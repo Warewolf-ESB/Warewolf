@@ -92,6 +92,8 @@ using Dev2.Activities;
 using Warewolf.Data;
 using Warewolf.Data.Options;
 using StringExtension = Dev2.Common.ExtMethods.StringExtension;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -2797,9 +2799,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             UpdateResource(resourceModel);
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage), "Warewolf Info");
-#if NETFRAMEWORK
-            EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
-#endif
+            EventPublisher.PublishAsync(new UpdateResourceMessage(resourceModel), null);
         }
 
         void UpdateResource(IContextualResourceModel resourceModel)
@@ -2860,7 +2860,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        protected bool _isPaste;
+		public Task HandleAsync(AddStringListToDataListMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		public Task HandleAsync(EditActivityMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		public Task HandleAsync(SaveUnsavedWorkflowMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		protected bool _isPaste;
         private IShellViewModel _shellViewModel;
 
         public System.Action WorkflowChanged { get; set; }

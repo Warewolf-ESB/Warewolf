@@ -10,7 +10,12 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Settings.Perfcounters
 {
+#if NETFRAMEWORK
+    public class PerformanceCountersByResource : BindableBase, IPerformanceCountersByResource
+#else
+
     public class PerformanceCountersByResource : BindableBase2,IPerformanceCountersByResource
+#endif
     {
         bool _isDeleted;
         Guid _resourceId;

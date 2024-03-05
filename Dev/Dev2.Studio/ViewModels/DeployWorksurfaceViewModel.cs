@@ -32,9 +32,15 @@ namespace Dev2.ViewModels
         public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
+#if NETFRAMEWORK
+            var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            var stats = new DeployStatsViewerViewModel(dest);
+            var source = new DeploySourceExplorerViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), stats);
+#else
             var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Prism.Events.IEventAggregator>());
             var stats = new DeployStatsViewerViewModel(dest);
             var source = new DeploySourceExplorerViewModel(mainViewModel, CustomContainer.Get<Prism.Events.IEventAggregator>(), stats);
+#endif
             dest.StatsArea = stats;
             var vm = new SingleExplorerDeployViewModel(dest, source, new List<IExplorerTreeItem>(), stats, mainViewModel, CustomContainer.Get<IPopupController>());
             ViewModel = vm;

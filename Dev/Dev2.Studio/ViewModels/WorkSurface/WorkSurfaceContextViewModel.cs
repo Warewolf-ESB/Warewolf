@@ -41,6 +41,8 @@ using Dev2.ViewModels;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Licensing;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -341,9 +343,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
-#if NETFRAMEWORK
-            _windowManager.ShowDialog(inputDataViewModel);
-#endif
+            _windowManager.ShowDialogAsync(inputDataViewModel);
         }
 
         WorkflowInputDataViewModel SetupForDebug(IContextualResourceModel resourceModel, bool isDebug)
@@ -694,8 +694,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             base.OnDispose();
         }
 
-        #endregion Overrides of BaseViewModel
+		public Task HandleAsync(SaveResourceMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
 
-        #endregion overrides
-    }
+		public Task HandleAsync(UpdateWorksurfaceDisplayName message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		#endregion Overrides of BaseViewModel
+
+		#endregion overrides
+	}
 }

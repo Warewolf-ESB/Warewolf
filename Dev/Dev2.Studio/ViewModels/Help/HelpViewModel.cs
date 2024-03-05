@@ -21,7 +21,9 @@ using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.Enums;
-#if !NETFRAMEWORK
+using System.Threading;
+
+#if NETFRAMEWORK
 using System.Threading;
 #endif
 
@@ -141,22 +143,14 @@ namespace Dev2.Studio.ViewModels.Help
 
 		/// <summary>Called when deactivating.</summary>
 		/// <param name="close">Inidicates whether this instance will be closed.</param>
-#if !NETFRAMEWORK
 		protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
-#else
-		protected override void OnDeactivate(bool close)
-#endif
 		{
 			if (close)
 			{
 				EventPublisher.Unsubscribe(this);
 				HelpViewDisposed = true;
 			}
-#if !NETFRAMEWORK
 			return base.OnDeactivateAsync(close, cancellationToken);
-#else
-			base.OnDeactivate(close);
-#endif
 		}
 
 		#endregion

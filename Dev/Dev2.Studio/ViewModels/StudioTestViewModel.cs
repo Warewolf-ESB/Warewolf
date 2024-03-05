@@ -1,5 +1,7 @@
 #pragma warning disable
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
@@ -114,13 +116,18 @@ namespace Dev2.ViewModels
                     DebugOutputViewModel.Append(debugState);
                 }
             }
-        }
+		}
+
+		public Task HandleAsync(DebugOutputMessage message, CancellationToken cancellationToken)
+		{
+            return new Task(() => { Handle(message); });
+		}
 
 		#endregion
 
 		#region Implementation of IStudioTab
 
-        public bool IsDirty => ViewModel.CanSave;
+		public bool IsDirty => ViewModel.CanSave;
 
         [ExcludeFromCodeCoverage]
         public void CloseView()
@@ -184,5 +191,5 @@ namespace Dev2.ViewModels
         }
 
 		#endregion
-    }
+	}
 }

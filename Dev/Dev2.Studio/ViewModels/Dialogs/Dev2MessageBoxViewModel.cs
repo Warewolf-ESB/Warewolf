@@ -83,7 +83,11 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             var urlsFoundInput = urlsFound;
             var dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
+#if NETFRAMEWORK
+            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFoundInput, isDeleteAnywayButtonVisible, applyToAll);
+#else
             var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, EFontAwesomeIcon.Solid_TriangleExclamation, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFoundInput, isDeleteAnywayButtonVisible, applyToAll);
+#endif
             if (dontShowAgainOption.Item1)
             {
                 msgBoxViewModel.Result = dontShowAgainOption.Item2;
