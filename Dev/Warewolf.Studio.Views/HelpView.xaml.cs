@@ -15,6 +15,7 @@ using Infragistics.Documents.RichText;
 #if !NETFRAMEWORK
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif
 
 namespace Warewolf.Studio.Views
