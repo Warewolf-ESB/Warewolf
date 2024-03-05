@@ -937,4 +937,9 @@
 			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
 		</Reference>
     </ItemGroup>
+	<Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+		<ItemGroup>
+			<_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(TargetFrameworkIdentifier)\net6.0-windows\$(AssemblyName).dll" />
+		</ItemGroup>
+	</Target>
 </Project>
