@@ -333,15 +333,13 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
-                $Net48OutputProperty = ""
-                $Net60WindowsOutputProperty = ""
+                $OutputProperty = ""
             } else {
-                $Net48OutputProperty = "/property:OutDir=`"$PSScriptRoot\Bin\$OutputFolderName\net48`""
-                $Net60WindowsOutputProperty = "/property:OutDir=`"$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows`""
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if (!($InContainer.IsPresent)) {
-#                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" "/p:TargetFramework=net48" $Net48OutputProperty $Target
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" "/p:TargetFramework=net6.0-windows" $Net60WindowsOutputProperty $Target
+                Write-Host "$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
                 docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             }

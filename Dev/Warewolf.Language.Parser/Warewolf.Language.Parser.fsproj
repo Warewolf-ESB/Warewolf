@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!--<TargetFramework>net48</TargetFramework>-->    
-    <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
