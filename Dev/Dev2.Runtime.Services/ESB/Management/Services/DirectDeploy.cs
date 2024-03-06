@@ -102,12 +102,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
 			{
-#if NETFRAMEWORK
-                var proxy = Connections.GetHubConnection(destination);
-#else
-				var proxy = Connections.GetTestHubConnection(destination);
-#endif
-                var roles = new StringBuilder("*");
+				var proxy = Connections.GetHubConnection(destination);
+				var roles = new StringBuilder("*");
                 values.TryGetValue("deployTests", out StringBuilder deployTests);
                 values.TryGetValue("deployTriggers", out StringBuilder deployTriggers);
 
