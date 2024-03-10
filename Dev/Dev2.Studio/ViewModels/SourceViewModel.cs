@@ -9,6 +9,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif
 using Warewolf.Studio.ViewModels;
 
@@ -86,11 +88,12 @@ namespace Dev2.ViewModels
         {
 #if NETFRAMEWORK
             if (view is IView loadedView)
-#else
-            if (view is Microsoft.Practices.Prism.Mvvm.IView loadedView)
-#endif
             {
-                loadedView.DataContext = ViewModel;
+				loadedView.DataContext = ViewModel;
+#else
+			if (view is IView loadedView)
+			{
+#endif
                 base.OnViewLoaded(loadedView);
             }
         }
