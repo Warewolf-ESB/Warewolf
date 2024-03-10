@@ -49,7 +49,7 @@ namespace Dev2.Studio.Views.Workflow
 
         TextEditor _editor;
         TextEditor _jsonEditor;
-		XmlFoldingStrategy _foldingStrategy;
+        AbstractFoldingStrategy _foldingStrategy;
         FoldingManager _foldingManager;
         DispatcherTimer _foldingUpdateTimer;
         readonly Grid _blackoutGrid = new Grid();

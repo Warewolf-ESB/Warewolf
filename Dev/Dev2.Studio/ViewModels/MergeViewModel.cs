@@ -16,13 +16,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
-#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
-#else
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
-#endif
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
@@ -77,7 +71,6 @@ namespace Dev2.ViewModels
         }
 
         public override string DisplayName => ViewModel.DisplayName;
-#if NETFRAMEWORK
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
@@ -87,7 +80,6 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
-#endif
         public IDataListViewModel DataListViewModel => ViewModel.DataListViewModel;
 
         public string ResourceType => "MergeConflicts";

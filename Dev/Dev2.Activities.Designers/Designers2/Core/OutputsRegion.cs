@@ -26,6 +26,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
+using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using IFieldAndPropertyMapper = Dev2.Common.IFieldAndPropertyMapper;

@@ -47,7 +47,7 @@ namespace Dev2.Webs.Callbacks
                 var resCat = HelperUtils.SanitizePath((string)jsonArgs.resourcePath, resName);
                 if (_resourceModel != null)
                 {
-                    EventPublisher.PublishAsync(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager, loadingFromServer, originalPath), null);
+                    //EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager, loadingFromServer, originalPath));
                 }
 
                 Close();
@@ -61,6 +61,6 @@ namespace Dev2.Webs.Callbacks
                 throw e1;
             }
         }
-#endregion
+        #endregion
     }
 }

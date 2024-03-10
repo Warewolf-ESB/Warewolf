@@ -2,13 +2,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#else
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
-#endif
 using Warewolf.Studio.Views;
 
 namespace Dev2

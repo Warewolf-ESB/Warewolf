@@ -101,9 +101,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 toReturn.Add(new DeployResult(new ExecuteMessage {HasError = true, Message = new StringBuilder(canConnectToServer.ErrorMessage)}, "An Error has occurred"));
             }
             else
-			{
-				var proxy = Connections.GetHubConnection(destination);
-				var roles = new StringBuilder("*");
+            {
+                var proxy = Connections.GetHubConnection(destination);
+                var roles = new StringBuilder("*");
                 values.TryGetValue("deployTests", out StringBuilder deployTests);
                 values.TryGetValue("deployTriggers", out StringBuilder deployTriggers);
 

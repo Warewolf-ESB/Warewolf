@@ -14,9 +14,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-#if !NETFRAMEWORK
 using Dev2.Data.Security;
-#endif
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -47,11 +45,7 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperation()
         {
-#if NETFRAMEWORK
-            if (_impersonatedUser != null)
-#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
-#endif
             {
                 return ExecuteOperationWithAuth();
             }
@@ -63,13 +57,8 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
-#if NETFRAMEWORK
-            using (_impersonatedUser)
-#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
-#endif
-
                 {
                     try
                     {
@@ -83,11 +72,9 @@ namespace Dev2.Data.PathOperations.Operations
                         return false;
                     }
                 }
-#if !NETFRAMEWORK
                 );
 
             return false;
-#endif
         }
     }
 }

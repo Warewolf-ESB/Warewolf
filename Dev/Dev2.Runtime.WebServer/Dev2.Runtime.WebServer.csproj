@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -221,6 +221,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     <!--<PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.3" />-->
     <!--<PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
       <Version>5.2.7</Version>
@@ -241,45 +242,10 @@
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
     <!--<PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />-->
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-		<PackageReference Include="Microsoft.AspNet.Cors">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
-			<Version>2.4.1</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Client">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Core">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Cors">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Cors">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Host.HttpListener">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Security">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.SelfHost">
-			<Version>4.2.2</Version>
-		</PackageReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
-	</ItemGroup>
 </Project>

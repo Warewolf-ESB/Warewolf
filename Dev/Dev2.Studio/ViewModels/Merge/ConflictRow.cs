@@ -8,21 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using System;
-#if !NETFRAMEWORK
-using Dev2.Common;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
 
 namespace Dev2.ViewModels.Merge
 {
-#if !NETFRAMEWORK
     public abstract class ConflictRow : BindableBase2, IConflictRow, IConflictCheckable
-#else
-    public abstract class ConflictRow : BindableBase, IConflictRow, IConflictCheckable
-#endif
     {
         public abstract bool IsEmptyItemSelected { get; set; }
         public bool HasConflict { get; set; }

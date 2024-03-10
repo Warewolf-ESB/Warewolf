@@ -11,11 +11,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-#if !NETFRAMEWORK
 using Microsoft.Xaml.Behaviors;
-#else
-using System.Windows.Interactivity;
-#endif
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

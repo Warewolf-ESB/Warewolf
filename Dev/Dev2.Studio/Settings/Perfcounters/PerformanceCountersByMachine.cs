@@ -1,17 +1,9 @@
-﻿using Dev2.Common.Interfaces;
-#if !NETFRAMEWORK
-using Dev2.Common;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Settings.Perfcounters
 {
-#if !NETFRAMEWORK
     public class PerformanceCountersByMachine : BindableBase2,IPerformanceCountersByMachine
-#else
-    public class PerformanceCountersByMachine : BindableBase,IPerformanceCountersByMachine
-#endif
     {
         string _machineName;
         bool _requestPerSecond;

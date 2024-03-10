@@ -11,11 +11,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-#if NETFRAMEWORK
-using System.Windows.Interactivity;
-#else
 using Microsoft.Xaml.Behaviors;
-#endif
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 

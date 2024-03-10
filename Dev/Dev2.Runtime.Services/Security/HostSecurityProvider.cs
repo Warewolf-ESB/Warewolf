@@ -10,19 +10,17 @@
 */
 
 using System;
+using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Wrappers;
-#if !NETFRAMEWORK
-using System.Configuration;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-#endif
 
 namespace Dev2.Runtime.Security
 {
@@ -178,32 +176,6 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSSL
 
-#if NETFRAMEWORK
-        public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
-        {
-            var result = false;
-
-            if (!fileWrapper.Exists(certPath))
-            {
-                try
-                {
-                    var certificateBuilder = new SslCertificateBuilder();
-                    certificateBuilder.EnsureSslCertificate(certPath, endPoint);
-                    result = fileWrapper.Exists(certPath);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                }
-            }
-            else
-            {
-                result = SslCertificateBuilder.BindSslCertToPorts(endPoint, certPath);
-            }
-
-            return result;
-        }
-#else
         public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
         {
             var result = false;
@@ -285,7 +257,6 @@ namespace Dev2.Runtime.Security
 
             return result;
         }
-#endif
         #endregion
     }
 }

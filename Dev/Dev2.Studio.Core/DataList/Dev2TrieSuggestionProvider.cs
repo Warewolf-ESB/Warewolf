@@ -15,9 +15,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Gma.DataStructures.StringSearch;
-#if !NETFRAMEWORK
 using KGySoft.CoreLibraries;
-#endif
 using static DataStorage;
 
 namespace Dev2.Studio.Core.DataList

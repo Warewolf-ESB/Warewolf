@@ -32,14 +32,10 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
-#if NETFRAMEWORK
-using FontAwesome.WPF;
-#else
+//using FontAwesome.WPF;
 using FontAwesome6;
 using FontAwesome6.Fonts;
 using Warewolf.Studio.Core.Extensions;
-#endif
-
 
 
 namespace Dev2.Activities.Designers2.Core
@@ -358,11 +354,7 @@ namespace Dev2.Activities.Designers2.Core
 
                     if (ViewModel != null && ViewModel.HasLargeView && !ViewModel.ShowSmall && ViewModel.ShowSmall)
                     {
-#if NETFRAMEWORK
-                        var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-#else
                         var imageSource = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Expand, Brushes.Black);
-#endif
                         var icon = new Image
                         {
                             Source = imageSource,

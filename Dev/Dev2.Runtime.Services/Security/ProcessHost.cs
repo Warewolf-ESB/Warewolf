@@ -23,11 +23,7 @@ namespace Dev2.Runtime.Security
         /// <param name="args"></param>
         /// <param name="useShellExecute"></param>
         /// <returns></returns>
-#if NETFRAMEWORK
-        public static bool Invoke(string workingDir, string fileName, string args)
-#else
         public static bool Invoke(string workingDir, string fileName, string args, bool useShellExecute = false)
-#endif
         {
             var invoked = true;
 
@@ -38,12 +34,8 @@ namespace Dev2.Runtime.Security
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = fileName,
-#if NETFRAMEWORK
-                    Verb = "runas"
-#else
                     Verb = "runas",
                     UseShellExecute = true
-#endif
                 }
             };
 

@@ -10,58 +10,38 @@
 
 using System;
 using System.Security.Principal;
-using Dev2.Data.Interfaces;
-using Dev2.PathOperations;
-#if !NETFRAMEWORK
 using Dev2.Common;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Security;
-#endif
+using Dev2.PathOperations;
 
 namespace Dev2.Data.PathOperations
 {
     public interface IWindowsImpersonationContext : IDisposable
     {
-#if !NETFRAMEWORK
         WindowsIdentity Identity { get; set; }
-#endif
         void Undo();
 
     }
 
     class WindowsImpersonationContextImpl : IWindowsImpersonationContext
     {
-#if !NETFRAMEWORK
         private WindowsIdentity _context;
 
         public WindowsImpersonationContextImpl(WindowsIdentity context)
-#else
-        private readonly WindowsImpersonationContext _context;
-		
-        public WindowsImpersonationContextImpl(WindowsImpersonationContext context)
-#endif
         {
             _context = context;
         }
 
-#if !NETFRAMEWORK
         public WindowsIdentity Identity { get => _context; set => _context = value; }
-#endif
 
         public void Dispose()
         {
-#if !NETFRAMEWORK
             //// _context.Dispose(); Should not dispose identity passed.
-#else
-            _context.Dispose();
-#endif
         }
         public void Undo()
         {
-#if !NETFRAMEWORK
-            //// _context.Dispose(); Should not dispose identity passed.
-#else
-            _context.Undo();
-#endif
+            //_context.Dispose(); Should not dispose identity passed.
         }
     }
 

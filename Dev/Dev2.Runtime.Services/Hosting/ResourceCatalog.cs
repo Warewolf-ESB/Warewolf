@@ -279,11 +279,7 @@ namespace Dev2.Runtime.Hosting
                 if (localCache.Cache.Count > 0)
                     return;
             }
-#if NETFRAMEWORK
-            foreach (var resource in userServices)
-#else
             foreach (var resource in userServices.ToList())
-#endif
             {
                 try
                 {

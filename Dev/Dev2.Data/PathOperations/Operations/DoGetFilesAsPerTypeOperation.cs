@@ -17,9 +17,7 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Warewolf.Resource.Errors;
-#if !NETFRAMEWORK
 using Dev2.Data.Security;
-#endif
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -53,11 +51,7 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
-#if NETFRAMEWORK
-                if (_impersonatedUser != null)
-#else
                 if (_impersonatedUser != null && _impersonatedUser.Identity != null)
-#endif
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -83,13 +77,8 @@ namespace Dev2.Data.PathOperations.Operations
         
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
-#if NETFRAMEWORK
-            using (_impersonatedUser)
-#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<IList<IActivityIOPath>>(() =>
-#endif
-
                 {
                     try
                     {
@@ -109,10 +98,8 @@ namespace Dev2.Data.PathOperations.Operations
                         throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
                     }
                 }
-#if !NETFRAMEWORK
-                );
-                return null;
-#endif
+            );
+            return null;
         }
     }
 }

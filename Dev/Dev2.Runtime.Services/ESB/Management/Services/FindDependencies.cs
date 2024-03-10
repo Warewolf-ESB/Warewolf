@@ -26,14 +26,10 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Workspaces;
-using Warewolf.Resource.Errors;
-#if NETFRAMEWORK
-using ServiceStack.Common.Extensions;
-#else
 using ServiceStack.Common;
+using Warewolf.Resource.Errors;
 using ServiceStack.Extensions;
 using ServiceStack;
-#endif
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -183,11 +179,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
 
-#if NETFRAMEWORK
-                dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-#else
+                //dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
                 dependencies.Each(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-#endif
 
                 sb.Append("</node>");
                 seenResource.Add(resource.ResourceID);

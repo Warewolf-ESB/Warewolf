@@ -44,7 +44,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _serverRepository = serverRepository;
 
             Init();
-            EventPublishers.Aggregator.Subscribe(this, null);
+            //EventPublishers.Aggregator.Subscribe(this);
         }
 
         void SingleEnvironmentExplorerViewModel_SelectedItemChanged(object sender, IExplorerTreeItem e)

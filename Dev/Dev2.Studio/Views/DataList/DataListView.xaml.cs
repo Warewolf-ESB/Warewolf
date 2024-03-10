@@ -15,13 +15,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
-#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
-#else
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-#endif
 using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.Views.DataList
@@ -31,16 +25,7 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : IView, ICheckControlEnabledView
     {
-#if !NETFRAMEWORK
-		public string Path => throw new System.NotImplementedException();
-
-		public Task RenderAsync(ViewContext context)
-		{
-			throw new System.NotImplementedException();
-		}
-#endif
-
-		public DataListView()
+        public DataListView()
         {
             InitializeComponent();
             KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
@@ -141,7 +126,7 @@ namespace Dev2.Studio.Views.DataList
             return false;
         }
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

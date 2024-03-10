@@ -12,13 +12,7 @@
 using System;
 using System.ComponentModel;
 using System.Text;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#else
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
-#endif
 
 
 
@@ -38,5 +32,14 @@ namespace Dev2.Studio.Interfaces
 
         void ClearErrors();
         StringBuilder GetWorkflowXaml();
+    }
+}
+
+
+namespace Microsoft.Practices.Prism.Mvvm
+{
+    public interface IView
+    {
+        object DataContext { get; set; }
     }
 }

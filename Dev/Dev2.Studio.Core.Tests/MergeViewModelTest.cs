@@ -15,11 +15,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.ViewModels;
 using Dev2.ViewModels.Merge;
-#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
-#else
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

@@ -18,17 +18,10 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.ViewModels.Merge.Utils;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#endif
 
 namespace Dev2.ViewModels.Merge
 {
-#if !NETFRAMEWORK
     public class MergeWorkflowViewModel : BindableBase2, IMergeWorkflowViewModel
-#else
-    public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
-#endif
     {
         string _displayName;
         bool _hasMergeStarted;

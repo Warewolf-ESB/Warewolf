@@ -4,12 +4,7 @@ using Dev2.Common;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
-#if NETFRAMEWORK
-using ServiceStack.Common.Extensions;
-#else
 using ServiceStack;
-using ServiceStack.Common;
-#endif
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -44,11 +39,7 @@ namespace Dev2.Studio.Core.DataList
         public void SetComplexObjectSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
             var objects = _complexObjectItemModels.Flatten(model => model.Children).Where(model => model.DisplayName == part.DisplayValue.Trim('@'));
-#if NETFRAMEWORK
-            objects.ForEach(model =>
-#else
             objects.Each(model =>
-#endif
             {
                 model.IsUsed = isUsed;
             });

@@ -23,10 +23,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.Enums;
 using System.Threading;
 
-#if NETFRAMEWORK
-using System.Threading;
-#endif
-
 namespace Dev2.Studio.ViewModels.Help
 
 {
