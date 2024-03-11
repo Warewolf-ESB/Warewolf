@@ -5,15 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using mshtml;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
-#if !NETFRAMEWORK
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.Rendering;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -45,9 +41,7 @@ namespace Warewolf.Studio.Views
 
         ManageOAuthSourceViewModel ViewModel { get; set; }
 
-#if !NETFRAMEWORK
 		public string Path => throw new NotImplementedException();
-#endif
 
 		void HideScriptErrors(WebBrowser wb, bool hide)
         {
@@ -93,12 +87,10 @@ namespace Warewolf.Studio.Views
 
         public bool GetControlEnabled(string controlName) => false;
 
-#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new NotImplementedException();
 		}
-#endif
 
 		#endregion
 	}

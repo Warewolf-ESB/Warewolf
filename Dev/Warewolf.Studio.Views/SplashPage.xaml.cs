@@ -17,10 +17,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Warewolf.Studio.Core;
-#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc.Rendering;
-#endif
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
@@ -30,9 +28,7 @@ namespace Warewolf.Studio.Views
         bool _isDialog;
         bool _studioShutdown;
 
-#if !NETFRAMEWORK
         public string Path => throw new NotImplementedException();
-#endif
 
         public SplashPage()
         {
@@ -112,11 +108,9 @@ namespace Warewolf.Studio.Views
             CloseSplash(false);
         }
 
-#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new NotImplementedException();
         }
-#endif
     }
 }

@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,14 +17,9 @@ using System.Windows.Documents;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Warewolf.Studio.ViewModels;
-#if !NETFRAMEWORK
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -32,9 +28,7 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageWebserviceSourceControl : IView, ICheckControlEnabledView
     {
-#if !NETFRAMEWORK
 		public string Path => throw new System.NotImplementedException();
-#endif
 
 		public ManageWebserviceSourceControl()
         {
@@ -167,11 +161,9 @@ namespace Warewolf.Studio.Views
             }
         }
 
-#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new System.NotImplementedException();
 		}
-#endif
 	}
 }

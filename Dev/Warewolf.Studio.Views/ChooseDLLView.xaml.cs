@@ -1,14 +1,9 @@
 #pragma warning disable
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#else
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -22,14 +17,12 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-#if !NETFRAMEWORK
         public string Path => throw new System.NotImplementedException();
 
         public Task RenderAsync(ViewContext context)
         {
             throw new System.NotImplementedException();
         }
-#endif
 
         public void RequestClose()
         {

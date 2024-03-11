@@ -10,17 +10,13 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
-using Warewolf.Studio.ViewModels;
-#if !NETFRAMEWORK
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -29,9 +25,7 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageEmailSourceControl : IView, ICheckControlEnabledView
     {
-#if !NETFRAMEWORK
 		public string Path => throw new NotImplementedException();
-#endif
 
 		public ManageEmailSourceControl()
         {
@@ -130,11 +124,9 @@ namespace Warewolf.Studio.Views
             FromTextBox.Text = emailFrom;
         }
 
-#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new NotImplementedException();
 		}
-#endif
 	}
 }

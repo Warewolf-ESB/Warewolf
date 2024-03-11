@@ -8,11 +8,9 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
-#if !NETFRAMEWORK
-using Microsoft.AspNetCore.Mvc.Rendering;
-#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -109,9 +107,7 @@ namespace Warewolf.Studio.Views
 
         bool IsRenaming { get; set; }
 
-#if !NETFRAMEWORK
         public string Path => throw new NotImplementedException();
-#endif
 
         void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -150,11 +146,9 @@ namespace Warewolf.Studio.Views
             }
         }
 
-#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new NotImplementedException();
         }
-#endif
     }
 }

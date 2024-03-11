@@ -1,10 +1,4 @@
-﻿#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#else
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
-#endif
+﻿using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Views
 {
@@ -14,14 +8,5 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
         }
-
-#if !NETFRAMEWORK
-        public string Path => throw new System.NotImplementedException();
-
-        public Task RenderAsync(ViewContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-#endif
     }
 }

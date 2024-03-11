@@ -1,5 +1,5 @@
 #pragma warning disable
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
@@ -9,18 +9,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common;
-#if !NETFRAMEWORK
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
-#endif
 
 namespace Warewolf.Studio.Views
 {
     public partial class ManageDatabaseSourceControl : IManageDatabaseSourceView, ICheckControlEnabledView
     {
-#if !NETFRAMEWORK
         public string Path => throw new NotImplementedException();
-#endif
 
         public ManageDatabaseSourceControl()
         {
@@ -187,12 +183,10 @@ namespace Warewolf.Studio.Views
             DatabaseComboxContainer.Visibility = collapsed;
         }
 
-#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new NotImplementedException();
         }
-#endif
     }
 
     public class NullToVisibilityConverter : IValueConverter
