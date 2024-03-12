@@ -62,7 +62,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     UserName = src.UserName,
                     Password = src.Password
                 };
+#if NETFRAMEWORK
+                var result = _connections.CanConnectToServer(connection);
+#else
                 var result = _connections.CanConnectToTestServer(connection);
+#endif
 
                 msg.HasError = false;
                 msg.Message = new StringBuilder(result.IsValid ? "" : result.ErrorMessage);

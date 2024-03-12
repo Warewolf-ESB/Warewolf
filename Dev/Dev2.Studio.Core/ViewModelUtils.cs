@@ -31,7 +31,11 @@ namespace Dev2
             {
                 var typeOfCommand = commandForCanExecuteChange.GetType();
 
+#if !NETFRAMEWORK
                 if (typeOfCommand == typeof(Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Prism.Commands.DelegateCommand command)
+#else
+                if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Prism.Commands.DelegateCommand command)
+#endif
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null)
                     {
