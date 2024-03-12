@@ -7,6 +7,11 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+#endif
 using Warewolf.Studio.ViewModels;
 
 
@@ -19,7 +24,11 @@ namespace Dev2.ViewModels
         readonly IPopupController _popupController;
         readonly IServer _server;
 
+#if NETFRAMEWORK
+        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IServer server)
+#else
         public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController, Microsoft.AspNetCore.Mvc.ViewEngines.IView view, IServer server)
+#endif
             : base(eventPublisher)
         {
             ViewModel = vm;
@@ -77,9 +86,14 @@ namespace Dev2.ViewModels
 
         protected override void OnViewLoaded(object view)
         {
-            if (view is Microsoft.Practices.Prism.Mvvm.IView loadedView)
+#if NETFRAMEWORK
+            if (view is IView loadedView)
             {
-                loadedView.DataContext = ViewModel;
+				loadedView.DataContext = ViewModel;
+#else
+			if (view is IView loadedView)
+			{
+#endif
                 base.OnViewLoaded(loadedView);
             }
         }
@@ -104,7 +118,11 @@ namespace Dev2.ViewModels
 
         public string HelpText { get; set; }
         public SourceBaseImpl<T> ViewModel { get; set; }
+#if NETFRAMEWORK
+        public IView View { get; set; }
+#else
         public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get; set; }
+#endif
 
         #endregion
 

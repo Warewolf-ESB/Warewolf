@@ -13,8 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
+#if !NETFRAMEWORK
 using FontAwesome6;
 using FontAwesome6.Fonts;
+#else
+using FontAwesome.WPF;
+#endif
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Interfaces;
@@ -79,7 +83,11 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             var urlsFoundInput = urlsFound;
             var dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
+#if NETFRAMEWORK
+            var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, FontAwesomeIcon.ExclamationTriangle, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFoundInput, isDeleteAnywayButtonVisible, applyToAll);
+#else
             var msgBoxViewModel = new MessageBoxViewModel(messageBoxText, caption, button, EFontAwesomeIcon.Solid_TriangleExclamation, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFoundInput, isDeleteAnywayButtonVisible, applyToAll);
+#endif
             if (dontShowAgainOption.Item1)
             {
                 msgBoxViewModel.Result = dontShowAgainOption.Item2;

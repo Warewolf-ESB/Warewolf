@@ -10,8 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Development.Languages</RootNamespace>
-    <AssemblyName>Dev2.Development.Languages</AssemblyName>
-    
+    <AssemblyName>Dev2.Development.Languages</AssemblyName>    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -50,12 +49,6 @@
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronRuby">
-      <HintPath>..\Binaries\IronRuby.dll</HintPath>
-    </Reference>
-    <Reference Include="IronRuby.Libraries">
-      <HintPath>..\Binaries\IronRuby.Libraries.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\Binaries\Microsoft.Dynamic.dll</HintPath>
     </Reference>
@@ -73,7 +66,6 @@
     <Compile Include="Scripting\RubyContext.cs" />
     <Compile Include="Scripting\ScriptingEngineRepo.cs" />
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <None Include="app.config" />
     <None Include="Dev2.Development.Languages.ruleset" />
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +91,32 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
-	  <PackageReference Include="IronPython" Version="3.4.0" />
 	  <PackageReference Include="Jurassic" Version="3.2.6" />
+	  <PackageReference Include="IronPython" Version="3.4.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+	  <Reference Include="IronRuby">
+		  <HintPath>..\Binaries\IronRuby_net48.dll</HintPath>
+	  </Reference>
+	  <Reference Include="IronRuby.Libraries">
+		  <HintPath>..\Binaries\IronRuby.Libraries_net48.dll</HintPath>
+	  </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+	<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+	  <Reference Include="IronRuby">
+		  <HintPath>..\Binaries\IronRuby.dll</HintPath>
+	  </Reference>
+	  <Reference Include="IronRuby.Libraries">
+		  <HintPath>..\Binaries\IronRuby.Libraries.dll</HintPath>
+	  </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

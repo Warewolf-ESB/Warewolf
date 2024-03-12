@@ -11,7 +11,11 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
 using ServiceStack.Common;
+#endif
 
 namespace Dev2.Studio.Core.DataList
 {

@@ -14,8 +14,12 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
 using ServiceStack;
 using ServiceStack.Common;
+#endif
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
@@ -137,8 +141,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (workspaceID == Guid.Empty && deleteVersions && resource != null)
             {
                 var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID);
-                //explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
+#if NETFRAMEWORK
+                explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
+#else
                 explorerItems?.Each(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
+#endif
             }
 
 
