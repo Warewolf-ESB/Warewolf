@@ -57,11 +57,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsActionEnabled = true;
                     SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
                 }
-#if NETFRAMEWORK
-                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-#else
                 RefreshActionsCommand = new Prism.Commands.DelegateCommand(() =>
-#endif
                 {
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
@@ -162,11 +158,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
-#if NETFRAMEWORK
-            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-#else
             var delegateCommand = RefreshActionsCommand as Prism.Commands.DelegateCommand;
-#endif
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedAction = value;

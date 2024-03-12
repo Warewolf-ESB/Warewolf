@@ -8,11 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
 
 namespace Dev2.Common.Interfaces
 {

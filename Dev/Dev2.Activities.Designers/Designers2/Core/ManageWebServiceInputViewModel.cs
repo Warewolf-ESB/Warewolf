@@ -26,11 +26,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Commands;
-#else
 using Prism.Commands;
-#endif
 using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Data.Options;

@@ -20,10 +20,8 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
-#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-#endif
 
 namespace Dev2.Common.Common
 {
