@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System.Threading.Tasks;
+#endif
 
 namespace Dev2.Activities.Designers2.Switch
 {
@@ -14,11 +18,13 @@ namespace Dev2.Activities.Designers2.Switch
             InitializeComponent();
         }
 
-		public string Path => throw new System.NotImplementedException();
+#if !NETFRAMEWORK
+        public string Path => throw new System.NotImplementedException();
 
-		public Task RenderAsync(ViewContext context)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+#endif
+    }
 }

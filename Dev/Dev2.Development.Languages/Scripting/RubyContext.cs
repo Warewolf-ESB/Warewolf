@@ -70,7 +70,9 @@ namespace Dev2.Development.Languages.Scripting
 
         ScriptEngine CreateRubyEngine()
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);            
+#if !NETFRAMEWORK
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
             RuntimeSetup = ScriptRuntimeSetup.ReadConfiguration();
             var languageSetup = RuntimeSetup.AddRubySetup();
 

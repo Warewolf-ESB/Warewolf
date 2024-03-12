@@ -10,7 +10,11 @@
 
 using System;
 using Warewolf.Exceptions;
+#if !NETFRAMEWORK
 using Boxed.AspNetCore;
+#else
+using System.Web;
+#endif
 
 namespace Dev2.Common.Interfaces
 {
@@ -18,7 +22,11 @@ namespace Dev2.Common.Interfaces
     public class AccessDeniedException : HttpException, IWarewolfException
     {
         public AccessDeniedException(string message)
+#if !NETFRAMEWORK
             : base(System.Net.HttpStatusCode.Forbidden, message)
+#else
+            : base(message)
+#endif
         {
         }
     }

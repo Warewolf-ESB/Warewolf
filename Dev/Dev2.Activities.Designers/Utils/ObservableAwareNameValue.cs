@@ -29,8 +29,13 @@ namespace Dev2.Activities.Utils
             Name = "";
             Value = "";
 
+#if !NETFRAMEWORK
             AddRowCommand = new Prism.Commands.DelegateCommand(AddRow);
             RemoveRowCommand = new Prism.Commands.DelegateCommand(RemoveRow);
+#else
+            AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
+            RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
+#endif
         }
 
         void RemoveRow()
