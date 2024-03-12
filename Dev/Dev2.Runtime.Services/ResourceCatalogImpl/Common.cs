@@ -13,11 +13,8 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-#if NETFRAMEWORK
-using ServiceStack.Common.Extensions;
-#else
 using ServiceStack;
-#endif
+//using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -50,11 +47,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             else
             {
-#if NETFRAMEWORK
-                compileMessagesTO.ForEach(to =>
-#else
+                //compileMessagesTO.ForEach(to =>
                 compileMessagesTO.Each(to =>
-#endif
                 {
                     var xElements = errorMessagesElement.Elements("ErrorMessage");
                     var firstOrDefault = xElements.FirstOrDefault(element =>

@@ -28,9 +28,7 @@ using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-#if !NETFRAMEWORK
 using ServiceStack;
-#endif
 using ServiceStack.Common;
 using Warewolf.Resource.Errors;
 using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;

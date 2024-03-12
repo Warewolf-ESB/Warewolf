@@ -34,12 +34,6 @@ namespace Dev2.Runtime.Security
         {
             get
             {
-#if NETFRAMEWORK
-                var serverAuthorizationService = _theInstance.Value;
-                serverAuthorizationService.SecurityService.PermissionsChanged += (s, e) => ClearCaches();
-                serverAuthorizationService.SecurityService.PermissionsModified += (s, e) => ClearCaches();
-                return serverAuthorizationService;  
-#else
                 try
                 {
                     var serverAuthorizationService = _theInstance.Value;
@@ -51,8 +45,7 @@ namespace Dev2.Runtime.Security
                 {
                     // log exception here
                     return null;
-                }
-#endif
+                }        
             }
         }
 

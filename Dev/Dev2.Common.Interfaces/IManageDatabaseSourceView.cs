@@ -1,8 +1,4 @@
-﻿#if !NETFRAMEWORK
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-#else
-using Microsoft.Practices.Prism.Mvvm;
-#endif
+﻿using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Dev2.Common.Interfaces
 {

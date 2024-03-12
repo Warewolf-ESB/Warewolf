@@ -22,12 +22,8 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-#if NETFRAMEWORK
-using ServiceStack.Common.Extensions;
-#else
 using ServiceStack;
 using ServiceStack.Common;
-#endif
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -69,11 +65,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(thisService != null)
             {
                 var workspaceGuids = WorkspaceRepository.Instance.GetWorkspaceGuids();
-#if NETFRAMEWORK
-                workspaceGuids.ForEach(guid =>
-#else
+                //workspaceGuids.ForEach(guid =>
                 workspaceGuids.Each(guid =>
-#endif
                 {
                     var union = dependants.Union(ResourceCatalog.Instance.GetDependants(guid, thisService.ResourceID));
                     dependants = union.ToList();

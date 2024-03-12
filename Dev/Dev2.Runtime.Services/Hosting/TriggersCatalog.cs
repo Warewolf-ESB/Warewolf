@@ -210,7 +210,6 @@ namespace Dev2.Runtime.Hosting
             Queues.Remove(triggerQueue);
         }
 
-#if !NETFRAMEWORK
         public void DeleteTriggerQueueFile(ITriggerQueue triggerQueue)
         {
             var queueFilePath = GetQueueFilePath(triggerQueue);
@@ -220,7 +219,6 @@ namespace Dev2.Runtime.Hosting
                 _fileWrapper.Delete(queueFilePath);
             }
         }
-#endif
 
         private void Load()
         {

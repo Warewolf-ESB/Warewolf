@@ -8,14 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
 using System.Windows;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
-#else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
-#endif
 
 namespace Dev2.Activities.Designers2.Decision
 {
@@ -27,15 +23,13 @@ namespace Dev2.Activities.Designers2.Decision
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement() => DataGrid;
+		public string Path => throw new System.NotImplementedException();
 
-#if !NETFRAMEWORK
-        public string Path => throw new System.NotImplementedException();
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
 
-        public Task RenderAsync(ViewContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-#endif
+		protected override IInputElement GetInitialFocusElement() => DataGrid;
     }
 }

@@ -520,6 +520,7 @@
     </PackageReference>-->
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="UiPath.Workflow">
@@ -531,7 +532,8 @@
     <PackageReference Include="System.Management.Automation">
       <Version>7.1.4</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 </Project>

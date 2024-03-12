@@ -12,11 +12,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-#if NETFRAMEWORK
-using System.Windows.Interactivity;
-#else
 using Microsoft.Xaml.Behaviors;
-#endif
 
 namespace Dev2.Studio.Core.AppResources.TriggerActions
 {

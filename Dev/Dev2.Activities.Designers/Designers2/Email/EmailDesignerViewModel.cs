@@ -397,9 +397,7 @@ namespace Dev2.Activities.Designers2.Email
                     }
                 }
             };
-#if NETFRAMEWORK
-            _eventPublisher.PublishAsync(message, null);
-#endif
+            //_eventPublisher.Publish(message);
         }
 
         public override void Validate()

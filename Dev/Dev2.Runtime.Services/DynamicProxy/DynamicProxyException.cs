@@ -19,13 +19,8 @@ namespace Dev2.Runtime.DynamicProxy
 {
     public class DynamicProxyException : ApplicationException
     {
-#if NETFRAMEWORK
-        IEnumerable<MetadataConversionError> _importErrors;
-        IEnumerable<MetadataConversionError> _codegenErrors;
-#else
         IEnumerable<CoreWCF.Description.MetadataConversionError> _importErrors;
         IEnumerable<CoreWCF.Description.MetadataConversionError> _codegenErrors;
-#endif
         IEnumerable<CompilerError> _compilerErrors;
 
         public DynamicProxyException(string message)
@@ -38,11 +33,7 @@ namespace Dev2.Runtime.DynamicProxy
         {
         }
 
-#if NETFRAMEWORK
-        public IEnumerable<MetadataConversionError> MetadataImportErrors
-#else
         public IEnumerable<CoreWCF.Description.MetadataConversionError> MetadataImportErrors
-#endif
         {
             get
             {
@@ -55,11 +46,7 @@ namespace Dev2.Runtime.DynamicProxy
             }
         }
 
-#if NETFRAMEWORK
-        public IEnumerable<MetadataConversionError> CodeGenerationErrors
-#else
         public IEnumerable<CoreWCF.Description.MetadataConversionError> CodeGenerationErrors
-#endif
         {
             get
             {

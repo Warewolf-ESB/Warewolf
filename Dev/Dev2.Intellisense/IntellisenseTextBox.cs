@@ -43,9 +43,7 @@ namespace Dev2.UI
             CustomSelection = true;
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
-#if NETFRAMEWORK
-            DataObject.AddPastingHandler(this, OnPaste);
-#endif
+            //DataObject.AddPastingHandler(this, OnPaste); // does not fire event for TextBox.Paste()
         }
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)

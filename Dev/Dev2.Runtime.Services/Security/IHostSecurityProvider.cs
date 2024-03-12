@@ -45,10 +45,6 @@ namespace Dev2.Runtime.Security
         /// </summary>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-#if NETFRAMEWORK
-        bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);
-#else
         bool EnsureSsl(IFile fileWrapper,  IPEndPoint endPoint);
-#endif
     }
 }
