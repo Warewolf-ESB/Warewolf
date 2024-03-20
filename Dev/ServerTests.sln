@@ -239,6 +239,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licensing", "Warew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licencing.Tests", "Warewolf.Licencing.Tests\Warewolf.Licencing.Tests.csproj", "{D3746053-97FA-4653-94CC-8B88BC49B761}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElsaServer", "Elsa\elsa-server\ElsaServer\ElsaServer.csproj", "{97C3162A-BA10-4181-8BE1-22439106E674}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -661,6 +663,10 @@ Global
 		{D3746053-97FA-4653-94CC-8B88BC49B761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D3746053-97FA-4653-94CC-8B88BC49B761}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3746053-97FA-4653-94CC-8B88BC49B761}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C3162A-BA10-4181-8BE1-22439106E674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C3162A-BA10-4181-8BE1-22439106E674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C3162A-BA10-4181-8BE1-22439106E674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C3162A-BA10-4181-8BE1-22439106E674}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
