@@ -1,0 +1,196 @@
+name: Elsa Studio 3 Packages
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+      - 'feature/*'
+      - 'issue/*'
+      - 'enhancement/*'
+      - 'patch/*'
+      - 'fix/*'
+  release:
+    types: [ prereleased, published ]
+env:
+  nuget_feed_feedzio: 'https://f.feedz.io/elsa-workflows/elsa-3/nuget/index.json'
+  nuget_feed_nuget: 'https://api.nuget.org/v3/index.json'
+  npm_feed_feedzio: 'https://f.feedz.io/elsa-workflows/elsa-3/npm/'
+  npm_feed_npm: 'https://registry.npmjs.org/'
+
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Extract branch name
+        run: |
+          BRANCH_NAME=${{ github.ref }} # e.g., refs/heads/main
+          BRANCH_NAME=${BRANCH_NAME#refs/heads/} # remove the refs/heads/ prefix
+          # Extract the last part after the last slash of the branch name, if any, e.g., feature/issue-123 -> issue-123 and use it as the version prefix.
+          PACKAGE_PREFIX=$(echo $BRANCH_NAME | rev | cut -d/ -f1 | rev | tr '_' '-')
+
+          # If the branch name is main, use the preview version. Otherwise, use the branch name as the version prefix.
+          if [[ "${BRANCH_NAME}" == "main" ]]; then
+              PACKAGE_PREFIX="preview"
+          fi
+
+          echo "Ref: ${{ github.ref }}"
+          echo "Branch name: ${BRANCH_NAME}"
+          echo "Package prefix: ${PACKAGE_PREFIX}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
+          echo "PACKAGE_PREFIX=${PACKAGE_PREFIX}" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Verify commit exists in remote branch
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+          git branch --remote --contains | grep origin/${BRANCH_NAME}
+      - name: Set VERSION variable
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* && "${{ github.event_name }}" == "release" && "${{ github.event.action }}" == "published" ]]; then
+            TAG_NAME=${{ github.ref }} # e.g., refs/tags/3.0.0
+            TAG_NAME=${TAG_NAME#refs/tags/} # remove the refs/tags/ prefix
+            echo "VERSION=${TAG_NAME}" >> $GITHUB_ENV
+          else
+            echo "VERSION=3.1.0-${PACKAGE_PREFIX}.${{github.run_number}}" >> $GITHUB_ENV
+          fi
+      - name: Build workflow designer client assets
+        working-directory: ./src/modules/Elsa.Studio.Workflows.Designer/ClientLib
+        run: |
+          npm install --force
+          npm run build
+      - name: Build DOM interop client assets
+        working-directory: ./src/framework/Elsa.Studio.DomInterop/ClientLib
+        run: |
+          npm install --force
+          npm run build
+      - name: Build nuget packages
+        run: dotnet build Elsa.Studio.sln --configuration Release /p:Version=${VERSION}
+      - name: Test
+        run: dotnet test Elsa.Studio.sln --configuration Release /p:Version=${VERSION} --no-build
+      - name: Pack nuget packages
+        run: dotnet pack Elsa.Studio.sln --configuration Release /p:Version=${VERSION} /p:PackageOutputPath=$(pwd)/packages/nuget
+      - name: Publish Custom Elements packages # This generates client assets that we then package as an NPM package.
+        run: dotnet publish ./src/hosts/Elsa.Studio.Host.CustomElements --configuration Release -o ./packages/wasm /p:Version=${VERSION} -f net7.0
+      
+      # Pack npm wasm package
+      - name: Pack elsa-studio-wasm npm package
+        run: |
+          cp ./packages/wasm/npm/package.json ./packages/wasm/wwwroot/package.json # Copy the package.json file from the NPM package to the wwwroot folder.
+          cd ./packages/wasm/wwwroot
+          npm version $VERSION --allow-same-version
+          npm pack
+      
+      # Build npm react wrapper package
+      - name: Pack elsa-studio-wasm-react npm package
+        run: |
+          cd ./src/wrappers/wrappers/react-wrapper
+          npm version $VERSION --allow-same-version
+          npm run build
+          npm pack
+      
+      # Upload nuget packages
+      - name: Upload nuget packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: elsa-studio-nuget-packages
+          path: ./packages/nuget/*nupkg
+      
+      # Upload npm wasm package
+      - name: Upload npm wasm package
+        uses: actions/upload-artifact@v3
+        with:
+          name: elsa-studio-npm-packages
+          path: ./packages/wasm/wwwroot/*.tgz
+      
+      # Upload npm react wrapper package
+      - name: Upload npm react wrapper package
+        uses: actions/upload-artifact@v3
+        with:
+          name: elsa-studio-npm-packages
+          path: ./src/wrappers/wrappers/react-wrapper/*.tgz
+
+  publish_npm_preview_feedzio:
+    name: Publish npm packages to feedz.io
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'release' || github.event_name == 'push'}}
+    steps:
+      - name: Download Packages
+        uses: actions/download-artifact@v3
+        with:
+          name: elsa-studio-npm-packages
+          path: elsa-studio-npm-packages
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+          registry-url: ${{ env.npm_feed_feedzio }}
+
+      - run: |
+          for file in ./elsa-studio-npm-packages/*.tgz
+          do
+            npm publish "$file" --access public
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.FEEDZ_API_KEY_BASE64}}
+  
+  publish_npm_npm:
+    name: Publish npm packages to npmjs.com
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    steps:
+      - name: Download Packages
+        uses: actions/download-artifact@v3
+        with:
+          name: elsa-studio-npm-packages
+          path: elsa-studio-npm-packages
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+          registry-url: ${{ env.npm_feed_npm }}
+
+      - run: |
+          for file in ./elsa-studio-npm-packages/*.tgz
+          do
+            npm publish "$file" --access public
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_API_KEY }}
+
+  publish_nuget_preview_feedzio:
+    name: Publish nuget packages to feedz.io
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'release' || github.event_name == 'push'}}
+    steps:
+      - name: Download Packages
+        uses: actions/download-artifact@v3
+        with:
+          name: elsa-studio-nuget-packages
+          path: elsa-studio-nuget-packages
+
+      - name: Publish to feedz.io
+        run: dotnet nuget push ./elsa-studio-nuget-packages/*.nupkg -k ${{ secrets.FEEDZ_API_KEY }} -s ${{ env.nuget_feed_feedzio }} --skip-duplicate
+
+  publish_nuget_nuget:
+    name: Publish to nuget.org
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    steps:
+      - name: Download Packages
+        uses: actions/download-artifact@v3
+        with:
+          name: elsa-studio-nuget-packages
+          path: elsa-studio-nuget-packages
+
+      - name: Publish to nuget.org
+        run: dotnet nuget push ./elsa-studio-nuget-packages/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.nuget_feed_nuget }} --skip-duplicate

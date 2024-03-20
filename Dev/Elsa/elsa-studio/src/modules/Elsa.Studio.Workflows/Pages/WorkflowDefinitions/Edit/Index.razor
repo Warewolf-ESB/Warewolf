@@ -1,0 +1,15 @@
+@page "/workflows/definitions/{definitionId}/edit"
+@inherits StudioComponentBase
+
+<PageTitle>Workflow definition</PageTitle>
+
+<WorkflowDefinitionEditor DefinitionId="@DefinitionId"/>
+
+@code
+{
+    /// <summary>
+    /// The ID of the workflow definition to edit.
+    /// </summary>
+    [Parameter]
+    public string DefinitionId { get; set; } = default!;
+}

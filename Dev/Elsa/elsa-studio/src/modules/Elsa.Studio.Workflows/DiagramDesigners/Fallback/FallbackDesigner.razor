@@ -1,0 +1,23 @@
+@using System.Text.Json.Nodes
+@using Elsa.Api.Client.Extensions
+@using Elsa.Api.Client.Resources.WorkflowDefinitions.Models
+<MudPaper Width="100%" Class="pa-16">
+    <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+        @if (Activity != null)
+        {
+            <ActivityWrapper WorkflowDefinition="@WorkflowDefinition" Activity="@Activity" ActivityId="@Activity.GetId()"></ActivityWrapper>
+        }
+    </MudContainer>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public JsonObject? Activity { get; set; }
+
+    /// <summary>
+    /// Gets or sets the workflow definition.
+    /// </summary>
+    [Parameter]
+    public WorkflowDefinition? WorkflowDefinition { get; set; }
+}

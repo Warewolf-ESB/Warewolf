@@ -1,0 +1,15 @@
+@page "/workflows/definitions"
+@inherits StudioComponentBase
+
+<PageTitle>Workflow definitions</PageTitle>
+<WorkflowDefinitionList EditWorkflowDefinition="OnWorkflowDefinitionEdit"/>
+
+@code {
+    
+    [Inject] NavigationManager NavigationManager { get; set; } = default!;
+    
+    private void OnWorkflowDefinitionEdit(string definitionId)
+    {
+        NavigationManager.NavigateTo($"workflows/definitions/{definitionId}/edit");
+    }
+}

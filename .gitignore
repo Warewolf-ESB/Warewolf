@@ -136,4 +136,7 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Binaries/Projects/IronRubyAll_Net6/IronRuby1130/.vs
 !/Dev/Server Tests Setup/**
 !/Dev/Binaries/Infragistcs_Net6/**
+!/Dev/Elsa/**
 /Dev/Elsa/elsa-server/.vs/ElsaServer
+/Dev/Elsa/elsa-server/bin/Debug/net8.0
+/Dev/Elsa/elsa-server/obj

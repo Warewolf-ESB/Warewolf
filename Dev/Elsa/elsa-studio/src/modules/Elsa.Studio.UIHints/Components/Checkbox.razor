@@ -1,0 +1,48 @@
+@using Elsa.Studio.Models
+@using Elsa.Api.Client.Resources.Scripting.Models
+
+@{
+    var inputDescriptor = EditorContext.InputDescriptor;
+    var displayName = inputDescriptor.DisplayName;
+    var description = inputDescriptor.Description;
+    var inputValue = EditorContext.GetLiteralValueOrDefault();
+    var isChecked = !string.IsNullOrWhiteSpace(inputValue) && bool.TryParse(inputValue, out var b) && b;
+}
+
+<ExpressionInput EditorContext="@EditorContext">
+    <ChildContent>
+        <MudField Variant="Variant.Text" Margin="Margin.None" DisableUnderLine="@false" HelperText="@description">
+            <MudCheckBox
+                T="bool?"
+                Label="@displayName"
+                Checked="@isChecked"
+                Dense="true"
+                CheckedChanged="OnCheckChanged"/>
+        </MudField>
+    </ChildContent>
+</ExpressionInput>
+
+@code {
+
+    /// <summary>
+    /// The editor context.
+    /// </summary>
+    [Parameter]
+    public DisplayInputEditorContext EditorContext { get; set; } = default!;
+
+    private async Task OnCheckChanged(bool? isChecked)
+    {
+        if (EditorContext.InputDescriptor.IsWrapped)
+        {
+            var newValue = isChecked == true ? "True" : "False";
+            var expression = Expression.CreateLiteral(newValue);
+
+            await EditorContext.UpdateExpressionAsync(expression);
+        }
+        else
+        {
+            await EditorContext.UpdateValueAsync(isChecked);
+        }
+    }
+
+}

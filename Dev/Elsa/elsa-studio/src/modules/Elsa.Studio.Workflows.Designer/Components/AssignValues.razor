@@ -1,0 +1,375 @@
+﻿@page "/assignvalues"
+
+@using WW.UI.Common.Data
+@inject WW.UI.Common.IPropertyService PropertyService
+@inject MudBlazor.ISnackbar snackBar
+@using System.Collections.ObjectModel
+
+@* <MudCard style="width:2px; height:2px;">
+    <MudCardContent> *@
+
+        <MudPopover OverflowBehavior="OverflowBehavior.FlipNever" Open="@(PopOverState)" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft" Class="pa-4">
+            <MudCard>
+                <MudCardContent>
+
+                    <MudStack Row="true" Justify="@(Justify.FlexStart)" Spacing="3">
+                        <MudIcon style="width: 25px" Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                        <MudText Class="flex-auto">Properties</MudText>
+                        <MudStack style="width: 25px" Row="true" Justify="@(Justify.FlexEnd)" Spacing="3">
+                            <MudStack Row="true" Justify="@(Justify.FlexEnd)">
+                                <MudTooltip Text="@(getTitleForView())">
+                                    <MudFab Class="rounded-0" @onclick="@(()=>ToggleView())" Color="Color.Secondary" StartIcon="@(getIconForView())" Size="Size.Small" />
+                                </MudTooltip>
+                            </MudStack>
+                        </MudStack>
+                    </MudStack>
+
+                    <br />
+
+                    <MudDataGrid @ref="propertyGrid" T="Property" @bind-Items="Properties" ReadOnly="false" EditMode="@(DataGridEditMode.Cell)"
+                                 StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
+                                 Bordered="true" Dense="true"
+                                 FixedHeader="true" Height="@(getHeight())" SelectOnRowClick="true">
+                        <Columns>
+                            <PropertyColumn Property="x => x.Id" Title="#" IsEditable="false" Sortable="false"
+                                            HeaderStyle="width: 25px; padding-left:10px; padding-right:3px"
+                                            CellStyle="width: 25px; padding-left:10px; padding-right:3px" />
+                            <PropertyColumn Property="x => x.Name" Title="Variable" Required="false" />
+                            <TemplateColumn IsEditable="false"
+                                            HeaderStyle="width: 25px; padding-left:3px; padding-right:3px"
+                                            CellStyle="width: 25px; padding-left:3px; padding-right:3px"
+                                            Sortable="false">
+                                <CellTemplate>
+                                    <MudStack Row>
+                                        <MudIcon Icon="@Icons.Material.Filled.ArrowCircleRight" Color="Color.Secondary" Size="Size.Medium" />
+                                    </MudStack>
+                                </CellTemplate>
+                                <HeaderTemplate>
+                                    <MudIcon Icon="@Icons.Material.Filled.ArrowCircleRight" Color="Color.Secondary" Size="Size.Medium" />
+                                </HeaderTemplate>
+                            </TemplateColumn>
+
+                            <TemplateColumn Title="New Value" Required="false">
+                                <CellTemplate>
+                                    <MudText Color="Color.Secondary">@context.Item.Value</MudText>
+                                </CellTemplate>
+                                <EditTemplate>
+                                    <MudTextField Clearable="true" HelperTextOnFocus="true" ShrinkLabel Margin="Margin.Dense"
+                                                  @bind-Value="@context.Item.Value" Variant="Variant.Outlined" 
+                                                  OnKeyDown="(e) => OnPropertyValueColumnKeyDown(e, context.Item)"></MudTextField>
+
+                                </EditTemplate>
+                            </TemplateColumn>
+                        </Columns>
+
+                    </MudDataGrid>
+
+                    @* <div class="@GetLocation()" style="top:0; left:0;">
+                    <MudIcon Icon="@GetIcon()" Color="Color.Secondary" Class="" />
+                    </div> *@
+                </MudCardContent>
+
+                <MudCardActions>
+                    <MudStack Row="true" Justify="@(Justify.FlexStart)" Spacing="3">
+                        <MudStack Row="true" Justify="@(Justify.FlexEnd)" Spacing="3">
+
+                            <MudTooltip Text="Okay">
+                                <MudFab Class="rounded-0" @onclick="@(()=>onOkayClicked())" Color="Color.Info" StartIcon="@(Icons.Material.Filled.DoneOutline)" Size="Size.Small" />
+                            </MudTooltip>
+
+                            <MudTooltip Text="Cancel">
+                                <MudFab Class="rounded-0" @onclick="@(()=>onCancelClicked())" Color="Color.Secondary" StartIcon="@(Icons.Material.Filled.Cancel)" Size="Size.Small" />
+                            </MudTooltip>
+
+                        </MudStack>
+                    </MudStack>
+
+                </MudCardActions>
+
+            </MudCard>
+        </MudPopover> 
+
+  @*   </MudCardContent>
+
+</MudCard>  *@
+
+    @code {
+
+    #region PopOver Positions
+
+    public Origin TransformOrigin { get; set; } = Origin.TopCenter;//Origin.TopLeft;//Origin.TopCenter;
+    public Origin AnchorOrigin { get; set; } = Origin.BottomCenter;//Origin.BottomLeft;//Origin.BottomCenter;
+
+    public string GetIcon()
+    {
+        string icon = "";
+
+        switch (TransformOrigin)
+        {
+            case Origin.TopLeft:
+                icon = Icons.Material.Filled.SouthEast;
+                break;
+            case Origin.TopCenter:
+                icon = Icons.Material.Filled.South;
+                break;
+            case Origin.TopRight:
+                icon = Icons.Material.Filled.SouthWest;
+                break;
+            case Origin.CenterLeft:
+                icon = Icons.Material.Filled.East;
+                break;
+            case Origin.CenterCenter:
+                icon = Icons.Material.Filled.ZoomOutMap;
+                break;
+            case Origin.CenterRight:
+                icon = Icons.Material.Filled.West;
+                break;
+            case Origin.BottomLeft:
+                icon = Icons.Material.Filled.NorthEast;
+                break;
+            case Origin.BottomCenter:
+                icon = Icons.Material.Filled.North;
+                break;
+            case Origin.BottomRight:
+                icon = Icons.Material.Filled.NorthWest;
+                break;
+        }
+        return icon;
+    }
+
+    public string GetLocation()
+    {
+        string align = "";
+        string justify = "";
+        string[] pos = TransformOrigin.ToDescriptionString().Split("-");
+
+        if (pos[0] == "center")
+        {
+            align = "align-center";
+        }
+        else if (pos[0] == "top")
+        {
+            align = "align-start";
+        }
+        else if (pos[0] == "bottom")
+        {
+            align = "align-end";
+        }
+        if (pos[1] == "left")
+        {
+            justify = "justify-start";
+        }
+        else if (pos[1] == "right")
+        {
+            justify = "justify-end";
+        }
+        else if (pos[1] == "center")
+        {
+            justify = "justify-center";
+        }
+
+        return $"absolute mud-width-full d-flex {align} {justify}";
+    }
+
+
+    #endregion
+
+    #region Properties PopOver
+
+    private bool hover = false;
+    private string searchString = "";
+
+    private Property Property = new Property();
+    private ObservableCollection<Property> Properties = new ObservableCollection<Property>();
+
+
+    private MudDataGrid<Property> propertyGrid;
+    private bool isViewOpen = false;
+    private bool isLargeView = false;
+    //private bool PopOverState = true; // default opened
+
+
+    //private bool popOverState;
+
+
+    [Parameter]
+    public bool PopOverState { get; set; }
+
+    // /// <summary>
+    // /// Gets or sets the PopOverState.
+    // /// </summary>
+    // [Parameter]
+    // public bool PopOverState
+    // {
+    //     get => popOverState;
+    //     set
+    //     {
+    //         if(popOverState != value)
+    //         {
+    //             popOverState = value;
+    //             await PopOverStateChanged.InvokeAsync(value);
+    //         }
+    //     }
+    // }
+
+    [Parameter]
+    public EventCallback<bool> PopOverStateChanged { get; set; }
+
+
+    async Task UpdatePopOverState(bool value)
+    {
+        await PopOverStateChanged.InvokeAsync(value);
+    }
+
+
+    private string LargeViewSize = "250px";
+    private string SmallViewSize = "130px";
+
+    // private void ShowSmallView()
+    // {
+    //     isViewOpen = !isViewOpen;
+    //     isLargeView = false;
+    //     PopOverState = true;
+    // }
+
+
+    // private void ShowLargeView()
+    // {
+    //     isViewOpen = !isViewOpen;
+    //     isLargeView = true;
+    //     PopOverState = true;
+
+    // }
+
+    private void ToggleView()
+    {
+        isViewOpen = !isViewOpen;
+        PopOverState = true;
+        UpdatePopOverState(true).GetAwaiter().GetResult();
+        isLargeView = !isLargeView;
+    }
+
+    private string getHeight()
+    {
+        return isLargeView ? LargeViewSize : SmallViewSize;
+    }
+
+    private string getIconForView()
+    {
+        return !isViewOpen ? Icons.Material.Filled.Add : Icons.Material.Filled.Minimize;
+    }
+
+    private string getTitleForView()
+    {
+        return !isLargeView ? "Large View" : "Small View";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //PopOverState = true;
+        LoadProperties();
+    }
+
+    private void LoadProperties()
+    {
+        Properties.Clear();
+        foreach (var p in PropertyService.GetProperties())
+            Properties.Add(p);
+    }
+    private bool Search(Property Property)
+    {
+        if (string.IsNullOrWhiteSpace(searchString)) return true;
+        if (Property.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+            || Property.Value.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void Save()
+    {
+        SaveInternal(Property);
+    }
+
+    private void SaveInternal(Property property)
+    {
+        PropertyService.SaveProperty(property);
+        Property = new Property();
+        snackBar.Add("Property Saved.", Severity.Success);
+        LoadProperties();
+    }
+    private void Edit(int id)
+    {
+        Property = Properties.FirstOrDefault(c => c.Id == id);
+    }
+    private void Delete(int id)
+    {
+        PropertyService.DeleteProperty(id);
+        snackBar.Add("Property Deleted.", Severity.Success);
+        LoadProperties();
+    }
+
+    void onOkayClicked()
+    {
+        // accept changes
+        PopOverState = false;
+        UpdatePopOverState(false).GetAwaiter().GetResult();
+    }
+
+    void onCancelClicked()
+    {
+        // cancel changes
+        PopOverState = false;
+        UpdatePopOverState(false).GetAwaiter().GetResult();
+    }
+
+    // events
+    void StartedEditingItem(Property item)
+    {
+        Console.WriteLine($"Event = StartedEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    void CanceledEditingItem(Property item)
+    {
+        Console.WriteLine($"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    void CommittedItemChanges(Property item)
+    {
+        Console.WriteLine($"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    async void CreateNewItem(Property currentRowItem)
+    {
+        var index = Properties.IndexOf(currentRowItem);
+        if (index == Properties.Count - 1)
+        {
+            await propertyGrid.CancelEditingItemAsync();
+            // this is last item
+            var newItem = new Property() { Id = Properties.Count + 1 };
+            SaveInternal(newItem);
+            await Task.Delay(25);
+            await propertyGrid.SetSelectedItemAsync(newItem);
+            //await propertyGrid.SetEditingItemAsync(newItem);
+        }
+    }
+
+    public async Task OnFocusLostAsync(Property item)
+    {
+        CreateNewItem(item);
+    }
+
+    void OnPropertyValueColumnKeyDown(KeyboardEventArgs e, Property currentItem)
+    {
+        if (e.Key == "Tab")
+        {
+            if (currentItem != null)
+            {
+                CreateNewItem(currentItem);
+            }
+        }
+    }
+
+    #endregion
+}

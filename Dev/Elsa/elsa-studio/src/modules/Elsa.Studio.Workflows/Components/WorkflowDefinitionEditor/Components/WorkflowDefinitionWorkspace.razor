@@ -1,0 +1,43 @@
+@using Elsa.Studio.Workflows.Components.WorkflowDefinitionEditor.Components.WorkflowProperties
+@using Orientation = Radzen.Orientation
+@inherits StudioComponentBase
+
+<CascadingValue Value="this">
+    <RadzenSplitter Orientation="Orientation.Horizontal">
+        <RadzenSplitterPane Size="65%">
+
+            @if (SelectedWorkflowDefinition != null!)
+            {
+                <MudDynamicTabs @ref="@_dynamicTabs"
+                                Style="height: 100%"
+                                ActivePanelIndex="0"
+                                AddIconClass="d-none"
+                                AddIconToolTip="Click to open a new workflow tab" CloseIconToolTip="Close workflow"
+                                Elevation="0"
+                                ApplyEffectsToContainer>
+
+                    <MudTabPanel Text="@SelectedWorkflowDefinition.Name" ShowCloseIcon="false" Style="height: 100%">
+                        @if (!IsReadOnly)
+                        {
+                            <WorkflowEditor @key="SelectedWorkflowDefinition.DefinitionId" @ref="WorkflowEditor" WorkflowDefinition="SelectedWorkflowDefinition" WorkflowDefinitionUpdated="OnWorkflowDefinitionUpdated" WorkflowDefinitionExecuted="WorkflowDefinitionExecuted"/>
+                        }
+                        else
+                        {
+                            <WorkflowDefinitionVersionViewer WorkflowDefinition="SelectedWorkflowDefinition"/>
+                        }
+
+                    </MudTabPanel>
+
+                </MudDynamicTabs>
+            }
+
+        </RadzenSplitterPane>
+        <RadzenSplitterPane Size="35%" Min="100px">
+            @if (SelectedWorkflowDefinition != null!)
+            {
+                <WorkflowProperties WorkflowDefinition="@SelectedWorkflowDefinition" OnWorkflowDefinitionUpdated="OnWorkflowDefinitionPropsUpdated"/>
+            }
+        </RadzenSplitterPane>
+
+    </RadzenSplitter>
+</CascadingValue>

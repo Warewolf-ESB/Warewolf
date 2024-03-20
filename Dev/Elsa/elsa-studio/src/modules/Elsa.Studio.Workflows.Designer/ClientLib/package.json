@@ -1,0 +1,31 @@
+{
+  "name": "elsa-designer-dependencies",
+  "description": "Bundle dependencies for the designer.",
+  "repository": "https://github.com/elsa-workflows/elsa-dashboard",
+  "license": "MIT",
+  "version": "1.0.0",
+  "dependencies": {
+    "@antv/layout": "^0.3.25",
+    "@antv/x6": "^2.17.1",
+    "@antv/x6-plugin-clipboard": "^2.1.6",
+    "@antv/x6-plugin-history": "^2.2.4",
+    "@antv/x6-plugin-keyboard": "^2.2.2",
+    "@antv/x6-plugin-scroller": "^2.0.10",
+    "@antv/x6-plugin-selection": "^2.2.1",
+    "@antv/x6-plugin-snapline": "^2.1.7",
+    "@antv/x6-plugin-transform": "^2.1.8",
+    "lodash.camelcase": "^4.3.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "css-loader": "^6.9.0",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}
