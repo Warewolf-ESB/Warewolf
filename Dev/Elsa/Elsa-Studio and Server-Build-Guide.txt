@@ -1,0 +1,75 @@
+Ensure that you have .NET 8.0 SDK installed
+
+------------------- Elsa Server -------------------------------------------
+Elsa Server 
+base location: D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-server
+
+Build Solution
+1. Open Command Prompt (Run as administrator)
+2. cd D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-server
+3. dotnet restore ElsaServer.sln
+4. dotnet build ElsaServer.sln
+
+
+
+Run Elsa Server (on port 9001)
+5. cd D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-server
+6. dotnet run --urls "https://localhost:9001" 
+
+
+------------------- Elsa Server -------------------------------------------
+
+
+
+
+------------------- Elsa Studio  -------------------------------------------
+
+Elsa Stdio
+base location: D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio
+
+
+Build Solution
+
+A) Build Elsa.Studio.DomInterop
+1. Open Command Prompt (Run as administrator)
+2. cd D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio\src\framework\Elsa.Studio.DomInterop\ClientLib
+3. npm install
+4. npm run build
+
+B) Build Elsa.Studio.Workflows.Designer
+5. cd D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio\src\modules\Elsa.Studio.Workflows.Designer\ClientLib
+6. npm install
+7. npm run build
+
+C) Build Elsa Studio
+8. cd D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio
+9. dotnet restore Elsa.Studio.sln
+10. dotnet build Elsa.Studio.sln
+
+
+Run Elsa Studio
+
+For Blazor Server Host: 
+11. dotnet run --project D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio\src\hosts\Elsa.Studio.Host.Server\Elsa.Studio.Host.Server.csproj --framework net8.0
+
+OR
+
+For Blazor Server WASM:
+11. dotnet run --project D:\Projects\Live\Warewolf\7232_Clone_4\Dev\Elsa\elsa-studio\src\hosts\Elsa.Studio.Host.Wasm\Elsa.Studio.Host.Wasm.csproj --framework net8.0
+
+
+
+12. Browse Studio at: http:localhost:5010
+Username: admin
+password: password
+------------------- Elsa Studio  -------------------------------------------
+
+
+------------------- Assign Variable Activity UI Customization  -------------------------------
+13. Drag and drop activity in Workflow designer: Assign Variable (can be found under WareWolf group)
+14. Click the activity to open Properties window - Small View (to take inputs from user, i.e., user can assign multiple variables)
+15. Click Large view (top right side in properties window, to toggle between large/small view)
+16. Press Tab key in the last row's New Value column to insert new row in the grid
+17. Click Ok/Cancle button to close properties window
+--------------------------------------------------------------------
+
