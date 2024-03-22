@@ -342,13 +342,11 @@
 			<Version>1.0.3</Version>
 		</PackageReference>
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-		<Reference Include="Infragistics.Calculations">
-			<HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
-		</Reference>
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+	<Reference Include="Infragistics.Calculations">
+		<HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
+	</Reference>
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
