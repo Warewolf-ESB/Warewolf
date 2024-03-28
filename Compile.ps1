@@ -51,7 +51,6 @@ if ($ForceMultitargetting.IsPresent) {
 		# Replace target framework nodes
 		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows'] | //TargetFrameworks[.='net6.0-windows']")
 		foreach ($node in $nodes) {
-			$node.'#text' = 'net6.0-windows;net48' | Out-Null
             $newNode = $xml.CreateElement("TargetFrameworks")
             $newNode.InnerText = 'net6.0-windows;net48'
             $node.ParentNode.ReplaceChild($newNode, $node)
