@@ -52,7 +52,9 @@ if ($ForceMultitargetting.IsPresent) {
 		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows']")
 		foreach ($node in $nodes) {
 			$node.'#text' = 'net6.0-windows;net48'
-			$node.LocalName = 'TargetFrameworks'
+            $newNode = $xml.CreateElement("TargetFrameworks")
+            $newNode.InnerText = 'net6.0-windows;net48'
+            $node.ParentNode.ReplaceChild($newNode, $node)
 		}
 
 		# Special handling for Dev2.Data.csproj
