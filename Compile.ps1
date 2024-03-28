@@ -53,7 +53,7 @@ if ($ForceMultitargetting.IsPresent) {
 		foreach ($node in $nodes) {
 			$node.'#text' = 'net6.0-windows;net48'
             $newNode = $xml.CreateElement("TargetFrameworks")
-            $newNode.InnerText = 'net6.0-windows;net48'
+            $newNode.InnerText = 'net6.0-windows;net48' | Out-Null
             $node.ParentNode.ReplaceChild($newNode, $node)
 		}
 
