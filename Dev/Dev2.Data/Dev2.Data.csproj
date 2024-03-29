@@ -10,7 +10,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Data</RootNamespace>
-    <AssemblyName>Dev2.Data</AssemblyName>    
+    <AssemblyName>Dev2.Data</AssemblyName>
+    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -353,9 +354,9 @@
       <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
-	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-  <ItemGroup Condition="">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
