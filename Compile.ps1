@@ -160,44 +160,44 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 	# Get all the latest version tags from server repo.
 	git -C "$PSScriptRoot" fetch --all --tags -f
 
-	# Generate informational version.
-	# (from git commit id and time)
-	$GitCommitTimeObject = git -C "$PSScriptRoot" show -s --format="%ct" $GitCommitID
-	if (($GitCommitTimeObject[0]).ToString().length -gt 1){
-		$GitCommitTimeString = $GitCommitTimeObject[0]
-	} else {
-		$GitCommitTimeString = $GitCommitTimeObject
-	}
-	if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
-		Write-Host Cannot resolve time of commit `"$GitCommitID`".
-	} else {
-		write-host Resolved time of commit `"$GitCommitID`" as `"$GitCommitTimeString`".
-		$GitCommitTimeDouble = [Double]$GitCommitTimeString
-		$origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
-		$GitCommitTime = $origin.AddSeconds($GitCommitTimeDouble)
-	}
-	$GitBranchName = git -C "$PSScriptRoot" rev-parse --abbrev-ref HEAD
-	if ($CustomVersion -ne "") {
-		$FullVersionString = "$CustomVersion"
-	} else {
-		# Check if this version already tagged.
-		$FullVersionString = git -C "$PSScriptRoot" tag --points-at HEAD
-		if (-not [string]::IsNullOrEmpty($FullVersionString))  {
-			$FullVersionString = $FullVersionString.Trim()
-			$MultiTags = $FullVersionString.Split("\n")
-			if ($MultiTags.Count -gt 1) {
-				# This commit has more than one tag, using first tag
-				Write-Host This commit has more than one tags as `"$FullVersionString`".
-				$FullVersionString = $MultiTags[-1]
-				Write-Host Using last tag as `"$FullVersionString`".
-			}
-			# This version is already tagged.
-			Write-Host You are up to date with version `"$FullVersionString`".
-		} else {
-			# This version is not already tagged.
-			Write-Host This version is not tagged, generating new tag...
-			# Get last known version
-			$AllTags = git -C "$PSScriptRoot" tag -l --sort=-creatordate --merged
+    # Generate informational version.
+    # (from git commit id and time)
+    $GitCommitTimeObject = git -C "$PSScriptRoot" show -s --format="%ct" $GitCommitID
+    if (($GitCommitTimeObject[0]).ToString().length -gt 1){
+        $GitCommitTimeString = $GitCommitTimeObject[0]
+    } else {
+        $GitCommitTimeString = $GitCommitTimeObject
+    }
+    if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
+        Write-Host Cannot resolve time of commit `"$GitCommitID`".
+    } else {
+        write-host Resolved time of commit `"$GitCommitID`" as `"$GitCommitTimeString`".
+        $GitCommitTimeDouble = [Double]$GitCommitTimeString
+        $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+        $GitCommitTime = $origin.AddSeconds($GitCommitTimeDouble)
+    }
+    $GitBranchName = git -C "$PSScriptRoot" rev-parse --abbrev-ref HEAD
+    if ($CustomVersion -ne "") {
+        $FullVersionString = "$CustomVersion"
+    } else {
+        # Check if this version already tagged.
+        $FullVersionString = git -C "$PSScriptRoot" tag --points-at HEAD
+        if (-not [string]::IsNullOrEmpty($FullVersionString))  {
+            $FullVersionString = $FullVersionString.Trim()
+            $MultiTags = $FullVersionString.Split("\n")
+            if ($MultiTags.Count -gt 1) {
+                # This commit has more than one tag, using first tag
+                Write-Host This commit has more than one tags as `"$FullVersionString`".
+                $FullVersionString = $MultiTags[-1]
+                Write-Host Using last tag as `"$FullVersionString`".
+            }
+            # This version is already tagged.
+            Write-Host You are up to date with version `"$FullVersionString`".
+        } else {
+            # This version is not already tagged.
+            Write-Host This version is not tagged, generating new tag...
+            # Get last known version
+            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-creatordate --merged
 			foreach ($element in $AllTags) {
 				$dotCount = $element.Split('.').Count - 1
 				if ($dotCount -eq 3) {
@@ -342,47 +342,46 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {
-	if (Test-Path "$PSScriptRoot\$SolutionFile") {
-		$GetSolutionFileInfo = Get-Item "$PSScriptRoot\$SolutionFile"
-		$SolutionFileName = $GetSolutionFileInfo.Name
-		$SolutionFileExtension = $GetSolutionFileInfo.Extension
-		$OutputFolderName = $SolutionFileName.TrimEnd($SolutionFileExtension).TrimStart("Dev2.").TrimEnd("2")
-		if ($OutputFolderName -eq "Studi") {
-			$OutputFolderName = "StudioProject"
-		}
-		if ($OutputFolderName -eq "ServerTest") {
-			$OutputFolderName = "ServerTests"
-		}
-		if ($OutputFolderName -eq "Warewolf.COMIPC") {
-			$OutputFolderName = "COMIPCProject"
-		}
-		if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
-			$SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
-		} else {
-			$SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
-		}
-		if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
-			if ($OutputFolderName -eq "Webs") {
-				npm install --add-python-to-path='true' --global --production windows-build-tools
-			}
-			if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
-				&"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
-			}
-			if ($ProjectSpecificOutputs.IsPresent) {
-				$OutputProperty = ""
-			} else {
-				$OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
-			}
-			if (!($InContainer.IsPresent)) {
-				Write-Host "$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
-				&"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
-			} else {
-				docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
-			}
-			if ($LASTEXITCODE -ne 0) {
-				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
-				exit 1
-			}
+    if (Test-Path "$PSScriptRoot\$SolutionFile") {
+        $GetSolutionFileInfo = Get-Item "$PSScriptRoot\$SolutionFile"
+        $SolutionFileName = $GetSolutionFileInfo.Name
+        $SolutionFileExtension = $GetSolutionFileInfo.Extension
+        $OutputFolderName = $SolutionFileName.TrimEnd($SolutionFileExtension).TrimStart("Dev2.").TrimEnd("2")
+        if ($OutputFolderName -eq "Studi") {
+            $OutputFolderName = "StudioProject"
+        }
+        if ($OutputFolderName -eq "ServerTest") {
+            $OutputFolderName = "ServerTests"
+        }
+        if ($OutputFolderName -eq "Warewolf.COMIPC") {
+            $OutputFolderName = "COMIPCProject"
+        }
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
+        } else {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
+        }
+        if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
+            if ($OutputFolderName -eq "Webs") {
+                npm install --add-python-to-path='true' --global --production windows-build-tools
+            }
+            if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+            }
+            if ($ProjectSpecificOutputs.IsPresent) {
+                $OutputProperty = ""
+            } else {
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            }
+            if (!($InContainer.IsPresent)) {
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+            } else {
+                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+            }
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
+                exit 1
+            }
 			if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
 				if (!($ProjectSpecificOutputs.IsPresent)) {
 					if ($Target -eq "/t:Debug" -or $Target -eq "") {
