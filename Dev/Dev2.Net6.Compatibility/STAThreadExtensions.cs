@@ -18,15 +18,23 @@ namespace Dev2.Net6.Compatibility
 
         public static Task RunSTAThread(Action action)
         {
+#if !NETFRAMEWORK
             var tcs = new TaskCompletionSource();
-            System.Threading.Thread runThread = new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+#else
+			var tcs = new TaskCompletionSource<bool>();
+#endif
+			System.Threading.Thread runThread = new System.Threading.Thread(new System.Threading.ThreadStart(() =>
             {
                 try
                 {
                     action();
+#if !NETFRAMEWORK
                     tcs.TrySetResult();
-                }
-                catch (Exception ex)
+#else
+					tcs.TrySetResult(true);
+#endif
+				}
+				catch (Exception ex)
                 {
                     tcs.TrySetException(ex);
                 }

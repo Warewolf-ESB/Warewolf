@@ -4,8 +4,10 @@ using Warewolf.Studio.Core;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Studio.Interfaces;
+#if !NETFRAMEWORK
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -16,7 +18,9 @@ namespace Warewolf.Studio.Views
     {
         readonly Grid _blackoutGrid = new Grid();
 
+#if !NETFRAMEWORK
         public string Path => throw new System.NotImplementedException();
+#endif
 
         public MergeSelectionView()
         {
@@ -68,9 +72,11 @@ namespace Warewolf.Studio.Views
             }
         }
 
+#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new System.NotImplementedException();
         }
+#endif
     }
 }

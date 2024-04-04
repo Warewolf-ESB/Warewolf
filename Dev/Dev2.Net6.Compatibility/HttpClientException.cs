@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if NETFRAMEWORK
+using System.Net.Http;
+#endif
 
 namespace Dev2.Net6.Compatibility
 {

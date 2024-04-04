@@ -111,7 +111,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
+#if !NETFRAMEWORK
             ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
+#else
+            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+#endif
             AddNewTestCommand = new DelegateCommand(o => AddNewTest(EventPublishers.Aggregator), o=> CanAddNewTest());
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }

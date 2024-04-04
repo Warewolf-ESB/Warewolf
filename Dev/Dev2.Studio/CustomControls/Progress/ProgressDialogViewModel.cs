@@ -9,12 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
- 
+using System.Windows.Input; 
+#if !NETFRAMEWORK
+using Microsoft.Xaml.Behaviors.Core;
+#else
+using Microsoft.Expression.Interactivity.Core;
+#endif
 
 namespace Dev2.CustomControls.Progress
 {

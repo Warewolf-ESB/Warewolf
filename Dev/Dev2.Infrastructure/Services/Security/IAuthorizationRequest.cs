@@ -9,10 +9,14 @@
 */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR.Hosting;
+#else
+using System.Collections;
+using System.Collections.Generic;
+#endif
 
 namespace Dev2.Services.Security
 {
@@ -29,14 +33,11 @@ namespace Dev2.Services.Security
         WebServerRequestType RequestType { get; }
         IPrincipal User { get; }
         Uri Url { get; }
+#if NETFRAMEWORK
+        INameValueCollection QueryString { get; }
+#else
         Microsoft.AspNetCore.Http.IQueryCollection QueryString { get; }
+#endif
         string ResourcePath { get; }
     }
-
-    //public interface INameValueCollection : IEnumerable<KeyValuePair<string, string>>, IEnumerable
-    //{
-    //    string this[string key] { get; }
-    //    IEnumerable<string> GetValues(string key);
-    //    string Get(string key);
-    //}
 }

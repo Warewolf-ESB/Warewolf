@@ -89,7 +89,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     SelectedMethod = Method;
                 }
+#if NETFRAMEWORK
+                RefreshMethodsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+#else
                 RefreshMethodsCommand = new Prism.Commands.DelegateCommand(() =>
+#endif
                 {
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
@@ -364,7 +368,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
+#if NETFRAMEWORK
+            var delegateCommand = RefreshMethodsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+#else
             var delegateCommand = RefreshMethodsCommand as Prism.Commands.DelegateCommand;
+#endif
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedMethod = value;

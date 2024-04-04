@@ -10,8 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Studio.CustomControls</RootNamespace>
-    <AssemblyName>Warewolf.Studio.CustomControls</AssemblyName>
-    
+    <AssemblyName>Warewolf.Studio.CustomControls</AssemblyName>    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,30 +51,6 @@
 	  <PackageReference Include="Infragistics.WPF.DataGrids.Trial" Version="22.2.19" />
 	  <PackageReference Include="Infragistics.WPF.DragDrop.Trial" Version="22.2.19" />
 	  <PackageReference Include="Infragistics.WPF.Trial" Version="22.2.19" />-->
-	  
-	  
-    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Management" />
   </ItemGroup>
@@ -135,18 +110,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <!--<PackageReference Include="Expression.Blend.Sdk">
-      <Version>1.0.2</Version>
-    </PackageReference>-->
-	   <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
   </ItemGroup>
@@ -180,7 +146,80 @@
     <Content Include="styles\warewolf.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+	<PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
   </ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+		<Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
+			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+			<HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="PresentationFramework.Aero" />
+		<Reference Include="System" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Xml" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="System.Xaml">
+			<RequiredTargetFramework>4.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="WindowsBase" />
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<PackageReference Include="Expression.Blend.Sdk">
+			<Version>1.0.2</Version>
+		</PackageReference>
+		<PackageReference Include="Prism.Mvvm">
+			<Version>1.1.1</Version>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+	<Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
+	</Reference>
+	<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+	</Reference>
+	<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+	</Reference>
+	<Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
+	</Reference>
+	<Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
+	</Reference>
+	<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
+	</Reference>
+		<PackageReference Include="Prism.Core" Version="8.1.97" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+	</ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

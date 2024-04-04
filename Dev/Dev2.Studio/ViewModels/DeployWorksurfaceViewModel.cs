@@ -15,7 +15,13 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
@@ -26,9 +32,15 @@ namespace Dev2.ViewModels
         public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
+#if NETFRAMEWORK
+            var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            var stats = new DeployStatsViewerViewModel(dest);
+            var source = new DeploySourceExplorerViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), stats);
+#else
             var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Prism.Events.IEventAggregator>());
             var stats = new DeployStatsViewerViewModel(dest);
             var source = new DeploySourceExplorerViewModel(mainViewModel, CustomContainer.Get<Prism.Events.IEventAggregator>(), stats);
+#endif
             dest.StatsArea = stats;
             var vm = new SingleExplorerDeployViewModel(dest, source, new List<IExplorerTreeItem>(), stats, mainViewModel, CustomContainer.Get<IPopupController>());
             ViewModel = vm;
@@ -52,6 +64,7 @@ namespace Dev2.ViewModels
 
         public override string DisplayName => "Deploy";
 
+#if NETFRAMEWORK
         protected override void OnViewLoaded(object view)
         {
             if (view is IView loadedView)
@@ -60,8 +73,9 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
+#endif
 
-        public string ResourceType => "DeployViewer";
+		public string ResourceType => "DeployViewer";
 
         public string HelpText { get; set; }
         public SingleExplorerDeployViewModel ViewModel { get; set; }

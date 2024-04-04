@@ -8,8 +8,10 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Infragistics.Windows.DockManager;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Warewolf.Studio.ViewModels.ToolBox;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Mvc.Rendering;
+#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -18,7 +20,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ToolboxView : IToolboxView
     {
+#if !NETFRAMEWORK
         public string Path => throw new System.NotImplementedException();
+#endif
 
         public ToolboxView()
         {
@@ -104,9 +108,11 @@ namespace Warewolf.Studio.Views
             }
         }
 
+#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new System.NotImplementedException();
         }
+#endif
     }
 }

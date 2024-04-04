@@ -15,20 +15,26 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common;
+#if !NETFRAMEWORK
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+#else
+using Microsoft.Practices.Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.Views
 {
     /// <summary>
     /// Interaction logic for ManageServerControl.xaml
     /// </summary>
-    public partial class ManageServerControl : Microsoft.AspNetCore.Mvc.ViewEngines.IView, ICheckControlEnabledView
+    public partial class ManageServerControl : IView, ICheckControlEnabledView
 	{
+#if !NETFRAMEWORK
 		public string Path => throw new NotImplementedException();
+#endif
 
 		public ManageServerControl()
         {
@@ -160,10 +166,12 @@ namespace Warewolf.Studio.Views
             return ErrorTextBlock.Text;
 		}
 
+#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new NotImplementedException();
 		}
+#endif
 
 		#region Implementation of ICheckControlEnabledView
 

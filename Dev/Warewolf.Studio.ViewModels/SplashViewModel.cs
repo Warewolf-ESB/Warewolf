@@ -15,13 +15,22 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
-using Prism.Mvvm;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Dev2.Common;
+using Prism.Mvvm;
+#endif
+using Warewolf.Studio.AntiCorruptionLayer;
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class SplashViewModel : BindableBase, ISplashViewModel
+#else
     public class SplashViewModel : BindableBase2, ISplashViewModel
+#endif
     {
         private string _serverVersion;
         private string _studioVersion;

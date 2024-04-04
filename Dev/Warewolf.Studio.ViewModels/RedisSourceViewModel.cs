@@ -14,8 +14,13 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Commands;
 using Prism.Events;
+#endif
 using System;
 using System.Threading;
 using System.Threading.Tasks;

@@ -10,10 +10,14 @@
 */
 
 using Dev2.Common.Interfaces;
+using Warewolf.Studio.ViewModels;
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System.Threading.Tasks;
-using Warewolf.Studio.ViewModels;
+#else
+using Microsoft.Practices.Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -22,7 +26,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageExchangeSourceControl : IView, ICheckControlEnabledView
     {
+#if !NETFRAMEWORK
 		public string Path => throw new System.NotImplementedException();
+#endif
 
 		public ManageExchangeSourceControl()
         {
@@ -51,10 +57,12 @@ namespace Warewolf.Studio.Views
             return false;
         }
 
+#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new System.NotImplementedException();
 		}
+#endif
 
 		#endregion
 	}

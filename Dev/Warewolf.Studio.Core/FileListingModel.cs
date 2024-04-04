@@ -14,12 +14,20 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-//using Microsoft.Practices.Prism.Mvvm;
-using Prism.Mvvm;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Dev2.Common;
+using Prism.Mvvm;
+#endif
+
 namespace Warewolf.Studio.Core
 {
+#if NETFRAMEWORK
+    public class FileListingModel : BindableBase, IFileListingModel,IEquatable<FileListingModel>
+#else
     public class FileListingModel : BindableBase2, IFileListingModel,IEquatable<FileListingModel>
+#endif
     {
         readonly IFileChooserModel _model;
         bool _isExpanded;

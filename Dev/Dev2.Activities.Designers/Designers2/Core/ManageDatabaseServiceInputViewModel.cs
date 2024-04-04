@@ -16,7 +16,11 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+#else
 using Prism.Commands;
+#endif
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 

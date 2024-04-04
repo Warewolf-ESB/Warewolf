@@ -16,6 +16,8 @@ using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
@@ -421,6 +423,12 @@ namespace Dev2.Studio.Controller
             return result;
         }
 
-        #endregion
-    }
+		public Task HandleAsync(ConfigureSwitchExpressionMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		public Task HandleAsync(ConfigureCaseExpressionMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		public Task HandleAsync(EditCaseExpressionMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
+
+		#endregion
+	}
 }

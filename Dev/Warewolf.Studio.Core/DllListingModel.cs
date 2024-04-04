@@ -14,12 +14,20 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
-//using Microsoft.Practices.Prism.Mvvm;
-using Prism.Mvvm;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Dev2.Common;
+using Prism.Mvvm;
+#endif
+
 namespace Warewolf.Studio.Core
 {
+#if NETFRAMEWORK
+    public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
+#else
     public class DllListingModel : BindableBase2, IDllListingModel, IEquatable<DllListingModel>
+#endif
     {
         readonly IManagePluginSourceModel _updateManager;
         readonly IManageComPluginSourceModel _comUpdateManager;

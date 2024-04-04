@@ -21,7 +21,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+#else
 using Prism.Commands;
+#endif
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
@@ -45,7 +49,11 @@ namespace Warewolf.Studio.ViewModels
         AsyncObservableCollection<IDllListingModel> _originalDllListings;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+#if NETFRAMEWORK
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
+#else
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Prism.Events.IEventAggregator aggregator, IAsyncWorker asyncWorker)
+#endif
             : base("ComPluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -161,7 +169,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         
+#if NETFRAMEWORK
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
+#else
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Prism.Events.IEventAggregator aggregator, IAsyncWorker asyncWorker)
+#endif
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -170,7 +182,11 @@ namespace Warewolf.Studio.ViewModels
             Item = ToModel();
         }
 
+#if NETFRAMEWORK
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+#else
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Prism.Events.IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
+#endif
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
@@ -180,7 +196,11 @@ namespace Warewolf.Studio.ViewModels
             Item = ToModel();
         }
         
+#if NETFRAMEWORK
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker)
+#else
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Prism.Events.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker)
+#endif
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("compluginSource", pluginSource);
@@ -206,7 +226,11 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+#if NETFRAMEWORK
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
+#else
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Prism.Events.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
+#endif
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("comPluginSource", pluginSource);

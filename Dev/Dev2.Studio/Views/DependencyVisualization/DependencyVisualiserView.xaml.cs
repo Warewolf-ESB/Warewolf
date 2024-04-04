@@ -15,7 +15,13 @@ using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Interfaces;
 using Infragistics.Controls.Maps;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+#endif
 using Warewolf.Studio.ViewModels;
 
 
@@ -29,7 +35,11 @@ namespace Dev2.Studio.Views.DependencyVisualization
         NetworkNodeNodeControl _currentElement;
         Point _currentPosition;
 
-        public DependencyVisualiserView()
+#if !NETFRAMEWORK
+        public string Path => throw new System.NotImplementedException();
+#endif
+
+		public DependencyVisualiserView()
             : this(EventPublishers.Aggregator)
         {
         }
@@ -112,5 +122,12 @@ namespace Dev2.Studio.Views.DependencyVisualization
             var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
             CustomContainer.Get<IShellViewModel>().OpenResource(id,activeServer.EnvironmentID, activeServer);            
         }
+
+#if !NETFRAMEWORK
+        public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+#endif
     }
 }

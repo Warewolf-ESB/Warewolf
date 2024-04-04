@@ -14,7 +14,13 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Studio.ViewModels.WorkSurface;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.ViewModels
@@ -64,6 +70,7 @@ namespace Dev2.ViewModels
         }
 
         public override string DisplayName => ViewModel.DisplayName;
+#if NETFRAMEWORK
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
@@ -73,6 +80,7 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
+#endif
 
         public string ResourceType => "Search";
 

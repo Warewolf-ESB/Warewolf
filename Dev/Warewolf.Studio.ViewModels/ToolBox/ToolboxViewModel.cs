@@ -8,14 +8,23 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Studio.Interfaces;
+using Warewolf.Studio.Core;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
 using Prism.Mvvm;
-using Warewolf.Studio.Core;
 using Dev2.Common;
+#endif
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
+#if NETFRAMEWORK
+    public class ToolboxViewModel : BindableBase, IToolboxViewModel, IDisposable, IUpdatesHelp
+#else
     public class ToolboxViewModel : BindableBase2, IToolboxViewModel, IDisposable, IUpdatesHelp
+#endif
     {
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;

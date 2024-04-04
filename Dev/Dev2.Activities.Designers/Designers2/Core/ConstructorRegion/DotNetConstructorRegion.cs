@@ -65,7 +65,11 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 {
                     SelectedConstructor = Constructors.FirstOrDefault(constructor => constructor.ConstructorName == Method.ConstructorName);
                 }
+#if NETFRAMEWORK
+                RefreshConstructorsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+#else
                 RefreshConstructorsCommand = new Prism.Commands.DelegateCommand(() =>
+#endif
                 {
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
@@ -190,7 +194,11 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 
                 OnSomethingChanged(this);
             }
+#if NETFRAMEWORK
+            var delegateCommand = RefreshConstructorsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+#else
             var delegateCommand = RefreshConstructorsCommand as Prism.Commands.DelegateCommand;
+#endif
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedConstructor = value;

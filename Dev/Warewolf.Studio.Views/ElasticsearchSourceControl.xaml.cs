@@ -10,12 +10,16 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Studio.ViewModels;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#else
+using Microsoft.Practices.Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -24,7 +28,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ElasticsearchSourceControl : IView, ICheckControlEnabledView
     {
+#if !NETFRAMEWORK
 		public string Path => throw new System.NotImplementedException();
+#endif
 
 		public ElasticsearchSourceControl()
         {
@@ -129,9 +135,11 @@ namespace Warewolf.Studio.Views
             }
         }
 
+#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new System.NotImplementedException();
 		}
+#endif
 	}
 }

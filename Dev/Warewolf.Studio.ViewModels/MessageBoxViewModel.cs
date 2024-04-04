@@ -3,9 +3,14 @@
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+#if NETFRAMEWORK
+using FontAwesome.WPF;
+using Microsoft.Practices.Prism.Commands;
+#else
 using FontAwesome6;
 using FontAwesome6.Fonts;
 using Prism.Commands;
+#endif
 
 
 namespace Warewolf.Studio.ViewModels
@@ -15,14 +20,22 @@ namespace Warewolf.Studio.ViewModels
         MessageBoxButton _buttons = MessageBoxButton.OK;
         string _message;
         string _title;
+#if NETFRAMEWORK
+        FontAwesomeIcon _icon;
+#else
         EFontAwesomeIcon _icon;
+#endif
         bool _isError;
         bool _isInfo;
         bool _isQuestion;
         List<string> _urlsFound;
         bool _isDuplicatesVisible;
 
+#if NETFRAMEWORK
+        public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
+#else
         public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, EFontAwesomeIcon icon, bool isDependenciesButtonVisible,
+#endif
             bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             Title = title;
@@ -52,7 +65,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+#if NETFRAMEWORK
+        FontAwesomeIcon Icon
+#else
         EFontAwesomeIcon Icon
+#endif
         {
             get { return _icon; }
             set
@@ -158,25 +175,25 @@ namespace Warewolf.Studio.ViewModels
         public void No()
         {
             Result = MessageBoxResult.No;
-            //TryClose(false);
+            TryCloseAsync(false);
         }
 
         public void Yes()
         {
             Result = MessageBoxResult.Yes;
-            //TryClose(true);
+            TryCloseAsync(true);
         }
 
         public void Cancel()
         {
             Result = MessageBoxResult.Cancel;
-            //TryClose(false);
+            TryCloseAsync(false);
         }
 
         public void Ok()
         {
             Result = MessageBoxResult.OK;
-            //TryClose(true);
+            TryCloseAsync(true);
         }
     }
 }
