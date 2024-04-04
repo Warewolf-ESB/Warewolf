@@ -13,7 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+#if !NETFRAMEWORK
 using Microsoft.Xaml.Behaviors;
+#else
+using System.Windows.Interactivity;
+#endif
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;

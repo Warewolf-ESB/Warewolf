@@ -25,7 +25,6 @@ using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism;
 using Prism.Commands;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced

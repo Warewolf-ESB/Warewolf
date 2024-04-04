@@ -10,7 +10,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Events;
+#endif
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 

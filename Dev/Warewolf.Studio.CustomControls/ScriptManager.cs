@@ -19,7 +19,13 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 using Warewolf.Licensing;
 
 // ReSharper disable CC0091

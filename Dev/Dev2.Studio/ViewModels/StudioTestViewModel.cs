@@ -1,5 +1,7 @@
 #pragma warning disable
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
@@ -12,7 +14,13 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 
 namespace Dev2.ViewModels
 {
@@ -62,6 +70,7 @@ namespace Dev2.ViewModels
         }
 
         public override string DisplayName => ViewModel.DisplayName;
+#if NETFRAMEWORK
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
@@ -71,11 +80,12 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
+#endif
 
-    
-        public string ResourceType => "ServiceTestsViewer";
 
-        #region Implementation of IHelpSource
+		public string ResourceType => "ServiceTestsViewer";
+
+		#region Implementation of IHelpSource
 
         public string HelpText { get; set; }
         public IServiceTestViewModel ViewModel { get; set; }
@@ -106,13 +116,18 @@ namespace Dev2.ViewModels
                     DebugOutputViewModel.Append(debugState);
                 }
             }
-        }
+		}
 
-        #endregion
+		public Task HandleAsync(DebugOutputMessage message, CancellationToken cancellationToken)
+		{
+            return new Task(() => { Handle(message); });
+		}
 
-        #region Implementation of IStudioTab
+		#endregion
 
-        public bool IsDirty => ViewModel.CanSave;
+		#region Implementation of IStudioTab
+
+		public bool IsDirty => ViewModel.CanSave;
 
         [ExcludeFromCodeCoverage]
         public void CloseView()
@@ -175,6 +190,6 @@ namespace Dev2.ViewModels
             }
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

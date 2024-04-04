@@ -16,14 +16,21 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Prism.Mvvm;
 using Warewolf.Studio.Core;
 using Dev2.Common;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class FileChooser : BindableBase, IFileChooser
+#else
     public class FileChooser : BindableBase2, IFileChooser
+#endif
     {
         readonly Action _closeAction;
         bool _allowMultipleSelection;

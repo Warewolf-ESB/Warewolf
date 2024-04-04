@@ -11,21 +11,31 @@
 
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using FontAwesome.WPF;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
+using System.Threading.Tasks;
 using FontAwesome6;
 using FontAwesome6.Fonts;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Prism.Commands;
+using Dev2.Common;
 using Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class MenuViewModel : BindableBase, IMenuViewModel, IMenuView,IUpdatesHelp
+#else
     public class MenuViewModel : BindableBase2, IMenuViewModel, IMenuView,IUpdatesHelp
+#endif
     {
         bool _hasNewVersion;
         bool _panelLockedOpen;
@@ -33,7 +43,11 @@ namespace Warewolf.Studio.ViewModels
         bool _isOverLock;
         ICommand _saveCommand;
         ICommand _executeServiceCommand;
+#if NETFRAMEWORK
+        FontAwesomeIcon _debugIcon;
+#else
         EFontAwesomeIcon _debugIcon;
+#endif
         bool _isProcessing;
         const int ButtonWidthSmall = 35;
         const int ButtonWidthLarge = 125;
@@ -82,11 +96,19 @@ namespace Warewolf.Studio.ViewModels
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
             IsPopoutViewOpen = false;
+#if NETFRAMEWORK
+            DebugIcon = FontAwesomeIcon.Bug;
+#else
             DebugIcon = EFontAwesomeIcon.Solid_Bug;
+#endif
             
         }
 
+#if NETFRAMEWORK
+        public FontAwesomeIcon DebugIcon
+#else
         public EFontAwesomeIcon DebugIcon
+#endif
         {
             get => _debugIcon;
             set
@@ -229,10 +251,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+#if !NETFRAMEWORK
         public Task RenderAsync(ViewContext context)
         {
             throw new NotImplementedException();
         }
+#endif
 
         public int ButtonWidth { get; set; }
 
@@ -352,7 +376,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 SetProperty(ref _isProcessing, value);
+#if NETFRAMEWORK
+                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Bug;
+#else
                 DebugIcon = _isProcessing ? EFontAwesomeIcon.Solid_Stop : EFontAwesomeIcon.Solid_Bug;
+#endif
                 OnPropertyChanged(()=>DebugLabel);
             }
         }
@@ -431,6 +459,8 @@ namespace Warewolf.Studio.ViewModels
 
         public object DataContext { get; set; }
 
+#if !NETFRAMEWORK
         public string Path => throw new NotImplementedException();
+#endif
     }
 }

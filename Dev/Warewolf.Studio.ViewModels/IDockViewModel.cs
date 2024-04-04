@@ -1,5 +1,4 @@
 ﻿using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism;
 using Prism;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 

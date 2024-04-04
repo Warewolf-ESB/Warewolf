@@ -11,17 +11,20 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Studio.Interfaces;
-using Prism.Events;
 using Warewolf.Studio.ViewModels;
 using System.Threading.Tasks;
 using System.Linq;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
-using Microsoft.Practices.Prism;
 using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
+using Prism.Events;
+#endif
 
 namespace Dev2.ViewModels.Search
 {

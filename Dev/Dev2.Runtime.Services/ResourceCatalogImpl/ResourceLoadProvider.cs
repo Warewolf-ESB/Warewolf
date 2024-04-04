@@ -35,8 +35,12 @@ using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
 using ServiceStack;
 using ServiceStack.Common;
+#endif
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
@@ -437,8 +441,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     return;
                 }
-            //resource.Dependencies.ForEach(tree =>
+#if NETFRAMEWORK
+            resource.Dependencies.ForEach(tree =>
+#else
             resource.Dependencies.Each(tree =>
+#endif
             {
                 if (tree.ResourceID == resourceId)
                     {
@@ -455,8 +462,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var dependants = new List<ResourceForTree>();
             foreach (var resource in resources)
             {
-                //resource.Dependencies?.ForEach(tree =>
+#if NETFRAMEWORK
+                resource.Dependencies?.ForEach(tree =>
+#else
                 resource.Dependencies?.Each(tree =>
+#endif
                 {
                     tree.Resource = ResourceCatalog.Instance.GetResource(workspaceID, tree.ResourceID);
                     if (tree.ResourceID == resourceId)

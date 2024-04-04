@@ -44,8 +44,13 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
 using Prism.Mvvm;
+#endif
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -54,7 +59,11 @@ using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
+#else
     public class ServiceTestViewModel : BindableBase2, IServiceTestViewModel
+#endif
     {
         readonly IExternalProcessExecutor _processExecutor;
         private IServiceTestModel _selectedServiceTest;

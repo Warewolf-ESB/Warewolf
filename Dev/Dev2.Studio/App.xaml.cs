@@ -43,7 +43,11 @@ using Dev2.Studio.Core.Views;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Infragistics.Windows.DockManager;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Events;
+#endif
 using Warewolf.Core;
 using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Models.Toolbox;
@@ -105,7 +109,9 @@ namespace Dev2.Studio
             }
         }
 
-        //[PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
+#if NETFRAMEWORK
+        [PrincipalPermission(SecurityAction.Demand)] // Principal must be authenticated
+#endif
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
@@ -161,7 +167,7 @@ namespace Dev2.Studio
             _splashThread.Start();
 
             _resetSplashCreated.WaitOne();
-            //new Bootstrapper().Start();
+            new Bootstrapper().Initialize();
             base.OnStartup(e);
             _shellViewModel = MainWindow?.DataContext as ShellViewModel;
             if(_shellViewModel != null)

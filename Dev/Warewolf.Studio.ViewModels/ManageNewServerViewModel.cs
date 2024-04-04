@@ -24,8 +24,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Prism.Commands;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Events;
+using Prism.Commands;
+#endif
+
 
 namespace Warewolf.Studio.ViewModels
 {

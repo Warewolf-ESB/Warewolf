@@ -38,7 +38,6 @@ namespace Dev2.Services
                 var dispatcher = Dispatcher.CurrentDispatcher;
                 if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
                 {
-
                     _events = _events.ObserveOn(Scheduler.Default);
                 }
             }

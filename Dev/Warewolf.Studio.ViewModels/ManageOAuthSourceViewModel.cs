@@ -3,7 +3,11 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dropbox.Api;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+#else
 using Prism.Commands;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

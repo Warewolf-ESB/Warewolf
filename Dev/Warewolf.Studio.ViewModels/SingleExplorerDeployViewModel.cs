@@ -22,8 +22,13 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.ServiceModel;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
 using Prism.Mvvm;
+#endif
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
@@ -32,7 +37,11 @@ using System.Globalization;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class SingleExplorerDeployViewModel : BindableBase, IDeployViewModel, IUpdatesHelp
+#else
     public class SingleExplorerDeployViewModel : BindableBase2, IDeployViewModel, IUpdatesHelp
+#endif
     {
         IDeploySourceExplorerViewModel _source;
         readonly IDeployStatsViewerViewModel _stats;

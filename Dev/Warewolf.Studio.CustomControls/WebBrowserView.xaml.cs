@@ -12,7 +12,13 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.CustomControls
@@ -62,5 +68,14 @@ namespace Warewolf.Studio.CustomControls
         {
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
+
+#if !NETFRAMEWORK
+        public string Path => throw new System.NotImplementedException();
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+#endif
     }
 }

@@ -18,26 +18,62 @@ Param(
   [switch]$ServerTests,
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
-  [string]$GitCredential
+  [string]$GitCredential,
+  [switch]$ForceMultitargetting
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
-                      "Dev\UITesting.sln",
-                      "Dev\Server.sln",
-                      "Dev\Studio.sln",
-                      "Dev\Release.sln",
-                      "Dev\Web.sln",
-                      "Dev\NewServerNet6.sln",
-                      "Dev\ServerTests.sln",
-                      "Dev\Dev2.Studio\Dev2.Studio.csproj",
-                      "Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
+					  "Dev\UITesting.sln",
+					  "Dev\Server.sln",
+					  "Dev\Studio.sln",
+					  "Dev\Release.sln",
+					  "Dev\Web.sln",
+					  "Dev\NewServerNet6.sln",
+					  "Dev\ServerTests.sln",
+					  "Dev\Dev2.Studio\Dev2.Studio.csproj",
+					  "Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
 $NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent) -and !($COMIPCProject.IsPresent)
 if ($Target -ne "") {
-    $Target = "/t:" + $Target
+	$Target = "/t:" + $Target
 }
 
 #find script
 if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
-    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+
+if ($ForceMultitargetting.IsPresent) {
+	$path = "$PSScriptRoot\Dev\"
+	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
+
+	foreach ($file in $files) {
+		$xml = [xml](Get-Content $file.FullName)
+
+		# Replace target framework nodes
+		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows'] | //TargetFrameworks[.='net6.0-windows']")
+		foreach ($node in $nodes) {
+            $newNode = $xml.CreateElement("TargetFrameworks")
+            $newNode.InnerText = 'net6.0-windows;net48'
+            $node.ParentNode.ReplaceChild($newNode, $node)
+		}
+
+		# Special handling for Dev2.Data.csproj
+		if ($file.Name -eq 'Dev2.Data.csproj') {
+			$refNodes = $xml.SelectNodes("//Reference[@Include='Infragistics.Calculations'] | //PackageReference[@Include='System.Configuration.ConfigurationManager' and @Version='6.0.1'] | //FrameworkReference[@Include='Microsoft.AspNetCore.App']")
+			$itemGroupNode = $xml.CreateElement("ItemGroup")
+			$conditionAttr = $xml.CreateAttribute("Condition")
+			$conditionAttr.Value = "'$(TargetFrameworkIdentifier)' != '.NETFramework'"
+			$itemGroupNode.Attributes.Append($conditionAttr)
+
+			foreach ($refNode in $refNodes) {
+				$refNode.ParentNode.RemoveChild($refNode)
+				$itemGroupNode.AppendChild($refNode)
+			}
+
+			$xml.Project.AppendChild($itemGroupNode)
+		}
+
+		$xml.Save($file.FullName)
+	}
 }
 
 if (!($InContainer.IsPresent)) {
@@ -116,13 +152,13 @@ if (!($InContainer.IsPresent)) {
 #Version
 $GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
 if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
-    Write-Host Writing C# and F# versioning files...
+	Write-Host Writing C# and F# versioning files...
 
-    if ($GitCredential -ne "") {
-        git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
-    }
-    # Get all the latest version tags from server repo.
-    git -C "$PSScriptRoot" fetch --all --tags -f
+	if ($GitCredential -ne "") {
+		git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
+	}
+	# Get all the latest version tags from server repo.
+	git -C "$PSScriptRoot" fetch --all --tags -f
 
     # Generate informational version.
     # (from git commit id and time)
@@ -169,55 +205,55 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 					break
 				}
 			}
-            if ([string]::IsNullOrEmpty($FullVersionString) -or $dotCount -ne 3) {
-                Write-Host No local tags found in git history. 
-                exit 1
-            } else {
-                $FullVersionString = $FullVersionString.Trim()
-                # Make new version from last known version.
-                Write-Host Last version was `"$FullVersionString`". Generating next version...
-                do {
-                    # Increment build number.
-                    [int]$NewBuildNumber = $FullVersionString.Split(".")[3]
-                    if ($NewBuildNumber -eq $null) 
-                    {
-                        $NewBuildNumber = 0
-                    }
-                    else
-                    {
-                        $NewBuildNumber++
-                    }
-                    $FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
-                    Write-Host Next version would be `"$FullVersionString`". Checking against Origin repo...
-                    # Check tag against origin
-                    $originTag = git -C "$PSScriptRoot" ls-remote --tags origin $FullVersionString
-                    if ($originTag.length -ne 0) {
-                        Write-Host Origin has tag `"$originTag`".
-                    } else {
-                        Write-Host Double checking with hard coded integration manager repo...
-                        # Check tag against hard coded integration manager repo
-                        $originTag = git -C "$PSScriptRoot" ls-remote --tags "https://gitlab.com/warewolf/warewolf" $FullVersionString
-                        if ($originTag.length -ne 0) {
-                            Write-Host Hard coded integration manager repo has tag `"$originTag`".
-                        } else {
-                            Write-Host Double checking with hard coded blessed repo...
-                            # Check tag against hard coded blessed repo
-                            $originTag = git -C "$PSScriptRoot" ls-remote --tags "https://github.com/Warewolf-ESB/Warewolf" $FullVersionString
-                            if ($originTag.length -ne 0) {
-                                Write-Host Hard coded blessed repo has tag `"$originTag`".
-                            }
-                        }
-                    }
-                } while ($originTag.length -ne 0)
-            }
-            # New (unique) version has been generated.
-            Write-Host Origin has confirmed version `"$FullVersionString`" is OK.
-        }
-    }
-    # Write version files
-    $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
-    Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
-    $CSharpVersionFileContents = @"
+			if ([string]::IsNullOrEmpty($FullVersionString) -or $dotCount -ne 3) {
+				Write-Host No local tags found in git history. 
+				exit 1
+			} else {
+				$FullVersionString = $FullVersionString.Trim()
+				# Make new version from last known version.
+				Write-Host Last version was `"$FullVersionString`". Generating next version...
+				do {
+					# Increment build number.
+					[int]$NewBuildNumber = $FullVersionString.Split(".")[3]
+					if ($NewBuildNumber -eq $null) 
+					{
+						$NewBuildNumber = 0
+					}
+					else
+					{
+						$NewBuildNumber++
+					}
+					$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
+					Write-Host Next version would be `"$FullVersionString`". Checking against Origin repo...
+					# Check tag against origin
+					$originTag = git -C "$PSScriptRoot" ls-remote --tags origin $FullVersionString
+					if ($originTag.length -ne 0) {
+						Write-Host Origin has tag `"$originTag`".
+					} else {
+						Write-Host Double checking with hard coded integration manager repo...
+						# Check tag against hard coded integration manager repo
+						$originTag = git -C "$PSScriptRoot" ls-remote --tags "https://gitlab.com/warewolf/warewolf" $FullVersionString
+						if ($originTag.length -ne 0) {
+							Write-Host Hard coded integration manager repo has tag `"$originTag`".
+						} else {
+							Write-Host Double checking with hard coded blessed repo...
+							# Check tag against hard coded blessed repo
+							$originTag = git -C "$PSScriptRoot" ls-remote --tags "https://github.com/Warewolf-ESB/Warewolf" $FullVersionString
+							if ($originTag.length -ne 0) {
+								Write-Host Hard coded blessed repo has tag `"$originTag`".
+							}
+						}
+					}
+				} while ($originTag.length -ne 0)
+			}
+			# New (unique) version has been generated.
+			Write-Host Origin has confirmed version `"$FullVersionString`" is OK.
+		}
+	}
+	# Write version files
+	$CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
+	Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
+	$CSharpVersionFileContents = @"
 using System.Reflection;
 using System.Runtime.CompilerServices;
 #pragma warning disable CC0021 // Use nameof
@@ -256,13 +292,13 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.HangfireServer.Tests")]
 "@
-    Write-Host $CSharpVersionFileContents
-    $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
-    Write-Host C Sharp version file written to `"$CSharpVersionFile`".
+	Write-Host $CSharpVersionFileContents
+	$CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
+	Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
-    $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
-    Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
-    $FSharpVersionFileContents = @"
+	$FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
+	Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
+	$FSharpVersionFileContents = @"
 namespace Warewolf.FSharp
 namespace Warewolf.FSharp
 open System.Reflection;
@@ -278,30 +314,30 @@ open System.Reflection;
 ")>]
 do()
 "@
-    Write-Host $FSharpVersionFileContents
-    $FSharpVersionFileContents | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
-    Write-Host F Sharp version file written to `"$FSharpVersionFile`".
-    Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
+	Write-Host $FSharpVersionFileContents
+	$FSharpVersionFileContents | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
+	Write-Host F Sharp version file written to `"$FSharpVersionFile`".
+	Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
 }
 
 if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
-    &"nuget.exe" "restore" "$PSScriptRoot\Dev\AcceptanceTesting.sln"
-    if ($LASTEXITCODE -ne 0) {
-        sleep 30
-        exit 1
-    }
-    foreach ($ProjectDir in ((Get-ChildItem "$PSScriptRoot\Dev\*Specs") + (Get-ChildItem "$PSScriptRoot\Dev\Warewolf.UIBindingTests.*"))) {
-        $FullPath = $ProjectDir.FullName
-        $ProjectName = $ProjectDir.Name
-        if (Test-Path "$FullPath\$ProjectName.csproj") {
-            &"$env:userprofile\.nuget\packages\specflow\2.3.2\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
-        } else {
-            Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
-        }
-    }
-    foreach ($FeatureFile in (Get-ChildItem "$PSScriptRoot\Dev\**\*.feature.cs")) {
-        (Get-Content $FeatureFile).replace('TestCategoryAttribute("MSTest:DeploymentItem:', 'DeploymentItem("').replace('DeploymentItem("Warewolf_Studio.exe")', 'DeploymentItem("Warewolf Studio.exe")') | Set-Content $FeatureFile
-    }
+	&"nuget.exe" "restore" "$PSScriptRoot\Dev\AcceptanceTesting.sln"
+	if ($LASTEXITCODE -ne 0) {
+		sleep 30
+		exit 1
+	}
+	foreach ($ProjectDir in ((Get-ChildItem "$PSScriptRoot\Dev\*Specs") + (Get-ChildItem "$PSScriptRoot\Dev\Warewolf.UIBindingTests.*"))) {
+		$FullPath = $ProjectDir.FullName
+		$ProjectName = $ProjectDir.Name
+		if (Test-Path "$FullPath\$ProjectName.csproj") {
+			&"$env:userprofile\.nuget\packages\specflow\2.3.2\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+		} else {
+			Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
+		}
+	}
+	foreach ($FeatureFile in (Get-ChildItem "$PSScriptRoot\Dev\**\*.feature.cs")) {
+		(Get-Content $FeatureFile).replace('TestCategoryAttribute("MSTest:DeploymentItem:', 'DeploymentItem("').replace('DeploymentItem("Warewolf_Studio.exe")', 'DeploymentItem("Warewolf Studio.exe")') | Set-Content $FeatureFile
+	}
 }
 
 #Compile Solutions
@@ -366,10 +402,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						}
 						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                		Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                		Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                		Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                		Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 
 						if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
 							Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
@@ -383,58 +419,58 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 <?xml version="1.0" encoding="utf-8"?>
 
 <configuration>
-    <configSections>
-        <section name="secureSettings" type="System.Configuration.NameValueSectionHandler" />
-        <section name="entityFramework"
-                 type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-                 requirePermission="false" />
-    </configSections>
-    <runtime>
-        <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
-            <dependentAssembly>
-                <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
-                <bindingRedirect oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0" />
-            </dependentAssembly>
-        </assemblyBinding>
-    </runtime>
-    <secureSettings>
-        <add key="ServerID" value="d53bbcc5-4794-4dfa-b096-3aa815692e66" />
-        <add key="ServerKey"
-             value="BwIAAACkAABSU0EyAAQAAAEAAQBBgKRIdzPGpaPt3hJ7Kxm8iVrKpfu4wfsJJf/3gBG5qhiS0rs5j5HqkLazdO5az9oPWnSTmNnww03WvCJhz8nhaJjXHoEK6xtcWL++IY+R3E27xaHaPQJSDvGg3j1Jvm0QKUGmzZX75tGDC4s17kQSCpsVW3vEuZ5gBdMLMi3UqaVW9EO7qOcEvVO9Cym7lxViqUhvq6c0nLzp6C6zrtZGjLtFqo9KDj7PMkq10Xc0JkzE1ptRz/YytMRacIDn8tptbHbxM8AtObeeiZ7V6Tznmi82jcAm2Jugr0D97Da2MXZuqEKLL5uPagL4RUHite3kT/puSNbTtqZLdqMtV5HGqVmn2a64JU3b8TIW8rKd5rKucG4KwoXRNQihJzX1it8vcqt6tjDnJZdJkuyDjdd6BKCYHWeX9mqDwKJ3EY+TRZmsl9RILyV/XviyrpTYBdDDmdQ9YLSLt0LtdpPpcRzciwMsBEfMH5NPFOtqSF/151Sl/DBdEJxOINXDl1qdO5MtgL7rXkfiGwu66n4hokRdVlj6TTcXTCn6YrUbzOts6IZJnQ9cwK693u9yMJ3Di0hp49L6LWnoWmW334ys+iOfob0i4eM+M3XNw7wGN/jd6t2KYemVZEnTcl5Lon5BpdoFlxa7Y1n+kXbaeSAwTJIe9HM6uoXIH61VCIk0ac69oZcG2/FhSeBO/DcGIQQqdFvuFqJY0g2qbt7+hmEZDZBehr3KpoRTgB5xPW/ThVhuaoZxlpEb4hFmKoj900knnQk=" />
-        <add key="SystemKey"
-             value="BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==" />
-    </secureSettings>
-    <appSettings>
-        <add key="webServerPort" value="1234" />
-        <add key="webServerSslPort" value="1236" />
-        <add key="webServerEnabled" value="true" />
-        <add key="SupportedFileExtensions" value=".js,.css,.jpg,.jpeg,.bmp,.bm,.gif,.ico,.tiff,.png" />
-        <add key="Hello World" value="acb75027-ddeb-47d7-814e-a54c37247ec1" />
-        <add key="ForEachWithHelloWorldTest" value="c5381f15-c5e5-41a9-b322-ab7b2a891aa5" />
-        <add key="Control Flow - Sequence" value="0bdc3207-ff6b-4c01-a5eb-c7060222f75d" />
-        <add key="Loop Constructs - For Each" value="8ba79b49-226e-4c67-a732-4657fd0edb6b" />
-        <add key="Loop Constructs - Select and Apply" value="ea916fa6-76ca-4243-841c-74fa18dd8c14" />
-        <add key="Select and Apply" value="b65bd0c2-4b17-426d-a515-3891ab8c4a93" />
-        <add key="DllSourceForExecutionSpecs" value="D9017469-ADAD-40F9-AAD2-F1F0A0D2614B" />
-        <add key="testRabbitMQSource" value="78899836-7c8f-4a8e-8c0a-b45eba3a522e" />
-        <add key="SharePoint Test Server" value="94d4b4ca-31e1-494d-886b-cd94224c9a8b" />
-        <add key="SecuritySpecsUser" value="SecuritySpecsUser" />
-        <add key="SecuritySpecsPassword" value="ASfas123@!fda" />
-        <add key="userGroup" value="Administrators" />
+	<configSections>
+		<section name="secureSettings" type="System.Configuration.NameValueSectionHandler" />
+		<section name="entityFramework"
+				 type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+				 requirePermission="false" />
+	</configSections>
+	<runtime>
+		<assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+			<dependentAssembly>
+				<assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+				<bindingRedirect oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0" />
+			</dependentAssembly>
+		</assemblyBinding>
+	</runtime>
+	<secureSettings>
+		<add key="ServerID" value="d53bbcc5-4794-4dfa-b096-3aa815692e66" />
+		<add key="ServerKey"
+			 value="BwIAAACkAABSU0EyAAQAAAEAAQBBgKRIdzPGpaPt3hJ7Kxm8iVrKpfu4wfsJJf/3gBG5qhiS0rs5j5HqkLazdO5az9oPWnSTmNnww03WvCJhz8nhaJjXHoEK6xtcWL++IY+R3E27xaHaPQJSDvGg3j1Jvm0QKUGmzZX75tGDC4s17kQSCpsVW3vEuZ5gBdMLMi3UqaVW9EO7qOcEvVO9Cym7lxViqUhvq6c0nLzp6C6zrtZGjLtFqo9KDj7PMkq10Xc0JkzE1ptRz/YytMRacIDn8tptbHbxM8AtObeeiZ7V6Tznmi82jcAm2Jugr0D97Da2MXZuqEKLL5uPagL4RUHite3kT/puSNbTtqZLdqMtV5HGqVmn2a64JU3b8TIW8rKd5rKucG4KwoXRNQihJzX1it8vcqt6tjDnJZdJkuyDjdd6BKCYHWeX9mqDwKJ3EY+TRZmsl9RILyV/XviyrpTYBdDDmdQ9YLSLt0LtdpPpcRzciwMsBEfMH5NPFOtqSF/151Sl/DBdEJxOINXDl1qdO5MtgL7rXkfiGwu66n4hokRdVlj6TTcXTCn6YrUbzOts6IZJnQ9cwK693u9yMJ3Di0hp49L6LWnoWmW334ys+iOfob0i4eM+M3XNw7wGN/jd6t2KYemVZEnTcl5Lon5BpdoFlxa7Y1n+kXbaeSAwTJIe9HM6uoXIH61VCIk0ac69oZcG2/FhSeBO/DcGIQQqdFvuFqJY0g2qbt7+hmEZDZBehr3KpoRTgB5xPW/ThVhuaoZxlpEb4hFmKoj900knnQk=" />
+		<add key="SystemKey"
+			 value="BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==" />
+	</secureSettings>
+	<appSettings>
+		<add key="webServerPort" value="1234" />
+		<add key="webServerSslPort" value="1236" />
+		<add key="webServerEnabled" value="true" />
+		<add key="SupportedFileExtensions" value=".js,.css,.jpg,.jpeg,.bmp,.bm,.gif,.ico,.tiff,.png" />
+		<add key="Hello World" value="acb75027-ddeb-47d7-814e-a54c37247ec1" />
+		<add key="ForEachWithHelloWorldTest" value="c5381f15-c5e5-41a9-b322-ab7b2a891aa5" />
+		<add key="Control Flow - Sequence" value="0bdc3207-ff6b-4c01-a5eb-c7060222f75d" />
+		<add key="Loop Constructs - For Each" value="8ba79b49-226e-4c67-a732-4657fd0edb6b" />
+		<add key="Loop Constructs - Select and Apply" value="ea916fa6-76ca-4243-841c-74fa18dd8c14" />
+		<add key="Select and Apply" value="b65bd0c2-4b17-426d-a515-3891ab8c4a93" />
+		<add key="DllSourceForExecutionSpecs" value="D9017469-ADAD-40F9-AAD2-F1F0A0D2614B" />
+		<add key="testRabbitMQSource" value="78899836-7c8f-4a8e-8c0a-b45eba3a522e" />
+		<add key="SharePoint Test Server" value="94d4b4ca-31e1-494d-886b-cd94224c9a8b" />
+		<add key="SecuritySpecsUser" value="SecuritySpecsUser" />
+		<add key="SecuritySpecsPassword" value="ASfas123@!fda" />
+		<add key="userGroup" value="Administrators" />
 
-    </appSettings>
-    <connectionStrings>
-        <add name="Persistence"
-             connectionString="Server=RSAKLFSVRDEV;Database=WFPersistenceStore;Integrated Security=true" />
-    </connectionStrings>
-    
+	</appSettings>
+	<connectionStrings>
+		<add name="Persistence"
+			 connectionString="Server=RSAKLFSVRDEV;Database=WFPersistenceStore;Integrated Security=true" />
+	</connectionStrings>
+	
 
 </configuration>
 "@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
 					}
 				}
 			}
-        }
-    }
+		}
+	}
 }
 exit 0

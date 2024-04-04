@@ -12,11 +12,20 @@
 using System;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Dev2.Common;
 using Prism.Mvvm;
+#endif
+
 namespace Warewolf.Studio.ViewModels.Help
 {
+#if NETFRAMEWORK
+    public class HelpDescriptorViewModel : BindableBase, IHelpDescriptorViewModel
+#else
     public class HelpDescriptorViewModel : BindableBase2, IHelpDescriptorViewModel
+#endif
     {
         readonly IHelpDescriptor _descriptor;
         bool _isEnabled;

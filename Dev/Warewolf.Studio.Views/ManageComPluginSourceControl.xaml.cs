@@ -1,14 +1,18 @@
 #pragma warning disable
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Infragistics.Controls.Menus;
+using Warewolf.Studio.ViewModels;
+#if !NETFRAMEWORK
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Warewolf.Studio.ViewModels;
+#else
+using Microsoft.Practices.Prism.Mvvm;
+#endif
 
 namespace Warewolf.Studio.Views
 {
@@ -17,7 +21,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageComPluginSourceControl : IView, ICheckControlEnabledView
     {
+#if !NETFRAMEWORK
 		public string Path => throw new System.NotImplementedException();
+#endif
 
 		public ManageComPluginSourceControl()
         {
@@ -134,9 +140,11 @@ namespace Warewolf.Studio.Views
             var count = ExplorerTree.Nodes.Count;
         }
 
+#if !NETFRAMEWORK
 		public Task RenderAsync(ViewContext context)
 		{
 			throw new System.NotImplementedException();
 		}
+#endif
 	}
 }

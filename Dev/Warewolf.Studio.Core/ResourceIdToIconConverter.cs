@@ -8,10 +8,13 @@ using System.Windows.Media;
 using Dev2;
 using Dev2.Common;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using FontAwesome.WPF;
+#else
 using FontAwesome6;
 using FontAwesome6.Fonts;
-//using FontAwesome.WPF;
 using Warewolf.Studio.Core.Extensions;
+#endif
 
 namespace Warewolf.Studio.Core
 {
@@ -85,26 +88,54 @@ namespace Warewolf.Studio.Core
                 case "Dev2Server":
                     return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                 case "StartPage":
+#if NETFRAMEWORK
+                    var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
+#else
                     var imageSource = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_House, _brush);
+#endif
                     return imageSource;
                 case "OAuth":
                 case "OauthSource":
                 case "DropBoxSource":
                     return Application.Current.Resources["DropboxSource"];
                 case "Scheduler":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_ClockRotateLeft, _brush);//ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.HISTORY, _brush);
+#endif
                 case "ServiceTestsViewer":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Flask, _brush);//ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Flask, _brush);
+#endif
                 case "MergeConflicts":
                     return _dict[CustomMenuIcons.MergeConflicts] as DrawingImage;
                 case "Search":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.Search, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_MagnifyingGlass, _brush);//ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.search, _brush);
+#endif
                 case "Settings":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Gears, _brush);//ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Cogs, _brush);
+#endif
                 case "DependencyViewer":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.Sitemap, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Sitemap, _brush);
+#endif
                 case "DeployViewer":
+#if NETFRAMEWORK
+                    return ImageAwesome.CreateImageSource(FontAwesomeIcon.PaperPlane, _brush);
+#else
                     return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_PaperPlane, _brush);
+#endif
                 default:
                     return _dict[CustomMenuIcons.Folder] as DrawingImage;
             }

@@ -5,6 +5,8 @@ namespace Dev2.Runtime.Interfaces
     public interface IConnections : IHubFactory
     {
         ValidationResult CanConnectToServer(Data.ServiceModel.Connection connection);
+#if !NETFRAMEWORK
         ValidationResult CanConnectToTestServer(Data.ServiceModel.Connection connection);
+#endif
     }
 }
