@@ -71,47 +71,25 @@ namespace Dev2.Communication
         public static string Compress(string text)
         {
             var buffer = Encoding.UTF8.GetBytes(text);
-            var ms = new MemoryStream();
-            using (GZipStream zip = new GZipStream(ms, CompressionMode.Compress, true))
+            using (var memoryStream = new MemoryStream())
             {
-                zip.Write(buffer, 0, buffer.Length);
+                using (var zip = new DeflateStream(memoryStream, CompressionLevel.Optimal))
+                {
+                    zip.Write(buffer, 0, buffer.Length);
+                }
+                return Convert.ToBase64String(memoryStream.ToArray());
             }
-
-            ms.Position = 0;
-   
-
-            var compressed = new byte[ms.Length];
-            ms.Read(compressed, 0, compressed.Length);
-
-            var gzBuffer = new byte[compressed.Length + 4];
-            Buffer.BlockCopy(compressed, 0, gzBuffer, 4, compressed.Length);
-            Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gzBuffer, 0, 4);
-            return Convert.ToBase64String(gzBuffer);
         }
 
         public static string Decompress(string compressedText)
         {
             var gzBuffer = Convert.FromBase64String(compressedText);
+            using (var compressedStream = new MemoryStream(gzBuffer))
+            using (var decompressedStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
             using (MemoryStream ms = new MemoryStream())
             {
-                var msgLength = BitConverter.ToInt32(gzBuffer, 0);
-                ms.Write(gzBuffer, 4, gzBuffer.Length - 4);
-
-                var buffer = new byte[msgLength];
-
-                ms.Position = 0;
-                using (GZipStream zip = new GZipStream(ms, CompressionMode.Decompress))
-                {
-                    int totalRead = 0;
-                    while (totalRead < buffer.Length)
-                    {
-                        int bytesRead = zip.Read(buffer, totalRead, buffer.Length - totalRead);
-                        if (bytesRead == 0) break;
-                        totalRead += bytesRead;
-                    }
-                }
-
-                return Encoding.UTF8.GetString(buffer);
+                decompressedStream.CopyTo(ms);
+                return Encoding.UTF8.GetString(ms.ToArray());
             }
         }
 
