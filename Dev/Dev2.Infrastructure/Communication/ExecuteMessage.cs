@@ -82,16 +82,43 @@ namespace Dev2.Communication
         }
 
         public static string Decompress(string compressedText)
-        {
-            var gzBuffer = Convert.FromBase64String(compressedText);
-            using (var compressedStream = new MemoryStream(gzBuffer))
-            using (var decompressedStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
-            using (MemoryStream ms = new MemoryStream())
+		{
+			var gzBuffer = Convert.FromBase64String(compressedText);
+            byte[] buffer;
+			try
             {
-                decompressedStream.CopyTo(ms);
-                return Encoding.UTF8.GetString(ms.ToArray());
+                using (var compressedStream = new MemoryStream(gzBuffer))
+                using (var decompressedStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    decompressedStream.CopyTo(ms);
+                    buffer = ms.ToArray();
+                }
             }
-        }
+            catch (InvalidDataException exception)
+			{
+				using (MemoryStream ms = new MemoryStream())
+				{
+					var msgLength = BitConverter.ToInt32(gzBuffer, 0);
+					ms.Write(gzBuffer, 4, gzBuffer.Length - 4);
+
+					buffer = new byte[msgLength];
+
+					ms.Position = 0;
+					using (GZipStream zip = new GZipStream(ms, CompressionMode.Decompress))
+					{
+						int totalRead = 0;
+						while (totalRead < buffer.Length)
+						{
+							int bytesRead = zip.Read(buffer, totalRead, buffer.Length - totalRead);
+							if (bytesRead == 0) break;
+							totalRead += bytesRead;
+						}
+					}
+				}
+			}
+			return Encoding.UTF8.GetString(buffer);
+		}
 
         public string GetDecompressedMessage() => Decompress(_message.ToString());
     }
