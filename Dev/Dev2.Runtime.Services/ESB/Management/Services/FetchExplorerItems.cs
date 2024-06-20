@@ -11,14 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using KGySoft.CoreLibraries;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -59,9 +62,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ResourceCatalog.Instance.Reload();
                         exeManager.StopRefresh();
                     }
-
                 }
-                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
+
+                // ResourceType
+                values.TryGetValue("resourceTypeFilter", out StringBuilder tmp_resourceType);
+                var resourceTypeFilter = "all";
+                if (tmp_resourceType != null)
+                {
+                    resourceTypeFilter = tmp_resourceType.ToString();
+                }
+
+                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue, resourceTypeFilter));
             }
             catch (Exception e)
             {
@@ -76,12 +87,42 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue)
+        CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue, string resourceType)
         {
-            var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
+            IExplorerItem item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
+
+            if (!resourceType.Equals("all"))
+                item = FilterResourcesByType(item, resourceType.ToLower(), true);
+
             var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(item));
             return message;
+        }
+
+        public static IExplorerItem FilterResourcesByType(IExplorerItem root, string filterType, bool isRoot = false)
+        {
+            if (root == null) return null;
+
+            // Recursively filter the children
+            List<IExplorerItem> filteredChildren = new List<IExplorerItem>();
+            if (root.Children != null)
+            {
+                foreach (var child in root.Children)
+                {
+                    var filteredChild = FilterResourcesByType(child, filterType);
+                    if (filteredChild != null)
+                        filteredChildren.Add(filteredChild);
+                }
+            }
+            // If the current item is of the filter type or a folder with filtered children, keep it
+            if (isRoot || root.ResourceType.ToLower() == filterType || (root.ResourceType.ToLower() == "folder" && filteredChildren.Count > 0))
+            {
+                root.Children = filteredChildren;
+                return root;
+            }
+
+            // Otherwise, return null to exclude this item
+            return null;
         }
 
         public IExplorerServerResourceRepository ServerExplorerRepo
