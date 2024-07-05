@@ -203,7 +203,7 @@ namespace Dev2.Activities
                 var colDataType = row.Table.Columns["Value"].DataType;
                 if (colDataType.Name == "Byte[]")
                 {
-                    value = Encoding.UTF8.GetString(value as byte[]);
+                    value = Encoding.UTF8.GetString(value as byte[]).Replace("''", "'");
                 }
                 var retValue = value.ToString();
                 if (int.TryParse(retValue, out int num))
