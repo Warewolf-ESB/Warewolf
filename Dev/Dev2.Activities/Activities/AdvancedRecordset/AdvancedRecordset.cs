@@ -225,7 +225,10 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        newVariableValue.AppendFormat(s, "'" + str + "'");
+                        if (!(s.TrimStart().StartsWith("'") && s.TrimEnd().EndsWith("'")))
+                        {
+                            newVariableValue.AppendFormat(s.Trim(), "'" + str + "'");
+                        }
                     }
                 }
                 return newVariableValue.ToString();
