@@ -4563,3 +4563,29 @@ Scenario:   Join statement with underscore in the field name and star after sele
     | [[TableCopy(2).id]] = 2                |
     | [[TableCopy(2).address]] = 2           |
     | [[TableCopy(2).line1]] = 2a Lane Place |
+
+Scenario: Declare Variable Value contains quotes
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    | person().name | Alice  |
+    | person().name | Hatter |
+    | checkName     | 'Bob'  |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name       | Value         |
+    | FilterName | [[checkName]] |
+    And I have the following sql statement "SELECT * from person where name like @FilterName"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs               | value |
+    | TableCopy().name | Bob   |
+    And the execution has "NO" error
+    And the debug output as
+    |                             |
+    | [[TableCopy(1).name]] = Bob |
