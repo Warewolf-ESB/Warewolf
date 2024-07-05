@@ -225,7 +225,7 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        if (!(s.TrimStart().StartsWith("'") && s.TrimEnd().EndsWith("'")))
+                        if (!(str.TrimStart().StartsWith("'") && str.TrimEnd().EndsWith("'")))
                         {
                             newVariableValue.AppendFormat(s.Trim(), "'" + str + "'");
                         }
