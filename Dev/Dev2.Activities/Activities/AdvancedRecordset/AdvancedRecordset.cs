@@ -183,7 +183,7 @@ namespace Dev2.Activities
         {
             using (var cmd = _dbManager.CreateCommand())
             {
-                var sql = "INSERT OR REPLACE INTO Variables VALUES ('" + variableName + "', '" + variableValue + "');";
+                var sql = "INSERT OR REPLACE INTO Variables VALUES ('" + variableName + "', '" + variableValue.Replace("'", "''") + "');";
                 cmd.CommandText = sql;
                 cmd.CommandType = CommandType.Text;
                 _dbManager.ExecuteNonQuery(cmd);
