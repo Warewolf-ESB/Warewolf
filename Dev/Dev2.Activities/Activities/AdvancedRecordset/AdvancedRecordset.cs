@@ -183,7 +183,7 @@ namespace Dev2.Activities
         {
             using (var cmd = _dbManager.CreateCommand())
             {
-                var sql = "INSERT OR REPLACE INTO Variables VALUES ('" + variableName + "', '" + variableValue + "');";
+                var sql = "INSERT OR REPLACE INTO Variables VALUES ('" + variableName + "', '" + variableValue.Replace("'", "''") + "');";
                 cmd.CommandText = sql;
                 cmd.CommandType = CommandType.Text;
                 _dbManager.ExecuteNonQuery(cmd);
@@ -203,7 +203,7 @@ namespace Dev2.Activities
                 var colDataType = row.Table.Columns["Value"].DataType;
                 if (colDataType.Name == "Byte[]")
                 {
-                    value = Encoding.UTF8.GetString(value as byte[]);
+                    value = Encoding.UTF8.GetString(value as byte[]);//.Replace("''", "'");
                 }
                 var retValue = value.ToString();
                 if (int.TryParse(retValue, out int num))
@@ -225,7 +225,14 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        newVariableValue.AppendFormat(s, "'" + str + "'");
+                        if (!(str.TrimStart().StartsWith("'") && str.TrimEnd().EndsWith("'")))
+                        {
+                            newVariableValue.AppendFormat(s.Trim(), "'" + str + "'");
+                        }
+                        else
+                        {
+                            newVariableValue.AppendFormat(s.Trim(), str);
+                        }
                     }
                 }
                 return newVariableValue.ToString();
