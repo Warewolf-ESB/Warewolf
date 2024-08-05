@@ -642,4 +642,10 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="WarewolfUnRegisteredError" xml:space="preserve">
     <value>Warewolf is not registered. To start a trial version, please click 'Yes'.</value>
   </data>
+  <data name="APIKeyLabel" xml:space="preserve">
+    <value>API Key:</value>
+  </data>
+  <data name="CertificateFingerprintLabel" xml:space="preserve">
+    <value>Certificate Fingerprint:</value>
+  </data>
 </root>

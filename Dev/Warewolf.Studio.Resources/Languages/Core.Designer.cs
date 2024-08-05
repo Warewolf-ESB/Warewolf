@@ -61,6 +61,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API Key:.
+        /// </summary>
+        public static string APIKeyLabel {
+            get {
+                return ResourceManager.GetString("APIKeyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication Type:.
         /// </summary>
         public static string AuthenticationTypeLabel {
@@ -84,6 +93,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CancelTest {
             get {
                 return ResourceManager.GetString("CancelTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate Fingerprint:.
+        /// </summary>
+        public static string CertificateFingerprintLabel {
+            get {
+                return ResourceManager.GetString("CertificateFingerprintLabel", resourceCulture);
             }
         }
         

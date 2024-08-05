@@ -117,6 +117,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter an API key for the account you want to use for authenticating..
+        /// </summary>
+        public static string APIKeyAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("APIKeyAuthenticationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;li&gt;[[@Object.Property]]&lt;/li&gt; 	&lt;li&gt;[[@Object.Object(n).Property]]&lt;/li&gt; 	&lt;/ol&gt;	= fx.
         /// </summary>
         public static string AssignHelpNewValue {
@@ -230,6 +239,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CaseConversionHelpTextInput {
             get {
                 return ResourceManager.GetString("CaseConversionHelpTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fingerprint for the certificate you want to use to connect to this resource..
+        /// </summary>
+        public static string CertificateFingerprintAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("CertificateFingerprintAuthenticationHelp", resourceCulture);
             }
         }
         
@@ -4899,6 +4917,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SQLBulkInsertRefreshListHelp {
             get {
                 return ResourceManager.GetString("SQLBulkInsertRefreshListHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the password for the account you want to use for authenticating..
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

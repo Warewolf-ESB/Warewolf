@@ -19,7 +19,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Elasticsearch.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Nest;
+using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.Core.Search;
 using Newtonsoft.Json.Linq;
 using Warewolf.Auditing.Drivers;
 using Warewolf.Interfaces.Auditing;
@@ -141,25 +142,25 @@ namespace Warewolf.Auditing.Tests
                 {"fields", values}
             };
 
-            var mockHit = new Mock<IHit<object>>();
+            var mockHit = new Mock<Hit<object>>();
             mockHit.Setup(o => o.Source).Returns(fields);
 
-            var readOnlyCollection = new List<IHit<object>>
+            var readOnlyCollection = new List<Hit<object>>
             {
                 mockHit.Object
             };
 
-            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
+            var mockHitsMetadata = new Mock<HitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockSearchResponse = new Mock<ISearchResponse<object>>();
+            var mockSearchResponse = new Mock<SearchResponse<object>>();
             mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
 
-            var mockElasticClient = new Mock<IElasticClient>();
-            var mock = new Mock<IConnectionSettingsValues>();
-            mockElasticClient.Setup(o => o.ConnectionSettings).Returns(mock.Object);
+            var mockElasticClient = new Mock<ElasticsearchClient>();
+            var mock = new Mock<ElasticsearchClientSettings>();
+            mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
 
-            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<ISearchRequest>()))
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest>()))
                 .Returns(mockSearchResponse.Object);
 
             var auditQueryableElastic =
@@ -249,25 +250,25 @@ namespace Warewolf.Auditing.Tests
                 {"fields", values}
             };
 
-            var mockHit = new Mock<IHit<object>>();
+            var mockHit = new Mock<Hit<object>>();
             mockHit.Setup(o => o.Source).Returns(fields);
 
-            var readOnlyCollection = new List<IHit<object>>
+            var readOnlyCollection = new List<Hit<object>>
             {
                 mockHit.Object
             };
 
-            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
+            var mockHitsMetadata = new Mock<HitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockSearchResponse = new Mock<ISearchResponse<object>>();
+            var mockSearchResponse = new Mock<SearchResponse<object>>();
             mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
 
-            var mockElasticClient = new Mock<IElasticClient>();
-            var mock = new Mock<IConnectionSettingsValues>();
-            mockElasticClient.Setup(o => o.ConnectionSettings).Returns(mock.Object);
+            var mockElasticClient = new Mock<ElasticsearchClient>();
+            var mock = new Mock<ElasticsearchClientSettings>();
+            mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
 
-            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<ISearchRequest>()))
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest>()))
                 .Returns(mockSearchResponse.Object);
 
             var auditQueryableElastic =

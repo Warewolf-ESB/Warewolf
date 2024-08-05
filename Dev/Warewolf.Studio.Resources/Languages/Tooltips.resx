@@ -2667,4 +2667,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="ReloadServerResourceToolTip" xml:space="preserve">
     <value>Reload the resources on server</value>
   </data>
+  <data name="ElasticsearchAPIKeyTooltip" xml:space="preserve">
+    <value>The Elasticsearch server API key</value>
+  </data>
+  <data name="APIKeyAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using a specific account.</value>
+  </data>
+  <data name="ElasticsearchCertificateFingerprintTooltip" xml:space="preserve">
+    <value>The fingerprint for the certificate.</value>
+  </data>
 </root>

@@ -112,23 +112,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2378 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2383 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2378.AddRow(new string[] {
+                table2383.AddRow(new string[] {
                             "rs().row",
                             "10"});
-                table2378.AddRow(new string[] {
+                table2383.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2378.AddRow(new string[] {
+                table2383.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2378.AddRow(new string[] {
+                table2383.AddRow(new string[] {
                             "rs().row",
                             "30"});
 #line 8
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2378, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2383, "Given ");
 #line hidden
 #line 14
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
@@ -140,49 +140,49 @@ this.ScenarioInitialize(scenarioInfo);
 #line 16
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2379 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2384 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             "unique"});
-                table2379.AddRow(new string[] {
+                table2384.AddRow(new string[] {
                             "rec().unique",
                             "10"});
-                table2379.AddRow(new string[] {
+                table2384.AddRow(new string[] {
                             "rec().unique",
                             "20"});
-                table2379.AddRow(new string[] {
+                table2384.AddRow(new string[] {
                             "rec().unique",
                             "30"});
 #line 17
- testRunner.Then("the unique result will be", ((string)(null)), table2379, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2384, "Then ");
 #line hidden
 #line 22
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2380 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2385 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2380.AddRow(new string[] {
+                table2385.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(4).row]] = 30",
                             "[[rs().row]] ="});
 #line 23
- testRunner.And("the debug inputs as", ((string)(null)), table2380, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2385, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2381 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2386 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-                table2381.AddRow(new string[] {
+                table2386.AddRow(new string[] {
                             "1",
                             "[[rec(1).unique]] = 10"});
-                table2381.AddRow(new string[] {
+                table2386.AddRow(new string[] {
                             "",
                             "[[rec(2).unique]] = 20"});
-                table2381.AddRow(new string[] {
+                table2386.AddRow(new string[] {
                             "",
                             "[[rec(3).unique]] = 30"});
 #line 26
- testRunner.And("the debug output as", ((string)(null)), table2381, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2386, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -207,11 +207,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2382 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2387 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
 #line 33
- testRunner.Given("I have the following empty recordset", ((string)(null)), table2382, "Given ");
+ testRunner.Given("I have the following empty recordset", ((string)(null)), table2387, "Given ");
 #line hidden
 #line 35
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
@@ -223,11 +223,11 @@ this.ScenarioInitialize(scenarioInfo);
 #line 37
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2383 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2388 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 38
- testRunner.Then("the unique result will be", ((string)(null)), table2383, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2388, "Then ");
 #line hidden
 #line 40
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -255,23 +255,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2384 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2389 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2384.AddRow(new string[] {
+                table2389.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2384.AddRow(new string[] {
+                table2389.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2384.AddRow(new string[] {
+                table2389.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2384.AddRow(new string[] {
+                table2389.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 44
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2384, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2389, "Given ");
 #line hidden
 #line 50
  testRunner.And("I want to find unique in field \"\" with the return field \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -282,34 +282,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 52
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2385 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2390 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 53
- testRunner.Then("the unique result will be", ((string)(null)), table2385, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2390, "Then ");
 #line hidden
 #line 55
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2386 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2391 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2386.AddRow(new string[] {
+                table2391.AddRow(new string[] {
                             "In Field(s)",
                             "",
                             "[[rs().row]] ="});
 #line 56
- testRunner.And("the debug inputs as", ((string)(null)), table2386, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2391, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2387 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2392 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
-                table2387.AddRow(new string[] {
+                table2392.AddRow(new string[] {
                             "",
                             "[[rec(*).unique]] ="});
 #line 59
- testRunner.And("the debug output as", ((string)(null)), table2387, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2392, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -334,23 +334,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2388 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2393 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2388.AddRow(new string[] {
+                table2393.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2388.AddRow(new string[] {
+                table2393.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2388.AddRow(new string[] {
+                table2393.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2388.AddRow(new string[] {
+                table2393.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 64
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2388, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2393, "Given ");
 #line hidden
 #line 70
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -361,34 +361,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 72
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2389 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2394 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 73
- testRunner.Then("the unique result will be", ((string)(null)), table2389, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2394, "Then ");
 #line hidden
 #line 75
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2390 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2395 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2390.AddRow(new string[] {
+                table2395.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(4).row]] = 3",
                             "\"\""});
 #line 76
- testRunner.And("the debug inputs as", ((string)(null)), table2390, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2395, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2391 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2396 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
-                table2391.AddRow(new string[] {
+                table2396.AddRow(new string[] {
                             "",
                             "[[rec(*).unique]] ="});
 #line 79
- testRunner.And("the debug output as", ((string)(null)), table2391, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2396, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -413,23 +413,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2392 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2397 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2392.AddRow(new string[] {
+                table2397.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2392.AddRow(new string[] {
+                table2397.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2392.AddRow(new string[] {
+                table2397.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2392.AddRow(new string[] {
+                table2397.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 84
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2392, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2397, "Given ");
 #line hidden
 #line 90
  testRunner.And("I want to find unique in field \"[[rs(-1).row]]\" with the return field \"[[rs().row" +
@@ -441,38 +441,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 92
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2393 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2398 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 93
- testRunner.Then("the unique result will be", ((string)(null)), table2393, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2398, "Then ");
 #line hidden
 #line 95
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2394 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2399 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2394.AddRow(new string[] {
+                table2399.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(-1).row]] =",
                             ""});
-                table2394.AddRow(new string[] {
+                table2399.AddRow(new string[] {
                             "",
                             "",
                             "[[rs().row]]  ="});
 #line 96
- testRunner.And("the debug inputs as", ((string)(null)), table2394, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2399, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2395 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2400 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
-                table2395.AddRow(new string[] {
+                table2400.AddRow(new string[] {
                             "",
                             "[[rec(*).unique]] ="});
 #line 100
- testRunner.And("the debug output as", ((string)(null)), table2395, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2400, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -497,23 +497,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2396 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2401 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2396.AddRow(new string[] {
+                table2401.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2396.AddRow(new string[] {
+                table2401.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2396.AddRow(new string[] {
+                table2401.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2396.AddRow(new string[] {
+                table2401.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 105
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2396, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2401, "Given ");
 #line hidden
 #line 111
  testRunner.And("I want to find unique in field \"[[rs(*).row]]\" with the return field \"[[rs().row]" +
@@ -525,65 +525,65 @@ this.ScenarioInitialize(scenarioInfo);
 #line 113
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2397 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2402 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
-                table2397.AddRow(new string[] {
+                table2402.AddRow(new string[] {
                             "rec().unique",
                             "1"});
-                table2397.AddRow(new string[] {
+                table2402.AddRow(new string[] {
                             "rec().unique",
                             "2"});
-                table2397.AddRow(new string[] {
+                table2402.AddRow(new string[] {
                             "rec().unique",
                             "3"});
 #line 114
- testRunner.Then("the unique result will be", ((string)(null)), table2397, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2402, "Then ");
 #line hidden
 #line 119
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2398 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2403 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2398.AddRow(new string[] {
+                table2403.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(1).row]] = 1",
                             ""});
-                table2398.AddRow(new string[] {
+                table2403.AddRow(new string[] {
                             "",
                             "[[rs(2).row]] = 2",
                             ""});
-                table2398.AddRow(new string[] {
+                table2403.AddRow(new string[] {
                             "",
                             "[[rs(3).row]] = 2",
                             ""});
-                table2398.AddRow(new string[] {
+                table2403.AddRow(new string[] {
                             "",
                             "[[rs(4).row]] = 3",
                             ""});
-                table2398.AddRow(new string[] {
+                table2403.AddRow(new string[] {
                             "",
                             "",
                             "[[rs().row]] ="});
 #line 120
- testRunner.And("the debug inputs as", ((string)(null)), table2398, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2403, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2399 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2404 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-                table2399.AddRow(new string[] {
+                table2404.AddRow(new string[] {
                             "1",
                             "[[rec(1).unique]] = 1"});
-                table2399.AddRow(new string[] {
+                table2404.AddRow(new string[] {
                             "",
                             "[[rec(2).unique]] = 2"});
-                table2399.AddRow(new string[] {
+                table2404.AddRow(new string[] {
                             "",
                             "[[rec(3).unique]] = 3"});
 #line 127
- testRunner.And("the debug output as", ((string)(null)), table2399, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2404, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -608,23 +608,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2400 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2405 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2400.AddRow(new string[] {
+                table2405.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2400.AddRow(new string[] {
+                table2405.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2400.AddRow(new string[] {
+                table2405.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2400.AddRow(new string[] {
+                table2405.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 134
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2400, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2405, "Given ");
 #line hidden
 #line 140
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs(-1).row" +
@@ -636,34 +636,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 142
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2401 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2406 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 143
- testRunner.Then("the unique result will be", ((string)(null)), table2401, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2406, "Then ");
 #line hidden
 #line 145
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2402 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2407 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2402.AddRow(new string[] {
+                table2407.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(4).row]] = 3",
                             "[[rs(-1).row]] ="});
 #line 146
- testRunner.And("the debug inputs as", ((string)(null)), table2402, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2407, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2403 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2408 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
-                table2403.AddRow(new string[] {
+                table2408.AddRow(new string[] {
                             "",
                             "[[rec(*).unique]] ="});
 #line 149
- testRunner.And("the debug output as", ((string)(null)), table2403, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2408, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -688,23 +688,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2404 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2409 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2404.AddRow(new string[] {
+                table2409.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2404.AddRow(new string[] {
+                table2409.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2404.AddRow(new string[] {
+                table2409.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2404.AddRow(new string[] {
+                table2409.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 154
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2404, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2409, "Given ");
 #line hidden
 #line 160
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs(*).row]" +
@@ -716,49 +716,49 @@ this.ScenarioInitialize(scenarioInfo);
 #line 162
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2405 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2410 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
-                table2405.AddRow(new string[] {
+                table2410.AddRow(new string[] {
                             "rec().unique",
                             "1"});
-                table2405.AddRow(new string[] {
+                table2410.AddRow(new string[] {
                             "rec().unique",
                             "2"});
-                table2405.AddRow(new string[] {
+                table2410.AddRow(new string[] {
                             "rec().unique",
                             "3"});
 #line 163
- testRunner.Then("the unique result will be", ((string)(null)), table2405, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2410, "Then ");
 #line hidden
 #line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2406 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2411 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2406.AddRow(new string[] {
+                table2411.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(4).row]] = 3",
                             "[[rs(*).row]] ="});
 #line 169
- testRunner.And("the debug inputs as", ((string)(null)), table2406, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2411, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2407 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2412 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-                table2407.AddRow(new string[] {
+                table2412.AddRow(new string[] {
                             "1",
                             "[[rec(1).unique]] = 1"});
-                table2407.AddRow(new string[] {
+                table2412.AddRow(new string[] {
                             "",
                             "[[rec(2).unique]] = 2"});
-                table2407.AddRow(new string[] {
+                table2412.AddRow(new string[] {
                             "",
                             "[[rec(3).unique]] = 3"});
 #line 172
- testRunner.And("the debug output as", ((string)(null)), table2407, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2412, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -783,23 +783,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2408 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2413 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2408.AddRow(new string[] {
+                table2413.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2408.AddRow(new string[] {
+                table2413.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2408.AddRow(new string[] {
+                table2413.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2408.AddRow(new string[] {
+                table2413.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 179
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2408, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2413, "Given ");
 #line hidden
 #line 185
  testRunner.And("I want to find unique in field \"\" with the return field \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -810,31 +810,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 187
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2409 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2414 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 188
- testRunner.Then("the unique result will be", ((string)(null)), table2409, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2414, "Then ");
 #line hidden
 #line 190
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2410 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2415 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2410.AddRow(new string[] {
+                table2415.AddRow(new string[] {
                             "In Field(s)",
                             "",
                             "[[rs(*).row]] ="});
 #line 191
- testRunner.And("the debug inputs as", ((string)(null)), table2410, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2415, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2411 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2416 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
 #line 194
- testRunner.And("the debug output as", ((string)(null)), table2411, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2416, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -859,23 +859,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2412 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2417 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2412.AddRow(new string[] {
+                table2417.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2412.AddRow(new string[] {
+                table2417.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2412.AddRow(new string[] {
+                table2417.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2412.AddRow(new string[] {
+                table2417.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 199
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2412, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2417, "Given ");
 #line hidden
 #line 205
  testRunner.And("I want to find unique in field \"[[rs(*).row]]\" with the return field \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -886,43 +886,43 @@ this.ScenarioInitialize(scenarioInfo);
 #line 207
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2413 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2418 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 208
- testRunner.Then("the unique result will be", ((string)(null)), table2413, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2418, "Then ");
 #line hidden
 #line 210
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2414 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2419 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2414.AddRow(new string[] {
+                table2419.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(1).row]] = 1",
                             ""});
-                table2414.AddRow(new string[] {
+                table2419.AddRow(new string[] {
                             "",
                             "[[rs(2).row]] = 2",
                             ""});
-                table2414.AddRow(new string[] {
+                table2419.AddRow(new string[] {
                             "",
                             "[[rs(3).row]] = 2",
                             ""});
-                table2414.AddRow(new string[] {
+                table2419.AddRow(new string[] {
                             "",
                             "[[rs(4).row]] = 3",
                             "\"\""});
 #line 211
- testRunner.And("the debug inputs as", ((string)(null)), table2414, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2419, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2415 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2420 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
 #line 217
- testRunner.And("the debug output as", ((string)(null)), table2415, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2420, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -947,23 +947,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2416 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2421 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2416.AddRow(new string[] {
+                table2421.AddRow(new string[] {
                             "rs().row",
                             "10"});
-                table2416.AddRow(new string[] {
+                table2421.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2416.AddRow(new string[] {
+                table2421.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2416.AddRow(new string[] {
+                table2421.AddRow(new string[] {
                             "rs().row",
                             "30"});
 #line 221
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2416, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2421, "Given ");
 #line hidden
 #line 227
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
@@ -978,16 +978,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 230
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2417 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2422 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "",
                             "Return Fields"});
-                table2417.AddRow(new string[] {
+                table2422.AddRow(new string[] {
                             "In Field(s)",
                             "[[rs(4).row]] = 30",
                             "[[rs().row]] ="});
 #line 231
- testRunner.And("the debug inputs as", ((string)(null)), table2417, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2422, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1012,23 +1012,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2418 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2423 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2418.AddRow(new string[] {
+                table2423.AddRow(new string[] {
                             "rs().row",
                             "10"});
-                table2418.AddRow(new string[] {
+                table2423.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2418.AddRow(new string[] {
+                table2423.AddRow(new string[] {
                             "rs().row",
                             "20"});
-                table2418.AddRow(new string[] {
+                table2423.AddRow(new string[] {
                             "rs().row",
                             "30"});
 #line 236
-testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2418, "Given ");
+testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2423, "Given ");
 #line hidden
 #line 242
  testRunner.And(string.Format("I want to find unique in field \"{0}\" with the return field \"{1}\"", inField, @return), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1039,29 +1039,29 @@ testRunner.Given("I have the following duplicated recordset", ((string)(null)), 
 #line 244
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table2419 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2424 = new TechTalk.SpecFlow.Table(new string[] {
                             "rec",
                             "unique"});
 #line 245
- testRunner.Then("the unique result will be", ((string)(null)), table2419, "Then ");
+ testRunner.Then("the unique result will be", ((string)(null)), table2424, "Then ");
 #line hidden
 #line 247
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2420 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2425 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "InField",
                             "Return",
                             "Result",
                             "Value"});
-                table2420.AddRow(new string[] {
+                table2425.AddRow(new string[] {
                             "1",
                             string.Format("{0}", inField),
                             string.Format("{0}", @return),
                             string.Format("{0}", result),
                             string.Format("{0}", value)});
 #line 248
- testRunner.And("the debug inputs as", ((string)(null)), table2420, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2425, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1214,17 +1214,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2421 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2426 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2421.AddRow(new string[] {
+                table2426.AddRow(new string[] {
                             "rs().row",
                             "NULL"});
-                table2421.AddRow(new string[] {
+                table2426.AddRow(new string[] {
                             "rs().val",
                             "NULL"});
 #line 263
- testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2421, "Given ");
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table2426, "Given ");
 #line hidden
 #line 267
  testRunner.And("I want to find unique in field \"\" with the return field \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

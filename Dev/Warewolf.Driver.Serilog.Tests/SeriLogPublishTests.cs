@@ -25,7 +25,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Nest;
+using Elastic.Clients.Elasticsearch;
 using Newtonsoft.Json.Linq;
 using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing;
@@ -33,6 +33,8 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using Audit = Warewolf.Auditing.Audit;
 using File = System.IO.File;
+using Elastic.Clients.Elasticsearch.QueryDsl;
+using Elastic.Transport;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -289,17 +291,17 @@ namespace Warewolf.Driver.Serilog.Tests
             public IEnumerable<object> GetPublishedData(SerilogElasticsearchSource source, string executionID)
             {
                 var uri = new Uri(source.HostName + ":" + source.Port);
-                var settings = new ConnectionSettings(uri)
+                var settings = new ElasticsearchClientSettings(uri)
                     .RequestTimeout(TimeSpan.FromMinutes(2))
                     .DefaultIndex(source.SearchIndex);
                 if (source.AuthenticationType == AuthenticationType.Password)
                 {
-                    settings.BasicAuthentication(source.Username, source.Password);
+                    settings.Authentication(new BasicAuthentication(source.Username, source.Password));
                 }
 
-                var client = new ElasticClient(settings);
+                var client = new ElasticsearchClient(settings);
                 var result = client.Ping();
-                var isValid = result.IsValid;
+                var isValid = result.IsValidResponse;
                 if (!isValid)
                 {
                     throw new Exception("Invalid Data Source");
@@ -321,9 +323,12 @@ namespace Warewolf.Driver.Serilog.Tests
                     var obj = new JObject();
                     obj.Add("bool", objMust);
                     var query = obj.ToString();
-                    var search = new SearchDescriptor<object>()
+                    var search = new SearchRequestDescriptor<object>()
                         .Query(q =>
-                            q.Raw(query));
+                            q.QueryString(new QueryStringQuery
+							{
+								Query = query
+							}));
                     var logEvents = client.Search<object>(search);
                     var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
                     return sources;
