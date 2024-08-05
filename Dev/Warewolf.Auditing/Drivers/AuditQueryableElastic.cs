@@ -15,7 +15,9 @@ using System.Text;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Nest;
+using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.QueryDsl;
+using Elastic.Transport;
 using Newtonsoft.Json.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
@@ -27,7 +29,7 @@ namespace Warewolf.Auditing.Drivers
     {
         private string _query;
         private readonly IElasticsearchSource _elasticsearchSource;
-        private readonly IElasticClient _elasticClient;
+        private readonly ElasticsearchClient _elasticClient;
 
         public override string Query
         {
@@ -35,7 +37,7 @@ namespace Warewolf.Auditing.Drivers
             set => _query = value;
         }
 
-        public AuditQueryableElastic(IElasticsearchSource elasticsearchSource, IElasticClient elasticClient)
+        public AuditQueryableElastic(IElasticsearchSource elasticsearchSource, ElasticsearchClient elasticClient)
         {
             _elasticsearchSource = elasticsearchSource;
             _elasticClient = elasticClient;
@@ -350,32 +352,36 @@ namespace Warewolf.Auditing.Drivers
         private IEnumerable<object> ExecuteDatabase()
         {
             var client = _elasticClient ?? Client();
-            var search = new SearchDescriptor<object>().Query(q => q.Raw(_query));
-            var logEvents = client.Search<object>(search);
+            var search = new SearchRequestDescriptor<object>().Query(q => new QueryStringQuery
+            {
+                Query = _query
+            });
+			var logEvents = client.Search<object>(search);
             var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
             return sources;
         }
 
-        private ElasticClient Client()
-        {
-            var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
-            var settings = new ConnectionSettings(uri)
-                .RequestTimeout(TimeSpan.FromMinutes(2))
-                .DefaultIndex(_elasticsearchSource.SearchIndex);
-            if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
-            {
-                settings.BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
-            }
+		private ElasticsearchClient Client()
+		{
+			var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
+			var settings = new ElasticsearchClientSettings(uri)
+				.RequestTimeout(TimeSpan.FromMinutes(2))
+				.DefaultIndex(_elasticsearchSource.SearchIndex);
+			if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
+			{
+				var basicAuth = new BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
+				settings.Authentication(basicAuth);
+			}
 
-            var elasticClient = new ElasticClient(settings);
-            var result = elasticClient.Ping();
-            var isValid = result.IsValid;
-            if (!isValid)
-            {
-                throw result.OriginalException;
-            }
-            return elasticClient;
-        }
+			var elasticClient = new ElasticsearchClient(settings);
+			var result = elasticClient.Ping();
+			var isValid = result.IsValidResponse;
+			if (!isValid && result.TryGetOriginalException(out Exception e))
+			{
+				throw e;
+			}
+			return elasticClient;
+		}
 
         public void Dispose()
         {

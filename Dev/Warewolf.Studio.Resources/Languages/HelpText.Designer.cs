@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///	&lt;b&gt;ORDER BY&lt;/b&gt; &lt;i&gt;person.name&lt;/i&gt;&lt;br /&gt;
         ///	&lt;b&gt;LIMIT &lt;/b&gt;&lt;i&gt;10&lt;/i&gt;
         ///	&lt;br /&gt;&lt;br /&gt;
-        ///	&lt;b&gt;SELE [rest of string was truncated]&quot;;.
+        ///	&lt;b&gt;SELECT DISTINCT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AdvancedRecordsetSqlQuery {
             get {
@@ -113,6 +113,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string AnonymousAuthenticationHelp {
             get {
                 return ResourceManager.GetString("AnonymousAuthenticationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter an API key for the account you want to use for authenticating..
+        /// </summary>
+        public static string APIKeyAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("APIKeyAuthenticationHelp", resourceCulture);
             }
         }
         
@@ -230,6 +239,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CaseConversionHelpTextInput {
             get {
                 return ResourceManager.GetString("CaseConversionHelpTextInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fingerprint for the certificate you want to use to connect to this resource..
+        /// </summary>
+        public static string CertificateFingerprintAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("CertificateFingerprintAuthenticationHelp", resourceCulture);
             }
         }
         
@@ -733,7 +751,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by \ or some other characters.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;&lt;br/&gt;
         ///&lt;table border=&apos;1px solid black&apos;&gt;
-        ///&lt;tr&gt;&lt;th border=&apos;1px solid black&apos;&gt;Escape Sequence&lt;/th&gt;&lt;th border= [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt;&lt;th border=&apos;1px solid black&apos;&gt;Escape Sequence&lt;/th&gt;&lt;th border=&apos;1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataSplitHelpEscape {
             get {
@@ -2429,7 +2447,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///
         ///A list of conflicts will be shown starting with the Workflow name, then the Variables, and then the Tools and Tool connected states. 
         ///
-        ///If there are no conflicts, a green tick will be displayed. As each selection is made, the selected Tool will appear on the design surface to the right. Once a Tool connection conflict is se [rest of string was truncated]&quot;;.
+        ///If there are no conflicts, a green tick will be displayed. As each selection is made, the selected Tool will appear on the design surface to the right. Once a Tool connection conflict is select [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MergeWorkflowStartupHelp {
             get {
@@ -4903,6 +4921,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the password for the account you want to use for authenticating..
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If selected, it allows for manual resumption of the workflow suspended execution..
         /// </summary>
         public static string SuspendExecutionAllowManualResumptionHelpText {
@@ -4989,7 +5016,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///	&lt;br /&gt;&lt;br /&gt;
         ///	Warewolf Recordsets and Warewolf Scalars used in the SQL Statement are loaded.
         ///	This will allow you to write simple or complex SQL to manipulate your data. &lt;br /&gt;&lt;br /&gt;
-        ///	Once executed  [rest of string was truncated]&quot;;.
+        ///	Once executed the r [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Tool_AdvancedRecordset {
             get {
