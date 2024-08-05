@@ -111,7 +111,14 @@ namespace Dev2.Runtime.ServiceModel
                     isValid = result.IsValidResponse;
                     if (!isValid)
                     {
-                        errorMessage = "could not connect to elasticsearch Instance";
+                        if (result.ApiCallDetails != null && result.ApiCallDetails.DebugInformation != null)
+                        {
+							errorMessage = result.ApiCallDetails.DebugInformation;
+						}
+                        else
+                        {
+                            errorMessage = "could not connect to elasticsearch Instance";
+                        }
                     }
                     return new ValidationResult
                     {
