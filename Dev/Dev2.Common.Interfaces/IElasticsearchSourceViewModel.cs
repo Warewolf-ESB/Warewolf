@@ -28,6 +28,7 @@ namespace Dev2.Common.Interfaces
         bool Testing { get; }
         string Name { get; set; }
         ICommand OkCommand { get; set; }
+        string CertificateFingerprint { get; }
     }
 
     public interface IElasticsearchSourceModel

@@ -32,7 +32,7 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
-using Nest;
+using Elastic.Clients.Elasticsearch;
 using Warewolf.Resource.Errors;
 
 

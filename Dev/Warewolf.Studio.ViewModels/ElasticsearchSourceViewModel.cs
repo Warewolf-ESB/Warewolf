@@ -47,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IElasticsearchSourceModel _elasticsearchSourceModel;
         CancellationTokenSource _token;
         private IServer _currentEnvironment;
+        private string _certificateFingerprint;
 
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
@@ -218,6 +219,8 @@ namespace Warewolf.Studio.ViewModels
 
         public bool PasswordSelected => AuthenticationType == AuthenticationType.Password;
 
+        public bool APIKeySelected => AuthenticationType == AuthenticationType.API_Key;
+
         public string Password
         {
             get => _password;
@@ -247,6 +250,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 _searchIndex = value;
                 OnPropertyChanged(() => SearchIndex);
+                ResetTestValue();
+            }
+        }
+
+        public string CertificateFingerprint
+        {
+            get => _certificateFingerprint;
+            set
+            {
+                _certificateFingerprint = value;
+                OnPropertyChanged(() => CertificateFingerprint);
                 ResetTestValue();
             }
         }
@@ -287,6 +301,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => PasswordSelected);
+                    OnPropertyChanged(() => APIKeySelected);
                     ResetTestValue();
                 }
             }
@@ -527,7 +542,8 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = AuthenticationType,
             Port = Port,
             SearchIndex = SearchIndex,
-            Id = _elasticsearchServiceSource?.Id ?? Guid.NewGuid()
+            Id = _elasticsearchServiceSource?.Id ?? Guid.NewGuid(),
+            CertificateFingerprint = CertificateFingerprint
         };
 
         public override void FromModel(IElasticsearchSourceDefinition source)

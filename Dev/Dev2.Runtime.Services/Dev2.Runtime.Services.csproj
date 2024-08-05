@@ -557,8 +557,8 @@
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>
-    <PackageReference Include="NEST">
-      <Version>7.6.0</Version>
+    <PackageReference Include="Elastic.Clients.Elasticsearch">
+      <Version>8.14.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>

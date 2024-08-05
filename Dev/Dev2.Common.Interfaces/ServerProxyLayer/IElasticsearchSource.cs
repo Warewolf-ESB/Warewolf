@@ -22,5 +22,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         AuthenticationType AuthenticationType { get; set; }
         string SearchIndex { get; set; }
         void Dispose();
-    }
+        string CertificateFingerprint { get; set; }
+	}
 }

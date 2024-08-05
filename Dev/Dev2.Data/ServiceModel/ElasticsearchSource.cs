@@ -34,6 +34,7 @@ namespace Dev2.Data.ServiceModel
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
         public string Port { get; set; }
+        public string CertificateFingerprint { get; set; }
 
         public ElasticsearchSource()
         {

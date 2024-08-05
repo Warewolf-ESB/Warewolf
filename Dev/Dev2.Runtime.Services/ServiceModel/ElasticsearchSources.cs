@@ -9,13 +9,16 @@
 */
 
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Nest;
+using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -87,17 +90,25 @@ namespace Dev2.Runtime.ServiceModel
                 var uri = new Uri(source.HostName + ":" + source.Port);  
                 bool isValid; 
                 var errorMessage = "";
-                using (var connectionSettings = new ConnectionSettings(uri))
+                using (var connectionSettings = new ElasticsearchClientSettings(uri))
                 {
                     var settings = connectionSettings.RequestTimeout(TimeSpan.FromMinutes(2));
                     if (source.AuthenticationType == AuthenticationType.Password)
+					{
+						settings.Authentication(new BasicAuthentication(source.Username, source.Password));
+                    }
+                    if (source.AuthenticationType == AuthenticationType.API_Key)
                     {
-                        settings.BasicAuthentication(source.Username, source.Password);
+                        settings.Authentication(new ApiKey(source.Password));
+                    }
+                    if (source.CertificateFingerprint != null)
+                    {
+                        settings.CertificateFingerprint(source.CertificateFingerprint);
                     }
 
-                    var client = new ElasticClient(settings);
+					var client = new ElasticsearchClient(settings);
                     var result = client.Ping();
-                    isValid = result.IsValid;
+                    isValid = result.IsValidResponse;
                     if (!isValid)
                     {
                         errorMessage = "could not connect to elasticsearch Instance";
