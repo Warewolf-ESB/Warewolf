@@ -24,8 +24,6 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
-using Elastic.Clients.Elasticsearch;
 using Newtonsoft.Json.Linq;
 using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing;
@@ -33,8 +31,10 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using Audit = Warewolf.Auditing.Audit;
 using File = System.IO.File;
+using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using Elastic.Transport;
+using System.Text.Json;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -212,7 +212,7 @@ namespace Warewolf.Driver.Serilog.Tests
             //-------------------------Arrange------------------------------
             Config.Server.IncludeEnvironmentVariable = false;
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "http://" + dependency.Container.IP;
+            var hostName = "https://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = dependency.Container.Port,
@@ -255,7 +255,7 @@ namespace Warewolf.Driver.Serilog.Tests
 
             var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
 
-            Assert.AreEqual(1,dataList.Count);
+            Assert.AreEqual(1,dataList.Count());
 
             foreach (Dictionary<string, object> fields in dataList)
             {
@@ -268,6 +268,78 @@ namespace Warewolf.Driver.Serilog.Tests
                 var message = fields.Where(pair => pair.Key.Contains("message"));
                 Assert.IsNotNull(message);
             }
+        }
+
+        public static Dictionary<string, object> JsonElementToDictionary(JsonElement element)
+        {
+            var dict = new Dictionary<string, object>();
+
+            foreach (JsonProperty property in element.EnumerateObject())
+            {
+                switch (property.Value.ValueKind)
+                {
+                    case JsonValueKind.Object:
+                        dict[property.Name] = JsonElementToDictionary(property.Value);
+                        break;
+                    case JsonValueKind.Array:
+                        dict[property.Name] = JsonElementToList(property.Value);
+                        break;
+                    case JsonValueKind.String:
+                        dict[property.Name] = property.Value.GetString();
+                        break;
+                    case JsonValueKind.Number:
+                        dict[property.Name] = property.Value.GetDecimal();
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        dict[property.Name] = property.Value.GetBoolean();
+                        break;
+                    case JsonValueKind.Null:
+                        dict[property.Name] = null;
+                        break;
+                    default:
+                        dict[property.Name] = property.Value.ToString();
+                        break;
+                }
+            }
+
+            return dict;
+        }
+
+        public static List<object> JsonElementToList(JsonElement element)
+        {
+            var list = new List<object>();
+
+            foreach (JsonElement item in element.EnumerateArray())
+            {
+                switch (item.ValueKind)
+                {
+                    case JsonValueKind.Object:
+                        list.Add(JsonElementToDictionary(item));
+                        break;
+                    case JsonValueKind.Array:
+                        list.Add(JsonElementToList(item));
+                        break;
+                    case JsonValueKind.String:
+                        list.Add(item.GetString());
+                        break;
+                    case JsonValueKind.Number:
+                        list.Add(item.GetDecimal());
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        list.Add(item.GetBoolean());
+                        break;
+                    case JsonValueKind.Null:
+                        list.Add(null);
+                        break;
+                    default:
+                        list.Add(item.ToString());
+                        break;
+                }
+            }
+
+            return list;
         }
 
         Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId)
@@ -293,11 +365,10 @@ namespace Warewolf.Driver.Serilog.Tests
                 var uri = new Uri(source.HostName + ":" + source.Port);
                 var settings = new ElasticsearchClientSettings(uri)
                     .RequestTimeout(TimeSpan.FromMinutes(2))
-                    .DefaultIndex(source.SearchIndex);
-                if (source.AuthenticationType == AuthenticationType.Password)
-                {
-                    settings.Authentication(new BasicAuthentication(source.Username, source.Password));
-                }
+                    .DefaultIndex(source.SearchIndex)
+                    .DisableDirectStreaming()
+                    .Authentication(new BasicAuthentication("test", "test123"))
+                    .ServerCertificateValidationCallback(CertificateValidations.AllowAll);
 
                 var client = new ElasticsearchClient(settings);
                 var result = client.Ping();
@@ -323,12 +394,19 @@ namespace Warewolf.Driver.Serilog.Tests
                     var obj = new JObject();
                     obj.Add("bool", objMust);
                     var query = obj.ToString();
+
                     var search = new SearchRequestDescriptor<object>()
                         .Query(q =>
-                            q.QueryString(new QueryStringQuery
-							{
-								Query = query
-							}));
+                            q.Bool(b => b
+                                .Must(m => m
+                                    .Match(mt => mt
+                                        .Field("fields.Data.Audit.ExecutionID")
+                                        .Query(executionID)
+                                    )
+                                )
+                            )
+                        );
+
                     var logEvents = client.Search<object>(search);
                     var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
                     return sources;
