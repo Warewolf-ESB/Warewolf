@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -913,6 +913,16 @@
       <Version>4.5.4</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <PreBuildEvent>
+      if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
+      powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
+      )
+      if exist "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
+      powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1"
+      )</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

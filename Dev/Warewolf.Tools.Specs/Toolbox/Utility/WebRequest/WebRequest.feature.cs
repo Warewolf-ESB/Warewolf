@@ -140,21 +140,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 13
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2859 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2854 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2859.AddRow(new string[] {
+                table2854.AddRow(new string[] {
                             "http://TFSBLD.premier.local:9810/api/products/Get",
                             ""});
 #line 14
-  testRunner.And("the debug inputs as", ((string)(null)), table2859, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2854, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2860 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2855 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2860.AddRow(new string[] {
+                table2855.AddRow(new string[] {
                             @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 17
-  testRunner.And("the debug output as", ((string)(null)), table2860, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2855, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -204,21 +204,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 26
   testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2861 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2856 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2861.AddRow(new string[] {
+                table2856.AddRow(new string[] {
                             "www.google.comx",
                             ""});
 #line 27
-  testRunner.And("the debug inputs as", ((string)(null)), table2861, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2856, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2862 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2857 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2862.AddRow(new string[] {
+                table2857.AddRow(new string[] {
                             "[[result]] ="});
 #line 30
-  testRunner.And("the debug output as", ((string)(null)), table2862, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2857, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -276,21 +276,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 41
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2863 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2858 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2863.AddRow(new string[] {
+                table2858.AddRow(new string[] {
                             "http://[[site]][[file]] = http://TFSBLD.premier.local:9810/api/products/Get",
                             ""});
 #line 42
-  testRunner.And("the debug inputs as", ((string)(null)), table2863, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2858, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2864 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2859 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2864.AddRow(new string[] {
+                table2859.AddRow(new string[] {
                             "[[result]] = String"});
 #line 45
-  testRunner.And("the debug output as", ((string)(null)), table2864, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2859, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -351,21 +351,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 58
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2865 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2860 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2865.AddRow(new string[] {
+                table2860.AddRow(new string[] {
                             "http://TFSBLD.premier.local:9810/api/products/Get",
                             "[[ContentType]]: [[Type]] = Content-Type: application/json\""});
 #line 59
-  testRunner.And("the debug inputs as", ((string)(null)), table2865, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2860, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2866 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2861 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2866.AddRow(new string[] {
+                table2861.AddRow(new string[] {
                             @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 62
-  testRunner.And("the debug output as", ((string)(null)), table2866, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2861, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -426,21 +426,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 74
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2867 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2862 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2867.AddRow(new string[] {
+                table2862.AddRow(new string[] {
                             "http://TFSBLD.premier.local:9810/api/products/Get",
                             "[[ContentType]]: [[Type]] = Content-Type: application/xml\""});
 #line 75
-  testRunner.And("the debug inputs as", ((string)(null)), table2867, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2862, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2868 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2863 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2868.AddRow(new string[] {
+                table2863.AddRow(new string[] {
                             @"[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontract.org/2004/07/WebApplication1.Controllers ><Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product><Product><Category>Electronic</Category><Id>2</Id><Name>Refrigerator</Name><Price>23000</Price></Product><Product><Category>Electronic</Category><Id>3</Id><Name>Mobiles</Name><Price>20000</Price></Product><Product><Category>Electronic</Category><Id>4</Id><Name>Laptops</Name><Price>45000</Price></Product><Product><Category>Electronic</Category><Id>5</Id><Name>iPads</Name><Price>67000</Price></Product><Product><Category>Gift Items</Category><Id>6</Id><Name>Toys</Name><Price>15000</Price></Product></ArrayOfProduct>"});
 #line 78
-  testRunner.And("the debug output as", ((string)(null)), table2868, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2863, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -492,21 +492,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 87
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2869 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2864 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2869.AddRow(new string[] {
+                table2864.AddRow(new string[] {
                             "http://TFSBLD.premier.local:9810/api/products/Get",
                             ""});
 #line 88
-  testRunner.And("the debug inputs as", ((string)(null)), table2869, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2864, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2870 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2865 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2870.AddRow(new string[] {
+                table2865.AddRow(new string[] {
                             @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 91
-  testRunner.And("the debug output as", ((string)(null)), table2870, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2865, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -561,21 +561,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 101
   testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2871 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2866 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2871.AddRow(new string[] {
+                table2866.AddRow(new string[] {
                             "http://TFSBLD.premier.local:9810/api/products/Get",
                             ""});
 #line 102
-  testRunner.And("the debug inputs as", ((string)(null)), table2871, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2866, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2872 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2867 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2872.AddRow(new string[] {
+                table2867.AddRow(new string[] {
                             @"[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontract.org/2004/07/WebApplication1.Controllers ><Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product><Product><Category>Electronic</Category><Id>2</Id><Name>Refrigerator</Name><Price>23000</Price></Product><Product><Category>Electronic</Category><Id>3</Id><Name>Mobiles</Name><Price>20000</Price></Product><Product><Category>Electronic</Category><Id>4</Id><Name>Laptops</Name><Price>45000</Price></Product><Product><Category>Electronic</Category><Id>5</Id><Name>iPads</Name><Price>67000</Price></Product><Product><Category>Gift Items</Category><Id>6</Id><Name>Toys</Name><Price>15000</Price></Product></ArrayOfProduct>"});
 #line 105
-  testRunner.And("the debug output as", ((string)(null)), table2872, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2867, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -622,21 +622,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 113
   testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2873 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2868 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2873.AddRow(new string[] {
+                table2868.AddRow(new string[] {
                             "\"\"",
                             ""});
 #line 114
-  testRunner.And("the debug inputs as", ((string)(null)), table2873, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2868, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2874 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2869 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2874.AddRow(new string[] {
+                table2869.AddRow(new string[] {
                             "[[result]] ="});
 #line 117
-  testRunner.And("the debug output as", ((string)(null)), table2874, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2869, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -683,21 +683,21 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 125
   testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2875 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2870 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2875.AddRow(new string[] {
+                table2870.AddRow(new string[] {
                             "[[rec(-1).set]] =",
                             ""});
 #line 126
-  testRunner.And("the debug inputs as", ((string)(null)), table2875, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2870, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2876 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2871 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2876.AddRow(new string[] {
+                table2871.AddRow(new string[] {
                             "[[result]] ="});
 #line 129
-  testRunner.And("the debug output as", ((string)(null)), table2876, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2871, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -747,23 +747,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 138
   testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2877 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2872 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header",
                             "Time Out Seconds"});
-                table2877.AddRow(new string[] {
+                table2872.AddRow(new string[] {
                             string.Format("{0}", url),
                             string.Format("{0}", header),
                             string.Format("{0}", timeoutSeconds)});
 #line 139
-  testRunner.And("the debug inputs as", ((string)(null)), table2877, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2872, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2878 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2873 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2878.AddRow(new string[] {
+                table2873.AddRow(new string[] {
                             "[[result]] ="});
 #line 142
-  testRunner.And("the debug output as", ((string)(null)), table2878, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2873, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -922,14 +922,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 160
   testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2879 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2874 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2879.AddRow(new string[] {
+                table2874.AddRow(new string[] {
                             "[[var]] =",
                             ""});
 #line 161
-  testRunner.And("the debug inputs as", ((string)(null)), table2879, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2874, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -973,14 +973,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 169
   testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2880 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2875 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2880.AddRow(new string[] {
+                table2875.AddRow(new string[] {
                             "[[var]] =",
                             ""});
 #line 170
-  testRunner.And("the debug inputs as", ((string)(null)), table2880, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2875, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1022,23 +1022,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 177
   testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2881 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2876 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header",
                             "Time Out Seconds"});
-                table2881.AddRow(new string[] {
+                table2876.AddRow(new string[] {
                             string.Format("{0}", url),
                             "",
                             string.Format("{0}", timeoutSeconds)});
 #line 178
-  testRunner.And("the debug inputs as", ((string)(null)), table2881, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2876, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2882 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2877 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2882.AddRow(new string[] {
+                table2877.AddRow(new string[] {
                             "[[result]] = String"});
 #line 181
-  testRunner.And("the debug output as", ((string)(null)), table2882, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table2877, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1126,17 +1126,17 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 196
   testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2883 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2878 = new TechTalk.SpecFlow.Table(new string[] {
                             "URL",
                             "Header"});
-                table2883.AddRow(new string[] {
+                table2878.AddRow(new string[] {
                             "[[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx",
                             ""});
-                table2883.AddRow(new string[] {
+                table2878.AddRow(new string[] {
                             "[[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15",
                             ""});
 #line 197
-  testRunner.And("the debug inputs as", ((string)(null)), table2883, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table2878, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
