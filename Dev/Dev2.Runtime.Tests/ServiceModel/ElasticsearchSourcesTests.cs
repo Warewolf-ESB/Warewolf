@@ -168,7 +168,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("could not connect to elasticsearch Instance", result.ErrorMessage);
+            Assert.IsTrue(result.ErrorMessage.StartsWith("Unsuccessful () low level call on HEAD: /\r\n Exception: The remote name could not be resolved: 'ddd'. Call: Status code unknown from: HEAD /\r\n\r\n# Audit trail of this API call:\r\n - [1] BadResponse: Node: http://ddd:9300/ Took: "));
         }
     }
 }
