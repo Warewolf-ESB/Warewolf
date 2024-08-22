@@ -28,6 +28,7 @@ using Warewolf.Triggers;
 using Warewolf.UnitTestAttributes;
 using LogLevel = Warewolf.Logging.LogLevel;
 using System.Reflection;
+using Elastic.Transport;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -58,7 +59,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(HttpRequestException))]
+        [ExpectedException(typeof(TransportException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty,

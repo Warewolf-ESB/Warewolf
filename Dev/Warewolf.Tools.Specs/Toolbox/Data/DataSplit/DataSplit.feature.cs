@@ -319,8 +319,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "1",
                             "No",
                             ""});
-#line 56
- testRunner.And("the debug inputs as", ((string)(null)), table1475, "And ");
+#line 54
+ testRunner.And("the debug inputs as", ((string)(null)), table1470, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1476 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -340,8 +340,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1476.AddRow(new string[] {
                             "",
                             "[[vowels(5).letters]] = e"});
-#line 59
-    testRunner.And("the debug output as", ((string)(null)), table1476, "And ");
+#line 57
+    testRunner.And("the debug output as", ((string)(null)), table1471, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -393,8 +393,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1477.AddRow(new string[] {
                             "vowels().row",
                             "@!?"});
-#line 73
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1477, "Then ");
+#line 70
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1472, "Then ");
 #line hidden
 #line 78
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -419,8 +419,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "7",
                             "No",
                             ""});
-#line 79
- testRunner.And("the debug inputs as", ((string)(null)), table1478, "And ");
+#line 76
+ testRunner.And("the debug inputs as", ((string)(null)), table1473, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1479 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -434,8 +434,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1479.AddRow(new string[] {
                             "",
                             "[[vowels(3).chars]] = @!?"});
-#line 82
- testRunner.And("the debug output as", ((string)(null)), table1479, "And ");
+#line 79
+ testRunner.And("the debug output as", ((string)(null)), table1474, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -487,8 +487,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1480.AddRow(new string[] {
                             "vowels().chars",
                             "@!?"});
-#line 94
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1480, "Then ");
+#line 90
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1475, "Then ");
 #line hidden
 #line 99
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -513,8 +513,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "7",
                             "No",
                             ""});
-#line 100
- testRunner.And("the debug inputs as", ((string)(null)), table1481, "And ");
+#line 96
+ testRunner.And("the debug inputs as", ((string)(null)), table1476, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1482 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -528,8 +528,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1482.AddRow(new string[] {
                             "",
                             "[[vowels(3).chars]] = @!?"});
-#line 103
- testRunner.And("the debug output as", ((string)(null)), table1482, "And ");
+#line 99
+ testRunner.And("the debug output as", ((string)(null)), table1477, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -581,6 +581,9 @@ this.ScenarioInitialize(scenarioInfo);
                 table1483.AddRow(new string[] {
                             "vowels().chars",
                             "&^~"});
+#line 110
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1478, "Then ");
+#line hidden
 #line 115
  testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1483, "Then ");
 #line hidden
@@ -607,8 +610,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "7",
                             "No",
                             ""});
-#line 121
- testRunner.And("the debug inputs as", ((string)(null)), table1484, "And ");
+#line 116
+ testRunner.And("the debug inputs as", ((string)(null)), table1479, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1485 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -622,8 +625,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1485.AddRow(new string[] {
                             "",
                             "[[vowels(3).chars]] = &^~"});
-#line 124
- testRunner.And("the debug output as", ((string)(null)), table1485, "And ");
+#line 119
+ testRunner.And("the debug output as", ((string)(null)), table1480, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -675,8 +678,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1486.AddRow(new string[] {
                             "vowels().chars",
                             "&^~"});
-#line 136
- testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1486, "Then ");
+#line 130
+ testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table1481, "Then ");
 #line hidden
 #line 141
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -701,8 +704,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "7",
                             "No",
                             ""});
-#line 142
- testRunner.And("the debug inputs as", ((string)(null)), table1487, "And ");
+#line 136
+ testRunner.And("the debug inputs as", ((string)(null)), table1482, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1488 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -716,8 +719,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1488.AddRow(new string[] {
                             "",
                             "[[vowels(3).chars]] = &^~"});
-#line 145
- testRunner.And("the debug output as", ((string)(null)), table1488, "And ");
+#line 139
+ testRunner.And("the debug output as", ((string)(null)), table1483, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -788,8 +791,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1489.AddRow(new string[] {
                             "vowels().chars",
                             "end"});
-#line 160
- testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table1489, "Then ");
+#line 153
+ testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table1484, "Then ");
 #line hidden
 #line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -854,8 +857,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "No",
                             ""});
-#line 169
- testRunner.And("the debug inputs as", ((string)(null)), table1490, "And ");
+#line 162
+ testRunner.And("the debug inputs as", ((string)(null)), table1485, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1491 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -875,8 +878,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1491.AddRow(new string[] {
                             "",
                             "[[vowels(5).letters]] = end"});
-#line 176
- testRunner.And("the debug output as", ((string)(null)), table1491, "And ");
+#line 169
+ testRunner.And("the debug output as", ((string)(null)), table1486, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -949,8 +952,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1492.AddRow(new string[] {
                             "vowels().chars",
                             "end"});
-#line 194
- testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table1492, "Then ");
+#line 186
+ testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table1487, "Then ");
 #line hidden
 #line 201
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1015,8 +1018,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "No",
                             ""});
-#line 202
- testRunner.And("the debug inputs as", ((string)(null)), table1493, "And ");
+#line 194
+ testRunner.And("the debug inputs as", ((string)(null)), table1488, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1494 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -1036,8 +1039,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1494.AddRow(new string[] {
                             "",
                             "[[vowels(5).letters]] = end"});
-#line 209
- testRunner.And("the debug output as", ((string)(null)), table1494, "And ");
+#line 201
+ testRunner.And("the debug output as", ((string)(null)), table1489, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1101,8 +1104,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1495.AddRow(new string[] {
                             "vowels().name",
                             "Mo"});
-#line 226
- testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table1495, "Then ");
+#line 217
+ testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table1490, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1496 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
@@ -1119,8 +1122,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1496.AddRow(new string[] {
                             "vowels().phone",
                             ""});
-#line 232
- testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table1496, "Then ");
+#line 223
+ testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table1491, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1497 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
@@ -1137,8 +1140,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1497.AddRow(new string[] {
                             "vowels().id",
                             "3"});
-#line 238
- testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1497, "Then ");
+#line 229
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1492, "Then ");
 #line hidden
 #line 244
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1193,8 +1196,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "No",
                             ""});
-#line 245
- testRunner.And("the debug inputs as", ((string)(null)), table1498, "And ");
+#line 236
+ testRunner.And("the debug inputs as", ((string)(null)), table1493, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1499 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -1238,8 +1241,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1499.AddRow(new string[] {
                             "",
                             "[[rec(4).phone]] ="});
-#line 251
- testRunner.And("the debug output as", ((string)(null)), table1499, "And ");
+#line 242
+ testRunner.And("the debug output as", ((string)(null)), table1494, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1306,8 +1309,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1500.AddRow(new string[] {
                             "rec().name",
                             "Mo"});
-#line 276
- testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table1500, "Then ");
+#line 266
+ testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table1495, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1501 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
@@ -1324,8 +1327,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1501.AddRow(new string[] {
                             "rec().phone",
                             ""});
-#line 282
- testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table1501, "Then ");
+#line 272
+ testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table1496, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1502 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
@@ -1342,8 +1345,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1502.AddRow(new string[] {
                             "rec().id",
                             "3"});
-#line 288
- testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1502, "Then ");
+#line 278
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1497, "Then ");
 #line hidden
 #line 294
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1398,8 +1401,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "No",
                             ""});
-#line 295
- testRunner.And("the debug inputs as", ((string)(null)), table1503, "And ");
+#line 285
+ testRunner.And("the debug inputs as", ((string)(null)), table1498, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1504 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -1443,8 +1446,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1504.AddRow(new string[] {
                             "",
                             "[[rec(4).phone]] ="});
-#line 301
- testRunner.And("the debug output as", ((string)(null)), table1504, "And ");
+#line 291
+ testRunner.And("the debug output as", ((string)(null)), table1499, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1574,14 +1577,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "",
                             ""});
-#line 328
- testRunner.And("the debug inputs as", ((string)(null)), table1505, "And ");
+#line 317
+ testRunner.And("the debug inputs as", ((string)(null)), table1500, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1506 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 336
- testRunner.And("the debug output as", ((string)(null)), table1506, "And ");
+#line 325
+ testRunner.And("the debug output as", ((string)(null)), table1501, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1658,14 +1661,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "No",
                             ""});
-#line 347
-    testRunner.And("the debug inputs as", ((string)(null)), table1507, "And ");
+#line 335
+    testRunner.And("the debug inputs as", ((string)(null)), table1502, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1508 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 351
- testRunner.And("the debug output as", ((string)(null)), table1508, "And ");
+#line 339
+ testRunner.And("the debug output as", ((string)(null)), table1503, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1708,8 +1711,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1509.AddRow(new string[] {
                             "[[var]]",
                             "123\\,45"});
-#line 359
- testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1509, "Then ");
+#line 346
+ testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1504, "Then ");
 #line hidden
 #line 363
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1734,8 +1737,8 @@ this.ScenarioInitialize(scenarioInfo);
                             ",",
                             "No",
                             "\\"});
-#line 365
- testRunner.And("the debug inputs as", ((string)(null)), table1510, "And ");
+#line 352
+ testRunner.And("the debug inputs as", ((string)(null)), table1505, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1511 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -1743,8 +1746,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1511.AddRow(new string[] {
                             "1",
                             "[[var]] = 123\\,45"});
-#line 368
- testRunner.And("the debug output as", ((string)(null)), table1511, "And ");
+#line 355
+ testRunner.And("the debug output as", ((string)(null)), table1506, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1804,14 +1807,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "1",
                             "No",
                             ""});
-#line 378
- testRunner.And("the debug inputs as", ((string)(null)), table1512, "And ");
+#line 364
+ testRunner.And("the debug inputs as", ((string)(null)), table1507, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1513 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 381
- testRunner.And("the debug output as", ((string)(null)), table1513, "And ");
+#line 367
+ testRunner.And("the debug output as", ((string)(null)), table1508, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1871,14 +1874,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "-1",
                             "No",
                             ""});
-#line 390
- testRunner.And("the debug inputs as", ((string)(null)), table1514, "And ");
+#line 375
+ testRunner.And("the debug inputs as", ((string)(null)), table1509, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1515 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 393
- testRunner.And("the debug output as", ((string)(null)), table1515, "And ");
+#line 378
+ testRunner.And("the debug output as", ((string)(null)), table1510, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2004,8 +2007,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1516.AddRow(new string[] {
                             "[[var]]",
                             "12"});
-#line 417
-     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1516, "Then ");
+#line 399
+     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1511, "Then ");
 #line hidden
 #line 420
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -2051,8 +2054,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1517.AddRow(new string[] {
                             "[[var]]",
                             "123"});
-#line 427
-     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1517, "Then ");
+#line 408
+     testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table1512, "Then ");
 #line hidden
 #line 430
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -2130,8 +2133,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "*",
                             "No",
                             ""});
-#line 443
-    testRunner.And("the debug inputs as", ((string)(null)), table1518, "And ");
+#line 423
+    testRunner.And("the debug inputs as", ((string)(null)), table1513, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2191,14 +2194,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "5",
                             "Yes",
                             ""});
-#line 453
- testRunner.And("the debug inputs as", ((string)(null)), table1519, "And ");
+#line 432
+ testRunner.And("the debug inputs as", ((string)(null)), table1514, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1520 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 456
- testRunner.And("the debug output as", ((string)(null)), table1520, "And ");
+#line 435
+ testRunner.And("the debug output as", ((string)(null)), table1515, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2258,14 +2261,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "5",
                             "Yes",
                             ""});
-#line 465
- testRunner.And("the debug inputs as", ((string)(null)), table1521, "And ");
+#line 443
+ testRunner.And("the debug inputs as", ((string)(null)), table1516, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1522 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 468
- testRunner.And("the debug output as", ((string)(null)), table1522, "And ");
+#line 446
+ testRunner.And("the debug output as", ((string)(null)), table1517, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2327,14 +2330,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0} = \"\"", type),
                             "Yes",
                             ""});
-#line 477
- testRunner.And("the debug inputs as", ((string)(null)), table1523, "And ");
+#line 455
+ testRunner.And("the debug inputs as", ((string)(null)), table1518, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1524 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 480
- testRunner.And("the debug output as", ((string)(null)), table1524, "And ");
+#line 458
+ testRunner.And("the debug output as", ((string)(null)), table1519, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -2426,14 +2429,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "5",
                             "Yes",
                             ""});
-#line 493
- testRunner.And("the debug inputs as", ((string)(null)), table1525, "And ");
+#line 470
+ testRunner.And("the debug inputs as", ((string)(null)), table1520, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1526 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 496
- testRunner.And("the debug output as", ((string)(null)), table1526, "And ");
+#line 473
+ testRunner.And("the debug output as", ((string)(null)), table1521, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -3745,14 +3748,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", @using),
                             "Yes",
                             ""});
-#line 590
- testRunner.And("the debug inputs as", ((string)(null)), table1527, "And ");
+#line 566
+ testRunner.And("the debug inputs as", ((string)(null)), table1522, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1528 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-#line 593
- testRunner.And("the debug output as", ((string)(null)), table1528, "And ");
+#line 569
+ testRunner.And("the debug output as", ((string)(null)), table1523, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -3919,8 +3922,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1529.AddRow(new string[] {
                             "rec().id",
                             "d"});
-#line 616
- testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1529, "Then ");
+#line 590
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1524, "Then ");
 #line hidden
 #line 622
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -3945,8 +3948,8 @@ this.ScenarioInitialize(scenarioInfo);
                             ",",
                             "No",
                             "\"\\\'\""});
-#line 623
- testRunner.And("the debug inputs as", ((string)(null)), table1530, "And ");
+#line 597
+ testRunner.And("the debug inputs as", ((string)(null)), table1525, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1531 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -3963,8 +3966,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1531.AddRow(new string[] {
                             "",
                             "[[rec(4).id]] = d"});
-#line 626
- testRunner.And("the debug output as", ((string)(null)), table1531, "And ");
+#line 600
+ testRunner.And("the debug output as", ((string)(null)), table1526, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -4010,8 +4013,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1532.AddRow(new string[] {
                             "rec().id",
                             "ff"});
-#line 638
- testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1532, "Then ");
+#line 611
+ testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table1527, "Then ");
 #line hidden
 #line 642
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -4036,8 +4039,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "\\r\n2",
                             "No",
                             "\"\""});
-#line 643
- testRunner.And("the debug inputs as", ((string)(null)), table1533, "And ");
+#line 616
+ testRunner.And("the debug inputs as", ((string)(null)), table1528, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1534 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
@@ -4048,8 +4051,8 @@ this.ScenarioInitialize(scenarioInfo);
                 table1534.AddRow(new string[] {
                             "",
                             "[[rec(2).id]] = ff"});
-#line 646
- testRunner.And("the debug output as", ((string)(null)), table1534, "And ");
+#line 619
+ testRunner.And("the debug output as", ((string)(null)), table1529, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
