@@ -11,6 +11,7 @@
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
+using System.Data.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Studio.ViewModels;
@@ -123,6 +124,8 @@ namespace Warewolf.Studio.Views
             {
                 PasswordRadioButton.IsChecked = true;
             }
+            var viewModel = DataContext as ElasticsearchSourceViewModel;
+            viewModel.AuthenticationType = authenticationType;
         }
     }
 }
