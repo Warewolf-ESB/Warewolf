@@ -29,10 +29,10 @@ namespace Warewolf.Studio.Views
     public partial class ElasticsearchSourceControl : IView, ICheckControlEnabledView
     {
 #if !NETFRAMEWORK
-		public string Path => throw new System.NotImplementedException();
+        public string Path => throw new System.NotImplementedException();
 #endif
 
-		public ElasticsearchSourceControl()
+        public ElasticsearchSourceControl()
         {
             InitializeComponent();
             ElasticsearchHostNameTextbox.Focus();
@@ -133,13 +133,15 @@ namespace Warewolf.Studio.Views
             {
                 PasswordRadioButton.IsChecked = true;
             }
+            var viewModel = DataContext as ElasticsearchSourceViewModel;
+            viewModel.AuthenticationType = authenticationType;
         }
 
 #if !NETFRAMEWORK
-		public Task RenderAsync(ViewContext context)
-		{
-			throw new System.NotImplementedException();
-		}
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
+        }
 #endif
-	}
+    }
 }
