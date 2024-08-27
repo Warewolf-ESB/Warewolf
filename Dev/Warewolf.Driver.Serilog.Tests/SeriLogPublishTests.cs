@@ -217,7 +217,9 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 Port = dependency.Container.Port,
                 HostName = hostName,
-                SearchIndex =  "warewolftestlogs"
+                SearchIndex =  "warewolftestlogs",
+                Username = "test",
+                Password = "test123"
             };
             var uri = new Uri(hostName + ":" + dependency.Container.Port);
             var logger = new LoggerConfiguration()
@@ -226,6 +228,8 @@ namespace Warewolf.Driver.Serilog.Tests
                 {
                     AutoRegisterTemplate = true,
                     IndexDecider = (e, o) => loggerSource.SearchIndex,
+                    ModifyConnectionSettings = connectionConfiguration =>
+                      connectionConfiguration.BasicAuthentication(loggerSource.Username, loggerSource.Password)
                 }))
                 .CreateLogger();
 
