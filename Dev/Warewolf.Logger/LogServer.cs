@@ -101,9 +101,8 @@ namespace Warewolf.Logger
                     }
                 };
 
-                var innerConsumer = new SeriLogConsumer(_loggerContext);
-                var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);
-                socket.StartConsuming(new ForwardingConsumer(defaultConsumer, _loggerContext));
+                var consumer = new SeriLogConsumer(_loggerContext);
+                socket.StartConsuming(new AuditCommandConsumer(consumer, socket, _writer));
             });
         }
 
@@ -121,36 +120,6 @@ namespace Warewolf.Logger
         public void Dispose()
         {
             Dispose(true);
-        }
-    }
-
-    internal class ForwardingConsumer : IConsumer<AuditCommand>
-    {
-        private readonly IAuditCommandConsumer _defaultConsumer;
-        private static IConnection _leaderConnection;
-        private readonly IPublisher _publisher;
-
-        public ForwardingConsumer(IAuditCommandConsumer defaultConsumer, ILoggerContext loggerContext)
-        {
-            _defaultConsumer = defaultConsumer;
-            _leaderConnection = loggerContext.LeaderSource?.NewConnection();
-            _publisher = _leaderConnection?.NewPublisher(loggerContext.LeaderConfig);
-        }
-
-        public Task<ConsumerResult> Consume(AuditCommand item, object parameters)
-        {
-            try
-            {
-                var serialize = new JsonSerializer();
-                var serilizedLog = serialize.Serialize<AuditCommand>(item);
-
-                _publisher.Publish(serilizedLog);
-                return Task.FromResult(ConsumerResult.Success);
-            }
-            catch
-            {
-                return _defaultConsumer.Consume(item, parameters);
-            }
         }
     }
 
