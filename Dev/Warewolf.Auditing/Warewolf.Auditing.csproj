@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.14.6" />
+    <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Net.WebSockets.Client.Managed" Version="1.0.22" />
     <PackageReference Include="Mindbox.Data.Linq" Version="5.0.0" />

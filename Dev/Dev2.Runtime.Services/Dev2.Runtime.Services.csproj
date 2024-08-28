@@ -561,7 +561,7 @@
       <Version>6.9.9</Version>
     </PackageReference>
     <PackageReference Include="Elastic.Clients.Elasticsearch">
-      <Version>8.14.6</Version>
+      <Version>8.15.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
@@ -576,7 +576,7 @@
       <Version>5.1.2</Version>
     </PackageReference>
     <PackageReference Include="Serilog">
-      <Version>2.8.0</Version>
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.SQLite">
       <Version>4.5.0</Version>
