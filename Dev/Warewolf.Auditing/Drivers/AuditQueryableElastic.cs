@@ -58,7 +58,6 @@ namespace Warewolf.Auditing.Drivers
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
-            var result = new List<ExecutionHistory>();
             if (resourceId != null)
             {
                 var jsonQuery = new JObject
@@ -70,8 +69,8 @@ namespace Warewolf.Auditing.Drivers
                 };
 
                 _query = jsonQuery.ToString();
-                var results = ExecuteDatabase().ToList();
-                if (results.Count > 0)
+                var results = ExecuteDatabase()?.ToList();
+                if (results?.Count > 0)
                 {
                     var queryTriggerData = ExecutionHistories(results, result);
                     if (queryTriggerData != null)
@@ -81,7 +80,7 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            return result;
+            return new List<ExecutionHistory>();
         }
 
         private static IEnumerable<IExecutionHistory> ExecutionHistories(IEnumerable<object> results, ICollection<ExecutionHistory> result)
@@ -356,32 +355,32 @@ namespace Warewolf.Auditing.Drivers
             {
                 Query = _query
             });
-			var logEvents = client.Search<object>(search);
-            var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
+            var logEvents = client.Search<object>(search);
+            var sources = logEvents.HitsMetadata?.Hits?.Select(h => h.Source);
             return sources;
         }
 
-		private ElasticsearchClient Client()
-		{
-			var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
-			var settings = new ElasticsearchClientSettings(uri)
-				.RequestTimeout(TimeSpan.FromMinutes(2))
-				.DefaultIndex(_elasticsearchSource.SearchIndex);
-			if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
-			{
-				var basicAuth = new BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
-				settings.Authentication(basicAuth);
-			}
+        private ElasticsearchClient Client()
+        {
+            var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
+            var settings = new ElasticsearchClientSettings(uri)
+                .RequestTimeout(TimeSpan.FromMinutes(2))
+                .DefaultIndex(_elasticsearchSource.SearchIndex);
+            if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
+            {
+                var basicAuth = new BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
+                settings.Authentication(basicAuth);
+            }
 
-			var elasticClient = new ElasticsearchClient(settings);
-			var result = elasticClient.Ping();
-			var isValid = result.IsValidResponse;
-			if (!isValid && result.TryGetOriginalException(out Exception e))
-			{
-				throw e;
-			}
-			return elasticClient;
-		}
+            var elasticClient = new ElasticsearchClient(settings);
+            var result = elasticClient.Ping();
+            var isValid = result.IsValidResponse;
+            if (!isValid && result.TryGetOriginalException(out Exception e))
+            {
+                throw e;
+            }
+            return elasticClient;
+        }
 
         public void Dispose()
         {
