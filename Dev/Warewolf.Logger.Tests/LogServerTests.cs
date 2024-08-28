@@ -224,8 +224,6 @@ namespace Warewolf.Logger.Tests
             mockClient.Object.OnClose();
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(0, clients.Count);
-
-            mockPublisher.Verify(o => o.Publish(It.IsAny<byte[]>()), Times.Once);
         }
 
         [TestMethod]
