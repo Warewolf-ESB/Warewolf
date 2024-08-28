@@ -104,7 +104,7 @@ namespace Warewolf.Auditing.Tests
             mockElasticsearchSource.Setup(o => o.SearchIndex).Returns(searchIndex);
             mockElasticsearchSource.Setup(o => o.Username).Returns(username);
             mockElasticsearchSource.Setup(o => o.Password).Returns(password);
-            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Anonymous);
+            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Password);
 
             var resourceId = Guid.NewGuid();
             var executionId = Guid.NewGuid();
@@ -159,7 +159,7 @@ namespace Warewolf.Auditing.Tests
             mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
 
             var mockElasticClient = new Mock<IElasticsearchClientWrapper>();
-            var mock = new Mock<ElasticsearchClientSettings>();
+            var mock = new Mock<TestElasticsearchClientSettings>();
             mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
 
             mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest<object>>()))
@@ -213,29 +213,41 @@ namespace Warewolf.Auditing.Tests
             return hitsMetadata;
         }
 
-		public static SearchResponse<T> ConvertToSearchResponse<T>(ISearchResponse<T> iSearchResponse)
-		{
-			// Create an instance of SearchResponse<T> using reflection
-			var searchResponse = (SearchResponse<T>)Activator.CreateInstance(typeof(SearchResponse<T>), true);
+        public static SearchResponse<T> ConvertToSearchResponse<T>(ISearchResponse<T> iSearchResponse)
+        {
+            // Create an instance of SearchResponse<T> using reflection
+            var searchResponse = (SearchResponse<T>)Activator.CreateInstance(typeof(SearchResponse<T>), true);
 
-			// Set the HitsMetadata property using reflection
-			var hitsMetadataProperty = typeof(SearchResponse<T>).GetProperty("HitsMetadata", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			var hitsMetadata = ConvertToHitsMetadata(iSearchResponse.HitsMetadata);
-			hitsMetadataProperty.SetValue(searchResponse, hitsMetadata);
+            // Set the HitsMetadata property using reflection
+            var hitsMetadataProperty = typeof(SearchResponse<T>).GetProperty("HitsMetadata", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var hitsMetadata = ConvertToHitsMetadata(iSearchResponse.HitsMetadata);
+            hitsMetadataProperty.SetValue(searchResponse, hitsMetadata);
 
-			return searchResponse;
-		}
+            return searchResponse;
+        }
 
-		[TestMethod]
+        public static IElasticsearchClientSettings ConvertToIElasticsearchClientSettings(TestElasticsearchClientSettings interfaceSettings)
+        {
+            // Create an instance of ElasticsearchClientSettings using reflection
+            var settings = (IElasticsearchClientSettings)Activator.CreateInstance(typeof(IElasticsearchClientSettings), true);
+
+            // Set the DefaultIndex property using reflection
+            var defaultIndexProperty = typeof(IElasticsearchClientSettings).GetProperty("DefaultIndex", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            defaultIndexProperty.SetValue(settings, interfaceSettings.DefaultIndex);
+
+            return settings;
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData()
         {
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "http://" + dependency.Container.IP;
+            var hostName = "https://" + dependency.Container.IP;
             const string searchIndex = "warewolftestlogs";
-            const string username = "";
-            const string password = "";
+            const string username = "test";
+            const string password = "test123";
 
             var mockElasticsearchSource = new Mock<IElasticsearchSource>();
             mockElasticsearchSource.Setup(o => o.HostName).Returns(hostName);
@@ -243,7 +255,7 @@ namespace Warewolf.Auditing.Tests
             mockElasticsearchSource.Setup(o => o.SearchIndex).Returns(searchIndex);
             mockElasticsearchSource.Setup(o => o.Username).Returns(username);
             mockElasticsearchSource.Setup(o => o.Password).Returns(password);
-            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Anonymous);
+            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Password);
 
             var executionId = Guid.NewGuid();
             var serverId = Guid.NewGuid();
@@ -287,29 +299,29 @@ namespace Warewolf.Auditing.Tests
                 {"fields", values}
             };
 
-            var mockHit = new Mock<Hit<object>>();
+            var mockHit = new Mock<IHit<object>>();
             mockHit.Setup(o => o.Source).Returns(fields);
 
             var readOnlyCollection = new List<Hit<object>>
             {
-                mockHit.Object
+                ConvertToHit(mockHit.Object)
             };
 
-            var mockHitsMetadata = new Mock<HitsMetadata<object>>();
+            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockSearchResponse = new Mock<SearchResponse<object>>();
+            var mockSearchResponse = new Mock<ISearchResponse<object>>();
             mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
 
-            var mockElasticClient = new Mock<ElasticsearchClient>();
-            var mock = new Mock<ElasticsearchClientSettings>();
+            var mockElasticClient = new Mock<IElasticsearchClientWrapper>();
+            var mock = new Mock<TestElasticsearchClientSettings>();
             mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
 
-            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest>()))
-                .Returns(mockSearchResponse.Object);
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest<object>>()))
+                .Returns(ConvertToSearchResponse(mockSearchResponse.Object));
 
             var auditQueryableElastic =
-                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
+                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object.GetUnderlyingClient());
 
             var query = new Dictionary<string, StringBuilder>
             {
@@ -372,56 +384,66 @@ namespace Warewolf.Auditing.Tests
         public IReadOnlyCollection<Hit<T>> Hits => _hitsMetadata.Hits;
     }
 
-	public interface ISearchResponse<T>
-	{
-		IHitsMetadata<T> HitsMetadata { get; }
-	}
+    public interface ISearchResponse<T>
+    {
+        IHitsMetadata<T> HitsMetadata { get; }
+    }
 
-	public class SearchResponseWrapper<T> : ISearchResponse<T>
-	{
-		private readonly SearchResponse<T> _searchResponse;
+    public class SearchResponseWrapper<T> : ISearchResponse<T>
+    {
+        private readonly SearchResponse<T> _searchResponse;
 
-		public SearchResponseWrapper(SearchResponse<T> searchResponse)
-		{
-			_searchResponse = searchResponse;
-		}
+        public SearchResponseWrapper(SearchResponse<T> searchResponse)
+        {
+            _searchResponse = searchResponse;
+        }
 
-		public IHitsMetadata<T> HitsMetadata => new HitsMetadataWrapper<T>(_searchResponse.HitsMetadata);
-	}
+        public IHitsMetadata<T> HitsMetadata => new HitsMetadataWrapper<T>(_searchResponse.HitsMetadata);
+    }
 
-	public interface IElasticsearchClientWrapper
-	{
-		object ElasticsearchClientSettings { get; set; }
+    public interface IElasticsearchClientWrapper
+    {
+        public object ElasticsearchClientSettings { get; set; }
 
-		IElasticsearchClientSettings GetSettings();
-		ElasticsearchClient GetUnderlyingClient();
-		SearchResponse<T> Search<T>(SearchRequest<T> request);
-	}
+        IElasticsearchClientSettings GetSettings();
+        ElasticsearchClient GetUnderlyingClient();
+        SearchResponse<T> Search<T>(SearchRequest<T> request);
+    }
 
-	public class ElasticsearchClientWrapper : IElasticsearchClientWrapper
-	{
-		private readonly ElasticsearchClient _client;
+    public class ElasticsearchClientWrapper : IElasticsearchClientWrapper
+    {
+        private readonly ElasticsearchClient _client;
 
-		public ElasticsearchClientWrapper(ElasticsearchClient client)
-		{
-			_client = client;
-		}
+        public ElasticsearchClientWrapper(ElasticsearchClient client)
+        {
+            _client = client;
+        }
 
-		object IElasticsearchClientWrapper.ElasticsearchClientSettings { get => GetSettings(); set => throw new NotImplementedException(); }
+        object IElasticsearchClientWrapper.ElasticsearchClientSettings { get => GetSettings(); set => throw new NotImplementedException(); }
 
-		public IElasticsearchClientSettings GetSettings()
-		{
-			return _client.ElasticsearchClientSettings;
-		}
+        public IElasticsearchClientSettings GetSettings()
+        {
+            return _client.ElasticsearchClientSettings;
+        }
 
-		public SearchResponse<T> Search<T>(SearchRequest<T> request)
-		{
-			return _client.Search<T>(request);
-		}
+        public SearchResponse<T> Search<T>(SearchRequest<T> request)
+        {
+            return _client.Search<T>(request);
+        }
 
-		public ElasticsearchClient GetUnderlyingClient()
-		{
-			return _client;
-		}
-	}
+        public ElasticsearchClient GetUnderlyingClient()
+        {
+            return _client;
+        }
+    }
+
+    public interface TestElasticsearchClientSettings
+    {
+        string DefaultIndex { get; }
+    }
+
+    public class ElasticsearchClientSettings : TestElasticsearchClientSettings
+    {
+        public string DefaultIndex { get; set; }
+    }
 }
