@@ -11,7 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
-        <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="16.8.3" />
+        <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.11.0" />
         <PackageReference Include="Moq" Version="4.18.2" />
         <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
         <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />

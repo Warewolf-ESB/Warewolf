@@ -35,6 +35,7 @@ using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
 using Elastic.Transport;
 using System.Text.Json;
+using Serilog.Debugging;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -217,26 +218,31 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 Port = dependency.Container.Port,
                 HostName = hostName,
-                SearchIndex =  "warewolftestlogs",
+                SearchIndex = "warewolftestlogs",
                 Username = "test",
                 Password = "test123"
             };
             var uri = new Uri(hostName + ":" + dependency.Container.Port);
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(uri)
                 {
                     AutoRegisterTemplate = true,
                     IndexDecider = (e, o) => loggerSource.SearchIndex,
                     ModifyConnectionSettings = connectionConfiguration =>
-                      connectionConfiguration.BasicAuthentication(loggerSource.Username, loggerSource.Password)
-                }))
+                    {
+                        var settings = connectionConfiguration.BasicAuthentication(loggerSource.Username, loggerSource.Password).EnableDebugMode(response =>
+                        {
+                            Console.WriteLine(response.DebugInformation);
+                        });
+                        return settings;
+                    }
+                })
                 .CreateLogger();
 
             var mockSeriLogConfig = new Mock<ISeriLogConfig>();
             mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
 
-            
             var executionID = Guid.NewGuid();
             using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
             {
@@ -259,13 +265,14 @@ namespace Warewolf.Driver.Serilog.Tests
 
             var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
 
-            Assert.AreEqual(1,dataList.Count());
+            Assert.AreEqual(1,dataList.Count);
 
-            foreach (Dictionary<string, object> fields in dataList)
+            foreach (var jsonElement in dataList)
             {
+                var fields = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonElement.ToString());
                 var level = fields.Where(pair => pair.Key.Contains("level")).Select(pair => pair.Value).FirstOrDefault();
                 Assert.AreEqual("Information", level.ToString());
-                
+
                 var messageTemplate = fields.Where(pair => pair.Key.Contains("messageTemplate")).Select(pair => pair.Value).FirstOrDefault();
                 Assert.AreEqual("{@Data}", messageTemplate.ToString());
 
@@ -371,7 +378,7 @@ namespace Warewolf.Driver.Serilog.Tests
                     .RequestTimeout(TimeSpan.FromMinutes(2))
                     .DefaultIndex(source.SearchIndex)
                     .DisableDirectStreaming()
-                    .Authentication(new BasicAuthentication("test", "test123"))
+                    .Authentication(new BasicAuthentication(source.Username, source.Password))
                     .ServerCertificateValidationCallback(CertificateValidations.AllowAll);
 
                 var client = new ElasticsearchClient(settings);
