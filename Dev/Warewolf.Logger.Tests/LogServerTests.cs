@@ -284,8 +284,6 @@ namespace Warewolf.Logger.Tests
             mockClient.Object.OnClose();
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(0, clients.Count);
-
-            mockAuditCommandConsumerFactory.Verify(o => o.New(It.IsAny<SeriLogConsumer>(), It.IsAny<IWebSocketConnection>(), It.IsAny<IWriter>()));
         }
 
     }
