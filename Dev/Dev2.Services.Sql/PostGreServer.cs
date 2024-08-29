@@ -395,7 +395,7 @@ namespace Dev2.Services.Sql
                     Enum.TryParse(datatype, true, out NpgsqlDbType sqlType);
 
                     var sqlParameter = new NpgsqlParameter(value, sqlType);
-
+                    
                     var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
                     if (direction.ToUpper().Trim().Contains("IN".Trim()))
                     {
@@ -419,6 +419,35 @@ namespace Dev2.Services.Sql
             command.CommandText = originalCommandText;
 
             return parameters;
+        }
+
+
+        /// <summary>
+        /// This method returns the type of the provided procedure/function
+        /// </summary>
+        /// <param name="fullProcedureName"></param>
+        /// <returns>return type of the object, Default "void"</returns>
+        public string GetProcedureReturnType(string fullProcedureName)
+        {
+            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
+            {
+                var originalCommandText = command.CommandText;
+
+                var proc = string.Format(GlobalConstants.ReturnTypePostgreSql, fullProcedureName);
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = proc;
+
+                var dataTable = FetchDataTable(command);
+                command.CommandText = originalCommandText;
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    return dataTable.Rows[0].ItemArray[0].ToString();
+                }
+               
+                return "void";
+            }
         }
 
         #region IDisposable

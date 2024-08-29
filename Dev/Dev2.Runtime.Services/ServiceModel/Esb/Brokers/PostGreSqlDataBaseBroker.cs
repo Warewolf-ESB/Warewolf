@@ -152,7 +152,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     
                     var outParams = server.GetProcedureOutParams(command.CommandText);
-                    
+
+                    var returnType = server.GetProcedureReturnType(command.CommandText);
+
                     foreach (var dbDataParameter in outParams)
                     {
                         if (command.Parameters.Contains(dbDataParameter))
@@ -162,8 +164,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                         command.Parameters.Add(dbDataParameter);
                     }
-                    var dataTable = server.FetchDataTable(command);
-
+                    var dataTable = returnType.Equals("void") ? new DataTable() : server.FetchDataTable(command);
+                   
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);

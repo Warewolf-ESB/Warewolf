@@ -356,6 +356,8 @@ inner join pg_language pl on (pp.prolang = pl.oid)
 inner join pg_type t on (pp.prorettype = t.oid)
 where pn.nspname = 'public';
 ";
+        public static readonly string ReturnTypePostgreSql = @"select routines.data_type AS proc_return_type FROM information_schema.routines
+                WHERE routines.specific_schema='public' and routine_name ='{0}';";
 
         public static readonly string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
         public static readonly string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";

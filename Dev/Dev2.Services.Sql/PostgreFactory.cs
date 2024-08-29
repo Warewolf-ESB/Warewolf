@@ -49,7 +49,14 @@ namespace Dev2.Services.Sql
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
             var ds = new DataSet(); //conn is opened by dataadapter
-            reader.Fill(ds);
+            try
+            {
+                reader.Fill(ds);
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
             return ds.Tables[0];
         }
 
