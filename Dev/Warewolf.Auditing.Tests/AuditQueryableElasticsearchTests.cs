@@ -29,6 +29,7 @@ using Warewolf.UnitTestAttributes;
 using LogLevel = Warewolf.Logging.LogLevel;
 using System.Reflection;
 using Elastic.Transport;
+using System.DirectoryServices.Protocols;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -155,15 +156,12 @@ namespace Warewolf.Auditing.Tests
             var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockSearchResponse = new Mock<ISearchResponse<object>>();
-            mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
-
             var mockElasticClient = new Mock<IElasticsearchClientWrapper>();
             var mock = new Mock<TestElasticsearchClientSettings>();
             mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
 
-            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest<object>>()))
-                .Returns(ConvertToSearchResponse(mockSearchResponse.Object));
+            mockElasticClient.Setup(o => o.Search(It.IsAny<SearchRequest<object>>()))
+                .Returns(new SearchResponse<object> { HitsMetadata = ConvertToHitsMetadata(mockHitsMetadata.Object) });
 
             var auditQueryableElastic =
                 new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object.GetUnderlyingClient());
@@ -211,19 +209,6 @@ namespace Warewolf.Auditing.Tests
             hitsProperty.SetValue(hitsMetadata, iHitsMetadata.Hits);
         
             return hitsMetadata;
-        }
-
-        public static SearchResponse<T> ConvertToSearchResponse<T>(ISearchResponse<T> iSearchResponse)
-        {
-            // Create an instance of SearchResponse<T> using reflection
-            var searchResponse = (SearchResponse<T>)Activator.CreateInstance(typeof(SearchResponse<T>), true);
-
-            // Set the HitsMetadata property using reflection
-            var hitsMetadataProperty = typeof(SearchResponse<T>).GetProperty("HitsMetadata", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var hitsMetadata = ConvertToHitsMetadata(iSearchResponse.HitsMetadata);
-            hitsMetadataProperty.SetValue(searchResponse, hitsMetadata);
-
-            return searchResponse;
         }
 
         public static IElasticsearchClientSettings ConvertToIElasticsearchClientSettings(TestElasticsearchClientSettings interfaceSettings)
@@ -310,18 +295,12 @@ namespace Warewolf.Auditing.Tests
             var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockSearchResponse = new Mock<ISearchResponse<object>>();
-            mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
-
-            var mockElasticClient = new Mock<IElasticsearchClientWrapper>();
-            var mock = new Mock<TestElasticsearchClientSettings>();
-            mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
-
-            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequest<object>>()))
-                .Returns(ConvertToSearchResponse(mockSearchResponse.Object));
+            var mockElasticClient = new Mock<ElasticsearchClient>();
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<SearchRequestDescriptor<object>>()))
+                .Returns(new SearchResponse<object> { HitsMetadata = ConvertToHitsMetadata(mockHitsMetadata.Object) });
 
             var auditQueryableElastic =
-                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object.GetUnderlyingClient());
+                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
 
             var query = new Dictionary<string, StringBuilder>
             {
