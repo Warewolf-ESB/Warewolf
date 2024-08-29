@@ -179,14 +179,9 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "102.37.115.89";
                 Container.Port = "1433";
             }
-            else if (_containerType == ContainerType.Elasticsearch)
+            else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "9400";
-            }
-            else if (_containerType == ContainerType.AnonymousElasticsearch)
-            {
-                Container.IP = "102.37.115.89";
+                Container.IP = "4.221.39.39";
                 Container.Port = "9200";
             }
             else if (_containerType == ContainerType.PostGreSQL)
