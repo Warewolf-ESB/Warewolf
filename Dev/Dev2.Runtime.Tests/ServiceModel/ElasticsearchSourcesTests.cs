@@ -36,6 +36,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var hostName = "http://" + dependency.Container.IP;
             elasticsearchSource.HostName = hostName;
             elasticsearchSource.Port = dependency.Container.Port;
+            elasticsearchSource.Username = "test";
+            elasticsearchSource.Password = "test123";
+            elasticsearchSource.AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password;
             var result = handler.Test(elasticsearchSource);
             Assert.IsTrue(result.IsValid);
         }
