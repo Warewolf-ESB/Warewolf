@@ -155,15 +155,12 @@ namespace Warewolf.Auditing.Tests
             var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
             mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
-            var mockElasticClient = new Mock<IElasticsearchClientWrapper>();
-            var mock = new Mock<TestElasticsearchClientSettings>();
-            mockElasticClient.Setup(o => o.ElasticsearchClientSettings).Returns(mock.Object);
-
-            mockElasticClient.Setup(o => o.Search(It.IsAny<SearchRequest<object>>()))
+            var mockElasticClient = new Mock<ElasticsearchClient>();
+            mockElasticClient.Setup(o => o.Search(It.IsAny<SearchRequestDescriptor<object>>()))
                 .Returns(new SearchResponse<object> { HitsMetadata = ConvertToHitsMetadata(mockHitsMetadata.Object) });
 
             var auditQueryableElastic =
-                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object.GetUnderlyingClient());
+                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
 
             var query = new Dictionary<string, StringBuilder>
             {
