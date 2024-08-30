@@ -213,7 +213,7 @@ namespace Warewolf.Driver.Serilog.Tests
             //-------------------------Arrange------------------------------
             Config.Server.IncludeEnvironmentVariable = false;
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "https://" + dependency.Container.IP;
+            var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = dependency.Container.Port,
