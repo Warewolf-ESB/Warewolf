@@ -43,8 +43,8 @@ namespace Warewolf.Auditing.Tests
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             const string searchIndex = "warewolftestlogs";
-            const string username = "WarewolfUser";
-            const string password = "$3@R(h";
+            const string username = "test";
+            const string password = "test123";
 
             var mockElasticsearchSource = new Mock<IElasticsearchSource>();
             mockElasticsearchSource.Setup(o => o.HostName).Returns(hostName);
