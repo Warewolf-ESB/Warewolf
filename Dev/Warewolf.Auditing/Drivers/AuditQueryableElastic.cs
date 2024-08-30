@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -212,6 +213,10 @@ namespace Warewolf.Auditing.Drivers
                     )
                 )
             );
+            Query = search.SerializeToJsonString(new KnownTypesBinder
+            {
+                KnownTypes = new List<Type> { typeof(object) }
+            });
             return search;
         }
 
