@@ -78,11 +78,11 @@ namespace Warewolf.Auditing.Tests
         {
             var auditQueryable = GetAuditQueryablePasswordAuthentication();
             var query = new Dictionary<string, StringBuilder>();
-
-            var results = auditQueryable.QueryLogData(query);
+            _ = auditQueryable.QueryLogData(query);
             var match_all = new JObject
             {
-                ["match_all"] = new JObject()
+                ["$id"] = "1",
+                ["$type"] = "Elastic.Clients.Elasticsearch.SearchRequestDescriptor`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
             };
 
             Assert.AreEqual(match_all.ToString(), auditQueryable.Query);
@@ -94,7 +94,7 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryTriggerData()
         {
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "https://" + dependency.Container.IP;
+            var hostName = "http://" + dependency.Container.IP;
             const string searchIndex = "warewolftestlogs";
             const string username = "test";
             const string password = "test123";

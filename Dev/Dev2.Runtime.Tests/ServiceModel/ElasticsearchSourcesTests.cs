@@ -65,8 +65,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "test",
-                Username =  "test123"
+                Username = "test",
+                Password = "test123"
             }.ToString();
 
             try
