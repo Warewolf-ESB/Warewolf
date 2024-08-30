@@ -115,19 +115,6 @@
                    Text="{x:Static languages:Core.AuthenticationTypeLabel}" />
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" Margin="0,-3,0,0">
             <RadioButton Margin="{StaticResource ControlBorderRight}"
-                         x:Name="AnonymousRadioButton"
-                         ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Left"
-                         IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                             ConverterParameter={x:Static serviceModel:AuthenticationType.Anonymous}}"
-                         Content="Anonymous">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.AnonymousAuthenticationHelp}"
-                                     DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </RadioButton>
-            <RadioButton Margin="{StaticResource ControlBorderRight}"
                          x:Name="APIKeyRadioButton"
                          ToolTip="{x:Static languages:Tooltips.APIKeyAuthenticationToolTip}"
                          VerticalAlignment="Center"
