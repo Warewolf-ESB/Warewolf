@@ -176,7 +176,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LogServer))]
-        public void LogServer_PerformingClientOnClose_ShouldCallAction_And_OnMessage_ShouldTryConsume_Success()
+        public void LogServer_PerformingClientOnClose_ShouldRemoveFromClientList()
         {
             //--------------------------------Arrange-------------------------------
             var mockStreamConfig = new Mock<IStreamConfig>();
