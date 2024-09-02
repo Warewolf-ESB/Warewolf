@@ -27,19 +27,6 @@ using Warewolf.Streams;
 
 namespace Warewolf.Logger
 {
-    public interface IAuditCommandConsumerFactory
-    {
-        IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer);
-    }
-
-    public class AuditCommandConsumerFactory : IAuditCommandConsumerFactory
-    {
-        public IAuditCommandConsumer New(SeriLogConsumer innerConsumer, IWebSocketConnection socket, IWriter writer)
-        {
-            return new AuditCommandConsumer(innerConsumer, socket, writer);
-        }
-    }
-
     public interface IAuditCommandConsumer : IConsumer<AuditCommand>
     {
         new Task<ConsumerResult> Consume(AuditCommand item, object parameters);

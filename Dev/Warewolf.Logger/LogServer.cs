@@ -47,21 +47,13 @@ namespace Warewolf.Logger
         private readonly IWriter _writer;
         private IWebSocketServerWrapper _server;
         private readonly ILoggerContext _loggerContext;
-        private IAuditCommandConsumerFactory _auditCommandConsumerFactory;
 
         public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
             _webSocketServerFactory = webSocketServerFactory ?? throw new ArgumentNullException(nameof(webSocketServerFactory));
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
-            _loggerContext = loggerContext ?? throw new ArgumentNullException(nameof(loggerContext));
+             _loggerContext = loggerContext ?? throw new ArgumentNullException(nameof(loggerContext));
         }
-
-        public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext, IAuditCommandConsumerFactory auditCommandConsumerFactory)
-            : this(webSocketServerFactory, writer, loggerContext)
-        {
-            _auditCommandConsumerFactory = auditCommandConsumerFactory;
-        }
-
 
         public void Start(IList<IWebSocketConnection> clients)
         {
