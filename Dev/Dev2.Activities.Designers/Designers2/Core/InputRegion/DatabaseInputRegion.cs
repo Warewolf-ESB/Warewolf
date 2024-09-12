@@ -137,6 +137,19 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     var removedInputs = inputCopy.Except(selectedActionInputs, new ServiceInputNameComparer()).ToList();
                     var union = inputCopy.Union(newInputs, new ServiceInputNameComparer()).ToList();
                     union.RemoveAll(a => removedInputs.Any(k => a.Equals(k)));
+
+                    // 7750 - EmptyisNull property to persist when open and close of largeview
+                    foreach (var _input in union)
+                    {
+                        var _inputCopyParam = inputCopy.FirstOrDefault(i => i.Name.Equals(_input.Name) && i.EmptyIsNull != _input.EmptyIsNull);
+
+                        if (_inputCopyParam!= null)
+                        {
+                            _input.EmptyIsNull = _inputCopyParam.EmptyIsNull;
+                        }
+                    }
+                    // End - 7750
+
                     ResetInputs(union);
                 }
                 else

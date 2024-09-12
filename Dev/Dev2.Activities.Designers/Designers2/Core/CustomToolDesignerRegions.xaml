@@ -495,7 +495,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <CheckBox 
-                                            IsChecked="{Binding Path=EmptyIsNull}" 
+                                            IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                             HorizontalAlignment="Center"
                                             ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
                                             <i:Interaction.Behaviors>
@@ -533,6 +533,7 @@
             </Button>
         </Grid>
     </ControlTemplate>
+    
     <ControlTemplate x:Key="NewDotNetConstructorInputsGrid" >
         <Grid>
             <Grid.ColumnDefinitions>
@@ -645,7 +646,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                         </i:Interaction.Behaviors>
@@ -659,6 +660,7 @@
 
         </Grid>
     </ControlTemplate>
+    
     <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" >
         <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" Margin="0,0,3,0" >
             <Grid.ColumnDefinitions>
