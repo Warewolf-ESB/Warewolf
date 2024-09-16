@@ -138,7 +138,13 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.MySqlDatabase:
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
-                        return $"Server={Server};{portString}Database={DatabaseName};Uid={UserID};Pwd={Password};Connect Timeout={ConnectionTimeout};SslMode=none;";
+                        
+                        var msdCS = $"Server={Server};{portString}Database={DatabaseName};Uid={UserID};Pwd={Password};Connect Timeout={ConnectionTimeout};";
+                        
+                        if(!msdCS.Contains("SslMode", StringComparison.OrdinalIgnoreCase))
+                            msdCS = string.Concat(msdCS, "SslMode=Preferred;");
+
+                        return msdCS;
 
                     case enSourceType.Oracle:
                         portString = Port > 0 ? $":{Port}" : string.Empty;

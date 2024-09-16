@@ -370,7 +370,7 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <!--<PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.9" />-->
-    <PackageReference Include="MySql.Data" Version="6.10.9" />
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
