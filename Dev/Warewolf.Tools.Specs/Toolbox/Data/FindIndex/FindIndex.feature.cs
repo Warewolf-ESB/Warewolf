@@ -137,26 +137,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 15
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1532 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1537 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1532.AddRow(new string[] {
+                table1537.AddRow(new string[] {
                             "[[a]] = I have managed to spend time in real innovation since I started using War" +
                                 "ewolf",
                             "First Occurrence",
                             "since",
                             "Left to Right"});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table1532, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1537, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1533 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1538 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1533.AddRow(new string[] {
+                table1538.AddRow(new string[] {
                             "[[result]] = 49"});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table1533, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1538, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -208,26 +208,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1534 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1539 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1534.AddRow(new string[] {
+                table1539.AddRow(new string[] {
                             "[[a]] = I have managed to spend time in real innovation since I started using War" +
                                 "ewolf",
                             "All Occurrences",
                             "a",
                             "Left to Right"});
 #line 32
- testRunner.And("the debug inputs as", ((string)(null)), table1534, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1539, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1535 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1540 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1535.AddRow(new string[] {
+                table1540.AddRow(new string[] {
                             "[[result]] = 4,9,11,35,43,59,72"});
 #line 35
- testRunner.And("the debug output as", ((string)(null)), table1535, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1540, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -273,48 +273,48 @@ this.ScenarioInitialize(scenarioInfo);
 #line 45
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table1536 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1541 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "7"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "20"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "36"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "44"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "68"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "70"});
-                table1536.AddRow(new string[] {
+                table1541.AddRow(new string[] {
                             "75"});
 #line 46
- testRunner.Then("the find index result is", ((string)(null)), table1536, "Then ");
+ testRunner.Then("the find index result is", ((string)(null)), table1541, "Then ");
 #line hidden
 #line 55
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1537 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1542 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1537.AddRow(new string[] {
+                table1542.AddRow(new string[] {
                             "[[a]] = I have managed to spend time in real innovation since I started using War" +
                                 "ewolf",
                             "All Occurrences",
                             "a",
                             "Right to Left"});
 #line 56
- testRunner.And("the debug inputs as", ((string)(null)), table1537, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1542, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1538 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1543 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1538.AddRow(new string[] {
+                table1543.AddRow(new string[] {
                             "[[result]] = 7,20,36,44,68,70,75"});
 #line 59
- testRunner.And("the debug output as", ((string)(null)), table1538, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1543, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -363,25 +363,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 71
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1539 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1544 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1539.AddRow(new string[] {
+                table1544.AddRow(new string[] {
                             "[[a]] = !@#$%)@#$%)",
                             "Last Occurrence",
                             ")",
                             "Left to Right"});
 #line 72
- testRunner.And("the debug inputs as", ((string)(null)), table1539, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1544, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1540 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1545 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1540.AddRow(new string[] {
+                table1545.AddRow(new string[] {
                             "[[result]] = 11"});
 #line 75
- testRunner.And("the debug output as", ((string)(null)), table1540, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1545, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -430,25 +430,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 87
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1541 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1546 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1541.AddRow(new string[] {
+                table1546.AddRow(new string[] {
                             "[[a]] =",
                             "First Occurrence",
                             "a",
                             "Left to Right"});
 #line 88
- testRunner.And("the debug inputs as", ((string)(null)), table1541, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1546, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1542 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1547 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1542.AddRow(new string[] {
+                table1547.AddRow(new string[] {
                             "[[result]] = -1"});
 #line 91
- testRunner.And("the debug output as", ((string)(null)), table1542, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1547, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -497,25 +497,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 103
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1543 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1548 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1543.AddRow(new string[] {
+                table1548.AddRow(new string[] {
                             "[[a]] = fff",
                             "First Occurrence",
                             "a",
                             "Left to Right"});
 #line 104
- testRunner.And("the debug inputs as", ((string)(null)), table1543, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1548, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1544 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1549 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1544.AddRow(new string[] {
+                table1549.AddRow(new string[] {
                             "[[result]] = -1"});
 #line 107
- testRunner.And("the debug output as", ((string)(null)), table1544, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1549, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -564,25 +564,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 119
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1545 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1550 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1545.AddRow(new string[] {
+                table1550.AddRow(new string[] {
                             "[[a]] =",
                             "All Occurrence",
                             "a",
                             "Left to Right"});
 #line 120
- testRunner.And("the debug inputs as", ((string)(null)), table1545, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1550, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1546 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1551 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1546.AddRow(new string[] {
+                table1551.AddRow(new string[] {
                             "[[result]] = -1"});
 #line 123
- testRunner.And("the debug output as", ((string)(null)), table1546, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1551, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -634,25 +634,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 136
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1547 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1552 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1547.AddRow(new string[] {
+                table1552.AddRow(new string[] {
                             "[[a]] = <x><b id=\"1\">One</b></x>",
                             "First Occurrence",
                             "<b id=\"[[id]]\"> = <b id=\"1\">",
                             "Left to Right"});
 #line 137
- testRunner.And("the debug inputs as", ((string)(null)), table1547, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1552, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1548 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1553 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1548.AddRow(new string[] {
+                table1553.AddRow(new string[] {
                             "[[result]] = 4"});
 #line 140
- testRunner.And("the debug output as", ((string)(null)), table1548, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1553, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -698,25 +698,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 151
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1549 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1554 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1549.AddRow(new string[] {
+                table1554.AddRow(new string[] {
                             "[[a]] = <x><b id=\"1\">One</b></x>",
                             "First Occurrence",
                             "[[my(-1).data]] =",
                             "Left to Right"});
 #line 152
- testRunner.And("the debug inputs as", ((string)(null)), table1549, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1554, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1550 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1555 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1550.AddRow(new string[] {
+                table1555.AddRow(new string[] {
                             "[[result]] ="});
 #line 155
- testRunner.And("the debug output as", ((string)(null)), table1550, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1555, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -759,25 +759,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 165
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1551 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1556 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1551.AddRow(new string[] {
+                table1556.AddRow(new string[] {
                             "[[a(-1).b]] =",
                             "First Occurrence",
                             "12",
                             "Left to Right"});
 #line 166
- testRunner.And("the debug inputs as", ((string)(null)), table1551, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1556, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1552 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1557 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1552.AddRow(new string[] {
+                table1557.AddRow(new string[] {
                             "[[result]] ="});
 #line 169
- testRunner.And("the debug output as", ((string)(null)), table1552, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1557, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -823,25 +823,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 180
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1553 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1558 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1553.AddRow(new string[] {
+                table1558.AddRow(new string[] {
                             "abc3cde3fgh3",
                             "All Occurrences",
                             "3",
                             "Left to Right"});
 #line 181
- testRunner.And("the debug inputs as", ((string)(null)), table1553, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1558, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1554 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1559 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1554.AddRow(new string[] {
+                table1559.AddRow(new string[] {
                             "[[rs(1).a]] = 4,8,12"});
 #line 184
- testRunner.And("the debug output as", ((string)(null)), table1554, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1559, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -887,25 +887,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 195
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1555 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1560 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1555.AddRow(new string[] {
+                table1560.AddRow(new string[] {
                             "abc3cde3fgh3",
                             "All Occurrences",
                             "3",
                             "Left to Right"});
 #line 196
- testRunner.And("the debug inputs as", ((string)(null)), table1555, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1560, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1556 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1561 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1556.AddRow(new string[] {
+                table1561.AddRow(new string[] {
                             "[[rs(1).a]] = 4,8,12"});
 #line 199
- testRunner.And("the debug output as", ((string)(null)), table1556, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1561, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -951,25 +951,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 210
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1557 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1562 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1557.AddRow(new string[] {
+                table1562.AddRow(new string[] {
                             "abc3cde3fgh3",
                             "All Occurrences",
                             "3",
                             "Left to Right"});
 #line 211
- testRunner.And("the debug inputs as", ((string)(null)), table1557, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1562, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1558 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1563 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1558.AddRow(new string[] {
+                table1563.AddRow(new string[] {
                             "[[res]],[[rs(*).a]] ="});
 #line 214
- testRunner.And("the debug output as", ((string)(null)), table1558, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1563, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1107,25 +1107,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 246
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1559 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1564 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1559.AddRow(new string[] {
+                table1564.AddRow(new string[] {
                             "[[a]] = 2211",
                             "All Occurrences",
                             "2",
                             "Left to Right"});
 #line 247
- testRunner.And("the debug inputs as", ((string)(null)), table1559, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1564, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1560 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1565 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1560.AddRow(new string[] {
+                table1565.AddRow(new string[] {
                             "[[result]] = 1,2"});
 #line 250
- testRunner.And("the debug output as", ((string)(null)), table1560, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1565, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1176,25 +1176,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 263
  testRunner.And("the execution has \"<Error>\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1561 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1566 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1561.AddRow(new string[] {
+                table1566.AddRow(new string[] {
                             "[[a]] =  Warewolf",
                             string.Format("{0}", index),
                             string.Format("{0}", characters),
                             "<Direction>"});
 #line 264
- testRunner.And("the debug inputs as", ((string)(null)), table1561, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1566, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1562 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1567 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1562.AddRow(new string[] {
+                table1567.AddRow(new string[] {
                             string.Format("{0}", res)});
 #line 267
- testRunner.And("the debug output as", ((string)(null)), table1562, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1567, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1329,25 +1329,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 284
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1563 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1568 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1563.AddRow(new string[] {
+                table1568.AddRow(new string[] {
                             "[[a]] =",
                             "First Occurrence",
                             "12",
                             "Left to Right"});
 #line 285
- testRunner.And("the debug inputs as", ((string)(null)), table1563, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1568, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1564 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1569 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1564.AddRow(new string[] {
+                table1569.AddRow(new string[] {
                             string.Format("{0}", result)});
 #line 288
- testRunner.And("the debug output as", ((string)(null)), table1564, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1569, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1501,25 +1501,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 308
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1565 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1570 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1565.AddRow(new string[] {
+                table1570.AddRow(new string[] {
                             "",
                             "All Occurrence",
                             "",
                             "Left to Right"});
 #line 309
- testRunner.And("the debug inputs as", ((string)(null)), table1565, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1570, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1566 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1571 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1566.AddRow(new string[] {
+                table1571.AddRow(new string[] {
                             "[[result]] = Index is not an integer"});
 #line 312
- testRunner.And("the debug output as", ((string)(null)), table1566, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1571, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1631,20 +1631,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1567 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1572 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1567.AddRow(new string[] {
+                table1572.AddRow(new string[] {
                             "rs().row",
                             "122"});
-                table1567.AddRow(new string[] {
+                table1572.AddRow(new string[] {
                             "rs().row",
                             "322"});
-                table1567.AddRow(new string[] {
+                table1572.AddRow(new string[] {
                             "rs().row",
                             "512"});
 #line 336
- testRunner.Given("a find index recordset", ((string)(null)), table1567, "Given ");
+ testRunner.Given("a find index recordset", ((string)(null)), table1572, "Given ");
 #line hidden
 #line 341
  testRunner.And("the sentence \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1667,35 +1667,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 347
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1568 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1573 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1568.AddRow(new string[] {
+                table1573.AddRow(new string[] {
                             "[[rs(1).row]] = 122",
                             "",
                             "",
                             ""});
-                table1568.AddRow(new string[] {
+                table1573.AddRow(new string[] {
                             "[[rs(2).row]] = 322",
                             "",
                             "",
                             ""});
-                table1568.AddRow(new string[] {
+                table1573.AddRow(new string[] {
                             "[[rs(3).row]] = 512",
                             "All Occurrences",
                             "2",
                             "Left to Right"});
 #line 348
- testRunner.And("the debug inputs as", ((string)(null)), table1568, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1573, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1569 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1574 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1569.AddRow(new string[] {
+                table1574.AddRow(new string[] {
                             "[[result]] = 3"});
 #line 353
- testRunner.And("the debug output as", ((string)(null)), table1569, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1574, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1722,20 +1722,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1570 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1575 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1570.AddRow(new string[] {
+                table1575.AddRow(new string[] {
                             "rs().row",
                             "122"});
-                table1570.AddRow(new string[] {
+                table1575.AddRow(new string[] {
                             "rs().row",
                             "322"});
-                table1570.AddRow(new string[] {
+                table1575.AddRow(new string[] {
                             "rs().row",
                             "512"});
 #line 358
- testRunner.Given("a find index recordset", ((string)(null)), table1570, "Given ");
+ testRunner.Given("a find index recordset", ((string)(null)), table1575, "Given ");
 #line hidden
 #line 363
  testRunner.And("the sentence \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1758,35 +1758,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 369
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1571 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1576 = new TechTalk.SpecFlow.Table(new string[] {
                             "In Field",
                             "Index",
                             "Characters",
                             "Direction"});
-                table1571.AddRow(new string[] {
+                table1576.AddRow(new string[] {
                             "[[rs(1).row]] = 122",
                             "",
                             "",
                             ""});
-                table1571.AddRow(new string[] {
+                table1576.AddRow(new string[] {
                             "[[rs(2).row]] = 322",
                             "",
                             "",
                             ""});
-                table1571.AddRow(new string[] {
+                table1576.AddRow(new string[] {
                             "[[rs(3).row]] = 512",
                             "All Occurrences",
                             "2",
                             "Left to Right"});
 #line 370
- testRunner.And("the debug inputs as", ((string)(null)), table1571, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1576, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1572 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1577 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1572.AddRow(new string[] {
+                table1577.AddRow(new string[] {
                             "[[rec(1).a]] = 3"});
 #line 375
- testRunner.And("the debug output as", ((string)(null)), table1572, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1577, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

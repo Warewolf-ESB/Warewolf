@@ -130,39 +130,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 13
  testRunner.Then("the debug inputs count equals \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1530 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1535 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             "Variable",
                             "New Value"});
-                table1530.AddRow(new string[] {
+                table1535.AddRow(new string[] {
                             "1",
                             "[[person().name]] =",
                             "Kim"});
-                table1530.AddRow(new string[] {
+                table1535.AddRow(new string[] {
                             "2",
                             "[[person().name]] =",
                             "bob"});
-                table1530.AddRow(new string[] {
+                table1535.AddRow(new string[] {
                             "3",
                             "[[person().name]] =",
                             "jack"});
 #line 14
- testRunner.And("the debug inputs as", ((string)(null)), table1530, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1535, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1531 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1536 = new TechTalk.SpecFlow.Table(new string[] {
                             "#",
                             ""});
-                table1531.AddRow(new string[] {
+                table1536.AddRow(new string[] {
                             "1",
                             "[[person(1).name]] = Kim"});
-                table1531.AddRow(new string[] {
+                table1536.AddRow(new string[] {
                             "2",
                             "[[person(2).name]] = bob"});
-                table1531.AddRow(new string[] {
+                table1536.AddRow(new string[] {
                             "3",
                             "[[person(3).name]] = jack"});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table1531, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1536, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
