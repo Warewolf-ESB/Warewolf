@@ -113,7 +113,7 @@
     </PackageReference>
 	  <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
 	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-	  <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.4.1" />
+	  <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.11.0" />
 	  <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
 	  <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
     <PackageReference Include="Xamarin.UITest" Version="3.2.9" />
