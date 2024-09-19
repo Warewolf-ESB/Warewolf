@@ -115,15 +115,15 @@
                    Text="{x:Static languages:Core.AuthenticationTypeLabel}" />
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" Margin="0,-3,0,0">
             <RadioButton Margin="{StaticResource ControlBorderRight}"
-                         x:Name="AnonymousRadioButton"
-                         ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}"
+                         x:Name="APIKeyRadioButton"
+                         ToolTip="{x:Static languages:Tooltips.APIKeyAuthenticationToolTip}"
                          VerticalAlignment="Center"
                          HorizontalAlignment="Left"
                          IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                             ConverterParameter={x:Static serviceModel:AuthenticationType.Anonymous}}"
-                         Content="Anonymous">
+                                             ConverterParameter={x:Static serviceModel:AuthenticationType.API_Key}}"
+                         Content="API Key">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.AnonymousAuthenticationHelp}"
+                    <core:HelpSetter Text="{x:Static languages:HelpText.APIKeyAuthenticationHelp}"
                                      DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
@@ -177,6 +177,34 @@
                 Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}"
+                        DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </customControls:PasswordBoxUserControl>
+        </Grid>
+
+        <Grid x:Name="APIKeyContainer"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Grid.Row="4"
+              Margin="0,-3,0,6"
+              Visibility="{Binding Path=APIKeySelected,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"
+                       Text="{x:Static languages:Core.APIKeyLabel}" />
+            <customControls:PasswordBoxUserControl x:Name="APIKeyTextBox" Grid.Column="1"
+                Grid.Row="1"
+                AutomationProperties.AutomationId="UI_APIKeyBox"
+                ToolTip="{x:Static languages:Tooltips.ElasticsearchAPIKeyTooltip}"
+                Margin="{StaticResource ControlBorderTop}"
+                Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.APIKeyAuthenticationHelp}"
                         DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </customControls:PasswordBoxUserControl>

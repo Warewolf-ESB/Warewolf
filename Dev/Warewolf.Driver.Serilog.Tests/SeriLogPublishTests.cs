@@ -24,8 +24,6 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
-using Nest;
 using Newtonsoft.Json.Linq;
 using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing;
@@ -33,6 +31,11 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using Audit = Warewolf.Auditing.Audit;
 using File = System.IO.File;
+using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.QueryDsl;
+using Elastic.Transport;
+using System.Text.Json;
+using Serilog.Debugging;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -215,22 +218,31 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 Port = dependency.Container.Port,
                 HostName = hostName,
-                SearchIndex =  "warewolftestlogs"
+                SearchIndex = "warewolftestlogs",
+                Username = "test",
+                Password = "test123"
             };
             var uri = new Uri(hostName + ":" + dependency.Container.Port);
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(uri)
                 {
                     AutoRegisterTemplate = true,
                     IndexDecider = (e, o) => loggerSource.SearchIndex,
-                }))
+                    ModifyConnectionSettings = connectionConfiguration =>
+                    {
+                        var settings = connectionConfiguration.BasicAuthentication(loggerSource.Username, loggerSource.Password).EnableDebugMode(response =>
+                        {
+                            Console.WriteLine(response.DebugInformation);
+                        });
+                        return settings;
+                    }
+                })
                 .CreateLogger();
 
             var mockSeriLogConfig = new Mock<ISeriLogConfig>();
             mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
 
-            
             var executionID = Guid.NewGuid();
             using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
             {
@@ -255,17 +267,90 @@ namespace Warewolf.Driver.Serilog.Tests
 
             Assert.AreEqual(1,dataList.Count);
 
-            foreach (Dictionary<string, object> fields in dataList)
+            foreach (var jsonElement in dataList)
             {
+                var fields = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonElement.ToString());
                 var level = fields.Where(pair => pair.Key.Contains("level")).Select(pair => pair.Value).FirstOrDefault();
                 Assert.AreEqual("Information", level.ToString());
-                
+
                 var messageTemplate = fields.Where(pair => pair.Key.Contains("messageTemplate")).Select(pair => pair.Value).FirstOrDefault();
                 Assert.AreEqual("{@Data}", messageTemplate.ToString());
 
                 var message = fields.Where(pair => pair.Key.Contains("message"));
                 Assert.IsNotNull(message);
             }
+        }
+
+        public static Dictionary<string, object> JsonElementToDictionary(JsonElement element)
+        {
+            var dict = new Dictionary<string, object>();
+
+            foreach (JsonProperty property in element.EnumerateObject())
+            {
+                switch (property.Value.ValueKind)
+                {
+                    case JsonValueKind.Object:
+                        dict[property.Name] = JsonElementToDictionary(property.Value);
+                        break;
+                    case JsonValueKind.Array:
+                        dict[property.Name] = JsonElementToList(property.Value);
+                        break;
+                    case JsonValueKind.String:
+                        dict[property.Name] = property.Value.GetString();
+                        break;
+                    case JsonValueKind.Number:
+                        dict[property.Name] = property.Value.GetDecimal();
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        dict[property.Name] = property.Value.GetBoolean();
+                        break;
+                    case JsonValueKind.Null:
+                        dict[property.Name] = null;
+                        break;
+                    default:
+                        dict[property.Name] = property.Value.ToString();
+                        break;
+                }
+            }
+
+            return dict;
+        }
+
+        public static List<object> JsonElementToList(JsonElement element)
+        {
+            var list = new List<object>();
+
+            foreach (JsonElement item in element.EnumerateArray())
+            {
+                switch (item.ValueKind)
+                {
+                    case JsonValueKind.Object:
+                        list.Add(JsonElementToDictionary(item));
+                        break;
+                    case JsonValueKind.Array:
+                        list.Add(JsonElementToList(item));
+                        break;
+                    case JsonValueKind.String:
+                        list.Add(item.GetString());
+                        break;
+                    case JsonValueKind.Number:
+                        list.Add(item.GetDecimal());
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        list.Add(item.GetBoolean());
+                        break;
+                    case JsonValueKind.Null:
+                        list.Add(null);
+                        break;
+                    default:
+                        list.Add(item.ToString());
+                        break;
+                }
+            }
+
+            return list;
         }
 
         Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId)
@@ -289,17 +374,16 @@ namespace Warewolf.Driver.Serilog.Tests
             public IEnumerable<object> GetPublishedData(SerilogElasticsearchSource source, string executionID)
             {
                 var uri = new Uri(source.HostName + ":" + source.Port);
-                var settings = new ConnectionSettings(uri)
+                var settings = new ElasticsearchClientSettings(uri)
                     .RequestTimeout(TimeSpan.FromMinutes(2))
-                    .DefaultIndex(source.SearchIndex);
-                if (source.AuthenticationType == AuthenticationType.Password)
-                {
-                    settings.BasicAuthentication(source.Username, source.Password);
-                }
+                    .DefaultIndex(source.SearchIndex)
+                    .DisableDirectStreaming()
+                    .Authentication(new BasicAuthentication(source.Username, source.Password))
+                    .ServerCertificateValidationCallback(CertificateValidations.AllowAll);
 
-                var client = new ElasticClient(settings);
+                var client = new ElasticsearchClient(settings);
                 var result = client.Ping();
-                var isValid = result.IsValid;
+                var isValid = result.IsValidResponse;
                 if (!isValid)
                 {
                     throw new Exception("Invalid Data Source");
@@ -321,9 +405,19 @@ namespace Warewolf.Driver.Serilog.Tests
                     var obj = new JObject();
                     obj.Add("bool", objMust);
                     var query = obj.ToString();
-                    var search = new SearchDescriptor<object>()
+
+                    var search = new SearchRequestDescriptor<object>()
                         .Query(q =>
-                            q.Raw(query));
+                            q.Bool(b => b
+                                .Must(m => m
+                                    .Match(mt => mt
+                                        .Field("fields.Data.Audit.ExecutionID")
+                                        .Query(executionID)
+                                    )
+                                )
+                            )
+                        );
+
                     var logEvents = client.Search<object>(search);
                     var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
                     return sources;

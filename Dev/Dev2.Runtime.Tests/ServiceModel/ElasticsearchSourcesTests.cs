@@ -37,6 +37,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var hostName = "http://" + dependency.Container.IP;
             elasticsearchSource.HostName = hostName;
             elasticsearchSource.Port = dependency.Container.Port;
+            elasticsearchSource.Username = "test";
+            elasticsearchSource.Password = "test123";
+            elasticsearchSource.AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password;
             var result = handler.Test(elasticsearchSource);
             Assert.IsTrue(result.IsValid);
         }
@@ -54,70 +57,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSources))]
-        public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
-        {
-            try
-            { 
-                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-                var hostName = "http://" + dependency.Container.IP;
-                var source = new ElasticsearchSource
-                {
-                    HostName = hostName,
-                    Port = dependency.Container.Port,
-                    AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
-                }.ToString();
-
-                var handler = new ElasticsearchSources();
-                var result = handler.Test(source);
-                Assert.IsTrue(result.IsValid, result.ErrorMessage);
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("could not connect to elasticsearch Instance"))
-                {
-                    Assert.Inconclusive(e.Message);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSources))]
-        public void ElasticsearchSources_Test_With_InvalidHost_AuthenticationType_Anonymous_Expected_InvalidValidationResult()
-        {
-            var source = new ElasticsearchSource
-            {
-                HostName = "http://ddd",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
-                Port = "9200"
-            }.ToString();
-            try
-            {
-                var handler = new ElasticsearchSources();
-                var result = handler.Test(source);
-                Assert.IsFalse(result.IsValid);
-                Assert.AreEqual("could not connect to elasticsearch Instance",result.ErrorMessage);
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("could not connect to elasticsearch Instance"))
-                {
-                    Assert.Inconclusive(e.Message);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSources))]
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
@@ -127,8 +66,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 HostName = hostName,
                 Port = dependency.Container.Port,
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password,
-                Password = "test",
-                Username =  "test"
+                Username = "test",
+                Password = "test123"
             }.ToString();
 
             try
@@ -168,7 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("could not connect to elasticsearch Instance", result.ErrorMessage);
+            Assert.IsTrue(result.ErrorMessage.StartsWith("Unsuccessful () low level call on HEAD: /\r\n Exception: The remote name could not be resolved: 'ddd'. Call: Status code unknown from: HEAD /\r\n\r\n# Audit trail of this API call:\r\n - [1] BadResponse: Node: http://ddd:9300/ Took: "));
         }
     }
 }

@@ -124,6 +124,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect using a specific account..
+        /// </summary>
+        public static string APIKeyAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("APIKeyAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only objects go in here. To assign a value to an object, put the object path in here..
         /// </summary>
         public static string AssignObjectToolTipVariable {
@@ -1308,11 +1317,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Elasticsearch server API key.
+        /// </summary>
+        public static string ElasticsearchAPIKeyTooltip {
+            get {
+                return ResourceManager.GetString("ElasticsearchAPIKeyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel the test execution.
         /// </summary>
         public static string ElasticsearchCancelTestTooltip {
             get {
                 return ResourceManager.GetString("ElasticsearchCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The fingerprint for the certificate..
+        /// </summary>
+        public static string ElasticsearchCertificateFingerprintTooltip {
+            get {
+                return ResourceManager.GetString("ElasticsearchCertificateFingerprintTooltip", resourceCulture);
             }
         }
         

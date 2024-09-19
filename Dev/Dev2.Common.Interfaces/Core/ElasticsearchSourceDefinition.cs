@@ -43,8 +43,9 @@ namespace Dev2.Common.Interfaces.Core
         public string Path { get; set; }
         public Guid Id { get; set; }
         public string SearchIndex { get; set; }
+		public string CertificateFingerprint { get; set; }
 
-        public bool Equals(IElasticsearchSourceDefinition other)
+		public bool Equals(IElasticsearchSourceDefinition other)
         {
             if (other is null)
             {

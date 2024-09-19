@@ -46,7 +46,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Password = elasticsearchServiceSourceDefinition.Password,
                     Username = elasticsearchServiceSourceDefinition.Username,
                     AuthenticationType = elasticsearchServiceSourceDefinition.AuthenticationType,
-                    SearchIndex = elasticsearchServiceSourceDefinition.SearchIndex
+                    SearchIndex = elasticsearchServiceSourceDefinition.SearchIndex,
+                    CertificateFingerprint = elasticsearchServiceSourceDefinition.CertificateFingerprint
                 })
                 {
                     var result = con.Test(elasticsearchSource);

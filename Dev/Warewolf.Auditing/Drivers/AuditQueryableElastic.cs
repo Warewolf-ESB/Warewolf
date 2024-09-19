@@ -12,11 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Nest;
-using Newtonsoft.Json.Linq;
+using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
 using LogLevel = Warewolf.Logging.LogLevel;
@@ -25,17 +26,10 @@ namespace Warewolf.Auditing.Drivers
 {
     public class AuditQueryableElastic : AuditQueryable, IDisposable
     {
-        private string _query;
         private readonly IElasticsearchSource _elasticsearchSource;
-        private readonly IElasticClient _elasticClient;
+        private readonly ElasticsearchClient _elasticClient;
 
-        public override string Query
-        {
-            get => _query;
-            set => _query = value;
-        }
-
-        public AuditQueryableElastic(IElasticsearchSource elasticsearchSource, IElasticClient elasticClient)
+        public AuditQueryableElastic(IElasticsearchSource elasticsearchSource, ElasticsearchClient elasticClient)
         {
             _elasticsearchSource = elasticsearchSource;
             _elasticClient = elasticClient;
@@ -57,19 +51,18 @@ namespace Warewolf.Auditing.Drivers
         {
             var resourceId = GetValue<string>("ResourceId", values);
             var result = new List<ExecutionHistory>();
+
             if (resourceId != null)
             {
-                var jsonQuery = new JObject
-                {
-                    ["match"] = new JObject
-                    {
-                        ["fields.Data.ResourceId"] = resourceId
-                    }
-                };
-
-                _query = jsonQuery.ToString();
-                var results = ExecuteDatabase().ToList();
-                if (results.Count > 0)
+                var search = new SearchRequestDescriptor<object>().Query(q => q
+                    .Bool(b => b
+                        .Must(
+                            m => m.Term(t => t.Field("fields.Data.ResourceId").Value(resourceId))
+                        )
+                    )
+                );
+                var results = ExecuteDatabase(search)?.ToList();
+                if (results?.Count > 0)
                 {
                     var queryTriggerData = ExecutionHistories(results, result);
                     if (queryTriggerData != null)
@@ -174,14 +167,14 @@ namespace Warewolf.Auditing.Drivers
         public override IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values)
         {
             var result = new List<Audit>();
-            BuildJsonQuery(values);
-            var results = ExecuteDatabase()?.ToList();
+            var searchDescriptor = BuildDescriptorQuery(values);
+            var results = ExecuteDatabase(searchDescriptor)?.ToList();
             if (!(results?.Count > 0)) return result;
             var queryLogData = AuditLogs(results, result);
             return queryLogData ?? result;
         }
 
-        private void BuildJsonQuery(Dictionary<string, StringBuilder> values)
+        private SearchRequestDescriptor<object> BuildDescriptorQuery(Dictionary<string, StringBuilder> values)
         {
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
@@ -207,63 +200,24 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            var jArray = new JArray();
-
-            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            var search = new SearchRequestDescriptor<object>().Query(q => q
+                .Bool(b => b
+                    .Must(
+                        m => m.Range(r => r.DateRange(dr => dr
+                            .Field("@timestamp")
+                            .Gt(startTime)
+                            .Lt(endTime)
+                        )),
+                        m => m.Term(t => t.Field("fields.Data.ExecutionID.keyword").Value(executionId)),
+                        m => m.Term(t => t.Field("fields.Data.LogLevel.keyword").Value(eventLevel))
+                    )
+                )
+            );
+            Query = search.SerializeToJsonString(new KnownTypesBinder
             {
-                var dateObj = new JObject
-                {
-                    ["gt"] = startTime,
-                    ["lt"] = endTime
-                };
-                var jsonQueryDateRangeFilter = new JObject
-                {
-                    ["range"] = new JObject
-                    {
-                        ["@timestamp"] = dateObj
-                    }
-                };
-                jArray.Add(jsonQueryDateRangeFilter);
-            }
-
-            if (!string.IsNullOrEmpty(executionId))
-            {
-                var jsonQueryexecutionId = new JObject
-                {
-                    ["match"] = new JObject
-                    {
-                        ["fields.Data.ExecutionID"] = executionId
-                    }
-                };
-                jArray.Add(jsonQueryexecutionId);
-            }
-
-            if (!string.IsNullOrEmpty(eventLevel))
-            {
-                var jsonQueryexecutionLevel = new JObject
-                {
-                    ["match"] = new JObject
-                    {
-                        ["level"] = eventLevel
-                    }
-                };
-                jArray.Add(jsonQueryexecutionLevel);
-            }
-
-            if (jArray.Count == 0)
-            {
-                var matchAll = new JObject
-                {
-                    ["match_all"] = new JObject()
-                };
-                _query = matchAll.ToString();
-            }
-            else
-            {
-                var objMust = new JObject {{"must", jArray}};
-                var obj = new JObject {{"bool", objMust}};
-                _query = obj.ToString();
-            }
+                KnownTypes = new List<Type> { typeof(object) }
+            });
+            return search;
         }
 
         private static IEnumerable<IAudit> AuditLogs(IEnumerable<object> results, ICollection<Audit> result)
@@ -347,32 +301,33 @@ namespace Warewolf.Auditing.Drivers
             return result;
         }
 
-        private IEnumerable<object> ExecuteDatabase()
+        private IEnumerable<object> ExecuteDatabase(SearchRequestDescriptor<object> search)
         {
             var client = _elasticClient ?? Client();
-            var search = new SearchDescriptor<object>().Query(q => q.Raw(_query));
-            var logEvents = client.Search<object>(search);
-            var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
+            var logEvents = client.Search(search);
+            var sources = logEvents.HitsMetadata?.Hits?.Select(h => h.Source);
             return sources;
         }
 
-        private ElasticClient Client()
+        private ElasticsearchClient Client()
         {
             var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
-            var settings = new ConnectionSettings(uri)
+            var settings = new ElasticsearchClientSettings(uri)
                 .RequestTimeout(TimeSpan.FromMinutes(2))
-                .DefaultIndex(_elasticsearchSource.SearchIndex);
+                .DefaultIndex(_elasticsearchSource.SearchIndex)
+                .DisableDirectStreaming();
             if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
             {
-                settings.BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
+                var basicAuth = new BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
+                settings.Authentication(basicAuth);
             }
 
-            var elasticClient = new ElasticClient(settings);
+            var elasticClient = new ElasticsearchClient(settings);
             var result = elasticClient.Ping();
-            var isValid = result.IsValid;
-            if (!isValid)
+            var isValid = result.IsValidResponse;
+            if (!isValid && result.TryGetOriginalException(out Exception e))
             {
-                throw result.OriginalException;
+                throw e;
             }
             return elasticClient;
         }
