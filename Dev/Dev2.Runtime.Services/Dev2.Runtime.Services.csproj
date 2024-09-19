@@ -511,7 +511,7 @@
       <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
-    <PackageReference Include="MySql.Data" Version="6.10.9" />
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
 	<PackageReference Include="System.Reactive.Core" Version="5.0.0" />
@@ -618,9 +618,7 @@
     <PackageReference Include="Microsoft.Owin.SelfHost">
       <Version>4.2.2</Version>
     </PackageReference>
-    <PackageReference Include="MySql.Data">
-      <Version>6.10.9</Version>
-    </PackageReference>
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

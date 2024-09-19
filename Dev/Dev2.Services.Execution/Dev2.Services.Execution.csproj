@@ -154,7 +154,7 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.118</Version>
     </PackageReference>
-    <PackageReference Include="MySql.Data" Version="6.10.9" />
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
