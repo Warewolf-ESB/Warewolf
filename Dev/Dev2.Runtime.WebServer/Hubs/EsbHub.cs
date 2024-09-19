@@ -31,7 +31,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Nest;
+using Elastic.Clients.Elasticsearch;
 using Warewolf.Resource.Errors;
 #if NETFRAMEWORK
 using Microsoft.AspNet.SignalR.Hubs;
