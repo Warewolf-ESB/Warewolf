@@ -263,7 +263,7 @@ namespace Warewolf.Driver.Serilog.Tests
             //-------------------------Assert------------------------------------
             var dataFromDb = new TestElasticsearchDatabase();
 
-            var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
+             var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
 
             Assert.AreEqual(1,dataList.Count);
 
@@ -390,22 +390,6 @@ namespace Warewolf.Driver.Serilog.Tests
                 }
                 else
                 {
-                    var jArray = new JArray();
-                    var jsonQueryexecutionId = new JObject
-                    {
-                        ["match"] = new JObject
-                        {
-                            ["fields.Data.Audit.ExecutionID"] = executionID
-                        }
-                    };
-                    jArray.Add(jsonQueryexecutionId);
-                    var objMust = new JObject();
-                    objMust.Add("must", jArray);
-
-                    var obj = new JObject();
-                    obj.Add("bool", objMust);
-                    var query = obj.ToString();
-
                     var search = new SearchRequestDescriptor<object>()
                         .Query(q =>
                             q.Bool(b => b
