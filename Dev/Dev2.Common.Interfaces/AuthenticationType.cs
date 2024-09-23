@@ -21,6 +21,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         Anonymous,
         Public,
         Password,
-		API_Key
-	}
+        API_Key
+    }
 }
