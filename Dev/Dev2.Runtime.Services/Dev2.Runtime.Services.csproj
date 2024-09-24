@@ -476,7 +476,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Elastic.Clients.Elasticsearch">
-      <Version>8.15.3</Version>
+      <Version>8.15.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
