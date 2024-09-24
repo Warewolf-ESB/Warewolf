@@ -18,140 +18,140 @@ using Warewolf.Logging;
 
 namespace Warewolf.Driver.Serilog
 {
-    public class SeriLogElasticsearchConfig : ISeriLogConfig
-    {
-        readonly Settings _config;
-        static ILogger _logger;
+	public class SeriLogElasticsearchConfig : ISeriLogConfig
+	{
+		readonly Settings _config;
+		static ILogger _logger;
 
-        public SeriLogElasticsearchConfig(ILoggerSource source)
-        {
-            if (source != null)
-            {
-                _config = new Settings(source as SerilogElasticsearchSource);
+		public SeriLogElasticsearchConfig(ILoggerSource source)
+		{
+			if (source != null)
+			{
+				_config = new Settings(source as SerilogElasticsearchSource);
 
-                _logger = CreateLogger();
-            }
-            else
-            {
-                _logger = new LoggerConfiguration().CreateLogger();
-            }
-        }
-        private ILogger CreateLogger()
-        {
-            var detectElasticsearchVersion = !string.IsNullOrEmpty(_config.Url) && (_config.Url.StartsWith("http://") || _config.Url.StartsWith("https://"));
+				_logger = CreateLogger();
+			}
+			else
+			{
+				_logger = new LoggerConfiguration().CreateLogger();
+			}
+		}
+		private ILogger CreateLogger()
+		{
+			var detectElasticsearchVersion = !string.IsNullOrEmpty(_config.Url) && (_config.Url.StartsWith("http://") || _config.Url.StartsWith("https://"));
 
-            var sinkOptions = new ElasticsearchSinkOptions(new Uri(_config.Url))
-            {
-                AutoRegisterTemplate = true,
-                DetectElasticsearchVersion = detectElasticsearchVersion,
-                RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
-                IndexDecider = (e, o) => _config.SearchIndex,
-            };
-            
-            if(_config.AuthenticationType == AuthenticationType.Password)
-            {
-                sinkOptions.ModifyConnectionSettings = x => x.BasicAuthentication(_config.Username, _config.Password);
-            }
+			var sinkOptions = new ElasticsearchSinkOptions(new Uri(_config.Url))
+			{
+				AutoRegisterTemplate = true,
+				DetectElasticsearchVersion = detectElasticsearchVersion,
+				RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
+				IndexDecider = (e, o) => _config.SearchIndex,
+			};
 
-            return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(sinkOptions))
-                .CreateLogger();
-        }
+			if (_config.AuthenticationType == AuthenticationType.Password)
+			{
+				sinkOptions.ModifyConnectionSettings = x => x.BasicAuthentication(_config.Username, _config.Password);
+			}
 
-        public ILogger Logger
-        {
-            get => _logger;
-        }
+			return new LoggerConfiguration()
+				.MinimumLevel.Verbose()
+				.WriteTo.Sink(new ElasticsearchSink(sinkOptions))
+				.CreateLogger();
+		}
 
-        public string Endpoint { get; set; } = Config.Auditing.Endpoint;
+		public ILogger Logger
+		{
+			get => _logger;
+		}
 
-        private class Settings
-        {
-            public Settings()
-            {
-            }
+		public string Endpoint { get; set; } = Config.Auditing.Endpoint;
 
-            public Settings(SerilogElasticsearchSource source)
-            {
-                Url = source.HostName + ":" + source.Port;
-                Password = source.Password;
-                Username = source.Username;
-                AuthenticationType = source.AuthenticationType;
-                SearchIndex = source.SearchIndex;
-            }
+		private class Settings
+		{
+			public Settings()
+			{
+			}
 
-            public string SearchIndex { get; set; }
+			public Settings(SerilogElasticsearchSource source)
+			{
+				Url = source.HostName + ":" + source.Port;
+				Password = source.Password;
+				Username = source.Username;
+				AuthenticationType = source.AuthenticationType;
+				SearchIndex = source.SearchIndex;
+			}
 
-            public string Password { get; }
-            public string Username { get; }
-            public AuthenticationType AuthenticationType { get; }
-            public string Url { get; }
-        }
-    }
+			public string SearchIndex { get; set; }
 
-    public class SerilogElasticsearchSource : ILoggerSource
-    {
-        private Guid _resourceId;
-        private string _resourceName;
-        private string _hostName;
-        private string _port;
-        private string _password;
-        private string _username;
-        private AuthenticationType _authenticationType;
-        private string _searchIndex { get; set; }
+			public string Password { get; }
+			public string Username { get; }
+			public AuthenticationType AuthenticationType { get; }
+			public string Url { get; }
+		}
+	}
 
-        public Guid ResourceID
-        {
-            get => _resourceId;
-            set => _resourceId = value;
-        }
+	public class SerilogElasticsearchSource : ILoggerSource
+	{
+		private Guid _resourceId;
+		private string _resourceName;
+		private string _hostName;
+		private string _port;
+		private string _password;
+		private string _username;
+		private AuthenticationType _authenticationType;
+		private string _searchIndex { get; set; }
 
-        public string ResourceName
-        {
-            get => _resourceName;
-            set => _resourceName = value;
-        }
+		public Guid ResourceID
+		{
+			get => _resourceId;
+			set => _resourceId = value;
+		}
 
-        public string HostName
-        {
-            get => _hostName;
-            set => _hostName = value;
-        }
+		public string ResourceName
+		{
+			get => _resourceName;
+			set => _resourceName = value;
+		}
 
-        public string Port
-        {
-            get => _port;
-            set => _port = value;
-        }
+		public string HostName
+		{
+			get => _hostName;
+			set => _hostName = value;
+		}
 
-        public string SearchIndex
-        {
-            get => _searchIndex;
-            set => _searchIndex = value;
-        }
+		public string Port
+		{
+			get => _port;
+			set => _port = value;
+		}
 
-        public AuthenticationType AuthenticationType
-        {
-            get => _authenticationType;
-            set => _authenticationType = value;
-        }
+		public string SearchIndex
+		{
+			get => _searchIndex;
+			set => _searchIndex = value;
+		}
 
-        public string Password
-        {
-            get => _password;
-            set => _password = value;
-        }
+		public AuthenticationType AuthenticationType
+		{
+			get => _authenticationType;
+			set => _authenticationType = value;
+		}
 
-        public string Username
-        {
-            get => _username;
-            set => _username = value;
-        }
+		public string Password
+		{
+			get => _password;
+			set => _password = value;
+		}
 
-        public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
-        {
-            return new SeriLogConnection(loggerConfig);
-        }
-    }
+		public string Username
+		{
+			get => _username;
+			set => _username = value;
+		}
+
+		public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
+		{
+			return new SeriLogConnection(loggerConfig);
+		}
+	}
 }
