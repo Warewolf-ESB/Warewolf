@@ -60,7 +60,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(TransportException))]
+        [ExpectedException(typeof(HttpRequestException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty,
@@ -82,8 +82,8 @@ namespace Warewolf.Auditing.Tests
             var match_all = new JObject
             {
                 ["$id"] = "1",
-                ["$type"] = "Elastic.Clients.Elasticsearch.SearchRequestDescriptor`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
-            };
+                ["$type"] = "Elastic.Clients.Elasticsearch.SearchRequestDescriptor`1[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+			};
 
             Assert.AreEqual(match_all.ToString(), auditQueryable.Query);
         }
