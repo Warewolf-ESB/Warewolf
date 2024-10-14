@@ -8,6 +8,13 @@ Param(
   [switch]$Cleanup,
   [switch]$Anonymous
 )
+if ($env:EXCLUDE_EXAMPLES -eq 'true' -or $env:EXCLUDE_EXAMPLES -eq 'True' -or $env:EXCLUDE_EXAMPLES -eq 'TRUE') {
+	Remove-Item -Path "C:\programdata\warewolf\resources\Examples" -Recurse -Force
+	Remove-Item -Path "C:\programdata\warewolf\resources\Hello World.bite" -Force
+	Remove-Item -Path "C:\programdata\warewolf\resources\Shared Resources Server.bite" -Force
+	Remove-Item -Path "C:\Server\Resources - Release" -Recurse -Force
+	Remove-Item -Path "C:\Server\Resources" -Recurse -Force
+}
 if ($Username -eq $null -or $Username -eq "" -or $Anonymous.IsPresent) {
     $IsAnonymous = $true
 }
