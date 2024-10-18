@@ -150,28 +150,19 @@ if ($WarewolfServerService) {
 	sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 }
 sc.exe start "Warewolf Server"
+$LoopCounter = 0
+$LoopCounterMax = 30
+if ($Coverage) {
+	$LoopCounterMax = 60
+}
 if ($NoExit.IsPresent) {
-	if (Test-Path "C:\Windows\System32\pauseloop.exe") {	
-		Write-Host Warewolf Server started successfully.
-
-		Write-Host 5. Read Server Logs started.
-		Get-Content -Path "C:\ProgramData\Warewolf\Server Log\wareWolf-Server.log" -Tail 5 -Wait
-		Write-Host 6. Read Server Logs ended.
-		
-		&"C:\Windows\System32\pauseloop.exe"
-	} else {
-		if (Test-Path "$PSScriptRoot\pauseloop.exe") {
-			&"$PSScriptRoot\pauseloop.exe"
-		} else {
-			ping -t localhost
-		}
+	while (!(Test-Path "C:\programdata\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax)
+	{
+		Write-Host Still waiting for server to start...
+		Start-Sleep 5
 	}
+	Get-Content "C:\programdata\Warewolf\Server Log\warewolf-server.log" -Wait
 } else {
-	$LoopCounter = 0
-	$LoopCounterMax = 30
-	if ($Coverage) {
-		$LoopCounterMax = 60
-	}
 	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
 		Write-Host Still waiting for server to start...
 		Start-Sleep 6
