@@ -311,7 +311,7 @@ namespace Dev2.Services.Execution
                 var i = 0;
                 for (; i < tokens.Count; i++)
                 {
-                    if (tokens[i].Type == TSQL.Tokens.TSQLTokenType.Keyword && tokens[i].Text.ToUpper() == "FOR")
+                    if (tokens[i] != null && tokens[i].Type == TSQL.Tokens.TSQLTokenType.Keyword && tokens[i].Text.ToUpper() == "FOR")
                     {
                         i++;
                         result = (i < tokens.Count && tokens[i].Type == TSQL.Tokens.TSQLTokenType.Identifier && tokens[i].Text == "XML");
