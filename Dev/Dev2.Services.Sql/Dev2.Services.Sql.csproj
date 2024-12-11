@@ -129,6 +129,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.9142.1" />
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>

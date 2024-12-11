@@ -2566,6 +2566,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="1.4.1" />
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.9142.1" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

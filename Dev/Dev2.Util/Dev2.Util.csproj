@@ -87,6 +87,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.9142.1" />
     <PackageReference Include="TSQL.Parser">
       <Version>2.6.0</Version>
     </PackageReference>

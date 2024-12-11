@@ -529,6 +529,7 @@
     <PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.3912.1204</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.9142.1" />
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>

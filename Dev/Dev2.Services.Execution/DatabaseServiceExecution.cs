@@ -36,8 +36,9 @@ using System.Transactions;
 using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using TSQL;
 using System.Linq;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
+using static Dropbox.Api.TeamLog.SharedLinkAccessLevel;
 
 namespace Dev2.Services.Execution
 {
@@ -297,27 +298,37 @@ namespace Dev2.Services.Execution
         {
             bool result = false;
             var procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
-            var statements = TSQLStatementReader.ParseStatements(procSqlScript);
-            foreach (var statement in statements)
+			TSql160Parser parser = new TSql160Parser(false);
+            IList<ParseError> errors;
+            TSqlFragment fragment;
+			using (TextReader reader = new StringReader(procSqlScript))
+			{
+				fragment = parser.Parse(reader, out errors);
+			}
+			List<TSqlStatement> statements = new List<TSqlStatement>();
+			TSqlScript sqlScriptFragment = fragment as TSqlScript;
+			foreach (var statement in new List<TSqlStatement>(sqlScriptFragment.Batches.SelectMany(b => b.Statements)))
             {
-                var tokens = statement.Tokens;
-                var cnt = tokens.Count;
+				var scriptGenerator = new Sql150ScriptGenerator();
+				scriptGenerator.GenerateScript(statement, out string sqlText);
 
-                if (cnt < 3)
-                {
-                    continue;
-                }
-
-                var i = 0;
-                for (; i < tokens.Count; i++)
-                {
-                    if (tokens[i] != null && tokens[i].Type == TSQL.Tokens.TSQLTokenType.Keyword && tokens[i].Text.ToUpper() == "FOR")
-                    {
-                        i++;
-                        result = (i < tokens.Count && tokens[i].Type == TSQL.Tokens.TSQLTokenType.Identifier && tokens[i].Text == "XML");
-                    }
-                }
-            }
+				var tokens = statement.ScriptTokenStream;
+				if (tokens == null || tokens.Count < 3)
+				{
+					continue;
+				}
+				for (int i = 0; i < tokens.Count; i++)
+				{
+					if (tokens[i] != null && tokens[i].TokenType == TSqlTokenType.For && tokens[i].Text.ToUpper() == "FOR")
+					{
+						i++;
+						if (i < tokens.Count && tokens[i].TokenType == TSqlTokenType.Identifier && tokens[i].Text.ToUpper() == "XML")
+						{
+							result = true;
+						}
+					}
+				}
+			}
             return result;
         }
 

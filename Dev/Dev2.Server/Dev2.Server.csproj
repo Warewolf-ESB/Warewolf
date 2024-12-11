@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -473,6 +473,7 @@
     <PackageReference Include="Microsoft.Owin.SelfHost">
       <Version>4.2.2</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.9142.1" />
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>
