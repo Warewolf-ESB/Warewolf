@@ -93,6 +93,15 @@ namespace Dev2.Data.ServiceModel
                 );
             }
 
+            // Appending password property for API_Key AuthType
+            if (AuthenticationType == AuthenticationType.API_Key)
+            {
+                connectionString = string.Join(";",
+                    connectionString,
+                    $"Password={Password}"
+                );
+            }
+
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
                 new XAttribute("Type", ResourceType),
