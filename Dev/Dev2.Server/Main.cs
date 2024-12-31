@@ -94,7 +94,7 @@ namespace Dev2
             Console.WriteLine();
             if (EnvironmentVariables.IsServerOnline)
             {
-                Console.WriteLine("Press <ENTER> to terminate service and/or web server if started");
+                Console.WriteLine("Press <ENTER> to terminate web server");
                 Pause();
             }
             else
