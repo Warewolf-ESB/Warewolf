@@ -288,38 +288,38 @@ if __name__ == '__main__':
 		net stop hns
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
-function Start-SFTPServer {
-	if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORCOPYFILETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORCREATEFILETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORCREATEFILETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORDELETEFILETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORDELETEFILETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORMOVEFILETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORMOVEFILETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORRENAMETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORRENAMETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORTESTING")) {
-		mkdir "C:\ftps_home\dev2\FORTESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
-		mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORWRITEFILETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORWRITEFILETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORZIPTESTING")) {
-		mkdir "C:\ftps_home\dev2\FORZIPTESTING"
-	}
-	if (!(Test-Path "C:\ssh\ssh_host_ed25519_key")) {
+	if ($StartSFTPServer.IsPresent) {
+	  if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORCOPYFILETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORCREATEFILETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORCREATEFILETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORDELETEFILETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORDELETEFILETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORMOVEFILETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORMOVEFILETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORRENAMETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORRENAMETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORTESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORTESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORWRITEFILETESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORWRITEFILETESTING"
+	  }
+	  if (!(Test-Path "C:\ftps_home\dev2\FORZIPTESTING")) {
+	  	mkdir "C:\ftps_home\dev2\FORZIPTESTING"
+	  }
+	  if (!(Test-Path "C:\ssh\ssh_host_ed25519_key")) {
 @"
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -329,8 +329,8 @@ AAAEBht+i09TToMobRGIkbJxFUXlhY1c6B3Cw+Stv7/mR7CiDdtjmzqEBbn3L1fMEMM4cc
 OLASHXC14VJMYbLn40iVAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQIDBA==
 -----END OPENSSH PRIVATE KEY-----
 "@ | Out-File -LiteralPath "C:\ssh\ssh_host_ed25519_key" -Encoding ascii -Force
-	}
-	if (!(Test-Path "C:\ssh_host_rsa_key")) {
+	  }
+	  if (!(Test-Path "C:\ssh_host_rsa_key")) {
 @"
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
@@ -382,9 +382,9 @@ VSZ+cknlyDdpFHvdPKfpZiKnSFHRMn2fO9yFXMVWCkr+hCfKqLEVGz6ZpntOKtlmrzP0F/
 L0UpTjXDkDrDAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQ==
 -----END OPENSSH PRIVATE KEY-----
 "@ | Out-File -LiteralPath "C:\ssh_host_rsa_key" -Encoding ascii -Force
-	}
-	pip install 'sftpserver==0.3'
-	if (!(Test-Path "C:\ftps_entrypoint.py")) {
+	  }
+	  pip install 'sftpserver==0.3'
+	  if (!(Test-Path "C:\ftps_entrypoint.py")) {
 @"
 import time
 import socket
@@ -433,9 +433,9 @@ def main():
 if __name__ == '__main__':
     main()
 "@ | Out-File -LiteralPath "C:\sftp_entrypoint.py" -Encoding utf8 -Force
+	  }
+	  pythonw -u "C:\sftp_entrypoint.py"
 	}
-	pythonw -u "C:\sftp_entrypoint.py"
-}
     if ($RetryRebuild.IsPresent) {
 		if (Test-Path "$PWD\..\..\Compile.ps1") {
 			&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
