@@ -319,18 +319,10 @@ if __name__ == '__main__':
 	  if (!(Test-Path "C:\ftps_home\dev2\FORZIPTESTING")) {
 	  	mkdir "C:\ftps_home\dev2\FORZIPTESTING"
 	  }
-	  if (!(Test-Path "C:\ssh\ssh_host_ed25519_key")) {
-@"
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACAg3bY5s6hAW59y9XzBDDOHHDiwEh1wteFSTGGy5+NIlQAAAJhplMnVaZTJ
-1QAAAAtzc2gtZWQyNTUxOQAAACAg3bY5s6hAW59y9XzBDDOHHDiwEh1wteFSTGGy5+NIlQ
-AAAEBht+i09TToMobRGIkbJxFUXlhY1c6B3Cw+Stv7/mR7CiDdtjmzqEBbn3L1fMEMM4cc
-OLASHXC14VJMYbLn40iVAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQIDBA==
------END OPENSSH PRIVATE KEY-----
-"@ | Out-File -LiteralPath "C:\ssh\ssh_host_ed25519_key" -Encoding ascii -Force
+	  if (!(Test-Path "C:\ssh")) {
+		  mkdir "C:\ssh"
 	  }
-	  if (!(Test-Path "C:\ssh_host_rsa_key")) {
+	  if (!(Test-Path "C:\ssh\ssh_host_rsa_key")) {
 @"
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
@@ -381,7 +373,7 @@ P3qFP/nAoyW5CORVthDi4X6ebJLYjzAsHBULwZEKo772B2VOjDMJxpn3CtxUSl7l7mMjaV
 VSZ+cknlyDdpFHvdPKfpZiKnSFHRMn2fO9yFXMVWCkr+hCfKqLEVGz6ZpntOKtlmrzP0F/
 L0UpTjXDkDrDAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQ==
 -----END OPENSSH PRIVATE KEY-----
-"@ | Out-File -LiteralPath "C:\ssh_host_rsa_key" -Encoding ascii -Force
+"@ | Out-File -LiteralPath "C:\ssh\ssh_host_rsa_key" -Encoding ascii -Force
 	  }
 	  pip install 'sftpserver==0.3'
 	  if (!(Test-Path "C:\ftps_entrypoint.py")) {
@@ -404,7 +396,7 @@ class ConnHandlerThd(threading.Thread):
         self._conn = conn
 
     def run(self):
-        host_key = paramiko.RSAKey.from_private_key_file('ssh/ssh_host_rsa_key')
+        host_key = paramiko.RSAKey.from_private_key_file('c:/ssh/ssh_host_rsa_key')
         transport = paramiko.Transport(self._conn)
         transport.add_server_key(host_key)
         transport.set_subsystem_handler(
