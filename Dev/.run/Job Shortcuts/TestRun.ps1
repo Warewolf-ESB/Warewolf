@@ -289,36 +289,37 @@ if __name__ == '__main__':
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
 	if ($StartSFTPServer.IsPresent) {
-	  if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORCOPYFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORCREATEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORCREATEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORDELETEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORDELETEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORMOVEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORMOVEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORRENAMETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORRENAMETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORTESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORWRITEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORWRITEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORZIPTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORZIPTESTING"
-	  }
+		if (!(Test-Path "C:\sftp_home\dev2\FORFILERENAMETESTING")) {
+			mkdir "C:\sftp_home\dev2\FORFILERENAMETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\sftp_home\dev2\FORUNZIPTESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORCOPYFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORCREATEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORCREATEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORDELETEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORDELETEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORMOVEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORMOVEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORRENAMETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORRENAMETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORTESTING")) {
+			mkdir "C:\Builds\SFTPData\FORTESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORWRITEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORWRITEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORZIPTESTING")) {
+			mkdir "C:\Builds\SFTPData\FORZIPTESTING"
+		}
+
 	  if (!(Test-Path "C:\ssh")) {
 		  mkdir "C:\ssh"
 	  }
@@ -375,20 +376,22 @@ L0UpTjXDkDrDAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQ==
 -----END OPENSSH PRIVATE KEY-----
 "@ | Out-File -LiteralPath "C:\ssh\ssh_host_rsa_key" -Encoding ascii -Force
 	  }
+	  pip install 'paramiko'
 	  pip install 'sftpserver==0.3'
-	  if (!(Test-Path "C:\ftps_entrypoint.py")) {
+	  if (!(Test-Path "C:\sftp_entrypoint.py")) {
 @"
 import time
 import socket
-import optparse
-import sys
-import textwrap
-import os
 import paramiko
-
 from sftpserver.stub_sftp import StubServer, StubSFTPServer
-
 import threading
+
+class AuthStubSFTPServer(StubSFTPServer):
+    def check_auth_password(self, username, password):
+        if username == "dev2" and password == "Q/ulw&]":
+            self.root = "C:/sftp_home/dev2"
+            return paramiko.AUTH_SUCCESSFUL
+        return paramiko.AUTH_FAILED
 
 class ConnHandlerThd(threading.Thread):
     def __init__(self, conn):
@@ -399,8 +402,7 @@ class ConnHandlerThd(threading.Thread):
         host_key = paramiko.RSAKey.from_private_key_file('c:/ssh/ssh_host_rsa_key')
         transport = paramiko.Transport(self._conn)
         transport.add_server_key(host_key)
-        transport.set_subsystem_handler(
-            'sftp', paramiko.SFTPServer, StubSFTPServer)
+        transport.set_subsystem_handler('sftp', paramiko.SFTPServer, AuthStubSFTPServer)
 
         server = StubServer()
         transport.start_server(server=server)
