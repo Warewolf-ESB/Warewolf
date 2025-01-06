@@ -296,28 +296,28 @@ if __name__ == '__main__':
 			mkdir "C:\sftp_home\dev2\FORUNZIPTESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORCOPYFILETESTING"
+			mkdir "C:\sftp_home\dev2\FORCOPYFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORCREATEFILETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORCREATEFILETESTING"
+			mkdir "C:\sftp_home\dev2\FORCREATEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORDELETEFILETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORDELETEFILETESTING"
+			mkdir "C:\sftp_home\dev2\FORDELETEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORMOVEFILETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORMOVEFILETESTING"
+			mkdir "C:\sftp_home\dev2\FORMOVEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORRENAMETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORRENAMETESTING"
+			mkdir "C:\sftp_home\dev2\FORRENAMETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORTESTING")) {
-			mkdir "C:\Builds\SFTPData\FORTESTING"
+			mkdir "C:\sftp_home\dev2\FORTESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORWRITEFILETESTING")) {
-			mkdir "C:\Builds\SFTPData\FORWRITEFILETESTING"
+			mkdir "C:\sftp_home\dev2\FORWRITEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORZIPTESTING")) {
-			mkdir "C:\Builds\SFTPData\FORZIPTESTING"
+			mkdir "C:\sftp_home\dev2\FORZIPTESTING"
 		}
 
 	  if (!(Test-Path "C:\ssh")) {
