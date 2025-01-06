@@ -345,20 +345,21 @@ L0UpTjXDkDrDAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQ==
 -----END OPENSSH PRIVATE KEY-----
 "@ | Out-File -LiteralPath "C:\ssh\ssh_host_rsa_key" -Encoding ascii -Force
 	  }
+	  pip install 'paramiko'
 	  pip install 'sftpserver==0.3'
 	  if (!(Test-Path "C:\sftp_entrypoint.py")) {
 @"
 import time
 import socket
-import optparse
-import sys
-import textwrap
-import os
 import paramiko
-
 from sftpserver.stub_sftp import StubServer, StubSFTPServer
-
 import threading
+
+class AuthStubSFTPServer(StubSFTPServer):
+    def check_auth_password(self, username, password):
+        if username == "dev2" and password == "Q/ulw&]":
+            return paramiko.AUTH_SUCCESSFUL
+        return paramiko.AUTH_FAILED
 
 class ConnHandlerThd(threading.Thread):
     def __init__(self, conn):
@@ -369,8 +370,7 @@ class ConnHandlerThd(threading.Thread):
         host_key = paramiko.RSAKey.from_private_key_file('c:/ssh/ssh_host_rsa_key')
         transport = paramiko.Transport(self._conn)
         transport.add_server_key(host_key)
-        transport.set_subsystem_handler(
-            'sftp', paramiko.SFTPServer, StubSFTPServer)
+        transport.set_subsystem_handler('sftp', paramiko.SFTPServer, AuthStubSFTPServer)
 
         server = StubServer()
         transport.start_server(server=server)
