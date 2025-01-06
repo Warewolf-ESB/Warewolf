@@ -290,145 +290,43 @@ if __name__ == '__main__':
 	}
 	if ($StartSFTPServer.IsPresent) {
 		if (!(Test-Path "C:\sftp_home\dev2\FORFILERENAMETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORFILERENAMETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORFILERENAMETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORUNZIPTESTING")) {
-			mkdir "C:\sftp_home\dev2\FORUNZIPTESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORUNZIPTESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORCOPYFILETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORCOPYFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORCREATEFILETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORCREATEFILETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORCREATEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORDELETEFILETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORDELETEFILETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORDELETEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORMOVEFILETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORMOVEFILETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORMOVEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORRENAMETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORRENAMETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORRENAMETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORTESTING")) {
-			mkdir "C:\sftp_home\dev2\FORTESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORTESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORWRITEFILETESTING")) {
-			mkdir "C:\sftp_home\dev2\FORWRITEFILETESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORWRITEFILETESTING"
 		}
 		if (!(Test-Path "C:\sftp_home\dev2\FORZIPTESTING")) {
-			mkdir "C:\sftp_home\dev2\FORZIPTESTING"
+			New-Item -ItemType Directory -Path "C:\sftp_home\dev2\FORZIPTESTING"
 		}
-
-	  if (!(Test-Path "C:\ssh")) {
-		  mkdir "C:\ssh"
-	  }
-	  if (!(Test-Path "C:\ssh\ssh_host_rsa_key")) {
-@"
------BEGIN OPENSSH PRIVATE KEY-----
-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
------END OPENSSH PRIVATE KEY-----
-"@ | Out-File -LiteralPath "C:\ssh\ssh_host_rsa_key" -Encoding ascii -Force
-	  }
-	  pip install 'paramiko'
-	  pip install 'sftpserver==0.3'
-	  if (!(Test-Path "C:\sftp_entrypoint.py")) {
-@"
-import time
-import socket
-import paramiko
-from sftpserver.stub_sftp import StubServer, StubSFTPServer
-import threading
-
-class AuthStubSFTPServer(StubSFTPServer):
-    def check_auth_password(self, username, password):
-        if username == "dev2" and password == "Q/ulw&]":
-            self.root = "C:/sftp_home/dev2"
-            return paramiko.AUTH_SUCCESSFUL
-        return paramiko.AUTH_FAILED
-
-class ConnHandlerThd(threading.Thread):
-    def __init__(self, conn):
-        threading.Thread.__init__(self)
-        self._conn = conn
-
-    def run(self):
-        host_key = paramiko.RSAKey.from_private_key_file('c:/ssh/ssh_host_rsa_key')
-        transport = paramiko.Transport(self._conn)
-        transport.add_server_key(host_key)
-        transport.set_subsystem_handler('sftp', paramiko.SFTPServer, AuthStubSFTPServer)
-
-        server = StubServer()
-        transport.start_server(server=server)
-
-        channel = transport.accept()
-        while transport.is_active():
-            time.sleep(1)
-            
-def main():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
-    server_socket.bind(('0.0.0.0', 22))
-    server_socket.listen(10)
-
-    while True:
-        conn, addr = server_socket.accept()
-
-        srv_thd = ConnHandlerThd(conn)
-        srv_thd.setDaemon(True)
-        srv_thd.start()
-    
-if __name__ == '__main__':
-    main()
-"@ | Out-File -LiteralPath "C:\sftp_entrypoint.py" -Encoding utf8 -Force
-	  }
-	  pythonw -u "C:\sftp_entrypoint.py"
+		Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+		Start-Service sshd
+		Set-Service -Name sshd -StartupType 'Automatic'
+		# Configure SSH to allow password authentication
+		(Get-Content -Path 'C:\ProgramData\ssh\sshd_config') -replace '#PasswordAuthentication yes', 'PasswordAuthentication yes' | Set-Content -Path 'C:\ProgramData\ssh\sshd_config'
+    	New-Item -ItemType Directory -Path 'C:\sftp_home\dev2' -Force
+    	New-LocalUser -Name dev2 -Password (ConvertTo-SecureString "Q/ulw&]" -AsPlainText -Force) -HomeDirectory 'C:\sftp_home\dev2' -AccountNeverExpires
+		Restart-Service sshd
 	}
     if ($RetryRebuild.IsPresent) {
 		if (Test-Path "$PWD\..\..\Compile.ps1") {
