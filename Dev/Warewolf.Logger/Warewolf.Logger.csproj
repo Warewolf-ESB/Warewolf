@@ -45,7 +45,7 @@
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
   </ItemGroup>
-  <ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 </Project>

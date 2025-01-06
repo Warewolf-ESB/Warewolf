@@ -16,7 +16,9 @@ using Warewolf.Data;
 using Dev2.Common.Interfaces.Runtime.WebServer;
 using System;
 using Dev2.Data;
+#if NETFRAMEWORK
 using System.Web.UI;
+#endif
 
 namespace Dev2.Runtime.WebServer
 {
