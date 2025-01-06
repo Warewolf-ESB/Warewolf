@@ -289,36 +289,6 @@ if __name__ == '__main__':
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
 	if ($StartSFTPServer.IsPresent) {
-	  if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORCOPYFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORCREATEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORCREATEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORDELETEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORDELETEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORMOVEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORMOVEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORRENAMETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORRENAMETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORTESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORWRITEFILETESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORWRITEFILETESTING"
-	  }
-	  if (!(Test-Path "C:\ftps_home\dev2\FORZIPTESTING")) {
-	  	mkdir "C:\ftps_home\dev2\FORZIPTESTING"
-	  }
 	  if (!(Test-Path "C:\ssh")) {
 		  mkdir "C:\ssh"
 	  }
@@ -376,7 +346,7 @@ L0UpTjXDkDrDAAAAEXJvb3RAMTdmMjkyN2ZiY2ZlAQ==
 "@ | Out-File -LiteralPath "C:\ssh\ssh_host_rsa_key" -Encoding ascii -Force
 	  }
 	  pip install 'sftpserver==0.3'
-	  if (!(Test-Path "C:\ftps_entrypoint.py")) {
+	  if (!(Test-Path "C:\sftp_entrypoint.py")) {
 @"
 import time
 import socket
