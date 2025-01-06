@@ -289,6 +289,37 @@ if __name__ == '__main__':
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
 	if ($StartSFTPServer.IsPresent) {
+		if (!(Test-Path "C:\sftp_home\dev2\FORFILERENAMETESTING")) {
+			mkdir "C:\sftp_home\dev2\FORFILERENAMETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\sftp_home\dev2\FORUNZIPTESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORCOPYFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORCOPYFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORCREATEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORCREATEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORDELETEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORDELETEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORMOVEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORMOVEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORRENAMETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORRENAMETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORTESTING")) {
+			mkdir "C:\Builds\SFTPData\FORTESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORWRITEFILETESTING")) {
+			mkdir "C:\Builds\SFTPData\FORWRITEFILETESTING"
+		}
+		if (!(Test-Path "C:\sftp_home\dev2\FORZIPTESTING")) {
+			mkdir "C:\Builds\SFTPData\FORZIPTESTING"
+		}
+
 	  if (!(Test-Path "C:\ssh")) {
 		  mkdir "C:\ssh"
 	  }
@@ -358,6 +389,7 @@ import threading
 class AuthStubSFTPServer(StubSFTPServer):
     def check_auth_password(self, username, password):
         if username == "dev2" and password == "Q/ulw&]":
+            self.root = "C:/sftp_home/dev2"
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
 
