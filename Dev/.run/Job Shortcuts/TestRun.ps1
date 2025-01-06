@@ -325,7 +325,11 @@ if __name__ == '__main__':
 		# Configure SSH to allow password authentication
 		(Get-Content -Path 'C:\ProgramData\ssh\sshd_config') -replace '#PasswordAuthentication yes', 'PasswordAuthentication yes' | Set-Content -Path 'C:\ProgramData\ssh\sshd_config'
     	New-Item -ItemType Directory -Path 'C:\sftp_home\dev2' -Force
-    	New-LocalUser -Name dev2 -Password (ConvertTo-SecureString "Q/ulw&]" -AsPlainText -Force) -HomeDirectory 'C:\sftp_home\dev2' -AccountNeverExpires
+    	New-LocalUser -Name dev2 -Password (ConvertTo-SecureString "Q/ulw&]" -AsPlainText -Force) -AccountNeverExpires
+    net user dev2 /homedir:C:\sftp_home\dev2
+	    $userSID = (Get-LocalUser -Name dev2).Sid
+		    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\$userSID" -Name "ProfileImagePath" -Value "C:\sftp_home\dev2"
+			    icacls 'C:\sftp_home\dev2' /grant dev2:F
 		Restart-Service sshd
 	}
     if ($RetryRebuild.IsPresent) {
