@@ -353,13 +353,16 @@ namespace Dev2.Data.PathOperations
                 if (!string.IsNullOrEmpty(path.PrivateKeyFile))
                 {
                     var keyFile = string.IsNullOrEmpty(path.Password) ? new PrivateKeyFile(path.PrivateKeyFile) : new PrivateKeyFile(path.PrivateKeyFile, path.Password);
-                    var keyFiles = new[] { keyFile };
+					var keyFiles = new[] { keyFile };
                     methods.Add(new PrivateKeyAuthenticationMethod(path.Username, keyFiles));
                 }
                 var con = new ConnectionInfo(hostName, 22, path.Username, methods.ToArray());
                 var sftp = new SftpClient(con) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutSeconds) };
-
-                try
+                sftp.HostKeyReceived += (sender, enActionType) => 
+                {
+                    enActionType.CanTrust = true;
+				};
+				try
                 {
                     sftp.Connect();
                 }
