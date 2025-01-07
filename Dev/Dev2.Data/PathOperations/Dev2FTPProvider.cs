@@ -358,10 +358,6 @@ namespace Dev2.Data.PathOperations
                 }
                 var con = new ConnectionInfo(hostName, 22, path.Username, methods.ToArray());
                 var sftp = new SftpClient(con) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutSeconds) };
-                sftp.HostKeyReceived += (sender, enActionType) => 
-                {
-                    enActionType.CanTrust = true;
-                };
                 try
                 {
                     sftp.Connect();
