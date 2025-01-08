@@ -1,4 +1,4 @@
-﻿
+﻿#if !NETFRAMEWORK
 using System;
 using System.Net;
 using System.Net.Http;
@@ -137,3 +137,4 @@ namespace Dev2.Runtime.WebServer.Security
         }
     }
 }
+#endif

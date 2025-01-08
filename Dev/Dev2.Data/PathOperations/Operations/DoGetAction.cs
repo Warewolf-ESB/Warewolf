@@ -40,7 +40,11 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override Stream ExecuteOperation()
         {
+#if NETFRAMEWORK
+            if (_impersonatedUser != null)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
             {
                 return ExecuteOperationWithAuth();
             }
@@ -52,21 +56,27 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override Stream ExecuteOperationWithAuth()
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<Stream>(() =>
+#endif
+            {
+                try
                 {
-                    try
-                    {
-                        return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
-                    }
-                    catch (Exception exception)
-                    {
-                        Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
-                        throw new Exception(exception.Message, exception);
-                    }
+                    return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
                 }
+                catch (Exception exception)
+                {
+                    Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                    throw new Exception(exception.Message, exception);
+                }
+            }
+#if !NETFRAMEWORK
             );
             return null;
+#endif
         }
     }
 }

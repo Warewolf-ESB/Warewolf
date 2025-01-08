@@ -11,14 +11,39 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
 using Hangfire.SqlServer;
+using HangfireServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+#if NETFRAMEWORK
+[assembly: OwinStartup(typeof(Dashboard))]
+#endif
 namespace HangfireServer
 {
     public class Dashboard
-    {
-        WebApplicationBuilder _builder = null;   
+	{
+#if NETFRAMEWORK
+        [ExcludeFromCodeCoverage]
+        public void Configuration(IAppBuilder app)
+        {
+            app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
+            {
+                Authorization = new[] { new HangFireAuthorizationFilter () },
+                IgnoreAntiforgeryToken = true
+            });
+            
+            if(Dev2.Common.Config.Persistence.UseAsServer)
+            {
+                app.UseHangfireServer(new BackgroundJobServerOptions()
+                {
+                    ServerName = Dev2.Common.Config.Persistence.ServerName,
+                    ServerTimeout = TimeSpan.FromMinutes(10),
+                    WorkerCount = Environment.ProcessorCount
+                });
+            }
+        }
+#else
+		WebApplicationBuilder _builder = null;   
         public Dashboard()
         {
             _builder = WebApplication.CreateBuilder();
@@ -56,5 +81,6 @@ namespace HangfireServer
 
             app.StartAsync().Wait();
         }
-    }
+#endif
+	}
 }

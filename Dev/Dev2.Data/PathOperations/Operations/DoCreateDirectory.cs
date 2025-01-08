@@ -47,7 +47,11 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperation()
         {
+#if NETFRAMEWORK
+            if (_impersonatedUser != null)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
             {
                 return ExecuteOperationWithAuth();
             }
@@ -61,32 +65,38 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
+#endif
+            {
+                try
                 {
-                    try
+                    if (_handleOverwrite == null)
                     {
-                        if (_handleOverwrite == null)
-                        {
-                            _dirWrapper.CreateDirectory(_path.Path);
-                            return true;
-                        }
-                        if (DirectoryExist(_path, _dirWrapper))
-                        {
-                            _handleOverwrite.ExecuteOperation();
-                        }
                         _dirWrapper.CreateDirectory(_path.Path);
                         return true;
-
                     }
-                    catch (Exception exception)
+                    if (DirectoryExist(_path, _dirWrapper))
                     {
-                        Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
-                        throw;
+                        _handleOverwrite.ExecuteOperation();
                     }
+                    _dirWrapper.CreateDirectory(_path.Path);
+                    return true;
+
                 }
+                catch (Exception exception)
+                {
+                    Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
+                    throw;
+                }
+            }
+#if !NETFRAMEWORK
             );
             return false;
+#endif
         }
     }
 }

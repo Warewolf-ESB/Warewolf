@@ -45,7 +45,11 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperation()
         {
+#if NETFRAMEWORK
+            if (_impersonatedUser != null)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
             {
                 return ExecuteOperationWithAuth();
             }
@@ -57,10 +61,14 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
-                {
-                    try
+#endif
+            {
+                try
                     {
                         return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory
                             ? _dirWrapper.Exists(_path.Path)
@@ -72,9 +80,10 @@ namespace Dev2.Data.PathOperations.Operations
                         return false;
                     }
                 }
-                );
-
+#if !NETFRAMEWORK
+            );
             return false;
+#endif
         }
     }
 }

@@ -77,7 +77,11 @@ namespace Dev2.Data.PathOperations.Operations
             _fileLock.EnterWriteLock();
             try
             {
+#if NETFRAMEWORK
+                if (_impersonatedUser != null)
+#else
                 if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
                 {
                     return ExecuteOperationWithAuth(_currentStream, destination);
                 }
@@ -92,13 +96,19 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<int>(() =>
-                {
-                    return WriteData(src, dst);
-                }
+#endif
+            {
+                return WriteData(src, dst);
+            }
+#if !NETFRAMEWORK
                 );
             return 0;
+#endif
         }
 
         int WriteData(Stream src, IActivityIOPath dst)
