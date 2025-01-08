@@ -12,48 +12,64 @@
 using System;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-//using Microsoft.AspNet.SignalR;
-//using Microsoft.AspNet.SignalR.Hubs;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
+#else
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Dev2.Runtime.WebServer.Security
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class AuthorizeHubAttribute : Attribute//,  IAuthorizeHubConnection, IAuthorizeHubMethodInvocation
-    {
-        public AuthorizeHubAttribute()
+    public class AuthorizeHubAttribute : Attribute
+#if NETFRAMEWORK
+        ,  IAuthorizeHubConnection, IAuthorizeHubMethodInvocation
+#endif
+	{
+		public AuthorizeHubAttribute()
             : this(ServerAuthorizationService.Instance)
         {
         }
 
-        public AuthorizeHubAttribute(Dev2.Services.Security.IAuthorizationService authorizationService)
-        {
-            VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
+#if NETFRAMEWORK
+		public AuthorizeHubAttribute(IAuthorizationService authorizationService)
+#else
+		public AuthorizeHubAttribute(Dev2.Services.Security.IAuthorizationService authorizationService)
+#endif
+		{
+			VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
             Service = authorizationService;
         }
 
-        public Dev2.Services.Security.IAuthorizationService Service { get; private set; }
+#if NETFRAMEWORK
+		public IAuthorizationService Service { get; private set; }
+#else
+		public Dev2.Services.Security.IAuthorizationService Service { get; private set; }
+#endif
 
 
-        //public bool AuthorizeHubConnection(HubDescriptor hubDescriptor, IRequest request)
-        //{
-        //    VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
-        //    VerifyArgument.IsNotNull("request", request);
-        //    var result = request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
-        //    return result;
-        //}
+#if NETFRAMEWORK
+		public bool AuthorizeHubConnection(HubDescriptor hubDescriptor, IRequest request)
+		{
+		    VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
+		    VerifyArgument.IsNotNull("request", request);
+		    var result = request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
+		    return result;
+		}
 
-        //public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext hubIncomingInvokerContext, bool appliesToMethod)
-        //{
-        //    VerifyArgument.IsNotNull("context", hubIncomingInvokerContext);
-        //    return Service.IsAuthorized(hubIncomingInvokerContext.GetAuthorizationRequest());
-        //}
-    }
-
-    public class AuthorizeHubRequirement : AuthorizationHandler<AuthorizeHubRequirement, HubInvocationContext>, IAuthorizationRequirement
+		public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext hubIncomingInvokerContext, bool appliesToMethod)
+		{
+		    VerifyArgument.IsNotNull("context", hubIncomingInvokerContext);
+		    return Service.IsAuthorized(hubIncomingInvokerContext.GetAuthorizationRequest());
+		}
+	}
+#else
+	}
+	public class AuthorizeHubRequirement : AuthorizationHandler<AuthorizeHubRequirement, HubInvocationContext>, IAuthorizationRequirement
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizeHubRequirement requirement, HubInvocationContext resource)
         {
@@ -87,4 +103,5 @@ namespace Dev2.Runtime.WebServer.Security
             return uriBuilder.Uri;
         }
     }
+#endif
 }

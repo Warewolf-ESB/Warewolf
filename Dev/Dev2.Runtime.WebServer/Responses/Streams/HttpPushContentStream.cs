@@ -10,7 +10,9 @@
 */
 
 
+#if !NETFRAMEWORK
 using Boxed.AspNetCore;
+#endif
 using System;
 using System.IO;
 using System.Net;

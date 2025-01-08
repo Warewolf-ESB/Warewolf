@@ -11,17 +11,20 @@
 
 using Dev2.Common;
 using Dev2.Web;
+#if NETFRAMEWORK
+using System.Web.Http.Controllers;
+#else
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
+using System.Net.Http.Formatting;
+#endif
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Security.Principal;
 using System.Text;
-//using System.Web.Http.Controllers;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -37,7 +40,8 @@ namespace Dev2.Runtime.WebServer
             return user != null && user.Identity.IsAuthenticated;
         }
 
-        public static bool IsAnonymous(this IPrincipal user)
+#if !NETFRAMEWORK
+		public static bool IsAnonymous(this IPrincipal user)
         {
             bool isAnonymous = false;
 
@@ -48,6 +52,7 @@ namespace Dev2.Runtime.WebServer
 
             return isAnonymous;
         }
+#endif
 
         public static Encoding GetContentEncoding(this HttpContent content)
         {
@@ -85,6 +90,12 @@ namespace Dev2.Runtime.WebServer
                           : new StringContent(message, System.Text.Encoding.UTF8, "application/json");
         }
 
+#if NETFRAMEWORK
+		public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
+		{
+			context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
+		}
+#else
         public static HttpResponseMessage CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Mvc.ActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {
             var errorResponse = CreateWarewolfErrorResponse(context.HttpContext.Request.ToUri(), errorResponseArgs);
@@ -114,9 +125,7 @@ namespace Dev2.Runtime.WebServer
 
         //    //context.Response = errorResponse;
         //}
-
-
-
+#endif
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
         public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Title, errorResponseArgs.Message);
         public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string tittle, string message)
@@ -128,6 +137,7 @@ namespace Dev2.Runtime.WebServer
                 Content = content
             };
         }
+#if !NETFRAMEWORK
         public static Uri ToUri(this Microsoft.AspNetCore.Http.HttpRequest request)
         {
             var builder = new UriBuilder
@@ -149,8 +159,8 @@ namespace Dev2.Runtime.WebServer
             if (null == message) return null;
             return new System.Web.Http.ResponseMessageResult(message);
         }
-
     }
+#endif
 
     public class WarewolfErrorResponseArgs
     {

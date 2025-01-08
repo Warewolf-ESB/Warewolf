@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿#if !NETFRAMEWORK
+using Dev2.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
@@ -75,3 +76,4 @@ namespace Dev2.Runtime.WebServer.Security
         }
     }
 }
+#endif

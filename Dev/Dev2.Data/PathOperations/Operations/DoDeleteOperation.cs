@@ -52,7 +52,11 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
+#if NETFRAMEWORK
+                if (_impersonatedUser != null)
+#else
                 if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -66,10 +70,14 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override bool ExecuteOperationWithAuth()
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
-                {
-                    try
+#endif
+            {
+                try
                     {
                         return _deleteHelper.Delete(_path.Path);
                     }
@@ -78,9 +86,11 @@ namespace Dev2.Data.PathOperations.Operations
                         Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
                         return false;
                     }
-                }
-                );
+            }
+#if !NETFRAMEWORK
+            );
             return false;
+#endif
         }
     }
 }

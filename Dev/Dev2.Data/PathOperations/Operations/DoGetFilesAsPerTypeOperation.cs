@@ -51,7 +51,11 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
+#if NETFRAMEWORK
+                if (_impersonatedUser != null)
+#else
                 if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#endif
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -77,10 +81,14 @@ namespace Dev2.Data.PathOperations.Operations
         
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
+#if NETFRAMEWORK
+            using (_impersonatedUser)
+#else
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<IList<IActivityIOPath>>(() =>
-                {
-                    try
+#endif
+            {
+                try
                     {
 
                         if (!Dev2ActivityIOPathUtils.IsStarWildCard(_newPath))
@@ -98,8 +106,10 @@ namespace Dev2.Data.PathOperations.Operations
                         throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
                     }
                 }
+#if !NETFRAMEWORK
             );
             return null;
+#endif
         }
     }
 }

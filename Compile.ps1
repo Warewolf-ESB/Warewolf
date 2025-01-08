@@ -19,7 +19,8 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [switch]$ForceMultitargetting
+  [switch]$ForceMultitargetting,
+  [string]$FrameworkTarget
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
 					  "Dev\UITesting.sln",
@@ -54,22 +55,6 @@ if ($ForceMultitargetting.IsPresent) {
             $newNode = $xml.CreateElement("TargetFrameworks")
             $newNode.InnerText = 'net6.0-windows;net48'
             $node.ParentNode.ReplaceChild($newNode, $node)
-		}
-
-		# Special handling for Dev2.Data.csproj
-		if ($file.Name -eq 'Dev2.Data.csproj') {
-			$refNodes = $xml.SelectNodes("//Reference[@Include='Infragistics.Calculations'] | //PackageReference[@Include='System.Configuration.ConfigurationManager' and @Version='6.0.1'] | //FrameworkReference[@Include='Microsoft.AspNetCore.App']")
-			$itemGroupNode = $xml.CreateElement("ItemGroup")
-			$conditionAttr = $xml.CreateAttribute("Condition")
-			$conditionAttr.Value = "'$(TargetFrameworkIdentifier)' != '.NETFramework'"
-			$itemGroupNode.Attributes.Append($conditionAttr)
-
-			foreach ($refNode in $refNodes) {
-				$refNode.ParentNode.RemoveChild($refNode)
-				$itemGroupNode.AppendChild($refNode)
-			}
-
-			$xml.Project.AppendChild($itemGroupNode)
 		}
 
 		$xml.Save($file.FullName)
@@ -373,10 +358,14 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             } else {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
+			if ($FrameworkTarget) {
+				$OutputProperty += "\" + $FrameworkTarget
+				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+			}
             if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
-                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             }
             if ($LASTEXITCODE -ne 0) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe

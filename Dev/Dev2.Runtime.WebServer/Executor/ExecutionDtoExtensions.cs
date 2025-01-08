@@ -11,7 +11,11 @@
 using System;
 using System.Net;
 using System.Runtime;
+#if NETFRAMEWORK
+using System.Web;
+#else
 using Boxed.AspNetCore;
+#endif
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;

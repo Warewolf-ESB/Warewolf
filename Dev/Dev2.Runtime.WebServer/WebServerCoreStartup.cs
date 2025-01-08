@@ -1,4 +1,4 @@
-﻿
+﻿#if !NETFRAMEWORK
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore;
@@ -111,4 +111,4 @@ namespace Dev2.Runtime.WebServer
         }
     }
 }
-
+#endif
