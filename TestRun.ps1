@@ -1,5 +1,4 @@
 param(
-  [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
   [String] $Category,
   [String[]] $Categories,
@@ -236,11 +235,13 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-	&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent) {
 	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-		Write-Error "Cannot install test runner using nuget."
-		exit 1
+		&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+		if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+			Write-Error "Cannot install test runner using nuget."
+			exit 1
+		}
 	}
 }
 if ($Coverage.IsPresent) {
