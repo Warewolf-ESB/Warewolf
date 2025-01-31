@@ -39,6 +39,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 using static Dropbox.Api.TeamLog.SharedLinkAccessLevel;
+using Dev2.Converters.Graph.DataTable;
 
 namespace Dev2.Services.Execution
 {
@@ -254,8 +255,26 @@ namespace Dev2.Services.Execution
             environment.Assign(displayExpression, value.ToString(), update);
         }
 
-        static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
+        //static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
 
+        static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping)
+        {
+            if (executeService.Columns.Contains("ReadForXml")) { return row["ReadForXml"]; }
+
+            if (executeService.Columns.IndexOf(serviceOutputMapping.MappedFrom) > -1)
+            {
+                var itemData = row[serviceOutputMapping.MappedFrom];
+                var columnDataType = executeService.Columns[serviceOutputMapping.MappedFrom].DataType;
+                var isNumericType = DataTableMapper.IsNumericType(columnDataType);
+                var newVals = DataTableMapper.ToInvariantString(itemData);
+                return isNumericType ? newVals : String.Concat("'", newVals, "'");
+            }
+
+
+            return row[serviceOutputMapping.MappedFrom];
+        }
+
+         
         static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
         {
             if (rsType == enRecordsetIndexType.Star && started)
