@@ -30,13 +30,7 @@ namespace Dev2.Studio.Core.Helpers
         /// </summary>
         public static string GetUniqueOutputPath(string extension)
         {
-            var path = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                Guid.NewGuid() + extension
-            });
-            return path;
+            return Path.Combine(Config.UserDataPath, Guid.NewGuid() + extension);
         }
 
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
@@ -75,22 +69,22 @@ namespace Dev2.Studio.Core.Helpers
             var path = new FileInfo(outputPath);
             var extension = Path.GetExtension(outputPath);
 
-            if(string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 throw new InvalidOperationException("The output path can only be to a 'xml' or 'zip' file.");
             }
 
-            if(path.Exists)
+            if (path.Exists)
             {
                 throw new IOException("File specified in the output path already exists.");
             }
 
-            if(path.Directory == null)
+            if (path.Directory == null)
             {
                 throw new IOException(ErrorResource.InvalidOutputPath);
             }
 
-            if(!path.Directory.Exists)
+            if (!path.Directory.Exists)
             {
                 path.Directory.Create();
             }
@@ -107,7 +101,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             var location = Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(location);
-            if(directory == null)
+            if (directory == null)
             {
                 return null;
             }
@@ -116,17 +110,17 @@ namespace Dev2.Studio.Core.Helpers
             return path;
         }
 
-        public static void MigrateTempData(string rootPath)
+        public static void MigrateTempData()
         {
-            var fullNewPath = Path.Combine(rootPath, NewPath);
-            var fullOldPath = Path.Combine(rootPath, OldPath);
+            var fullNewPath = Path.Combine(Config.UserDataPath, NewPath);
+            var fullOldPath = Path.Combine(Config.UserDataPath, OldPath);
 
             if (!Directory.Exists(fullOldPath))
             {
                 return;//no old data to migrate
             }
 
-            if(!Directory.Exists(fullNewPath))
+            if (!Directory.Exists(fullNewPath))
             {
                 Directory.Move(fullOldPath, fullNewPath);
             }

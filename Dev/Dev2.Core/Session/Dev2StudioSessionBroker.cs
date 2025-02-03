@@ -24,11 +24,11 @@ namespace Dev2.Session
 {
     public class Dev2StudioSessionBroker : IDev2StudioSessionBroker
     {
-        const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
+        const string SavePath = @"DebugData\PersistSettings.dat";
         static readonly object SettingsLock = new object();
         static readonly object InitLock = new object();
         string _debugPersistPath;
-        string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string _rootPath = Config.UserDataPath;
 
         readonly IDictionary<string, DebugTO> _debugPersistSettings = new ConcurrentDictionary<string, DebugTO>();
 

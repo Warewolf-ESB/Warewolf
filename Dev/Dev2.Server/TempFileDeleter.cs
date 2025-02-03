@@ -55,7 +55,7 @@ namespace Dev2
         {
             var tempPath = EnvironmentVariables.DebugItemTempPath;
             DeleteTempFiles(tempPath);
-            var schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+            var schedulerTempPath = Path.Combine(Config.AppDataPath, GlobalConstants.SchedulerDebugPath);
             DeleteTempFiles(schedulerTempPath);
         }
 

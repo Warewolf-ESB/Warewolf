@@ -63,21 +63,18 @@ namespace Dev2
                 string webServerSslPort;
                 string webServerPort;
                 GlobalConstants.CollectUsageStats = ConfigurationManager.AppSettings["CollectUsageStats"];
-                GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
-
                 bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
                 if (_isWebServerEnabled)
                 {
-                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
+                    if (string.IsNullOrEmpty(GlobalConstants.WebServerPort) && _isWebServerEnabled)
                     {
                         throw new ArgumentException("Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
                     }
 
 
-                    if (!int.TryParse(webServerPort, out int realPort))
+                    if (!int.TryParse(GlobalConstants.WebServerPort, out int realPort))
                     {
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
@@ -85,11 +82,11 @@ namespace Dev2
                     var endpoints = new List<Dev2Endpoint>();
 
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
-                    var httpUrl = $"http://*:{webServerPort}/";
+                    var httpUrl = $"http://*:{GlobalConstants.WebServerPort}/";
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-                    EnableSslForServer(webServerSslPort, endpoints);
+                    EnableSslForServer(GlobalConstants.WebServerSslPort, endpoints);
 
                     EndPoints = endpoints.ToArray();
                 }

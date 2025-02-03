@@ -227,7 +227,7 @@ namespace Dev2.Common
                 var valueAttrib = fileElement.Attribute("value");
                 if (valueAttrib != null)
                 {
-                    valueAttrib.SetValue("%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log");
+                    valueAttrib.SetValue(EnvironmentVariables.ServerLogFile);
                     settingsDocument.Save(settingsConfigFile);
                 }
             }

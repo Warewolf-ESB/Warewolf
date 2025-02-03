@@ -25,9 +25,8 @@ namespace Dev2.Providers.Logs
         {
             get
             {
-                var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var warewolfAppPath = Path.Combine(appDataFolder, "Warewolf");
-                if(!Directory.Exists(warewolfAppPath))
+                var warewolfAppPath = Config.UserDataPath;
+                if (!Directory.Exists(warewolfAppPath))
                 {
                     Directory.CreateDirectory(warewolfAppPath);
                 }

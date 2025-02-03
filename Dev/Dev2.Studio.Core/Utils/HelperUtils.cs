@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -25,8 +26,7 @@ namespace Dev2.Utils
        
         public static string GetStudioLogSettingsConfigFile()
         {
-            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var studioFolder = Path.Combine(localAppDataFolder, "Warewolf", "Studio");
+            var studioFolder = Path.Combine(Config.UserDataPath, "Studio");
 
             IDirectory directory = new DirectoryWrapper();
             directory.CreateIfNotExists(studioFolder);
@@ -78,8 +78,7 @@ namespace Dev2.Utils
 
         public static string GetServerLogSettingsConfigFile()
         {
-            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            var serverLogFolder = Path.Combine(localAppDataFolder, "Warewolf", "Server Log");
+            var serverLogFolder = Path.Combine(Common.Config.AppDataPath, "Server Log");
 
             IDirectory directory = new DirectoryWrapper();
             directory.CreateIfNotExists(serverLogFolder);

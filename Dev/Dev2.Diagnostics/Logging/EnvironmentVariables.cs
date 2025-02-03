@@ -17,7 +17,7 @@ namespace Dev2.Common
 {
     public static class EnvironmentVariables
     {
-        static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        static readonly string DataPath = Config.AppDataPath;
 
         private static string _applicationPath;
         public static string ApplicationPath {
@@ -226,7 +226,7 @@ namespace Dev2.Common
 
         static string _rootPath;
 
-        public static string RootPersistencePath => _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
+        public static string RootPersistencePath => _rootPath ?? (_rootPath = Config.UserDataPath);
 
         public struct CharacterMap
         {

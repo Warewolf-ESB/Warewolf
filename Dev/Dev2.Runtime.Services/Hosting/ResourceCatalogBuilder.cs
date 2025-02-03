@@ -144,7 +144,7 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(resourcePath, allResourcesFolders.ToArray(), programDataBuilders);
 
-            // get all installed resource ids in ProgramData
+            // get all installed resource ids in {GlobalConstants.ServerPathKey}
             var programDataIds = programDataBuilders.Select(currentItem =>
             {
                 XElement xml = null;
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.Hosting
                     return;
                 }
 
-                // Only get here if the bite file does not exist in ProgramData directory
+                // Only get here if the bite file does not exist in {GlobalConstants.ServerPathKey} directory
                 foundMissingResources = true;
                 programFileItem._fileStream.Close();
                 var currentPath = programFileItem._filePath;
@@ -225,7 +225,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn("Failed to copy Examples resource to ProgramData, " + e.Message, GlobalConstants.WarewolfWarn);
+                    Dev2Logger.Warn("Failed to copy Examples resource to " + Config.AppDataPath + " " + e.Message, GlobalConstants.WarewolfWarn);
                 }
             });
 

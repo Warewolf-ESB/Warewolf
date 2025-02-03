@@ -41,7 +41,7 @@ namespace Dev2
             CustomContainer.LoadedTypes = new List<Type>();
             AddRegionTypes();
             CheckPath();
-            FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            FileHelper.MigrateTempData();
         }
 
         void AddRegionTypes()

@@ -201,8 +201,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         static void OpenStudioLogFile(object o)
         {
-            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var logFile = Path.Combine(localAppDataFolder, nameof(Warewolf), "Studio Logs", "Warewolf Studio.log");
+            var logFile = Path.Combine(Config.UserDataPath, "Studio Logs", "Warewolf Studio.log");
             if (File.Exists(logFile))
             {
                 Process.Start(logFile);

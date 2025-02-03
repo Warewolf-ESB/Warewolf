@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Configuration;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -26,8 +27,18 @@ namespace Dev2.Common
     [ExcludeFromCodeCoverage]
     public class Config
     {
-        public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-        public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        public static readonly string AppDataPath = GetDirectory(GlobalConstants.ServerPathKey, Environment.SpecialFolder.CommonApplicationData);
+        public static readonly string UserDataPath = GetDirectory(GlobalConstants.UserPathKey, Environment.SpecialFolder.LocalApplicationData);
+
+        private static string GetDirectory(string key, Environment.SpecialFolder defaultPath)
+        {
+            string path = ConfigurationManager.AppSettings[key];
+            if (string.IsNullOrEmpty(path))
+            {
+                return Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
+            }
+            return Path.Combine(path, GlobalConstants.Warewolf);
+        }
 
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();

@@ -74,7 +74,7 @@ namespace Dev2.Studio.Core
         #region CTOR
 
         public ServerRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
+          : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:{GlobalConstants.WebServerPort}" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
 
@@ -584,12 +584,7 @@ namespace Dev2.Studio.Core
 
         public static string GetEnvironmentsDirectory()
         {
-            var path = Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                StringResources.Environments_Directory
-            });
+            var path = Path.Combine(Config.UserDataPath,StringResources.Environments_Directory);
 
             if (!Directory.Exists(path))
             {

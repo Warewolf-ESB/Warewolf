@@ -84,13 +84,8 @@ namespace Dev2.Workspaces
             {
                 if(string.IsNullOrEmpty(_repositoryPath))
                 {
-                    _repositoryPath = Path.Combine(new[]
-                    {
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        StringResources.App_Data_Directory,
-                        StringResources.User_Interface_Layouts_Directory,
-                        "WorkspaceItems.xml"
-                    });
+                    _repositoryPath = Path.Combine(Common.Config.UserDataPath, StringResources.User_Interface_Layouts_Directory,
+                        "WorkspaceItems.xml");                    
                 }
                 return _repositoryPath;
             }

@@ -9,6 +9,7 @@
 */
 
 using CommandLine;
+using Dev2.Common;
 using Dev2.Util;
 using System;
 
@@ -36,7 +37,7 @@ namespace QueueWorker
             {
                 if (_serverEndpoint is null)
                 {
-                    _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
+                    _serverEndpoint = new Uri($"http://{System.Net.Dns.GetHostName()}:{GlobalConstants.WebServerPort}");
                 }
                 return _serverEndpoint;
             }
