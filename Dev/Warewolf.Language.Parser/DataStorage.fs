@@ -38,23 +38,18 @@ type WarewolfAtom =
     | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)
     
-    override x.ToString() = 
-    match x with
-    | Float a -> 
-        let places = GetDecimalPlaces a
-        a.ToString(sprintf "F%i" places, System.Globalization.CultureInfo.InvariantCulture)
-    | Int a -> 
-        a.ToString(System.Globalization.CultureInfo.InvariantCulture)
-    | DataString a -> 
-        a
-    | JsonObject a -> 
-        a.ToString()
-    | Nothing -> 
-        ""
-    | NullPlaceholder -> 
-        ""
-    | PositionedValue(_, b) -> 
-        b.ToString()
+    override x.ToString() : string = 
+        match x with
+        | Float a -> 
+                let places = GetDecimalPlaces a
+                a.ToString(sprintf "F%i" places, System.Globalization.CultureInfo.InvariantCulture)
+        | Int a -> 
+                a.ToString(System.Globalization.CultureInfo.InvariantCulture)
+        | DataString a -> a
+        | JsonObject a -> a.ToString()
+        | Nothing -> ""
+        | NullPlaceholder -> ""
+        | PositionedValue(_, b) -> b.ToString()
 
     
     override x.Equals y = x.ToString() = y.ToString()
