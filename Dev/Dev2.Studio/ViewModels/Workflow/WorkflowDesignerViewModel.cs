@@ -1786,7 +1786,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    if (DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
+                    if (selectedModelItem.Parent != null && DecisionSwitchTypes.Contains(selectedModelItem.Parent.ItemType))
                     {
                         // Decision/switches activities are represented by their parents in the designer!
                         selectedModelItem = selectedModelItem.Parent;
