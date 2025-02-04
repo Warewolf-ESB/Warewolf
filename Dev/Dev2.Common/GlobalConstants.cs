@@ -46,8 +46,11 @@ namespace Dev2.Common
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
 
-            WebServerPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
-            WebServerSslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+            var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
+            WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
+         
+            var sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+            WebServerSslPort = !string.IsNullOrEmpty(sslPort) ? sslPort : "3143";
         }
 
 
