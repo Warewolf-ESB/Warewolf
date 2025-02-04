@@ -35,7 +35,7 @@ namespace Dev2.Common
             string path = ConfigurationManager.AppSettings[key];
             if (string.IsNullOrEmpty(path))
             {
-                return Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
+                path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
             }
             return Path.Combine(path, GlobalConstants.Warewolf);
         }
@@ -201,7 +201,7 @@ namespace Dev2.Common
 
         private string GetSink()
         {
-            if (_settings.Sink != null )
+            if (_settings.Sink != null)
             {
                 {
                     return _settings.Sink;
@@ -209,7 +209,7 @@ namespace Dev2.Common
             }
             return DefaultSink;
         }
-        
+
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
         public string AuditFilePath => LegacySettings.DefaultAuditPath;
 
@@ -325,7 +325,7 @@ namespace Dev2.Common
         }
 
         public long AuditLogMaxSize
-        {             
+        {
             get => (_settings.AuditLogMaxSize == 0) ? DefaultAuditLogMaxSize : _settings.AuditLogMaxSize;
             set
             {
@@ -337,7 +337,7 @@ namespace Dev2.Common
 
         private string GetAuditFilePath()
         {
-            if (_settings.AuditFilePath != null )
+            if (_settings.AuditFilePath != null)
             {
                 {
                     return _settings.AuditFilePath;
@@ -345,7 +345,7 @@ namespace Dev2.Common
             }
             return DefaultAuditPath;
         }
-        
+
         public string Endpoint
         {
             get => _settings.Endpoint ?? DefaultEndpoint;
@@ -478,13 +478,13 @@ namespace Dev2.Common
 
         public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
 
-        public bool IncludeEnvironmentVariable 
-        { 
+        public bool IncludeEnvironmentVariable
+        {
             get => _settings.IncludeEnvironmentVariable;
             set
             {
                 _settings.IncludeEnvironmentVariable = value;
             }
-        }       
+        }
     }
 }
