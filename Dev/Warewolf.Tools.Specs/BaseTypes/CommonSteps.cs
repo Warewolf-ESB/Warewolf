@@ -1127,16 +1127,19 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             for (int i = 0; i < expectedDebugItems.Count; i++)
             {
-                expectedDebugItems[i].Label = CleanString(expectedDebugItems[i].Label);
-                inputDebugItems[i].Label = CleanString(inputDebugItems[i].Label);
+                expectedDebugItems[i].Label = CleanString(expectedDebugItems[i].Label.Replace('"', ' ').Trim());
+                inputDebugItems[i].Label = CleanString(inputDebugItems[i].Label.Replace('"', ' ').Trim());
 
-                expectedDebugItems[i].Value = CleanString(expectedDebugItems[i].Value);
-                inputDebugItems[i].Value = CleanString(inputDebugItems[i].Value);
+                expectedDebugItems[i].Value = CleanString(expectedDebugItems[i].Value.Replace('"', ' ').Trim());
+                inputDebugItems[i].Value = CleanString(inputDebugItems[i].Value.Replace('"', ' ').Trim());
 
-                expectedDebugItems[i].Variable = CleanString(expectedDebugItems[i].Variable);
-                inputDebugItems[i].Variable = CleanString(inputDebugItems[i].Variable);
+                expectedDebugItems[i].Variable = CleanString(expectedDebugItems[i].Variable.Replace('"', ' ').Trim());
+                inputDebugItems[i].Variable = CleanString(inputDebugItems[i].Variable.Replace('"', ' ').Trim());
             }
         }
+
+
+
 
         static string CleanString(string input)
         {
@@ -1145,6 +1148,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             return input.Trim().Trim('\'', '"').Trim();
         }
+
 
         //static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         //{
