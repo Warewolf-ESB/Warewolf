@@ -1123,7 +1123,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
 
-        static void RemoveTrailingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
+        static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
             for (int i = 0; i < expectedDebugItems.Count; i++)
             {
