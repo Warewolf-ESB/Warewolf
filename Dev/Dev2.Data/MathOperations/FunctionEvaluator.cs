@@ -12,8 +12,7 @@ using System;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Net6.Compatibility;
-using Infragistics.Calculations;
+using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
@@ -21,16 +20,13 @@ namespace Dev2.MathOperations
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {
-         XamCalculationManager _manager;
-         FunctionEvaluatorOption _functionEvaluatorOption;
+        readonly IDev2CalculationManager _manager;
+        readonly FunctionEvaluatorOption _functionEvaluatorOption;
 
         public FunctionEvaluator()
         {
-            STAThreadExtensions.RunAsSTA(() =>
-            {
-                _manager = new XamCalculationManager();
-                _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
-            });
+            _manager = new Dev2CalculationManager();
+            _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
         }
 
         public FunctionEvaluator(FunctionEvaluatorOption functionEvaluatorOption) : this()
