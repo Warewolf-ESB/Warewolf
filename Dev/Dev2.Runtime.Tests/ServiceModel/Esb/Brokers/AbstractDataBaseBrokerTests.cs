@@ -237,7 +237,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
             Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].ActualPath);
             Assert.AreEqual("TestTableName().Col2", result.DataSourceShapes[0].Paths[1].DisplayPath);
-            Assert.AreEqual("'row1'__COMMA__'row2'__COMMA__''", result.DataSourceShapes[0].Paths[1].SampleData);
+            Assert.AreEqual("'row1'__COMMA__'row2'__COMMA__", result.DataSourceShapes[0].Paths[1].SampleData);
         }
 
         [TestMethod]
