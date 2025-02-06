@@ -57,42 +57,7 @@ namespace Dev2.Converters.Graph.DataTable
         /// <param name="result">The result.</param>
         void BuildSampleData(System.Data.DataTable tmp, int totalCols, ref List<IPath> result)
         {
-            var totalRows = tmp.Rows.Count - 1;
-
-            // now set sample data ;)
-
-
-            //for (int i = 0; i < totalCols; i++)
-            //{
-            //    var rowCnt = 0;
-            //    for (int rowIdx = 0; rowIdx < totalRows; rowIdx++)
-            //    {
-            //        var columnDataType = tmp.Columns[i].DataType;
-            //        var isNumericType = IsNumericType(columnDataType);
-            //        var itemData = isNumericType ? tmp.Rows[rowIdx].ItemArray[i] : tmp.Rows[rowIdx].ItemArray[i];
-
-            //        var newVals = ToInvariantString(itemData);
-
-            //        result[i].SampleData += isNumericType ? newVals : String.Concat("'", newVals, "'");
-
-            //        if (rowIdx < totalRows - 1)
-            //        {
-            //            result[i].SampleData += GlobalConstants.AnytingToXmlCommaToken;
-            //        }
-
-            //        rowCnt++;
-
-            //        // exit after 10 rows ;)
-            //        if (rowCnt == 10)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-
-            // exit after 10 columns ;)
-            // Since the row count is handled inside the inner loop, we don't need the outer row loop exit condition anymore.
-
+            var totalRows = tmp.Rows.Count - 1;             
             var rowCnt = 0;
 
             foreach (DataRow row in tmp.Rows)
@@ -102,9 +67,15 @@ namespace Dev2.Converters.Graph.DataTable
                     var columnDataType = tmp.Columns[i].DataType;
                     var isNumericType = IsNumericType(columnDataType);
                     var itemData = row.ItemArray[i].ToString();
-                    var newVals = ToInvariantString(itemData);
-                    result[i].SampleData += isNumericType ? newVals : String.Concat("'", newVals, "'");
-                    //result[i].SampleData += itemData;
+                    if (!string.IsNullOrEmpty(itemData))
+                    {
+                        var newVals = ToInvariantString(itemData);
+                        result[i].SampleData += isNumericType ? newVals : String.Concat("'", newVals, "'");
+                    }
+                    else
+                    {
+                        result[i].SampleData += itemData;
+                    }
                     if (rowCnt < totalRows)
                     {
                         result[i].SampleData += GlobalConstants.AnytingToXmlCommaToken;
