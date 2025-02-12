@@ -30,8 +30,8 @@ Scenario: Database PostgreSql Database service inputs and outputs
 	  |                                       |
 	  | [[countries(1).Id]] = 1               |
 	  | [[countries(2).Id]] = 3               |
-	  | [[countries(1).Name]] = United States |
-	  | [[countries(2).Name]] = South Africa  |
+	  | [[countries(1).Name]] = 'United States' |
+	  | [[countries(2).Name]] = 'South Africa'  |
 
 @DatabaseWorkflowExecution
 Scenario Outline: Database MySqlDB Database service using * indexes
@@ -43,9 +43,9 @@ Scenario Outline: Database MySqlDB Database service using * indexes
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
+	  |                                         |
+	  | [[rec(1).name]] = 'Monk'                |
+	  | [[rec(1).email]] = 'dora@explorers.com' |
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
@@ -71,9 +71,9 @@ Scenario Outline: Database MySqlDB Database service using int indexes
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs is
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
+	  |                                         |
+	  | [[rec(1).name]] = 'Monk'                |
+	  | [[rec(1).email]] = 'dora@explorers.com' |
 Examples: 
     | WorkflowName                 | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlIntIndex | MySqlEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
@@ -88,9 +88,9 @@ Scenario Outline: Database MySqlDB Database service last  indexes
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs is
-	  |                                       |
-	  | [[rec(1).name]] = Monk                |
-	  | [[rec(1).email]] = dora@explorers.com |
+	  |                                         |
+	  | [[rec(1).name]] = 'Monk'                |
+	  | [[rec(1).email]] = 'dora@explorers.com' |
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
@@ -105,9 +105,9 @@ Scenario Outline: Database MySqlDB Database service scalar outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                |
-	  | [[name]] = Monk                |
-	  | [[email]] = dora@explorers.com |
+	  |                                  |
+	  | [[name]] = 'Monk'                |
+	  | [[email]] = 'dora@explorers.com' |
 Examples: 
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
@@ -141,8 +141,8 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	 |                                            |
 	 | [[countries(1).id]] = 1                    |
 	 | [[countries(2).id]] = 1                    |
-	 | [[countries(1).description]] = Afghanistan |
-	 | [[countries(2).description]] = Afghanistan |
+	 | [[countries(1).description]] = 'Afghanistan' |
+	 | [[countries(2).description]] = 'Afghanistan' |
 Examples: 
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
@@ -159,7 +159,7 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
 	  |                                            |
 	  | [[countries(1).id]] = 1                    |
-	  | [[countries(1).description]] = Afghanistan |
+	  | [[countries(1).description]] = 'Afghanistan' |
 Examples: 
     | WorkflowName                    | ServiceName               | nameVariable        | emailVariable                | errorOccured |
     | TestSqlWFWithSqlServerCountries | dbo.Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
@@ -185,9 +185,9 @@ Scenario Outline: Database SqlDB  service using int indexes
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                         |
-	  | [[rec(1).name]] = dora                  |
-	  | [[rec(1).email]] = dora@explorers.co.za |
+	  |                                           |
+	  | [[rec(1).name]] = 'dora'                  |
+	  | [[rec(1).email]] = 'dora@explorers.co.za' |
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBSqlServerIntIndex | dbo.SQLEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
@@ -202,9 +202,9 @@ Scenario Outline: Database SqlDB  service using last indexes
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                         |
-	  | [[rec(1).name]] = dora                  |
-	  | [[rec(1).email]] = dora@explorers.co.za |
+	  |                                           |
+	  | [[rec(1).name]] = 'dora'                  |
+	  | [[rec(1).email]] = 'dora@explorers.co.za' |
 Examples: 
     | WorkflowName              | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestWFWithDBSqlServerLastIndex | dbo.SQLEmail    | [[rec().name]] | [[rec().email]] | NO           |
@@ -219,9 +219,9 @@ Scenario Outline: Database SqlDB  service using scalar outputs
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
-	  |                                  |
-	  | [[name]] = dora                  |
-	  | [[email]] = dora@explorers.co.za |
+	  |                                    |
+	  | [[name]] = 'dora'                  |
+	  | [[email]] = 'dora@explorers.co.za' |
 Examples: 
     | WorkflowName                | ServiceName  | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBSqlServerScalar | dbo.SQLEmail | [[name]]     | [[email]]     | NO           |

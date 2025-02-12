@@ -1122,41 +1122,65 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
+
         static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
             for (int i = 0; i < expectedDebugItems.Count; i++)
             {
-                if (expectedDebugItems[i].Label != null)
-                {
-                    expectedDebugItems[i].Label = expectedDebugItems[i].Label.Replace('"', ' ').Trim();
-                }
+                expectedDebugItems[i].Label = CleanString(expectedDebugItems[i].Label);
+                inputDebugItems[i].Label = CleanString(inputDebugItems[i].Label);
 
-                if (inputDebugItems[i].Label != null)
-                {
-                    inputDebugItems[i].Label = inputDebugItems[i].Label.Replace('"', ' ').Trim();
-                }
+                expectedDebugItems[i].Value = CleanString(expectedDebugItems[i].Value);
+                inputDebugItems[i].Value = CleanString(inputDebugItems[i].Value);
 
-                if (expectedDebugItems[i].Value != null)
-                {
-                    expectedDebugItems[i].Value = expectedDebugItems[i].Value.Replace('"', ' ').Trim();
-                }
-
-                if (inputDebugItems[i].Value != null)
-                {
-                    inputDebugItems[i].Value = inputDebugItems[i].Value.Replace('"', ' ').Trim();
-                }
-
-                if (expectedDebugItems[i].Variable != null)
-                {
-                    expectedDebugItems[i].Variable = expectedDebugItems[i].Variable.Replace('"', ' ').Trim();
-                }
-
-                if (inputDebugItems[i].Variable != null)
-                {
-                    inputDebugItems[i].Variable = inputDebugItems[i].Variable.Replace('"', ' ').Trim();
-                }
+                expectedDebugItems[i].Variable = CleanString(expectedDebugItems[i].Variable);
+                inputDebugItems[i].Variable = CleanString(inputDebugItems[i].Variable);
             }
         }
+
+        static string CleanString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return input.Replace('"', ' ').Trim().Trim('\'', '"').Trim();
+        }
+
+        //static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
+        //{
+        //    for (int i = 0; i < expectedDebugItems.Count; i++)
+        //    {
+        //        if (expectedDebugItems[i].Label != null)
+        //        {
+        //            expectedDebugItems[i].Label = expectedDebugItems[i].Label.Replace('"', ' ').Trim();
+        //        }
+
+        //        if (inputDebugItems[i].Label != null)
+        //        {
+        //            inputDebugItems[i].Label = inputDebugItems[i].Label.Replace('"', ' ').Trim();
+        //        }
+
+        //        if (expectedDebugItems[i].Value != null)
+        //        {
+        //            expectedDebugItems[i].Value = expectedDebugItems[i].Value.Replace('"', ' ').Trim();
+        //        }
+
+        //        if (inputDebugItems[i].Value != null)
+        //        {
+        //            inputDebugItems[i].Value = inputDebugItems[i].Value.Replace('"', ' ').Trim();
+        //        }
+
+        //        if (expectedDebugItems[i].Variable != null)
+        //        {
+        //            expectedDebugItems[i].Variable = expectedDebugItems[i].Variable.Replace('"', ' ').Trim();
+        //        }
+
+        //        if (inputDebugItems[i].Variable != null)
+        //        {
+        //            inputDebugItems[i].Variable = inputDebugItems[i].Variable.Replace('"', ' ').Trim();
+        //        }
+        //    }
+        //}
 
         [Given(@"""(.*)"" tab is opened")]
         [Then(@"""(.*)"" tab is opened")]

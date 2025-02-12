@@ -2,6 +2,8 @@
 
 open System.Diagnostics.CodeAnalysis
 open Newtonsoft.Json.Linq
+open System
+open System.Globalization
 
 [<ExcludeFromCodeCoverage>]
 let PositionColumn = "WarewolfPositionColumn"
@@ -36,17 +38,19 @@ type WarewolfAtom =
     | NullPlaceholder
     | PositionedValue of (int * WarewolfAtom)
     
-    override x.ToString() = 
+    override x.ToString() : string = 
         match x with
         | Float a -> 
-            let places = GetDecimalPlaces a
-            a.ToString(sprintf "F%i" places)
-        | Int a -> a.ToString()
+                let places = GetDecimalPlaces a
+                a.ToString(sprintf "F%i" places, System.Globalization.CultureInfo.InvariantCulture)
+        | Int a -> 
+                a.ToString(System.Globalization.CultureInfo.InvariantCulture)
         | DataString a -> a
         | JsonObject a -> a.ToString()
         | Nothing -> ""
         | NullPlaceholder -> ""
         | PositionedValue(_, b) -> b.ToString()
+
     
     override x.Equals y = x.ToString() = y.ToString()
     override x.GetHashCode() = x.ToString().GetHashCode()
@@ -100,26 +104,30 @@ type WarewolfEnvironment =
       Scalar : Map<string, WarewolfAtom>
       JsonObjects : Map<string, Newtonsoft.Json.Linq.JContainer> }
 
-///Parse atom from string. Order of precedence is int then float then string
 let rec tryParseAtom (data : string) = 
     let mutable value = 0
     if data = "0" then Int(0)
     else if data.StartsWith("0") || data.StartsWith("+") || data.EndsWith("\n") || data.EndsWith("\r") || data.EndsWith("\r\n") ||data.EndsWith(" ") then DataString data
-    else 
-        let success = System.Int32.TryParse(data, &value)
+    else
+        let invariantCulture2 = CultureInfo.InvariantCulture
+        let success = System.Int32.TryParse(data,NumberStyles.Integer, invariantCulture2, &value)
         if success then Int value
         else tryFloatParseAtom data
-
-///Parse a float. 
-and tryFloatParseAtom (data : string) = 
+and tryFloatParseAtom (data: string) = 
     let mutable value = 0.0m
     let mutable values = 0.0
-    if data.StartsWith("0") && (not (data.StartsWith("0."))) then DataString data
-    else if (data.Contains(".")) then 
-        let success = System.Decimal.TryParse(data, &value) && System.Double.TryParse(data, &values)
-        if success then Float(System.Convert.ToDouble(value))
-        else DataString data
-    else DataString data
+    let invariantCulture = CultureInfo.InvariantCulture
+    if data.StartsWith("0") && not (data.StartsWith("0.")) then 
+        DataString data
+    elif data.Contains(".") then
+        let successDecimal = Decimal.TryParse(data, NumberStyles.Float, invariantCulture, &value)
+        let successDouble = Double.TryParse(data, NumberStyles.Float, invariantCulture, &values)
+        if successDecimal && successDouble then 
+            Float(Convert.ToDouble(value))
+        else 
+            DataString data
+    else 
+        DataString data
 
 
 let CompareDataStringWithAtom(x : WarewolfAtom) (y : WarewolfAtom) =
