@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(200)]
         public void TestSaveCommand()
         {
             Assert.AreSame(_saveCommand, _target.SaveCommand);

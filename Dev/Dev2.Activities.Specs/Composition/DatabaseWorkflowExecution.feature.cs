@@ -175,9 +175,9 @@ this.FeatureBackground();
                 table471.AddRow(new string[] {
                             "[[countries(2).Id]] = 3"});
                 table471.AddRow(new string[] {
-                            "[[countries(1).Name]] = United States"});
+                            "[[countries(1).Name]] = \'United States\'"});
                 table471.AddRow(new string[] {
-                            "[[countries(2).Name]] = South Africa"});
+                            "[[countries(2).Name]] = \'South Africa\'"});
 #line 29
   testRunner.And("the \"get_countries\" in Workflow \"PostgreSqlGetCountries\" debug outputs as", ((string)(null)), table471, "And ");
 #line hidden
@@ -254,9 +254,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table473 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table473.AddRow(new string[] {
-                            "[[rec(1).name]] = Monk"});
+                            "[[rec(1).name]] = \'Monk\'"});
                 table473.AddRow(new string[] {
-                            "[[rec(1).email]] = dora@explorers.com"});
+                            "[[rec(1).email]] = \'dora@explorers.com\'"});
 #line 45
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table473, "And ");
 #line hidden
@@ -415,9 +415,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table476.AddRow(new string[] {
-                            "[[rec(1).name]] = Monk"});
+                            "[[rec(1).name]] = \'Monk\'"});
                 table476.AddRow(new string[] {
-                            "[[rec(1).email]] = dora@explorers.com"});
+                            "[[rec(1).email]] = \'dora@explorers.com\'"});
 #line 73
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs is", serviceName, workflowName), ((string)(null)), table476, "And ");
 #line hidden
@@ -512,9 +512,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table478.AddRow(new string[] {
-                            "[[rec(1).name]] = Monk"});
+                            "[[rec(1).name]] = \'Monk\'"});
                 table478.AddRow(new string[] {
-                            "[[rec(1).email]] = dora@explorers.com"});
+                            "[[rec(1).email]] = \'dora@explorers.com\'"});
 #line 90
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs is", serviceName, workflowName), ((string)(null)), table478, "And ");
 #line hidden
@@ -608,9 +608,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table480.AddRow(new string[] {
-                            "[[name]] = Monk"});
+                            "[[name]] = \'Monk\'"});
                 table480.AddRow(new string[] {
-                            "[[email]] = dora@explorers.com"});
+                            "[[email]] = \'dora@explorers.com\'"});
 #line 107
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table480, "And ");
 #line hidden
@@ -835,9 +835,9 @@ this.FeatureBackground();
                 table483.AddRow(new string[] {
                             "[[countries(2).id]] = 1"});
                 table483.AddRow(new string[] {
-                            "[[countries(1).description]] = Afghanistan"});
+                            "[[countries(1).description]] = \'Afghanistan\'"});
                 table483.AddRow(new string[] {
-                            "[[countries(2).description]] = Afghanistan"});
+                            "[[countries(2).description]] = \'Afghanistan\'"});
 #line 140
  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table483, "And ");
 #line hidden
@@ -934,7 +934,7 @@ this.FeatureBackground();
                 table485.AddRow(new string[] {
                             "[[countries(1).id]] = 1"});
                 table485.AddRow(new string[] {
-                            "[[countries(1).description]] = Afghanistan"});
+                            "[[countries(1).description]] = \'Afghanistan\'"});
 #line 159
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table485, "And ");
 #line hidden
@@ -1106,9 +1106,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table488.AddRow(new string[] {
-                            "[[rec(1).name]] = dora"});
+                            "[[rec(1).name]] = \'dora\'"});
                 table488.AddRow(new string[] {
-                            "[[rec(1).email]] = dora@explorers.co.za"});
+                            "[[rec(1).email]] = \'dora@explorers.co.za\'"});
 #line 187
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table488, "And ");
 #line hidden
@@ -1202,9 +1202,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table490 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table490.AddRow(new string[] {
-                            "[[rec(1).name]] = dora"});
+                            "[[rec(1).name]] = \'dora\'"});
                 table490.AddRow(new string[] {
-                            "[[rec(1).email]] = dora@explorers.co.za"});
+                            "[[rec(1).email]] = \'dora@explorers.co.za\'"});
 #line 204
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table490, "And ");
 #line hidden
@@ -1298,9 +1298,9 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table492 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table492.AddRow(new string[] {
-                            "[[name]] = dora"});
+                            "[[name]] = \'dora\'"});
                 table492.AddRow(new string[] {
-                            "[[email]] = dora@explorers.co.za"});
+                            "[[email]] = \'dora@explorers.co.za\'"});
 #line 221
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table492, "And ");
 #line hidden
