@@ -47,37 +47,38 @@ if (-Not [System.Diagnostics.PerformanceCounterCategory]::Exists($categoryName))
 $ErrorActionPreference = "Stop"
 try {
     Get-Counter -Counter "\Warewolf(*)\Concurrent requests currently executing"
-    Write-Output "Concurrent requests currently executing counter already exists."
+    Write-Output "Concurrent requests currently executing counter exists."
 } catch {
+    # Instance might not exist.
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Concurrent requests currently executing", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
 try {
     Get-Counter -Counter "\Warewolf(*)\Total Errors"
-    Write-Output "Total Errors counter already exists."
+    Write-Output "Total Errors counter exists."
 } catch {
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Total Errors", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
 try {
     Get-Counter -Counter "\Warewolf(*)\Request Per Second"
-    Write-Output "Request Per Second counter already exists."
+    Write-Output "Request Per Second counter exists."
 } catch {
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Request Per Second", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
 try {
     Get-Counter -Counter "\Warewolf(*)\Average workflow execution time"
-    Write-Output "Average workflow execution time counter already exists."
+    Write-Output "Average workflow execution time counter exists."
 } catch {
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Average workflow execution time", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
 try {
     Get-Counter -Counter "\Warewolf(*)\Count of Not Authorised errors"
-    Write-Output "Count of Not Authorised errors counter already exists."
+    Write-Output "Count of Not Authorised errors counter exists."
 } catch {
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Count of Not Authorised errors", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
 try {
     Get-Counter -Counter "\Warewolf(*)\Count of requests for workflows which don't exist"
-    Write-Output "Count of requests for workflows which don't exist counter already exists."
+    Write-Output "Count of requests for workflows which don't exist counter exists."
 } catch {
     New-Object System.Diagnostics.PerformanceCounter($categoryName, "Count of requests for workflows which don't exist", $instanceName, $false);Get-Counter -ListSet "Warewolf"
 }
