@@ -18,17 +18,17 @@ function Convert-CounterType {
 }
 
 if (-Not [System.Diagnostics.PerformanceCounterCategory]::Exists($categoryName)) {
-	$counters = @(@{
+    $counters = @(@{
         CreationData = @(
-		@{ CounterName = "Concurrent requests currently executing"; CounterHelp = "Concurrent requests currently executing"; CounterType = "NumberOfItems32" },
-		@{ CounterName = "Total Errors"; CounterHelp = "Total Errors"; CounterType = "NumberOfItems32" },
+        @{ CounterName = "Concurrent requests currently executing"; CounterHelp = "Concurrent requests currently executing"; CounterType = "NumberOfItems32" },
+        @{ CounterName = "Total Errors"; CounterHelp = "Total Errors"; CounterType = "NumberOfItems32" },
         @{ CounterName = "Request Per Second"; CounterHelp = "Request Per Second"; CounterType = "RateOfCountsPerSecond32" },
         @{ CounterName = "Average workflow execution time"; CounterHelp = "Average workflow execution time"; CounterType = "AverageTimer32" },
         @{ CounterName = "Average workflow execution time base"; CounterHelp = "Average workflow execution time base"; CounterType = "AverageBase" },
         @{ CounterName = "Count of Not Authorised errors"; CounterHelp = "Count of Not Authorised errors"; CounterType = "NumberOfItems32" },
         @{ CounterName = "Count of requests for workflows which don't exist"; CounterHelp = "Count of requests for workflows which don't exist"; CounterType = "NumberOfItems32" }
-		)
-	})
+        )
+    })
     $counterCreationDataCollection = New-Object System.Diagnostics.CounterCreationDataCollection
     
     foreach ($counter in $counters) {
