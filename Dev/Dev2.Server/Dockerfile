@@ -6,6 +6,7 @@ EXPOSE 3143
 SHELL ["powershell"]
 RUN New-Item -Path Server -ItemType Directory
 ADD . Server
+RUN &".\Server\Perfmon.ps1"
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
