@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 EXPOSE 3142
 EXPOSE 3143
