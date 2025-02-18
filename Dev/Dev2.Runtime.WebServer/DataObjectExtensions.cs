@@ -37,7 +37,9 @@ using Dev2.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Newtonsoft.Json;
 using Dev2.Common.Interfaces.Runtime.WebServer;
+#if NETFRAMEWORK
 using System.Web.UI;
+#endif
 
 namespace Dev2.Runtime.WebServer
 {
