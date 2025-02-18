@@ -19,53 +19,57 @@ using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using System.Diagnostics;
 using ServiceStack.ServiceModel;
+using Dev2.Runtime.Subscription;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetServerInformation : DefaultEsbManagementEndpoint
-    {
-        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
-            var serialiser = new Dev2JsonSerializer();
-            return serialiser.SerializeToBuilder(GetServerInformationData());
-        }
+	public class GetServerInformation : DefaultEsbManagementEndpoint
+	{
+		public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+		{
+			var serialiser = new Dev2JsonSerializer();
+			return serialiser.SerializeToBuilder(GetServerInformationData());
+		}
 
-        static Dictionary<string, string> GetServerInformationData()
-        {
-            var toReturn = ConfigurationManager.AppSettings.ToDictionary();
-            toReturn.Add("Version", GetVersion());
+		static Dictionary<string, string> GetServerInformationData()
+		{
+			var toReturn = ConfigurationManager.AppSettings.ToDictionary();
+			toReturn.Add("Version", GetVersion());
 
-            if (!toReturn.ContainsKey("MinSupportedVersion"))
-            {
-                toReturn.Add("MinSupportedVersion", MinSupportedVersion());
-            }
-            return toReturn;
-        }
+			if (!toReturn.ContainsKey("MinSupportedVersion"))
+			{
+				toReturn.Add("MinSupportedVersion", MinSupportedVersion());
+			}
 
-        static string MinSupportedVersion()
-        {
-            var min = ConfigurationManager.AppSettings["MinSupportedVersion"];
-            if (min != null)
-            {
-                return min;
-            }
-            var asm = Assembly.GetExecutingAssembly();
-            var fileName = asm.Location;
-            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
-            var v = new Version(versionResource.FileVersion);
-            return v.ToString();
-        }
+			toReturn.Add("IsLicensed", SubscriptionProvider.Instance.IsLicensed.ToString());
 
-        static string GetVersion()
-        {
-            var asm = Assembly.GetExecutingAssembly();
-            var fileName = asm.Location;
-            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
-            return versionResource.FileVersion;
-        }
+			return toReturn;
+		}
 
-        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+		static string MinSupportedVersion()
+		{
+			var min = ConfigurationManager.AppSettings["MinSupportedVersion"];
+			if (min != null)
+			{
+				return min;
+			}
+			var asm = Assembly.GetExecutingAssembly();
+			var fileName = asm.Location;
+			var versionResource = FileVersionInfo.GetVersionInfo(fileName);
+			var v = new Version(versionResource.FileVersion);
+			return v.ToString();
+		}
 
-        public override string HandlesType() => "GetServerInformation";
-    }
+		static string GetVersion()
+		{
+			var asm = Assembly.GetExecutingAssembly();
+			var fileName = asm.Location;
+			var versionResource = FileVersionInfo.GetVersionInfo(fileName);
+			return versionResource.FileVersion;
+		}
+
+		public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+		public override string HandlesType() => "GetServerInformation";
+	}
 }
