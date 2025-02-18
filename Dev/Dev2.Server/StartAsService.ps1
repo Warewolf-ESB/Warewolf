@@ -185,7 +185,7 @@ $LoopCounterMax = 30
 if ($Coverage) {
 	$LoopCounterMax = 60
 }
-if ($NoExit.IsPresent) {
+if (!$DoExit.IsPresent) {
 	while (!(Test-Path "C:\programdata\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax)
 	{
 		Write-Host Still waiting for server to start...
