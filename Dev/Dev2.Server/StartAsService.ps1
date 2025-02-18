@@ -1,5 +1,5 @@
 Param(
-  [switch]$NoExit,
+  [switch]$NoExit,  # Deprecated: Use $DoExit instead
   [switch]$DoExit,
   [switch]$Coverage=$false,
   [string]$Username=$env:SERVER_USERNAME,
