@@ -268,8 +268,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void GetStudioLogFile()
         {
-            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
+            var logFile = Path.Combine(Config.UserDataPath, "Studio Logs", "Warewolf Studio.log");
             if (File.Exists(logFile))
             {
                 var numberOfLines = GlobalConstants.LogFileNumberOfLines;

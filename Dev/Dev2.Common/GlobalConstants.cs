@@ -45,7 +45,14 @@ namespace Dev2.Common
             {
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
+
+            var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
+            WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
+         
+            var sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+            WebServerSslPort = !string.IsNullOrEmpty(sslPort) ? sslPort : "3143";
         }
+
 
         public static readonly string ExecutionLoggingResultStartTag = "Execution Result [ ";
         public static readonly string ExecutionLoggingResultEndTag = " ]";
@@ -332,7 +339,9 @@ namespace Dev2.Common
         public static readonly string WarewolfGroup = "Warewolf Administrators";
         public static readonly string SchedulerFolderId = "Warewolf";
         public static readonly string SchedulerAgentPath = @"WarewolfAgent.exe";
-        public static readonly string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
+        public static readonly string ServerPathKey = "webServerBasePath";
+        public static readonly string UserPathKey = "userBasePath";
+        public static readonly string SchedulerDebugPath = @"DebugOutPut\";
 
         public static readonly string SchemaQuery = @"SELECT name AS ROUTINE_NAME
 ,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
@@ -488,9 +497,9 @@ where pn.nspname = 'public';
         public static readonly int MaxNumberOfWorkflowWaits = 10000;
         public static readonly int WorkflowWaitTime = 60;
         public static readonly string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
-        public static string WebServerPort { get; set; }
+        public static string WebServerPort { get; set; } = "3142";
         public static string CollectUsageStats { get; set; }
-        public static string WebServerSslPort { get; set; }
+        public static string WebServerSslPort { get; set; } = "3143";
         public static readonly ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 
         public static void InvalidateCache(Guid resourceId)
@@ -530,13 +539,14 @@ where pn.nspname = 'public';
         {
             get
             {
-                var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                var warewolfFolder = Path.Combine(appDataFolder, "Warewolf");
-                if (!Directory.Exists(warewolfFolder))
-                {
-                    Directory.CreateDirectory(warewolfFolder);
-                }
-                var tempPath = Path.Combine(appDataFolder, "Warewolf", "Temp");
+                //var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                //var warewolfFolder = Path.Combine(appDataFolder, "Warewolf");
+                //if (!Directory.Exists(warewolfFolder))
+                //{
+                //    Directory.CreateDirectory(warewolfFolder);
+                //}
+                //var tempPath = Path.Combine(appDataFolder, "Warewolf", "Temp");
+                var tempPath = Path.Combine(Config.AppDataPath, "Temp");
                 if (!Directory.Exists(tempPath))
                 {
                     Directory.CreateDirectory(tempPath);

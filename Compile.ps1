@@ -430,8 +430,8 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			 value="BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==" />
 	</secureSettings>
 	<appSettings>
-		<add key="webServerPort" value="1234" />
-		<add key="webServerSslPort" value="1236" />
+		<add key="webServerPort" value="3142" />
+		<add key="webServerSslPort" value="3143" />
 		<add key="webServerEnabled" value="true" />
 		<add key="SupportedFileExtensions" value=".js,.css,.jpg,.jpeg,.bmp,.bm,.gif,.ico,.tiff,.png" />
 		<add key="Hello World" value="acb75027-ddeb-47d7-814e-a54c37247ec1" />

@@ -73,7 +73,7 @@ namespace Dev2.Runtime.DynamicProxy
         string proxyCode;
 
 #if !NETFRAMEWORK
-        string fileDirectory = "C:/ProgramData/Warewolf/Temp/WCFReference";
+        string fileDirectory = Path.Combine(Common.Config.AppDataPath, @"Temp/WCFReference");
         string fileName = "Reference.cs";
 #endif
 
@@ -127,8 +127,8 @@ namespace Dev2.Runtime.DynamicProxy
         public DynamicProxyFactory(string wsdlUri)
             : this(wsdlUri, new DynamicProxyFactoryOptions())
         {
-		}
-		
+        }
+
 #if NETFRAMEWORK
         void DownloadMetadata()
         {
@@ -338,7 +338,7 @@ namespace Dev2.Runtime.DynamicProxy
             compilerWarnings = ToEnumerable(results.Errors);
             proxyAssembly = Assembly.LoadFile(results.PathToAssembly);
         }
-		
+
 #if NETFRAMEWORK
         void WriteCode()
         {

@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Configuration;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -26,8 +27,18 @@ namespace Dev2.Common
     [ExcludeFromCodeCoverage]
     public class Config
     {
-        public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-        public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        public static readonly string AppDataPath = GetDirectory(GlobalConstants.ServerPathKey, Environment.SpecialFolder.CommonApplicationData);
+        public static readonly string UserDataPath = GetDirectory(GlobalConstants.UserPathKey, Environment.SpecialFolder.LocalApplicationData);
+
+        private static string GetDirectory(string key, Environment.SpecialFolder defaultPath)
+        {
+            string path = ConfigurationManager.AppSettings[key];
+            if (string.IsNullOrEmpty(path))
+            {
+                path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
+            }
+            return Path.Combine(path, GlobalConstants.Warewolf);
+        }
 
         public static ServerSettings Server = new ServerSettings();
         public static StudioSettings Studio = new StudioSettings();
@@ -190,7 +201,7 @@ namespace Dev2.Common
 
         private string GetSink()
         {
-            if (_settings.Sink != null )
+            if (_settings.Sink != null)
             {
                 {
                     return _settings.Sink;
@@ -198,7 +209,7 @@ namespace Dev2.Common
             }
             return DefaultSink;
         }
-        
+
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
         public string AuditFilePath => LegacySettings.DefaultAuditPath;
 
@@ -314,7 +325,7 @@ namespace Dev2.Common
         }
 
         public long AuditLogMaxSize
-        {             
+        {
             get => (_settings.AuditLogMaxSize == 0) ? DefaultAuditLogMaxSize : _settings.AuditLogMaxSize;
             set
             {
@@ -326,7 +337,7 @@ namespace Dev2.Common
 
         private string GetAuditFilePath()
         {
-            if (_settings.AuditFilePath != null )
+            if (_settings.AuditFilePath != null)
             {
                 {
                     return _settings.AuditFilePath;
@@ -334,7 +345,7 @@ namespace Dev2.Common
             }
             return DefaultAuditPath;
         }
-        
+
         public string Endpoint
         {
             get => _settings.Endpoint ?? DefaultEndpoint;
@@ -467,13 +478,13 @@ namespace Dev2.Common
 
         public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
 
-        public bool IncludeEnvironmentVariable 
-        { 
+        public bool IncludeEnvironmentVariable
+        {
             get => _settings.IncludeEnvironmentVariable;
             set
             {
                 _settings.IncludeEnvironmentVariable = value;
             }
-        }       
+        }
     }
 }

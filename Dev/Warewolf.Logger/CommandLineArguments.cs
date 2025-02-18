@@ -10,6 +10,7 @@
 
 using System;
 using CommandLine;
+using Dev2.Common;
 using Dev2.Util;
 
 namespace Warewolf.Logger
@@ -32,7 +33,7 @@ namespace Warewolf.Logger
             {
                 if (_serverEndpoint is null)
                 {
-                    var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
+                    var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:{GlobalConstants.WebServerSslPort}" : AppUsageStats.LocalHost);
                     _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
                 }
                 return _serverEndpoint;

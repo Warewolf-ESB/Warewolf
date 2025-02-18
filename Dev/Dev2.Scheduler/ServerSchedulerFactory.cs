@@ -28,7 +28,7 @@ namespace Dev2.Scheduler
         readonly IDev2TaskService _service;
         readonly ITaskServiceConvertorFactory _factory;
         readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
-        readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+        readonly string _debugOutputPath = string.Format("{0}\\{1}", Config.AppDataPath, GlobalConstants.SchedulerDebugPath);
 
         readonly IDirectory _dir;
         readonly Func<IScheduledResource, string> _pathResolve;

@@ -122,7 +122,7 @@ namespace Dev2.Studio
                 () =>
                 {
                     var dir = new DirectoryWrapper();
-                    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
+                    var path = Path.Combine(Config.UserDataPath, "Feedback");
                     dir.CleanUp(path);
                     dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
                 });

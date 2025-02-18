@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,14 +46,7 @@ namespace Dev2.Tests.DataList
             var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Guid.NewGuid().ToString();
-            if (Path.GetTempPath() != "C:\\WINDOWS\\TEMP")
-            {
-                rootFolder = Path.GetTempPath() + rootFolder;
-            }
-            else
-            {
-                rootFolder = "C:\\WINDOWS\\system32\\config\\systemprofile\\AppData\\Local\\TEMP" + rootFolder;
-            }
+            rootFolder = Config.UserDataPath + rootFolder;
 
             var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;

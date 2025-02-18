@@ -93,13 +93,7 @@ namespace Dev2.Studio.Views
 #pragma warning restore S3010
         }
 
-        string FilePath => Path.Combine(new[]
-        {
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            StringResources.App_Data_Directory,
-            StringResources.User_Interface_Layouts_Directory,
-            "WorkspaceLayout.xml"
-        });
+        string FilePath => Path.Combine(Config.UserDataPath, StringResources.User_Interface_Layouts_Directory, "WorkspaceLayout.xml");
 
         void GetFilePath()
         {
@@ -380,10 +374,10 @@ namespace Dev2.Studio.Views
             }
             Toolbox.Activate();
             Toolboxcontrol.Focus();
-            
-            if(DataContext is ShellViewModel model)
+
+            if (DataContext is ShellViewModel model)
             {
-                if(!model.SubscriptionData.Connected)
+                if (!model.SubscriptionData.Connected)
                     model.PopupProvider.ShowGetSubscriptionDataFailed();
             }
         }
