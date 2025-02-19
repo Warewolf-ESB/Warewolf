@@ -10,6 +10,7 @@ EXPOSE 3143
 
 RUN mkdir Server
 ADD . Server
+RUN &".\Server\Perfmon.ps1"
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_WORKINGDIR "C:\programdata\Warewolf"
 ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
