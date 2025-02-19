@@ -492,6 +492,88 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
+        public async Task<Receipt> ExecuteCommandAsync(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
+        {
+#if NETFRAMEWORK
+            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
+#else
+            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = _httpContextAccessor.HttpContext.User };
+#endif
+            string connectionId = Context.ConnectionId;
+            try
+            {
+                var task = new Task<Receipt>(() =>
+                {
+                    try
+                    {
+                        if (!MessageCache.TryGetValue(messageId, out StringBuilder sb))
+                        {
+                            sb = new StringBuilder();
+                            MessageCache.TryAdd(messageId, sb);
+                        }
+                        sb.Append(envelope.Content);
+
+                        MessageCache.TryRemove(messageId, out sb);
+                        var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
+
+                        var user = string.Empty;
+
+#if NETFRAMEWORK
+                        var userPrinciple = Context.User;
+                        if (Context.User.Identity != null)
+                        
+                        {
+                            user = Context.User.Identity.Name;
+                            userPrinciple = Context.User;
+                            Thread.CurrentPrincipal = userPrinciple;
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                        }
+#else
+                        var userPrinciple = _httpContextAccessor.HttpContext.User;
+                        if (_httpContextAccessor.HttpContext.User.Identity != null)
+
+                        {
+                            user = _httpContextAccessor.HttpContext.User.Identity.Name;
+                            userPrinciple = _httpContextAccessor.HttpContext.User;
+                            Thread.CurrentPrincipal = userPrinciple;
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : " + userPrinciple?.Identity?.AuthenticationType + " : " + userPrinciple?.Identity?.IsAuthenticated + " ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                        }
+#endif
+                        StringBuilder processRequest = null;
+                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, connectionId); });
+                        var future = new FutureReceipt
+                        {
+                            PartID = 0,
+                            RequestID = messageId,
+                            User = user
+                        };
+
+                        var value = processRequest?.ToString();
+                        if (!string.IsNullOrEmpty(value) && !ResultsCache.Instance.AddResult(future, value))
+                        {
+                            Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, connectionId, value)), GlobalConstants.WarewolfError);
+                        }
+
+                        return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
+
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                    }
+                    return null;
+                });
+                task.Start();
+                return null; //await task.ConfigureAwait(true);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Info("Is End of Stream:" + endOfStream, GlobalConstants.WarewolfInfo);
+            }
+            return null;
+        }
+
         #region Overrides of Hub
 
 #if NETFRAMEWORK
