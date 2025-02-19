@@ -443,6 +443,7 @@ namespace Dev2.Tests.Runtime.Security
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbSendMemo, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbAddDebugWriter, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbExecuteCommand, Url, queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbExecuteCommandAsync, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbSendDebugState, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbWrite, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbOnConnectedAsync, Url, queryString.Object),
