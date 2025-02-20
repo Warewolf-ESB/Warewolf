@@ -64,7 +64,6 @@
     <Compile Include="WebSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Web Source.feature">
       <LastGenOutput>Web Source.feature.cs</LastGenOutput>
     </None>

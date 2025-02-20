@@ -101,7 +101,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="New MySql Database Source.feature">
       <LastGenOutput>New MySql Database Source.feature.cs</LastGenOutput>
     </None>

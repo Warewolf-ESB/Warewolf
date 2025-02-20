@@ -102,7 +102,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="New SqlDatabase Source.feature">
       <LastGenOutput>New SqlDatabase Source.feature.cs</LastGenOutput>
     </None>

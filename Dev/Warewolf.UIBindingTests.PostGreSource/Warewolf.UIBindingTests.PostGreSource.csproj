@@ -60,7 +60,6 @@
     <Compile Include="NewDatabaseSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="New PostGre Database Source.feature">
       <LastGenOutput>New PostGre Database Source.feature.cs</LastGenOutput>
     </None>

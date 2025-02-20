@@ -64,7 +64,6 @@
     <Compile Include="SharepointSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Sharepoint.feature">
       <LastGenOutput>Sharepoint.feature.cs</LastGenOutput>
     </None>

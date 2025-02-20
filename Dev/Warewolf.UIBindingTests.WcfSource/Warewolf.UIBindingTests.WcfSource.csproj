@@ -61,7 +61,6 @@
     <Compile Include="WcfSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Wcf Source.feature">
       <LastGenOutput>Wcf Source.feature.cs</LastGenOutput>
     </None>
