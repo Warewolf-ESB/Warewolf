@@ -59,6 +59,7 @@
     <Compile Include="ServiceTestViewSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Service Test View.feature">
       <LastGenOutput>Service Test View.feature.cs</LastGenOutput>
     </None>

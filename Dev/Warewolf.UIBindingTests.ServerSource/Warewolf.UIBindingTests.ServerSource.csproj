@@ -64,6 +64,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="NewServerSource.feature">
       <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>
     </None>

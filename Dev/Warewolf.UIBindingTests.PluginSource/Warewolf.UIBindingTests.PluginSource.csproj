@@ -61,6 +61,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="PluginSource.feature">
       <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
     </None>

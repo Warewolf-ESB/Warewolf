@@ -112,6 +112,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="RabbitMq Source.feature">
       <LastGenOutput>RabbitMq Source.feature.cs</LastGenOutput>
     </None>
