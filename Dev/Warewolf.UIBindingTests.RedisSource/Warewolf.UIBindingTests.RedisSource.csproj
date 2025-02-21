@@ -63,6 +63,7 @@
     <Compile Include="RedisSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Redis Source.feature">
       <LastGenOutput>Redis Source.feature.cs</LastGenOutput>
     </None>
