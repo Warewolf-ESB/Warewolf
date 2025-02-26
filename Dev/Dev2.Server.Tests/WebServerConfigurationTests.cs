@@ -158,7 +158,7 @@ namespace Dev2.Server.Tests
             string expectedPort = "";
             string expectedSslPort = "55";
             ConfigurationManager.AppSettings.Set("CollectUsageStats", expectedUsageStats);
-            ConfigurationManager.AppSettings.Set("webServerPort", expectedPort);
+            GlobalConstants.WebServerPort = expectedPort;
             ConfigurationManager.AppSettings.Set("webServerSslPort", expectedSslPort);
 
             ConfigurationManager.AppSettings.Set("webServerEnabled", "true");
