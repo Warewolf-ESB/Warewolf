@@ -190,6 +190,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbFetchResourcesAffectedMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:
+                case WebServerRequestType.EsbExecuteCommandAsync:
                 case WebServerRequestType.EsbSendDebugState:
                 case WebServerRequestType.EsbWrite:
                 case WebServerRequestType.EsbOnConnectedAsync:
@@ -291,6 +292,8 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                     return null;
                 case WebServerRequestType.EsbExecuteCommand:
+                    return null;
+                case WebServerRequestType.EsbExecuteCommandAsync:
                     return null;
                 case WebServerRequestType.EsbAddItemMessage:
                     return null;
