@@ -229,45 +229,49 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <Reference Include="System.Web" />
   </ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-	  <Compile Include="WebServerStartup.cs" />
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+      <Compile Include="WebServerStartup.cs" />
       <Reference Include="System.Runtime.DurableInstancing" />
-		<PackageReference Include="Microsoft.AspNet.Cors">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
-			<Version>2.4.1</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Client">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Core">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.Cors">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
-			<Version>5.2.7</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Cors">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Host.HttpListener">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.Security">
-			<Version>4.2.2</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Owin.SelfHost">
-			<Version>4.2.2</Version>
-		</PackageReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-	  <Compile Include="WebServerCoreStartup.cs" />
+        <PackageReference Include="Microsoft.AspNet.Cors">
+            <Version>5.2.7</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
+            <Version>2.4.1</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client">
+            <Version>5.2.7</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Core">
+            <Version>5.2.7</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Cors">
+            <Version>5.2.7</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
+            <Version>5.2.7</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Owin.Cors">
+            <Version>4.2.2</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Owin.Host.HttpListener">
+            <Version>4.2.2</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Owin.Security">
+            <Version>4.2.2</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Owin.SelfHost">
+            <Version>4.2.2</Version>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+      <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+        <SpecificVersion>False</SpecificVersion>
+        <HintPath>..\Binaries\System.Reactive.dll</HintPath>
+      </Reference>
+      <Compile Include="WebServerCoreStartup.cs" />
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="HtmlTextWriter" Version="2.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
-	</ItemGroup>
+        <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
+    </ItemGroup>
 </Project>
