@@ -29,7 +29,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = authenticationType == AuthenticationType.User ? "testuser" : null,
-                Password = authenticationType == AuthenticationType.User ? "test123" : null,
+                Password = authenticationType == AuthenticationType.User ? "Ex@mple!23Secure#PWD" : null,
                 ConnectionTimeout = 30,
                 Port = port
             };
