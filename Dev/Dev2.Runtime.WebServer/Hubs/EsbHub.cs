@@ -641,21 +641,48 @@ namespace Dev2.Runtime.WebServer.Hubs
             t.Start();
         }
 
-        protected void SetupEvents()
-        {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
-            ServerExplorerRepository.Instance.MessageSubscription(this);
-            if (ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }
-            if (ResourceCatalog.Instance.SendResourceMessages == null)
-            {
-                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
-            }
-        }
+		protected void SetupEvents()
+		{
+			CompileMessageRepo.Instance.AllMessages.Subscribe(
+				new Observer<IList<ICompileMessageTO>>(OnCompilerMessageReceived)
+			);
+			ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+			ServerExplorerRepository.Instance.MessageSubscription(this);
+			if (ResourceCatalog.Instance.ResourceSaved == null)
+			{
+				ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+			}
+			if (ResourceCatalog.Instance.SendResourceMessages == null)
+			{
+				ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
+			}
+		}
 
-        #endregion
-    }
+		#endregion
+	}
+}
+
+public class Observer<T> : IObserver<T>
+{
+	private readonly Action<T> _onNext;
+
+	public Observer(Action<T> onNext)
+	{
+		_onNext = onNext;
+	}
+
+	public void OnNext(T value)
+	{
+		_onNext(value);
+	}
+
+	public void OnError(Exception error)
+	{
+		// Handle error
+	}
+
+	public void OnCompleted()
+	{
+		// Handle completion
+	}
 }

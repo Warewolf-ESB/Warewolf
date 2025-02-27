@@ -13,7 +13,10 @@ using System;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
 using Warewolf;
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Builder;
+#endif
+
 namespace Dev2
 {
 
@@ -25,15 +28,23 @@ namespace Dev2
     public class StartWebServer : IStartWebServer
     {
         private readonly IWriter _writer;
+#if NETFRAMEWORK
+		private readonly Func<Dev2Endpoint[], IDisposable> _startAction;
+#else
         private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
+#endif
 
-        IDisposable _owinServer;
-        
+		IDisposable _owinServer;
 
 
-        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> startAction)
-        {
-            _writer = writer;
+
+#if NETFRAMEWORK
+		public StartWebServer(IWriter writer, Func<Dev2Endpoint[], IDisposable> startAction)
+#else
+		public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> startAction)
+#endif
+		{
+			_writer = writer;
             _startAction = startAction;
         }
 
@@ -58,10 +69,13 @@ namespace Dev2
         public void DoStartWebServer(IWebServerConfiguration webServerConfig)
         {
             var endPoints = webServerConfig.EndPoints;
-            var builder = WebApplication.CreateBuilder();
-
-            _owinServer = _startAction(endPoints, builder); // WebServerStartup.Start(endPoints)
-            EnvironmentVariables.IsServerOnline = true;
+#if NETFRAMEWORK
+			_owinServer = _startAction(endPoints);
+#else
+			var builder = WebApplication.CreateBuilder();
+			WebServerStartup.Start(endPoints, builder);
+#endif
+			EnvironmentVariables.IsServerOnline = true;
             _writer.WriteLine("\r\nWeb Server Started");
             foreach (var endpoint in endPoints)
             {
@@ -74,9 +88,10 @@ namespace Dev2
             {
                 if (_owinServer != null)
                 {
+#if !NETFRAMEWORK
                     var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
                     if(app != null) app.StopAsync();
-
+#endif
                     _owinServer.Dispose();
                     _owinServer = null;
                 }

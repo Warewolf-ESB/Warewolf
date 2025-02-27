@@ -119,7 +119,7 @@
       <Link>app.config</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 </Project>
