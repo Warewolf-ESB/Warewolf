@@ -51,9 +51,6 @@
      <Reference Include="CalculationManager.WPF">
        <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
      </Reference>   
-     <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -284,6 +281,11 @@
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

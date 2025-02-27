@@ -46,7 +46,9 @@ namespace Dev2.Data.Tests.PathOperations
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockFileWrapper = new Mock<IFile>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+#if !NETFRAMEWORK
             mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
+#endif
 
             var doGetAction = new DoGetAction(mockActivityIOPath.Object, mockDev2LogonProvider.Object, mockFileWrapper.Object, (arg1, arg2)=> mockWindowsImpersonationContext.Object);
             //------------------------Act------------------------------

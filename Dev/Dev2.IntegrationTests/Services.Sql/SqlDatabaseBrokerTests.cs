@@ -320,16 +320,20 @@ namespace Dev2.Integration.Tests.Services.Sql
                     _impersonationContext = tempWindowsIdentity.Impersonate();
                     if (_impersonationContext != null)
                     {
+#if !NETFRAMEWORK
                         return _impersonationContext.RunImpersonated<bool>(() =>
                         {
+#endif
                             ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
                             Thread.CurrentPrincipal = principal;
                             CloseHandle(token);
                             CloseHandle(tokenDuplicate);
                             return true;
-                        });
-                    }
-                }
+#if !NETFRAMEWORK
+						});
+#endif
+					}
+				}
                 if (token != IntPtr.Zero)
                 {
                     CloseHandle(token);

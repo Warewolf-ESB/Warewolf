@@ -76,19 +76,15 @@
     <EmbeddedResource Include="TestData\testresult.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
- 
     <Reference Include="System.Management" />
-    
 	  <Reference Include="Weave">
 		  <HintPath>..\Binaries\Weave.dll</HintPath>
 	  </Reference>
- 
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -357,7 +353,7 @@
     <!--<PackageReference Include="Oracle.ManagedDataAccess" Version="21.8.0" />-->
   <!--<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.80" />-->
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
