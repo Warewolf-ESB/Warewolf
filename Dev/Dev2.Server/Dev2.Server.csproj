@@ -407,11 +407,11 @@
     )
     taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
     taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
-    <StartupObject>Dev2.Program</StartupObject>
     <IsTestProject>false</IsTestProject>
     <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <StartupObject>Dev2.Program</StartupObject>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
 	<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.70" />
