@@ -56,7 +56,9 @@ namespace Dev2.Runtime.WebServer.Hubs
 #endif
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
+#if !NETFRAMEWORK
         private readonly IHttpContextAccessor _httpContextAccessor;
+#endif
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
@@ -93,7 +95,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         #region Implementation of IDebugWriter
 
 #if NETFRAMEWORK
-        public void Write(IDebugState debugState)
+        public void WriteDebugState(IDebugState debugState)
 #else
         public void WriteDebugState(IDebugState debugState)
 #endif

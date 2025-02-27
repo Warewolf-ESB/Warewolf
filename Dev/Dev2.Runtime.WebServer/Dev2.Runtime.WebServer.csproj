@@ -230,10 +230,8 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <Reference Include="System.Web" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+      <Reference Include="System.Runtime.DurableInstancing" />
 		<PackageReference Include="Microsoft.AspNet.Cors">
 			<Version>5.2.7</Version>
 		</PackageReference>
@@ -266,6 +264,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+      <FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="HtmlTextWriter" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
