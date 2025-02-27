@@ -13,7 +13,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Runtime.WebServer</RootNamespace>
     <AssemblyName>Dev2.Runtime.WebServer</AssemblyName>
-    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -57,7 +56,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-   
     <Reference Include="System.Activities" />    
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -231,7 +229,6 @@
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <Reference Include="System.Web" />
-    <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -269,6 +266,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+		<PackageReference Include="HtmlTextWriter" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
 	</ItemGroup>
