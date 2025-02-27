@@ -126,7 +126,6 @@
     <Compile Include="Responses\StaticFileResponseWriter.cs" />
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Responses\IResponseWriter.cs" />
-    <Compile Include="WebServerCoreStartup.cs" />
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerRequestContent.cs" />
     <Compile Include="WebServerRequestContentHeaders.cs" />
@@ -231,6 +230,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+	  <Compile Include="WebServerStartup.cs" />
       <Reference Include="System.Runtime.DurableInstancing" />
 		<PackageReference Include="Microsoft.AspNet.Cors">
 			<Version>5.2.7</Version>
@@ -264,6 +264,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+	  <Compile Include="WebServerCoreStartup.cs" />
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="HtmlTextWriter" Version="2.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
