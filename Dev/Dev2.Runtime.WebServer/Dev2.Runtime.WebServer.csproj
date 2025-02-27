@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -217,6 +217,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
@@ -276,8 +277,6 @@
 		<PackageReference Include="Microsoft.Owin.SelfHost">
 			<Version>4.2.2</Version>
 		</PackageReference>
-		<PackageReference Include="HtmlTextWriter" Version="2.1.1" />
-		<Reference Include="System.Web" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />

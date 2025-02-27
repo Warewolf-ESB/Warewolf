@@ -16,9 +16,7 @@ using System.Linq;
 using System.Net.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
-#if NETFRAMEWORK
-using System.Web.Http;
-#else
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 #endif
