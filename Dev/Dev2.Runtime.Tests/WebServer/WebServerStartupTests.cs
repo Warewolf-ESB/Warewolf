@@ -9,14 +9,17 @@
 */
 
 using System.Net;
-using System.Security.Claims;
 using Dev2.Runtime.WebServer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if NETFRAMEWORK
+using Microsoft.Owin.Builder;
+#else
+using System.Security.Claims;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.Owin.Builder;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+#endif
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -24,31 +27,32 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestCategory("Runtime WebServer")]
     public class WebServerStartupTests
     {
-        //[TestMethod]
-        //[Owner("Trevor Williams-Ros")]
-        //[TestCategory("WebServerStartup_Configuration")]
-        //public void WebServerStartup_Configuration_HttpListener_InitializedCorrectly()
-        //{
-        //    //------------Setup for test--------------------------
+#if NETFRAMEWORK
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerStartup_Configuration")]
+        public void WebServerStartup_Configuration_HttpListener_InitializedCorrectly()
+        {
+            //------------Setup for test--------------------------
 
-        //    var listener = new HttpListener();
+            var listener = new HttpListener();
 
-        //    Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
-        //    Assert.IsFalse(listener.IgnoreWriteExceptions);
+            Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
+            Assert.IsFalse(listener.IgnoreWriteExceptions);
 
-        //    var app = new AppBuilder();
-        //    app.Properties.Add(typeof(HttpListener).FullName, listener);
+            var app = new AppBuilder();
+            app.Properties.Add(typeof(HttpListener).FullName, listener);
 
-        //    var webServerStartup = new WebServerStartup();
+            var webServerStartup = new WebServerStartup();
 
-        //    //------------Execute Test---------------------------
-        //    webServerStartup.Configuration(app);
+            //------------Execute Test---------------------------
+            webServerStartup.Configuration(app);
 
-        //    //------------Assert Results-------------------------
-        //    Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
-        //    Assert.IsTrue(listener.IgnoreWriteExceptions);
-        //}
-
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
+            Assert.IsTrue(listener.IgnoreWriteExceptions);
+        }
+#else
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerStartup_Configuration")]
@@ -70,5 +74,6 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthenticationSchemes.Anonymous, scheme);
         }
+#endif
     }
 }

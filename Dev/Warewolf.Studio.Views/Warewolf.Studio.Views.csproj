@@ -359,9 +359,9 @@
 		<PackageReference Include="Unofficial.Microsoft.mshtml">
 			<Version>7.0.3300</Version>
 		</PackageReference>
+		<PackageReference Include="Prism.Mvvm" Version="1.1.1" />
 	</ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-        <PackageReference Include="Prism.Mvvm" Version="1.1.1" />
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 		<PackageReference Include="Unity">
 			<Version>5.11.10</Version>
 		</PackageReference>

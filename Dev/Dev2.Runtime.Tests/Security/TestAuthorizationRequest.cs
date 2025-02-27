@@ -15,6 +15,9 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Moq;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR.Hosting;
+#endif
 
 namespace Dev2.Tests.Runtime.Security
 {
@@ -28,7 +31,11 @@ namespace Dev2.Tests.Runtime.Security
         {
         }
 
-        public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, Microsoft.AspNetCore.Http.IQueryCollection queryString, string resource = null)
+#if NETFRAMEWORK
+       public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, INameValueCollection queryString, string resource = null)
+#else
+		public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, Microsoft.AspNetCore.Http.IQueryCollection queryString, string resource = null)
+#endif
         {
             UserIsInRole = false;
             AuthorizationContext = authorizationContext;

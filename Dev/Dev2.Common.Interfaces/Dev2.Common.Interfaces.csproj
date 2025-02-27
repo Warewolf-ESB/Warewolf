@@ -507,7 +507,4 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
-    <PackageReference Include="System.Runtime" Version="6.0.0" />
-  </ItemGroup>
 </Project>

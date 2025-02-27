@@ -549,4 +549,9 @@
       )
     </PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Activities" />
+	<Reference Include="System.Activities.Presentation" />
+	<Reference Include="System.Runtime.DurableInstancing" />
+  </ItemGroup>
 </Project>

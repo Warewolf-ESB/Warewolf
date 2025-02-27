@@ -409,8 +409,6 @@
     taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
     <IsTestProject>false</IsTestProject>
     <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <StartupObject>Dev2.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
