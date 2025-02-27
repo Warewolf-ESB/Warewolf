@@ -353,15 +353,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
+			if ($FrameworkTarget) {
+				$OutputFolderName += "\" + $FrameworkTarget
+				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+			}
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
-			if ($FrameworkTarget) {
-				$OutputProperty += "\" + $FrameworkTarget
-				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-			}
             if (!($InContainer.IsPresent)) {
                 &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
