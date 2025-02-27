@@ -21,6 +21,7 @@ using Warewolf.Resource.Errors;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Web.Http.Controllers;
+using Microsoft.AspNet.SignalR.Hosting;
 #else
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.WebServer.Security
 			RequestType = context.GetRequestType(),
 			User = context.ControllerContext.RequestContext.Principal,
 			Url = context.Request.RequestUri,
-			QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
+			QueryString = new QueryString(context.Request.GetQueryNameValuePairs()) as INameValueCollection
 		};
 
 		public static AuthorizationRequest GetAuthorizationRequest(this HubDescriptor hubDescriptor, IRequest request) => GetAuthorizationRequest(request, WebServerRequestType.HubConnect);
