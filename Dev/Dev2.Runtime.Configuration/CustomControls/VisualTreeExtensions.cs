@@ -14,6 +14,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -72,3 +73,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

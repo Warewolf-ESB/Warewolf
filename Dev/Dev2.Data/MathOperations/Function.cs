@@ -62,32 +62,36 @@ namespace Dev2.MathOperations
 
         public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, XamCalculationManager calcManager)
         {
+#if WINDOWS
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
                 if (calcManager != null)
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
+#endif
                     SetFunctionName(functionName);
                     SetArguments(arguments);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
+#if WINDOWS
                 }
                 else
                 {
                     throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
                 }
             }
-
             else
             {
                 throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
             }
+#endif
+
 
 
 
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
         #region Private Methods
 

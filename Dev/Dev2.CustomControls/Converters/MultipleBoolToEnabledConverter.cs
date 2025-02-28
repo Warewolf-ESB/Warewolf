@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -17,7 +18,7 @@ namespace Dev2.CustomControls.Converters
 {
     public class MultipleBoolToEnabledConverter : IMultiValueConverter
     {
-        #region Implementation of IMultiValueConverter
+		#region Implementation of IMultiValueConverter
 
         /// <summary>
         ///     Converts source values to a value for the binding target. The data binding engine calls this method when it
@@ -70,6 +71,7 @@ namespace Dev2.CustomControls.Converters
         /// <param name="culture">The culture to use in the converter.</param>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] { };
 
-        #endregion
+		#endregion
     }
 }
+#endif

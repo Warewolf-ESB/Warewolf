@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows;
@@ -45,3 +46,4 @@ namespace Dev2.CustomControls.Converters
         }
     }
 }
+#endif

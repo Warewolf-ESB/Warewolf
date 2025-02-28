@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
@@ -27,7 +28,7 @@ namespace System.Windows.Controls
     /// </summary>
     static class VisualStates
     {
-        #region GroupCommon
+		#region GroupCommon
         /// <summary>
         /// Common state group.
         /// </summary>
@@ -57,9 +58,9 @@ namespace System.Windows.Controls
         /// Disabled state of the Common state group.
         /// </summary>
         public const string StateDisabled = "Disabled";
-        #endregion GroupCommon
+		#endregion GroupCommon
 
-        #region GroupFocus
+		#region GroupFocus
         /// <summary>
         /// Focus state group.
         /// </summary>
@@ -74,9 +75,9 @@ namespace System.Windows.Controls
         /// Focused state of the Focus state group.
         /// </summary>
         public const string StateFocused = "Focused";
-        #endregion GroupFocus
+		#endregion GroupFocus
 
-        #region GroupSelection
+		#region GroupSelection
         /// <summary>
         /// Selection state group.
         /// </summary>
@@ -96,9 +97,9 @@ namespace System.Windows.Controls
         /// Selected inactive state of the Selection state group.
         /// </summary>
         public const string StateSelectedInactive = "SelectedInactive";
-        #endregion GroupSelection
+		#endregion GroupSelection
 
-        #region GroupExpansion
+		#region GroupExpansion
         /// <summary>
         /// Expansion state group.
         /// </summary>
@@ -113,9 +114,9 @@ namespace System.Windows.Controls
         /// Collapsed state of the Expansion state group.
         /// </summary>
         public const string StateCollapsed = "Collapsed";
-        #endregion GroupExpansion
+		#endregion GroupExpansion
 
-        #region GroupPopup
+		#region GroupPopup
         /// <summary>
         /// Popup state group.
         /// </summary>
@@ -130,9 +131,9 @@ namespace System.Windows.Controls
         /// Closed state of the Popup state group.
         /// </summary>
         public const string StatePopupClosed = "PopupClosed";
-        #endregion
+		#endregion
 
-        #region GroupValidation
+		#region GroupValidation
         /// <summary>
         /// ValidationStates state group.
         /// </summary>
@@ -152,9 +153,9 @@ namespace System.Windows.Controls
         /// Invalid, unfocused state for the ValidationStates group.
         /// </summary>
         public const string StateInvalidUnfocused = "InvalidUnfocused";
-        #endregion
+		#endregion
 
-        #region GroupExpandDirection
+		#region GroupExpandDirection
         /// <summary>
         /// ExpandDirection state group.
         /// </summary>
@@ -179,9 +180,9 @@ namespace System.Windows.Controls
         /// Right expand direction state of ExpandDirection state group.
         /// </summary>
         public const string StateExpandRight = "ExpandRight";
-        #endregion
+		#endregion
 
-        #region GroupHasItems
+		#region GroupHasItems
         /// <summary>
         /// HasItems state group.
         /// </summary>
@@ -196,9 +197,9 @@ namespace System.Windows.Controls
         /// NoItems state of the HasItems state group.
         /// </summary>
         public const string StateNoItems = "NoItems";
-        #endregion GroupHasItems
+		#endregion GroupHasItems
 
-        #region GroupIncrease
+		#region GroupIncrease
         /// <summary>
         /// Increment state group.
         /// </summary>
@@ -213,9 +214,9 @@ namespace System.Windows.Controls
         /// State disabled for increment group.
         /// </summary>
         public const string StateIncreaseDisabled = "IncreaseDisabled";
-        #endregion GroupIncrease
+		#endregion GroupIncrease
 
-        #region GroupDecrease
+		#region GroupDecrease
         /// <summary>
         /// Decrement state group.
         /// </summary>
@@ -230,9 +231,9 @@ namespace System.Windows.Controls
         /// State disabled for decrement group.
         /// </summary>
         public const string StateDecreaseDisabled = "DecreaseDisabled";
-        #endregion GroupDecrease
+		#endregion GroupDecrease
 
-        #region GroupIteractionMode
+		#region GroupIteractionMode
         /// <summary>
         /// InteractionMode state group.
         /// </summary>
@@ -247,9 +248,9 @@ namespace System.Windows.Controls
         /// Display of the DisplayMode state group.
         /// </summary>
         public const string StateDisplay = "Display";
-        #endregion GroupIteractionMode
+		#endregion GroupIteractionMode
 
-        #region GroupLocked
+		#region GroupLocked
         /// <summary>
         /// DisplayMode state group.
         /// </summary>
@@ -264,9 +265,9 @@ namespace System.Windows.Controls
         /// Display of the DisplayMode state group.
         /// </summary>
         public const string StateUnlocked = "Unlocked";
-        #endregion GroupLocked
+		#endregion GroupLocked
 
-        #region GroupActive
+		#region GroupActive
         /// <summary>
         /// Active state.
         /// </summary>
@@ -281,9 +282,9 @@ namespace System.Windows.Controls
         /// Active state group.
         /// </summary>
         public const string GroupActive = "ActiveStates";
-        #endregion GroupActive
+		#endregion GroupActive
 
-        #region GroupWatermark
+		#region GroupWatermark
         /// <summary>
         /// Non-watermarked state.
         /// </summary>
@@ -298,9 +299,9 @@ namespace System.Windows.Controls
         /// Watermark state group.
         /// </summary>
         public const string GroupWatermark = "WatermarkStates";
-        #endregion GroupWatermark
+		#endregion GroupWatermark
 
-        #region GroupCalendarButtonFocus
+		#region GroupCalendarButtonFocus
         /// <summary>
         /// Unfocused state for Calendar Buttons.
         /// </summary>
@@ -315,9 +316,9 @@ namespace System.Windows.Controls
         /// CalendarButtons Focus state group.
         /// </summary>
         public const string GroupCalendarButtonFocus = "CalendarButtonFocusStates";
-        #endregion GroupCalendarButtonFocus
+		#endregion GroupCalendarButtonFocus
 
-        #region GroupBusyStatus
+		#region GroupBusyStatus
         /// <summary>
         /// Busy state for BusyIndicator.
         /// </summary>
@@ -332,9 +333,9 @@ namespace System.Windows.Controls
         /// Busyness group name.
         /// </summary>
         public const string GroupBusyStatus = "BusyStatusStates";
-        #endregion
+		#endregion
 
-        #region GroupVisibility
+		#region GroupVisibility
         /// <summary>
         /// Visible state name for BusyIndicator.
         /// </summary>
@@ -349,7 +350,7 @@ namespace System.Windows.Controls
         /// BusyDisplay group.
         /// </summary>
         public const string GroupVisibility = "VisibilityStates";
-        #endregion
+		#endregion
 
         /// <summary>
         /// Use VisualStateManager to change the visual state of the control.
@@ -423,3 +424,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

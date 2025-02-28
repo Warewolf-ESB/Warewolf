@@ -42,9 +42,11 @@
         <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
         <UseApplicationTrust>false</UseApplicationTrust>
         <BootstrapperEnabled>true</BootstrapperEnabled>
-        <UseWpf>true</UseWpf>
-        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
+		<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' != 'net6.0'">
+		<UseWpf>true</UseWpf>
+	</PropertyGroup>
     <PropertyGroup>
         <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
         <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
@@ -311,6 +313,8 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+    </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and $(TargetFramework.EndsWith('-windows'))">
         <Page Include="CustomControls\Progress\ProgressDialog.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
@@ -474,12 +478,12 @@
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
-    </ItemGroup>
-    <ItemGroup>
         <Page Include="Resources\Brushes.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
+    </ItemGroup>
+    <ItemGroup>
         <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
         <None Include="App.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -511,7 +515,7 @@
         <Resource Include="Warewolf.ico" />
         <!-- Handle Images - Must be save level since MS can't write a Copy routine that moves directories, only files ;( -->
     </ItemGroup>
-    <ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and $(TargetFramework.EndsWith('-windows'))">
         <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
             <Visible>False</Visible>
             <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>

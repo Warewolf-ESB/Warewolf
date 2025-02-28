@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -18,7 +19,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class ImagePathConverter : IValueConverter 
     {
-        #region IValueConverter Members
+		#region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
@@ -46,6 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw new NotImplementedException();
         }
 
-        #endregion
+		#endregion
     } 
 }
+#endif

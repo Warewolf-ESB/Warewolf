@@ -13,75 +13,70 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Windows.Threading;
+using System.Threading;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 
 namespace Dev2.Services
 {
-    public class SubscriptionService<TEvent> : DisposableObject, ISubscriptionService<TEvent>
-         where TEvent : class, new()
-    {
-        readonly List<IDisposable> _subscriptions;
-        readonly IObservable<TEvent> _events;
+	public class SubscriptionService<TEvent> : DisposableObject, ISubscriptionService<TEvent>
+			 where TEvent : class, new()
+	{
+		readonly List<IDisposable> _subscriptions;
+		readonly IObservable<TEvent> _events;
+		readonly SynchronizationContext _synchronizationContext;
 
-        public SubscriptionService(IEventPublisher eventPublisher)
-        {
-            _subscriptions = new List<IDisposable>();
+		public SubscriptionService(IEventPublisher eventPublisher)
+		{
+			_subscriptions = new List<IDisposable>();
 
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _events = eventPublisher.GetEvent<TEvent>();
+			VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+			_events = eventPublisher.GetEvent<TEvent>();
 
+			// Capture the current synchronization context
+			_synchronizationContext = SynchronizationContext.Current;
 
-            // Don't observe on dispatcher if this is a background thread!
-            try
-            {
-                var dispatcher = Dispatcher.CurrentDispatcher;
-                if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
-                {
-                    _events = _events.ObserveOn(Scheduler.Default);
-                }
-            }
-            
-            catch
-            
-            {
-                // FOR TESTING FUNNIES!!
-            }
-        }
+			// Don't observe on synchronization context if this is a background thread!
+			if (_synchronizationContext != null && SynchronizationContext.Current != null)
+			{
+#if WINDOWS
+				_events = _events.ObserveOn(Scheduler.Default);
+#endif
+			}
+		}
 
-        public int Count => _subscriptions.Count;
+		public int Count => _subscriptions.Count;
 
-        public void Subscribe(Action<TEvent> onNext)
-        {
-            Subscribe(null, onNext);
-        }
+		public void Subscribe(Action<TEvent> onNext)
+		{
+			Subscribe(null, onNext);
+		}
 
-        public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
-        {
-            var events = filter == null ? _events : _events?.Where(filter);
-            if(events != null)
-            {
-                var subscription = events.Subscribe(onNext);
-                _subscriptions.Add(subscription);
-            }
-        }
+		public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
+		{
+			var events = filter == null ? _events : _events?.Where(filter);
+			if (events != null)
+			{
+				var subscription = events.Subscribe(onNext);
+				_subscriptions.Add(subscription);
+			}
+		}
 
-        public void Unsubscribe()
-        {
-            foreach(var subscription in _subscriptions)
-            {
-                subscription.Dispose();
-            }
-            _subscriptions.Clear();
-        }
+		public void Unsubscribe()
+		{
+			foreach (var subscription in _subscriptions)
+			{
+				subscription.Dispose();
+			}
+			_subscriptions.Clear();
+		}
 
-        #region OnDisposed
+		#region OnDisposed
 
-        protected override void OnDisposed()
-        {
-            Unsubscribe();
-        }
+		protected override void OnDisposed()
+		{
+			Unsubscribe();
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

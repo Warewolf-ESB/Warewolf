@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -45,7 +46,7 @@ namespace Dev2.CustomControls
             }
         }
 
-        #region Event Handlers
+		#region Event Handlers
 
         static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
         {
@@ -65,9 +66,9 @@ namespace Dev2.CustomControls
             }
         }
 
-        #endregion
+		#endregion
 
-        #region Helper Methods
+		#region Helper Methods
 
         static void RemoveWatermark(UIElement control)
         {
@@ -111,6 +112,7 @@ namespace Dev2.CustomControls
             return (c as ItemsControl)?.Items.Count == 0;
         }
 
-        #endregion
+		#endregion
     }
 }
+#endif

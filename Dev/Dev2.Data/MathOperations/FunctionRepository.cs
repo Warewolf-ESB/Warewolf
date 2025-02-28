@@ -97,7 +97,11 @@ namespace Dev2.MathOperations
         {
             STAThreadExtensions.RunAsSTA(() =>
             {
+#if WINDOWS
                 var calcFunctions = CalcManager.GetAllFunctions();
+#else
+                IEnumerable<CalculationFunction> calcFunctions = new List<CalculationFunction>();
+#endif
 
                 foreach (CalculationFunction calcFunction in calcFunctions)
                 {

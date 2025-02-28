@@ -16,6 +16,10 @@ namespace Dev2.Interfaces
     public interface ICollectionActivity
     {
         int GetCollectionCount();
+#if WINDOWS
         void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem);
+#else
+        void AddListToCollection(IList<string> listToAdd, bool overwrite);
+#endif
     }
 }

@@ -10,8 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConsoleAppToTestExecuteCommandLineActivity</RootNamespace>
-    <AssemblyName>ConsoleAppToTestExecuteCommandLineActivity</AssemblyName>
-    
+    <AssemblyName>ConsoleAppToTestExecuteCommandLineActivity</AssemblyName>    
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>

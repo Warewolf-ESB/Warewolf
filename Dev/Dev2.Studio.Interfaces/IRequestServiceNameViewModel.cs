@@ -1,5 +1,7 @@
 using System;
+#if WINDOWS
 using System.Windows;
+#endif
 using System.Windows.Input;
 using Dev2.Common.SaveDialog;
 
@@ -7,8 +9,9 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IRequestServiceNameViewModel : IDisposable
     {
+#if WINDOWS
         MessageBoxResult ShowSaveDialog();
-
+#endif
         ResourceName ResourceName { get; }
         string Name { get; set; }
         string ErrorMessage { get; set; }
