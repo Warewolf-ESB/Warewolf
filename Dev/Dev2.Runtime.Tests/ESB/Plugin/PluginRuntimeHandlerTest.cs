@@ -25,9 +25,9 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 #if NETFRAMEWORK
-using Oracle.ManagedDataAccess.Client;
-#else
 using System.Data.OracleClient;
+#else
+using Oracle.ManagedDataAccess.Client;
 #endif
 using TestingDotnetDllCascading;
 
