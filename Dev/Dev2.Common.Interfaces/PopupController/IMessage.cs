@@ -6,10 +6,14 @@ namespace Dev2.Common.Interfaces.PopupController
     {
         string Description { get; set; }
         string Header { get; set; }
+#if WINDOWS
         MessageBoxButton Buttons { get; set; }
         MessageBoxImage Image { get; set; }
+#endif
         string DontShowAgainKey { get; set; }
+#if WINDOWS
         MessageBoxResult DefaultResult { get; set; }
+#endif
         bool IsDependenciesButtonVisible { get; set; }
         bool IsError { get; set; }
         bool IsInfo { get; set; }

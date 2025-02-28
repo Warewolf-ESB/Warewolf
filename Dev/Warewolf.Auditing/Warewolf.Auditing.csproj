@@ -26,7 +26,7 @@
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
-	<Target BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
 		<ItemGroup>
 			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
 			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
