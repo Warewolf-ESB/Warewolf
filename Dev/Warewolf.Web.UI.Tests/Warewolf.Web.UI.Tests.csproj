@@ -368,4 +368,11 @@
     <PostBuildEvent>if exist "$(TargetDir)WebDriverProfiles" rmdir /s /q "$(TargetDir)WebDriverProfiles"
 if exist "$(ProjectDir)BrowserWebDrivers\Profiles" if not exist "$(TargetDir)WebDriverProfiles" xcopy /Y /Q /R /S "$(ProjectDir)BrowserWebDrivers\Profiles" "$(TargetDir)WebDriverProfiles\"</PostBuildEvent>
   </PropertyGroup>
+  <Target BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>
