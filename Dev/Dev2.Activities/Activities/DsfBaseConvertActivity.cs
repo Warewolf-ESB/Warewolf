@@ -212,6 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
+#if WINDOWS
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
@@ -288,6 +289,62 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return string.Empty;
         }
+# else
+        void InsertToCollection(IEnumerable<string> listToAdd)
+        {
+            var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+            if (listOfValidRows.Count > 0)
+            {
+                var baseConvertTo = ConvertCollection.Last(c => !c.CanRemove());
+                var startIndex = ConvertCollection.IndexOf(baseConvertTo) + 1;
+                foreach (string s in listToAdd)
+                {
+                    ConvertCollection.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(startIndex);
+            }
+            else
+            {
+                AddToCollection(listToAdd);
+            }
+        }
+
+        void AddToCollection(IEnumerable<string> listToAdd)
+        {
+            var startIndex = 0;
+            var firstRowConvertFromType = ConvertCollection[0].FromType;
+            var firstRowConvertToType = ConvertCollection[0].ToType;
+            ConvertCollection.Clear();
+            foreach (string s in listToAdd)
+            {
+                ConvertCollection.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
+                startIndex++;
+            }
+            CleanUpCollection(startIndex);
+        }
+
+        void CleanUpCollection(int startIndex)
+        {
+            if (startIndex < ConvertCollection.Count)
+            {
+                ConvertCollection.RemoveAt(startIndex);
+            }
+            ConvertCollection.Add(new BaseConvertTO(string.Empty, "Text", "Base 64", string.Empty, startIndex + 1));
+            DisplayName = CreateDisplayName(startIndex + 1);
+        }
+
+        string CreateDisplayName(int count)
+        {
+            var currentName = DisplayName;
+            if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+            {
+                currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+            }
+            currentName = currentName + " (" + (count - 1) + ")";
+            return currentName;
+        }
+#endif
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -352,6 +409,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount() => throw new NotImplementedException();
 
+#if WINDOWS
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -363,6 +421,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+        {
+            if (!overwrite)
+            {
+                InsertToCollection(listToAdd);
+            }
+            else
+            {
+                AddToCollection(listToAdd);
+            }
+        }
+#endif
 
         public bool Equals(DsfBaseConvertActivity other)
         {
