@@ -20,18 +20,18 @@ using Microsoft.AspNetCore.Builder;
 namespace Dev2
 {
 
-    public interface IStartWebServer : IDisposable
-    {
-        void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper);
-    }
+	public interface IStartWebServer : IDisposable
+	{
+		void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper);
+	}
 
-    public class StartWebServer : IStartWebServer
-    {
-        private readonly IWriter _writer;
+	public class StartWebServer : IStartWebServer
+	{
+		private readonly IWriter _writer;
 #if NETFRAMEWORK
 		private readonly Func<Dev2Endpoint[], IDisposable> _startAction;
 #else
-        private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
+		private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
 #endif
 
 		IDisposable _owinServer;
@@ -45,65 +45,66 @@ namespace Dev2
 #endif
 		{
 			_writer = writer;
-            _startAction = startAction;
-        }
+			_startAction = startAction;
+		}
 
-        public void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper)
-        {
-            if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
-            {
-                try
-                {
-                    DoStartWebServer(webServerConfig);
-                }
-                catch (Exception e)
-                {
+		public void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper)
+		{
+			if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
+			{
+				try
+				{
+					DoStartWebServer(webServerConfig);
+				}
+				catch (Exception e)
+				{
 
-                    Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
-                    EnvironmentVariables.IsServerOnline = false;
-                    _writer.Fail("Webserver failed to start", e);
-                    pauseHelper.Pause();
-                }
-            }
-        }
-        public void DoStartWebServer(IWebServerConfiguration webServerConfig)
-        {
-            var endPoints = webServerConfig.EndPoints;
+					Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
+					EnvironmentVariables.IsServerOnline = false;
+					_writer.Fail("Webserver failed to start", e);
+					pauseHelper.Pause();
+				}
+			}
+		}
+		public void DoStartWebServer(IWebServerConfiguration webServerConfig)
+		{
+			var endPoints = webServerConfig.EndPoints;
 #if NETFRAMEWORK
 			_owinServer = _startAction(endPoints);
 #else
 			var builder = WebApplication.CreateBuilder();
-			WebServerStartup.Start(endPoints, builder);
+
+			_owinServer = _startAction(endPoints, builder);
 #endif
 			EnvironmentVariables.IsServerOnline = true;
-            _writer.WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in endPoints)
-            {
-                _writer.WriteLine($"Web server listening at {endpoint.Url}");
-            }
-        }
-        public void Dispose()
-        {
-            try
-            {
-                if (_owinServer != null)
-                {
+			_writer.WriteLine("\r\nWeb Server Started");
+			foreach (var endpoint in endPoints)
+			{
+				_writer.WriteLine($"Web server listening at {endpoint.Url}");
+			}
+		}
+		public void Dispose()
+		{
+			try
+			{
+				if (_owinServer != null)
+				{
 #if !NETFRAMEWORK
-                    var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
+					var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
                     if(app != null) app.StopAsync();
 #endif
-                    _owinServer.Dispose();
-                    _owinServer = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
-            }
-            finally
-            {
-                EnvironmentVariables.IsServerOnline = false;
-            }
-        }
-    }
+					_owinServer.Dispose();
+					_owinServer = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
+			}
+			finally
+			{
+				EnvironmentVariables.IsServerOnline = false;
+			}
+		}
+	}
 }
