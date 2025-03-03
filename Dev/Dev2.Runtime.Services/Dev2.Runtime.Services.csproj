@@ -511,7 +511,7 @@
       <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
-    <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
