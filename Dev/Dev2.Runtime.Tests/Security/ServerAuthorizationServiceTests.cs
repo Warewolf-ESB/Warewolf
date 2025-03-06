@@ -20,7 +20,11 @@ using System.Reflection;
 using System.Threading;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR.Hosting;
+#else
 using Microsoft.AspNetCore.Http;
+#endif
 //using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Tests.Runtime.Security
@@ -344,7 +348,11 @@ namespace Dev2.Tests.Runtime.Security
             var resourceID = Guid.NewGuid();
             var workspaceID = Guid.NewGuid();
 
+#if NETFRAMEWORK
+            var queryString = new Mock<INameValueCollection>();
+#else
             var queryString = new Mock<IQueryCollection>();
+#endif
             queryString.Setup(q => q["rid"]).Returns(resourceID.ToString());
             queryString.Setup(q => q["wid"]).Returns(workspaceID.ToString());
 
@@ -371,10 +379,18 @@ namespace Dev2.Tests.Runtime.Security
         public void ServerAuthorizationService_IsAuthorized_WebGetXXX_CorrectAuthorizations()
         {
             const string ResourceID = "ed44bc30-7bf0-4b64-a3a3-ad2c15e8eb23";
+#if NETFRAMEWORK
+            var queryStringWithResource = new Mock<INameValueCollection>();
+#else
             var queryStringWithResource = new Mock<IQueryCollection>();
+#endif
             queryStringWithResource.Setup(q => q["rid"]).Returns(ResourceID);
 
+#if NETFRAMEWORK
+            var queryString = new Mock<INameValueCollection>();
+#else
             var queryString = new Mock<IQueryCollection>();
+#endif
 
             const string UrlFormat = "http://localhost:1234/wwwroot/{0}";
             var requests = new[]
@@ -400,7 +416,11 @@ namespace Dev2.Tests.Runtime.Security
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
         {
+#if NETFRAMEWORK
+            var queryString = new Mock<INameValueCollection>();
+#else
             var queryString = new Mock<IQueryCollection>();
+#endif
 
             const string ResourceName = "Test 123";
 
@@ -419,7 +439,11 @@ namespace Dev2.Tests.Runtime.Security
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_HubConnect_CorrectAuthorizations()
         {
+#if NETFRAMEWORK
+            var queryString = new Mock<INameValueCollection>();
+#else
             var queryString = new Mock<IQueryCollection>();
+#endif
 
             const string Url = "http://localhost:1234/dsf/";
             var requests = new[]
@@ -435,7 +459,11 @@ namespace Dev2.Tests.Runtime.Security
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_EsbXXX_CorrectAuthorizations()
         {
+#if NETFRAMEWORK
+            var queryString = new Mock<INameValueCollection>();
+#else
             var queryString = new Mock<IQueryCollection>();
+#endif
 
             const string Url = "http://localhost:1234/dsf/";
             var requests = new[]

@@ -18,8 +18,10 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
-    <UseWpf>true</UseWpf>
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,13 +47,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-	  <!--<PackageReference Include="Infragistics.WPF.Controls.Grids.XamGrid.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DataTree.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DataManager.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DataGrids.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DragDrop.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.Trial" Version="22.2.19" />-->
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
@@ -117,18 +112,12 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="PasswordBoxUserControl.xaml" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Hide.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Show.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="WebBrowserView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\logo.png">
@@ -184,9 +173,6 @@
 		<Reference Include="System.Xaml">
 			<RequiredTargetFramework>4.0</RequiredTargetFramework>
 		</Reference>
-		<Reference Include="WindowsBase" />
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
 		<PackageReference Include="Expression.Blend.Sdk">
 			<Version>1.0.2</Version>
 		</PackageReference>
@@ -227,4 +213,19 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Page Include="PasswordBoxUserControl.xaml" />
+    <Page Include="WebBrowserView.xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Activities.Presentation" />
+  </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

@@ -13,7 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
+#if !NETFRAMEWORK
 using ReflectionMagic;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -114,9 +116,13 @@ namespace Dev2
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
+#if NETFRAMEWORK
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
+#else
                     var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, httpsEndpoint);
+#endif
 
-                    if (canEnableSsl)
+					if (canEnableSsl)
                     {
                         endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
                     }

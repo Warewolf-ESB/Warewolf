@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
@@ -79,3 +80,4 @@ namespace Warewolf.Studio.CustomControls
 #endif
     }
 }
+#endif

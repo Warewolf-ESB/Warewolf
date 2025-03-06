@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if !NETFRAMEWORK
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -234,3 +235,4 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public HttpContext HttpContext { get; set; }
     }
 }
+#endif

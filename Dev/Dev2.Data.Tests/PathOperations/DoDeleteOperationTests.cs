@@ -74,7 +74,9 @@ namespace Dev2.Data.Tests.PathOperations
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
-            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
+#if !NETFRAMEWORK
+			mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
+#endif
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
 
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
@@ -101,8 +103,10 @@ namespace Dev2.Data.Tests.PathOperations
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
-            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
-            const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
+#if !NETFRAMEWORK
+			mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
+#endif
+			const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
 
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
 

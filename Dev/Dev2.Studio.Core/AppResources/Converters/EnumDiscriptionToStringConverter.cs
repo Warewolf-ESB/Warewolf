@@ -11,14 +11,19 @@
 
 using System;
 using System.Globalization;
+#if WINDOWS
 using System.Windows.Data;
+#endif
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums.Enums;
 
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    public class EnumDiscriptionToStringConverter : IValueConverter
+    public class EnumDiscriptionToStringConverter
+#if WINDOWS
+        : IValueConverter
+#endif
     {
         #region Implementation of IValueConverter
 

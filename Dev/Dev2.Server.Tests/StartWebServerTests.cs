@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Dev2.Runtime.WebServer;
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Builder;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf;
@@ -69,7 +71,11 @@ namespace Dev2.Server.Tests
         }
 
         Mock<IDisposable> mockServer = new Mock<IDisposable>();
+#if NETFRAMEWORK
+        IDisposable StartAction(Dev2Endpoint[] endPoints)
+#else
         IDisposable StartAction(Dev2Endpoint[] endPoints, WebApplicationBuilder webApplicationBuilder)
+#endif
         {
             Assert.IsNotNull(endPoints);
             return mockServer.Object;
@@ -81,7 +87,6 @@ namespace Dev2.Server.Tests
         public void StartWebServer_DisposeCatch_DoesNotClushTheSystem_ExpectNomarlFlowAfter()
         {
             //-------------------Arrange---------------------
-            var listEndPoints = new List<Dev2Endpoint>();
             var mockWriter = new Mock<IWriter>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockPauseHelper = new Mock<IPauseHelper>();
@@ -107,7 +112,6 @@ namespace Dev2.Server.Tests
         public void StartWebServer_WebServerConfigurationEndPoints_NotNull_ExpectListOfEndpoints()
         {
             //-------------------Arrange---------------------
-            var listEndPoints = new List<Dev2Endpoint>();
             var mockWriter = new Mock<IWriter>();
             var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
             var mockPauseHelper = new Mock<IPauseHelper>();

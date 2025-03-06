@@ -39,10 +39,12 @@ namespace Dev2.Studio.Core
 
         void ShowServerDisconnectedPopup()
         {
+#if WINDOWS
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false, false, false);
+#endif
         }
 
         /// <summary>
@@ -132,6 +134,6 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<IList<IExplorerItem>>(result.Message);
         }
 
-        #endregion
+#endregion
     }
 }

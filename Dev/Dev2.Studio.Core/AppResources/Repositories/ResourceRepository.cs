@@ -106,13 +106,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         void ShowServerDisconnectedPopup()
         {
+#if WINDOWS
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _server.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false, false, false);
-        }
+#endif
+		}
 
-        public IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
+		public IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
         {
             if (!_server.Connection.IsConnected)
             {
@@ -446,13 +448,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         static void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
+#if WINDOWS
             if (data.HasError)
             {
                 MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName + "\" could not be deleted, reason: " + data.Message, model.ResourceType.GetDescription() + " Deletion Failed", MessageBoxButton.OK);
             }
-        }
+#endif
+		}
 
-        public void ReLoadResources()
+		public void ReLoadResources()
         {
             Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
             var comsController = new CommunicationController {ServiceName = "ReloadResourceService"};

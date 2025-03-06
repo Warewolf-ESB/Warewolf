@@ -16,8 +16,10 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 using Dev2.Net6.Compatibility;
+#if WINDOWS
 using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
+#endif
 using Warewolf.Resource.Errors;
 
 namespace Dev2.MathOperations
@@ -28,7 +30,9 @@ namespace Dev2.MathOperations
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
         readonly List<IFunction> _functions;
+#if WINDOWS
         static readonly XamCalculationManager CalcManager = new XamCalculationManager();
+#endif
         bool _isDisposed;
 
         internal FunctionRepository()
@@ -97,12 +101,14 @@ namespace Dev2.MathOperations
         {
             STAThreadExtensions.RunAsSTA(() =>
             {
+#if WINDOWS
                 var calcFunctions = CalcManager.GetAllFunctions();
-
+                IEnumerable<CalculationFunction> calcFunctions = new List<CalculationFunction>();
                 foreach (CalculationFunction calcFunction in calcFunctions)
                 {
                     _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
                 }
+#endif
             });
         }
 

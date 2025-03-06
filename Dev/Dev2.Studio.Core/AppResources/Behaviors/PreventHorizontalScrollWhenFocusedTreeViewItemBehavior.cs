@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -49,3 +50,4 @@ namespace Dev2.Studio.Core.AppResources.Behaviors
         }
     }
 }
+#endif

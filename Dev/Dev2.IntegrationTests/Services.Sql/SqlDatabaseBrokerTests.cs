@@ -262,14 +262,18 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 if (impersonator.Impersonate(userName, domain, password))
                 {
+#if !NETFRAMEWORK
                     if (impersonator.Context != null)
                     {
                         impersonator.Context.RunImpersonated(() =>
                         {
+#endif
                             action?.Invoke();
                             result = true;
+#if !NETFRAMEWORK
                         });
                     }
+#endif
                 }
             }
 
@@ -286,7 +290,9 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             const int LOGON32_PROVIDER_DEFAULT = 0;
             const int LOGON32_LOGON_INTERACTIVE = 2;
+#if !NETFRAMEWORK
             public WindowsIdentity Context { get { return _impersonationContext; } }
+#endif
             #region DllImports
 
             [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -306,7 +312,11 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #endregion
 
+#if NETFRAMEWORK
+            WindowsImpersonationContext _impersonationContext;
+#else
             WindowsIdentity _impersonationContext;
+#endif
 
             #region Impersonate
 
@@ -320,14 +330,18 @@ namespace Dev2.Integration.Tests.Services.Sql
                     _impersonationContext = tempWindowsIdentity.Impersonate();
                     if (_impersonationContext != null)
                     {
+#if !NETFRAMEWORK
                         return _impersonationContext.RunImpersonated<bool>(() =>
                         {
+#endif
                             ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
                             Thread.CurrentPrincipal = principal;
                             CloseHandle(token);
                             CloseHandle(tokenDuplicate);
                             return true;
+#if !NETFRAMEWORK
                         });
+#endif
                     }
                 }
                 if (token != IntPtr.Zero)

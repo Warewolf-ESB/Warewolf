@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using Dev2;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
@@ -38,6 +39,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Triggers;
 using Warewolf.Data;
 using Warewolf.Auditing;
+using Warewolf.Trigger.Queue.Tests;
 
 namespace Warewolf.Trigger.Queue.Tests
 {
@@ -886,3 +888,4 @@ namespace Warewolf.Trigger.Queue.Tests
         }
     }
 }
+#endif

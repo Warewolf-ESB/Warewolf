@@ -344,6 +344,7 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
+#if WINDOWS
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
@@ -403,7 +404,7 @@ namespace Dev2.Activities
             }
         }
 
-        string CreateDisplayName(ModelItem modelItem, int count)
+		string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
@@ -420,8 +421,6 @@ namespace Dev2.Activities
             return string.Empty;
         }
 
-        public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -433,6 +432,73 @@ namespace Dev2.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			var listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+				var startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
+				foreach (string s in listToAdd)
+				{
+					SystemInformationCollection.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
+					startIndex++;
+				}
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			var startIndex = 0;
+			const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
+			SystemInformationCollection.Clear();
+			foreach (string s in listToAdd)
+			{
+				SystemInformationCollection.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
+
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < SystemInformationCollection.Count)
+			{
+				SystemInformationCollection.RemoveAt(startIndex);
+			}
+			SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
+		}
+		string CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
+
+		public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public bool Equals(DsfDotNetGatherSystemInformationActivity other)
         {

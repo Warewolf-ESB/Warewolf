@@ -334,6 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+#if WINDOWS
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["MergeCollection"];
@@ -418,16 +419,73 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return null;
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			var listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var dataMergeDto = MergeCollection.Last(c => !c.CanRemove());
+				var startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
+				foreach (string s in listToAdd)
+				{
+					MergeCollection.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
+					startIndex++;
+				}
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
 
-        #endregion Private Methods
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			var startIndex = 0;
+			var firstRowMergeType = MergeCollection[0].MergeType;
+			var firstRowPadding = MergeCollection[0].Padding;
+			var firstRowAlignment = MergeCollection[0].Alignment;
+			MergeCollection.Clear();
+			foreach (string s in listToAdd)
+			{
+				MergeCollection.Add(new DataMergeDTO(s, firstRowMergeType, string.Empty, startIndex + 1, firstRowPadding, firstRowAlignment));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
 
-        #region Get Debug Inputs/Outputs
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < MergeCollection.Count)
+			{
+				MergeCollection.RemoveAt(startIndex);
+			}
+			MergeCollection.Add(new DataMergeDTO(string.Empty, "None", string.Empty, startIndex + 1, " ", "Left To Right"));
+			DisplayName = CreateDisplayName(startIndex + 1);
+		}
+
+		string CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+#endif
+
+		#endregion Private Methods
+
+		#region Get Debug Inputs/Outputs
 
 
 
 
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
+		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
@@ -497,6 +555,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount() => MergeCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
+#if WINDOWS
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -508,8 +567,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
 
-        #endregion
+#endregion
 
         public override List<string> GetOutputs() => new List<string> { Result };
 

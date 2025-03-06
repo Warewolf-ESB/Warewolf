@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.Collections;
 using System.Reflection;
 using System.Windows;
@@ -69,3 +70,4 @@ namespace Dev2.Studio.Core
         public object TryFindResource(object resourceKey) => _realApp.TryFindResource(resourceKey);
     }
 }
+#endif

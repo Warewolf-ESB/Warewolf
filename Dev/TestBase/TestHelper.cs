@@ -13,13 +13,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Core.Tests.Utils;
 using Dev2.Network;
+using Moq;
 
 namespace TestBase
 {
@@ -60,7 +62,7 @@ namespace TestBase
         {
             var fact = new CommunicationControllerFactory();
             var comm = fact.CreateController(serviceName);
-            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorkerObject());
+            var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, CreateSynchronousAsyncWorkerObject());
             prx.Connect(Guid.NewGuid());
             foreach (var payloadArgument in payloadArguments)
             {
@@ -83,6 +85,29 @@ namespace TestBase
             }
             return "Error: localhost server controller could not be created.";
         }
+
+        public static IAsyncWorker CreateSynchronousAsyncWorkerObject()
+        {
+            return MockAsyncWorker().Object;
+        }
+
+        private static Mock<IAsyncWorker> MockAsyncWorker()
+        {
+            var mockWorker = new Mock<IAsyncWorker>();
+            mockWorker.Setup(r => r.Start(It.IsAny<Action>(), It.IsAny<Action>()))
+                .Returns((Action backgroundAction, Action foregroundAction) =>
+                {
+                    var task = new Task(() =>
+                    {
+                        backgroundAction.Invoke();
+                        foregroundAction.Invoke();
+                    });
+                    task.RunSynchronously();
+                    return task;
+                });
+            return mockWorker;
+        }
+
 
         public static string PostDataToWebserver(string postandUrl, out bool wasHttps)
         {

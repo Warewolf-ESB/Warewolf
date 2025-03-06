@@ -13,7 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows.Threading;
+using System.Threading;
 using Dev2.Common.Interfaces.Core.Collections;
 
 namespace Dev2.Collections
@@ -21,7 +21,7 @@ namespace Dev2.Collections
     public class ObservableReadOnlyList<T> : IList<T>, IObservableReadOnlyList<T>
     {
         readonly ObservableCollection<T> _list;
-        readonly Dispatcher _dispatcher;
+        readonly SynchronizationContext _synchronizationContext;
 
         #region CTOR
 
@@ -37,16 +37,8 @@ namespace Dev2.Collections
 
         public ObservableReadOnlyList(IEnumerable<T> collection)
         {
-            // Save dispatcher so that we always fire CollectionChanged on it's thread
-
-            try
-            {
-                _dispatcher = Dispatcher.CurrentDispatcher;
-            }
-            catch(Exception)
-            {
-                //No valid dispatcher
-            }
+            // Save synchronization context so that we always fire CollectionChanged on its thread
+            _synchronizationContext = SynchronizationContext.Current;
 
             _list = collection == null ? new ObservableCollection<T>() : new ObservableCollection<T>(collection);
             InitCollectionChanged();
@@ -103,7 +95,8 @@ namespace Dev2.Collections
             _list.RemoveAt(index);
         }
 
-        public T this[int index] {
+        public T this[int index]
+        {
             get => _list[index];
             set => _list[index] = value;
         }
@@ -123,9 +116,9 @@ namespace Dev2.Collections
             // Post the CollectionChanged event on the creator thread
             _list.CollectionChanged += (sender, args) =>
             {
-                if(_dispatcher!=null && !_dispatcher.CheckAccess())
+                if (_synchronizationContext != null && _synchronizationContext != SynchronizationContext.Current)
                 {
-                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal);
+                    _synchronizationContext.Post(_ => RaiseCollectionChanged(args), null);
                 }
                 else
                 {
@@ -134,19 +127,10 @@ namespace Dev2.Collections
             };
         }
 
-        internal DispatcherFrame TestDispatcherFrame { get; set; }
-
         void RaiseCollectionChanged(object param)
         {
-            // MUST be called on the dispatcher thread!
-            if(CollectionChanged != null)
-            {
-                CollectionChanged(this, (NotifyCollectionChangedEventArgs)param);
-                if(TestDispatcherFrame != null)
-                {
-                    TestDispatcherFrame.Continue = false;
-                }
-            }
+            // MUST be called on the synchronization context thread!
+            CollectionChanged?.Invoke(this, (NotifyCollectionChangedEventArgs)param);
         }
 
         #endregion

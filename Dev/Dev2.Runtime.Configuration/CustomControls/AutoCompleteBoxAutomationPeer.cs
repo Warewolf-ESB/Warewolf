@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Automation.Provider;
@@ -128,7 +129,7 @@ namespace System.Windows.Automation.Peers
             return iface;
         }
 
-        #region ExpandCollapse
+		#region ExpandCollapse
         /// <summary>
         /// Blocking method that returns after the element has been expanded.
         /// </summary>
@@ -184,9 +185,9 @@ namespace System.Windows.Automation.Peers
                 oldValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed,
                 newValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed);
         }
-        #endregion ExpandCollapse
+		#endregion ExpandCollapse
 
-        #region ValueProvider
+		#region ValueProvider
 
         /// <summary>
         /// Sets the value of a control.
@@ -211,7 +212,7 @@ namespace System.Windows.Automation.Peers
         /// <value>The value of the control.</value>
         string IValueProvider.Value => OwnerAutoCompleteBox.Text ?? string.Empty;
 
-        #endregion
+		#endregion
 
         /// <summary>
         /// Gets the collection of child elements of the AutoCompleteBox that
@@ -275,3 +276,4 @@ namespace System.Windows.Automation.Peers
         }
     }
 }
+#endif

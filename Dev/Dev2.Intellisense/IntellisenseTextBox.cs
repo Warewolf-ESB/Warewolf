@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -981,3 +982,4 @@ namespace Dev2.UI
         }
     }
 }
+#endif

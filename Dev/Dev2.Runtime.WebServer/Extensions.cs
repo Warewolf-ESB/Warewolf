@@ -159,8 +159,8 @@ namespace Dev2.Runtime.WebServer
             if (null == message) return null;
             return new System.Web.Http.ResponseMessageResult(message);
         }
-    }
 #endif
+    }
 
     public class WarewolfErrorResponseArgs
     {

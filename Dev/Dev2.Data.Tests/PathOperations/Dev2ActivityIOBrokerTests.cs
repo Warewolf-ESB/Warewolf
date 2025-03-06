@@ -93,7 +93,7 @@ namespace Dev2.Data.Tests.PathOperations
         {
             var broker = ActivityIOFactory.CreateOperationsBroker();
             var fileMock = new Mock<IActivityIOOperationsEndPoint>();
-            fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new ByteBuffer(Encoding.ASCII.GetBytes("")));
+			fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new MemoryStream(Encoding.ASCII.GetBytes("")));
 
             var stringEncodingContents = broker.Get(fileMock.Object, true);
             Assert.IsNotNull(stringEncodingContents);
@@ -107,7 +107,7 @@ namespace Dev2.Data.Tests.PathOperations
             var fileMock = new Mock<IActivityIOOperationsEndPoint>();
 
             const string iAmGood = "I am good";
-            fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new ByteBuffer(Encoding.ASCII.GetBytes(iAmGood)));
+            fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new MemoryStream(Encoding.ASCII.GetBytes(iAmGood)));
 
             var stringEncodingContents = broker.Get(fileMock.Object, true);
 

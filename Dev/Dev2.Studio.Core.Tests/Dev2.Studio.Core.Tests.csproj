@@ -79,11 +79,11 @@
 		<CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
 			<Visible>False</Visible>
 		</CodeAnalysisDependentAssemblyPaths>
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
 			<Link>Properties\AssemblyCommonInfo.cs</Link>
 		</Compile>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
 		<Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
 		<Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
@@ -154,7 +154,6 @@
 		<Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
 		<Compile Include="IntellisenseProvider\EventLogParser.cs" />
 		<Compile Include="MainViewModelBase.cs" />
-		<Compile Include="Merge\ConnectorConflictRowTests.cs" />
 		<Compile Include="Merge\ConflictModelFactoryTests.cs" />
 		<Compile Include="Merge\ConflictRowListTests.cs" />
 		<Compile Include="Merge\ConnectorConflictItemTests.cs" />
@@ -454,7 +453,6 @@
 		<EmbeddedResource Include="XML\AssignOutput.xml" />
 	</ItemGroup>
 	<ItemGroup>
-
 		<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.11.0" />
 		<PackageReference Include="Moq" Version="4.18.2" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
@@ -465,6 +463,9 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="coverlet.collector" Version="3.2.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+		<Reference Include="ReachFramework" />
 	</ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -479,4 +480,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

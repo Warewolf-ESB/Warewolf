@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -31,3 +32,4 @@ namespace Warewolf.Studio.Themes.Luna
         }
     }
 }
+#endif

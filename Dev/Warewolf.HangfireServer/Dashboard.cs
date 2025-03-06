@@ -10,10 +10,15 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
-using Hangfire.SqlServer;
 using HangfireServer;
+#if NETFRAMEWORK
+using Microsoft.Owin;
+using Owin;
+#else
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+#endif
 
 #if NETFRAMEWORK
 [assembly: OwinStartup(typeof(Dashboard))]

@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS
 using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Controls
@@ -33,3 +34,4 @@ namespace System.Windows.Controls
     [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances", Justification = "There is no generic RoutedEventHandler.")]
     public delegate void PopulatingEventHandler(object sender, PopulatingEventArgs e);
 }
+#endif

@@ -11,13 +11,19 @@
 
 using System;
 using System.Globalization;
+#if WINDOWS
 using System.Windows.Data;
-
+#endif
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
+#if WINDOWS
     [ValueConversion(typeof(bool), typeof(bool))]
-    public class InverseBooleanConverter : IValueConverter
+#endif
+    public class InverseBooleanConverter
+#if WINDOWS
+        : IValueConverter
+#endif
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !(bool)value;
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => !(bool)value;

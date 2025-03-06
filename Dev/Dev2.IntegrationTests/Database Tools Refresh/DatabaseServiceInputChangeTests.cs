@@ -1,3 +1,4 @@
+#if WINDOWS
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core.ActionRegion;
@@ -182,3 +183,4 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         }
     }
 }
+#endif

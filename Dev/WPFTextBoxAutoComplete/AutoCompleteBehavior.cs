@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -211,3 +212,4 @@ namespace WPFTextBoxAutoComplete
         }
     }
 }
+#endif

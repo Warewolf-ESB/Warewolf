@@ -9,8 +9,10 @@
 */
 
 using System;
+#if WINDOWS
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+#endif
 using System.Collections.Generic;
 using System.Windows;
 
@@ -21,10 +23,14 @@ namespace Dev2.Common.Interfaces
         object MergeIcon { get; set; }
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
+#if WINDOWS
         FlowNode FlowNode { get; set; }
+#endif
         object Activity { get; set; }
+#if WINDOWS
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
+#endif
         bool IsInWorkflow { get; }
         bool IsAddedToWorkflow { get; set; }
         bool ShowCheckbox { get; }

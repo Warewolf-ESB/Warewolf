@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows;
@@ -18,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class IntInRangeToVisibilityConverter : IMultiValueConverter
     {
-        #region Implementation of IMultiValueConverter
+		#region Implementation of IMultiValueConverter
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -51,6 +52,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             throw new NotImplementedException();
         }
 
-        #endregion
+		#endregion
     }
 }
+#endif

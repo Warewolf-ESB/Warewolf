@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Activities.Presentation.Services;
@@ -286,3 +287,4 @@ namespace Warewolf.MergeParser
         }
     }
 }
+#endif

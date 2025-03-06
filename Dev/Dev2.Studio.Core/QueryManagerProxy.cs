@@ -106,8 +106,10 @@ namespace Dev2.Studio.Core
                 {
                     if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
                     {
+#if WINDOWS
                         popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Warning, "", false, false, true, false, false, false);
+#endif
                     }
                 },System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
                 var result = await fetchExplorerTask.ConfigureAwait(true);
@@ -115,14 +117,16 @@ namespace Dev2.Studio.Core
             }                        
         }
 
-        #endregion
+#endregion
 
         void ShowServerDisconnectedPopup()
         {
+#if WINDOWS
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false, false, false);
+#endif
         }
 
         public IList<IToolDescriptor> FetchTools()
@@ -144,8 +148,10 @@ namespace Dev2.Studio.Core
             {
                 if (!Connection.IsConnected)
                 {
+#if WINDOWS
                     var application = Application.Current;
                     application?.Dispatcher?.BeginInvoke(new Action(ShowServerDisconnectedPopup));
+#endif
                     return new List<string>();
                 }
                 if (result != null)

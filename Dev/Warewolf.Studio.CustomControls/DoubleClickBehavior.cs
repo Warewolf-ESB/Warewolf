@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿#if WINDOWS
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
 
@@ -18,3 +19,4 @@ namespace Warewolf.Studio.CustomControls
         }
     }
 }
+#endif

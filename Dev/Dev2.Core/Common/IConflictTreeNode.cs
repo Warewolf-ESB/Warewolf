@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System.Windows;
+#endif
 using System;
 using System.Collections.Generic;
 
@@ -19,7 +21,9 @@ namespace Dev2.Common
         IDev2Activity Activity { get; }
         List<(string uniqueId, IConflictTreeNode node)> Children { get; }
         bool IsInConflict { get; set; }
+#if WINDOWS
         Point Location { get; }
+#endif
         string UniqueId { get; set; }
 
         void AddChild(IConflictTreeNode node,string name);

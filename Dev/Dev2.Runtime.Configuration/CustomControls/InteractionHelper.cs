@@ -23,8 +23,9 @@ namespace System.Windows.Controls
     sealed class InteractionHelper
     {
 
+#if WINDOWS
         public Control Control { get; private set; }
-        
+#endif        
         public bool IsFocused { get; private set; }
         
         public bool IsMouseOver { get; private set; }
@@ -38,6 +39,7 @@ namespace System.Windows.Controls
 
         readonly IUpdateVisualState _updateVisualState;
 
+#if WINDOWS
         public InteractionHelper(Control control)
         {
             Debug.Assert(control != null, "control should not be null!");
@@ -47,7 +49,7 @@ namespace System.Windows.Controls
             control.Loaded += OnLoaded;
             control.IsEnabledChanged += OnIsEnabledChanged;
         }
-
+#endif
         #region UpdateVisualState
         /// <summary>
         /// Update the visual state of the control.
@@ -78,7 +80,8 @@ namespace System.Windows.Controls
         /// </param>
         public void UpdateVisualStateBase(bool useTransitions)
         {
-            // Handle the Common states
+			// Handle the Common states
+#if WINDOWS
             if(!Control.IsEnabled)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateDisabled, VisualStates.StateNormal);
@@ -109,9 +112,11 @@ namespace System.Windows.Controls
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateUnfocused);
             }
+#endif
         }
-        #endregion UpdateVisualState
+#endregion UpdateVisualState
 
+#if WINDOWS
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateVisualState(false);
@@ -129,7 +134,7 @@ namespace System.Windows.Controls
 
             UpdateVisualState(true);
         }
-
+#endif
         public void OnApplyTemplateBase()
         {
             UpdateVisualState(false);
