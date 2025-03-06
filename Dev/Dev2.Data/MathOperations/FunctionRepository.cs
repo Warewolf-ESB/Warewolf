@@ -103,7 +103,6 @@ namespace Dev2.MathOperations
             {
 #if WINDOWS
                 var calcFunctions = CalcManager.GetAllFunctions();
-                IEnumerable<CalculationFunction> calcFunctions = new List<CalculationFunction>();
                 foreach (CalculationFunction calcFunction in calcFunctions)
                 {
                     _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
