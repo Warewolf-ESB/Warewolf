@@ -19,9 +19,11 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.ViewModels.Base;
+#if WINDOWS
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Views;
+#endif
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
@@ -259,6 +261,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+#if WINDOWS
         void ViewJsonObjects()
         {
             if (!string.IsNullOrEmpty(JsonString))
@@ -274,8 +277,9 @@ namespace Dev2.Studio.ViewModels.DataList
                 window.ShowDialog();
             }
         }
+#endif
 
-        #endregion
+#endregion
 
         public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
             : this(name, value, mapsTo, defaultValue, required, recordSetName, false)
@@ -293,10 +297,12 @@ namespace Dev2.Studio.ViewModels.DataList
             EmptyToNull = emptyToNull;
 
             DisplayName = RecordSetName == string.Empty ? Name : RecordSetName + "(*)." + Name;
+#if WINDOWS
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
                 ViewJsonObjects();
             });
+#endif
         }
 
 

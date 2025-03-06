@@ -35,7 +35,11 @@ using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Enums;
 using Warewolf.Licensing;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+#endif
 using Dev2.Tests;
 
 namespace Dev2.Core.Tests

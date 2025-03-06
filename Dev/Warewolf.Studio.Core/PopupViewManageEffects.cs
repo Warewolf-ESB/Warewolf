@@ -1,3 +1,4 @@
+#if WINDOWS
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -44,3 +45,4 @@ namespace Warewolf.Studio.Core
         }
     }
 }
+#endif

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System.Collections;
 
 namespace System.Windows.Controls
@@ -23,3 +24,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

@@ -1,16 +1,20 @@
-﻿using System.Windows.Media;
+﻿#if WINDOWS
+using System.Windows.Media;
+#endif
 using Dev2.Common.Interfaces.Help;
 
 namespace Warewolf.Core
 {
     public class HelpDescriptor:IHelpDescriptor
     {
+#if WINDOWS
         public HelpDescriptor(string name, string description, DrawingImage icon)
         {
             Icon = icon;
             Description = description;
             Name = name;
         }
+#endif
 
 
         #region Implementation of IHelpDescriptor

@@ -13,20 +13,33 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Globalization;
+#if WINDOWS
 using System.Windows.Data;
+#endif
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    public class ModelItemToActivityConverter : IValueConverter
+    public class ModelItemToActivityConverter
+#if WINDOWS
+        : IValueConverter
+#endif
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public
+#if !WINDOWS
+            static
+#endif
+            object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var modelItem = value as ModelItem;
 
             return modelItem;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public
+#if !WINDOWS
+            static
+#endif
+            object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is ModelItem modelItem)
             {

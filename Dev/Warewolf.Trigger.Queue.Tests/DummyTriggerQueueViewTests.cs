@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using Dev2;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -56,3 +57,4 @@ namespace Warewolf.Trigger.Queue.Tests
         }
     }
 }
+#endif

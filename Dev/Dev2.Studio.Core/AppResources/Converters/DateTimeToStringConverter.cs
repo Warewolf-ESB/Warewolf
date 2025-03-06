@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows;
@@ -19,13 +20,13 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class DateTimeToStringConverter : DependencyObject, IValueConverter
     {
-        #region Properties
+		#region Properties
 
         public string Format { get; set; }
 
-        #endregion Properties
+		#endregion Properties
 
-        #region Override Methods
+		#region Override Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -47,6 +48,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 
-        #endregion Override Mehods
+		#endregion Override Mehods
     }
 }
+#endif

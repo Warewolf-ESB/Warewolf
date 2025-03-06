@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using Dev2.CustomControls.Converters;
@@ -26,3 +27,4 @@ namespace Dev2.CustomControls.Tests.Converters
         }
     }
 }
+#endif

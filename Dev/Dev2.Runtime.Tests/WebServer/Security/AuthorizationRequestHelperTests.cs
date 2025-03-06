@@ -16,9 +16,14 @@ using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
+#if NETFRAMEWORK
+using Microsoft.Owin.Builder;
+using Microsoft.AspNet.SignalR.Hubs;
+#else
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -35,14 +40,23 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
+#if NETFRAMEWORK
+                var context = AuthorizeWebAttributeTests.CreateActionContext(true, "xxx");
+#else
                 var context = CustomActionFilterTests.CreateActionContext(true, "xxx");
+#endif
                 return context.GetAuthorizationRequest();
             }, WebServerRequestType.Unknown);
 
             Verify_RequestTypeIsParsedCorrectly(typeof(WebServerController), "Web", actionName =>
             {
+#if NETFRAMEWORK
+                var context = AuthorizeWebAttributeTests.CreateActionContext(true, actionName);
+                return context.GetAuthorizationRequest();
+#else
                 var context = CustomActionFilterTests.CreateActionContext(true, actionName);
                 return CustomActionFilter.GetAuthorizationRequest(context);
+#endif
             });
         }
 
@@ -53,8 +67,13 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
+#if NETFRAMEWORK
+                var request = AuthorizeHubAttributeTests.CreateRequest(false);
+                return new HubDescriptor().GetAuthorizationRequest(request.Object);
+#else
                 var context = CustomHubFilterTests.CreateHubLifeTimeContext(false, string.Empty);
                 return context.GetAuthorizationRequest();
+#endif
 
             }, WebServerRequestType.HubConnect);
         }
@@ -66,7 +85,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
+#if NETFRAMEWORK
+                var context = AuthorizeHubAttributeTests.CreateHubIncomingInvokerContext(true, "xxx");
+#else
                 var context = CustomHubFilterTests.CreateHubInvocationContext(true, "xxx");
+#endif
                 return context.GetAuthorizationRequest();
             }, WebServerRequestType.Unknown);
 
@@ -81,7 +104,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
                 var hub1 = hub;
                 Func<string, AuthorizationRequest> getAuthorizationRequest = methodName =>
                 {
+#if NETFRAMEWORK
+                    var context = AuthorizeHubAttributeTests.CreateHubIncomingInvokerContext(true, methodName, hub1.Item2);
+#else
                     var context = CustomHubFilterTests.CreateHubInvocationContext(true, methodName, new EsbHub());
+#endif
                     return context.GetAuthorizationRequest();
                 };
                 Verify_RequestTypeIsParsedCorrectly(hub1.Item1, hub1.Item2, getAuthorizationRequest);

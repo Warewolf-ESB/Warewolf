@@ -13,7 +13,9 @@ using System.Globalization;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
-//using Microsoft.AspNet.SignalR.Hosting;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR.Hosting;
+#endif
 
 namespace Dev2.Runtime.WebServer.Security
 {
@@ -23,7 +25,11 @@ namespace Dev2.Runtime.WebServer.Security
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }
+#if NETFRAMEWORK
+        public INameValueCollection QueryString { get; set; }
+#else
         public Microsoft.AspNetCore.Http.IQueryCollection QueryString { get; set; }
+#endif
 
         public string ResourcePath
         {

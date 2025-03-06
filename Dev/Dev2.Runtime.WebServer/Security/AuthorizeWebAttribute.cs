@@ -24,10 +24,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Resource.Errors;
 using static Dev2.Runtime.WebServer.Extensions;
-
 #if NETFRAMEWORK
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using Microsoft.AspNet.SignalR.Hosting;
 #else
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
@@ -154,7 +154,7 @@ namespace Dev2.Runtime.WebServer.Security
 							RequestType = WebServerRequestType.WebExecuteInternalService,
 							User = actionContext.ControllerContext.RequestContext.Principal,
 							Url = actionContext.Request.RequestUri,
-							QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
+							QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs()) as INameValueCollection
 						};
 					}
 				}

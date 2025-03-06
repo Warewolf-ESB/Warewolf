@@ -16,8 +16,10 @@
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
 		<RestorePackages>true</RestorePackages>
 		<TargetFrameworkProfile />
-		<UseWpf>true</UseWpf>
 		<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<UseWpf>true</UseWpf>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -44,10 +46,15 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="System.Activities" />
-		<Reference Include="System.Activities.Presentation" />
 		<Reference Include="System.ServiceModel.Activities" />
+		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+			<Link>Properties\AssemblyCommonInfo.cs</Link>
+		</Compile>
+		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+		<None Include="app.config" />
+		<None Include="Warewolf.Studio.Views.ruleset" />
 	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Compile Include="ChooseDLLView.xaml.cs">
 			<DependentUpon>ChooseDLLView.xaml</DependentUpon>
 		</Compile>
@@ -113,9 +120,6 @@
 			<DependentUpon>MessageBoxView.xaml</DependentUpon>
 		</Compile>
 		<Compile Include="NotConverter.cs" />
-		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-			<Link>Properties\AssemblyCommonInfo.cs</Link>
-		</Compile>
 		<Compile Include="RedisSourceControl.xaml.cs">
 			<DependentUpon>RedisSourceControl.xaml</DependentUpon>
 		</Compile>
@@ -141,11 +145,8 @@
 		<Compile Include="ActivityDefaultWindow.xaml.cs">
 			<DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
 		</Compile>
-		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-		<None Include="app.config" />
-		<None Include="Warewolf.Studio.Views.ruleset" />
 	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Page Include="ChooseDLLView.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
@@ -359,9 +360,9 @@
 		<PackageReference Include="Unofficial.Microsoft.mshtml">
 			<Version>7.0.3300</Version>
 		</PackageReference>
+		<PackageReference Include="Prism.Mvvm" Version="1.1.1" />
 	</ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-        <PackageReference Include="Prism.Mvvm" Version="1.1.1" />
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 		<PackageReference Include="Unity">
 			<Version>5.11.10</Version>
 		</PackageReference>
@@ -503,6 +504,9 @@
 			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
 		</Reference>
     </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<Reference Include="System.Activities.Presentation" />
+	</ItemGroup>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -510,4 +514,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

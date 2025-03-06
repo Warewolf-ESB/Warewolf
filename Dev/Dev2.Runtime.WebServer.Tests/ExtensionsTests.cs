@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -16,6 +15,11 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using Dev2.Runtime.WebServer.Executor;
+
+#if NETFRAMEWORK
+using System.Web.Http.Controllers;
+#else
+using Mono.Unix;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using Dev2.Runtime.WebServer;
+#endif
 
 namespace Dev2.Runtime.WebServer.Tests
 {
@@ -78,10 +83,14 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
-            var httpContext = sut.HttpContext;
+#if NETFRAMEWORK
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            var result = sut.Response.Content.ReadAsStringAsync().Result;
+#else
+			var httpContext = sut.HttpContext;
             var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
-
-            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
+            var result = GetResponse(errorResult);
+#endif
             var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
@@ -96,11 +105,15 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
-            var httpContext = sut.HttpContext;
+#if NETFRAMEWORK
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            var result = sut.Response.Content.ReadAsStringAsync().Result;
+#else
+			var httpContext = sut.HttpContext;
             var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
-
-            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
-            var expected = new Error
+			var result = GetResponse(errorResult);
+#endif
+			var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
                 Title = "test_title",
@@ -112,14 +125,17 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
-        {
-            //var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
-            var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx");
-            var httpContext = sut.HttpContext;
+		{
+			var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
+#if NETFRAMEWORK
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            var result = sut.Response.Content.ReadAsStringAsync().Result;
+#else
+			var httpContext = sut.HttpContext;
             var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
-
-            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
-            var expected = new Error
+            var result = GetResponse(errorResult);
+#endif
+			var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
                 Title = "test_title",
@@ -128,32 +144,32 @@ namespace Dev2.Runtime.WebServer.Tests
             Assert.AreEqual(expected.ToXML(), result);
         }
 
+#if NETFRAMEWORK
+        public static HttpActionContext CreateActionContext(bool isAuthenticated, string actionName)
+        {
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
 
-        //public static HttpActionContext CreateActionContext(bool isAuthenticated, string actionName)
-        //{
-        //    var user = new Mock<IPrincipal>();
-        //    user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
+            var actionDescriptor = new Mock<HttpActionDescriptor>();
+            actionDescriptor.Setup(ad => ad.ActionName).Returns(actionName);
 
-        //    var actionDescriptor = new Mock<HttpActionDescriptor>();
-        //    actionDescriptor.Setup(ad => ad.ActionName).Returns(actionName);
-
-        //    var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8080/content/site.css");
-        //    if (!string.IsNullOrEmpty(actionName))
-        //    {
-        //        httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, string.Format("http://localhost:8080/services/{0}", actionName));
-        //    }
-        //    var actionContext = new HttpActionContext
-        //    {
-        //        ControllerContext = new HttpControllerContext
-        //        {
-        //            Request = httpRequestMessage,
-        //            RequestContext = new HttpRequestContext { Principal = user.Object }
-        //        },
-        //        ActionDescriptor = actionDescriptor.Object
-        //    };
-        //    return actionContext;
-        //}
-
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8080/content/site.css");
+            if (!string.IsNullOrEmpty(actionName))
+            {
+                httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, string.Format("http://localhost:8080/services/{0}", actionName));
+            }
+            var actionContext = new HttpActionContext
+            {
+                ControllerContext = new HttpControllerContext
+                {
+                    Request = httpRequestMessage,
+                    RequestContext = new HttpRequestContext { Principal = user.Object }
+                },
+                ActionDescriptor = actionDescriptor.Object
+            };
+            return actionContext;
+        }
+#else
         public static ActionContext CreateActionContext(bool isAuthenticated, string actionName)
         {
             var routeValues = new RouteValueDictionary();
@@ -197,6 +213,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             return new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(routeValues), actionDescriptor.Object);
         }
+#endif
 
         public static string GetResponse(HttpResponseMessage response)
         {

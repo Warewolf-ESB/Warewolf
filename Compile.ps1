@@ -353,15 +353,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
+			if ($FrameworkTarget) {
+				$OutputFolderName += "\" + $FrameworkTarget
+				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+			}
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
-			if ($FrameworkTarget) {
-				$OutputProperty += "\" + $FrameworkTarget
-				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-			}
             if (!($InContainer.IsPresent)) {
                 &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
@@ -401,7 +401,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						}
 						Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
 					}
-					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+					if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
+						Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+					}
 					Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
 					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
 						@"

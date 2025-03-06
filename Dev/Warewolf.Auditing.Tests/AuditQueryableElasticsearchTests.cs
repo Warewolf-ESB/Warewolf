@@ -16,7 +16,6 @@ using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
-using Elasticsearch.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Elastic.Clients.Elasticsearch;
@@ -28,8 +27,6 @@ using Warewolf.Triggers;
 using Warewolf.UnitTestAttributes;
 using LogLevel = Warewolf.Logging.LogLevel;
 using System.Reflection;
-using Elastic.Transport;
-using System.DirectoryServices.Protocols;
 
 namespace Warewolf.Auditing.Tests
 {

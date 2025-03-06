@@ -9,18 +9,23 @@
 */
 
 using System.Collections.Generic;
+#if WINDOWS
 using System.Windows;
+#endif
+
 
 namespace Dev2.Common
 {
     public class ConflictTreeNode : IConflictTreeNode
     {
+#if WINDOWS
         public ConflictTreeNode(IDev2Activity act, Point location)
         {
             Activity = act;
             UniqueId = act.UniqueID;
             Location = location;
         }
+#endif
 
         public void AddChild(IConflictTreeNode node,string name)
         {
@@ -96,7 +101,9 @@ namespace Dev2.Common
         public List<(string uniqueId, IConflictTreeNode node)> Children { get; private set; }
         public string UniqueId { get; set; }
         public IDev2Activity Activity { get; }
+#if WINDOWS
         public Point Location { get; }
+#endif
         public bool IsInConflict { get; set; }
     }
 }

@@ -282,6 +282,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+#if WINDOWS
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
@@ -366,12 +367,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             currentName = currentName + " (" + (count - 1) + ")";
             return currentName;
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var findRecordsTo = ResultsCollection.Last(c => !c.CanRemove());
+				var startIndex = ResultsCollection.IndexOf(findRecordsTo) + 1;
+				foreach (var s in listToAdd)
+				{
+					ResultsCollection.Insert(startIndex, new FindRecordsTO(s, ResultsCollection[startIndex - 1].SearchType, startIndex + 1));
+					startIndex++;
+				}
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
 
-        #endregion Private Methods
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			var startIndex = 0;
+			var searchType = ResultsCollection[0].SearchType;
+			ResultsCollection.Clear();
+			foreach (var s in listToAdd)
+			{
+				ResultsCollection.Add(new FindRecordsTO(s, searchType, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
 
-        #region Get Debug Inputs/Outputs
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < ResultsCollection.Count)
+			{
+				ResultsCollection.RemoveAt(startIndex);
+			}
+			ResultsCollection.Add(new FindRecordsTO(string.Empty, "Match On", startIndex + 1));
+			DisplayName = CreateDisplayName(startIndex + 1);
+		}
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+		string CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+#endif
+
+		#endregion Private Methods
+
+		#region Get Debug Inputs/Outputs
+
+		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -450,6 +506,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public IList<FindRecordsTO> ResultsCollection { get; set; }
 
+#if WINDOWS
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -461,8 +518,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
 
-        #endregion
+#endregion
 
         public bool Equals(DsfFindRecordsMultipleCriteriaActivity other)
         {

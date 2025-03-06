@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             TrueEnumValues = new EnumCollection();
         }
 
-        #region TrueEnumValues
+		#region TrueEnumValues
 
         public EnumCollection TrueEnumValues
         {
@@ -38,13 +39,13 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public static readonly DependencyProperty TrueEnumValuesProperty =
             DependencyProperty.Register("VisibleEnumValues", typeof(EnumCollection), typeof(EnumToBoolConverter), new PropertyMetadata(null));
 
-        #endregion VisibleEnumValues
+		#endregion VisibleEnumValues
 
-        #region Properties
+		#region Properties
 
         public bool NullValue { get; set; }
 
-        #endregion Properties
+		#endregion Properties
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -73,3 +74,4 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
+#endif

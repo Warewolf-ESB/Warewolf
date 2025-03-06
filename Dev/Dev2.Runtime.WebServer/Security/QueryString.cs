@@ -15,7 +15,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-//using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Runtime.WebServer.Security
 {
@@ -51,10 +50,12 @@ namespace Dev2.Runtime.WebServer.Security
 
         public string Get(string key) => this[key];
 
+#if !NETFRAMEWORK
         public bool Equals(Microsoft.AspNetCore.Http.QueryString other)
         {
             throw new NotImplementedException();
         }
+#endif
 
         public string this[string key]
         {

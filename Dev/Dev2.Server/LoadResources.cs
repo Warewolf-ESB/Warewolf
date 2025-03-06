@@ -97,7 +97,9 @@ namespace Dev2
             _writer.Write("Preloading assemblies...  ");
             var currentAsm = typeof(ServerLifecycleManager).Assembly;
             var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+#if WINDOWS
             LoadReferences(currentAsm, inspected, assemblyLoader);
+#endif
             _writer.WriteLine("done.");
         }
 

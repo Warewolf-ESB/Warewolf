@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace Dev2.AppResources.Converters
     public class SchedulerMultiBoolToVisibilityConverter : IMultiValueConverter
     {
 
-        #region Implementation of IMultiValueConverter
+		#region Implementation of IMultiValueConverter
 
         /// <summary>
         /// Converts source values to a value for the binding target. The data binding engine calls this method when it propagates the values from source bindings to the binding target.
@@ -49,6 +50,7 @@ namespace Dev2.AppResources.Converters
         /// <param name="value">The value that the binding target produces.</param><param name="targetTypes">The array of types to convert to. The array length indicates the number and types of values that are suggested for the method to return.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => new object[] { };
 
-        #endregion
+		#endregion
     }
 }
+#endif

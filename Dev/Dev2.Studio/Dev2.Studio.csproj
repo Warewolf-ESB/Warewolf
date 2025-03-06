@@ -42,9 +42,11 @@
         <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
         <UseApplicationTrust>false</UseApplicationTrust>
         <BootstrapperEnabled>true</BootstrapperEnabled>
-        <UseWpf>true</UseWpf>
-        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
+		<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<UseWpf>true</UseWpf>
+	</PropertyGroup>
     <PropertyGroup>
         <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
         <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
@@ -76,24 +78,19 @@
         <LangVersion>7.3</LangVersion>
         <DebugType>none</DebugType>
     </PropertyGroup>
-    <PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
         <StartupObject>Dev2.Startup</StartupObject>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Activities" />
-        <Reference Include="System.Activities.Core.Presentation" />
-        <Reference Include="System.Activities.Presentation" />
         <Reference Include="System.ComponentModel.Composition" />
         <Reference Include="System.Management" />
-    </ItemGroup>
-    <ItemGroup>
-        <ApplicationDefinition Include="App.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </ApplicationDefinition>
         <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
             <Link>Properties\AssemblyCommonInfo.cs</Link>
         </Compile>
+		<Compile Include="Startup.cs" />
+    </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
         <Compile Include="GlobalSuppressions.cs" />
         <Compile Include="ResourceExtensionHelper.cs" />
         <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
@@ -208,7 +205,6 @@
             <DependentUpon>SettingsView.xaml</DependentUpon>
         </Compile>
         <Compile Include="Settings\SettingsViewModel.cs" />
-        <Compile Include="Startup.cs" />
         <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
         <Compile Include="Utils\ResourceChangeHandler.cs" />
         <Compile Include="ViewFactory.cs" />
@@ -311,6 +307,12 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+    </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<ApplicationDefinition Include="App.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</ApplicationDefinition>
         <Page Include="CustomControls\Progress\ProgressDialog.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
@@ -474,12 +476,12 @@
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
-    </ItemGroup>
-    <ItemGroup>
         <Page Include="Resources\Brushes.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
+    </ItemGroup>
+    <ItemGroup>
         <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
         <None Include="App.config">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -511,7 +513,7 @@
         <Resource Include="Warewolf.ico" />
         <!-- Handle Images - Must be save level since MS can't write a Copy routine that moves directories, only files ;( -->
     </ItemGroup>
-    <ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
         <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
             <Visible>False</Visible>
             <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -941,4 +943,15 @@
 			<_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(TargetFrameworkIdentifier)\net6.0-windows\$(AssemblyName).dll" />
 		</ItemGroup>
 	</Target>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<Reference Include="System.Activities.Core.Presentation" />
+		<Reference Include="System.Activities.Presentation" />
+	</ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

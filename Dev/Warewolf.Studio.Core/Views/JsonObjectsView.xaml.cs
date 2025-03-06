@@ -1,4 +1,5 @@
 #pragma warning disable
+#if WINDOWS
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,3 +57,4 @@ namespace Dev2.Studio.Core.Views
         }
     }
 }
+#endif

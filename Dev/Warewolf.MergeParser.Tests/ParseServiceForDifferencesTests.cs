@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -1203,3 +1204,4 @@ namespace Warewolf.MergeParser.Tests
         }
     }
 }
+#endif

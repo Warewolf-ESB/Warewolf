@@ -18,7 +18,9 @@ using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.SqlServer;
-//using Microsoft.Owin.Hosting;
+#if NETFRAMEWORK
+using Microsoft.Owin.Hosting;
+#endif
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common;
@@ -121,12 +123,22 @@ namespace HangfireServer
                     }
 
                     var dashboard = new Dashboard();
+#if NETFRAMEWORK
+					ConfigureServerStorage(connectionString);
+#else
                     ConfigureServerStorage(dashboard.GetServices(), connectionString);
-                    
-                    var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
-                    dashboard.Start(dashboardEndpoint);
+#endif
 
-                    _writer.WriteLine("Hangfire dashboard started...");
+					var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
+#if NETFRAMEWORK
+					var options = new StartOptions();
+					options.Urls.Add(dashboardEndpoint);
+					WebApp.Start<Dashboard>(options);
+#else
+					dashboard.Start(dashboardEndpoint);
+#endif
+
+					_writer.WriteLine("Hangfire dashboard started...");
                     _logger.Debug("Hangfire dashboard started...");
 
                     //if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
@@ -160,11 +172,28 @@ namespace HangfireServer
             private static PersistenceSettings _persistence;
             private readonly IBuilderSerializer _deserializer;
 
-            private void ConfigureServerStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection services, string connectionString)
-            {
-                var resumptionAttribute = new ResumptionAttribute(_logger);
+#if NETFRAMEWORK
+			private void ConfigureServerStorage(string connectionString)
+#else
+			private void ConfigureServerStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection services, string connectionString)
+#endif
+			{
+				var resumptionAttribute = new ResumptionAttribute(_logger);
 
-                services.AddHangfire(x => x
+#if NETFRAMEWORK
+                GlobalConfiguration.Configuration
+                    .UseFilter(resumptionAttribute)
+                    .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                    {
+                        PrepareSchemaIfNecessary = _persistence.PrepareSchemaIfNecessary,
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        DisableGlobalLocks = true
+                    });
+#else
+				services.AddHangfire(x => x
                     .UseFilter(resumptionAttribute)
                     .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                     {
@@ -175,9 +204,10 @@ namespace HangfireServer
                         UseRecommendedIsolationLevel = true,
                         DisableGlobalLocks = true
                     }));
+#endif
             }
 
-            private string ConnectionString()
+			private string ConnectionString()
             {
                 var payload = _persistence.PersistenceDataSource.Payload;
                 if (string.IsNullOrEmpty(payload))

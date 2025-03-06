@@ -185,6 +185,7 @@ namespace Dev2.Integration.Tests
             Assert.IsTrue(elapsed);
         }
 
+#if WINDOWS
         [TestMethod]
         public void SortLargeListOfScalarsExpectedLessThan5500Milliseconds()
         {
@@ -257,6 +258,7 @@ namespace Dev2.Integration.Tests
             Assert.IsNotNull(item);
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
         }
+#endif
     }
 
     internal class PerformanceGadge

@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -74,3 +75,4 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
+#endif

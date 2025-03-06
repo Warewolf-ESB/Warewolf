@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
+#if WINDOWS
 using System.Windows.Data;
 using System.Windows.Threading;
+#endif
 using Dev2.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -171,11 +173,11 @@ namespace Dev2.Infrastructure.Tests.Collections
             // MUST bind to CollectionView!!
             //
             var observableReadOnlyList = new ObservableReadOnlyList<string> { "item1", "item2" };
+#if WINDOWS
             var px = new Warewolf.Testing.PrivateObject(observableReadOnlyList);
             px.SetProperty("TestDispatcherFrame", new DispatcherFrame());
-
             var collectionView = CollectionViewSource.GetDefaultView(observableReadOnlyList);
-
+#endif
             //
             // Modify list from another thread
             //
@@ -200,10 +202,11 @@ namespace Dev2.Infrastructure.Tests.Collections
 
             //------------Execute Test---------------------------
             otherThread.Start();
-       
-            
+
+#if WINDOWS
             // Wait for thread to finish
             Dispatcher.PushFrame((DispatcherFrame)px.GetProperty("TestDispatcherFrame"));
+#endif
 
             otherDone.Wait();
 
