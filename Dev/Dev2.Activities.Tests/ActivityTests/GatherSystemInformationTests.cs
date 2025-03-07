@@ -731,11 +731,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
-			//------------Execute Test---------------------------
+            //------------Execute Test---------------------------
 #if WINDOWS
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
-			activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
 #endif
             //------------Assert Results-------------------------
             Assert.AreEqual(4, activity.SystemInformationCollection.Count);
@@ -753,14 +753,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
-			//------------Execute Test---------------------------
+            //------------Execute Test---------------------------
 #if WINDOWS
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
-			activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
 #endif
-			//------------Assert Results-------------------------
-			Assert.AreEqual(2, activity.SystemInformationCollection.Count);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
 
         [TestMethod]
@@ -779,14 +779,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
-			//------------Execute Test---------------------------
+            //------------Execute Test---------------------------
 #if WINDOWS
-            activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
 #else
-			activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true);
 #endif
-			//------------Assert Results-------------------------
-			Assert.AreEqual(2, activity.SystemInformationCollection.Count);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
 
 
