@@ -16,6 +16,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
@@ -35,16 +36,19 @@ namespace Dev2.Common
         public const string AltPayloadEnd = @"</Actions>";
 
         static GlobalConstants()
-        {
-            SystemEvents.TimeChanged += (sender, args) =>
+		{
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                CultureInfo.CurrentCulture.ClearCachedData();
-            };
-            
-            SystemEvents.UserPreferenceChanged += (sender, args) =>
-            {
-                CultureInfo.CurrentCulture.ClearCachedData();
-            };
+                SystemEvents.TimeChanged += (sender, args) =>
+                {
+                    CultureInfo.CurrentCulture.ClearCachedData();
+                };
+
+                SystemEvents.UserPreferenceChanged += (sender, args) =>
+                {
+                    CultureInfo.CurrentCulture.ClearCachedData();
+                };
+            }
 
             var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
             WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
