@@ -20,7 +20,6 @@ using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Util;
-using Dev2.Core;
 using System.Xml;
 
 namespace Dev2.DynamicServices.Objects
