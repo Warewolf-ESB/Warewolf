@@ -255,8 +255,10 @@ namespace Dev2
                             // OpenCOMStream(null);
 
                             _loadResources.LoadResourceCatalog();
+#if WINDOWS
                             _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                            _loadResources.LoadServerWorkspace();
+#endif
+							_loadResources.LoadServerWorkspace();
                             _loadResources.LoadActivityCache(_assemblyLoader);
                             LoadTestCatalog();
                             LoadTriggersCatalog();
@@ -265,7 +267,7 @@ namespace Dev2
                             _queueProcessMonitor.Start();
 
                             _hangfireServerMonitor.Start();
-
+#if WINDOWS
                             var checkLogServerConnectionTask = CheckLogServerConnection();
                             var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
                             var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
@@ -280,10 +282,10 @@ namespace Dev2
 
                                 Stop(false, 0, true);
                             }
-
+#endif
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
                             LogWarewolfVersion(logger);
-                            if (EnvironmentVariables.IsServerOnline)
+							if (EnvironmentVariables.IsServerOnline)
                             {
                                 SetAsStarted();
                             }
