@@ -19,7 +19,6 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [switch]$ForceMultitargetting,
   [string]$FrameworkTarget
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
@@ -42,7 +41,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($ForceMultitargetting.IsPresent) {
+if ($FrameworkTarget) {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
@@ -53,7 +52,7 @@ if ($ForceMultitargetting.IsPresent) {
 		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows'] | //TargetFrameworks[.='net6.0-windows']")
 		foreach ($node in $nodes) {
             $newNode = $xml.CreateElement("TargetFrameworks")
-            $newNode.InnerText = 'net6.0-windows;net48'
+            $newNode.InnerText = $FrameworkTarget
             $node.ParentNode.ReplaceChild($newNode, $node)
 		}
 
@@ -353,10 +352,37 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
-			if ($FrameworkTarget) {
-				$OutputFolderName += "\" + $FrameworkTarget
-				$FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-			}
+            if ($FrameworkTarget) {
+                $OutputFolderName += "\" + $FrameworkTarget
+                $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+                if ($FrameworkTarget -eq "net6.0") {
+                    $DockerfileContent = @"
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+
+EXPOSE 3142
+EXPOSE 3143
+
+ADD . Server
+ENV SERVER_PATH "Server\Warewolf Server.exe"
+ENV SERVER_WORKINGDIR "C:\programdata\Warewolf"
+ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
+ENV SERVER_USERNAME "WarewolfAdmin"
+ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
+
+# Run the application
+CMD ["dotnet", "./Server/Warewolf Server.dll"]
+"@
+                    if ($ProjectSpecificOutputs.IsPresent) {
+                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
+                    } else {
+                        $OutputFile = "$OutputFolderName\Dockerfile"
+                    }
+                    if (!(Test-Path $OutputFolderName)) {
+                        New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
+                    }
+                    $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
+                }
+            }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {

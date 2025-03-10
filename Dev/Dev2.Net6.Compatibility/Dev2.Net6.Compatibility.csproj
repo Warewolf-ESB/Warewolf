@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -8,7 +7,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Concurrent.cs" />
   </ItemGroup>
@@ -23,9 +21,6 @@
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
     <PackageReference Include="KGySoft.CoreLibraries" Version="7.1.0" />
-    <!--<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
-     <PackageReference Include="coverlet.collector" Version="3.2.0" />-->
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System.Transactions" />

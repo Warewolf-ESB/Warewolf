@@ -120,7 +120,9 @@ namespace Dev2.Data
         {
             NativeMethods.MEMORYSTATUSEX status = new NativeMethods.MEMORYSTATUSEX();
             status.dwLength = (uint)Marshal.SizeOf(status);
+#if WINDOWS
             Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
+#endif
             
             StringBuilder stringBuilder = new StringBuilder();
             var memoryPressureMessage = string.Empty;

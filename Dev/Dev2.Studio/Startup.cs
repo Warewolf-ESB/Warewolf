@@ -25,6 +25,7 @@ namespace Dev2
         {
             ConfigureLogging();
             Dev2Logger.Info("Studio " + Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
+#if WINDOWS
             try {
                 var wrapper = new SingleInstanceApplicationWrapper();
                 wrapper.Run(args);
@@ -33,6 +34,7 @@ namespace Dev2
             {
                 Dev2Logger.Fatal("failed starting app", e, GlobalConstants.ServerWorkspaceID.ToString());
             }
+#endif
         }
 
         static void ConfigureLogging()
@@ -47,6 +49,7 @@ namespace Dev2
         }
     }
 
+#if WINDOWS
     public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase, IDisposable
     {
         App _app;
@@ -77,4 +80,5 @@ namespace Dev2
             }
         }
     }
+#endif
 }

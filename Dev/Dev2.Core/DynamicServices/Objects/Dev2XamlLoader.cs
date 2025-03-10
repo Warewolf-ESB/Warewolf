@@ -20,6 +20,7 @@ using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Util;
+using System.Xml;
 
 namespace Dev2.DynamicServices.Objects
 {
@@ -43,25 +44,27 @@ namespace Dev2.DynamicServices.Objects
             {
                 throw new ArgumentNullException("xamlDefinition");
             }
-
             // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
-            
+
             if (GlobalConstants.RuntimeNamespaceClean)
                 
             {
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }
-            // End Mods
+			// End Mods
 
+#if !WINDOWS
+            RemoveWindowsElements(ref xamlDefinition);
+#endif
 
-            var generation = 0;
+			var generation = 0;
 
             using (xamlStream = xamlDefinition.EncodeForXmlDocument())
             {
                 var settings = new XamlXmlReaderSettings
-                {
+				{
                     LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
-                };
+				};
                 using (var reader = new XamlXmlReader(xamlStream, settings))
                 {
                     workflowActivity = ActivityXamlServices.Load(reader);
@@ -79,6 +82,51 @@ namespace Dev2.DynamicServices.Objects
                     workflowPool.Enqueue(new PooledServiceActivity(generation, activity));
                 }
             }
-        }
-    }
+		}
+
+		static void RemoveWindowsElements(ref StringBuilder xamlBuilder)
+		{
+			// Load XAML content into an XmlDocument
+			XmlDocument doc = new XmlDocument();
+			doc.LoadXml(xamlBuilder.ToString());
+
+			// Define namespaces and elements to remove
+			string vbNamespaceUri = "clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities";
+			string hintSizeNamespaceUri = "http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation";
+			string vbElementName = "VisualBasic.Settings";
+			string hintSizeElementName = "VirtualizedContainerService.HintSize";
+
+			// Remove VisualBasic.Settings elements
+			XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
+			nsmgr.AddNamespace("mva", vbNamespaceUri);
+			XmlNodeList vbNodesToRemove = doc.SelectNodes($"//mva:{vbElementName}", nsmgr);
+			foreach (XmlNode node in vbNodesToRemove)
+			{
+				node.ParentNode.RemoveChild(node);
+			}
+
+			// Remove VirtualizedContainerService.HintSize elements as child elements
+			nsmgr.AddNamespace("sap", hintSizeNamespaceUri);
+			XmlNodeList hintSizeNodesToRemove = doc.SelectNodes($"//sap:{hintSizeElementName}", nsmgr);
+			foreach (XmlNode node in hintSizeNodesToRemove)
+			{
+				node.ParentNode.RemoveChild(node);
+			}
+
+			// Remove VirtualizedContainerService.HintSize as attributes
+			XmlNodeList elementsWithHintSize = doc.SelectNodes("//*[@sap:VirtualizedContainerService.HintSize]", nsmgr);
+			foreach (XmlNode node in elementsWithHintSize)
+			{
+				XmlAttribute attribute = node.Attributes["sap:VirtualizedContainerService.HintSize"];
+				if (attribute != null)
+				{
+					node.Attributes.Remove(attribute);
+				}
+			}
+
+			// Update the StringBuilder with the modified XML
+			xamlBuilder.Clear();
+			xamlBuilder.Append(doc.OuterXml);
+		}
+	}
 }

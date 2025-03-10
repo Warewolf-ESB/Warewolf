@@ -43,9 +43,15 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="System.Activities" />
-		<Reference Include="System.Activities.Presentation" />
+		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+			<Link>Properties\AssemblyCommonInfo.cs</Link>
+		</Compile>
+		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+		<None Include="app.config" />
+		<None Include="Warewolf.Studio.ViewModels.ruleset" />
+		<Compile Include="ManageRabbitMQSourceModel.cs" />
 	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Compile Include="ConnectControlViewModel.cs" />
 		<Compile Include="DatabaseSourceViewModelBase.cs" />
 		<Compile Include="DeploySourceExplorerViewModel.cs" />
@@ -91,7 +97,6 @@
 		<Compile Include="IDockViewModel.cs" />
 		<Compile Include="ManageDatabaseSourceModel.cs" />
 		<Compile Include="ManageRabbitMQSourceViewModel.cs" />
-		<Compile Include="ManageRabbitMQSourceModel.cs" />
 		<Compile Include="ManageEmailSourceModel.cs" />
 		<Compile Include="ManageEmailSourceViewModel.cs" />
 		<Compile Include="ManageExchangeSourceModel.cs" />
@@ -109,9 +114,6 @@
 		<Compile Include="ManageWebserviceSourceViewModel.cs" />
 		<Compile Include="MenuViewModel.cs" />
 		<Compile Include="MessageBoxViewModel.cs" />
-		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-			<Link>Properties\AssemblyCommonInfo.cs</Link>
-		</Compile>
 		<Compile Include="RequestServiceNameViewModel.cs" />
 		<Compile Include="SharepointServerSourceModel.cs" />
 		<Compile Include="SharepointServerSourceViewModel.cs" />
@@ -127,9 +129,7 @@
 		<Compile Include="ToolBox\ToolboxViewModel.cs" />
 		<Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
 		<Compile Include="VersionViewModel.cs" />
-		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-		<None Include="app.config" />
-		<None Include="Warewolf.Studio.ViewModels.ruleset" />
+		<Reference Include="System.Activities.Presentation" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -231,55 +231,55 @@
 		</PackageReference>
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 	</ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <PackageReference Include="Expression.Blend.Sdk">
-      <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="FontAwesome.WPF">
-      <Version>4.7.0.9</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.UnityExtensions">
-      <Version>5.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+		<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Practices.Unity">
+			<HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Practices.Unity.Configuration">
+			<HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+			<HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+		</Reference>
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Data.Linq" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Xaml" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+		<Reference Include="WindowsBase" />
+		<PackageReference Include="Expression.Blend.Sdk">
+			<Version>1.0.2</Version>
+		</PackageReference>
+		<PackageReference Include="FontAwesome.WPF">
+			<Version>4.7.0.9</Version>
+		</PackageReference>
+		<PackageReference Include="Prism.Mvvm">
+			<Version>1.1.1</Version>
+		</PackageReference>
+		<PackageReference Include="Prism.UnityExtensions">
+			<Version>5.0.1</Version>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>
 			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
@@ -301,7 +301,7 @@
 		<PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-  </ItemGroup>
+	</ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -309,11 +309,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-    <ItemGroup>
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-    </ItemGroup>
-  </Target>
+	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+		<ItemGroup>
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+		</ItemGroup>
+	</Target>
 </Project>

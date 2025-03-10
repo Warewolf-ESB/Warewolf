@@ -23,99 +23,106 @@ using System.Threading.Tasks;
 
 namespace Dev2
 {
-    static class EntryPoint
-    {
-        static async Task<int> Main(string[] arguments)
-        {
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
-            };
+	static class EntryPoint
+	{
+		private static readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim(false);
 
-            try
-            {
-                using (new MemoryFailPoint(2048))
-                {
-                    return await RunMain(arguments);
-                }
-            }
-            catch (InsufficientMemoryException)
-            {
-                return await RunMain(arguments);
-            }
-        }
+		static async Task<int> Main(string[] arguments)
+		{
+			AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+			{
+				Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
+			};
 
-        internal static async Task<int> RunMain(string[] arguments)
-        {
-            SetWorkingDirectory();
+			try
+			{
+				using (new MemoryFailPoint(2048))
+				{
+					return await RunMain(arguments);
+				}
+			}
+			catch (InsufficientMemoryException)
+			{
+				return await RunMain(arguments);
+			}
+		}
 
-            const int Result = 0;
+		internal static async Task<int> RunMain(string[] arguments)
+		{
+			SetWorkingDirectory();
+
+			const int Result = 0;
 
 #if DEBUG
-            if (Environment.GetEnvironmentVariable("WAREWOLF_SERVER_DEBUG") == "1")
-            {
-                Dev2Logger.Info("** Starting In Debugging Mode **", GlobalConstants.WarewolfInfo);
-                while (!Debugger.IsAttached)
-                {
-                    Thread.Sleep(3000);
-                    Console.WriteLine("Still waiting for remote debugging...");
-                }
-                Console.WriteLine("Ready for remote debugging.");
-            }
+			if (Environment.GetEnvironmentVariable("WAREWOLF_SERVER_DEBUG") == "1")
+			{
+				Dev2Logger.Info("** Starting In Debugging Mode **", GlobalConstants.WarewolfInfo);
+				while (!Debugger.IsAttached)
+				{
+					Thread.Sleep(3000);
+					Console.WriteLine("Still waiting for remote debugging...");
+				}
+				Console.WriteLine("Ready for remote debugging.");
+			}
 #endif
 
-            if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
-            {
-                Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                var manager = new ServerLifecycleManager(new ServerEnvironmentPreparer());
-                var runTask = manager.Run(new LifeCycleInitializationList());
-                runTask.Wait();
+			if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
+			{
+				Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
+				var manager = new ServerLifecycleManager(new ServerEnvironmentPreparer());
+				var runTask = manager.Run(new LifeCycleInitializationList());
+				runTask.Wait();
 
-                WaitForUserExit(manager);
-            }
-            else
-            {
-                Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
-                using (var service = new ServerLifecycleManagerService())
-                {
-                    ServiceBase.Run(service);
-                    if (!service.RunSuccessful)
-                    {
-                        Dev2Logger.Warn("** Service Mode Failed to Start **", GlobalConstants.WarewolfWarn);
-                        return -1;
-                    }
-                }
-            }
-            return Result;
-        }
+				WaitForUserExit(manager);
+			}
+			else
+			{
+				Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
+				using (var service = new ServerLifecycleManagerService())
+				{
+					ServiceBase.Run(service);
+					if (!service.RunSuccessful)
+					{
+						Dev2Logger.Warn("** Service Mode Failed to Start **", GlobalConstants.WarewolfWarn);
+						return -1;
+					}
+				}
+			}
+			return Result;
+		}
 
-        static void WaitForUserExit(ServerLifecycleManager manager)
-        {
-            Console.WriteLine();
-            if (EnvironmentVariables.IsServerOnline)
-            {
-                Console.WriteLine("Press <ENTER> to terminate web server");
-                Pause();
-            }
-            else
-            {
-                Console.WriteLine("Failed to start Server");
-            }
-            manager.Stop(false, 0, false);
-        }
+		static void WaitForUserExit(ServerLifecycleManager manager)
+		{
+#if WINDOWS
+			Console.WriteLine();
+			if (EnvironmentVariables.IsServerOnline)
+			{
+				Console.WriteLine("Press <ENTER> to terminate web server");
+				Pause();
+			}
+			else
+			{
+				Console.WriteLine("Failed to start Server");
+			}
+			manager.Stop(false, 0, false);
+#else
+			_resetEvent.Wait();
+#endif
+		}
 
-        private static void Pause() => Console.ReadLine();
-        static void SetWorkingDirectory()
-        {
-            try
-            {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unable to set working directory.");
-                Console.WriteLine(e);
-            }
-        }
-    }
+		private static void Pause() => Console.ReadLine();
+
+		static void SetWorkingDirectory()
+		{
+			try
+			{
+				Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Unable to set working directory.");
+				Console.WriteLine(e);
+			}
+		}
+	}
 }
