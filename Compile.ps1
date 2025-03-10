@@ -19,7 +19,6 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [switch]$ForceMultitargetting,
   [string]$FrameworkTarget
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
@@ -42,7 +41,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($ForceMultitargetting.IsPresent) {
+if ($FrameworkTarget) {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
@@ -53,7 +52,7 @@ if ($ForceMultitargetting.IsPresent) {
 		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows'] | //TargetFrameworks[.='net6.0-windows']")
 		foreach ($node in $nodes) {
             $newNode = $xml.CreateElement("TargetFrameworks")
-            $newNode.InnerText = 'net6.0-windows;net48'
+            $newNode.InnerText = $FrameworkTarget
             $node.ParentNode.ReplaceChild($newNode, $node)
 		}
 
