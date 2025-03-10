@@ -44,7 +44,7 @@ namespace Dev2.Services
 
             if(!IsServiceRunning())
             {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 if(PopupController == null)
                 {
                     throw new Exception(ErrorResource.NullPopupController);
@@ -73,7 +73,7 @@ namespace Dev2.Services
 
             if (!ServiceManager.IsRunning() && !ServiceManager.Start())
             {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 PopupController.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
 #endif
 				return false;
@@ -87,7 +87,7 @@ namespace Dev2.Services
         {
             if(!ServiceManager.Exists())
             {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 PopupController.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
 #endif
 				return false;

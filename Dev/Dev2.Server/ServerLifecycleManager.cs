@@ -255,7 +255,7 @@ namespace Dev2
                             // OpenCOMStream(null);
 
                             _loadResources.LoadResourceCatalog();
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                             _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
 #endif
 							_loadResources.LoadServerWorkspace();
@@ -267,7 +267,7 @@ namespace Dev2
                             _queueProcessMonitor.Start();
 
                             _hangfireServerMonitor.Start();
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                             var checkLogServerConnectionTask = CheckLogServerConnection();
                             var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
                             var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;

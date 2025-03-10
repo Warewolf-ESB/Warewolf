@@ -10,14 +10,14 @@
 
 using System;
 using System.Globalization;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 #endif
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class NullableBoolToBoolConverter
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         : IValueConverter
 #endif
     {
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         }
 
         public
-#if !WINDOWS
+#if !(WINDOWS || NETFRAMEWORK)
             static
 #endif
 			object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -53,7 +53,7 @@ namespace Dev2.DynamicServices.Objects
             }
 			// End Mods
 
-#if !WINDOWS
+#if !(WINDOWS || NETFRAMEWORK)
             RemoveWindowsElements(ref xamlDefinition);
 #endif
 

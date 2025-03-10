@@ -321,7 +321,7 @@ namespace Dev2.Activities
 		#endregion
 
 		#region Private Methods
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
 		{
 			var modelProperty = modelItem.Properties["ResultsCollection"];
@@ -570,7 +570,7 @@ namespace Dev2.Activities
 
         public int GetCollectionCount() => ResultsCollection.Count(xPathDto => !xPathDto.CanRemove());
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if(!overwrite)

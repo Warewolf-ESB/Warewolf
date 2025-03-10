@@ -108,7 +108,7 @@ namespace Dev2.Studio.Core
             var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             if (graph.Nodes.Count > 1)
             {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 var result = popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
                     string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
                     MessageBoxButton.OK, MessageBoxImage.Warning, "false", true, false, true, false, true, true);
@@ -126,7 +126,7 @@ namespace Dev2.Studio.Core
                     };
                 }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 if (result == MessageBoxResult.OK)
 #endif
                 {

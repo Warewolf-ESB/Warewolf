@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Dev2.Activities.Specs.Scheduler;
 #endif
 using Dev2.Network;
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Specs.Permissions
 
             _featureContext = featureContext;
             _isCurrentPrincipalIdentitySet = SetTestPrincipalIfCurrentClaimsPrincipalIsNull();
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             SetupUser();
 #endif
             var securitySpecsUser = GetSecuritySpecsUser();
@@ -223,7 +223,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         static void SetupUser()
         {
             var securitySpecsUser = GetSecuritySpecsUser();

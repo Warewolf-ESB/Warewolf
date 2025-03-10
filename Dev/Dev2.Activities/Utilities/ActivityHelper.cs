@@ -13,7 +13,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 #endif
 using Dev2.Common;
@@ -80,7 +80,7 @@ namespace Dev2.Utilities
             return val;
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public static void SetSwitchKeyProperty(Dev2Switch ds, ModelItem switchCase)
         {
             if(ds != null)
@@ -108,7 +108,7 @@ namespace Dev2.Utilities
             }
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public static void SetArmText(ModelItem decisionActivity, Dev2DecisionStack dds)
         {
             SetArmText(decisionActivity, GlobalConstants.TrueArmPropertyText, dds.TrueArmText);

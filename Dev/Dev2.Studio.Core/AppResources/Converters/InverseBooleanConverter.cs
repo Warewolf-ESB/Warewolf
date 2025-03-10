@@ -11,17 +11,17 @@
 
 using System;
 using System.Globalization;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 #endif
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
     [ValueConversion(typeof(bool), typeof(bool))]
 #endif
     public class InverseBooleanConverter
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         : IValueConverter
 #endif
     {

@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.Models.QuickVariableInput
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             _activity.AddListToCollection(listToAdd, overwrite, _modelItem);
 #else
             _activity.AddListToCollection(listToAdd, overwrite);

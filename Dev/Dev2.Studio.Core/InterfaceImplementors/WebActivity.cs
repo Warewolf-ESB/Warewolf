@@ -77,7 +77,7 @@ namespace Dev2.Studio.Core
 
         string GetPropertyValue(object modelItemObject, string propertyName)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 return modelItem.Properties[propertyName].ComputedValue == null
@@ -90,7 +90,7 @@ namespace Dev2.Studio.Core
 
         void SetPropertyValue(object modelItemObject, string propertyName, object value)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 modelItem.Properties[propertyName].SetValue(value);

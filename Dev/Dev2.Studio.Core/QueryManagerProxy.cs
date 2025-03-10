@@ -106,7 +106,7 @@ namespace Dev2.Studio.Core
                 {
                     if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
                     {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                         popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Warning, "", false, false, true, false, false, false);
 #endif
@@ -121,7 +121,7 @@ namespace Dev2.Studio.Core
 
         void ShowServerDisconnectedPopup()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
@@ -148,7 +148,7 @@ namespace Dev2.Studio.Core
             {
                 if (!Connection.IsConnected)
                 {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                     var application = Application.Current;
                     application?.Dispatcher?.BeginInvoke(new Action(ShowServerDisconnectedPopup));
 #endif

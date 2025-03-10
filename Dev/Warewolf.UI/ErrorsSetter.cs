@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Microsoft.Xaml.Behaviors;

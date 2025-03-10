@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 using System.Windows.Threading;
 #endif
@@ -173,7 +173,7 @@ namespace Dev2.Infrastructure.Tests.Collections
             // MUST bind to CollectionView!!
             //
             var observableReadOnlyList = new ObservableReadOnlyList<string> { "item1", "item2" };
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var px = new Warewolf.Testing.PrivateObject(observableReadOnlyList);
             px.SetProperty("TestDispatcherFrame", new DispatcherFrame());
             var collectionView = CollectionViewSource.GetDefaultView(observableReadOnlyList);
@@ -203,7 +203,7 @@ namespace Dev2.Infrastructure.Tests.Collections
             //------------Execute Test---------------------------
             otherThread.Start();
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             // Wait for thread to finish
             Dispatcher.PushFrame((DispatcherFrame)px.GetProperty("TestDispatcherFrame"));
 #endif

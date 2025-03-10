@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using Dev2;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;

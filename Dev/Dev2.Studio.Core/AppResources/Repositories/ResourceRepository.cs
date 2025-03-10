@@ -106,7 +106,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         void ShowServerDisconnectedPopup()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _server.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
@@ -448,7 +448,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         static void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (data.HasError)
             {
                 MessageBox.Show(Application.Current.MainWindow, model.ResourceType.GetDescription() + " \"" + model.ResourceName + "\" could not be deleted, reason: " + data.Message, model.ResourceType.GetDescription() + " Deletion Failed", MessageBoxButton.OK);

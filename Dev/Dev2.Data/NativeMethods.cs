@@ -12,7 +12,7 @@ namespace Dev2.Data
 {
     public class NativeMethods
     {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GlobalMemoryStatusEx([In, Out] ref MEMORYSTATUSEX lpBuffer);
@@ -32,7 +32,7 @@ namespace Dev2.Data
 			internal ulong ulAvailExtendedVirtual;
 		}
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern IntPtr CreateMemoryResourceNotification(MemoryResourceNotificationType notificationType);
 
@@ -56,7 +56,7 @@ namespace Dev2.Data
 
 		public static void RegisterNotification()
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			MemoryResourceNotificationHandle = CreateMemoryResourceNotification(MemoryResourceNotificationType.LowMemoryResourceNotification);
 #endif
 		}
@@ -68,7 +68,7 @@ namespace Dev2.Data
 				RegisterNotification();
 			}
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			bool isSuccecced = QueryMemoryResourceNotification(MemoryResourceNotificationHandle, out int memoryStatus);
 
 			if (isSuccecced)
@@ -87,7 +87,7 @@ namespace Dev2.Data
 		{
 			if (null == MemoryResourceNotificationHandle)
 			{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 				CloseHandle(MemoryResourceNotificationHandle);
 #endif
 				MemoryResourceNotificationHandle = IntPtr.Zero;

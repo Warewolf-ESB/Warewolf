@@ -9,7 +9,7 @@
 */
 
 using System;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 #endif
@@ -23,11 +23,11 @@ namespace Dev2.Common.Interfaces
         object MergeIcon { get; set; }
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         FlowNode FlowNode { get; set; }
 #endif
         object Activity { get; set; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
 #endif

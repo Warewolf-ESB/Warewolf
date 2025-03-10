@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Controls.Primitives;
 #endif
 using Dev2.Runtime.Subscription;

@@ -31,7 +31,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>,
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         IActivityTemplateFactory, 
 #endif
         INotifyPropertyChanged, IEquatable<DsfActivityAbstract<T>>
@@ -102,7 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public Activity Create(DependencyObject target) => this;
 #else
         public Activity Create(object target) => this;

@@ -1,5 +1,5 @@
 ﻿#if !NETFRAMEWORK
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using FontAwesome6;
 using System.Windows.Media;
 using FontAwesome6.Fonts.Extensions;

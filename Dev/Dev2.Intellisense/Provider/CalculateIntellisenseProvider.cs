@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Parsing.Intellisense;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 #endif
 using Dev2.Calculate;
@@ -143,11 +143,11 @@ namespace Dev2.Studio.InterfaceImplementors
     }
 
 	#region CalculateIntellisenseTextConverter
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
     [ValueConversion(typeof(string), typeof(string), ParameterType = typeof(string))]
 #endif
 	public class CalculateIntellisenseTextConverter
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         : IValueConverter
 #endif
 	{

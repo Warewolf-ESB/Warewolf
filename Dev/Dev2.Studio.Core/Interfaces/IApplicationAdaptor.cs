@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Collections;
 using System.Reflection;

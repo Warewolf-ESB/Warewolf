@@ -282,7 +282,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
@@ -506,7 +506,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public IList<FindRecordsTO> ResultsCollection { get; set; }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)

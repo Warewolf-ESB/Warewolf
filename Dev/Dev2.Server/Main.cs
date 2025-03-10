@@ -93,7 +93,7 @@ namespace Dev2
 
 		static void WaitForUserExit(ServerLifecycleManager manager)
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			Console.WriteLine();
 			if (EnvironmentVariables.IsServerOnline)
 			{

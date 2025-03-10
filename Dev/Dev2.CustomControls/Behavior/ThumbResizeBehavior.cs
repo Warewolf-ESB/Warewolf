@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Windows;

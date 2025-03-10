@@ -23,7 +23,7 @@ namespace System.Windows.Controls
     sealed class InteractionHelper
     {
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public Control Control { get; private set; }
 #endif        
         public bool IsFocused { get; private set; }
@@ -39,7 +39,7 @@ namespace System.Windows.Controls
 
         readonly IUpdateVisualState _updateVisualState;
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public InteractionHelper(Control control)
         {
             Debug.Assert(control != null, "control should not be null!");
@@ -81,7 +81,7 @@ namespace System.Windows.Controls
         public void UpdateVisualStateBase(bool useTransitions)
         {
 			// Handle the Common states
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if(!Control.IsEnabled)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateDisabled, VisualStates.StateNormal);
@@ -116,7 +116,7 @@ namespace System.Windows.Controls
         }
 #endregion UpdateVisualState
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateVisualState(false);

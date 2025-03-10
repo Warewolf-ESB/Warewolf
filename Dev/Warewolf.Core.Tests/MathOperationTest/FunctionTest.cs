@@ -121,7 +121,7 @@ namespace Dev2.Tests.MathOperationTest
 #region CreateCustomFunction Test
 
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]   
         public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
         {           

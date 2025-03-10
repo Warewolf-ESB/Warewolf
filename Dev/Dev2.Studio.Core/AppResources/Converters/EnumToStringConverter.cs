@@ -11,7 +11,7 @@
 
 using System;
 using System.Globalization;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 #endif
 using Dev2.Common.ExtMethods;
@@ -21,7 +21,7 @@ using Dev2.Common.Interfaces.Enums.Enums;
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumToStringConverter
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         : IValueConverter
 #endif
 	{

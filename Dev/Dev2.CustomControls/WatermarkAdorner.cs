@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

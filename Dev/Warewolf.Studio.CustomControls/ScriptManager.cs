@@ -161,7 +161,7 @@ namespace Warewolf.Studio.CustomControls
         public void CloseBrowser()
         {
             _shellViewModel.UpdateStudioLicense(_isLicensed);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if(mForm is WebBrowserView browser)
             {
                 browser.Close();
@@ -169,7 +169,7 @@ namespace Warewolf.Studio.CustomControls
 #endif
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         [ExcludeFromCodeCoverage]
         public static void SetSilent(System.Windows.Controls.WebBrowser browser, bool silent)
         {

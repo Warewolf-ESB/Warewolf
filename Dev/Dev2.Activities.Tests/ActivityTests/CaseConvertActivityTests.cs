@@ -532,7 +532,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, false);
@@ -554,7 +554,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, false);
@@ -577,7 +577,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, true);

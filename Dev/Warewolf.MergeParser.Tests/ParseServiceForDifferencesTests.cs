@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;

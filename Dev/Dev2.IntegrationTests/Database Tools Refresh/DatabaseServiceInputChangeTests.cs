@@ -1,4 +1,4 @@
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core.ActionRegion;

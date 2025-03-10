@@ -1,4 +1,4 @@
-﻿#if WINDOWS
+﻿#if WINDOWS || NETFRAMEWORK
 using System.Windows.Media;
 #endif
 using Dev2.Common.Interfaces.Help;
@@ -7,7 +7,7 @@ namespace Warewolf.Core
 {
     public class HelpDescriptor:IHelpDescriptor
     {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public HelpDescriptor(string name, string description, DrawingImage icon)
         {
             Icon = icon;

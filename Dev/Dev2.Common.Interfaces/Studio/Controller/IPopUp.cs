@@ -24,14 +24,14 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         string Header { get; set; }
         string Description { get; set; }
         string Question { get; set; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		MessageBoxImage ImageType { get; set; }
         MessageBoxButton Buttons { get; set; }
 #endif
 		string DontShowAgainKey { get; set; }
         bool DeleteAnyway { get; }
         bool ApplyToAll { get; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		MessageBoxResult Show(IPopupMessage popupMessage);
         MessageBoxResult Show();
 
@@ -63,7 +63,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 		void ShowInvalidCharacterMessage(string invalidText);
         void ShowInvalidElasticsearchIndexFormatMessage(string invalidText);
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		MessageBoxResult ShowDeployNameConflict(string message);
         MessageBoxResult ShowDeploySuccessful(string message);
 
@@ -76,7 +76,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 		IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 		MessageBoxResult ShowNoInputsSelectedWhenClickLink();
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);

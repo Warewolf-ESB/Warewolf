@@ -20,7 +20,7 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels.Base;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Views;
 #endif
@@ -261,7 +261,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         void ViewJsonObjects()
         {
             if (!string.IsNullOrEmpty(JsonString))
@@ -297,7 +297,7 @@ namespace Dev2.Studio.ViewModels.DataList
             EmptyToNull = emptyToNull;
 
             DisplayName = RecordSetName == string.Empty ? Name : RecordSetName + "(*)." + Name;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
                 ViewJsonObjects();

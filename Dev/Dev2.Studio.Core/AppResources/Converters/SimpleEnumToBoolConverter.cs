@@ -1,5 +1,5 @@
 #pragma warning disable
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Globalization;
 using System.Windows.Data;

@@ -36,7 +36,7 @@ namespace Dev2.Utils
         }
         public static void ShowTrustRelationshipError(IPopupController popupController, SystemException exception)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (exception.Message.Contains("The trust relationship between this workstation and the primary domain failed"))
             {
                 var popup = popupController;

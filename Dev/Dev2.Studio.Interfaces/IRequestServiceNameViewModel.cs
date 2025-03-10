@@ -1,5 +1,5 @@
 using System;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 #endif
 using System.Windows.Input;
@@ -9,7 +9,7 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IRequestServiceNameViewModel : IDisposable
     {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         MessageBoxResult ShowSaveDialog();
 #endif
         ResourceName ResourceName { get; }

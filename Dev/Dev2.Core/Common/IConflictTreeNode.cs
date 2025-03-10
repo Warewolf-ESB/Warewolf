@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 #endif
 using System;
@@ -21,7 +21,7 @@ namespace Dev2.Common
         IDev2Activity Activity { get; }
         List<(string uniqueId, IConflictTreeNode node)> Children { get; }
         bool IsInConflict { get; set; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         Point Location { get; }
 #endif
         string UniqueId { get; set; }

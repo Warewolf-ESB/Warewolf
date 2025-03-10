@@ -38,7 +38,7 @@ namespace Dev2.Services
 			// Don't observe on synchronization context if this is a background thread!
 			if (_synchronizationContext != null && SynchronizationContext.Current != null && _events != null)
 			{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 				_events = _events.ObserveOn(Scheduler.Default);
 #endif
 			}

@@ -25,7 +25,7 @@ namespace Dev2
         {
             ConfigureLogging();
             Dev2Logger.Info("Studio " + Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             try {
                 var wrapper = new SingleInstanceApplicationWrapper();
                 wrapper.Run(args);
@@ -49,7 +49,7 @@ namespace Dev2
         }
     }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
     public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase, IDisposable
     {
         App _app;

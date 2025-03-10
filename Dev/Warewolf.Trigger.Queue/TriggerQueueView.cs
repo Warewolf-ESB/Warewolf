@@ -49,14 +49,14 @@ namespace Warewolf.Trigger.Queue
         private int _concurrency;
         private string _userName;
         private string _password;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         private ObservableCollection<OptionView> _options;
 #endif
 		private IResource _selectedDeadLetterQueueSource;
         private Guid _queueSinkId;
         private IList<INameValue> _deadLetterQueues;
         private string _deadLetterQueue;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         private ObservableCollection<OptionView> _deadLetterOptions;
 #endif
 		private ICollection<IServiceInputBase> _inputs;
@@ -112,7 +112,7 @@ namespace Warewolf.Trigger.Queue
 
             IsNewQueue = false;
             NewQueue = true;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             Options = new ObservableCollection<OptionView>();
             DeadLetterOptions = new ObservableCollection<OptionView>();
 #endif
@@ -135,7 +135,7 @@ namespace Warewolf.Trigger.Queue
             Password = queue.Password;
             TriggerEnabled = Concurrency > 0;
             
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (queue.Options != null)
             {
                 Options = FindOptions(queue.Options.ToList());
@@ -145,7 +145,7 @@ namespace Warewolf.Trigger.Queue
 
             SelectedDeadLetterQueueSource = DeadLetterQueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSinkId);
             DeadLetterQueue = queue.DeadLetterQueue;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (queue.DeadLetterOptions != null)
             {
                 DeadLetterOptions = FindOptions(queue.DeadLetterOptions.ToList());
@@ -193,7 +193,7 @@ namespace Warewolf.Trigger.Queue
                     QueueNames = GetQueueNamesFromSource();
 
                     var options = _resourceRepository.FindOptions(_server, _selectedQueueSource);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                     Options = FindOptions(options);
 #endif
                 }
@@ -286,7 +286,7 @@ namespace Warewolf.Trigger.Queue
                 IsDirtyPropertyChange();
             }
         }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public ObservableCollection<OptionView> Options
         {
             get => _options;
@@ -313,7 +313,7 @@ namespace Warewolf.Trigger.Queue
                     DeadLetterQueues = GetQueueNamesFromSource();
 
                     var options = _resourceRepository.FindOptions(_server, _selectedDeadLetterQueueSource);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                     DeadLetterOptions = FindOptions(options);
 #endif
 				}
@@ -350,7 +350,7 @@ namespace Warewolf.Trigger.Queue
                 IsDirtyPropertyChange();
             }
         }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public ObservableCollection<OptionView> DeadLetterOptions
         {
             get => _deadLetterOptions;
@@ -537,7 +537,7 @@ namespace Warewolf.Trigger.Queue
 
         public void ShowInvalidDataPopupMessage()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             _popupController.Show(StringResources.DataInput_Error,
                                   StringResources.DataInput_Error_Title,
                                   MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
@@ -632,7 +632,7 @@ namespace Warewolf.Trigger.Queue
             return queueNames;
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         private ObservableCollection<OptionView> FindOptions(List<Options.IOption> options)
         {
             var optionViews = new ObservableCollection<OptionView>();
@@ -696,12 +696,12 @@ namespace Warewolf.Trigger.Queue
 
         public void SetItem()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             Item = Clone();
 #endif
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public TriggerQueueView Clone()
         {
             var clone = MemberwiseClone() as TriggerQueueView;
@@ -743,7 +743,7 @@ namespace Warewolf.Trigger.Queue
             }
 
             bool equals = EqualsSeq(other);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var optionsCompare = OptionsCompare(other);
             return equals & optionsCompare;
 #else
@@ -766,7 +766,7 @@ namespace Warewolf.Trigger.Queue
             return equals;
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         bool OptionsCompare(TriggerQueueView other)
         {
             if (_options == null)

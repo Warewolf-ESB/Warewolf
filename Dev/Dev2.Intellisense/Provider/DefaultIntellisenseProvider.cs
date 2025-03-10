@@ -24,7 +24,7 @@ namespace Dev2.Studio.InterfaceImplementors
 {
 
     public class DefaultIntellisenseProvider :
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         DependencyObject, 
 #endif
         IIntellisenseProvider

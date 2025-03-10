@@ -732,7 +732,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, false);
@@ -754,7 +754,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, false);
@@ -780,7 +780,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, true);

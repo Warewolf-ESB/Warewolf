@@ -9,7 +9,7 @@
 */
 
 using System.Collections.Generic;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 #endif
 
@@ -18,7 +18,7 @@ namespace Dev2.Common
 {
     public class ConflictTreeNode : IConflictTreeNode
     {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public ConflictTreeNode(IDev2Activity act, Point location)
         {
             Activity = act;
@@ -101,7 +101,7 @@ namespace Dev2.Common
         public List<(string uniqueId, IConflictTreeNode node)> Children { get; private set; }
         public string UniqueId { get; set; }
         public IDev2Activity Activity { get; }
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public Point Location { get; }
 #endif
         public bool IsInConflict { get; set; }

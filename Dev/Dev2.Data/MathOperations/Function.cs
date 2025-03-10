@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations;
 #endif
 
@@ -62,10 +62,10 @@ namespace Dev2.MathOperations
 
 #region Public Methods
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, XamCalculationManager calcManager)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
                 if (calcManager != null)
@@ -76,7 +76,7 @@ namespace Dev2.MathOperations
                     SetArguments(arguments);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace Dev2.MathOperations
 
 #region Private Methods
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         static bool CreateCustomFunction(string functionName, Func<double[], double> func, out CustomCalculationFunction custCalculation)
         {
             bool isSucessfullyCreated;

@@ -185,7 +185,7 @@ namespace Dev2.Integration.Tests
             Assert.IsTrue(elapsed);
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]
         public void SortLargeListOfScalarsExpectedLessThan5500Milliseconds()
         {

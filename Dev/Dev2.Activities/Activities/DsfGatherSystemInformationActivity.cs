@@ -369,7 +369,7 @@ namespace Dev2.Activities
 
 		#region Private Methods
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
@@ -538,7 +538,7 @@ namespace Dev2.Activities
 
         public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if(!overwrite)

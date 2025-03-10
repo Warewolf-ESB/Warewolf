@@ -16,7 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 using Dev2.Net6.Compatibility;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
 #endif
@@ -30,7 +30,7 @@ namespace Dev2.MathOperations
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
         readonly List<IFunction> _functions;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         static readonly XamCalculationManager CalcManager = new XamCalculationManager();
 #endif
         bool _isDisposed;
@@ -101,7 +101,7 @@ namespace Dev2.MathOperations
         {
             STAThreadExtensions.RunAsSTA(() =>
             {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 var calcFunctions = CalcManager.GetAllFunctions();
                 foreach (CalculationFunction calcFunction in calcFunctions)
                 {

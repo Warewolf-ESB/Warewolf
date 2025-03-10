@@ -64,7 +64,7 @@ namespace Dev2.Runtime.WebServer
 
 
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 #else

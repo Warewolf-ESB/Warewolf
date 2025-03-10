@@ -344,7 +344,7 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];

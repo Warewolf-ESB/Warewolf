@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Threading;
 #endif
 using Dev2;
@@ -477,7 +477,7 @@ namespace Warewolf.Studio.ViewModels
 
         IList<string> SetupProgressSpinner()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 Testing = true;
@@ -534,7 +534,7 @@ namespace Warewolf.Studio.ViewModels
         void SaveConnection()
         {
             var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var res = requestServiceNameViewModel.ShowSaveDialog();
 
             if (res == MessageBoxResult.OK)
@@ -560,7 +560,7 @@ namespace Warewolf.Studio.ViewModels
             if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
             {
                 _token.Cancel();
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     Testing = false;
