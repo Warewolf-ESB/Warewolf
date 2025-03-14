@@ -29,8 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         IExplorerServerResourceRepository _serverExplorerRepository;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
-           
+        {           
             var serializer = new Dev2JsonSerializer();
             var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
             Dev2Logger.Info("Add Folder Service." +itemToAdd, GlobalConstants.WarewolfInfo);
