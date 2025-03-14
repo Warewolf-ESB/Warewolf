@@ -49,7 +49,7 @@ if ($FrameworkTarget) {
 		$xml = [xml](Get-Content $file.FullName)
 
 		# Replace target framework nodes
-		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0-windows'] | //TargetFrameworks[.='net6.0-windows']")
+		$nodes = $xml.SelectNodes("//TargetFramework[.='net6.0;net6.0-windows'] | //TargetFrameworks[.='net6.0;net6.0-windows']")
 		foreach ($node in $nodes) {
             $newNode = $xml.CreateElement("TargetFrameworks")
             $newNode.InnerText = $FrameworkTarget
