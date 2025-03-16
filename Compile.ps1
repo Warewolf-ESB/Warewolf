@@ -380,7 +380,7 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
                     $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
                 }
             }
-            if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
