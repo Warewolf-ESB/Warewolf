@@ -51,7 +51,7 @@ if ($FrameworkTarget) {
 		# Replace target framework nodes
 		$nodes = $xml.SelectNodes("//TargetFramework | //TargetFrameworks")
 		foreach ($node in $nodes) {
-            $newNode = $xml.CreateElement("TargetFrameworks")
+            $newNode = $xml.CreateElement("TargetFramework")
             $newNode.InnerText = $FrameworkTarget
             $node.ParentNode.ReplaceChild($newNode, $node)
 		}
