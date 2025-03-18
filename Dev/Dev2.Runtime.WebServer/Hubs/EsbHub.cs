@@ -628,12 +628,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             var t = new Task(() =>
             {
                 var workspaceId = Server.GetWorkspaceID(_httpContextAccessor.HttpContext.User.Identity);
-                ResourceCatalog.Instance.LoadServerActivityCache();
 
                 var clientCaller = _hubContext.Clients.Client(connectionId);
 
                 clientCaller.SendAsync("SendWorkspaceID", workspaceId);//clientCaller.SendWorkspaceID(workspaceId);
                 clientCaller.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//clientCaller.SendServerID(HostSecurityProvider.Instance.ServerID);
+                ResourceCatalog.Instance.LoadServerActivityCache();
 
                 NotifyPermissionsHaveBeenModified(clientCaller, _httpContextAccessor.HttpContext == null ? null : _httpContextAccessor.HttpContext.User);//PermissionsHaveBeenModified(null, null);
             });
