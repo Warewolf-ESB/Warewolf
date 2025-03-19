@@ -291,6 +291,9 @@
     <None Include="Composition\DatabaseWorkflowExecution.feature">
       <LastGenOutput>DatabaseWorkflowExecution.feature.cs</LastGenOutput>
     </None>
+    <None Include="Composition\DBSource\Restore MySQL.sql" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Composition\ExampleWorkflowExecution.feature">
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
     </None>
