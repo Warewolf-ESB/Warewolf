@@ -94,6 +94,8 @@ using Dev2.Runtime.Security;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
 using System.Management.Automation;
+using MySql.Data.MySqlClient;
+using System.Reflection;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -357,7 +359,8 @@ namespace Dev2.Activities.Specs.Composition
                 workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
                 _containerOps = new Depends(Depends.ContainerType.MySQL, true);
-            }
+                InitializeMySQL();
+			}
 
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -412,9 +415,48 @@ namespace Dev2.Activities.Specs.Composition
             {
                 Assert.Fail("failed to delete existing counters");
             }
-        }
+		}
 
-        [Then(@"the perfcounter raw values are")]
+		public void InitializeMySQL()
+		{
+			try
+			{
+				// Get the full path of the SQL script relative to the executing assembly
+				string basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+				string scriptPath = Path.Combine(basePath, "Composition", "DBSource", "Restore MySQL.sql");
+
+				if (!File.Exists(scriptPath))
+				{
+					throw new FileNotFoundException($"SQL script not found at: {scriptPath}");
+				}
+
+				string sqlScript = File.ReadAllText(scriptPath);
+
+				// Construct the MySQL connection string
+				string connectionString = $"Server={_containerOps.Container.IP};" +
+										  $"Port={_containerOps.Container.Port};" +
+										  $"Database=test;" + // Change if necessary
+										  $"Uid=root;" +      // Change credentials if needed
+										  $"Pwd=admin;";      // Change credentials if needed
+
+				using (MySqlConnection connection = new MySqlConnection(connectionString))
+				{
+					connection.Open();
+					using (MySqlCommand cmd = new MySqlCommand(sqlScript, connection))
+					{
+						cmd.ExecuteNonQuery();
+					}
+				}
+
+				Console.WriteLine("SQL script executed successfully.");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error executing SQL script: {ex.Message}");
+			}
+		}
+
+		[Then(@"the perfcounter raw values are")]
         public void ThenThePerfcounterRawValuesAre(Table table)
         {
             var performanceCounterCategory = new PerformanceCounterCategory("Warewolf");
