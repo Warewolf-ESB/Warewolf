@@ -350,7 +350,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             if ($FrameworkTarget) {
-                $OutputFolderName += "\" + $FrameworkTarget
                 $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
                 if ($FrameworkTarget -eq "net6.0") {
                     $DockerfileContent = @"
@@ -370,23 +369,41 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 CMD ["dotnet", "./Server/Warewolf Server.dll"]
 "@
                     if ($ProjectSpecificOutputs.IsPresent) {
-                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
+                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile" 
+                        if (!(Test-Path "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0")) {
+                            New-Item -ItemType Directory -Path "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0" -Force | Out-Null
+                        }                       
                     } else {
-                        $OutputFile = "$OutputFolderName\Dockerfile"
-                    }
-                    if (!(Test-Path $OutputFolderName)) {
-                        New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
+                        $OutputFile = "$OutputFolderName\net6.0\Dockerfile"
+                        if (!(Test-Path "$OutputFolderName\net6.0")) {
+                            New-Item -ItemType Directory -Path "$OutputFolderName\net6.0" -Force | Out-Null
+                        }
                     }
                     $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
                 }
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+                if ($FrameworkTarget) {
+                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\$FrameworkTarget" -Version "17.2.0"
+                } else {
+                    if (!(Test-Path "$OutputFolderName\net6.0-windows")) {
+                        New-Item -ItemType Directory -Path "$OutputFolderName\net6.0-windows" -Force | Out-Null
+                    }
+                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows" -Version "17.2.0"
+                    if (!(Test-Path "$OutputFolderName\net6.0")) {
+                        New-Item -ItemType Directory -Path "$OutputFolderName\net6.0" -Force | Out-Null
+                    }
+                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net6.0" -Version "17.2.0"
+                    if (!(Test-Path "$OutputFolderName\net48")) {
+                        New-Item -ItemType Directory -Path "$OutputFolderName\net48" -Force | Out-Null
+                    }
+                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net48" -Version "17.2.0"
+                }
             }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName\$(TargetFramework)\"
             }
             if (!($InContainer.IsPresent)) {
                 &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
