@@ -196,7 +196,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "20.164.88.47";
+                Container.IP = "20.164.73.166";
                 Container.Port = "6379";
             }
             else
