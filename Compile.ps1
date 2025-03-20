@@ -386,7 +386,7 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName\$(TargetFramework)\"
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if (!($InContainer.IsPresent)) {
                 &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
