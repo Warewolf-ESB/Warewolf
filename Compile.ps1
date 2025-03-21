@@ -392,6 +392,16 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
             } else {
                 docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
             }
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+				&"$MSBuildPath" "$PSScriptRoot\Dev\Dev2.Common\Dev2.Common.csproj" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $Target
+				if (Test-Path "$PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll") {
+				    Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll" `
+                              -Destination "$PSScriptRoot\Bin\$OutputFolderName\Dev2.Common.dll" `
+                              -Force
+				} else {
+					Write-Host File not found: $PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll
+				}
+			}
             if ($LASTEXITCODE -ne 0) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
