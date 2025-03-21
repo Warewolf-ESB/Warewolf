@@ -398,6 +398,7 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
 				    Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Common\bin\Any CPU\$Config\net6.0-windows\win\Dev2.Common.dll" `
                               -Destination "$PSScriptRoot\Bin\$OutputFolderName\Dev2.Common.dll" `
                               -Force
+				    Write-Host File copied.
 				} else {
 					Write-Host File not found: $PSScriptRoot\Dev\Dev2.Common\bin\Any CPU\$Config\net6.0-windows\win\Dev2.Common.dll
 				}
