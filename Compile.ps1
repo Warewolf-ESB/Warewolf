@@ -349,11 +349,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if ($FrameworkTarget) {
-                $OutputFolderName += "\" + $FrameworkTarget
-                $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-                if ($FrameworkTarget -eq "net6.0") {
-                    $DockerfileContent = @"
+			$OutputFolderName += "\" + $FrameworkTarget
+            $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+            if ($FrameworkTarget -eq "net6.0") {
+                $DockerfileContent = @"
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 
 EXPOSE 3142
@@ -369,16 +368,15 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 # Run the application
 CMD ["dotnet", "./Server/Warewolf Server.dll"]
 "@
-                    if ($ProjectSpecificOutputs.IsPresent) {
-                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
-                    } else {
-                        $OutputFile = "$OutputFolderName\Dockerfile"
-                    }
-                    if (!(Test-Path $OutputFolderName)) {
-                        New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
-                    }
-                    $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
+                if ($ProjectSpecificOutputs.IsPresent) {
+                    $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
+                } else {
+                    $OutputFile = "$OutputFolderName\Dockerfile"
                 }
+                if (!(Test-Path $OutputFolderName)) {
+                    New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
+                }
+                $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
@@ -389,7 +387,8 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
+				&"$MSBuildPath" "$PSScriptRoot\$SolutionFile" /t:Restore
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
                 docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
             }
