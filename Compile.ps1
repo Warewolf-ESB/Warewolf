@@ -394,12 +394,12 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
 				&"$MSBuildPath" "$PSScriptRoot\Dev\Dev2.Common\Dev2.Common.csproj" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $Target
-				if (Test-Path "$PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll") {
-				    Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll" `
+				if (Test-Path "$PSScriptRoot\Dev\Dev2.Common\bin\Any CPU\$Config\net6.0-windows\win\Dev2.Common.dll") {
+				    Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Common\bin\Any CPU\$Config\net6.0-windows\win\Dev2.Common.dll" `
                               -Destination "$PSScriptRoot\Bin\$OutputFolderName\Dev2.Common.dll" `
                               -Force
 				} else {
-					Write-Host File not found: $PSScriptRoot\Dev\Dev2.Common\bin\$Config\net6.0-windows\win\Dev2.Common.dll
+					Write-Host File not found: $PSScriptRoot\Dev\Dev2.Common\bin\Any CPU\$Config\net6.0-windows\win\Dev2.Common.dll
 				}
 			}
             if ($LASTEXITCODE -ne 0) {
