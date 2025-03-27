@@ -44,6 +44,7 @@
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchTestsAndTriggers.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="ServiceModel\ComPluginServices.cs" />
     <Compile Include="ServiceModel\Data\ComPluginService.cs" />
     <Compile Include="ServiceModel\Data\ConstructorParameter.cs" />
+    <Compile Include="ServiceModel\Data\ResourceTestTriggerData.cs" />
     <Compile Include="ServiceModel\Data\SqliteDBService.cs" />
     <Compile Include="ServiceModel\Data\SqliteDBSource.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
