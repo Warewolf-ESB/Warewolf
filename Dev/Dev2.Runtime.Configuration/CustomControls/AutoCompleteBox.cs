@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -1345,3 +1346,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

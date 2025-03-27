@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -63,8 +64,12 @@ namespace Dev2.Runtime.WebServer
 
 
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
+#if WINDOWS || NETFRAMEWORK
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+#else
+            builder.Services.AddAuthentication("Anonymous").AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("Anonymous", null);
+#endif
             #endregion
 
             builder.Services.AddSignalR(options =>

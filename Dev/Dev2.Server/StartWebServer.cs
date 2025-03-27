@@ -13,82 +13,98 @@ using System;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
 using Warewolf;
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Builder;
+#endif
+
 namespace Dev2
 {
 
-    public interface IStartWebServer : IDisposable
-    {
-        void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper);
-    }
+	public interface IStartWebServer : IDisposable
+	{
+		void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper);
+	}
 
-    public class StartWebServer : IStartWebServer
-    {
-        private readonly IWriter _writer;
-        private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
+	public class StartWebServer : IStartWebServer
+	{
+		private readonly IWriter _writer;
+#if NETFRAMEWORK
+		private readonly Func<Dev2Endpoint[], IDisposable> _startAction;
+#else
+		private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
+#endif
 
-        IDisposable _owinServer;
-        
+		IDisposable _owinServer;
 
 
-        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> startAction)
-        {
-            _writer = writer;
-            _startAction = startAction;
-        }
 
-        public void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper)
-        {
-            if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
-            {
-                try
-                {
-                    DoStartWebServer(webServerConfig);
-                }
-                catch (Exception e)
-                {
+#if NETFRAMEWORK
+		public StartWebServer(IWriter writer, Func<Dev2Endpoint[], IDisposable> startAction)
+#else
+		public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> startAction)
+#endif
+		{
+			_writer = writer;
+			_startAction = startAction;
+		}
 
-                    Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
-                    EnvironmentVariables.IsServerOnline = false;
-                    _writer.Fail("Webserver failed to start", e);
-                    pauseHelper.Pause();
-                }
-            }
-        }
-        public void DoStartWebServer(IWebServerConfiguration webServerConfig)
-        {
-            var endPoints = webServerConfig.EndPoints;
-            var builder = WebApplication.CreateBuilder();
+		public void Execute(IWebServerConfiguration webServerConfig, IPauseHelper pauseHelper)
+		{
+			if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
+			{
+				try
+				{
+					DoStartWebServer(webServerConfig);
+				}
+				catch (Exception e)
+				{
 
-            _owinServer = _startAction(endPoints, builder); // WebServerStartup.Start(endPoints)
-            EnvironmentVariables.IsServerOnline = true;
-            _writer.WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in endPoints)
-            {
-                _writer.WriteLine($"Web server listening at {endpoint.Url}");
-            }
-        }
-        public void Dispose()
-        {
-            try
-            {
-                if (_owinServer != null)
-                {
-                    var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
+					Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
+					EnvironmentVariables.IsServerOnline = false;
+					_writer.Fail("Webserver failed to start", e);
+					pauseHelper.Pause();
+				}
+			}
+		}
+		public void DoStartWebServer(IWebServerConfiguration webServerConfig)
+		{
+			var endPoints = webServerConfig.EndPoints;
+#if NETFRAMEWORK
+			_owinServer = _startAction(endPoints);
+#else
+			var builder = WebApplication.CreateBuilder();
+
+			_owinServer = _startAction(endPoints, builder);
+#endif
+			EnvironmentVariables.IsServerOnline = true;
+			_writer.WriteLine("\r\nWeb Server Started");
+			foreach (var endpoint in endPoints)
+			{
+				_writer.WriteLine($"Web server listening at {endpoint.Url}");
+			}
+		}
+		public void Dispose()
+		{
+			try
+			{
+				if (_owinServer != null)
+				{
+#if !NETFRAMEWORK
+					var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
                     if(app != null) app.StopAsync();
-
-                    _owinServer.Dispose();
-                    _owinServer = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
-            }
-            finally
-            {
-                EnvironmentVariables.IsServerOnline = false;
-            }
-        }
-    }
+#endif
+					_owinServer.Dispose();
+					_owinServer = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
+			}
+			finally
+			{
+				EnvironmentVariables.IsServerOnline = false;
+			}
+		}
+	}
 }

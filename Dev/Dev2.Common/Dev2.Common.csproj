@@ -248,9 +248,9 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-	</ItemGroup>
+  </ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -258,4 +258,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+		<ItemGroup>
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+		</ItemGroup>
+	</Target>
 </Project>

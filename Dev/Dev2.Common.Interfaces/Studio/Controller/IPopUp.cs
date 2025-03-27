@@ -24,12 +24,15 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         string Header { get; set; }
         string Description { get; set; }
         string Question { get; set; }
-        MessageBoxImage ImageType { get; set; }
+#if WINDOWS || NETFRAMEWORK
+		MessageBoxImage ImageType { get; set; }
         MessageBoxButton Buttons { get; set; }
-        string DontShowAgainKey { get; set; }
+#endif
+		string DontShowAgainKey { get; set; }
         bool DeleteAnyway { get; }
         bool ApplyToAll { get; }
-        MessageBoxResult Show(IPopupMessage popupMessage);
+#if WINDOWS || NETFRAMEWORK
+		MessageBoxResult Show(IPopupMessage popupMessage);
         MessageBoxResult Show();
 
         MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image,
@@ -55,22 +58,26 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
         MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
         MessageBoxResult ShowDeleteVersionMessage(string displayName);
+#endif
 
-        void ShowInvalidCharacterMessage(string invalidText);
+		void ShowInvalidCharacterMessage(string invalidText);
         void ShowInvalidElasticsearchIndexFormatMessage(string invalidText);
 
-        MessageBoxResult ShowDeployNameConflict(string message);
+#if WINDOWS || NETFRAMEWORK
+		MessageBoxResult ShowDeployNameConflict(string message);
         MessageBoxResult ShowDeploySuccessful(string message);
 
         MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);
 
         MessageBoxResult ShowServerNotConnected(string server);
         MessageBoxResult ShowGetSubscriptionDataFailed();
+#endif
 
-        IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
+		IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);
 
-        MessageBoxResult ShowNoInputsSelectedWhenClickLink();
+#if WINDOWS || NETFRAMEWORK
+		MessageBoxResult ShowNoInputsSelectedWhenClickLink();
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
         MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
@@ -85,5 +92,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowSaveSettingsPermissionsErrorMsg();
         MessageBoxResult ShowInstallationErrorOccurred();
         MessageBoxResult UnRegisteredDialog();
-    }
+#endif
+	}
 }

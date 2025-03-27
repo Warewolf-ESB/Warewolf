@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || NETFRAMEWORK
+using System;
 using System.Collections;
 using System.Reflection;
 using System.Security;
@@ -167,3 +168,4 @@ namespace Dev2.Studio.Core.Interfaces
       
     }
 }
+#endif

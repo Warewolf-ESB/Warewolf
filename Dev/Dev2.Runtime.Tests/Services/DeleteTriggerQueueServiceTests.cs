@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
             var triggerId = Guid.Parse(result.Message.ToString());
             source.TriggerId = triggerId;
-            ((TriggersCatalog)TriggersCatalog.Instance).DeleteTriggerQueueFile(source);            
+            ((TriggersCatalog)TriggersCatalog.Instance).DeleteTriggerQueue(source);            
         }
     }
 }

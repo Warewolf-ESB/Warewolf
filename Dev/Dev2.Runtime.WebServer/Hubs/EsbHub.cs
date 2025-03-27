@@ -56,7 +56,9 @@ namespace Dev2.Runtime.WebServer.Hubs
 #endif
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
+#if !NETFRAMEWORK
         private readonly IHttpContextAccessor _httpContextAccessor;
+#endif
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
@@ -93,7 +95,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         #region Implementation of IDebugWriter
 
 #if NETFRAMEWORK
-        public void Write(IDebugState debugState)
+        public void WriteDebugState(IDebugState debugState)
 #else
         public void WriteDebugState(IDebugState debugState)
 #endif
@@ -626,12 +628,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             var t = new Task(() =>
             {
                 var workspaceId = Server.GetWorkspaceID(_httpContextAccessor.HttpContext.User.Identity);
-                ResourceCatalog.Instance.LoadServerActivityCache();
 
                 var clientCaller = _hubContext.Clients.Client(connectionId);
 
                 clientCaller.SendAsync("SendWorkspaceID", workspaceId);//clientCaller.SendWorkspaceID(workspaceId);
                 clientCaller.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//clientCaller.SendServerID(HostSecurityProvider.Instance.ServerID);
+                ResourceCatalog.Instance.LoadServerActivityCache();
 
                 NotifyPermissionsHaveBeenModified(clientCaller, _httpContextAccessor.HttpContext == null ? null : _httpContextAccessor.HttpContext.User);//PermissionsHaveBeenModified(null, null);
             });
@@ -639,21 +641,48 @@ namespace Dev2.Runtime.WebServer.Hubs
             t.Start();
         }
 
-        protected void SetupEvents()
-        {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
-            ServerExplorerRepository.Instance.MessageSubscription(this);
-            if (ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }
-            if (ResourceCatalog.Instance.SendResourceMessages == null)
-            {
-                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
-            }
-        }
+		protected void SetupEvents()
+		{
+			CompileMessageRepo.Instance.AllMessages.Subscribe(
+				new Observer<IList<ICompileMessageTO>>(OnCompilerMessageReceived)
+			);
+			ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+			ServerExplorerRepository.Instance.MessageSubscription(this);
+			if (ResourceCatalog.Instance.ResourceSaved == null)
+			{
+				ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+			}
+			if (ResourceCatalog.Instance.SendResourceMessages == null)
+			{
+				ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
+			}
+		}
 
-        #endregion
-    }
+		#endregion
+	}
+}
+
+public class Observer<T> : IObserver<T>
+{
+	private readonly Action<T> _onNext;
+
+	public Observer(Action<T> onNext)
+	{
+		_onNext = onNext;
+	}
+
+	public void OnNext(T value)
+	{
+		_onNext(value);
+	}
+
+	public void OnError(Exception error)
+	{
+		// Handle error
+	}
+
+	public void OnCompleted()
+	{
+		// Handle completion
+	}
 }

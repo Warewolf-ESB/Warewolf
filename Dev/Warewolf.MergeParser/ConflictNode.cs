@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿#if WINDOWS || NETFRAMEWORK
+using Dev2;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using System.Activities.Presentation.Model;
@@ -29,3 +30,4 @@ namespace Warewolf.MergeParser
         public ModelItem CurrentActivity => ModelItemUtils.CreateModelItem(_activity);
     }
 }
+#endif

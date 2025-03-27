@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 namespace System.Windows.Controls
 {
     public class PopulatingEventArgs : RoutedEventArgs
@@ -23,3 +24,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

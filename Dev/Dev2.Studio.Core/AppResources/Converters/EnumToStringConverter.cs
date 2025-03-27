@@ -11,16 +11,21 @@
 
 using System;
 using System.Globalization;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
+#endif
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums.Enums;
 
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    public class EnumToStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (value as Enum).GetDescription();
+    public class EnumToStringConverter
+#if WINDOWS || NETFRAMEWORK
+        : IValueConverter
+#endif
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (value as Enum).GetDescription();
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Dev2EnumConverter.GetEnumFromStringDiscription(value?.ToString(), targetType);
     }
 }

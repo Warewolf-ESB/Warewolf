@@ -10,8 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConsoleAppToTestExecuteCommandLineActivity</RootNamespace>
-    <AssemblyName>ConsoleAppToTestExecuteCommandLineActivity</AssemblyName>
-    
+    <AssemblyName>ConsoleAppToTestExecuteCommandLineActivity</AssemblyName>    
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -58,4 +57,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

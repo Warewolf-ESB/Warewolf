@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -18,14 +19,14 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class BoolToValueConverter : IValueConverter
     {
-        #region Properties
+		#region Properties
 
         public object TrueValue { get; set; }
         public object FalseValue { get; set; }
 
-        #endregion Properties
+		#endregion Properties
 
-        #region Methods
+		#region Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -46,6 +47,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 
-        #endregion Methods
+		#endregion Methods
     }
 }
+#endif

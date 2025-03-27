@@ -318,101 +318,166 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
-        #endregion
+		#endregion
 
-        #region Private Methods
-        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
-        {
-            var modelProperty = modelItem.Properties["ResultsCollection"];
-            if(modelProperty == null)
-            {
-                return;
-            }
-            var mic = modelProperty.Collection;
+		#region Private Methods
+#if WINDOWS || NETFRAMEWORK
+		void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+		{
+			var modelProperty = modelItem.Properties["ResultsCollection"];
+			if (modelProperty == null)
+			{
+				return;
+			}
+			var mic = modelProperty.Collection;
 
-            if(mic == null)
-            {
-                return;
-            }
-            var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
-            if(listOfValidRows.Count > 0)
-            {
-                var xPathDto = ResultsCollection.Last(c => !c.CanRemove());
-                var startIndex = ResultsCollection.IndexOf(xPathDto) + 1;
-                foreach(var s in listToAdd)
-                {
-                    mic.Insert(startIndex, new XPathDTO(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
-                    startIndex++;
-                }
-                CleanUpCollection(mic, modelItem, startIndex);
-            }
-            else
-            {
-                AddToCollection(listToAdd, modelItem);
-            }
-        }
+			if (mic == null)
+			{
+				return;
+			}
+			var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var xPathDto = ResultsCollection.Last(c => !c.CanRemove());
+				var startIndex = ResultsCollection.IndexOf(xPathDto) + 1;
+				foreach (var s in listToAdd)
+				{
+					mic.Insert(startIndex, new XPathDTO(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
+					startIndex++;
+				}
+				CleanUpCollection(mic, modelItem, startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd, modelItem);
+			}
+		}
 
-        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
-        {
-            var modelProperty = modelItem.Properties["ResultsCollection"];
-            if(modelProperty == null)
-            {
-                return;
-            }
-            var mic = modelProperty.Collection;
+		void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+		{
+			var modelProperty = modelItem.Properties["ResultsCollection"];
+			if (modelProperty == null)
+			{
+				return;
+			}
+			var mic = modelProperty.Collection;
 
-            if(mic == null)
-            {
-                return;
-            }
-            var startIndex = 0;
-            var firstRowXPath = ResultsCollection[0].XPath;
-            mic.Clear();
-            foreach(var s in listToAdd)
-            {
-                mic.Add(new XPathDTO(s, firstRowXPath, startIndex + 1));
-                startIndex++;
-            }
-            CleanUpCollection(mic, modelItem, startIndex);
-        }
+			if (mic == null)
+			{
+				return;
+			}
+			var startIndex = 0;
+			var firstRowXPath = ResultsCollection[0].XPath;
+			mic.Clear();
+			foreach (var s in listToAdd)
+			{
+				mic.Add(new XPathDTO(s, firstRowXPath, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(mic, modelItem, startIndex);
+		}
 
-        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
-        {
-            if(startIndex < mic.Count)
-            {
-                mic.RemoveAt(startIndex);
-            }
-            mic.Add(new XPathDTO(string.Empty, "", startIndex + 1));
-            var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
-            {
-                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
-            }
-        }
+		void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+		{
+			if (startIndex < mic.Count)
+			{
+				mic.RemoveAt(startIndex);
+			}
+			mic.Add(new XPathDTO(string.Empty, "", startIndex + 1));
+			var modelProperty = modelItem.Properties["DisplayName"];
+			if (modelProperty != null)
+			{
+				modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+			}
+		}
 
-        string CreateDisplayName(ModelItem modelItem, int count)
-        {
-            var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty == null)
-            {
-                return "";
-            }
-            var currentName = modelProperty.ComputedValue as string;
-            if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
-            {
-                currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
-            }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
-        }
+		string CreateDisplayName(ModelItem modelItem, int count)
+		{
+			var modelProperty = modelItem.Properties["DisplayName"];
+			if (modelProperty == null)
+			{
+				return "";
+			}
+			var currentName = modelProperty.ComputedValue as string;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			if (ResultsCollection == null)
+			{
+				return;
+			}
 
-        #endregion Private Methods
+			var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var xPathDto = ResultsCollection.Last(c => !c.CanRemove());
+				var startIndex = ResultsCollection.IndexOf(xPathDto) + 1;
+				foreach (var s in listToAdd)
+				{
+					ResultsCollection.Insert(startIndex, new XPathDTO(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
+					startIndex++;
+				}
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
 
-        #region Get Debug Inputs/Outputs
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			if (ResultsCollection == null)
+			{
+				return;
+			}
 
-        #region GetDebugInputs
+			var startIndex = 0;
+			var firstRowXPath = ResultsCollection[0].XPath;
+			ResultsCollection.Clear();
+			foreach (var s in listToAdd)
+			{
+				ResultsCollection.Add(new XPathDTO(s, firstRowXPath, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < ResultsCollection.Count)
+			{
+				ResultsCollection.RemoveAt(startIndex);
+			}
+			ResultsCollection.Add(new XPathDTO(string.Empty, "", startIndex + 1));
+			CreateDisplayName(startIndex + 1);
+		}
+
+		void CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			DisplayName = currentName + " (" + (count - 1) + ")";
+		}
+#endif
+
+		#endregion Private Methods
+
+		#region Get Debug Inputs/Outputs
+
+		#region GetDebugInputs
+
+		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -505,6 +570,7 @@ namespace Dev2.Activities
 
         public int GetCollectionCount() => ResultsCollection.Count(xPathDto => !xPathDto.CanRemove());
 
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if(!overwrite)
@@ -516,8 +582,21 @@ namespace Dev2.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+        public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+        {
+            if(!overwrite)
+            {
+                InsertToCollection(listToAdd);
+            }
+            else
+            {
+                AddToCollection(listToAdd);
+            }
+        }
+#endif
 
-        #endregion
+#endregion
 
         public bool Equals(DsfXPathActivity other)
         {

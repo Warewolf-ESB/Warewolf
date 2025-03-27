@@ -30,7 +30,11 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>, IActivityTemplateFactory, INotifyPropertyChanged, IEquatable<DsfActivityAbstract<T>>
+    public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>,
+#if WINDOWS || NETFRAMEWORK
+        IActivityTemplateFactory, 
+#endif
+        INotifyPropertyChanged, IEquatable<DsfActivityAbstract<T>>
     {
         public string SimulationOutput { get; set; }
 
@@ -98,7 +102,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
 
+#if WINDOWS || NETFRAMEWORK
         public Activity Create(DependencyObject target) => this;
+#else
+        public Activity Create(object target) => this;
+#endif
 
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value)
         {
@@ -128,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region INotifyPropertyChnaged
+		#region INotifyPropertyChnaged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -137,10 +145,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        #endregion INotifyPropertyChnaged
+		#endregion INotifyPropertyChnaged
 
 
-        #region Protected Methods
+		#region Protected Methods
 
         protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
         {
@@ -177,7 +185,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion Protected Methods
+		#endregion Protected Methods
 
         public bool Equals(DsfActivityAbstract<T> other)
         {

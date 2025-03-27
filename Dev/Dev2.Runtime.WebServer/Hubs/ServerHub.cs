@@ -9,8 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-//using Microsoft.AspNet.SignalR;
+#if NETFRAMEWORK
+using Microsoft.AspNet.SignalR;
+#else
 using Microsoft.AspNetCore.SignalR;
+#endif
 
 namespace Dev2.Runtime.WebServer.Hubs
 {

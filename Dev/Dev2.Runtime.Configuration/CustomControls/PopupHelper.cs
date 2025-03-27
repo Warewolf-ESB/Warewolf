@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls.Primitives;
@@ -309,3 +310,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

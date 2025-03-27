@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Globalization;
 using System.Windows;
@@ -47,3 +48,4 @@ namespace Dev2.Studio.Core.AppResources.Converters
     }
 
 }
+#endif

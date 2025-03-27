@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Parsing.Intellisense;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
+#endif
 using Dev2.Calculate;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -31,12 +33,12 @@ namespace Dev2.Studio.InterfaceImplementors
     {
         readonly ISyntaxTreeBuilderHelper _syntaxTreeBuilderHelper;
 
-        #region Static Members
+		#region Static Members
         static HashSet<string> _functionNames = new HashSet<string>(StringComparer.Ordinal);
         static readonly IList<IntellisenseProviderResult> EmptyResults = new List<IntellisenseProviderResult>();
-        #endregion
+		#endregion
 
-        #region Instance Fields
+		#region Instance Fields
 
         public IList<IntellisenseProviderResult> IntellisenseResult
         {
@@ -44,15 +46,15 @@ namespace Dev2.Studio.InterfaceImplementors
             private set;
         }
 
-        #endregion
+		#endregion
 
-        #region Public Properties
+		#region Public Properties
         public bool Optional => false;
 
         public bool HandlesResultInsertion => false;
-        #endregion
+		#endregion
 
-        #region Constructors
+		#region Constructors
 
         public CalculateIntellisenseProvider() : this(new SyntaxTreeBuilderHelper()) { }
 
@@ -76,7 +78,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 return result;
             }).OrderBy(p => p.Name).ToList();
         }
-        #endregion
+		#endregion
 
         public IntellisenseProviderType IntellisenseProviderType { get; private set; }
 
@@ -140,11 +142,16 @@ namespace Dev2.Studio.InterfaceImplementors
         }
     }
 
-    #region CalculateIntellisenseTextConverter
+	#region CalculateIntellisenseTextConverter
+#if WINDOWS || NETFRAMEWORK
     [ValueConversion(typeof(string), typeof(string), ParameterType = typeof(string))]
-    public class CalculateIntellisenseTextConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+#endif
+	public class CalculateIntellisenseTextConverter
+#if WINDOWS || NETFRAMEWORK
+        : IValueConverter
+#endif
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value != null)
             {
@@ -183,5 +190,5 @@ namespace Dev2.Studio.InterfaceImplementors
             return null;
         }
     }
-    #endregion
+#endregion
 }

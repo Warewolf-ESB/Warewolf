@@ -363,16 +363,17 @@
       <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.1" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.2" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <!--<PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.9" />-->
-    <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
@@ -407,9 +408,9 @@
     )
     taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
     taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
-    <StartupObject>Dev2.Program</StartupObject>
     <IsTestProject>false</IsTestProject>
     <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
+    <StartupObject>Dev2.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -423,4 +424,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

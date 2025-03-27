@@ -17,4 +17,7 @@ ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
-CMD ["powershell", ".\\Server\\StartAsService.ps1 -NoExit"]
+RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
+RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
+
+CMD ["powershell", ".\\Server\\StartAsService.ps1"]

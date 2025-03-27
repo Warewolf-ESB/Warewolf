@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || NETFRAMEWORK
+using System;
 using System.Globalization;
 using Dev2.CustomControls.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -52,3 +53,4 @@ namespace Dev2.CustomControls.Tests.Converters
         }
     }
 }
+#endif

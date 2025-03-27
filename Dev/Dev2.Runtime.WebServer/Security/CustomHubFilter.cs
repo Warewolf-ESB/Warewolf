@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETFRAMEWORK
+using System;
 using System.Threading.Tasks;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -95,3 +96,4 @@ namespace Dev2.Runtime.WebServer.Security
 
     }
 }
+#endif

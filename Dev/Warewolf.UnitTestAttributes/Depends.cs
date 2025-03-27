@@ -176,7 +176,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MSSQL)
             {
-                Container.IP = "102.37.115.89";
+                Container.IP = "tuwlfsql01.database.windows.net";
                 Container.Port = "1433";
             }
             else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
@@ -191,13 +191,13 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MySQL)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "9300";
+                Container.IP = "20.164.55.70";
+                Container.Port = "3306";
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "6380";
+                Container.IP = "20.164.73.166";
+                Container.Port = "6379";
             }
             else
             {
@@ -356,7 +356,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
             UpdateSourcesConnectionStrings(
-                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
+                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=Ex@mple!23Secure#PWD;",
                 knownMssqlServerSources);
         }
         

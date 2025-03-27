@@ -343,6 +343,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         static bool ArePureScalarTargets(IEnumerable<DataSplitDTO> args) => args.All(arg => !DataListUtil.IsValueRecordset(arg.OutputVariable));
 
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
@@ -424,6 +425,67 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return string.Empty;
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				ConcatenateCollections(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+
+		void ConcatenateCollections(IEnumerable<string> listToAdd)
+		{
+			var dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
+			var startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
+			foreach (string s in listToAdd)
+			{
+				ResultsCollection.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
+
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			var startIndex = 0;
+			var firstRowSplitType = ResultsCollection[0].SplitType;
+			var firstRowAt = ResultsCollection[0].At;
+			ResultsCollection.Clear();
+			foreach (string s in listToAdd)
+			{
+				ResultsCollection.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
+
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < ResultsCollection.Count)
+			{
+				ResultsCollection.RemoveAt(startIndex);
+			}
+			ResultsCollection.Add(new DataSplitDTO(string.Empty, "Chars", string.Empty, startIndex + 1));
+			DisplayName = CreateDisplayName(startIndex + 1);
+		}
+
+		string CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+#endif
 
         IDev2Tokenizer CreateSplitPattern(ref StringBuilder stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
         {
@@ -701,6 +763,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount() => ResultsCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -712,6 +775,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
 
         public override List<string> GetOutputs() => ResultsCollection.Select(dto => dto.OutputVariable).ToList();
 

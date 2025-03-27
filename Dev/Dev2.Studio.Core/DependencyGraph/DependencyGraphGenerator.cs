@@ -126,6 +126,7 @@ namespace Dev2.Common
 
         IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
+#if WINDOWS || NETFRAMEWORK
             var screenWidth = width;
             var screenHeight = height - 150;
             var centerX = Convert.ToInt32(screenWidth / 2);
@@ -177,6 +178,9 @@ namespace Dev2.Common
             }
 
             return new DependencyVisualizationNode(id, x, y, isTarget, broken);
-        }
-    }
+#else
+            return null;
+#endif
+		}
+	}
 }

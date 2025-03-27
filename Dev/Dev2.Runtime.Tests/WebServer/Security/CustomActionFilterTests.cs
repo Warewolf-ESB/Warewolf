@@ -1,3 +1,4 @@
+#if !NETFRAMEWORK
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -338,3 +339,4 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
     }
 }
+#endif

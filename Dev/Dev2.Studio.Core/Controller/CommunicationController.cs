@@ -96,9 +96,11 @@ namespace Dev2.Controller
 
         static void ShowAuthorizationErrorPopup(string ex)
         {
+#if WINDOWS || NETFRAMEWORK
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, false, true, false, false, false);
+#endif
         }
         
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
@@ -178,6 +180,7 @@ namespace Dev2.Controller
 
         static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
+#if WINDOWS || NETFRAMEWORK
             if ((payload == null || payload.Length == 0) && connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -186,10 +189,12 @@ namespace Dev2.Controller
                     , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 });
             }
+#endif
         }
 
         static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
         {
+#if WINDOWS || NETFRAMEWORK
             if (connection != null)
             {
                 try
@@ -206,6 +211,7 @@ namespace Dev2.Controller
                     Dev2Logger.Error("Error popup", e, "Warewolf Error");
                 }
             }
+#endif
         }
 
         public void FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId) => connection.FetchResourcesAffectedMemo(resourceId);
@@ -215,6 +221,7 @@ namespace Dev2.Controller
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
+#if WINDOWS || NETFRAMEWORK
             if (connection == null || !connection.IsConnected)
             {
                 if (connection != null && !connection.IsConnecting)
@@ -226,6 +233,7 @@ namespace Dev2.Controller
                 }
                 return default(T);
             }
+#endif
             try
             {
                 if (ServicePayload == null)
@@ -281,6 +289,7 @@ namespace Dev2.Controller
 
             if (connection == null || !connection.IsConnected)
             {
+#if WINDOWS || NETFRAMEWORK
                 if (connection != null && !connection.IsConnecting)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
@@ -288,7 +297,7 @@ namespace Dev2.Controller
                                           ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                                           MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
-
+#endif
             }
             else
             {
@@ -339,10 +348,12 @@ namespace Dev2.Controller
             { return default(T); }
             if (!connection.IsConnected && !connection.IsConnecting)
             {
+#if WINDOWS || NETFRAMEWORK
                 var popupController = CustomContainer.Get<IPopupController>();
                 popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
                                       ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
                                       MessageBoxImage.Information, "", false, false, true, false, false, false);
+#endif
             }
             else
             {

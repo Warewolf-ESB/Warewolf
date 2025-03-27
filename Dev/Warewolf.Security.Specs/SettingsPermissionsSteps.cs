@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
+#if WINDOWS || NETFRAMEWORK
 using Dev2.Activities.Specs.Scheduler;
+#endif
 using Dev2.Network;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -51,7 +53,9 @@ namespace Dev2.Activities.Specs.Permissions
 
             _featureContext = featureContext;
             _isCurrentPrincipalIdentitySet = SetTestPrincipalIfCurrentClaimsPrincipalIsNull();
+#if WINDOWS || NETFRAMEWORK
             SetupUser();
+#endif
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
@@ -219,6 +223,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
         }
 
+#if WINDOWS || NETFRAMEWORK
         static void SetupUser()
         {
             var securitySpecsUser = GetSecuritySpecsUser();
@@ -235,6 +240,7 @@ namespace Dev2.Activities.Specs.Permissions
                 }
             }
         }
+#endif
 
         [When(@"connected as user part of ""(.*)""")]
         public void WhenConnectedAsUserPartOf(string userGroup)

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 
 [assembly: ThemeInfo(
@@ -18,5 +19,4 @@ using System.Windows;
     //(used if a resource is not found in the page, 
     // app, or any theme specific resource dictionaries)
 )]
-
-
+#endif

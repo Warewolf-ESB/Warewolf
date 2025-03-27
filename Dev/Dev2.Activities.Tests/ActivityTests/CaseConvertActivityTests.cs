@@ -326,9 +326,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
-	        {
-		        new CaseConvertTO( "[[rs(*).val]] [[result]]","text", "[[result]]",1)
-	        };
+            {
+                new CaseConvertTO( "[[rs(*).val]] [[result]]","text", "[[result]]",1)
+            };
 
 
             var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
@@ -336,8 +336,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        });
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            });
 
             //------------Assert Results-------------------------
 
@@ -354,9 +354,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
-	        {
-		        new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
-	        };
+            {
+                new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
+            };
 
 
             var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
@@ -364,8 +364,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
                 {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        });
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            });
 
             //------------Assert Results-------------------------
 
@@ -382,17 +382,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
-	        {
-		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
-	        };
+            {
+                new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
+            };
 
             var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
                 {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        });
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            });
 
             //------------Assert Results-------------------------
 
@@ -409,9 +409,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
-	        {
-		        new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
-	        };
+            {
+                new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
+            };
 
             var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
@@ -433,9 +433,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
-	        {
-		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
-	        };
+            {
+                new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
+            };
 
             var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
@@ -532,7 +532,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+#endif
             //------------Assert Results-------------------------
             Assert.AreEqual(4, activity.ConvertCollection.Count);
         }
@@ -550,7 +554,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+#endif
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.ConvertCollection.Count);
         }
@@ -569,12 +577,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ConvertCollection = convertCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(2, activity.ConvertCollection.Count);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true);
+#endif
+			//------------Assert Results-------------------------
+			Assert.AreEqual(2, activity.ConvertCollection.Count);
         }
 
-        #endregion
+#endregion
 
         #region Private Test Methods
 

@@ -1,4 +1,5 @@
 #pragma warning disable
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Globalization;
 using System.Windows.Controls;
@@ -34,3 +35,4 @@ namespace Warewolf.Studio.CustomControls
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }
+#endif

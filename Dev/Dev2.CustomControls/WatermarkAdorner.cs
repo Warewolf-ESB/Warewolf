@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿#if WINDOWS || NETFRAMEWORK
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -82,3 +83,4 @@ namespace Dev2.CustomControls
         #endregion
     }
 }
+#endif

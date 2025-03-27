@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Threading;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Dev2.Net6.Compatibility;
@@ -119,10 +118,10 @@ namespace Dev2.Tests.MathOperationTest
 
         #endregion Ctor
 
-        #region CreateCustomFunction Test
+#region CreateCustomFunction Test
 
- 
 
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]   
         public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
         {           
@@ -203,8 +202,9 @@ namespace Dev2.Tests.MathOperationTest
             });
         }
 
+#endif
 
-        #endregion CreateCustom Function Test
+#endregion CreateCustom Function Test
 
         #region Private Test Methods
 

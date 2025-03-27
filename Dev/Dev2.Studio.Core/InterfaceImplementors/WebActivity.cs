@@ -77,21 +77,25 @@ namespace Dev2.Studio.Core
 
         string GetPropertyValue(object modelItemObject, string propertyName)
         {
+#if WINDOWS || NETFRAMEWORK
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 return modelItem.Properties[propertyName].ComputedValue == null
                            ? string.Empty
                            : modelItem.Properties[propertyName].ComputedValue.ToString();
             }
+#endif
             return string.Empty;
         }
 
         void SetPropertyValue(object modelItemObject, string propertyName, object value)
         {
+#if WINDOWS || NETFRAMEWORK
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
                 modelItem.Properties[propertyName].SetValue(value);
             }
+#endif
         }
         public bool IsNotAvailable() => !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.IsConnected;
     }

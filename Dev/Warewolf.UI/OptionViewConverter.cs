@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -78,3 +79,4 @@ namespace Warewolf.UI
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
+#endif

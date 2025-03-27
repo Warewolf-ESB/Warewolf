@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
 
 namespace System.Windows.Controls
@@ -23,7 +24,7 @@ namespace System.Windows.Controls
     {
         Binding _binding;
 
-        #region public T Value
+		#region public T Value
 
         public T Value
         {
@@ -38,7 +39,7 @@ namespace System.Windows.Controls
                 typeof(BindingEvaluator<T>),
                 new PropertyMetadata(default(T)));
 
-        #endregion public string Value
+		#endregion public string Value
         
         public Binding ValueBinding
         {
@@ -67,3 +68,4 @@ namespace System.Windows.Controls
         }
     }
 }
+#endif

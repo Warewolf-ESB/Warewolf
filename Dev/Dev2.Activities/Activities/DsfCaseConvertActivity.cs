@@ -228,6 +228,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
@@ -318,8 +319,62 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return string.Empty;
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
+				foreach (string s in listToAdd)
+				{
+					ConvertCollection.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+					startIndex++;
+				}
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			var startIndex = 0;
+			var firstRowConvertType = ConvertCollection[0].ConvertType;
+			ConvertCollection.Clear();
+			foreach (string s in listToAdd)
+			{
+				ConvertCollection.Insert(startIndex, new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
+
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < ConvertCollection.Count)
+			{
+				ConvertCollection.RemoveAt(startIndex);
+			}
+			ConvertCollection.Add(new CaseConvertTO(string.Empty, "UPPER", string.Empty, startIndex + 1));
+			DisplayName = CreateDisplayName(startIndex + 1);
+		}
+
+		string CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			currentName = currentName + " (" + (count - 1) + ")";
+			return currentName;
+		}
+#endif
+
+		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -399,6 +454,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount() => ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if (!overwrite)
@@ -410,8 +466,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
 
-        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
+		public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
 
         public override IEnumerable<StateVariable> GetState()
         {

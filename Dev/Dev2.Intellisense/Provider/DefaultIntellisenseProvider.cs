@@ -23,7 +23,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
 {
 
-    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider
+    public class DefaultIntellisenseProvider :
+#if WINDOWS || NETFRAMEWORK
+        DependencyObject, 
+#endif
+        IIntellisenseProvider
     {
         #region Implementation of IDisposable
 

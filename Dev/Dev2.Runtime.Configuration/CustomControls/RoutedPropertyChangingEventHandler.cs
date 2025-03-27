@@ -15,6 +15,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS || NETFRAMEWORK
 using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Controls
@@ -34,3 +35,4 @@ namespace System.Windows.Controls
     [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances", Justification = "To match pattern of RoutedPropertyChangedEventHandler<T>")]
     public delegate void RoutedPropertyChangingEventHandler<T>(object sender, RoutedPropertyChangingEventArgs<T> e);
 }
+#endif

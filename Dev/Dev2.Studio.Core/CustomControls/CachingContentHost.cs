@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,3 +22,4 @@ namespace Dev2.Studio.Core.CustomControls
                 DependencyProperty.Register("CurrentItem", typeof(object), typeof(CachingContentHost), new PropertyMetadata(null));
     }
 }
+#endif

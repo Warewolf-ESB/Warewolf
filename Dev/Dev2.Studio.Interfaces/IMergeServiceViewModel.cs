@@ -16,8 +16,9 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IMergeServiceViewModel : IDisposable
     {
+#if WINDOWS || NETFRAMEWORK
         MessageBoxResult ShowMergeDialog();
-
+#endif
         IExplorerItemViewModel SelectedResource { get; set; }
         string ResourceToMerge { get; set; }
         ICommand MergeCommand { get; set; }

@@ -1,5 +1,6 @@
 #pragma warning disable
-﻿using System;
+#if WINDOWS || NETFRAMEWORK
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -23,7 +24,7 @@ namespace Warewolf.Studio.Core
         readonly ResourceDictionary _dict;
         readonly SolidColorBrush _brush;
 
-        #region Implementation of IValueConverter
+		#region Implementation of IValueConverter
 
         public ResourceIdToIconConverter()
         {
@@ -143,6 +144,7 @@ namespace Warewolf.Studio.Core
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
 
-        #endregion
+		#endregion
     }
 }
+#endif

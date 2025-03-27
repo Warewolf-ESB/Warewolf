@@ -14,6 +14,7 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
+#if WINDOWS || NETFRAMEWORK
 using System.Collections;
 using System.Windows.Automation.Peers;
 using System.Windows.Input;
@@ -80,3 +81,4 @@ namespace System.Windows.Controls
         AutomationPeer CreateAutomationPeer();
     }
 }
+#endif

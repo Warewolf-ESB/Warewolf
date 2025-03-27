@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
-
 
 namespace Dev2.Studio.Core.Messages
 {
@@ -18,3 +18,4 @@ namespace Dev2.Studio.Core.Messages
         FrameworkElement Context { get; }
     }
 }
+#endif

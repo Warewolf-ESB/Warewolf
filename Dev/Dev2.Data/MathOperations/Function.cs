@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+#if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations;
+#endif
 
 using Warewolf.Resource.Errors;
 
@@ -58,39 +60,42 @@ namespace Dev2.MathOperations
 
         #endregion Ctor
 
-        #region Public Methods
+#region Public Methods
 
+#if WINDOWS || NETFRAMEWORK
         public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, XamCalculationManager calcManager)
         {
+#if WINDOWS || NETFRAMEWORK
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
                 if (calcManager != null)
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
+#endif
                     SetFunctionName(functionName);
                     SetArguments(arguments);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
+#if WINDOWS || NETFRAMEWORK
                 }
                 else
                 {
                     throw new NullReferenceException(ErrorResource.CalculationManagerIsNull);
                 }
             }
-
             else
             {
                 throw new InvalidOperationException(ErrorResource.UnableToCreateDefinedFunction);
             }
-
-
-
+#endif
         }
+#endif
 
-        #endregion Public Methods
+#endregion Public Methods
 
-        #region Private Methods
+#region Private Methods
 
+#if WINDOWS || NETFRAMEWORK
         static bool CreateCustomFunction(string functionName, Func<double[], double> func, out CustomCalculationFunction custCalculation)
         {
             bool isSucessfullyCreated;
@@ -106,8 +111,8 @@ namespace Dev2.MathOperations
                 isSucessfullyCreated = false;
             }
             return isSucessfullyCreated;
-
         }
+#endif
 
         void SetFunctionName(string functionName)
         {
@@ -137,6 +142,6 @@ namespace Dev2.MathOperations
             _description = !string.IsNullOrEmpty(description) ? description : string.Empty;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }

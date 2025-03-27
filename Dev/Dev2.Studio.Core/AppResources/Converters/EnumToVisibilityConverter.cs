@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -32,7 +33,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             VisibleEnumValues = new EnumCollection();
         }
 
-        #region VisibleEnumValues
+		#region VisibleEnumValues
 
         public EnumCollection VisibleEnumValues
         {
@@ -44,7 +45,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public static readonly DependencyProperty VisibleEnumValuesProperty =
             DependencyProperty.Register("VisibleEnumValues", typeof(EnumCollection), typeof(EnumToVisibilityConverter), new PropertyMetadata(null));
 
-        #endregion VisibleEnumValues
+		#endregion VisibleEnumValues
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -64,3 +65,4 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
+#endif

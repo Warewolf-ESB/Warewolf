@@ -24,7 +24,9 @@ namespace Dev2.Studio.Interfaces
         object SelectedModelItem { get; }
         string WorkflowName { get; }
         WorkflowDesigner Designer { get; }
+#if WINDOWS || NETFRAMEWORK
         UIElement DesignerView { get; }
+#endif
         StringBuilder DesignerText { get; }
         Action<ModelItem> ItemSelectedAction { get; set; }
         bool IsTestView { get; set; }

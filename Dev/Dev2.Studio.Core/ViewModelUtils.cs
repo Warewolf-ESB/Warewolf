@@ -12,6 +12,7 @@ namespace Dev2
         
         public static void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
         {
+#if WINDOWS || NETFRAMEWORK
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.CheckAccess())
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -20,6 +21,7 @@ namespace Dev2
                 });
             }
             else
+#endif
             {
                 RaiseCanExecuteChangedInternal(commandForCanExecuteChange);
             }
@@ -37,6 +39,7 @@ namespace Dev2
                 if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Prism.Commands.DelegateCommand command)
 #endif
                 {
+#if WINDOWS || NETFRAMEWORK
                     if (Application.Current != null && Application.Current.Dispatcher != null)
                     {
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -44,8 +47,7 @@ namespace Dev2
                            command.RaiseCanExecuteChanged();
                        }));
                     }
-
-
+#endif
                     return;
                 }
 
@@ -68,12 +70,14 @@ namespace Dev2
                     var delegateCommand = commandForCanExecuteChange as DelegateCommand;
                     delegateCommand?.RaiseCanExecuteChanged();
                 }
+#if WINDOWS || NETFRAMEWORK
                 if (typeOfCommand == typeof(AuthorizeCommand))
                 {
                     var authorizeCommand = commandForCanExecuteChange as AuthorizeCommand;
                     authorizeCommand?.RaiseCanExecuteChanged();
                 }
-            }
-        }
+#endif
+			}
+		}
     }
 }

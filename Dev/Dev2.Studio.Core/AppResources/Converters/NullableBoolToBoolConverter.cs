@@ -10,12 +10,16 @@
 
 using System;
 using System.Globalization;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Data;
-
+#endif
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-    public class NullableBoolToBoolConverter : IValueConverter
+    public class NullableBoolToBoolConverter
+#if WINDOWS || NETFRAMEWORK
+        : IValueConverter
+#endif
     {
         public bool NullValueReplacement { get; set; }
 
@@ -30,7 +34,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return b ?? NullValueReplacement;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public
+#if !(WINDOWS || NETFRAMEWORK)
+            static
+#endif
+			object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

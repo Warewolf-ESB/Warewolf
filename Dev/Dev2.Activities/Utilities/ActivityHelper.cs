@@ -13,7 +13,9 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
+#endif
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
@@ -78,6 +80,7 @@ namespace Dev2.Utilities
             return val;
         }
 
+#if WINDOWS || NETFRAMEWORK
         public static void SetSwitchKeyProperty(Dev2Switch ds, ModelItem switchCase)
         {
             if(ds != null)
@@ -90,6 +93,7 @@ namespace Dev2.Utilities
                 }
             }
         }
+#endif
 
         public static void SetArmTextDefaults(Dev2DecisionStack dds)
         {
@@ -104,6 +108,7 @@ namespace Dev2.Utilities
             }
         }
 
+#if WINDOWS || NETFRAMEWORK
         public static void SetArmText(ModelItem decisionActivity, Dev2DecisionStack dds)
         {
             SetArmText(decisionActivity, GlobalConstants.TrueArmPropertyText, dds.TrueArmText);
@@ -134,6 +139,7 @@ namespace Dev2.Utilities
         {
             //This is to ensure nothing can be dragged onto a Activity Designer
         }
+#endif
 
         public static string GetSerializedStateValueFromCollection<T>(IList<T> collection)
         {

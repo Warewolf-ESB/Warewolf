@@ -154,7 +154,7 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.118</Version>
     </PackageReference>
-    <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
@@ -165,4 +165,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+		<ItemGroup>
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+		</ItemGroup>
+	</Target>
 </Project>

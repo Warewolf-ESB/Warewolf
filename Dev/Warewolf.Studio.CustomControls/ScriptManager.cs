@@ -161,12 +161,15 @@ namespace Warewolf.Studio.CustomControls
         public void CloseBrowser()
         {
             _shellViewModel.UpdateStudioLicense(_isLicensed);
+#if WINDOWS || NETFRAMEWORK
             if(mForm is WebBrowserView browser)
             {
                 browser.Close();
             }
+#endif
         }
 
+#if WINDOWS || NETFRAMEWORK
         [ExcludeFromCodeCoverage]
         public static void SetSilent(System.Windows.Controls.WebBrowser browser, bool silent)
         {
@@ -185,6 +188,7 @@ namespace Warewolf.Studio.CustomControls
                 webBrowser?.GetType().InvokeMember("Silent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.PutDispProperty, null, webBrowser, new object[] { silent });
             }
         }
+#endif
 
         [ComImport, Guid("6D5140C1-7436-11CE-8034-00AA006009FA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface IOleServiceProvider

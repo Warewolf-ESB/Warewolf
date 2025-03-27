@@ -22,7 +22,11 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+#endif
 using Dev2.Studio.Core;
 using Warewolf.Data;
 using Warewolf.Enums;

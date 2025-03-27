@@ -1,4 +1,5 @@
 #pragma warning disable
+#if WINDOWS || NETFRAMEWORK
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace Warewolf.Studio.CustomControls
 {
     public static class DragDropExtension
     {
-        #region ScrollOnDragDropProperty
+		#region ScrollOnDragDropProperty
 
         static readonly DependencyProperty ScrollOnDragDropProperty =
             DependencyProperty.RegisterAttached("ScrollOnDragDrop",
@@ -120,6 +121,7 @@ namespace Warewolf.Studio.CustomControls
             return null;
         }
 
-        #endregion
+		#endregion
     }
 }
+#endif

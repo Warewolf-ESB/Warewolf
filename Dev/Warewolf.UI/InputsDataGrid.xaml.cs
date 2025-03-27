@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Activities.Presentation.Model;
 using System.Windows;
@@ -118,3 +119,4 @@ namespace Warewolf.UI
         }
     }
 }
+#endif

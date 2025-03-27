@@ -365,10 +365,11 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        #endregion
+		#endregion
 
-        #region Private Methods
+		#region Private Methods
 
+#if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
@@ -394,7 +395,7 @@ namespace Dev2.Activities
             }
         }
 
-        private int InsertAllItems(IEnumerable<string> listToAdd, ModelItemCollection mic, int startIndex)
+		private int InsertAllItems(IEnumerable<string> listToAdd, ModelItemCollection mic, int startIndex)
         {
             foreach (string s in listToAdd)
             {
@@ -457,15 +458,87 @@ namespace Dev2.Activities
 
             return string.Empty;
         }
+#else
+		void InsertToCollection(IEnumerable<string> listToAdd)
+		{
+			if (SystemInformationCollection == null)
+			{
+				return;
+			}
 
-        #endregion
+			var listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+			if (listOfValidRows.Count > 0)
+			{
+				var gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+				var startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
+				startIndex = InsertAllItems(listToAdd, startIndex);
+				CleanUpCollection(startIndex);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
 
-        #endregion
+		private int InsertAllItems(IEnumerable<string> listToAdd, int startIndex)
+		{
+			foreach (string s in listToAdd)
+			{
+				SystemInformationCollection.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
+				startIndex++;
+			}
+
+			return startIndex;
+		}
+
+		void AddToCollection(IEnumerable<string> listToAdd)
+		{
+			if (SystemInformationCollection == null)
+			{
+				return;
+			}
+
+			var startIndex = 0;
+			const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
+			SystemInformationCollection.Clear();
+			foreach (string s in listToAdd)
+			{
+				SystemInformationCollection.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
+				startIndex++;
+			}
+			CleanUpCollection(startIndex);
+		}
+
+		void CleanUpCollection(int startIndex)
+		{
+			if (startIndex < SystemInformationCollection.Count)
+			{
+				SystemInformationCollection.RemoveAt(startIndex);
+			}
+			SystemInformationCollection.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
+			CreateDisplayName(startIndex + 1);
+		}
+
+		void CreateDisplayName(int count)
+		{
+			var currentName = DisplayName;
+			if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
+			{
+				currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
+			}
+			DisplayName = currentName + " (" + (count - 1) + ")";
+		}
+#endif
+
+#endregion
+
+#endregion
 
         #region Implementation of ICollectionActivity
 
         public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
+#if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
             if(!overwrite)
@@ -477,8 +550,21 @@ namespace Dev2.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+#else
+		public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+		{
+			if (!overwrite)
+			{
+				InsertToCollection(listToAdd);
+			}
+			else
+			{
+				AddToCollection(listToAdd);
+			}
+		}
+#endif
 
-        #endregion
+#endregion
 
         public bool Equals(DsfGatherSystemInformationActivity other)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if WINDOWS || NETFRAMEWORK
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using Dev2.Net6.Compatibility;
@@ -336,3 +337,4 @@ namespace Dev2.Runtime.Configuration.Tests
         }
     }
 }
+#endif

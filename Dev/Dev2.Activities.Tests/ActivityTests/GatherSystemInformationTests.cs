@@ -732,7 +732,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+#endif
             //------------Assert Results-------------------------
             Assert.AreEqual(4, activity.SystemInformationCollection.Count);
         }
@@ -750,7 +754,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false);
+#endif
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
@@ -772,7 +780,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
+#if WINDOWS || NETFRAMEWORK
             activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
+#else
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true);
+#endif
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }

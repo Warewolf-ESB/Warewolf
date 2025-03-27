@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using Microsoft.Xaml.Behaviors;
 using System;
 using System.Windows;
@@ -24,7 +25,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public double MinHeightOffset { get; set; }
 
-        #region Override Methods
+		#region Override Methods
 
         protected override void OnAttached()
         {
@@ -42,9 +43,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.DragDelta -= AssociatedObjectOnDragDelta;
         }
 
-        #endregion Override Methods
+		#endregion Override Methods
 
-        #region Properties
+		#region Properties
 
         // Using a DependencyProperty as the backing store for TargetElement.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TargetElementProperty =
@@ -68,9 +69,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             set { SetValue(ContentElementProperty, value); }
         }
 
-        #endregion
+		#endregion
 
-        #region Event Handlers
+		#region Event Handlers
 
         void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -129,6 +130,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         }
 
-        #endregion Event Handlers
+		#endregion Event Handlers
     }
 }
+#endif

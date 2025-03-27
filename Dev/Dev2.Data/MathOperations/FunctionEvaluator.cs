@@ -12,20 +12,26 @@ using System;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+#if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
+#endif
 using Warewolf.Resource.Errors;
 
 namespace Dev2.MathOperations
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {
+#if WINDOWS || NETFRAMEWORK
         readonly IDev2CalculationManager _manager;
+#endif
         readonly FunctionEvaluatorOption _functionEvaluatorOption;
 
         public FunctionEvaluator()
         {
+#if WINDOWS || NETFRAMEWORK
             _manager = new Dev2CalculationManager();
+#endif
             _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
         }
 
@@ -43,6 +49,7 @@ namespace Dev2.MathOperations
             {
                 try
                 {
+#if WINDOWS || NETFRAMEWORK
                     var value = _manager.CalculateFormula(expression);
                     if (value.IsError)
                     {
@@ -53,6 +60,7 @@ namespace Dev2.MathOperations
                         evaluation = value.IsDateTime ? PerformEvaluation(value) : value.GetResolvedValue().ToString();
                         evaluationState = true;
                     }
+#endif
                 }
                 catch (Exception ex)
                 {
@@ -69,6 +77,7 @@ namespace Dev2.MathOperations
             return evaluationState;
         }
 
+#if WINDOWS || NETFRAMEWORK
         string PerformEvaluation(CalculationValue value)
         {
             string evaluation;
@@ -91,5 +100,6 @@ namespace Dev2.MathOperations
 
             return evaluation;
         }
+#endif
     }
 }

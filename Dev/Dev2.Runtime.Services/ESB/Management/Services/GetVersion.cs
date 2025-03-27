@@ -60,9 +60,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var resourcePath = ResourceCatalog.GetResourcePath(theWorkspace.ID, resourceId);
                 var result = ServerVersionRepo.GetVersion(version, resourcePath);
                 res.Message.Append(result);
+#if WINDOWS || NETFRAMEWORK
                 var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
-                
+#endif
                 return serializer.SerializeToBuilder(res);
             }
             catch (Exception e)
@@ -73,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        #endregion
+#endregion
 
         public IServerVersionRepository ServerVersionRepo
         {

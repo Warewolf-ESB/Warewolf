@@ -1,4 +1,5 @@
 ﻿#if !NETFRAMEWORK
+#if WINDOWS || NETFRAMEWORK
 using FontAwesome6;
 using System.Windows.Media;
 using FontAwesome6.Fonts.Extensions;
@@ -14,4 +15,5 @@ namespace Warewolf.Studio.Core.Extensions
         
     }
 }
+#endif
 #endif

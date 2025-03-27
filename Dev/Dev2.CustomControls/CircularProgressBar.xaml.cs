@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,13 +30,13 @@ namespace Dev2.CustomControls
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof (int), typeof (CircularProgressBar), new UIPropertyMetadata(100));
 
-        #region Fields
+		#region Fields
 
         readonly DispatcherTimer _animationTimer;
 
-        #endregion
+		#endregion
 
-        #region Constructors
+		#region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CircularProgressBar" /> class.
@@ -52,9 +53,9 @@ namespace Dev2.CustomControls
             };
         }
 
-        #endregion
+		#endregion
 
-        #region Public Properties
+		#region Public Properties
 
         /// <summary>
         ///     Gets or sets the minimum.
@@ -86,7 +87,7 @@ namespace Dev2.CustomControls
             set { SetValue(ValueProperty, value); }
         }
 
-        #endregion
+		#endregion
 
         /// <summary>
         ///     Sets the position.
@@ -183,3 +184,4 @@ namespace Dev2.CustomControls
         }
     }
 }
+#endif

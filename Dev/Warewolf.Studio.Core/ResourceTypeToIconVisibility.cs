@@ -1,4 +1,5 @@
 #pragma warning disable
+#if WINDOWS || NETFRAMEWORK
 using System;
 using System.Globalization;
 using System.Windows;
@@ -36,3 +37,4 @@ namespace Warewolf.Studio.Core
         #endregion
     }
 }
+#endif

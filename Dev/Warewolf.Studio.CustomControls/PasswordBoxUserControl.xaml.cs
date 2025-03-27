@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Security.Encryption;
@@ -85,3 +86,4 @@ namespace Warewolf.Studio.CustomControls
         }
     }
 }
+#endif

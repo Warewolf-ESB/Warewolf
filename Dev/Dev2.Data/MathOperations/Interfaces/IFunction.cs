@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+#if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations;
+#endif
 
 
 namespace Dev2.MathOperations
@@ -22,8 +24,9 @@ namespace Dev2.MathOperations
         IList<string> ArgumentDescriptions { get; }
         string Description { get; }
 
-    
+#if WINDOWS || NETFRAMEWORK
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
            Func<double[], double> function, XamCalculationManager calcManager);
+#endif
     }
 }
