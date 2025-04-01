@@ -254,6 +254,12 @@ namespace Dev2.Runtime.Hosting
             return Queues.Where(queue => queue.ResourceId == resourceId).ToList();
         }
 
+        public List<ITriggerQueue> FetchQueuesByResourceId(Guid resourceId,bool isQueueLoads)
+        {
+            if (!isQueueLoads) { Load(); }
+            return Queues.Where(queue => queue.ResourceId == resourceId).ToList();
+        }
+
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
             var fileData = _fileWrapper.ReadAllText(filename);

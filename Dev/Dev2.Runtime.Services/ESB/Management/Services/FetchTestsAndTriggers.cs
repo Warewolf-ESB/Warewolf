@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Triggers;
- 
+
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Services.ServiceModel.Data;
 
@@ -42,6 +42,7 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
                 var resourceIds = serializer.Deserialize<List<Guid>>(resourceIdsString);
                 var totalTests = 0;
                 var totalTriggers = 0;
+                bool isQueueLoads = false;
 
                 foreach (var resourceId in resourceIds)
                 {
@@ -50,8 +51,8 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
                     {
                         totalTests += tests.Count;
                     }
-
-                    var triggers = TriggersCatalog.LoadQueuesByResourceId(resourceId);
+                    var triggers = TriggersCatalog.FetchQueuesByResourceId(resourceId, isQueueLoads);
+                    isQueueLoads = true;
                     if (triggers != null)
                     {
                         totalTriggers += triggers.Count;

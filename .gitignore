@@ -136,3 +136,5 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Binaries/Projects/IronRubyAll_Net6/IronRuby1130/.vs
 !/Dev/Server Tests Setup/**
 !/Dev/Binaries/Infragistcs_Net6/**
+/Dev/Dev2.Studio.Core/Models
+/Dev

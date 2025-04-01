@@ -133,6 +133,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\FetchTestsAndTriggersTests.cs" />
     <Compile Include="Services\FetchTriggersForDeployTests.cs" />
     <Compile Include="Services\GetDependanciesOnListTests.cs" />
     <Compile Include="Services\GetSubscriptionDataTests.cs" />
