@@ -862,7 +862,6 @@
 			<Name>Dev2.Development.Languages</Name>
 		</ProjectReference>
         <PackageReference Include="Prism.Core" Version="9.0.537" />
-        <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
         <PackageReference Include="ServiceStack" Version="6.3.0" />
         <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
         <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
