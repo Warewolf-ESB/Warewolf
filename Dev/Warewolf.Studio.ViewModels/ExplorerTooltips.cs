@@ -10,7 +10,7 @@
 
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

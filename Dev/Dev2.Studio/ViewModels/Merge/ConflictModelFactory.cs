@@ -24,7 +24,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #endif
 
 namespace Dev2.ViewModels.Merge

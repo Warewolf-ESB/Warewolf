@@ -55,7 +55,7 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Workspaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif

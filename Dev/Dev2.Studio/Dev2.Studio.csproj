@@ -720,9 +720,6 @@
         <PackageReference Include="Newtonsoft.Json">
             <Version>13.0.2</Version>
         </PackageReference>
-        <PackageReference Include="Prism.Mvvm">
-            <Version>1.1.1</Version>
-        </PackageReference>
         <PackageReference Include="Prism.UnityExtensions">
             <Version>5.0.1</Version>
         </PackageReference>
@@ -864,7 +861,7 @@
 			<Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
 			<Name>Dev2.Development.Languages</Name>
 		</ProjectReference>
-        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="Prism.Core" Version="9.0.537" />
         <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
         <PackageReference Include="ServiceStack" Version="6.3.0" />
         <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
@@ -873,7 +870,7 @@
         <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
         <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
         <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>

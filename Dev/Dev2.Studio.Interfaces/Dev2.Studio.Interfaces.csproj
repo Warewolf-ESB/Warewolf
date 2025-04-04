@@ -165,12 +165,8 @@
     <None Include="Dev2.Studio.Interfaces.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

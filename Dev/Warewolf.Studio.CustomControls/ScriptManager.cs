@@ -20,7 +20,7 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;

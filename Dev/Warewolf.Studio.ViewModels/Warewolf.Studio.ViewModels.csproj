@@ -273,7 +273,7 @@
 			<Version>4.7.0.9</Version>
 		</PackageReference>
 		<PackageReference Include="Prism.Mvvm">
-			<Version>1.1.1</Version>
+			<Version>7.2.0.1422</Version>
 		</PackageReference>
 		<PackageReference Include="Prism.UnityExtensions">
 			<Version>5.0.1</Version>
@@ -295,12 +295,12 @@
 		<PackageReference Include="Unity" Version="5.11.10" />
 		<PackageReference Include="Unity.Configuration" Version="5.11.2" />
 		<PackageReference Include="Unity.RegistrationByConvention" Version="5.11.1" />
-		<PackageReference Include="Prism.Core" Version="8.1.97" />
+		<PackageReference Include="Prism.Core" Version="9.0.537" />
 		<PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
 		<PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
 		<PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
 	</ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

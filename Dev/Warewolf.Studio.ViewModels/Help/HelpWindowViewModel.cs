@@ -16,7 +16,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Help;
 using Warewolf.Core;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

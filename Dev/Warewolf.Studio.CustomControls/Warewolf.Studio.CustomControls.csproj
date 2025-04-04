@@ -177,7 +177,7 @@
 			<Version>1.0.2</Version>
 		</PackageReference>
 		<PackageReference Include="Prism.Mvvm">
-			<Version>1.1.1</Version>
+			<Version>7.2.0.1422</Version>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
@@ -203,8 +203,8 @@
 		<SpecificVersion>False</SpecificVersion>
 		<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
 	</Reference>
-		<PackageReference Include="Prism.Core" Version="8.1.97" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="Prism.Core" Version="9.0.537" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
 	</ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

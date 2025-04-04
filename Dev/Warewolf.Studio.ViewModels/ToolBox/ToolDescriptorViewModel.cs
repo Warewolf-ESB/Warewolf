@@ -9,7 +9,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

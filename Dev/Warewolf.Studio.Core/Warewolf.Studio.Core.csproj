@@ -132,7 +132,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
@@ -174,9 +174,6 @@
 	  </PackageReference>
 	  <PackageReference Include="FontAwesome.WPF">
 		  <Version>4.7.0.9</Version>
-	  </PackageReference>
-	  <PackageReference Include="Prism.Mvvm">
-		  <Version>1.1.1</Version>
 	  </PackageReference>
 	  <PackageReference Include="Prism.UnityExtensions">
 		  <Version>5.0.1</Version>

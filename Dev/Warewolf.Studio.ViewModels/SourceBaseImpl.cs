@@ -5,7 +5,7 @@ using Dev2;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

@@ -46,7 +46,7 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Prism.Commands;
 using Prism.Mvvm;

@@ -19,7 +19,7 @@ using Dev2.Common;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.ViewModels.Merge.Utils;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #endif
 
 namespace Dev2.ViewModels.Merge

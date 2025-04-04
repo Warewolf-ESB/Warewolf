@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif

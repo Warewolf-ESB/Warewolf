@@ -657,11 +657,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
       <PrivateAssets>none</PrivateAssets>

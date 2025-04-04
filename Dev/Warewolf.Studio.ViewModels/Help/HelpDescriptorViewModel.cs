@@ -13,7 +13,7 @@ using System;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

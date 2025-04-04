@@ -348,7 +348,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
 		<!--<PackageReference Include="Expression.Blend.Sdk">
 			<Version>1.0.2</Version>
 		</PackageReference>-->
@@ -360,7 +360,7 @@
 		<PackageReference Include="Unofficial.Microsoft.mshtml">
 			<Version>7.0.3300</Version>
 		</PackageReference>
-		<PackageReference Include="Prism.Mvvm" Version="1.1.1" />
+		<PackageReference Include="Prism.Mvvm" Version="7.2.0.1422" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 		<PackageReference Include="Unity">
@@ -446,7 +446,7 @@
 		</Reference>
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-        <PackageReference Include="Prism.Core" Version="8.1.97" />
+        <PackageReference Include="Prism.Core" Version="9.0.537" />
 		<!--<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />

@@ -17,7 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;

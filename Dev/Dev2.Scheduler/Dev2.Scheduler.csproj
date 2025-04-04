@@ -128,7 +128,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="System.DirectoryServices" Version="6.0.0" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>

@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Dev2.Studio.Interfaces;
 using Dev2.UI;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;

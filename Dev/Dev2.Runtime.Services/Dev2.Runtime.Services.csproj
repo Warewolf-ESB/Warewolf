@@ -583,9 +583,6 @@
     <PackageReference Include="Npgsql">
       <Version>3.2.7</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>
     <PackageReference Include="GAC.API">
       <Version>1.0.1</Version>
     </PackageReference>

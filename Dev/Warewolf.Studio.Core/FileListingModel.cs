@@ -15,7 +15,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;
@@ -75,7 +75,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _useIsSelected = value;
-                OnPropertyChanged(() => UseIsSelected);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(UseIsSelected)));
             }
         }
 
@@ -103,7 +103,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _children = value;
-                OnPropertyChanged(() => Children);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(Children)));
             }
         }
 
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _progressVisibility = value;
-                OnPropertyChanged(() => ProgressVisibility);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(ProgressVisibility)));
             }
         }
 
@@ -141,7 +141,7 @@ namespace Warewolf.Studio.Core
                     {
                         ProgressVisibility = false;
                     }
-                    OnPropertyChanged(() => CurrentProgress);
+                    OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(CurrentProgress)));
                 }
             }
         }
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.Core
                     IsExpanded = true;
                 }
 
-                OnPropertyChanged(() => IsSelected);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsSelected)));
                 _selectedAction();
             }
         }
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.Core
                     }
                     IsExpanderVisible = Children != null && Children.Count > 0;
                 }
-                OnPropertyChanged(() => IsExpanded);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsExpanded)));
             }
         }
 
@@ -197,7 +197,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _isExpanderVisible = value;
-                OnPropertyChanged(() => IsExpanderVisible);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsExpanderVisible)));
             }
         }
 
@@ -212,7 +212,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _isVisible = value;
-                OnPropertyChanged(() => IsVisible);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsVisible)));
             }
         }
 
@@ -293,7 +293,7 @@ namespace Warewolf.Studio.Core
             set
             {
                 _isChecked = value;
-                OnPropertyChanged(() => IsChecked);
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(IsChecked)));
                 _selectedAction();
             }
         }
