@@ -176,9 +176,6 @@
 		<PackageReference Include="Expression.Blend.Sdk">
 			<Version>1.0.2</Version>
 		</PackageReference>
-		<PackageReference Include="Prism.Mvvm">
-			<Version>7.2.0.1422</Version>
-		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 	<Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
