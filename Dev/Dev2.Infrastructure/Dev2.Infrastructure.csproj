@@ -57,9 +57,6 @@
 	  <!--<Reference Include="System.Reactive.Windows.Thread">
       <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
     </Reference>-->
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -257,6 +254,9 @@
     <PackageReference Include="Microsoft.Owin.Security">
       <Version>4.2.2</Version>
     </PackageReference>
+	<Reference Include="Weave">
+		<HintPath>..\Binaries\Weave.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

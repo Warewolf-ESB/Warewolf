@@ -68,9 +68,6 @@
     <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
     </Reference>
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -356,6 +353,9 @@
     <Reference Include="Infragistics.Calculations">
       <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
+	<Reference Include="Weave">
+		<HintPath>..\Binaries\Weave.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>

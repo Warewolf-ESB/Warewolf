@@ -77,14 +77,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Management" />
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -352,6 +346,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Activities.Presentation" />
+	<Reference Include="Weave">
+		<HintPath>..\Binaries\Weave.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json" />

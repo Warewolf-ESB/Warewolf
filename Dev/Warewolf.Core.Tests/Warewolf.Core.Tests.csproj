@@ -98,10 +98,6 @@
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>-->
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dev2RandomTests.cs" />
@@ -167,9 +163,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-      <Reference Include="System.Runtime.DurableInstancing" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Runtime.DurableInstancing" />
+	<Reference Include="System.Activities.Presentation" />
+	<Reference Include="Weave">
+		<HintPath>..\Binaries\Weave.dll</HintPath>
+	</Reference>
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -58,12 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
-    
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -234,6 +229,10 @@
     <PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
     </PackageReference>
+    <Reference Include="System.Activities.Presentation" />
+	<Reference Include="Weave">
+		<HintPath>..\Binaries\Weave.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
