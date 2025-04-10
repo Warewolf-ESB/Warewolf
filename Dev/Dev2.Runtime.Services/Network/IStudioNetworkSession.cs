@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Network;
 using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.DynamicServices
@@ -21,5 +20,10 @@ namespace Dev2.DynamicServices
         string ServicePack { get; }
         uint Fingerprint { get; }
         bool Attached { get; }
+    }
+
+    public interface INetworkOperator
+    {
+        void Send(Org.BouncyCastle.Bcpg.Packet p);
     }
 }

@@ -1,0 +1,331 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!--Project was exported from assembly: C:\Builds\Warewolf\Dev\Binaries\Weave.dll-->
+  <PropertyGroup>
+    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Reference Include="System.Collections" />
+    <Reference Include="System.Collections.Concurrent" />
+    <Reference Include="System.Console" />
+    <Reference Include="System.Data.Common" />
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.NameResolution" />
+    <Reference Include="System.Net.NetworkInformation" />
+    <Reference Include="System.Net.Primitives" />
+    <Reference Include="System.Net.Sockets" />
+    <Reference Include="System.Reflection.Emit" />
+    <Reference Include="System.Reflection.Emit.ILGeneration" />
+    <Reference Include="System.Reflection.Primitives" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Security.Cryptography.Algorithms" />
+    <Reference Include="System.Security.Cryptography.Csp" />
+    <Reference Include="System.Security.Cryptography.Primitives" />
+    <Reference Include="System.Text.Encoding.Extensions" />
+    <Reference Include="System.Threading" />
+    <Reference Include="System.Threading.Thread" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDisposable.cs" />
+    <Compile Include="BaseFinalized.cs" />
+    <Compile Include="ByteBuffer.cs" />
+    <Compile Include="CollectOutputEventHandler.cs" />
+    <Compile Include="Deserializer.cs" />
+    <Compile Include="EightOctetUnion.cs" />
+    <Compile Include="FourOctetUnion.cs" />
+    <Compile Include="IByteReaderBase.cs" />
+    <Compile Include="IByteStreamBase.cs" />
+    <Compile Include="IByteWriterBase.cs" />
+    <Compile Include="ICryptProvider.cs" />
+    <Compile Include="IDecryptionProvider.cs" />
+    <Compile Include="IEncryptionProvider.cs" />
+    <Compile Include="MathHelper.cs" />
+    <Compile Include="NetworkContext.cs" />
+    <Compile Include="NullCryptProvider.cs" />
+    <Compile Include="SerializableEntity.cs" />
+    <Compile Include="SerializationExclusionAttribute.cs" />
+    <Compile Include="StringUtility.cs" />
+    <Compile Include="TPKey.cs" />
+    <Compile Include="TwoOctetUnion.cs" />
+    <Compile Include="WeaveUtility.cs" />
+    <Compile Include="__IByteReaderBaseExtensions.cs" />
+    <Compile Include="__IByteWriterBaseExtensions.cs" />
+    <Compile Include="Threading\AtomicComposition.cs" />
+    <Compile Include="Threading\IMessage.cs" />
+    <Compile Include="Threading\IMessageContext.cs" />
+    <Compile Include="Threading\Lock.cs" />
+    <Compile Include="Threading\MessageDispatcher.cs" />
+    <Compile Include="Threading\ReadLock.cs" />
+    <Compile Include="Threading\TokenGeneratingLock.cs" />
+    <Compile Include="Threading\WriteLock.cs" />
+    <Compile Include="Collections\BooleanArray.cs" />
+    <Compile Include="Collections\Generic\BitVector.cs" />
+    <Compile Include="Collections\Generic\CollectionUtility.cs" />
+    <Compile Include="Collections\Generic\ExposedList`1.cs" />
+    <Compile Include="Collections\Generic\IIndexed.cs" />
+    <Compile Include="Collections\Generic\IndexedList`1.cs" />
+    <Compile Include="Collections\Generic\KeyedValueKeyCollectionDebugView`2.cs" />
+    <Compile Include="Collections\Generic\KeyedValueValueCollectionDebugView`2.cs" />
+    <Compile Include="Collections\Generic\OneDimensionCollectionDebugView`1.cs" />
+    <Compile Include="Collections\Generic\StringValueCollection`1.cs" />
+    <Compile Include="Collections\Generic\StringValueCollectionBase.cs" />
+    <Compile Include="Collections\Generic\StringValueCollectionDebugView`1.cs" />
+    <Compile Include="Collections\Generic\StringValueCollectionImplementation.cs" />
+    <Compile Include="Collections\Generic\StringValueInt16CollectionImplementation.cs" />
+    <Compile Include="Collections\Generic\StringValueInt32CollectionImplementation.cs" />
+    <Compile Include="Collections\Generic\SynchronizedQueue`1.cs" />
+    <Compile Include="IO\BinaryFileReader.cs" />
+    <Compile Include="IO\BinaryFileWriter.cs" />
+    <Compile Include="IO\ByteKernal.cs" />
+    <Compile Include="IO\ByteReaderBackend.cs" />
+    <Compile Include="IO\ByteWriterBackend.cs" />
+    <Compile Include="IO\__Error.cs" />
+    <Compile Include="Parsing\ParseEventLog.cs" />
+    <Compile Include="Parsing\ParseEventLogEntry.cs" />
+    <Compile Include="Parsing\ParseEventLogToken.cs" />
+    <Compile Include="Parsing\TestParseEventLog.cs" />
+    <Compile Include="Parsing\__NoOpParseEventLog.cs" />
+    <Compile Include="Parsing\Tokenization\ITokenBuilder.cs" />
+    <Compile Include="Parsing\Tokenization\RequiredTokenDefinitions`1.cs" />
+    <Compile Include="Parsing\Tokenization\Token`2.cs" />
+    <Compile Include="Parsing\Tokenization\TokenBuilder`2.cs" />
+    <Compile Include="Parsing\Tokenization\TokenDefinition.cs" />
+    <Compile Include="Parsing\Tokenization\TokenDefinitionMask.cs" />
+    <Compile Include="Parsing\Tokenization\TokenizationExecutionStore`2.cs" />
+    <Compile Include="Parsing\Tokenization\TokenizationHandler`2.cs" />
+    <Compile Include="Parsing\Tokenization\TokenizationHandlerExecutionStore.cs" />
+    <Compile Include="Parsing\Tokenization\Tokenizer`2.cs" />
+    <Compile Include="Parsing\Tokenization\TokenizerInputWalker`2.cs" />
+    <Compile Include="Parsing\Tokenization\UnaryTokenizationHandler`2.cs" />
+    <Compile Include="Parsing\Tokenization\WhitespaceTokenizationHandler`2.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\AbstractSyntaxTreeBuilder`3.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\AbstractSyntaxTreeGrammer`3.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\ASTGrammerBehaviour.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\ASTGrammerBehaviourRegistry.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\ASTNode`3.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\GrammerGroup.cs" />
+    <Compile Include="Parsing\SyntaxAnalysis\VisitPurpose.cs" />
+    <Compile Include="Parsing\JSON\BooleanLiteralGrammer.cs" />
+    <Compile Include="Parsing\JSON\CharacterLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\JSON\CharLiteralGrammer.cs" />
+    <Compile Include="Parsing\JSON\CollectionNode.cs" />
+    <Compile Include="Parsing\JSON\CSharpNumericLiteralGrammer.cs" />
+    <Compile Include="Parsing\JSON\CSharpNumericLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\JSON\JSONComposite.cs" />
+    <Compile Include="Parsing\JSON\JSONGrammer.cs" />
+    <Compile Include="Parsing\JSON\JSONNode.cs" />
+    <Compile Include="Parsing\JSON\JSONRoot.cs" />
+    <Compile Include="Parsing\JSON\JSONScalar.cs" />
+    <Compile Include="Parsing\JSON\JSONTokenizer.cs" />
+    <Compile Include="Parsing\JSON\LiteralNode.cs" />
+    <Compile Include="Parsing\JSON\StringLiteralGrammer.cs" />
+    <Compile Include="Parsing\JSON\StringLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\JSON\SyntaxTreeBuilder.cs" />
+    <Compile Include="Parsing\JSON\Token.cs" />
+    <Compile Include="Parsing\JSON\TokenClassification.cs" />
+    <Compile Include="Parsing\JSON\TokenKind.cs" />
+    <Compile Include="Parsing\JSON\TokenPair.cs" />
+    <Compile Include="Parsing\Intellisense\BinaryOperatorNode.cs" />
+    <Compile Include="Parsing\Intellisense\BooleanLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\CharacterLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\Intellisense\CharLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\CollectionNode.cs" />
+    <Compile Include="Parsing\Intellisense\CompositeStringLiteralNode.cs" />
+    <Compile Include="Parsing\Intellisense\CSharpNumericLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\CSharpNumericLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistNestedReferenceNode.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistNumericLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistNumericLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistRecordSetFieldNode.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistRecordSetNode.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistReferenceNode.cs" />
+    <Compile Include="Parsing\Intellisense\DatalistStringLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\ExclusionGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\InfrigisticNumericLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\InfrigisticsGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\InfrigisticsNumericLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\Intellisense\INodeValueSource.cs" />
+    <Compile Include="Parsing\Intellisense\IntellisenseTokenizer.cs" />
+    <Compile Include="Parsing\Intellisense\IterationNode.cs" />
+    <Compile Include="Parsing\Intellisense\LiteralNode.cs" />
+    <Compile Include="Parsing\Intellisense\MethodInvocationNode.cs" />
+    <Compile Include="Parsing\Intellisense\Node.cs" />
+    <Compile Include="Parsing\Intellisense\NullLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\ParameterCollectionNode.cs" />
+    <Compile Include="Parsing\Intellisense\ParameterNode.cs" />
+    <Compile Include="Parsing\Intellisense\ParenthesisGroupNode.cs" />
+    <Compile Include="Parsing\Intellisense\PlaceholderOperatorNode.cs" />
+    <Compile Include="Parsing\Intellisense\StringLiteralGrammer.cs" />
+    <Compile Include="Parsing\Intellisense\StringLiteralTokenizationHandler.cs" />
+    <Compile Include="Parsing\Intellisense\SyntaxTreeBuilder.cs" />
+    <Compile Include="Parsing\Intellisense\Token.cs" />
+    <Compile Include="Parsing\Intellisense\TokenClassification.cs" />
+    <Compile Include="Parsing\Intellisense\TokenKind.cs" />
+    <Compile Include="Parsing\Intellisense\TokenPair.cs" />
+    <Compile Include="Parsing\Intellisense\TokenUtility.cs" />
+    <Compile Include="Network\AccountCompromisedReason.cs" />
+    <Compile Include="Network\AsyncConnection.cs" />
+    <Compile Include="Network\AsyncExtensionHandler.cs" />
+    <Compile Include="Network\AsyncPacketHandler.cs" />
+    <Compile Include="Network\AsyncPacketHandlerCollection.cs" />
+    <Compile Include="Network\AuthenticationBroker.cs" />
+    <Compile Include="Network\AuthenticationResponse.cs" />
+    <Compile Include="Network\BFPSetup.cs" />
+    <Compile Include="Network\Connection.cs" />
+    <Compile Include="Network\ConnectionEventHandler.cs" />
+    <Compile Include="Network\Envoy.cs" />
+    <Compile Include="Network\EnvoyReturnedEventHandler.cs" />
+    <Compile Include="Network\Firewall.cs" />
+    <Compile Include="Network\IFirewallEntry.cs" />
+    <Compile Include="Network\InboundAuthenticationBroker.cs" />
+    <Compile Include="Network\InboundSRPAuthenticationBroker.cs" />
+    <Compile Include="Network\INetworkOperator.cs" />
+    <Compile Include="Network\INetworkSerializable.cs" />
+    <Compile Include="Network\InternalTemplates.cs" />
+    <Compile Include="Network\IOCPConnection.cs" />
+    <Compile Include="Network\IOCPExtensionHandler`1.cs" />
+    <Compile Include="Network\IOCPPacketHandler`1.cs" />
+    <Compile Include="Network\IOCPPacketHandlerCollection`1.cs" />
+    <Compile Include="Network\Listener.cs" />
+    <Compile Include="Network\ListenerConfig.cs" />
+    <Compile Include="Network\LoginReply.cs" />
+    <Compile Include="Network\LoginStateEventArgs.cs" />
+    <Compile Include="Network\LoginStateEventHandler.cs" />
+    <Compile Include="Network\NetworkAccount.cs" />
+    <Compile Include="Network\NetworkAsyncEventArgs.cs" />
+    <Compile Include="Network\NetworkContextEventHandler`1.cs" />
+    <Compile Include="Network\NetworkDirection.cs" />
+    <Compile Include="Network\NetworkHelper.cs" />
+    <Compile Include="Network\NetworkHost.cs" />
+    <Compile Include="Network\NetworkServer.cs" />
+    <Compile Include="Network\NetworkState.cs" />
+    <Compile Include="Network\NetworkStateEventArgs.cs" />
+    <Compile Include="Network\NetworkStateEventHandler.cs" />
+    <Compile Include="Network\OutboundAuthenticationBroker.cs" />
+    <Compile Include="Network\OutboundSRPAuthenticationBroker.cs" />
+    <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\PacketAssembler.cs" />
+    <Compile Include="Network\PacketData.cs" />
+    <Compile Include="Network\PacketEventHandler.cs" />
+    <Compile Include="Network\PacketEventHandler`1.cs" />
+    <Compile Include="Network\PacketFlags.cs" />
+    <Compile Include="Network\PacketHeaderFlags.cs" />
+    <Compile Include="Network\PacketTemplate.cs" />
+    <Compile Include="Network\SocketConnectEventArgs.cs" />
+    <Compile Include="Network\SocketEventHandler.cs" />
+    <Compile Include="Network\StandardAccountPermissions.cs" />
+    <Compile Include="Network\TCPClient.cs" />
+    <Compile Include="Network\TCPServer`1.cs" />
+    <Compile Include="Network\__BaseNetworkTransparentProxy.cs" />
+    <Compile Include="Emission\AbstractCodeBuilder.cs" />
+    <Compile Include="Emission\AddressOfReferenceExpression.cs" />
+    <Compile Include="Emission\ApplyGenArgs.cs" />
+    <Compile Include="Emission\ArgumentReference.cs" />
+    <Compile Include="Emission\ArgumentsUtil.cs" />
+    <Compile Include="Emission\AssignArgumentStatement.cs" />
+    <Compile Include="Emission\AssignStatement.cs" />
+    <Compile Include="Emission\AttributesToAvoidReplicating.cs" />
+    <Compile Include="Emission\AttributeUtil.cs" />
+    <Compile Include="Emission\ConstructorCodeBuilder.cs" />
+    <Compile Include="Emission\ConstructorInvocationStatement.cs" />
+    <Compile Include="Emission\ConvertExpression.cs" />
+    <Compile Include="Emission\DefaultValueExpression.cs" />
+    <Compile Include="Emission\DesignatingScope.cs" />
+    <Compile Include="Emission\EmissionCacheKey.cs" />
+    <Compile Include="Emission\EmissionModule.cs" />
+    <Compile Include="Emission\EmissionProxyHook.cs" />
+    <Compile Include="Emission\EmissionProxyOptions.cs" />
+    <Compile Include="Emission\EmissionRuntime.cs" />
+    <Compile Include="Emission\EmissionUtility.cs" />
+    <Compile Include="Emission\Expression.cs" />
+    <Compile Include="Emission\ExpressionStatement.cs" />
+    <Compile Include="Emission\FieldReference.cs" />
+    <Compile Include="Emission\GenericUtil.cs" />
+    <Compile Include="Emission\IDesignatingScope.cs" />
+    <Compile Include="Emission\IEmissionContributor.cs" />
+    <Compile Include="Emission\IEmissionProxyHook.cs" />
+    <Compile Include="Emission\IILEmitter.cs" />
+    <Compile Include="Emission\LdcOpCodesDictionary.cs" />
+    <Compile Include="Emission\LdindOpCodesDictionary.cs" />
+    <Compile Include="Emission\LocalReference.cs" />
+    <Compile Include="Emission\MethodCodeBuilder.cs" />
+    <Compile Include="Emission\MethodInvocationExpression.cs" />
+    <Compile Include="Emission\NetworkInterfaceProxyGenerator.cs" />
+    <Compile Include="Emission\NetworkProxyGenerator.cs" />
+    <Compile Include="Emission\NewInstanceExpression.cs" />
+    <Compile Include="Emission\NopStatement.cs" />
+    <Compile Include="Emission\OpCodeUtil.cs" />
+    <Compile Include="Emission\OverrideMethodDelegate.cs" />
+    <Compile Include="Emission\Reference.cs" />
+    <Compile Include="Emission\ReferenceExpression.cs" />
+    <Compile Include="Emission\ReturnStatement.cs" />
+    <Compile Include="Emission\SelfReference.cs" />
+    <Compile Include="Emission\Statement.cs" />
+    <Compile Include="Emission\StindOpCodesDictionary.cs" />
+    <Compile Include="Emission\TypeReference.cs" />
+    <Compile Include="Emission\TypeTokenExpression.cs" />
+    <Compile Include="Emission\TypeUtil.cs" />
+    <Compile Include="Emission\Meta\MetaEvent.cs" />
+    <Compile Include="Emission\Meta\MetaMethod.cs" />
+    <Compile Include="Emission\Meta\MetaMethodSource.cs" />
+    <Compile Include="Emission\Meta\MetaProperty.cs" />
+    <Compile Include="Emission\Meta\MetaType.cs" />
+    <Compile Include="Emission\Meta\MetaTypeElement.cs" />
+    <Compile Include="Emission\Meta\MethodSignatureComparer.cs" />
+    <Compile Include="Emission\Meta\TypeElementCollection`1.cs" />
+    <Compile Include="Emission\Generators\EmptyMethodGenerator.cs" />
+    <Compile Include="Emission\Generators\IEmissionGenerator`1.cs" />
+    <Compile Include="Emission\Generators\MethodGenerator.cs" />
+    <Compile Include="Emission\Generators\NetworkSerializationMethodGenerator.cs" />
+    <Compile Include="Emission\Emitters\AbstractTypeEmitter.cs" />
+    <Compile Include="Emission\Emitters\ClassEmitter.cs" />
+    <Compile Include="Emission\Emitters\ConstructorEmitter.cs" />
+    <Compile Include="Emission\Emitters\EventEmitter.cs" />
+    <Compile Include="Emission\Emitters\IEmissionMemberEmitter.cs" />
+    <Compile Include="Emission\Emitters\MethodEmitter.cs" />
+    <Compile Include="Emission\Emitters\NestedClassEmitter.cs" />
+    <Compile Include="Emission\Emitters\PropertyEmitter.cs" />
+    <Compile Include="Emission\Emitters\TypeConstructorEmitter.cs" />
+    <Compile Include="Emission\Contributors\NetworkInterfaceProxyContributor.cs" />
+    <Compile Include="Emission\Collectors\EmissionMemberCollector.cs" />
+    <Compile Include="Emission\Collectors\MethodFinder.cs" />
+    <Compile Include="Emission\Collectors\NetworkInterfaceProxyMemberCollector.cs" />
+    <Compile Include="Cryptography\ARCProvider.cs" />
+    <Compile Include="Cryptography\BigInteger.cs" />
+    <Compile Include="Cryptography\CryptUtility.cs" />
+    <Compile Include="Cryptography\HashDataBroker.cs" />
+    <Compile Include="Cryptography\SecureRemotePassword.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="System.Management" Version="9.0.4" />
+  </ItemGroup>
+</Project>

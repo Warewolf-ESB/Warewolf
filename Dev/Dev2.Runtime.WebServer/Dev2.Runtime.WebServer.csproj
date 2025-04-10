@@ -261,9 +261,6 @@
         <PackageReference Include="Microsoft.Owin.SelfHost">
             <Version>4.2.2</Version>
         </PackageReference>
-		<Reference Include="Weave">
-			<HintPath>..\Binaries\Weave.dll</HintPath>
-		</Reference>
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
       <Compile Include="WebServerCoreStartup.cs" />

@@ -125,9 +125,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
   	<Reference Include="System.Activities.Presentation" />
-	<Reference Include="Weave">
-		<HintPath>..\Binaries\Weave.dll</HintPath>
-	</Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

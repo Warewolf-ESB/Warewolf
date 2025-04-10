@@ -156,6 +156,7 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dev2.Studio.Interfaces.ruleset" />
@@ -166,9 +167,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
   	<Reference Include="System.Activities.Presentation" />
-	<Reference Include="Weave">
-		<HintPath>..\Binaries\Weave.dll</HintPath>
-	</Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

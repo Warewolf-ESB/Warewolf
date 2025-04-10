@@ -463,9 +463,6 @@
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 	  <Reference Include="ReachFramework" />
 	  <Reference Include="System.Activities.Presentation" />
-	  <Reference Include="Weave">
-	  	<HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
 	</ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />

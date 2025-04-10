@@ -171,6 +171,7 @@
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="codecracker.CSharp">
@@ -230,9 +231,6 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <Reference Include="System.Activities.Presentation" />
-	<Reference Include="Weave">
-		<HintPath>..\Binaries\Weave.dll</HintPath>
-	</Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
