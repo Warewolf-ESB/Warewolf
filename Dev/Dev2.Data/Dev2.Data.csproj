@@ -355,7 +355,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup Condition="''$(TargetFrameworkIdentifier)' != '.NETFramework' and $(TargetFramework)' != '' and $(TargetFramework.EndsWith('-windows'))">
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework' and '$(TargetFramework)' != '' and $(TargetFramework.EndsWith('-windows'))">
     <Reference Include="Infragistics.Calculations">
       <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
