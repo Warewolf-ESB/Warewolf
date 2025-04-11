@@ -24,15 +24,11 @@
   </PropertyGroup>
   <ItemGroup>   
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
     </Reference>
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>   
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -617,6 +613,7 @@
       <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data" Version="9.2.0" />
+    <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

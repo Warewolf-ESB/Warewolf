@@ -66,19 +66,11 @@
     <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1">
       <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
     </Reference>
-   
     <PackageReference Include="ServiceStack.Interfaces" Version="6.3.0" />
-    
     <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
-    </Reference>
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -730,9 +722,10 @@
 		)
 	</PostBuildEvent>
   </PropertyGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-		<Reference Include="System.Runtime.DurableInstancing" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Activities.Presentation" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>

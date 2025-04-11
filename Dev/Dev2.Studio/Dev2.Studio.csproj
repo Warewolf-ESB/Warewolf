@@ -839,10 +839,6 @@
         </Reference>
         <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
-        <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-            <SpecificVersion>False</SpecificVersion>
-            <HintPath>..\Binaries\Weave.dll</HintPath>
-        </Reference>
         <Reference Include="WindowsBase" />
         <Reference Include="WindowsFormsIntegration" />
         <Reference Include="System.ComponentModel.DataAnnotations" />

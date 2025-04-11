@@ -90,7 +90,6 @@
     <Compile Include="TokenizerTest.cs" />
     <Compile Include="TypeExtentionTest.cs" />
     <Compile Include="Utils\Dev2XamlCleanerTest.cs" />
-    <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Reference Include="Infragistics.Calculations">
       <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
@@ -98,10 +97,6 @@
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>-->
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dev2RandomTests.cs" />
@@ -126,6 +121,7 @@
       <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq">
@@ -167,9 +163,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-      <Reference Include="System.Runtime.DurableInstancing" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Runtime.DurableInstancing" />
+	<Reference Include="System.Activities.Presentation" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Weave\" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -53,8 +53,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
- 
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -498,13 +496,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>

@@ -68,12 +68,8 @@
 		<Reference Include="System.Management" />
 		<Reference Include="System.Activities" />
 		<Reference Include="System.Activities.Core.Presentation" />
-		<Reference Include="System.Activities.Presentation" />
 		<Reference Include="System.ComponentModel.Composition" />
 		<Reference Include="System.DirectoryServices.AccountManagement" />
-		<Reference Include="Weave">
-			<HintPath>..\Binaries\Weave.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -465,11 +461,12 @@
 		<PackageReference Include="coverlet.collector" Version="3.2.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-		<Reference Include="ReachFramework" />
+	  <Reference Include="ReachFramework" />
+	  <Reference Include="System.Activities.Presentation" />
 	</ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 	<!--<PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
   </PropertyGroup>-->

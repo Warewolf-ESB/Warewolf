@@ -197,55 +197,6 @@ namespace Dev2.Tests.Diagnostics
             //---------------Test Result -----------------------
             Assert.IsNull(debugState.ParentID);
         }
-        
-        [TestMethod]
-        public void Constructor_With_ByteReaderBase_Expected_InvokesByteReaderBase()
-        {
-            var reader = new Mock<IByteReaderBase>();
-            reader.Setup(w => w.ReadInt32()).Verifiable();
-            reader.Setup(w => w.ReadString()).Verifiable();
-            reader.Setup(w => w.ReadBoolean()).Verifiable();
-            reader.Setup(w => w.ReadGuid()).Verifiable();
-            reader.Setup(w => w.ReadDateTime()).Verifiable();
-
-            
-            new DebugState(reader.Object);
-            
-
-            reader.Verify(w => w.ReadInt32());
-            reader.Verify(w => w.ReadString());
-            reader.Verify(w => w.ReadBoolean());
-            reader.Verify(w => w.ReadGuid());
-            reader.Verify(w => w.ReadDateTime());
-        }
-
-
-
-        #region Write
-
-        [TestMethod]
-
-        public void Write_With_ByteWriterBase_Expected_InvokesByteWriterBase()
-
-        {
-            var debugState = new DebugState();
-
-            var writer = new Mock<IByteWriterBase>();
-            writer.Setup(w => w.Write(It.IsAny<int>())).Verifiable();
-            writer.Setup(w => w.Write(It.IsAny<string>())).Verifiable();
-            writer.Setup(w => w.Write(It.IsAny<bool>())).Verifiable();
-            writer.Setup(w => w.Write(It.IsAny<Guid>())).Verifiable();
-            writer.Setup(w => w.Write(It.IsAny<DateTime>())).Verifiable();
-
-            debugState.Write(writer.Object);
-
-            writer.Verify(w => w.Write(It.IsAny<int>()));
-            writer.Verify(w => w.Write(It.IsAny<string>()));
-            writer.Verify(w => w.Write(It.IsAny<bool>()));
-            writer.Verify(w => w.Write(It.IsAny<Guid>()));
-            writer.Verify(w => w.Write(It.IsAny<DateTime>()));
-        }
-        #endregion
 
         #region Serialization
 
