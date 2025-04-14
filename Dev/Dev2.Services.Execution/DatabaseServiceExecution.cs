@@ -267,7 +267,8 @@ namespace Dev2.Services.Execution
                 var columnDataType = executeService.Columns[serviceOutputMapping.MappedFrom].DataType;
                 var isNumericType = DataTableMapper.IsNumericType(columnDataType);
                 var newVals = DataTableMapper.ToInvariantString(itemData);
-                return isNumericType ? newVals : String.Concat("'", newVals, "'");
+                //return isNumericType ? newVals : String.Concat("'", newVals, "'");
+                return newVals;
             }
 
 
