@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Windows.Interop;
-using ChargeBee.Internal;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -27,10 +25,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using DynamicData;
-using ServiceStack;
-using Warewolf.Triggers;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
