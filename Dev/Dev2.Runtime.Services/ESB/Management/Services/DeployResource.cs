@@ -123,14 +123,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            var deployResults = new List<DeployResult>();
+            //var deployResults = new List<DeployResult>();
+            var deployResults = new DeployResultDetails() { Tests = new List<DeployResult>(), Triggers = new List<DeployResult>() };
 
             values.TryGetValue("resourceIDs", out StringBuilder sbResourceIDsValues);
             if (sbResourceIDsValues == null || sbResourceIDsValues.Length == 0)
             {
                 Dev2Logger.Info("resourceIDs missing", GlobalConstants.WarewolfInfo);
 
-                deployResults.Add(new DeployResult() { HasError = true, Message = "ResourceIds missing" });
+                deployResults.HasError = true; deployResults.Message = "ResourceIds missing";
                 return serializer.SerializeToBuilder(deployResults);
             }
 
@@ -138,7 +139,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (resourceIdList == null || resourceIdList.Count == 0)
             {
                 Dev2Logger.Info("Failed to get resourceIDs", GlobalConstants.WarewolfInfo);
-                deployResults.Add(new DeployResult() { HasError = true, Message = "ResourceIds are invalid" });
+                deployResults.HasError = true; deployResults.Message = "ResourceIds are invalid";
                 return serializer.SerializeToBuilder(deployResults);
             }
 
@@ -151,25 +152,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             foreach (var resourceId in resourceIdList)
             {
                 var strResourceId = resourceId.ToString();
+                deployResults.ResourceId = strResourceId;
                 var resourceDefinition = GetResourceDefinition(resourceId, out IResource resource);
                 if (resourceDefinition == null || resourceDefinition.Length == 0)
                 {
                     var message = "ResourceDefinition missing for " + resourceId;
                     Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
-                    deployResults.Add(new DeployResult() { HasError = true, Message = message });
+                    deployResults.HasError = true; deployResults.Message = message;
                     continue;
                 }
 
                 var resourcePath = resource.GetSavePath();
                 if (resourcePath == null)
                 {
-                    deployResults.Add(new DeployResult() { HasError = true, Message = "SavePath is missing" });
+                    deployResults.HasError = true; deployResults.Message = "SavePath is missing";
                     continue;
                 }
 
                 var response = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition, resourcePath, GlobalConstants.SaveReasonForDeploy, "unknown");
                 var hasError = response.Status != ExecStatus.Success;
-                deployResults.Add(new DeployResult() { HasError = hasError , ErrorDetails = strResourceId});
+                deployResults.HasError = hasError; deployResults.Message = response.Message;
+
                 if (hasError) continue;
 
                 if (doTestDeploy)
@@ -178,10 +181,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var testResults = TestCatalog.Instance.PersistTests(resourceId, testsToDeploy);
 
                     foreach (DeployResult test in testResults)
-                    {
-                        test.ErrorDetails = strResourceId;
-                        deployResults.Add(test);
-                    }
+                        deployResults.Tests.Add(test);
                 }
 
                 if (doTriggerDeploy)
@@ -190,7 +190,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     foreach (var queue in triggersToDeploy)
                     {
                         var status = TriggersCatalog.Instance.PersistTriggerQueue(queue);
-                        deployResults.Add(new DeployResult() { HasError = !status, ErrorDetails = strResourceId, Message = queue.QueueName });
+                        deployResults.Triggers.Add(new DeployResult() { HasError = !status, Message = queue.QueueName });
                     }
                 }
 
@@ -220,5 +220,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "DeployAllResourcesService";
+
+        public class DeployResultDetails
+        {
+            public string ResourceId { get; set; }
+            public string Message { get; set; }
+            public bool HasError { get; set; }
+            public List<DeployResult> Tests { get; set; }
+            public List<DeployResult> Triggers { get; set; }
+        }
     }
 }
