@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-
 namespace Warewolf.Triggers
 {
     public delegate void TriggerChangeEvent(Guid guid);
@@ -22,6 +21,7 @@ namespace Warewolf.Triggers
         List<ITriggerQueue> FetchQueuesByResourceId(Guid resourceId, bool isQueueLoads);
         void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues);
         void SaveTriggerQueue(ITriggerQueue triggerQueue);
+        bool PersistTriggerQueue(ITriggerQueue triggerQueue);
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
         ITriggerQueue LoadQueueTriggerFromFile(string filename);
         event TriggerChangeEvent OnChanged;
