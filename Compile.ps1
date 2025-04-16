@@ -352,9 +352,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
-			if ($FrameworkTarget) {
-                $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-			}
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
