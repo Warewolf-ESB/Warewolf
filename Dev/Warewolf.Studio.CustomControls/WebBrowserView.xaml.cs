@@ -31,12 +31,12 @@ namespace Warewolf.Studio.CustomControls
 #else
     public partial class WebBrowserView : IView
 #endif
-	{
-		private readonly Grid _blackoutGrid = new Grid();
+    {
+        private readonly Grid _blackoutGrid = new Grid();
 
-		public string Path => throw new System.NotImplementedException();
+        public string Path => throw new System.NotImplementedException();
 
-		public WebBrowserView(string licenseType)
+        public WebBrowserView(string licenseType)
         {
             InitializeComponent();
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
@@ -81,6 +81,6 @@ namespace Warewolf.Studio.CustomControls
         {
             throw new System.NotImplementedException();
         }
-	}
+    }
 }
 #endif
