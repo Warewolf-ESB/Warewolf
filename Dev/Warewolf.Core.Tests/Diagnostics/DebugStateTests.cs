@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Dev2.Tests.Weave;
 using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Tests.Diagnostics
@@ -215,7 +215,7 @@ namespace Dev2.Tests.Diagnostics
             debugStateIn.Inputs.Add(itemToAdd);
 
             debugStateIn.Write(rw);
-            var debugStateOut = new DebugState(rw);
+            var debugStateOut = new DebugState();
 
             Assert.AreEqual(debugStateIn.WorkspaceID, debugStateOut.WorkspaceID);
             Assert.AreEqual(debugStateIn.ID, debugStateOut.ID);
