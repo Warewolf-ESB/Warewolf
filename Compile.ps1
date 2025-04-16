@@ -352,9 +352,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
+			if ($FrameworkTarget) {
+                $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+			}
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
+			    if ($FrameworkTarget) {
+			        $OutputFolderName += "\" + $FrameworkTarget
+			    }
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if (!($InContainer.IsPresent)) {
@@ -368,8 +374,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 exit 1
             }
 			if ($FrameworkTarget) {
-			  $OutputFolderName += "\" + $FrameworkTarget
-              $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
               if ($FrameworkTarget -eq "net6.0") {
                   $DockerfileContent = @"
 FROM mcr.microsoft.com/dotnet/sdk:6.0
