@@ -41,7 +41,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($FrameworkTarget -ne "net6.0-windows") {
+if ($FrameworkTarget -ne "net6.0-windows" -and $FrameworkTarget -ne "net48") {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
