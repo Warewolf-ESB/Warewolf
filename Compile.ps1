@@ -363,6 +363,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			    }
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
+			if ($FrameworkTarget) {
+                $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+			}
             if (!($InContainer.IsPresent)) {
 				&"$MSBuildPath" "$PSScriptRoot\$SolutionFile" /t:Restore
                 &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
