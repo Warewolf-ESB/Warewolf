@@ -19,7 +19,7 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [string]$FrameworkTarget="net6.0-windows"
+  [string]$FrameworkTarget
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
 					  "Dev\UITesting.sln",
@@ -41,7 +41,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($FrameworkTarget -ne "net6.0-windows" -and $FrameworkTarget -ne "net48") {
+if ($FrameworkTarget -and $FrameworkTarget -ne "net6.0-windows" -and $FrameworkTarget -ne "net48") {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
@@ -349,10 +349,11 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-			$OutputFolderName += "\" + $FrameworkTarget
-            $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-            if ($FrameworkTarget -eq "net6.0") {
-                $DockerfileContent = @"
+			if ($FrameworkTarget) {
+			  $OutputFolderName += "\" + $FrameworkTarget
+              $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
+              if ($FrameworkTarget -eq "net6.0") {
+                  $DockerfileContent = @"
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 
 EXPOSE 3142
@@ -377,7 +378,8 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
                     New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
                 }
                 $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
-            }
+			  }
+			}
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
