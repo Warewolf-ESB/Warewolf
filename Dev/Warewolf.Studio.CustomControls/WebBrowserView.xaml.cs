@@ -81,10 +81,6 @@ namespace Warewolf.Studio.CustomControls
         {
             throw new System.NotImplementedException();
         }
-
-#if !NETFRAMEWORK
-        public string Path => throw new System.NotImplementedException();
-#endif
 	}
 }
 #endif
