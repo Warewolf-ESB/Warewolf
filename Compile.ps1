@@ -349,9 +349,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
-            }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
@@ -359,6 +356,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			        $OutputFolderName += "\" + $FrameworkTarget
 			    }
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            }
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
 			if ($FrameworkTarget) {
                 $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
