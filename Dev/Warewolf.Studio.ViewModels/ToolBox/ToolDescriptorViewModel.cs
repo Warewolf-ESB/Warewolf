@@ -9,7 +9,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 #if NETFRAMEWORK
-using Prism.Mvvm;
+using Microsoft.Practices.Prism.Mvvm;
 #else
 using Dev2.Common;
 using Prism.Mvvm;
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
             private set
             {
-                OnPropertyChanged("Tool");
+				OnPropertyChanged("Tool");
                 _tool = value;
             }
         }
@@ -121,6 +121,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        #endregion
+#endregion
     }
 }

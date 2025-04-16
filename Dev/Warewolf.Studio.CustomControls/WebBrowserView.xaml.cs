@@ -11,25 +11,32 @@
 #if WINDOWS || NETFRAMEWORK
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 #if NETFRAMEWORK
 using Prism.Mvvm;
+using System.Web.Mvc;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Threading.Tasks;
 #endif
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.CustomControls
 {
     [SuppressMessage("ReSharper", "CC0091")]
+#if NETFRAMEWORK
+    public partial class WebBrowserView : Prism.Mvvm.IView
+#else
     public partial class WebBrowserView : IView
-    {
-        private readonly Grid _blackoutGrid = new Grid();
+#endif
+	{
+		private readonly Grid _blackoutGrid = new Grid();
 
-        public WebBrowserView(string licenseType)
+		public string Path => throw new System.NotImplementedException();
+
+		public WebBrowserView(string licenseType)
         {
             InitializeComponent();
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
@@ -70,14 +77,14 @@ namespace Warewolf.Studio.CustomControls
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
-#if !NETFRAMEWORK
-        public string Path => throw new System.NotImplementedException();
-
         public Task RenderAsync(ViewContext context)
         {
             throw new System.NotImplementedException();
         }
+
+#if !NETFRAMEWORK
+        public string Path => throw new System.NotImplementedException();
 #endif
-    }
+	}
 }
 #endif
