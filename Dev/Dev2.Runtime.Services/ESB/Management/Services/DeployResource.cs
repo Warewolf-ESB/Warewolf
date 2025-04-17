@@ -24,6 +24,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using Dropbox.Api.Files;
+using DynamicData;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Triggers;
+using static LanguageAST;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -101,6 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         IConnections _connections = new Connections();
         Data.ServiceModel.Connection _destinationConnection;
         private bool shouldLoadQueue;
+        private readonly object deployResultsListLock = new();
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -307,17 +311,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             var execResult = serializer.Deserialize<List<DeployResultDetails>>(fragmentInvokeResult as string);
             if (execResult == null || execResult.Count == 0)
             {
+                var batchList = new List<DeployResultDetails>();
                 foreach (var item in batch)
                 {
                     var deployResults = new DeployResultDetails();
                     deployResults.ResourceId = item.ResourceId;
                     deployResults.HasError = true; deployResults.Message = "Deploy Failed";
-                    deployResultsList.Add(deployResults);
+                    batchList.Add(deployResults);
                 }
+
+                lock (this.deployResultsListLock)
+                {
+                    deployResultsList.Add(batchList);
+                }
+
             }
             else
             {
-                deployResultsList.AddRange(execResult);
+                lock (this.deployResultsListLock)
+                {
+                    deployResultsList.AddRange(execResult);
+                }
             }
         }
 
