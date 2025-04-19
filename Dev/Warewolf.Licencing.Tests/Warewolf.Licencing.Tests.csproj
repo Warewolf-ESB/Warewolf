@@ -17,6 +17,7 @@
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
 		<PackageReference Include="System.Security.Permissions" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
