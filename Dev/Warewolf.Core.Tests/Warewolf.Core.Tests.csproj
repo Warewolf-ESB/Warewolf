@@ -134,11 +134,11 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
-    <!--<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />-->
+    <!--<PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />-->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserStrings.Designer.cs">

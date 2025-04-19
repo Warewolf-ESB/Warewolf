@@ -114,7 +114,7 @@
       <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
