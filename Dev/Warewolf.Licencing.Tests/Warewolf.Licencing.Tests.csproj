@@ -8,7 +8,6 @@
         <Configurations>Debug</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
         <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.11.0" />
@@ -16,8 +15,8 @@
         <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
         <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     </ItemGroup>
-    
     <ItemGroup>
       <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
     </ItemGroup>
