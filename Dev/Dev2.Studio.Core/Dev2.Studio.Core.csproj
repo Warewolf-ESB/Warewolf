@@ -63,7 +63,6 @@
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
   </ItemGroup>
@@ -470,6 +469,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Activities.Core.Presentation" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

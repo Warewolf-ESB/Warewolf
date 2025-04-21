@@ -521,9 +521,6 @@
     <PackageReference Include="UiPath.Workflow">
       <Version>6.0.3</Version>
     </PackageReference>
-    <PackageReference Include="System.Activities.Core.Presentation">
-      <Version>1.0.0-alpha003</Version>
-    </PackageReference>
     <PackageReference Include="System.Management.Automation">
       <Version>7.1.4</Version>
     </PackageReference>
