@@ -471,9 +471,6 @@
 	  <PackageReference Include="UiPath.Workflow">
 		  <Version>6.0.3</Version>
 	  </PackageReference>
-	  <PackageReference Include="System.Activities.Core.Presentation">
-		  <Version>1.0.0-alpha003</Version>
-	  </PackageReference>
 	  <PackageReference Include="Boxed.AspNetCore" Version="8.1.2" />
 	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />

@@ -67,7 +67,6 @@
 		</Reference>
 		<Reference Include="System.Management" />
 		<Reference Include="System.Activities" />
-		<Reference Include="System.Activities.Core.Presentation" />
 		<Reference Include="System.ComponentModel.Composition" />
 		<Reference Include="System.DirectoryServices.AccountManagement" />
 	</ItemGroup>

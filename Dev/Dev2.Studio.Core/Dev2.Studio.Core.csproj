@@ -63,7 +63,6 @@
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
   </ItemGroup>
