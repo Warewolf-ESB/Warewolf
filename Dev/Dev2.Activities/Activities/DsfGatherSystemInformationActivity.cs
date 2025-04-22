@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -365,9 +367,9 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
 #if WINDOWS || NETFRAMEWORK
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)

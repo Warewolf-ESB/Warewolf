@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Interfaces;
@@ -31,11 +32,8 @@ namespace Dev2.Studio.Core.Models.QuickVariableInput
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite)
         {
-#if WINDOWS || NETFRAMEWORK
             _activity.AddListToCollection(listToAdd, overwrite, _modelItem);
-#else
-            _activity.AddListToCollection(listToAdd, overwrite);
-#endif
         }
     }
 }
+#endif

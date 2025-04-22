@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -477,9 +479,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 		}
 #endif
 
-		#endregion Private Methods
+        #endregion Private Methods
 
-		#region Get Debug Inputs/Outputs
+        #region Get Debug Inputs/Outputs
 
 
 

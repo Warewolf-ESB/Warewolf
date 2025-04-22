@@ -9,7 +9,9 @@
 */
 
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Services;
+#endif
 using System.Text;
 
 namespace Dev2.Utilities
@@ -17,11 +19,15 @@ namespace Dev2.Utilities
     // BUG 9304 - 2013.05.08 - TWR - Added this
     public interface IWorkflowHelper
     {
+#if WINDOWS || NETFRAMEWORK
         StringBuilder SerializeWorkflow(ModelService modelService);
+#endif
 
         ActivityBuilder CreateWorkflow(string displayName);
 
+#if WINDOWS || NETFRAMEWORK
         ActivityBuilder EnsureImplementation(ModelService modelService);
+#endif
 
         StringBuilder SanitizeXaml(StringBuilder workflowXaml);
     }

@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -44,7 +46,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
     public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfFindRecordsMultipleCriteriaActivity>
     {
-        #region Properties
+		#region Properties
 
         /// <summary>
         /// Property for holding a string the user enters into the "In Fields" box
@@ -77,9 +79,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool RequireAllTrue { get; set; }
 
         public bool RequireAllFieldsToMatch { get; set; }
-        #endregion Properties
+		#endregion Properties
 
-        #region Ctor
+		#region Ctor
 
         public DsfFindRecordsMultipleCriteriaActivity()
             : base("Find Record Index")
@@ -93,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RequireAllFieldsToMatch = false;
         }
 
-        #endregion Ctor
+		#endregion Ctor
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -242,16 +244,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
         }
 
-        #region Overrides of DsfNativeActivity<string>
+		#region Overrides of DsfNativeActivity<string>
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return _debugOutputs;
         }
 
-        #endregion
+		#endregion
 
-        #region Private Methods
+		#region Private Methods
 
         void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection, IExecutionEnvironment environment, int update)
         {
@@ -437,9 +439,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        #endregion Get Inputs/Outputs
+		#endregion Get Inputs/Outputs
 
-        #region Get ForEach Inputs/Ouputs
+		#region Get ForEach Inputs/Ouputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -479,9 +481,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion
+		#endregion
 
-        #region GetForEachInputs/Outputs
+		#region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
@@ -495,9 +497,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(items);
         }
 
-        #endregion
+		#endregion
 
-        #region Implementation of ICollectionActivity
+		#region Implementation of ICollectionActivity
 
         public int GetCollectionCount()
         {
@@ -620,7 +622,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Local Functions
             //-------------------------------------------------------------------------------------
-            #region local-functions
+			#region local-functions
             void ApplyResultsToEnvironment(IList<int> results)
             {
                 var distinctResults = results.Distinct();
@@ -689,7 +691,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             
-            #endregion
+			#endregion
             
             searchContext.Validate(errorResult);
 

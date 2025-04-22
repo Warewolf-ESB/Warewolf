@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if (WINDOWS || NETFRAMEWORK)
 using System.Activities.Presentation.View;
+#endif
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.IO;
@@ -62,10 +64,14 @@ namespace Dev2.DynamicServices.Objects
             using (xamlStream = xamlDefinition.EncodeForXmlDocument())
             {
                 var settings = new XamlXmlReaderSettings
+#if (WINDOWS || NETFRAMEWORK)
 				{
-                    LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
+					LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
 				};
-                using (var reader = new XamlXmlReader(xamlStream, settings))
+#else
+				();
+#endif
+				using (var reader = new XamlXmlReader(xamlStream, settings))
                 {
                     workflowActivity = ActivityXamlServices.Load(reader);
                 }

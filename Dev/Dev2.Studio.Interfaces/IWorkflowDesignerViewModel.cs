@@ -10,8 +10,10 @@
 */
 
 using System;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -23,14 +25,18 @@ namespace Dev2.Studio.Interfaces
     {
         object SelectedModelItem { get; }
         string WorkflowName { get; }
-        WorkflowDesigner Designer { get; }
 #if WINDOWS || NETFRAMEWORK
+        WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
 #endif
         StringBuilder DesignerText { get; }
+#if WINDOWS || NETFRAMEWORK
         Action<ModelItem> ItemSelectedAction { get; set; }
+#endif
         bool IsTestView { get; set; }
+#if WINDOWS || NETFRAMEWORK
         ModelItem SelectedItem { get; set; }
+#endif
         bool WorkspaceSave { get; }
         Action WorkflowChanged { get; set; }
         bool CanViewWorkflowLink { get; set; }
@@ -39,7 +45,9 @@ namespace Dev2.Studio.Interfaces
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
+#if WINDOWS || NETFRAMEWORK
         ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
+#endif
 
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();

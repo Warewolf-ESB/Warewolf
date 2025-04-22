@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -289,7 +291,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return string.Empty;
         }
-# else
+#else
         void InsertToCollection(IEnumerable<string> listToAdd)
         {
             var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();

@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Activities.Statements;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -42,7 +44,8 @@ namespace Dev2.Activities
         }
 
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object flowChart)
-        {
+		{
+#if WINDOWS || NETFRAMEWORK
             var modelItem = flowChart as ModelItem;
             var currentValue = modelItem?.GetCurrentValue();
             if (currentValue is null)
@@ -61,6 +64,9 @@ namespace Dev2.Activities
             }
             var flowdec = currentValue as FlowDecision;
             return ParseDecision(flowdec, seenActivities).FirstOrDefault();
+#else
+            return default;
+#endif
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
