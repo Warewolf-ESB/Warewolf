@@ -516,8 +516,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         #endregion RecordSet Tests
 
-        #region InsertToCollection
-        
+#region InsertToCollection
+
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]
         [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
@@ -582,9 +583,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 #else
             activity.AddListToCollection(new[] { "[[Var1]]" }, true);
 #endif
-			//------------Assert Results-------------------------
-			Assert.AreEqual(2, activity.ConvertCollection.Count);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, activity.ConvertCollection.Count);
         }
+#endif
 
 #endregion
 

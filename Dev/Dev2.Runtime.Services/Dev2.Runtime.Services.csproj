@@ -399,6 +399,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GACManagerApi\GACManagerApi.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
       <Name>Warewolf.Auditing</Name>
@@ -497,9 +498,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-    <Reference Include="GACManagerApi">
-      <HintPath>..\Binaries\GACManagerApi.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
     <PackageReference Include="CoreWCF.Http" Version="1.2.1" />
     <PackageReference Include="CoreWCF.NetTcp" Version="1.2.1" />
