@@ -191,7 +191,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MySQL)
             {
-                Container.IP = "20.164.55.70";
+                Container.IP = "20.164.87.49";
                 Container.Port = "3306";
             }
             else if (_containerType == ContainerType.AnonymousRedis)

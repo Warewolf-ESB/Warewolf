@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Warewolf.OS;
 using Warewolf.Triggers;
@@ -163,6 +164,12 @@ namespace Dev2.Server.Tests
         {
             return null;
         }
+
+        public List<ITriggerQueue> FetchQueuesByResourceId(Guid resourceId, bool isQueueLoads)
+        {
+            return null;
+        }
+
 
         public void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues)
         {
