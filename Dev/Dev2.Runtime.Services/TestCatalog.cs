@@ -20,6 +20,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
@@ -68,6 +69,22 @@ namespace Dev2.Runtime
                 var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
                 Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
             }
+        }
+
+        public List<Dev2.Common.Interfaces.Deploy.IDeployResult> PersistTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos)
+        {
+            var result = new List<IDeployResult>();
+            
+            if (serviceTestModelTos != null && serviceTestModelTos.Count > 0)
+            {
+                foreach (var serviceTestModelTo in serviceTestModelTos)
+                {
+                    result.Add(PersistTestToDisk(resourceID, serviceTestModelTo));
+                }
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
+                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
+            }
+            return result;
         }
 
         public void SaveTest(Guid resourceID, IServiceTestModelTO test)
@@ -382,6 +399,31 @@ namespace Dev2.Runtime
             _serializer.Serialize(sw, serviceTestModelTo);
         }
 
+        DeployResult PersistTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        {
+            var result = new DeployResult() { HasError = false, Message = serviceTestModelTo.TestName };
+            try
+            {
+                var dirPath = GetTestPathForResourceId(resourceId);
+                _directoryWrapper.CreateIfNotExists(dirPath);
+                if (!string.Equals(serviceTestModelTo.OldTestName, serviceTestModelTo.TestName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var oldFilePath = Path.Combine(dirPath, $"{serviceTestModelTo.OldTestName}.test");
+                    _fileWrapper.Delete(oldFilePath);
+                }
+                var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
+                serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
+                var sw = new StreamWriter(filePath, false);
+                _serializer.Serialize(sw, serviceTestModelTo);
+            }
+            catch (Exception ex)
+            {
+                result.HasError = true;
+                Dev2Logger.Warn($" Test Deployment failure:  " + resourceId + ex.Message, GlobalConstants.WarewolfWarn);
+            }
+            return result;
+        }
+
         public void Load()
         {
             Tests = new ConcurrentDictionary<Guid, List<IServiceTestModelTO>>();
@@ -399,7 +441,7 @@ namespace Dev2.Runtime
             }
         }
 
-        List<IServiceTestModelTO> GetTestList(string resourceTestDirectory) 
+        List<IServiceTestModelTO> GetTestList(string resourceTestDirectory)
         {
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
@@ -410,7 +452,8 @@ namespace Dev2.Runtime
                     var reader = new StreamReader(file);
                     var testModel = _serializer.Deserialize<IServiceTestModelTO>(reader);
                     serviceTestModelTos.Add(testModel);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Dev2Logger.Warn($"failed loading test: {file} {e.GetType().Name}: " + e.Message, GlobalConstants.WarewolfWarn);
                 }
@@ -471,7 +514,7 @@ namespace Dev2.Runtime
                 Tests.TryRemove(resourceId, out List<IServiceTestModelTO> removedTests);
             }
         }
-        
+
         public void DeleteAllTests(List<string> testsToList)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
@@ -507,6 +550,6 @@ namespace Dev2.Runtime
                 }
             }
             return null;
-        }           
+        }
     }
 }

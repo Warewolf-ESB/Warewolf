@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Deploy;
 
 namespace Dev2.Common.Interfaces
 {
     public interface ITestCatalog
     {
         void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos);
+        List<IDeployResult> PersistTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos);
         void Load();
         List<IServiceTestModelTO> Fetch(Guid resourceId);
         List<IServiceTestModelTO> FetchAllTests();

@@ -185,5 +185,10 @@ namespace Dev2.Server.Tests
         {
             throw new NotImplementedException();
         }
+
+        public bool PersistTriggerQueue(ITriggerQueue triggerQueue)
+        {
+            return false;
+        }
     }
 }

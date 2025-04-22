@@ -254,7 +254,7 @@ namespace Dev2.Runtime.Hosting
             return Queues.Where(queue => queue.ResourceId == resourceId).ToList();
         }
 
-        public List<ITriggerQueue> FetchQueuesByResourceId(Guid resourceId,bool isQueueLoads)
+        public List<ITriggerQueue> FetchQueuesByResourceId(Guid resourceId, bool isQueueLoads)
         {
             if (!isQueueLoads) { Load(); }
             return Queues.Where(queue => queue.ResourceId == resourceId).ToList();
@@ -293,6 +293,29 @@ namespace Dev2.Runtime.Hosting
             _fileWrapper.WriteAllText(queueFilePath, saveData);
         }
 
+        public bool PersistTriggerQueue(ITriggerQueue triggerQueue)
+        {
+            var result = true;
+            if (triggerQueue.TriggerId == Guid.Empty)
+            {
+                triggerQueue.TriggerId = Guid.NewGuid();
+            }
+
+            try
+            {
+                var serializedData = _serializer.Serialize(triggerQueue);
+                var saveData = DpapiWrapper.Encrypt(serializedData);
+
+                var queueFilePath = GetQueueFilePath(triggerQueue);
+                _fileWrapper.WriteAllText(queueFilePath, saveData);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
         private string GetQueueFilePath(ITriggerQueue triggerQueue)
         {
             var queueFilePath = Path.Combine(_queueTriggersPath, $"{triggerQueue.TriggerId}.bite");
@@ -323,7 +346,7 @@ namespace Dev2.Runtime.Hosting
                     //File already closed
                 }
 #pragma warning restore CC0004
-                
+
                 retries--;
 
                 if (!fileClosed)
