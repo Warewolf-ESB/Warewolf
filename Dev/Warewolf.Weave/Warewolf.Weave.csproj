@@ -328,7 +328,7 @@
     <Compile Include="Cryptography\HashDataBroker.cs" />
     <Compile Include="Cryptography\SecureRemotePassword.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+  <ItemGroup>
     <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
 </Project>
