@@ -328,7 +328,7 @@
     <Compile Include="Cryptography\HashDataBroker.cs" />
     <Compile Include="Cryptography\SecureRemotePassword.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
-    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
 </Project>
