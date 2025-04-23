@@ -2,6 +2,10 @@
   <!--Project was exported from assembly: C:\Builds\Warewolf\Dev\Binaries\Weave.dll-->
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
+	<OutputType>Library</OutputType>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProjectGuid>{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}</ProjectGuid>
+	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	<EnableDefaultItems>false</EnableDefaultItems>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -324,8 +328,5 @@
     <Compile Include="Cryptography\CryptUtility.cs" />
     <Compile Include="Cryptography\HashDataBroker.cs" />
     <Compile Include="Cryptography\SecureRemotePassword.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
 </Project>

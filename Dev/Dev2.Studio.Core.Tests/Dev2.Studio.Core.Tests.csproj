@@ -467,6 +467,14 @@
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+		<Reference Include="Weave">
+			<HintPath>..\Binaries\Weave.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
+		<ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
+	</ItemGroup>
 	<!--<PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
   </PropertyGroup>-->

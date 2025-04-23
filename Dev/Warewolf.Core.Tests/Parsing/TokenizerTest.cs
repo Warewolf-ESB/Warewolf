@@ -593,7 +593,11 @@ namespace Unlimited.UnitTest.Framework.Parsing
                 _operation = operation;
             }
 
-            protected internal override void OnConfigureTokenizer(Tokenizer<Token, TokenKind> tokenizer)
+            protected
+#if !WINDOWS
+                internal
+#endif
+                override void OnConfigureTokenizer(Tokenizer<Token, TokenKind> tokenizer)
             {
                 if (_operation == 0)
                 {
@@ -606,12 +610,20 @@ namespace Unlimited.UnitTest.Framework.Parsing
                 }
             }
 
-            protected internal override Node BuildNode(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
+            protected
+#if !WINDOWS
+                internal
+#endif
+                override Node BuildNode(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
             {
                 throw new NotImplementedException();
             }
 
-            protected internal override void OnRegisterTriggers(ASTGrammerBehaviourRegistry triggerRegistry)
+            protected
+#if !WINDOWS
+                internal
+#endif
+                override void OnRegisterTriggers(ASTGrammerBehaviourRegistry triggerRegistry)
             {
                 if (_operation == 1)
                 {

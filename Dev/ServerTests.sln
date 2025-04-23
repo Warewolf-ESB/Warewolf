@@ -239,7 +239,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licensing", "Warew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licencing.Tests", "Warewolf.Licencing.Tests\Warewolf.Licencing.Tests.csproj", "{D3746053-97FA-4653-94CC-8B88BC49B761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Weave", "Warewolf.Weave\Warewolf.Weave.csproj", "{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Weave", "Warewolf.Weave\Warewolf.Weave.csproj", "{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
