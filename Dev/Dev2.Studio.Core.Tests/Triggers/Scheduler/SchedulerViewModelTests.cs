@@ -46,7 +46,7 @@ using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests.Triggers.Scheduler
 {
-    [Dev2.Net6.Compatibility.STATestClass]
+    [STATestClass]
     [TestCategory("Studio Triggers Scheduler Core")]
     public class SchedulerViewModelTests
     {
@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Create().Object);
             shell.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
-			CustomContainer.Register(shell.Object);
+            CustomContainer.Register(shell.Object);
             CustomContainer.Register(new Mock<Prism.Events.IEventAggregator>().Create().Object);
         }
 
