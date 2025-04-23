@@ -40,7 +40,6 @@
     <Reference Include="System.Console" />
     <Reference Include="System.Data.Common" />
     <Reference Include="System.Linq" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Net.NameResolution" />
     <Reference Include="System.Net.NetworkInformation" />
     <Reference Include="System.Net.Primitives" />
@@ -328,5 +327,8 @@
     <Compile Include="Cryptography\CryptUtility.cs" />
     <Compile Include="Cryptography\HashDataBroker.cs" />
     <Compile Include="Cryptography\SecureRemotePassword.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
 </Project>
