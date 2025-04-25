@@ -42,12 +42,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Delete Trigger Queue Service", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
 
-                values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition);
+                if (!values.TryGetValue("TriggerQueue", out StringBuilder resourceDefinition))
+                {
+                    throw new InvalidDataContractException("TriggerQueue is missing");
+                }
 
                 var triggerQueue = serializer.Deserialize<ITriggerQueue>(resourceDefinition);
+                if (triggerQueue == null)
+                {
+                    throw new InvalidDataContractException("Failed to deserialize TriggerQueue");
+                }
 
                 TriggersCatalog.Instance.DeleteTriggerQueue(triggerQueue);
-
                 return serializer.SerializeToBuilder(msg);
             }
             catch (Exception err)
