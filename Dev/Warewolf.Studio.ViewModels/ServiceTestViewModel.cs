@@ -881,7 +881,6 @@ namespace Warewolf.Studio.ViewModels
         {
             var sequence = GetCurrentActivity<DsfSequenceActivity>(modelItem);
             var testStep = BuildParentsFromModelItem(modelItem);
-            testStep.Type = StepType.Mock; //PBI: specs are failing of assert
             if (testStep != null)
             {
                 AddSequence(sequence, testStep, SelectedServiceTest.TestSteps);
