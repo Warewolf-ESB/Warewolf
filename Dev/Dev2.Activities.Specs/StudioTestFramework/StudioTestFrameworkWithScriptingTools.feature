@@ -50,7 +50,7 @@ Scenario: Test WF with Cmd Script
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testCmdScript" as TestStep
+	And I Add "testCmdScript" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value                    |
 	  	 | [[result]]    | =         | Kingdom of KwaZulu Natal |  
@@ -69,7 +69,7 @@ Scenario: Test WF with JavaScript
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testJavaScript" as TestStep
+	And I Add "testJavaScript" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 7     |  
@@ -88,7 +88,7 @@ Scenario: Test WF with Python
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testPython" as TestStep
+	And I Add "testPython" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value          |
 	  	 | [[result]]    | =         | not one or two |
@@ -107,7 +107,7 @@ Scenario: Test WF with Ruby
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testRuby" as TestStep
+	And I Add "testRuby" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 5     |
