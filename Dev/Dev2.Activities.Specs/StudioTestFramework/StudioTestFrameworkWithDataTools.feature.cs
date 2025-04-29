@@ -1208,7 +1208,7 @@ this.FeatureBackground();
   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 272
-  testRunner.And("I Add \"TestReplace\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"TestReplace\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table980 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -1379,7 +1379,7 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-            "ex and Replace) mock")]
+            "ex and Replace) Mock")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithDataTools")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithDataTools")]
         public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceMock()
@@ -1387,7 +1387,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) mock", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ex and Replace) Mock", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 315
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1534,15 +1534,15 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-            "ex and Replace) Assign")]
+            "ex and Replace) Assert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithDataTools")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithDataTools")]
-        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssign()
+        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssert()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) Assign", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ex and Replace) Assert", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 347
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
