@@ -371,6 +371,11 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 Then the test builder is open with "sequenceAssertTestWF"
 	 And I click New Test
 	 And I Add "Sequence1" as TestStep with All Asserts
+	 And I add StepOutputs as 
+	 | Variable Name     | Condition | Value           |
+	 | [[rec(1).a]]      | =         | tREPLACEDst     |
+	 | [[rec(2).a]]      | =         | warREPLACEDwolf |		
+	 | [[replaceResult]] | =         | 4               |
 	 When I save
 	 And I run the test
 	 Then test result is Passed
