@@ -140,34 +140,34 @@ Scenario: Test WF with CaseConvert
 		 Then workflow "CaseConvertTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Data split
-		Given I have a workflow "DataSplitTestWF"
-		And "DataSplitTestWF" contains an Assign "TestAssign" as
-		 | variable        | value                                                                              |
-		 | [[FileContent]] | Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.com |
-		And "DataSplitTestWF" contains Data Split "TestDataSplit" as	
-		| String          | Variable       | Type  | At | Include | Escape |
-		| [[FileContent]] | [[rec().Name]] | Chars | ,  |         |        |
-		 And I save workflow "DataSplitTestWF"
-		 Then the test builder is open with "DataSplitTestWF"
-		 And I click New Test
-		 And a new test is added	
-		 And test name starts with "Test 1"
-		 And I Add "TestDataSplit" as TestStep
-		And I add StepOutputs as 
-	  	 | Variable Name   | Condition | Value             |
-	  	 | [[rec(1).Name]] | =         | Brad              |
-	  	 | [[rec(2).Name]] | =         | 5546854           |
-	  	 | [[rec(3).Name]] | =         | brad@mail.com Bob |
-	  	 | [[rec(4).Name]] | =         | 65548912          |
-	  	 | [[rec(5).Name]] | =         | bob@mail.com Bill |
-	  	 | [[rec(6).Name]] | =         | 3215464987        |
-	  	 | [[rec(7).Name]] | =         | bill@mail.com     |
-		 When  I save
-		 And I run the test
-		 Then test result is Passed
-		 When I delete "Test 1"
-		 Then The "DeleteConfirmation" popup is shown I click Ok
-		 Then workflow "DataSplitTestWF" is deleted as cleanup
+	Given I have a workflow "DataSplitTestWF"
+	And "DataSplitTestWF" contains an Assign "TestAssign" as
+	| variable        | value                                                                              |
+	| [[FileContent]] | Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.com |
+	And "DataSplitTestWF" contains Data Split "TestDataSplit" as	
+	| String          | Variable       | Type  | At | Include | Escape |
+	| [[FileContent]] | [[rec().Name]] | Chars | ,  |         |        |
+	And I save workflow "DataSplitTestWF"
+	Then the test builder is open with "DataSplitTestWF"
+	And I click New Test
+	And a new test is added	
+	And test name starts with "Test 1"
+	And I Add "TestDataSplit" as TestStep with All Mocks
+	And I add StepOutputs as 
+	| Variable Name   | Condition | Value             |
+	| [[rec(1).Name]] | =         | Brad              |
+	| [[rec(2).Name]] | =         | 5546854           |
+	| [[rec(3).Name]] | =         | brad@mail.com Bob |
+	| [[rec(4).Name]] | =         | 65548912          |
+	| [[rec(5).Name]] | =         | bob@mail.com Bill |
+	| [[rec(6).Name]] | =         | 3215464987        |
+	| [[rec(7).Name]] | =         | bill@mail.com     |
+	When  I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "DataSplitTestWF" is deleted as cleanup
 		
 Scenario: Test WF with Find Index
 		Given I have a workflow "FindIndexTestWF"
