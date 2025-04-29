@@ -611,7 +611,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 143
-  testRunner.Given("I have a workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table966 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -621,7 +621,7 @@ this.FeatureBackground();
                             "Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.co" +
                                 "m"});
 #line 144
-  testRunner.And("\"DataSplitTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table966, "And ");
+ testRunner.And("\"DataSplitTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table966, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table967 = new TechTalk.SpecFlow.Table(new string[] {
                             "String",
@@ -638,25 +638,25 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 147
-  testRunner.And("\"DataSplitTestWF\" contains Data Split \"TestDataSplit\" as", ((string)(null)), table967, "And ");
+ testRunner.And("\"DataSplitTestWF\" contains Data Split \"TestDataSplit\" as", ((string)(null)), table967, "And ");
 #line hidden
 #line 150
-   testRunner.And("I save workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I save workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 151
-   testRunner.Then("the test builder is open with \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the test builder is open with \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 152
-   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 153
-   testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 154
-   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 155
-   testRunner.And("I Add \"TestDataSplit\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"TestDataSplit\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table968 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -691,25 +691,25 @@ this.FeatureBackground();
                             "=",
                             "bill@mail.com"});
 #line 156
-  testRunner.And("I add StepOutputs as", ((string)(null)), table968, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table968, "And ");
 #line hidden
 #line 165
-   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 166
-   testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 167
-   testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 168
-   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 169
-   testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 170
-   testRunner.Then("workflow \"DataSplitTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("workflow \"DataSplitTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

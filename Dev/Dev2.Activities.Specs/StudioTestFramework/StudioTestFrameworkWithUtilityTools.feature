@@ -162,7 +162,7 @@ Scenario: Test WF with RabbitMq Consume object result
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Mocks
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Asserts
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[@result]]   | =         | Failure: Queue Name and Message are required. |
@@ -186,7 +186,7 @@ Scenario: Test WF with RabbitMq Consume object Array result
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Mocks
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Asserts
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[@result()]]   | =         | Failure: Queue Name and Message are required. |
