@@ -140,7 +140,7 @@ namespace Dev2.Activities
         {
             if (dataObject.IsServiceTestExecution && serviceTestTestSteps != null)
             {
-                var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.ActivityID == Guid.Parse(childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
+                var stepToBeAsserted = serviceTestTestSteps.FirstOrDefault(step => step.Type == StepType.Assert && step.ActivityID == Guid.Parse(childUniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name);
                 if (stepToBeAsserted != null)
                 {
                     GetStepOutputResults(dataObject, stepToBeAsserted);
