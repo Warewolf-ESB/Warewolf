@@ -758,7 +758,7 @@ this.FeatureBackground();
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 165
- testRunner.And("I Add \"DsfConsumeRabbitMQActivity\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"DsfConsumeRabbitMQActivity\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1219 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -863,7 +863,7 @@ this.FeatureBackground();
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 189
- testRunner.And("I Add \"DsfConsumeRabbitMQActivity\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"DsfConsumeRabbitMQActivity\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1220 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",

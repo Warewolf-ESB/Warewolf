@@ -2040,7 +2040,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
             foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
             {
-                serviceTestStep.Type = StepType.Assert;
                 var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
                 foreach (var s in testSteps)
                 {
