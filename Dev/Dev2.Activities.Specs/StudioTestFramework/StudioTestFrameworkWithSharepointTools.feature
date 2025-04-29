@@ -58,7 +58,7 @@ Scenario: Test WF with Sharepoint Copy File
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePCopyFile" as TestStep
+	And I Add "TestSharePCopyFile" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[copyResult]] | =         | Success |
@@ -92,7 +92,7 @@ Scenario: Test WF with Sharepoint Create List Items
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePCreateItemList" as TestStep
+	And I Add "TestSharePCreateItemList" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
@@ -113,7 +113,7 @@ Scenario: Test WF with Sharepoint Delete File List
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePDeleteFile" as TestStep
+	And I Add "TestSharePDeleteFile" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[delResult]] | =         | 0     |
@@ -134,7 +134,7 @@ Scenario: Test WF with Sharepoint Delete File
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePdeleteListItem" as TestStep
+	And I Add "TestSharePdeleteListItem" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[Result]]    | =         |       |
@@ -162,7 +162,7 @@ Scenario: Test WF with Sharepoint Download File
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePDownloadFile" as TestStep
+	And I Add "TestSharePDownloadFile" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[Downloaded]] | =         | Success |
@@ -187,7 +187,7 @@ Scenario: Test WF with Sharepoint Upload File
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePUploadFile" as TestStep
+	And I Add "TestSharePUploadFile" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
@@ -211,7 +211,7 @@ Scenario: Test WF with Sharepoint Move File
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePMoveFile" as TestStep
+	And I Add "TestSharePMoveFile" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name  | Condition | Value   |
 	  	 | [[MoveResult]] | =         | Success |
@@ -232,7 +232,7 @@ Scenario: Test WF with Sharepoint Read Folder
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePReadFolder" as TestStep
+	And I Add "TestSharePReadFolder" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name       | Condition | Value                 |
 	  	 | [[Folders(1).Name]] | =         | /Shared Documents/bob |
@@ -253,7 +253,7 @@ Scenario: Test WF with Sharepoint Read List Item
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePReadListItem" as TestStep
+	And I Add "TestSharePReadListItem" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name           | Condition | Value  |
 	  	 | [[AccTesting(1).Title]] | =         | Mrs    |
@@ -286,7 +286,7 @@ Scenario: Test WF with Sharepoint Update List Item
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestSharePUpdateListItem" as TestStep
+	And I Add "TestSharePUpdateListItem" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[Result]]    | =         | Success |
