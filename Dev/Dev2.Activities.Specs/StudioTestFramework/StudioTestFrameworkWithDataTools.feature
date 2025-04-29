@@ -53,7 +53,7 @@ Scenario: Test WF with Assign
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestAssign" as TestStep
+	And I Add "TestAssign" as TestStep with All Mocks
 	And I add StepOutputs as 
 	| Variable Name | Condition | Value | 
 	| [[rec(1).a]]  | =         | yes   | 
@@ -76,7 +76,7 @@ Scenario: Test WF with Assign Object
 		 And I click New Test
 		 And a new test is added	
 	   	 And test name starts with "Test 1"
-		 And I Add "TestAssignObject" as TestStep
+		 And I Add "TestAssignObject" as TestStep with All Mocks
 		And I add StepOutputs as 
 		 | Variable Name       | Condition | Value | 
 		 | [[@Person.Name]]    | =         | yes   | 
@@ -102,7 +102,7 @@ Scenario: Test WF with BaseConvert
 		 And I click New Test
 		 And a new test is added	
 		 And test name starts with "Test 1"
-		 And I Add "TestBaseConvert" as TestStep
+		 And I Add "TestBaseConvert" as TestStep with All Mocks
 		And I add StepOutputs as 
 		  | Variable Name | Condition | Value         |
 		  | [[a]]         | =         | I was mangled |
@@ -128,7 +128,7 @@ Scenario: Test WF with CaseConvert
 		 And I click New Test
 		 And a new test is added	
 		 And test name starts with "Test 1"
-		 And I Add "TestCaseConvert" as TestStep
+		 And I Add "TestCaseConvert" as TestStep with All Mocks
 	 And I add StepOutputs as 
 		 | Variable Name | Condition | Value |
 		 | [[rec(2).a]]  | =         | TEST  |
@@ -140,34 +140,34 @@ Scenario: Test WF with CaseConvert
 		 Then workflow "CaseConvertTestWF" is deleted as cleanup
 	
 Scenario: Test WF with Data split
-		Given I have a workflow "DataSplitTestWF"
-		And "DataSplitTestWF" contains an Assign "TestAssign" as
-		 | variable        | value                                                                              |
-		 | [[FileContent]] | Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.com |
-		And "DataSplitTestWF" contains Data Split "TestDataSplit" as	
-		| String          | Variable       | Type  | At | Include | Escape |
-		| [[FileContent]] | [[rec().Name]] | Chars | ,  |         |        |
-		 And I save workflow "DataSplitTestWF"
-		 Then the test builder is open with "DataSplitTestWF"
-		 And I click New Test
-		 And a new test is added	
-		 And test name starts with "Test 1"
-		 And I Add "TestDataSplit" as TestStep
-		And I add StepOutputs as 
-	  	 | Variable Name   | Condition | Value             |
-	  	 | [[rec(1).Name]] | =         | Brad              |
-	  	 | [[rec(2).Name]] | =         | 5546854           |
-	  	 | [[rec(3).Name]] | =         | brad@mail.com Bob |
-	  	 | [[rec(4).Name]] | =         | 65548912          |
-	  	 | [[rec(5).Name]] | =         | bob@mail.com Bill |
-	  	 | [[rec(6).Name]] | =         | 3215464987        |
-	  	 | [[rec(7).Name]] | =         | bill@mail.com     |
-		 When  I save
-		 And I run the test
-		 Then test result is Passed
-		 When I delete "Test 1"
-		 Then The "DeleteConfirmation" popup is shown I click Ok
-		 Then workflow "DataSplitTestWF" is deleted as cleanup
+	Given I have a workflow "DataSplitTestWF"
+	And "DataSplitTestWF" contains an Assign "TestAssign" as
+	| variable        | value                                                                              |
+	| [[FileContent]] | Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.com |
+	And "DataSplitTestWF" contains Data Split "TestDataSplit" as	
+	| String          | Variable       | Type  | At | Include | Escape |
+	| [[FileContent]] | [[rec().Name]] | Chars | ,  |         |        |
+	And I save workflow "DataSplitTestWF"
+	Then the test builder is open with "DataSplitTestWF"
+	And I click New Test
+	And a new test is added	
+	And test name starts with "Test 1"
+	And I Add "TestDataSplit" as TestStep with All Mocks
+	And I add StepOutputs as 
+	| Variable Name   | Condition | Value             |
+	| [[rec(1).Name]] | =         | Brad              |
+	| [[rec(2).Name]] | =         | 5546854           |
+	| [[rec(3).Name]] | =         | brad@mail.com Bob |
+	| [[rec(4).Name]] | =         | 65548912          |
+	| [[rec(5).Name]] | =         | bob@mail.com Bill |
+	| [[rec(6).Name]] | =         | 3215464987        |
+	| [[rec(7).Name]] | =         | bill@mail.com     |
+	When  I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "DataSplitTestWF" is deleted as cleanup
 		
 Scenario: Test WF with Find Index
 		Given I have a workflow "FindIndexTestWF"
@@ -185,7 +185,7 @@ Scenario: Test WF with Find Index
 		 And I click New Test
 		 And a new test is added	
 		 And test name starts with "Test 1"
-		 And I Add "TestIndex" as TestStep
+		 And I Add "TestIndex" as TestStep with All Mocks
 		And I add StepOutputs as 
 		 | Variable Name   | Condition | Value |
 		 | [[indexResult]] | =         | 4     |
@@ -213,7 +213,7 @@ Scenario: Test WF with Data Merge
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "TestDataMerge" as TestStep
+		And I Add "TestDataMerge" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value        |
 		| [[result]]    | =         | TestWarewolf |
@@ -240,7 +240,7 @@ Scenario: Test WF with Replace
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "TestReplace" as TestStep
+		And I Add "TestReplace" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name     | Condition | Value           |
 		| [[rec(1).a]]      | =         | tREPLACEDst     |
@@ -269,7 +269,7 @@ Scenario: Test WF with Replace with square brackets
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "TestReplace" as TestStep
+		And I Add "TestReplace" as TestStep with All Asserts
 		And I add StepOutputs as 
 		| Variable Name     | Condition | Value           |
 		| [[rec(1).a]]      | =         | t[[st     |
@@ -292,7 +292,7 @@ Scenario: Test Wf With AssignObject And ObjectOutput
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank	
-	And I Add "Assign Object (3)" as TestStep		
+	And I Add "Assign Object (3)" as TestStep with All Mocks
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
 	| Variable Name | Condition | Value |
@@ -312,7 +312,7 @@ Scenario: Test Wf With AssignObject And ObjectOutput
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
-Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) mock 
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Mock 
 	Given I have a workflow "sequenceMockTestWF"		
 	 And "sequenceMockTestWF" contains an Assign "Assign for sequence" as
       | variable    | value    |
@@ -338,13 +338,13 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 And I save workflow "sequenceMockTestWF"
 	 Then the test builder is open with "sequenceMockTestWF"
 	 And I click New Test
-	 And I Add "Sequence1" as TestStep	
+	 And I Add "Sequence1" as TestStep with All Mocks
 	 When I save
 	 And I run the test
 	 Then test result is Passed
 	 When I delete "Test 1"
 	 
-Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assign
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assert
 	Given I have a workflow "sequenceAssertTestWF"		
 	 And "sequenceAssertTestWF" contains an Assign "Assign for sequence" as
       | variable    | value    |
@@ -370,29 +370,34 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 And I save workflow "sequenceAssertTestWF"
 	 Then the test builder is open with "sequenceAssertTestWF"
 	 And I click New Test
-	 And I Add "Sequence1" as TestStep All Assert
+	 And I Add "Sequence1" as TestStep with All Asserts
+	 And I add StepOutputs as 
+	 | Variable Name     | Condition | Value           |
+	 | [[rec(1).a]]      | =         | tREPLACEDst     |
+	 | [[rec(2).a]]      | =         | warREPLACEDwolf |		
+	 | [[replaceResult]] | =         | 4               |
 	 When I save
 	 And I run the test
 	 Then test result is Passed
 	 When I delete "Test 1"
 	 
 Scenario: Test Workflow with ForEach which contains assign Mock
-      Given I have a workflow "TestWFForEachMock"
-	  And "TestWFForEachMock" contains an Assign "Rec To Convert" as
-	    | variable    | value |
-	    | [[Warewolf]] | bob   |
-	  And "TestWFForEachMock" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
-	  And "ForEachTest" contains an Assign "MyAssign" as
-	    | variable    | value |
-	    | [[rec().a]] | Test  |
-      And I save workflow "TestWFForEachMock"
-	  Then the test builder is open with "TestWFForEachMock"
-	  And I click New Test
-	  And I Add "ForEachTest" as TestStep	
-	  When I save
-	  And I run the test
-	  Then test result is Passed
-	  When I delete "Test 1"
+    Given I have a workflow "TestWFForEachMock"
+	And "TestWFForEachMock" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[Warewolf]] | bob   |
+	And "TestWFForEachMock" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	And "ForEachTest" contains an Assign "MyAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | Test  |
+    And I save workflow "TestWFForEachMock"
+	Then the test builder is open with "TestWFForEachMock"
+	And I click New Test
+	And I Add "ForEachTest" as TestStep with All Mocks
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 	  
 Scenario: Test Workflow with ForEach which contains assign Assert
 	Given I have a workflow "TestWFForEachAssert"
@@ -406,7 +411,7 @@ Scenario: Test Workflow with ForEach which contains assign Assert
 	   And I save workflow "TestWFForEachAssert"
 	Then the test builder is open with "TestWFForEachAssert"
 	And I click New Test
-	And I Add "ForEachTest" as TestStep All Assert
+	And I Add "ForEachTest" as TestStep with All Asserts
 	When I save
 	And I run the test
 	Then test result is Passed

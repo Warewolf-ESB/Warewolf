@@ -2038,10 +2038,10 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        [Then(@"I Add ""(.*)"" as TestStep with All Asserts")]
         public void ThenIAddAsTestStepAllAssert(string actNameToFind)
         {
-            ThenIAddAsTestStep(actNameToFind);
+            AddTestStep(actNameToFind);
             var serviceTest = GetTestFrameworkFromContext();
 
             foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
@@ -2127,11 +2127,24 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [Then(@"I Add ""(.*)"" as TestStep")]
+        [Then("I Add {string} as TestStep with All Mocks")]
+        [Then(@"I Add ""(.*)"" as TestStep with All Mocks")]
         public void ThenIAddAsTestStep(string actNameToFind)
         {
             AddTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                serviceTestStep.Type = StepType.Mock;
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Mock;
+                }
+            }
         }
+
 
         [Then(@"I Add all ""(.*)"" as TestStep")]
         public void ThenIAddAllAsTestStep(string actNameToFind)
