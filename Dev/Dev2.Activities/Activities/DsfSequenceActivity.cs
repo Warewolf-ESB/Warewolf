@@ -215,7 +215,9 @@ namespace Dev2.Activities
             }
             if (dataObject.IsServiceTestExecution && serviceTestStep != null)
             {
-				UpdateDebugStateWithAssertions(dataObject, new List<IServiceTestStep>() { serviceTestStep }, serviceTestStep.ActivityID);
+                var testRunResult = new TestRunResult();
+                GetFinalTestRunResult(serviceTestStep, testRunResult);
+                serviceTestStep.Result = testRunResult;
             }
 
             OnCompleted(dataObject);
@@ -235,8 +237,52 @@ namespace Dev2.Activities
                 if (dsfActivity.GetType().Name == "DsfActivity" && dsfActivity is DsfActivity newAct)
                 {
                     contentId = newAct.GetWorkSurfaceMappingId();
-				}
-			}
+                }
+
+                UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(), contentId);
+            }
+        }
+
+        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        {
+            var resultList = new ObservableCollection<TestRunResult>();
+            foreach (var testStep in serviceTestStep.Children)
+            {
+                if (testStep.Result != null)
+                {
+                    resultList.Add(testStep.Result);
+                }
+            }
+
+            if (resultList.Count == 0)
+            {
+                testRunResult.RunTestResult = RunResult.TestPassed;
+            }
+            else
+            {
+                testRunResult.RunTestResult = RunResult.TestInvalid;
+
+                var testRunResults = resultList.Where(runResult => runResult.RunTestResult == RunResult.TestInvalid).ToList();
+                if (testRunResults.Count > 0)
+                {
+                    testRunResult.Message = string.Join(Environment.NewLine, testRunResults.Select(result => result.Message));
+                    testRunResult.RunTestResult = RunResult.TestInvalid;
+                }
+                else
+                {
+                    var passed = resultList.All(runResult => runResult.RunTestResult == RunResult.TestPassed);
+                    if (passed)
+                    {
+                        testRunResult.Message = Messages.Test_PassedResult;
+                        testRunResult.RunTestResult = RunResult.TestPassed;
+                    }
+                    else
+                    {
+                        testRunResult.Message = Messages.Test_FailureResult;
+                        testRunResult.RunTestResult = RunResult.TestFailed;
+                    }
+                }
+            }
         }
 
         void OnCompleted(IDSFDataObject dataObject)
