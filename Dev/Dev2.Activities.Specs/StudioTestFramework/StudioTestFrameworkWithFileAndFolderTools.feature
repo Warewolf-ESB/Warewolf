@@ -55,7 +55,7 @@ Scenario: Test WF with Create
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "Create1" as TestStep
+		And I Add "Create1" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[res1]]      | =         | Success |
@@ -82,7 +82,7 @@ Scenario: Test WF with Create and Delete folder
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "DeleteFolder" as TestStep
+		And I Add "DeleteFolder" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[res2]]      | =         | Success |
@@ -108,7 +108,7 @@ Scenario: Test WF with Move
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "Move1" as TestStep
+		And I Add "Move1" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
@@ -130,7 +130,7 @@ Scenario: Test WF with Read File
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "ReadFile" as TestStep
+		And I Add "ReadFile" as TestStep with All Mocks
 	And I add StepOutputs as 
 		| Variable Name | Condition | Value |
 		| [[Result]]    | Contains  | Hello |
@@ -154,7 +154,7 @@ Scenario: Test WF with Rename File
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "RenameFile" as TestStep
+		And I Add "RenameFile" as TestStep with All Mocks
 	And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |
@@ -182,7 +182,7 @@ Scenario: Test WF with Unzip File
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "UnZipFile" as TestStep
+		And I Add "UnZipFile" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name   | Condition | Value   |
 		| [[UnZipResult]] | =         | Success |
@@ -206,7 +206,7 @@ Scenario: Test WF with Zip File
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "ZipFile" as TestStep
+		And I Add "ZipFile" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |

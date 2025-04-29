@@ -214,8 +214,8 @@ Scenario: Run a test with invalid and pending results
 	| Name          | Bob   | 
 	And I Add Decision "If [[Name]] <> (Not Equal)" as TestStep
 	And I change Decision "If [[Name]] <> (Not Equal)" arm to "Name Input"
-	And I Add "Assign a value to Name if blank (1)" as TestStep
-	And I Add "Set the output variable (1)" as TestStep
+	And I Add "Assign a value to Name if blank (1)" as TestStep with All Mocks
+	And I Add "Set the output variable (1)" as TestStep with All Mocks
 	And I update outputs as
          | Variable Name | Value      |
          | Message       | Hello Bob. |

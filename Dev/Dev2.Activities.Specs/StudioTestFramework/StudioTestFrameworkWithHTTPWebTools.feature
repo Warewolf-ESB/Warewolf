@@ -226,7 +226,7 @@ Scenario: Test WF with Web Delete
 	And I click New Test
 	And a new test is added
     And test name starts with "Test 1"
-	And I Add "testWebDelete" as TestStep
+	And I Add "testWebDelete" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name | Condition | Value |
 	  	 | [[Response]]  | =         |       |
@@ -247,7 +247,7 @@ Scenario: Test WF with Web Post
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testWebPost" as TestStep
+	And I Add "testWebPost" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name   | Condition | Value |
 	  	 | [[Response]] | =         |       |
@@ -268,7 +268,7 @@ Scenario: Test WF with Web Get
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testWebGet" as TestStep
+	And I Add "testWebGet" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name                    | Condition | Value      |
 	  	 | [[UnnamedArrayData(6).Id]]       | =         | 6          |
@@ -292,7 +292,7 @@ Scenario: Test WF with Web Put
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "testWebPut" as TestStep
+	And I Add "testWebPut" as TestStep with All Mocks
 	And I add StepOutputs as  
 	  	 | Variable Name   | Condition | Value |
 	  	 | [[Response]] | =         |       |     
