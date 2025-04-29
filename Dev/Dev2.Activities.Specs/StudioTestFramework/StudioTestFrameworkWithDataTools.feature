@@ -269,7 +269,7 @@ Scenario: Test WF with Replace with square brackets
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "TestReplace" as TestStep with All Mocks
+		And I Add "TestReplace" as TestStep with All Asserts
 		And I add StepOutputs as 
 		| Variable Name     | Condition | Value           |
 		| [[rec(1).a]]      | =         | t[[st     |
@@ -312,7 +312,7 @@ Scenario: Test Wf With AssignObject And ObjectOutput
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
-Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) mock 
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Mock 
 	Given I have a workflow "sequenceMockTestWF"		
 	 And "sequenceMockTestWF" contains an Assign "Assign for sequence" as
       | variable    | value    |
@@ -344,7 +344,7 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 Then test result is Passed
 	 When I delete "Test 1"
 	 
-Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assign
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assert
 	Given I have a workflow "sequenceAssertTestWF"		
 	 And "sequenceAssertTestWF" contains an Assign "Assign for sequence" as
       | variable    | value    |
