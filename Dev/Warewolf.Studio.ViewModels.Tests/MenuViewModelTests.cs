@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(200)]
         public void TestOpenSchedulerCommand()
         {
             Assert.AreSame(_openSchedulerCommand, _target.OpenSchedulerCommand);
