@@ -207,7 +207,10 @@ namespace Dev2.Runtime.Hosting
                 _fileWrapper.Delete(queueFilePath);
             }
 
-            Queues.Remove(triggerQueue);
+            //Queues.Remove(triggerQueue);
+            var existingQueue = Queues.SingleOrDefault(q => q.TriggerId == triggerQueue.TriggerId);
+            if (existingQueue != null)
+                Queues.Remove(existingQueue);
         }
 
 #if !NETFRAMEWORK
