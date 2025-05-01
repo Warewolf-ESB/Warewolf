@@ -364,7 +364,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                RestoreValues(dataObject, itr);
+                if (DataFunc.Handler != null)
+                {
+                    RestoreValues(dataObject, itr);
+                }
                 var serviceTestStep = HandleServiceTestExecution(dataObject);
                 dataObject.ParentInstanceID = _previousParentId;
                 UniqueID = _originalUniqueID.ToString();
