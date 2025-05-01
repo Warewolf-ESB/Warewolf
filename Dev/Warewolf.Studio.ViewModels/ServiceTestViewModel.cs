@@ -1126,13 +1126,13 @@ namespace Warewolf.Studio.ViewModels
 			}
 			else
 			{
-				if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+				if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
 				{
 					AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
 				}
 				else
 				{
-					if (activity.GetType() == type)
+					if (activity != null && activity.GetType() == type)
 					{
 						AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
 					}
