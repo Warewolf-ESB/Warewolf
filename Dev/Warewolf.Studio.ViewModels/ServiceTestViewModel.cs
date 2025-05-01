@@ -1097,45 +1097,44 @@ namespace Warewolf.Studio.ViewModels
 			}
 			var uniqueId = forEachActivity.UniqueID;
 			var exists = FindExistingStep(uniqueId);
-
-			var type = typeof(DsfForEachActivity);
-			var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
-			SetStepIcon(type, testStep);
-			var activity = forEachActivity.DataFunc.Handler;
-			var act = activity as DsfNativeActivity<string>;
-			var workFlowService = activity as DsfActivity;
-			if (act != null)
-			{
-				if (act.GetType() == typeof(DsfSequenceActivity))
-				{
-					AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
-				}
-				else
-				{
-					AddChildActivity(act, testStep);
-				}
-			}
-			else
-			{
-				if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
-				{
-					AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
-				}
-				else
-				{
-					if (activity != null && activity.GetType() == type)
-					{
-						AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
-					}
-				}
-			}
-
-			if (workFlowService != null)
-			{
-				AddChildActivity(workFlowService, testStep);
-			}
 			if (exists == null)
 			{
+				var type = typeof(DsfForEachActivity);
+				var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
+				SetStepIcon(type, testStep);
+				var activity = forEachActivity.DataFunc.Handler;
+				var act = activity as DsfNativeActivity<string>;
+				var workFlowService = activity as DsfActivity;
+				if (act != null)
+				{
+					if (act.GetType() == typeof(DsfSequenceActivity))
+					{
+						AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
+					}
+					else
+					{
+						AddChildActivity(act, testStep);
+					}
+				}
+				else
+				{
+					if (activity != null && activity.GetType() == typeof(DsfSelectAndApplyActivity))
+					{
+						AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+					}
+					else
+					{
+						if (activity != null && activity.GetType() == type)
+						{
+							AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
+						}
+					}
+				}
+
+				if (workFlowService != null)
+				{
+					AddChildActivity(workFlowService, testStep);
+				}
 				serviceTestSteps.Add(testStep);
 			}
 		}
