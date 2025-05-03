@@ -55,7 +55,7 @@
     <EmbeddedResource Include="XML\LoggingSettings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
