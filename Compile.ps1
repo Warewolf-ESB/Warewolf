@@ -381,7 +381,7 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
                 }
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
