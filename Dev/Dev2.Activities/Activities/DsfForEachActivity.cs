@@ -364,10 +364,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (DataFunc.Handler != null)
-                {
-                    RestoreValues(dataObject, itr);
-                }
+                RestoreValues(dataObject, itr);
                 var serviceTestStep = HandleServiceTestExecution(dataObject);
                 dataObject.ParentInstanceID = _previousParentId;
                 UniqueID = _originalUniqueID.ToString();
@@ -383,7 +380,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (itr != null && ForEachType != enForEachType.NumOfExecution)
             {
-                RestoreHandlerFn();
+                if (DataFunc.Handler != null)
+                {
+                    RestoreHandlerFn();
+                }
             }
 
             if (dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
