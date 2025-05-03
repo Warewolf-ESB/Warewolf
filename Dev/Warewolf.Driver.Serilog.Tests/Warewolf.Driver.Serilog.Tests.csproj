@@ -13,7 +13,7 @@
  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Elastic.Serilog.Sinks" Version="8.11.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
