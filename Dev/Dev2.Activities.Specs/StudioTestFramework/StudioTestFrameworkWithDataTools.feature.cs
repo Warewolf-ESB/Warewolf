@@ -1286,7 +1286,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
+                    "ex and Replace) Mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 315
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1426,12 +1426,12 @@ this.FeatureBackground();
             "ex and Replace) Assert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithDataTools")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithDataTools")]
-        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssert()
+        public void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssert()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) Assert", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ex and Replace) Assert", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 347
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1586,7 +1586,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with ForEach which contains assign Mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 379
+#line 382
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1661,7 +1661,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with ForEach which contains assign Assert", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 397
+#line 400
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1736,7 +1736,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with Loop Constructs - Select and Apply example workflow", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 415
+#line 418
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))

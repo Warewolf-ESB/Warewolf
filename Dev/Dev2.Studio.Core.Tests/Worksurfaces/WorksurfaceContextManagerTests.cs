@@ -31,11 +31,10 @@ using Dev2.Studio.Core;
 using Warewolf.Data;
 using Warewolf.Enums;
 using Action = System.Action;
-using Dev2.Net6.Compatibility;
 
 namespace Dev2.Core.Tests
 {
-    [STATestClass]
+    [Dev2.Net6.Compatibility.STATestClass]
     [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {

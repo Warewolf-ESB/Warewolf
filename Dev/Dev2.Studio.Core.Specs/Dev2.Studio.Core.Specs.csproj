@@ -65,10 +65,10 @@
       <Version>4.18.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.0.2</Version>
+      <Version>3.8.3</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.0.2</Version>
+      <Version>3.8.3</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="SpecFlow.MsTest">
