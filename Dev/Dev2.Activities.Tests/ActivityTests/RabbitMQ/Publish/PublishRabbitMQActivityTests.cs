@@ -88,10 +88,10 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             connection.Verify(c => c.CreateModel(), Times.Once);
             channel.Verify(
                 c => c.ExchangeDeclare(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(),
-                    It.IsAny<IDictionary<string, object>>()), Times.None);
+                    It.IsAny<IDictionary<string, object>>()), Times.Never);
             channel.Verify(
                 c => c.QueueDeclare(It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(),
-                    It.IsAny<IDictionary<string, object>>()), Times.None);
+                    It.IsAny<IDictionary<string, object>>()), Times.Never);
             channel.Verify(
                 c => c.BasicPublish(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<IBasicProperties>(),
                     It.IsAny<byte[]>()), Times.Once);
