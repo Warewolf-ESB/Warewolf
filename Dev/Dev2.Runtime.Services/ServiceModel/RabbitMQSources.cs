@@ -78,20 +78,9 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     using (IModel channel = connection.CreateModel())
                     {
-                        channel.QueueDeclare(queue: "TestRabbitMQServiceSource",
-                                                durable: false,
-                                                exclusive: false,
-                                                autoDelete: false,
-                                                arguments: null);
-
-                        channel.BasicPublish(exchange: "",
-                            routingKey: "TestRabbitMQServiceSource",
-                            basicProperties: null,
-                            body: Encoding.UTF8.GetBytes("Test Message"));
-
-                        channel.QueueDeleteNoWait("TestRabbitMQServiceSource", true, false);
-                    }
-                }
+						//Successfully connected to RabbitMQ
+					}
+				}
                 return new ValidationResult
                 {
                     IsValid = true
