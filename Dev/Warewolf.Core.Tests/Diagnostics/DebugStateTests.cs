@@ -200,9 +200,7 @@ namespace Dev2.Tests.Diagnostics
         #region Serialization
 
         [TestMethod]
-
         public void Serialized_Expected_CanBeDeserialized()
-
         {
             var rw = new MockByteReaderWriter();
 
@@ -215,7 +213,7 @@ namespace Dev2.Tests.Diagnostics
             debugStateIn.Inputs.Add(itemToAdd);
 
             debugStateIn.Write(rw);
-            var debugStateOut = new DebugState();
+            var debugStateOut = new DebugState(rw);
 
             Assert.AreEqual(debugStateIn.WorkspaceID, debugStateOut.WorkspaceID);
             Assert.AreEqual(debugStateIn.ID, debugStateOut.ID);
@@ -229,15 +227,12 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(debugStateIn.HasError, debugStateOut.HasError);
             Assert.AreEqual(debugStateIn.ErrorMessage, debugStateOut.ErrorMessage);
             Assert.AreEqual(debugStateIn.Server, debugStateOut.Server);
-            Assert.AreEqual(debugStateIn.Server, debugStateOut.Server);
             Assert.AreEqual(debugStateIn.ServerID, debugStateOut.ServerID);
             Assert.AreEqual(debugStateIn.StartTime, debugStateOut.StartTime);
             Assert.AreEqual(debugStateIn.EndTime, debugStateOut.EndTime);
             Assert.AreEqual(debugStateIn.SessionID, debugStateOut.SessionID);
-
         }
 
-        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DebugItem_Add")]
