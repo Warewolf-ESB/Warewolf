@@ -513,10 +513,10 @@
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ServiceStack" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Client" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Common" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Redis" Version="6.2.0" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Client" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="Microsoft.JScript" />

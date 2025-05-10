@@ -90,7 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.13.0</Version>
     </PackageReference>
@@ -102,7 +102,7 @@
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="System.Security.Permissions" Version="9.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

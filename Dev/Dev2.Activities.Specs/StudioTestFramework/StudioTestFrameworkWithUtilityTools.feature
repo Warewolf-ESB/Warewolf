@@ -51,7 +51,7 @@ Scenario: Test WF with Random
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestRandoms" as TestStep	
+	And I Add "TestRandoms" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition  | Value |
 	  	 | [[result]]    | Is Numeric |       |
@@ -77,7 +77,7 @@ Scenario: Test WF with Aggregate Calculate
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestAgrCalculate" as TestStep
+	And I Add "TestAgrCalculate" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 8     |
@@ -100,7 +100,7 @@ Scenario: Test WF with WebRequest
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestWebRequest" as TestStep
+	And I Add "TestWebRequest" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value               |
 	  	 | [[Result]]    | Contains  | ["value1","value2"] |
@@ -120,7 +120,7 @@ Scenario: Test WF with RabbitMq Publish
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfPublishRabbitMQActivity" as TestStep
+	And I Add "DsfPublishRabbitMQActivity" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
@@ -140,7 +140,7 @@ Scenario: Test WF with RabbitMq Consume
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfConsumeRabbitMQActivity" as TestStep
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[result]]    | =         | Failure: Queue Name is required. |
@@ -162,7 +162,7 @@ Scenario: Test WF with RabbitMq Consume object result
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfConsumeRabbitMQActivity" as TestStep
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Asserts
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[@result]]   | =         | Failure: Queue Name and Message are required. |
@@ -186,7 +186,7 @@ Scenario: Test WF with RabbitMq Consume object Array result
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DsfConsumeRabbitMQActivity" as TestStep
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep with All Asserts
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
 	  	 | [[@result()]]   | =         | Failure: Queue Name and Message are required. |
@@ -208,7 +208,7 @@ Scenario: Test WF with RabbitMq Consume and count Recordset
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-   	And I Add "CountRec" as TestStep
+   	And I Add "CountRec" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[count]]     | =         | 0     |
@@ -232,7 +232,7 @@ Scenario: Test WF with Calculate
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestCalculate" as TestStep
+	And I Add "TestCalculate" as TestStep with All Mocks
 And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 6     |		 
@@ -256,7 +256,7 @@ Scenario: Test WF with Calculate outputs with no variable
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestCalculate" as TestStep
+	And I Add "TestCalculate" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 |               | =         |       |		 
@@ -280,7 +280,7 @@ Scenario: Test WF with Calculate No outPuts
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "TestCalculate" as TestStep	 
+	And I Add "TestCalculate" as TestStep with All Mocks
 	When I save
 	And I run the test
 	Then test result is Passed
@@ -297,7 +297,7 @@ Scenario: Test WF with Xpath
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "XPathTest" as TestStep
+	And I Add "XPathTest" as TestStep with All Mocks
 And I add StepOutputs as 
 	  	 | Variable Name   | Condition | Value        |
 	  	 | [[singleValue]] | =         | Mr.  Johnson |
@@ -319,7 +319,7 @@ Scenario: Test WF with SysInfo
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "System info" as TestStep
+	And I Add "System info" as TestStep with All Mocks
 And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[a]]         | Is Date   |       |
@@ -341,7 +341,7 @@ Scenario: Test WF with FormatNumber
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "Fnumber" as TestStep
+	And I Add "Fnumber" as TestStep with All Mocks
 And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 12.34 |
@@ -366,7 +366,7 @@ Scenario: Test WF with Count Record
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "Cnt1" as TestStep
+	And I Add "Cnt1" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 3     |
@@ -390,7 +390,7 @@ Scenario: Test WF with Length
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "Len" as TestStep
+	And I Add "Len" as TestStep with All Mocks
 And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 2     |
@@ -417,7 +417,7 @@ Scenario: Test WF with Find Records
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "FindRecord0" as TestStep
+	And I Add "FindRecord0" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[result]]    | =         | 2     |
@@ -442,7 +442,7 @@ Scenario: Test WF with Delete Records
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "Delet1" as TestStep
+	And I Add "Delet1" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value   |
 	  	 | [[result]]    | =         | Success |
@@ -474,7 +474,7 @@ Scenario: Test WF with Unique Record
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "Unique rec" as TestStep
+	And I Add "Unique rec" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name     | Condition | Value |
 	  	 | [[rec(1).unique]] | =         | 10    |
@@ -503,7 +503,7 @@ Scenario: Test WF with Sort
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "sortRec1" as TestStep
+	And I Add "sortRec1" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value |
 	  	 | [[rs(1).a]]   | =         | 20    |
@@ -526,7 +526,7 @@ Scenario: Test WF with DateTime
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "AddDate" as TestStep
+	And I Add "AddDate" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value    |
 	  	 | [[result]]    | =         | 16 03 12 |
@@ -548,7 +548,7 @@ Scenario: Test WF with DateTimeDiff
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
-	And I Add "DateTimedif" as TestStep
+	And I Add "DateTimedif" as TestStep with All Mocks
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value         |
 		 | [[result]]      | =         | 259 |		 
@@ -569,7 +569,7 @@ Scenario: Run a passing Test with RabbitMq Object return
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank	
-	And I Add "RabbitMQ Consume" as TestStep
+	And I Add "RabbitMQ Consume" as TestStep with All Mocks
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
 	| Variable Name      | Condition | Value |
@@ -601,7 +601,7 @@ Scenario:Test Workflow which contains COM DLL
 	And I save workflow "TestWFCOMDLL"
 	Then the test builder is open with "TestWFCOMDLL"
 	And I click New Test
-	And I Add "COMService" as TestStep
+	And I Add "COMService" as TestStep with All Mocks
 	And I add StepOutputs as
 		| Variable Name            | Condition | Value |
 		| [[PrimitiveReturnValue]] | Not Date  |       |

@@ -380,7 +380,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (itr != null && ForEachType != enForEachType.NumOfExecution)
             {
-                RestoreHandlerFn();
+                if (DataFunc.Handler != null)
+                {
+                    RestoreHandlerFn();
+                }
             }
 
             if (dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)

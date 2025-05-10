@@ -33,7 +33,7 @@
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
     <PackageReference Include="Fleck" Version="1.2.0" />
-    <PackageReference Include="System.Security.Permissions" Version="9.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />

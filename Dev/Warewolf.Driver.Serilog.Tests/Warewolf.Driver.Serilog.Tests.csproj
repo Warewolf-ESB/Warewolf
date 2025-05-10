@@ -13,7 +13,7 @@
  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Elastic.Serilog.Sinks" Version="8.11.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
@@ -22,7 +22,7 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="System.Security.Permissions" Version="9.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj" />

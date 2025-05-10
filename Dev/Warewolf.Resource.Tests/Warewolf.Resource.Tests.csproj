@@ -42,7 +42,7 @@
     <Compile Include="MessagesTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.13.0</Version>
     </PackageReference>
@@ -52,7 +52,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
-    <PackageReference Include="System.Security.Permissions" Version="9.0.2" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
 	<PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
   </ItemGroup>

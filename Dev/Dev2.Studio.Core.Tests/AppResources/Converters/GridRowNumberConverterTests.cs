@@ -15,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Dev2.AppResources.Converters;
-using Dev2.Net6.Compatibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Converters

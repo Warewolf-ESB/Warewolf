@@ -230,7 +230,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="ServiceStack" Version="6.2.0" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.118</Version>
     </PackageReference>

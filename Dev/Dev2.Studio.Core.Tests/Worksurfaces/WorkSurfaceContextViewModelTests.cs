@@ -32,7 +32,6 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Messages;
-using Dev2.Net6.Compatibility;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;

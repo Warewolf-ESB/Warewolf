@@ -53,7 +53,7 @@ Scenario: Test WF with MySql
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "MySqlEmail" as TestStep
+		And I Add "MySqlEmail" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name           | Condition | Value              |
 		| [[MySqlEmail(1).name]]  | =         | Monk               |
@@ -73,7 +73,7 @@ Scenario: Test WF with Sql Server
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "dbo.Pr_CitiesGetCountries" as TestStep
+		And I Add "dbo.Pr_CitiesGetCountries" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name                                | Condition | Value    |
 		| [[dbo_Pr_CitiesGetCountries(2).CountryID]]   | =         | 40       |
@@ -92,7 +92,7 @@ Scenario: Test WF with Oracle
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "HR.GET_EMP_RS" as TestStep
+		And I Add "HR.GET_EMP_RS" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name                      | Condition | Value        |
 		| [[HR_GET_EMP_RS(2).EMPLOYEE_ID]]   | =         | 205          |
@@ -114,7 +114,7 @@ Scenario: Test WF with PostGre Sql
 		And I click New Test
 		And a new test is added
 		And test name starts with "Test 1"
-		And I Add "get_countries" as TestStep
+		And I Add "get_countries" as TestStep with All Mocks
 		And I add StepOutputs as
 		| Variable Name             | Condition | Value          |
 		| [[get_countries(1).id]]   | =         | 2              |
@@ -134,7 +134,7 @@ Scenario: Test WF with Decision
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "TestDecision" as TestStep
+		And I Add "TestDecision" as TestStep with All Mocks
 		And I add Assert steps as
 		| Step Name                  | Output Variable | Output Value | Activity Type |
 		| If [[Name]] <> (Not Equal) | Flow Arm        | True         | Decision      |
@@ -154,7 +154,7 @@ Scenario: Test WF with SqlBulk Insert
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "BulkInsert" as TestStep
+		And I Add "BulkInsert" as TestStep with All Mocks
 		And I add StepOutputs as 
 		| Variable Name | Condition | Value   |
 		| [[result]]    | =         | Success |

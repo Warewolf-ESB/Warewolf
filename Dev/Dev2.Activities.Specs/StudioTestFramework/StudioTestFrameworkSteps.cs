@@ -2039,10 +2039,10 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        [Then(@"I Add ""(.*)"" as TestStep with All Asserts")]
         public void ThenIAddAsTestStepAllAssert(string actNameToFind)
         {
-            ThenIAddAsTestStep(actNameToFind);
+            AddTestStep(actNameToFind);
             var serviceTest = GetTestFrameworkFromContext();
 
             foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
@@ -2128,11 +2128,24 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [Then(@"I Add ""(.*)"" as TestStep")]
+        [Then("I Add {string} as TestStep with All Mocks")]
+        [Then(@"I Add ""(.*)"" as TestStep with All Mocks")]
         public void ThenIAddAsTestStep(string actNameToFind)
         {
             AddTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                serviceTestStep.Type = StepType.Mock;
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Mock;
+                }
+            }
         }
+
 
         [Then(@"I Add all ""(.*)"" as TestStep")]
         public void ThenIAddAllAsTestStep(string actNameToFind)
@@ -2256,6 +2269,37 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+
+        [Then(@"I replace all StepOutputs in squence with")]
+        public void ThenIAddStepToASequence(Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            if (serviceTest.SelectedServiceTest.TestSteps.Count > 0)
+            {
+                var children = serviceTest.SelectedServiceTest.TestSteps.FirstOrDefault()?.Children;
+                if (children != null)
+                {
+                    var itemToKeep = children.FirstOrDefault();
+                    children.Clear();
+                    if (itemToKeep != null)
+                    {
+                        children.Add(itemToKeep);
+                    }
+                }
+                var firstChild = serviceTest.SelectedServiceTest.TestSteps.FirstOrDefault()?.Children.FirstOrDefault();
+                firstChild.StepOutputs = new ObservableCollection<IServiceTestOutput>();
+                foreach (var tableRow in table.Rows)
+                {
+                    var varName = tableRow["Variable Name"];
+                    var condition = tableRow["Condition"];
+                    var value = tableRow["Value"];
+                    firstChild.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                    {
+                        AssertOp = condition
+                    });
+                }
+            }
+        }
 
         [Then(@"I add ""(.*)"" StepOutputs as")]
         public void ThenIAddStepOutputsAs(string stepDesc, Table table)

@@ -260,7 +260,7 @@ this.FeatureBackground();
     testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 56
- testRunner.And("I Add \"TestAssign\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"TestAssign\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table957 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -352,7 +352,7 @@ this.FeatureBackground();
       testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 79
-   testRunner.And("I Add \"TestAssignObject\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Add \"TestAssignObject\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table959 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -453,7 +453,7 @@ this.FeatureBackground();
    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 105
-   testRunner.And("I Add \"TestBaseConvert\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Add \"TestBaseConvert\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table962 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -553,7 +553,7 @@ this.FeatureBackground();
    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 131
-   testRunner.And("I Add \"TestCaseConvert\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Add \"TestCaseConvert\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table965 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -611,7 +611,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 143
-  testRunner.Given("I have a workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table966 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -621,7 +621,7 @@ this.FeatureBackground();
                             "Brad,5546854,brad@mail.com Bob,65548912,bob@mail.com Bill,3215464987,bill@mail.co" +
                                 "m"});
 #line 144
-  testRunner.And("\"DataSplitTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table966, "And ");
+ testRunner.And("\"DataSplitTestWF\" contains an Assign \"TestAssign\" as", ((string)(null)), table966, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table967 = new TechTalk.SpecFlow.Table(new string[] {
                             "String",
@@ -638,25 +638,25 @@ this.FeatureBackground();
                             "",
                             ""});
 #line 147
-  testRunner.And("\"DataSplitTestWF\" contains Data Split \"TestDataSplit\" as", ((string)(null)), table967, "And ");
+ testRunner.And("\"DataSplitTestWF\" contains Data Split \"TestDataSplit\" as", ((string)(null)), table967, "And ");
 #line hidden
 #line 150
-   testRunner.And("I save workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I save workflow \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 151
-   testRunner.Then("the test builder is open with \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the test builder is open with \"DataSplitTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 152
-   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 153
-   testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 154
-   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 155
-   testRunner.And("I Add \"TestDataSplit\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"TestDataSplit\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table968 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -691,25 +691,25 @@ this.FeatureBackground();
                             "=",
                             "bill@mail.com"});
 #line 156
-  testRunner.And("I add StepOutputs as", ((string)(null)), table968, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table968, "And ");
 #line hidden
 #line 165
-   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 166
-   testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 167
-   testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 168
-   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 169
-   testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 170
-   testRunner.Then("workflow \"DataSplitTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("workflow \"DataSplitTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -787,7 +787,7 @@ this.FeatureBackground();
    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 188
-   testRunner.And("I Add \"TestIndex\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Add \"TestIndex\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table971 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -899,7 +899,7 @@ this.FeatureBackground();
   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 216
-  testRunner.And("I Add \"TestDataMerge\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"TestDataMerge\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table974 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -1004,7 +1004,7 @@ this.FeatureBackground();
   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 243
-  testRunner.And("I Add \"TestReplace\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"TestReplace\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table977 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -1117,7 +1117,7 @@ this.FeatureBackground();
   testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 272
-  testRunner.And("I Add \"TestReplace\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"TestReplace\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table980 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -1208,7 +1208,7 @@ this.FeatureBackground();
  testRunner.And("password is blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 295
- testRunner.And("I Add \"Assign Object (3)\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"Assign Object (3)\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 296
  testRunner.And("I Clear existing StepOutputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1278,7 +1278,7 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-            "ex and Replace) mock")]
+            "ex and Replace) Mock")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithDataTools")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithDataTools")]
         public void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceMock()
@@ -1286,7 +1286,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
+                    "ex and Replace) Mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 315
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1403,7 +1403,7 @@ this.FeatureBackground();
   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 341
-  testRunner.And("I Add \"Sequence1\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"Sequence1\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 342
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -1423,15 +1423,15 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-            "ex and Replace) Assign")]
+            "ex and Replace) Assert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithDataTools")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithDataTools")]
-        public void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssign()
+        public void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssert()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace) Assign", null, tagsOfScenario, argumentsOfScenario, featureTags);
+                    "ex and Replace) Assert", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 347
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -1548,18 +1548,29 @@ this.FeatureBackground();
   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 373
-  testRunner.And("I Add \"Sequence1\" as TestStep All Assert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Add \"Sequence1\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+                TechTalk.SpecFlow.Table table995 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Variable Name",
+                            "Condition",
+                            "Value"});
+                table995.AddRow(new string[] {
+                            "[[rec(1).a]]",
+                            "=",
+                            "test"});
 #line 374
-  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 375
-  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 376
-  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I replace all StepOutputs in squence with", ((string)(null)), table995, "And ");
 #line hidden
 #line 377
+  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 378
+  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 379
+  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 380
   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -1575,7 +1586,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with ForEach which contains assign Mock", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 379
+#line 382
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1588,54 +1599,54 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-#line 380
-      testRunner.Given("I have a workflow \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-                TechTalk.SpecFlow.Table table995 = new TechTalk.SpecFlow.Table(new string[] {
-                            "variable",
-                            "value"});
-                table995.AddRow(new string[] {
-                            "[[Warewolf]]",
-                            "bob"});
-#line 381
-   testRunner.And("\"TestWFForEachMock\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table995, "And ");
-#line hidden
-#line 384
-   testRunner.And("\"TestWFForEachMock\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" executio" +
-                        "ns \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
+    testRunner.Given("I have a workflow \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table996 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
                             "value"});
                 table996.AddRow(new string[] {
+                            "[[Warewolf]]",
+                            "bob"});
+#line 384
+ testRunner.And("\"TestWFForEachMock\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table996, "And ");
+#line hidden
+#line 387
+ testRunner.And("\"TestWFForEachMock\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" executio" +
+                        "ns \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table997 = new TechTalk.SpecFlow.Table(new string[] {
+                            "variable",
+                            "value"});
+                table997.AddRow(new string[] {
                             "[[rec().a]]",
                             "Test"});
-#line 385
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table996, "And ");
-#line hidden
 #line 388
-      testRunner.And("I save workflow \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 389
-   testRunner.Then("the test builder is open with \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 390
-   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table997, "And ");
 #line hidden
 #line 391
-   testRunner.And("I Add \"ForEachTest\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I save workflow \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 392
-   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("the test builder is open with \"TestWFForEachMock\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 393
-   testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 394
-   testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Add \"ForEachTest\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 395
-   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 396
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 397
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 398
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1650,7 +1661,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with ForEach which contains assign Assert", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 397
+#line 400
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1663,53 +1674,53 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-#line 398
+#line 401
  testRunner.Given("I have a workflow \"TestWFForEachAssert\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-                TechTalk.SpecFlow.Table table997 = new TechTalk.SpecFlow.Table(new string[] {
-                            "variable",
-                            "value"});
-                table997.AddRow(new string[] {
-                            "[[Warewolf]]",
-                            "bob"});
-#line 399
- testRunner.And("\"TestWFForEachAssert\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table997, "And ");
-#line hidden
-#line 402
- testRunner.And("\"TestWFForEachAssert\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" execut" +
-                        "ions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table998 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
                             "value"});
                 table998.AddRow(new string[] {
+                            "[[Warewolf]]",
+                            "bob"});
+#line 402
+ testRunner.And("\"TestWFForEachAssert\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table998, "And ");
+#line hidden
+#line 405
+ testRunner.And("\"TestWFForEachAssert\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" execut" +
+                        "ions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table999 = new TechTalk.SpecFlow.Table(new string[] {
+                            "variable",
+                            "value"});
+                table999.AddRow(new string[] {
                             "[[rec().a]]",
                             "Test"});
-#line 403
- testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table998, "And ");
-#line hidden
 #line 406
-    testRunner.And("I save workflow \"TestWFForEachAssert\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 407
- testRunner.Then("the test builder is open with \"TestWFForEachAssert\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 408
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table999, "And ");
 #line hidden
 #line 409
- testRunner.And("I Add \"ForEachTest\" as TestStep All Assert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I save workflow \"TestWFForEachAssert\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 410
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("the test builder is open with \"TestWFForEachAssert\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 411
- testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 412
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Add \"ForEachTest\" as TestStep with All Asserts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 413
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 414
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 415
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 416
  testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -1725,7 +1736,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with Loop Constructs - Select and Apply example workflow", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 415
+#line 418
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1738,29 +1749,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-#line 416
+#line 419
  testRunner.Given("the test builder is open with \"Select and Apply\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 417
+#line 420
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 418
+#line 421
  testRunner.And("I Add all TestSteps", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 419
+#line 422
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 420
+#line 423
  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 421
+#line 424
  testRunner.Then("test result is Failed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 422
+#line 425
  testRunner.And("the service debug assert Json message contains \"Message: Failed: Assert Equal. Ex" +
                         "pected Equal To \'\' for \'@Pet\' but got\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 423
+#line 426
  testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
