@@ -475,6 +475,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="DynamicData" Version="9.2.2" />
     <PackageReference Include="Elastic.Clients.Elasticsearch">
       <Version>8.15.6</Version>
     </PackageReference>
@@ -578,9 +579,6 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
     <PackageReference Include="Npgsql">
       <Version>3.2.7</Version>
-    </PackageReference>
-    <PackageReference Include="GAC.API">
-      <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
