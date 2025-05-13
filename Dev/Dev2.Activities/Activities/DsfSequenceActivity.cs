@@ -214,8 +214,9 @@ namespace Dev2.Activities
                 }
             }
             if (dataObject.IsServiceTestExecution && serviceTestStep != null)
-            {
-                var testRunResult = new TestRunResult();
+			{
+				UpdateDebugStateWithAssertions(dataObject, new List<IServiceTestStep> { serviceTestStep }, Guid.Parse(UniqueID));
+				var testRunResult = new TestRunResult();
                 GetFinalTestRunResult(serviceTestStep, testRunResult);
                 serviceTestStep.Result = testRunResult;
             }
