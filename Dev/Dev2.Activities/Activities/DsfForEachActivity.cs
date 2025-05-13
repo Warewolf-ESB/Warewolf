@@ -363,11 +363,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.AddError(e.Message);
             }
             finally
-            {
-                RestoreValues(dataObject, itr);
+			{
+				RestoreValues(dataObject, itr);
+                UniqueID = _originalUniqueID.ToString();
                 var serviceTestStep = HandleServiceTestExecution(dataObject);
                 dataObject.ParentInstanceID = _previousParentId;
-                UniqueID = _originalUniqueID.ToString();
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
                 HandleDebug(dataObject, serviceTestStep);
@@ -403,11 +403,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var testRunResult = new TestRunResult();
                     GetFinalTestRunResult(serviceTestStep, testRunResult);
-                    serviceTestStep.Result = testRunResult;
+					ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, dataObject.ServiceTest?.TestSteps, UniqueID);
+					serviceTestStep.Result = testRunResult;
                 }
-            }
+			}
 
-            return serviceTestStep;
+			return serviceTestStep;
         }
 
         private void HandleDebug(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
