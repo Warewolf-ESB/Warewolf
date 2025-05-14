@@ -73,7 +73,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         client.OnMessage((msgResponse, socket) =>
                         {
                             response = msgResponse;
-                            result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+                            if (string.IsNullOrEmpty(response))
+                                result.Add(new ExecutionHistory());
+                            else
+                                result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+                            
                             ewh.Set();
                         });
                         client.SendMessage(serializer.Serialize(message));

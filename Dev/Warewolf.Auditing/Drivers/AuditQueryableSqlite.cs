@@ -47,26 +47,55 @@ namespace Warewolf.Auditing.Drivers
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
-            var sql = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
+            var sql = new StringBuilder($"SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs ");
 
             if (resourceId != null)
             {
-                sql.Append("WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ");
+                 sql.Append("WHERE json_extract(Message, '$.WorkflowID') = '" + resourceId + "' ");
                 sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
+                _query = sql.ToString();
+
                 var results = ExecuteDatabase();
                 if (results.Length > 0)
                 {
                     foreach (var result in results)
                     {
-                        var executionHistory = JsonConvert.DeserializeObject<ExecutionHistory>(result);
+                        if (string.IsNullOrWhiteSpace(result)) continue;
+
+                        var jObject = JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(result);
+
+                        var start = jObject["StartDateTime"]?.ToObject<DateTime>() ?? DateTime.MinValue;
+                        var end = jObject["CompletedDateTime"]?.ToObject<DateTime>() ?? DateTime.MinValue;
+
+                        var executionHistory = new ExecutionHistory
+                        {
+                            ResourceId = Guid.TryParse(jObject["WorkflowID"]?.ToString(), out var rid) ? rid : Guid.Empty,
+                            WorkflowOutput = result,
+                            UserName = jObject["User"]?.ToString(),
+                            AuditType = jObject["AuditType"]?.ToString() ?? "ExecutionLog",
+                            LogLevel = Enum.TryParse<LogLevel>(jObject["LogLevel"]?.ToString(), out var lvl) ? lvl : LogLevel.Info,
+                            Exception = null, // Parse if you have structured exception info
+                            ExecutionInfo = new ExecutionInfo
+                            {
+                                CustomTransactionID = jObject["CustomTransactionID"]?.ToString(),
+                                StartDate = start,
+                                EndDate = end,
+                                Duration = (end - start),
+                                ExecutionId = Guid.TryParse(jObject["ExecutionID"]?.ToString(), out var eid) ? eid : Guid.Empty,
+                                FailureReason = jObject["Exception"]?.ToString(),
+                                Success = string.IsNullOrEmpty(jObject["Exception"]?.ToString())
+                                    ? QueueRunStatus.Success
+                                    : QueueRunStatus.Error
+                            }
+                        };
+
                         yield return executionHistory;
                     }
                 }
             }
-            else
-            {
-                yield return null;
-            }
+
+            // just exiting cleanly
+            yield break;
         }
 
         public override IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values)

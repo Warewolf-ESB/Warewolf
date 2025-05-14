@@ -23,6 +23,7 @@ using Dev2.Runtime.ServiceModel;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data;
 using Warewolf.Streams;
+using System.Text.RegularExpressions;
 
 namespace Warewolf.Common
 {
@@ -57,13 +58,28 @@ namespace Warewolf.Common
         public async Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var postBody = BuildPostBody(body);
-            var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers, body);
+            var execution = await SendEventToWarewolf(RemoveDuplicateSlashes(_url), postBody, parameters as Headers, body);
             if (!execution.IsSuccessStatusCode)
             {
                 _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
                 return ConsumerResult.Failed;
             }
             return ConsumerResult.Success;
+        }
+
+        /// <summary>
+        /// Method to trim off extra forwarding slashes if exists in URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string RemoveDuplicateSlashes(string url)
+        {
+            var uri = new Uri(url);
+            string baseUrl = $"{uri.Scheme}://{uri.Authority}";
+            string pathAndQuery = uri.PathAndQuery;
+            string cleanedPath = Regex.Replace(pathAndQuery, @"\/{2,}", "/");
+
+            return baseUrl + cleanedPath;
         }
 
         private string BuildPostBody(byte[] body)

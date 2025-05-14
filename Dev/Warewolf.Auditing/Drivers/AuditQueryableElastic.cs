@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
@@ -21,6 +22,7 @@ using Elastic.Transport;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
 using LogLevel = Warewolf.Logging.LogLevel;
+
 
 namespace Warewolf.Auditing.Drivers
 {
@@ -49,120 +51,169 @@ namespace Warewolf.Auditing.Drivers
 
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
-            var resourceId = GetValue<string>("ResourceId", values);
-            var result = new List<ExecutionHistory>();
-
-            if (resourceId != null)
+            try
             {
-                var search = new SearchRequestDescriptor<object>().Query(q => q
-                    .Bool(b => b
-                        .Must(
-                            m => m.Term(t => t.Field("fields.Data.ResourceId").Value(resourceId))
-                        )
-                    )
-                );
-                var results = ExecuteDatabase(search)?.ToList();
-                if (results?.Count > 0)
+                var resourceId = GetValue<string>("ResourceId", values);
+                var result = new List<ExecutionHistory>();
+
+                if (resourceId != null)
                 {
-                    var queryTriggerData = ExecutionHistories(results, result);
-                    if (queryTriggerData != null)
+                    var search = new SearchRequestDescriptor<object>()
+                    .Size(20)
+                    .Query(q => q
+                        .Bool(b => b
+                            .Must(m => m
+                                .Term(t => t
+                                    .Field("fields.Data.WorkflowID.keyword")
+                                    .Value(resourceId)
+                                )
+                            )
+                        )
+                    );
+
+                    var results = ExecuteDatabase(search)?.ToList();
+                    if (results?.Count > 0)
                     {
-                        return queryTriggerData;
+                        var queryTriggerData = ExecutionHistories(results, result);
+                        if (queryTriggerData != null)
+                        {
+                            return queryTriggerData;
+                        }
                     }
                 }
-            }
 
-            return result;
+                return result;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error in querying trigger data: "+ ex.ToString());
+                return new List<ExecutionHistory>();
+            }
         }
 
         private static IEnumerable<IExecutionHistory> ExecutionHistories(IEnumerable<object> results, ICollection<ExecutionHistory> result)
         {
-            foreach (Dictionary<string, object> item in results)
+            foreach (JsonElement jsonElement in results)
             {
-                foreach (var entry in item)
+                if (jsonElement.TryGetProperty("fields", out JsonElement fieldsElement) &&
+                    fieldsElement.TryGetProperty("Data", out JsonElement dataElement))
                 {
-                    if (entry.Key != "fields")
-                    {
-                        continue;
-                    }
-                    foreach (var fields in (Dictionary<string, object>) entry.Value)
-                    {
-                        var executionHistory = new ExecutionHistory();
+                    var executionHistory = new ExecutionHistory();
 
-                        var keyValuePairs = ((Dictionary<string, object>) fields.Value)
-                            .Where(items => items.Value != null);
+                    foreach (JsonProperty property in dataElement.EnumerateObject())
+                    {
+                        if (property.Value.ValueKind == JsonValueKind.Null)
+                            continue;
 
-                        foreach (var items in keyValuePairs)
+                        switch (property.Name)
                         {
-                            switch (items.Key)
-                            {
-                                case "ResourceId":
-                                    executionHistory.ResourceId = Guid.Parse(items.Value.ToString());
-                                    break;
-                                case "ExecutionInfo":
-                                    var executionInfo = ExecutionInfo(items);
-                                    executionHistory.ExecutionInfo = executionInfo;
-                                    break;
-                                case "UserName":
-                                    executionHistory.UserName = items.Value.ToString();
-                                    break;
-                                case "Exception":
-                                    executionHistory.Exception = items.Value as SerializableException;
-                                    break;
-                                case "LogLevel":
-                                    Enum.TryParse((string) items.Value, true, out LogLevel logLevel);
-                                    executionHistory.LogLevel = logLevel;
-                                    break;
-                                case "AuditType":
-                                    executionHistory.AuditType = items.Value.ToString();
-                                    break;
-                            }
-                        }
+                            case "WorkflowID":
+                                executionHistory.ResourceId = Guid.Parse(property.Value.GetString());
+                                break;
+                            case "ExecutionID":
+                                var jObject = fieldsElement.GetProperty("Data");
 
-                        result.Add(executionHistory);
+                                var hasStart = DateTime.TryParse(jObject.GetProperty("StartDateTime").ToString(), out var start);
+                                var hasEnd = DateTime.TryParse(jObject.GetProperty("CompletedDateTime").ToString(), out var end);
+
+                                var execInfo = new ExecutionInfo
+                                {
+                                    CustomTransactionID = jObject.GetProperty("CustomTransactionID").ToString(),
+                                    StartDate = hasStart ? start : default,
+                                    EndDate = hasEnd ? end : default,
+                                    Duration = hasStart && hasEnd ? end - start : TimeSpan.Zero,
+                                    ExecutionId = Guid.TryParse(jObject.GetProperty("ExecutionID").ToString(), out var eid) ? eid : Guid.Empty,
+                                    FailureReason = jObject.TryGetProperty("Exception", out var exProp) && exProp.ValueKind != JsonValueKind.Null ? exProp.ToString() : null,
+                                    Success = jObject.TryGetProperty("Exception", out var exProp1) && exProp1.ValueKind != JsonValueKind.Null
+                                        ? QueueRunStatus.Success
+                                        : QueueRunStatus.Error
+                                };
+
+                                executionHistory.ExecutionInfo = execInfo;
+                                break;
+                            case "ExecutionInfo":
+                                var executionInfo = ExecutionInfo(property); // Ensure ExecutionInfo() accepts JsonProperty or JsonElement
+                                executionHistory.ExecutionInfo = executionInfo;
+                                break;
+                            case "User":
+                                executionHistory.UserName = property.Value.GetString();
+                                break;
+                            case "Exception":
+                                // Assuming it's a string or null — update if needed
+                                executionHistory.Exception = null; // Deserialize appropriately if needed
+                                break;
+                            case "LogLevel":
+                                Enum.TryParse(property.Value.GetString(), true, out LogLevel logLevel);
+                                executionHistory.LogLevel = logLevel;
+                                break;
+                            case "AuditType":
+                                executionHistory.AuditType = property.Value.GetString();
+                                break;
+                        }
                     }
+
+                    result.Add(executionHistory);
                 }
             }
 
             return result;
         }
 
-        private static ExecutionInfo ExecutionInfo(KeyValuePair<string, object> items)
+        private static ExecutionInfo ExecutionInfo(JsonProperty item)
         {
             var executionInfo = new ExecutionInfo();
-            var keyValuePairs = ((Dictionary<string, object>) items.Value)
-                .Where(infoItem => infoItem.Value != null);
 
-            foreach (var infoItem in keyValuePairs)
+            if (item.Value.ValueKind != JsonValueKind.Object)
+                return executionInfo;
+
+            foreach (var prop in item.Value.EnumerateObject())
             {
-                switch (infoItem.Key)
+                if (prop.Value.ValueKind == JsonValueKind.Null)
+                    continue;
+
+                switch (prop.Name)
                 {
                     case "ExecutionId":
-                        executionInfo.ExecutionId = Guid.Parse(infoItem.Value.ToString());
+                        executionInfo.ExecutionId = Guid.Parse(prop.Value.GetString());
                         break;
+
                     case "CustomTransactionID":
-                        executionInfo.CustomTransactionID = infoItem.Value.ToString();
+                        executionInfo.CustomTransactionID = prop.Value.GetString();
                         break;
+
                     case "Success":
-                        executionInfo.Success = items.Value is QueueRunStatus value ? value : QueueRunStatus.Success;
+                        // You'll likely need custom logic here if you're deserializing an enum
+                        if (Enum.TryParse<QueueRunStatus>(prop.Value.GetString(), true, out var status))
+                        {
+                            executionInfo.Success = status;
+                        }
+                        else
+                        {
+                            executionInfo.Success = QueueRunStatus.Success;
+                        }
                         break;
+
                     case "EndDate":
-                        executionInfo.EndDate = DateTime.Parse(infoItem.Value.ToString());
+                        executionInfo.EndDate = prop.Value.GetDateTime();
                         break;
+
                     case "Duration":
-                        executionInfo.Duration = TimeSpan.Parse(infoItem.Value.ToString());
+                        executionInfo.Duration = TimeSpan.Parse(prop.Value.GetString());
                         break;
+
                     case "StartDate":
-                        executionInfo.StartDate = DateTime.Parse(infoItem.Value.ToString());
+                        executionInfo.StartDate = prop.Value.GetDateTime();
                         break;
+
                     case "FailureReason":
-                        executionInfo.FailureReason = infoItem.Value.ToString();
+                        executionInfo.FailureReason = prop.Value.GetString();
                         break;
                 }
             }
 
             return executionInfo;
         }
+
 
         public override IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values)
         {
@@ -305,8 +356,14 @@ namespace Warewolf.Auditing.Drivers
         {
             var client = _elasticClient ?? Client();
             var logEvents = client.Search(search);
+            if (!logEvents.IsValidResponse)
+            {
+                Console.WriteLine("Elasticsearch query failed");
+                return Enumerable.Empty<object>();
+            }
+
             var sources = logEvents.HitsMetadata?.Hits?.Select(h => h.Source);
-            return sources;
+            return sources ?? Enumerable.Empty<object>();
         }
 
         private ElasticsearchClient Client()
