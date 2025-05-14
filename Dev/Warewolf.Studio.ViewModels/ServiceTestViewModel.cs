@@ -1100,7 +1100,7 @@ namespace Warewolf.Studio.ViewModels
 			if (exists == null)
 			{
 				var type = typeof(DsfForEachActivity);
-				var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
+                var testStep = CreateMockChildStepWithoutOutputs(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
 				SetStepIcon(type, testStep);
 				var activity = forEachActivity.DataFunc.Handler;
 				var act = activity as DsfNativeActivity<string>;
@@ -1131,10 +1131,10 @@ namespace Warewolf.Studio.ViewModels
 					}
 				}
 
-            if (workFlowService != null)
-            {
-                AddChildActivity(workFlowService, testStep);
-            }
+                if (workFlowService != null)
+                {
+                    AddChildActivity(workFlowService, testStep);
+                }
                 serviceTestSteps.Add(testStep);
             }
         }
@@ -1146,7 +1146,13 @@ namespace Warewolf.Studio.ViewModels
             StepOutputs = GetDefaultOutputs()
         };
 
-        void ProcessSelectAndApply(ModelItem modelItem)
+		private IServiceTestStep CreateMockChildStepWithoutOutputs(Guid uniqueId, IServiceTestStep parent, string typeName, string displayName) => new ServiceTestStep(uniqueId, typeName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+		{
+			StepDescription = displayName,
+			Parent = parent
+		};
+
+		void ProcessSelectAndApply(ModelItem modelItem)
         {
             var selectAndApplyActivity = GetCurrentActivity<DsfSelectAndApplyActivity>(modelItem);
             AddSelectAndApply(selectAndApplyActivity, null, SelectedServiceTest.TestSteps);
@@ -1162,8 +1168,8 @@ namespace Warewolf.Studio.ViewModels
             var exists = FindExistingStep(uniqueId);
 
             var type = typeof(DsfSelectAndApplyActivity);
-            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, selectApplyActivity.DisplayName);
-            SetStepIcon(type, testStep);
+			var testStep = CreateMockChildStepWithoutOutputs(Guid.Parse(uniqueId), parent, type.Name, selectApplyActivity.DisplayName);
+			SetStepIcon(type, testStep);
             var activity = selectApplyActivity.ApplyActivityFunc.Handler;
             var act = activity as DsfNativeActivity<string>;
             var workFlowService = activity as DsfActivity;
@@ -1215,8 +1221,8 @@ namespace Warewolf.Studio.ViewModels
             var uniqueId = sequence.UniqueID;
 
             var type = sequence.GetType();
-            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, sequence.DisplayName);
-            SetStepIcon(type, testStep);
+            var testStep = CreateMockChildStepWithoutOutputs(Guid.Parse(uniqueId), parent, type.Name, sequence.DisplayName);
+			SetStepIcon(type, testStep);
             foreach (var activity in sequence.Activities)
             {
                 AddInnerActivity(testStep, activity);
@@ -1770,8 +1776,13 @@ namespace Warewolf.Studio.ViewModels
                         SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                         return serviceTestStep;
                     }
+					else if (type == typeof(DsfSequenceActivity))
+					{
+						SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+						return serviceTestStep;
+					}
 
-                    serviceTestStep.StepOutputs = GetDefaultOutputs();
+					serviceTestStep.StepOutputs = GetDefaultOutputs();
                     SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                     return serviceTestStep;
                 }
