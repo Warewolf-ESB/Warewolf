@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -180,9 +181,33 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
-                        Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
-                        Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
+                        bool newExchangeOrQueue = false;
+						try
+						{
+							// Check if the exchange exists
+							Channel.ExchangeDeclarePassive(queueName);
+						}
+						catch (OperationInterruptedException)
+						{
+							// The exchange does not exist, so declare it
+							Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
+                            newExchangeOrQueue = true;
+						}
+						try
+						{
+							// Check if the queue exists
+							Channel.QueueDeclarePassive(queueName);
+						}
+						catch (OperationInterruptedException)
+						{
+							// The queue does not exist, so declare it
+							Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
+							newExchangeOrQueue = true;
+						}
+                        if (newExchangeOrQueue)
+                        {
+                            Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
+                        }
 
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
