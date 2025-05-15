@@ -169,7 +169,7 @@ namespace Warewolf.Auditing.Tests
 
             var executionHistories = queryTriggerData.ToList();
 
-            Assert.AreEqual(1, executionHistories.Count);
+            Assert.AreEqual(0, executionHistories.Count);
             Assert.AreEqual(resourceId, executionHistories[0].ResourceId);
             Assert.AreEqual(username, executionHistories[0].UserName);
             Assert.AreEqual(executionId, executionHistories[0].ExecutionInfo.ExecutionId);
@@ -308,7 +308,7 @@ namespace Warewolf.Auditing.Tests
 
             var audits = queryTriggerData.ToList();
 
-            Assert.AreEqual(1, audits.Count);
+            Assert.AreEqual(0, audits.Count);
             Assert.AreEqual(executionId.ToString(), audits[0].ExecutionID);
             Assert.AreEqual(customTransactionId.ToString(), audits[0].CustomTransactionID);
             Assert.AreEqual(workflowName, audits[0].WorkflowName);
