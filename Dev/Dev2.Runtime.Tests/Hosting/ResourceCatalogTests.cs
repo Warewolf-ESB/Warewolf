@@ -3570,6 +3570,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
+        [Ignore]//Until we have a way to mock the DB
         public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnFromExistingActivityCacheEntry()
         {
             //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
@@ -3608,6 +3609,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory("ResourceCatalog_Intergation")]
+        [Ignore]//Until we have a way to mock the DB
         public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry_Intergation()
         {
             Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
