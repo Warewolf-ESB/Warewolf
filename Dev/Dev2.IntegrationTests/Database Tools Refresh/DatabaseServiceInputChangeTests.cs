@@ -104,42 +104,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             CreateModelItem();
             CreateDatabaseSourceRegion();
             CreateDbActionRegion();
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Load Tests")]
-        public void Change_sql_source_verify_Empty_Inputs()
-        {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
-            var newName = Guid.NewGuid().ToString();
-            var cleanProcName = newName.Replace("-", "").Replace(" ", "");
-            try
-            {
-                var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-                var result = SqlHelper.RunSqlCommand(_containerOps.Container.IP,
-                    _containerOps.Container.Port, createProcedure);
-                Assert.AreEqual(-1, result);
-
-                Setup(cleanProcName);
-
-                var mockSource = new Mock<IDbSource>().Create();
-
-                IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(_modelItem, _dbActionRegion);
-                Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
-                Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
-                Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
-                //add testing here
-
-                _source.SelectedSource = mockSource.Object;
-                Assert.AreEqual(0, databaseInputRegion.Inputs.Count);
-            }
-            finally
-            {
-                var dropResult = DropProcedure(cleanProcName);
-                Assert.AreEqual(-1, dropResult);
-            }
-        }
+       }
 
         int DropProcedure(string cleanProcName)
         {

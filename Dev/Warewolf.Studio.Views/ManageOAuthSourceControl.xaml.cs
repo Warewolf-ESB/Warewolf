@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.Rendering;
 #else
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #endif
 
 namespace Warewolf.Studio.Views

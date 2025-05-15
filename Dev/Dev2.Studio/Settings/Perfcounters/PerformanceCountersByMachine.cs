@@ -2,7 +2,7 @@
 #if !NETFRAMEWORK
 using Dev2.Common;
 #else
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #endif
 
 namespace Dev2.Settings.Perfcounters

@@ -1305,7 +1305,6 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
-    <Reference Include="System.Activities.Presentation" />
     <Page Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2544,8 +2543,8 @@
       <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
@@ -2605,6 +2604,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

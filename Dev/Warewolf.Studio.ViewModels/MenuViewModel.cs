@@ -18,7 +18,7 @@ using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using System.Threading.Tasks;
 using FontAwesome6;

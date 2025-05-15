@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if (WINDOWS || NETFRAMEWORK)
 using System.Activities.Presentation.View;
+#endif
 using System.Activities.Statements;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
@@ -234,12 +236,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                 if (xamlStr.Length != 0)
                 {
                     using (var sw = new StringReader(xamlStr))
-                    {
-                        var xamlXmlWriterSettings = new XamlXmlReaderSettings
-                        {
-                            LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
-                        };
-                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
+					{
+						var xamlXmlWriterSettings = new XamlXmlReaderSettings
+#if (WINDOWS || NETFRAMEWORK)
+				        {
+				        	LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
+				        };
+#else
+				        ();
+#endif
+						var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
                         var load = XamlServices.Load(xw);
                         return load as ActivityBuilder;
                     }

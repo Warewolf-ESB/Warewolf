@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System.Threading.Tasks;
 #else
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #endif
 
 namespace Warewolf.Studio.Views

@@ -8,7 +8,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif
@@ -87,7 +87,7 @@ namespace Dev2.ViewModels
         protected override void OnViewLoaded(object view)
         {
 #if NETFRAMEWORK
-            if (view is IView loadedView)
+            if (view is FrameworkElement loadedView)
             {
 				loadedView.DataContext = ViewModel;
 #else

@@ -22,7 +22,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Prism.Mvvm;
 #endif

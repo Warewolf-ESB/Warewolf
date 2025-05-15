@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation;
+#endif
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -136,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-		#region INotifyPropertyChnaged
+        #region INotifyPropertyChnaged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -145,10 +147,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-		#endregion INotifyPropertyChnaged
+        #endregion INotifyPropertyChnaged
 
 
-		#region Protected Methods
+        #region Protected Methods
 
         protected IWarewolfIterator CreateDataListEvaluateIterator(string expression, IExecutionEnvironment executionEnvironment, int update)
         {
@@ -185,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-		#endregion Protected Methods
+        #endregion Protected Methods
 
         public bool Equals(DsfActivityAbstract<T> other)
         {

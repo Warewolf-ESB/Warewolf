@@ -16,7 +16,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Interfaces;
 using Infragistics.Controls.Maps;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;

@@ -9,8 +9,10 @@
 */
 
 using System;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
+#endif
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,8 +82,9 @@ namespace Dev2.Tests.Activities
 
         #endregion
 
-        #region SerializeWorkflow
+#region SerializeWorkflow
 
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]
         [Timeout(60000)]
         public void WorkflowHelperSerializeWorkflowWithNullModelServiceExpectedReturnsEmptyString()
@@ -137,11 +140,13 @@ namespace Dev2.Tests.Activities
             var actualAssemblies = asmList.Elements(a + "AssemblyReference").Select(e => e.Value).ToList();
             Assert.IsTrue(ExpectedAssemblies.SequenceEqual(actualAssemblies));
         }
+#endif
 
-        #endregion
+#endregion
 
-        #region CreateModelService
+#region CreateModelService
 
+#if WINDOWS || NETFRAMEWORK
         static Mock<ModelService> CreateModelService()
         {
             var root = new Mock<ModelItem>();
@@ -152,7 +157,8 @@ namespace Dev2.Tests.Activities
 
             return modelService;
         }
+#endif
 
-        #endregion
+#endregion
     }
 }

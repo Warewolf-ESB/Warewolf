@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using Dev2.Studio.Interfaces;
 
 
@@ -17,7 +19,9 @@ namespace Dev2.Studio.Core.Messages
     public class ConfigureActivityMessage : IMessage
     {
         public IServer Server { get; set; }
+#if WINDOWS || NETFRAMEWORK
         public ModelItem ModelItem { get; set; }
+#endif
         public bool IsPaste { get; set; }
     }
 }

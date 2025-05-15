@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
             private set
             {
-                OnPropertyChanged("Tool");
+				OnPropertyChanged("Tool");
                 _tool = value;
             }
         }
@@ -121,6 +121,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        #endregion
+#endregion
     }
 }

@@ -24,15 +24,11 @@
   </PropertyGroup>
   <ItemGroup>   
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
     </Reference>
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>   
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -403,6 +399,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GACManagerApi\GACManagerApi.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
       <Name>Warewolf.Auditing</Name>
@@ -478,6 +475,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="DynamicData" Version="9.2.2" />
     <PackageReference Include="Elastic.Clients.Elasticsearch">
       <Version>8.15.6</Version>
     </PackageReference>
@@ -501,9 +499,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-    <Reference Include="GACManagerApi">
-      <HintPath>..\Binaries\GACManagerApi.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
     <PackageReference Include="CoreWCF.Http" Version="1.2.1" />
     <PackageReference Include="CoreWCF.NetTcp" Version="1.2.1" />
@@ -519,10 +514,10 @@
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ServiceStack" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Client" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Common" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Redis" Version="6.2.0" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Client" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="Microsoft.JScript" />
@@ -585,12 +580,6 @@
     <PackageReference Include="Npgsql">
       <Version>3.2.7</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="GAC.API">
-      <Version>1.0.1</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
@@ -622,6 +611,7 @@
       <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data" Version="9.2.0" />
+    <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

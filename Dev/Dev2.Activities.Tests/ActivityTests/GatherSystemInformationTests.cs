@@ -715,6 +715,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[testLanguage]]", outputs[1]);
         }
 
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]
         [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
@@ -788,6 +789,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
+#endif
 
 
         [TestMethod]

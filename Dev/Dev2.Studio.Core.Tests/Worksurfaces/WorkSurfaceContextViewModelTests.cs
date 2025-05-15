@@ -53,7 +53,7 @@ using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests
 {
-    [Dev2.Net6.Compatibility.STATestClass]
+    [STATestClass]
     [TestCategory("Studio Worksurfaces Core")]
     public class WorkSurfaceContextViewModelTests
     {

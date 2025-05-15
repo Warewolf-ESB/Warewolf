@@ -24,7 +24,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.DependencyVisualization;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;

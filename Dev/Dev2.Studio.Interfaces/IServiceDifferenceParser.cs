@@ -9,7 +9,9 @@
 */
 
 using Dev2.Common;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation;
+#endif
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Interfaces

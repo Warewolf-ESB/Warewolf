@@ -10,7 +10,9 @@
 */
 
 using System;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 #if WINDOWS || NETFRAMEWORK
@@ -23,7 +25,8 @@ using Dev2.Data.SystemTemplates.Models;
 namespace Dev2.Utilities
 {
     public static class ActivityHelper
-    {
+	{
+#if WINDOWS || NETFRAMEWORK
         public static string InjectExpression(Dev2Switch ds, ModelProperty activityExpression)
         {
             if(ds == null)
@@ -59,6 +62,7 @@ namespace Dev2.Utilities
             }
             return expressionToInject;
         }
+#endif
 
         public static string ExtractData(string val)
         {

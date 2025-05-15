@@ -62,19 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
-   
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Core.Presentation" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
-    
-    <!--<Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
-    </Reference>-->
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -415,15 +405,15 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ServiceStack" Version="6.2.0" />
-    <PackageReference Include="ServiceStack.Common" Version="6.2.0" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="TrieNet.Core" Version="1.0.4" />
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
 	  <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
@@ -478,6 +468,16 @@
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Activities.Core.Presentation" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

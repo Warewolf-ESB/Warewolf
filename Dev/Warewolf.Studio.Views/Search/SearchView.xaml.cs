@@ -1,6 +1,6 @@
 ﻿using Dev2.ViewModels.Search;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;

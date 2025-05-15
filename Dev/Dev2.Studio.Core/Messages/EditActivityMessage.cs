@@ -10,21 +10,27 @@
 */
 
 using System;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 
 
 
 namespace Dev2.Studio.Core.Messages
 {
     public class EditActivityMessage : IMessage
-    {
+	{
+#if WINDOWS || NETFRAMEWORK
         public ModelItem ModelItem { get; private set; }
+#endif
         public Guid ParentEnvironmentID { get; private set; }
 
+#if WINDOWS || NETFRAMEWORK
         public EditActivityMessage(ModelItem modelItem, Guid parentEnvironmentID)
         {
             ModelItem = modelItem;
             ParentEnvironmentID = parentEnvironmentID;
         }
+#endif
     }
 }

@@ -11,7 +11,9 @@
 
 using System;
 using System.Activities;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -318,9 +320,9 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 #if WINDOWS || NETFRAMEWORK
 		void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
 		{
@@ -471,11 +473,11 @@ namespace Dev2.Activities
 		}
 #endif
 
-		#endregion Private Methods
+        #endregion Private Methods
 
-		#region Get Debug Inputs/Outputs
+        #region Get Debug Inputs/Outputs
 
-		#region GetDebugInputs
+        #region GetDebugInputs
 
 		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {

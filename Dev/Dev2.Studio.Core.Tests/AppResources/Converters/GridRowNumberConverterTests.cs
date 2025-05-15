@@ -19,7 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Converters
 {
-    [Dev2.Net6.Compatibility.STATestClass]
+    [STATestClass]
 	[TestCategory("Studio Resources Core")]
     public class GridRowNumberConverterTests
     {

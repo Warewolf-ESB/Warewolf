@@ -4,7 +4,7 @@ using Infragistics.Windows.DockManager;
 
 namespace Dev2.Core.Tests
 {
-    [Dev2.Net6.Compatibility.STATestClass]
+    [STATestClass]
     public class TabGroupPaneBindingBehaviorTests
     {
         [STATestMethod]

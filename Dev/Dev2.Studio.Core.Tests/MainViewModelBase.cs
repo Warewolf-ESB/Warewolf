@@ -36,7 +36,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Enums;
 using Warewolf.Licensing;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif

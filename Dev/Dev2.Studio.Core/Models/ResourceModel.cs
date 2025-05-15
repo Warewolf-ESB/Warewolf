@@ -34,7 +34,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif

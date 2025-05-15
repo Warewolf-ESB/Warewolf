@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;

@@ -19,7 +19,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Warewolf.Studio.Core;
 using Dev2.Common;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Prism.Mvvm;
 #endif

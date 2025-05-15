@@ -10,7 +10,9 @@
 */
 
 using System;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
+#endif
 using Dev2.Studio.Interfaces;
 
 
@@ -71,11 +73,16 @@ namespace Dev2.Studio.Core
 
         public object WebActivityObject { get; set; }
 
+#if WINDOWS || NETFRAMEWORK
         public Type UnderlyingWebActivityObjectType => (WebActivityObject as ModelItem)?.ItemType;
+#else
+		public Type UnderlyingWebActivityObjectType => throw new NotImplementedException();
+#endif
 
         public IContextualResourceModel ResourceModel { get; set; }
 
-        string GetPropertyValue(object modelItemObject, string propertyName)
+
+		string GetPropertyValue(object modelItemObject, string propertyName)
         {
 #if WINDOWS || NETFRAMEWORK
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)

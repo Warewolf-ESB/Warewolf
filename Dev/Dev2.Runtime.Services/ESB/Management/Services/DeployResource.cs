@@ -104,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         IConnections _connections = new Connections();
         Data.ServiceModel.Connection _destinationConnection;
         private bool shouldLoadQueue;
-        private readonly object deployResultsListLock = new();
+        private readonly object deployResultsListLock = new object();
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {

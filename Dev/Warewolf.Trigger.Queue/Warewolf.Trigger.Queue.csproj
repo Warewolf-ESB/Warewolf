@@ -15,7 +15,7 @@
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="Serilog.Sinks.SQLite" Version="5.5.0" />
   </ItemGroup>
   <ItemGroup>

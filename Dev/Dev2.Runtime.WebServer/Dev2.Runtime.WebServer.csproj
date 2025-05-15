@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -56,10 +56,7 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Activities" />    
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Activities" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -127,6 +124,7 @@
     <Compile Include="Responses\StaticFileResponseWriter.cs" />
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Responses\IResponseWriter.cs" />
+    <Compile Include="WebServerCoreStartup.cs" />
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerRequestContent.cs" />
     <Compile Include="WebServerRequestContentHeaders.cs" />

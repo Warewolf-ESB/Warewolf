@@ -19,7 +19,8 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [string]$FrameworkTarget
+  [string]$FrameworkTarget,
+  [switch]$Disablemaxcpucount
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
 					  "Dev\UITesting.sln",
@@ -41,7 +42,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($FrameworkTarget) {
+if ($FrameworkTarget -and $FrameworkTarget -ne "net6.0-windows") {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
@@ -349,11 +350,32 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if ($FrameworkTarget) {
-                $OutputFolderName += "\" + $FrameworkTarget
+            if ($ProjectSpecificOutputs.IsPresent) {
+                $OutputProperty = ""
+            } else {
+			    if ($FrameworkTarget) {
+			        $OutputFolderName += "\" + $FrameworkTarget
+			    }
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            }
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+            }
+			if ($FrameworkTarget) {
                 $FrameworkTarget = ";TargetFramework=`"" + $FrameworkTarget + "`""
-                if ($FrameworkTarget -eq "net6.0") {
-                    $DockerfileContent = @"
+			}
+            if (!($InContainer.IsPresent)) {
+				&"$MSBuildPath" "$PSScriptRoot\$SolutionFile" /t:Restore
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
+            } else {
+                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" $OutputProperty $Target
+            }
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
+                exit 1
+            }
+            if ($FrameworkTarget -eq "net6.0") {
+                $DockerfileContent = @"
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 
 EXPOSE 3142
@@ -369,16 +391,15 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 # Run the application
 CMD ["dotnet", "./Server/Warewolf Server.dll"]
 "@
-                    if ($ProjectSpecificOutputs.IsPresent) {
-                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
-                    } else {
-                        $OutputFile = "$OutputFolderName\Dockerfile"
-                    }
-                    if (!(Test-Path $OutputFolderName)) {
-                        New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
-                    }
-                    $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
+                if ($ProjectSpecificOutputs.IsPresent) {
+                    $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
+                } else {
+                    $OutputFile = "$OutputFolderName\Dockerfile"
                 }
+                if (!(Test-Path $OutputFolderName)) {
+                    New-Item -ItemType Directory -Path $OutputFolderName -Force | Out-Null
+                }
+                $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
@@ -388,10 +409,13 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
             } else {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
+			if (!($Disablemaxcpucount.IsPresent)) {
+				$DisablemaxcpucountProperty = "/maxcpucount"
+			}
             if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/nodeReuse:false" "/restore" $OutputProperty $Target $DisablemaxcpucountProperty
             } else {
-                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkTarget" "/nodeReuse:false" "/restore" $OutputProperty $Target $NodeReuseProperty
             }
             if ($LASTEXITCODE -ne 0) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe

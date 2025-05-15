@@ -52,7 +52,7 @@ using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;

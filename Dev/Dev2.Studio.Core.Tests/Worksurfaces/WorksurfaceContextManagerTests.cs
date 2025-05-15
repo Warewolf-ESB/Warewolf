@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 #endif
@@ -34,7 +34,7 @@ using Action = System.Action;
 
 namespace Dev2.Core.Tests
 {
-    [Dev2.Net6.Compatibility.STATestClass]
+    [STATestClass]
     [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {

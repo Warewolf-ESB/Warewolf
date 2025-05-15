@@ -12,7 +12,9 @@
 using System;
 using System.Activities;
 using System.Activities.Expressions;
+#if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Services;
+#endif
 using System.Activities.Statements;
 using System.Activities.XamlIntegration;
 using System.Collections.Concurrent;
@@ -41,8 +43,9 @@ namespace Dev2.Utilities
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
 
-        // NOTE : This singleton instance causes memory leaks ;)
+// NOTE : This singleton instance causes memory leaks ;)
 
+#if WINDOWS || NETFRAMEWORK
         public StringBuilder SerializeWorkflow(ModelService modelService)
         {
             var builder = GetActivityBuilder(modelService);
@@ -50,6 +53,7 @@ namespace Dev2.Utilities
 
             return text;
         }
+#endif
 
         public StringBuilder GetXamlDefinition(ActivityBuilder builder)
         {
@@ -122,6 +126,7 @@ namespace Dev2.Utilities
             return builder;
         }
 
+#if WINDOWS || NETFRAMEWORK
         public ActivityBuilder EnsureImplementation(ModelService modelService)
         {
             var builder = GetActivityBuilder(modelService);
@@ -145,6 +150,7 @@ namespace Dev2.Utilities
             var builder = root as ActivityBuilder;
             return builder;
         }
+#endif
 
         void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
         {

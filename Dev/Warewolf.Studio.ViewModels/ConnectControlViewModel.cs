@@ -22,7 +22,7 @@ using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Warewolf.Resource.Errors;
 #else
 using Prism.Commands;

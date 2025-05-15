@@ -48,10 +48,6 @@
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
     <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataList\IComplexObjectItemModel.cs" />
@@ -165,12 +161,19 @@
     <None Include="Dev2.Studio.Interfaces.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+  	<Reference Include="System.Activities.Presentation" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+  	<Reference Include="Weave">
+  		<HintPath>..\Binaries\Weave.dll</HintPath>
+  	</Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
+  	<ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

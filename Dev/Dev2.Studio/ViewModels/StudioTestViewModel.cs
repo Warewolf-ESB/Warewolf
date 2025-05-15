@@ -15,7 +15,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -74,7 +74,7 @@ namespace Dev2.ViewModels
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
-            if (view is IView loadedView)
+            if (view is FrameworkElement loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);

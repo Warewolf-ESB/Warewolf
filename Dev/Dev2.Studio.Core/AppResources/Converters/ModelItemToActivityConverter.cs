@@ -11,9 +11,9 @@
 using Dev2.Activities;
 using System;
 using System.Activities;
-using System.Activities.Presentation.Model;
 using System.Globalization;
 #if WINDOWS || NETFRAMEWORK
+using System.Activities.Presentation.Model;
 using System.Windows.Data;
 #endif
 
@@ -30,8 +30,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
 #endif
             object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var modelItem = value as ModelItem;
-
+            var modelItem = value
+#if WINDOWS || NETFRAMEWORK
+                as ModelItem
+#endif
+                ;
             return modelItem;
         }
 
@@ -41,6 +44,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 #endif
             object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+#if WINDOWS || NETFRAMEWORK
             if (value is ModelItem modelItem)
             {
                 var currentValue = modelItem.GetCurrentValue();
@@ -55,6 +59,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 var act = currentValue as Activity;
                 return act;
             }
+#endif
 
             if (value is null && parameter?.ToString() == "Resume")
             {

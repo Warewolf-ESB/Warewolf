@@ -15,7 +15,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Studio.ViewModels.WorkSurface;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 #else
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
