@@ -5,6 +5,7 @@ Feature: SqlBulkInsert
 	I want a tool that performs this action
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into table with check contraint disabled
 	Given I have this data
 		| Col1 | Col2     | Col3                                 |
@@ -31,6 +32,7 @@ Scenario: Import data into table with check contraint disabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with check constraint enabled
 	#Col3 is a foreign key that does not exist in the primary key table.
 	Given I have this data
@@ -51,6 +53,7 @@ Scenario: Import data into Table with check constraint enabled
 	| [[result]] = Failure |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with keep identity disabled
 	#Given that the table is truncated i.e. seed is 1 and increment is 1
 	Given I have this data
@@ -83,6 +86,7 @@ Scenario: Import data into Table with keep identity disabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with keep identity enabled
 	Given I have this data
 		| Col1 | Col2     | Col3                                 |
@@ -114,6 +118,7 @@ Scenario: Import data into Table with keep identity enabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with skip blank rows disabled
 	#Note the second row is blank from the source data
 	Given I have this data
@@ -145,6 +150,7 @@ Scenario: Import data into Table with skip blank rows disabled
 	| [[result]] = Failure |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with skip blank rows enabled
 	#Note the second row is blank from the source data
 	Given I have this data
@@ -177,6 +183,7 @@ Scenario: Import data into Table with skip blank rows enabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with fire triggers disabled
 #A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled] against the column [Col2] to add a default value of XXXXXXXX.
 	Given I have this data
@@ -209,6 +216,7 @@ Scenario: Import data into Table with fire triggers disabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table with fire triggers enabled
 #A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled] against the column [Col2] to add a default value of XXXXXXXX.
 	Given I have this data
@@ -241,6 +249,7 @@ Scenario: Import data into Table with fire triggers enabled
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table Batch size is 0
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -268,6 +277,7 @@ Scenario: Import data into Table Batch size is 0
 	| [[result]] = Success |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table Batch size is 1
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -292,6 +302,7 @@ Scenario: Import data into Table Batch size is 1
 	|   |                                                       |          |        | 1          |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into Table Batch size is 2
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
@@ -371,6 +382,7 @@ Scenario: Import data into Table timeout after 1 second
 	| [[result]] = Failure |
 
 @SqlBulkInsert
+@Ignore #Until we can get the DB mocked
 Scenario: Import data into table with blank data
 	Given I have this data
 		| Col1 | Col2     | Col3                           |

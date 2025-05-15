@@ -2656,7 +2656,7 @@ this.FeatureBackground();
                             "System.Random",
                             "Next"});
 #line 599
- testRunner.And("\"TestWFCOMDLL\" contains an COM DLL \"COMService\" as", ((string)(null)), table1256, "And ");
+ testRunner.And("\"TestWFCOMDLL\" contains an COM DLL \"COMService\" as", ((string)(null)), table1257, "And ");
 #line hidden
 #line 602
  testRunner.And("I save workflow \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -2668,7 +2668,7 @@ this.FeatureBackground();
  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 605
- testRunner.And("I Add \"COMService\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Add \"COMService\" as TestStep with All Mocks", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1258 = new TechTalk.SpecFlow.Table(new string[] {
                             "Variable Name",
@@ -2679,7 +2679,7 @@ this.FeatureBackground();
                             "Not Date",
                             ""});
 #line 606
- testRunner.And("I add StepOutputs as", ((string)(null)), table1257, "And ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1258, "And ");
 #line hidden
 #line 609
  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
