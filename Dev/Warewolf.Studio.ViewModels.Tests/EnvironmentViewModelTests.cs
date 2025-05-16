@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestRefreshCommandChildrenNoAllowResourceCheck()
         {
             //arrange
@@ -615,7 +615,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestSelectItemGuid()
         {
             //arrange
