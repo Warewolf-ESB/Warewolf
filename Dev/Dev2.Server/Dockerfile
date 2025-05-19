@@ -18,6 +18,6 @@ ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
 RUN mkdir "programdata\Warewolf"
-RUN ["powershell", "Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force"]
+RUN ["powershell.exe", "-Command", "Copy-Item -Path 'Server\\Resources - Release\\*' -Destination 'programdata\\Warewolf' -Recurse -Force"]
 
 CMD ["powershell", ".\\Server\\StartAsService.ps1"]
