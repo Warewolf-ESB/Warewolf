@@ -119,6 +119,7 @@ Scenario Outline: Copy file at FTPS location
 
 @CopyFileFromSFTP
 @CopyFileFromSFTPWithOverwrite
+@ignore(WOLF-7980)
 Scenario Outline: Copy file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"

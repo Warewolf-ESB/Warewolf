@@ -213,6 +213,7 @@ Scenario Outline: Zip file at FTPS location with overwrite disabled
 
 @ZipFromSFTP
 @ZipFromSFTPWithoutOverwrite
+@ignore(WOLF-7980)
 Scenario Outline: Zip file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests

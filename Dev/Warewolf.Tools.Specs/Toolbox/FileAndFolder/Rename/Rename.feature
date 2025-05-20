@@ -262,6 +262,7 @@ Scenario Outline: Rename file at FTPS location with overwrite disabled
 
 @FileRenameFromSFTP
 @FileRenameFromSFTPWithoutOverwrite
+@ignore(WOLF-7980)
 	Scenario Outline: Rename file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"

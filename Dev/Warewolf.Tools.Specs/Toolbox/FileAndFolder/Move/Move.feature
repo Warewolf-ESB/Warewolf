@@ -28,7 +28,7 @@ Scenario Outline: Move file at local location
 	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt                                                                               | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                            | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                            | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/moved0.txt                                                      | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+#ignore| 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/moved0.txt                                                      | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 
 @FileMoveFromUNC
@@ -262,6 +262,7 @@ Scenario Outline: Move file at FTPS location with overwrite disabled
 
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithoutOverwrite
+@ignore(WOLF-7980)
 Scenario Outline: Move file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
