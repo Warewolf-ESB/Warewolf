@@ -512,8 +512,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  And the "Cnt2" in Workflow "WorkflowWithAssignCountDataMerge&2Delete" debug outputs as 
 	  |                 |
 	  | [[result3]] = 3 |
-	  
-@Ignore #Until we can get the DB mocked
+
 Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing against the server
 	Given I depend on a valid MSSQL server
 	And I have a workflow "WorkflowWithAssignAndSQLBulkInsert"
