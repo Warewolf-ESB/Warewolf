@@ -97,7 +97,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [Ignore]//Until we can get the DB
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
@@ -202,7 +201,6 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestMethod]
         [Owner("Massimo.Guerrera")]
         [TestCategory("SqlDatabaseBroker")]
-        [Ignore]//Until we can get the DB mocked
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
@@ -226,7 +224,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [Ignore]//Until we can get the DB
         public void SqlDatabaseBroker_TestService_ValidDbServiceThatReturnsNull_RecordsetWithNullColumn()
         {
             var service = new DbService
