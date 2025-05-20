@@ -122,14 +122,8 @@ namespace Dev2.Runtime
                 foreach (var serviceTestModelTO in testsToUpdate)
                 {
                     UpdateTestToInvalid(testsToUpdate);
-                    if (inputDefs != null && inputDefs.Count > 0)
-                    {
-                        UpdateInputsForTest(serviceTestModelTO, inputDefs);
-                    }
-                    if (outputDefs != null && outputDefs.Count > 0)
-                    {
-                        UpdateOutputsForTest(serviceTestModelTO, outputDefs);
-                    }
+                    UpdateInputsForTest(serviceTestModelTO, inputDefs);
+                    UpdateOutputsForTest(serviceTestModelTO, outputDefs);
                 }
                 SaveTests(resourceID, testsToUpdate);
             }
@@ -175,7 +169,7 @@ namespace Dev2.Runtime
 
         static void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
         {
-            if (outputDefs.Count == 0)
+            if (outputDefs == null || outputDefs.Count == 0)
             {
                 serviceTestModelTO.Outputs = new List<IServiceTestOutput>();
             }
@@ -275,7 +269,7 @@ namespace Dev2.Runtime
 
         static void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
         {
-            if (inputDefs.Count == 0)
+            if (inputDefs == null || inputDefs.Count == 0)
             {
                 serviceTestModelTO.Inputs = new List<IServiceTestInput>();
             }
