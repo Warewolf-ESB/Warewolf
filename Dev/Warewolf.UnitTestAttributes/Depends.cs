@@ -176,7 +176,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MSSQL)
             {
-                Container.IP = "localhost";
+                Container.IP = "(localdb)\MSSQLLocalDB";
                 Container.Port = "1433";
             }
             else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
