@@ -84,7 +84,7 @@ Scenario Outline: Unzip file at FTPS location
 #ignore | 4  | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip | dev2     | Q/ulw&]  | [[destPath]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/ZIP3                        | dev2         | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 
 @UnzipFromSFTP
-@ignore(WOLF-7980)
+@ignore
 Scenario Outline: Unzip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And zip credentials as "<username>" and "<password>"

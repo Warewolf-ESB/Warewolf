@@ -262,7 +262,7 @@ Scenario Outline: Move file at FTPS location with overwrite disabled
 
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithoutOverwrite
-@ignore(WOLF-7980)
+@ignore
 Scenario Outline: Move file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
