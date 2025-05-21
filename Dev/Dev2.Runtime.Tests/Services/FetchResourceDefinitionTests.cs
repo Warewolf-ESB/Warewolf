@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Contains("RSAKLFSVRGENDEV"));
             Assert.IsTrue(result.Contains("testUser"));
-            Assert.IsTrue(result.Contains("Ex@mple!23Secure#PWD"));
+            Assert.IsTrue(result.Contains("test123"));
         }
 
         DbSource CreateDev2TestingDbSource(Guid resourceID)
@@ -225,7 +225,7 @@ namespace Dev2.Tests.Runtime.Services
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
-                Password = "Ex@mple!23Secure#PWD"
+                Password = "test123"
 			};
             return dbSource;
         }

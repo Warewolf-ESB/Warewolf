@@ -337,11 +337,11 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
                 Server = _containerOps.Container.IP,
-                AuthenticationType = AuthenticationType.User,
+                AuthenticationType = AuthenticationType.Windows,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
-                Password = "Ex@mple!23Secure#PWD",
+                Password = "test123",
                 ConnectionTimeout = 30
             };
             dbSource.Port = int.Parse(_containerOps.Container.Port);

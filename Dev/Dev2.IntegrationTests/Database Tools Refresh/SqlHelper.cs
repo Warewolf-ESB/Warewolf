@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             using (var trans = new TransactionScope())
             {
-                using (var con = new SqlConnection($"Data Source={host},{port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=Ex@mple!23Secure#PWD;"))
+                using (var con = new SqlConnection($"Data Source={host},{port};Initial Catalog=Dev2TestingDB;Integrated Security=SSPI;"))
                 {
                     var cmd = con.CreateCommand();
                     cmd.CommandText = command;

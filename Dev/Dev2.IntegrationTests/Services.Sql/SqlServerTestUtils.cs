@@ -17,7 +17,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 {
     public static class SqlServerTestUtils
     {
-        public static DbSource CreateDev2TestingDbSource(string server, int port, AuthenticationType authenticationType = AuthenticationType.User)
+        public static DbSource CreateDev2TestingDbSource(string server, int port, AuthenticationType authenticationType = AuthenticationType.Windows)
         {
             var dbSource = new DbSource
             {
@@ -29,7 +29,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = authenticationType == AuthenticationType.User ? "testuser" : null,
-                Password = authenticationType == AuthenticationType.User ? "Ex@mple!23Secure#PWD" : null,
+                Password = authenticationType == AuthenticationType.User ? "test123" : null,
                 ConnectionTimeout = 30,
                 Port = port
             };

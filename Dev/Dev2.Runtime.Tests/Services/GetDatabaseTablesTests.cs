@@ -198,11 +198,11 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = emptyDBName ? "" : "Dev2TestingDB",
                 Server = GetDatabaseColumnsForTableTests._containerOps.Container.IP,
-                AuthenticationType = AuthenticationType.User,
+                AuthenticationType = AuthenticationType.Windows,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
-                Password = "Ex@mple!23Secure#PWD",
+                Password = "test123",
                 ConnectionTimeout = 30
             };
             dbSource.Port = int.Parse(GetDatabaseColumnsForTableTests._containerOps.Container.Port);
