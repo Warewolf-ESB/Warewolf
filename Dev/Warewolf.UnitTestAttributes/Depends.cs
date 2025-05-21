@@ -356,7 +356,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
             UpdateSourcesConnectionStrings(
-                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;Integrated Security=SSPI;",
+                $"Data Source={Container.IP};Initial Catalog=Dev2TestingDB;Integrated Security=SSPI;",
                 knownMssqlServerSources);
         }
         
