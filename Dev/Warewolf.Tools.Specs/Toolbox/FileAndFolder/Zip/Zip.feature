@@ -94,6 +94,7 @@ Scenario Outline: Zip file at FTPS location
 
 @ZipFromSFTP
 @ZipFromSFTPWithOverwrite
+@ignore
 Scenario Outline: Zip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests

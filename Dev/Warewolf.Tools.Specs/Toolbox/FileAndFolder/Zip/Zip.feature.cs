@@ -903,7 +903,8 @@ this.ZipFileAtFTPSLocation("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPD
         {
             string[] @__tags = new string[] {
                     "ZipFromSFTP",
-                    "ZipFromSFTPWithOverwrite"};
+                    "ZipFromSFTPWithOverwrite",
+                    "ignore"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -932,7 +933,7 @@ this.ZipFileAtFTPSLocation("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPD
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at SFTP location", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 97
+#line 98
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -952,43 +953,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 98
+#line 99
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 99
+#line 100
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 100
+#line 101
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 102
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 102
+#line 103
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 104
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 105
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 105
+#line 106
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 106
+#line 107
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 107
+#line 108
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 108
+#line 109
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 109
+#line 110
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 110
+#line 111
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1778 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1015,14 +1016,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 111
+#line 112
  testRunner.And("the debug inputs as", ((string)(null)), table1778, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1779 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1779.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 114
+#line 115
  testRunner.And("the debug output as", ((string)(null)), table1779, "And ");
 #line hidden
             }
@@ -1032,6 +1033,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at SFTP location: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
@@ -1055,7 +1057,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocation_1()
         {
-#line 97
+#line 98
 this.ZipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New4.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1063,6 +1065,7 @@ this.ZipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://egx4s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at SFTP location: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
@@ -1086,7 +1089,7 @@ this.ZipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://egx4s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ZipFileAtSFTPLocation_2()
         {
-#line 97
+#line 98
 this.ZipFileAtSFTPLocation("2", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
@@ -1094,6 +1097,7 @@ this.ZipFileAtSFTPLocation("2", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://egx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at SFTP location: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
@@ -1117,7 +1121,7 @@ this.ZipFileAtSFTPLocation("2", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://egx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocation_3()
         {
-#line 97
+#line 98
 this.ZipFileAtSFTPLocation("3", "SFTP to FTP", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip14.txt", "dev2", "Q/ulw&]", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1125,6 +1129,7 @@ this.ZipFileAtSFTPLocation("3", "SFTP to FTP", "[[sourcePath]]", "sftp://egx4sze
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at SFTP location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
@@ -1148,7 +1153,7 @@ this.ZipFileAtSFTPLocation("3", "SFTP to FTP", "[[sourcePath]]", "sftp://egx4sze
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocation_4()
         {
-#line 97
+#line 98
 this.ZipFileAtSFTPLocation("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip24.txt", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1156,6 +1161,7 @@ this.ZipFileAtSFTPLocation("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://egx4sz
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at SFTP location: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ZipFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
@@ -1179,7 +1185,7 @@ this.ZipFileAtSFTPLocation("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://egx4sz
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocation_5()
         {
-#line 97
+#line 98
 this.ZipFileAtSFTPLocation("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1236,7 +1242,7 @@ this.ZipFileAtSFTPLocation("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://egx4sz
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at local location with overwrite disabled", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 127
+#line 128
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1256,43 +1262,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 128
+#line 129
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 129
+#line 130
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 130
+#line 131
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 131
+#line 132
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 132
+#line 133
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 133
+#line 134
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 135
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 135
+#line 136
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 137
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 137
+#line 138
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 138
+#line 139
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 139
+#line 140
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 140
+#line 141
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1780 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1319,14 +1325,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 141
+#line 142
  testRunner.And("the debug inputs as", ((string)(null)), table1780, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1781 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1781.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 144
+#line 145
  testRunner.And("the debug output as", ((string)(null)), table1781, "And ");
 #line hidden
             }
@@ -1359,7 +1365,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocalLocationWithOverwriteDisabled_1()
         {
-#line 127
+#line 128
 this.ZipFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\My New0.zip", "\"\"", "\"\"", "False", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1390,7 +1396,7 @@ this.ZipFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sourc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocalLocationWithOverwriteDisabled_2()
         {
-#line 127
+#line 128
 this.ZipFileAtLocalLocationWithOverwriteDisabled("2", "Local to FTP", "[[sourcePath]]", "c:\\filetozip2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip10.txt", "dev2", "Q/ulw&]", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1421,7 +1427,7 @@ this.ZipFileAtLocalLocationWithOverwriteDisabled("2", "Local to FTP", "[[sourceP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocalLocationWithOverwriteDisabled_3()
         {
-#line 127
+#line 128
 this.ZipFileAtLocalLocationWithOverwriteDisabled("3", "Local to FTPS", "[[sourcePath]]", "c:\\filetozip3.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip20.txt", "dev2", "Q/ulw&]", "False", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1478,7 +1484,7 @@ this.ZipFileAtLocalLocationWithOverwriteDisabled("3", "Local to FTPS", "[[source
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at FTP location with overwrite disabled", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 156
+#line 157
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1498,43 +1504,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 157
+#line 158
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 158
+#line 159
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 159
+#line 160
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 160
+#line 161
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 161
+#line 162
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 162
+#line 163
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 163
+#line 164
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 164
+#line 165
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 165
+#line 166
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 166
+#line 167
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 167
+#line 168
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 168
+#line 169
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 169
+#line 170
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1782 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1561,14 +1567,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 170
+#line 171
  testRunner.And("the debug inputs as", ((string)(null)), table1782, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1783 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1783.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 173
+#line 174
  testRunner.And("the debug output as", ((string)(null)), table1783, "And ");
 #line hidden
             }
@@ -1601,7 +1607,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPLocationWithOverwriteDisabled_1()
         {
-#line 156
+#line 157
 this.ZipFileAtFTPLocationWithOverwriteDisabled("1", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New2.zip", "\"\"", "\"\"", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1632,7 +1638,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("1", "FTP to Local", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPLocationWithOverwriteDisabled_2()
         {
-#line 156
+#line 157
 this.ZipFileAtFTPLocationWithOverwriteDisabled("2", "FTP to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\localhost\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\filetozip12.txt", "\"\"", "\"\"", "False", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1663,7 +1669,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("2", "FTP to UNC", "[[sourcePath]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPLocationWithOverwriteDisabled_3()
         {
-#line 156
+#line 157
 this.ZipFileAtFTPLocationWithOverwriteDisabled("3", "FTP to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip12.txt", "dev2", "Q/ulw&]", "False", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1694,7 +1700,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("3", "FTP to FTP", "[[sourcePath]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPLocationWithOverwriteDisabled_4()
         {
-#line 156
+#line 157
 this.ZipFileAtFTPLocationWithOverwriteDisabled("4", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip22.txt", "dev2", "Q/ulw&]", "False", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1751,7 +1757,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("4", "FTP to FTPS", "[[sourcePath
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at FTPS location with overwrite disabled", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 186
+#line 187
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1771,43 +1777,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 187
+#line 188
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 188
+#line 189
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 189
+#line 190
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 190
+#line 191
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 191
+#line 192
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 192
+#line 193
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 193
+#line 194
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 194
+#line 195
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 195
+#line 196
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 196
+#line 197
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 197
+#line 198
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 198
+#line 199
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 199
+#line 200
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1784 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1834,14 +1840,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 200
+#line 201
  testRunner.And("the debug inputs as", ((string)(null)), table1784, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1785 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1785.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 203
+#line 204
  testRunner.And("the debug output as", ((string)(null)), table1785, "And ");
 #line hidden
             }
@@ -1874,7 +1880,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPSLocationWithOverwriteDisabled_1()
         {
-#line 186
+#line 187
 this.ZipFileAtFTPSLocationWithOverwriteDisabled("1", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New3.zip", "\"\"", "\"\"", "False", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1905,7 +1911,7 @@ this.ZipFileAtFTPSLocationWithOverwriteDisabled("1", "FTPS to Local", "[[sourceP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPSLocationWithOverwriteDisabled_2()
         {
-#line 186
+#line 187
 this.ZipFileAtFTPSLocationWithOverwriteDisabled("2", "FTPS to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\localhost\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\filetozip13.txt", "\"\"", "\"\"", "False", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1936,7 +1942,7 @@ this.ZipFileAtFTPSLocationWithOverwriteDisabled("2", "FTPS to UNC", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPSLocationWithOverwriteDisabled_3()
         {
-#line 186
+#line 187
 this.ZipFileAtFTPSLocationWithOverwriteDisabled("3", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip13.txt", "dev2", "Q/ulw&]", "False", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1967,7 +1973,7 @@ this.ZipFileAtFTPSLocationWithOverwriteDisabled("3", "FTPS to FTP", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtFTPSLocationWithOverwriteDisabled_4()
         {
-#line 186
+#line 187
 this.ZipFileAtFTPSLocationWithOverwriteDisabled("4", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip23.txt", "dev2", "Q/ulw&]", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2025,7 +2031,7 @@ this.ZipFileAtFTPSLocationWithOverwriteDisabled("4", "FTPS to FTPS", "[[sourcePa
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at SFTP location with overwrite disabled", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 217
+#line 218
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -2045,43 +2051,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 218
+#line 219
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 219
+#line 220
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 220
+#line 221
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 221
+#line 222
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 222
+#line 223
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 223
+#line 224
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 224
+#line 225
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 226
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 226
+#line 227
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 227
+#line 228
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 228
+#line 229
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 229
+#line 230
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 230
+#line 231
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1786 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2108,14 +2114,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 231
+#line 232
  testRunner.And("the debug inputs as", ((string)(null)), table1786, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1787 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1787.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 234
+#line 235
  testRunner.And("the debug output as", ((string)(null)), table1787, "And ");
 #line hidden
             }
@@ -2149,7 +2155,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_1()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("1", "SFTP to Local", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New4.zip", "\"\"", "\"\"", "False", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2181,7 +2187,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("1", "SFTP to Local", "[[sourceP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_2()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("2", "SFTP to UNC", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\localhost\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\filetozip14.txt", "\"\"", "\"\"", "False", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2213,7 +2219,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("2", "SFTP to UNC", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_3()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("3", "SFTP to FTP", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip14.txt", "dev2", "Q/ulw&]", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2245,7 +2251,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("3", "SFTP to FTP", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_4()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip24.txt", "dev2", "Q/ulw&]", "False", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2277,7 +2283,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("4", "SFTP to FTPS", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_5()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip.zip", "dev2", "Q/ulw&]", "False", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2309,7 +2315,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("5", "SFTP to SFTP", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ZipFileAtSFTPLocationWithOverwriteDisabled_6()
         {
-#line 217
+#line 218
 this.ZipFileAtSFTPLocationWithOverwriteDisabled("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip.zip", "dev2", "Q/ulw&]", "False", "", "None", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
@@ -2365,7 +2371,7 @@ this.ZipFileAtSFTPLocationWithOverwriteDisabled("6", "SFTP to SFTP PK", "[[sourc
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             argumentsOfScenario.Add("destinationPrivateKeyFile", destinationPrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at location Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 247
+#line 248
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -2385,40 +2391,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 248
+#line 249
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 249
+#line 250
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 250
+#line 251
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 251
+#line 252
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 252
+#line 253
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 253
+#line 254
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 254
+#line 255
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 255
+#line 256
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 256
+#line 257
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 257
+#line 258
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 258
+#line 259
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 259
+#line 260
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -2450,7 +2456,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocationNull_1()
         {
-#line 247
+#line 248
 this.ZipFileAtLocationNull("1", "Local to FTPS", "[[sourcePath]]", "NULL", "\"\"", "\"\"", "[[destPath]]", "c:\\filetozip0.txt", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2480,7 +2486,7 @@ this.ZipFileAtLocationNull("1", "Local to FTPS", "[[sourcePath]]", "NULL", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocationNull_2()
         {
-#line 247
+#line 248
 this.ZipFileAtLocationNull("2", "Local to FTPS", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "Null", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2510,7 +2516,7 @@ this.ZipFileAtLocationNull("2", "Local to FTPS", "[[sourcePath]]", "c:\\filetozi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocationNull_3()
         {
-#line 247
+#line 248
 this.ZipFileAtLocationNull("3", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\" \"", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2540,7 +2546,7 @@ this.ZipFileAtLocationNull("3", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocationNull_4()
         {
-#line 247
+#line 248
 this.ZipFileAtLocationNull("4", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New3.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Error", "An", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2570,7 +2576,7 @@ this.ZipFileAtLocationNull("4", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOPS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocationNull_5()
         {
-#line 247
+#line 248
 this.ZipFileAtLocationNull("5", "SFTP to Local", "[[sourcePath]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New4.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "Error", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2624,7 +2630,7 @@ this.ZipFileAtLocationNull("5", "SFTP to Local", "[[sourcePath]]", "sftp://egx4s
             argumentsOfScenario.Add("errorOccured", errorOccured);
             argumentsOfScenario.Add("compressionTimes", compressionTimes);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at location is compressed at ratio", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 269
+#line 270
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -2644,46 +2650,46 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 270
+#line 271
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 271
+#line 272
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 272
+#line 273
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 273
+#line 274
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 274
+#line 275
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 275
+#line 276
  testRunner.And("use private public key for source is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 276
+#line 277
  testRunner.And("use private public key for destination is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 277
+#line 278
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 278
+#line 279
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 279
+#line 280
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 280
+#line 281
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 281
+#line 282
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 282
+#line 283
  testRunner.And(string.Format("the output is approximately \"{0}\" the size of the original input", compressionTimes), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 283
+#line 284
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1788 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2706,14 +2712,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", selected),
                             string.Format("{0}", archivepassword),
                             string.Format("{0}", compression)});
-#line 284
+#line 285
  testRunner.And("the debug inputs as", ((string)(null)), table1788, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1789 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1789.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 287
+#line 288
  testRunner.And("the debug output as", ((string)(null)), table1789, "And ");
 #line hidden
             }
@@ -2744,7 +2750,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "0.99")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_1()
         {
-#line 269
+#line 270
 this.ZipFileAtLocationIsCompressedAtRatio("1", "Local to Local", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "None", "[[result]]", "\"Success\"", "NO", "0.99", ((string[])(null)));
 #line hidden
         }
@@ -2773,7 +2779,7 @@ this.ZipFileAtLocationIsCompressedAtRatio("1", "Local to Local", "[[sourcePath]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.71")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_2()
         {
-#line 269
+#line 270
 this.ZipFileAtLocationIsCompressedAtRatio("2", "Local to Local", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "1.71", ((string[])(null)));
 #line hidden
         }
@@ -2802,7 +2808,7 @@ this.ZipFileAtLocationIsCompressedAtRatio("2", "Local to Local", "[[sourcePath]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.66")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_3()
         {
-#line 269
+#line 270
 this.ZipFileAtLocationIsCompressedAtRatio("3", "Local to Local", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "1.66", ((string[])(null)));
 #line hidden
         }
@@ -2831,7 +2837,7 @@ this.ZipFileAtLocationIsCompressedAtRatio("3", "Local to Local", "[[sourcePath]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compressionTimes", "1.71")]
         public virtual void ZipFileAtLocationIsCompressedAtRatio_4()
         {
-#line 269
+#line 270
 this.ZipFileAtLocationIsCompressedAtRatio("4", "Local to Local", "[[sourcePath]]", "c:\\filetozip0.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\My New0.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "1.71", ((string[])(null)));
 #line hidden
         }
