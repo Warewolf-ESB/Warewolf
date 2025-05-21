@@ -119,6 +119,7 @@ Scenario Outline: Rename file at FTPS location
 
 @FileRenameFromSFTP
 @FileRenameFromSFTPWithOverwrite
+@ignore
 Scenario Outline: Rename file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"

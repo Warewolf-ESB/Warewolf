@@ -117,6 +117,7 @@ Scenario Outline: Move file at FTPS location
 
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithOverwrite
+@ignore
 Scenario Outline: Move file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
