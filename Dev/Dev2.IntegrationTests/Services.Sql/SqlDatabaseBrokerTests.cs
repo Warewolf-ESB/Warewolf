@@ -90,6 +90,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port));
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
+            dbSource.AuthenticationType = AuthenticationType.User;
 
             var broker = new SqlDatabaseBroker();
             broker.GetServiceMethods(dbSource);
