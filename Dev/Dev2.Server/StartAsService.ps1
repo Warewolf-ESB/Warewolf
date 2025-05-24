@@ -7,8 +7,7 @@ Param(
   [string]$ResourcesPath,
   [string]$ServerPath,
   [switch]$Cleanup,
-  [switch]$Anonymous,
-  [string]$ServiceUser
+  [switch]$Anonymous
 )
 if ($env:EXCLUDE_EXAMPLES -eq 'true' -or $env:EXCLUDE_EXAMPLES -eq 'True' -or $env:EXCLUDE_EXAMPLES -eq 'TRUE') {
 	Remove-Item -Path "C:\programdata\warewolf\resources\Examples" -Recurse -Force
@@ -146,18 +145,10 @@ if ($WarewolfServerProcess) {
 }
 if ($WarewolfServerService) {
 	Write-Host Configuring service to $BinPath
-	if ($ServiceUser -ne $null -and $ServiceUser -ne "") {
-		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= "$ServiceUser"
-	} else {
-		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-	}
+	sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
 } else {
 	Write-Host Creating service for $BinPath
-	if ($ServiceUser -ne $null -and $ServiceUser -ne "") {
-		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= "$ServiceUser"
-	} else {
-		sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-	}
+	sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 }
 sc.exe start "Warewolf Server"
 $LoopCounter = 0
