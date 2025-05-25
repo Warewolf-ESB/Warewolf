@@ -176,7 +176,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MSSQL)
             {
-                Container.IP = "(localdb)\\MSSQLLocalDB";
+                Container.IP = "localhost";
                 Container.Port = "1433";
             }
             else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
@@ -356,7 +356,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
             UpdateSourcesConnectionStrings(
-                $"Data Source={Container.IP};Initial Catalog=Dev2TestingDB;Integrated Security=SSPI;",
+                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
                 knownMssqlServerSources);
         }
         

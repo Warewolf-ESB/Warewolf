@@ -337,7 +337,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
                 Server = _containerOps.Container.IP,
-                AuthenticationType = AuthenticationType.Windows,
+                AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
