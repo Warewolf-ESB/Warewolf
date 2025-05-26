@@ -11,7 +11,6 @@
 using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
-using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
