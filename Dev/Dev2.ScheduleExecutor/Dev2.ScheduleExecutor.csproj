@@ -4,15 +4,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6858EA8E-1F83-423C-8F03-260D836C6EDE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.ScheduleExecutor</RootNamespace>
     <AssemblyName>WarewolfAgent</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <!--<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>-->
+    <!--<RuntimeIdentifier>win</RuntimeIdentifier>-->
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -68,19 +68,8 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Dev2.ScheduleExecutor.Program</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -121,7 +110,7 @@
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -132,15 +121,7 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="TaskScheduler">
-      <Version>2.5.20</Version>
-    </PackageReference>
-  </ItemGroup>
+  </ItemGroup>-->
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -159,4 +140,7 @@
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
     </ItemGroup>
   </Target>
+  <!--<ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>-->
 </Project>

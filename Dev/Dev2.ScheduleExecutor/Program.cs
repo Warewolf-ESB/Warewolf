@@ -32,7 +32,7 @@ namespace Dev2.ScheduleExecutor
     class Program
     {
         const string WarewolfTaskSchedulerPath = "\\warewolf\\";
-        static readonly string OutputPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{GlobalConstants.SchedulerDebugPath}";
+        static readonly string OutputPath = $"{Config.AppDataPath}\\{GlobalConstants.SchedulerDebugPath}";
         static readonly string SchedulerLogDirectory = OutputPath + "SchedulerLogs";
         static readonly Stopwatch Stopwatch = new Stopwatch();
         static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
@@ -42,6 +42,7 @@ namespace Dev2.ScheduleExecutor
 
             try
             {
+                Debugger.Launch();
 
                 SetupForLogging();
 
@@ -91,7 +92,7 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID)
         {
-            var postUrl = $"http://localhost:3142/services/{workflowName}";
+            var postUrl = $"http://localhost:{GlobalConstants.WebServerPort}/services/{workflowName}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             var len = postUrl.Split('?').Length;
             if (len == 1)
@@ -148,23 +149,7 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId)
         {
-            var portNumber = "3142";
-            if(File.Exists("userServerSettings.config"))
-            {
-                var doc = XDocument.Load("userServerSettings.config");
-                var appSettingsElement = doc.Element("appSettings");
-                var webServerPortElement = appSettingsElement?.Elements()
-                    .FirstOrDefault(element => element.Name == "add" && element.Attribute("key")?.Value == "webServerPort");
-                if(webServerPortElement != null)
-                {
-                    portNumber = webServerPortElement.Attribute("value")?.Value;
-                }
-            }
-            else
-            {
-                Log("Error", $"userServerSettings.config does not exist in {Directory.GetCurrentDirectory()}");
-            }
-
+            var portNumber = GlobalConstants.WebServerPort;
             var postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             var result = string.Empty;

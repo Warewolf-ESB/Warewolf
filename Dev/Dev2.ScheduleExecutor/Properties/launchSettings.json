@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Dev2.ScheduleExecutor": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Workflow:tests\\SalesOrderProcess\" \"TaskName:TaskSalesOrder\" \"ResourceId:dbb6365e-23b9-4e42-8dbe-0dac64903d07\""
+    }
+  }
+}
