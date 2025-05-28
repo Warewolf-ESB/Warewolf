@@ -22,7 +22,9 @@ param(
   [switch] $CreateUNCPath,
   [switch] $UseRegionalSettings,
   [switch] $CreateLocalSchedulerAdmin,
-  [switch] $STA
+  [switch] $STA,
+  [switch] $StartSFTPServer,
+  [string] $StartMSSQLServer
 )
 function Start-FTPServer {
 	if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
@@ -167,6 +169,150 @@ if __name__ == '__main__':
 	}
 	pythonw -u "C:\ftps_entrypoint.py"
 }
+if ($StartSFTPServer.IsPresent) {
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload")) {
+		mkdir "C:\Users\LocalSchedulerAdmin\Upload"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\test.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\test.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\test1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\test1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetowrite1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetowrite1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetowrite2.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetowrite2.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetowrite21.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetowrite21.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copied0.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copied0.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copied1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copied1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copied2.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copied2.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copied3.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copied3.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copied61.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copied61.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile0.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile0.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile2.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile2.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile3.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile3.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile4.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile4.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile5.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile5.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile6.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile6.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\copyfile7.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\copyfile7.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip.zip")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip.zip"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile0.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile0.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile2.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile2.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile3.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile3.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile4.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile4.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile01.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile01.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile11.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile11.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile21.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile21.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile31.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile31.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\movefile41.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\movefile41.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip0.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip0.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip41.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip2.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip2.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip3.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip3.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip4.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip4.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetodelete.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetodelete.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetodelete1.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetodelete1.txt"
+	}
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\Memo.txt")) {
+		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\Memo.txt"
+	}
+    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+    Start-Service sshd
+    Add-Content -Path "C:\ProgramData\ssh\sshd_config" -Value "`nAllowUsers LocalSchedulerAdmin"
+    Restart-Service sshd
+}
+if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -neq "") {
+	choco install sql-server-2022 -y
+    [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
+    $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
+    $comp = $env:ComputerName
+    $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
+    $Tcp.IsEnabled = $true
+    $Tcp.Alter()
+    $Tcp
+    $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
+    $Np.IsEnabled = $true
+    $Np.Alter()
+    $Np
+    $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
+    $sql.Settings.LoginMode = 'Mixed'
+    $sql.Alter()
+    sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
+    sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
+	if (!(Test-Path "C:\Builds")) {New-Item -ItemType Directory "C:\Builds"}
+    sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$StartMSSQLServer' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
+    sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+    Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+}
+
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
@@ -235,7 +381,7 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent) {
+if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent) {
 	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
 		if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {

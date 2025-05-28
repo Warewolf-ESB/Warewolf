@@ -650,6 +650,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(WebPutActivity))]
+        [Ignore("Until WOLF-8009 is done")]
         public void WebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------

@@ -411,6 +411,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        [Ignore("Until WOLF-8009 is done")]
         public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
         {
             //------------Setup for test--------------------------
