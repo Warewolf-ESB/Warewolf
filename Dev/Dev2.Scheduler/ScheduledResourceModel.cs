@@ -252,9 +252,14 @@ namespace Dev2.Scheduler
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
-            var evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
+            var taskPath = $@"\{_warewolfFolderPath}\{resource.Name}";
+
+            var evt = _factory.CreateTaskEventLog(taskPath, resource.UserName, resource.Password, ".");
+            if (evt == null)
+                return new List<IResourceHistory>();
+
             var groupings = from a in evt.Where(x => !string.IsNullOrEmpty(x.Correlation)
-                            && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
+                            && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory.TrimEnd('\0')))
                             group a by a.Correlation into corrGroup
                             select new
                             {
@@ -263,7 +268,7 @@ namespace Dev2.Scheduler
                                 EventId = corrGroup.Max(a => a.EventId),
                                 corrGroup.Key
                             };
-            // for each grouping get the data and debug output
+            
             IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse()
                 .Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
                 .Select(a =>
@@ -331,7 +336,11 @@ namespace Dev2.Scheduler
             var file = _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if (file != null)
             {
-                return file.Split('_').Last();
+                var username = file.Split('_').Last();
+                if (username.Contains(".txt"))
+                    return username.Split('.').First();
+                else
+                    return username;
             }
 
             return "";

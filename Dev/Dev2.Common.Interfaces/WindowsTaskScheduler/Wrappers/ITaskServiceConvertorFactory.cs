@@ -53,7 +53,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         ITaskEvent CreateTaskEvent(TaskEvent currentEvent);
 
-        ITaskEventLog CreateTaskEventLog(string taskPath);
+        ITaskEventLog CreateTaskEventLog(string taskPath, string username = "", string password = "", string domain = ".");
 
         ITrigger SanitiseTrigger(ITrigger resource);
     }

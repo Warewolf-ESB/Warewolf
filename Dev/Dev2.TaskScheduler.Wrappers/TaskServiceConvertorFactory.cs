@@ -16,8 +16,10 @@ using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
-    public class TaskServiceConvertorFactory : ITaskServiceConvertorFactory
+    public class TaskServiceConvertorFactory : ITaskServiceConvertorFactory, IDisposable
     {
+        private TaskService _taskService;
+
         public ITaskFolder CreateRootFolder(TaskFolder taskFolder)
         {
             return new Dev2TaskFolder(this, taskFolder);
@@ -94,10 +96,35 @@ namespace Dev2.TaskScheduler.Wrappers
             return new Dev2TaskEvent(currentEvent);
         }
 
-        public ITaskEventLog CreateTaskEventLog(string taskPath)
+
+        public ITaskEventLog CreateTaskEventLog(string taskPath, string username = "", string password = "", string domain =".")
         {
-            return new Dev2TaskEventLog(this,
-                new TaskEventLog(DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0)), taskPath));
+           try
+            {
+                var ts = new TaskService(null, username, domain, password);
+                var task = ts.GetTask(taskPath);
+
+                if (task != null)
+                {
+                    var log = new TaskEventLog(DateTime.MinValue, task.Path, null, username, password);
+                    return new Dev2TaskEventLog(this, log);
+                }
+                return null;
+
+                // return new Dev2TaskEventLog(this,
+                // new TaskEventLog(DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0)), taskPath));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Failed to create TaskEventLog: {ex.Message}");
+                return null;
+            }
+        }
+
+        public void Dispose()
+        {
+            _taskService?.Dispose();
+            _taskService = null;
         }
 
         public TaskService CreateTaskService()
