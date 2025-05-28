@@ -263,7 +263,7 @@ if ($StartSFTPServer.IsPresent) {
 	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip0.txt")) {
 		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip0.txt"
 	}
-	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip1.txt")) {
+	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip41.txt")) {
 		New-Item -ItemType File "C:\Users\LocalSchedulerAdmin\Upload\filetozip41.txt"
 	}
 	if (!(Test-Path "C:\Users\LocalSchedulerAdmin\Upload\filetozip2.txt")) {
