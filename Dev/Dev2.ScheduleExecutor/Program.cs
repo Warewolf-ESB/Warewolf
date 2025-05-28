@@ -44,8 +44,6 @@ namespace Dev2.ScheduleExecutor
 
             try
             {
-                Debugger.Launch();
-
                 SetupForLogging();
 
                 Stopwatch.Start();
@@ -237,7 +235,7 @@ namespace Dev2.ScheduleExecutor
                 Variable = result
             });
             var js = new Dev2JsonSerializer();
-            Thread.Sleep(1000);
+            //Thread.Sleep(5000);
             var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName, username,password,domain);
             if (!Directory.Exists(OutputPath))
             {
@@ -262,7 +260,7 @@ namespace Dev2.ScheduleExecutor
                     var logs = new TaskEventLog(DateTime.MinValue, task.Path, null, username, password);
 
                     var eventlogs = (from a in logs
-                                  where a.TaskCategory == "Task Started" && time > StartTime
+                                  where a.TaskCategory.TrimEnd('\0') == "Task Started" && time > StartTime
                                      orderby a.TimeCreated
                                   select a).LastOrDefault();
                     if (null != eventlogs)
@@ -352,7 +350,7 @@ namespace Dev2.ScheduleExecutor
                 }
             }
             var js = new Dev2JsonSerializer();
-            Thread.Sleep(1000);
+            //Thread.Sleep(5000);
             var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName, username, password,domain);
             if (!Directory.Exists(OutputPath))
             {
