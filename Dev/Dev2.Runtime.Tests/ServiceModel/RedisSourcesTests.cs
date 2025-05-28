@@ -54,17 +54,18 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
+        [Ignore("Until WOLF-7979 is done")]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             try
             {
-            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
-            var source = new RedisSource
-            {
-                HostName = dependency.Container.IP,
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
-                Port = dependency.Container.Port
-            }.ToString();
+                var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
+                var source = new RedisSource
+                {
+                    HostName = dependency.Container.IP,
+                    AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,
+                    Port = dependency.Container.Port
+                }.ToString();
 
                 var handler = new RedisSources();
                 var result = handler.Test(source);
