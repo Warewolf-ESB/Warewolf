@@ -25,7 +25,9 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.TaskScheduler.Wrappers;
+using Microsoft.Win32.TaskScheduler;
 using Warewolf.Resource.Errors;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.ScheduleExecutor
 {
@@ -64,43 +66,59 @@ namespace Dev2.ScheduleExecutor
                                   singleParameters.Skip(1).Aggregate((a, b) => $"{a}:{b}"));
                 }
                 Log("Info", $"Start execution of {paramters["Workflow"]}");
+                string username = "", password = "", domain = ".";
+
                 try
                 {
+                    if (paramters.ContainsKey("Data"))
+                    {
+                        try
+                        {
+                            string[] credentials = DpapiWrapper.Decrypt(paramters["Data"]).Split(":");
+                            username = credentials[0];
+                            password = credentials[1];
+                        }
+                        catch (Exception)
+                        {
+                            Log("Error", "Username, Password retrieval failed... Passing Blank Username and Password");
+                            username = "";
+                            password = "";
+                        }
+                    }
+
                     if (paramters.ContainsKey("ResourceId"))
                     {
-                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"]);
+                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"], username, password, domain);
                     }
                     else
                     {
-                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
-
+                        PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), username, password, domain);
                     }
                 }
                 catch
                 {
-                    CreateDebugState("Warewolf Server Unavailable", paramters["Workflow"], paramters["TaskName"]);
+                    CreateDebugState("Warewolf Server Unavailable", paramters["Workflow"], paramters["TaskName"],username, password,domain);
                     throw;
                 }
             }
             catch (Exception e)
             {
                 Log("Error", $"Error from execution: {e.Message}{e.StackTrace}");
-
                 Environment.Exit(1);
             }
         }
 
-        public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID)
+        public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string username, string password, string domain)
         {
             var postUrl = $"http://localhost:{GlobalConstants.WebServerPort}/services/{workflowName}";
-            Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
+            Log("Info", $"Executing as {username}");
             var len = postUrl.Split('?').Length;
             if (len == 1)
             {
                 var result = string.Empty;
 
                 var req = WebRequest.Create(postUrl);
-                req.Credentials = CredentialCache.DefaultNetworkCredentials;
+                req.Credentials = new NetworkCredential(username, password, domain);
                 req.Method = "GET";
 
                 try
@@ -119,21 +137,21 @@ namespace Dev2.ScheduleExecutor
                             if (response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
                             {
                                 Log("Error", $"Error from execution: {result}");
-                                CreateDebugState(result, workflowName, taskName);
+                                CreateDebugState(result, workflowName, taskName, username, password,domain);
                                 Environment.Exit(1);
                             }
                             else
                             {
                                 Log("Info", $"Completed execution. Output: {result}");
 
-                                WriteDebugItems(workflowName, taskName, result);
+                                WriteDebugItems(workflowName, taskName, result, username, password, domain);
                             }
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
+                    CreateDebugState("Warewolf Server Unavailable", workflowName, taskName, username, password, domain);
                     Console.Write(e.Message);
                     Console.WriteLine(e.StackTrace);
                     Log("Error",
@@ -147,15 +165,15 @@ namespace Dev2.ScheduleExecutor
             return string.Empty;
         }
 
-        public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId)
+        public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID, string resourceId, string username, string password, string domain)
         {
             var portNumber = GlobalConstants.WebServerPort;
             var postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
-            Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
+            Log("Info", $"Executing as {username}");
             var result = string.Empty;
 
             var req = WebRequest.Create(postUrl);
-            req.Credentials = CredentialCache.DefaultNetworkCredentials;
+            req.Credentials = new NetworkCredential(username, password, domain);
             req.Method = "GET";
 
             try
@@ -164,9 +182,7 @@ namespace Dev2.ScheduleExecutor
                 {
                     if(response != null)
                     {
-                        
                         using(var reader = new StreamReader(response.GetResponseStream()))
-                            
                         {
                             result = reader.ReadToEnd();
                         }
@@ -174,20 +190,20 @@ namespace Dev2.ScheduleExecutor
                         if(response.StatusCode != HttpStatusCode.OK || result.StartsWith("<FatalError>"))
                         {
                             Log("Error", $"Error from execution: {result}");
-                            CreateDebugState(result, workflowName, taskName);
+                            CreateDebugState(result, workflowName, taskName, username, password, domain);
                             Environment.Exit(1);
                         }
                         else
                         {
                             Log("Info", $"Completed execution. Output: {result}");
-                            WriteDebugItems(workflowName, taskName, result);
+                            WriteDebugItems(workflowName, taskName, result, username, password, domain);
                         }
                     }
                 }
             }
             catch(Exception e)
             {
-                CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
+                CreateDebugState("Warewolf Server Unavailable", workflowName, taskName,username, password, domain);
                 Console.Write(e.Message);
                 Console.WriteLine(e.StackTrace);
                 Log("Error",
@@ -199,7 +215,7 @@ namespace Dev2.ScheduleExecutor
             return result;
         }
 
-        static void CreateDebugState(string result, string workflowName, string taskName)
+        static void CreateDebugState(string result, string workflowName, string taskName, string username, string password, string domain)
         {
             var user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
             var state = new DebugState
@@ -221,8 +237,8 @@ namespace Dev2.ScheduleExecutor
                 Variable = result
             });
             var js = new Dev2JsonSerializer();
-            Thread.Sleep(5000);
-            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
+            Thread.Sleep(1000);
+            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName, username,password,domain);
             if (!Directory.Exists(OutputPath))
             {
                 Directory.CreateDirectory(OutputPath);
@@ -233,21 +249,40 @@ namespace Dev2.ScheduleExecutor
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
         }
 
-        static string GetCorrelationId(string taskName)
+        static string GetCorrelationId(string taskName, string username, string password, string domain)
         {
             try
             {
+                var time = DateTime.Now; 
+
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                {
+                    var ts = new TaskService(null, username, domain, password);
+                    var task = ts.GetTask(taskName);
+                    var logs = new TaskEventLog(DateTime.MinValue, task.Path, null, username, password);
+
+                    var eventlogs = (from a in logs
+                                  where a.TaskCategory == "Task Started" && time > StartTime
+                                     orderby a.TimeCreated
+                                  select a).LastOrDefault();
+                    if (null != eventlogs)
+                    {
+                        return eventlogs.ActivityId.ToString();
+                    }
+                    return "";
+                }
+                
                 var factory = new TaskServiceConvertorFactory();
-                var time = DateTime.Now;
                 var eventLog = factory.CreateTaskEventLog(taskName);
                 var events = (from a in eventLog
-                                     where a.TaskCategory == "Task Started" && time > StartTime
-                                     orderby a.TimeCreated
-                                     select a).LastOrDefault();
+                              where a.TaskCategory == "Task Started" && time > StartTime
+                              orderby a.TimeCreated
+                              select a).LastOrDefault();
                 if (null != events)
                 {
                     return events.Correlation;
                 }
+
                 return "";
             }
             catch (Exception e)
@@ -263,7 +298,7 @@ namespace Dev2.ScheduleExecutor
             return "";
         }
 
-        static void WriteDebugItems(string workflowName, string taskName, string result)
+        static void WriteDebugItems(string workflowName, string taskName, string result, string username, string password, string domain)
         {
             var user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
 
@@ -317,8 +352,8 @@ namespace Dev2.ScheduleExecutor
                 }
             }
             var js = new Dev2JsonSerializer();
-            Thread.Sleep(5000);
-            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
+            Thread.Sleep(1000);
+            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName, username, password,domain);
             if (!Directory.Exists(OutputPath))
             {
                 Directory.CreateDirectory(OutputPath);
