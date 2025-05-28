@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Scheduler
 {
@@ -157,7 +158,7 @@ namespace Dev2.Scheduler
         }
 
         IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
-                $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\"");
+                $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\" \"Data:{DpapiWrapper.Encrypt(resource.UserName + ":" + resource.Password)}\"");
 
         IScheduledResource TryCreateScheduledResource(IDev2Task arg)
         {
