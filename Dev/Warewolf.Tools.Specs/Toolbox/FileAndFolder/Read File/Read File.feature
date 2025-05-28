@@ -20,13 +20,13 @@ Scenario Outline: Read File at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| NO | Name       | source   | sourceLocation                                                                    | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                 | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt              | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 4  | FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt                      | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 5  | SFTP       | [[path]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread.txt           | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP PK    | [[path]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread1.txt          | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| NO | Name       | source   | sourceLocation                                                                    | username      | password     | resultVar   | result | errorOccured | sourcePrivateKeyFile |
+	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                 | ""            | ""           | [[result]]  | Guid   | NO           |                      |
+	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]]  | Guid   | NO           |                      |
+	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt              | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
+	| 4  | FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt                      | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
+	| 5  | SFTP       | [[path]] | sftp://localhost/C:/Users/localscheduleradmin/upload/filetoread.txt             | LocalSchedulerAdmin          | 987Sched#@! | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://localhost/C:/Users/localscheduleradmin/upload/filetoread1.txt            | LocalSchedulerAdmin          | 987Sched#@! | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Read File at locationNull
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -41,8 +41,8 @@ Scenario Outline: Read File at locationNull
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
 	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 4  | FTPS       | [[path]] | ftps://DEVOPSPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 5  | SFTP       | [[path]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP PK    | [[path]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 5  | SFTP       | [[path]] | sftp://localhost/C:/Users/localscheduleradmin/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://localhost/C:/Users/localscheduleradmin/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 	
 Scenario Outline: Read File validation
