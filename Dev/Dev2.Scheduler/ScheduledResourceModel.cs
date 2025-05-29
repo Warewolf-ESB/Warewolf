@@ -171,7 +171,7 @@ namespace Dev2.Scheduler
                 nextDate = trigger.StartBoundary;
                 output = action.Arguments.Split(ArgWrapper).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
-            if (output.Count == ArgCount && output.All(a => a.Contains(NameSeperator)))
+            if ((output.Count == ArgCount || output.Count == ArgCountNew) && output.All(a => a.Contains(NameSeperator)))
             {
                 var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
                 try
@@ -246,6 +246,8 @@ namespace Dev2.Scheduler
 
             return res;
         }
+
+        public int ArgCountNew => 4;
 
         public int ArgCount => 3;
 
