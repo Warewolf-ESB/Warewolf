@@ -253,8 +253,8 @@ this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://DEVOPSPDC.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSchedulerAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -262,7 +262,7 @@ this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://DEVOPSPDC.pre
         public void WriteFileAtLocation_Variant3()
         {
 #line 7
-this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite0.txt", "Overwrite", "warewolf rules", "LocalSchedulerAdmin", "987Sched#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite0.txt", "Overwrite", "warewolf rules", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -345,8 +345,8 @@ this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://DEVOPSPDC.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSchedulerAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -354,7 +354,7 @@ this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://DEVOPSPDC.pr
         public void WriteFileAtLocation_Variant7()
         {
 #line 7
-this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite1.txt", "Append Top", "warewolf rules", "LocalSchedulerAdmin", "987Sched#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite1.txt", "Append Top", "warewolf rules", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -437,8 +437,8 @@ this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://DEVOPSPDC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSchedulerAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -446,7 +446,7 @@ this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://DEVOPSPDC
         public void WriteFileAtLocation_Variant11()
         {
 #line 7
-this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite2.txt", "Append Bottom", "warewolf rules", "LocalSchedulerAdmin", "987Sched#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite2.txt", "Append Bottom", "warewolf rules", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -460,8 +460,8 @@ this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://localhos
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite21.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSchedulerAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -469,7 +469,7 @@ this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://localhos
         public void WriteFileAtLocation_Variant12()
         {
 #line 7
-this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite21.txt", "Append Bottom", "warewolf rules", "LocalSchedulerAdmin", "987Sched#@!", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://localhost/C:/Users/localscheduleradmin/upload/filetowrite21.txt", "Append Bottom", "warewolf rules", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
