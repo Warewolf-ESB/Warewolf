@@ -150,25 +150,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 15
  testRunner.And("the execution has \"<AN>\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1714 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1719 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password",
                             "Private Key File"});
-                table1714.AddRow(new string[] {
+                table1719.AddRow(new string[] {
                             string.Format("{0} = {1}", source, sourceLocation),
                             string.Format("{0}", username),
                             "String",
                             string.Format("{0}", sourcePrivateKeyFile)});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table1714, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1719, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1715 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1720 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1715.AddRow(new string[] {
+                table1720.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table1715, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1720, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -259,50 +259,6 @@ this.ReadFileAtLocation("3", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1
         {
 #line 8
 this.ReadFileAtLocation("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Read File at location: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Read File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ReadFile")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void ReadFileAtLocation_5()
-        {
-#line 8
-this.ReadFileAtLocation("5", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Read File at location: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Read File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ReadFile")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        public virtual void ReadFileAtLocation_6()
-        {
-#line 8
-this.ReadFileAtLocation("6", "SFTP PK", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetoread1.txt", "dev2", "Q/ulw&]", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -573,23 +529,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 61
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1716 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1721 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password"});
-                table1716.AddRow(new string[] {
+                table1721.AddRow(new string[] {
                             string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
 #line 63
- testRunner.And("the debug inputs as", ((string)(null)), table1716, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1721, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1717 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1722 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1717.AddRow(new string[] {
+                table1722.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 66
- testRunner.And("the debug output as", ((string)(null)), table1717, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1722, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1881,23 +1837,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 125
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1718 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1723 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password"});
-                table1718.AddRow(new string[] {
+                table1723.AddRow(new string[] {
                             string.Format("{0} = {1}", source, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
 #line 126
- testRunner.And("the debug inputs as", ((string)(null)), table1718, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1723, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1719 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1724 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1719.AddRow(new string[] {
+                table1724.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 129
- testRunner.And("the debug output as", ((string)(null)), table1719, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1724, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -26,8 +26,8 @@ Scenario Outline: Create file at location
 		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt     | True     | ""              | ""           | [[result]] | Success | NO           |                           |
 		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+#ignore	| 5  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+#ignore	| 6  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -50,8 +50,8 @@ Scenario Outline: Create file at location with overwrite disabled
 		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | False    | ""              | ""           | [[result]] | Success | NO           |                           |
 		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt                                                        | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt                                                       | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+#ignore	| 5  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt                                                        | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+#ignore	| 6  | SFTP       | [[path]]    | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt                                                       | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 	
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"

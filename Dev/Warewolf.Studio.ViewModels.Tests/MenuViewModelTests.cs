@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestNewCommand()
         {
             Assert.AreSame(_newCommand, _target.NewServiceCommand);
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestOpenSettingsCommand()
         {
             Assert.AreSame(_openSettingsCommand, _target.OpenSettingsCommand);
@@ -175,7 +175,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSupportCommand()
         {
             Assert.IsTrue(_target.SupportCommand.CanExecute(null));

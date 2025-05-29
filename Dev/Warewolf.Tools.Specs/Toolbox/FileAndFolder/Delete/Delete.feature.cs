@@ -149,25 +149,25 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
 #line 14
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1686 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1691 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password",
                             "Private Key File"});
-                table1686.AddRow(new string[] {
+                table1691.AddRow(new string[] {
                             string.Format("{0} = {1}", source, sourceLocation),
                             string.Format("{0}", username),
                             "String",
                             string.Format("{0}", sourcePrivateKeyFile)});
 #line 15
-  testRunner.And("the debug inputs as", ((string)(null)), table1686, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table1691, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1687 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1692 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1687.AddRow(new string[] {
+                table1692.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 18
-  testRunner.And("the debug output as", ((string)(null)), table1687, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table1692, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -256,48 +256,6 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         {
 #line 7
  this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location: SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetodelete.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileAtLocation_SFTP()
-        {
-#line 7
- this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location: SFTP PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetodelete1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        public virtual void DeleteFileAtLocation_SFTPPK()
-        {
-#line 7
- this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/filetodelete1.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -569,23 +527,23 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
 #line 62
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1688 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1693 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password"});
-                table1688.AddRow(new string[] {
+                table1693.AddRow(new string[] {
                             string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
 #line 63
-  testRunner.And("the debug inputs as", ((string)(null)), table1688, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table1693, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1689 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1694 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1689.AddRow(new string[] {
+                table1694.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 66
-  testRunner.And("the debug output as", ((string)(null)), table1689, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table1694, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1525,23 +1483,23 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
 #line 113
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1690 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1695 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input Path",
                             "Username",
                             "Password"});
-                table1690.AddRow(new string[] {
+                table1695.AddRow(new string[] {
                             string.Format("{0} = {1}", source, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
 #line 114
-  testRunner.And("the debug inputs as", ((string)(null)), table1690, "And ");
+  testRunner.And("the debug inputs as", ((string)(null)), table1695, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1691 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1696 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1691.AddRow(new string[] {
+                table1696.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 117
-  testRunner.And("the debug output as", ((string)(null)), table1691, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table1696, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

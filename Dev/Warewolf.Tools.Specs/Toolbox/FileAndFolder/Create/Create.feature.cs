@@ -154,27 +154,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 16
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1680 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1685 = new TechTalk.SpecFlow.Table(new string[] {
                             "File or Folder",
                             "Overwrite",
                             "Username",
                             "Password",
                             "Destination Private Key File"});
-                table1680.AddRow(new string[] {
+                table1685.AddRow(new string[] {
                             string.Format("{0} = {1}", destination, destinationLocation),
                             string.Format("{0}", selected),
                             string.Format("{0}", username),
                             "String",
                             string.Format("{0}", destinationPrivateKeyFile)});
 #line 17
- testRunner.And("the debug inputs as", ((string)(null)), table1680, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1685, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1681 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1686 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1681.AddRow(new string[] {
+                table1686.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 20
- testRunner.And("the debug output as", ((string)(null)), table1681, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1686, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -272,52 +272,6 @@ this.CreateFileAtLocation("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.loca
 #line hidden
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create file at location: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderCreate")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void CreateFileAtLocation_5()
-        {
-#line 8
-this.CreateFileAtLocation("5", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create file at location: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderCreate")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
-        public virtual void CreateFileAtLocation_6()
-        {
-#line 8
-this.CreateFileAtLocation("6", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
-#line hidden
-        }
-        
         public virtual void CreateFileAtLocationWithOverwriteDisabled(string no, string name, string destination, string destinationLocation, string selected, string username, string password, string resultVar, string result, string errorOccured, string destinationPrivateKeyFile, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -378,27 +332,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 40
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1682 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1687 = new TechTalk.SpecFlow.Table(new string[] {
                             "File or Folder",
                             "Overwrite",
                             "Username",
                             "Password",
                             "Destination Private Key File"});
-                table1682.AddRow(new string[] {
+                table1687.AddRow(new string[] {
                             string.Format("{0} = {1}", destination, destinationLocation),
                             string.Format("{0}", selected),
                             string.Format("{0}", username),
                             "String",
                             string.Format("{0}", destinationPrivateKeyFile)});
 #line 41
- testRunner.And("the debug inputs as", ((string)(null)), table1682, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1687, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1683 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1688 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1683.AddRow(new string[] {
+                table1688.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 44
- testRunner.And("the debug output as", ((string)(null)), table1683, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1688, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -493,52 +447,6 @@ this.CreateFileAtLocationWithOverwriteDisabled("3", "FTP", "[[path]]", "ftp://DE
         {
 #line 32
 this.CreateFileAtLocationWithOverwriteDisabled("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create file at location with overwrite disabled: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderCreate")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void CreateFileAtLocationWithOverwriteDisabled_5()
-        {
-#line 32
-this.CreateFileAtLocationWithOverwriteDisabled("5", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create file at location with overwrite disabled: 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Create")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderCreate")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
-        public virtual void CreateFileAtLocationWithOverwriteDisabled_6()
-        {
-#line 32
-this.CreateFileAtLocationWithOverwriteDisabled("6", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/test1.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -728,25 +636,25 @@ this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://egx4szel7v2ys.so
 #line 78
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1684 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1689 = new TechTalk.SpecFlow.Table(new string[] {
                             "File or Folder",
                             "Overwrite",
                             "Username",
                             "Password"});
-                table1684.AddRow(new string[] {
+                table1689.AddRow(new string[] {
                             string.Format("{0} = {1}", destination, destinationLocation),
                             string.Format("{0}", selected),
                             string.Format("{0}", username),
                             "String"});
 #line 79
- testRunner.And("the debug inputs as", ((string)(null)), table1684, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1689, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1685 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1690 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1685.AddRow(new string[] {
+                table1690.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
 #line 82
- testRunner.And("the debug output as", ((string)(null)), table1685, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1690, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

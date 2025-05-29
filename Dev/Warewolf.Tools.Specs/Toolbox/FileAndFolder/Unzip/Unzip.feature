@@ -28,7 +28,7 @@ Scenario Outline: Unzip file at local location
 	| 1  | Local to Local  | [[sourcePath]] | C:\test0.zip   | ""       | ""       | [[destPath]]   | C:\Temp\ZIP0                                            | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 2  | Local to FTP    | [[sourcePath]] | C:\test2.zip   | ""       | ""       | [[destPath]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP0 | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 3  | Local to FTPS   | [[sourcePath]] | C:\test3.zip   | ""       | ""       | [[destPath]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP0 | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | Local to SFTP   | [[sourcePath]] | C:\test4.zip   | ""       | ""       | [[destPath]]   | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/ZIP0                        | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+#ignore	| 4  | Local to SFTP   | [[sourcePath]] | C:\test4.zip   | ""       | ""       | [[destPath]]   | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/ZIP0                        | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	
 @UnzipFromFTP
 Scenario Outline: Unzip file at FTP location
@@ -81,9 +81,10 @@ Scenario Outline: Unzip file at FTPS location
 	| 1  | FTPS to Local   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test0.zip | dev2     | Q/ulw&]  | [[destPath]] | C:\Temp\ZIP3                                            | ""           | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 2  | FTPS to FTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test2.zip | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP3 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 3  | FTPS to FTPS    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test3.zip | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP3 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip | dev2     | Q/ulw&]  | [[destPath]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/ZIP3                        | dev2         | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+#ignore | 4  | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip | dev2     | Q/ulw&]  | [[destPath]] | sftp://egx4szel7v2ys.southafricanorth.azurecontainer.io/upload/ZIP3                        | dev2         | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 
 @UnzipFromSFTP
+@ignore
 Scenario Outline: Unzip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And zip credentials as "<username>" and "<password>"

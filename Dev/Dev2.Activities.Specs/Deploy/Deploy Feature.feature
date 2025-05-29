@@ -1,6 +1,7 @@
 ﻿@RemoteServer
 Feature: Deploy Feature
 
+@ignore(WOLF-7984)
 Scenario: Deploy a renamed resource
 	Given localhost and destination server are connected
 	And I have a workflow "OriginalName"

@@ -341,7 +341,7 @@ namespace Dev2.Tests.Runtime.Services
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
-                Password = "Ex@mple!23Secure#PWD",
+                Password = "test123",
                 ConnectionTimeout = 30
             };
             dbSource.Port = int.Parse(_containerOps.Container.Port);
