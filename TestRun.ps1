@@ -289,7 +289,7 @@ if ($StartSFTPServer.IsPresent) {
     Add-Content -Path "C:\ProgramData\ssh\sshd_config" -Value "`nAllowUsers LocalSchedulerAdmin"
     Restart-Service sshd
 }
-if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -neq "") {
+if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
 	choco install sql-server-2022 -y
     [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
     $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
