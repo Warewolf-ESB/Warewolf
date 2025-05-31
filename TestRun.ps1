@@ -337,6 +337,9 @@ if ($Projects.Length -gt 0) {
 		if ($StartFTPSServer.IsPresent) {
 			Start-FTPSServer
 		}
+		if ($StartSFTPServer.IsPresent) {
+			Start-SFTPServer
+		}
 		if ($RetryRebuild.IsPresent) {
 			if (Test-Path "$PWD\..\..\Compile.ps1") {
 				&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
@@ -508,6 +511,9 @@ if ($Projects.Length -gt 0) {
 		Start-FTPServer
 	}
 	if ($StartFTPSServer.IsPresent) {
+		Start-FTPSServer
+	}
+	if ($StartSFTPServer.IsPresent) {
 		Start-FTPSServer
 	}
 }
