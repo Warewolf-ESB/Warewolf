@@ -261,7 +261,7 @@ this.ReadFileAtLocation("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -269,7 +269,7 @@ this.ReadFileAtLocation("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:
         public void ReadFileAtLocation_5()
         {
 #line 8
-this.ReadFileAtLocation("5", "SFTP", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread.txt", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("5", "SFTP", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread.txt", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -283,7 +283,7 @@ this.ReadFileAtLocation("5", "SFTP", "[[path]]", "sftp://localhost/C:/Users/loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -291,7 +291,7 @@ this.ReadFileAtLocation("5", "SFTP", "[[path]]", "sftp://localhost/C:/Users/loca
         public void ReadFileAtLocation_6()
         {
 #line 8
-this.ReadFileAtLocation("6", "SFTP PK", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread1.txt", "LocalSFTPAdmin", "987Sftp#@!", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.ReadFileAtLocation("6", "SFTP PK", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetoread1.txt", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[result]]", "Guid", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
