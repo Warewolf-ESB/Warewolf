@@ -170,7 +170,7 @@ if __name__ == '__main__':
 	pythonw -u "C:\ftps_entrypoint.py"
 }
 function Start-SFTPServer {
-	docker run -d -p 22:22 registry.gitlab.com/warewolf/sftp-connector-testing
+	docker run -d -p 22:22 --name sftp-connector-testing registry.gitlab.com/warewolf/sftp-connector-testing
 }
 if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
 	choco install sql-server-2022 -y
@@ -504,6 +504,9 @@ if ($Projects.Length -gt 0) {
 		if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
 			taskkill /im pythonw.exe /f
 			taskkill /im pythonw3.10.exe /f
+		}
+		if ($StartSFTPServer.IsPresent) {
+			docker rm -f sftp-connector-testing
 		}
 	}
 } else {
