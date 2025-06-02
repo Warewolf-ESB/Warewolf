@@ -169,7 +169,7 @@ if __name__ == '__main__':
 	}
 	pythonw -u "C:\ftps_entrypoint.py"
 }
-if ($StartSFTPServer.IsPresent) {
+function Start-SFTPServer {
 	docker run -d -p 22:22 registry.gitlab.com/warewolf/sftp-connector-testing
 }
 if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
