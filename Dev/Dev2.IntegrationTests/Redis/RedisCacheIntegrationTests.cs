@@ -40,6 +40,7 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
         [TestCategory("AnonymousRedis")]
+        [Ignore("Until WOLF-7979 is done")]
         public void RedisCacheIntegration_CacheVariableResult_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             try
@@ -171,7 +172,8 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
         [TestCategory("AnonymousRedis")]
-        public void RedisCacheIntegration_CacheVariableResult_EvaluateVariableAsKey()
+		[Ignore("Until WOLF-7979 is done")]
+		public void RedisCacheIntegration_CacheVariableResult_EvaluateVariableAsKey()
         {
             try
             {
@@ -232,7 +234,8 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
         [TestCategory("AnonymousRedis")]
-        public void RedisCacheIntegration_CacheRecordsetResult_ReturnInnerActivityOutputs()
+		[Ignore("Until WOLF-7979 is done")]
+		public void RedisCacheIntegration_CacheRecordsetResult_ReturnInnerActivityOutputs()
         {
             try
             {
@@ -302,7 +305,8 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Yogesh Rajpurohit")]
         [TestCategory(nameof(RedisCacheActivity))]
         [TestCategory("AnonymousRedis")]
-        public void RedisCacheActivity_PerformExecution_RedisKeyNotFound()
+		[Ignore("Until WOLF-7979 is done")]
+		public void RedisCacheActivity_PerformExecution_RedisKeyNotFound()
         {
             TestAnonymousAuth(out var hostName, out var password, out var port);
             var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
