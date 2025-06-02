@@ -419,13 +419,18 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskEventLog_Givenpath_ShouldReturnDev2TaskEventLog()
         {
             //---------------Set up test pack-------------------
-            var factory = new TaskServiceConvertorFactory();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(factory);
+            var mockLog = new Mock<ITaskEventLog>();
+            var mockFactory = new Mock<ITaskServiceConvertorFactory>();
+
+            mockFactory
+                .Setup(f => f.CreateTaskEventLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(mockLog.Object);
+
             //---------------Execute Test ----------------------
-            var taskEventLog = factory.CreateTaskEventLog(It.IsAny<string>());
+            var result = mockFactory.Object.CreateTaskEventLog("Bob", "user", "pass", ".");
+
             //---------------Test Result -----------------------
-            Assert.IsNotNull(taskEventLog);
+            Assert.IsNotNull(result);
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
