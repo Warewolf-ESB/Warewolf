@@ -24,8 +24,8 @@ Feature: Delete
 			| UNC     | [[path]] | \\\\localhost\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt | ""       | ""           | [[result]] | "Success" | NO           |                      |
 			| FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                            | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
 			| FTPS    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                             | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
-			| SFTP    | [[path]] | sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete.txt                             | LocalSFTPAdmin              | 987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!      | [[result]] | "Success" | NO           |                      |
-			| SFTP PK | [[path]] | sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete1.txt                            | LocalSFTPAdmin              | 987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+			| SFTP    | [[path]] | sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete.txt                             | LocalSFTPAdmin              | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!      | [[result]] | "Success" | NO           |                      |
+			| SFTP PK | [[path]] | sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete1.txt                            | LocalSFTPAdmin              | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 	Scenario Outline: Delete file at location Null
 		Given I have a source path "<source>" with value "<sourceLocation>"

@@ -257,7 +257,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -265,7 +265,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocation_SFTP()
         {
 #line 7
- this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete.txt", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete.txt", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -278,7 +278,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -286,7 +286,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocation_SFTPPK()
         {
 #line 7
- this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete1.txt", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+ this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://localhost/C:/Users/localsftpadmin/upload/filetodelete1.txt", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         

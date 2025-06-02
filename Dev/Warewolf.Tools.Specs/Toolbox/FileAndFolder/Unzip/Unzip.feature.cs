@@ -321,7 +321,7 @@ this.UnzipFileAtLocalLocation("3", "Local to FTPS", "[[sourcePath]]", "C:\\test3
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -332,7 +332,7 @@ this.UnzipFileAtLocalLocation("3", "Local to FTPS", "[[sourcePath]]", "C:\\test3
         public void UnzipFileAtLocalLocation_4()
         {
 #line 7
-this.UnzipFileAtLocalLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\test4.zip", "\"\"", "\"\"", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP0", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocalLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\test4.zip", "\"\"", "\"\"", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP0", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -780,7 +780,7 @@ this.UnzipFileAtFTPSLocation("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -791,7 +791,7 @@ this.UnzipFileAtFTPSLocation("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOP
         public void UnzipFileAtFTPSLocation_4()
         {
 #line 60
-this.UnzipFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP3", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP3", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -933,7 +933,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/test0.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\Temp\\ZIP4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -948,7 +948,7 @@ this.ScenarioInitialize(scenarioInfo);
         public void UnzipFileAtSFTPLocation_1()
         {
 #line 87
-this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test0.zip", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[destPath]]", "C:\\Temp\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test0.zip", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[destPath]]", "C:\\Temp\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -962,7 +962,7 @@ this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://loc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/test2.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -977,7 +977,7 @@ this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://loc
         public void UnzipFileAtSFTPLocation_2()
         {
 #line 87
-this.UnzipFileAtSFTPLocation("2", "SFTP to FTP", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test2.zip", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP4", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtSFTPLocation("2", "SFTP to FTP", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test2.zip", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP4", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -991,7 +991,7 @@ this.UnzipFileAtSFTPLocation("2", "SFTP to FTP", "[[sourcePath]]", "sftp://local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/test3.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -1006,7 +1006,7 @@ this.UnzipFileAtSFTPLocation("2", "SFTP to FTP", "[[sourcePath]]", "sftp://local
         public void UnzipFileAtSFTPLocation_3()
         {
 #line 87
-this.UnzipFileAtSFTPLocation("3", "SFTP to FTPS", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test3.zip", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP4", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtSFTPLocation("3", "SFTP to FTPS", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test3.zip", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP4", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1020,11 +1020,11 @@ this.UnzipFileAtSFTPLocation("3", "SFTP to FTPS", "[[sourcePath]]", "sftp://loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/test5.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -1035,7 +1035,7 @@ this.UnzipFileAtSFTPLocation("3", "SFTP to FTPS", "[[sourcePath]]", "sftp://loca
         public void UnzipFileAtSFTPLocation_4()
         {
 #line 87
-this.UnzipFileAtSFTPLocation("4", "SFTP to SFTP", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test5.zip", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP6", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtSFTPLocation("4", "SFTP to SFTP", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test5.zip", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP6", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1049,11 +1049,11 @@ this.UnzipFileAtSFTPLocation("4", "SFTP to SFTP", "[[sourcePath]]", "sftp://loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/test51.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "LocalSFTPAdmin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -1064,7 +1064,7 @@ this.UnzipFileAtSFTPLocation("4", "SFTP to SFTP", "[[sourcePath]]", "sftp://loca
         public void UnzipFileAtSFTPLocation_5()
         {
 #line 87
-this.UnzipFileAtSFTPLocation("5", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test51.zip", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP61", "LocalSFTPAdmin", "987Sched#@!987Sched#@!987Sched#@!987Sched#@!987Sched#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
+this.UnzipFileAtSFTPLocation("5", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/test51.zip", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "[[destPath]]", "sftp://localhost/C:/Users/localsftpadmin/upload/ZIP61", "LocalSFTPAdmin", "987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
