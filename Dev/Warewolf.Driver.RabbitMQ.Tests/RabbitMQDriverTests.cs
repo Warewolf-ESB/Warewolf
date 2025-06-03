@@ -37,7 +37,8 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
+		[Ignore("Until WOLF-8013 is done.")]
+		public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
             var queueSource = new ValidRealRabbitMQSourceForTestingAgainst(new Depends(Depends.ContainerType.RabbitMQ));
@@ -76,7 +77,8 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        public void RabbitMQSource_Publish_Success()
+        [Ignore("Until WOLF-8013 is done.")]
+		public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
             var dependency = new Depends(Depends.ContainerType.RabbitMQ);
