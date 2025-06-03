@@ -21,13 +21,13 @@ Scenario Outline: Create file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name       | destination | destinationLocation                                                           | selected | username         | password   | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                 | True     | ""               | ""         | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | True     | ""               | ""         | [[result]] | Success | NO           |                           |
-		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt              | True     | dev2             | Q/ulw&]    | [[result]] | Success | NO           |                           |
-		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt              | True     | dev2             | Q/ulw&]    | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://localhost/C:/Users/localsftpadmin/upload/test.txt                 | True     | LocalSFTPAdmin   | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://localhost/C:/Users/localsftpadmin/upload/test1.txt                | True     | LocalSFTPAdmin   | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| No | Name       | destination | destinationLocation                                                           | selected | username         | password                                           | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                 | True     | ""               | ""                                                 | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | True     | ""               | ""                                                 | [[result]] | Success | NO           |                           |
+		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt              | True     | dev2             | Q/ulw&]                                            | [[result]] | Success | NO           |                           |
+		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt              | True     | dev2             | Q/ulw&]                                            | [[result]] | Success | NO           |                           |
+		| 5  | SFTP       | [[path]]    | sftp://4.221.39.39/C:/Users/LocalSFTPAdmin.TUDEV2-PC001/Upload/test.txt                    | True     | LocalSFTPAdmin   | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://4.221.39.39/C:/Users/LocalSFTPAdmin.TUDEV2-PC001/Upload/test1.txt                   | True     | LocalSFTPAdmin   | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -45,13 +45,13 @@ Scenario Outline: Create file at location with overwrite disabled
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name       | destination | destinationLocation                                                           | selected | username            | password    | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                 | False    | ""                  | ""          | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | False    | ""                  | ""          | [[result]] | Success | NO           |                           |
-		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt              | False    | dev2                | Q/ulw&]     | [[result]] | Success | NO           |                           |
-		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt              | False    | dev2                | Q/ulw&]     | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://localhost/C:/Users/localsftpadmin/upload/test.txt                 | False    | LocalSFTPAdmin | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://localhost/C:/Users/localsftpadmin/upload/test1.txt                | False    | LocalSFTPAdmin | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| No | Name       | destination | destinationLocation                                                           | selected | username       | password                                           | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                 | False    | ""             | ""                                                 | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | False    | ""             | ""                                                 | [[result]] | Success | NO           |                           |
+		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt              | False    | dev2           | Q/ulw&]                                            | [[result]] | Success | NO           |                           |
+		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt              | False    | dev2           | Q/ulw&]                                            | [[result]] | Success | NO           |                           |
+		| 5  | SFTP       | [[path]]    | sftp://4.221.39.39/C:/Users/LocalSFTPAdmin.TUDEV2-PC001/Upload/test.txt                    | False    | LocalSFTPAdmin | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://4.221.39.39/C:/Users/LocalSFTPAdmin.TUDEV2-PC001/Upload/test1.txt                   | False    | LocalSFTPAdmin | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 	
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -62,10 +62,10 @@ Scenario Outline: Create file at location Nulls
 	When the create file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
-		| No | Name  | destination | destinationLocation                                             | selected | username       | password    | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local | [[path]]    | NULL                                                            | True     |                |             | [[result]] | Failure | AN           |                           |
-		| 2  | Local | [[path]]    | v:\myfile.txt                                                   | True     |                |             | [[result]] | Failure | AN           |                           |
-		| 3  | SFTP  | [[path]]    | sftp://localhost/C:/Users/localsftpadmin/upload/test1.txt  | True     | ""             | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Failure | AN           | C:\\Temp\                 |
+		| No | Name  | destination | destinationLocation                                         | selected | username       | password                                           | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local | [[path]]    | NULL                                                        | True     |                |                                                    | [[result]] | Failure | AN           |                           |
+		| 2  | Local | [[path]]    | v:\myfile.txt                                               | True     |                |                                                    | [[result]] | Failure | AN           |                           |
+		| 3  | SFTP  | [[path]]    | sftp://4.221.39.39/C:/Users/LocalSFTPAdmin.TUDEV2-PC001/Upload/test1.txt | True     | ""             | 987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@!987Sftp#@! | [[result]] | Failure | AN           | C:\\Temp\                 |
 
 
 Scenario Outline: Create file at location with invalid directories
