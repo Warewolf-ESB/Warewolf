@@ -506,6 +506,7 @@ if ($Projects.Length -gt 0) {
 			taskkill /im pythonw3.10.exe /f
 		}
 		if ($StartSFTPServer.IsPresent) {
+			docker logs sftp-connector-testing
 			docker rm -f sftp-connector-testing
 		}
 	}
