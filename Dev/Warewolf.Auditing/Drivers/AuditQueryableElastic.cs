@@ -354,16 +354,17 @@ namespace Warewolf.Auditing.Drivers
 
         private IEnumerable<object> ExecuteDatabase(SearchRequestDescriptor<object> search)
         {
-            var client = _elasticClient ?? Client();
-            var logEvents = client.Search(search);
-            if (!logEvents.IsValidResponse)
+            try
             {
-                Console.WriteLine("Elasticsearch query failed");
+                var client = _elasticClient ?? Client();
+                var logEvents = client.Search(search);
+                var sources = logEvents.HitsMetadata?.Hits?.Select(h => h.Source);
+                return sources ?? Enumerable.Empty<object>();
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Error in executing elastic DB: " + ex);
                 return Enumerable.Empty<object>();
             }
-
-            var sources = logEvents.HitsMetadata?.Hits?.Select(h => h.Source);
-            return sources ?? Enumerable.Empty<object>();
         }
 
         private ElasticsearchClient Client()
