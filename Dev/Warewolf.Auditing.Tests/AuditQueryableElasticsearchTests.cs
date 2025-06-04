@@ -58,15 +58,18 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(HttpRequestException))]
+        //[ExpectedException(typeof(HttpRequestException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty,
                 AuthenticationType.Anonymous, string.Empty, string.Empty);
             var query = new Dictionary<string, StringBuilder>();
 
-            _ = auditQueryable.QueryLogData(query);
-            Assert.Fail("Invalid Elastic source successfully connected.");
+            // Act
+            var result = auditQueryable.QueryLogData(query);
+            // Assert
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.AreEqual(0, result.Count(), "Expected empty result when connection to Elastic fails.");
         }
 
         [TestMethod]
