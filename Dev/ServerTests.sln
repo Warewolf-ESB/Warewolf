@@ -241,6 +241,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licencing.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Weave", "Warewolf.Weave\Warewolf.Weave.csproj", "{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -667,6 +669,10 @@ Global
 		{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

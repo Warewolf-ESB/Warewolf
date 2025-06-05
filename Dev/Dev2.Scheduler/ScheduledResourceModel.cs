@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Scheduler
 {
@@ -157,7 +158,7 @@ namespace Dev2.Scheduler
         }
 
         IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
-                $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\"");
+                $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\" \"Data:{DpapiWrapper.Encrypt(resource.UserName + ":" + resource.Password)}\"");
 
         IScheduledResource TryCreateScheduledResource(IDev2Task arg)
         {
@@ -170,7 +171,7 @@ namespace Dev2.Scheduler
                 nextDate = trigger.StartBoundary;
                 output = action.Arguments.Split(ArgWrapper).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
-            if (output.Count == ArgCount && output.All(a => a.Contains(NameSeperator)))
+            if ((output.Count == ArgCount || output.Count == ArgCountNew) && output.All(a => a.Contains(NameSeperator)))
             {
                 var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
                 try
@@ -246,15 +247,22 @@ namespace Dev2.Scheduler
             return res;
         }
 
+        public int ArgCountNew => 4;
+
         public int ArgCount => 3;
 
         public int ArgCountOld => 2;
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
-            var evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
+            var taskPath = $@"\{_warewolfFolderPath}\{resource.Name}";
+
+            var evt = _factory.CreateTaskEventLog(taskPath, resource.UserName, resource.Password, ".");
+            if (evt == null)
+                return new List<IResourceHistory>();
+
             var groupings = from a in evt.Where(x => !string.IsNullOrEmpty(x.Correlation)
-                            && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
+                            && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory.TrimEnd('\0')))
                             group a by a.Correlation into corrGroup
                             select new
                             {
@@ -263,7 +271,7 @@ namespace Dev2.Scheduler
                                 EventId = corrGroup.Max(a => a.EventId),
                                 corrGroup.Key
                             };
-            // for each grouping get the data and debug output
+            
             IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse()
                 .Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
                 .Select(a =>
@@ -331,7 +339,11 @@ namespace Dev2.Scheduler
             var file = _directory.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if (file != null)
             {
-                return file.Split('_').Last();
+                var username = file.Split('_').Last();
+                if (username.Contains(".txt"))
+                    return username.Split('.').First();
+                else
+                    return username;
             }
 
             return "";

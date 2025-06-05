@@ -63,7 +63,7 @@ namespace Dev2.TaskScheduler.Wrappers
             {
                 var output =
                     action.Arguments.Split('"').Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
-                if (output.Count >3 || output.Count < 2 || !output.All(a => a.Contains(":")))
+                if (!(output.Count == 2 || output.Count == 3 || output.Count == 4) || !output.All(a => a.Contains(":")))
                 {
                     return false;
                 }
