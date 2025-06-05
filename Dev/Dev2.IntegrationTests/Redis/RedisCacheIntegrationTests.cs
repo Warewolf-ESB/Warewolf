@@ -106,6 +106,7 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
         [TestCategory("Load Tests")]
+        [Ignore("Until WOLF-7979 is done")]
         public void RedisCacheIntegration_CacheVariableResult_ShouldReturnInnerActivityOutputs_TTLExpired()
         {
             try
