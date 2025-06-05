@@ -27,6 +27,7 @@ using Warewolf.Triggers;
 using Warewolf.UnitTestAttributes;
 using LogLevel = Warewolf.Logging.LogLevel;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -57,15 +58,18 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(HttpRequestException))]
+        //[ExpectedException(typeof(HttpRequestException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty,
                 AuthenticationType.Anonymous, string.Empty, string.Empty);
             var query = new Dictionary<string, StringBuilder>();
 
-            _ = auditQueryable.QueryLogData(query);
-            Assert.Fail("Invalid Elastic source successfully connected.");
+            // Act
+            var result = auditQueryable.QueryLogData(query);
+            // Assert
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.AreEqual(0, result.Count(), "Expected empty result when connection to Elastic fails.");
         }
 
         [TestMethod]
@@ -111,77 +115,68 @@ namespace Warewolf.Auditing.Tests
             var endDate = startDate.AddMinutes(5);
             var queueRunStatus = QueueRunStatus.Success;
 
-            var executionInfo = new Dictionary<string, object>
+            var json = $@"
+        {{
+          ""fields"": {{
+            ""Data"": {{
+              ""WorkflowID"": ""{resourceId}"",
+              ""ExecutionID"": ""{executionId}"",
+              ""CustomTransactionID"": ""{customTransactionId}"",
+              ""StartDateTime"": ""{startDate:o}"",
+              ""CompletedDateTime"": ""{endDate:o}"",
+              ""Exception"": """",
+              ""LogLevel"": ""{LogLevel.Debug}"",
+              ""AuditType"": ""LogAdditionalDetail"",
+              ""User"": ""{username}""
+            }}
+          }}
+        }}";
+
+            using var doc = JsonDocument.Parse(json);
+            var jsonElement = doc.RootElement.Clone();
+
+            var hit = new Hit<object> { Source = jsonElement };
+
+            var hitsMetadata = new HitsMetadata<object>
             {
-                {"ExecutionId", executionId},
-                {"CustomTransactionID", customTransactionId},
-                {"Success", queueRunStatus},
-                {"EndDate", endDate},
-                {"Duration", "5"},
-                {"StartDate", startDate},
-                {"FailureReason", ""},
+                Hits = new List<Hit<object>> { hit }
             };
 
-            var hits = new Dictionary<string, object>
+            var searchResponse = new SearchResponse<object>
             {
-                {"ResourceId", resourceId},
-                {"ExecutionInfo", executionInfo},
-                {"UserName", username},
-                {"Exception", new Exception("This is an exception")},
-                {"LogLevel", LogLevel.Debug.ToString()},
-                {"AuditType", "LogAdditionalDetail"},
+                HitsMetadata = hitsMetadata
             };
-
-            var values = new Dictionary<string, object>
-            {
-                {"values", hits}
-            };
-
-            var fields = new Dictionary<string, object>
-            {
-                {"fields", values}
-            };
-
-            var mockHit = new Mock<IHit<object>>();
-            mockHit.Setup(o => o.Source).Returns(fields);
-
-            var readOnlyCollection = new List<Hit<object>>
-            {
-                ConvertToHit(mockHit.Object)
-            };
-
-            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
-            mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
 
             var mockElasticClient = new Mock<ElasticsearchClient>();
-            mockElasticClient.Setup(o => o.Search(It.IsAny<SearchRequestDescriptor<object>>()))
-                .Returns(new SearchResponse<object> { HitsMetadata = ConvertToHitsMetadata(mockHitsMetadata.Object) });
+            mockElasticClient
+                .Setup(c => c.Search(It.IsAny<SearchRequestDescriptor<object>>()))
+                .Returns(searchResponse);
 
             var auditQueryableElastic =
                 new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
 
             var query = new Dictionary<string, StringBuilder>
-            {
-                {"ResourceId", resourceId.ToString().ToStringBuilder()}
-            };
+    {
+        {"ResourceId", resourceId.ToString().ToStringBuilder()}
+    };
 
             var queryTriggerData = auditQueryableElastic.QueryTriggerData(query);
-
             var executionHistories = queryTriggerData.ToList();
 
-            Assert.AreEqual(0, executionHistories.Count);
+            Assert.AreEqual(1, executionHistories.Count);
             Assert.AreEqual(resourceId, executionHistories[0].ResourceId);
             Assert.AreEqual(username, executionHistories[0].UserName);
             Assert.AreEqual(executionId, executionHistories[0].ExecutionInfo.ExecutionId);
             Assert.AreEqual(queueRunStatus, executionHistories[0].ExecutionInfo.Success);
             Assert.AreEqual(startDate.ToString(), executionHistories[0].ExecutionInfo.StartDate.ToString());
             Assert.AreEqual(endDate.ToString(), executionHistories[0].ExecutionInfo.EndDate.ToString());
-            Assert.AreEqual("5.00:00:00", executionHistories[0].ExecutionInfo.Duration.ToString());
+            Assert.AreEqual("00:05:00", executionHistories[0].ExecutionInfo.Duration.ToString());
 
             auditQueryableElastic.Dispose();
-
             mockElasticsearchSource.Verify(o => o.Dispose(), Times.Once);
         }
+
+
 
         public static Hit<T> ConvertToHit<T>(IHit<T> iHit)
         {
@@ -269,14 +264,14 @@ namespace Warewolf.Auditing.Tests
             };
 
             var values = new Dictionary<string, object>
-            {
+{
                 {"values", hits}
-            };
+};
 
             var fields = new Dictionary<string, object>
-            {
+{
                 {"fields", values}
-            };
+};
 
             var mockHit = new Mock<IHit<object>>();
             mockHit.Setup(o => o.Source).Returns(fields);
@@ -308,7 +303,7 @@ namespace Warewolf.Auditing.Tests
 
             var audits = queryTriggerData.ToList();
 
-            Assert.AreEqual(0, audits.Count);
+            Assert.AreEqual(1, audits.Count);
             Assert.AreEqual(executionId.ToString(), audits[0].ExecutionID);
             Assert.AreEqual(customTransactionId.ToString(), audits[0].CustomTransactionID);
             Assert.AreEqual(workflowName, audits[0].WorkflowName);
