@@ -176,7 +176,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MSSQL)
             {
-                Container.IP = "102.37.115.89";
+                Container.IP = "localhost";
                 Container.Port = "1433";
             }
             else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
@@ -191,12 +191,12 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MySQL)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "9300";
+                Container.IP = "20.164.87.49";
+                Container.Port = "3306";
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "102.37.115.89";
+                Container.IP = "20.164.73.166";
                 Container.Port = "6380";
             }
             else

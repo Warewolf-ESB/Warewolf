@@ -128,6 +128,7 @@ namespace Warewolf.Trigger.Queue
             UserName = queue.UserName;
             Password = queue.Password;
             TriggerEnabled = Concurrency > 0;
+            ResourceId= queue.ResourceId;
             
             if (queue.Options != null)
             {
@@ -533,6 +534,7 @@ namespace Warewolf.Trigger.Queue
                 if (_verifyResults != null)
                 {
                     _dataList = new DataListModel();
+                    _contextualResourceModel = _server.ResourceRepository.LoadContextualResourceModel(ResourceId);
                     _dataList.Create(VerifyResults, _contextualResourceModel.DataList);
                     var inputList = _dataListConversionUtils.GetInputs(_dataList);
                     Inputs = inputList.Select(sca =>
@@ -644,7 +646,7 @@ namespace Warewolf.Trigger.Queue
                     _asyncWorker.Start(() =>
                     {
                         IsProgressBarVisible = true;
-                        _history = _resourceRepository.GetTriggerQueueHistory(TriggerId);
+                        _history = _resourceRepository.GetTriggerQueueHistory(ResourceId);
                     }
                    , () =>
                    {

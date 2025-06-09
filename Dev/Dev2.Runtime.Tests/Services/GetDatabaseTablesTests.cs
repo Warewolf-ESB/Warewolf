@@ -130,6 +130,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Hagashen Naidu")]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
+        [Ignore]//Until we can get the DB
         public void GetDatabaseTables_Execute_ValidDatabaseSource()
         {
             var parser = new Mock<IActivityParser>();
