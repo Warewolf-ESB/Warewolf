@@ -25,7 +25,6 @@ Scenario: Database PostgreSql Database service inputs and outputs
 	  | [[countries(2).Name]] = South Africa  |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -43,7 +42,6 @@ Examples:
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario: Database MySqlDB Database service using char in param name
      Given I have a workflow "TestMySqlWFWithMySqlCharParamName"
 	 And "TestMySqlWFWithMySqlCharParamName" contains a mysql database service "procWithCharNoOutput" with mappings as
@@ -55,7 +53,6 @@ Scenario: Database MySqlDB Database service using char in param name
 
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -73,7 +70,6 @@ Examples:
     | TestMySqlWFWithMySqlIntIndex | MySqlEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -91,7 +87,6 @@ Examples:
     | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -109,7 +104,6 @@ Examples:
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -125,7 +119,6 @@ Examples:
     | TestMySqlWFWithMySqlMailsInvalidVarWithIndex | MySqlEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
 
 @DatabaseWorkflowExecution
-@ignore #Until WOLF-7978 is done.
 Scenario Outline: Database MySqlDB Database service inputs and outputs
 	Given I depend on a valid MySQL server
     And I have a workflow "<WorkflowName>"
@@ -215,7 +208,7 @@ Examples:
 Scenario Outline: Database SqlDB  service using scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  | Input to Service | From Variable | Output from SeWrvice | To Variable     |
 	  |                  |               | name                | <nameVariable>  |
 	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed

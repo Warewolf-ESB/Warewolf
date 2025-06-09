@@ -25,6 +25,7 @@ param(
   [switch] $STA,
   [switch] $StartSFTPServer,
   [string] $StartMSSQLServer
+  [switch] $StartMySQLServer
 )
 function Start-FTPServer {
 	if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
@@ -172,6 +173,9 @@ if __name__ == '__main__':
 function Start-SFTPServer {
 	docker run -d -p 22:22 --name sftp-connector-testing registry.gitlab.com/warewolf/sftp-connector-testing
 }
+function Start-MySQLServer {
+	docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing
+}
 if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
 	choco install sql-server-2022 -y
     [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
@@ -264,7 +268,7 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent) {
+if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent -and !$StartMySQLServer.IsPresent) {
 	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
 		if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
@@ -339,6 +343,9 @@ if ($Projects.Length -gt 0) {
 		}
 		if ($StartSFTPServer.IsPresent) {
 			Start-SFTPServer
+		}
+		if ($StartMySQLServer.IsPresent) {
+			Start-MySQLServer
 		}
 		if ($RetryRebuild.IsPresent) {
 			if (Test-Path "$PWD\..\..\Compile.ps1") {
@@ -508,6 +515,10 @@ if ($Projects.Length -gt 0) {
 			docker logs sftp-connector-testing
 			docker rm -f sftp-connector-testing
 		}
+		if ($StartMySQLServer.IsPresent) {
+			docker logs mysql-connector-testing
+			docker rm -f mysql-connector-testing
+		}
 	}
 } else {
 	if ($StartFTPServer.IsPresent) {
@@ -517,7 +528,10 @@ if ($Projects.Length -gt 0) {
 		Start-FTPSServer
 	}
 	if ($StartSFTPServer.IsPresent) {
-		Start-FTPSServer
+		Start-SFTPServer
+	}
+	if ($StartMySQLServer.IsPresent) {
+		Start-MySQLServer
 	}
 }
 if ($Coverage.IsPresent) {

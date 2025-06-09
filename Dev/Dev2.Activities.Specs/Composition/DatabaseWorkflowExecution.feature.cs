@@ -178,8 +178,7 @@ this.FeatureBackground();
         public virtual void DatabaseMySqlDBDatabaseServiceUsingIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -192,7 +191,7 @@ this.FeatureBackground();
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service using * indexes", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 29
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -205,7 +204,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 30
+#line 29
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table472 = new TechTalk.SpecFlow.Table(new string[] {
@@ -223,13 +222,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 31
+#line 30
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table472, "And ");
 #line hidden
-#line 35
+#line 34
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 35
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table473 = new TechTalk.SpecFlow.Table(new string[] {
@@ -238,7 +237,7 @@ this.FeatureBackground();
                             "[[rec(1).name]] = Monk"});
                 table473.AddRow(new string[] {
                             "[[rec(1).email]] = dora@explorers.com"});
-#line 37
+#line 36
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table473, "And ");
 #line hidden
             }
@@ -248,7 +247,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using * indexes: TestMySqlWFWithMySqlStarIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlStarIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlStarIndex")]
@@ -258,7 +256,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseMySqlDBDatabaseServiceUsingIndexes_TestMySqlWFWithMySqlStarIndex()
         {
-#line 29
+#line 28
 this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithMySqlStarIndex", "MySqlEmail", "[[rec(*).name]]", "[[rec(*).email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -266,16 +264,14 @@ this.DatabaseMySqlDBDatabaseServiceUsingIndexes("TestMySqlWFWithMySqlStarIndex",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using char in param name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         public void DatabaseMySqlDBDatabaseServiceUsingCharInParamName()
         {
             string[] tagsOfScenario = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service using char in param name", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 47
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -288,7 +284,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 48
+#line 46
      testRunner.Given("I have a workflow \"TestMySqlWFWithMySqlCharParamName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table474 = new TechTalk.SpecFlow.Table(new string[] {
@@ -306,14 +302,14 @@ this.FeatureBackground();
                             "bart01",
                             "",
                             ""});
-#line 49
+#line 47
   testRunner.And("\"TestMySqlWFWithMySqlCharParamName\" contains a mysql database service \"procWithCh" +
                         "arNoOutput\" with mappings as", ((string)(null)), table474, "And ");
 #line hidden
-#line 53
+#line 51
       testRunner.When("\"TestMySqlWFWithMySqlCharParamName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 52
      testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -323,8 +319,7 @@ this.FeatureBackground();
         public virtual void DatabaseMySqlDBDatabaseServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -337,7 +332,7 @@ this.FeatureBackground();
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service using int indexes", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 59
+#line 56
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -350,7 +345,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 60
+#line 57
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table475 = new TechTalk.SpecFlow.Table(new string[] {
@@ -368,13 +363,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 61
+#line 58
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table475, "And ");
 #line hidden
-#line 65
+#line 62
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 66
+#line 63
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
@@ -383,7 +378,7 @@ this.FeatureBackground();
                             "[[rec(1).name]] = Monk"});
                 table476.AddRow(new string[] {
                             "[[rec(1).email]] = dora@explorers.com"});
-#line 67
+#line 64
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs is", serviceName, workflowName), ((string)(null)), table476, "And ");
 #line hidden
             }
@@ -394,7 +389,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service using int indexes: TestMySqlWFWithMySqlIntIndex" +
             "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlIntIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlIntIndex")]
@@ -404,7 +398,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseMySqlDBDatabaseServiceUsingIntIndexes_TestMySqlWFWithMySqlIntIndex()
         {
-#line 59
+#line 56
 this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithMySqlIntIndex", "MySqlEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -412,8 +406,7 @@ this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithMySqlIntIndex
         public virtual void DatabaseMySqlDBDatabaseServiceLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -426,7 +419,7 @@ this.DatabaseMySqlDBDatabaseServiceUsingIntIndexes("TestMySqlWFWithMySqlIntIndex
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service last  indexes", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 77
+#line 73
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -439,7 +432,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 78
+#line 74
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table477 = new TechTalk.SpecFlow.Table(new string[] {
@@ -457,13 +450,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 79
+#line 75
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table477, "And ");
 #line hidden
-#line 83
+#line 79
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 84
+#line 80
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
@@ -472,7 +465,7 @@ this.FeatureBackground();
                             "[[rec(1).name]] = Monk"});
                 table478.AddRow(new string[] {
                             "[[rec(1).email]] = dora@explorers.com"});
-#line 85
+#line 81
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs is", serviceName, workflowName), ((string)(null)), table478, "And ");
 #line hidden
             }
@@ -482,7 +475,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service last  indexes: TestMySqlWFWithMySqlLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlLastIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlLastIndex")]
@@ -492,7 +484,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseMySqlDBDatabaseServiceLastIndexes_TestMySqlWFWithMySqlLastIndex()
         {
-#line 77
+#line 73
 this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", "MySqlEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -500,8 +492,7 @@ this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", 
         public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -514,7 +505,7 @@ this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", 
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service scalar outputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 95
+#line 90
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -527,7 +518,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 96
+#line 91
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table479 = new TechTalk.SpecFlow.Table(new string[] {
@@ -545,13 +536,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 97
+#line 92
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table479, "And ");
 #line hidden
-#line 101
+#line 96
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 102
+#line 97
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
@@ -560,7 +551,7 @@ this.FeatureBackground();
                             "[[name]] = Monk"});
                 table480.AddRow(new string[] {
                             "[[email]] = dora@explorers.com"});
-#line 103
+#line 98
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table480, "And ");
 #line hidden
             }
@@ -570,7 +561,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service scalar outputs: TestMySqlWFWithMySqlScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlScalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlScalar")]
@@ -580,7 +570,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseMySqlDBDatabaseServiceScalarOutputs_TestMySqlWFWithMySqlScalar()
         {
-#line 95
+#line 90
 this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "MySqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -588,8 +578,7 @@ this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -602,7 +591,7 @@ this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service Error outputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 113
+#line 107
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -615,7 +604,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 114
+#line 108
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table481 = new TechTalk.SpecFlow.Table(new string[] {
@@ -633,13 +622,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 115
+#line 109
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table481, "And ");
 #line hidden
-#line 119
+#line 113
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 120
+#line 114
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -650,7 +639,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithMySqlMailsInvalid" +
             "Index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidIndex")]
@@ -660,7 +648,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidIndex()
         {
-#line 113
+#line 107
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidIndex", "MySqlEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -669,7 +657,6 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithMySqlMailsInvalid" +
             "Var")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidVar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidVar")]
@@ -679,7 +666,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVar()
         {
-#line 113
+#line 107
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVar", "MySqlEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -688,7 +675,6 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service Error outputs: TestMySqlWFWithMySqlMailsInvalid" +
             "VarWithIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlMailsInvalidVarWithIndex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlMailsInvalidVarWithIndex")]
@@ -698,7 +684,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVarWithIndex()
         {
-#line 113
+#line 107
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVarWithIndex", "MySqlEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -706,8 +692,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DatabaseWorkflowExecution",
-                    "ignore"};
+                    "DatabaseWorkflowExecution"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -720,7 +705,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service inputs and outputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 129
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -733,10 +718,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 130
+#line 123
  testRunner.Given("I depend on a valid MySQL server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 131
+#line 124
     testRunner.And(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table482 = new TechTalk.SpecFlow.Table(new string[] {
@@ -754,13 +739,13 @@ this.FeatureBackground();
                             "",
                             "description",
                             string.Format("{0}", emailVariable)});
-#line 132
+#line 125
  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table482, "And ");
 #line hidden
-#line 136
+#line 129
     testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 137
+#line 130
     testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table483 = new TechTalk.SpecFlow.Table(new string[] {
@@ -773,7 +758,7 @@ this.FeatureBackground();
                             "[[countries(1).description]] = Afghanistan"});
                 table483.AddRow(new string[] {
                             "[[countries(2).description]] = Afghanistan"});
-#line 138
+#line 131
  testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table483, "And ");
 #line hidden
             }
@@ -784,7 +769,6 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database MySqlDB Database service inputs and outputs: TestMySqlWFWithMySqlCountri" +
             "es")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DatabaseWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestMySqlWFWithMySqlCountries")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestMySqlWFWithMySqlCountries")]
@@ -794,7 +778,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseMySqlDBDatabaseServiceInputsAndOutputs_TestMySqlWFWithMySqlCountries()
         {
-#line 129
+#line 122
 this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountries", "Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -816,7 +800,7 @@ this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountri
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB Database service inputs and outputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 150
+#line 143
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -829,7 +813,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 151
+#line 144
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table484 = new TechTalk.SpecFlow.Table(new string[] {
@@ -847,13 +831,13 @@ this.FeatureBackground();
                             "",
                             "description",
                             string.Format("{0}", emailVariable)});
-#line 152
+#line 145
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table484, "And ");
 #line hidden
-#line 156
+#line 149
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 157
+#line 150
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table485 = new TechTalk.SpecFlow.Table(new string[] {
@@ -862,7 +846,7 @@ this.FeatureBackground();
                             "[[countries(1).id]] = 1"});
                 table485.AddRow(new string[] {
                             "[[countries(1).description]] = Afghanistan"});
-#line 158
+#line 151
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table485, "And ");
 #line hidden
             }
@@ -883,7 +867,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithSqlServerCountries()
         {
-#line 150
+#line 143
 this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountries", "dbo.Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -904,7 +888,7 @@ this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountri
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service DBErrors", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 167
+#line 160
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -917,7 +901,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 168
+#line 161
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table486 = new TechTalk.SpecFlow.Table(new string[] {
@@ -925,13 +909,13 @@ this.FeatureBackground();
                             "From Variable",
                             "Output from Service",
                             "To Variable"});
-#line 169
+#line 162
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table486, "And ");
 #line hidden
-#line 171
+#line 164
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 172
+#line 165
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -950,7 +934,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public void DatabaseSqlDBServiceDBErrors_TestWFWithDBSqlServerErrorProcSql()
         {
-#line 167
+#line 160
 this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "dbo.willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -972,7 +956,7 @@ this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "dbo.will
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using int indexes", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 179
+#line 172
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -985,7 +969,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 180
+#line 173
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table487 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1003,13 +987,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 181
+#line 174
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table487, "And ");
 #line hidden
-#line 185
+#line 178
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 186
+#line 179
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1018,7 +1002,7 @@ this.FeatureBackground();
                             "[[rec(1).name]] = dora"});
                 table488.AddRow(new string[] {
                             "[[rec(1).email]] = dora@explorers.co.za"});
-#line 187
+#line 180
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table488, "And ");
 #line hidden
             }
@@ -1038,7 +1022,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseSqlDBServiceUsingIntIndexes_TestWFWithDBSqlServerIntIndex()
         {
-#line 179
+#line 172
 this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "dbo.SQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -1060,7 +1044,7 @@ this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "dbo.S
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using last indexes", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 197
+#line 190
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1073,7 +1057,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 198
+#line 191
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table489 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1091,13 +1075,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 199
+#line 192
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table489, "And ");
 #line hidden
-#line 203
+#line 196
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 204
+#line 197
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table490 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1106,7 +1090,7 @@ this.FeatureBackground();
                             "[[rec(1).name]] = dora"});
                 table490.AddRow(new string[] {
                             "[[rec(1).email]] = dora@explorers.co.za"});
-#line 205
+#line 198
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table490, "And ");
 #line hidden
             }
@@ -1126,7 +1110,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseSqlDBServiceUsingLastIndexes_TestWFWithDBSqlServerLastIndex()
         {
-#line 197
+#line 190
 this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "dbo.SQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -1148,7 +1132,7 @@ this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "dbo
             argumentsOfScenario.Add("emailVariable", emailVariable);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using scalar outputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 215
+#line 208
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1161,13 +1145,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 216
+#line 209
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table491 = new TechTalk.SpecFlow.Table(new string[] {
                             "Input to Service",
                             "From Variable",
-                            "Output from Service",
+                            "Output from SeWrvice",
                             "To Variable"});
                 table491.AddRow(new string[] {
                             "",
@@ -1179,13 +1163,13 @@ this.FeatureBackground();
                             "",
                             "email",
                             string.Format("{0}", emailVariable)});
-#line 217
+#line 210
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table491, "And ");
 #line hidden
-#line 221
+#line 214
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 222
+#line 215
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table492 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1194,7 +1178,7 @@ this.FeatureBackground();
                             "[[name]] = dora"});
                 table492.AddRow(new string[] {
                             "[[email]] = dora@explorers.co.za"});
-#line 223
+#line 216
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table492, "And ");
 #line hidden
             }
@@ -1214,7 +1198,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public void DatabaseSqlDBServiceUsingScalarOutputs_TestWFWithDBSqlServerScalar()
         {
-#line 215
+#line 208
 this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.SQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -1229,7 +1213,7 @@ this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.
                     "DatabaseWorkflowExecution"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing unsaved workflow should execute by ID", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 232
+#line 225
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1242,7 +1226,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 233
+#line 226
  testRunner.Given("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table493 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1254,13 +1238,13 @@ this.FeatureBackground();
                 table493.AddRow(new string[] {
                             "[[rec(2).a]]",
                             "no"});
-#line 234
+#line 227
  testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table493, "And ");
 #line hidden
-#line 238
+#line 231
    testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 239
+#line 232
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table494 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1272,10 +1256,10 @@ this.FeatureBackground();
                 table494.AddRow(new string[] {
                             "2",
                             "[[rec(2).a]] = no"});
-#line 240
+#line 233
    testRunner.And("the \"Rec To Convert\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table494, "And ");
 #line hidden
-#line 244
+#line 237
    testRunner.Then("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table495 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1287,10 +1271,10 @@ this.FeatureBackground();
                 table495.AddRow(new string[] {
                             "[[rec(2).a]]",
                             "2"});
-#line 245
+#line 238
    testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table495, "And ");
 #line hidden
-#line 249
+#line 242
    testRunner.When("\'2\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table496 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1302,7 +1286,7 @@ this.FeatureBackground();
                 table496.AddRow(new string[] {
                             "2",
                             "[[rec(2).a]] = 2"});
-#line 250
+#line 243
    testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table496, "And ");
 #line hidden
             }
