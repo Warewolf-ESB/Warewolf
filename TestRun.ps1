@@ -24,7 +24,7 @@ param(
   [switch] $CreateLocalSchedulerAdmin,
   [switch] $STA,
   [switch] $StartSFTPServer,
-  [string] $StartMSSQLServer
+  [string] $StartMSSQLServer,
   [switch] $StartMySQLServer
 )
 function Start-FTPServer {
