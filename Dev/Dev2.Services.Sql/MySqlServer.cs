@@ -376,7 +376,7 @@ namespace Dev2.Services.Sql
             command.CommandType = CommandType.Text;
             command.CommandText =
                 string.Format(
-                    "SELECT param_list FROM mysql.proc WHERE db='{0}' AND name='{1}'",
+					"SELECT PARAMETER_NAME FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_SCHEMA='{0}' AND SPECIFIC_NAME='{1}'",
                     dbName, procedureName);
             var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
