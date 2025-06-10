@@ -15,8 +15,8 @@ using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
-    [Serializable]
-    public class Workspace : IWorkspace
+	[DataContract]
+	public class Workspace : IWorkspace
     {
         public Workspace(Guid workspaceID)
         {
@@ -24,13 +24,15 @@ namespace Dev2.Workspaces
             Items = new List<IWorkspaceItem>();
         }
 
-        public Guid ID
+		[DataMember]
+		public Guid ID
         {
             get;
             private set;
         }
 
-        public IList<IWorkspaceItem> Items
+		[DataMember]
+		public IList<IWorkspaceItem> Items
         {
             get;
             private set;
