@@ -25,6 +25,7 @@ param(
   [switch] $STA,
   [switch] $StartSFTPServer,
   [string] $StartMSSQLServer,
+  [string] $StartWarewolfServer,
   [switch] $StartMySQLServer
 )
 function Start-FTPServer {
@@ -173,31 +174,34 @@ if __name__ == '__main__':
 function Start-SFTPServer {
 	docker run -d -p 22:22 --name sftp-connector-testing registry.gitlab.com/warewolf/sftp-connector-testing
 }
+function Start-WarewolfServer {
+	docker run -d -p $StartWarewolfServer`:3142 --name remote-warewolf-connector-testing registry.gitlab.com/warewolf/remote-warewolf-connector-testing
+}
 function Start-MySQLServer {
 	docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing
 }
-if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
+function Start-MSSQLServer {
 	choco install sql-server-2022 -y
-    [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
-    $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
-    $comp = $env:ComputerName
-    $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-    $Tcp.IsEnabled = $true
-    $Tcp.Alter()
-    $Tcp
-    $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
-    $Np.IsEnabled = $true
-    $Np.Alter()
-    $Np
-    $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
-    $sql.Settings.LoginMode = 'Mixed'
-    $sql.Alter()
-    sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
-    sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
+	[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
+	$wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
+	$comp = $env:ComputerName
+	$Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
+	$Tcp.IsEnabled = $true
+	$Tcp.Alter()
+	$Tcp
+	$Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
+	$Np.IsEnabled = $true
+	$Np.Alter()
+	$Np
+	$sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
+	$sql.Settings.LoginMode = 'Mixed'
+	$sql.Alter()
+	sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
+	sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
 	if (!(Test-Path "C:\Builds")) {New-Item -ItemType Directory "C:\Builds"}
-    sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$StartMSSQLServer' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
-    sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
-    Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+	sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$StartMSSQLServer' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
+	sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+	Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
 }
 
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -343,6 +347,12 @@ if ($Projects.Length -gt 0) {
 		}
 		if ($StartSFTPServer.IsPresent) {
 			Start-SFTPServer
+		}
+		if ($StartWarewolfServer) {
+			Start-WarewolfServer
+		}
+		if ($StartMSSQLServer) {
+			Start-MSSQLServer
 		}
 		if ($StartMySQLServer.IsPresent) {
 			Start-MySQLServer
@@ -515,9 +525,16 @@ if ($Projects.Length -gt 0) {
 			docker logs sftp-connector-testing
 			docker rm -f sftp-connector-testing
 		}
+		if ($StartWarewolfServer) {
+			docker logs remote-warewolf-connector-testing
+			docker rm -f remote-warewolf-connector-testing
+		}
 		if ($StartMySQLServer.IsPresent) {
 			docker logs mysql-connector-testing
 			docker rm -f mysql-connector-testing
+		}
+		if ($StartMSSQLServer) {
+			Get-Service -Name 'MSSQLSERVER' | Stop-Service -Force
 		}
 	}
 } else {
@@ -530,8 +547,14 @@ if ($Projects.Length -gt 0) {
 	if ($StartSFTPServer.IsPresent) {
 		Start-SFTPServer
 	}
+	if ($StartWarewolfServer) {
+		Start-WarewolfServer
+	}
 	if ($StartMySQLServer.IsPresent) {
 		Start-MySQLServer
+	}
+	if ($StartMSSQLServer.IsPresent) {
+		Start-MSSQLServer
 	}
 }
 if ($Coverage.IsPresent) {
