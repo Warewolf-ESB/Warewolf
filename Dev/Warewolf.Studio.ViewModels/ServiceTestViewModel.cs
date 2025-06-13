@@ -1465,17 +1465,24 @@ namespace Warewolf.Studio.ViewModels
         void AddChildActivity<T>(DsfNativeActivity<T> act, IServiceTestStep parentTestStep)
         {
             var outputs = act.GetOutputs();
-            if (outputs != null && outputs.Count > 0)
-            {
-                var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
-                serviceTestStep.StepOutputs = outputs
-                                                .Select(output => new ServiceTestOutput(output, "", "", "")
-                                                {
-                                                    HasOptionsForValue = false,
-                                                    AddStepOutputRow = serviceTestStep.AddNewOutput
-                                                })
-                                                .Cast<IServiceTestOutput>()
-                                                .ToObservableCollection();
+            if (outputs != null)
+			{
+				var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
+                if (outputs.Count > 0)
+                {
+                    serviceTestStep.StepOutputs = outputs
+                        .Select(output => new ServiceTestOutput(output, "", "", "")
+                        {
+                            HasOptionsForValue = false,
+                            AddStepOutputRow = serviceTestStep.AddNewOutput
+                        })
+                        .Cast<IServiceTestOutput>()
+                        .ToObservableCollection();
+                }
+                else
+				{
+					serviceTestStep.StepOutputs = GetDefaultOutputs();
+				}
 
                 SetStepIcon(act.GetType(), serviceTestStep);
                 parentTestStep.Children.Add(serviceTestStep);
