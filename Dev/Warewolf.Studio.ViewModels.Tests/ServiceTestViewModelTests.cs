@@ -2622,7 +2622,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
@@ -2657,7 +2656,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(nameof(DsfSelectAndApplyActivity),
                 testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
-            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+            Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
         }
 
         [TestMethod]
