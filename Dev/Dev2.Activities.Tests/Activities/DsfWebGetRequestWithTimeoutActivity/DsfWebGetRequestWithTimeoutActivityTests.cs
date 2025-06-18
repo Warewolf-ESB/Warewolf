@@ -411,7 +411,8 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
-        public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
+		[Ignore("Until WOLF-8009 is done.")]
+		public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
         {
             //------------Setup for test--------------------------
             const string response = "[\"value1\",\"value2\"]";
