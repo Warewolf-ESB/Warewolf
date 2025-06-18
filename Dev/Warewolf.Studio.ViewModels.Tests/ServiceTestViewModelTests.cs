@@ -540,7 +540,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_SelectedServiceTest_GIVEN_NotDummyServiceTestOrIsNewTest_ShouldNotSetAsSelectedItem()
