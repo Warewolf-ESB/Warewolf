@@ -6,7 +6,6 @@ EXPOSE 3143
 SHELL ["powershell"]
 RUN New-Item -Path Server -ItemType Directory
 ADD . Server
-RUN &".\Server\Perfmon.ps1"
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
@@ -15,4 +14,4 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
 
-CMD ["powershell", ".\\Server\\StartAsService.ps1"]
+CMD Start-Job -ScriptBlock { & "C:\\Server\\PerfMon.ps1" };.\\Server\\StartAsService.ps1
