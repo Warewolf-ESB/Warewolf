@@ -22,7 +22,8 @@ param(
   [switch] $StartFTPSServer,
   [switch] $CreateUNCPath,
   [switch] $UseRegionalSettings,
-  [switch] $CreateLocalSchedulerAdmin
+  [switch] $CreateLocalSchedulerAdmin,
+  [switch] $StartMySQLServer
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -286,6 +287,9 @@ if __name__ == '__main__':
 		}
 		net stop hns
 		pythonw -u "C:\ftps_entrypoint.py"
+	}
+	if ($StartMySQLServer.IsPresent) {
+		docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing
 	}
     if ($RetryRebuild.IsPresent) {
 		if (Test-Path "$PWD\..\..\Compile.ps1") {

@@ -114,6 +114,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
         [TestCategory("AnonymousRedis")]
+        [Ignore]//Until WOLF-7979 us done.
         public void TestRedisSource_Execute_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------

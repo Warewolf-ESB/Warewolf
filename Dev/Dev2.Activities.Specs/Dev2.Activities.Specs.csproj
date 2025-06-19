@@ -106,6 +106,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseWorkflowExecution.feature</DependentUpon>
     </Compile>
+    <None Include="Composition\DBSource\Restore MySQL.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Composition\RabbitMQWorkflowExecution.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
