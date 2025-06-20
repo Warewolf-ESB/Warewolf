@@ -205,9 +205,25 @@ for SolutionFile in "${KnownSolutionFiles[@]}"; do
         OutputProperty="\"-property:OutDir=$PSScriptRoot/Bin/$OutputFolderName\""
       fi
       if [[ $InContainer -eq 0 ]]; then
-        $MSBuildPath "$PSScriptRoot/$SolutionFile" -t:Restore
-        echo $MSBuildPath \"$PSScriptRoot/$SolutionFile\" \"-p:Platform=Any CPU\;Configuration=$Config$FrameworkTarget\" $OutputProperty $Target
-        $MSBuildPath "$PSScriptRoot/$SolutionFile" "-p:Platform=Any CPU\;Configuration=$Config$FrameworkTarget" $OutputProperty $Target
+        # Build the command as an array for proper argument handling
+        MSBUILD_CMD=()
+        # Split MSBuildPath if it contains spaces (e.g., "dotnet msbuild")
+        read -ra MSBUILD_PATH_ARR <<< "$MSBuildPath"
+        MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
+        MSBUILD_CMD+=("$PSScriptRoot/$SolutionFile" -t:Restore)
+        # Run restore
+        "${MSBUILD_CMD[@]}"
+
+        # Build command for build
+        MSBUILD_CMD=()
+        MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
+        MSBUILD_CMD+=("$PSScriptRoot/$SolutionFile")
+        MSBUILD_CMD+=("-p:Platform=Any CPU" "-p:Configuration=$Config")
+        [[ -n "$FrameworkTarget" ]] && MSBUILD_CMD+=("-p:TargetFramework=$FrameworkTarget")
+        [[ -n "$OutputProperty" ]] && MSBUILD_CMD+=("$OutputProperty")
+        [[ -n "$Target" ]] && MSBUILD_CMD+=("$Target")
+        # Run build
+        "${MSBUILD_CMD[@]}"
       else
         docker run -t -m 4g -v "$PSScriptRoot:/Build" registry.gitlab.com/warewolf/msbuild "/Build/$SolutionFile" "-p:Platform=Any CPU;Configuration=$Config$FrameworkTarget" $OutputProperty $Target
       fi
