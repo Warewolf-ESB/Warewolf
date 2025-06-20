@@ -44,14 +44,6 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-KnownSolutionFiles=(
-  "Dev/ServerTests.sln"
-)
-
-NoSolutionParametersPresent=$((
-  AcceptanceTesting==0 && UITesting==0 && Server==0 && Studio==0 && Release==0 && Web==0 && RegenerateSpecFlowFeatureFiles==0 && NewServerNet6==0 && ServerTests==0 && StudioProject==0 && COMIPCProject==0
-))
-
 if [[ -n "$Target" ]]; then
   Target="-t:$Target"
 fi
@@ -180,65 +172,52 @@ EOF
   echo "Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/"
 fi
 
-# Compile Solutions
-for SolutionFile in "${KnownSolutionFiles[@]}"; do
-  if [[ -f "$PSScriptRoot/$SolutionFile" ]]; then
-    SolutionFileName=$(basename "$SolutionFile")
-    SolutionFileExtension=".${SolutionFileName##*.}"
-    OutputFolderName="${SolutionFileName%$SolutionFileExtension}"
-    # Custom output folder logic
-    if [[ "$OutputFolderName" == "Studi" ]]; then OutputFolderName="StudioProject"; fi
-    if [[ "$OutputFolderName" == "ServerTest" ]]; then OutputFolderName="ServerTests"; fi
-    if [[ "$OutputFolderName" == "Warewolf.COMIPC" ]]; then OutputFolderName="COMIPCProject"; fi
-    # Solution parameter present logic (simplified)
-    SolutionParameterIsPresent=1 # Always build for now
-    if [[ $SolutionParameterIsPresent -eq 1 || $NoSolutionParametersPresent -eq 1 ]]; then
-      if [[ "$OutputFolderName" == "Webs" ]]; then
-        npm install --add-python-to-path='true' --global --production windows-build-tools
-      fi
-      if [[ $ProjectSpecificOutputs -eq 1 ]]; then
-        OutputProperty=""
-      else
-        if [[ -n "$FrameworkTarget" ]]; then
-          OutputFolderName+="/$FrameworkTarget"
-        fi
-        OutputProperty="\"-property:OutDir=$PSScriptRoot/Bin/$OutputFolderName\""
-      fi
-      if [[ $InContainer -eq 0 ]]; then
-        # Build the command as an array for proper argument handling
-        MSBUILD_CMD=()
-        # Split MSBuildPath if it contains spaces (e.g., "dotnet msbuild")
-        read -ra MSBUILD_PATH_ARR <<< "$MSBuildPath"
-        MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
-        MSBUILD_CMD+=("$PSScriptRoot/$SolutionFile" -t:Restore)
-        # Run restore
-        "${MSBUILD_CMD[@]}"
-
-        # Build command for build
-        MSBUILD_CMD=()
-        MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
-        MSBUILD_CMD+=("$PSScriptRoot/$SolutionFile")
-        MSBUILD_CMD+=("-p:Platform=Any CPU" "-p:Configuration=$Config")
-        [[ -n "$FrameworkTarget" ]] && MSBUILD_CMD+=("-p:TargetFramework=$FrameworkTarget")
-        [[ -n "$OutputProperty" ]] && MSBUILD_CMD+=("$OutputProperty")
-        [[ -n "$Target" ]] && MSBUILD_CMD+=("$Target")
-        # Run build
-        "${MSBUILD_CMD[@]}"
-      else
-        docker run -t -m 4g -v "$PSScriptRoot:/Build" registry.gitlab.com/warewolf/msbuild "/Build/$SolutionFile" "-p:Platform=Any CPU;Configuration=$Config$FrameworkTarget" $OutputProperty $Target
-      fi
-      if [[ $? -ne 0 ]]; then
-        echo "Build failed. Check your pending changes. Compiling Warewolf requires at least MSBuild 15.0 and FSharp 4.0."
-        exit 1
-      fi
-      # Dockerfile for net6.0
-      if [[ "$FrameworkTarget" == "net6.0" ]]; then
-        DockerfileContent="FROM mcr.microsoft.com/dotnet/sdk:6.0\n\nEXPOSE 3142\nEXPOSE 3143\n\nADD . Server\nENV SERVER_PATH \"Server/Warewolf Server.exe\"\nENV SERVER_WORKINGDIR \"/programdata/Warewolf\"\nENV SERVER_LOG \"/programdata/Warewolf/Server Log/warewolf-server.log\"\nENV SERVER_USERNAME \"WarewolfAdmin\"\nENV SERVER_PASSWORD \"W@rEw0lf@dm1n\"\n\n# Run the application\nCMD [\"dotnet\", \"./Server/Warewolf Server.dll\"]\n"
-        OutputFile="$OutputFolderName/Dockerfile"
-        mkdir -p "$OutputFolderName"
-        echo -e "$DockerfileContent" > "$OutputFile"
-      fi
+# Compile
+if [[ -f "$PSScriptRoot/Dev/ServerTests.sln" ]]; then
+  SolutionFileName=$(basename "Dev/ServerTests.sln")
+  SolutionFileExtension=".${SolutionFileName##*.}"
+  OutputFolderName="${SolutionFileName%Dev/ServerTests.slnExtension}"
+  if [[ $ProjectSpecificOutputs -eq 1 ]]; then
+    OutputProperty=""
+  else
+    if [[ -n "$FrameworkTarget" ]]; then
+      OutputFolderName+="/$FrameworkTarget"
     fi
+    OutputProperty="\"-property:OutDir=$PSScriptRoot/Bin/$OutputFolderName\""
   fi
-done
+  if [[ $InContainer -eq 0 ]]; then
+    # Build the command as an array for proper argument handling
+    MSBUILD_CMD=()
+    # Split MSBuildPath if it contains spaces (e.g., "dotnet msbuild")
+    read -ra MSBUILD_PATH_ARR <<< "$MSBuildPath"
+    MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
+    MSBUILD_CMD+=("$PSScriptRoot/Dev/ServerTests.sln" -t:Restore)
+    # Run restore
+    "${MSBUILD_CMD[@]}"
+
+    # Build command for build
+    MSBUILD_CMD=()
+    MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
+    MSBUILD_CMD+=("$PSScriptRoot/Dev/ServerTests.sln")
+    MSBUILD_CMD+=("-p:Platform=Any CPU" "-p:Configuration=$Config")
+    [[ -n "$FrameworkTarget" ]] && MSBUILD_CMD+=("-p:TargetFramework=$FrameworkTarget")
+    [[ -n "$OutputProperty" ]] && MSBUILD_CMD+=("$OutputProperty")
+    [[ -n "$Target" ]] && MSBUILD_CMD+=("$Target")
+    # Run build
+    "${MSBUILD_CMD[@]}"
+  else
+    docker run -t -m 4g -v "$PSScriptRoot:/Build" registry.gitlab.com/warewolf/msbuild "/Build/Dev/ServerTests.sln" "-p:Platform=Any CPU;Configuration=$Config$FrameworkTarget" $OutputProperty $Target
+  fi
+  if [[ $? -ne 0 ]]; then
+    echo "Build failed. Check your pending changes. Compiling Warewolf requires at least MSBuild 15.0 and FSharp 4.0."
+    exit 1
+  fi
+  # Dockerfile for net6.0
+  if [[ "$FrameworkTarget" == "net6.0" ]]; then
+    DockerfileContent="FROM mcr.microsoft.com/dotnet/sdk:6.0\n\nEXPOSE 3142\nEXPOSE 3143\n\nADD . Server\nENV SERVER_PATH \"Server/Warewolf Server.exe\"\nENV SERVER_WORKINGDIR \"/programdata/Warewolf\"\nENV SERVER_LOG \"/programdata/Warewolf/Server Log/warewolf-server.log\"\nENV SERVER_USERNAME \"WarewolfAdmin\"\nENV SERVER_PASSWORD \"W@rEw0lf@dm1n\"\n\n# Run the application\nCMD [\"dotnet\", \"./Server/Warewolf Server.dll\"]\n"
+    OutputFile="$OutputFolderName/Dockerfile"
+    mkdir -p "$OutputFolderName"
+    echo -e "$DockerfileContent" > "$OutputFile"
+  fi
+fi
 exit 0
