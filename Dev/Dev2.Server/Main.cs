@@ -93,6 +93,7 @@ namespace Dev2
 
 		static void WaitForUserExit(ServerLifecycleManager manager)
 		{
+#if WINDOWS || NETFRAMEWORK
 			Console.WriteLine();
 			if (EnvironmentVariables.IsServerOnline)
 			{
@@ -104,6 +105,9 @@ namespace Dev2
 				Console.WriteLine("Failed to start Server");
 			}
 			manager.Stop(false, 0, false);
+#else
+			_resetEvent.Wait();
+#endif
 		}
 
 		private static void Pause() => Console.ReadLine();
