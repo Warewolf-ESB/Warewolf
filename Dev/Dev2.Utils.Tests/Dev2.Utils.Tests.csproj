@@ -61,6 +61,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DynamicData" Version="9.2.2" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
     <PackageReference Include="Moq" Version="4.18.2" />
