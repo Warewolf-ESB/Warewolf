@@ -108,7 +108,6 @@
     <None Include="Toolbox\Exchange\ExchangeEmail.feature">
       <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\FileAndFolder\AddGuidToPaths.ps1" />
     <None Include="Toolbox\FileAndFolder\Copy\Copy.feature">
       <LastGenOutput>Copy.feature.cs</LastGenOutput>
     </None>
@@ -903,11 +902,6 @@
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
-	  <PreBuildEvent>
-		  if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-		  powershell.exe -ExecutionPolicy Bypass -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
-		  )
-	  </PreBuildEvent>
 	  <PostBuildEvent>
 		  if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" if not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
 		  echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
