@@ -199,6 +199,9 @@ if [[ -f "$PSScriptRoot/Dev/ServerTests.sln" ]]; then
     MSBUILD_CMD=()
     MSBUILD_CMD+=("${MSBUILD_PATH_ARR[@]}")
     MSBUILD_CMD+=("$PSScriptRoot/Dev/ServerTests.sln")
+    if [[ $Disablemaxcpucount -eq 0 ]]; then
+      MSBUILD_CMD+=("-maxcpucount")
+    fi
     MSBUILD_CMD+=("-p:Platform=Any CPU" "-p:Configuration=$Config")
     [[ -n "$FrameworkTarget" ]] && MSBUILD_CMD+=("-p:TargetFramework=$FrameworkTarget")
     [[ -n "$OutputProperty" ]] && MSBUILD_CMD+=("$OutputProperty")
