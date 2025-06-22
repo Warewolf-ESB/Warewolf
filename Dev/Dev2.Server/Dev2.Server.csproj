@@ -59,13 +59,13 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+  <PropertyGroup>
     <ManifestKeyFile>Unlimited.Applications.DynamicServicesHost_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+  <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
