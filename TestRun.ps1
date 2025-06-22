@@ -243,11 +243,11 @@ if (Test-Path "$TestResultsPath") {
 	Remove-Item -Force -Recurse "$TestResultsPath"
 }
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
+	$VSTestPath = ".\Microsoft.TestPlatform\tools\net462\common7\ide"
 } else {
 	if ($InContainer.IsPresent -or $InContainerCommitID -ne "latest" -or $InContainerVersion -ne "latest") {
 		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
-		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
+		$VSTestPath = ".\Microsoft.TestPlatform\tools\net462\Common7\IDE"
 	}
 }
 if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
@@ -285,7 +285,7 @@ if ($Coverage.IsPresent) {
 	if (Test-Path "$TestResultsPath\Cobertura.xml") {
 		Remove-Item "$TestResultsPath\Cobertura.xml"
 	}
-	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
+	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
 	(Get-Content $CoverageConfigPath).replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>', '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
 }
 if ($CreateLocalSchedulerAdmin.IsPresent) {
@@ -536,7 +536,7 @@ if ($Projects.Length -gt 0) {
 }
 if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
-	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
 	if ($GetSnapshots.count -le 0) {
 		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
