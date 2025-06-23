@@ -9,12 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.PerformanceCounters.Management;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Common;
 
 namespace Dev2.PerformanceCounters.Counters
 {
@@ -68,10 +72,25 @@ namespace Dev2.PerformanceCounters.Counters
         readonly PerformanceCounter _counter;
         public RealWarewolfPerformanceCounter(string categoryName, string counterName, string instanceName)
         {
-            _counter = new PerformanceCounter(categoryName, counterName, instanceName);
-            _counter.MachineName = ".";
-            _counter.ReadOnly = false;
-            _counter.InstanceLifetime = PerformanceCounterInstanceLifetime.Global;
+            try
+            {
+                _counter = new PerformanceCounter(categoryName, counterName, instanceName);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Attempt to re-register all counters for this category using the register logic
+                var allCounters = PerformanceCounterPersistence.DefaultCounters;
+				var register = new WarewolfPerformanceCounterRegister(allCounters, new List<IResourcePerformanceCounter>());
+                register.RegisterCountersOnMachine(allCounters, categoryName);
+				Dev2Logger.Warn("Failed to create performance counter. Attempting to re-register all counters.", "Warewolf Warn");
+				_counter = new PerformanceCounter(categoryName, counterName, instanceName);
+            }
+            finally
+			{
+				_counter.MachineName = ".";
+				_counter.ReadOnly = false;
+				_counter.InstanceLifetime = PerformanceCounterInstanceLifetime.Global;
+			}
         }
 
         public long RawValue

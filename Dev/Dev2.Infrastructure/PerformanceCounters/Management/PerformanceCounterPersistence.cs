@@ -96,7 +96,7 @@ namespace Dev2.PerformanceCounters.Management
             return toSerialise;
         }
 
-        public IList<IPerformanceCounter> DefaultCounters
+        public static IList<IPerformanceCounter> DefaultCounters
         {
             get
             {
