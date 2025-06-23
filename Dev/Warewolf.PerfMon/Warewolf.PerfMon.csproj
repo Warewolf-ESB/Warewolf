@@ -7,6 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
+	  <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="System.ServiceProcess" />
 		<Reference Include="System" />
 		<Reference Include="System.Core" />
