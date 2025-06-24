@@ -14,7 +14,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+#if WINDOWS
 using System.Management;
+#endif
 using System.Net;
 using System.Security.Principal;
 using System.Text;
@@ -23,7 +25,7 @@ using Dev2.Common.DateAndTime;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Dev2.Runtime.ESB.Management.Services;
-
+using System.Runtime.InteropServices;
 
 namespace Dev2.Activities
 {
@@ -74,11 +76,15 @@ namespace Dev2.Activities
 
         string GetOperatingSystemProperty(string property)
         {
+#if WINDOWS
             var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
                         select x.GetPropertyValue(property)).First();
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat("{0}", name);
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetServicePackInformation()
@@ -146,6 +152,11 @@ namespace Dev2.Activities
 
         public string GetPhysicalMemoryAvailableInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -156,10 +167,18 @@ namespace Dev2.Activities
                 stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetPhysicalMemoryTotalInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -170,10 +189,18 @@ namespace Dev2.Activities
                 stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetVirtualMemoryAvailableInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -184,10 +211,18 @@ namespace Dev2.Activities
                 stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetVirtualMemoryTotalInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -198,6 +233,9 @@ namespace Dev2.Activities
                 stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         ulong ConvertToMB(ulong valueToConvert)
@@ -214,6 +252,11 @@ namespace Dev2.Activities
 
         public string GetCPUAvailableInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT LoadPercentage FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -224,10 +267,18 @@ namespace Dev2.Activities
                 stringBuilder.Append(100 - Convert.ToInt32(item["LoadPercentage"]) + "%");
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetCPUTotalInformation()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT MaxClockSpeed,NumberOfLogicalProcessors FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
@@ -239,6 +290,9 @@ namespace Dev2.Activities
                 stringBuilder.Append(numberOfProcessors + "*" + maxClockSpeed + " Mhz");
             }
             return stringBuilder.ToString();
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetLanguageInformation()
@@ -273,6 +327,7 @@ namespace Dev2.Activities
 
         static StringBuilder TryAppendGroup(StringBuilder stringBuilder, IdentityReference sid)
         {
+#if WINDOWS
             try
             {
                 var translatedGroup = sid.Translate(typeof(NTAccount));
@@ -281,6 +336,10 @@ namespace Dev2.Activities
             }
             catch (Exception)
             {
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    return stringBuilder;
+                }
                 var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
                 var searcher = new ManagementObjectSearcher(winQuery);
                 foreach (var o in searcher.Get())
@@ -291,6 +350,9 @@ namespace Dev2.Activities
                 }
             }
             return stringBuilder;
+#else
+            return stringBuilder;
+#endif
         }
 
         public string GetUserNameInformation() => Environment.UserName;
@@ -312,6 +374,11 @@ namespace Dev2.Activities
 
         public string GetWarewolfCPU()
         {
+#if WINDOWS
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Not Supported";
+            }
             using (var proc = Process.GetCurrentProcess())
             {
                 var stringBuilder = new StringBuilder();
@@ -325,6 +392,9 @@ namespace Dev2.Activities
                 }
                 return stringBuilder.ToString();
             }
+#else
+            return "Not Supported";
+#endif
         }
 
         public string GetNumberOfNICS()
