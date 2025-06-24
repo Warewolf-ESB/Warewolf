@@ -37,18 +37,17 @@ namespace Dev2.Common
 
         static GlobalConstants()
 		{
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#if WINDOWS
+            SystemEvents.TimeChanged += (sender, args) =>
             {
-                SystemEvents.TimeChanged += (sender, args) =>
-                {
-                    CultureInfo.CurrentCulture.ClearCachedData();
-                };
+                CultureInfo.CurrentCulture.ClearCachedData();
+            };
 
-                SystemEvents.UserPreferenceChanged += (sender, args) =>
-                {
-                    CultureInfo.CurrentCulture.ClearCachedData();
-                };
-            }
+            SystemEvents.UserPreferenceChanged += (sender, args) =>
+            {
+                CultureInfo.CurrentCulture.ClearCachedData();
+            };
+#endif
 
             var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
             WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
