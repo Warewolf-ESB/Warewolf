@@ -60,6 +60,8 @@ namespace Dev2.MathOperations
                         evaluation = value.IsDateTime ? PerformEvaluation(value) : value.GetResolvedValue().ToString();
                         evaluationState = true;
                     }
+#else
+                    error = "Not supported";
 #endif
                 }
                 catch (Exception ex)

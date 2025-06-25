@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.Management;
 #endif
 using System.Net;
@@ -76,7 +76,7 @@ namespace Dev2.Activities
 
         string GetOperatingSystemProperty(string property)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
                         select x.GetPropertyValue(property)).First();
             var stringBuilder = new StringBuilder();
@@ -152,7 +152,7 @@ namespace Dev2.Activities
 
         public string GetPhysicalMemoryAvailableInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -168,13 +168,13 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
         public string GetPhysicalMemoryTotalInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -190,13 +190,13 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
         public string GetVirtualMemoryAvailableInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -212,13 +212,13 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
         public string GetVirtualMemoryTotalInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -234,7 +234,7 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
@@ -252,7 +252,7 @@ namespace Dev2.Activities
 
         public string GetCPUAvailableInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -268,13 +268,13 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
         public string GetCPUTotalInformation()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -291,7 +291,7 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 
@@ -327,7 +327,7 @@ namespace Dev2.Activities
 
         static StringBuilder TryAppendGroup(StringBuilder stringBuilder, IdentityReference sid)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             try
             {
                 var translatedGroup = sid.Translate(typeof(NTAccount));
@@ -351,7 +351,7 @@ namespace Dev2.Activities
             }
             return stringBuilder;
 #else
-            return stringBuilder;
+			return stringBuilder;
 #endif
         }
 
@@ -374,7 +374,7 @@ namespace Dev2.Activities
 
         public string GetWarewolfCPU()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return "Not Supported";
@@ -393,7 +393,7 @@ namespace Dev2.Activities
                 return stringBuilder.ToString();
             }
 #else
-            return "Not Supported";
+			return "Not Supported";
 #endif
         }
 

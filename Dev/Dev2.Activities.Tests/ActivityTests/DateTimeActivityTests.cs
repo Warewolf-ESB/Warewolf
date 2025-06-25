@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
+using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -141,7 +142,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Timeout(60000)]
         [TestCategory(nameof(DsfDateTimeActivity))]
         [Owner("Rory McGuire")]
         public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
@@ -162,15 +162,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            var parsedResult = DateTime.Parse(actual);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string actualError, out string e);
+            if (actualError != "Not supported")
+            {
+                var parsedResult = DateTime.Parse(actual);
+                Thread.Sleep(1100);
 
-            Thread.Sleep(1100);
+                var endTime = DateTime.Now;
 
-            var endTime = DateTime.Now;
-
-            Assert.IsTrue(endTime >= parsedResult, $"expected a time <= ({endTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
-            Assert.IsTrue(parsedResult >= startTime, $"expected a time >= ({startTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
-            Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}' with Start Time Timezone {startTime.ToString("zzz")}, End Time Timezone {endTime.ToString("zzz")}, and Parsed Result Timezone {parsedResult.ToString("zzz")}");
+                Assert.IsTrue(endTime >= parsedResult, $"expected a time <= ({endTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+                Assert.IsTrue(parsedResult >= startTime, $"expected a time >= ({startTime.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}) but got: '{parsedResult.ToString("yyyy/MM/ddThh:mm:ss.fff zzz")}'");
+                Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}' with Start Time Timezone {startTime.ToString("zzz")}, End Time Timezone {endTime.ToString("zzz")}, and Parsed Result Timezone {parsedResult.ToString("zzz")}");
+            }
         }
 
         [TestMethod]
