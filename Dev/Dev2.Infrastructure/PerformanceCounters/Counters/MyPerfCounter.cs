@@ -71,7 +71,7 @@ namespace Dev2.PerformanceCounters.Counters
         readonly PerformanceCounter _counter;
         public RealWarewolfPerformanceCounter(string categoryName, string counterName, string instanceName)
 		{
-			Dev2Logger.Warn("Attempting to get performance counter.", "Warewolf Warn");
+			Dev2Logger.Info("Attempting to get performance counter.", "Warewolf Info");
 			try
             {
                 _counter = new PerformanceCounter(categoryName, counterName, instanceName);
@@ -81,7 +81,7 @@ namespace Dev2.PerformanceCounters.Counters
 				var allCounters = PerformanceCounterPersistence.DefaultCounters;
 				var register = new WarewolfPerformanceCounterRegister(allCounters, new List<IResourcePerformanceCounter>());
 				register.RegisterCountersOnMachine(allCounters, "Warewolf");
-                Dev2Logger.Warn("Failed to create performance counter. Attempting to re-register all counters.", "Warewolf Warn");
+                Dev2Logger.Info("Failed to create performance counter. Attempting to re-register all counters.", "Warewolf Info");
 				_counter = new PerformanceCounter(categoryName, counterName, instanceName);
 			}
             if (_counter == null)
@@ -90,7 +90,7 @@ namespace Dev2.PerformanceCounters.Counters
             }
             else
             {
-                Dev2Logger.Warn("Got performance counter: \\" + _counter.CategoryName + "(" + _counter.InstanceName + ")\\" + _counter.CounterName, "Warewolf Warn");
+                Dev2Logger.Info("Got performance counter: \\" + _counter.CategoryName + "(" + _counter.InstanceName + ")\\" + _counter.CounterName, "Warewolf Info");
             }
 			_counter.MachineName = ".";
             _counter.ReadOnly = false;
