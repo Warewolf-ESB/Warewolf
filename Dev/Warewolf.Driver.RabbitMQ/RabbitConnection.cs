@@ -8,11 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.Diagnostics;
 using System.Threading;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 using IConnection = RabbitMQ.Client.IConnection;
@@ -27,10 +28,10 @@ namespace Warewolf.Driver.RabbitMQ
         private DateTime consumerCancelledDateTime = DateTime.MinValue;
         private string currentProcessId;
 
-        public RabbitConnection(IConnection connection)
+		public RabbitConnection(IConnection connection)
         {
             _connection = connection;
-        }
+		}
 
         public bool IsOpen => _connection.IsOpen;
 
@@ -50,13 +51,19 @@ namespace Warewolf.Driver.RabbitMQ
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
             {
-                if (isConsumerCancelled) return;
+				Dev2Logger.Info("** Message received from RabbitMQ! **", GlobalConstants.WarewolfInfo);
+				if (isConsumerCancelled) return;
 
                 var body = eventArgs.Body;
                 var headers = new Warewolf.Data.Headers();
                 headers["Warewolf-Custom-Transaction-Id"] = new[] { eventArgs.BasicProperties.CorrelationId };
+				if (!headers.KeyExists("Warewolf-Execution-Id"))
+				{
+					headers["Warewolf-Execution-Id"] = new[] { Guid.NewGuid().ToString() };
+				}
+				Dev2Logger.Info("** Message received from RabbitMQ: CorrelationId=\"" + eventArgs.BasicProperties.CorrelationId + "\" Warewolf-Execution-Id=\"" + headers["Warewolf-Execution-Id"] + "\"", GlobalConstants.WarewolfInfo);
 
-                try
+				try
                 {
                     throttler.Wait();
                     var resultTask = consumer.Consume(body, headers);

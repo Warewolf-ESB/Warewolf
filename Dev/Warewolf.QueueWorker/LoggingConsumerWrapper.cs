@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,7 @@ namespace QueueWorker
             var empty = new string[] { };
             var executionId = Guid.Parse(headers["Warewolf-Execution-Id"].FirstOrDefault());
             var customTransactionID = headers["Warewolf-Custom-Transaction-Id", empty].FirstOrDefault();
+            _logger.Info("** Message received from RabbitMQ: CorrelationId=\"" + customTransactionID + "\" Warewolf-Execution-Id=\"" + executionId + "\"", GlobalConstants.WarewolfInfo);
             string strBody = System.Text.Encoding.UTF8.GetString(body);
 
             _logger.StartExecution($"[{executionId}] - {customTransactionID} processing body {strBody} ");
@@ -82,6 +84,7 @@ namespace QueueWorker
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
+                _logger.Info("** Message received from RabbitMQ: CorrelationId=\"" + customTransactionID + "\" Warewolf-Execution-Id=\"" + executionId + "\" Exception Message=\"" + reqException + "\"", GlobalConstants.WarewolfInfo);
                 _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
                 CreateExecutionError(task.Exception ?? reqException, executionId, startDate, endDate, duration,
                     customTransactionID);
