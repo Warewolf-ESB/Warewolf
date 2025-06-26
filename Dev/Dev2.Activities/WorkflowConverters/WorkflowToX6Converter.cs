@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using Dev2.Common.X6;
+using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Runtime.ESB.WF
+namespace Dev2.Activities.WF
 {
 
     public class WorkflowToX6Converter
@@ -19,37 +21,18 @@ namespace Dev2.Runtime.ESB.WF
         private const int FONT_SIZE = 9;
 
 
-        public class X6NodeData
-        {
-            public string Id { get; set; }
-            public string Shape { get; set; }
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public string Label { get; set; }
-            public object Data { get; set; }
-            public object Attrs { get; set; }
-        }
-
-        public class X6EdgeData
-        {
-            public string Id { get; set; }
-            public string Source { get; set; }
-            public string Target { get; set; }
-            public string Label { get; set; }
-            public object Data { get; set; }
-        }
-
         public class X6GraphData
         {
-            public List<X6NodeData> Nodes { get; set; } = new List<X6NodeData>();
-            public List<X6EdgeData> Edges { get; set; } = new List<X6EdgeData>();
+            public string WorkflowXml { get; set; }
+            public List<Cell> Nodes { get; set; } = new List<Cell>();
+            public List<Cell> Edges { get; set; } = new List<Cell>();
         }
 
-        public string ConvertToX6Json(ActivityBuilder workflow)
+        public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
-            var graphData = new X6GraphData();
+
+            var graphData = new X6GraphData { WorkflowXml = xml };
+            //var graphData = new X6GraphData();
             var activityNodeMap = new Dictionary<Activity, string>();
 
             var startNode = CreateStartNode();
@@ -64,7 +47,6 @@ namespace Dev2.Runtime.ESB.WF
 
             return JsonConvert.SerializeObject(graphData);
         }
-
 
         private string ProcessActivity(Activity activity, X6GraphData graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
@@ -407,127 +389,135 @@ namespace Dev2.Runtime.ESB.WF
             return children;
         }
 
-        private X6NodeData CreateStartNode()
+        private Cell CreateStartNode()
         {
-            return new X6NodeData
+            return new Cell
             {
                 Id = "start_" + Guid.NewGuid().ToString(),
                 Shape = "rect",
-                X = _currentX,
-                Y = _currentY,
-                Width = NODE_WIDTH,
-                Height = NODE_HEIGHT,
+                Position = new Position(_currentX, _currentY),
+                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
+
                 Label = "Start",
-                Data = new { type = "Start" },
-                Attrs = new
+                Data = new Dictionary<string, object> { ["type"] = "Start" },
+                Attrs = new Dictionary<string, object>
                 {
-                    body = new { fill = "#52c41a", stroke = "#389e0d" },
-                    text = new { fill = "#fff", fontSize = FONT_SIZE }
+                    ["body"] = new { fill = "#52c41a", stroke = "#389e0d" },
+                    ["text"] = new { fill = "#fff", fontSize = FONT_SIZE }
                 }
             };
         }
 
-        private X6NodeData CreateActivityNode(Activity activity, string nodeId)
+        private Cell CreateActivityNode(Activity activity, string nodeId)
         {
             _currentY += VERTICAL_SPACING;
 
             var shape = GetShapeForActivity(activity);
             var color = GetColorForActivity(activity);
+            var cell = new Cell { Id = nodeId, Attrs = new Dictionary<string, object>(), Data = new Dictionary<string, object>() };
 
-            return new X6NodeData
+            var activityType = activity.GetType();
+            if (activityType == typeof(DsfDotNetMultiAssignActivity))
             {
-                Id = nodeId,
-                Shape = shape,
-                X = _currentX,
-                Y = _currentY,
-                Width = NODE_WIDTH,
-                Height = NODE_HEIGHT,
-                Label = GetActivityLabel(activity),
-                Data = new
-                {
-                    type = activity.GetType().Name,
-                    displayName = activity.DisplayName,
-                    properties = ExtractActivityProperties(activity)
-                },
-                Attrs = new
-                {
-                    body = new { fill = color.background, stroke = color.border },
-                    text = new { fill = color.text, fontSize = FONT_SIZE }
-                }
+                var p = (DsfDotNetMultiAssignActivity)activity;
+                p.ToX6Graph(cell);
+            }
+
+            cell.Shape = shape;
+            cell.Position = new Position(_currentX, _currentY);
+            cell.Size = new Size(NODE_WIDTH, NODE_HEIGHT);
+            cell.Label = GetActivityLabel(activity);
+            cell.Data.Add("type", activityType);
+            cell.Data.Add("displayName", activity.DisplayName);
+            cell.Data.Add("properties", ExtractActivityProperties(activity));
+
+            cell.Attrs = new Dictionary<string, object>
+            {
+                ["body"] = new { fill = color.background, stroke = color.border },
+                ["text"] = new { fill = color.text, fontSize = FONT_SIZE }
             };
+
+            return cell;
         }
 
-        private X6NodeData CreateDecisionNode(FlowDecision decision, string nodeId)
+        private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
         {
             _currentY += VERTICAL_SPACING;
 
-            return new X6NodeData
+            return new Cell
             {
                 Id = nodeId,
                 Shape = "rect",
-                X = _currentX,
-                Y = _currentY,
-                Width = NODE_WIDTH,
-                Height = NODE_HEIGHT,
+                Position = new Position(_currentX, _currentY),
+                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
                 Label = GetDecisionLabel(decision),
-                Data = new
+                Data = new Dictionary<string, object>
                 {
-                    type = "FlowDecision",
-                    condition = decision.Condition?.ToString() ?? "Decision"
+                    ["type"] = "FlowDecision",
+                    ["condition"] = decision.Condition?.ToString() ?? "Decision"
                 },
-                Attrs = new
+                Attrs = new Dictionary<string, object>
                 {
-                    body = new
+                    ["body"] = new Dictionary<string, object>
                     {
-                        fill = "#faad14",
-                        stroke = "#d48806",
-                        refPoints = "0,10 10,0 20,10 10,20"
+                        ["fill"] = "#faad14",
+                        ["stroke"] = "#d48806",
+                        ["refPoints"] = "0,10 10,0 20,10 10,20"
                     },
-                    text = new { fill = "#fff", fontSize = FONT_SIZE }
+                    ["text"] = new Dictionary<string, object>
+                    {
+                        ["fill"] = "#fff",
+                        ["fontSize"] = FONT_SIZE
+                    }
                 }
             };
         }
 
-        private X6NodeData CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
+        private Cell CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
         {
             _currentY += VERTICAL_SPACING;
 
-            return new X6NodeData
+            return new Cell
             {
                 Id = nodeId,
                 Shape = "polygon",
-                X = _currentX,
-                Y = _currentY,
-                Width = NODE_WIDTH,
-                Height = NODE_HEIGHT,
+                Position = new Position(_currentX, _currentY),
+                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
                 Label = "Switch",
-                Data = new
+                Data = new Dictionary<string, object>
                 {
-                    type = "FlowSwitch",
-                    expression = flowSwitch.Expression?.ToString() ?? "Switch"
+                    ["type"] = "FlowSwitch",
+                    ["expression"] = flowSwitch.Expression?.ToString() ?? "Switch"
                 },
-                Attrs = new
+                Attrs = new Dictionary<string, object>
                 {
-                    body = new
+                    ["body"] = new Dictionary<string, object>
                     {
-                        fill = "#722ed1",
-                        stroke = "#531dab",
-                        refPoints = "0,10 10,0 20,10 10,20"
+                        ["fill"] = "#722ed1",
+                        ["stroke"] = "#531dab",
+                        ["refPoints"] = "0,10 10,0 20,10 10,20"
                     },
-                    text = new { fill = "#fff", fontSize = FONT_SIZE }
+                    ["text"] = new Dictionary<string, object>
+                    {
+                        ["fill"] = "#fff",
+                        ["fontSize"] = FONT_SIZE
+                    }
                 }
             };
         }
 
-        private static X6EdgeData CreateEdge(string sourceId, string targetId, string label = "")
+        private static Cell CreateEdge(string sourceId, string targetId, string label = "")
         {
-            return new X6EdgeData
+            return new Cell
             {
                 Id = Guid.NewGuid().ToString(),
-                Source = sourceId,
-                Target = targetId,
+                Source = new Connector(sourceId),
+                Target = new Connector(targetId),
                 Label = label,
-                Data = new { type = "sequence" }
+                Data = new Dictionary<string, object>
+                {
+                    ["type"] = "sequence"
+                }
             };
         }
 
@@ -642,6 +632,5 @@ namespace Dev2.Runtime.ESB.WF
             }
         }
     }
-
 
 }

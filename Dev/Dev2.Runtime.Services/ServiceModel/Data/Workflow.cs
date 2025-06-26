@@ -66,11 +66,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
         }
-        
+
         public Workflow Clone()
         {
             var clone = MemberwiseClone() as Workflow;
-            
+
             return clone;
         }
 
@@ -106,21 +106,21 @@ namespace Dev2.Runtime.ServiceModel.Data
             switch (nodeType)
             {
                 case nameof(FlowStep):
-                {
-                    return CalculateFlowStep((FlowStep)flowNode);
-                }
+                    {
+                        return CalculateFlowStep((FlowStep)flowNode);
+                    }
                 case nameof(FlowDecision):
-                {
-                    return CalculateFlowDecision((FlowDecision)flowNode);
-                }
+                    {
+                        return CalculateFlowDecision((FlowDecision)flowNode);
+                    }
                 case "FlowSwitch`1":
-                {
-                    return CalculateFlowSwitch((FlowSwitch<string>)flowNode);
-                }
+                    {
+                        return CalculateFlowSwitch((FlowSwitch<string>)flowNode);
+                    }
                 default:
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
 
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     wfTree.Add(GetWorkflowNodeFrom(node.False));
                 }
             }
-            
+
             return wfTree;
         }
 
@@ -236,16 +236,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                 if (xamlStr.Length != 0)
                 {
                     using (var sw = new StringReader(xamlStr))
-					{
-						var xamlXmlWriterSettings = new XamlXmlReaderSettings
+                    {
+                        var xamlXmlWriterSettings = new XamlXmlReaderSettings
 #if (WINDOWS || NETFRAMEWORK)
-				        {
-				        	LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
-				        };
+                        {
+                            LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
+                        };
 #else
 				        ();
 #endif
-						var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
+                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
                         var load = XamlServices.Load(xw);
                         return load as ActivityBuilder;
                     }
@@ -273,7 +273,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
+
             var serviceDefinition = XamlDefinition.ToXElement();
+            var cleanServiceDefinition = NamespaceNormalizer.Normalize(serviceDefinition);
+
             serviceDefinition.Name = "XamlDefinition";
             result.Add(new XElement("Comment", Comment ?? string.Empty));
             result.Add(new XElement("IconPath", IconPath ?? string.Empty));
@@ -281,9 +284,106 @@ namespace Dev2.Runtime.ServiceModel.Data
             result.Add(new XElement("HelpLink", HelpLink ?? string.Empty));
             result.Add(DataList);
             result.Add(new XElement("Action", new XAttribute("Name", "InvokeWorkflow"), new XAttribute("Type", "Workflow"),
-                serviceDefinition)
+                cleanServiceDefinition)
                 );
             return result;
         }
+
+
+
     }
+
+
+
+    public static class NamespaceNormalizer
+    {
+        public static XElement Normalize(XElement element)
+        {
+            // Step 1: Collect namespace declarations in order
+            var nsDeclarations = element
+                .DescendantsAndSelf()
+                .Attributes()
+                .Where(a => a.IsNamespaceDeclaration)
+                .GroupBy(a => a.Name.LocalName)
+                .ToList();
+
+            // Step 2: Resolve conflicts
+            var usedUris = new HashSet<string>();
+            var aliasMap = new Dictionary<string, XNamespace>();
+
+            foreach (var group in nsDeclarations)
+            {
+                var alias = group.Key;
+                var bindings = group.Select(a => a.Value).Distinct().ToList();
+
+                if (bindings.Count == 1 && usedUris.Add(bindings[0]))
+                {
+                    // unique alias and URI — keep as-is
+                    aliasMap[alias] = bindings[0];
+                }
+                else
+                {
+                    // same alias used for multiple URIs ? assign new aliases
+                    foreach (var uri in bindings)
+                    {
+                        if (!usedUris.Add(uri)) continue;
+
+                        string newAlias = GetUniqueAlias(aliasMap.Keys, alias);
+                        aliasMap[newAlias] = uri;
+                    }
+                }
+            }
+
+            // Step 3: Rebind element tree using resolved aliasMap
+            return RebindWithNamespaceAliases(element, aliasMap);
+        }
+
+        private static XElement RebindWithNamespaceAliases(XElement element, Dictionary<string, XNamespace> aliasMap)
+        {
+            var currentNs = element.Name.Namespace;
+            var prefix = aliasMap.FirstOrDefault(p => p.Value == currentNs).Key;
+            var newName = prefix != null ? aliasMap[prefix] + element.Name.LocalName : element.Name.LocalName;
+
+            var newElement = new XElement(newName,
+                element.Attributes()
+                    .Where(a => !a.IsNamespaceDeclaration)
+                    .Select(a =>
+                        a.Name.Namespace == XNamespace.None
+                            ? new XAttribute(a.Name.LocalName, a.Value)
+                            : new XAttribute(
+                                aliasMap.FirstOrDefault(p => p.Value == a.Name.Namespace).Value + a.Name.LocalName,
+                                a.Value)
+                    ),
+                element.Elements().Select(child => RebindWithNamespaceAliases(child, aliasMap))
+            );
+
+            // Add namespace declarations at top-most level
+            if (element.Parent == null)
+            {
+                foreach (var ns in aliasMap)
+                {
+                    if (!string.IsNullOrWhiteSpace(ns.Key) && ns.Key != "xmlns")
+                    {
+                        newElement.Add(new XAttribute(XNamespace.Xmlns + ns.Key, ns.Value));
+                    }
+                }
+
+            }
+
+            return newElement;
+        }
+
+        private static string GetUniqueAlias(IEnumerable<string> existingAliases, string baseAlias)
+        {
+            int index = 1;
+            string newAlias = baseAlias + index;
+            while (existingAliases.Contains(newAlias))
+            {
+                index++;
+                newAlias = baseAlias + index;
+            }
+            return newAlias;
+        }
+    }
+
 }

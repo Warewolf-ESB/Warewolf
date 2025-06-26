@@ -20,6 +20,8 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
+using System.Xml;
+
 #if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
@@ -328,13 +330,17 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
-            var result = new StringBuilder();
-            using (var sw = new StringWriter(result))
+            try
             {
-                elm.Save(sw, SaveOptions.DisableFormatting);
+                return new StringBuilder(elm.ToString(SaveOptions.DisableFormatting));
             }
-
-            return result.CleanEncodingHeaderForXmlSave();
+            catch
+            {
+                // Fallback: convert to XmlDocument first to handle namespace conflicts
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(elm.ToString());
+                return new StringBuilder(xmlDoc.OuterXml);
+            }
         }
 
         public static bool IsEqual(this StringBuilder sb, StringBuilder that)
