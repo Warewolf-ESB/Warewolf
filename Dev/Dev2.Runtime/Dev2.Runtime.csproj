@@ -103,6 +103,8 @@
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
+    <Compile Include="ESB\WF\JsonToWorkflowMapper.cs" />
+    <Compile Include="ESB\WF\WorkflowToJsonMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

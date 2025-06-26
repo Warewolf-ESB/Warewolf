@@ -152,7 +152,7 @@ namespace Dev2.Utilities
         }
 #endif
 
-        void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
+        public void EnsureImplementation(ActivityBuilder builder, Flowchart chart)
         {
             FixExpressions(chart);
             SetVariables(chart.Variables);

@@ -188,6 +188,8 @@
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
+    <Compile Include="X6\X6Models.cs" />
+    <Compile Include="X6\X6RequestInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

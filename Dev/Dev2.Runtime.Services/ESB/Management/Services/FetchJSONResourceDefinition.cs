@@ -27,7 +27,8 @@ using System.Activities.XamlIntegration;
 using Newtonsoft.Json;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Common;
-using Dev2.Runtime.ESB.WF;
+using Dev2.Common.X6;
+using System.ComponentModel;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -101,15 +102,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Dev2Logger.Info($"Fetch JSON Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
                 var result = ResourceCat.GetResourceContents(theWorkspace.ID, resourceId);
+                var serviceXaml = new StringBuilder(result.ToString());
                 finalresult = (ExecuteMessage)Cleaner.GetRawResourceDefinition(prepairForDeployment, resourceId, result);
 
                 if (finalresult != null && !finalresult.HasError)
                 {
-                    var data = ReadXamlDefinition(finalresult.Message);
-                    if (data != null) {
-                        var graph = new WorkflowToX6Converter().ConvertToX6Json(data);
-                        finalresult.Message = new StringBuilder(graph);
-                    }
+                    var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement());
+                    var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToXml().ToString() };
+
+                    finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
                 }
             }
             catch (Exception err)
@@ -122,33 +123,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
-        public ActivityBuilder ReadXamlDefinition(StringBuilder xaml)
-        {
-            try
-            {
-                if (xaml != null && xaml.Length != 0)
-                {
-                    using (var sw = new System.IO.StringReader(xaml.ToString()))
-                    {
-                        var xamlXmlWriterSettings = new XamlXmlReaderSettings();
-                        var xw = ActivityXamlServices.CreateBuilderReader(new System.Xaml.XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
-                        var load = XamlServices.Load(xw);
-                        return load as ActivityBuilder;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
-            }
-            return null;
-        }
-
-
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder) => Cleaner.DecryptAllPasswords(stringBuilder);
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => @"FetchJSONResourceDefinitionService";
-
+        public string HandlesType() => ServiceName();
+        public static string ServiceName() => "FetchJSONResourceDefinitionService";
     }
 }

@@ -21,6 +21,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -28,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
 using Dev2.Utilities;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Data;
 using Warewolf.Exceptions;
@@ -535,6 +537,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
+        public void ToX6Graph(Cell cell)
+        {
+            if(cell.Data != null) 
+            cell.Data.Add("fields", FieldsCollection);
+        }
+
+        public void FromX6Graph(Cell cell)
+        {
+            object fieldObject = null;
+            cell.Data?.TryGetValue("fields", out fieldObject);
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                FieldsCollection = array.ToObject<List<ActivityDTO>>();
+            }
+
+        }
         public override int GetHashCode()
         {
             var hashCode = -838835648;
