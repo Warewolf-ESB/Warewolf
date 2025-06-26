@@ -5,6 +5,7 @@ using System.Threading;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common;
+using System.Threading.Tasks;
 
 namespace Warewolf.PerfMon
 {
@@ -14,7 +15,7 @@ namespace Warewolf.PerfMon
 
 		protected override void OnStart(string[] args)
 		{
-			InitializeAndRun();
+			Task.Run(() => InitializeAndRun());
 		}
 
 		public void InitializeAndRun()
