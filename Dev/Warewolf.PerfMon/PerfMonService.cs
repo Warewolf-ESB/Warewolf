@@ -24,7 +24,7 @@ namespace Warewolf.PerfMon
 				while (true)
 				{
 					EnsureCategory();
-					Thread.Sleep(TimeSpan.FromSeconds(300));
+					Thread.Sleep(TimeSpan.FromSeconds(5));
 				}
 			}
 			catch (ThreadInterruptedException)
