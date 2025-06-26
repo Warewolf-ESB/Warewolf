@@ -243,6 +243,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Weave", "Warewolf.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.PerfMon", "Warewolf.PerfMon\Warewolf.PerfMon.csproj", "{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -673,6 +675,10 @@ Global
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
