@@ -1,236 +1,236 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.Runtime.WebServer</RootNamespace>
-    <AssemblyName>Dev2.Runtime.WebServer</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-	<LangVersion>9.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Activities" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="AnonymousAuthenticationHandler.cs" />
-    <Compile Include="ApisJsonBuilder.cs" />
-    <Compile Include="CommunicationContextExtensions.cs" />
-    <Compile Include="Controllers\AbstractController.cs" />
-    <Compile Include="DataObjectExtensions.cs" />
-    <Compile Include="Executor\DataObjectFactory.cs" />
-    <Compile Include="Executor\DefaultEsbChannelFactory.cs" />
-    <Compile Include="Executor\Error.cs" />
-    <Compile Include="Executor\ExecuteExceptionPayload.cs" />
-    <Compile Include="Executor\ExecutionDto.cs" />
-    <Compile Include="Executor\ExecutionDtoExtensions.cs" />
-    <Compile Include="Executor\Executor.cs" />
-    <Compile Include="Executor\ExecutorBase.cs" />
-    <Compile Include="Executor\IDataObjectFactory.cs" />
-    <Compile Include="Executor\IExecutionDto.cs" />
-    <Compile Include="Executor\IExecutor.cs" />
-    <Compile Include="Executor\SubmittedData.cs" />
-    <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
-    <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
-    <Compile Include="Handlers\GetOpenAPIServiceHandler.cs" />
-    <Compile Include="Handlers\TokenRequestHandler.cs" />
-    <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
-    <Compile Include="Handlers\WebGetRequestHandler.cs" />
-    <Compile Include="Handlers\IRequestHandler.cs" />
-    <Compile Include="Handlers\WebPostRequestHandler.cs" />
-    <Compile Include="ICommunicationRequestContent.cs" />
-    <Compile Include="ICommunicationRequestContentHeaders.cs" />
-    <Compile Include="Responses\ContentTypes.cs" />
-    <Compile Include="Responses\ExceptionResponseWriter.cs" />
-    <Compile Include="Responses\FileResponseWriter.cs" />
-    <Compile Include="Responses\Streams\HttpPushContentStream.cs" />
-    <Compile Include="ICommunicationContext.cs" />
-    <Compile Include="ICommunicationRequest.cs" />
-    <Compile Include="ICommunicationResponse.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Hubs\EsbHub.cs" />
-    <Compile Include="Hubs\Server.cs" />
-    <Compile Include="Hubs\ServerHub.cs" />
-    <Compile Include="Security\AuthorizationRequest.cs" />
-    <Compile Include="Security\AuthorizationRequestHelper.cs" />
-    <Compile Include="Security\AuthorizeHubAttribute.cs" />
-    <Compile Include="Security\AuthorizeWebAttribute.cs" />
-    <Compile Include="Security\CustomActionFilter.cs" />
-    <Compile Include="Security\CustomHubFilter.cs" />
-    <Compile Include="Security\QueryString.cs" />
-    <Compile Include="Security\WindowsAndAnonymousAuthenticationMiddleware.cs" />
-    <Compile Include="ServiceTesting\IServiceTestExecutor.cs" />
-    <Compile Include="ServiceTesting\ServiceTestCoverageExecutor.cs" />
-    <Compile Include="ServiceTesting\ServiceTestCoverageModelHTMLResultBuilder.cs" />
-    <Compile Include="ServiceTesting\ServiceTestExecutor.cs" />
-    <Compile Include="ServiceTesting\ServiceTestModelJObjectResultBuilder.cs" />
-    <Compile Include="ServiceTesting\ServiceTestModelTRXResultBuilder.cs" />
-    <Compile Include="TransferObjects\WebRequestTO.cs" />
-    <Compile Include="WebRequestExtentions.cs" />
-    <Compile Include="WebServerContext.cs" />
-    <Compile Include="Dev2Endpoint.cs" />
-    <Compile Include="Responses\Streams\HttpFileStream.cs" />
-    <Compile Include="Responses\DynamicFileResponseWriter.cs" />
-    <Compile Include="Responses\StatusResponseWriter.cs" />
-    <Compile Include="Responses\StaticFileResponseWriter.cs" />
-    <Compile Include="Responses\StringResponseWriter.cs" />
-    <Compile Include="Responses\IResponseWriter.cs" />
-    <Compile Include="WebServerCoreStartup.cs" />
-    <Compile Include="WebServerRequest.cs" />
-    <Compile Include="WebServerRequestContent.cs" />
-    <Compile Include="WebServerRequestContentHeaders.cs" />
-    <Compile Include="WebServerResponse.cs" />
-    <Compile Include="Controllers\WebServerController.cs" />
-    <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
-      <Name>Dev2.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
-      <Name>Dev2.Data.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
-      <Name>Dev2.Diagnostics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-      <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
-      <Name>Dev2.Runtime.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
-      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
-      <Name>Dev2.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
-      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
-      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
-      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
-      <Name>Warewolf.Common.Framework48</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-      <Name>Warewolf.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-      <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
-      <Name>Warewolf.Storage.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
-      <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Dev2.Runtime.WebServer.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SignalR.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="codecracker.CSharp">
-      <Version>1.1.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
-      <Version>5.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProductVersion>8.0.30703</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Dev2.Runtime.WebServer</RootNamespace>
+        <AssemblyName>Dev2.Runtime.WebServer</AssemblyName>
+        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <FileAlignment>512</FileAlignment>
+        <SccProjectName>
+        </SccProjectName>
+        <SccLocalPath>
+        </SccLocalPath>
+        <SccAuxPath>
+        </SccAuxPath>
+        <SccProvider>
+        </SccProvider>
+        <TargetFrameworkProfile />
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+        <RestorePackages>true</RestorePackages>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Activities" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+            <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+        <Compile Include="AnonymousAuthenticationHandler.cs" />
+        <Compile Include="ApisJsonBuilder.cs" />
+        <Compile Include="CommunicationContextExtensions.cs" />
+        <Compile Include="Controllers\AbstractController.cs" />
+        <Compile Include="DataObjectExtensions.cs" />
+        <Compile Include="Executor\DataObjectFactory.cs" />
+        <Compile Include="Executor\DefaultEsbChannelFactory.cs" />
+        <Compile Include="Executor\Error.cs" />
+        <Compile Include="Executor\ExecuteExceptionPayload.cs" />
+        <Compile Include="Executor\ExecutionDto.cs" />
+        <Compile Include="Executor\ExecutionDtoExtensions.cs" />
+        <Compile Include="Executor\Executor.cs" />
+        <Compile Include="Executor\ExecutorBase.cs" />
+        <Compile Include="Executor\IDataObjectFactory.cs" />
+        <Compile Include="Executor\IExecutionDto.cs" />
+        <Compile Include="Executor\IExecutor.cs" />
+        <Compile Include="Executor\SubmittedData.cs" />
+        <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
+        <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
+        <Compile Include="Handlers\GetOpenAPIServiceHandler.cs" />
+        <Compile Include="Handlers\TokenRequestHandler.cs" />
+        <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
+        <Compile Include="Handlers\WebGetRequestHandler.cs" />
+        <Compile Include="Handlers\IRequestHandler.cs" />
+        <Compile Include="Handlers\WebPostRequestHandler.cs" />
+        <Compile Include="ICommunicationRequestContent.cs" />
+        <Compile Include="ICommunicationRequestContentHeaders.cs" />
+        <Compile Include="Responses\ContentTypes.cs" />
+        <Compile Include="Responses\ExceptionResponseWriter.cs" />
+        <Compile Include="Responses\FileResponseWriter.cs" />
+        <Compile Include="Responses\Streams\HttpPushContentStream.cs" />
+        <Compile Include="ICommunicationContext.cs" />
+        <Compile Include="ICommunicationRequest.cs" />
+        <Compile Include="ICommunicationResponse.cs" />
+        <Compile Include="Extensions.cs" />
+        <Compile Include="Hubs\EsbHub.cs" />
+        <Compile Include="Hubs\Server.cs" />
+        <Compile Include="Hubs\ServerHub.cs" />
+        <Compile Include="Security\AuthorizationRequest.cs" />
+        <Compile Include="Security\AuthorizationRequestHelper.cs" />
+        <Compile Include="Security\AuthorizeHubAttribute.cs" />
+        <Compile Include="Security\AuthorizeWebAttribute.cs" />
+        <Compile Include="Security\CustomActionFilter.cs" />
+        <Compile Include="Security\CustomHubFilter.cs" />
+        <Compile Include="Security\QueryString.cs" />
+        <Compile Include="Security\WindowsAndAnonymousAuthenticationMiddleware.cs" />
+        <Compile Include="ServiceTesting\IServiceTestExecutor.cs" />
+        <Compile Include="ServiceTesting\ServiceTestCoverageExecutor.cs" />
+        <Compile Include="ServiceTesting\ServiceTestCoverageModelHTMLResultBuilder.cs" />
+        <Compile Include="ServiceTesting\ServiceTestExecutor.cs" />
+        <Compile Include="ServiceTesting\ServiceTestModelJObjectResultBuilder.cs" />
+        <Compile Include="ServiceTesting\ServiceTestModelTRXResultBuilder.cs" />
+        <Compile Include="TransferObjects\WebRequestTO.cs" />
+        <Compile Include="WebRequestExtentions.cs" />
+        <Compile Include="WebServerContext.cs" />
+        <Compile Include="Dev2Endpoint.cs" />
+        <Compile Include="Responses\Streams\HttpFileStream.cs" />
+        <Compile Include="Responses\DynamicFileResponseWriter.cs" />
+        <Compile Include="Responses\StatusResponseWriter.cs" />
+        <Compile Include="Responses\StaticFileResponseWriter.cs" />
+        <Compile Include="Responses\StringResponseWriter.cs" />
+        <Compile Include="Responses\IResponseWriter.cs" />
+        <Compile Include="WebServerCoreStartup.cs" />
+        <Compile Include="WebServerRequest.cs" />
+        <Compile Include="WebServerRequestContent.cs" />
+        <Compile Include="WebServerRequestContentHeaders.cs" />
+        <Compile Include="WebServerResponse.cs" />
+        <Compile Include="Controllers\WebServerController.cs" />
+        <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+            <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+            <Name>Dev2.Common.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+            <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+            <Name>Dev2.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+            <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+            <Name>Dev2.Core</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+            <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+            <Name>Dev2.Data.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+            <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+            <Name>Dev2.Data</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+            <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+            <Name>Dev2.Diagnostics</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+            <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+            <Name>Dev2.Infrastructure</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+            <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+            <Name>Dev2.Runtime.Services</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+            <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
+            <Name>Dev2.Runtime</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+            <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+            <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+            <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+            <Name>Warewolf.Common.Framework48</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+            <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+            <Name>Warewolf.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+            <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+            <Name>Warewolf.Resource</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+            <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
+            <Name>Warewolf.Storage.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+            <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+            <Name>Warewolf.Storage</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.config">
+            <SubType>Designer</SubType>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Dev2.Runtime.WebServer.ruleset" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="SignalR.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="codecracker.CSharp">
+            <Version>1.1.0</Version>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="log4net">
+            <Version>2.0.15</Version>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json">
+            <Version>13.0.2</Version>
+        </PackageReference>
+        <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+            <Version>5.1.0</Version>
+        </PackageReference>
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
+        <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
+        <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
+        <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+        <Reference Include="System.Web" />
+    </ItemGroup>
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-      <Compile Include="WebServerStartup.cs" />
-      <Reference Include="System.Runtime.DurableInstancing" />
+        <Compile Include="WebServerStartup.cs" />
+        <Reference Include="System.Runtime.DurableInstancing" />
         <PackageReference Include="Microsoft.AspNet.Cors">
             <Version>5.2.7</Version>
         </PackageReference>
@@ -263,17 +263,10 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-      <Compile Include="WebServerCoreStartup.cs" />
-      <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <Compile Include="WebServerCoreStartup.cs" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-    <ItemGroup>
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-    </ItemGroup>
-  </Target>
 </Project>

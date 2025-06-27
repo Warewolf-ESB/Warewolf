@@ -1,317 +1,310 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2</RootNamespace>
-    <AssemblyName>Dev2.Core</AssemblyName>    
-    <RuntimeIdentifier>win</RuntimeIdentifier>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <LangVersion>9.0</LangVersion>
-    <SonarQubeTestProject>False</SonarQubeTestProject>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Activities" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.DirectoryServices.AccountManagement" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
-    <Compile Include="Common\ConflictTreeNode.cs" />
-    <Compile Include="Common\ExtensionMethods.cs" />
-    <Compile Include="Common\IConflictTreeNode.cs" />
-    <Compile Include="Common\ResourceCriteria.cs" />
-    <Compile Include="Common\ResourceSingleCriteria.cs" />
-    <Compile Include="Common\ValidatableObject.cs" />
-    <Compile Include="Common\VariableUtils.cs" />
-    <Compile Include="Comparers\DataSourceShapeComparer.cs" />
-    <Compile Include="Converters\Base\TO\CaseConvertTO.cs" />
-    <Compile Include="DeletedFileMetadata.cs" />
-    <Compile Include="Common\Dev2Random.cs" />
-    <Compile Include="Common\JTokenExtensionmethods.cs" />
-    <Compile Include="Common\JPropertyExtensionMethods.cs" />
-    <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
-    <Compile Include="Converters\Base\BaseTypeException.cs" />
-    <Compile Include="Converters\Base\Dev2Base64Converter.cs" />
-    <Compile Include="Converters\Base\Dev2BaseConversionFactory.cs" />
-    <Compile Include="Converters\Base\Dev2BinaryConverter.cs" />
-    <Compile Include="Converters\Base\Dev2BaseConversionBroker.cs" />
-    <Compile Include="Converters\Base\Dev2HexConverter.cs" />
-    <Compile Include="Converters\Base\Dev2TextConverter.cs" />
-    <Compile Include="Converters\Base\enDev2BaseConvertType.cs" />
-    <Compile Include="Converters\Base\TO\BaseConvertTO.cs" />
-    <Compile Include="Converters\Graph\BasePath.cs" />
-    <Compile Include="Converters\Graph\DataBrowser.cs" />
-    <Compile Include="Converters\Graph\DataBrowserFactory.cs" />
-    <Compile Include="Converters\Graph\DataSourceShapeFactory.cs" />
-    <Compile Include="Converters\Graph\DataTable\DataTableInterrogator.cs" />
-    <Compile Include="Converters\Graph\DataTable\DataTableMapper.cs" />
-    <Compile Include="Converters\Graph\DataTable\DataTablePath.cs" />
-    <Compile Include="Converters\Graph\IndexedPathSegmentTreeNode.cs" />
-    <Compile Include="Converters\Graph\InterrogatorFactory.cs" />
-    <Compile Include="Converters\Graph\NavigatorBase.cs" />
-    <Compile Include="Converters\Graph\Ouput\DataSourceShape.cs" />
-    <Compile Include="Converters\Graph\Ouput\OutputDescription.cs" />
-    <Compile Include="Converters\Graph\Ouput\ShapedXmlOutputFormatter.cs" />
-    <Compile Include="Converters\Graph\OutputDescriptionFactory.cs" />
-    <Compile Include="Converters\Graph\Ouput\OutputDescriptionSerializationService.cs" />
-    <Compile Include="Converters\Graph\OutputDescriptionSerializationServiceFactory.cs" />
-    <Compile Include="Converters\Graph\OutputFormatterFactory.cs" />
-    <Compile Include="Converters\Graph\Poco\PocoInterrogator.cs" />
-    <Compile Include="Converters\Graph\Poco\PocoMapper.cs" />
-    <Compile Include="Converters\Graph\Poco\PocoNavigator.cs" />
-    <Compile Include="Converters\Graph\Poco\PocoPath.cs" />
-    <Compile Include="Converters\Graph\Poco\PocoPathSegment.cs" />
-    <Compile Include="Converters\Graph\String\Json\JsonMapper.cs" />
-    <Compile Include="Converters\Graph\String\Json\JsonNavigator.cs" />
-    <Compile Include="Converters\Graph\String\Json\JsonPath.cs" />
-    <Compile Include="Converters\Graph\String\Json\JsonPathSegment.cs" />
-    <Compile Include="Converters\Graph\String\Json\StringMapper.cs" />
-    <Compile Include="Converters\Graph\String\Json\StringPath.cs" />
-    <Compile Include="Converters\Graph\String\StringInterrogator.cs" />
-    <Compile Include="Converters\Graph\String\Xml\XmlMapper.cs" />
-    <Compile Include="Converters\Graph\String\Xml\XmlNavigator.cs" />
-    <Compile Include="Converters\Graph\String\Xml\XmlPath.cs" />
-    <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
-    <Compile Include="Common\TypeExtensionMethods.cs" />
-    <Compile Include="CustomContainer.cs" />
-    <Compile Include="Dev2ActivityComparer.cs" />
-    <Compile Include="Dev2UniqueActivityComparer.cs" />
-    <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
-    <Compile Include="enFindMissingType.cs" />
-    <Compile Include="ExecutionEnvironmentUtils.cs" />
-    <Compile Include="IActivityParser.cs" />
-    <Compile Include="IDev2Activity.cs" />
-    <Compile Include="InterfaceImplementors\CoverageDataContext.cs" />
-    <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
-    <Compile Include="Interfaces\IDev2EmailSender.cs" />
-    <Compile Include="Interfaces\IDSFDataObject.cs" />
-    <Compile Include="Interfaces\IEsbChannel.cs" />
-    <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
-    <Compile Include="Interfaces\IFrameworkDataChannel.cs" />
-    <Compile Include="Interfaces\IResourceCriteria.cs" />
-    <Compile Include="Session\Debug\DebugTO.cs" />
-    <Compile Include="Session\Debug\IDebugSession.cs" />
-    <Compile Include="Session\Debug\SaveDebugTO.cs" />
-    <Compile Include="Session\Dev2StudioSessionBroker.cs" />
-    <Compile Include="Session\Dev2StudioSessionFactory.cs" />
-    <Compile Include="Session\IDev2StudioBroker.cs" />
-    <Compile Include="Util\FindMissingAttribute.cs" />
-    <Compile Include="DynamicServices\Objects\DynamicService.cs" />
-    <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
-    <Compile Include="DynamicServices\Resources1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicServices\Objects\ServiceAction.cs" />
-    <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
-    <Compile Include="DynamicServices\Objects\Source.cs" />
-    <Compile Include="DynamicServices\Objects\Validator.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DynamicServices\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dev2.Core.ruleset" />
-    <None Include="Dynamic Services.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <Content Include="DotfuscateConfig\Dotfuscator1.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
-      <Name>Dev2.Data.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
-      <Name>Dev2.Diagnostics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-      <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
-      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
-      <Name>Dev2.Runtime.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
-      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
-      <Name>Warewolf.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
-      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
-      <Name>Warewolf.Language.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>Warewolf.Parser.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-      <Name>Warewolf.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
-      <Name>Warewolf.Storage.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
-      <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reflection\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.JScript" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Workflow.ComponentModel" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
-    <Reference Include="CalculationManager.WPF">
-      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1">
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Activities.Presentation" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
-  	<Reference Include="Weave">
-  	  <HintPath>..\Binaries\Weave.dll</HintPath>
-  	</Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
-  	<ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
-  </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProductVersion>8.0.30703</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Dev2</RootNamespace>
+        <AssemblyName>Dev2.Core</AssemblyName>    
+        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <FileAlignment>512</FileAlignment>
+        <SccProjectName>
+        </SccProjectName>
+        <SccLocalPath>
+        </SccLocalPath>
+        <SccAuxPath>
+        </SccAuxPath>
+        <SccProvider>
+        </SccProvider>
+        <TargetFrameworkProfile />
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+        <RestorePackages>true</RestorePackages>
+        <LangVersion>9.0</LangVersion>
+        <SonarQubeTestProject>False</SonarQubeTestProject>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
     <ItemGroup>
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+        <Reference Include="System.Activities" />
+        <Reference Include="System.ComponentModel.Composition" />
+        <Reference Include="System.DirectoryServices.AccountManagement" />
     </ItemGroup>
-  </Target>
+    <ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+            <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+        <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
+        <Compile Include="Common\ConflictTreeNode.cs" />
+        <Compile Include="Common\ExtensionMethods.cs" />
+        <Compile Include="Common\IConflictTreeNode.cs" />
+        <Compile Include="Common\ResourceCriteria.cs" />
+        <Compile Include="Common\ResourceSingleCriteria.cs" />
+        <Compile Include="Common\ValidatableObject.cs" />
+        <Compile Include="Common\VariableUtils.cs" />
+        <Compile Include="Comparers\DataSourceShapeComparer.cs" />
+        <Compile Include="Converters\Base\TO\CaseConvertTO.cs" />
+        <Compile Include="DeletedFileMetadata.cs" />
+        <Compile Include="Common\Dev2Random.cs" />
+        <Compile Include="Common\JTokenExtensionmethods.cs" />
+        <Compile Include="Common\JPropertyExtensionMethods.cs" />
+        <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
+        <Compile Include="Converters\Base\BaseTypeException.cs" />
+        <Compile Include="Converters\Base\Dev2Base64Converter.cs" />
+        <Compile Include="Converters\Base\Dev2BaseConversionFactory.cs" />
+        <Compile Include="Converters\Base\Dev2BinaryConverter.cs" />
+        <Compile Include="Converters\Base\Dev2BaseConversionBroker.cs" />
+        <Compile Include="Converters\Base\Dev2HexConverter.cs" />
+        <Compile Include="Converters\Base\Dev2TextConverter.cs" />
+        <Compile Include="Converters\Base\enDev2BaseConvertType.cs" />
+        <Compile Include="Converters\Base\TO\BaseConvertTO.cs" />
+        <Compile Include="Converters\Graph\BasePath.cs" />
+        <Compile Include="Converters\Graph\DataBrowser.cs" />
+        <Compile Include="Converters\Graph\DataBrowserFactory.cs" />
+        <Compile Include="Converters\Graph\DataSourceShapeFactory.cs" />
+        <Compile Include="Converters\Graph\DataTable\DataTableInterrogator.cs" />
+        <Compile Include="Converters\Graph\DataTable\DataTableMapper.cs" />
+        <Compile Include="Converters\Graph\DataTable\DataTablePath.cs" />
+        <Compile Include="Converters\Graph\IndexedPathSegmentTreeNode.cs" />
+        <Compile Include="Converters\Graph\InterrogatorFactory.cs" />
+        <Compile Include="Converters\Graph\NavigatorBase.cs" />
+        <Compile Include="Converters\Graph\Ouput\DataSourceShape.cs" />
+        <Compile Include="Converters\Graph\Ouput\OutputDescription.cs" />
+        <Compile Include="Converters\Graph\Ouput\ShapedXmlOutputFormatter.cs" />
+        <Compile Include="Converters\Graph\OutputDescriptionFactory.cs" />
+        <Compile Include="Converters\Graph\Ouput\OutputDescriptionSerializationService.cs" />
+        <Compile Include="Converters\Graph\OutputDescriptionSerializationServiceFactory.cs" />
+        <Compile Include="Converters\Graph\OutputFormatterFactory.cs" />
+        <Compile Include="Converters\Graph\Poco\PocoInterrogator.cs" />
+        <Compile Include="Converters\Graph\Poco\PocoMapper.cs" />
+        <Compile Include="Converters\Graph\Poco\PocoNavigator.cs" />
+        <Compile Include="Converters\Graph\Poco\PocoPath.cs" />
+        <Compile Include="Converters\Graph\Poco\PocoPathSegment.cs" />
+        <Compile Include="Converters\Graph\String\Json\JsonMapper.cs" />
+        <Compile Include="Converters\Graph\String\Json\JsonNavigator.cs" />
+        <Compile Include="Converters\Graph\String\Json\JsonPath.cs" />
+        <Compile Include="Converters\Graph\String\Json\JsonPathSegment.cs" />
+        <Compile Include="Converters\Graph\String\Json\StringMapper.cs" />
+        <Compile Include="Converters\Graph\String\Json\StringPath.cs" />
+        <Compile Include="Converters\Graph\String\StringInterrogator.cs" />
+        <Compile Include="Converters\Graph\String\Xml\XmlMapper.cs" />
+        <Compile Include="Converters\Graph\String\Xml\XmlNavigator.cs" />
+        <Compile Include="Converters\Graph\String\Xml\XmlPath.cs" />
+        <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
+        <Compile Include="Common\TypeExtensionMethods.cs" />
+        <Compile Include="CustomContainer.cs" />
+        <Compile Include="Dev2ActivityComparer.cs" />
+        <Compile Include="Dev2UniqueActivityComparer.cs" />
+        <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
+        <Compile Include="enFindMissingType.cs" />
+        <Compile Include="ExecutionEnvironmentUtils.cs" />
+        <Compile Include="IActivityParser.cs" />
+        <Compile Include="IDev2Activity.cs" />
+        <Compile Include="InterfaceImplementors\CoverageDataContext.cs" />
+        <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
+        <Compile Include="Interfaces\IDev2EmailSender.cs" />
+        <Compile Include="Interfaces\IDSFDataObject.cs" />
+        <Compile Include="Interfaces\IEsbChannel.cs" />
+        <Compile Include="Interfaces\IEsbWorkspaceChannel.cs" />
+        <Compile Include="Interfaces\IFrameworkDataChannel.cs" />
+        <Compile Include="Interfaces\IResourceCriteria.cs" />
+        <Compile Include="Session\Debug\DebugTO.cs" />
+        <Compile Include="Session\Debug\IDebugSession.cs" />
+        <Compile Include="Session\Debug\SaveDebugTO.cs" />
+        <Compile Include="Session\Dev2StudioSessionBroker.cs" />
+        <Compile Include="Session\Dev2StudioSessionFactory.cs" />
+        <Compile Include="Session\IDev2StudioBroker.cs" />
+        <Compile Include="Util\FindMissingAttribute.cs" />
+        <Compile Include="DynamicServices\Objects\DynamicService.cs" />
+        <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
+        <Compile Include="DynamicServices\Resources1.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Include="DynamicServices\Objects\ServiceAction.cs" />
+        <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
+        <Compile Include="DynamicServices\Objects\Source.cs" />
+        <Compile Include="DynamicServices\Objects\Validator.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="DynamicServices\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Dev2.Core.ruleset" />
+        <None Include="Dynamic Services.cd" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+        <Content Include="DotfuscateConfig\Dotfuscator1.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+            <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+            <Name>Dev2.Common.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+            <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+            <Name>Dev2.Data.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+            <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+            <Name>Dev2.Data</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+            <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+            <Name>Dev2.Diagnostics</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+            <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+            <Name>Dev2.Infrastructure</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+            <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+            <Name>Dev2.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+            <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+            <Name>Dev2.Runtime.Configuration</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+            <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+            <Name>Warewolf.Data</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+            <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+            <Name>Warewolf.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+            <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+            <Name>Warewolf.Language.Parser</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+            <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+            <Name>Warewolf.Parser.Interop</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+            <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+            <Name>Warewolf.Resource</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+            <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+            <Name>Warewolf.Storage.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+            <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+            <Name>Warewolf.Storage</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Reflection\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+        <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+        <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+        </Reference>
+        <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+        </Reference>
+        <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.JScript" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="System" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+        <Reference Include="System.configuration" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.DirectoryServices" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Net.Http.WebRequest" />
+        <Reference Include="System.Runtime.DurableInstancing" />
+        <Reference Include="System.Runtime.Serialization" />
+        <Reference Include="System.Security" />
+        <Reference Include="System.ServiceModel" />
+        <Reference Include="System.Web.Services" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Workflow.ComponentModel" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+        <Reference Include="CalculationManager.WPF">
+            <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
+        </Reference>
+        <Reference Include="InfragisticsWPF4.v15.1">
+            <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Activities.Presentation" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+        <Reference Include="Weave">
+            <HintPath>..\Binaries\Weave.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
+        <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
+    </ItemGroup>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
 </Project>

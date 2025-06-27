@@ -9,6 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
@@ -16,11 +17,4 @@
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-    <ItemGroup>
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-    </ItemGroup>
-  </Target>
 </Project>

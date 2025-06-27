@@ -1,270 +1,263 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.Common</RootNamespace>
-    <AssemblyName>Dev2.Common</AssemblyName>    
-    <RuntimeIdentifier>win</RuntimeIdentifier>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <SonarQubeTestProject>False</SonarQubeTestProject>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-	<LangVersion>9.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
-    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
-    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
-    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Dev2.Common</RootNamespace>
+        <AssemblyName>Dev2.Common</AssemblyName>    
+        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <FileAlignment>512</FileAlignment>
+        <SccProjectName>
+        </SccProjectName>
+        <SccLocalPath>
+        </SccLocalPath>
+        <SccAuxPath>
+        </SccAuxPath>
+        <SccProvider>
+        </SccProvider>
+        <TargetFrameworkProfile />
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+        <RestorePackages>true</RestorePackages>
+        <SonarQubeTestProject>False</SonarQubeTestProject>
+        <NuGetPackageImportStamp>
+        </NuGetPackageImportStamp>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+        <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+        <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+        <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <ItemGroup>
 
-    <Reference Include="System.Activities" />
-    <Reference Include="System.Management" />
- 
+        <Reference Include="System.Activities" />
+        <Reference Include="System.Management" />
 
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="AssemblyWrapper.cs" />
-    <Compile Include="ComPluginServiceDefinition.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Core\ServerSource.cs" />
-    <Compile Include="DataNode.cs" />
-    <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
-    <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
-    <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
-    <Compile Include="DateAndTime\StandardDateTimeFormatter.cs" />
-    <Compile Include="DateAndTime\StandardDateTimeParser.cs" />
-    <Compile Include="CommonEqualityOps.cs" />
-    <Compile Include="Dev2XamlCleaner.cs" />
-    <Compile Include="EqualityFactory.cs" />
-    <Compile Include="DebugStateTreeBuilder.cs" />
-    <Compile Include="DeplyResult.cs" />
-    <Compile Include="Dev2MethodInfo.cs" />
-    <Compile Include="DuplicateResource.cs" />
-    <Compile Include="ApisJson.cs" />
-    <Compile Include="Common\DeleteHelper.cs" />
-    <Compile Include="Common\ExtensionMethods.cs" />
-    <Compile Include="Common\GetComputerNames.cs" />
-    <Compile Include="DateAndTime\AssignManager.cs" />
-    <Compile Include="DateAndTime\CompareTextValueToDateTimePart.cs" />
-    <Compile Include="DateAndTime\DateTimeComparer.cs" />
-    <Compile Include="DateAndTime\DateTimeConverterFactory.cs" />
-    <Compile Include="DateAndTime\DateTimeFormatter.cs" />
-    <Compile Include="DateAndTime\DateTimeLiteralProcessor.cs" />
-    <Compile Include="DateAndTime\DateTimeParser.cs" />
-    <Compile Include="DateAndTime\DatetimeParserHelper.cs" />
-    <Compile Include="DateAndTime\TO\DateTimeDiffTO.cs" />
-    <Compile Include="DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
-    <Compile Include="DateAndTime\TO\DateTimeFormatPartTO.cs" />
-    <Compile Include="DateAndTime\TO\DateTimeOperationTO.cs" />
-    <Compile Include="DateAndTime\TO\DateTimeResultTO.cs" />
-    <Compile Include="DateAndTime\TO\TimeZoneTO.cs" />
-    <Compile Include="Dev2EnumConverter.cs" />
-    <Compile Include="Dev2Tokenizer.cs" />
-    <Compile Include="Exchange\ExchangeEmailSender.cs" />
-    <Compile Include="Exchange\ExchangeServiceFactory.cs" />
-    <Compile Include="ExplorerRepositoryResult.cs" />
-    <Compile Include="ExternalProcessExecutor.cs" />
-    <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
-    <Compile Include="ExtMethods\BindableBaseExtensions.cs" />
-    <Compile Include="ExtMethods\GuidExtensions.cs" />
-    <Compile Include="ExtMethods\ObjectExtensions.cs" />
-    <Compile Include="ExtMethods\StringExtension.cs" />
-    <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="FileStreamFactory.cs" />
-    <Compile Include="HttpClientException.cs" />
-    <Compile Include="WebRequestHeadersHelper.cs" />
-    <Compile Include="Wrappers\EnvironmentWrapper.cs" />
-    <Compile Include="Wrappers\FileSystemWatcherWrapper.cs" />
-    <Compile Include="GlobalConstants.cs" />
-    <Compile Include="IntellisenseStringResult.cs" />
-    <Compile Include="Interfaces\IAssemblyWrapper.cs" />
-    <Compile Include="IncludeApi.cs" />
-    <Compile Include="Interfaces\IAssignManager.cs" />
-    <Compile Include="Interfaces\IDateTimeFormatForwardLookup.cs" />
-    <Compile Include="Interfaces\IDateTimeFormatForwardLookupsForDotNet.cs" />
-    <Compile Include="Interfaces\IDateTimeFormatPart.cs" />
-    <Compile Include="Interfaces\IDateTimeFormatPartsForDotNet.cs" />
-    <Compile Include="Interfaces\IDateTimeParserBuilder.cs" />
-    <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
-    <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
-    <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
-    <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
-    <Compile Include="SaveDialogue\ResourceName.cs" />
-    <Compile Include="Search\Search.cs" />
-    <Compile Include="Serializers\Dev2JsonSerializer.cs" />
-    <Compile Include="State\StateVariable.cs" />
-    <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
-    <Compile Include="Utils\JsonNetValueSystem.cs" />
-    <Compile Include="Utils\JsonPath.cs" />
-    <Compile Include="Utils\SearchUtils.cs" />
-    <Compile Include="Utils\VerifyArgument.cs" />
-    <Compile Include="WebServiceHeaderBuilder.cs" />
-    <Compile Include="LogEntry.cs" />
-    <Compile Include="Lookups\CompressionRatios.cs" />
-    <Compile Include="MaintainerApi.cs" />
-    <Compile Include="Mapper.cs" />
-    <Compile Include="Patterns\SpookyAction.cs" />
-    <Compile Include="PluginAction.cs" />
-    <Compile Include="PluginConstructor.cs" />
-    <Compile Include="PropertyApi.cs" />
-    <Compile Include="SaveResult.cs" />
-    <Compile Include="ServiceNotAuthorizedException.cs" />
-    <Compile Include="SharepointSourceTo.cs" />
-    <Compile Include="SingleApi.cs" />
-    <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
-    <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
-    <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
-    <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
-    <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
-    <Compile Include="TestSaveResult.cs" />
-    <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookup.cs" />
-    <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookupsForDotNet.cs" />
-    <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />
-    <Compile Include="TimeZoneBuilder\DateTimeFormatPartsForDotNet.cs" />
-    <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
-    <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
-    <Compile Include="Utilities.cs" />
-    <Compile Include="Utils\JsonUtils.cs" />
-    <Compile Include="Utils\StringTransform.cs" />
-    <Compile Include="Utils\TextUtils.cs" />
-    <Compile Include="Utils\VersionInfo.cs" />
-    <Compile Include="WorkflowExecutionWatcher.cs" />
-    <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
-    <Compile Include="Wrappers\DirectoryWrapper.cs" />
-    <Compile Include="Wrappers\DropboxClientWrapper.cs" />
-    <Compile Include="Wrappers\FileInfoWrapper.cs" />
-    <Compile Include="Wrappers\FilePathWrapper.cs" />
-    <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
-    <Compile Include="Wrappers\TimerWrapper.cs" />
-    <Compile Include="Wrappers\ZipFileWrapper.cs" />
-    <Compile Include="Wrappers\FileWrapper.cs" />
-    <Compile Include="X6\X6Models.cs" />
-    <Compile Include="X6\X6RequestInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
-      <Name>Dev2.Data.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
-    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
-      <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
-      <Name>Warewolf.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
-      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
-      <Name>Warewolf.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-      <Name>Warewolf.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dev2.Common.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="codecracker.CSharp">
-      <Version>1.1.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Dropbox.Api">
-      <Version>6.15.0</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.Core" Version="9.0.537" />
-    <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.118</Version>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <PackageReference Include="TxFileManager" Version="1.5.0.1" />
-		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-  </ItemGroup>
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+            <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+        <Compile Include="AssemblyWrapper.cs" />
+        <Compile Include="ComPluginServiceDefinition.cs" />
+        <Compile Include="Config.cs" />
+        <Compile Include="Core\ServerSource.cs" />
+        <Compile Include="DataNode.cs" />
+        <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
+        <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
+        <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
+        <Compile Include="DateAndTime\StandardDateTimeFormatter.cs" />
+        <Compile Include="DateAndTime\StandardDateTimeParser.cs" />
+        <Compile Include="CommonEqualityOps.cs" />
+        <Compile Include="Dev2XamlCleaner.cs" />
+        <Compile Include="EqualityFactory.cs" />
+        <Compile Include="DebugStateTreeBuilder.cs" />
+        <Compile Include="DeplyResult.cs" />
+        <Compile Include="Dev2MethodInfo.cs" />
+        <Compile Include="DuplicateResource.cs" />
+        <Compile Include="ApisJson.cs" />
+        <Compile Include="Common\DeleteHelper.cs" />
+        <Compile Include="Common\ExtensionMethods.cs" />
+        <Compile Include="Common\GetComputerNames.cs" />
+        <Compile Include="DateAndTime\AssignManager.cs" />
+        <Compile Include="DateAndTime\CompareTextValueToDateTimePart.cs" />
+        <Compile Include="DateAndTime\DateTimeComparer.cs" />
+        <Compile Include="DateAndTime\DateTimeConverterFactory.cs" />
+        <Compile Include="DateAndTime\DateTimeFormatter.cs" />
+        <Compile Include="DateAndTime\DateTimeLiteralProcessor.cs" />
+        <Compile Include="DateAndTime\DateTimeParser.cs" />
+        <Compile Include="DateAndTime\DatetimeParserHelper.cs" />
+        <Compile Include="DateAndTime\TO\DateTimeDiffTO.cs" />
+        <Compile Include="DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
+        <Compile Include="DateAndTime\TO\DateTimeFormatPartTO.cs" />
+        <Compile Include="DateAndTime\TO\DateTimeOperationTO.cs" />
+        <Compile Include="DateAndTime\TO\DateTimeResultTO.cs" />
+        <Compile Include="DateAndTime\TO\TimeZoneTO.cs" />
+        <Compile Include="Dev2EnumConverter.cs" />
+        <Compile Include="Dev2Tokenizer.cs" />
+        <Compile Include="Exchange\ExchangeEmailSender.cs" />
+        <Compile Include="Exchange\ExchangeServiceFactory.cs" />
+        <Compile Include="ExplorerRepositoryResult.cs" />
+        <Compile Include="ExternalProcessExecutor.cs" />
+        <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
+        <Compile Include="ExtMethods\BindableBaseExtensions.cs" />
+        <Compile Include="ExtMethods\GuidExtensions.cs" />
+        <Compile Include="ExtMethods\ObjectExtensions.cs" />
+        <Compile Include="ExtMethods\StringExtension.cs" />
+        <Compile Include="ExtMethods\TypeExtensions.cs" />
+        <Compile Include="FileStreamFactory.cs" />
+        <Compile Include="HttpClientException.cs" />
+        <Compile Include="WebRequestHeadersHelper.cs" />
+        <Compile Include="Wrappers\EnvironmentWrapper.cs" />
+        <Compile Include="Wrappers\FileSystemWatcherWrapper.cs" />
+        <Compile Include="GlobalConstants.cs" />
+        <Compile Include="IntellisenseStringResult.cs" />
+        <Compile Include="Interfaces\IAssemblyWrapper.cs" />
+        <Compile Include="IncludeApi.cs" />
+        <Compile Include="Interfaces\IAssignManager.cs" />
+        <Compile Include="Interfaces\IDateTimeFormatForwardLookup.cs" />
+        <Compile Include="Interfaces\IDateTimeFormatForwardLookupsForDotNet.cs" />
+        <Compile Include="Interfaces\IDateTimeFormatPart.cs" />
+        <Compile Include="Interfaces\IDateTimeFormatPartsForDotNet.cs" />
+        <Compile Include="Interfaces\IDateTimeParserBuilder.cs" />
+        <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
+        <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
+        <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
+        <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
+        <Compile Include="SaveDialogue\ResourceName.cs" />
+        <Compile Include="Search\Search.cs" />
+        <Compile Include="Serializers\Dev2JsonSerializer.cs" />
+        <Compile Include="State\StateVariable.cs" />
+        <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
+        <Compile Include="Utils\JsonNetValueSystem.cs" />
+        <Compile Include="Utils\JsonPath.cs" />
+        <Compile Include="Utils\SearchUtils.cs" />
+        <Compile Include="Utils\VerifyArgument.cs" />
+        <Compile Include="WebServiceHeaderBuilder.cs" />
+        <Compile Include="LogEntry.cs" />
+        <Compile Include="Lookups\CompressionRatios.cs" />
+        <Compile Include="MaintainerApi.cs" />
+        <Compile Include="Mapper.cs" />
+        <Compile Include="Patterns\SpookyAction.cs" />
+        <Compile Include="PluginAction.cs" />
+        <Compile Include="PluginConstructor.cs" />
+        <Compile Include="PropertyApi.cs" />
+        <Compile Include="SaveResult.cs" />
+        <Compile Include="ServiceNotAuthorizedException.cs" />
+        <Compile Include="SharepointSourceTo.cs" />
+        <Compile Include="SingleApi.cs" />
+        <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
+        <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
+        <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
+        <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
+        <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+        <Compile Include="TestSaveResult.cs" />
+        <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookup.cs" />
+        <Compile Include="TimeZoneBuilder\DateTimeFormatForwardLookupsForDotNet.cs" />
+        <Compile Include="TimeZoneBuilder\DateTimeFormatPart.cs" />
+        <Compile Include="TimeZoneBuilder\DateTimeFormatPartsForDotNet.cs" />
+        <Compile Include="TimeZoneBuilder\TimeFormatPartBuilder.cs" />
+        <Compile Include="TimeZoneBuilder\TimeZoneBuilder.cs" />
+        <Compile Include="Utilities.cs" />
+        <Compile Include="Utils\JsonUtils.cs" />
+        <Compile Include="Utils\StringTransform.cs" />
+        <Compile Include="Utils\TextUtils.cs" />
+        <Compile Include="Utils\VersionInfo.cs" />
+        <Compile Include="WorkflowExecutionWatcher.cs" />
+        <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
+        <Compile Include="Wrappers\DirectoryWrapper.cs" />
+        <Compile Include="Wrappers\DropboxClientWrapper.cs" />
+        <Compile Include="Wrappers\FileInfoWrapper.cs" />
+        <Compile Include="Wrappers\FilePathWrapper.cs" />
+        <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
+        <Compile Include="Wrappers\TimerWrapper.cs" />
+        <Compile Include="Wrappers\ZipFileWrapper.cs" />
+        <Compile Include="Wrappers\FileWrapper.cs" />
+        <Compile Include="X6\X6Models.cs" />
+        <Compile Include="X6\X6RequestInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+            <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+            <Name>Dev2.Common.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+            <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+            <Name>Dev2.Data.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
+        <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+            <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
+            <Name>Warewolf.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+            <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+            <Name>Warewolf.Data</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+            <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+            <Name>Warewolf.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+            <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+            <Name>Warewolf.Resource</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Dev2.Common.ruleset" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="codecracker.CSharp">
+            <Version>1.1.0</Version>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Dropbox.Api">
+            <Version>6.15.0</Version>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json">
+            <Version>13.0.2</Version>
+        </PackageReference>
+        <PackageReference Include="Prism.Core" Version="9.0.537" />
+        <PackageReference Include="System.Data.SQLite.Core">
+            <Version>1.0.118</Version>
+        </PackageReference>
+        <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+        <PackageReference Include="TxFileManager" Version="1.5.0.1" />
+        <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+        <Reference Include="Microsoft.VisualBasic" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+        <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    </ItemGroup>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-		<ItemGroup>
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-		</ItemGroup>
-	</Target>
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
 </Project>

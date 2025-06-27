@@ -9,6 +9,7 @@
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	<EnableDefaultItems>false</EnableDefaultItems>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
     <BuildProject>false</BuildProject>

@@ -1,264 +1,257 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.Runtime</RootNamespace>
-    <AssemblyName>Dev2.Runtime</AssemblyName>    
-    <RuntimeIdentifier>win</RuntimeIdentifier>
-    <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-	<LangVersion>9.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
-    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
-    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
-    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Activities" />
-    <Reference Include="System.DirectoryServices.AccountManagement" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <Compile Include="ESB\Execution\Evaluator.cs" />
-    <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
-    <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
-    <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />
-    <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
-    <Compile Include="ESB\Control\IServiceLocator.cs" />
-    <Compile Include="ESB\Control\ServiceLocator.cs" />
-    <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
-    <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\ExecutionManager.cs" />
-    <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
-    <Compile Include="ESB\Execution\PerfmonExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
-    <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\WebServiceContainer.cs" />
-    <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
-    <Compile Include="ESB\WF\WFApplicationUtils.cs" />
-    <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
-    <Compile Include="ESB\WF\JsonToWorkflowMapper.cs" />
-    <Compile Include="ESB\WF\WorkflowToJsonMapper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
-      <Visible>False</Visible>
-      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
-      <Name>Dev2.Activities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
-      <Name>Dev2.Data.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
-      <Name>Dev2.Diagnostics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
-      <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
-      <Name>Dev2.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
-      <Name>Dev2.Runtime.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
-      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
-      <Name>Dev2.Services.Execution</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
-      <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
-      <Name>Dev2.Services.Sql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
-      <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
-      <Name>Warewolf.Auditing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
-      <Name>Warewolf.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
-      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
-      <Name>Warewolf.Language.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>Warewolf.Parser.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
-      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
-      <Name>Warewolf.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-      <Name>Warewolf.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
-      <Name>Warewolf.Storage.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
-      <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dev2.Runtime.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ESB\Execution\State\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="codecracker.CSharp">
-      <Version>1.1.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="ServiceStack" Version="6.3.0" />
-    <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.118</Version>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <PackageReference Include="TxFileManager" Version="1.5.0.1" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.Activities.Presentation" />
-  </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-		<ItemGroup>
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-		</ItemGroup>
-	</Target>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProductVersion>8.0.30703</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Dev2.Runtime</RootNamespace>
+        <AssemblyName>Dev2.Runtime</AssemblyName>    
+        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <FileAlignment>512</FileAlignment>
+        <PublishUrl>publish\</PublishUrl>
+        <Install>true</Install>
+        <InstallFrom>Disk</InstallFrom>
+        <UpdateEnabled>false</UpdateEnabled>
+        <UpdateMode>Foreground</UpdateMode>
+        <UpdateInterval>7</UpdateInterval>
+        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+        <UpdatePeriodically>false</UpdatePeriodically>
+        <UpdateRequired>false</UpdateRequired>
+        <MapFileExtensions>true</MapFileExtensions>
+        <ApplicationRevision>0</ApplicationRevision>
+        <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+        <IsWebBootstrapper>false</IsWebBootstrapper>
+        <UseApplicationTrust>false</UseApplicationTrust>
+        <BootstrapperEnabled>true</BootstrapperEnabled>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+        <TargetFrameworkProfile />
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+        <RestorePackages>true</RestorePackages>
+        <NuGetPackageImportStamp>
+        </NuGetPackageImportStamp>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+        <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+        <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+        <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32Bit>false</Prefer32Bit>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Activities" />
+        <Reference Include="System.DirectoryServices.AccountManagement" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+            <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+        <Compile Include="ESB\Execution\Evaluator.cs" />
+        <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
+        <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
+        <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />
+        <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
+        <Compile Include="ESB\Control\IServiceLocator.cs" />
+        <Compile Include="ESB\Control\ServiceLocator.cs" />
+        <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
+        <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
+        <Compile Include="ESB\Execution\ExecutionManager.cs" />
+        <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
+        <Compile Include="ESB\Execution\PerfmonExecutionContainer.cs" />
+        <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
+        <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
+        <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
+        <Compile Include="ESB\Execution\WebServiceContainer.cs" />
+        <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
+        <Compile Include="ESB\WF\WFApplicationUtils.cs" />
+        <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
+        <Compile Include="ESB\WF\JsonToWorkflowMapper.cs" />
+        <Compile Include="ESB\WF\WorkflowToJsonMapper.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+            <Visible>False</Visible>
+            <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+            <Install>true</Install>
+        </BootstrapperPackage>
+        <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+            <Visible>False</Visible>
+            <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+            <Install>false</Install>
+        </BootstrapperPackage>
+        <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+            <Visible>False</Visible>
+            <ProductName>.NET Framework 3.5 SP1</ProductName>
+            <Install>false</Install>
+        </BootstrapperPackage>
+        <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+            <Visible>False</Visible>
+            <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+            <Install>true</Install>
+        </BootstrapperPackage>
+        <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+            <Visible>False</Visible>
+            <ProductName>Windows Installer 3.1</ProductName>
+            <Install>true</Install>
+        </BootstrapperPackage>
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+            <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+            <Name>Dev2.Activities</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+            <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+            <Name>Dev2.Common.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+            <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+            <Name>Dev2.Data.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+            <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+            <Name>Dev2.Data</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+            <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+            <Name>Dev2.Diagnostics</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+            <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+            <Name>Dev2.Infrastructure</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+            <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+            <Name>Dev2.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+            <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+            <Name>Dev2.Core</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+            <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+            <Name>Dev2.Runtime.Services</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+            <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+            <Name>Dev2.Services.Execution</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
+            <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
+            <Name>Dev2.Services.Sql</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
+            <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
+            <Name>Warewolf.Auditing</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+            <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+            <Name>Warewolf.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+            <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+            <Name>Warewolf.Language.Parser</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+            <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+            <Name>Warewolf.Parser.Interop</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+            <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
+            <Name>Warewolf.Security</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+            <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+            <Name>Warewolf.Resource</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+            <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+            <Name>Warewolf.Storage.Interfaces</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+            <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+            <Name>Warewolf.Storage</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Dev2.Runtime.ruleset" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="ESB\Execution\State\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="codecracker.CSharp">
+            <Version>1.1.0</Version>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="log4net">
+            <Version>2.0.15</Version>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json">
+            <Version>13.0.2</Version>
+        </PackageReference>
+        <PackageReference Include="ServiceStack" Version="6.3.0" />
+        <PackageReference Include="System.Data.SQLite">
+            <Version>1.0.118</Version>
+        </PackageReference>
+        <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+        <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+        <PackageReference Include="TxFileManager" Version="1.5.0.1" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+        <Reference Include="System.Runtime.DurableInstancing" />
+        <Reference Include="System.Activities.Presentation" />
+    </ItemGroup>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
 </Project>
