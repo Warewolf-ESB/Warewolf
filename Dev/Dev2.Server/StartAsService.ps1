@@ -43,7 +43,6 @@ if ($Cleanup.IsPresent) {
 		"%PROGRAMDATA%\Warewolf\Server Log\wareWolf-Server.log"
 	)
 }
-Start-Job -ScriptBlock { & "$PSScriptRoot\PerfMon.ps1" }; 
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	if (!(Test-Path C:\programdata\Warewolf)) {
 		New-Item -ItemType Directory -path C:\programdata\Warewolf

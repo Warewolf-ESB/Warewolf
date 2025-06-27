@@ -16,7 +16,7 @@ RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\
 RUN New-Service -Name \"Warewolf PerfMon\" \
                 -BinaryPathName C:\Server\Warewolf.PerfMon.exe \
                 -StartupType Automatic \
-                -Description \"Warewolf Performnace Monitor Service\"
+                -Description \"Warewolf Performance Monitor Service\"
 
 
-CMD ["powershell", ".\\Server\\StartAsService.ps1"]
+CMD ["powershell", "-Command", "Start-Job -ScriptBlock { & 'C:\\Server\\PerfMon.ps1' }; .\\Server\\StartAsService.ps1"]
