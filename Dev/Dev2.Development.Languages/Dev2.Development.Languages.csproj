@@ -93,6 +93,7 @@
     </PackageReference>
 	  <PackageReference Include="Jurassic" Version="3.2.6" />
 	  <PackageReference Include="IronPython" Version="3.4.0" />
+	  <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System" />

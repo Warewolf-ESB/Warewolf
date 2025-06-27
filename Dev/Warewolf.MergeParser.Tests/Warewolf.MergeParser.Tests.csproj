@@ -104,6 +104,7 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="GherkinSpec.MsTest" Version="3.0.2" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
   	<Reference Include="System.Activities.Presentation" />

@@ -363,6 +363,7 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
     </PackageReference>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.1" />
     <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
     <PackageReference Include="TaskSchedulerEditor">

@@ -137,6 +137,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
     <!--<PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />-->
     <PackageReference Include="System.Security.Permissions" Version="9.0.0" />
   </ItemGroup>

@@ -110,6 +110,7 @@
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Hide.jpg">
