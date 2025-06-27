@@ -19,4 +19,4 @@ RUN New-Service -Name "Warewolf PerfMon" \
                 -Description "Warewolf Performnace Monitor Service"
 
 
-CMD ["powershell", "-Command", "Start-Job -ScriptBlock { & 'C:\\Server\\PerfMon.ps1' }; .\\Server\\StartAsService.ps1"]
+CMD ["powershell", ".\\Server\\StartAsService.ps1"]
