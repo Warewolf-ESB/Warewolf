@@ -29,7 +29,7 @@
         <SonarQubeTestProject>True</SonarQubeTestProject>
         <SonarQubeExclude>True</SonarQubeExclude>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
     <Configurations>Debug</Configurations>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

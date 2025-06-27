@@ -21,12 +21,13 @@
         <IsCodedUITest>False</IsCodedUITest>
         <TestProjectType>UnitTest</TestProjectType>
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+        <RestorePackages>true</RestorePackages>
+
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
     <TargetFrameworkProfile />
-	<LangVersion>9.0</LangVersion>
+	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -5,7 +5,7 @@
     <Configurations>Debug</Configurations>
     <TargetFramework>net6.0-windows</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	<LangVersion>9.0</LangVersion>
+	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
 	<PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />

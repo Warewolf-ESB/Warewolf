@@ -6,7 +6,7 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>none</DebugType>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
     </PropertyGroup>   
     <ItemGroup>
       <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />

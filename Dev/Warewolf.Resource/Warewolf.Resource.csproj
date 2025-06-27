@@ -3,7 +3,7 @@
     <!--<TargetFramework>netstandard2.0</TargetFramework>-->
     <TargetFramework>net6.0-windows</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

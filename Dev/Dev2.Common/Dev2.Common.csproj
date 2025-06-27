@@ -27,7 +27,7 @@
         <SonarQubeTestProject>False</SonarQubeTestProject>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

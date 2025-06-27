@@ -24,7 +24,7 @@
     </SccProvider>
     <SonarQubeExclude>True</SonarQubeExclude>
     <TargetFrameworkProfile />
-	<LangVersion>9.0</LangVersion>
+	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

@@ -49,7 +49,7 @@
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
     <StartupObject>Dev2.EntryPoint</StartupObject>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

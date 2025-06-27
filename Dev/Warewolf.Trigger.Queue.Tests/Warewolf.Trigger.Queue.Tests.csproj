@@ -6,7 +6,7 @@
     <Platforms>AnyCPU</Platforms>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	<PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />

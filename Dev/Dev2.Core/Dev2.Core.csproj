@@ -26,7 +26,7 @@
         <TargetFrameworkProfile />
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
         <RestorePackages>true</RestorePackages>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
         <SonarQubeTestProject>False</SonarQubeTestProject>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

@@ -23,7 +23,7 @@
         </SccProvider>
         <TargetFrameworkProfile />
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-        <LangVersion>9.0</LangVersion>
+        <LangVersion>10.0</LangVersion>
         <RestorePackages>true</RestorePackages>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -170,7 +170,8 @@
         <Compile Include="Decisions\Operations\IsLessThan.cs" />
         <Compile Include="Decisions\Operations\IsLessThanOrEqual.cs" />
         <Compile Include="Decisions\Operations\IsNotAlphanumeric.cs" />
-    <Compile Include="Decisions\Operations\IsNotBase64.cs" />
+        <Compile Include="Decisions\Operations\IsNotBase64.cs" />
+
     <Compile Include="Decisions\Operations\IsNotBinary.cs" />
     <Compile Include="Decisions\Operations\IsNotDate.cs" />
     <Compile Include="Decisions\Operations\IsNotEmail.cs" />
