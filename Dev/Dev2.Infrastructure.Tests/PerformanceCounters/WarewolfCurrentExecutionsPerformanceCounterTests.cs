@@ -51,7 +51,6 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory);
             counter.Setup();
-            counter.Reset();
 
             mockPerformanceCounterFactory.Verify();
             mockCounter.VerifySet(o => o.RawValue = 0, Times.Once);
