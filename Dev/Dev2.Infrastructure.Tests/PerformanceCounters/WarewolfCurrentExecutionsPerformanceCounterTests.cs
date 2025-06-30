@@ -43,7 +43,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
 
 
         [TestMethod]
-        public void WarewolfCurrentExecutionsPerformanceCounter_Reset_ClearsCounter()
+        public void WarewolfCurrentExecutionsPerformanceCounter_Setup_ClearsCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
             var mockCounter = new Mock<IWarewolfPerformanceCounter>();

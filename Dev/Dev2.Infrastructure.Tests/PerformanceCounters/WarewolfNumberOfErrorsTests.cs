@@ -45,7 +45,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
 
 
         [TestMethod]
-        public void WarewolfNumberOfErrors_Reset_ClearsCounter()
+        public void WarewolfNumberOfErrors_Setup_ClearsCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
             var mockCounter = new Mock<IWarewolfPerformanceCounter>();
@@ -53,7 +53,6 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfNumberOfErrors(performanceCounterFactory);
             counter.Setup();
-            counter.Reset();
 
             mockPerformanceCounterFactory.Verify();
             mockCounter.VerifySet(o => o.RawValue = 0, Times.Once);

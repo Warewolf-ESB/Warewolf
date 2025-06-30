@@ -55,7 +55,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
 
 
         [TestMethod]
-        public void WarewolfAverageExecutionTimePerformanceCounter_Reset_ClearsCounter()
+        public void WarewolfAverageExecutionTimePerformanceCounter_Setup_ClearsCounter()
         {
             var mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
             var mockCounter = new Mock<IWarewolfPerformanceCounter>();
@@ -65,7 +65,6 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory);
             counter.Setup();
-            counter.Reset();
 
             mockPerformanceCounterFactory.Verify();
             mockCounter.VerifySet(o => o.RawValue = 0, Times.Once);
