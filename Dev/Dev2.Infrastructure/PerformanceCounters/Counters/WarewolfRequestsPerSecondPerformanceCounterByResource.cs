@@ -39,7 +39,8 @@ namespace Dev2.PerformanceCounters.Counters
                 _stopwatch = new System.Diagnostics.Stopwatch();
                 _stopwatch.Start();
                 _counter = _counterFactory.New(GlobalConstants.WarewolfServices, Name, CategoryInstanceName);
-            }
+				Reset();
+			}
         }
         public void Reset()
         {

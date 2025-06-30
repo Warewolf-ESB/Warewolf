@@ -80,7 +80,8 @@ namespace Dev2.PerformanceCounters.Counters
                 _baseCounter = _counterFactory.New(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName);
 
                 _started = true;
-            }
+                Reset();
+			}
         }
 
         public void Reset()

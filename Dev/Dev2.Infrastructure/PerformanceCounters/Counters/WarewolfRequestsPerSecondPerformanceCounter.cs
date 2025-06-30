@@ -33,7 +33,8 @@ namespace Dev2.PerformanceCounters.Counters
                 _stopwatch = new System.Diagnostics.Stopwatch();
                 _stopwatch.Start();
                 _counter = _counterFactory.New(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName);
-            }
+				Reset();
+			}
         }
 
         public void Reset()
@@ -52,7 +53,7 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 Setup();
                 _counter.Increment();
-            }
+			}
       
         }
 

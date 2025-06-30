@@ -71,9 +71,9 @@ namespace Dev2.PerformanceCounters.Counters
             if (!_started)
             {
                 _counter = _counterFactory.New(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName);
-
                 _started = true;
-            }
+				Reset();
+			}
         }
 
         public void Decrement()

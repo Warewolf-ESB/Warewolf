@@ -14,9 +14,9 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
 RUN New-Service -Name \"Warewolf PerfMon\" \
-                -BinaryPathName C:\Server\Warewolf.PerfMon.exe \
+                -BinaryPathName C:\Server\Warewolf PerfMon.exe \
                 -StartupType Automatic \
                 -Description \"Warewolf Performance Monitor Service\"
 
 
-CMD ["powershell", "-Command", "Start-Job -ScriptBlock { & 'C:\\Server\\PerfMon.ps1' }; .\\Server\\StartAsService.ps1"]
+CMD ["powershell", ".\\Server\\StartAsService.ps1"]

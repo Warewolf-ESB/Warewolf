@@ -43,6 +43,10 @@ namespace Warewolf.PerfMon
 			var allCounters = PerformanceCounterPersistence.DefaultCounters;
 			var register = new WarewolfPerformanceCounterRegister(allCounters, new List<IResourcePerformanceCounter>());
 			register.RegisterCountersOnMachine(allCounters, Category);
+			foreach(var counter in register.Counters)
+			{
+				counter.Setup();
+			}
 		}
 	}
 }
