@@ -1,177 +1,174 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <EnableDefaultItems>false</EnableDefaultItems>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Dev2.Data</RootNamespace>
-        <AssemblyName>Dev2.Data</AssemblyName>
-        <RuntimeIdentifier>win</RuntimeIdentifier>
-        <FileAlignment>512</FileAlignment>
-        <SccProjectName>
-        </SccProjectName>
-        <SccLocalPath>
-        </SccLocalPath>
-        <SccAuxPath>
-        </SccAuxPath>
-        <SccProvider>
-        </SccProvider>
-        <TargetFrameworkProfile />
-        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-        <LangVersion>10.0</LangVersion>
-        <RestorePackages>true</RestorePackages>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Prefer32Bit>false</Prefer32Bit>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>none</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <Prefer32Bit>false</Prefer32Bit>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="System.Management" />
-        <Reference Include="System.Runtime.Caching" />
-        <Reference Include="System.Web" />
-        <Reference Include="System.Web.Extensions" />
-        <Reference Include="System.Web.Extensions" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
-        <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-            <Link>Properties\AssemblyCommonInfo.cs</Link>
-        </Compile>
-        <Compile Include="AllCoverageReports.cs" />
-        <Compile Include="AllTestResults.cs" />
-        <Compile Include="DataListConversionUtils.cs" />
-        <Compile Include="DataListItem.cs" />
-        <Compile Include="DataListModel.cs" />
-        <Compile Include="DataListTO.cs" />
-        <Compile Include="Decisions\Operations\DecisionUtils.cs" />
-        <Compile Include="Decisions\Operations\IsNotNull.cs" />
-        <Compile Include="Decisions\Operations\IsNull.cs" />
-        <Compile Include="Decisions\Operations\NotBetween.cs" />
-        <Compile Include="Decisions\Operations\NotContains.cs" />
-        <Compile Include="Decisions\Operations\NotEndsWith.cs" />
-        <Compile Include="Decisions\Operations\NotRegex.cs" />
-        <Compile Include="Decisions\Operations\NotStartsWith.cs" />
-        <Compile Include="Dev2Column.cs" />
-        <Compile Include="Dev2DecisionComparer.cs" />
-        <Compile Include="Dev2WorkflowSettingsTO.cs" />
-        <Compile Include="NativeMethods.cs" />
-        <Compile Include="Parsers\XPathParserNetCore.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
-        <Compile Include="PathOperations\ImpersonationDelegate.cs" />
-        <Compile Include="PathOperations\ImpersonationOperation.cs" />
-        <Compile Include="PathOperations\ValidateAuthorization.cs" />
-        <Compile Include="Security\WindowsIdentityExtensions.cs" />
-        <Compile Include="ServiceModel\ElasticsearchSource.cs" />
-        <Compile Include="ServiceModel\RedisSource.cs" />
-        <Compile Include="ServiceTestCoverageModelTo.cs" />
-        <Compile Include="SingleTestNodesCovered.cs" />
-        <Compile Include="Util\OperationsHelper.cs" />
-        <Compile Include="IComplexObject.cs" />
-        <Compile Include="IDataListModel.cs" />
-        <Compile Include="IIndexIterator.cs" />
-        <Compile Include="IndexIterator.cs" />
-        <Compile Include="IndexList.cs" />
-        <Compile Include="ListIndexIterator.cs" />
-        <Compile Include="ListOfIndex.cs" />
-        <Compile Include="OptomizedObservableCollection.cs" />
-        <Compile Include="PathOperations\Extension\PathExtensions.cs" />
-        <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
-        <Compile Include="PathOperations\LogonProvider.cs" />
-        <Compile Include="PathOperations\Operations\DoCreateDirectory.cs" />
-        <Compile Include="PathOperations\Operations\DoDeleteOperation.cs" />
-        <Compile Include="PathOperations\Operations\DoGetAction.cs" />
-        <Compile Include="PathOperations\Operations\DoGetFilesAsPerTypeOperation.cs" />
-        <Compile Include="PathOperations\Operations\DoPathExistOperation.cs" />
-        <Compile Include="PathOperations\Operations\DoPutAction.cs" />
-        <Compile Include="PathOperations\PerformBoolIOOperation.cs" />
-        <Compile Include="PathOperations\PerformIntegerIOOperation.cs" />
-        <Compile Include="PathOperations\PerformListOfIOPathOperation.cs" />
-        <Compile Include="PathOperations\PerformStreamIOOperation.cs" />
-        <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
-        <Compile Include="PulseLogger.cs" />
-        <Compile Include="RecordSet.cs" />
-        <Compile Include="ReverseIndexIterator.cs" />
-        <Compile Include="Scalar.cs" />
-        <Compile Include="ServiceModel\ComPluginSource.cs" />
-        <Compile Include="ServiceModel\Connection.cs" />
-        <Compile Include="ServiceModel\RabbitMQSource.cs" />
-        <Compile Include="ServiceModel\OauthSource.cs" />
-        <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
-        <Compile Include="ServiceModel\PluginSource.cs" />
-        <Compile Include="ServiceModel\ResourceBase.cs" />
-        <Compile Include="ServiceModel\SharepointSource.cs" />
-        <Compile Include="ServiceModel\VersionInfo.cs" />
-        <Compile Include="ServiceModel\WebSource.cs" />
-        <Compile Include="ServiceModel\EmailSource.cs" />
-        <Compile Include="ServiceModel\Resource.cs" />
-        <Compile Include="ServiceModel\ResourceForTree.cs" />
-        <Compile Include="ServiceTestInputTO.cs" />
-        <Compile Include="ServiceTestModelTO.cs" />
-        <Compile Include="ServiceTestOutputTO.cs" />
-        <Compile Include="ServiceTestStepTO.cs" />
-        <Compile Include="Settings\Settings.cs" />
-        <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
-        <Compile Include="Builders\DefinitionBuilder.cs" />
-        <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
-        <Compile Include="Decisions\Dev2DataListDecisionHandler.cs" />
-        <Compile Include="Decisions\Operations\Dev2DecisionFactory.cs" />
-        <Compile Include="Decisions\Operations\enDecisionType.cs" />
-        <Compile Include="Decisions\Operations\IDecisionOperation.cs" />
-        <Compile Include="Decisions\Operations\IsAlphanumeric.cs" />
-        <Compile Include="Decisions\Operations\IsBase64.cs" />
-        <Compile Include="Decisions\Operations\IsBetween.cs" />
-        <Compile Include="Decisions\Operations\IsBinary.cs" />
-        <Compile Include="Decisions\Operations\IsContains.cs" />
-        <Compile Include="Decisions\Operations\IsDate.cs" />
-        <Compile Include="Decisions\Operations\IsEmail.cs" />
-        <Compile Include="Decisions\Operations\IsEndsWith.cs" />
-        <Compile Include="Decisions\Operations\IsEqual.cs" />
-        <Compile Include="Decisions\Operations\IsError.cs" />
-        <Compile Include="Decisions\Operations\IsGreaterThan.cs" />
-        <Compile Include="Decisions\Operations\IsGreaterThanOrEqual.cs" />
-        <Compile Include="Decisions\Operations\IsHex.cs" />
-        <Compile Include="Decisions\Operations\IsLessThan.cs" />
-        <Compile Include="Decisions\Operations\IsLessThanOrEqual.cs" />
-        <Compile Include="Decisions\Operations\IsNotAlphanumeric.cs" />
-        <Compile Include="Decisions\Operations\IsNotBase64.cs" />
-
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Data</RootNamespace>
+    <AssemblyName>Dev2.Data</AssemblyName>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+	<LangVersion>10.0</LangVersion>
+	<RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="AllCoverageReports.cs" />
+    <Compile Include="AllTestResults.cs" />
+    <Compile Include="DataListConversionUtils.cs" />
+    <Compile Include="DataListItem.cs" />
+    <Compile Include="DataListModel.cs" />
+    <Compile Include="DataListTO.cs" />
+    <Compile Include="Decisions\Operations\DecisionUtils.cs" />
+    <Compile Include="Decisions\Operations\IsNotNull.cs" />
+    <Compile Include="Decisions\Operations\IsNull.cs" />
+    <Compile Include="Decisions\Operations\NotBetween.cs" />
+    <Compile Include="Decisions\Operations\NotContains.cs" />
+    <Compile Include="Decisions\Operations\NotEndsWith.cs" />
+    <Compile Include="Decisions\Operations\NotRegex.cs" />
+    <Compile Include="Decisions\Operations\NotStartsWith.cs" />
+    <Compile Include="Dev2Column.cs" />
+    <Compile Include="Dev2DecisionComparer.cs" />
+    <Compile Include="Dev2WorkflowSettingsTO.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Parsers\XPathParserNetCore.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
+    <Compile Include="PathOperations\ImpersonationDelegate.cs" />
+    <Compile Include="PathOperations\ImpersonationOperation.cs" />
+    <Compile Include="PathOperations\ValidateAuthorization.cs" />
+    <Compile Include="Security\WindowsIdentityExtensions.cs" />
+    <Compile Include="ServiceModel\ElasticsearchSource.cs" />
+    <Compile Include="ServiceModel\RedisSource.cs" />
+    <Compile Include="ServiceTestCoverageModelTo.cs" />
+    <Compile Include="SingleTestNodesCovered.cs" />
+    <Compile Include="Util\OperationsHelper.cs" />
+    <Compile Include="IComplexObject.cs" />
+    <Compile Include="IDataListModel.cs" />
+    <Compile Include="IIndexIterator.cs" />
+    <Compile Include="IndexIterator.cs" />
+    <Compile Include="IndexList.cs" />
+    <Compile Include="ListIndexIterator.cs" />
+    <Compile Include="ListOfIndex.cs" />
+    <Compile Include="OptomizedObservableCollection.cs" />
+    <Compile Include="PathOperations\Extension\PathExtensions.cs" />
+    <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
+    <Compile Include="PathOperations\LogonProvider.cs" />
+    <Compile Include="PathOperations\Operations\DoCreateDirectory.cs" />
+    <Compile Include="PathOperations\Operations\DoDeleteOperation.cs" />
+    <Compile Include="PathOperations\Operations\DoGetAction.cs" />
+    <Compile Include="PathOperations\Operations\DoGetFilesAsPerTypeOperation.cs" />
+    <Compile Include="PathOperations\Operations\DoPathExistOperation.cs" />
+    <Compile Include="PathOperations\Operations\DoPutAction.cs" />
+    <Compile Include="PathOperations\PerformBoolIOOperation.cs" />
+    <Compile Include="PathOperations\PerformIntegerIOOperation.cs" />
+    <Compile Include="PathOperations\PerformListOfIOPathOperation.cs" />
+    <Compile Include="PathOperations\PerformStreamIOOperation.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
+    <Compile Include="PulseLogger.cs" />
+    <Compile Include="RecordSet.cs" />
+    <Compile Include="ReverseIndexIterator.cs" />
+    <Compile Include="Scalar.cs" />
+    <Compile Include="ServiceModel\ComPluginSource.cs" />
+    <Compile Include="ServiceModel\Connection.cs" />
+    <Compile Include="ServiceModel\RabbitMQSource.cs" />
+    <Compile Include="ServiceModel\OauthSource.cs" />
+    <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
+    <Compile Include="ServiceModel\PluginSource.cs" />
+    <Compile Include="ServiceModel\ResourceBase.cs" />
+    <Compile Include="ServiceModel\SharepointSource.cs" />
+    <Compile Include="ServiceModel\VersionInfo.cs" />
+    <Compile Include="ServiceModel\WebSource.cs" />
+    <Compile Include="ServiceModel\EmailSource.cs" />
+    <Compile Include="ServiceModel\Resource.cs" />
+    <Compile Include="ServiceModel\ResourceForTree.cs" />
+    <Compile Include="ServiceTestInputTO.cs" />
+    <Compile Include="ServiceTestModelTO.cs" />
+    <Compile Include="ServiceTestOutputTO.cs" />
+    <Compile Include="ServiceTestStepTO.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
+    <Compile Include="Builders\DefinitionBuilder.cs" />
+    <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
+    <Compile Include="Decisions\Dev2DataListDecisionHandler.cs" />
+    <Compile Include="Decisions\Operations\Dev2DecisionFactory.cs" />
+    <Compile Include="Decisions\Operations\enDecisionType.cs" />
+    <Compile Include="Decisions\Operations\IDecisionOperation.cs" />
+    <Compile Include="Decisions\Operations\IsAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsBase64.cs" />
+    <Compile Include="Decisions\Operations\IsBetween.cs" />
+    <Compile Include="Decisions\Operations\IsBinary.cs" />
+    <Compile Include="Decisions\Operations\IsContains.cs" />
+    <Compile Include="Decisions\Operations\IsDate.cs" />
+    <Compile Include="Decisions\Operations\IsEmail.cs" />
+    <Compile Include="Decisions\Operations\IsEndsWith.cs" />
+    <Compile Include="Decisions\Operations\IsEqual.cs" />
+    <Compile Include="Decisions\Operations\IsError.cs" />
+    <Compile Include="Decisions\Operations\IsGreaterThan.cs" />
+    <Compile Include="Decisions\Operations\IsGreaterThanOrEqual.cs" />
+    <Compile Include="Decisions\Operations\IsHex.cs" />
+    <Compile Include="Decisions\Operations\IsLessThan.cs" />
+    <Compile Include="Decisions\Operations\IsLessThanOrEqual.cs" />
+    <Compile Include="Decisions\Operations\IsNotAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsNotBase64.cs" />
     <Compile Include="Decisions\Operations\IsNotBinary.cs" />
     <Compile Include="Decisions\Operations\IsNotDate.cs" />
     <Compile Include="Decisions\Operations\IsNotEmail.cs" />

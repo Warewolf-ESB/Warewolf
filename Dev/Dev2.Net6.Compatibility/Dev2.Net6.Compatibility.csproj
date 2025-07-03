@@ -1,29 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <IsTestProject>false</IsTestProject>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <LangVersion>10.0</LangVersion>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>false</IsTestProject>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Concurrent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+	<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+		<Link>Properties\AssemblyCommonInfo.cs</Link>
+	</Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq">
+      <Version>4.18.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="KGySoft.CoreLibraries" Version="7.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="System.Transactions" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
-        <Compile Remove="Concurrent.cs" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
     </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-            <Link>Properties\AssemblyCommonInfo.cs</Link>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Moq">
-            <Version>4.18.2</Version>
-        </PackageReference>
-        <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-        <PackageReference Include="KGySoft.CoreLibraries" Version="7.1.0" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-        <Reference Include="System.Transactions" />
-        <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    </ItemGroup>
+  </Target>
 </Project>

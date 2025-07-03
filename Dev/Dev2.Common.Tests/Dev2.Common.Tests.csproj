@@ -1,212 +1,219 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{B0564C7A-9DA8-4751-B5D4-D446138E0987}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <EnableDefaultItems>false</EnableDefaultItems>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Dev2.Common.Tests</RootNamespace>
-        <AssemblyName>Dev2.Common.Tests</AssemblyName>
-        <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
-        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-        <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-        <IsCodedUITest>False</IsCodedUITest>
-        <TestProjectType>UnitTest</TestProjectType>
-        <SccProjectName>
-        </SccProjectName>
-        <SccLocalPath>
-        </SccLocalPath>
-        <SccAuxPath>
-        </SccAuxPath>
-        <SccProvider>
-        </SccProvider>
-        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-        <RestorePackages>true</RestorePackages>
-        <NuGetPackageImportStamp>
-        </NuGetPackageImportStamp>
-        <SonarQubeExclude>True</SonarQubeExclude>
-        <SonarQubeTestProject>True</SonarQubeTestProject>
-        <LangVersion>10.0</LangVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B0564C7A-9DA8-4751-B5D4-D446138E0987}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Common.Tests</RootNamespace>
+    <AssemblyName>Dev2.Common.Tests</AssemblyName>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SonarQubeExclude>True</SonarQubeExclude>
+    <SonarQubeTestProject>True</SonarQubeTestProject>
+	<LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Activities" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="AuditingSettingsTests.cs" />
+    <Compile Include="CommonComparerTests.cs" />
+    <Compile Include="Common\GetComputerNamesImplTests.cs" />
+    <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
+    <Compile Include="Core\ServerSourceTests.cs" />
+    <Compile Include="Core\PluginSourceDefinitionTests.cs" />
+    <Compile Include="Core\ComPluginSourceDefinitionTests.cs" />
+    <Compile Include="Core\EmailServiceSourceDefinitionTests.cs" />
+    <Compile Include="Core\ExchangeSourceDefinitionTests.cs" />
+    <Compile Include="Core\SharePointServiceSourceDefinitionTests.cs" />
+    <Compile Include="Core\RedisSourceDefinitionTests.cs" />
+    <Compile Include="Core\WebServiceSourceDefinitionTests.cs" />
+    <Compile Include="Core\WcfServiceSourceDefinitionTests.cs" />
+    <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
+    <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
+    <Compile Include="DateAndTime\TO\DateTimeResultTOTests.cs" />
+    <Compile Include="DebugStateTreeBuilderTests.cs" />
+    <Compile Include="DirectoryEntryFactoryTest.cs" />
+    <Compile Include="ExtMethods\StringExtensionTests.cs" />
+    <Compile Include="Common\GetComputerNamesTests.cs" />
+    <Compile Include="ExtMethods\StringIsJsonTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="JsonResource.cs" />
+    <Compile Include="LegacySettingsTests.cs" />
+    <Compile Include="PersistenceSettingsTests.cs" />
+    <Compile Include="ServerSettingsTests.cs" />
+    <Compile Include="ComputerNameTests.cs" />
+    <Compile Include="RecordSetSearchPayloadTests.cs" />
+    <Compile Include="SaveDialogue\ResourceNameTests.cs" />
+    <Compile Include="SearchTests.cs" />
+    <Compile Include="ServerStatsTests.cs" />
+    <Compile Include="SingleApiTests.cs" />
+    <Compile Include="AssemblyWrapperTests.cs" />
+    <Compile Include="ExternalProcessExecutorTests.cs" />
+    <Compile Include="ComPluginServiceDefinitionTests.cs" />
+    <Compile Include="Dev2EnumConverterTests.cs" />
+    <Compile Include="IntellisenseStringResultTests.cs" />
+    <Compile Include="CommonEqualityOpsTests.cs" />
+    <Compile Include="EqualityFactoryTests.cs" />
+    <Compile Include="PluginActionTests.cs" />
+    <Compile Include="FileListingTests.cs" />
+    <Compile Include="PluginConstructorTests.cs" />
+    <Compile Include="DllListingTests.cs" />
+    <Compile Include="ApisJsonTests.cs" />
+    <Compile Include="DataNodeTests.cs" />
+    <Compile Include="UtilitiesTests.cs" />
+    <Compile Include="Utils\JSONUtilsTests.cs" />
+    <Compile Include="WcfActionTests.cs" />
+    <Compile Include="NameValueTests.cs" />
+    <Compile Include="Utils\VerifyArgumentTests.cs" />
+    <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
+    <Compile Include="Utils\SearchUtilTests.cs" />
+    <Compile Include="Wrappers\DirectoryWrapperTests.cs" />
+    <Compile Include="Wrappers\TimerWrapperTests.cs" />
+    <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
+    <Compile Include="Wrappers\FilePathWrapperTests.cs" />
+    <Compile Include="ExtensionMethodsTest.cs" />
+    <Compile Include="MapperTests.cs" />
+    <Compile Include="DistinctByTests.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Utils\TextUtilsTests.cs" />
+    <EmbeddedResource Include="Json\FlatStates.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{d754b817-a714-4e6e-bd46-8c4ffffbdacb}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
+      <Name>Warewolf.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Json\ForEachWorkFlow.json" />
+    <EmbeddedResource Include="Json\NestedForEachWorkFlow.json" />
+    <EmbeddedResource Include="Json\ForEachWithHelloWorldTest.json" />
+    <EmbeddedResource Include="Json\AllTools.json" />
+    <None Include="App.config" />
+    <EmbeddedResource Include="Json\Test.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
+      <Version>17.13.0</Version>
+    </PackageReference>
+    <PackageReference Include="Moq" Version="4.18.2" />
+    <!--<PackageReference Include="MSTest.TestFramework" Version="2.1.2" />-->
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
-        <Reference Include="System.Activities" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
     </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-            <Link>Properties\AssemblyCommonInfo.cs</Link>
-        </Compile>
-        <Compile Include="AuditingSettingsTests.cs" />
-        <Compile Include="CommonComparerTests.cs" />
-        <Compile Include="Common\GetComputerNamesImplTests.cs" />
-        <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
-        <Compile Include="Core\ServerSourceTests.cs" />
-        <Compile Include="Core\PluginSourceDefinitionTests.cs" />
-        <Compile Include="Core\ComPluginSourceDefinitionTests.cs" />
-        <Compile Include="Core\EmailServiceSourceDefinitionTests.cs" />
-        <Compile Include="Core\ExchangeSourceDefinitionTests.cs" />
-        <Compile Include="Core\SharePointServiceSourceDefinitionTests.cs" />
-        <Compile Include="Core\RedisSourceDefinitionTests.cs" />
-        <Compile Include="Core\WebServiceSourceDefinitionTests.cs" />
-        <Compile Include="Core\WcfServiceSourceDefinitionTests.cs" />
-        <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
-        <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
-        <Compile Include="DateAndTime\TO\DateTimeResultTOTests.cs" />
-        <Compile Include="DebugStateTreeBuilderTests.cs" />
-        <Compile Include="DirectoryEntryFactoryTest.cs" />
-        <Compile Include="ExtMethods\StringExtensionTests.cs" />
-        <Compile Include="Common\GetComputerNamesTests.cs" />
-        <Compile Include="ExtMethods\StringIsJsonTests.cs" />
-        <Compile Include="GlobalSuppressions.cs" />
-        <Compile Include="JsonResource.cs" />
-        <Compile Include="LegacySettingsTests.cs" />
-        <Compile Include="PersistenceSettingsTests.cs" />
-        <Compile Include="ServerSettingsTests.cs" />
-        <Compile Include="ComputerNameTests.cs" />
-        <Compile Include="RecordSetSearchPayloadTests.cs" />
-        <Compile Include="SaveDialogue\ResourceNameTests.cs" />
-        <Compile Include="SearchTests.cs" />
-        <Compile Include="ServerStatsTests.cs" />
-        <Compile Include="SingleApiTests.cs" />
-        <Compile Include="AssemblyWrapperTests.cs" />
-        <Compile Include="ExternalProcessExecutorTests.cs" />
-        <Compile Include="ComPluginServiceDefinitionTests.cs" />
-        <Compile Include="Dev2EnumConverterTests.cs" />
-        <Compile Include="IntellisenseStringResultTests.cs" />
-        <Compile Include="CommonEqualityOpsTests.cs" />
-        <Compile Include="EqualityFactoryTests.cs" />
-        <Compile Include="PluginActionTests.cs" />
-        <Compile Include="FileListingTests.cs" />
-        <Compile Include="PluginConstructorTests.cs" />
-        <Compile Include="DllListingTests.cs" />
-        <Compile Include="ApisJsonTests.cs" />
-        <Compile Include="DataNodeTests.cs" />
-        <Compile Include="UtilitiesTests.cs" />
-        <Compile Include="Utils\JSONUtilsTests.cs" />
-        <Compile Include="WcfActionTests.cs" />
-        <Compile Include="NameValueTests.cs" />
-        <Compile Include="Utils\VerifyArgumentTests.cs" />
-        <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
-        <Compile Include="Utils\SearchUtilTests.cs" />
-        <Compile Include="Wrappers\DirectoryWrapperTests.cs" />
-        <Compile Include="Wrappers\TimerWrapperTests.cs" />
-        <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
-        <Compile Include="Wrappers\FilePathWrapperTests.cs" />
-        <Compile Include="ExtensionMethodsTest.cs" />
-        <Compile Include="MapperTests.cs" />
-        <Compile Include="DistinctByTests.cs" />
-        <Compile Include="Person.cs" />
-        <Compile Include="Utils\TextUtilsTests.cs" />
-        <EmbeddedResource Include="Json\FlatStates.json" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-            <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
-            <Name>Dev2.Activities</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-            <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-            <Name>Dev2.Common.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-            <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
-            <Name>Dev2.Common</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-            <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
-            <Name>Dev2.Data.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-            <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
-            <Name>Dev2.Data</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-            <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
-            <Name>Dev2.Diagnostics</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
-            <Project>{d754b817-a714-4e6e-bd46-8c4ffffbdacb}</Project>
-            <Name>Dev2.Infrastructure.Tests</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-            <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-            <Name>Dev2.Infrastructure</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-            <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
-            <Name>Dev2.Runtime.Services</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
-            <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
-            <Name>Dev2.Studio.Core</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
-            <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
-            <Name>Warewolf.Common</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
-            <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
-            <Name>Warewolf.Data</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-            <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
-            <Name>Warewolf.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
-            <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
-            <Name>Warewolf.Security</Name>
-        </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Include="Json\ForEachWorkFlow.json" />
-        <EmbeddedResource Include="Json\NestedForEachWorkFlow.json" />
-        <EmbeddedResource Include="Json\ForEachWithHelloWorldTest.json" />
-        <EmbeddedResource Include="Json\AllTools.json" />
-        <None Include="App.config" />
-        <EmbeddedResource Include="Json\Test.json" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
-            <Version>17.13.0</Version>
-        </PackageReference>
-        <PackageReference Include="Moq" Version="4.18.2" />
-        <!--<PackageReference Include="MSTest.TestFramework" Version="2.1.2" />-->
-        <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-        <PackageReference Include="Newtonsoft.Json">
-            <Version>13.0.2</Version>
-        </PackageReference>
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-        <PackageReference Include="coverlet.collector" Version="3.2.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-        <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
-    </ItemGroup>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+  </Target>
 </Project>

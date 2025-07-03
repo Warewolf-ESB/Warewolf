@@ -1,300 +1,307 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{86E580CD-C480-435A-8978-A9C27377C900}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <EnableDefaultItems>false</EnableDefaultItems>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Dev2.Data.Tests</RootNamespace>
-        <AssemblyName>Dev2.Data.Tests</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-        <RuntimeIdentifier>win</RuntimeIdentifier>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
-        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-        <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-        <IsCodedUITest>False</IsCodedUITest>
-        <TestProjectType>UnitTest</TestProjectType>
-        <SccProjectName>
-        </SccProjectName>
-        <SccLocalPath>
-        </SccLocalPath>
-        <SccAuxPath>
-        </SccAuxPath>
-        <SccProvider>
-        </SccProvider>
-        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-        <RestorePackages>true</RestorePackages>
-        <NuGetPackageImportStamp>
-        </NuGetPackageImportStamp>
-        <SonarQubeExclude>True</SonarQubeExclude>
-        <LangVersion>10.0</LangVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{86E580CD-C480-435A-8978-A9C27377C900}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Data.Tests</RootNamespace>
+    <AssemblyName>Dev2.Data.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SonarQubeExclude>True</SonarQubeExclude>
+	<LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="BinaryDataList\IndexListTest.cs" />
+    <Compile Include="BinaryDataList\DataListUtilTest.cs" />
+    <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
+    <Compile Include="Builders\DataListIntellisenseBuilderTests.cs" />
+    <Compile Include="DataListFactoryTests.cs" />
+    <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
+    <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsBase64Tests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsBetweenTests.cs" />
+    <Compile Include="DecisionsTests\IsBinaryTests.cs" />
+    <Compile Include="DecisionsTests\IsDateTests.cs" />
+    <Compile Include="DecisionsTests\IsEmailTests.cs" />
+    <Compile Include="DecisionsTests\IsEqualTests.cs" />
+    <Compile Include="DecisionsTests\IsErrorTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsHexTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotAlphanumericTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBase64Tests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBinaryTests.cs" />
+    <Compile Include="DecisionsTests\IsNotDateTests.cs" />
+    <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
+    <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
+    <Compile Include="DecisionsTests\IsNotErrorTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotHexTests.cs" />
+    <Compile Include="DecisionsTests\IsNotNullTests.cs" />
+    <Compile Include="DecisionsTests\IsNotNumericTests.cs" />
+    <Compile Include="DecisionsTests\IsNotTextTests.cs" />
+    <Compile Include="DecisionsTests\IsNotXmlTests.cs" />
+    <Compile Include="DecisionsTests\IsNullTests.cs" />
+    <Compile Include="DecisionsTests\IsNumericTests.cs" />
+    <Compile Include="DecisionsTests\IsRegExTests.cs" />
+    <Compile Include="DecisionsTests\IsTextTests.cs" />
+    <Compile Include="DecisionsTests\IsXmlTest.cs" />
+    <Compile Include="DecisionsTests\IsContainsTests.cs" />
+    <Compile Include="DecisionsTests\NotContainsTests.cs" />
+    <Compile Include="DecisionsTests\IsEndsWithTests.cs" />
+    <Compile Include="DecisionsTests\NotEndsWithTests.cs" />
+    <Compile Include="DecisionsTests\IsStartsWithTests.cs" />
+    <Compile Include="DecisionsTests\NotRegexTests.cs" />
+    <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
+    <Compile Include="Dev2ColumnTests.cs" />
+    <Compile Include="Dev2DefinitionTests.cs" />
+    <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="IndexListIndexIteratorTests.cs" />
+    <Compile Include="MethodOutputTests.cs" />
+    <Compile Include="Operations\NotBetweenTests.cs" />
+    <Compile Include="Parsers\DataLanguageParserImplementationTests.cs" />
+    <Compile Include="Parsers\ServiceActivityVariableMappingTests.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOBrokerTests.cs" />
+    <Compile Include="PathOperations\ActivityIOFactoryTests.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPathUtilsTests.cs" />
+    <Compile Include="PathOperations\Extention\PathExtensionsTests.cs" />
+    <Compile Include="PathOperations\LogonProviderTests.cs" />
+    <Compile Include="PathOperations\Dev2FTPProviderTests.cs" />
+    <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
+    <Compile Include="PathOperations\DoGetFilesAsPerTypeOperationTests.cs" />
+    <Compile Include="PathOperations\DoPathExistOperationTests.cs" />
+    <Compile Include="PathOperations\DoDeleteOperationTests.cs" />
+    <Compile Include="PathOperations\DoGetActionTests.cs" />
+    <Compile Include="PathOperations\DoCreateDirectoryTests.cs" />
+    <Compile Include="PathOperations\DoPutActionTests.cs" />
+    <Compile Include="PathOperations\PerformListOfIOPathOperationTests.cs" />
+    <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
+    <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
+    <Compile Include="ServiceModel\SharePointSourceTests.cs" />
+    <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
+    <Compile Include="ServiceModel\OauthSourceTests.cs" />
+    <Compile Include="ServiceModel\RedisSourceTests.cs" />
+    <Compile Include="SetingTest.cs" />
+    <Compile Include="ListIndexIteratorTests.cs" />
+    <Compile Include="LoopedIndexIteratorTests.cs" />
+    <Compile Include="MathOperations\EvaluationFunctionTOTests.cs" />
+    <Compile Include="MathOperations\MathOpsFactoryTests.cs" />
+    <Compile Include="Operations\Dev2DecisionFactoryTests.cs" />
+    <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
+    <Compile Include="Operations\Dev2IndexFinderTests.cs" />
+    <Compile Include="Operations\Dev2IOBrokerTests.cs" />
+    <Compile Include="PathOperations\Dev2DataListDecisionHandlerTests.cs" />
+    <Compile Include="ListOfIndexTests.cs" />
+    <Compile Include="ReverseIndexIteratorTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
+    <Compile Include="TO\DateTimeVerifyPartTests.cs" />
+    <Compile Include="TO\SafeTokenHandleTests.cs" />
+    <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
+    <Compile Include="TO\Dev2PutOperationTOTests.cs" />
+    <Compile Include="TO\IntellisenseFilterOpsTOTests.cs" />
+    <Compile Include="TO\UpsertTOTests.cs" />
+    <Compile Include="Operations\Dev2ReplaceOperationTest.cs" />
+    <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
+    <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
+    <Compile Include="Parsers\Dev2DataLanguageParserTests.cs" />
+    <Compile Include="PathOperations\Dev2FileSystemProviderTests.cs" />
+    <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
+    <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
+    <Compile Include="TO\ErrorResultTOTests.cs" />
+    <Compile Include="TO\CompileMessageTOTests.cs" />
+    <Compile Include="ServiceTestOutputTOTests.cs" />
+    <Compile Include="Dev2DecisionComparerTests.cs" />
+    <Compile Include="DataListModelTests.cs" />
+    <Compile Include="DataListConversionUtilsTests.cs" />
+    <Compile Include="SharepointHelperTests.cs" />
+    <Compile Include="OptomizedObservableCollectionTests.cs" />
+    <Compile Include="DataListTOTests.cs" />
+    <Compile Include="Util\OperationsHelperTests.cs" />
+    <Compile Include="Util\CommonRecordSetUtilTests.cs" />
+    <Compile Include="WarewolfAtomComparerTests.cs" />
+    <Compile Include="Util\CommonDataUtilsTests.cs" />
+    <Compile Include="TranslationConstantsTest.cs" />
+    <Compile Include="WarewolfIteratorTests.cs" />
+    <Compile Include="WarewolfListIteratorTests.cs" />
+    <Compile Include="ExtensionClassesTests.cs" />
+    <Compile Include="WarewolfWorkflowReportsTests.cs" />
+    <Compile Include="WorkflowCoverageReportsTests.cs" />
+    <Compile Include="XPathParserTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
+      <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
+      <Name>Dev2.Runtime.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>Warewolf.Parser.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
+      <Name>Warewolf.Sharepoint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
+    <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
+    <None Include="..\Dev2.Studio\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
+      <Version>17.13.0</Version>
+    </PackageReference>
+    <PackageReference Include="Moq">
+      <Version>4.18.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.8.3</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dev2.Server\app.config">
+      <Link>app.config</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <Reference Include="CalculationManager.WPF">
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
-        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-            <Link>Properties\AssemblyCommonInfo.cs</Link>
-        </Compile>
-        <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
-        <Compile Include="BinaryDataList\IndexListTest.cs" />
-        <Compile Include="BinaryDataList\DataListUtilTest.cs" />
-        <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
-        <Compile Include="Builders\DataListIntellisenseBuilderTests.cs" />
-        <Compile Include="DataListFactoryTests.cs" />
-        <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
-        <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsBase64Tests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsBetweenTests.cs" />
-        <Compile Include="DecisionsTests\IsBinaryTests.cs" />
-        <Compile Include="DecisionsTests\IsDateTests.cs" />
-        <Compile Include="DecisionsTests\IsEmailTests.cs" />
-        <Compile Include="DecisionsTests\IsEqualTests.cs" />
-        <Compile Include="DecisionsTests\IsErrorTests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsHexTests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsNotAlphanumericTests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsNotBase64Tests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsNotBinaryTests.cs" />
-        <Compile Include="DecisionsTests\IsNotDateTests.cs" />
-        <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
-        <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
-        <Compile Include="DecisionsTests\IsNotErrorTests.cs" />
-        <Compile Include="DecisionsTests\Operations\IsNotHexTests.cs" />
-        <Compile Include="DecisionsTests\IsNotNullTests.cs" />
-        <Compile Include="DecisionsTests\IsNotNumericTests.cs" />
-        <Compile Include="DecisionsTests\IsNotTextTests.cs" />
-        <Compile Include="DecisionsTests\IsNotXmlTests.cs" />
-        <Compile Include="DecisionsTests\IsNullTests.cs" />
-        <Compile Include="DecisionsTests\IsNumericTests.cs" />
-        <Compile Include="DecisionsTests\IsRegExTests.cs" />
-        <Compile Include="DecisionsTests\IsTextTests.cs" />
-        <Compile Include="DecisionsTests\IsXmlTest.cs" />
-        <Compile Include="DecisionsTests\IsContainsTests.cs" />
-        <Compile Include="DecisionsTests\NotContainsTests.cs" />
-        <Compile Include="DecisionsTests\IsEndsWithTests.cs" />
-        <Compile Include="DecisionsTests\NotEndsWithTests.cs" />
-        <Compile Include="DecisionsTests\IsStartsWithTests.cs" />
-        <Compile Include="DecisionsTests\NotRegexTests.cs" />
-        <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
-        <Compile Include="Dev2ColumnTests.cs" />
-        <Compile Include="Dev2DefinitionTests.cs" />
-        <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
-        <Compile Include="IndexListIndexIteratorTests.cs" />
-        <Compile Include="MethodOutputTests.cs" />
-        <Compile Include="Operations\NotBetweenTests.cs" />
-        <Compile Include="Parsers\DataLanguageParserImplementationTests.cs" />
-        <Compile Include="Parsers\ServiceActivityVariableMappingTests.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
-        <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
-        <Compile Include="PathOperations\Dev2ActivityIOBrokerTests.cs" />
-        <Compile Include="PathOperations\ActivityIOFactoryTests.cs" />
-        <Compile Include="PathOperations\Dev2ActivityIOPathUtilsTests.cs" />
-        <Compile Include="PathOperations\Extention\PathExtensionsTests.cs" />
-        <Compile Include="PathOperations\LogonProviderTests.cs" />
-        <Compile Include="PathOperations\Dev2FTPProviderTests.cs" />
-        <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
-        <Compile Include="PathOperations\DoGetFilesAsPerTypeOperationTests.cs" />
-        <Compile Include="PathOperations\DoPathExistOperationTests.cs" />
-        <Compile Include="PathOperations\DoDeleteOperationTests.cs" />
-        <Compile Include="PathOperations\DoGetActionTests.cs" />
-        <Compile Include="PathOperations\DoCreateDirectoryTests.cs" />
-        <Compile Include="PathOperations\DoPutActionTests.cs" />
-        <Compile Include="PathOperations\PerformListOfIOPathOperationTests.cs" />
-        <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
-        <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
-        <Compile Include="ServiceModel\SharePointSourceTests.cs" />
-        <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
-        <Compile Include="ServiceModel\OauthSourceTests.cs" />
-        <Compile Include="ServiceModel\RedisSourceTests.cs" />
-        <Compile Include="SetingTest.cs" />
-        <Compile Include="ListIndexIteratorTests.cs" />
-        <Compile Include="LoopedIndexIteratorTests.cs" />
-        <Compile Include="MathOperations\EvaluationFunctionTOTests.cs" />
-        <Compile Include="MathOperations\MathOpsFactoryTests.cs" />
-        <Compile Include="Operations\Dev2DecisionFactoryTests.cs" />
-        <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
-        <Compile Include="Operations\Dev2IndexFinderTests.cs" />
-        <Compile Include="Operations\Dev2IOBrokerTests.cs" />
-        <Compile Include="PathOperations\Dev2DataListDecisionHandlerTests.cs" />
-        <Compile Include="ListOfIndexTests.cs" />
-        <Compile Include="ReverseIndexIteratorTests.cs" />
-        <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
-        <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
-        <Compile Include="TO\DateTimeVerifyPartTests.cs" />
-        <Compile Include="TO\SafeTokenHandleTests.cs" />
-        <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
-        <Compile Include="TO\Dev2PutOperationTOTests.cs" />
-        <Compile Include="TO\IntellisenseFilterOpsTOTests.cs" />
-        <Compile Include="TO\UpsertTOTests.cs" />
-        <Compile Include="Operations\Dev2ReplaceOperationTest.cs" />
-        <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
-        <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
-        <Compile Include="Parsers\Dev2DataLanguageParserTests.cs" />
-        <Compile Include="PathOperations\Dev2FileSystemProviderTests.cs" />
-        <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
-        <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
-        <Compile Include="TO\ErrorResultTOTests.cs" />
-        <Compile Include="TO\CompileMessageTOTests.cs" />
-        <Compile Include="ServiceTestOutputTOTests.cs" />
-        <Compile Include="Dev2DecisionComparerTests.cs" />
-        <Compile Include="DataListModelTests.cs" />
-        <Compile Include="DataListConversionUtilsTests.cs" />
-        <Compile Include="SharepointHelperTests.cs" />
-        <Compile Include="OptomizedObservableCollectionTests.cs" />
-        <Compile Include="DataListTOTests.cs" />
-        <Compile Include="Util\OperationsHelperTests.cs" />
-        <Compile Include="Util\CommonRecordSetUtilTests.cs" />
-        <Compile Include="WarewolfAtomComparerTests.cs" />
-        <Compile Include="Util\CommonDataUtilsTests.cs" />
-        <Compile Include="TranslationConstantsTest.cs" />
-        <Compile Include="WarewolfIteratorTests.cs" />
-        <Compile Include="WarewolfListIteratorTests.cs" />
-        <Compile Include="ExtensionClassesTests.cs" />
-        <Compile Include="WarewolfWorkflowReportsTests.cs" />
-        <Compile Include="WorkflowCoverageReportsTests.cs" />
-        <Compile Include="XPathParserTests.cs" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
     </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-            <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
-            <Name>Dev2.Activities</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-            <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
-            <Name>Dev2.Common.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-            <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
-            <Name>Dev2.Common</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-            <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
-            <Name>Dev2.Data.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-            <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
-            <Name>Dev2.Data</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-            <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
-            <Name>Dev2.Diagnostics</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
-            <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
-            <Name>Dev2.Infrastructure.Tests</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-            <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
-            <Name>Dev2.Infrastructure</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-            <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
-            <Name>Dev2.Runtime.Services</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
-            <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
-            <Name>Dev2.Runtime.Tests</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
-            <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
-            <Name>Warewolf.Data</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
-            <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
-            <Name>Warewolf.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
-            <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
-            <Name>Warewolf.Language.Parser</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
-            <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-            <Name>Warewolf.Parser.Interop</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-            <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
-            <Name>Warewolf.Resource</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
-            <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
-            <Name>Warewolf.Sharepoint</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-            <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
-            <Name>Warewolf.Storage.Interfaces</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-            <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
-            <Name>Warewolf.Storage</Name>
-        </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
-        <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
-        <None Include="..\Dev2.Studio\App.config">
-            <Link>App.config</Link>
-        </None>
-        <None Include="App.config">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <SubType>Designer</SubType>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-        <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
-            <Version>17.13.0</Version>
-        </PackageReference>
-        <PackageReference Include="Moq">
-            <Version>4.18.2</Version>
-        </PackageReference>
-        <PackageReference Include="MSTest.TestFramework">
-            <Version>3.8.3</Version>
-        </PackageReference>
-        <PackageReference Include="Newtonsoft.Json">
-            <Version>13.0.2</Version>
-        </PackageReference>
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-        <PackageReference Include="System.Security.Permissions" Version="9.0.4" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="..\Dev2.Server\app.config">
-            <Link>app.config</Link>
-        </None>
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-        <Reference Include="CalculationManager.WPF">
-            <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-        <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-            <SpecificVersion>False</SpecificVersion>
-            <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+  </Target>
 </Project>

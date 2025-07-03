@@ -6,7 +6,6 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>none</DebugType>
-		<LangVersion>10.0</LangVersion>
     </PropertyGroup>   
     <ItemGroup>
       <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
@@ -24,4 +23,11 @@
         <Link>Properties\AssemblyCommonInfo.cs</Link>
       </Compile>
     </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>
