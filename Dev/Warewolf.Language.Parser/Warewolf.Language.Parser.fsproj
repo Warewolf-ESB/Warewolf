@@ -13,7 +13,7 @@
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <FSharpPreferNetFrameworkTools>True</FSharpPreferNetFrameworkTools>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>6.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
