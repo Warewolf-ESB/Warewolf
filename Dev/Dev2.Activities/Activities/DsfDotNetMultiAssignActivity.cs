@@ -552,7 +552,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 FieldsCollection = array.ToObject<List<ActivityDTO>>();
             }
-
         }
         public override int GetHashCode()
         {

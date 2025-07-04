@@ -4,6 +4,37 @@ using System.Text.Json.Serialization;
 
 namespace Dev2.Common.X6
 {
+    public class Constants
+    {
+        public const string TYPE = "Type";
+        public const string DISPLAYNAME = "DisplayName";
+        public const string ID = "Id";
+        public const string ACTIVITY = "Activity";
+
+        public const string PROPERTIES = "Properties";
+        public const string START = "Start";
+        public const string RECT = "rect";
+        public const string CONDITION = "Condition";
+        public const string FLOWDECISION = "FlowDecision";
+        public const string DECISION = "Decision";
+        public const string POLYGON = "Polygon";
+
+        public const string EXPRESSION = "Expression";
+        public const string SWITCH = "Switch";
+        public const string SEQUENCE = "Sequence";
+        public const string FLOWSWITCH = "FlowSwitch";
+        public const string TRUE = "True";
+
+        public const string FALSE = "False";
+
+        public const string DISPLAYTEXT = "DisplayText";
+        public const string TRUEARMTEXT = "TrueArmText";
+        public const string FALSEARMTEXT = "FalseArmText";
+        public const string AND = "And";
+
+    }
+
+
     public class Cell
     {
         [JsonProperty("position")]
@@ -24,11 +55,11 @@ namespace Dev2.Common.X6
         [JsonPropertyName("data")]
         public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
 
-        [JsonPropertyName("attrs")]
-        public Dictionary<string, object> Attrs { get; set; } = new Dictionary<string, object>();
+        //[JsonPropertyName("attrs")]
+        //public Dictionary<string, object> Attrs { get; set; } = new Dictionary<string, object>();
 
-        [JsonProperty("zIndex")]
-        public int ZIndex { get; set; }
+        //[JsonProperty("zIndex")]
+        //public int ZIndex { get; set; }
 
         [JsonProperty("source")]
         public Connector Source { get; set; }
@@ -93,5 +124,5 @@ namespace Dev2.Common.X6
         }
     }
 
-    
+
 }

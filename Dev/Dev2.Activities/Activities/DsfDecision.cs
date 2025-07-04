@@ -32,6 +32,8 @@ using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Utilities;
 using Warewolf.Exceptions;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
 
 namespace Dev2.Activities
 {
@@ -282,7 +284,7 @@ namespace Dev2.Activities
                 {
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {
@@ -507,8 +509,45 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
-    }
 
+        public void ToX6Graph(Common.X6.Cell cell)
+        {
+            if (cell.Data == null) cell.Data = new Dictionary<string, object>();
+
+            cell.Data.Add(Constants.TYPE, Constants.FLOWDECISION);
+            cell.Data.Add(Constants.DISPLAYTEXT, GetDisplayName());
+            cell.Data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
+            cell.Data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);
+            cell.Data.Add(Constants.EXPRESSION, Conditions.ToWebModel());
+            cell.Data.Add(Constants.AND, And);
+        }
+
+        public void FromX6Graph(Common.X6.Cell cell)
+        {
+            if (cell.Data == null) return;
+
+            object expression, and;
+            cell.Data.TryGetValue(Constants.EXPRESSION, out expression);
+            cell.Data.TryGetValue(Constants.AND, out and);
+
+            var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.ToString());
+
+            if (!string.IsNullOrEmpty(eval))
+            {
+                var ser = new Dev2JsonSerializer();
+                var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                this.Conditions = dds;
+            }
+
+            //object fieldObject = null;
+            //cell.Data?.TryGetValue("fields", out fieldObject);
+            //var array = fieldObject as JArray;
+            //if (array != null)
+            //{
+            //    FieldsCollection = array.ToObject<List<ActivityDTO>>();
+            //}
+        }
+    }
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
         readonly DsfDecision _dsfDecision;
@@ -606,5 +645,8 @@ namespace Dev2.Activities
             }
             return false;
         }
+
+
+
     }
 }

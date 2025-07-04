@@ -351,7 +351,7 @@ namespace Dev2.Activities
 
 
 
-        IEnumerable<IDev2Activity> ParseTools(FlowNode startNode, List<IDev2Activity> seenActivities)
+        public IEnumerable<IDev2Activity> ParseTools(FlowNode startNode, List<IDev2Activity> seenActivities)
         {
 
             if (startNode == null)
@@ -605,6 +605,39 @@ namespace Dev2.Activities
         }
         #endregion
 
+        public DsfDecision ParseDsfDecisionOnly(FlowDecision decision, List<IDev2Activity> seenActivities)
+        {
 
+            var activity = decision.Condition as DsfFlowDecisionActivity;
+            if (activity != null)
+            {
+                if (seenActivities.Contains(activity))
+                {
+                    return new DsfDecision(activity);
+                }
+
+                var rawText = activity.ExpressionText;
+
+                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
+
+                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
+                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
+                var dec = new DsfDecision(activity);
+                if (!seenActivities.Contains(activity))
+                {
+                    seenActivities.Add(dec);
+                }
+
+                //dec.TrueArm = ParseTools(decision.True, seenActivities);
+                //dec.FalseArm = ParseTools(decision.False, seenActivities);
+                dec.Conditions = decisionStack;
+                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
+
+
+                return dec;
+            }
+
+            return null;
+        }
     }
 }

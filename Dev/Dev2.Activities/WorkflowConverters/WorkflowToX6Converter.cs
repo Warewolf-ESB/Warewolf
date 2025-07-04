@@ -1,4 +1,5 @@
 ﻿using Dev2.Common.X6;
+using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
 using System;
 using System.Activities;
@@ -7,18 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.WF
 {
-
     public class WorkflowToX6Converter
     {
         private int _currentX = 100;
         private int _currentY = 100;
-        private const int NODE_WIDTH = 120;
-        private const int NODE_HEIGHT = 60;
-        private const int VERTICAL_SPACING = 100;
-        private const int FONT_SIZE = 9;
 
 
         public class X6GraphData
@@ -184,7 +181,7 @@ namespace Dev2.Activities.WF
                 var trueNodeId = ProcessFlowNode(flowDecision.True, graphData, activityNodeMap, null);
                 graphData.Edges.Add(CreateEdge(decisionNodeId,
                     activityNodeMap.ContainsValue(trueNodeId) ? trueNodeId : GetFirstNodeId(flowDecision.True, activityNodeMap),
-                    "True"));
+                    Constants.TRUE));
                 endNodes.Add(trueNodeId);
             }
 
@@ -194,7 +191,7 @@ namespace Dev2.Activities.WF
                 var falseNodeId = ProcessFlowNode(flowDecision.False, graphData, activityNodeMap, null);
                 graphData.Edges.Add(CreateEdge(decisionNodeId,
                     activityNodeMap.ContainsValue(falseNodeId) ? falseNodeId : GetFirstNodeId(flowDecision.False, activityNodeMap),
-                    "False"));
+                    Constants.FALSE));
                 endNodes.Add(falseNodeId);
             }
 
@@ -393,29 +390,17 @@ namespace Dev2.Activities.WF
         {
             return new Cell
             {
-                Id = "start_" + Guid.NewGuid().ToString(),
-                Shape = "rect",
+                Id = Guid.NewGuid().ToString(),
+                Shape = Constants.RECT,
                 Position = new Position(_currentX, _currentY),
-                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
-
-                Label = "Start",
-                Data = new Dictionary<string, object> { ["type"] = "Start" },
-                Attrs = new Dictionary<string, object>
-                {
-                    ["body"] = new { fill = "#52c41a", stroke = "#389e0d" },
-                    ["text"] = new { fill = "#fff", fontSize = FONT_SIZE }
-                }
+                Label = Constants.START,
+                Data = new Dictionary<string, object> { [Constants.TYPE] = Constants.START }
             };
         }
 
         private Cell CreateActivityNode(Activity activity, string nodeId)
         {
-            _currentY += VERTICAL_SPACING;
-
-            var shape = GetShapeForActivity(activity);
-            var color = GetColorForActivity(activity);
-            var cell = new Cell { Id = nodeId, Attrs = new Dictionary<string, object>(), Data = new Dictionary<string, object>() };
-
+            var cell = new Cell { Id = nodeId, Data = new Dictionary<string, object>() };
             var activityType = activity.GetType();
             if (activityType == typeof(DsfDotNetMultiAssignActivity))
             {
@@ -423,86 +408,48 @@ namespace Dev2.Activities.WF
                 p.ToX6Graph(cell);
             }
 
-            cell.Shape = shape;
+            cell.Shape = Constants.RECT;
             cell.Position = new Position(_currentX, _currentY);
-            cell.Size = new Size(NODE_WIDTH, NODE_HEIGHT);
             cell.Label = GetActivityLabel(activity);
-            cell.Data.Add("type", activityType);
-            cell.Data.Add("displayName", activity.DisplayName);
-            cell.Data.Add("properties", ExtractActivityProperties(activity));
-
-            cell.Attrs = new Dictionary<string, object>
-            {
-                ["body"] = new { fill = color.background, stroke = color.border },
-                ["text"] = new { fill = color.text, fontSize = FONT_SIZE }
-            };
-
+            cell.Data.Add(Constants.TYPE, activityType);
+            cell.Data.Add(Constants.DISPLAYNAME, activity.DisplayName);
+            cell.Data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
             return cell;
         }
 
         private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
         {
-            _currentY += VERTICAL_SPACING;
+            var parser = new ActivityParser();
+            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ?? new DsfDecision();
 
-            return new Cell
+            var cell = new Cell
             {
                 Id = nodeId,
-                Shape = "rect",
+                Shape = Constants.RECT,
                 Position = new Position(_currentX, _currentY),
-                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
                 Label = GetDecisionLabel(decision),
-                Data = new Dictionary<string, object>
-                {
-                    ["type"] = "FlowDecision",
-                    ["condition"] = decision.Condition?.ToString() ?? "Decision"
-                },
-                Attrs = new Dictionary<string, object>
-                {
-                    ["body"] = new Dictionary<string, object>
-                    {
-                        ["fill"] = "#faad14",
-                        ["stroke"] = "#d48806",
-                        ["refPoints"] = "0,10 10,0 20,10 10,20"
-                    },
-                    ["text"] = new Dictionary<string, object>
-                    {
-                        ["fill"] = "#fff",
-                        ["fontSize"] = FONT_SIZE
-                    }
-                }
+                Data = new Dictionary<string, object>()
             };
+
+            dsfDecision.ToX6Graph(cell);
+            return cell;
         }
 
         private Cell CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
         {
-            _currentY += VERTICAL_SPACING;
 
             return new Cell
             {
                 Id = nodeId,
-                Shape = "polygon",
+                Shape = Constants.POLYGON,
                 Position = new Position(_currentX, _currentY),
-                Size = new Size(NODE_WIDTH, NODE_HEIGHT),
-                Label = "Switch",
+                Label = Constants.SWITCH,
                 Data = new Dictionary<string, object>
                 {
-                    ["type"] = "FlowSwitch",
-                    ["expression"] = flowSwitch.Expression?.ToString() ?? "Switch"
-                },
-                Attrs = new Dictionary<string, object>
-                {
-                    ["body"] = new Dictionary<string, object>
-                    {
-                        ["fill"] = "#722ed1",
-                        ["stroke"] = "#531dab",
-                        ["refPoints"] = "0,10 10,0 20,10 10,20"
-                    },
-                    ["text"] = new Dictionary<string, object>
-                    {
-                        ["fill"] = "#fff",
-                        ["fontSize"] = FONT_SIZE
-                    }
+                    [Constants.TYPE] = Constants.FLOWSWITCH,
+                    [Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
                 }
+
             };
         }
 
@@ -516,68 +463,25 @@ namespace Dev2.Activities.WF
                 Label = label,
                 Data = new Dictionary<string, object>
                 {
-                    ["type"] = "sequence"
+                    [Constants.TYPE] = Constants.SEQUENCE
                 }
             };
         }
 
-        private static string GetShapeForActivity(Activity activity)
-        {
-            switch (activity)
-            {
-                case If _:
-                //case FlowDecision _:
-                //    return "polygon";
-                case Sequence _:
-                case Flowchart _:
-                    return "rect";
-                case While _:
-                case DoWhile _:
-                //case ForEach _:
-                //    return "ellipse";
-                case TryCatch _:
-                    return "rect";
-                case Parallel _:
-                    return "rect";
-                default:
-                    return "rect";
-            }
-        }
 
-        private static (string background, string border, string text) GetColorForActivity(Activity activity)
-        {
-            switch (activity)
-            {
-                case If _:
-                    return ("#faad14", "#d48806", "#fff");
-                case Sequence _:
-                    return ("#1890ff", "#096dd9", "#fff");
-                case Flowchart _:
-                    return ("#13c2c2", "#08979c", "#fff");
-                case While _:
-                case DoWhile _:
-                //case ForEach _:
-                //    return ("#722ed1", "#531dab", "#fff");
-                case TryCatch _:
-                    return ("#fa8c16", "#d46b08", "#fff");
-                case Parallel _:
-                    return ("#eb2f96", "#c41d7f", "#fff");
-                default:
-                    return ("#595959", "#262626", "#fff");
-            }
-        }
+
 
         private static string GetActivityLabel(Activity activity)
         {
             if (!string.IsNullOrEmpty(activity.DisplayName))
                 return activity.DisplayName;
 
-            return activity.GetType().Name.Replace("Activity", "");
+            return activity.GetType().Name.Replace(Constants.ACTIVITY, "");
         }
 
         private static string GetDecisionLabel(FlowDecision decision)
         {
-            return decision.Condition?.ToString() ?? "Decision";
+            return decision.Condition?.ToString() ?? Constants.DECISION;
         }
 
         private static object ExtractActivityProperties(Activity activity)
@@ -585,8 +489,8 @@ namespace Dev2.Activities.WF
             var properties = new Dictionary<string, object>();
 
             // Extract common properties
-            properties["DisplayName"] = activity.DisplayName;
-            properties["Id"] = activity.Id;
+            properties[Constants.DISPLAYNAME] = activity.DisplayName;
+            properties[Constants.ID] = activity.Id;
 
             // Extract activity-specific properties using reflection
             var activityType = activity.GetType();
@@ -606,7 +510,6 @@ namespace Dev2.Activities.WF
                 }
                 catch
                 {
-                    // Skip properties that can't be accessed
                 }
             }
 

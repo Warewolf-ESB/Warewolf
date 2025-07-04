@@ -80,7 +80,7 @@ namespace Dev2.Activities.WF
             var flowchart = new Flowchart();
 
             // Find the start node
-            var startNode = nodes.FirstOrDefault(n => GetNodeType(n) == "start");
+            var startNode = nodes.FirstOrDefault(n => GetNodeType(n) == Constants.START);
             if (startNode == null) return sequence;
 
             // Build flowchart structure
@@ -115,7 +115,7 @@ namespace Dev2.Activities.WF
                 return null;
 
             var nodeType = type.ToLowerInvariant();
-            if(nodeType == "start")
+            if (nodeType == Constants.START)
             {
                 return new WriteLine { Text = "Workflow Start Node" };
             }
@@ -123,17 +123,33 @@ namespace Dev2.Activities.WF
             {
                 return CreateAssignActivity(node);
             }
+            else if (nodeType.Contains("dsfdecision"))
+            {
+                return CreateDecisionActivity(node);
+            }
             else
             {
                 return new WriteLine { Text = "Unknow type" };
             }
-           
+
+        }
+
+        private static DsfDecision CreateDecisionActivity(Cell node)
+        {
+            if (!node.Data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
+                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfDecision();
+            activity.FromX6Graph(node);
+            return activity;
         }
 
         private static DsfDotNetMultiAssignActivity CreateAssignActivity(Cell node)
         {
 
-            if (!node.Data.TryGetValue("displayname", out var displayObject) || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!node.Data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
+                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignActivity();
@@ -144,7 +160,7 @@ namespace Dev2.Activities.WF
 
         private static string GetNodeType(Cell node)
         {
-            node.Data.TryGetValue("type", out var typeObj);
+            node.Data.TryGetValue(Constants.TYPE, out var typeObj);
             return typeObj as string;
 
         }
