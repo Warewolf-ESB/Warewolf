@@ -514,8 +514,10 @@ namespace Dev2.Activities
         {
             if (cell.Data == null) cell.Data = new Dictionary<string, object>();
 
+            var label = GetDisplayName();
+            cell.Label = label;
             cell.Data.Add(Constants.TYPE, Constants.FLOWDECISION);
-            cell.Data.Add(Constants.DISPLAYTEXT, GetDisplayName());
+            cell.Data.Add(Constants.DISPLAYTEXT, label);
             cell.Data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
             cell.Data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);
             cell.Data.Add(Constants.EXPRESSION, Conditions.ToWebModel());
@@ -530,22 +532,24 @@ namespace Dev2.Activities
             cell.Data.TryGetValue(Constants.EXPRESSION, out expression);
             cell.Data.TryGetValue(Constants.AND, out and);
 
-            var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.ToString());
-
-            if (!string.IsNullOrEmpty(eval))
+            if(and != null)
             {
-                var ser = new Dev2JsonSerializer();
-                var dds = ser.Deserialize<Dev2DecisionStack>(eval);
-                this.Conditions = dds;
+                this.And = And;
             }
 
-            //object fieldObject = null;
-            //cell.Data?.TryGetValue("fields", out fieldObject);
-            //var array = fieldObject as JArray;
-            //if (array != null)
-            //{
-            //    FieldsCollection = array.ToObject<List<ActivityDTO>>();
-            //}
+            if (expression != null)
+            {
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.ToString());
+                if (string.IsNullOrEmpty(eval))
+                    eval = expression.ToString();
+
+                if (!string.IsNullOrEmpty(eval))
+                {
+                    var ser = new Dev2JsonSerializer();
+                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                    this.Conditions = dds;
+                }
+            }
         }
     }
     public class TestMockDecisionStep : DsfActivityAbstract<string>

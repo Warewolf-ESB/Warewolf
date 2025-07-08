@@ -43,7 +43,7 @@ namespace Dev2.Utilities
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
 
-// NOTE : This singleton instance causes memory leaks ;)
+        // NOTE : This singleton instance causes memory leaks ;)
 
 #if WINDOWS || NETFRAMEWORK
         public StringBuilder SerializeWorkflow(ModelService modelService)
@@ -60,23 +60,23 @@ namespace Dev2.Utilities
             var text = new StringBuilder();
             try
             {
-                if(builder != null)
+                if (builder != null)
                 {
                     var sb = new StringBuilder();
-                    using(var sw = new StringWriter(sb))
+                    using (var sw = new StringWriter(sb))
                     {
                         var xamlXmlWriterSettings = new XamlXmlWriterSettings { AssumeValidInput = true };
                         var xamlSchemaContext = new XamlSchemaContext();
-                        var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, xamlSchemaContext,xamlXmlWriterSettings));                    
+                        var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, xamlSchemaContext, xamlXmlWriterSettings));
                         XamlServices.Save(xw, builder);
                         text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
                     }
                 }
                 text = SanitizeXaml(text);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
             }
             return text;
         }
@@ -85,27 +85,27 @@ namespace Dev2.Utilities
         {
             try
             {
-                if(xaml != null && xaml.Length!=0)
+                if (xaml != null && xaml.Length != 0)
                 {
-                    using(var sw = new StringReader(xaml.ToString()))
+                    using (var sw = new StringReader(xaml.ToString()))
                     {
                         var xamlXmlWriterSettings = new XamlXmlReaderSettings();
-                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(),xamlXmlWriterSettings));
+                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
                         var load = XamlServices.Load(xw);
                         return load as ActivityBuilder;
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
             }
             return null;
         }
 
         public ActivityBuilder CreateWorkflow(string displayName)
         {
-            if(string.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(displayName))
             {
                 throw new ArgumentNullException(nameof(displayName));
             }
@@ -131,7 +131,7 @@ namespace Dev2.Utilities
         {
             var builder = GetActivityBuilder(modelService);
             var chart = builder?.Implementation as Flowchart;
-            if(chart != null)
+            if (chart != null)
             {
                 EnsureImplementation(builder, chart);
             }
@@ -194,13 +194,20 @@ namespace Dev2.Utilities
 
         void FixExpressions(Flowchart chart, bool isServerInvocation = false)
         {
-            foreach(var node in chart.Nodes)
+            var nodes = chart.Nodes.ToList();
+
+            if(nodes.Count == 0)
+            {
+                nodes = CollectAllNodes(chart);
+            }
+
+            foreach (var node in nodes)
             {
                 var fd = node as FlowDecision;
-                if(fd != null)
+                if (fd != null)
                 {
                     var decisionActivity = fd.Condition as DsfFlowDecisionActivity;
-                    if(isServerInvocation)
+                    if (isServerInvocation)
                     {
                         // CompileExpressionsImpl will strip out backslashes!!
                         TryFixExpression(decisionActivity, "\\", "\\\\");
@@ -211,7 +218,7 @@ namespace Dev2.Utilities
 
         void TryFixExpression<TResult>(DsfFlowNodeActivity<TResult> activity, string oldExpr, string newExpr)
         {
-            if(!string.IsNullOrEmpty(activity?.ExpressionText))
+            if (!string.IsNullOrEmpty(activity?.ExpressionText))
             {
                 activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);
             }
@@ -221,14 +228,14 @@ namespace Dev2.Utilities
 
         StringBuilder RemoveNodeValue(StringBuilder xml, string nodeName)
         {
-            if(xml == null || xml.Length == 0)
+            if (xml == null || xml.Length == 0)
             {
                 return xml;
             }
 
             var startIdx = xml.IndexOf(nodeName, 0, true);
 
-            if(startIdx == -1)
+            if (startIdx == -1)
             {
                 return xml;
             }
@@ -390,5 +397,48 @@ namespace Dev2.Utilities
 
             return eq;
         }
+
+        public static List<FlowNode> CollectAllNodes(Flowchart flowchart)
+        {
+            var allNodes = new List<FlowNode>();
+
+            if (flowchart != null && flowchart.StartNode != null)
+            {
+                CollectNodesRecursive(flowchart.StartNode, allNodes);
+            }
+
+            return allNodes;
+        }
+
+        private static void CollectNodesRecursive(FlowNode node, List<FlowNode> allNodes)
+        {
+            if (node == null || allNodes.Contains(node))
+                return;
+
+            allNodes.Add(node);
+
+            switch (node)
+            {
+                case FlowStep flowStep:
+                    if (flowStep.Next != null)
+                        CollectNodesRecursive(flowStep.Next, allNodes);
+                    break;
+
+                case FlowDecision flowDecision:
+                    if (flowDecision.True != null)
+                        CollectNodesRecursive(flowDecision.True, allNodes);
+                    if (flowDecision.False != null)
+                        CollectNodesRecursive(flowDecision.False, allNodes);
+                    break;
+
+                case FlowSwitch<object> flowSwitch:
+                    foreach (var cases in flowSwitch.Cases)
+                        CollectNodesRecursive(cases.Value, allNodes);
+                    if (flowSwitch.Default != null)
+                        CollectNodesRecursive(flowSwitch.Default, allNodes);
+                    break;
+            }
+        }
+
     }
 }

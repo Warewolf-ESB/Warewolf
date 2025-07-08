@@ -6,34 +6,43 @@ namespace Dev2.Common.X6
 {
     public class Constants
     {
-        public const string TYPE = "Type";
-        public const string DISPLAYNAME = "DisplayName";
-        public const string ID = "Id";
-        public const string ACTIVITY = "Activity";
+        public const string TYPE = "type";
+        public const string DISPLAYNAME = "displayname";
+        public const string ID = "id";
+        public const string ACTIVITY = "activity";
 
-        public const string PROPERTIES = "Properties";
-        public const string START = "Start";
+        public const string PROPERTIES = "properties";
+        public const string START = "start";
         public const string RECT = "rect";
-        public const string CONDITION = "Condition";
-        public const string FLOWDECISION = "FlowDecision";
-        public const string DECISION = "Decision";
-        public const string POLYGON = "Polygon";
+        public const string CONDITION = "condition";
+        public const string FLOWDECISION = "flowdecision";
+        public const string DECISION = "decision";
+        public const string POLYGON = "polygon";
 
-        public const string EXPRESSION = "Expression";
-        public const string SWITCH = "Switch";
-        public const string SEQUENCE = "Sequence";
-        public const string FLOWSWITCH = "FlowSwitch";
-        public const string TRUE = "True";
+        public const string EXPRESSION = "expression";
+        public const string SWITCH = "switch";
+        public const string SEQUENCE = "sequence";
+        public const string FLOWSWITCH = "flowswitch";
+        public const string TRUE = "true";
 
-        public const string FALSE = "False";
+        public const string FALSE = "false";
 
-        public const string DISPLAYTEXT = "DisplayText";
-        public const string TRUEARMTEXT = "TrueArmText";
-        public const string FALSEARMTEXT = "FalseArmText";
-        public const string AND = "And";
+        public const string DISPLAYTEXT = "displaytext";
+        public const string TRUEARMTEXT = "truearmtext";
+        public const string FALSEARMTEXT = "falsearmtext";
+        public const string AND = "and";
 
     }
+    public class X6GraphData
+    {
+        public string WorkflowXml { get; set; }
+        
+        [JsonProperty("nodes")]
+        public List<Cell> Nodes { get; set; } = new List<Cell>();
 
+        [JsonProperty("edges")]
+        public List<Cell> Edges { get; set; } = new List<Cell>();
+    }
 
     public class Cell
     {
@@ -86,10 +95,21 @@ namespace Dev2.Common.X6
     public class Position
     {
         [JsonProperty("x")]
-        public int X { get; set; }
+        public float X { get; set; }
 
         [JsonProperty("y")]
-        public int Y { get; set; }
+        public float Y { get; set; }
+
+        public Position()
+        {
+                
+        }
+
+        public Position(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
 
         public Position(int x, int y)
         {
@@ -101,15 +121,23 @@ namespace Dev2.Common.X6
     public class Size
     {
         [JsonProperty("width")]
-        public int Width { get; set; }
+        public float Width { get; set; }
 
         [JsonProperty("height")]
-        public int Height { get; set; }
+        public float Height { get; set; }
 
-        public Size(int w, int h)
+        public Size() { }
+
+        public Size(float width, float height)
         {
-            Width = w;
-            Height = h;
+            Width = width;
+            Height = height;
+        }
+
+        public Size(int width, int height)
+        {
+            Width = width;
+            Height = height;
         }
     }
 

@@ -107,8 +107,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (finalresult != null && !finalresult.HasError)
                 {
-                    var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement());
-                    var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToXml().ToString() };
+                    var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
+                    var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
 
                     finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
                 }

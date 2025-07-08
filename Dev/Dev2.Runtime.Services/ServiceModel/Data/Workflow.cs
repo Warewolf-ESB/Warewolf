@@ -22,11 +22,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xaml;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data;
+using Dropbox.Api.Files;
+using Elastic.Clients.Elasticsearch.MachineLearning;
 using Warewolf.Data;
 using Warewolf.Data.Options;
+using Warewolf.Resource.Errors;
+using static Dropbox.Api.TeamLog.LoginMethod;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -65,6 +71,33 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
+        }
+
+        public Workflow(XElement xml, bool loadExtra)
+            : this(xml)
+        {
+
+            string version = xml.Attribute("Version")?.Value;
+            if (Version.TryParse(version, out var versionString))
+                this.Version = versionString;
+
+            string serverID = xml.Attribute("ServerID")?.Value;
+            if (Guid.TryParse(serverID, out Guid serverGuid))
+                this.ServerID = serverGuid;
+
+            string serverVersion = xml.Attribute("ServerVersion")?.Value;
+
+            Version serverversion;
+            if (string.IsNullOrEmpty(serverVersion) && Version.TryParse(serverVersion, out serverversion))
+                this.ServerVersion = serverversion;
+
+            string category = xml.Element("Category")?.Value;
+            this.Category = category;
+
+            string unitTestTargetWorkflowService = xml.Element("UnitTestTargetWorkflowService")?.Value;
+            this.UnitTestTargetWorkflowService = unitTestTargetWorkflowService;
+
+
         }
 
         public Workflow Clone()
@@ -269,6 +302,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<IWorkflowNode> WorkflowNodesForHtml => _workflowNodesForHtml ?? (_workflowNodesForHtml = GetWorkflowNodesForHtml());
         public List<IWorkflowNode> WorkflowNodes => _workflowNodes.Count != 0 ? _workflowNodes : (_workflowNodes = GetWorkflowNodes());
         public string Name { get; set; }
+        public Guid ServerID { get; set; }
+        public string Category { get; set; }
+        public string UnitTestTargetWorkflowService { get; set; }
+        public Version ServerVersion { get; set; }
 
         public override XElement ToXml()
         {
@@ -287,10 +324,147 @@ namespace Dev2.Runtime.ServiceModel.Data
                 cleanServiceDefinition)
                 );
             return result;
+
+
+            //return new XElement("Service",
+            //            new XAttribute("ID", ID),
+            //            new XAttribute("Version", Version?.ToString() ?? "1.0"),
+            //            new XAttribute("ServerID", ServerID.ToString()),
+            //            new XAttribute("Name", ResourceName ?? string.Empty),
+            //            new XAttribute("ResourceType", ResourceType),
+            //            new XAttribute("IsValid", IsValid),
+            //        new XElement("DisplayName", ResourceName ?? string.Empty),
+            //        new XElement("Category", Category ?? string.Empty),
+            //        new XElement("IsNewWorkflow", IsNewWorkflow),
+            //        new XElement("AuthorRoles", string.Empty),
+            //        new XElement("Comment", Comment ?? string.Empty),
+            //        new XElement("Tags", Tags ?? string.Empty),
+            //        new XElement("HelpLink", HelpLink ?? string.Empty),
+            //        new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
+            //        dataList,
+            //        new XElement("Action",
+            //            new XAttribute("Name", "InvokeWorkflow"),
+            //            new XAttribute("Type", "Workflow"),
+            //        new XElement("XamlDefinition", xaml)),
+            //        new XElement("ErrorMessages", WriteErrors()));
         }
 
+        public StringBuilder ToServiceDefinition()
+        {
+            if (ResourceType == "WorkflowService")
+            {
+                StringBuilder result = WorkflowServiceResourceType();
+                return result;
+            }
+            //if (ResourceType == "Source" || ResourceType == "Server")
+            //{
+            //    StringBuilder result = SourceOrServerResourceType(prepairForDeployment);
+            //    return result;
+            //}
+            throw new Exception(ErrorResource.ToServiceDefinitionDoesNotRupportResourcesOfTypeSource);
+        }
 
+        private StringBuilder WorkflowServiceResourceType()
+        {
+            var result = new StringBuilder();
+            var xaml = XamlDefinition;
 
+            var service = CreateWorkflowXElement(xaml);
+            var xws = new XmlWriterSettings { OmitXmlDeclaration = true };
+            using (XmlWriter xwriter = XmlWriter.Create(result, xws))
+            {
+                service.Save(xwriter);
+            }
+
+            return result;
+        }
+
+        XElement CreateWorkflowXElement(StringBuilder xaml)
+        {
+            var dataList = this.DataList == null ? new XElement("DataList") : this.DataList;
+            var service = CreateServiceElement(xaml, dataList);
+            return service;
+        }
+
+        private XElement CreateServiceElement(StringBuilder xaml, XElement dataList)
+        {
+            return new XElement("Service",
+                        new XAttribute("ID", ResourceID),
+                        new XAttribute("Version", Version?.ToString() ?? "1.0"),
+                        new XAttribute("ServerID", ServerID.ToString()),
+                        new XAttribute("Name", ResourceName ?? string.Empty),
+                        new XAttribute("ResourceType", ResourceType),
+                        new XAttribute("IsValid", IsValid),
+                        new XAttribute("ServerVersion", this.ServerVersion?.ToString() ?? "0.0.0.0"),
+                    new XElement("DisplayName", ResourceName ?? string.Empty),
+                    new XElement("Category", Category ?? string.Empty),
+                    new XElement("IsNewWorkflow", IsNewResource),
+                    new XElement("AuthorRoles", string.Empty),
+                    new XElement("Comment", Comment ?? string.Empty),
+                    new XElement("Tags", Tags ?? string.Empty),
+                    new XElement("HelpLink", HelpLink ?? string.Empty),
+                    new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
+                    dataList,
+                    new XElement("Action",
+                        new XAttribute("Name", "InvokeWorkflow"),
+                        new XAttribute("Type", "Workflow"),
+                    new XElement("XamlDefinition", xaml)),
+                    new XElement("ErrorMessages", WriteErrors()),
+                    CreateVersionInfoElement());
+        }
+
+        private XElement CreateVersionInfoElement()
+        {
+            return (this.VersionInfo != null)
+                ? new XElement("VersionInfo",
+                        new XAttribute("DateTimeStamp", this.VersionInfo.DateTimeStamp.ToString("O")),
+                        new XAttribute("Reason", this.VersionInfo.Reason ?? string.Empty),
+                        new XAttribute("User", this.VersionInfo.User ?? string.Empty),
+                        new XAttribute("VersionNumber", this.VersionInfo.VersionNumber ?? string.Empty),
+                        new XAttribute("ResourceId", this.VersionInfo.ResourceId.ToString()),
+                        new XAttribute("VersionId", this.VersionInfo.VersionId.ToString()))
+                : null;
+        }
+
+        List<XElement> WriteErrors()
+        {
+            if (Errors == null || Errors.Count == 0)
+            {
+                return null;
+            }
+
+            var errorElements = new List<XElement>();
+            foreach (var errorInfo in Errors)
+            {
+                var xElement = new XElement("ErrorMessage");
+                xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
+                xElement.Add(new XAttribute("Message", errorInfo.Message ?? ""));
+                xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
+                xElement.Add(new XAttribute("FixType", errorInfo.FixType));
+                if (!string.IsNullOrEmpty(errorInfo.FixData))
+                {
+                    xElement.Add(new XCData(errorInfo.FixData));
+                }
+                errorElements.Add(xElement);
+            }
+
+            return errorElements;
+        }
+
+        public string GetSavePath()
+        {
+            if (!string.IsNullOrEmpty(Category))
+            {
+                var savePath = Category;
+                var resourceNameIndex = Category.LastIndexOf(ResourceName, StringComparison.InvariantCultureIgnoreCase);
+                if (resourceNameIndex >= 0)
+                {
+                    savePath = Category.Substring(0, resourceNameIndex);
+                }
+                return savePath;
+            }
+            return "";
+        }
     }
 
 

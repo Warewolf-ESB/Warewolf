@@ -17,14 +17,6 @@ namespace Dev2.Activities.WF
         private int _currentX = 100;
         private int _currentY = 100;
 
-
-        public class X6GraphData
-        {
-            public string WorkflowXml { get; set; }
-            public List<Cell> Nodes { get; set; } = new List<Cell>();
-            public List<Cell> Edges { get; set; } = new List<Cell>();
-        }
-
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
 

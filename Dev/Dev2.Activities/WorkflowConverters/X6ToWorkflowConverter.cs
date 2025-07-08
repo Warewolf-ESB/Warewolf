@@ -33,7 +33,15 @@ namespace Dev2.Activities.WF
         {
             try
             {
-                var x6Graph = JsonConvert.DeserializeObject<X6Graph>(x6Json);
+                var settings = new JsonSerializerSettings
+                {
+                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                    FloatParseHandling = FloatParseHandling.Decimal,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var x6Graph = JsonConvert.DeserializeObject<X6Graph>(x6Json, settings);
+
                 var activityBuilder = ConvertFromX6Graph(x6Graph);
                 var flowChart = activityBuilder.Implementation as Flowchart;
                 var workflowHelper = new WorkflowHelper();
@@ -71,6 +79,7 @@ namespace Dev2.Activities.WF
 
             // Build the workflow structure
             activityBuilder.Implementation = BuildSequentialWorkflow(nodes);
+
             return activityBuilder;
         }
 
@@ -123,7 +132,7 @@ namespace Dev2.Activities.WF
             {
                 return CreateAssignActivity(node);
             }
-            else if (nodeType.Contains("dsfdecision"))
+            else if (nodeType.Contains("dsfdecision") || nodeType.Contains("flowdecision"))
             {
                 return CreateDecisionActivity(node);
             }
@@ -136,7 +145,7 @@ namespace Dev2.Activities.WF
 
         private static DsfDecision CreateDecisionActivity(Cell node)
         {
-            if (!node.Data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
+            if (!node.Data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
                 || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 

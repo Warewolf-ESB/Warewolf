@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Windows.Markup;
 using Dev2.Common;
@@ -66,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException("SavePath is missing");
                 }
                 values.TryGetValue("ResourceJSON", out StringBuilder resourceDefinition);
-                values.TryGetValue("ResourceID", out StringBuilder tmp);
+                values.TryGetValue("WorkspaceID", out StringBuilder tmp);
                 values.TryGetValue("Reason", out StringBuilder reason);
 
                 if (tmp != null)
@@ -91,16 +92,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 var x6Graph = JsonConvert.DeserializeObject<X6Graph>(resourceDefinition.ToString());
-                var workflow = new Workflow(new StringBuilder(x6Graph.WorkflowXml).ToXElement());
+                var workflow = new Workflow(new StringBuilder(x6Graph.WorkflowXml).ToXElement(), true);
                 workflow.XamlDefinition = resourceXaml;
-                var serviceXaml = workflow.ToXml().ToStringBuilder();
+                var serviceXaml = workflow.ToServiceDefinition();
 
                 var serializer = new Dev2JsonSerializer();                
                 var res = new ExecuteMessage { HasError = false };
 
                 var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, serviceXaml, savePathValue.ToString(), reason.ToString());
                 
-                if (workspaceId == GlobalConstants.ServerWorkspaceID)
+                if (workspaceId == GlobalConstants.ServerWorkspaceID && theWorkspace.ID != workspaceId)
                 {
                     ResourceCatalog.Instance.SaveResource(theWorkspace.ID, serviceXaml, savePathValue.ToString(), reason.ToString());
                 }
