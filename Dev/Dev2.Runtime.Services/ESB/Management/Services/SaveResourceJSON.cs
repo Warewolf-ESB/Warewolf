@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException("ResourceXaml is missing");
                 }
 
-                var x6Graph = JsonConvert.DeserializeObject<X6Graph>(resourceDefinition.ToString());
+                var x6Graph = JsonConvert.DeserializeObject<X6WorkflowSaveModel>(resourceDefinition.ToString());
                 var workflow = new Workflow(new StringBuilder(x6Graph.WorkflowXml).ToXElement(), true);
                 workflow.XamlDefinition = resourceXaml;
                 var serviceXaml = workflow.ToServiceDefinition();

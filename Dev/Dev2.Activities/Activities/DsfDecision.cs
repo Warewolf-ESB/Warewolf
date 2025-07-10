@@ -510,27 +510,27 @@ namespace Dev2.Activities
             }
         }
 
-        public void ToX6Graph(Common.X6.Cell cell)
+        public void ToX6Json(Common.X6.Cell cell)
         {
-            if (cell.Data == null) cell.Data = new Dictionary<string, object>();
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
 
             var label = GetDisplayName();
-            cell.Label = label;
-            cell.Data.Add(Constants.TYPE, Constants.FLOWDECISION);
-            cell.Data.Add(Constants.DISPLAYTEXT, label);
-            cell.Data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
-            cell.Data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);
-            cell.Data.Add(Constants.EXPRESSION, Conditions.ToWebModel());
-            cell.Data.Add(Constants.AND, And);
+            cell.label = label;
+            cell.data.Add(Constants.TYPE, Constants.FLOWDECISION);
+            cell.data.Add(Constants.DISPLAYTEXT, label);
+            cell.data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
+            cell.data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);
+            cell.data.Add(Constants.EXPRESSION, Conditions.ToWebModel());
+            cell.data.Add(Constants.AND, And);
         }
 
-        public void FromX6Graph(Common.X6.Cell cell)
+        public void FromX6Json(Common.X6.Cell cell)
         {
-            if (cell.Data == null) return;
+            if (cell.data == null) return;
 
             object expression, and;
-            cell.Data.TryGetValue(Constants.EXPRESSION, out expression);
-            cell.Data.TryGetValue(Constants.AND, out and);
+            cell.data.TryGetValue(Constants.EXPRESSION, out expression);
+            cell.data.TryGetValue(Constants.AND, out and);
 
             if(and != null)
             {

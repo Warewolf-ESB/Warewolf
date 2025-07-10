@@ -388,6 +388,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private XElement CreateServiceElement(StringBuilder xaml, XElement dataList)
         {
+            var xamlString = xaml.ToString();
+            if(!xamlString.StartsWith("XamlDefinition", StringComparison.OrdinalIgnoreCase))
+            {
+                xamlString = string.Concat("<XamlDefinition>", xamlString, "</XamlDefinition>");
+            }
             return new XElement("Service",
                         new XAttribute("ID", ResourceID),
                         new XAttribute("Version", Version?.ToString() ?? "1.0"),
@@ -408,7 +413,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                     new XElement("Action",
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
-                    new XElement("XamlDefinition", xaml)),
+                    //new XElement("XamlDefinition", xaml)),
+                    XElement.Parse(xamlString)),
                     new XElement("ErrorMessages", WriteErrors()),
                     CreateVersionInfoElement());
         }

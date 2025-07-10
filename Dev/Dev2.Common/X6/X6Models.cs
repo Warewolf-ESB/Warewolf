@@ -33,8 +33,9 @@ namespace Dev2.Common.X6
         public const string AND = "and";
 
     }
-    public class X6GraphData
+    public class X6WorkflowLoadModel
     {
+        [JsonProperty("workflowxml")]
         public string WorkflowXml { get; set; }
         
         [JsonProperty("nodes")]
@@ -47,22 +48,22 @@ namespace Dev2.Common.X6
     public class Cell
     {
         [JsonProperty("position")]
-        public Position Position { get; set; }
+        public Position position { get; set; }
 
         [JsonProperty("size")]
-        public Size Size { get; set; }
+        public Size size { get; set; }
 
         [JsonProperty("visible")]
-        public bool? Visible { get; set; }
+        public bool? visible { get; set; }
 
         [JsonProperty("shape")]
-        public string Shape { get; set; }
+        public string shape { get; set; }
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string id { get; set; }
 
         [JsonPropertyName("data")]
-        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object> data { get; set; } = new Dictionary<string, object>();
 
         //[JsonPropertyName("attrs")]
         //public Dictionary<string, object> Attrs { get; set; } = new Dictionary<string, object>();
@@ -77,10 +78,10 @@ namespace Dev2.Common.X6
         public Connector Target { get; set; }
 
         [JsonPropertyName("label")]
-        public string Label { get; set; }
+        public string label { get; set; }
     }
 
-    public class X6Graph
+    public class X6WorkflowSaveModel
     {
         [JsonProperty("resourcename")]
         public string ResourceName { get; set; }

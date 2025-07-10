@@ -20,14 +20,14 @@ namespace Dev2.Activities.WF
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
 
-            var graphData = new X6GraphData { WorkflowXml = xml };
+            var graphData = new X6WorkflowLoadModel { WorkflowXml = xml };
             //var graphData = new X6GraphData();
             var activityNodeMap = new Dictionary<Activity, string>();
 
             var startNode = CreateStartNode();
             graphData.Nodes.Add(startNode);
 
-            var previousNodeId = startNode.Id;
+            var previousNodeId = startNode.id;
 
             if (workflow.Implementation != null)
             {
@@ -37,7 +37,7 @@ namespace Dev2.Activities.WF
             return JsonConvert.SerializeObject(graphData);
         }
 
-        private string ProcessActivity(Activity activity, X6GraphData graphData,
+        private string ProcessActivity(Activity activity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             if (activity == null) return previousNodeId;
@@ -93,7 +93,7 @@ namespace Dev2.Activities.WF
             }
         }
 
-        private string ProcessSequence(Sequence sequence, X6GraphData graphData,
+        private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var currentNodeId = parentNodeId;
@@ -106,7 +106,7 @@ namespace Dev2.Activities.WF
             return currentNodeId;
         }
 
-        private string ProcessFlowchart(Flowchart flowchart, X6GraphData graphData,
+        private string ProcessFlowchart(Flowchart flowchart, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var processedNodes = new List<string>();
@@ -120,7 +120,7 @@ namespace Dev2.Activities.WF
             return processedNodes.LastOrDefault() ?? parentNodeId;
         }
 
-        private string ProcessFlowNode(FlowNode flowNode, X6GraphData graphData,
+        private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             switch (flowNode)
@@ -139,7 +139,7 @@ namespace Dev2.Activities.WF
             }
         }
 
-        private string ProcessFlowStep(FlowStep flowStep, X6GraphData graphData,
+        private string ProcessFlowStep(FlowStep flowStep, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var nodeId = ProcessActivity(flowStep.Action, graphData, activityNodeMap, previousNodeId);
@@ -153,7 +153,7 @@ namespace Dev2.Activities.WF
             return nodeId;
         }
 
-        private string ProcessFlowDecision(FlowDecision flowDecision, X6GraphData graphData,
+        private string ProcessFlowDecision(FlowDecision flowDecision, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var decisionNodeId = Guid.NewGuid().ToString();
@@ -190,7 +190,7 @@ namespace Dev2.Activities.WF
             return decisionNodeId;
         }
 
-        private string ProcessFlowSwitch(FlowSwitch<object> flowSwitch, X6GraphData graphData,
+        private string ProcessFlowSwitch(FlowSwitch<object> flowSwitch, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var switchNodeId = Guid.NewGuid().ToString();
@@ -226,7 +226,7 @@ namespace Dev2.Activities.WF
             return switchNodeId;
         }
 
-        private string ProcessIfActivity(If ifActivity, X6GraphData graphData,
+        private string ProcessIfActivity(If ifActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var endNodes = new List<string> { parentNodeId };
@@ -248,7 +248,7 @@ namespace Dev2.Activities.WF
             return endNodes.Last();
         }
 
-        private string ProcessWhileActivity(While whileActivity, X6GraphData graphData,
+        private string ProcessWhileActivity(While whileActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             if (whileActivity.Body != null)
@@ -273,7 +273,7 @@ namespace Dev2.Activities.WF
         //    return parentNodeId;
         //}
 
-        private string ProcessDoWhileActivity(DoWhile doWhileActivity, X6GraphData graphData,
+        private string ProcessDoWhileActivity(DoWhile doWhileActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             if (doWhileActivity.Body != null)
@@ -287,7 +287,7 @@ namespace Dev2.Activities.WF
             return parentNodeId;
         }
 
-        private string ProcessTryCatchActivity(TryCatch tryCatchActivity, X6GraphData graphData,
+        private string ProcessTryCatchActivity(TryCatch tryCatchActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var endNodes = new List<string>();
@@ -319,7 +319,7 @@ namespace Dev2.Activities.WF
             return endNodes.LastOrDefault() ?? parentNodeId;
         }
 
-        private string ProcessParallelActivity(Parallel parallelActivity, X6GraphData graphData,
+        private string ProcessParallelActivity(Parallel parallelActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var endNodes = new List<string>();
@@ -333,7 +333,7 @@ namespace Dev2.Activities.WF
             return endNodes.LastOrDefault() ?? parentNodeId;
         }
 
-        private string ProcessGenericActivity(Activity activity, X6GraphData graphData,
+        private string ProcessGenericActivity(Activity activity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             // Handle activities with child activities using reflection
@@ -382,30 +382,30 @@ namespace Dev2.Activities.WF
         {
             return new Cell
             {
-                Id = Guid.NewGuid().ToString(),
-                Shape = Constants.RECT,
-                Position = new Position(_currentX, _currentY),
-                Label = Constants.START,
-                Data = new Dictionary<string, object> { [Constants.TYPE] = Constants.START }
+                id = Guid.NewGuid().ToString(),
+                shape = Constants.RECT,
+                position = new Position(_currentX, _currentY),
+                label = Constants.START,
+                data = new Dictionary<string, object> { [Constants.TYPE] = Constants.START }
             };
         }
 
         private Cell CreateActivityNode(Activity activity, string nodeId)
         {
-            var cell = new Cell { Id = nodeId, Data = new Dictionary<string, object>() };
+            var cell = new Cell { id = nodeId, data = new Dictionary<string, object>() };
             var activityType = activity.GetType();
             if (activityType == typeof(DsfDotNetMultiAssignActivity))
             {
                 var p = (DsfDotNetMultiAssignActivity)activity;
-                p.ToX6Graph(cell);
+                p.ToX6Json(cell);
             }
 
-            cell.Shape = Constants.RECT;
-            cell.Position = new Position(_currentX, _currentY);
-            cell.Label = GetActivityLabel(activity);
-            cell.Data.Add(Constants.TYPE, activityType);
-            cell.Data.Add(Constants.DISPLAYNAME, activity.DisplayName);
-            cell.Data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
+            cell.shape = Constants.RECT;
+            cell.position = new Position(_currentX, _currentY);
+            cell.label = GetActivityLabel(activity);
+            cell.data.Add(Constants.TYPE, activityType);
+            cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
+            cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
             return cell;
         }
 
@@ -416,14 +416,14 @@ namespace Dev2.Activities.WF
 
             var cell = new Cell
             {
-                Id = nodeId,
-                Shape = Constants.RECT,
-                Position = new Position(_currentX, _currentY),
-                Label = GetDecisionLabel(decision),
-                Data = new Dictionary<string, object>()
+                id = nodeId,
+                shape = Constants.RECT,
+                position = new Position(_currentX, _currentY),
+                label = GetDecisionLabel(decision),
+                data = new Dictionary<string, object>()
             };
 
-            dsfDecision.ToX6Graph(cell);
+            dsfDecision.ToX6Json(cell);
             return cell;
         }
 
@@ -432,11 +432,11 @@ namespace Dev2.Activities.WF
 
             return new Cell
             {
-                Id = nodeId,
-                Shape = Constants.POLYGON,
-                Position = new Position(_currentX, _currentY),
-                Label = Constants.SWITCH,
-                Data = new Dictionary<string, object>
+                id = nodeId,
+                shape = Constants.POLYGON,
+                position = new Position(_currentX, _currentY),
+                label = Constants.SWITCH,
+                data = new Dictionary<string, object>
                 {
                     [Constants.TYPE] = Constants.FLOWSWITCH,
                     [Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
@@ -449,11 +449,11 @@ namespace Dev2.Activities.WF
         {
             return new Cell
             {
-                Id = Guid.NewGuid().ToString(),
+                id = Guid.NewGuid().ToString(),
                 Source = new Connector(sourceId),
                 Target = new Connector(targetId),
-                Label = label,
-                Data = new Dictionary<string, object>
+                label = label,
+                data = new Dictionary<string, object>
                 {
                     [Constants.TYPE] = Constants.SEQUENCE
                 }
