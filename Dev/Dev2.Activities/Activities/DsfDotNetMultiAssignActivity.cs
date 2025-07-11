@@ -546,7 +546,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void FromX6Json(Cell cell)
         {
             object fieldObject = null;
-            cell.data?.TryGetValue("fields", out fieldObject);
+            cell.data?.TryGetValue("updatedfields", out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data?.TryGetValue("fields", out fieldObject);
+            }
             var array = fieldObject as JArray;
             if (array != null)
             {

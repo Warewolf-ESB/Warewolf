@@ -399,6 +399,11 @@ namespace Dev2.Activities.WF
                 var p = (DsfDotNetMultiAssignActivity)activity;
                 p.ToX6Json(cell);
             }
+            else if (activityType == typeof(DsfDecision))
+            {
+                var p = (DsfDecision)activity;
+                return CreateDecisionNode(p, nodeId);
+            }
 
             cell.shape = Constants.RECT;
             cell.position = new Position(_currentX, _currentY);
@@ -413,13 +418,17 @@ namespace Dev2.Activities.WF
         {
             var parser = new ActivityParser();
             var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ?? new DsfDecision();
+            return CreateDecisionNode(dsfDecision, nodeId);
+        }
 
+        private Cell CreateDecisionNode(DsfDecision dsfDecision, string nodeId)
+        {
             var cell = new Cell
             {
                 id = nodeId,
                 shape = Constants.RECT,
                 position = new Position(_currentX, _currentY),
-                label = GetDecisionLabel(decision),
+                label = dsfDecision.DisplayName,
                 data = new Dictionary<string, object>()
             };
 

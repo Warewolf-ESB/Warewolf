@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Xaml;
 using System.Xml;
@@ -367,7 +368,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         private StringBuilder WorkflowServiceResourceType()
         {
             var result = new StringBuilder();
-            var xaml = XamlDefinition;
+
+            var xaml = new StringBuilder(XmlSanitizer.EncodeXmlAttributeValues(XamlDefinition.ToString()));
 
             var service = CreateWorkflowXElement(xaml);
             var xws = new XmlWriterSettings { OmitXmlDeclaration = true };
@@ -389,7 +391,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         private XElement CreateServiceElement(StringBuilder xaml, XElement dataList)
         {
             var xamlString = xaml.ToString();
-            if(!xamlString.StartsWith("XamlDefinition", StringComparison.OrdinalIgnoreCase))
+            if (!xamlString.StartsWith("XamlDefinition", StringComparison.OrdinalIgnoreCase))
             {
                 xamlString = string.Concat("<XamlDefinition>", xamlString, "</XamlDefinition>");
             }
@@ -471,6 +473,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             return "";
         }
+
+
     }
 
 
@@ -565,5 +569,33 @@ namespace Dev2.Runtime.ServiceModel.Data
             return newAlias;
         }
     }
+
+
+
+    public static class XmlSanitizer
+    {
+        public static string EncodeXmlAttributeValues(string xml)
+        {
+            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
+
+            foreach (var element in doc.Descendants())
+            {
+                var attrs = element.Attributes().ToList(); // Prevent collection modification during iteration
+                foreach (var attr in attrs)
+                {
+                    var escaped = EscapeXmlAttribute(attr.Value);
+                    attr.Value = escaped;
+                }
+            }
+
+            return doc.ToString(SaveOptions.DisableFormatting);
+        }
+
+        private static string EscapeXmlAttribute(string value)
+        {
+            return SecurityElement.Escape(value);
+        }
+    }
+
 
 }
