@@ -537,22 +537,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-        public void ToX6Graph(Cell cell)
+        public void ToX6Json(Cell cell)
         {
-            if(cell.Data != null) 
-            cell.Data.Add("fields", FieldsCollection);
+            if(cell.data != null) 
+            cell.data.Add("fields", FieldsCollection);
         }
 
-        public void FromX6Graph(Cell cell)
+        public void FromX6Json(Cell cell)
         {
             object fieldObject = null;
-            cell.Data?.TryGetValue("fields", out fieldObject);
+            cell.data?.TryGetValue("updatedfields", out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data?.TryGetValue("fields", out fieldObject);
+            }
             var array = fieldObject as JArray;
             if (array != null)
             {
                 FieldsCollection = array.ToObject<List<ActivityDTO>>();
             }
-
         }
         public override int GetHashCode()
         {

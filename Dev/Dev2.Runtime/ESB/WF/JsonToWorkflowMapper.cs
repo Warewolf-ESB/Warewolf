@@ -7,7 +7,7 @@ namespace Dev2.Runtime.ESB.WF
     {
         public static void Process(EsbExecuteRequest request)
         {
-            var xaml = X6ToWorkflowConverter.ConvertJsonToXaml(request.Args);
+            var xaml = X6ToWorkflowConverter.X6JsonToXaml(request.Args);
             if (xaml != null && xaml.Length > 0)
             {
                 request.AddArgument("ResourceXaml", xaml);

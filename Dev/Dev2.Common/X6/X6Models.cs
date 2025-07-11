@@ -4,31 +4,72 @@ using System.Text.Json.Serialization;
 
 namespace Dev2.Common.X6
 {
+    public class Constants
+    {
+        public const string TYPE = "type";
+        public const string DISPLAYNAME = "displayname";
+        public const string ID = "id";
+        public const string ACTIVITY = "activity";
+
+        public const string PROPERTIES = "properties";
+        public const string START = "start";
+        public const string RECT = "rect";
+        public const string CONDITION = "condition";
+        public const string FLOWDECISION = "flowdecision";
+        public const string DECISION = "decision";
+        public const string POLYGON = "polygon";
+
+        public const string EXPRESSION = "expression";
+        public const string SWITCH = "switch";
+        public const string SEQUENCE = "sequence";
+        public const string FLOWSWITCH = "flowswitch";
+        public const string TRUE = "true";
+
+        public const string FALSE = "false";
+
+        public const string DISPLAYTEXT = "displaytext";
+        public const string TRUEARMTEXT = "truearmtext";
+        public const string FALSEARMTEXT = "falsearmtext";
+        public const string AND = "and";
+
+    }
+    public class X6WorkflowLoadModel
+    {
+        [JsonProperty("workflowxml")]
+        public string WorkflowXml { get; set; }
+        
+        [JsonProperty("nodes")]
+        public List<Cell> Nodes { get; set; } = new List<Cell>();
+
+        [JsonProperty("edges")]
+        public List<Cell> Edges { get; set; } = new List<Cell>();
+    }
+
     public class Cell
     {
         [JsonProperty("position")]
-        public Position Position { get; set; }
+        public Position position { get; set; }
 
         [JsonProperty("size")]
-        public Size Size { get; set; }
+        public Size size { get; set; }
 
         [JsonProperty("visible")]
-        public bool? Visible { get; set; }
+        public bool? visible { get; set; }
 
         [JsonProperty("shape")]
-        public string Shape { get; set; }
+        public string shape { get; set; }
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string id { get; set; }
 
         [JsonPropertyName("data")]
-        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object> data { get; set; } = new Dictionary<string, object>();
 
-        [JsonPropertyName("attrs")]
-        public Dictionary<string, object> Attrs { get; set; } = new Dictionary<string, object>();
+        //[JsonPropertyName("attrs")]
+        //public Dictionary<string, object> Attrs { get; set; } = new Dictionary<string, object>();
 
-        [JsonProperty("zIndex")]
-        public int ZIndex { get; set; }
+        //[JsonProperty("zIndex")]
+        //public int ZIndex { get; set; }
 
         [JsonProperty("source")]
         public Connector Source { get; set; }
@@ -37,10 +78,10 @@ namespace Dev2.Common.X6
         public Connector Target { get; set; }
 
         [JsonPropertyName("label")]
-        public string Label { get; set; }
+        public string label { get; set; }
     }
 
-    public class X6Graph
+    public class X6WorkflowSaveModel
     {
         [JsonProperty("resourcename")]
         public string ResourceName { get; set; }
@@ -55,10 +96,21 @@ namespace Dev2.Common.X6
     public class Position
     {
         [JsonProperty("x")]
-        public int X { get; set; }
+        public float X { get; set; }
 
         [JsonProperty("y")]
-        public int Y { get; set; }
+        public float Y { get; set; }
+
+        public Position()
+        {
+                
+        }
+
+        public Position(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
 
         public Position(int x, int y)
         {
@@ -70,15 +122,23 @@ namespace Dev2.Common.X6
     public class Size
     {
         [JsonProperty("width")]
-        public int Width { get; set; }
+        public float Width { get; set; }
 
         [JsonProperty("height")]
-        public int Height { get; set; }
+        public float Height { get; set; }
 
-        public Size(int w, int h)
+        public Size() { }
+
+        public Size(float width, float height)
         {
-            Width = w;
-            Height = h;
+            Width = width;
+            Height = height;
+        }
+
+        public Size(int width, int height)
+        {
+            Width = width;
+            Height = height;
         }
     }
 
@@ -93,5 +153,5 @@ namespace Dev2.Common.X6
         }
     }
 
-    
+
 }
