@@ -32,6 +32,8 @@ namespace Dev2.Common.X6
         public const string FALSEARMTEXT = "falsearmtext";
         public const string AND = "and";
 
+        public const string ISDECISIONARM = "isDecisionArm";
+        public const string ISTRUEARM = "isTrue";
     }
     public class X6WorkflowLoadModel
     {

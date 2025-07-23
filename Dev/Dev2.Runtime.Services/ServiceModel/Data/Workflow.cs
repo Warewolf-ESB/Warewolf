@@ -415,7 +415,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                     new XElement("Action",
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
-                    //new XElement("XamlDefinition", xaml)),
                     XElement.Parse(xamlString)),
                     new XElement("ErrorMessages", WriteErrors()),
                     CreateVersionInfoElement());

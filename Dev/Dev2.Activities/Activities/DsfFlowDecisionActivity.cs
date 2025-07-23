@@ -68,5 +68,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new StateVariable[0];
         }
+
+        public void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) return;
+
+            object expression, displayText;
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.EXPRESSION, out expression);
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.DISPLAYTEXT, out displayText);
+
+            if (expression != null)
+            {
+                var expresionText = expression.ToString().Replace("\"", "!");
+                this.ExpressionText = string.Format(@"Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(""{0}"",AmbientDataList)", expresionText);
+            }
+
+            if (displayText != null)
+            {
+                this.DisplayName = displayText.ToString();
+            }
+        }
+
     }
 }

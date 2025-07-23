@@ -103,10 +103,9 @@ namespace Dev2.Activities.WF
             FlowStep startFlowNode = null;
             foreach (var node in nodes)
             {
-                var flowNode = new FlowStep
-                {
-                    Action = activityMap[node.id]
-                };
+                var action = activityMap[node.id];
+
+                var flowNode = CreateFlowNode(action);
 
                 if (flowNode != null)
                 {
@@ -114,7 +113,7 @@ namespace Dev2.Activities.WF
 
                     if (node.id == startcell.id)
                     {
-                        startFlowNode = flowNode;
+                        startFlowNode = flowNode as FlowStep;
                     }
                     else
                     {
@@ -130,6 +129,21 @@ namespace Dev2.Activities.WF
                 flowchart.StartNode = startFlowNode.Next ?? startFlowNode;
 
             return flowchart;
+        }
+
+        /// <summary>
+        /// Activity Factory: Creates Flow Node from Activity (action) 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        private static FlowNode CreateFlowNode(Activity action)
+        {
+            if (action is DsfFlowDecisionActivity flowAction)
+            {
+                return new FlowDecision { DisplayName = flowAction.DisplayName, Condition = flowAction };
+            }
+
+            return new FlowStep { Action = action };
         }
 
         /// <summary>
@@ -155,7 +169,11 @@ namespace Dev2.Activities.WF
             {
                 return CreateAssignActivity(node);
             }
-            else if (nodeType.Contains("dsfdecision") || nodeType.Contains("flowdecision"))
+            else if (nodeType.Contains("flowdecision"))
+            {
+                return CreateFlowDecisionActivity(node);
+            }
+            else if (nodeType.Contains("dsfdecision"))
             {
                 return CreateDecisionActivity(node);
             }
@@ -164,6 +182,17 @@ namespace Dev2.Activities.WF
                 return new WriteLine { Text = "Unknow type" };
             }
 
+        }
+
+        private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
+        {
+            if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
+                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfFlowDecisionActivity();
+            activity.FromX6Json(node);
+            return activity;
         }
 
         private static DsfDecision CreateDecisionActivity(Cell node)
@@ -196,38 +225,43 @@ namespace Dev2.Activities.WF
             return typeObj as string;
         }
 
-        //private void CreateConnections(Dictionary<string, FlowNode> flowNodes)
-        //{
-        //    foreach (var connection in connections)
-        //    {
-        //        var sourceId = connection.Source?.Id;
-        //        var targetId = connection.Target?.Id;
-
-        //        if (sourceId != null && targetId != null &&
-        //            flowNodes.ContainsKey(sourceId) && flowNodes.ContainsKey(targetId))
-        //        {
-        //            var sourceNode = flowNodes[sourceId];
-        //            var targetNode = flowNodes[targetId];
-
-        //            if (sourceNode is FlowStep step)
-        //            {
-        //                step.Next = targetNode;
-        //            }
-        //        }
-        //    }
-        //}
-
         private void CreateConnections(Dictionary<string, FlowNode> flowNodes)
         {
             foreach (var connection in connections)
             {
-                if (connection.Source?.Id is string sourceId &&
-                    connection.Target?.Id is string targetId &&
-                    flowNodes.TryGetValue(sourceId, out var sourceNode) &&
-                    flowNodes.TryGetValue(targetId, out var targetNode) &&
-                    sourceNode is FlowStep step)
+                if (connection.Source?.Id is not string sourceId ||
+                    connection.Target?.Id is not string targetId ||
+                    !flowNodes.TryGetValue(sourceId, out var sourceNode) ||
+                    !flowNodes.TryGetValue(targetId, out var targetNode))
                 {
-                    step.Next = targetNode;
+                    continue;
+                }
+
+                switch (sourceNode)
+                {
+                    case FlowDecision decision:
+                        {
+                            if (connection.data is not null &&
+                                                    connection.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
+                                                    bool.TryParse(isDecisionArmObj?.ToString(), out var isDecision) && isDecision &&
+                                                    connection.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
+                                                    bool.TryParse(isTrueArmObj?.ToString(), out var isTrue))
+                            {
+                                if (isTrue)
+                                    decision.True = targetNode;
+                                else
+                                    decision.False = targetNode;
+                            }
+                            break;
+                        }
+                    case FlowStep step:
+                        {
+                            step.Next = targetNode;
+                            break;
+                        }
+
+                    default:
+                        break;
                 }
             }
         }
