@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Common;
 
 namespace Dev2.Activities.WF
 {
@@ -142,6 +143,10 @@ namespace Dev2.Activities.WF
             {
                 return new FlowDecision { DisplayName = flowAction.DisplayName, Condition = flowAction };
             }
+            else if (action is DsfFlowSwitchActivity switchAction)
+            {
+                return new FlowSwitch<string> { DisplayName = switchAction.DisplayName, Expression = switchAction };
+            }
 
             return new FlowStep { Action = action };
         }
@@ -177,11 +182,46 @@ namespace Dev2.Activities.WF
             {
                 return CreateDecisionActivity(node);
             }
+            else if (nodeType.Contains("dsfflowswitchactivity") || nodeType.Contains("flowswitch"))
+            {
+                return CreateSwitchActivity(node);
+            }
             else
             {
-                return new WriteLine { Text = "Unknow type" };
+                return new WriteLine { Text = "Unknown type" };
             }
 
+        }
+
+        private static DsfFlowSwitchActivity CreateSwitchActivity(Cell node)
+        {
+            var displayName = "Switch";
+            if (node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject) && displayObject is string displayText && !string.IsNullOrWhiteSpace(displayText))
+            {
+                displayName = displayText;
+            }
+
+            var activity = new DsfFlowSwitchActivity
+            {
+                DisplayName = displayName
+            };
+
+            // Extract switch variable from node data
+            if (node.data.TryGetValue("switchVariable", out var switchVarObj) && switchVarObj is string switchVariable)
+            {
+                // Create the proper expression text format for switch
+                activity.ExpressionText = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                                                     "(\"", switchVariable, "\",",
+                                                     GlobalConstants.InjectedDecisionDataListVariable,
+                                                     ")");
+            }
+
+            // Set other properties if available
+            activity.UniqueID = node.data.TryGetValue("UniqueID", out var uniqueIdObj) && uniqueIdObj is string uniqueId 
+                ? uniqueId 
+                : Guid.NewGuid().ToString();
+
+            return activity;
         }
 
         private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
@@ -240,29 +280,60 @@ namespace Dev2.Activities.WF
                 switch (sourceNode)
                 {
                     case FlowDecision decision:
-                        {
-                            if (connection.data is not null &&
-                                                    connection.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
-                                                    bool.TryParse(isDecisionArmObj?.ToString(), out var isDecision) && isDecision &&
-                                                    connection.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
-                                                    bool.TryParse(isTrueArmObj?.ToString(), out var isTrue))
-                            {
-                                if (isTrue)
-                                    decision.True = targetNode;
-                                else
-                                    decision.False = targetNode;
-                            }
-                            break;
-                        }
+                        HandleDecisionConnection(connection, decision, targetNode);
+                        break;
+                    case FlowSwitch<string> switchNode:
+                        HandleSwitchConnection(connection, switchNode, targetNode);
+                        break;
                     case FlowStep step:
-                        {
-                            step.Next = targetNode;
-                            break;
-                        }
-
-                    default:
+                        step.Next = targetNode;
                         break;
                 }
+            }
+        }
+
+        private static void HandleDecisionConnection(Cell connection, FlowDecision decision, FlowNode targetNode)
+        {
+            if (connection.data == null) return;
+            
+            var isDecisionArm = connection.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
+                               bool.TryParse(isDecisionArmObj?.ToString(), out var isDecision) && isDecision;
+                               
+            if (!isDecisionArm) return;
+            
+            var isTrue = connection.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
+                        bool.TryParse(isTrueArmObj?.ToString(), out var isTrueArm) && isTrueArm;
+                        
+            if (isTrue)
+                decision.True = targetNode;
+            else
+                decision.False = targetNode;
+        }
+
+        private static void HandleSwitchConnection(Cell connection, FlowSwitch<string> switchNode, FlowNode targetNode)
+        {
+            string caseKey = null;
+            
+            // Try to get case key from connection data
+            if (connection.data?.TryGetValue(nameof(caseKey), out var caseKeyObj) == true && caseKeyObj is string key)
+            {
+                caseKey = key;
+            }
+            // Fallback to using connection label as case key
+            else if (!string.IsNullOrEmpty(connection.label))
+            {
+                caseKey = connection.label;
+            }
+            
+            if (caseKey == null) return;
+            
+            if (caseKey == "Default" || caseKey == "default")
+            {
+                switchNode.Default = targetNode;
+            }
+            else
+            {
+                switchNode.Cases[caseKey] = targetNode;
             }
         }
 
