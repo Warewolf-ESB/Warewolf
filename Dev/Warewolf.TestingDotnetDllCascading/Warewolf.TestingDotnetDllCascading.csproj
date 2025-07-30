@@ -35,6 +35,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ErrorTestService.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="HelloWolrd.cs" />
