@@ -1,23 +1,26 @@
 ﻿using Dev2.Activities.WF;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Communication;
-using Dev2.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xaml;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Runtime.ESB.WF
 {
-
+    /// <summary>
+    /// Workflow to Json Mapper
+    /// </summary>
     public class WorkflowToJsonMapper
     {
+        /// <summary>
+        /// Processes request to create map workflow to Json
+        /// </summary>
+        /// <param name="request">Execution request</param>
         public static void Process(EsbExecuteRequest request)
         {
             var data = request.ExecuteResult;
@@ -42,186 +45,65 @@ namespace Dev2.Runtime.ESB.WF
             }
         }
 
+        /// <summary>
+        /// Maps request to Json
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <returns></returns>
         public static string MapToJson(Common.X6.X6RequestInfo requestInfo)
         {
-            var builder = ReadXamlDefinition(requestInfo.ActivityXaml);
+            var builder = GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
             if (builder == null) { return string.Empty; }
 
             var graph = new WorkflowToX6Converter().ConvertToX6Json(builder, requestInfo.WorkflowXML);
             return graph;
         }
 
-        //private static bool useV3 = false;
-        public static ActivityBuilder ReadXamlDefinition(string xaml)
+        /// <summary>
+        /// Gets Xaml ActivityBuilder from xamlDefinition.
+        /// </summary>
+        /// <param name="xamlDefinition">The xaml definition.</param>
+        /// <returns cref="ActivityBuilder">ActivityBuilder</returns>
+        public static ActivityBuilder GetXamlActivityBuilderAsDataActivities(StringBuilder xamlDefinition)
         {
-            //if (useV3) return ReadXamlDefinition3(xaml);
+            if (xamlDefinition == null || xamlDefinition.Length == 0)
+            {
+                return null;
+            }
 
             try
             {
-                if (!string.IsNullOrEmpty(xaml))
+                if (GlobalConstants.RuntimeNamespaceClean)
                 {
-                    // Get the target assembly we want to control
-                    var targetAssembly = typeof(DsfFlowDecisionActivity).Assembly;
-                    var targetAssemblyName = targetAssembly.GetName().Name;
-
-                    // Create a selective assembly resolve handler
-                    ResolveEventHandler selectiveHandler = (sender, args) =>
-                    {
-                        var requestedAssembly = new AssemblyName(args.Name);
-
-                        // Only intercept requests for our specific assembly
-                        if (requestedAssembly.Name == targetAssemblyName)
-                        {
-                            Console.WriteLine($"Redirecting assembly load for: {args.Name}");
-                            return targetAssembly;
-                        }
-
-                        // For all other assemblies, let the default resolution happen
-                        return null;
-                    };
-
-                    AppDomain.CurrentDomain.AssemblyResolve += selectiveHandler;
-
-                    try
-                    {
-                        using (var sw = new System.IO.StringReader(xaml))
-                        {
-                            var xamlXmlWriterSettings = new XamlXmlReaderSettings();
-
-                            // Use default XamlSchemaContext to ensure all standard types are available
-                            var xw = ActivityXamlServices.CreateBuilderReader(
-                                new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
-                            var load = XamlServices.Load(xw);
-                            return load as ActivityBuilder;
-                        }
-                    }
-                    finally
-                    {
-                        AppDomain.CurrentDomain.AssemblyResolve -= selectiveHandler;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
-            }
-            return null;
-        }
-
-        public class SelectiveAssemblyXamlSchemaContext : XamlSchemaContext
-        {
-            private readonly Dictionary<string, Assembly> _controlledAssemblies;
-
-            public SelectiveAssemblyXamlSchemaContext(Dictionary<string, Assembly> controlledAssemblies)
-                : base(controlledAssemblies.Values)
-            {
-                _controlledAssemblies = controlledAssemblies;
-            }
-
-            protected override XamlType GetXamlType(string xamlNamespace, string name, params XamlType[] typeArguments)
-            {
-                // Extract assembly name from xaml namespace if present
-                // Format: clr-namespace:Namespace;assembly=AssemblyName
-                if (xamlNamespace.Contains("assembly="))
-                {
-                    var assemblyPart = xamlNamespace.Split(';').FirstOrDefault(p => p.StartsWith("assembly="));
-                    if (assemblyPart != null)
-                    {
-                        var assemblyName = assemblyPart.Replace("assembly=", "");
-
-                        // Check if this is one of our controlled assemblies
-                        if (_controlledAssemblies.TryGetValue(assemblyName, out var controlledAssembly))
-                        {
-                            var namespacePart = xamlNamespace.Split(';')[0].Replace("clr-namespace:", "");
-                            var type = controlledAssembly.GetTypes()
-                                .FirstOrDefault(t => t.Name == name && t.Namespace == namespacePart);
-
-                            if (type != null)
-                            {
-                                return GetXamlType(type);
-                            }
-                        }
-                    }
+                    xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
                 }
 
-                // Fallback to default behavior for other types
-                return base.GetXamlType(xamlNamespace, name, typeArguments);
-            }
-        }
-
-        public static ActivityBuilder ReadXamlDefinition3(string xaml)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(xaml))
+#if !(WINDOWS || NETFRAMEWORK)
+            new Dev2XamlLoader().RemoveWindowsElements(ref xamlDefinition);
+#endif
+                using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))
                 {
-                    // Get all assemblies currently loaded that might be needed
-                    var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                    // Create a list of assemblies to include
-                    var includedAssemblies = new List<Assembly>
+                    var settings = new XamlXmlReaderSettings
+#if (WINDOWS || NETFRAMEWORK)
                     {
-                        // Add your controlled assembly
-                        typeof(DsfFlowDecisionActivity).Assembly,
-
-                        // Add essential workflow assemblies
-                        typeof(Activity).Assembly,
-                        typeof(ActivityBuilder).Assembly,
-                        typeof(XamlServices).Assembly
+                        //LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
+                        LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(DsfFlowDecisionActivity))
                     };
-
-                    // Add commonly needed assemblies
-                    includedAssemblies.AddRange(currentAssemblies.Where(a =>
-                        a.GetName().Name.StartsWith("System.Activities") ||
-                        a.GetName().Name.StartsWith("System.Xaml") ||
-                        a.GetName().Name.StartsWith("System.ComponentModel") ||
-                        a.GetName().Name == "mscorlib" ||
-                        a.GetName().Name == "System.Private.CoreLib"));
-
-                    // Remove duplicates
-                    var uniqueAssemblies = includedAssemblies.Distinct().ToArray();
-
-                    using (var sw = new System.IO.StringReader(xaml))
+#else
+				();
+#endif
+                    using (var reader = new XamlXmlReader(xamlStream, settings))
                     {
-                        var xamlXmlWriterSettings = new XamlXmlReaderSettings();
-                        var schemaContext = new XamlSchemaContext(uniqueAssemblies);
-
-                        var xw = ActivityXamlServices.CreateBuilderReader(
-                            new XamlXmlReader(sw, schemaContext, xamlXmlWriterSettings));
+                        var xw = ActivityXamlServices.CreateBuilderReader(reader);
                         var load = XamlServices.Load(xw);
                         return load as ActivityBuilder;
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
+                return null;
             }
-            return null;
-        }
-
-        public static ActivityBuilder ReadXamlDefinition_old(string xaml)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(xaml))
-                {
-                    using (var sw = new System.IO.StringReader(xaml))
-                    {
-                        var xamlXmlWriterSettings = new XamlXmlReaderSettings();
-                        var xw = ActivityXamlServices.CreateBuilderReader(new XamlXmlReader(sw, new XamlSchemaContext(), xamlXmlWriterSettings));
-                        var load = XamlServices.Load(xw);
-                        return load as ActivityBuilder;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error loading XAML: ", e, GlobalConstants.WarewolfError);
-            }
-            return null;
         }
     }
-
-
 }

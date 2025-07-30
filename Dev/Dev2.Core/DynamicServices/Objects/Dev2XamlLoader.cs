@@ -90,7 +90,7 @@ namespace Dev2.DynamicServices.Objects
             }
 		}
 
-		static void RemoveWindowsElements(ref StringBuilder xamlBuilder)
+		public static void RemoveWindowsElements(ref StringBuilder xamlBuilder)
 		{
 			// Load XAML content into an XmlDocument
 			XmlDocument doc = new XmlDocument();

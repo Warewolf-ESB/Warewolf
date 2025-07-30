@@ -12,11 +12,19 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.WF
 {
+    /// <summary>
+    /// Creates Workflow from X6 Json data (nodes, edges and common data) 
+    /// </summary>
     public class X6ToWorkflowConverter
     {
         private Dictionary<string, Activity> activityMap = new();
         private List<Cell> connections = new List<Cell>();
 
+        /// <summary>
+        /// Converts X6 Json to Xaml representing a workflow
+        /// </summary>
+        /// <param name="values">Dictionary containing ResourceJSON</param>
+        /// <returns></returns>
         public static StringBuilder X6JsonToXaml(Dictionary<string, System.Text.StringBuilder> values)
         {
             values.TryGetValue("ResourceJSON", out StringBuilder resourceDefinition);
@@ -31,6 +39,11 @@ namespace Dev2.Activities.WF
             return new StringBuilder();
         }
 
+        /// <summary>
+        /// Converts X6 Json to Xaml representing a workflow
+        /// </summary>
+        /// <param name="x6Json"></param>
+        /// <returns>StringBuilder</returns>
         public StringBuilder X6JsonToWorkflow(string x6Json)
         {
             try
@@ -58,6 +71,11 @@ namespace Dev2.Activities.WF
             return null;
         }
 
+        /// <summary>
+        /// Builds a workflow from X6WorkflowSaveModel and returns ActivityBuilder
+        /// </summary>
+        /// <param name="x6Graph">X6WorkflowSaveModel representing workflow data in X6</param>
+        /// <returns>ActivityBuilder</returns>
         private ActivityBuilder X6JsonToActivityBuilder(X6WorkflowSaveModel x6Graph)
         {
             var workflowName = x6Graph.ResourceName ?? "ConvertedWorkflow";
@@ -91,6 +109,12 @@ namespace Dev2.Activities.WF
             return activityBuilder;
         }
 
+        /// <summary>
+        /// Builds workflow from nodes
+        /// </summary>
+        /// <param name="nodes">X6 Nodes (also known as Cell)</param>
+        /// <param name="startcell">Start Node (i.e., X6 Cell)</param>
+        /// <returns>Activity</returns>
         private Activity BuildWorkflow(List<Cell> nodes, Cell startcell)
         {
             var sequence = new Sequence();
@@ -135,7 +159,7 @@ namespace Dev2.Activities.WF
         /// Activity Factory: Creates Flow Node from Activity (action) 
         /// </summary>
         /// <param name="action"></param>
-        /// <returns></returns>
+        /// <returns>FlowNode</returns>
         private static FlowNode CreateFlowNode(Activity action)
         {
             if (action is DsfFlowDecisionActivity flowAction)
@@ -151,7 +175,7 @@ namespace Dev2.Activities.WF
         /// </summary>
         /// <param name="node">X6 Json Cell</param>
         /// <param name="isStartNode">flag to indicate if node is a start node</param>
-        /// <returns></returns>
+        /// <returns>Activity</returns>
         private static Activity CreateActivityFromNode(Cell node, out bool isStartNode)
         {
             isStartNode = false;
@@ -184,6 +208,11 @@ namespace Dev2.Activities.WF
 
         }
 
+        /// <summary>
+        /// Creates FlowDecisionActivity from X6 Node
+        /// </summary>
+        /// <param name="node">X6 Node</param>
+        /// <returns>DsfFlowDecisionActivity</returns>
         private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
         {
             if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
@@ -195,6 +224,11 @@ namespace Dev2.Activities.WF
             return activity;
         }
 
+        /// <summary>
+        /// Creates DsfDecision from X6 Node
+        /// </summary>
+        /// <param name="node">X6 Node</param>
+        /// <returns>DsfDecision</returns>
         private static DsfDecision CreateDecisionActivity(Cell node)
         {
             if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
@@ -206,6 +240,11 @@ namespace Dev2.Activities.WF
             return activity;
         }
 
+        /// <summary>
+        /// Creates DsfDotNetMultiAssignActivity from X6 Node
+        /// </summary>
+        /// <param name="node">X6 Node</param>
+        /// <returns>DsfDotNetMultiAssignActivity</returns>
         private static DsfDotNetMultiAssignActivity CreateAssignActivity(Cell node)
         {
 
@@ -219,12 +258,10 @@ namespace Dev2.Activities.WF
 
         }
 
-        private static string GetNodeType(Cell node)
-        {
-            node.data.TryGetValue(Constants.TYPE, out var typeObj);
-            return typeObj as string;
-        }
-
+        /// <summary>
+        /// Creates Connections among flow nodes
+        /// </summary>
+        /// <param name="flowNodes">Flow Nodes</param>
         private void CreateConnections(Dictionary<string, FlowNode> flowNodes)
         {
             foreach (var connection in connections)
@@ -309,6 +346,11 @@ namespace Dev2.Activities.WF
             oldAttr?.Remove();
         }
 
+        /// <summary>
+        /// Add/replaces namespaces
+        /// </summary>
+        /// <param name="xmlString">xml</param>
+        /// <returns>Updated xml with added/replaced namespaces</returns>
         public static StringBuilder AddReplaceNameSpace(StringBuilder xmlString)
         {
             try

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.WF
 {
@@ -417,7 +416,11 @@ namespace Dev2.Activities.WF
         private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
         {
             var parser = new ActivityParser();
-            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ?? new DsfDecision();
+            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>());
+            if (dsfDecision == null)
+            {
+                dsfDecision = new DsfDecision { Conditions = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() } };
+            }
             return CreateDecisionNode(dsfDecision, nodeId);
         }
 

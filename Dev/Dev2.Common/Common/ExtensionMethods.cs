@@ -48,7 +48,7 @@ namespace Dev2.Common.Common
 
         public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem)
             where TSource : class => FromHierarchy(source, nextItem, s => s != null);
-        
+
         public static StringBuilder CleanEncodingHeaderForXmlSave(this StringBuilder sb)
         {
             var removeStartIdx = sb.IndexOf("<?", 0, false);
@@ -116,26 +116,47 @@ namespace Dev2.Common.Common
 
         public static StringBuilder ToStringBuilder(this string str) => new StringBuilder(str);
 
-        public static Stream EncodeForXmlDocument(this StringBuilder sb)
+        public static Stream EncodeForXmlDocument(this StringBuilder sb, bool tryUnicodeFirst = true)
         {
-            try
+            if (tryUnicodeFirst)
             {
-                var result = sb.EncodeStream(Encoding.Unicode);
-                XElement.Load(result);
-                result.Position = 0;
-                return result;
+                try
+                {
+                    return EncodeForXmlDocumentWithUnicode(sb);
+                }
+                catch (Exception ex)
+                {
+                    return EncodeForXmlDocumentWithUtf(sb);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                
-                var result = sb.EncodeStream(Encoding.UTF8);
-                XElement.Load(result);
-                result.Position = 0;
-                return result;
+                try
+                {
+                    return EncodeForXmlDocumentWithUtf(sb);
+                }
+                catch (Exception ex)
+                {
+                    return EncodeForXmlDocumentWithUnicode(sb);
+                }
             }
         }
 
-       
+        private static Stream EncodeForXmlDocumentWithUtf(StringBuilder sb)
+        {
+            var result = sb.EncodeStream(Encoding.UTF8);
+            XElement.Load(result);
+            result.Position = 0;
+            return result;
+        }
+
+        private static Stream EncodeForXmlDocumentWithUnicode(StringBuilder sb)
+        {
+            var result = sb.EncodeStream(Encoding.Unicode);
+            XElement.Load(result);
+            result.Position = 0;
+            return result;
+        }
 
         static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
@@ -560,6 +581,6 @@ namespace Dev2.Common.Common
 
         private static byte[] GetBytesFromBase64String(string base64String) => Convert.FromBase64String(base64String);
 
-        
+
     }
 }
