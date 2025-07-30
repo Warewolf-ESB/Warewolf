@@ -706,3 +706,22 @@ namespace Dev2.Activities.WF
         private static bool IsSerializable(object value)
         {
             var type = value.GetType();
+            return type.IsPrimitive || type == typeof(string) || type == typeof(DateTime) ||
+                   type == typeof(decimal) || type.IsEnum;
+        }
+
+        private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
+        {
+            switch (flowNode)
+            {
+                case FlowStep flowStep:
+                    return activityNodeMap.ContainsKey(flowStep.Action) ?
+                           activityNodeMap[flowStep.Action] : Guid.NewGuid().ToString();
+                default:
+                    return Guid.NewGuid().ToString();
+            }
+        }
+    }
+
+}
+
