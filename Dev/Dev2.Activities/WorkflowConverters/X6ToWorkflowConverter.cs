@@ -17,6 +17,19 @@ namespace Dev2.Activities.WF
     {
         private Dictionary<string, Activity> activityMap = new();
         private List<Cell> connections = new List<Cell>();
+        private Dictionary<string, SwitchCaseData> switchCaseMap = new(); // NEW: Store switch case data
+
+        private class SwitchCaseData
+        {
+            public List<SwitchCase> Cases { get; set; } = new();
+            public string DefaultCase { get; set; }
+        }
+
+        private class SwitchCase
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
+        }
 
         public static StringBuilder X6JsonToXaml(Dictionary<string, System.Text.StringBuilder> values)
         {
@@ -71,6 +84,8 @@ namespace Dev2.Activities.WF
             var nodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
             connections = x6Graph.Cells.Where(c => c.shape == "edge").ToList();
             Cell startcell = null;
+
+            ProcessSwitchCaseData(nodes);
 
             foreach (var node in nodes)
             {
@@ -216,9 +231,31 @@ namespace Dev2.Activities.WF
                                                      ")");
             }
 
+            if (node.data.TryGetValue("switchExpression", out var switchExprObj) && switchExprObj is string switchExprJson)
+            {
+                try
+                {
+                    var switchExpression = JsonConvert.DeserializeObject<dynamic>(switchExprJson);
+
+                    // Extract switch variable from expression if not already set
+                    if (string.IsNullOrEmpty(activity.ExpressionText) && switchExpression?.SwitchVariable != null)
+                    {
+                        var switchVar = switchExpression.SwitchVariable.ToString();
+                        activity.ExpressionText = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                                                             "(\"", switchVar, "\",",
+                                                             GlobalConstants.InjectedDecisionDataListVariable,
+                                                             ")");
+                    }
+                }
+                catch (JsonException)
+                {
+                    // If JSON parsing fails, continue with default values for
+                }
+            }
+
             // Set other properties if available
-            activity.UniqueID = node.data.TryGetValue("UniqueID", out var uniqueIdObj) && uniqueIdObj is string uniqueId 
-                ? uniqueId 
+            activity.UniqueID = node.data.TryGetValue("UniqueID", out var uniqueIdObj) && uniqueIdObj is string uniqueId
+                ? uniqueId
                 : Guid.NewGuid().ToString();
 
             return activity;
@@ -267,6 +304,10 @@ namespace Dev2.Activities.WF
 
         private void CreateConnections(Dictionary<string, FlowNode> flowNodes)
         {
+            // First, create connections from switch case data
+            CreateSwitchCaseConnections(flowNodes);
+
+            // Then create regular connections
             foreach (var connection in connections)
             {
                 if (connection.Source?.Id is not string sourceId ||
@@ -290,6 +331,151 @@ namespace Dev2.Activities.WF
                         break;
                 }
             }
+        }
+
+        private void CreateSwitchCaseConnections(Dictionary<string, FlowNode> flowNodes)
+        {
+            foreach (var kvp in switchCaseMap)
+            {
+                if (TryGetSwitchNode(flowNodes, kvp.Key, out var switchNode))
+                {
+                    ProcessSwitchCases(kvp.Value, kvp.Key, switchNode, flowNodes);
+                    ProcessDefaultCase(kvp.Value, kvp.Key, switchNode, flowNodes);
+                }
+            }
+        }
+
+        private static bool TryGetSwitchNode(Dictionary<string, FlowNode> flowNodes, string switchNodeId, out FlowSwitch<string> switchNode)
+        {
+            switchNode = null;
+            return flowNodes.TryGetValue(switchNodeId, out var flowNode) && 
+                   (switchNode = flowNode as FlowSwitch<string>) != null;
+        }
+
+        private void ProcessSwitchCases(SwitchCaseData caseData, string switchNodeId, FlowSwitch<string> switchNode, Dictionary<string, FlowNode> flowNodes)
+        {
+            foreach (var switchCase in caseData.Cases)
+            {
+                var matchingConnection = FindMatchingConnection(switchNodeId, switchCase.Key, switchCase.Value);
+                if (TryGetTargetNode(matchingConnection, flowNodes, out var targetNode))
+                {
+                    switchNode.Cases[switchCase.Key] = targetNode;
+                }
+            }
+        }
+
+        private void ProcessDefaultCase(SwitchCaseData caseData, string switchNodeId, FlowSwitch<string> switchNode, Dictionary<string, FlowNode> flowNodes)
+        {
+            if (string.IsNullOrEmpty(caseData.DefaultCase)) 
+                return;
+
+            var defaultConnection = FindDefaultConnection(switchNodeId, caseData.DefaultCase);
+            if (TryGetTargetNode(defaultConnection, flowNodes, out var defaultTargetNode))
+            {
+                switchNode.Default = defaultTargetNode;
+            }
+        }
+
+        private Cell FindMatchingConnection(string switchNodeId, string caseKey, string caseValue)
+        {
+            return connections.FirstOrDefault(c => 
+                c.Source?.Id == switchNodeId && 
+                (c.label == caseKey || c.label == caseValue));
+        }
+
+        private Cell FindDefaultConnection(string switchNodeId, string defaultCase)
+        {
+            return connections.FirstOrDefault(c => 
+                c.Source?.Id == switchNodeId && 
+                (c.label == "Default" || c.label == "default" || c.label == defaultCase));
+        }
+
+        private static bool TryGetTargetNode(Cell connection, Dictionary<string, FlowNode> flowNodes, out FlowNode targetNode)
+        {
+            targetNode = null;
+            return connection?.Target?.Id != null && 
+                   flowNodes.TryGetValue(connection.Target.Id, out targetNode);
+        }
+
+        private void ProcessSwitchCaseData(List<Cell> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                if (!TryGetNodeType(node, out string nodeType))
+                    continue;
+
+                if (IsSwitchNodeType(nodeType) && TryGetSwitchExpression(node, out string switchExprJson))
+                {
+                    ProcessSwitchExpressionJson(node.id, switchExprJson);
+                }
+            }
+        }
+
+        private static bool TryGetNodeType(Cell node, out string nodeType)
+        {
+            nodeType = null;
+            if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type)
+                return false;
+            
+            nodeType = type.ToLowerInvariant();
+            return true;
+        }
+
+        private static bool IsSwitchNodeType(string nodeType)
+        {
+            return nodeType.Contains("dsfflowswitchactivity") || nodeType.Contains("flowswitch");
+        }
+
+        private static bool TryGetSwitchExpression(Cell node, out string switchExprJson)
+        {
+            switchExprJson = null;
+            return node.data.TryGetValue("switchExpression", out var switchExprObj) && 
+                   switchExprObj is string expr && 
+                   !string.IsNullOrEmpty(expr) &&
+                   (switchExprJson = expr) != null;
+        }
+
+        private void ProcessSwitchExpressionJson(string nodeId, string switchExprJson)
+        {
+            try
+            {
+                var switchExpression = JsonConvert.DeserializeObject<dynamic>(switchExprJson);
+                var caseData = ExtractSwitchCaseData(switchExpression);
+                switchCaseMap[nodeId] = caseData;
+            }
+            catch (JsonException)
+            {
+                // If JSON parsing fails, continue without case data
+            }
+        }
+
+        private static SwitchCaseData ExtractSwitchCaseData(dynamic switchExpression)
+        {
+            var caseData = new SwitchCaseData();
+
+            // Extract cases
+            if (switchExpression?.Cases != null)
+            {
+                foreach (var caseItem in switchExpression.Cases)
+                {
+                    if (caseItem?.Key != null && caseItem?.Value != null)
+                    {
+                        caseData.Cases.Add(new SwitchCase
+                        {
+                            Key = caseItem.Key.ToString(),
+                            Value = caseItem.Value.ToString()
+                        });
+                    }
+                }
+            }
+
+            // Extract default case
+            if (switchExpression?.DefaultCase != null)
+            {
+                caseData.DefaultCase = switchExpression.DefaultCase.ToString();
+            }
+
+            return caseData;
         }
 
         private static void HandleDecisionConnection(Cell connection, FlowDecision decision, FlowNode targetNode)
@@ -384,44 +570,59 @@ namespace Dev2.Activities.WF
         {
             try
             {
-                var activityXaml = xmlString.ToString();
-                var doc = XElement.Parse(activityXaml);
-                XNamespace xmlnsNs = "http://www.w3.org/2000/xmlns/";
+                var doc = XElement.Parse(xmlString.ToString());
+                ProcessNamespaceReplacements(doc);
+                ProcessNamespacesForImplementation(doc);
+                ProcessReferencesForImplementation(doc);
+                ReplaceDefaultNamespace(doc);
+                return new StringBuilder(doc.ToString());
+            }
+            catch (Exception)
+            {
+                return xmlString;
+            }
+        }
 
-                // Helper to replace assembly name in given prefix
-                void ReplaceAssembly(string prefix)
+        private static void ProcessNamespaceReplacements(XElement doc)
+        {
+            XNamespace xmlnsNs = "http://www.w3.org/2000/xmlns/";
+
+            // Helper to replace assembly name in given prefix
+            void ReplaceAssembly(string prefix)
+            {
+                var attr = doc.Attribute(XName.Get(prefix, xmlnsNs.NamespaceName));
+                if (attr != null && attr.Value.Contains("System.Private.CoreLib"))
                 {
-                    var attr = doc.Attribute(XName.Get(prefix, xmlnsNs.NamespaceName));
-                    if (attr != null && attr.Value.Contains("System.Private.CoreLib"))
-                    {
-                        attr.Value = attr.Value.Replace("System.Private.CoreLib", "mscorlib");
-                    }
+                    attr.Value = attr.Value.Replace("System.Private.CoreLib", "mscorlib");
                 }
+            }
 
-                ReplaceAssembly("scg");
-                ReplaceAssembly("sco");
+            ReplaceAssembly("scg");
+            ReplaceAssembly("sco");
 
-                // Add missing xmlns declarations
-                void EnsureNamespace(string prefix, string uri)
-                {
-                    if (!doc.Attributes().Any(a => a.Name.LocalName == prefix && a.Name.Namespace == xmlnsNs))
-                    {
-                        doc.Add(new XAttribute(XNamespace.Xmlns + prefix, uri));
-                    }
-                }
+            // Add missing xmlns declarations
+            EnsureNamespace(doc, xmlnsNs, "av", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            EnsureNamespace(doc, xmlnsNs, "sap", "http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation");
+        }
 
-                EnsureNamespace("av", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-                EnsureNamespace("sap", "http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation");
+        private static void EnsureNamespace(XElement doc, XNamespace xmlnsNs, string prefix, string uri)
+        {
+            if (!doc.Attributes().Any(a => a.Name.LocalName == prefix && a.Name.Namespace == xmlnsNs))
+            {
+                doc.Add(new XAttribute(XNamespace.Xmlns + prefix, uri));
+            }
+        }
 
-                XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
+        private static void ProcessNamespacesForImplementation(XElement doc)
+        {
+            XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
+            var nsImpl = doc.Element(defaultNs + "TextExpression.NamespacesForImplementation");
+            
+            if (nsImpl == null) return;
 
-                // Replace content in TextExpression.NamespacesForImplementation
-                var nsImpl = doc.Element(defaultNs + "TextExpression.NamespacesForImplementation");
-                if (nsImpl != null)
-                {
-                    nsImpl.RemoveNodes();
+            nsImpl.RemoveNodes();
 
-                    const string nsImplBlock = @"
+            const string nsImplBlock = @"
 <scg:List x:TypeArguments=""x:String"" Capacity=""6"" 
           xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" 
           xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
@@ -433,21 +634,19 @@ namespace Dev2.Activities.WF
   <x:String>Unlimited.Applications.BusinessDesignStudio.Activities</x:String>
 </scg:List>";
 
-                    var parsedElements = XElement.Parse($"<wrapper>{nsImplBlock}</wrapper>").Elements();
-                    foreach (var node in parsedElements)
-                    {
-                        node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
-                        nsImpl.Add(node);
-                    }
-                }
+            AddParsedElements(nsImpl, nsImplBlock);
+        }
 
-                // Replace content in TextExpression.ReferencesForImplementation
-                var nsRImpl = doc.Element(defaultNs + "TextExpression.ReferencesForImplementation");
-                if (nsRImpl != null)
-                {
-                    nsRImpl.RemoveNodes();
+        private static void ProcessReferencesForImplementation(XElement doc)
+        {
+            XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
+            var nsRImpl = doc.Element(defaultNs + "TextExpression.ReferencesForImplementation");
+            
+            if (nsRImpl == null) return;
 
-                    const string referencesXml = @"
+            nsRImpl.RemoveNodes();
+
+            const string referencesXml = @"
 <sco:Collection xmlns:sco='clr-namespace:System.Collections.ObjectModel;assembly=mscorlib' 
                 x:TypeArguments='AssemblyReference'
                 xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'>
@@ -456,32 +655,36 @@ namespace Dev2.Activities.WF
   <AssemblyReference>Dev2.Activities</AssemblyReference>
 </sco:Collection>";
 
-                    var parsedCollection = XElement.Parse($"<wrapper>{referencesXml}</wrapper>").Elements();
-                    foreach (var node in parsedCollection)
-                    {
-                        node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
+            AddParsedElementsWithNamespace(nsRImpl, referencesXml, defaultNs);
+        }
 
-                        foreach (var descendant in node.DescendantsAndSelf())
-                        {
-                            if (descendant.Name.Namespace == XNamespace.None)
-                            {
-                                descendant.Name = XName.Get(descendant.Name.LocalName, defaultNs.NamespaceName);
-                            }
-                        }
-
-                        nsRImpl.Add(node);
-                    }
-                }
-
-                ReplaceDefaultNamespace(doc);
-
-                return new StringBuilder(doc.ToString());
-            }
-            catch (Exception)
+        private static void AddParsedElements(XElement parent, string xmlBlock)
+        {
+            var parsedElements = XElement.Parse($"<wrapper>{xmlBlock}</wrapper>").Elements();
+            foreach (var node in parsedElements)
             {
-                return xmlString;
+                node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
+                parent.Add(node);
             }
         }
 
+        private static void AddParsedElementsWithNamespace(XElement parent, string xmlBlock, XNamespace defaultNs)
+        {
+            var parsedCollection = XElement.Parse($"<wrapper>{xmlBlock}</wrapper>").Elements();
+            foreach (var node in parsedCollection)
+            {
+                node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
+
+                foreach (var descendant in node.DescendantsAndSelf())
+                {
+                    if (descendant.Name.Namespace == XNamespace.None)
+                    {
+                        descendant.Name = XName.Get(descendant.Name.LocalName, defaultNs.NamespaceName);
+                    }
+                }
+
+                parent.Add(node);
+            }
+        }
     }
 }

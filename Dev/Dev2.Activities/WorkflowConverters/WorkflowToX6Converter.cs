@@ -135,7 +135,61 @@ namespace Dev2.Activities.WF
                     return ProcessFlowSwitch(flowSwitch, graphData, activityNodeMap, previousNodeId);
 
                 default:
+                    // Handle generic FlowSwitch case by checking the type dynamically
+                    var flowNodeType = flowNode.GetType();
+                    if (flowNodeType.IsGenericType && flowNodeType.GetGenericTypeDefinition() == typeof(FlowSwitch<>))
+                    {
+                        // Convert to FlowSwitch<object> for processing
+                        var switchNode = ConvertToObjectSwitch(flowNode);
+                        if (switchNode != null)
+                        {
+                            return ProcessFlowSwitch(switchNode, graphData, activityNodeMap, previousNodeId);
+                        }
+                    }
                     return previousNodeId;
+            }
+        }
+
+        private static FlowSwitch<object> ConvertToObjectSwitch(FlowNode flowNode)
+        {
+            try
+            {
+                // Use reflection to access the properties of the generic FlowSwitch
+                var type = flowNode.GetType();
+                var expressionProperty = type.GetProperty("Expression");
+                var casesProperty = type.GetProperty("Cases");
+                var defaultProperty = type.GetProperty("Default");
+
+                if (expressionProperty == null || casesProperty == null)
+                    return null;
+
+                var expression = expressionProperty.GetValue(flowNode) as Activity;
+                var cases = casesProperty.GetValue(flowNode);
+                var defaultCase = defaultProperty?.GetValue(flowNode) as FlowNode;
+
+                var objectSwitch = new FlowSwitch<object>
+                {
+                    Expression = expression,
+                    Default = defaultCase
+                };
+
+                // Copy cases using reflection
+                if (cases is System.Collections.IDictionary casesDictionary)
+                {
+                    foreach (System.Collections.DictionaryEntry entry in casesDictionary)
+                    {
+                        if (entry.Key != null && entry.Value is FlowNode flowNodeValue)
+                        {
+                            objectSwitch.Cases[entry.Key] = flowNodeValue;
+                        }
+                    }
+                }
+
+                return objectSwitch;
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -195,6 +249,13 @@ namespace Dev2.Activities.WF
         {
             var switchNodeId = Guid.NewGuid().ToString();
             var switchNode = CreateSwitchNode(flowSwitch, switchNodeId);
+            
+            // Store the switch activity in the activity map if it has an expression
+            if (flowSwitch.Expression != null)
+            {
+                activityNodeMap[flowSwitch.Expression] = switchNodeId;
+            }
+            
             graphData.Nodes.Add(switchNode);
 
             if (!string.IsNullOrEmpty(previousNodeId))
@@ -208,9 +269,8 @@ namespace Dev2.Activities.WF
                 if (caseItem.Value != null)
                 {
                     var caseNodeId = ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
-                    graphData.Edges.Add(CreateEdge(switchNodeId,
-                        GetFirstNodeId(caseItem.Value, activityNodeMap),
-                        caseItem.Key?.ToString() ?? "Case"));
+                    var targetNodeId = GetTargetNodeId(caseItem.Value, activityNodeMap, caseNodeId);
+                    graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, caseItem.Key?.ToString() ?? "Case"));
                 }
             }
 
@@ -218,12 +278,32 @@ namespace Dev2.Activities.WF
             if (flowSwitch.Default != null)
             {
                 var defaultNodeId = ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
-                graphData.Edges.Add(CreateEdge(switchNodeId,
-                    GetFirstNodeId(flowSwitch.Default, activityNodeMap),
-                    "Default"));
+                var targetNodeId = GetTargetNodeId(flowSwitch.Default, activityNodeMap, defaultNodeId);
+                graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, "Default"));
             }
 
             return switchNodeId;
+        }
+
+        private static string GetTargetNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap, string fallbackNodeId)
+        {
+            // First try to get the node ID from the activity map
+            if (flowNode is FlowStep flowStep && flowStep.Action != null && activityNodeMap.ContainsKey(flowStep.Action))
+            {
+                return activityNodeMap[flowStep.Action];
+            }
+            
+            if (flowNode is FlowDecision flowDecision && flowDecision.Condition != null && activityNodeMap.ContainsKey(flowDecision.Condition))
+            {
+                return activityNodeMap[flowDecision.Condition];
+            }
+            
+            if (flowNode is FlowSwitch<object> flowSwitch && flowSwitch.Expression != null && activityNodeMap.ContainsKey(flowSwitch.Expression))
+            {
+                return activityNodeMap[flowSwitch.Expression];
+            }
+            
+            return fallbackNodeId;
         }
 
         private string ProcessIfActivity(If ifActivity, X6WorkflowLoadModel graphData,
@@ -380,7 +460,7 @@ namespace Dev2.Activities.WF
 
         private Cell CreateStartNode()
         {
-            return new Cell
+            var node = new Cell
             {
                 id = Guid.NewGuid().ToString(),
                 shape = Constants.RECT,
@@ -388,6 +468,11 @@ namespace Dev2.Activities.WF
                 label = Constants.START,
                 data = new Dictionary<string, object> { [Constants.TYPE] = Constants.START }
             };
+            
+            // Update position for next node
+            _currentY += 150;
+            
+            return node;
         }
 
         private Cell CreateActivityNode(Activity activity, string nodeId)
@@ -411,6 +496,10 @@ namespace Dev2.Activities.WF
             cell.data.Add(Constants.TYPE, activityType);
             cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
             cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
+            
+            // Update position for next node
+            _currentY += 150;
+            
             return cell;
         }
 
@@ -438,8 +527,7 @@ namespace Dev2.Activities.WF
 
         private Cell CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
         {
-
-            return new Cell
+            var cell = new Cell
             {
                 id = nodeId,
                 shape = Constants.POLYGON,
@@ -450,8 +538,109 @@ namespace Dev2.Activities.WF
                     [Constants.TYPE] = Constants.FLOWSWITCH,
                     [Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
                 }
-
             };
+
+            // Update position for next node
+            _currentY += 150;
+
+            // If the expression is a DsfFlowSwitchActivity, extract more detailed information
+            // Note: Expression is Activity<object>, but DsfFlowSwitchActivity inherits from DsfFlowNodeActivity<string>
+            if (flowSwitch.Expression != null)
+            {
+                // Try to access the underlying activity through reflection if needed
+                var expression = flowSwitch.Expression;
+                if (expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
+                {
+                    ProcessSwitchActivityReflection(expression, flowSwitch, cell);
+                }
+                else
+                {
+                    // Basic processing for other expression types
+                    cell.data[Constants.DISPLAYNAME] = expression.DisplayName ?? Constants.SWITCH;
+                    cell.label = expression.DisplayName ?? Constants.SWITCH;
+                }
+            }
+
+            return cell;
+        }
+
+        private static void ProcessSwitchActivityReflection(Activity expression, FlowSwitch<object> flowSwitch, Cell cell)
+        {
+            try
+            {
+                // Use reflection to access DsfFlowSwitchActivity properties
+                var type = expression.GetType();
+                
+                var displayNameProperty = type.GetProperty("DisplayName");
+                var expressionTextProperty = type.GetProperty("ExpressionText");
+                var uniqueIdProperty = type.GetProperty("UniqueID");
+
+                var displayName = displayNameProperty?.GetValue(expression) as string ?? Constants.SWITCH;
+                var expressionText = expressionTextProperty?.GetValue(expression) as string;
+                var uniqueId = uniqueIdProperty?.GetValue(expression) as string;
+
+                cell.data[Constants.DISPLAYNAME] = displayName;
+                cell.label = displayName;
+                
+                if (!string.IsNullOrEmpty(expressionText))
+                {
+                    cell.data["switchExpression"] = CreateSwitchExpressionJson(expressionText, flowSwitch);
+                }
+                
+                if (!string.IsNullOrEmpty(uniqueId))
+                {
+                    cell.data["UniqueID"] = uniqueId;
+                }
+            }
+            catch
+            {
+                // Fallback to basic processing
+                cell.data[Constants.DISPLAYNAME] = expression.DisplayName ?? Constants.SWITCH;
+                cell.label = expression.DisplayName ?? Constants.SWITCH;
+            }
+        }
+
+        private static string CreateSwitchExpressionJson(string expressionText, FlowSwitch<object> flowSwitch)
+        {
+            try
+            {
+                var switchExpression = new
+                {
+                    SwitchVariable = ExtractSwitchVariable(expressionText),
+                    Cases = flowSwitch.Cases.Select(c => new { Key = c.Key?.ToString(), Value = c.Key?.ToString() }).ToList(),
+                    DefaultCase = flowSwitch.Default != null ? "Default" : null
+                };
+
+                return JsonConvert.SerializeObject(switchExpression);
+            }
+            catch
+            {
+                // If serialization fails, return a basic expression
+                return JsonConvert.SerializeObject(new { SwitchVariable = "variable", Cases = new object[0] });
+            }
+        }
+
+        private static string ExtractSwitchVariable(string expressionText)
+        {
+            if (string.IsNullOrEmpty(expressionText))
+                return "variable";
+
+            // Try to extract variable name from expression like: Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[hello]]",AmbientDataList)
+            var match = System.Text.RegularExpressions.Regex.Match(expressionText, @"\[\[([^\]]+)\]\]");
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+
+            // Fallback to basic extraction
+            var startIndex = expressionText.IndexOf("\"[[") + 3;
+            var endIndex = expressionText.IndexOf("]]\"");
+            if (startIndex > 2 && endIndex > startIndex)
+            {
+                return expressionText.Substring(startIndex, endIndex - startIndex);
+            }
+
+            return "variable";
         }
 
         private static Cell CreateEdge(string sourceId, string targetId, string label = "")
@@ -468,9 +657,6 @@ namespace Dev2.Activities.WF
                 }
             };
         }
-
-
-
 
         private static string GetActivityLabel(Activity activity)
         {
@@ -520,21 +706,3 @@ namespace Dev2.Activities.WF
         private static bool IsSerializable(object value)
         {
             var type = value.GetType();
-            return type.IsPrimitive || type == typeof(string) || type == typeof(DateTime) ||
-                   type == typeof(decimal) || type.IsEnum;
-        }
-
-        private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
-        {
-            switch (flowNode)
-            {
-                case FlowStep flowStep:
-                    return activityNodeMap.ContainsKey(flowStep.Action) ?
-                           activityNodeMap[flowStep.Action] : Guid.NewGuid().ToString();
-                default:
-                    return Guid.NewGuid().ToString();
-            }
-        }
-    }
-
-}
