@@ -104,6 +104,15 @@ namespace Dev2.Activities
             try
             {
                 TryExecuteService(update, dataObject, pluginExecutionDto, args);
+                
+                // Check for errors in method execution and add them to the error collection
+                foreach (var methodInfo in args.MethodsToRun)
+                {
+                    if (methodInfo.HasError)
+                    {
+                        errors.AddError(methodInfo.ErrorMessage);
+                    }
+                }
             }
             catch (Exception e)
             {
