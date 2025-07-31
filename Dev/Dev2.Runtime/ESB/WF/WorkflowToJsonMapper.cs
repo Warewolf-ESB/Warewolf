@@ -84,14 +84,10 @@ namespace Dev2.Runtime.ESB.WF
                 using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))
                 {
                     var settings = new XamlXmlReaderSettings
-#if (WINDOWS || NETFRAMEWORK)
                     {
                         //LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
                         LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(DsfFlowDecisionActivity))
                     };
-#else
-                ();
-#endif
                     using (var reader = new XamlXmlReader(xamlStream, settings))
                     {
                         var xw = ActivityXamlServices.CreateBuilderReader(reader);
