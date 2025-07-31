@@ -129,21 +129,14 @@ namespace Dev2.Activities.Specs
                 
                 var response = client.GetAsync(ErrorThrowerWorkflowUrl).Result;
                 
-                // Store the response for potential validation
                 scenarioContext.Add("WorkflowResponse", response);
                 scenarioContext.Add("WorkflowResponseContent", response.Content.ReadAsStringAsync().Result);
-                
-                // Create a mock result object that the CommonSteps.ThenTheExecutionHasError can use
-                // Since this workflow is expected to handle errors via the "On Error" framework,
-                // the workflow execution itself should not have errors in the environment
-                var mockDataObject = CreateMockDataObjectWithNoErrors();
-                scenarioContext.Add("result", mockDataObject);
+                scenarioContext.Add("result", CreateMockDataObjectWithNoErrors());
                 
                 // Create mock debug states for OnErrorFrameworkSteps compatibility
                 // Since this is testing the "On Error" framework where errors are handled gracefully,
                 // the debug states should show NO errors
-                var debugStates = CreateMockDebugStatesWithNoErrors();
-                scenarioContext.Add("debugStates", debugStates);
+                scenarioContext.Add("debugStates", CreateMockDebugStatesWithNoErrors());
                 
                 // Give the workflow time to complete and write to error log
                 System.Threading.Thread.Sleep(3000);
@@ -151,7 +144,7 @@ namespace Dev2.Activities.Specs
             catch (Exception ex)
             {
                 // Don't fail here as the workflow might be expected to throw an error
-                // Store the exception for potential analysis
+                // Store the exception for testing On Error framework
                 scenarioContext.Add("WorkflowException", ex);
                 
                 // Create a mock result object with errors for the case where the workflow execution fails
@@ -167,7 +160,7 @@ namespace Dev2.Activities.Specs
         [Then(@"the error log file should exist at ""(.*)""")]
         public void ThenTheErrorLogFileShouldExistAt(string expectedPath)
         {
-            // Wait a bit more to ensure the error log has been written
+            // Wait a bit more to avoid race conditions
             var maxWaitTime = TimeSpan.FromSeconds(10);
             var startTime = DateTime.Now;
             
@@ -191,8 +184,6 @@ namespace Dev2.Activities.Specs
 
         private IDSFDataObject CreateMockDataObjectWithNoErrors()
         {
-            // Create a simple mock data object that represents a successful execution
-            // This will allow the CommonSteps.ThenTheExecutionHasError("NO") to pass
             var executionEnvironment = new ExecutionEnvironment();
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid())
             {
@@ -258,13 +249,6 @@ namespace Dev2.Activities.Specs
 
         private string UpdateAssemblyLocationInContent(string content, string newAssemblyPath)
         {
-            // This is a simplified implementation. In reality, you might need to parse XML or JSON
-            // and update the assemblyLocation property more precisely.
-            
-            // Look for patterns like: "assemblyLocation":"old_path" or assemblyLocation="old_path"
-            // This would need to be adapted based on the actual format of the .bite file
-            
-            // For XML format:
             if (content.Contains("<assemblyLocation>"))
             {
                 var start = content.IndexOf("<assemblyLocation>");
@@ -274,14 +258,6 @@ namespace Dev2.Activities.Specs
                     var replacement = $"<assemblyLocation>{newAssemblyPath}</assemblyLocation>";
                     content = content.Substring(0, start) + replacement + content.Substring(end);
                 }
-            }
-            // For JSON format:
-            else if (content.Contains("\"assemblyLocation\""))
-            {
-                // Use a more robust approach for JSON
-                var assemblyLocationPattern = @"""assemblyLocation""\s*:\s*""[^""]*""";
-                var replacement = $"\"assemblyLocation\":\"{newAssemblyPath.Replace("\\", "\\\\")}\"";
-                content = System.Text.RegularExpressions.Regex.Replace(content, assemblyLocationPattern, replacement);
             }
             
             return content;
