@@ -9,6 +9,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Interfaces;
 using Dev2.Common.Interfaces;
 using System.Activities;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.OnErrorFramework
 {
@@ -92,7 +93,6 @@ namespace Dev2.Activities.Specs.OnErrorFramework
         [Then(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string hasError)
         {
-            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             
             if (hasError == "AN")
@@ -112,7 +112,6 @@ namespace Dev2.Activities.Specs.OnErrorFramework
         [Then(@"""(.*)"" equals ""(.*)""")]
         public void ThenVariableEquals(string variableName, string expectedValue)
         {
-            TryGetValue("environment", out IServer environment);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             
             // Get the last debug state that has outputs containing our variable
@@ -153,6 +152,10 @@ namespace Dev2.Activities.Specs.OnErrorFramework
         T Get<T>(string keyName)
         {
             return _scenarioContext.Get<T>(keyName);
+        }
+        protected override void BuildDataList()
+        {
+            throw new NotImplementedException();
         }
     }
 }
