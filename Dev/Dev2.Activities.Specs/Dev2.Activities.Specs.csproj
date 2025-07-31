@@ -211,12 +211,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
-    <Compile Include="DotNetPluginErrorHandlingSteps.cs" />
-    <Compile Include="DotNetPluginErrorHandling.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DotNetPluginErrorHandling.feature</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
@@ -367,9 +361,6 @@
     </None>
     <None Include="StudioTestFramework\StudioTestFramework.feature">
       <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
-    </None>
-    <None Include="DotNetPluginErrorHandling.feature">
-      <LastGenOutput>DotNetPluginErrorHandling.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
