@@ -219,6 +219,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiAssignOnErrorHandlingSteps.cs" />
     <Compile Include="OnErrorFramework\OnErrorFrameworkSteps.cs" />
   </ItemGroup>
   <ItemGroup>
