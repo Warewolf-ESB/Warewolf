@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
 
 #if !(WINDOWS || NETFRAMEWORK)
-            DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
+                DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
 #endif
                 using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))
                 {
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.WF
                         LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(DsfFlowDecisionActivity))
                     };
 #else
-				();
+                ();
 #endif
                     using (var reader = new XamlXmlReader(xamlStream, settings))
                     {
