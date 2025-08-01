@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiAssignOnErrorHandling.feature.cs" />
+    <Compile Include="MultiAssignOnErrorHandlingSteps.cs" />
     <Compile Include="OnErrorFramework\OnErrorFrameworkSteps.cs" />
     <Compile Include="OnErrorIntegration.feature.cs" />
   </ItemGroup>
