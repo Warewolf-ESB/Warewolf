@@ -49,8 +49,8 @@ namespace Dev2.Activities.Specs
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "MultiAssignOnErrorHandling", "\tIn order to test error handling in MultiAssign activities\r\n\tAs a Warewolf user\r\n" +
-                    "\tI want to ensure that errors are properly handled by the \"On Error\" framework", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "MultiAssignOnErrorHandling", "In order to test error handling in MultiAssign activities\r\nAs a Warewolf user\r\nI " +
+                    "want to ensure that errors are properly handled by the \"On Error\" framework", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -113,7 +113,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table851 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -125,25 +125,25 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[..invalid]]",
                             "test"});
 #line 9
- testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table851, "And ");
+testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table851, "And ");
 #line hidden
 #line 13
- testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
- testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
- testRunner.And("\"ErrorAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 16
- testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 18
- testRunner.And("\"[[Error]]\" equals \"The following variable [[..invalid]] is not evaluated : parse" +
+testRunner.And("\"[[Error]]\" equals \"The following variable [[..invalid]] is not evaluated : parse" +
                         " error: {..invalid }.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -170,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 21
- testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table852 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -182,22 +182,22 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[..invalid]]",
                             "test"});
 #line 22
- testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table852, "And ");
+testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table852, "And ");
 #line hidden
 #line 26
- testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 27
- testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"ErrorHandler\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"ErrorHandler\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
- testRunner.And("\"ErrorAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 29
- testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -223,7 +223,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 33
- testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have a workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table853 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -235,25 +235,25 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[..invalid]]",
                             "test"});
 #line 34
- testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table853, "And ");
+testRunner.And("\"MultiAssignErrorWorkflow\" contains an Assign \"ErrorAssign\" as", ((string)(null)), table853, "And ");
 #line hidden
 #line 38
- testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 39
- testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 40
- testRunner.And("\"ErrorAssign\" has IsEndedOnError \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"ErrorAssign\" has IsEndedOnError \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 41
- testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("I execute the workflow \"MultiAssignErrorWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 42
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 43
- testRunner.And("\"[[Error]]\" equals \"The following variable [[..invalid]] is not evaluated : parse" +
+testRunner.And("\"[[Error]]\" equals \"The following variable [[..invalid]] is not evaluated : parse" +
                         " error: {..invalid }.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -280,7 +280,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 46
- testRunner.Given("I have a workflow \"MultiAssignSuccessWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have a workflow \"MultiAssignSuccessWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table854 = new TechTalk.SpecFlow.Table(new string[] {
                             "variable",
@@ -292,31 +292,31 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[var2]]",
                             "value2"});
 #line 47
- testRunner.And("\"MultiAssignSuccessWorkflow\" contains an Assign \"SuccessAssign\" as", ((string)(null)), table854, "And ");
+testRunner.And("\"MultiAssignSuccessWorkflow\" contains an Assign \"SuccessAssign\" as", ((string)(null)), table854, "And ");
 #line hidden
 #line 51
- testRunner.And("\"SuccessAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"SuccessAssign\" has OnErrorVariable \"[[Error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 52
- testRunner.And("\"SuccessAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"SuccessAssign\" has OnErrorWorkflow \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 53
- testRunner.And("\"SuccessAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"SuccessAssign\" has IsEndedOnError \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 54
- testRunner.When("I execute the workflow \"MultiAssignSuccessWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("I execute the workflow \"MultiAssignSuccessWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 55
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 56
- testRunner.And("\"[[var1]]\" equals \"value1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"[[var1]]\" equals \"value1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 57
- testRunner.And("\"[[var2]]\" equals \"value2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"[[var2]]\" equals \"value2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 58
- testRunner.And("\"[[Error]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("\"[[Error]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
