@@ -4,7 +4,7 @@
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://www.warewolf.io/contributors.php>
+*  AUTHORS <http://www.warewolf.io/authors.php> , CONTRIBUTORS <http://www.warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs
         const string ErrorThrowerWorkflowPath = @"C:\programdata\Warewolf\resources\ErrorThrower.bite";
         const string ErrorLogPath = @"c:\error.log";
         const string FetchExplorerItemsUrl = "http://localhost:3142/public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true";
-        const string ErrorThrowerWorkflowUrl = "http://localhost:3142/public/ErrorThrower";
+        const string ErrorThrowerWorkflowUrl = "http://localhost:3142/secure/ErrorThrower";
 
         public DotNetPluginErrorHandlingSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
