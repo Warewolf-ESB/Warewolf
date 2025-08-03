@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -177,8 +178,12 @@ namespace Dev2.Activities.Specs
         {
             try
             {
+                var handler = new HttpClientHandler()
+                {
+                    Credentials = CredentialCache.DefaultNetworkCredentials
+                };
                 Console.WriteLine($"Executing workflow: {workflowName}");
-                using var client = new HttpClient();
+                using var client = new HttpClient(handler);
                 client.Timeout = TimeSpan.FromSeconds(120); // Extended timeout for build agents
                 
                 var response = client.GetAsync(ErrorThrowerWorkflowUrl).Result;
