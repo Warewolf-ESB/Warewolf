@@ -1,14 +1,7 @@
 ﻿using Dev2.Activities.WF;
-using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Communication;
 using Newtonsoft.Json;
-using System;
-using System.Activities;
-using System.Activities.XamlIntegration;
 using System.Text;
-using System.Xaml;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -52,54 +45,11 @@ namespace Dev2.Runtime.ESB.WF
         /// <returns></returns>
         public static string MapToJson(Common.X6.X6RequestInfo requestInfo)
         {
-            var builder = GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
+            var builder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
             if (builder == null) { return string.Empty; }
 
             var graph = new WorkflowToX6Converter().ConvertToX6Json(builder, requestInfo.WorkflowXML);
             return graph;
-        }
-
-        /// <summary>
-        /// Gets Xaml ActivityBuilder from xamlDefinition.
-        /// </summary>
-        /// <param name="xamlDefinition">The xaml definition.</param>
-        /// <returns cref="ActivityBuilder">ActivityBuilder</returns>
-        public static ActivityBuilder GetXamlActivityBuilderAsDataActivities(StringBuilder xamlDefinition)
-        {
-            if (xamlDefinition == null || xamlDefinition.Length == 0)
-            {
-                return null;
-            }
-
-            try
-            {
-                if (GlobalConstants.RuntimeNamespaceClean)
-                {
-                    xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
-                }
-
-#if !(WINDOWS || NETFRAMEWORK)
-                DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
-#endif
-                using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))
-                {
-                    var settings = new XamlXmlReaderSettings
-                    {
-                        //LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
-                        LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(DsfFlowDecisionActivity))
-                    };
-                    using (var reader = new XamlXmlReader(xamlStream, settings))
-                    {
-                        var xw = ActivityXamlServices.CreateBuilderReader(reader);
-                        var load = XamlServices.Load(xw);
-                        return load as ActivityBuilder;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
     }
 }

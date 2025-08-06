@@ -510,9 +510,18 @@ namespace Dev2.Activities
             }
         }
 
-        public void ToX6Json(Common.X6.Cell cell)
+        public override void ToX6Json(Common.X6.Cell cell)
         {
             if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            if (this._inner != null)
+            {
+                this._inner.ToX6Json(cell);
+            }
+            else
+            {
+                base.ToX6Json(cell);
+            }
 
             var label = GetDisplayName();
             cell.label = label;
@@ -524,15 +533,17 @@ namespace Dev2.Activities
             cell.data.Add(Constants.AND, And);
         }
 
-        public void FromX6Json(Common.X6.Cell cell)
+        public override void FromX6Json(Common.X6.Cell cell)
         {
-            if (cell.data == null) return;
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
 
             object expression, and;
             cell.data.TryGetValue(Constants.EXPRESSION, out expression);
             cell.data.TryGetValue(Constants.AND, out and);
 
-            if(and != null)
+            if (and != null)
             {
                 this.And = And;
             }
@@ -551,6 +562,8 @@ namespace Dev2.Activities
                 }
             }
         }
+
+
     }
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
