@@ -224,10 +224,11 @@ public class Dev2XamlSchemaContext : XamlSchemaContext
 {
     private readonly Assembly _targetAssembly;
     private readonly Dictionary<string, Assembly> _assemblyCache;
-
+    private readonly string _targetAssemblyName;
     public Dev2XamlSchemaContext(Assembly targetAssembly) : base()
     {
         _targetAssembly = targetAssembly;
+        _targetAssemblyName = targetAssembly.GetName().Name;
         _assemblyCache = new Dictionary<string, Assembly>(StringComparer.OrdinalIgnoreCase);
 
         // Pre-populate cache with all currently loaded assemblies in AppDomain
@@ -333,6 +334,16 @@ public class Dev2XamlSchemaContext : XamlSchemaContext
                 if (assemblyPart != null)
                 {
                     assemblyName = assemblyPart.Substring("assembly=".Length);
+                }
+            }
+
+            if(_targetAssemblyName == assemblyName)
+            {
+                var fullTypeName = $"{namespaceName}.{typeName}";
+                var type = _targetAssembly.GetType(fullTypeName);
+                if (type != null)
+                {
+                    return type;
                 }
             }
 
