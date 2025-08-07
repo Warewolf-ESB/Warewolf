@@ -98,6 +98,7 @@
     <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
+    <Compile Include="ESB\WF\XamlActivityHelper.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="ESB\WF\JsonToWorkflowMapper.cs" />

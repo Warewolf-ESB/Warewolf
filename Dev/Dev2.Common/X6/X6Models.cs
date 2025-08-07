@@ -34,12 +34,17 @@ namespace Dev2.Common.X6
 
         public const string ISDECISIONARM = "isDecisionArm";
         public const string ISTRUEARM = "isTrue";
+
+        public const string ONERRORDATA = "onerrordata";
+        public const string FIELDS = "fields";
+        public const string UPDATEDFIELDS = "updatedfields";
+        
     }
     public class X6WorkflowLoadModel
     {
         [JsonProperty("workflowxml")]
         public string WorkflowXml { get; set; }
-        
+
         [JsonProperty("nodes")]
         public List<Cell> Nodes { get; set; } = new List<Cell>();
 
@@ -105,7 +110,7 @@ namespace Dev2.Common.X6
 
         public Position()
         {
-                
+
         }
 
         public Position(float x, float y)
@@ -155,5 +160,15 @@ namespace Dev2.Common.X6
         }
     }
 
+    public class X6NodeOnErrorData
+    {
+        [JsonProperty("errorMessage")]
+        public string OnErrorVariable { get; set; }
+        [JsonProperty("webServiceUrl")]
+        public string OnErrorWorkflow { get; set; }
+        [JsonProperty("endWorkflow")]
+        public bool IsEndedOnError { get; set; }
 
+        public X6NodeOnErrorData() { }
+    }
 }
