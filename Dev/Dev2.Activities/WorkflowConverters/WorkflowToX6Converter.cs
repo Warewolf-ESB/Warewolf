@@ -7,6 +7,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Resource.Errors;
 
@@ -91,9 +92,12 @@ namespace Dev2.Activities.WF
                 default:
                     return ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId);
             }
-        }
+		}
 
-        private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static string GenerateNodeId() => Guid.NewGuid().ToString();
+
+		private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var currentNodeId = parentNodeId;
@@ -706,3 +710,19 @@ namespace Dev2.Activities.WF
         private static bool IsSerializable(object value)
         {
             var type = value.GetType();
+			return type.IsPrimitive || type == typeof(string) || type == typeof(DateTime) ||
+				   type == typeof(decimal) || type.IsEnum;
+		}
+
+		private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
+		{
+			return flowNode switch
+			{
+				FlowStep flowStep when activityNodeMap.ContainsKey(flowStep.Action) => activityNodeMap[flowStep.Action],
+				_ => GenerateNodeId()
+			};
+		}
+	}
+
+}
+
