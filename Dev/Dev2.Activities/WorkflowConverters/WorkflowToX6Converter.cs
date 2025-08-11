@@ -9,30 +9,42 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities.WF
 {
+    /// <summary>
+    /// Converts workflow to X6 based Json
+    /// </summary>
     public class WorkflowToX6Converter
     {
         private int _currentX = 100;
         private int _currentY = 100;
 
+        // Cache for reflection-based property lookups to avoid repeated reflection calls
+        private static readonly Dictionary<Type, PropertyInfo[]> _typePropertyCache = new();
+        private static readonly Dictionary<Type, PropertyInfo[]> _childActivityPropertiesCache = new();
+
+        // Reusable collections to reduce allocations
+        private readonly List<Activity> _tempChildActivities = new(16);
+        private readonly List<string> _tempEndNodes = new(8);
+
+        /// <summary>
+        /// Convert workflow (ActivityBuilder) to X6 Json
+        /// </summary>
+        /// <param name="workflow">ActivityBuilder</param>
+        /// <param name="xml">Workflow Xaml</param>
+        /// <returns>Json serialized string</returns>
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
-
             var graphData = new X6WorkflowLoadModel { WorkflowXml = xml };
-            //var graphData = new X6GraphData();
-            var activityNodeMap = new Dictionary<Activity, string>();
+            var activityNodeMap = new Dictionary<Activity, string>(64); 
 
             var startNode = CreateStartNode();
             graphData.Nodes.Add(startNode);
 
-            var previousNodeId = startNode.id;
-
             if (workflow.Implementation != null)
             {
-                ProcessActivity(workflow.Implementation, graphData, activityNodeMap, previousNodeId);
+                ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
             }
 
             return JsonConvert.SerializeObject(graphData);
@@ -45,13 +57,11 @@ namespace Dev2.Activities.WF
 
             string nodeId;
 
-
-            if (!(activity is Flowchart))
+            if (activity is not Flowchart)
             {
-                nodeId = Guid.NewGuid().ToString();
+                nodeId = GenerateNodeId();
                 activityNodeMap[activity] = nodeId;
                 var node = CreateActivityNode(activity, nodeId);
-
                 graphData.Nodes.Add(node);
 
                 if (!string.IsNullOrEmpty(previousNodeId))
@@ -60,51 +70,37 @@ namespace Dev2.Activities.WF
                 }
             }
             else
-                nodeId = previousNodeId;
-
-
-            switch (activity)
             {
-                case Sequence sequence:
-                    return ProcessSequence(sequence, graphData, activityNodeMap, nodeId);
-
-                case Flowchart flowchart:
-                    return ProcessFlowchart(flowchart, graphData, activityNodeMap, nodeId);
-
-                case If ifActivity:
-                    return ProcessIfActivity(ifActivity, graphData, activityNodeMap, nodeId);
-
-                case While whileActivity:
-                    return ProcessWhileActivity(whileActivity, graphData, activityNodeMap, nodeId);
-
-                //case System.Activities.Statements.ForEach<> forEachActivity:
-                //    return ProcessForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId);
-
-                case DoWhile doWhileActivity:
-                    return ProcessDoWhileActivity(doWhileActivity, graphData, activityNodeMap, nodeId);
-
-                case TryCatch tryCatchActivity:
-                    return ProcessTryCatchActivity(tryCatchActivity, graphData, activityNodeMap, nodeId);
-
-                case Parallel parallelActivity:
-                    return ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId);
-
-                default:
-                    return ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId);
+                nodeId = previousNodeId;
             }
-		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string GenerateNodeId() => Guid.NewGuid().ToString();
+            return activity switch
+            {
+                Sequence sequence => ProcessSequence(sequence, graphData, activityNodeMap, nodeId),
+                Flowchart flowchart => ProcessFlowchart(flowchart, graphData, activityNodeMap, nodeId),
+                If ifActivity => ProcessIfActivity(ifActivity, graphData, activityNodeMap, nodeId),
+                While whileActivity => ProcessWhileActivity(whileActivity, graphData, activityNodeMap, nodeId),
+                DoWhile doWhileActivity => ProcessDoWhileActivity(doWhileActivity, graphData, activityNodeMap, nodeId),
+                TryCatch tryCatchActivity => ProcessTryCatchActivity(tryCatchActivity, graphData, activityNodeMap, nodeId),
+                Parallel parallelActivity => ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId),
+                //ForEach<> forEachActivity => ProcessForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId),
+                DsfFlowSwitchActivity<object> flowSwitchActivity => ProcessFlowSwitch(flowSwitchActivity, graphData, activityNodeMap, nodeId)
+				_ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
+            };
+        }
 
-		private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string GenerateNodeId() => Guid.NewGuid().ToString();
+
+        private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             var currentNodeId = parentNodeId;
+            var activities = sequence.Activities;
 
-            foreach (var childActivity in sequence.Activities)
+            for (int i = 0; i < activities.Count; i++)
             {
-                currentNodeId = ProcessActivity(childActivity, graphData, activityNodeMap, currentNodeId);
+                currentNodeId = ProcessActivity(activities[i], graphData, activityNodeMap, currentNodeId);
             }
 
             return currentNodeId;
@@ -113,90 +109,23 @@ namespace Dev2.Activities.WF
         private string ProcessFlowchart(Flowchart flowchart, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            var processedNodes = new List<string>();
+            if (flowchart.StartNode == null) return parentNodeId;
 
-            if (flowchart.StartNode != null)
-            {
-                var startNodeId = ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
-                processedNodes.Add(startNodeId);
-            }
-
-            return processedNodes.LastOrDefault() ?? parentNodeId;
+            return ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
         }
 
         private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            switch (flowNode)
+            return flowNode switch
             {
-                case FlowStep flowStep:
-                    return ProcessFlowStep(flowStep, graphData, activityNodeMap, previousNodeId);
-
-                case FlowDecision flowDecision:
-                    return ProcessFlowDecision(flowDecision, graphData, activityNodeMap, previousNodeId);
-
-                case FlowSwitch<object> flowSwitch:
-                    return ProcessFlowSwitch(flowSwitch, graphData, activityNodeMap, previousNodeId);
-
-                default:
-                    // Handle generic FlowSwitch case by checking the type dynamically
-                    var flowNodeType = flowNode.GetType();
-                    if (flowNodeType.IsGenericType && flowNodeType.GetGenericTypeDefinition() == typeof(FlowSwitch<>))
-                    {
-                        // Convert to FlowSwitch<object> for processing
-                        var switchNode = ConvertToObjectSwitch(flowNode);
-                        if (switchNode != null)
-                        {
-                            return ProcessFlowSwitch(switchNode, graphData, activityNodeMap, previousNodeId);
-                        }
-                    }
-                    return previousNodeId;
-            }
+                FlowStep flowStep => ProcessFlowStep(flowStep, graphData, activityNodeMap, previousNodeId),
+                FlowDecision flowDecision => ProcessFlowDecision(flowDecision, graphData, activityNodeMap, previousNodeId),
+                FlowSwitch<object> flowSwitch => ProcessFlowSwitch(flowSwitch, graphData, activityNodeMap, previousNodeId),
+                _ => previousNodeId
+            };
         }
-
-        private static FlowSwitch<object> ConvertToObjectSwitch(FlowNode flowNode)
-        {
-            try
-            {
-                // Use reflection to access the properties of the generic FlowSwitch
-                var type = flowNode.GetType();
-                var expressionProperty = type.GetProperty("Expression");
-                var casesProperty = type.GetProperty("Cases");
-                var defaultProperty = type.GetProperty("Default");
-
-                if (expressionProperty == null || casesProperty == null)
-                    return null;
-
-                var expression = expressionProperty.GetValue(flowNode) as Activity;
-                var cases = casesProperty.GetValue(flowNode);
-                var defaultCase = defaultProperty?.GetValue(flowNode) as FlowNode;
-
-                var objectSwitch = new FlowSwitch<object>
-                {
-                    Expression = expression,
-                    Default = defaultCase
-                };
-
-                // Copy cases using reflection
-                if (cases is System.Collections.IDictionary casesDictionary)
-                {
-                    foreach (System.Collections.DictionaryEntry entry in casesDictionary)
-                    {
-                        if (entry.Key != null && entry.Value is FlowNode flowNodeValue)
-                        {
-                            objectSwitch.Cases[entry.Key] = flowNodeValue;
-                        }
-                    }
-                }
-
-                return objectSwitch;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
+        
         private string ProcessFlowStep(FlowStep flowStep, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
@@ -205,7 +134,6 @@ namespace Dev2.Activities.WF
             if (flowStep.Next != null)
             {
                 ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
-                return nodeId;
             }
 
             return nodeId;
@@ -214,7 +142,7 @@ namespace Dev2.Activities.WF
         private string ProcessFlowDecision(FlowDecision flowDecision, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            var decisionNodeId = Guid.NewGuid().ToString();
+            var decisionNodeId = GenerateNodeId();
             var decisionNode = CreateDecisionNode(flowDecision, decisionNodeId);
             graphData.Nodes.Add(decisionNode);
 
@@ -223,26 +151,20 @@ namespace Dev2.Activities.WF
                 graphData.Edges.Add(CreateEdge(previousNodeId, decisionNodeId));
             }
 
-            var endNodes = new List<string>();
-
             // Process True branch
             if (flowDecision.True != null)
             {
                 var trueNodeId = ProcessFlowNode(flowDecision.True, graphData, activityNodeMap, null);
-                graphData.Edges.Add(CreateEdge(decisionNodeId,
-                    activityNodeMap.ContainsValue(trueNodeId) ? trueNodeId : GetFirstNodeId(flowDecision.True, activityNodeMap),
-                    Constants.TRUE));
-                endNodes.Add(trueNodeId);
+                var targetNodeId = activityNodeMap.ContainsValue(trueNodeId) ? trueNodeId : GetFirstNodeId(flowDecision.True, activityNodeMap);
+                graphData.Edges.Add(CreateEdge(decisionNodeId, targetNodeId, Constants.TRUE));
             }
 
             // Process False branch
             if (flowDecision.False != null)
             {
                 var falseNodeId = ProcessFlowNode(flowDecision.False, graphData, activityNodeMap, null);
-                graphData.Edges.Add(CreateEdge(decisionNodeId,
-                    activityNodeMap.ContainsValue(falseNodeId) ? falseNodeId : GetFirstNodeId(flowDecision.False, activityNodeMap),
-                    Constants.FALSE));
-                endNodes.Add(falseNodeId);
+                var targetNodeId = activityNodeMap.ContainsValue(falseNodeId) ? falseNodeId : GetFirstNodeId(flowDecision.False, activityNodeMap);
+                graphData.Edges.Add(CreateEdge(decisionNodeId, targetNodeId, Constants.FALSE));
             }
 
             return decisionNodeId;
@@ -251,7 +173,7 @@ namespace Dev2.Activities.WF
         private string ProcessFlowSwitch(FlowSwitch<object> flowSwitch, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            var switchNodeId = Guid.NewGuid().ToString();
+            var switchNodeId = GenerateNodeId();
             var switchNode = CreateSwitchNode(flowSwitch, switchNodeId);
             
             // Store the switch activity in the activity map if it has an expression
@@ -267,22 +189,21 @@ namespace Dev2.Activities.WF
                 graphData.Edges.Add(CreateEdge(previousNodeId, switchNodeId));
             }
 
-            // Process each case
             foreach (var caseItem in flowSwitch.Cases)
             {
                 if (caseItem.Value != null)
                 {
-                    var caseNodeId = ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
-                    var targetNodeId = GetTargetNodeId(caseItem.Value, activityNodeMap, caseNodeId);
-                    graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, caseItem.Key?.ToString() ?? "Case"));
+                    ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
+                    var targetNodeId = GetFirstNodeId(caseItem.Value, activityNodeMap);
+                    var label = caseItem.Key?.ToString() ?? "Case";
+                    graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, label));
                 }
             }
 
-            // Process default case
             if (flowSwitch.Default != null)
             {
-                var defaultNodeId = ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
-                var targetNodeId = GetTargetNodeId(flowSwitch.Default, activityNodeMap, defaultNodeId);
+                ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
+                var targetNodeId = GetFirstNodeId(flowSwitch.Default, activityNodeMap);
                 graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, "Default"));
             }
 
@@ -313,37 +234,34 @@ namespace Dev2.Activities.WF
         private string ProcessIfActivity(If ifActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            var endNodes = new List<string> { parentNodeId };
+            var lastNodeId = parentNodeId;
 
             // Process Then branch
             if (ifActivity.Then != null)
             {
-                var thenNodeId = ProcessActivity(ifActivity.Then, graphData, activityNodeMap, parentNodeId);
-                endNodes.Add(thenNodeId);
+                lastNodeId = ProcessActivity(ifActivity.Then, graphData, activityNodeMap, parentNodeId);
             }
 
             // Process Else branch
             if (ifActivity.Else != null)
             {
                 var elseNodeId = ProcessActivity(ifActivity.Else, graphData, activityNodeMap, parentNodeId);
-                endNodes.Add(elseNodeId);
+                lastNodeId = elseNodeId; // Use the else branch as the final node
             }
 
-            return endNodes.Last();
+            return lastNodeId;
         }
 
         private string ProcessWhileActivity(While whileActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            if (whileActivity.Body != null)
-            {
-                var bodyNodeId = ProcessActivity(whileActivity.Body, graphData, activityNodeMap, parentNodeId);
-                // Create loop back edge
-                graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
-                return bodyNodeId;
-            }
+            if (whileActivity.Body == null) return parentNodeId;
 
-            return parentNodeId;
+            var bodyNodeId = ProcessActivity(whileActivity.Body, graphData, activityNodeMap, parentNodeId);
+            
+            // Create loop back edge
+            graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            return bodyNodeId;
         }
 
         //private string ProcessForEachActivity(ForEach forEachActivity, X6GraphData graphData,
@@ -360,113 +278,116 @@ namespace Dev2.Activities.WF
         private string ProcessDoWhileActivity(DoWhile doWhileActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            if (doWhileActivity.Body != null)
-            {
-                var bodyNodeId = ProcessActivity(doWhileActivity.Body, graphData, activityNodeMap, parentNodeId);
-                // Create loop back edge
-                graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
-                return bodyNodeId;
-            }
+            if (doWhileActivity.Body == null) return parentNodeId;
 
-            return parentNodeId;
+            var bodyNodeId = ProcessActivity(doWhileActivity.Body, graphData, activityNodeMap, parentNodeId);
+            // Create loop back edge
+            graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            return bodyNodeId;
         }
 
         private string ProcessTryCatchActivity(TryCatch tryCatchActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            var endNodes = new List<string>();
+            // Clear and reuse the temp collection
+            _tempEndNodes.Clear();
 
             // Process Try block
             if (tryCatchActivity.Try != null)
             {
                 var tryNodeId = ProcessActivity(tryCatchActivity.Try, graphData, activityNodeMap, parentNodeId);
-                endNodes.Add(tryNodeId);
+                _tempEndNodes.Add(tryNodeId);
             }
 
+            // Process Catch blocks - commented out in original, keeping as is
             // Process Catch blocks
-            foreach (var catchBlock in tryCatchActivity.Catches)
-            {
+            //foreach (var catchBlock in tryCatchActivity.Catches)
+            //{
                 //if (catchBlock.Handler != null)
                 //{
                 //    var catchNodeId = ProcessActivity(catchBlock.Handler, graphData, activityNodeMap, parentNodeId);
                 //    endNodes.Add(catchNodeId);
                 //}
-            }
+            //}
 
             // Process Finally block
             if (tryCatchActivity.Finally != null)
             {
                 var finallyNodeId = ProcessActivity(tryCatchActivity.Finally, graphData, activityNodeMap, parentNodeId);
-                endNodes.Add(finallyNodeId);
+                _tempEndNodes.Add(finallyNodeId);
             }
 
-            return endNodes.LastOrDefault() ?? parentNodeId;
+            return _tempEndNodes.Count > 0 ? _tempEndNodes[^1] : parentNodeId;
         }
 
         private string ProcessParallelActivity(Parallel parallelActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            var endNodes = new List<string>();
+            // Clear and reuse the temp collection
+            _tempEndNodes.Clear();
 
-            foreach (var branch in parallelActivity.Branches)
+            var branches = parallelActivity.Branches;
+            for (int i = 0; i < branches.Count; i++)
             {
-                var branchNodeId = ProcessActivity(branch, graphData, activityNodeMap, parentNodeId);
-                endNodes.Add(branchNodeId);
+                var branchNodeId = ProcessActivity(branches[i], graphData, activityNodeMap, parentNodeId);
+                _tempEndNodes.Add(branchNodeId);
             }
 
-            return endNodes.LastOrDefault() ?? parentNodeId;
+            return _tempEndNodes.Count > 0 ? _tempEndNodes[^1] : parentNodeId;
         }
 
         private string ProcessGenericActivity(Activity activity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            // Handle activities with child activities using reflection
-            var childActivities = GetChildActivities(activity);
-            var currentNodeId = parentNodeId;
+            // Use cached child activities
+            GetChildActivities(activity, _tempChildActivities);
 
-            foreach (var child in childActivities)
+            var currentNodeId = parentNodeId;
+            for (int i = 0; i < _tempChildActivities.Count; i++)
             {
-                currentNodeId = ProcessActivity(child, graphData, activityNodeMap, currentNodeId);
+                currentNodeId = ProcessActivity(_tempChildActivities[i], graphData, activityNodeMap, currentNodeId);
             }
 
             return currentNodeId;
         }
 
-        private static List<Activity> GetChildActivities(Activity activity)
+
+        private static void GetChildActivities(Activity activity, List<Activity> children)
         {
-            var children = new List<Activity>();
+            children.Clear();
+            var activityType = activity.GetType();
 
-            // Use reflection to find child activities
-            var properties = activity.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            foreach (var prop in properties)
+            // Use cached properties to avoid repeated reflection
+            if (!_childActivityPropertiesCache.TryGetValue(activityType, out var properties))
             {
+                properties = activityType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                _childActivityPropertiesCache[activityType] = properties;
+            }
+
+            for (int i = 0; i < properties.Length; i++)
+            {
+                var prop = properties[i];
+
                 if (typeof(Activity).IsAssignableFrom(prop.PropertyType))
                 {
-                    var childActivity = prop.GetValue(activity) as Activity;
-                    if (childActivity != null)
+                    if (prop.GetValue(activity) is Activity childActivity)
                     {
                         children.Add(childActivity);
                     }
                 }
-                else if (typeof(ICollection<Activity>).IsAssignableFrom(prop.PropertyType))
+                else if (typeof(ICollection<Activity>).IsAssignableFrom(prop.PropertyType) && prop.GetValue(activity) is ICollection<Activity> childActivities)
                 {
-                    var childActivities = prop.GetValue(activity) as ICollection<Activity>;
-                    if (childActivities != null)
-                    {
-                        children.AddRange(childActivities);
-                    }
+                    children.AddRange(childActivities);
                 }
-            }
 
-            return children;
+            }
         }
 
         private Cell CreateStartNode()
         {
             var node = new Cell
             {
-                id = Guid.NewGuid().ToString(),
+                id = GenerateNodeId(),
                 shape = Constants.RECT,
                 position = new Position(_currentX, _currentY),
                 label = Constants.START,
@@ -479,19 +400,20 @@ namespace Dev2.Activities.WF
             return node;
         }
 
+
         private Cell CreateActivityNode(Activity activity, string nodeId)
         {
             var cell = new Cell { id = nodeId, data = new Dictionary<string, object>() };
             var activityType = activity.GetType();
-            if (activityType == typeof(DsfDotNetMultiAssignActivity))
+
+            // Use direct type comparison instead of typeof() for better performance
+            if (activity is DsfDotNetMultiAssignActivity multiAssign)
             {
-                var p = (DsfDotNetMultiAssignActivity)activity;
-                p.ToX6Json(cell);
+                multiAssign.ToX6Json(cell);
             }
-            else if (activityType == typeof(DsfDecision))
+            else if (activity is DsfDecision decision)
             {
-                var p = (DsfDecision)activity;
-                return CreateDecisionNode(p, nodeId);
+                return CreateDecisionNode(decision, nodeId);
             }
 
             cell.shape = Constants.RECT;
@@ -500,17 +422,16 @@ namespace Dev2.Activities.WF
             cell.data.Add(Constants.TYPE, activityType);
             cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
             cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
-            
-            // Update position for next node
-            _currentY += 150;
-            
+
             return cell;
         }
 
         private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
         {
             var parser = new ActivityParser();
-            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ?? new DsfDecision();
+            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ??
+                             new DsfDecision { Conditions = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() } };
+
             return CreateDecisionNode(dsfDecision, nodeId);
         }
 
@@ -651,7 +572,7 @@ namespace Dev2.Activities.WF
         {
             return new Cell
             {
-                id = Guid.NewGuid().ToString(),
+                id = GenerateNodeId(),
                 Source = new Connector(sourceId),
                 Target = new Connector(targetId),
                 label = label,
@@ -662,35 +583,38 @@ namespace Dev2.Activities.WF
             };
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string GetActivityLabel(Activity activity)
         {
-            if (!string.IsNullOrEmpty(activity.DisplayName))
-                return activity.DisplayName;
-
-            return activity.GetType().Name.Replace(Constants.ACTIVITY, "");
-        }
-
-        private static string GetDecisionLabel(FlowDecision decision)
-        {
-            return decision.Condition?.ToString() ?? Constants.DECISION;
+            return !string.IsNullOrEmpty(activity.DisplayName)
+                ? activity.DisplayName
+                : activity.GetType().Name.Replace(Constants.ACTIVITY, "");
         }
 
         private static object ExtractActivityProperties(Activity activity)
         {
-            var properties = new Dictionary<string, object>();
-
-            // Extract common properties
-            properties[Constants.DISPLAYNAME] = activity.DisplayName;
-            properties[Constants.ID] = activity.Id;
-
-            // Extract activity-specific properties using reflection
-            var activityType = activity.GetType();
-            var props = activityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && !p.PropertyType.IsSubclassOf(typeof(Activity)) &&
-                           !typeof(ICollection<Activity>).IsAssignableFrom(p.PropertyType));
-
-            foreach (var prop in props)
+            var properties = new Dictionary<string, object>
             {
+                [Constants.DISPLAYNAME] = activity.DisplayName,
+                [Constants.ID] = activity.Id
+            };
+
+            var activityType = activity.GetType();
+
+            // Use cached properties
+            if (!_typePropertyCache.TryGetValue(activityType, out var props))
+            {
+                props = activityType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.CanRead &&
+                               !p.PropertyType.IsSubclassOf(typeof(Activity)) &&
+                               !typeof(ICollection<Activity>).IsAssignableFrom(p.PropertyType))
+                    .ToArray();
+                _typePropertyCache[activityType] = props;
+            }
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                var prop = props[i];
                 try
                 {
                     var value = prop.GetValue(activity);
@@ -701,28 +625,30 @@ namespace Dev2.Activities.WF
                 }
                 catch
                 {
+                    // Ignore property access errors
                 }
             }
 
             return properties;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsSerializable(object value)
         {
             var type = value.GetType();
-			return type.IsPrimitive || type == typeof(string) || type == typeof(DateTime) ||
-				   type == typeof(decimal) || type.IsEnum;
-		}
+            return type.IsPrimitive || type == typeof(string) || type == typeof(DateTime) ||
+                   type == typeof(decimal) || type.IsEnum;
+        }
 
-		private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
-		{
-			return flowNode switch
-			{
-				FlowStep flowStep when activityNodeMap.ContainsKey(flowStep.Action) => activityNodeMap[flowStep.Action],
-				_ => GenerateNodeId()
-			};
-		}
-	}
+        private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
+        {
+            return flowNode switch
+            {
+                FlowStep flowStep when activityNodeMap.ContainsKey(flowStep.Action) => activityNodeMap[flowStep.Action],
+                _ => GenerateNodeId()
+            };
+        }
+    }
 
 }
 

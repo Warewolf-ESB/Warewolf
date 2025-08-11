@@ -9,12 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -26,6 +20,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -38,15 +34,20 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Newtonsoft.Json;
+using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Auditing;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using System.Activities.Statements;
-using Dev2.Common.State;
-using System.Runtime.Serialization;
-using Warewolf.Auditing;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -150,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void RunOnErrorSteps(IDSFDataObject dataObject, IErrorResultTO allErrors, int update)
         {
-            if(allErrors.HasErrors())
+            if (allErrors.HasErrors())
             {
                 if (!string.IsNullOrEmpty(OnErrorVariable))
                 {
@@ -225,12 +226,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             //TODO: duplicate check on the Recordset might hide the real issue, 
                             //of multiple execution calls passing here which seems not to be the same on F7
-                            AssignError( env, upsertVariable, update, error);
+                            AssignError(env, upsertVariable, update, error);
                         }
                     }
                     else
                     {
-                        AssignError( env, upsertVariable, update, errorString);
+                        AssignError(env, upsertVariable, update, errorString);
                     }
                 }
 
@@ -256,12 +257,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-        
+
         void AssignError(IExecutionEnvironment env, string upsertVariable, int update, string errorString)
         {
             var eval = env.Eval(upsertVariable, update).ToString();
             //check if last assign value is the same, dont log error if it is
-            if(string.IsNullOrEmpty(eval) || !eval.Contains($"(seq [DataString \"{errorString}\"])"))
+            if (string.IsNullOrEmpty(eval) || !eval.Contains($"(seq [DataString \"{errorString}\"])"))
             {
                 env.Assign(upsertVariable, errorString, update);
             }
@@ -300,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
                 };
-                DebugDispatcher.Instance.Write(new WriteArgs {debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName});
+                DebugDispatcher.Instance.Write(new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName });
             }
         }
 
@@ -408,7 +409,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (state != null)
             {
-                _debugDispatcher.Write(new WriteArgs {debugState = state, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID, parentInstanceId = dataObject.ParentInstanceID, remoteDebugItems = dataObject.RemoteDebugItems});
+                _debugDispatcher.Write(new WriteArgs { debugState = state, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID, parentInstanceId = dataObject.ParentInstanceID, remoteDebugItems = dataObject.RemoteDebugItems });
             }
         }
 
@@ -487,7 +488,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.RunWorkflowAsync && !_debugState.HasError)
             {
                 var debugItem = new DebugItem();
-                var debugItemResult = new DebugItemResult {Type = DebugItemResultType.Value, Value = "Asynchronous execution started"};
+                var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
                 debugItem.Add(debugItemResult);
                 _debugState.Outputs.Add(debugItem);
                 _debugState.NumberOfSteps = 0;
@@ -557,7 +558,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.RemoteServiceType == "Workflow" && !_debugState.HasError)
                 {
                     var debugItem = new DebugItem();
-                    var debugItemResult = new DebugItemResult {Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False"};
+                    var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False" };
                     debugItem.Add(debugItemResult);
                     _debugState.Inputs.Add(debugItem);
                 }
@@ -635,7 +636,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var assertPassed = dsfSwitch.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
-                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> {serviceTestOutput.Result}, "");
+                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
                     var msg = Messages.Test_FailureResult;
@@ -669,7 +670,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var assertPassed = dsfDecision.Result == serviceTestOutput.Value;
                 serviceTestOutput.Result.RunTestResult = assertPassed ? RunResult.TestPassed : RunResult.TestFailed;
-                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> {serviceTestOutput.Result}, "");
+                UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { serviceTestOutput.Result }, "");
                 if (dataObject.IsDebugMode())
                 {
                     var msg = Messages.Test_FailureResult;
@@ -857,7 +858,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.Environment.AddError(Messages.Test_FailureResult);
             }
 
-            UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> {stepToBeAsserted.Result}, "");
+            UpdateStepWithFinalResult(dataObject, stepToBeAsserted, assertPassed, new List<TestRunResult> { stepToBeAsserted.Result }, "");
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
@@ -872,7 +873,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     RunTestResult = RunResult.None
                 };
-                return new List<TestRunResult> {testResult};
+                return new List<TestRunResult> { testResult };
             }
 
             if (string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
@@ -881,7 +882,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     RunTestResult = RunResult.None
                 };
-                return new List<TestRunResult> {testResult};
+                return new List<TestRunResult> { testResult };
             }
 
             if (output.Result != null)
@@ -898,15 +899,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 };
                 output.Result = testResult;
                 AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(testResult.Message, true));
-                return new List<TestRunResult> {testResult};
+                return new List<TestRunResult> { testResult };
             }
 
             var opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
 
-            var value = new List<DataStorage.WarewolfAtom> {DataStorage.WarewolfAtom.NewDataString(output.Value)};
-            var from = new List<DataStorage.WarewolfAtom> {DataStorage.WarewolfAtom.NewDataString(output.From)};
-            var to = new List<DataStorage.WarewolfAtom> {DataStorage.WarewolfAtom.NewDataString(output.To)};
+            var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
+            var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
+            var to = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.To) };
 
             IList<TestRunResult> ret = new List<TestRunResult>();
             var iter = new WarewolfListIterator();
@@ -928,7 +929,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var variableValue = iter.FetchNextValue(c1);
                 var val2 = iter.FetchNextValue(c2);
                 var val3 = iter.FetchNextValue(c3);
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] {variableValue, val2, val3});
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { variableValue, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
@@ -1114,12 +1115,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return (from s in strings
-                where !string.IsNullOrEmpty(s)
-                select new DsfForEachItem
-                {
-                    Name = s,
-                    Value = s
-                }).ToList();
+                    where !string.IsNullOrEmpty(s)
+                    select new DsfForEachItem
+                    {
+                        Name = s,
+                        Value = s
+                    }).ToList();
         }
 
         public virtual enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
@@ -1131,25 +1132,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
-                if(!data.IsDebugMode())
+                if (!data.IsDebugMode())
                 {
                     UpdateWithAssertions(data);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("DsfNativActivity", ex, data.ExecutionID.ToString());
                 data.Environment.AddError(ex.Message);
             }
             finally
             {
-                if(!_isExecuteAsync || _isOnDemandSimulation)
+                if (!_isExecuteAsync || _isOnDemandSimulation)
                 {
                     DoErrorHandling(data, update);
                 }
             }
 
-            if(NextNodes != null && NextNodes.Any())
+            if (NextNodes != null && NextNodes.Any())
             {
                 return NextNodes.First();
             }
@@ -1169,7 +1170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual FlowNode GetFlowNode()
         {
-            var flowStep = new FlowStep {Action = this as Activity};
+            var flowStep = new FlowStep { Action = this as Activity };
             return flowStep;
         }
 
@@ -1197,7 +1198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDebugItem itemToAdd = new DebugItem();
             itemToAdd.AddRange(parameters.GetDebugItemResult());
 #pragma warning disable S3215
-            _debugInputs.Add((DebugItem) itemToAdd);
+            _debugInputs.Add((DebugItem)itemToAdd);
 #pragma warning restore S3215
         }
 
@@ -1259,5 +1260,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => Equals(left, right);
 
         public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => !Equals(left, right);
+
+        public virtual void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            object onerrordatastring = null;
+
+            if (!cell.data.TryGetValue(Constants.ONERRORDATA, out onerrordatastring)) return;
+
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                    FloatParseHandling = FloatParseHandling.Decimal,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var onErroData = JsonConvert.DeserializeObject<X6NodeOnErrorData>(onerrordatastring.ToString(), settings);
+                if(onErroData != null)
+                {
+                    this.OnErrorVariable = onErroData.OnErrorVariable;
+                    this.OnErrorWorkflow = onErroData.OnErrorWorkflow;
+                    this.IsEndedOnError = onErroData.IsEndedOnError;
+                }
+            }
+            catch { }
+
+        }
+
+        public virtual void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            var onerrorData = new X6NodeOnErrorData() { IsEndedOnError = this.IsEndedOnError, OnErrorVariable = this.OnErrorVariable, OnErrorWorkflow = this.OnErrorWorkflow };
+
+            cell.data[Constants.ONERRORDATA] = onerrorData;
+        }
     }
 }

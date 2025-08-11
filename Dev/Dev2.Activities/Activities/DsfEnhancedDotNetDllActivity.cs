@@ -104,6 +104,14 @@ namespace Dev2.Activities
             try
             {
                 TryExecuteService(update, dataObject, pluginExecutionDto, args);
+                
+                foreach (var methodInfo in args.MethodsToRun)
+                {
+                    if (methodInfo.HasError)
+                    {
+                        errors.AddError(methodInfo.ErrorMessage);
+                    }
+                }
             }
             catch (Exception e)
             {
