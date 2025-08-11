@@ -84,7 +84,6 @@ namespace Dev2.Activities.WF
                 TryCatch tryCatchActivity => ProcessTryCatchActivity(tryCatchActivity, graphData, activityNodeMap, nodeId),
                 Parallel parallelActivity => ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId),
                 //ForEach<> forEachActivity => ProcessForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId),
-                DsfFlowSwitchActivity<object> flowSwitchActivity => ProcessFlowSwitch(flowSwitchActivity, graphData, activityNodeMap, nodeId)
 				_ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -117,14 +116,15 @@ namespace Dev2.Activities.WF
         private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
+            var TypeName = flowNode.GetType().Name;            
             return flowNode switch
             {
                 FlowStep flowStep => ProcessFlowStep(flowStep, graphData, activityNodeMap, previousNodeId),
                 FlowDecision flowDecision => ProcessFlowDecision(flowDecision, graphData, activityNodeMap, previousNodeId),
-                FlowSwitch<object> flowSwitch => ProcessFlowSwitch(flowSwitch, graphData, activityNodeMap, previousNodeId),
+                FlowSwitch<string> flowSwitchString => ProcessFlowSwitch(flowSwitchString, graphData, activityNodeMap, previousNodeId),
                 _ => previousNodeId
-            };
-        }
+			};
+		}
         
         private string ProcessFlowStep(FlowStep flowStep, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
@@ -170,11 +170,11 @@ namespace Dev2.Activities.WF
             return decisionNodeId;
         }
 
-        private string ProcessFlowSwitch(FlowSwitch<object> flowSwitch, X6WorkflowLoadModel graphData,
+        private string ProcessFlowSwitch(FlowSwitch<string> flowSwitch, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var switchNodeId = GenerateNodeId();
-            var switchNode = CreateSwitchNode(flowSwitch, switchNodeId);
+            var switchNode = CreateSwitchNodeString(flowSwitch, switchNodeId);
             
             // Store the switch activity in the activity map if it has an expression
             if (flowSwitch.Expression != null)
@@ -188,25 +188,18 @@ namespace Dev2.Activities.WF
             {
                 graphData.Edges.Add(CreateEdge(previousNodeId, switchNodeId));
             }
-
             foreach (var caseItem in flowSwitch.Cases)
             {
-                if (caseItem.Value != null)
-                {
-                    ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
-                    var targetNodeId = GetFirstNodeId(caseItem.Value, activityNodeMap);
-                    var label = caseItem.Key?.ToString() ?? "Case";
-                    graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, label));
-                }
+                ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
+                var targetNodeIdValue = GetFirstNodeId(caseItem.Value, activityNodeMap);
+                var label = caseItem.Key?.ToString() ?? "Case";
+                graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeIdValue, label));
             }
 
-            if (flowSwitch.Default != null)
-            {
-                ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
-                var targetNodeId = GetFirstNodeId(flowSwitch.Default, activityNodeMap);
-                graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeId, "Default"));
-            }
-
+            // Process default case
+            ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
+            var targetNodeIdDefault = GetFirstNodeId(flowSwitch.Default, activityNodeMap);
+            graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeIdDefault, "Default"));
             return switchNodeId;
         }
 
@@ -468,15 +461,50 @@ namespace Dev2.Activities.WF
             // Update position for next node
             _currentY += 150;
 
+            // Try to access the underlying activity through reflection if needed
+            var expression = flowSwitch.Expression;
+            if (expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
+            {
+                ProcessSwitchActivityReflection(expression, flowSwitch, cell);
+            }
+            else
+            {
+                Console.WriteLine($"[X6Convert-Switch] Using basic processing for expression type: {expression.GetType().Name}");
+                // Basic processing for other expression types
+                cell.data[Constants.DISPLAYNAME] = expression.DisplayName ?? Constants.SWITCH;
+                cell.label = expression.DisplayName ?? Constants.SWITCH;
+            }
+
+            return cell;
+        }
+
+        private Cell CreateSwitchNodeString(FlowSwitch<string> flowSwitch, string nodeId)
+        {
+            
+            var cell = new Cell
+            {
+                id = nodeId,
+                shape = Constants.POLYGON,
+                position = new Position(_currentX, _currentY),
+                label = Constants.SWITCH,
+                data = new Dictionary<string, object>
+                {
+                    [Constants.TYPE] = Constants.FLOWSWITCH,
+                    [Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
+                }
+            };
+
+            // Update position for next node
+            _currentY += 150;
+
             // If the expression is a DsfFlowSwitchActivity, extract more detailed information
-            // Note: Expression is Activity<object>, but DsfFlowSwitchActivity inherits from DsfFlowNodeActivity<string>
             if (flowSwitch.Expression != null)
             {
-                // Try to access the underlying activity through reflection if needed
                 var expression = flowSwitch.Expression;
+                
                 if (expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
                 {
-                    ProcessSwitchActivityReflection(expression, flowSwitch, cell);
+                    ProcessSwitchActivityReflectionString(expression, flowSwitch, cell);
                 }
                 else
                 {
@@ -509,7 +537,45 @@ namespace Dev2.Activities.WF
                 
                 if (!string.IsNullOrEmpty(expressionText))
                 {
-                    cell.data["switchExpression"] = CreateSwitchExpressionJson(expressionText, flowSwitch);
+                    var switchExpressionJson = CreateSwitchExpressionJson(expressionText, flowSwitch);
+                    cell.data["switchExpression"] = switchExpressionJson;
+                }
+                
+                if (!string.IsNullOrEmpty(uniqueId))
+                {
+                    cell.data["UniqueID"] = uniqueId;
+                }
+            }
+            catch
+            {
+                // Fallback to basic processing
+                cell.data[Constants.DISPLAYNAME] = expression.DisplayName ?? Constants.SWITCH;
+                cell.label = expression.DisplayName ?? Constants.SWITCH;
+            }
+        }
+
+        private static void ProcessSwitchActivityReflectionString(Activity expression, FlowSwitch<string> flowSwitch, Cell cell)
+        {
+            try
+            {
+                // Use reflection to access DsfFlowSwitchActivity properties
+                var type = expression.GetType();
+                
+                var displayNameProperty = type.GetProperty("DisplayName");
+                var expressionTextProperty = type.GetProperty("ExpressionText");
+                var uniqueIdProperty = type.GetProperty("UniqueID");
+
+                var displayName = displayNameProperty?.GetValue(expression) as string ?? Constants.SWITCH;
+                var expressionText = expressionTextProperty?.GetValue(expression) as string;
+                var uniqueId = uniqueIdProperty?.GetValue(expression) as string;
+
+                cell.data[Constants.DISPLAYNAME] = displayName;
+                cell.label = displayName;
+                
+                if (!string.IsNullOrEmpty(expressionText))
+                {
+                    var switchExpressionJson = CreateSwitchExpressionJsonString(expressionText, flowSwitch);
+                    cell.data["switchExpression"] = switchExpressionJson;
                 }
                 
                 if (!string.IsNullOrEmpty(uniqueId))
@@ -529,11 +595,54 @@ namespace Dev2.Activities.WF
         {
             try
             {
+                var switchVariable = ExtractSwitchVariable(expressionText);
+                
+                var cases = flowSwitch.Cases.Select(c => {
+                    var key = c.Key?.ToString();
+                    var value = c.Key?.ToString();
+                    return new { Key = key, Value = value };
+                }).ToList();
+                
+                var defaultCase = flowSwitch.Default != null ? "Default" : null;
+                
                 var switchExpression = new
                 {
-                    SwitchVariable = ExtractSwitchVariable(expressionText),
-                    Cases = flowSwitch.Cases.Select(c => new { Key = c.Key?.ToString(), Value = c.Key?.ToString() }).ToList(),
-                    DefaultCase = flowSwitch.Default != null ? "Default" : null
+                    SwitchVariable = switchVariable,
+                    Cases = cases,
+                    DefaultCase = defaultCase
+                };
+
+                var result = JsonConvert.SerializeObject(switchExpression);
+                return result;
+            }
+            catch
+            {
+                // If serialization fails, return a basic expression
+                var fallback = JsonConvert.SerializeObject(new { SwitchVariable = "variable", Cases = new object[0] });
+                Console.WriteLine($"[X6Convert-Switch-JSON] Fallback JSON: {fallback}");
+                return fallback;
+            }
+        }
+
+        private static string CreateSwitchExpressionJsonString(string expressionText, FlowSwitch<string> flowSwitch)
+        {
+            try
+            {
+                var switchVariable = ExtractSwitchVariable(expressionText);
+                
+                var cases = flowSwitch.Cases.Select(c => {
+                    var key = c.Key?.ToString();
+                    var value = c.Key?.ToString();
+                    return new { Key = key, Value = value };
+                }).ToList();
+                
+                var defaultCase = flowSwitch.Default != null ? "Default" : null;
+                
+                var switchExpression = new
+                {
+                    SwitchVariable = switchVariable,
+                    Cases = cases,
+                    DefaultCase = defaultCase
                 };
 
                 return JsonConvert.SerializeObject(switchExpression);
@@ -548,7 +657,9 @@ namespace Dev2.Activities.WF
         private static string ExtractSwitchVariable(string expressionText)
         {
             if (string.IsNullOrEmpty(expressionText))
+            {
                 return "variable";
+            }
 
             // Try to extract variable name from expression like: Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[hello]]",AmbientDataList)
             var match = System.Text.RegularExpressions.Regex.Match(expressionText, @"\[\[([^\]]+)\]\]");
