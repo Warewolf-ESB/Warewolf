@@ -78,6 +78,7 @@
     <Compile Include="ActivityComparerTests\WebTools\WebPostActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\WebPostActivityNewComparerTests .cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfFlowSwitchActivitySerializationTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Exchange\DsfExchangeNewEmailActivityComparerTests.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
+    <Compile Include="ActivityTests\WorkflowToX6ConverterTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />
