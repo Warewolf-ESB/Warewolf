@@ -454,7 +454,7 @@ namespace Dev2.Activities.WF
                 data = new Dictionary<string, object>
                 {
                     [Constants.TYPE] = Constants.FLOWSWITCH,
-                    [Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
+                    [Constants.EXPRESSION] = GetCleanExpressionText(flowSwitch.Expression) ?? Constants.SWITCH
                 }
             };
 
@@ -537,6 +537,12 @@ namespace Dev2.Activities.WF
                 
                 if (!string.IsNullOrEmpty(expressionText))
                 {
+                    var cleanVariable = ExtractSwitchVariable(expressionText);
+                    if (!string.IsNullOrEmpty(cleanVariable))
+                    {
+                        cell.data[Constants.EXPRESSION] = $"[[{cleanVariable}]]";
+                    }
+                    
                     var switchExpressionJson = CreateSwitchExpressionJson(expressionText, flowSwitch);
                     cell.data["switchExpression"] = switchExpressionJson;
                 }
@@ -574,6 +580,12 @@ namespace Dev2.Activities.WF
                 
                 if (!string.IsNullOrEmpty(expressionText))
                 {
+                    var cleanVariable = ExtractSwitchVariable(expressionText);
+                    if (!string.IsNullOrEmpty(cleanVariable))
+                    {
+                        cell.data[Constants.EXPRESSION] = $"[[{cleanVariable}]]";
+                    }
+                    
                     var switchExpressionJson = CreateSwitchExpressionJsonString(expressionText, flowSwitch);
                     cell.data["switchExpression"] = switchExpressionJson;
                 }
@@ -677,6 +689,28 @@ namespace Dev2.Activities.WF
             }
 
             return "variable";
+        }
+
+        private static string GetCleanExpressionText(Activity expression)
+        {
+            if (expression == null) return null;
+            
+            // For DsfFlowSwitchActivity, get the clean ExpressionText directly
+            if (expression is IFlowNodeActivity flowNodeActivity)
+            {
+                var expressionText = flowNodeActivity.ExpressionText;
+                if (!string.IsNullOrEmpty(expressionText))
+                {
+                    var cleanVariable = ExtractSwitchVariable(expressionText);
+                    if (!string.IsNullOrEmpty(cleanVariable))
+                    {
+                        return $"[[{cleanVariable}]]";
+                    }
+                }
+            }
+            
+            // Fallback to basic approach
+            return expression.ToString();
         }
 
         private static Cell CreateEdge(string sourceId, string targetId, string label = "")
