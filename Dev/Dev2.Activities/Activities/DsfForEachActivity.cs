@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces.Enums;
@@ -30,6 +31,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Core;
@@ -147,8 +149,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 #pragma warning restore S100 // Methods and properties should be named in camel case
         public ActivityFunc<string, bool> DataFunc { get; set; }
         public bool FailOnFirstError { get; set; }
-        public string ElementName { private set; get; }
-        public string PreservedDataList { private set; get; }
+        public string ElementName { get; private set; }
+        public string PreservedDataList { get; private set; }
         readonly Variable<string> _origInput = new Variable<string>("origInput");
         readonly Variable<string> _origOutput = new Variable<string>("origOutput");
 
@@ -506,6 +508,196 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ForEachElementName);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(ForEachElementName.Replace("*", ""));
+
+        /// <summary>
+        /// Serializes the ForEach activity to X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with ForEach data</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.ToX6Json(cell);
+
+            // Set the activity type
+            cell.data["type"] = "dsfforeachactivity";
+            cell.data["displayName"] = DisplayName ?? "For Each";
+
+            // Create comprehensive ForEach data structure matching the rich JSON format
+            cell.data["forEachType"] = ForEachType.ToString();
+            cell.data["forEachElementName"] = ForEachElementName ?? string.Empty;
+            cell.data["from"] = From ?? string.Empty;
+            cell.data["to"] = To ?? string.Empty;
+            cell.data["recordset"] = Recordset ?? string.Empty;
+            cell.data["csvIndexes"] = CsvIndexes ?? string.Empty;
+            cell.data["numOfExecutions"] = NumOfExections ?? string.Empty;
+            cell.data["failOnFirstError"] = FailOnFirstError;
+            cell.data["droppedNodes"] = new List<object>(); // Initialize as empty array for dropped child activities
+
+            // Add ngArguments for the frontend framework integration
+            if (cell.id != null)
+            {
+                cell.data["ngArguments"] = new
+                {
+                    graphId = Guid.NewGuid().ToString(), // Generate a graph ID for UI purposes
+                    nodeId = cell.id
+                };
+            }
+
+            // Serialize the DataFunc (child activities) information
+            var dataFuncInfo = SerializeDataFunc();
+            if (dataFuncInfo != null)
+            {
+                cell.data["dataFunc"] = dataFuncInfo;
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the ForEach activity from X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell containing ForEach data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            // Deserialize comprehensive ForEach data
+            try
+            {
+                // Parse ForEachType
+                if (cell.data.TryGetValue("forEachType", out var forEachTypeObj) && 
+                    forEachTypeObj is string forEachTypeStr && 
+                    Enum.TryParse<enForEachType>(forEachTypeStr, out var forEachType))
+                {
+                    ForEachType = forEachType;
+                }
+
+                // Parse other properties directly from the data object
+                ForEachElementName = ExtractStringValue(cell.data, "forEachElementName");
+                FromDisplayName = ForEachElementName; // Set both properties as they're linked
+                From = ExtractStringValue(cell.data, "from");
+                To = ExtractStringValue(cell.data, "to");
+                Recordset = ExtractStringValue(cell.data, "recordset");
+                CsvIndexes = ExtractStringValue(cell.data, "csvIndexes");
+                NumOfExections = ExtractStringValue(cell.data, "numOfExecutions");
+
+                // Parse boolean property
+                if (cell.data.TryGetValue("failOnFirstError", out var failOnFirstErrorObj) && 
+                    bool.TryParse(failOnFirstErrorObj?.ToString(), out var failOnFirstError))
+                {
+                    FailOnFirstError = failOnFirstError;
+                }
+
+                // Handle droppedNodes if present (for child activities)
+                if (cell.data.TryGetValue("droppedNodes", out var droppedNodesObj))
+                {
+                    // Future enhancement: Process dropped child activities
+                    // This would require integration with the activity factory
+                }
+
+                // Handle ngArguments if present (UI framework data)
+                if (cell.data.TryGetValue("ngArguments", out var ngArgumentsObj))
+                {
+                    // Store for potential UI integration needs
+                    // This typically doesn't affect the core activity logic
+                }
+
+                // Deserialize DataFunc if present
+                if (cell.data.TryGetValue("dataFunc", out var dataFuncObj))
+                {
+                    DeserializeDataFunc(dataFuncObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't throw - graceful degradation
+                Dev2Logger.Error($"Error deserializing ForEach data from comprehensive X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        /// <summary>
+        /// Helper method to safely extract string values from the data dictionary
+        /// </summary>
+        /// <param name="data">The data dictionary</param>
+        /// <param name="key">The key to extract</param>
+        /// <returns>String value or empty string if not found</returns>
+        private static string ExtractStringValue(Dictionary<string, object> data, string key)
+        {
+            return data.TryGetValue(key, out var value) ? value?.ToString() ?? string.Empty : string.Empty;
+        }
+
+        /// <summary>
+        /// Serializes the DataFunc (child activity) to a JSON-friendly format
+        /// </summary>
+        /// <returns>Serialized DataFunc data</returns>
+        private object SerializeDataFunc()
+        {
+            if (DataFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = DataFunc.DisplayName ?? "Data Action",
+                    argumentName = DataFunc.Argument?.Name ?? string.Empty,
+                    handlerType = DataFunc.Handler.GetType().Name,
+                    handlerUniqueId = (DataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (DataFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the DataFunc (child activity) from JSON format
+        /// </summary>
+        /// <param name="dataFuncData">The serialized DataFunc data</param>
+        private void DeserializeDataFunc(dynamic dataFuncData)
+        {
+            if (dataFuncData == null) return;
+
+            try
+            {
+                // Note: For full deserialization of child activities, we would need access to the 
+                // activity factory and the complete activity definition. For now, we preserve
+                // the basic structure and properties that can be restored.
+                
+                if (DataFunc == null)
+                {
+                    DataFunc = new ActivityFunc<string, bool>();
+                }
+
+                // Restore basic properties
+                if (dataFuncData.displayName != null)
+                {
+                    DataFunc.DisplayName = dataFuncData.displayName.ToString();
+                }
+
+                if (dataFuncData.argumentName != null && DataFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+
+                // The actual Handler restoration would require more complex logic involving
+                // activity factories and full activity serialization/deserialization
+                // This is typically handled at a higher level during workflow reconstruction
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
 
         public bool Equals(DsfForEachActivity other)
         {

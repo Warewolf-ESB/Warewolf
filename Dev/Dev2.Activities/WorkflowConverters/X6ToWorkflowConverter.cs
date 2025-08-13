@@ -78,11 +78,11 @@ namespace Dev2.Activities.WF
                 var workflowXaml = workflowHelper.GetXamlDefinition(activityBuilder);
                 return workflowXaml;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-            }
-            return null;
+				Dev2Logger.Error("Failed to convert X6 JSON to workflow", ex, GlobalConstants.WarewolfError);
+				throw;
+			}
         }
 
         /// <summary>
@@ -143,7 +143,9 @@ namespace Dev2.Activities.WF
             FlowStep startFlowNode = null;
             foreach (var node in nodes)
             {
-                var action = activityMap[node.id];
+                // Only process nodes that have activities in the activityMap
+                if (!activityMap.TryGetValue(node.id, out var action))
+                    continue;
 
                 var flowNode = CreateFlowNode(action);
 
@@ -224,6 +226,10 @@ namespace Dev2.Activities.WF
             else if (nodeType.Contains("dsfflowswitchactivity") || nodeType.Contains("flowswitch"))
             {
                 return CreateSwitchActivity(node);
+            }
+            else if (nodeType.Contains("dsfforeachactivity") || nodeType.Contains("foreach"))
+            {
+                return CreateForEachActivity(node);
             }
             else
             {
@@ -324,15 +330,35 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDotNetMultiAssignActivity</returns>
         private static DsfDotNetMultiAssignActivity CreateAssignActivity(Cell node)
         {
-
-            if (!node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
+                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignActivity();
             activity.FromX6Json(node);
             return activity;
+        }
 
+        /// <summary>
+        /// Creates DsfForEachActivity from X6 Node
+        /// </summary>
+        /// <param name="node">X6 Node</param>
+        /// <returns>DsfForEachActivity</returns>
+        private static DsfForEachActivity CreateForEachActivity(Cell node)
+        {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
+                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfForEachActivity();
+            activity.FromX6Json(node);
+            return activity;
         }
 
         /// <summary>
