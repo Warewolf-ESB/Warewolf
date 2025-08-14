@@ -534,7 +534,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data["csvIndexes"] = CsvIndexes ?? string.Empty;
             cell.data["numOfExecutions"] = NumOfExections ?? string.Empty;
             cell.data["failOnFirstError"] = FailOnFirstError;
-            cell.data["droppedNodes"] = new List<object>(); // Initialize as empty array for dropped child activities
+
+            var droppedNodes = new List<object>();
+            if (DataFunc?.Handler != null)
+            {
+                // Create a cell for the child activity and serialize it
+                var childCell = new Cell
+                {
+                    id = Guid.NewGuid().ToString(),
+                    data = new Dictionary<string, object>()
+                };
+                    
+                // Check for specific activity types that support ToX6Json
+                if (DataFunc.Handler is DsfActivityAbstract<string> activityAbstract)
+                {
+                    activityAbstract.ToX6Json(childCell);
+                    droppedNodes.Add(childCell);
+                }
+                else if (DataFunc.Handler is DsfActivityAbstract<bool> activityAbstractBool)
+                {
+                    activityAbstractBool.ToX6Json(childCell);
+                    droppedNodes.Add(childCell);
+                }
+            }
+            
+            cell.data["droppedNodes"] = droppedNodes;
 
             // Add ngArguments for the frontend framework integration
             if (cell.id != null)
@@ -626,37 +650,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             try
             {
-                // Handle different possible formats of droppedNodes
-                List<object> droppedNodesList = null;
+            // Handle different possible formats of droppedNodes
+            List<object> droppedNodesList = null;
                 
-                if (droppedNodesObj is JArray jArray)
-                {
-                    // Handle JArray from JSON deserialization
-                    droppedNodesList = jArray.ToObject<List<object>>();
-                }
+            if (droppedNodesObj is JArray jArray)
+            {
+                // Handle JArray from JSON deserialization
+                droppedNodesList = jArray.ToObject<List<object>>();
+            }
+            else if (droppedNodesObj != null)
+            {
+                // Try to serialize and deserialize as a fallback
+                var json = JsonConvert.SerializeObject(droppedNodesObj);
+                droppedNodesList = JsonConvert.DeserializeObject<List<object>>(json);
+            }
 
-                // Process the first dropped node (ForEach should only contain one or no child activities)
-                if (droppedNodesList != null && droppedNodesList.Count > 0)
-                {
-                    var firstDroppedNode = droppedNodesList[0];
-                    var childActivity = CreateActivityFromDroppedNode(firstDroppedNode);
+            // Process the first dropped node (ForEach should only contain one or no child activities)
+            if (droppedNodesList != null && droppedNodesList.Count > 0)
+            {
+                var firstDroppedNode = droppedNodesList[0];
+                var childActivity = CreateActivityFromDroppedNode(firstDroppedNode);
                     
-                    if (childActivity != null)
+                if (childActivity != null)
+                {
+                    // Set up the ActivityFunc with the deserialized child activity
+                    if (DataFunc == null)
                     {
-                        // Set up the ActivityFunc with the deserialized child activity
-                        if (DataFunc == null)
+                        DataFunc = new ActivityFunc<string, bool>
                         {
-                            DataFunc = new ActivityFunc<string, bool>
-                            {
-                                DisplayName = "Data Action",
-                                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-                            };
-                        }
-                        
-                        DataFunc.Handler = childActivity;
+                            DisplayName = "Data Action",
+                            Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+                        };
                     }
+                        
+                    DataFunc.Handler = childActivity;
                 }
             }
+        }
             catch (Exception ex)
             {
                 Dev2Logger.Error($"Error deserializing droppedNodes: {ex.Message}", ex, GlobalConstants.WarewolfError);
