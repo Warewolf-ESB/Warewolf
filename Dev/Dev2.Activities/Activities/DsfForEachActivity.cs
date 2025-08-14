@@ -32,6 +32,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Core;
@@ -594,8 +595,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle droppedNodes if present (for child activities)
                 if (cell.data.TryGetValue("droppedNodes", out var droppedNodesObj))
                 {
-                    // Future enhancement: Process dropped child activities
-                    // This would require integration with the activity factory
+                    DeserializeDroppedNodes(droppedNodesObj);
                 }
 
                 // Handle ngArguments if present (UI framework data)
@@ -605,7 +605,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // This typically doesn't affect the core activity logic
                 }
 
-                // Deserialize DataFunc if present
+                // Deserialize DataFunc if present (legacy support)
                 if (cell.data.TryGetValue("dataFunc", out var dataFuncObj))
                 {
                     DeserializeDataFunc(dataFuncObj);
@@ -616,6 +616,184 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Log error but don't throw - graceful degradation
                 Dev2Logger.Error($"Error deserializing ForEach data from comprehensive X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
+        }
+
+        /// <summary>
+        /// Deserializes dropped nodes and sets up the DataFunc.Handler property
+        /// </summary>
+        /// <param name="droppedNodesObj">The droppedNodes data from the X6 cell</param>
+        private void DeserializeDroppedNodes(object droppedNodesObj)
+        {
+            try
+            {
+                // Handle different possible formats of droppedNodes
+                List<object> droppedNodesList = null;
+                
+                if (droppedNodesObj is JArray jArray)
+                {
+                    // Handle JArray from JSON deserialization
+                    droppedNodesList = jArray.ToObject<List<object>>();
+                }
+
+                // Process the first dropped node (ForEach should only contain one or no child activities)
+                if (droppedNodesList != null && droppedNodesList.Count > 0)
+                {
+                    var firstDroppedNode = droppedNodesList[0];
+                    var childActivity = CreateActivityFromDroppedNode(firstDroppedNode);
+                    
+                    if (childActivity != null)
+                    {
+                        // Set up the ActivityFunc with the deserialized child activity
+                        if (DataFunc == null)
+                        {
+                            DataFunc = new ActivityFunc<string, bool>
+                            {
+                                DisplayName = "Data Action",
+                                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+                            };
+                        }
+                        
+                        DataFunc.Handler = childActivity;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing droppedNodes: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        /// <summary>
+        /// Creates an activity from a dropped node object
+        /// </summary>
+        /// <param name="droppedNodeObj">The dropped node data</param>
+        /// <returns>The created activity or null</returns>
+        private Activity CreateActivityFromDroppedNode(object droppedNodeObj)
+        {
+            try
+            {
+                // Convert the dropped node object to a Cell for processing
+                Cell droppedNodeCell = null;
+                
+                if (droppedNodeObj is string droppedNodeJson)
+                {
+                    // If it's a JSON string, deserialize it to a Cell
+                    droppedNodeCell = JsonConvert.DeserializeObject<Cell>(droppedNodeJson);
+                }
+                else
+                {
+                    // If it's already an object, try to convert it to a Cell
+                    var json = JsonConvert.SerializeObject(droppedNodeObj);
+                    droppedNodeCell = JsonConvert.DeserializeObject<Cell>(json);
+                }
+
+                if (droppedNodeCell?.data == null)
+                {
+                    return null;
+                }
+
+                // Use similar logic to X6ToWorkflowConverter.CreateActivityFromNode
+                if (!droppedNodeCell.data.TryGetValue("type", out var typeObj) || 
+                    typeObj is not string type || 
+                    string.IsNullOrWhiteSpace(type))
+                {
+                    return null;
+                }
+
+                var nodeType = type.ToLowerInvariant();
+                
+                // Create activities based on type
+                if (nodeType.Contains("dsfdotnetmultiassignactivity") || nodeType.Contains("assigntool"))
+                {
+                    return CreateAssignActivityFromDroppedNode(droppedNodeCell);
+                }
+                else if (nodeType.Contains("flowdecision"))
+                {
+                    return CreateFlowDecisionActivityFromDroppedNode(droppedNodeCell);
+                }
+                else if (nodeType.Contains("dsfdecision"))
+                {
+                    return CreateDecisionActivityFromDroppedNode(droppedNodeCell);
+                }
+                else if (nodeType.Contains("dsfflowswitchactivity") || nodeType.Contains("flowswitch"))
+                {
+                    return CreateSwitchActivityFromDroppedNode(droppedNodeCell);
+                }
+                else if (nodeType.Contains("dsfforeachactivity") || nodeType.Contains("foreach"))
+                {
+                    return CreateForEachActivityFromDroppedNode(droppedNodeCell);
+                }
+                else
+                {
+                    // For unknown types, create a comment activity as a fallback
+                    return new DsfCommentActivity { Text = $"Unknown activity type: {type}" };
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error creating activity from dropped node: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a DsfDotNetMultiAssignActivity from a dropped node
+        /// </summary>
+        /// <param name="droppedNodeCell">The dropped node cell</param>
+        /// <returns>DsfDotNetMultiAssignActivity instance</returns>
+        private static DsfDotNetMultiAssignActivity CreateAssignActivityFromDroppedNode(Cell droppedNodeCell)
+        {
+            var activity = new DsfDotNetMultiAssignActivity();
+            activity.FromX6Json(droppedNodeCell);
+            return activity;
+        }
+
+        /// <summary>
+        /// Creates a DsfFlowDecisionActivity from a dropped node
+        /// </summary>
+        /// <param name="droppedNodeCell">The dropped node cell</param>
+        /// <returns>DsfFlowDecisionActivity instance</returns>
+        private static DsfFlowDecisionActivity CreateFlowDecisionActivityFromDroppedNode(Cell droppedNodeCell)
+        {
+            var activity = new DsfFlowDecisionActivity();
+            activity.FromX6Json(droppedNodeCell);
+            return activity;
+        }
+
+        /// <summary>
+        /// Creates a DsfDecision from a dropped node
+        /// </summary>
+        /// <param name="droppedNodeCell">The dropped node cell</param>
+        /// <returns>DsfDecision instance</returns>
+        private static DsfDecision CreateDecisionActivityFromDroppedNode(Cell droppedNodeCell)
+        {
+            var activity = new DsfDecision();
+            activity.FromX6Json(droppedNodeCell);
+            return activity;
+        }
+
+        /// <summary>
+        /// Creates a DsfFlowSwitchActivity from a dropped node
+        /// </summary>
+        /// <param name="droppedNodeCell">The dropped node cell</param>
+        /// <returns>DsfFlowSwitchActivity instance</returns>
+        private static DsfFlowSwitchActivity CreateSwitchActivityFromDroppedNode(Cell droppedNodeCell)
+        {
+            var activity = new DsfFlowSwitchActivity();
+            activity.FromX6Json(droppedNodeCell);
+            return activity;
+        }
+
+        /// <summary>
+        /// Creates a DsfForEachActivity from a dropped node
+        /// </summary>
+        /// <param name="droppedNodeCell">The dropped node cell</param>
+        /// <returns>DsfForEachActivity instance</returns>
+        private static DsfForEachActivity CreateForEachActivityFromDroppedNode(Cell droppedNodeCell)
+        {
+            var activity = new DsfForEachActivity();
+            activity.FromX6Json(droppedNodeCell);
+            return activity;
         }
 
         /// <summary>
