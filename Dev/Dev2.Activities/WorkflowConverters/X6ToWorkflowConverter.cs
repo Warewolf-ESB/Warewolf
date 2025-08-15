@@ -1,6 +1,7 @@
 ﻿using Dev2.Common.X6;
 using Dev2.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Activities;
 using System.Activities.Statements;
@@ -99,13 +100,17 @@ namespace Dev2.Activities.WF
             };
 
             // Separate nodes and edges
-            var nodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
+            var allNodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
             connections = x6Graph.Cells.Where(c => c.shape == "edge").ToList();
+            
+            // Filter out child nodes that belong to ForEach activities' droppedNodes
+            var topLevelNodes = FilterTopLevelNodes(allNodes);
+            
             Cell startcell = null;
 
-            ProcessSwitchCaseData(nodes);
+            ProcessSwitchCaseData(topLevelNodes);
 
-            foreach (var node in nodes)
+            foreach (var node in topLevelNodes)
             {
                 var activity = CreateActivityFromNode(node, out bool isStartNode);
                 if (activity != null)
@@ -120,9 +125,123 @@ namespace Dev2.Activities.WF
             }
 
             // Build the workflow structure
-            activityBuilder.Implementation = BuildWorkflow(nodes, startcell);
+            activityBuilder.Implementation = BuildWorkflow(topLevelNodes, startcell);
 
             return activityBuilder;
+        }
+        
+        /// <summary>
+        /// Filters out child nodes that belong to ForEach activities' droppedNodes
+        /// to prevent them from being processed as separate top-level activities
+        /// </summary>
+        /// <param name="allNodes">All nodes from the X6 graph</param>
+        /// <returns>List of nodes that should be processed as top-level activities</returns>
+        private List<Cell> FilterTopLevelNodes(List<Cell> allNodes)
+        {
+            var childNodeIds = new HashSet<string>();
+            
+            // First pass: identify all child node IDs that are embedded in ForEach droppedNodes
+            foreach (var node in allNodes)
+            {
+                if (IsForEachNode(node))
+                {
+                    var droppedNodeIds = ExtractDroppedNodeIds(node);
+                    foreach (var childId in droppedNodeIds)
+                    {
+                        childNodeIds.Add(childId);
+                    }
+                }
+            }
+            
+            // Second pass: filter out child nodes, keeping only top-level nodes
+            return allNodes.Where(node => !childNodeIds.Contains(node.id)).ToList();
+        }
+        
+        /// <summary>
+        /// Checks if a node represents a ForEach activity
+        /// </summary>
+        /// <param name="node">The node to check</param>
+        /// <returns>True if the node is a ForEach activity</returns>
+        private static bool IsForEachNode(Cell node)
+        {
+            if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type)
+                return false;
+                
+            var nodeType = type.ToLowerInvariant();
+            return nodeType.Contains("dsfforeachactivity") || nodeType.Contains("foreach");
+        }
+        
+        /// <summary>
+        /// Extracts the IDs of child nodes from a ForEach activity's droppedNodes
+        /// </summary>
+        /// <param name="forEachNode">The ForEach node</param>
+        /// <returns>List of child node IDs</returns>
+        private static List<string> ExtractDroppedNodeIds(Cell forEachNode)
+        {
+            var childIds = new List<string>();
+            
+            try
+            {
+                if (forEachNode.data.TryGetValue("droppedNodes", out var droppedNodesObj))
+                {
+                    List<object> droppedNodesList = null;
+                    
+                    if (droppedNodesObj is JArray jArray)
+                    {
+                        droppedNodesList = jArray.ToObject<List<object>>();
+                    }
+                    else if (droppedNodesObj != null)
+                    {
+                        var json = JsonConvert.SerializeObject(droppedNodesObj);
+                        droppedNodesList = JsonConvert.DeserializeObject<List<object>>(json);
+                    }
+                    
+                    if (droppedNodesList != null)
+                    {
+                        foreach (var droppedNode in droppedNodesList)
+                        {
+                            var childId = ExtractNodeId(droppedNode);
+                            if (!string.IsNullOrEmpty(childId))
+                            {
+                                childIds.Add(childId);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error extracting dropped node IDs from ForEach: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+            
+            return childIds;
+        }
+        
+        /// <summary>
+        /// Extracts the ID from a dropped node object
+        /// </summary>
+        /// <param name="droppedNode">The dropped node object</param>
+        /// <returns>The node ID or null if not found</returns>
+        private static string ExtractNodeId(object droppedNode)
+        {
+            try
+            {
+                if (droppedNode is string jsonString)
+                {
+                    var nodeData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
+                    return nodeData?.TryGetValue("id", out var idObj) == true ? idObj?.ToString() : null;
+                }
+                else
+                {
+                    var json = JsonConvert.SerializeObject(droppedNode);
+                    var nodeData = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                    return nodeData?.TryGetValue("id", out var idObj) == true ? idObj?.ToString() : null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>

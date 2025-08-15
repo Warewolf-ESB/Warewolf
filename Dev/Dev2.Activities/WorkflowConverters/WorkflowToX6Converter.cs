@@ -343,7 +343,7 @@ namespace Dev2.Activities.WF
                 activityNodeMap[forEachActivity] = forEachNodeId;
             }
             
-            // Create the ForEach node
+            // Create the ForEach node - the ToX6Json method will handle embedding child activities
             var forEachNode = CreateForEachNode(forEachActivity, forEachNodeId);
             graphData.Nodes.Add(forEachNode);
             
@@ -353,12 +353,9 @@ namespace Dev2.Activities.WF
                 graphData.Edges.Add(CreateEdge(previousNodeId, forEachNodeId));
             }
 
-            // Process the child activity in DataFunc.Handler
-            if (forEachActivity.DataFunc?.Handler != null)
-            {
-                var childNodeId = ProcessActivity(forEachActivity.DataFunc.Handler, graphData, activityNodeMap, forEachNodeId);
-                return childNodeId;
-            }
+            // DO NOT process the child activity separately - it's already embedded via ToX6Json
+            // The child activity is handled within the ForEach droppedNodes by the ToX6Json method
+            // This prevents the child from appearing as a separate top-level node
 
             return forEachNodeId;
         }
