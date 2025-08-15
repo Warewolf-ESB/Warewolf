@@ -178,7 +178,7 @@ namespace Dev2.Activities.WF
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var switchNodeId = GenerateNodeId();
-            var switchNode = CreateSwitchNodeString(flowSwitch, switchNodeId);
+            var switchNode = CreateSwitchNode(flowSwitch, switchNodeId);
             
             // Store the switch activity in the activity map if it has an expression
             if (flowSwitch.Expression != null)
@@ -481,44 +481,8 @@ namespace Dev2.Activities.WF
             return cell;
         }
 
-        private Cell CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
-        {
-            var cell = new Cell
-            {
-                id = nodeId,
-                shape = Constants.POLYGON,
-                position = new Position(_currentX, _currentY),
-                label = Constants.SWITCH,
-                data = new Dictionary<string, object>
-                {
-                    [Constants.TYPE] = Constants.FLOWSWITCH,
-                    [Constants.EXPRESSION] = GetCleanExpressionText(flowSwitch.Expression) ?? Constants.SWITCH
-                }
-            };
-
-            // Update position for next node
-            _currentY += 150;
-
-            // Try to access the underlying activity through reflection if needed
-            var expression = flowSwitch.Expression;
-            if (expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
-            {
-                ProcessSwitchActivityReflection(expression, flowSwitch, cell);
-            }
-            else
-            {
-                Console.WriteLine($"[X6Convert-Switch] Using basic processing for expression type: {expression.GetType().Name}");
-                // Basic processing for other expression types
-                cell.data[Constants.DISPLAYNAME] = expression.DisplayName ?? Constants.SWITCH;
-                cell.label = expression.DisplayName ?? Constants.SWITCH;
-            }
-
-            return cell;
-        }
-
-        private Cell CreateSwitchNodeString(FlowSwitch<string> flowSwitch, string nodeId)
-        {
-            
+        private Cell CreateSwitchNode(FlowSwitch<string> flowSwitch, string nodeId)
+        {            
             var cell = new Cell
             {
                 id = nodeId,
