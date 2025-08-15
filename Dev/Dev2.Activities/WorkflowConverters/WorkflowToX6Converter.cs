@@ -61,12 +61,16 @@ namespace Dev2.Activities.WF
             {
                 nodeId = GenerateNodeId();
                 activityNodeMap[activity] = nodeId;
-                var node = CreateActivityNode(activity, nodeId);
-                graphData.Nodes.Add(node);
-
-                if (!string.IsNullOrEmpty(previousNodeId))
+                
+                if (activity is not DsfForEachActivity)
                 {
-                    graphData.Edges.Add(CreateEdge(previousNodeId, nodeId));
+                    var node = CreateActivityNode(activity, nodeId);
+                    graphData.Nodes.Add(node);
+
+                    if (!string.IsNullOrEmpty(previousNodeId))
+                    {
+                        graphData.Edges.Add(CreateEdge(previousNodeId, nodeId));
+                    }
                 }
             }
             else
@@ -83,7 +87,7 @@ namespace Dev2.Activities.WF
                 DoWhile doWhileActivity => ProcessDoWhileActivity(doWhileActivity, graphData, activityNodeMap, nodeId),
                 TryCatch tryCatchActivity => ProcessTryCatchActivity(tryCatchActivity, graphData, activityNodeMap, nodeId),
                 Parallel parallelActivity => ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId),
-                //ForEach<> forEachActivity => ProcessForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId),
+                DsfForEachActivity forEachActivity => ProcessDsfForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId, previousNodeId),
 				_ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -329,6 +333,36 @@ namespace Dev2.Activities.WF
             return _tempEndNodes.Count > 0 ? _tempEndNodes[^1] : parentNodeId;
         }
 
+        private string ProcessDsfForEachActivity(DsfForEachActivity forEachActivity, X6WorkflowLoadModel graphData,
+            Dictionary<Activity, string> activityNodeMap, string parentNodeId, string previousNodeId)
+        {
+            // The nodeId should already be generated and stored in activityNodeMap by ProcessActivity
+            if (!activityNodeMap.TryGetValue(forEachActivity, out var forEachNodeId))
+            {
+                forEachNodeId = GenerateNodeId();
+                activityNodeMap[forEachActivity] = forEachNodeId;
+            }
+            
+            // Create the ForEach node
+            var forEachNode = CreateForEachNode(forEachActivity, forEachNodeId);
+            graphData.Nodes.Add(forEachNode);
+            
+            // Create edge from previous node to this ForEach node
+            if (!string.IsNullOrEmpty(previousNodeId))
+            {
+                graphData.Edges.Add(CreateEdge(previousNodeId, forEachNodeId));
+            }
+
+            // Process the child activity in DataFunc.Handler
+            if (forEachActivity.DataFunc?.Handler != null)
+            {
+                var childNodeId = ProcessActivity(forEachActivity.DataFunc.Handler, graphData, activityNodeMap, forEachNodeId);
+                return childNodeId;
+            }
+
+            return forEachNodeId;
+        }
+
         private string ProcessGenericActivity(Activity activity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
@@ -407,6 +441,10 @@ namespace Dev2.Activities.WF
             else if (activity is DsfDecision decision)
             {
                 return CreateDecisionNode(decision, nodeId);
+            }
+            else if (activity is DsfForEachActivity forEachActivity)
+            {
+                return CreateForEachNode(forEachActivity, nodeId);
             }
 
             cell.shape = Constants.RECT;
@@ -517,6 +555,26 @@ namespace Dev2.Activities.WF
             return cell;
         }
 
+        private Cell CreateForEachNode(DsfForEachActivity forEachActivity, string nodeId)
+        {
+            var cell = new Cell
+            {
+                id = nodeId,
+                shape = Constants.RECT,
+                position = new Position(_currentX, _currentY),
+                label = forEachActivity.DisplayName ?? "For Each",
+                data = new Dictionary<string, object>()
+            };
+
+            // Update position for next node
+            _currentY += 150;
+
+            // Use the existing ToX6Json method from DsfForEachActivity
+            forEachActivity.ToX6Json(cell);
+            
+            return cell;
+        }
+        
         private static void ProcessSwitchActivityReflection(Activity expression, FlowSwitch<object> flowSwitch, Cell cell)
         {
             try
