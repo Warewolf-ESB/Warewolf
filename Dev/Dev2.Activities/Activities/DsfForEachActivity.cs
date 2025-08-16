@@ -535,30 +535,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data["numOfExecutions"] = NumOfExections ?? string.Empty;
             cell.data["failOnFirstError"] = FailOnFirstError;
 
-            var droppedNodes = new List<object>();
-            if (DataFunc?.Handler != null)
-            {
-                // Create a cell for the child activity and serialize it
-                var childCell = new Cell
-                {
-                    id = Guid.NewGuid().ToString(),
-                    data = new Dictionary<string, object>()
-                };
-                    
-                // Check for specific activity types that support ToX6Json
-                if (DataFunc.Handler is DsfActivityAbstract<string> activityAbstract)
-                {
-                    activityAbstract.ToX6Json(childCell);
-                    droppedNodes.Add(childCell);
-                }
-                else if (DataFunc.Handler is DsfActivityAbstract<bool> activityAbstractBool)
-                {
-                    activityAbstractBool.ToX6Json(childCell);
-                    droppedNodes.Add(childCell);
-                }
-            }
-            
-            cell.data["droppedNodes"] = droppedNodes;
+            // Note: droppedNodes are no longer included here as nested activities are now handled 
+            // separately as standalone nodes with nesting properties by the workflow converter
+            cell.data["droppedNodes"] = new List<object>();
 
             // Add ngArguments for the frontend framework integration
             if (cell.id != null)
@@ -570,7 +549,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 };
             }
 
-            // Serialize the DataFunc (child activities) information
+            // Serialize the DataFunc (child activities) information for legacy support
             var dataFuncInfo = SerializeDataFunc();
             if (dataFuncInfo != null)
             {

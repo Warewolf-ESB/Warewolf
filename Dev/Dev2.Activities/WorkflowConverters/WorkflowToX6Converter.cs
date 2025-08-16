@@ -353,9 +353,22 @@ namespace Dev2.Activities.WF
                 graphData.Edges.Add(CreateEdge(previousNodeId, forEachNodeId));
             }
 
-            // DO NOT process the child activity separately - it's already embedded via ToX6Json
-            // The child activity is handled within the ForEach droppedNodes by the ToX6Json method
-            // This prevents the child from appearing as a separate top-level node
+            // Extract nested activities from DataFunc.Handler and create separate top-level nodes
+            if (forEachActivity.DataFunc?.Handler != null)
+            {
+                var nestedActivity = forEachActivity.DataFunc.Handler;
+                var nestedNodeId = GenerateNodeId();
+                activityNodeMap[nestedActivity] = nestedNodeId;
+                
+                // Create the nested activity node with ForEach nesting properties
+                var nestedNode = CreateActivityNode(nestedActivity, nestedNodeId);
+                
+                // Add the nesting properties to indicate this node is nested in the ForEach
+                nestedNode.data["isNestedInForEach"] = true;
+                nestedNode.data["forEachParentId"] = forEachNodeId;
+                
+                graphData.Nodes.Add(nestedNode);
+            }
 
             return forEachNodeId;
         }
@@ -450,8 +463,56 @@ namespace Dev2.Activities.WF
             cell.data.Add(Constants.TYPE, activityType);
             cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
             cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
+            
+            // Extract and include ForEach nesting information if present
+            ExtractForEachNestingInfo(activity, cell);
 
             return cell;
+        }
+        
+        /// <summary>
+        /// Extracts ForEach nesting information from an activity's annotations and adds it to the cell data
+        /// </summary>
+        /// <param name="activity">The activity to extract nesting info from</param>
+        /// <param name="cell">The X6 cell to add nesting info to</param>
+        private static void ExtractForEachNestingInfo(Activity activity, Cell cell)
+        {
+            try
+            {
+                // Look for ForEach nesting information in the activity's annotations
+                var annotationsProperty = activity.GetType().GetProperty("Annotations");
+                if (annotationsProperty?.GetValue(activity) is System.Collections.ObjectModel.Collection<object> annotations)
+                {
+                    // Find the ForEachNestingInfo annotation
+                    foreach (var annotation in annotations)
+                    {
+                        if (annotation is Dictionary<string, object> annotationDict && 
+                            annotationDict.TryGetValue("_annotationType", out var annotationType) &&
+                            annotationType?.ToString() == "ForEachNestingInfo")
+                        {
+                            // Extract the nesting information
+                            if (annotationDict.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                                bool.TryParse(isNestedObj?.ToString(), out var isNested))
+                            {
+                                cell.data["isNestedInForEach"] = isNested;
+                            }
+                            
+                            if (annotationDict.TryGetValue("forEachParentId", out var parentIdObj) && 
+                                parentIdObj is string parentId && !string.IsNullOrEmpty(parentId))
+                            {
+                                cell.data["forEachParentId"] = parentId;
+                            }
+                            
+                            break; // Found our annotation, no need to continue
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // If extraction fails, continue without nesting info
+                // This ensures the conversion doesn't fail due to annotation issues
+            }
         }
 
         private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
