@@ -266,7 +266,7 @@ namespace Dev2.Activities
                         if (cachedActivity != null) { return cachedActivity; }
 
                         var tool = ParseTools(start, seenActivities);
-                        result = tool.FirstOrDefault();
+                        result = tool?.FirstOrDefault();
 
                         // Serialize and Cache result
                         //activityId = string.Concat(workspaceID, resourceIdGuid);
