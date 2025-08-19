@@ -1,5 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.Common.X6;
+﻿using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
 using System;
@@ -113,34 +112,9 @@ namespace Dev2.Activities.WF
         private string ProcessFlowchart(Flowchart flowchart, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            string lastNodeId = parentNodeId;
-            
-            // Process the StartNode first if it exists
-            if (flowchart.StartNode != null)
-            {
-                lastNodeId = ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
-            }
-            
-            // Also process all nodes in the Nodes collection to ensure nothing is missed
-            for (int i = 0; i < flowchart.Nodes.Count; i++)
-            {
-                var node = flowchart.Nodes[i];
-                
-                // Check if this node's action was already processed
-                bool alreadyProcessed = false;
-                if (node is FlowStep step && step.Action != null)
-                {
-                    alreadyProcessed = activityNodeMap.ContainsKey(step.Action);
-                }
-                
-                if (!alreadyProcessed)
-                {
-                    var nodeResult = ProcessFlowNode(node, graphData, activityNodeMap, lastNodeId);
-                    lastNodeId = nodeResult;
-                }
-            }
-            
-            return lastNodeId;
+            if (flowchart.StartNode == null) return parentNodeId;
+
+            return ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
         }
 
         private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
@@ -163,7 +137,7 @@ namespace Dev2.Activities.WF
 
             if (flowStep.Next != null)
             {
-                return ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
+                ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
             }
 
             return nodeId;
@@ -287,17 +261,6 @@ namespace Dev2.Activities.WF
             return bodyNodeId;
         }
 
-        //private string ProcessForEachActivity(ForEach forEachActivity, X6GraphData graphData,
-        //    Dictionary<Activity, string> activityNodeMap, string parentNodeId)
-        //{
-        //    if (forEachActivity.Body != null)
-        //    {
-        //        return ProcessActivity(forEachActivity.Body.Handler, graphData, activityNodeMap, parentNodeId);
-        //    }
-
-        //    return parentNodeId;
-        //}
-
         private string ProcessDoWhileActivity(DoWhile doWhileActivity, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
@@ -379,24 +342,76 @@ namespace Dev2.Activities.WF
                 graphData.Edges.Add(CreateEdge(previousNodeId, forEachNodeId));
             }
 
-            // Extract nested activities from DataFunc.Handler and create separate top-level nodes
-            if (forEachActivity.DataFunc?.Handler != null)
-            {
-                var nestedActivity = forEachActivity.DataFunc.Handler;
-                var nestedNodeId = GenerateNodeId();
-                activityNodeMap[nestedActivity] = nestedNodeId;
-                
-                // Create the nested activity node with ForEach nesting properties
-                var nestedNode = CreateActivityNode(nestedActivity, nestedNodeId);
-                
-                // Add the nesting properties to indicate this node is nested in the ForEach
-                nestedNode.data["isNestedInForEach"] = true;
-                nestedNode.data["forEachParentId"] = forEachNodeId;
-                
-                graphData.Nodes.Add(nestedNode);
-            }
+            // Process nested activities from DataFunc.Handler
+            ProcessForEachNestedActivities(forEachActivity, forEachNodeId, graphData, activityNodeMap);
 
             return forEachNodeId;
+        }
+        
+        /// <summary>
+        /// Processes nested activities within a ForEach activity and creates separate X6 nodes for them
+        /// </summary>
+        /// <param name="forEachActivity">The ForEach activity containing nested activities</param>
+        /// <param name="forEachNodeId">The node ID of the parent ForEach activity</param>
+        /// <param name="graphData">The X6 graph data to add nodes to</param>
+        /// <param name="activityNodeMap">Map of activities to their node IDs</param>
+        private void ProcessForEachNestedActivities(DsfForEachActivity forEachActivity, string forEachNodeId,
+            X6WorkflowLoadModel graphData, Dictionary<Activity, string> activityNodeMap)
+        {
+            // Check if there's a nested activity in the DataFunc.Handler
+            var nestedActivity = forEachActivity.DataFunc?.Handler;
+            if (nestedActivity == null) return;
+
+            // Generate a unique node ID for the nested activity
+            var nestedNodeId = GenerateNodeId();
+            activityNodeMap[nestedActivity] = nestedNodeId;
+                
+            // Create the nested activity node
+            var nestedNode = CreateActivityNode(nestedActivity, nestedNodeId);
+                
+            // Add nesting metadata to indicate this activity is nested within the ForEach
+            nestedNode.data["isNestedInForEach"] = true;
+            nestedNode.data["forEachParentId"] = forEachNodeId;
+                
+            // Add the nested node to the graph
+            graphData.Nodes.Add(nestedNode);
+                
+            // Recursively process any further nested activities (e.g., if the nested activity is itself a container)
+            ProcessNestedActivityChildren(nestedActivity, graphData, activityNodeMap, forEachNodeId);
+        }
+        
+        /// <summary>
+        /// Recursively processes any child activities of a nested activity
+        /// </summary>
+        /// <param name="parentActivity">The parent activity to check for children</param>
+        /// <param name="graphData">The X6 graph data to add nodes to</param>
+        /// <param name="activityNodeMap">Map of activities to their node IDs</param>
+        /// <param name="forEachParentId">The ID of the root ForEach parent</param>
+        private void ProcessNestedActivityChildren(Activity parentActivity, X6WorkflowLoadModel graphData,
+            Dictionary<Activity, string> activityNodeMap, string forEachParentId)
+        {
+            // Get child activities using the existing GetChildActivities method
+            GetChildActivities(parentActivity, _tempChildActivities);
+            
+            foreach (var childActivity in _tempChildActivities)
+            {
+                // Skip if we've already processed this activity
+                if (activityNodeMap.ContainsKey(childActivity)) continue;
+                
+                var childNodeId = GenerateNodeId();
+                activityNodeMap[childActivity] = childNodeId;
+                    
+                var childNode = CreateActivityNode(childActivity, childNodeId);
+                    
+                // Add nesting metadata
+                childNode.data["isNestedInForEach"] = true;
+                childNode.data["forEachParentId"] = forEachParentId;
+                    
+                graphData.Nodes.Add(childNode);
+                    
+                // Recursively process further nested children
+                ProcessNestedActivityChildren(childActivity, graphData, activityNodeMap, forEachParentId);
+            }
         }
 
         private string ProcessGenericActivity(Activity activity, X6WorkflowLoadModel graphData,
