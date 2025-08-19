@@ -1,4 +1,5 @@
-﻿using Dev2.Common.X6;
+﻿using Dev2.Common;
+using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
 using System;
@@ -112,9 +113,34 @@ namespace Dev2.Activities.WF
         private string ProcessFlowchart(Flowchart flowchart, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
-            if (flowchart.StartNode == null) return parentNodeId;
-
-            return ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
+            string lastNodeId = parentNodeId;
+            
+            // Process the StartNode first if it exists
+            if (flowchart.StartNode != null)
+            {
+                lastNodeId = ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
+            }
+            
+            // Also process all nodes in the Nodes collection to ensure nothing is missed
+            for (int i = 0; i < flowchart.Nodes.Count; i++)
+            {
+                var node = flowchart.Nodes[i];
+                
+                // Check if this node's action was already processed
+                bool alreadyProcessed = false;
+                if (node is FlowStep step && step.Action != null)
+                {
+                    alreadyProcessed = activityNodeMap.ContainsKey(step.Action);
+                }
+                
+                if (!alreadyProcessed)
+                {
+                    var nodeResult = ProcessFlowNode(node, graphData, activityNodeMap, lastNodeId);
+                    lastNodeId = nodeResult;
+                }
+            }
+            
+            return lastNodeId;
         }
 
         private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
@@ -137,7 +163,7 @@ namespace Dev2.Activities.WF
 
             if (flowStep.Next != null)
             {
-                ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
+                return ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
             }
 
             return nodeId;
