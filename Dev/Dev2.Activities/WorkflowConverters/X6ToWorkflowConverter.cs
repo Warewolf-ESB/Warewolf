@@ -1053,14 +1053,12 @@ namespace Dev2.Activities.WF
                     if (!string.IsNullOrEmpty(validParentId))
                     {
                         node.data["forEachParentId"] = validParentId;
-                        Dev2Logger.Info($"Fixed invalid ForEach parent reference: {parentId} -> {validParentId} for node {node.id}", GlobalConstants.WarewolfInfo);
                     }
                     else
                     {
                         // Remove invalid parent reference
                         node.data.Remove("forEachParentId");
                         node.data["isNestedInForEach"] = false;
-                        Dev2Logger.Warn($"Removed invalid ForEach parent reference {parentId} for node {node.id} - no valid parent found", GlobalConstants.WarewolfWarn);
                     }
                 }
             }
