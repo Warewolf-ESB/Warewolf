@@ -1045,25 +1045,22 @@ namespace Dev2.Activities.WF
                     bool.TryParse(isNestedObj?.ToString(), out var isNested) && isNested &&
                     node.data.TryGetValue("forEachParentId", out var parentIdObj) && 
                     parentIdObj is string parentId && 
-                    !string.IsNullOrWhiteSpace(parentId))
+                    !string.IsNullOrWhiteSpace(parentId) &&
+					!existingNodeIds.Contains(parentId))
                 {
-                    // Check if the parent reference is valid
-                    if (!existingNodeIds.Contains(parentId))
+                    // Try to find a valid ForEach parent node
+                    var validParentId = FindValidForEachParent(allNodes, node);
+                    if (!string.IsNullOrEmpty(validParentId))
                     {
-                        // Try to find a valid ForEach parent node
-                        var validParentId = FindValidForEachParent(allNodes, node);
-                        if (!string.IsNullOrEmpty(validParentId))
-                        {
-                            node.data["forEachParentId"] = validParentId;
-                            Dev2Logger.Info($"Fixed invalid ForEach parent reference: {parentId} -> {validParentId} for node {node.id}", GlobalConstants.WarewolfInfo);
-                        }
-                        else
-                        {
-                            // Remove invalid parent reference
-                            node.data.Remove("forEachParentId");
-                            node.data["isNestedInForEach"] = false;
-                            Dev2Logger.Warn($"Removed invalid ForEach parent reference {parentId} for node {node.id} - no valid parent found", GlobalConstants.WarewolfWarn);
-                        }
+                        node.data["forEachParentId"] = validParentId;
+                        Dev2Logger.Info($"Fixed invalid ForEach parent reference: {parentId} -> {validParentId} for node {node.id}", GlobalConstants.WarewolfInfo);
+                    }
+                    else
+                    {
+                        // Remove invalid parent reference
+                        node.data.Remove("forEachParentId");
+                        node.data["isNestedInForEach"] = false;
+                        Dev2Logger.Warn($"Removed invalid ForEach parent reference {parentId} for node {node.id} - no valid parent found", GlobalConstants.WarewolfWarn);
                     }
                 }
             }
