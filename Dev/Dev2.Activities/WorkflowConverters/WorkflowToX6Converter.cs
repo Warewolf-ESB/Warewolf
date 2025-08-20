@@ -405,9 +405,11 @@ namespace Dev2.Activities.WF
                     
                 // Add nesting metadata
                 childNode.data["isNestedInForEach"] = true;
-                childNode.data["forEachParentId"] = forEachParentId;
-                    
-                graphData.Nodes.Add(childNode);
+#pragma warning disable CC0021 // Use nameof
+				childNode.data["forEachParentId"] = forEachParentId;
+#pragma warning restore CC0021 // Use nameof
+
+				graphData.Nodes.Add(childNode);
                     
                 // Recursively process further nested children
                 ProcessNestedActivityChildren(childActivity, graphData, activityNodeMap, forEachParentId);
