@@ -22,6 +22,9 @@ namespace Dev2.Activities.WF
         private Dictionary<string, Activity> activityMap = new();
         private List<Cell> connections = new List<Cell>();
         private Dictionary<string, SwitchCaseData> switchCaseMap = new();
+        
+        // Store ForEach nesting information for activities
+        private Dictionary<string, ForEachNestingInfo> forEachNestingMap = new();
 
         private class SwitchCaseData
         {
@@ -33,6 +36,15 @@ namespace Dev2.Activities.WF
         {
             public string Key { get; set; }
             public string Value { get; set; }
+        }
+        
+        /// <summary>
+        /// Stores information about an activity's nesting within ForEach activities
+        /// </summary>
+        private class ForEachNestingInfo
+        {
+            public bool IsNestedInForEach { get; set; }
+            public string ForEachParentId { get; set; }
         }
 
         /// <summary>
@@ -103,6 +115,12 @@ namespace Dev2.Activities.WF
             var allNodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
             connections = x6Graph.Cells.Where(c => c.shape == "edge").ToList();
             
+            // Apply ForEach ID mapping to fix parent relationship references
+            ApplyForEachIdMapping(allNodes);
+            
+            // Process ForEach nesting information first
+            ProcessForEachNestingInfo(allNodes);
+            
             // Filter out child nodes that belong to ForEach activities' droppedNodes
             var topLevelNodes = FilterTopLevelNodes(allNodes);
             
@@ -124,6 +142,9 @@ namespace Dev2.Activities.WF
                 }
             }
 
+            // Now embed nested activities into their parent ForEach activities' DataFunc.Handler property
+            EmbedNestedActivitiesIntoForEachActivities(allNodes);
+
             // Build the workflow structure
             activityBuilder.Implementation = BuildWorkflow(topLevelNodes, startcell);
 
@@ -131,14 +152,105 @@ namespace Dev2.Activities.WF
         }
         
         /// <summary>
+        /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property
+        /// </summary>
+        /// <param name="allNodes">All nodes from the X6 graph</param>
+        private void EmbedNestedActivitiesIntoForEachActivities(List<Cell> allNodes)
+        {
+            // Group nested nodes by their parent ForEach ID
+            var nestedNodesByParent = new Dictionary<string, List<Cell>>();
+            
+            foreach (var node in allNodes)
+            {
+                if (forEachNestingMap.TryGetValue(node.id, out var nestingInfo) && 
+                    nestingInfo.IsNestedInForEach && !string.IsNullOrEmpty(nestingInfo.ForEachParentId))
+                {
+                    if (!nestedNodesByParent.ContainsKey(nestingInfo.ForEachParentId))
+                    {
+                        nestedNodesByParent[nestingInfo.ForEachParentId] = new List<Cell>();
+                    }
+                    nestedNodesByParent[nestingInfo.ForEachParentId].Add(node);
+                }
+            }
+            
+            // For each ForEach activity, embed its nested activities
+            foreach (var kvp in nestedNodesByParent)
+            {
+                var forEachParentId = kvp.Key;
+                var nestedNodes = kvp.Value;
+                
+                // Find the ForEach activity with this ID and ensure it's a DsfForEachActivity
+                if (activityMap.TryGetValue(forEachParentId, out var forEachActivity) && 
+                    forEachActivity is DsfForEachActivity forEach && 
+                    nestedNodes.Count > 0)
+                {
+                    // For simplicity, we'll take the first nested activity
+                    // In a more complex scenario, you might need to handle multiple nested activities
+                    var nestedNode = nestedNodes[0]; // Take first nested activity
+                    var nestedActivity = CreateActivityFromNode(nestedNode, out _);
+                    
+                    if (nestedActivity != null)
+                    {
+                        // Initialize DataFunc if it doesn't exist
+                        if (forEach.DataFunc == null)
+                        {
+                            forEach.DataFunc = new ActivityFunc<string, bool>
+                            {
+                                DisplayName = "Data Action",
+                                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+                            };
+                        }
+                        
+                        // Set the nested activity as the handler
+                        forEach.DataFunc.Handler = nestedActivity;
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Processes and stores ForEach nesting information for all nodes
+        /// </summary>
+        /// <param name="allNodes">All nodes from the X6 graph</param>
+        private void ProcessForEachNestingInfo(List<Cell> allNodes)
+        {
+            foreach (var node in allNodes)
+            {
+                var nestingInfo = new ForEachNestingInfo();
+                
+                // Extract isNestedInForEach property
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                    bool.TryParse(isNestedObj?.ToString(), out var isNested))
+                {
+                    nestingInfo.IsNestedInForEach = isNested;
+                }
+                
+                // Extract forEachParentId property
+                if (node.data.TryGetValue("forEachParentId", out var parentIdObj) && 
+                    parentIdObj is string parentId && !string.IsNullOrWhiteSpace(parentId))
+                {
+                    nestingInfo.ForEachParentId = parentId;
+                }
+                
+                // Only store if we have meaningful nesting information
+                if (nestingInfo.IsNestedInForEach || !string.IsNullOrEmpty(nestingInfo.ForEachParentId))
+                {
+                    forEachNestingMap[node.id] = nestingInfo;
+                }
+            }
+        }
+        
+        /// <summary>
         /// Filters out child nodes that belong to ForEach activities' droppedNodes
+        /// and also filters out nodes that are nested in ForEach activities (have isNestedInForEach = true)
         /// to prevent them from being processed as separate top-level activities
         /// </summary>
         /// <param name="allNodes">All nodes from the X6 graph</param>
         /// <returns>List of nodes that should be processed as top-level activities</returns>
-        private List<Cell> FilterTopLevelNodes(List<Cell> allNodes)
+        private static List<Cell> FilterTopLevelNodes(List<Cell> allNodes)
         {
             var childNodeIds = new HashSet<string>();
+            var nestedNodeIds = new HashSet<string>();
             
             // First pass: identify all child node IDs that are embedded in ForEach droppedNodes
             foreach (var node in allNodes)
@@ -151,10 +263,17 @@ namespace Dev2.Activities.WF
                         childNodeIds.Add(childId);
                     }
                 }
+                
+                // Also identify nodes that are nested in ForEach activities
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                    bool.TryParse(isNestedObj?.ToString(), out var isNested) && isNested)
+                {
+                    nestedNodeIds.Add(node.id);
+                }
             }
             
-            // Second pass: filter out child nodes, keeping only top-level nodes
-            return allNodes.Where(node => !childNodeIds.Contains(node.id)).ToList();
+            // Second pass: filter out child nodes and nested nodes, keeping only top-level nodes
+            return allNodes.Where(node => !childNodeIds.Contains(node.id) && !nestedNodeIds.Contains(node.id)).ToList();
         }
         
         /// <summary>
@@ -351,8 +470,42 @@ namespace Dev2.Activities.WF
                 return CreateForEachActivity(node);
             }
             else
+			{
+				return new WriteLine { Text = "Unknown type" };
+            }
+        }
+        
+        /// <summary>
+        /// Applies ForEach nesting information to an activity by storing it in the activity's annotations
+        /// </summary>
+        /// <param name="activity">The activity to apply nesting info to</param>
+        /// <param name="nodeId">The node ID to look up nesting info</param>
+        private void ApplyForEachNestingInfo(Activity activity, string nodeId)
+        {
+            if (forEachNestingMap.TryGetValue(nodeId, out var nestingInfo) && 
+                activity.GetType().GetProperty("Annotations") != null)
             {
-                return new WriteLine { Text = "Unknown type" };
+                // Use reflection to set annotations if the property exists
+                var annotationsProperty = activity.GetType().GetProperty("Annotations");
+                if (annotationsProperty != null)
+                {
+                    var annotations = annotationsProperty.GetValue(activity) as System.Collections.ObjectModel.Collection<object>;
+                    if (annotations == null)
+                    {
+                        annotations = new System.Collections.ObjectModel.Collection<object>();
+                        annotationsProperty.SetValue(activity, annotations);
+                    }
+                    
+                    // Add our custom nesting information as an annotation
+                    var nestingAnnotation = new Dictionary<string, object>
+                    {
+                        ["isNestedInForEach"] = nestingInfo.IsNestedInForEach,
+                        ["forEachParentId"] = nestingInfo.ForEachParentId ?? string.Empty,
+                        ["_annotationType"] = nameof(ForEachNestingInfo)
+                    };
+                    
+                    annotations.Add(nestingAnnotation);
+                }
             }
         }
 
@@ -722,8 +875,8 @@ namespace Dev2.Activities.WF
                     element.Name = newNs + element.Name.LocalName;
                 }
 
-                foreach (var attr in element.Attributes())
-                {
+	            foreach (var attr in element.Attributes())
+	            {
                     // Fix namespace in x:TypeArguments or other attributes that use oldNs in string form
                     if ((attr.Name.LocalName == "x:TypeArguments") &&
                         attr.Value.Contains("clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib"))
@@ -732,7 +885,7 @@ namespace Dev2.Activities.WF
                             "clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib",
                             "clr-namespace:System.Collections.Generic;assembly=mscorlib");
                     }
-                }
+	            }
 
                 foreach (var child in element.Elements())
                 {
@@ -872,6 +1025,74 @@ namespace Dev2.Activities.WF
 
                 parent.Add(node);
             }
+        }
+        
+        /// <summary>
+        /// Applies ForEach ID mapping to fix parent relationship references.
+        /// This addresses the bug where nested nodes become orphaned when node IDs are regenerated
+        /// but parent references are not updated accordingly.
+        /// </summary>
+        /// <param name="allNodes">All nodes from the X6 graph</param>
+        private static void ApplyForEachIdMapping(List<Cell> allNodes)
+        {
+            // Create a lookup of existing node IDs for validation
+            var existingNodeIds = new HashSet<string>(allNodes.Select(node => node.id));
+            
+            // Only update ForEach parent references that are invalid
+            foreach (var node in allNodes)
+            {
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                    bool.TryParse(isNestedObj?.ToString(), out var isNested) && isNested &&
+                    node.data.TryGetValue("forEachParentId", out var parentIdObj) && 
+                    parentIdObj is string parentId && 
+                    !string.IsNullOrWhiteSpace(parentId))
+                {
+                    // Check if the parent reference is valid
+                    if (!existingNodeIds.Contains(parentId))
+                    {
+                        // Try to find a valid ForEach parent node
+                        var validParentId = FindValidForEachParent(allNodes, node);
+                        if (!string.IsNullOrEmpty(validParentId))
+                        {
+                            node.data["forEachParentId"] = validParentId;
+                            Dev2Logger.Info($"Fixed invalid ForEach parent reference: {parentId} -> {validParentId} for node {node.id}", GlobalConstants.WarewolfInfo);
+                        }
+                        else
+                        {
+                            // Remove invalid parent reference
+                            node.data.Remove("forEachParentId");
+                            node.data["isNestedInForEach"] = false;
+                            Dev2Logger.Warn($"Removed invalid ForEach parent reference {parentId} for node {node.id} - no valid parent found", GlobalConstants.WarewolfWarn);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds a valid ForEach parent node for a nested node
+        /// </summary>
+        /// <param name="allNodes">All nodes from the X6 graph</param>
+        /// <param name="nestedNode">The nested node looking for a parent</param>
+        /// <returns>Valid parent ID or null if not found</returns>
+        private static string FindValidForEachParent(List<Cell> allNodes, Cell nestedNode)
+        {
+            // Look for ForEach nodes that might contain this nested node in their droppedNodes
+            foreach (var node in allNodes)
+            {
+                if (IsForEachNode(node))
+                {
+                    var droppedNodeIds = ExtractDroppedNodeIds(node);
+                    if (droppedNodeIds.Contains(nestedNode.id))
+                    {
+                        return node.id;
+                    }
+                }
+            }
+            
+            // If no direct containment found, try to find the closest ForEach node
+            // This is a fallback strategy - you might want to implement more sophisticated logic here
+            return allNodes.FirstOrDefault(IsForEachNode)?.id;
         }
     }
 }
