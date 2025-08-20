@@ -213,6 +213,10 @@ namespace Dev2.Activities.WF
             {
                 return CreateAssignActivity(node);
             }
+            else if (nodeType.Contains("dsfdotnetmultiassignobjectactivity"))
+            {
+                return CreateAssignObectActivity(node);
+            }
             else if (nodeType.Contains("flowdecision"))
             {
                 return CreateFlowDecisionActivity(node);
@@ -231,56 +235,12 @@ namespace Dev2.Activities.WF
             }
         }
 
+        
+
         private static DsfFlowSwitchActivity CreateSwitchActivity(Cell node)
         {
-            var displayName = "Switch";
-            if (node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject) && displayObject is string displayText && !string.IsNullOrWhiteSpace(displayText))
-            {
-                displayName = displayText;
-            }
-
-            var activity = new DsfFlowSwitchActivity
-            {
-                DisplayName = displayName
-            };
-
-            // Extract switch variable from node data
-            if (node.data.TryGetValue("switchVariable", out var switchVarObj) && switchVarObj is string switchVariable)
-            {
-                // Create the proper expression text format for switch
-                activity.ExpressionText = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
-                                                     "(\"", switchVariable, "\",",
-                                                     GlobalConstants.InjectedDecisionDataListVariable,
-                                                     ")");
-            }
-
-            if (node.data.TryGetValue("switchExpression", out var switchExprObj) && switchExprObj is string switchExprJson)
-            {
-                try
-                {
-                    var switchExpression = JsonConvert.DeserializeObject<dynamic>(switchExprJson);
-
-                    // Extract switch variable from expression if not already set
-                    if (string.IsNullOrEmpty(activity.ExpressionText) && switchExpression?.SwitchVariable != null)
-                    {
-                        var switchVar = switchExpression.SwitchVariable.ToString();
-                        activity.ExpressionText = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
-                                                             "(\"", switchVar, "\",",
-                                                             GlobalConstants.InjectedDecisionDataListVariable,
-                                                             ")");
-                    }
-                }
-                catch (JsonException)
-                {
-                    // If JSON parsing fails, continue with default values for
-                }
-            }
-
-            // Set other properties if available
-            activity.UniqueID = node.data.TryGetValue("UniqueID", out var uniqueIdObj) && uniqueIdObj is string uniqueId
-                ? uniqueId
-                : Guid.NewGuid().ToString();
-
+            var activity = new DsfFlowSwitchActivity();
+            activity.FromX6Json(node);
             return activity;
         }
 
@@ -313,6 +273,23 @@ namespace Dev2.Activities.WF
                 return null;
 
             var activity = new DsfDecision();
+            activity.FromX6Json(node);
+            return activity;
+        }
+
+        /// <summary>
+        /// Creates DsfDotNetMultiAssignObjectActivity from X6 Node
+        /// </summary>
+        /// <param name="node">X6 Node</param>
+        /// <returns>DsfDotNetMultiAssignActivity</returns>
+        private static DsfDotNetMultiAssignObjectActivity CreateAssignObectActivity(Cell node)
+        {
+
+            if (!node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
+                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfDotNetMultiAssignObjectActivity();
             activity.FromX6Json(node);
             return activity;
         }
@@ -385,7 +362,7 @@ namespace Dev2.Activities.WF
         private static bool TryGetSwitchNode(Dictionary<string, FlowNode> flowNodes, string switchNodeId, out FlowSwitch<string> switchNode)
         {
             switchNode = null;
-            return flowNodes.TryGetValue(switchNodeId, out var flowNode) && 
+            return flowNodes.TryGetValue(switchNodeId, out var flowNode) &&
                    (switchNode = flowNode as FlowSwitch<string>) != null;
         }
 
@@ -403,7 +380,7 @@ namespace Dev2.Activities.WF
 
         private void ProcessDefaultCase(SwitchCaseData caseData, string switchNodeId, FlowSwitch<string> switchNode, Dictionary<string, FlowNode> flowNodes)
         {
-            if (string.IsNullOrEmpty(caseData.DefaultCase)) 
+            if (string.IsNullOrEmpty(caseData.DefaultCase))
                 return;
 
             var defaultConnection = FindDefaultConnection(switchNodeId, caseData.DefaultCase);
@@ -415,22 +392,22 @@ namespace Dev2.Activities.WF
 
         private Cell FindMatchingConnection(string switchNodeId, string caseKey, string caseValue)
         {
-            return connections.FirstOrDefault(c => 
-                c.Source?.Id == switchNodeId && 
+            return connections.FirstOrDefault(c =>
+                c.Source?.Id == switchNodeId &&
                 (c.label == caseKey || c.label == caseValue));
         }
 
         private Cell FindDefaultConnection(string switchNodeId, string defaultCase)
         {
-            return connections.FirstOrDefault(c => 
-                c.Source?.Id == switchNodeId && 
+            return connections.FirstOrDefault(c =>
+                c.Source?.Id == switchNodeId &&
                 (c.label == "Default" || c.label == "default" || c.label == defaultCase));
         }
 
         private static bool TryGetTargetNode(Cell connection, Dictionary<string, FlowNode> flowNodes, out FlowNode targetNode)
         {
             targetNode = null;
-            return connection?.Target?.Id != null && 
+            return connection?.Target?.Id != null &&
                    flowNodes.TryGetValue(connection.Target.Id, out targetNode);
         }
 
@@ -453,7 +430,7 @@ namespace Dev2.Activities.WF
             nodeType = null;
             if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type)
                 return false;
-            
+
             nodeType = type.ToLowerInvariant();
             return true;
         }
@@ -466,8 +443,8 @@ namespace Dev2.Activities.WF
         private static bool TryGetSwitchExpression(Cell node, out string switchExprJson)
         {
             switchExprJson = null;
-            return node.data.TryGetValue("switchExpression", out var switchExprObj) && 
-                   switchExprObj is string expr && 
+            return node.data.TryGetValue("switchExpression", out var switchExprObj) &&
+                   switchExprObj is string expr &&
                    !string.IsNullOrEmpty(expr) &&
                    (switchExprJson = expr) != null;
         }
@@ -518,15 +495,15 @@ namespace Dev2.Activities.WF
         private static void HandleDecisionConnection(Cell connection, FlowDecision decision, FlowNode targetNode)
         {
             if (connection.data == null) return;
-            
+
             var isDecisionArm = connection.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
                                bool.TryParse(isDecisionArmObj?.ToString(), out var isDecision) && isDecision;
-                               
+
             if (!isDecisionArm) return;
-            
+
             var isTrue = connection.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
                         bool.TryParse(isTrueArmObj?.ToString(), out var isTrueArm) && isTrueArm;
-                        
+
             if (isTrue)
                 decision.True = targetNode;
             else
@@ -536,7 +513,7 @@ namespace Dev2.Activities.WF
         private static void HandleSwitchConnection(Cell connection, FlowSwitch<string> switchNode, FlowNode targetNode)
         {
             string caseKey = null;
-            
+
             // Try to get case key from connection data
             if (connection.data?.TryGetValue(nameof(caseKey), out var caseKeyObj) == true && caseKeyObj is string key)
             {
@@ -547,9 +524,9 @@ namespace Dev2.Activities.WF
             {
                 caseKey = connection.label;
             }
-            
+
             if (caseKey == null) return;
-            
+
             if (caseKey == "Default" || caseKey == "default")
             {
                 switchNode.Default = targetNode;
@@ -659,7 +636,7 @@ namespace Dev2.Activities.WF
         {
             XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
             var nsImpl = doc.Element(defaultNs + "TextExpression.NamespacesForImplementation");
-            
+
             if (nsImpl == null) return;
 
             nsImpl.RemoveNodes();
@@ -683,7 +660,7 @@ namespace Dev2.Activities.WF
         {
             XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
             var nsRImpl = doc.Element(defaultNs + "TextExpression.ReferencesForImplementation");
-            
+
             if (nsRImpl == null) return;
 
             nsRImpl.RemoveNodes();

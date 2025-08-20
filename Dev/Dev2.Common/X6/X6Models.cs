@@ -23,6 +23,10 @@ namespace Dev2.Common.X6
         public const string SWITCH = "switch";
         public const string SEQUENCE = "sequence";
         public const string FLOWSWITCH = "flowswitch";
+        public const string SWITCH_EXPRESSION = "switchExpression";
+        public const string SWITCH_DEFAULT = "Default";
+        public const string SWITCH_VARIABLE = "variable";
+        
         public const string TRUE = "true";
 
         public const string FALSE = "false";
@@ -38,7 +42,15 @@ namespace Dev2.Common.X6
         public const string ONERRORDATA = "onerrordata";
         public const string FIELDS = "fields";
         public const string UPDATEDFIELDS = "updatedfields";
-        
+        public const string UNIQUEID = "UniqueID";
+
+        public const string PROPERTY_ONERRORVARIABLE = "OnErrorVariable";
+        public const string PROPERTY_DISPLAYNAME = "DisplayName";
+        public const string PROPERTY_EXPRESSIONTEXT = "ExpressionText";
+        public const string PROPERTY_ONERRORWORKFLOW = "OnErrorWorkflow";
+        public const string PROPERTY_ISENDEDONERROR = "IsEndedOnError";
+        public const string PROPERTY_UNIQUEID = "UniqueID";
+
     }
     public class X6WorkflowLoadModel
     {

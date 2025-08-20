@@ -264,6 +264,17 @@ public class Dev2XamlSchemaContext : XamlSchemaContext
                     System.Diagnostics.Debug.WriteLine($"Could not cache assembly {assembly}: {ex.Message}");
                 }
             }
+
+
+            // Add target assmbly last so that any duplicate assembly is added, it will be overriden to ensure that it always returns type from target assembly first
+            _assemblyCache[_targetAssembly.FullName] = _targetAssembly;
+
+            var targetAssemblyName = new AssemblyName(_targetAssembly.FullName);
+            if (!string.IsNullOrEmpty(targetAssemblyName.Name))
+            {
+                _assemblyCache[targetAssemblyName.Name] = _targetAssembly;
+            }
+
         }
         catch (Exception ex)
         {
@@ -273,6 +284,9 @@ public class Dev2XamlSchemaContext : XamlSchemaContext
 
     public override XamlType GetXamlType(Type type)
     {
+        if (object.ReferenceEquals(type.Assembly, _targetAssembly))
+            return base.GetXamlType(type);
+
         // Try to get type from cached assemblies first
         if (type != null && type.Assembly != null)
         {

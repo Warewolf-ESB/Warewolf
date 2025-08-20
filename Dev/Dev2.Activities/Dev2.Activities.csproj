@@ -324,6 +324,7 @@
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
+    <Compile Include="WorkflowConverters\SwitchActivityDataHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter.cs" />
     <Compile Include="TestMockStep.cs" />
