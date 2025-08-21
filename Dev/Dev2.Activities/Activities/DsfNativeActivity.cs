@@ -1292,7 +1292,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual void ToX6Json(Dev2.Common.X6.Cell cell)
         {
-            var onerrorData = new X6NodeOnErrorData() { IsEndedOnError = this.IsEndedOnError, OnErrorVariable = this.OnErrorVariable, OnErrorWorkflow = this.OnErrorWorkflow };
+            SetOnErrorData(cell, this.IsEndedOnError, this.OnErrorVariable, this.OnErrorWorkflow);
+        }
+
+        public static void SetOnErrorData(Dev2.Common.X6.Cell cell, bool isEndedOnError, string onErrorVariable, string onErrorWorkflow)
+        {
+            var onerrorData = new X6NodeOnErrorData() { IsEndedOnError = isEndedOnError, OnErrorVariable = onErrorVariable, OnErrorWorkflow = onErrorWorkflow };
 
             cell.data[Constants.ONERRORDATA] = onerrorData;
         }
