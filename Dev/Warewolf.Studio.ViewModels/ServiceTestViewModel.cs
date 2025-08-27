@@ -1468,7 +1468,7 @@ namespace Warewolf.Studio.ViewModels
             if (outputs != null)
 			{
 				var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
-                if (outputs.Count > 0)
+                if (outputs.Count > 0 && outputs.Any(output => !string.IsNullOrEmpty(output)))
                 {
                     serviceTestStep.StepOutputs = outputs
                         .Select(output => new ServiceTestOutput(output, "", "", "")
