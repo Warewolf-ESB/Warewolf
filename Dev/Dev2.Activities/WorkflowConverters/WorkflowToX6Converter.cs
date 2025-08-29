@@ -1,4 +1,4 @@
-﻿using Dev2.Activities.WorkflowConverters;
+using Dev2.Activities.WorkflowConverters;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Newtonsoft.Json;
@@ -588,6 +588,26 @@ namespace Dev2.Activities.WF
             };
 
             dsfDecision.ToX6Json(cell);
+            return cell;
+        }
+
+        private Cell CreateForEachNode(DsfForEachActivity forEachActivity, string nodeId)
+        {
+            var cell = new Cell
+            {
+                id = nodeId,
+                shape = Constants.RECT,
+                position = new Position(_currentX, _currentY),
+                label = forEachActivity.DisplayName ?? "For Each",
+                data = new Dictionary<string, object>()
+            };
+
+            // Update position for next node
+            _currentY += 150;
+
+            // Use the existing ToX6Json method from DsfForEachActivity
+            forEachActivity.ToX6Json(cell);
+            
             return cell;
         }
 
