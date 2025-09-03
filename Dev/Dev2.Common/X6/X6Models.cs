@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Activities;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -26,7 +27,7 @@ namespace Dev2.Common.X6
         public const string SWITCH_EXPRESSION = "switchExpression";
         public const string SWITCH_DEFAULT = "Default";
         public const string SWITCH_VARIABLE = "variable";
-        
+
         public const string TRUE = "true";
 
         public const string FALSE = "false";
@@ -51,6 +52,23 @@ namespace Dev2.Common.X6
         public const string PROPERTY_ISENDEDONERROR = "IsEndedOnError";
         public const string PROPERTY_UNIQUEID = "UniqueID";
 
+        public const string DSFSEQUENCE = "dsfsequenceactivity";
+
+        public const string DSFDOTNETMULTIASSIGNACTIVITY = "DsfDotNetMultiAssignActivity";
+        public const string DSFDOTNETMULTIASSIGNAOBJECTCTIVITY = "DsfDotNetMultiAssignObjectActivity";
+        public const string DSFDECISION = "DsfDecision";
+        public const string DSFFOREACHACTIVITY = "DsfForEachActivity";
+
+        public const string ISNESTED = "isNested";
+        public const string PARENTID = "parentId";
+        public const string SEQUENCE_NESTED_ACTIVITY_INDEX = "index";
+        
+        public const string ISNESTED_INFOREACH = "isNestedInForEach";
+        public const string PARENTID_FOREACH = "forEachParentId";
+
+
+        public const string DISPLAYNAME_SEQUENCE = "Sequence";
+        public const string DISPLAYNAME_FOREACH = "For Each";
     }
     public class X6WorkflowLoadModel
     {
@@ -62,6 +80,9 @@ namespace Dev2.Common.X6
 
         [JsonProperty("edges")]
         public List<Cell> Edges { get; set; } = new List<Cell>();
+
+        [Newtonsoft.Json.JsonIgnore]
+        public Dictionary<Activity, Cell> ActivityNodeMap { get; set; }
     }
 
     public class Cell

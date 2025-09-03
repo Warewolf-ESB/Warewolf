@@ -1,6 +1,7 @@
 using Dev2.Activities.WorkflowConverters;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.WorkflowConverters;
 using Newtonsoft.Json;
 using System;
 using System.Activities;
@@ -16,7 +17,7 @@ namespace Dev2.Activities.WF
     /// <summary>
     /// Converts workflow to X6 based Json
     /// </summary>
-    public class WorkflowToX6Converter
+    public partial class WorkflowToX6Converter
     {
         private int _currentX = 100;
         private int _currentY = 100;
@@ -37,7 +38,7 @@ namespace Dev2.Activities.WF
         /// <returns>Json serialized string</returns>
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
-            var graphData = new X6WorkflowLoadModel { WorkflowXml = xml };
+            var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
             var activityNodeMap = new Dictionary<Activity, string>(64);
 
             var startNode = CreateStartNode();
@@ -60,17 +61,18 @@ namespace Dev2.Activities.WF
 
             if (activity is not Flowchart)
             {
-                nodeId = GenerateNodeId();
+                nodeId = CommonHelper.GenerateNodeId();
                 activityNodeMap[activity] = nodeId;
-                
-                if (activity is not DsfForEachActivity)
+
+                if (!HasNestedActivities(activity))//if (activity is not DsfForEachActivity)
                 {
                     var node = CreateActivityNode(activity, nodeId);
                     graphData.Nodes.Add(node);
+                    graphData.ActivityNodeMap[activity] = node;
 
                     if (!string.IsNullOrEmpty(previousNodeId))
                     {
-                        graphData.Edges.Add(CreateEdge(previousNodeId, nodeId));
+                        graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, nodeId));
                     }
                 }
             }
@@ -89,12 +91,12 @@ namespace Dev2.Activities.WF
                 TryCatch tryCatchActivity => ProcessTryCatchActivity(tryCatchActivity, graphData, activityNodeMap, nodeId),
                 Parallel parallelActivity => ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId),
                 DsfForEachActivity forEachActivity => ProcessDsfForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId, previousNodeId),
-				_ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
+                DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
+                _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static string GenerateNodeId() => Guid.NewGuid().ToString();
+
 
         private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
@@ -146,13 +148,14 @@ namespace Dev2.Activities.WF
         private string ProcessFlowDecision(FlowDecision flowDecision, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            var decisionNodeId = GenerateNodeId();
+            var decisionNodeId = CommonHelper.GenerateNodeId();
             var decisionNode = CreateDecisionNode(flowDecision, decisionNodeId);
             graphData.Nodes.Add(decisionNode);
+            //graphData.ActivityNodeMap[flowDecision] = decisionNode;
 
             if (!string.IsNullOrEmpty(previousNodeId))
             {
-                graphData.Edges.Add(CreateEdge(previousNodeId, decisionNodeId));
+                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, decisionNodeId));
             }
 
             // Process True branch
@@ -160,7 +163,7 @@ namespace Dev2.Activities.WF
             {
                 var trueNodeId = ProcessFlowNode(flowDecision.True, graphData, activityNodeMap, null);
                 var targetNodeId = activityNodeMap.ContainsValue(trueNodeId) ? trueNodeId : GetFirstNodeId(flowDecision.True, activityNodeMap);
-                graphData.Edges.Add(CreateEdge(decisionNodeId, targetNodeId, Constants.TRUE));
+                graphData.Edges.Add(CommonHelper.CreateEdge(decisionNodeId, targetNodeId, Constants.TRUE));
             }
 
             // Process False branch
@@ -168,7 +171,7 @@ namespace Dev2.Activities.WF
             {
                 var falseNodeId = ProcessFlowNode(flowDecision.False, graphData, activityNodeMap, null);
                 var targetNodeId = activityNodeMap.ContainsValue(falseNodeId) ? falseNodeId : GetFirstNodeId(flowDecision.False, activityNodeMap);
-                graphData.Edges.Add(CreateEdge(decisionNodeId, targetNodeId, Constants.FALSE));
+                graphData.Edges.Add(CommonHelper.CreateEdge(decisionNodeId, targetNodeId, Constants.FALSE));
             }
 
             return decisionNodeId;
@@ -177,7 +180,7 @@ namespace Dev2.Activities.WF
         private string ProcessFlowSwitch(FlowSwitch<string> flowSwitch, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            var switchNodeId = GenerateNodeId();
+            var switchNodeId = CommonHelper.GenerateNodeId();
             //var switchNode = CreateSwitchNodeString(flowSwitch, switchNodeId);
             var helper = new SwitchActivityDataHelper(this._currentX, this._currentY);
             var switchNode = helper.CreateSwitchNodeString(flowSwitch, switchNodeId);
@@ -192,23 +195,25 @@ namespace Dev2.Activities.WF
             }
 
             graphData.Nodes.Add(switchNode);
+            //graphData.ActivityNodeMap[flowSwitch] = switchNode;
+
 
             if (!string.IsNullOrEmpty(previousNodeId))
             {
-                graphData.Edges.Add(CreateEdge(previousNodeId, switchNodeId));
+                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, switchNodeId));
             }
             foreach (var caseItem in flowSwitch.Cases)
             {
                 ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
                 var targetNodeIdValue = GetFirstNodeId(caseItem.Value, activityNodeMap);
                 var label = caseItem.Key?.ToString() ?? "Case";
-                graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeIdValue, label));
+                graphData.Edges.Add(CommonHelper.CreateEdge(switchNodeId, targetNodeIdValue, label));
             }
 
             // Process default case
             ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
             var targetNodeIdDefault = GetFirstNodeId(flowSwitch.Default, activityNodeMap);
-            graphData.Edges.Add(CreateEdge(switchNodeId, targetNodeIdDefault, "Default"));
+            graphData.Edges.Add(CommonHelper.CreateEdge(switchNodeId, targetNodeIdDefault, "Default"));
             return switchNodeId;
         }
 
@@ -262,7 +267,7 @@ namespace Dev2.Activities.WF
             var bodyNodeId = ProcessActivity(whileActivity.Body, graphData, activityNodeMap, parentNodeId);
 
             // Create loop back edge
-            graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            graphData.Edges.Add(CommonHelper.CreateEdge(bodyNodeId, parentNodeId, "Loop"));
             return bodyNodeId;
         }
 
@@ -273,7 +278,7 @@ namespace Dev2.Activities.WF
 
             var bodyNodeId = ProcessActivity(doWhileActivity.Body, graphData, activityNodeMap, parentNodeId);
             // Create loop back edge
-            graphData.Edges.Add(CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            graphData.Edges.Add(CommonHelper.CreateEdge(bodyNodeId, parentNodeId, "Loop"));
             return bodyNodeId;
         }
 
@@ -333,18 +338,19 @@ namespace Dev2.Activities.WF
             // The nodeId should already be generated and stored in activityNodeMap by ProcessActivity
             if (!activityNodeMap.TryGetValue(forEachActivity, out var forEachNodeId))
             {
-                forEachNodeId = GenerateNodeId();
+                forEachNodeId = CommonHelper.GenerateNodeId();
                 activityNodeMap[forEachActivity] = forEachNodeId;
             }
-            
+
             // Create the ForEach node - the ToX6Json method will handle embedding child activities
             var forEachNode = CreateForEachNode(forEachActivity, forEachNodeId);
             graphData.Nodes.Add(forEachNode);
-            
+            graphData.ActivityNodeMap[forEachActivity] = forEachNode;
+
             // Create edge from previous node to this ForEach node
             if (!string.IsNullOrEmpty(previousNodeId))
             {
-                graphData.Edges.Add(CreateEdge(previousNodeId, forEachNodeId));
+                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, forEachNodeId));
             }
 
             // Process nested activities from DataFunc.Handler
@@ -352,7 +358,7 @@ namespace Dev2.Activities.WF
 
             return forEachNodeId;
         }
-        
+
         /// <summary>
         /// Processes nested activities within a ForEach activity and creates separate X6 nodes for them
         /// </summary>
@@ -368,56 +374,58 @@ namespace Dev2.Activities.WF
             if (nestedActivity == null) return;
 
             // Generate a unique node ID for the nested activity
-            var nestedNodeId = GenerateNodeId();
+            var nestedNodeId = CommonHelper.GenerateNodeId();
             activityNodeMap[nestedActivity] = nestedNodeId;
-                
+
             // Create the nested activity node
             var nestedNode = CreateActivityNode(nestedActivity, nestedNodeId);
-                
+
             // Add nesting metadata to indicate this activity is nested within the ForEach
-            nestedNode.data["isNestedInForEach"] = true;
-            nestedNode.data["forEachParentId"] = forEachNodeId;
-                
+            nestedNode.data[Constants.ISNESTED_INFOREACH] = true;
+            nestedNode.data[Constants.PARENTID_FOREACH] = forEachNodeId;
+
             // Add the nested node to the graph
             graphData.Nodes.Add(nestedNode);
-                
+            graphData.ActivityNodeMap[nestedActivity] = nestedNode;
+
             // Recursively process any further nested activities (e.g., if the nested activity is itself a container)
             ProcessNestedActivityChildren(nestedActivity, graphData, activityNodeMap, forEachNodeId);
         }
-        
+
         /// <summary>
         /// Recursively processes any child activities of a nested activity
         /// </summary>
         /// <param name="parentActivity">The parent activity to check for children</param>
         /// <param name="graphData">The X6 graph data to add nodes to</param>
         /// <param name="activityNodeMap">Map of activities to their node IDs</param>
-        /// <param name="forEachParentId">The ID of the root ForEach parent</param>
+        /// <param name="parentActivityId">The ID of the root ForEach parent</param>
         private void ProcessNestedActivityChildren(Activity parentActivity, X6WorkflowLoadModel graphData,
-            Dictionary<Activity, string> activityNodeMap, string forEachParentId)
+            Dictionary<Activity, string> activityNodeMap, string parentActivityId)
         {
             // Get child activities using the existing GetChildActivities method
-            GetChildActivities(parentActivity, _tempChildActivities);
-            
+            ActivityPropertiesReaderHelper.GetChildActivities(parentActivity, _tempChildActivities);
+
             foreach (var childActivity in _tempChildActivities)
             {
                 // Skip if we've already processed this activity
                 if (activityNodeMap.ContainsKey(childActivity)) continue;
-                
-                var childNodeId = GenerateNodeId();
+
+                var childNodeId = CommonHelper.GenerateNodeId();
                 activityNodeMap[childActivity] = childNodeId;
-                    
+
                 var childNode = CreateActivityNode(childActivity, childNodeId);
-                    
+
                 // Add nesting metadata
-                childNode.data["isNestedInForEach"] = true;
+                childNode.data[Constants.ISNESTED_INFOREACH] = true;
 #pragma warning disable CC0021 // Use nameof
-				childNode.data["forEachParentId"] = forEachParentId;
+                childNode.data[Constants.PARENTID_FOREACH] = parentActivityId;
 #pragma warning restore CC0021 // Use nameof
 
-				graphData.Nodes.Add(childNode);
-                    
+                graphData.Nodes.Add(childNode);
+                graphData.ActivityNodeMap[childActivity] = childNode;
+
                 // Recursively process further nested children
-                ProcessNestedActivityChildren(childActivity, graphData, activityNodeMap, forEachParentId);
+                ProcessNestedActivityChildren(childActivity, graphData, activityNodeMap, parentActivityId);
             }
         }
 
@@ -425,54 +433,67 @@ namespace Dev2.Activities.WF
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             // Use cached child activities
-            GetChildActivities(activity, _tempChildActivities);
+            ActivityPropertiesReaderHelper.GetChildActivities(activity, _tempChildActivities);
 
+            var childActivities = _tempChildActivities.ToList();
             var currentNodeId = parentNodeId;
-            for (int i = 0; i < _tempChildActivities.Count; i++)
+            bool activityHasNestedActivities = HasNestedActivities(activity);
+            for (int i = 0; i < childActivities.Count; i++)
             {
-                currentNodeId = ProcessActivity(_tempChildActivities[i], graphData, activityNodeMap, currentNodeId);
+                currentNodeId = ProcessActivity(childActivities[i], graphData, activityNodeMap, activityHasNestedActivities ? parentNodeId : currentNodeId);
             }
 
             return currentNodeId;
         }
 
-
-        private static void GetChildActivities(Activity activity, List<Activity> children)
+        private static bool HasNestedActivities(Activity activity)
         {
-            children.Clear();
-            var activityType = activity.GetType();
-
-            // Use cached properties to avoid repeated reflection
-            if (!_childActivityPropertiesCache.TryGetValue(activityType, out var properties))
+            return activity switch
             {
-                properties = activityType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                _childActivityPropertiesCache[activityType] = properties;
-            }
-
-            for (int i = 0; i < properties.Length; i++)
-            {
-                var prop = properties[i];
-
-                if (typeof(Activity).IsAssignableFrom(prop.PropertyType))
-                {
-                    if (prop.GetValue(activity) is Activity childActivity)
-                    {
-                        children.Add(childActivity);
-                    }
-                }
-                else if (typeof(ICollection<Activity>).IsAssignableFrom(prop.PropertyType) && prop.GetValue(activity) is ICollection<Activity> childActivities)
-                {
-                    children.AddRange(childActivities);
-                }
-
-            }
+                Sequence => true,
+                //Flowchart => true,
+                DsfForEachActivity => true,
+                DsfSequenceActivity => true,
+                _ => false
+            };
         }
+
+        //private static void GetChildActivities(Activity activity, List<Activity> children)
+        //{
+        //    children.Clear();
+        //    var activityType = activity.GetType();
+
+        //    // Use cached properties to avoid repeated reflection
+        //    if (!_childActivityPropertiesCache.TryGetValue(activityType, out var properties))
+        //    {
+        //        properties = activityType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        //        _childActivityPropertiesCache[activityType] = properties;
+        //    }
+
+        //    for (int i = 0; i < properties.Length; i++)
+        //    {
+        //        var prop = properties[i];
+
+        //        if (typeof(Activity).IsAssignableFrom(prop.PropertyType))
+        //        {
+        //            if (prop.GetValue(activity) is Activity childActivity)
+        //            {
+        //                children.Add(childActivity);
+        //            }
+        //        }
+        //        else if (typeof(ICollection<Activity>).IsAssignableFrom(prop.PropertyType) && prop.GetValue(activity) is ICollection<Activity> childActivities)
+        //        {
+        //            children.AddRange(childActivities);
+        //        }
+
+        //    }
+        //}
 
         private Cell CreateStartNode()
         {
             var node = new Cell
             {
-                id = GenerateNodeId(),
+                id = CommonHelper.GenerateNodeId(),
                 shape = Constants.RECT,
                 position = new Position(_currentX, _currentY),
                 label = Constants.START,
@@ -502,26 +523,36 @@ namespace Dev2.Activities.WF
             }
             else if (activity is DsfDecision decision)
             {
-                return CreateDecisionNode(decision, nodeId);
+                cell = CreateDecisionNode(decision, nodeId);
             }
             else if (activity is DsfForEachActivity forEachActivity)
             {
-                return CreateForEachNode(forEachActivity, nodeId);
+                cell = CreateForEachNode(forEachActivity, nodeId);
+            }
+            else if (activity is DsfSequenceActivity sequenceActivity)
+            {
+                cell = CreateSequenceNode(sequenceActivity, nodeId);
+            }
+            else
+            {
+                cell.shape = Constants.RECT;
             }
 
-            cell.shape = Constants.RECT;
             cell.position = new Position(_currentX, _currentY);
-            cell.label = GetActivityLabel(activity);
-            cell.data.Add(Constants.TYPE, activityType);
-            cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
+            if (string.IsNullOrEmpty(cell.label))
+                cell.label = GetActivityLabel(activity);
+            if (!cell.data.ContainsKey(Constants.TYPE))
+                cell.data.Add(Constants.TYPE, activityType);
+            if (!cell.data.ContainsKey(Constants.DISPLAYNAME))
+                cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
+
             cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
-            
             // Extract and include ForEach nesting information if present
             ExtractForEachNestingInfo(activity, cell);
 
             return cell;
         }
-        
+
         /// <summary>
         /// Extracts ForEach nesting information from an activity's annotations and adds it to the cell data
         /// </summary>
@@ -538,23 +569,23 @@ namespace Dev2.Activities.WF
                     // Find the ForEachNestingInfo annotation
                     foreach (var annotation in annotations)
                     {
-                        if (annotation is Dictionary<string, object> annotationDict && 
+                        if (annotation is Dictionary<string, object> annotationDict &&
                             annotationDict.TryGetValue("_annotationType", out var annotationType) &&
                             annotationType?.ToString() == "ForEachNestingInfo")
                         {
                             // Extract the nesting information
-                            if (annotationDict.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                            if (annotationDict.TryGetValue("isNestedInForEach", out var isNestedObj) &&
                                 bool.TryParse(isNestedObj?.ToString(), out var isNested))
                             {
                                 cell.data["isNestedInForEach"] = isNested;
                             }
-                            
-                            if (annotationDict.TryGetValue("forEachParentId", out var parentIdObj) && 
+
+                            if (annotationDict.TryGetValue("forEachParentId", out var parentIdObj) &&
                                 parentIdObj is string parentId && !string.IsNullOrEmpty(parentId))
                             {
                                 cell.data["forEachParentId"] = parentId;
                             }
-                            
+
                             break; // Found our annotation, no need to continue
                         }
                     }
@@ -596,9 +627,8 @@ namespace Dev2.Activities.WF
             var cell = new Cell
             {
                 id = nodeId,
-                shape = Constants.RECT,
                 position = new Position(_currentX, _currentY),
-                label = forEachActivity.DisplayName ?? "For Each",
+                label = forEachActivity.DisplayName ?? Constants.DISPLAYNAME_FOREACH,
                 data = new Dictionary<string, object>()
             };
 
@@ -607,7 +637,7 @@ namespace Dev2.Activities.WF
 
             // Use the existing ToX6Json method from DsfForEachActivity
             forEachActivity.ToX6Json(cell);
-            
+
             return cell;
         }
 
@@ -897,20 +927,7 @@ namespace Dev2.Activities.WF
         //} 
         #endregion
 
-        private static Cell CreateEdge(string sourceId, string targetId, string label = "")
-        {
-            return new Cell
-            {
-                id = GenerateNodeId(),
-                Source = new Connector(sourceId),
-                Target = new Connector(targetId),
-                label = label,
-                data = new Dictionary<string, object>
-                {
-                    [Constants.TYPE] = Constants.SEQUENCE
-                }
-            };
-        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string GetActivityLabel(Activity activity)
@@ -974,7 +991,7 @@ namespace Dev2.Activities.WF
             return flowNode switch
             {
                 FlowStep flowStep when activityNodeMap.ContainsKey(flowStep.Action) => activityNodeMap[flowStep.Action],
-                _ => GenerateNodeId()
+                _ => CommonHelper.GenerateNodeId()
             };
         }
     }

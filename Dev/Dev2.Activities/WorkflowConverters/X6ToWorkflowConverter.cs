@@ -17,7 +17,7 @@ namespace Dev2.Activities.WF
     /// <summary>
     /// Creates Workflow from X6 Json data (nodes, edges and common data) 
     /// </summary>
-    public class X6ToWorkflowConverter
+    public partial class X6ToWorkflowConverter
     {
         private Dictionary<string, Activity> activityMap = new();
         private List<Cell> connections = new List<Cell>();
@@ -144,13 +144,16 @@ namespace Dev2.Activities.WF
 
             // Now embed nested activities into their parent ForEach activities' DataFunc.Handler property
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
+            EmbedNestedActivitiesIntoSequenceActivities(allNodes);
 
             // Build the workflow structure
             activityBuilder.Implementation = BuildWorkflow(topLevelNodes, startcell);
 
             return activityBuilder;
         }
+
         
+
         /// <summary>
         /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property
         /// </summary>

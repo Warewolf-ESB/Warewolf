@@ -324,6 +324,11 @@
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
+    <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
+    <Compile Include="WorkflowConverters\CellOrganizer.cs" />
+    <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\SwitchActivityDataHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter.cs" />

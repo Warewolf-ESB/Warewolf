@@ -521,6 +521,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Call base implementation for common properties (OnError handling, etc.)
             base.ToX6Json(cell);
 
+            cell.shape = Constants.DSFFOREACHACTIVITY;
             // Set the activity type
             cell.data["type"] = "dsfforeachactivity";
             cell.data["displayName"] = DisplayName ?? "For Each";

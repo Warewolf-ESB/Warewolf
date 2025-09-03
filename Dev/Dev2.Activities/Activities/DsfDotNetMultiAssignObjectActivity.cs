@@ -523,6 +523,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             base.ToX6Json(cell);
 
             cell.data.Add(Constants.FIELDS, FieldsCollection);
+            cell.shape = Constants.DSFDOTNETMULTIASSIGNAOBJECTCTIVITY;
+
         }
 
         public override void FromX6Json(Cell cell)
