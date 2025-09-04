@@ -39,6 +39,8 @@ namespace Dev2.Activities.WF
                     if (activityMap.TryGetValue(childCell.id, out var childActivity))
                     {
                         sequence.Activities.Add(childActivity);
+                        if (!this.nestedActivites.Contains(childActivity))
+                            this.nestedActivites.Add(childActivity);
                     }
                 }
             }

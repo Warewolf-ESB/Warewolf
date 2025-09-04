@@ -25,6 +25,7 @@ namespace Dev2.Activities.WF
 
         // Store ForEach nesting information for activities
         private Dictionary<string, ForEachNestingInfo> forEachNestingMap = new();
+        private HashSet<Activity> nestedActivites = new();
 
         private class SwitchCaseData
         {
@@ -388,6 +389,11 @@ namespace Dev2.Activities.WF
                 if (!activityMap.TryGetValue(node.id, out var action))
                     continue;
 
+                // if this is a nested activities then do not add it to flow chart
+                // it will be added from its parent activity
+                if (this.nestedActivites.Contains(action))
+                    continue;
+                
                 var flowNode = CreateFlowNode(action);
 
                 if (flowNode != null)
