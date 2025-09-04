@@ -1,4 +1,5 @@
-﻿using Dev2.Common.X6;
+﻿using Dev2.Common;
+using Dev2.Common.X6;
 using Dev2.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common;
 
 namespace Dev2.Activities.WF
 {
@@ -22,7 +22,7 @@ namespace Dev2.Activities.WF
         private Dictionary<string, Activity> activityMap = new();
         private List<Cell> connections = new List<Cell>();
         private Dictionary<string, SwitchCaseData> switchCaseMap = new();
-        
+
         // Store ForEach nesting information for activities
         private Dictionary<string, ForEachNestingInfo> forEachNestingMap = new();
 
@@ -37,7 +37,7 @@ namespace Dev2.Activities.WF
             public string Key { get; set; }
             public string Value { get; set; }
         }
-        
+
         /// <summary>
         /// Stores information about an activity's nesting within ForEach activities
         /// </summary>
@@ -93,9 +93,9 @@ namespace Dev2.Activities.WF
             }
             catch (Exception ex)
             {
-				Dev2Logger.Error("Failed to convert X6 JSON to workflow", ex, GlobalConstants.WarewolfError);
-				throw;
-			}
+                Dev2Logger.Error("Failed to convert X6 JSON to workflow", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
         }
 
         /// <summary>
@@ -114,16 +114,16 @@ namespace Dev2.Activities.WF
             // Separate nodes and edges
             var allNodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
             connections = x6Graph.Cells.Where(c => c.shape == "edge").ToList();
-            
+
             // Apply ForEach ID mapping to fix parent relationship references
             ApplyForEachIdMapping(allNodes);
-            
+
             // Process ForEach nesting information first
             ProcessForEachNestingInfo(allNodes);
-            
+
             // Filter out child nodes that belong to ForEach activities' droppedNodes
             var topLevelNodes = FilterTopLevelNodes(allNodes);
-            
+
             Cell startcell = null;
 
             ProcessSwitchCaseData(topLevelNodes);
@@ -152,7 +152,7 @@ namespace Dev2.Activities.WF
             return activityBuilder;
         }
 
-        
+
 
         /// <summary>
         /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property
@@ -162,10 +162,10 @@ namespace Dev2.Activities.WF
         {
             // Group nested nodes by their parent ForEach ID
             var nestedNodesByParent = new Dictionary<string, List<Cell>>();
-            
+
             foreach (var node in allNodes)
             {
-                if (forEachNestingMap.TryGetValue(node.id, out var nestingInfo) && 
+                if (forEachNestingMap.TryGetValue(node.id, out var nestingInfo) &&
                     nestingInfo.IsNestedInForEach && !string.IsNullOrEmpty(nestingInfo.ForEachParentId))
                 {
                     if (!nestedNodesByParent.ContainsKey(nestingInfo.ForEachParentId))
@@ -175,23 +175,23 @@ namespace Dev2.Activities.WF
                     nestedNodesByParent[nestingInfo.ForEachParentId].Add(node);
                 }
             }
-            
+
             // For each ForEach activity, embed its nested activities
             foreach (var kvp in nestedNodesByParent)
             {
                 var forEachParentId = kvp.Key;
                 var nestedNodes = kvp.Value;
-                
+
                 // Find the ForEach activity with this ID and ensure it's a DsfForEachActivity
-                if (activityMap.TryGetValue(forEachParentId, out var forEachActivity) && 
-                    forEachActivity is DsfForEachActivity forEach && 
+                if (activityMap.TryGetValue(forEachParentId, out var forEachActivity) &&
+                    forEachActivity is DsfForEachActivity forEach &&
                     nestedNodes.Count > 0)
                 {
                     // For simplicity, we'll take the first nested activity
                     // In a more complex scenario, you might need to handle multiple nested activities
                     var nestedNode = nestedNodes[0]; // Take first nested activity
                     var nestedActivity = CreateActivityFromNode(nestedNode, out _);
-                    
+
                     if (nestedActivity != null)
                     {
                         // Initialize DataFunc if it doesn't exist
@@ -203,14 +203,14 @@ namespace Dev2.Activities.WF
                                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
                             };
                         }
-                        
+
                         // Set the nested activity as the handler
                         forEach.DataFunc.Handler = nestedActivity;
                     }
                 }
             }
         }
-        
+
         /// <summary>
         /// Processes and stores ForEach nesting information for all nodes
         /// </summary>
@@ -220,21 +220,21 @@ namespace Dev2.Activities.WF
             foreach (var node in allNodes)
             {
                 var nestingInfo = new ForEachNestingInfo();
-                
+
                 // Extract isNestedInForEach property
-                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) &&
                     bool.TryParse(isNestedObj?.ToString(), out var isNested))
                 {
                     nestingInfo.IsNestedInForEach = isNested;
                 }
-                
+
                 // Extract forEachParentId property
-                if (node.data.TryGetValue("forEachParentId", out var parentIdObj) && 
+                if (node.data.TryGetValue("forEachParentId", out var parentIdObj) &&
                     parentIdObj is string parentId && !string.IsNullOrWhiteSpace(parentId))
                 {
                     nestingInfo.ForEachParentId = parentId;
                 }
-                
+
                 // Only store if we have meaningful nesting information
                 if (nestingInfo.IsNestedInForEach || !string.IsNullOrEmpty(nestingInfo.ForEachParentId))
                 {
@@ -242,7 +242,7 @@ namespace Dev2.Activities.WF
                 }
             }
         }
-        
+
         /// <summary>
         /// Filters out child nodes that belong to ForEach activities' droppedNodes
         /// and also filters out nodes that are nested in ForEach activities (have isNestedInForEach = true)
@@ -254,7 +254,7 @@ namespace Dev2.Activities.WF
         {
             var childNodeIds = new HashSet<string>();
             var nestedNodeIds = new HashSet<string>();
-            
+
             // First pass: identify all child node IDs that are embedded in ForEach droppedNodes
             foreach (var node in allNodes)
             {
@@ -266,19 +266,19 @@ namespace Dev2.Activities.WF
                         childNodeIds.Add(childId);
                     }
                 }
-                
+
                 // Also identify nodes that are nested in ForEach activities
-                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) &&
                     bool.TryParse(isNestedObj?.ToString(), out var isNested) && isNested)
                 {
                     nestedNodeIds.Add(node.id);
                 }
             }
-            
+
             // Second pass: filter out child nodes and nested nodes, keeping only top-level nodes
             return allNodes.Where(node => !childNodeIds.Contains(node.id) && !nestedNodeIds.Contains(node.id)).ToList();
         }
-        
+
         /// <summary>
         /// Checks if a node represents a ForEach activity
         /// </summary>
@@ -288,11 +288,11 @@ namespace Dev2.Activities.WF
         {
             if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type)
                 return false;
-                
+
             var nodeType = type.ToLowerInvariant();
             return nodeType.Contains("dsfforeachactivity") || nodeType.Contains("foreach");
         }
-        
+
         /// <summary>
         /// Extracts the IDs of child nodes from a ForEach activity's droppedNodes
         /// </summary>
@@ -301,13 +301,13 @@ namespace Dev2.Activities.WF
         private static List<string> ExtractDroppedNodeIds(Cell forEachNode)
         {
             var childIds = new List<string>();
-            
+
             try
             {
                 if (forEachNode.data.TryGetValue("droppedNodes", out var droppedNodesObj))
                 {
                     List<object> droppedNodesList = null;
-                    
+
                     if (droppedNodesObj is JArray jArray)
                     {
                         droppedNodesList = jArray.ToObject<List<object>>();
@@ -317,7 +317,7 @@ namespace Dev2.Activities.WF
                         var json = JsonConvert.SerializeObject(droppedNodesObj);
                         droppedNodesList = JsonConvert.DeserializeObject<List<object>>(json);
                     }
-                    
+
                     if (droppedNodesList != null)
                     {
                         foreach (var droppedNode in droppedNodesList)
@@ -335,10 +335,10 @@ namespace Dev2.Activities.WF
             {
                 Dev2Logger.Error($"Error extracting dropped node IDs from ForEach: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
-            
+
             return childIds;
         }
-        
+
         /// <summary>
         /// Extracts the ID from a dropped node object
         /// </summary>
@@ -439,7 +439,7 @@ namespace Dev2.Activities.WF
         /// <param name="node">X6 Json Cell</param>
         /// <param name="isStartNode">flag to indicate if node is a start node</param>
         /// <returns>Activity</returns>
-        private static Activity CreateActivityFromNode(Cell node, out bool isStartNode)
+        private static Activity CreateActivityFromNode_old(Cell node, out bool isStartNode)
         {
             isStartNode = false;
 
@@ -476,12 +476,63 @@ namespace Dev2.Activities.WF
             {
                 return CreateForEachActivity(node);
             }
+            else if (nodeType.Contains("dsfsequenceactivity"))
+            {
+                return CreateSequenceActivity(node);
+            }
             else
-			{
-				return new WriteLine { Text = "Unknown type" };
+            {
+                return new WriteLine { Text = "Unknown type" };
             }
         }
-        
+
+        /// <summary>
+        /// Activity Factory: Creates Activity from X6 Json Cell
+        /// </summary>
+        /// <param name="node">X6 Json Cell</param>
+        /// <param name="isStartNode">flag to indicate if node is a start node</param>
+        /// <returns>Activity</returns>
+        private static Activity CreateActivityFromNode(Cell node, out bool isStartNode)
+        {
+            isStartNode = false;
+
+            if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type || string.IsNullOrWhiteSpace(type))
+                return null;
+
+            var nodeType = type.ToLowerInvariant();
+
+            switch (nodeType)
+            {
+                case var t when t == Constants.START:
+                    isStartNode = true;
+                    return new WriteLine { Text = "Workflow Start Node" };
+
+                case var t when t.Contains("dsfdotnetmultiassignactivity"):
+                    return CreateAssignActivity(node);
+
+                case var t when t.Contains("dsfdotnetmultiassignobjectactivity"):
+                    return CreateAssignObectActivity(node);
+
+                case var t when t.Contains("flowdecision"):
+                    return CreateFlowDecisionActivity(node);
+
+                case var t when t.Contains("dsfdecision"):
+                    return CreateDecisionActivity(node);
+
+                case var t when t.Contains("dsfflowswitchactivity") || t.Contains("flowswitch"):
+                    return CreateSwitchActivity(node);
+
+                case var t when t.Contains("dsfforeachactivity") || t.Contains("foreach"):
+                    return CreateForEachActivity(node);
+
+                case var t when t.Contains("dsfsequenceactivity"):
+                    return CreateSequenceActivity(node);
+
+                default:
+                    return new WriteLine { Text = "Unknown type" };
+            }
+        }
+
         /// <summary>
         /// Applies ForEach nesting information to an activity by storing it in the activity's annotations
         /// </summary>
@@ -489,7 +540,7 @@ namespace Dev2.Activities.WF
         /// <param name="nodeId">The node ID to look up nesting info</param>
         private void ApplyForEachNestingInfo(Activity activity, string nodeId)
         {
-            if (forEachNestingMap.TryGetValue(nodeId, out var nestingInfo) && 
+            if (forEachNestingMap.TryGetValue(nodeId, out var nestingInfo) &&
                 activity.GetType().GetProperty("Annotations") != null)
             {
                 // Use reflection to set annotations if the property exists
@@ -502,7 +553,7 @@ namespace Dev2.Activities.WF
                         annotations = new System.Collections.ObjectModel.Collection<object>();
                         annotationsProperty.SetValue(activity, annotations);
                     }
-                    
+
                     // Add our custom nesting information as an annotation
                     var nestingAnnotation = new Dictionary<string, object>
                     {
@@ -510,13 +561,13 @@ namespace Dev2.Activities.WF
                         ["forEachParentId"] = nestingInfo.ForEachParentId ?? string.Empty,
                         ["_annotationType"] = nameof(ForEachNestingInfo)
                     };
-                    
+
                     annotations.Add(nestingAnnotation);
                 }
             }
         }
 
-        
+
 
         private static DsfFlowSwitchActivity CreateSwitchActivity(Cell node)
         {
@@ -585,7 +636,7 @@ namespace Dev2.Activities.WF
             // Try both camelCase and lowercase variations for compatibility
             var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
                                  node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
-            
+
             if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
@@ -604,11 +655,25 @@ namespace Dev2.Activities.WF
             // Try both camelCase and lowercase variations for compatibility
             var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
                                  node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
-            
+
             if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfForEachActivity();
+            activity.FromX6Json(node);
+            return activity;
+        }
+
+        private static DsfSequenceActivity CreateSequenceActivity(Cell node)
+        {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
+                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfSequenceActivity();
             activity.FromX6Json(node);
             return activity;
         }
@@ -855,8 +920,8 @@ namespace Dev2.Activities.WF
                     element.Name = newNs + element.Name.LocalName;
                 }
 
-	            foreach (var attr in element.Attributes())
-	            {
+                foreach (var attr in element.Attributes())
+                {
                     // Fix namespace in x:TypeArguments or other attributes that use oldNs in string form
                     if ((attr.Name.LocalName == "x:TypeArguments") &&
                         attr.Value.Contains("clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib"))
@@ -865,7 +930,7 @@ namespace Dev2.Activities.WF
                             "clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib",
                             "clr-namespace:System.Collections.Generic;assembly=mscorlib");
                     }
-	            }
+                }
 
                 foreach (var child in element.Elements())
                 {
@@ -881,6 +946,51 @@ namespace Dev2.Activities.WF
             oldAttr?.Remove();
         }
 
+        public static string ReplaceBadCollection(string xml)
+        {
+            if (string.IsNullOrWhiteSpace(xml)) return xml;
+
+            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
+
+            const string badNs = "clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib";
+            var scoNs = XNamespace.Get("clr-namespace:System.Collections.ObjectModel;assembly=mscorlib");
+            var xNs = XNamespace.Get("http://schemas.microsoft.com/winfx/2006/xaml");
+
+            // ensure root has xmlns:sco declared
+            var root = doc.Root;
+            if (root != null && root.GetNamespaceOfPrefix("sco") == null)
+            {
+                root.Add(new XAttribute(XNamespace.Xmlns + "sco", scoNs.NamespaceName));
+            }
+
+            // find all <Collection> with bad namespace
+            var matches = doc
+                .Descendants()
+                .Where(el =>
+                    el.Name.LocalName == "Collection" &&
+                    el.Name.NamespaceName == badNs)
+                .ToList();
+
+            foreach (var el in matches)
+            {
+                // preserve TypeArguments if present
+                var typeArg = el.Attribute(xNs + "TypeArguments")?.Value ?? "Activity";
+
+                // replace only if it's empty (like your bad case)
+                if (!el.HasElements && string.IsNullOrWhiteSpace(el.Value))
+                {
+                    var replacement = new XElement(scoNs + "Collection",
+                        new XAttribute(xNs + "TypeArguments", typeArg));
+
+                    el.ReplaceWith(replacement);
+                }
+            }
+
+            return doc.ToString(SaveOptions.DisableFormatting);
+        }
+
+
+
         /// <summary>
         /// Add/replaces namespaces
         /// </summary>
@@ -895,7 +1005,8 @@ namespace Dev2.Activities.WF
                 ProcessNamespacesForImplementation(doc);
                 ProcessReferencesForImplementation(doc);
                 ReplaceDefaultNamespace(doc);
-                return new StringBuilder(doc.ToString());
+                var finalXml = ReplaceBadCollection(doc.ToString());
+                return new StringBuilder(finalXml);
             }
             catch (Exception)
             {
@@ -1006,7 +1117,7 @@ namespace Dev2.Activities.WF
                 parent.Add(node);
             }
         }
-        
+
         /// <summary>
         /// Applies ForEach ID mapping to fix parent relationship references.
         /// This addresses the bug where nested nodes become orphaned when node IDs are regenerated
@@ -1017,16 +1128,16 @@ namespace Dev2.Activities.WF
         {
             // Create a lookup of existing node IDs for validation
             var existingNodeIds = new HashSet<string>(allNodes.Select(node => node.id));
-            
+
             // Only update ForEach parent references that are invalid
             foreach (var node in allNodes)
             {
-                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) && 
+                if (node.data.TryGetValue("isNestedInForEach", out var isNestedObj) &&
                     bool.TryParse(isNestedObj?.ToString(), out var isNested) && isNested &&
-                    node.data.TryGetValue("forEachParentId", out var parentIdObj) && 
-                    parentIdObj is string parentId && 
+                    node.data.TryGetValue("forEachParentId", out var parentIdObj) &&
+                    parentIdObj is string parentId &&
                     !string.IsNullOrWhiteSpace(parentId) &&
-					!existingNodeIds.Contains(parentId))
+                    !existingNodeIds.Contains(parentId))
                 {
                     // Try to find a valid ForEach parent node
                     var validParentId = FindValidForEachParent(allNodes, node);
@@ -1064,7 +1175,7 @@ namespace Dev2.Activities.WF
                     }
                 }
             }
-            
+
             // If no direct containment found, try to find the closest ForEach node
             // This is a fallback strategy - you might want to implement more sophisticated logic here
             return allNodes.FirstOrDefault(IsForEachNode)?.id;
