@@ -8,9 +8,10 @@ RUN del dotnet-core-installer.exe
 EXPOSE 3142
 EXPOSE 3143
 
-RUN mkdir Server
+SHELL ["powershell", "-Command"]
+RUN New-Item -Path "Server" -ItemType Directory
 ADD . Server
-RUN ["powershell", ".\\Server\\Perfmon.ps1"]
+RUN &".\\Server\\Perfmon.ps1"
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_WORKINGDIR "C:\programdata\Warewolf"
 ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
@@ -19,10 +20,10 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
-RUN New-Service -Name "Warewolf PerfMon" \
+RUN New-Service -Name \"Warewolf PerfMon\" \
                 -BinaryPathName C:\Server\Warewolf.PerfMon.exe \
                 -StartupType Automatic \
-				-Description "Warewolf Performnace Monitor Service"
+				-Description \"Warewolf Performance Monitoring Service\"
 
 
 CMD ["powershell", "-Command", "Start-Job -ScriptBlock { & 'C:\\Server\\PerfMon.ps1' }; .\\Server\\StartAsService.ps1"]
