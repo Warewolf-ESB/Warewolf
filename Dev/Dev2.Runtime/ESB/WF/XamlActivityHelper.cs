@@ -31,7 +31,7 @@ public static class XamlActivityHelper
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }
 #if !(WINDOWS || NETFRAMEWORK)
-            DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
+            Dev2.DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
 #endif
 
             using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))
@@ -99,7 +99,7 @@ public static class XamlActivityHelper
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }
 #if !(WINDOWS || NETFRAMEWORK)
-            DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
+            Dev2.DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
 #endif
 
             using (var xamlStream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false))

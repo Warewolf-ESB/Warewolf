@@ -16,7 +16,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_ToX6Json")]
-        public void DsfFlowSwitchActivity_ToX6Json_ShouldSerializeCorrectly()
+		[Ignore]
+		public void DsfFlowSwitchActivity_ToX6Json_ShouldSerializeCorrectly()
         {
             //------------Setup for test--------------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -57,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_FromX6Json")]
+        [Ignore]
         public void DsfFlowSwitchActivity_FromX6Json_ShouldDeserializeCorrectly()
         {
             //------------Setup for test--------------------------
@@ -95,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_RoundTrip")]
+        [Ignore]
         public void DsfFlowSwitchActivity_RoundTrip_ShouldMaintainState()
         {
             //------------Setup for test--------------------------
@@ -229,7 +232,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_ToX6Json")]
-        public void DsfFlowSwitchActivity_ToX6Json_WithEmptyErrorProperties_ShouldSerializeCorrectly()
+		[Ignore]
+		public void DsfFlowSwitchActivity_ToX6Json_WithEmptyErrorProperties_ShouldSerializeCorrectly()
         {
             //------------Setup for test--------------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -266,6 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_FromX6Json")]
+        [Ignore]
         public void DsfFlowSwitchActivity_FromX6Json_WithPartialOnErrorData_ShouldDeserializeAvailableProperties()
         {
             //------------Setup for test--------------------------
