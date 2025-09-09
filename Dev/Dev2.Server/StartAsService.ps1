@@ -7,8 +7,11 @@ Param(
   [string]$ResourcesPath,
   [string]$ServerPath,
   [switch]$Cleanup,
-  [switch]$Anonymous
+  [switch]$Anonymous,
+  [switch]$InContainer,
+  [switch]$InBackground
 )
+
 if ($env:EXCLUDE_EXAMPLES -eq 'true' -or $env:EXCLUDE_EXAMPLES -eq 'True' -or $env:EXCLUDE_EXAMPLES -eq 'TRUE') {
 	Remove-Item -Path "C:\programdata\warewolf\resources\Examples" -Recurse -Force
 	Remove-Item -Path "C:\programdata\warewolf\resources\Hello World.bite" -Force
@@ -19,6 +22,11 @@ if ($env:EXCLUDE_EXAMPLES -eq 'true' -or $env:EXCLUDE_EXAMPLES -eq 'True' -or $e
 if ($Username -eq $null -or $Username -eq "" -or $Anonymous.IsPresent) {
     $IsAnonymous = $true
 }
+
+if (!($InBackground.IsPresent) -and $InContainer.IsPresent) {
+    Write-Warning -Message "Running in a container."
+}
+
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {
@@ -70,6 +78,7 @@ if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 if ($IsAnonymous -and (Test-Path "C:\ProgramData\Warewolf\Server Settings - Copy")) {
 	Copy-Item -Path "C:\ProgramData\Warewolf\Server Settings - Copy\*" -Destination "C:\ProgramData\Warewolf\Server Settings" -Force -Recurse
 }
+
 if ($WarewolfServerProcess) {
 	if ($IsAnonymous) {
 		Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -UseBasicParsing
@@ -171,30 +180,51 @@ if ($WarewolfServerProcess) {
 		Write-Host 4. Add new Warewolf Administrator to Warewolf Administrators group.
 		NET localgroup "Warewolf Administrators" "$Username" /ADD
 	}
-}
-if ($WarewolfServerService) {
-	Write-Host Configuring service to $BinPath
-	sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-} else {
-	Write-Host Creating service for $BinPath
-	sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-}
-sc.exe start "Warewolf Server"
-$LoopCounter = 0
-$LoopCounterMax = 30
-if ($Coverage) {
-	$LoopCounterMax = 60
-}
-if (!$DoExit.IsPresent) {
-	while (!(Test-Path "C:\programdata\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax)
-	{
-		Write-Host Still waiting for server to start...
-		Start-Sleep 5
-	}
-	Get-Content "C:\programdata\Warewolf\Server Log\warewolf-server.log" -Wait
-} else {
-	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
-		Write-Host Still waiting for server to start...
-		Start-Sleep 6
+	
+	if ($InBackground.IsPresent) {		
+		Start-Process -FilePath "$BinPath" `
+			-RedirectStandardOutput "$PSScriptRoot\TestResults\WarewolfOutput.txt" `
+			-RedirectStandardError "$PSScriptRoot\TestResults\WarewolfError.txt" `
+			-WindowStyle Hidden
+	} else {
+		if (!($InContainer.IsPresent)) {
+			# Run locally
+			Write-Host "Running service startup locally..."
+			
+			if ($WarewolfServerService) {
+				Write-Host Configuring service to $BinPath
+				sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
+			} else {
+				Write-Host Creating service for $BinPath
+				sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
+			}
+			sc.exe start "Warewolf Server"
+			
+			$LoopCounter = 0
+			$LoopCounterMax = 30
+			if ($Coverage) {
+				$LoopCounterMax = 60
+			}
+			if (!$DoExit.IsPresent) {
+				while (!(Test-Path "C:\programdata\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax)
+				{
+					Write-Host Still waiting for server to start...
+					Start-Sleep 5
+				}
+				Get-Content "C:\programdata\Warewolf\Server Log\warewolf-server.log" -Wait
+			} else {
+				while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
+					Write-Host Still waiting for server to start...
+					Start-Sleep 6
+				}
+			}
+		} else {
+			docker rm -f vstest
+			Write-Host "Starting container with image: mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2022"
+			docker run -d --name=vstest --memory 4g -p 3142:3142 -v "${PSScriptRoot}:C:\BuildUnderTest" mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2022 powershell -Command "Set-Location .\BuildUnderTest; &.\StartAsService.ps1 -ResourcesPath $ResourcesPath"
+			if (!$DoExit.IsPresent) {
+				docker logs -f vstest
+			}
+		}
 	}
 }
