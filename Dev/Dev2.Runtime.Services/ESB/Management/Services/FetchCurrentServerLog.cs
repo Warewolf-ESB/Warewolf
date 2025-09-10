@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
@@ -45,15 +46,39 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var result = new ExecuteMessage { HasError = false };
                 if (File.Exists(_serverLogPath))
                 {
-                    var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read,FileShare.Read);
-                    using (var streamReader = new StreamReader(fileStream))
+                    // Check if numLines parameter is provided
+                    int? numLines = null;
+                    if (values != null && values.ContainsKey("numLines"))
                     {
-                        while(!streamReader.EndOfStream)
+                        if (int.TryParse(values["numLines"].ToString(), out int parsedLines))
                         {
-                            result.Message.Append(streamReader.ReadLine());    
+                            numLines = parsedLines;
+                        }
+                    }
+
+                    if (numLines.HasValue && numLines.Value > 0)
+                    {
+                        // Read only the last N lines
+                        var lines = ReadLastLines(_serverLogPath, numLines.Value);
+                        foreach (var line in lines)
+                        {
+                            result.Message.AppendLine(line);
+                        }
+                    }
+                    else
+                    {
+                        // Read entire file (existing behavior)
+                        using (var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (var streamReader = new StreamReader(fileStream))
+                        {
+                            while (!streamReader.EndOfStream)
+                            {
+                                result.Message.AppendLine(streamReader.ReadLine());
+                            }
                         }
                     }
                 }
+                
                 var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
@@ -62,6 +87,102 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error("Fetch Server Log Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Efficiently reads the last N lines from a file without loading the entire file into memory
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <param name="numLines">Number of lines to read from the end</param>
+        /// <returns>Array of the last N lines</returns>
+        private static string[] ReadLastLines(string filePath, int numLines)
+        {
+            try
+            {
+                using (var fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    var lines = new List<string>();
+                    
+                    // For small files or small numLines, just read all lines and take the last N
+                    if (fileStream.Length < 1024 * 1024 || numLines <= 100) // Less than 1MB or requesting <= 100 lines
+                    {
+                        using (var reader = new StreamReader(fileStream))
+                        {
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                lines.Add(line);
+                            }
+                        }
+                        
+                        return lines.Skip(Math.Max(0, lines.Count - numLines)).ToArray();
+                    }
+                    
+                    // For larger files, use a more efficient approach
+                    return ReadLastLinesEfficient(fileStream, numLines);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error reading last {numLines} lines from {filePath}", ex, GlobalConstants.WarewolfError);
+                return new string[0];
+            }
+        }
+
+        /// <summary>
+        /// Efficiently reads the last N lines from a large file by reading backwards
+        /// </summary>
+        private static string[] ReadLastLinesEfficient(FileStream fileStream, int numLines)
+        {
+            const int bufferSize = 4096;
+            var buffer = new byte[bufferSize];
+            var lines = new List<string>();
+            var currentLine = new StringBuilder();
+            var position = fileStream.Length;
+            
+            while (position > 0 && lines.Count < numLines)
+            {
+                var bytesToRead = (int)Math.Min(bufferSize, position);
+                position -= bytesToRead;
+                fileStream.Seek(position, SeekOrigin.Begin);
+                
+                var bytesRead = fileStream.Read(buffer, 0, bytesToRead);
+                
+                // Process buffer backwards
+                for (int i = bytesRead - 1; i >= 0; i--)
+                {
+                    char c = (char)buffer[i];
+                    
+                    if (c == '\n')
+                    {
+                        if (currentLine.Length > 0)
+                        {
+                            // Reverse the line since we built it backwards
+                            var lineStr = new string(currentLine.ToString().Reverse().ToArray());
+                            lines.Add(lineStr);
+                            currentLine.Clear();
+                            
+                            if (lines.Count >= numLines)
+                                break;
+                        }
+                    }
+                    else if (c != '\r') // Skip carriage returns
+                    {
+                        currentLine.Append(c);
+                    }
+                }
+            }
+            
+            // Add the last line if we have one
+            if (currentLine.Length > 0 && lines.Count < numLines)
+            {
+                var lineStr = new string(currentLine.ToString().Reverse().ToArray());
+                lines.Add(lineStr);
+            }
+            
+            // Reverse the lines array since we collected them backwards
+            lines.Reverse();
+            return lines.ToArray();
         }
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
