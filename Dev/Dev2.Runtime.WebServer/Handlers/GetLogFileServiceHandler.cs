@@ -73,8 +73,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                     // For small files or small numLines, just read all lines and take the last N
                     if (fileStream.Length < 1024 * 1024 || numLines <= 100) // Less than 1MB or requesting <= 100 lines
                     {
-                        var allLines = File.ReadAllLines(filePath);
-                        return allLines.Skip(Math.Max(0, allLines.Length - numLines)).ToArray();
+                        // Use StreamReader with the same FileStream to maintain consistent file sharing
+                        using (var reader = new StreamReader(fileStream))
+                        {
+                            var allLines = new List<string>();
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                allLines.Add(line);
+                            }
+                            return allLines.Skip(Math.Max(0, allLines.Count - numLines)).ToArray();
+                        }
                     }
                     
                     // For larger files, use a more efficient approach
