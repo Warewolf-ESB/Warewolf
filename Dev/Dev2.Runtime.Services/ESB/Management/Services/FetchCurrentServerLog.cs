@@ -67,8 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        // Read entire file (existing behavior)
-                        using (var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         using (var streamReader = new StreamReader(fileStream))
                         {
                             while (!streamReader.EndOfStream)
