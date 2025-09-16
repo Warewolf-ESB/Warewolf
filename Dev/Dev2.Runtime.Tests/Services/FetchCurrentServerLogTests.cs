@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void FetchCurrentServerLogExecuteWithExistingLogExpectedReturnsContentsOfLog()
         {
-            const string Expected = "Hello world";
+            const string Expected = "Hello world\r\n";
             var serverLogPath = Path.Combine(_testDir, string.Format("ServerLog_{0}.txt", Guid.NewGuid()));
             File.WriteAllText(serverLogPath, Expected);
 
