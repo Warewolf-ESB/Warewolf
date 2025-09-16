@@ -47,13 +47,20 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, numLines.Value);
                 var content = string.Join(Environment.NewLine, lastLines);
                 ctx.Send(new StringResponseWriter(content, "text/plain"));
-            }
-            else
-            {
-                // Return entire file (existing behavior)
+			}
+			else if (numLines.HasValue && numLines.Value <= 0)
+			{
+                // Return entire file
                 ctx.Send(new FileResponseWriter(EnvironmentVariables.ServerLogFile));
-            }
-        }
+			}
+            else if (!numLines.HasValue)
+			{
+				// Return only the last 10 lines
+				var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, 10);
+				var content = string.Join(Environment.NewLine, lastLines);
+				ctx.Send(new StringResponseWriter(content, "text/plain"));
+			}
+		}
 
         /// <summary>
         /// Efficiently reads the last N lines from a file without loading the entire file into memory
