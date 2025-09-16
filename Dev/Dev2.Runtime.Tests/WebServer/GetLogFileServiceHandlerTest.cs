@@ -133,9 +133,9 @@ namespace Dev2.Tests.Runtime.WebServer
             request.Setup(communicationRequest => communicationRequest.QueryString).Returns(EmptyQueryString);
             communicationContext.Setup(context => context.Request).Returns(request.Object);
 
-            FileResponseWriter capturedWriter = null;
-            communicationContext.Setup(ctx => ctx.Send(It.IsAny<FileResponseWriter>()))
-                .Callback<IResponseWriter>(writer => capturedWriter = writer as FileResponseWriter);
+			StringResponseWriter capturedWriter = null;
+            communicationContext.Setup(ctx => ctx.Send(It.IsAny<StringResponseWriter>()))
+                .Callback<IResponseWriter>(writer => capturedWriter = writer as StringResponseWriter);
 
             var handler = new GetLogFileServiceHandler();
 
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.WebServer
             handler.ProcessRequest(communicationContext.Object);
 
             //------------Assert Results-------------------------
-            communicationContext.Verify(ctx => ctx.Send(It.IsAny<FileResponseWriter>()), Times.Once);
+            communicationContext.Verify(ctx => ctx.Send(It.IsAny<StringResponseWriter>()), Times.Once);
             Assert.IsNotNull(capturedWriter, "Expected FileResponseWriter to be sent");
         }
 
@@ -343,9 +343,9 @@ namespace Dev2.Tests.Runtime.WebServer
             request.Setup(communicationRequest => communicationRequest.QueryString).Returns(EmptyQueryString);
             communicationContext.Setup(context => context.Request).Returns(request.Object);
 
-            FileResponseWriter capturedWriter = null;
-            communicationContext.Setup(ctx => ctx.Send(It.IsAny<FileResponseWriter>()))
-                .Callback<IResponseWriter>(writer => capturedWriter = writer as FileResponseWriter);
+			StringResponseWriter capturedWriter = null;
+            communicationContext.Setup(ctx => ctx.Send(It.IsAny<StringResponseWriter>()))
+                .Callback<IResponseWriter>(writer => capturedWriter = writer as StringResponseWriter);
 
             var handler = new GetLogFileServiceHandler();
 
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Runtime.WebServer
             handler.ProcessRequest(communicationContext.Object);
 
             //------------Assert Results-------------------------
-            communicationContext.Verify(ctx => ctx.Send(It.IsAny<FileResponseWriter>()), Times.Once);
+            communicationContext.Verify(ctx => ctx.Send(It.IsAny<StringResponseWriter>()), Times.Once);
             Assert.IsNotNull(capturedWriter, "Expected FileResponseWriter to be sent");
         }
 
