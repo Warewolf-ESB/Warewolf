@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                     else if (numLines.HasValue && numLines.Value <= 0)
-					{
+                    {
                         using (var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         using (var streamReader = new StreamReader(fileStream))
                         {
@@ -77,14 +77,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                     else if (!numLines.HasValue)
-					{
-						// Read only the last 10 lines
-						var lines = ReadLastLines(_serverLogPath, 10);
-						foreach (var line in lines)
-						{
-							result.Message.AppendLine(line);
-						}
-					}
+                    {
+                        // Read only the last 10 lines
+                        var lines = ReadLastLines(_serverLogPath, 10);
+                        foreach (var line in lines)
+                        {
+                            result.Message.AppendLine(line);
+                        }
+                    }
                 }
                 
                 var serializer = new Dev2JsonSerializer();

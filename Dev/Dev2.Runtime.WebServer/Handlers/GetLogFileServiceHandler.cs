@@ -9,16 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Castle.Core.Internal;
+using Dev2.Common;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.WebServer.Responses;
+using Dev2.Services.Security;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Dev2.Common;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.WebServer.Responses;
-using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -31,36 +32,35 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            // Check if numLines parameter is provided
-            int? numLines = null;
 #pragma warning disable CC0021 // Use nameof
             var numLinesParam = ctx.Request.QueryString["numLines"];
 #pragma warning restore CC0021 // Use nameof
-            if (!string.IsNullOrEmpty(numLinesParam) && int.TryParse(numLinesParam, out int parsedLines))
+            if (int.TryParse(numLinesParam, out int noOfLines))
             {
-                numLines = parsedLines;
-            }
-
-            if (numLines.HasValue && numLines.Value > 0)
-            {
+                if (noOfLines < 1) noOfLines = 10; // or set default no. of lines
                 // Return only the last N lines
-                var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, numLines.Value);
+                var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, noOfLines);
                 var content = string.Join(Environment.NewLine, lastLines);
                 ctx.Send(new StringResponseWriter(content, "text/plain"));
-			}
-			else if (numLines.HasValue && numLines.Value <= 0)
-			{
-                // Return entire file
-                ctx.Send(new FileResponseWriter(EnvironmentVariables.ServerLogFile));
-			}
-            else if (!numLines.HasValue)
-			{
-				// Return only the last 10 lines
-				var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, 10);
-				var content = string.Join(Environment.NewLine, lastLines);
-				ctx.Send(new StringResponseWriter(content, "text/plain"));
-			}
-		}
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(numLinesParam) && numLinesParam.ToLower() == "all")
+                {
+                    // Return entire file
+                    ctx.Send(new FileResponseWriter(EnvironmentVariables.ServerLogFile));
+                }
+                else
+                {
+                    // treat this as if there is no numLines provided
+                    // return default no. of lines from logs
+                    // Return only the last 10 lines
+                    var lastLines = ReadLastLines(EnvironmentVariables.ServerLogFile, 10);
+                    var content = string.Join(Environment.NewLine, lastLines);
+                    ctx.Send(new StringResponseWriter(content, "text/plain"));
+                }
+            }
+        }
 
         /// <summary>
         /// Efficiently reads the last N lines from a file without loading the entire file into memory
