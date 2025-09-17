@@ -98,11 +98,12 @@ namespace Dev2.Runtime.WebServer
 
             app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
 
+            // IMPORTANT: Custom authentication middleware must come BEFORE UseAuthentication()
+            app.UseWindowsAndAnonymousAuthentication();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseWindowsAndAnonymousAuthentication();
 
             app.MapControllers();
 
