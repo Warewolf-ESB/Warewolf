@@ -11,6 +11,20 @@ namespace Dev2.Activities.WF
     /// </summary>
     public partial class X6ToWorkflowConverter
     {
+        private static DsfSequenceActivity CreateSequenceActivity(Cell node)
+        {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
+                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfSequenceActivity();
+            activity.FromX6Json(node);
+            return activity;
+        }
+
         private void EmbedNestedActivitiesIntoSequenceActivities(List<Cell> allNodes)
         {
             if (allNodes == null || allNodes.Count == 0)

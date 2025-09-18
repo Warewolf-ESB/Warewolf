@@ -1,3 +1,4 @@
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
@@ -92,11 +93,12 @@ namespace Dev2.Activities.WF
                 Parallel parallelActivity => ProcessParallelActivity(parallelActivity, graphData, activityNodeMap, nodeId),
                 DsfForEachActivity forEachActivity => ProcessDsfForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId, previousNodeId),
                 DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
+                DsfSelectAndApplyActivity selectAndApplyActivity => ProcessDsfSelectAndApplyActivity(selectAndApplyActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
 
-
+        
 
         private string ProcessSequence(Sequence sequence, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
@@ -454,6 +456,7 @@ namespace Dev2.Activities.WF
                 //Flowchart => true,
                 DsfForEachActivity => true,
                 DsfSequenceActivity => true,
+                DsfSelectAndApplyActivity => true,
                 _ => false
             };
         }
@@ -533,6 +536,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateSequenceNode(sequenceActivity, nodeId);
             }
+            else if (activity is DsfSelectAndApplyActivity selectAndApplyActivity)
+            {
+                cell = CreateSelectAndApplyActivity(selectAndApplyActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
@@ -552,6 +559,8 @@ namespace Dev2.Activities.WF
 
             return cell;
         }
+
+        
 
         /// <summary>
         /// Extracts ForEach nesting information from an activity's annotations and adds it to the cell data
