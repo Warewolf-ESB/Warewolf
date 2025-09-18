@@ -31,6 +31,9 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
 using Warewolf.Resource.Messages;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.SelectAndApply
 {
@@ -426,5 +429,151 @@ namespace Dev2.Activities.SelectAndApply
                 return hashCode;
             }
         }
+
+        /// <summary>
+        /// Serializes the ApplyActivityFunc (child activity) to a JSON-friendly format
+        /// </summary>
+        /// <returns>Serialized ApplyActivityFunc data</returns>
+        private object SerializeApplyActivityFunc()
+        {
+            if (ApplyActivityFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = ApplyActivityFunc.DisplayName ?? "Data Action",
+                    argumentName = ApplyActivityFunc.Argument?.Name ?? string.Empty,
+                    handlerType = ApplyActivityFunc.Handler.GetType().Name,
+                    handlerUniqueId = (ApplyActivityFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (ApplyActivityFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing ApplyActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Deserializes the ApplyActivityFunc (child activity) from JSON format
+        /// </summary>
+        /// <param name="applyActivityFuncData">The serialized DataFunc data</param>
+        private void DeserializeApplyActivityFunc(dynamic applyActivityFuncData)
+        {
+            if (applyActivityFuncData == null) return;
+
+            try
+            {
+                // Note: For full deserialization of child activities, we would need access to the 
+                // activity factory and the complete activity definition. For now, we preserve
+                // the basic structure and properties that can be restored.
+
+                if (ApplyActivityFunc == null)
+                {
+                    ApplyActivityFunc = new ActivityFunc<string, bool>();
+                }
+
+                // Restore basic properties
+                if (applyActivityFuncData.displayName != null)
+                {
+                    ApplyActivityFunc.DisplayName = applyActivityFuncData.displayName.ToString();
+                }
+
+                if (applyActivityFuncData.argumentName != null && ApplyActivityFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+
+                // The actual Handler restoration would require more complex logic involving
+                // activity factories and full activity serialization/deserialization
+                // This is typically handled at a higher level during workflow reconstruction
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing ApplyActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Select and apply activity to X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with Select and apply data</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFSELECTANDAPPLYACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFSELECTANDAPPLYACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_SELECTANDAPPLY;
+
+            // Create comprehensive Select and apply data structure matching the rich JSON format
+            cell.data[Constants.SELECTANDAPPLY_ALIAS] = Alias ?? string.Empty;
+            cell.data[Constants.SELECTANDAPPLY_DATASOURCE] = DataSource ?? string.Empty;
+
+            // Add ngArguments for the frontend framework integration
+            if (cell.id != null)
+            {
+                cell.data[Constants.NGARGUMENTS] = new
+                {
+                    graphId = Guid.NewGuid().ToString(), // Generate a graph ID for UI purposes
+                    nodeId = cell.id
+                };
+            }
+
+            // Serialize the DataFunc (child activities) information for legacy support
+            var applyActivityFuncInfo = SerializeApplyActivityFunc();
+            if (applyActivityFuncInfo != null)
+            {
+                cell.data[Constants.SELECTANDAPPLY_APPLYACTIVITYFUNC] = applyActivityFuncInfo;
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the Select and apply activity from X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Select and apply data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            // Deserialize comprehensive Select and apply data
+            try
+            {
+                if(cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                    this.DisplayName = displayName;
+
+                if (cell.data.TryGetString(Constants.SELECTANDAPPLY_ALIAS, out string alias))
+                    this.Alias = alias;
+
+                if (cell.data.TryGetString(Constants.SELECTANDAPPLY_DATASOURCE, out string dataSource))
+                    this.DataSource = dataSource;
+
+                // Deserialize ApplyActivityFunc if present (legacy support)
+                if (cell.data.TryGetValue(Constants.SELECTANDAPPLY_APPLYACTIVITYFUNC, out var applyActivityFuncObj))
+                {
+                    DeserializeApplyActivityFunc(applyActivityFuncObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't throw - graceful degradation
+                Dev2Logger.Error($"Error deserializing Select and apply data from comprehensive X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
     }
 }

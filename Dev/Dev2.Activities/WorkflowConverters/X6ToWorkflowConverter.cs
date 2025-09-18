@@ -144,13 +144,19 @@ namespace Dev2.Activities.WF
             }
 
             // Now embed nested activities into their parent ForEach activities' DataFunc.Handler property
-            EmbedNestedActivitiesIntoForEachActivities(allNodes);
-            EmbedNestedActivitiesIntoSequenceActivities(allNodes);
+            EmbedNestedActivities(allNodes);
 
             // Build the workflow structure
             activityBuilder.Implementation = BuildWorkflow(topLevelNodes, startcell);
 
             return activityBuilder;
+        }
+
+        private void EmbedNestedActivities(List<Cell> allNodes)
+        {
+            EmbedNestedActivitiesIntoForEachActivities(allNodes);
+            EmbedNestedActivitiesIntoSequenceActivities(allNodes);
+            EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
         }
 
 
@@ -534,10 +540,15 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains("dsfsequenceactivity"):
                     return CreateSequenceActivity(node);
 
+                case var t when t.Contains(Constants.DSFSELECTANDAPPLYACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSelectAndApplyActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }
+
+        
 
         /// <summary>
         /// Applies ForEach nesting information to an activity by storing it in the activity's annotations
@@ -670,19 +681,7 @@ namespace Dev2.Activities.WF
             return activity;
         }
 
-        private static DsfSequenceActivity CreateSequenceActivity(Cell node)
-        {
-            // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
-
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
-                return null;
-
-            var activity = new DsfSequenceActivity();
-            activity.FromX6Json(node);
-            return activity;
-        }
+        
 
         /// <summary>
         /// Creates Connections among flow nodes

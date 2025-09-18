@@ -327,8 +327,10 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
-    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SelectAndApplyActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_SelectAndApplyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\SwitchActivityDataHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter.cs" />
