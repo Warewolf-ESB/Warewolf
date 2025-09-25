@@ -540,6 +540,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateSelectAndApplyActivity(selectAndApplyActivity, nodeId);
             }
+            else if (activity is DsfDataMergeActivity dataMergeActivity)
+            {
+                cell = CreateDataMergeActivity(dataMergeActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

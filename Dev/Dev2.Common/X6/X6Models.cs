@@ -59,6 +59,9 @@ namespace Dev2.Common.X6
         public const string DSFDECISION = "DsfDecision";
         public const string DSFFOREACHACTIVITY = "DsfForEachActivity";
         public const string DSFSELECTANDAPPLYACTIVITY = "DsfSelectAndApplyActivity";
+        public const string DSFDATAMERGEACTIVITY = "DsfDataMergeActivity";
+        public const string DSFDATASPLITACTIVITY = "DsfDataSplitActivity";
+
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -71,6 +74,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SEQUENCE = "Sequence";
         public const string DISPLAYNAME_FOREACH = "For Each";
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
+        public const string DISPLAYNAME_DATAMERGE = "Data Merge";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -79,6 +83,11 @@ namespace Dev2.Common.X6
 
         public const string NGARGUMENTS = "ngArguments";
         public const string DATAACTION = "Data Action";
+
+        public const string MERGECOLLECTION = "mergecollection";
+        public const string UPDATEDMERGECOLLECTION = "updatedmergecollection";
+        public const string RESULT = "result";
+
     }
     public class X6WorkflowLoadModel
     {
