@@ -39,6 +39,10 @@ using WarewolfParserInterop;
 using Dev2.Comparer;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Dev2.TO;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -140,12 +144,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    if(!this.IsErrorHandled)
+                    if (!this.IsErrorHandled)
                     {
                         var errorString = allErrors.MakeDisplayReady();
                         dataObject.Environment.AddError(errorString);
                     }
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
 
                 if (dataObject.IsDebugMode())
@@ -487,7 +491,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
@@ -583,7 +587,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 		}
 #endif
 
-#endregion
+        #endregion
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
@@ -652,6 +656,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (MergeCollection != null ? MergeCollection.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDATAMERGEACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFDATAMERGEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DATAMERGE;
+
+            cell.data.Add(Constants.MERGECOLLECTION, MergeCollection);
+            cell.data.Add(Constants.RESULT, Result);
+
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Read Result
+            if (cell.data.TryGetString(Constants.RESULT, out string result))
+            {
+                this.Result = result;
+            }
+
+            // Read Merge Collection or Updated Merge Collection
+            object fieldObject = null;
+            cell.data.TryGetValue(Constants.UPDATEDMERGECOLLECTION, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data.TryGetValue(Constants.MERGECOLLECTION, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                MergeCollection = array.ToObject<List<DataMergeDTO>>();
+            }
+
+
         }
     }
 }

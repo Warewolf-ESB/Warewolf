@@ -543,6 +543,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFSELECTANDAPPLYACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSelectAndApplyActivity(node);
 
+                case var t when t.Contains(Constants.DSFDATAMERGEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDataMergeActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
