@@ -544,6 +544,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateDataMergeActivity(dataMergeActivity, nodeId);
             }
+            else if (activity is DsfBaseConvertActivity baseConvertActivity)
+            {
+                cell = CreateBaseConvertActivity(baseConvertActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

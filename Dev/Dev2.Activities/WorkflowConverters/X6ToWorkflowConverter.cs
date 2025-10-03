@@ -546,6 +546,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFDATAMERGEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDataMergeActivity(node);
 
+                case var t when t.Contains(Constants.DSFBASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateBaseConvertActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
