@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Converters;
 using Dev2.Data.TO;
@@ -32,6 +33,8 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Utilities;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
@@ -496,6 +499,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Type = StateVariable.StateType.InputOutput
                 }
             };
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFBASECONVERTACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFBASECONVERTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_BASECONVERT;
+
+            cell.data.Add(Constants.CONVERTCOLLECTION, ConvertCollection);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Read Convert Collection or Updated Convert Collection
+            object fieldObject = null;
+            cell.data.TryGetValue(Constants.UPDATEDCONVERTCOLLECTION, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data.TryGetValue(Constants.CONVERTCOLLECTION, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                ConvertCollection = array.ToObject<List<BaseConvertTO>>();
+            }
         }
     }
 }
