@@ -94,9 +94,6 @@ namespace Dev2.Common.X6
         public const string UPDATEDCONVERTCOLLECTION = "updatedconvertcollection";
         public const string RESULT = "result";
 
-        public const string CONVERTCOLLECTION = "convertcollection";
-        public const string UPDATEDCONVERTCOLLECTION = "updatedconvertcollection";
-
     }
     public class X6WorkflowLoadModel
     {
