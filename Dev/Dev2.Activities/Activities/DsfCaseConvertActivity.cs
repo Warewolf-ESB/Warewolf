@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -35,6 +36,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Activities.Factories.Case;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Newtonsoft.Json;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -328,7 +330,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			if (listOfValidRows.Count > 0)
 			{
 				var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
-				foreach (string s in listToAdd)
+				foreach (string s in listToAdd
+)
 				{
 					ConvertCollection.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
 					startIndex++;
@@ -539,6 +542,96 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 return (base.GetHashCode() * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the CaseConvert activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with CaseConvert data</param>
+        public void ToX6Json(Cell cell)
+        {
+            cell.data[Constants.TYPE] = Constants.DSFCASECONVERTACTIVITY;
+            cell.data[Constants.DISPLAYNAME] = DisplayName;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.shape = Constants.RECT;
+
+            // Serialize the ConvertCollection
+            var convertCollectionJson = JsonConvert.SerializeObject(ConvertCollection);
+            cell.data[Constants.CONVERTCOLLECTION] = convertCollectionJson;
+
+            // Serialize OnError data if present
+            if (!string.IsNullOrEmpty(OnErrorVariable) || !string.IsNullOrEmpty(OnErrorWorkflow) || IsEndedOnError)
+            {
+                var onErrorData = new X6NodeOnErrorData
+                {
+                    OnErrorVariable = OnErrorVariable,
+                    OnErrorWorkflow = OnErrorWorkflow,
+                    IsEndedOnError = IsEndedOnError
+                };
+                var onErrorDataJson = JsonConvert.SerializeObject(onErrorData);
+                cell.data[Constants.ONERRORDATA] = onErrorDataJson;
+            }
+        }
+
+        /// <summary>
+        /// Deserializes X6 JSON to populate the CaseConvert activity
+        /// </summary>
+        /// <param name="cell">The X6 cell containing CaseConvert data</param>
+        public void FromX6Json(Cell cell)
+        {
+            if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
+            {
+                DisplayName = displayName;
+            }
+
+            if (cell.data.TryGetValue(Constants.UNIQUEID, out var uniqueIdObj) && uniqueIdObj is string uniqueId)
+            {
+                UniqueID = uniqueId;
+            }
+
+            // Deserialize ConvertCollection
+            if (cell.data.TryGetValue(Constants.CONVERTCOLLECTION, out var convertCollectionObj))
+            {
+                var convertCollectionJson = convertCollectionObj?.ToString();
+                if (!string.IsNullOrEmpty(convertCollectionJson))
+                {
+                    try
+                    {
+                        var deserializedCollection = JsonConvert.DeserializeObject<List<CaseConvertTO>>(convertCollectionJson);
+                        if (deserializedCollection != null)
+                        {
+                            ConvertCollection = new List<ICaseConvertTO>(deserializedCollection);
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        Dev2Logger.Error($"Error deserializing ConvertCollection: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                    }
+                }
+            }
+
+            // Deserialize OnError data if present
+            if (cell.data.TryGetValue(Constants.ONERRORDATA, out var onErrorDataObj))
+            {
+                var onErrorDataJson = onErrorDataObj?.ToString();
+                if (!string.IsNullOrEmpty(onErrorDataJson))
+                {
+                    try
+                    {
+                        var onErrorData = JsonConvert.DeserializeObject<X6NodeOnErrorData>(onErrorDataJson);
+                        if (onErrorData != null)
+                        {
+                            OnErrorVariable = onErrorData.OnErrorVariable;
+                            OnErrorWorkflow = onErrorData.OnErrorWorkflow;
+                            IsEndedOnError = onErrorData.IsEndedOnError;
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        Dev2Logger.Error($"Error deserializing OnErrorData: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                    }
+                }
             }
         }
     }
