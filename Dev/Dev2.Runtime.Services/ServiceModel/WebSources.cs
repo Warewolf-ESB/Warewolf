@@ -498,19 +498,46 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
         }
-        
-        private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
-        {
-            if (headers != null)
-            {
-                foreach (var header in headers)
-                {
-                    if (header != ":" && !header.ToLower().StartsWith("content-type:") && !header.ToLower().StartsWith("accept:") && !header.ToLower().Contains(":bearer") && !header.ToLower().Contains(":basic"))
-                    {
-                        wr.AddHeader(header.Trim());
-                    }
-                }
-            }
-        }
-    }
+
+		private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
+		{
+			if (headers == null) return;
+
+			foreach (var rawHeader in headers)
+			{
+				if (string.IsNullOrWhiteSpace(rawHeader) || rawHeader == ":")
+					continue;
+
+				var parts = rawHeader.Split(new[] { ':' }, 2);
+				if (parts.Length != 2)
+					continue;
+
+				var name = parts[0].Trim();
+				var value = parts[1].Trim();
+
+				// Skip restricted/ignored headers
+				if (name.Equals("Content-Type", StringComparison.OrdinalIgnoreCase) ||
+					value.StartsWith("Bearer", StringComparison.OrdinalIgnoreCase))
+					continue;
+
+				if (name.Equals("Accept", StringComparison.OrdinalIgnoreCase))
+				{
+					if (wr is WebRequestWrapper webRequestWrapper)
+						webRequestWrapper.SetAcceptHeader(value);
+					else
+						try
+						{
+							wr.AddHeader($"{name}: {value}");
+						}
+						catch
+						{
+						}
+				}
+				else
+				{
+					wr.AddHeader($"{name}: {value}");
+				}
+			}
+		}
+	}
 }
