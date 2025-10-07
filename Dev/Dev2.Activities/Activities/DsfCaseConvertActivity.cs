@@ -550,14 +550,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         /// <param name="cell">The X6 cell to populate with CaseConvert data</param>
         public void ToX6Json(Cell cell)
-        {
-            cell.data[Constants.TYPE] = Constants.DSFCASECONVERTACTIVITY;
-            cell.data[Constants.DISPLAYNAME] = DisplayName;
-            cell.data[Constants.UNIQUEID] = UniqueID;
-            cell.shape = Constants.RECT;
+		{
+			if (cell.data == null) cell.data = new Dictionary<string, object>();
 
-            // Serialize the ConvertCollection
-            var convertCollectionJson = JsonConvert.SerializeObject(ConvertCollection);
+			base.ToX6Json(cell);
+
+			cell.shape = Constants.DSFCASECONVERTACTIVITY;
+
+			cell.data[Constants.TYPE] = Constants.DSFCASECONVERTACTIVITY;
+			cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_BASECONVERT;
+			cell.data[Constants.UNIQUEID] = UniqueID;
+
+			// Serialize the ConvertCollection
+			var convertCollectionJson = JsonConvert.SerializeObject(ConvertCollection);
             cell.data[Constants.CONVERTCOLLECTION] = convertCollectionJson;
 
             // Serialize OnError data if present
