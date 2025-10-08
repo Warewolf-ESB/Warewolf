@@ -437,7 +437,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     UniqueID = uniqueId;
                 }
 
-                // Also check properties object if it exists (for backward compatibility)
                 if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
                 {
                     Dictionary<string, object> properties = null;
