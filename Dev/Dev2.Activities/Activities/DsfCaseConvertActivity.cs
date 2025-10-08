@@ -37,6 +37,7 @@ using Dev2.Activities.Factories.Case;
 using Dev2.Common.State;
 using Dev2.Utilities;
 using Newtonsoft.Json;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -570,15 +571,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="cell">The X6 cell containing CaseConvert data</param>
         public override void FromX6Json(Cell cell)
         {
-            if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
-            {
-                DisplayName = displayName;
-            }
+            if (cell == null || cell.data == null) return;
 
-            if (cell.data.TryGetValue(Constants.UNIQUEID, out var uniqueIdObj) && uniqueIdObj is string uniqueId)
-            {
-                UniqueID = uniqueId;
-            }
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
 
             // Deserialize ConvertCollection
             if (cell.data.TryGetValue(Constants.CONVERTCOLLECTION, out var convertCollectionObj))
