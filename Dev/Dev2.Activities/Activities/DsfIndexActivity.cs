@@ -437,22 +437,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     UniqueID = uniqueId;
                 }
 
-                // Extract Find Index specific properties directly from cell.data
-                if (cell.data.TryGetValue("InField", out var inFieldObj))
-                    InField = inFieldObj?.ToString() ?? string.Empty;
-
-                if (cell.data.TryGetValue("Index", out var indexObj))
-                    Index = indexObj?.ToString() ?? "First Occurrence";
-
-                if (cell.data.TryGetValue("Characters", out var charactersObj))
-                    Characters = charactersObj?.ToString() ?? string.Empty;
-
-                if (cell.data.TryGetValue("Direction", out var directionObj))
-                    Direction = directionObj?.ToString() ?? "Left to Right";
-
-                if (cell.data.TryGetValue("Result", out var resultObj))
-                    Result = resultObj?.ToString() ?? string.Empty;
-
                 // Also check properties object if it exists (for backward compatibility)
                 if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
                 {
