@@ -549,7 +549,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Serializes the CaseConvert activity to X6 JSON format
         /// </summary>
         /// <param name="cell">The X6 cell to populate with CaseConvert data</param>
-        public void ToX6Json(Cell cell)
+        public override void ToX6Json(Cell cell)
 		{
 			if (cell.data == null) cell.data = new Dictionary<string, object>();
 
@@ -561,29 +561,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_BASECONVERT;
 			cell.data[Constants.UNIQUEID] = UniqueID;
 
-			// Serialize the ConvertCollection
-			var convertCollectionJson = JsonConvert.SerializeObject(ConvertCollection);
-            cell.data[Constants.CONVERTCOLLECTION] = convertCollectionJson;
-
-            // Serialize OnError data if present
-            if (!string.IsNullOrEmpty(OnErrorVariable) || !string.IsNullOrEmpty(OnErrorWorkflow) || IsEndedOnError)
-            {
-                var onErrorData = new X6NodeOnErrorData
-                {
-                    OnErrorVariable = OnErrorVariable,
-                    OnErrorWorkflow = OnErrorWorkflow,
-                    IsEndedOnError = IsEndedOnError
-                };
-                var onErrorDataJson = JsonConvert.SerializeObject(onErrorData);
-                cell.data[Constants.ONERRORDATA] = onErrorDataJson;
-            }
+            cell.data.Add(Constants.CONVERTCOLLECTION, ConvertCollection);
         }
 
         /// <summary>
         /// Deserializes X6 JSON to populate the CaseConvert activity
         /// </summary>
         /// <param name="cell">The X6 cell containing CaseConvert data</param>
-        public void FromX6Json(Cell cell)
+        public override void FromX6Json(Cell cell)
         {
             if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
             {
@@ -612,29 +597,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch (JsonException ex)
                     {
                         Dev2Logger.Error($"Error deserializing ConvertCollection: {ex.Message}", ex, GlobalConstants.WarewolfError);
-                    }
-                }
-            }
-
-            // Deserialize OnError data if present
-            if (cell.data.TryGetValue(Constants.ONERRORDATA, out var onErrorDataObj))
-            {
-                var onErrorDataJson = onErrorDataObj?.ToString();
-                if (!string.IsNullOrEmpty(onErrorDataJson))
-                {
-                    try
-                    {
-                        var onErrorData = JsonConvert.DeserializeObject<X6NodeOnErrorData>(onErrorDataJson);
-                        if (onErrorData != null)
-                        {
-                            OnErrorVariable = onErrorData.OnErrorVariable;
-                            OnErrorWorkflow = onErrorData.OnErrorWorkflow;
-                            IsEndedOnError = onErrorData.IsEndedOnError;
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Dev2Logger.Error($"Error deserializing OnErrorData: {ex.Message}", ex, GlobalConstants.WarewolfError);
                     }
                 }
             }
