@@ -20,6 +20,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -28,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -386,6 +388,139 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
                 hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Find Index activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate</param>
+        public override void ToX6Json(Cell cell)
+        {
+            base.ToX6Json(cell);
+
+            cell.data[Constants.TYPE] = Constants.DSFINDEXACTIVITY;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FINDINDEX;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.shape = Constants.RECT;
+
+            // Create properties object matching the UI model structure
+            var properties = new Dictionary<string, string>
+            {
+                ["Add"] = Add.ToString(),
+                ["DatabindRecursive"] = DatabindRecursive.ToString(),
+                ["DisplayName"] = DisplayName ?? Constants.DISPLAYNAME_FINDINDEX,
+                ["IsEndedOnError"] = IsEndedOnError.ToString(),
+                ["IsService"] = IsService.ToString(),
+                ["IsSimulationEnabled"] = IsSimulationEnabled.ToString(),
+                ["IsUIStep"] = IsUIStep.ToString(),
+                ["IsWorkflow"] = IsWorkflow.ToString(),
+                ["OnResumeClearAmbientDataList"] = OnResumeClearAmbientDataList.ToString(),
+                ["SimulationMode"] = SimulationMode.ToString(),
+                ["UniqueID"] = UniqueID ?? string.Empty,
+                ["InField"] = InField ?? string.Empty,
+                ["Index"] = Index ?? "First Occurrence",
+                ["Characters"] = Characters ?? string.Empty,
+                ["Direction"] = Direction ?? "Left to Right",
+                ["Result"] = Result ?? string.Empty
+            };
+
+            cell.data[Constants.PROPERTIES] = properties;
+
+            // Add ngArguments for the frontend framework integration
+            if (!string.IsNullOrEmpty(cell.id))
+            {
+                cell.data[Constants.NGARGUMENTS] = new { };
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the Find Index activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Find Index data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            try
+            {
+                // Deserialize DisplayName
+                if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
+                {
+                    DisplayName = displayName;
+                }
+
+                // Deserialize UniqueID
+                if (cell.data.TryGetValue(Constants.UNIQUEID, out var uniqueIdObj) && uniqueIdObj is string uniqueId)
+                {
+                    UniqueID = uniqueId;
+                }
+
+                // Deserialize properties if present
+                if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
+                {
+                    Dictionary<string, object> properties = null;
+
+                    if (propertiesObj is Dictionary<string, object> dict)
+                    {
+                        properties = dict;
+                    }
+                    else
+                    {
+                        // Try to deserialize as JSON string
+                        var propertiesJson = propertiesObj?.ToString();
+                        if (!string.IsNullOrEmpty(propertiesJson))
+                        {
+                            try
+                            {
+                                properties = JsonConvert.DeserializeObject<Dictionary<string, object>>(propertiesJson);
+                            }
+                            catch (JsonException ex)
+                            {
+                                Dev2Logger.Error($"Error deserializing Find Index properties: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                            }
+                        }
+                    }
+
+                    if (properties != null)
+                    {
+                        // Extract Find Index specific properties
+                        if (properties.TryGetValue("InField", out var inFieldObj))
+                            InField = inFieldObj?.ToString() ?? string.Empty;
+
+                        if (properties.TryGetValue("Index", out var indexObj))
+                            Index = indexObj?.ToString() ?? "First Occurrence";
+
+                        if (properties.TryGetValue("Characters", out var charactersObj))
+                            Characters = charactersObj?.ToString() ?? string.Empty;
+
+                        if (properties.TryGetValue("Direction", out var directionObj))
+                            Direction = directionObj?.ToString() ?? "Left to Right";
+
+                        if (properties.TryGetValue("Result", out var resultObj))
+                            Result = resultObj?.ToString() ?? string.Empty;
+
+                        // Extract common activity properties
+                        if (properties.TryGetValue("Add", out var addObj) && bool.TryParse(addObj?.ToString(), out var add))
+                            Add = add;
+
+                        if (properties.TryGetValue("DatabindRecursive", out var databindObj) && bool.TryParse(databindObj?.ToString(), out var databind))
+                            DatabindRecursive = databind;
+
+                        if (properties.TryGetValue("IsUIStep", out var isUIStepObj) && bool.TryParse(isUIStepObj?.ToString(), out var isUIStep))
+                            IsUIStep = isUIStep;
+
+                        if (properties.TryGetValue("OnResumeClearAmbientDataList", out var onResumeObj) && bool.TryParse(onResumeObj?.ToString(), out var onResume))
+                            OnResumeClearAmbientDataList = onResume;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing Find Index data from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
         }
     }
