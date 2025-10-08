@@ -404,34 +404,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data[Constants.UNIQUEID] = UniqueID;
             cell.shape = Constants.RECT;
 
-            // Create properties object matching the UI model structure
-            var properties = new Dictionary<string, string>
-            {
-                ["Add"] = Add.ToString(),
-                ["DatabindRecursive"] = DatabindRecursive.ToString(),
-                ["DisplayName"] = DisplayName ?? Constants.DISPLAYNAME_FINDINDEX,
-                ["IsEndedOnError"] = IsEndedOnError.ToString(),
-                ["IsService"] = IsService.ToString(),
-                ["IsSimulationEnabled"] = IsSimulationEnabled.ToString(),
-                ["IsUIStep"] = IsUIStep.ToString(),
-                ["IsWorkflow"] = IsWorkflow.ToString(),
-                ["OnResumeClearAmbientDataList"] = OnResumeClearAmbientDataList.ToString(),
-                ["SimulationMode"] = SimulationMode.ToString(),
-                ["UniqueID"] = UniqueID ?? string.Empty,
-                ["InField"] = InField ?? string.Empty,
-                ["Index"] = Index ?? "First Occurrence",
-                ["Characters"] = Characters ?? string.Empty,
-                ["Direction"] = Direction ?? "Left to Right",
-                ["Result"] = Result ?? string.Empty
-            };
-
-            cell.data[Constants.PROPERTIES] = properties;
-
-            // Add ngArguments for the frontend framework integration
-            if (!string.IsNullOrEmpty(cell.id))
-            {
-                cell.data[Constants.NGARGUMENTS] = new { };
-            }
+            // Add Find Index specific data
+            cell.data["InField"] = InField ?? string.Empty;
+            cell.data["Index"] = Index ?? "First Occurrence";
+            cell.data["Characters"] = Characters ?? string.Empty;
+            cell.data["Direction"] = Direction ?? "Left to Right";
+            cell.data["Result"] = Result ?? string.Empty;
         }
 
         /// <summary>
@@ -459,7 +437,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     UniqueID = uniqueId;
                 }
 
-                // Deserialize properties if present
+                // Extract Find Index specific properties directly from cell.data
+                if (cell.data.TryGetValue("InField", out var inFieldObj))
+                    InField = inFieldObj?.ToString() ?? string.Empty;
+
+                if (cell.data.TryGetValue("Index", out var indexObj))
+                    Index = indexObj?.ToString() ?? "First Occurrence";
+
+                if (cell.data.TryGetValue("Characters", out var charactersObj))
+                    Characters = charactersObj?.ToString() ?? string.Empty;
+
+                if (cell.data.TryGetValue("Direction", out var directionObj))
+                    Direction = directionObj?.ToString() ?? "Left to Right";
+
+                if (cell.data.TryGetValue("Result", out var resultObj))
+                    Result = resultObj?.ToString() ?? string.Empty;
+
+                // Also check properties object if it exists (for backward compatibility)
                 if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
                 {
                     Dictionary<string, object> properties = null;
@@ -470,7 +464,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        // Try to deserialize as JSON string
                         var propertiesJson = propertiesObj?.ToString();
                         if (!string.IsNullOrEmpty(propertiesJson))
                         {
@@ -478,43 +471,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 properties = JsonConvert.DeserializeObject<Dictionary<string, object>>(propertiesJson);
                             }
-                            catch (JsonException ex)
+                            catch (JsonException)
                             {
-                                Dev2Logger.Error($"Error deserializing Find Index properties: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                                // Ignore and use direct properties
                             }
                         }
                     }
 
                     if (properties != null)
                     {
-                        // Extract Find Index specific properties
-                        if (properties.TryGetValue("InField", out var inFieldObj))
-                            InField = inFieldObj?.ToString() ?? string.Empty;
+                        // Only use properties from the nested object if not already set from direct access
+                        if (string.IsNullOrEmpty(InField) && properties.TryGetValue("InField", out var inFieldProp))
+                            InField = inFieldProp?.ToString() ?? string.Empty;
 
-                        if (properties.TryGetValue("Index", out var indexObj))
-                            Index = indexObj?.ToString() ?? "First Occurrence";
+                        if (Index == "First Occurrence" && properties.TryGetValue("Index", out var indexProp))
+                            Index = indexProp?.ToString() ?? "First Occurrence";
 
-                        if (properties.TryGetValue("Characters", out var charactersObj))
-                            Characters = charactersObj?.ToString() ?? string.Empty;
+                        if (string.IsNullOrEmpty(Characters) && properties.TryGetValue("Characters", out var charactersProp))
+                            Characters = charactersProp?.ToString() ?? string.Empty;
 
-                        if (properties.TryGetValue("Direction", out var directionObj))
-                            Direction = directionObj?.ToString() ?? "Left to Right";
+                        if (Direction == "Left to Right" && properties.TryGetValue("Direction", out var directionProp))
+                            Direction = directionProp?.ToString() ?? "Left to Right";
 
-                        if (properties.TryGetValue("Result", out var resultObj))
-                            Result = resultObj?.ToString() ?? string.Empty;
-
-                        // Extract common activity properties
-                        if (properties.TryGetValue("Add", out var addObj) && bool.TryParse(addObj?.ToString(), out var add))
-                            Add = add;
-
-                        if (properties.TryGetValue("DatabindRecursive", out var databindObj) && bool.TryParse(databindObj?.ToString(), out var databind))
-                            DatabindRecursive = databind;
-
-                        if (properties.TryGetValue("IsUIStep", out var isUIStepObj) && bool.TryParse(isUIStepObj?.ToString(), out var isUIStep))
-                            IsUIStep = isUIStep;
-
-                        if (properties.TryGetValue("OnResumeClearAmbientDataList", out var onResumeObj) && bool.TryParse(onResumeObj?.ToString(), out var onResume))
-                            OnResumeClearAmbientDataList = onResume;
+                        if (string.IsNullOrEmpty(Result) && properties.TryGetValue("Result", out var resultProp))
+                            Result = resultProp?.ToString() ?? string.Empty;
                     }
                 }
             }
