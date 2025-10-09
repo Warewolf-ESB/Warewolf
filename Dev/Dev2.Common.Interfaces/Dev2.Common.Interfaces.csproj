@@ -465,9 +465,6 @@
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 	  <PackageReference Include="Microsoft.Exchange.WebServices.NETStandard" Version="1.1.3" />
 	  <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-	  <PackageReference Include="UiPath.Workflow">
-		  <Version>6.0.3</Version>
-	  </PackageReference>
 	  <PackageReference Include="Boxed.AspNetCore" Version="8.1.2" />
 	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
