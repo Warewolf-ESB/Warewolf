@@ -533,6 +533,9 @@
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="UiPath.Workflow">
+      <Version>6.0.3</Version>
+    </PackageReference>
     <PackageReference Include="System.Management.Automation">
       <Version>7.1.4</Version>
     </PackageReference>

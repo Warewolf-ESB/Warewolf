@@ -13,6 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
+#if !NETFRAMEWORK
+using ReflectionMagic;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Configuration;
