@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -31,6 +32,8 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -188,13 +191,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    if(!this.IsErrorHandled)
+                    if (!this.IsErrorHandled)
                     {
                         var errorString = allErrors.MakeDisplayReady();
                         dataObject.Environment.AddError(errorString);
                     }
                     dataObject.Environment.Assign(Result, null, update);
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
 
                 if (dataObject.IsDebugMode())
@@ -260,7 +263,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         else
                         {
                             replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
-                        }                        
+                        }
                         if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
                         {
                             dataObject.Environment.Assign(Result, replacementCountInner.ToString(CultureInfo.InvariantCulture), update == 0 ? counterInner : update);
@@ -475,6 +478,81 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ CaseMatch.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Replace activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFREPLACEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFREPLACEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_REPLACE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Add Replace-specific properties
+            cell.data["FieldsToSearch"] = FieldsToSearch ?? string.Empty;
+            cell.data["Find"] = Find ?? string.Empty;
+            cell.data["ReplaceWith"] = ReplaceWith ?? string.Empty;
+            cell.data["CaseMatch"] = CaseMatch;
+            cell.data["Result"] = Result ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Deserializes the Replace activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Replace data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            try
+            {
+                Dictionary<string, object> sourceData = null;
+
+                if (cell.data.TryGetValue("properties", out var propertiesObj) && propertiesObj != null)
+                {
+                    // Try to deserialize as JSON string
+                    var jsonString = propertiesObj.ToString();
+                    if (!string.IsNullOrEmpty(jsonString) && jsonString.StartsWith("{"))
+                    {
+                        sourceData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
+                    }
+                }
+
+                // If no properties object or it failed to parse, use cell.data directly
+                if (sourceData == null)
+                {
+                    sourceData = cell.data;
+                }
+
+                // Now extract the values from the source data
+                if (sourceData.TryGetValue("FieldsToSearch", out var fieldsToSearchObj))
+                    FieldsToSearch = fieldsToSearchObj?.ToString() ?? string.Empty;
+
+                if (sourceData.TryGetValue("Find", out var findObj))
+                    Find = findObj?.ToString() ?? string.Empty;
+
+                if (sourceData.TryGetValue("ReplaceWith", out var replaceWithObj))
+                    ReplaceWith = replaceWithObj?.ToString() ?? string.Empty;
+
+                if (sourceData.TryGetValue("CaseMatch", out var caseMatchObj) && bool.TryParse(caseMatchObj?.ToString(), out var caseMatch))
+                    CaseMatch = caseMatch;
+
+                if (sourceData.TryGetValue("Result", out var resultObj))
+                    Result = resultObj?.ToString() ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing Replace activity from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
         }
     }

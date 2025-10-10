@@ -548,6 +548,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateBaseConvertActivity(baseConvertActivity, nodeId);
             }
+            else if (activity is DsfReplaceActivity replaceActivity)
+            {
+                cell = CreateReplaceActivity(replaceActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

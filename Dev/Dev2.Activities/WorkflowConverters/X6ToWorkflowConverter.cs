@@ -549,6 +549,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFBASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateBaseConvertActivity(node);
 
+                case var t when t.Contains(Constants.DSFREPLACEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateReplaceActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
