@@ -559,7 +559,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			cell.shape = Constants.DSFCASECONVERTACTIVITY;
 
 			cell.data[Constants.TYPE] = Constants.DSFCASECONVERTACTIVITY;
-			cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_BASECONVERT;
+			cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_CASECONVERT;
 			cell.data[Constants.UNIQUEID] = UniqueID;
 
             cell.data.Add(Constants.CONVERTCOLLECTION, ConvertCollection);
