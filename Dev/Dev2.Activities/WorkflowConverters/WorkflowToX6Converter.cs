@@ -556,6 +556,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCaseConvertActivity(caseConvertActivity, nodeId);
             }
+            else if (activity is DsfIndexActivity findIndexActivity)
+            {
+                cell = CreateFindIndexActivity(findIndexActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
