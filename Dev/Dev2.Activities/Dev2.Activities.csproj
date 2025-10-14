@@ -329,10 +329,12 @@
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_BaseConvertActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_CaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_BaseConvertActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SelectAndApplyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SequenceActivityHelper.cs" />

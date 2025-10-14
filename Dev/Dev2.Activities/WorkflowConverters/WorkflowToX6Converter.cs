@@ -552,6 +552,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateReplaceActivity(replaceActivity, nodeId);
             }
+            else if (activity is DsfCaseConvertActivity caseConvertActivity)
+            {
+                cell = CreateCaseConvertActivity(caseConvertActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

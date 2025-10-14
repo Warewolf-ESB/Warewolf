@@ -63,6 +63,7 @@ namespace Dev2.Common.X6
         public const string DSFDATASPLITACTIVITY = "DsfDataSplitActivity";
         public const string DSFBASECONVERTACTIVITY = "DsfBaseConvertActivity";
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
+        public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
 
 
         public const string ISNESTED = "isNested";
@@ -78,6 +79,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
+        public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_REPLACE = "Replace";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
