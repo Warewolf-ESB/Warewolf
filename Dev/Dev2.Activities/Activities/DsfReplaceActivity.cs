@@ -497,11 +497,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data[Constants.UNIQUEID] = UniqueID;
 
             // Add Replace-specific properties
-            cell.data["FieldsToSearch"] = FieldsToSearch ?? string.Empty;
-            cell.data["Find"] = Find ?? string.Empty;
-            cell.data["ReplaceWith"] = ReplaceWith ?? string.Empty;
-            cell.data["CaseMatch"] = CaseMatch;
-            cell.data["Result"] = Result ?? string.Empty;
+            cell.data[Constants.REPLACE_FIELDS_TO_SEARCH] = FieldsToSearch ?? string.Empty;
+            cell.data[Constants.REPLACE_FIND] = Find ?? string.Empty;
+            cell.data[Constants.REPLACE_REPLACE_WTIH] = ReplaceWith ?? string.Empty;
+            cell.data[Constants.REPLACE_CASE_MATCH] = CaseMatch;
+            cell.data[Constants.REPLACE_RESULT] = Result ?? string.Empty;
         }
 
         /// <summary>
@@ -514,45 +514,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             base.FromX6Json(cell);
 
-            try
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
             {
-                Dictionary<string, object> sourceData = null;
-
-                if (cell.data.TryGetValue("properties", out var propertiesObj) && propertiesObj != null)
-                {
-                    // Try to deserialize as JSON string
-                    var jsonString = propertiesObj.ToString();
-                    if (!string.IsNullOrEmpty(jsonString) && jsonString.StartsWith("{"))
-                    {
-                        sourceData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
-                    }
-                }
-
-                // If no properties object or it failed to parse, use cell.data directly
-                if (sourceData == null)
-                {
-                    sourceData = cell.data;
-                }
-
-                // Now extract the values from the source data
-                if (sourceData.TryGetValue("FieldsToSearch", out var fieldsToSearchObj))
-                    FieldsToSearch = fieldsToSearchObj?.ToString() ?? string.Empty;
-
-                if (sourceData.TryGetValue("Find", out var findObj))
-                    Find = findObj?.ToString() ?? string.Empty;
-
-                if (sourceData.TryGetValue("ReplaceWith", out var replaceWithObj))
-                    ReplaceWith = replaceWithObj?.ToString() ?? string.Empty;
-
-                if (sourceData.TryGetValue("CaseMatch", out var caseMatchObj) && bool.TryParse(caseMatchObj?.ToString(), out var caseMatch))
-                    CaseMatch = caseMatch;
-
-                if (sourceData.TryGetValue("Result", out var resultObj))
-                    Result = resultObj?.ToString() ?? string.Empty;
+                DisplayName = displayName;
             }
-            catch (Exception ex)
+
+            if (cell.data.TryGetString(Constants.REPLACE_FIELDS_TO_SEARCH, out string fieldsToSearch))
             {
-                Dev2Logger.Error($"Error deserializing Replace activity from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                FieldsToSearch = fieldsToSearch;
+            }
+
+            if (cell.data.TryGetString(Constants.REPLACE_FIND, out string find))
+            {
+                Find = find;
+            }
+
+            if (cell.data.TryGetString(Constants.REPLACE_REPLACE_WTIH, out string replaceWith))
+            {
+                ReplaceWith = replaceWith;
+            }
+
+            if (cell.data.TryGetBool(Constants.REPLACE_CASE_MATCH, out bool caseMatch))
+            {
+                CaseMatch = caseMatch;
+            }
+
+            if (cell.data.TryGetString(Constants.REPLACE_RESULT, out string result))
+            {
+                Result = result;
             }
         }
     }

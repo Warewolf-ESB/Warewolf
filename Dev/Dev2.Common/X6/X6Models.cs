@@ -106,8 +106,12 @@ namespace Dev2.Common.X6
         public const string DATASPLIT_SOURCESTRING = "sourcestring";
         public const string DATASPLIT_REVERSEORDER = "reverseorder";
         public const string DATASPLIT_SKIPBLANKROWS = "skipblankrows";
-            
 
+        public const string REPLACE_FIELDS_TO_SEARCH = "FieldsToSearch";
+        public const string REPLACE_FIND = "Find";
+        public const string REPLACE_REPLACE_WTIH = "ReplaceWith";
+        public const string REPLACE_CASE_MATCH = "CaseMatch";
+        public const string REPLACE_RESULT = "Result";
     }
     public class X6WorkflowLoadModel
     {
