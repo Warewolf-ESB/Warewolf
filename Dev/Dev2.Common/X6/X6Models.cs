@@ -79,6 +79,8 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_FOREACH = "For Each";
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
+        public const string DISPLAYNAME_DATASPLIT = "Data Split";
+        
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
@@ -98,6 +100,13 @@ namespace Dev2.Common.X6
 
         public const string CONVERTCOLLECTION = "convertcollection";
         public const string UPDATEDCONVERTCOLLECTION = "updatedconvertcollection";
+        public const string RESULTSCOLLECTION = "resultscollection";
+
+
+        public const string DATASPLIT_SOURCESTRING = "sourcestring";
+        public const string DATASPLIT_REVERSEORDER = "reverseorder";
+        public const string DATASPLIT_SKIPBLANKROWS = "skipblankrows";
+            
 
     }
     public class X6WorkflowLoadModel
