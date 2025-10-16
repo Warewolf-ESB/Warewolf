@@ -552,6 +552,18 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateBaseConvertActivity(baseConvertActivity, nodeId);
             }
+            else if (activity is DsfReplaceActivity replaceActivity)
+            {
+                cell = CreateReplaceActivity(replaceActivity, nodeId);
+            }
+            else if (activity is DsfCaseConvertActivity caseConvertActivity)
+            {
+                cell = CreateCaseConvertActivity(caseConvertActivity, nodeId);
+            }
+            else if (activity is DsfIndexActivity findIndexActivity)
+            {
+                cell = CreateFindIndexActivity(findIndexActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

@@ -62,6 +62,9 @@ namespace Dev2.Common.X6
         public const string DSFDATAMERGEACTIVITY = "DsfDataMergeActivity";
         public const string DSFDATASPLITACTIVITY = "DsfDataSplitActivity";
         public const string DSFBASECONVERTACTIVITY = "DsfBaseConvertActivity";
+        public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
+        public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
+        public const string DSFINDEXACTIVITY = "DsfIndexActivity";
 
 
         public const string ISNESTED = "isNested";
@@ -79,6 +82,9 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
         
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
+        public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
+        public const string DISPLAYNAME_FINDINDEX = "Find Index";
+        public const string DISPLAYNAME_REPLACE = "Replace";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -100,8 +106,12 @@ namespace Dev2.Common.X6
         public const string DATASPLIT_SOURCESTRING = "sourcestring";
         public const string DATASPLIT_REVERSEORDER = "reverseorder";
         public const string DATASPLIT_SKIPBLANKROWS = "skipblankrows";
-            
 
+        public const string REPLACE_FIELDS_TO_SEARCH = "FieldsToSearch";
+        public const string REPLACE_FIND = "Find";
+        public const string REPLACE_REPLACE_WTIH = "ReplaceWith";
+        public const string REPLACE_CASE_MATCH = "CaseMatch";
+        public const string REPLACE_RESULT = "Result";
     }
     public class X6WorkflowLoadModel
     {

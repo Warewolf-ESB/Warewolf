@@ -886,8 +886,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // Read ReverseOrder
             if (cell.data.TryGetBool(Constants.DATASPLIT_REVERSEORDER, out bool reverseorder))
-            {
-                
+            {                
                 this.ReverseOrder = reverseorder;
             }
 
@@ -905,8 +904,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ResultsCollection = array.ToObject<List<DataSplitDTO>>();
             }
-
-
         }
     }
 }
