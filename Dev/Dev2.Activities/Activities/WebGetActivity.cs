@@ -28,6 +28,9 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Activities
 {
@@ -194,6 +197,98 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.WEBGETACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.WEBGETACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBGET;
+
+            cell.data.Add(Constants.WEBGET_HEADERS, Headers);
+            cell.data.Add(Constants.WEBGET_QUERYSTRING, QueryString);
+            cell.data.Add(Constants.WEBGET_ISRESPONSEBASE64, IsResponseBase64);
+            cell.data.Add(Constants.WEBGET_SOURCEID, SourceId);
+            cell.data.Add(Constants.WEBGET_INPUTS, Inputs);
+            cell.data.Add(Constants.WEBGET_OUTPUTS, Outputs);
+            cell.data.Add(Constants.WEBGET_ISOBJECT, IsObject);
+            cell.data.Add(Constants.WEBGET_OBJECTNAME, ObjectName);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Read QueryString
+            if (cell.data.TryGetString(Constants.WEBGET_QUERYSTRING, out string queryString))
+            {
+                this.QueryString = queryString;
+            }
+
+            // Read IsResponseBase64
+            if (cell.data.TryGetBool(Constants.WEBGET_ISRESPONSEBASE64, out bool isResponseBase64))
+            {
+                this.IsResponseBase64 = isResponseBase64;
+            }
+
+            // Read SourceId
+            if (cell.data.TryGetGuid(Constants.WEBGET_SOURCEID, out Guid sourceId))
+            {
+                this.SourceId = sourceId;
+            }
+
+            // Read IsObject
+            if (cell.data.TryGetBool(Constants.WEBGET_ISOBJECT, out bool isObject))
+            {
+                this.IsObject = isObject;
+            }
+
+            // Read ObjectName
+            if (cell.data.TryGetString(Constants.WEBGET_OBJECTNAME, out string objectName))
+            {
+                this.ObjectName = objectName;
+            }
+
+            // Read Headers (check for updated version first)
+            object headersObject = null;
+            cell.data.TryGetValue(Constants.WEBGET_UPDATEDHEADERS, out headersObject);
+            if (headersObject == null)
+            {
+                cell.data.TryGetValue(Constants.WEBGET_HEADERS, out headersObject);
+            }
+            var headersArray = headersObject as JArray;
+            if (headersArray != null)
+            {
+                Headers = headersArray.ToObject<List<NameValue>>();
+            }
+
+            // Read Inputs
+            object inputsObject = null;
+            cell.data.TryGetValue(Constants.WEBGET_INPUTS, out inputsObject);
+            var inputsArray = inputsObject as JArray;
+            if (inputsArray != null)
+            {
+                Inputs = inputsArray.ToObject<List<ServiceInput>>();
+            }
+
+            // Read Outputs
+            object outputsObject = null;
+            cell.data.TryGetValue(Constants.WEBGET_OUTPUTS, out outputsObject);
+            var outputsArray = outputsObject as JArray;
+            if (outputsArray != null)
+            {
+                Outputs = outputsArray.ToObject<List<ServiceOutputMapping>>();
             }
         }
     }
