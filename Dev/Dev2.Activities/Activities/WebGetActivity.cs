@@ -290,7 +290,13 @@ namespace Dev2.Activities
             var outputsArray = outputsObject as JArray;
             if (outputsArray != null)
             {
-                var outputsList = outputsArray.ToObject<List<ServiceOutputMapping>>();
+                // Use JsonSerializerSettings that support type metadata deserialization
+                var settings = new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto,
+                    TypeNameAssemblyFormatHandling = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple
+                };
+                var outputsList = outputsArray.ToObject<List<ServiceOutputMapping>>(Newtonsoft.Json.JsonSerializer.Create(settings));
                 Outputs = outputsList.Cast<Common.Interfaces.DB.IServiceOutputMapping>().ToList();
             }
         }
