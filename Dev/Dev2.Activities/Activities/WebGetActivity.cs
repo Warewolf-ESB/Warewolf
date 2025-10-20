@@ -270,7 +270,8 @@ namespace Dev2.Activities
             var headersArray = headersObject as JArray;
             if (headersArray != null)
             {
-                Headers = headersArray.ToObject<List<NameValue>>();
+                var headersList = headersArray.ToObject<List<NameValue>>();
+                Headers = headersList.Cast<INameValue>().ToList();
             }
 
             // Read Inputs
@@ -279,7 +280,8 @@ namespace Dev2.Activities
             var inputsArray = inputsObject as JArray;
             if (inputsArray != null)
             {
-                Inputs = inputsArray.ToObject<List<ServiceInput>>();
+                var inputsList = inputsArray.ToObject<List<ServiceInput>>();
+                Inputs = inputsList.Cast<Common.Interfaces.DB.IServiceInput>().ToList();
             }
 
             // Read Outputs
@@ -288,7 +290,8 @@ namespace Dev2.Activities
             var outputsArray = outputsObject as JArray;
             if (outputsArray != null)
             {
-                Outputs = outputsArray.ToObject<List<ServiceOutputMapping>>();
+                var outputsList = outputsArray.ToObject<List<ServiceOutputMapping>>();
+                Outputs = outputsList.Cast<Common.Interfaces.DB.IServiceOutputMapping>().ToList();
             }
         }
     }
