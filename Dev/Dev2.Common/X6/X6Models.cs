@@ -124,6 +124,8 @@ namespace Dev2.Common.X6
         public const string WEBGET_OUTPUTS = "outputs";
         public const string WEBGET_ISOBJECT = "isobject";
         public const string WEBGET_OBJECTNAME = "objectname";
+        public const string WEBGET_OBJECTRESULT = "objectresult";
+
     }
     public class X6WorkflowLoadModel
     {
