@@ -123,7 +123,7 @@ namespace Dev2.Common.X6
         public const string WEBGET_INPUTS = "inputs";
         public const string WEBGET_OUTPUTS = "outputs";
         public const string WEBGET_ISOBJECT = "isOutputToObject";
-        public const string WEBGET_OBJECTNAME = "objectName";
+        public const string WEBGET_OBJECTNAME = "objectname";
         public const string WEBGET_OBJECTRESULT = "objectresult";
 
     }
