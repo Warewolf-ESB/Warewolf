@@ -564,6 +564,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
 
+                case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebPostActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

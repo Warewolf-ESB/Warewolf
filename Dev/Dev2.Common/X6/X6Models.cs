@@ -85,6 +85,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
+        public const string DISPLAYNAME_WEBPOST = "Post Web Method";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -115,17 +116,27 @@ namespace Dev2.Common.X6
 
         public const string WEBGETACTIVITY = "WebGetActivity";
         public const string DISPLAYNAME_WEBGET = "GET Web Method";
-        public const string WEBGET_HEADERS = "headers";
-        public const string WEBGET_UPDATEDHEADERS = "updatedheaders";
-        public const string WEBGET_QUERYSTRING = "querystring";
-        public const string WEBGET_ISRESPONSEBASE64 = "isresponsebase64";
-        public const string WEBGET_SOURCEID = "sourceId";
-        public const string WEBGET_INPUTS = "inputs";
-        public const string WEBGET_OUTPUTS = "outputs";
-        public const string WEBGET_ISOBJECT = "isOutputToObject";
-        public const string WEBGET_OBJECTNAME = "objectname";
-        public const string WEBGET_OBJECTRESULT = "objectresult";
+        public const string WEBMETHOD_HEADERS = "headers";
+        public const string WEBMETHOD_UPDATEDHEADERS = "updatedheaders";
+        public const string WEBMETHOD_QUERYSTRING = "querystring";
+        public const string WEBMETHOD_ISRESPONSEBASE64 = "isresponsebase64";
+        public const string WEBMETHOD_SOURCEID = "sourceId";
+        
+        public const string WEBMETHOD_OUTPUTDESCRIPTION = "outputdescription";
+        public const string WEBMETHOD_INPUTS = "inputs";
+        public const string WEBMETHOD_OUTPUTS = "outputs";
+        public const string WEBMETHOD_ISOBJECT = "isOutputToObject";
+        public const string WEBMETHOD_OBJECTNAME = "objectname";
+        public const string WEBMETHOD_OBJECTRESULT = "objectresult";
 
+        public const string WEBPOSTACTIVITY = "WebPostActivity";
+        public const string WEBMETHOD_SETTINGS = "settings";
+        public const string WEBMETHOD_CONDITIONS = "conditions";
+        public const string WEBMETHOD_TIMEOUT = "timeout";
+        public const string WEBMETHOD_POSTDATA = "postdata";
+
+        
+        
     }
     public class X6WorkflowLoadModel
     {

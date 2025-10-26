@@ -8,24 +8,28 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.WorkflowConverters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Storage;
@@ -40,7 +44,7 @@ namespace Dev2.Activities
         private IDSFDataObject _dataObject;
 
         public IList<INameValue> Headers { get; set; }
-        
+
         public IList<INameValue> Settings { get; set; }
         private bool IsFormDataChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
         private bool IsManualChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
@@ -122,7 +126,7 @@ namespace Dev2.Activities
                     var conditionExpression = dds.Current;
 
                     text.Append("\n");
-                    if(conditionExpression != null)
+                    if (conditionExpression != null)
                         conditionExpression.RenderDescription(text);
                 }
 
@@ -144,7 +148,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(_dataObject,serviceName, allErrors);
+                    DisplayAndWriteError(_dataObject, serviceName, allErrors);
                 }
             }
         }
@@ -164,8 +168,8 @@ namespace Dev2.Activities
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
                 var timeout = Convert.ToInt32(Settings?.FirstOrDefault(s => s.Name == nameof(Timeout))?.Value);
-                
-                if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
+
+                if (isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
                     var webPostOptions = new WebPostOptions
                     {
@@ -182,7 +186,7 @@ namespace Dev2.Activities
                         IsUrlEncodedChecked = isUrlEncodedChecked,
                         Timeout = Timeout,
                     };
-                    
+
                     webRequestResult = PerformWebPostRequest(webPostOptions);
                 }
             }
@@ -225,7 +229,7 @@ namespace Dev2.Activities
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateFormDataContentType();
                 }
-                else if(IsUrlEncodedChecked)
+                else if (IsUrlEncodedChecked)
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateUrlEncodedContentType();
@@ -327,6 +331,159 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
-    }
 
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.WEBPOSTACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.WEBPOSTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBPOST;
+            cell.data.Add(Constants.UNIQUEID, UniqueID);
+
+
+            cell.data.Add(Constants.WEBMETHOD_HEADERS, Headers);
+            cell.data.Add(Constants.WEBMETHOD_QUERYSTRING, QueryString);
+            cell.data.Add(Constants.WEBMETHOD_SETTINGS, Settings);
+            cell.data.Add(Constants.WEBMETHOD_CONDITIONS, Conditions);
+            cell.data.Add(Constants.WEBMETHOD_TIMEOUT, Timeout);
+            cell.data.Add(Constants.WEBMETHOD_POSTDATA, PostData);
+
+            cell.data.Add(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTDESCRIPTION, OutputDescription);
+
+            cell.data.Add(Constants.WEBMETHOD_INPUTS, Inputs);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTS, Outputs);
+            cell.data.Add(Constants.WEBMETHOD_ISOBJECT, IsObject);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTRESULT, ObjectResult);
+
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.UNIQUEID, out string uniqueid))
+                this.UniqueID = uniqueid;
+
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out string objectresult))
+                this.ObjectResult = objectresult;
+
+            // Read QueryString
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out string queryString))
+            {
+                this.QueryString = queryString;
+            }
+
+            // Read Settings
+            object settingsObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_SETTINGS, out settingsObject);
+            if (settingsObject is JArray settingsArray)
+            {
+                var settingsList = settingsArray.ToObject<List<NameValue>>();
+                Settings = settingsList.Cast<INameValue>().ToList();
+            }
+
+            // Read Conditions
+            object conditionsObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_CONDITIONS, out conditionsObject);
+            if (conditionsObject is JArray conditionsArray)
+            {
+                var conditionsList = conditionsArray.ToObject<List<FormDataConditionExpression>>();
+                Conditions = conditionsList;
+            }
+
+            // Read Timeout
+            if (cell.data.TryGetInt(Constants.WEBMETHOD_TIMEOUT, out int timeout))
+            {
+                Timeout = timeout;
+            }
+
+            // Read PostData
+            if (cell.data.TryGetString(Constants.WEBMETHOD_POSTDATA, out string postData))
+            {
+                PostData = postData;
+            }
+
+            // Read SourceId
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out Guid sourceId))
+            {
+                this.SourceId = sourceId;
+            }
+
+            // Read IsObject
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out bool isObject))
+            {
+                this.IsObject = isObject;
+            }
+
+            // Read ObjectName
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out string objectName))
+            {
+                this.ObjectName = objectName;
+            }
+
+            // Read Headers (check for updated version first)
+            object headersObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_UPDATEDHEADERS, out headersObject);
+            if (headersObject == null)
+            {
+                cell.data.TryGetValue(Constants.WEBMETHOD_HEADERS, out headersObject);
+            }
+            var headersArray = headersObject as JArray;
+            if (headersArray != null)
+            {
+                var headersList = headersArray.ToObject<List<NameValue>>();
+                Headers = headersList.Cast<INameValue>().ToList();
+            }
+
+            // Read Inputs
+            object inputsObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_INPUTS, out inputsObject);
+            var inputsArray = inputsObject as JArray;
+            if (inputsArray != null)
+            {
+                var inputsList = inputsArray.ToObject<List<ServiceInput>>();
+                Inputs = inputsList.Cast<Common.Interfaces.DB.IServiceInput>().ToList();
+            }
+
+            // Read Outputs
+            object outputsObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_OUTPUTS, out outputsObject);
+            var outputsArray = outputsObject as JArray;
+            if (outputsArray != null)
+            {
+                // Use JsonSerializerSettings that support type metadata deserialization
+                var settings = new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto,
+                    TypeNameAssemblyFormatHandling = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple
+                };
+                var outputsList = outputsArray.ToObject<List<ServiceOutputMapping>>(Newtonsoft.Json.JsonSerializer.Create(settings));
+                Outputs = outputsList.Cast<Common.Interfaces.DB.IServiceOutputMapping>().ToList();
+            }
+
+            // Read OutputDescription
+            object outputDescriptionObject = null;
+            cell.data.TryGetValue(Constants.WEBMETHOD_OUTPUTDESCRIPTION, out outputDescriptionObject);
+            if (outputDescriptionObject is JObject outputDescriptionJObject)
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                };
+                OutputDescription = outputDescriptionJObject.ToObject<OutputDescription>(JsonSerializer.Create(settings));
+            }
+        }
+    }
 }

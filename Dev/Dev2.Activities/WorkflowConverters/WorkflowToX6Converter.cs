@@ -568,6 +568,11 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
             }
+            else if (activity is WebPostActivityNew webPostActivityNew)
+            {
+                cell = CreateWebPostActivity(webPostActivityNew, nodeId);
+            }
+
             else
             {
                 cell.shape = Constants.RECT;

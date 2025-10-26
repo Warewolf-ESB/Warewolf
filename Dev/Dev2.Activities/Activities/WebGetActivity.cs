@@ -211,14 +211,14 @@ namespace Dev2.Activities
             cell.data[Constants.TYPE] = Constants.WEBGETACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBGET;
 
-            cell.data.Add(Constants.WEBGET_HEADERS, Headers);
-            cell.data.Add(Constants.WEBGET_QUERYSTRING, QueryString);
-            cell.data.Add(Constants.WEBGET_ISRESPONSEBASE64, IsResponseBase64);
-            cell.data.Add(Constants.WEBGET_SOURCEID, SourceId);
-            cell.data.Add(Constants.WEBGET_INPUTS, Inputs);
-            cell.data.Add(Constants.WEBGET_OUTPUTS, Outputs);
-            cell.data.Add(Constants.WEBGET_ISOBJECT, IsObject);
-            cell.data.Add(Constants.WEBGET_OBJECTNAME, ObjectName);
+            cell.data.Add(Constants.WEBMETHOD_HEADERS, Headers);
+            cell.data.Add(Constants.WEBMETHOD_QUERYSTRING, QueryString);
+            cell.data.Add(Constants.WEBMETHOD_ISRESPONSEBASE64, IsResponseBase64);
+            cell.data.Add(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.Add(Constants.WEBMETHOD_INPUTS, Inputs);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTS, Outputs);
+            cell.data.Add(Constants.WEBMETHOD_ISOBJECT, IsObject);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
         }
 
         public override void FromX6Json(Cell cell)
@@ -231,41 +231,41 @@ namespace Dev2.Activities
                 this.DisplayName = displayName;
 
             // Read QueryString
-            if (cell.data.TryGetString(Constants.WEBGET_QUERYSTRING, out string queryString))
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out string queryString))
             {
                 this.QueryString = queryString;
             }
 
             // Read IsResponseBase64
-            if (cell.data.TryGetBool(Constants.WEBGET_ISRESPONSEBASE64, out bool isResponseBase64))
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISRESPONSEBASE64, out bool isResponseBase64))
             {
                 this.IsResponseBase64 = isResponseBase64;
             }
 
             // Read SourceId
-            if (cell.data.TryGetGuid(Constants.WEBGET_SOURCEID, out Guid sourceId))
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out Guid sourceId))
             {
                 this.SourceId = sourceId;
             }
 
             // Read IsObject
-            if (cell.data.TryGetBool(Constants.WEBGET_ISOBJECT, out bool isObject))
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out bool isObject))
             {
                 this.IsObject = isObject;
             }
 
             // Read ObjectName
-            if (cell.data.TryGetString(Constants.WEBGET_OBJECTNAME, out string objectName))
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out string objectName))
             {
                 this.ObjectName = objectName;
             }
 
             // Read Headers (check for updated version first)
             object headersObject = null;
-            cell.data.TryGetValue(Constants.WEBGET_UPDATEDHEADERS, out headersObject);
+            cell.data.TryGetValue(Constants.WEBMETHOD_UPDATEDHEADERS, out headersObject);
             if (headersObject == null)
             {
-                cell.data.TryGetValue(Constants.WEBGET_HEADERS, out headersObject);
+                cell.data.TryGetValue(Constants.WEBMETHOD_HEADERS, out headersObject);
             }
             var headersArray = headersObject as JArray;
             if (headersArray != null)
@@ -276,7 +276,7 @@ namespace Dev2.Activities
 
             // Read Inputs
             object inputsObject = null;
-            cell.data.TryGetValue(Constants.WEBGET_INPUTS, out inputsObject);
+            cell.data.TryGetValue(Constants.WEBMETHOD_INPUTS, out inputsObject);
             var inputsArray = inputsObject as JArray;
             if (inputsArray != null)
             {
@@ -286,7 +286,7 @@ namespace Dev2.Activities
 
             // Read Outputs
             object outputsObject = null;
-            cell.data.TryGetValue(Constants.WEBGET_OUTPUTS, out outputsObject);
+            cell.data.TryGetValue(Constants.WEBMETHOD_OUTPUTS, out outputsObject);
             var outputsArray = outputsObject as JArray;
             if (outputsArray != null)
             {
