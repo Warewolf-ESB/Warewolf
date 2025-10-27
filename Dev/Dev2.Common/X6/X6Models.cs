@@ -129,7 +129,7 @@ namespace Dev2.Common.X6
         public const string WEBMETHOD_OBJECTNAME = "objectname";
         public const string WEBMETHOD_OBJECTRESULT = "objectresult";
 
-        public const string WEBPOSTACTIVITY = "WebPostActivity";
+        public const string WEBPOSTACTIVITY = "WebPostActivityNew";
         public const string WEBMETHOD_SETTINGS = "settings";
         public const string WEBMETHOD_CONDITIONS = "conditions";
         public const string WEBMETHOD_TIMEOUT = "timeout";
