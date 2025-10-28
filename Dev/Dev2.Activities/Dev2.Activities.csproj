@@ -327,6 +327,7 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_GETWebMethodHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_BaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataSplitActivityHelper.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindIndexActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GETWebMethodHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_BaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DataSplitActivityHelper.cs" />
@@ -383,6 +385,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GETWebMethodScreenshot.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

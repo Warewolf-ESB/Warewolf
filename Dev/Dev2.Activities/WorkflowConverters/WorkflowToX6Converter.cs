@@ -564,6 +564,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFindIndexActivity(findIndexActivity, nodeId);
             }
+            else if (activity is WebGetActivity webGetActivity)
+            {
+                cell = CreateWebGetActivity(webGetActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
