@@ -1,7 +1,17 @@
-﻿using Dev2.Common.X6;
+﻿using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Common.X6;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using Unlimited.Framework.Converters.Graph.Ouput;
+using Unlimited.Framework.Converters.Graph.String.Json;
+using Warewolf.Core;
+using Warewolf.Data.Options;
 
 namespace Dev2.WorkflowConverters
 {
@@ -99,28 +109,169 @@ namespace Dev2.WorkflowConverters
             }
         }
 
+        private static readonly JsonSerializerSettings OutputDescSerializerSettings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+        };
+
+        public static bool TryGetOutputs(IDictionary<string, object> data, out IList<IServiceOutputMapping> outputs)
+        {
+            outputs = null;
+            if (!data.TryGetValue(Constants.WEBMETHOD_OUTPUTS, out var raw) || raw is not JArray arr) return false;
+
+            outputs = arr
+                .Children<JObject>()
+                .Select(child =>
+                {
+                    var mapping = new ServiceOutputMapping(
+                        child.Value<string>(nameof(ServiceOutputMapping.MappedFrom)) ?? string.Empty,
+                        child.Value<string>(nameof(ServiceOutputMapping.MappedTo)) ?? string.Empty,
+                        child.Value<string>(nameof(ServiceOutputMapping.RecordSetName)) ?? string.Empty);
+
+                    if (child[nameof(ObservableObject.Path)] is JObject pathObj)
+                    {
+                        mapping.Path = new JsonPath(
+                            pathObj.Value<string>(nameof(JsonPath.ActualPath)) ?? string.Empty,
+                            pathObj.Value<string>(nameof(JsonPath.DisplayPath)) ?? string.Empty,
+                            pathObj.Value<string>(nameof(JsonPath.OutputExpression)) ?? string.Empty,
+                            pathObj.Value<string>(nameof(JsonPath.SampleData)) ?? string.Empty);
+                    }
+
+                    return (IServiceOutputMapping)mapping;
+                })
+                .ToList();
+
+            return true;
+        }
+
+        public static bool TryGetOutputDescription(IDictionary<string, object> data, out IOutputDescription outputDescription)
+        {
+            outputDescription = null;
+            if (!data.TryGetValue(Constants.WEBMETHOD_OUTPUTDESCRIPTION, out var raw) || raw is not JObject obj) return false;
+
+            var serializer = JsonSerializer.Create(OutputDescSerializerSettings);
+            var od = new OutputDescription();
+
+            var formatToken = obj[nameof(OutputDescription.Format)];
+            if (formatToken != null && formatToken.Type != JTokenType.Null)
+            {
+                od.Format = formatToken.ToObject<OutputFormats>(serializer);
+            }
+
+            var dssToken = obj[nameof(OutputDescription.DataSourceShapes)];
+            if (dssToken is JArray dssArray)
+            {
+                od.DataSourceShapes = dssArray
+                    .Children<JObject>()
+                    .Select(shapeToken =>
+                    {
+                        var shape = new DataSourceShape();
+                        var pathsToken = shapeToken[nameof(DataSourceShape.Paths)];
+                        if (pathsToken is JArray pathsArray)
+                        {
+                            shape.Paths = pathsArray
+                                .Children<JObject>()
+                                .Select(p =>
+                                    (IPath)new JsonPath(
+                                        p.Value<string>(nameof(JsonPath.ActualPath)) ?? string.Empty,
+                                        p.Value<string>(nameof(JsonPath.DisplayPath)) ?? string.Empty,
+                                        p.Value<string>(nameof(JsonPath.OutputExpression)) ?? string.Empty,
+                                        p.Value<string>(nameof(JsonPath.SampleData)) ?? string.Empty))
+                                .ToList();
+                        }
+                        return (IDataSourceShape)shape;
+                    })
+                    .ToList();
+            }
+
+            outputDescription = od;
+            return true;
+        }
+
+        public static bool TryGetJArray(IDictionary<string, object> data, out JArray array, params string[] keys)
+        {
+            array = null;
+            if (data == null || keys == null || keys.Length == 0) return false;
+
+            foreach (var key in keys)
+            {
+                if (!data.TryGetValue(key, out var raw) || raw is not JArray ja) continue;
+                array = ja;
+                return true;
+            }
+            return false;
+        }
+
+        public static bool TryGetList<TConcrete, TInterface>(IDictionary<string, object> data, out IList<TInterface> list, params string[] keys)
+            where TConcrete : class, TInterface
+            where TInterface : class
+        {
+            list = null;
+            if (!TryGetJArray(data, out var arr, keys)) return false;
+
+            try
+            {
+                var concrete = arr.ToObject<List<TConcrete>>();
+                list = concrete?.Cast<TInterface>().ToList();
+                return list != null;
+            }
+            catch (Exception)
+            {
+                list = null;
+                return false;
+            }
+        }
+
+        public static bool TryGetHeaders(IDictionary<string, object> data, out IList<INameValue> headers) =>
+            TryGetList<NameValue, INameValue>(data, out headers, Constants.WEBMETHOD_UPDATEDHEADERS, Constants.WEBMETHOD_HEADERS);
+
+        public static bool TryGetInputs(IDictionary<string, object> data, out IList<Common.Interfaces.DB.IServiceInput> inputs) =>
+            TryGetList<ServiceInput, Common.Interfaces.DB.IServiceInput>(data, out inputs, Constants.WEBMETHOD_INPUTS);
+
+        public static bool TryGetSettings(IDictionary<string, object> data, out IList<INameValue> settings) =>
+            TryGetList<NameValue, INameValue>(data, out settings, Constants.WEBMETHOD_SETTINGS);
+
+        public static bool TryGetConditions(IDictionary<string, object> data, out IList<FormDataConditionExpression> conditions)
+        {
+            conditions = null;
+            if (!TryGetList<FormDataConditionExpression, FormDataConditionExpression>(data, out var list, Constants.WEBMETHOD_CONDITIONS))
+                return false;
+            conditions = list;
+            return true;
+        }
     }
 
     public static class CommonHelperExtensions
     {
-        public static bool TryGetBool(this Dictionary<string, object> data, string key, out bool value)
-        {
-            return CommonHelper.TryGetBool(data, key, out value);
-        }
+        public static bool TryGetBool(this Dictionary<string, object> data, string key, out bool value) =>
+            CommonHelper.TryGetBool(data, key, out value);
 
-        public static bool TryGetString(this Dictionary<string, object> data, string key, out string value)
-        {
-            return CommonHelper.TryGetString(data, key, out value); 
-        }
+        public static bool TryGetString(this Dictionary<string, object> data, string key, out string value) =>
+            CommonHelper.TryGetString(data, key, out value);
 
-        public static bool TryGetInt(this Dictionary<string, object> data, string key, out int value)
-        {
-            return CommonHelper.TryGetInt(data, key, out value);
-        }
+        public static bool TryGetInt(this Dictionary<string, object> data, string key, out int value) =>
+            CommonHelper.TryGetInt(data, key, out value);
 
-        public static bool TryGetGuid(this Dictionary<string, object> data, string key, out Guid value)
-        {
-            return CommonHelper.TryGetGuid(data, key, out value);
-        }
+        public static bool TryGetGuid(this Dictionary<string, object> data, string key, out Guid value) =>
+            CommonHelper.TryGetGuid(data, key, out value);
+
+        public static bool TryGetOutputs(this IDictionary<string, object> data, out IList<IServiceOutputMapping> outputs) =>
+            CommonHelper.TryGetOutputs(data, out outputs);
+
+        public static bool TryGetOutputDescription(this IDictionary<string, object> data, out IOutputDescription outputDescription) =>
+            CommonHelper.TryGetOutputDescription(data, out outputDescription);
+
+        public static bool TryGetHeaders(this IDictionary<string, object> data, out IList<INameValue> headers) =>
+            CommonHelper.TryGetHeaders(data, out headers);
+
+        public static bool TryGetInputs(this IDictionary<string, object> data, out IList<Dev2.Common.Interfaces.DB.IServiceInput> inputs) =>
+            CommonHelper.TryGetInputs(data, out inputs);
+
+        public static bool TryGetSettings(this IDictionary<string, object> data, out IList<INameValue> settings) =>
+            CommonHelper.TryGetSettings(data, out settings);
+
+        public static bool TryGetConditions(this IDictionary<string, object> data, out IList<FormDataConditionExpression> conditions) =>
+            CommonHelper.TryGetConditions(data, out conditions);
     }
 }
