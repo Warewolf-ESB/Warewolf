@@ -112,6 +112,20 @@ namespace Dev2.Common.X6
         public const string REPLACE_REPLACE_WTIH = "ReplaceWith";
         public const string REPLACE_CASE_MATCH = "CaseMatch";
         public const string REPLACE_RESULT = "Result";
+
+        public const string WEBGETACTIVITY = "WebGetActivity";
+        public const string DISPLAYNAME_WEBGET = "GET Web Method";
+        public const string WEBGET_HEADERS = "headers";
+        public const string WEBGET_UPDATEDHEADERS = "updatedheaders";
+        public const string WEBGET_QUERYSTRING = "querystring";
+        public const string WEBGET_ISRESPONSEBASE64 = "isresponsebase64";
+        public const string WEBGET_SOURCEID = "sourceId";
+        public const string WEBGET_INPUTS = "inputs";
+        public const string WEBGET_OUTPUTS = "outputs";
+        public const string WEBGET_ISOBJECT = "isOutputToObject";
+        public const string WEBGET_OBJECTNAME = "objectname";
+        public const string WEBGET_OBJECTRESULT = "objectresult";
+
     }
     public class X6WorkflowLoadModel
     {

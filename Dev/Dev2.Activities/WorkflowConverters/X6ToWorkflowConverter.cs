@@ -561,6 +561,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
 
+                case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebGetActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

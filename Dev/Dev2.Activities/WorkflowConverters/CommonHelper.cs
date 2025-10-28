@@ -79,6 +79,26 @@ namespace Dev2.WorkflowConverters
             }
         }
 
+        public static bool TryGetGuid(Dictionary<string, object> data, string key, out Guid value)
+        {
+            value = default;
+
+            if (data == null || !data.TryGetValue(key, out var raw) || raw == null)
+                return false;
+
+            switch (raw)
+            {
+                case Guid g:
+                    value = g;
+                    return true;
+                case string s when Guid.TryParse(s, out var parsed):
+                    value = parsed;
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
     }
 
     public static class CommonHelperExtensions
@@ -96,6 +116,11 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetInt(this Dictionary<string, object> data, string key, out int value)
         {
             return CommonHelper.TryGetInt(data, key, out value);
+        }
+
+        public static bool TryGetGuid(this Dictionary<string, object> data, string key, out Guid value)
+        {
+            return CommonHelper.TryGetGuid(data, key, out value);
         }
     }
 }
