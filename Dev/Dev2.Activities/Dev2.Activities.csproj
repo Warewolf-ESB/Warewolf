@@ -336,6 +336,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindIndexActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GETWebMethodHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ReplaceActivityHelper.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPutActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

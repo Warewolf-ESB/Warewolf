@@ -74,7 +74,6 @@ namespace Dev2.Common.X6
         public const string ISNESTED_INFOREACH = "isNestedInForEach";
         public const string PARENTID_FOREACH = "forEachParentId";
 
-
         public const string DISPLAYNAME_SEQUENCE = "Sequence";
         public const string DISPLAYNAME_FOREACH = "For Each";
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
@@ -134,7 +133,9 @@ namespace Dev2.Common.X6
         public const string WEBMETHOD_CONDITIONS = "conditions";
         public const string WEBMETHOD_TIMEOUT = "timeout";
         public const string WEBMETHOD_POSTDATA = "postdata";
-
+        public const string WEBPUTACTIVITY = "WebPutActivity";
+        public const string DISPLAYNAME_WEBPUT = "PUT Web Method";
+        public const string WEBMETHOD_ISPUTDATABASE64 = "isputdatabase64";
         
         
     }

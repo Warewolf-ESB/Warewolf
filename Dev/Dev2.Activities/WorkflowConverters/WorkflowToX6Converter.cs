@@ -572,7 +572,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebPostActivity(webPostActivityNew, nodeId);
             }
-
+            else if (activity is WebPutActivity webPutActivity)
+            {
+                cell = CreateWebPutActivity(webPutActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
@@ -592,7 +595,6 @@ namespace Dev2.Activities.WF
 
             return cell;
         }
-
         
 
         /// <summary>
