@@ -55,6 +55,8 @@ namespace Warewolf.Studio.Core
                         return _dict["PostgreSource"] as DrawingImage;
                     case "ElasticsearchSource":
                         return _dict["ElasticsearchSource"] as DrawingImage;
+                    case "ChatCompletionsSource":
+                        return _dict[CustomMenuIcons.ChatCompletionsSource] as DrawingImage;
                     case "ODBC":
                         return _dict["OdbcSource"] as DrawingImage;
                     case "RedisSource":

@@ -952,7 +952,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Make the queue auto-delete to delete queue after Consumer are done with it.</value>
   </data>
   <data name="RabbitMQToolTipAcknowledge" xml:space="preserve">
-    <value>Aknowledge message after consume?</value>
+    <value>Acknowledge message after consume?</value>
   </data>
   <data name="QuickVariableVariableListToolTip" xml:space="preserve">
     <value>The rough data with the variables in it</value>
@@ -1017,47 +1017,11 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
     <value>Create a new rabbitmq source</value>
   </data>
-  <data name="QueueSourceTooltip" xml:space="preserve">
-    <value>Select the source message queue</value>
+  <data name="NewElasticsearchSourceTooltip" xml:space="preserve">
+    <value>Create a new elasticsearch source</value>
   </data>
-  <data name="QueueConcurrencyTooltip" xml:space="preserve">
-    <value>Set the concurrency of the queue</value>
-  </data>
-  <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
-    <value>Select the source message dead-letter queue</value>
-  </data>
-  <data name="NewPluginSourceTooltip" xml:space="preserve">
-    <value>Create a new plugin source</value>
-  </data>
-  <data name="NewFolderTooltip" xml:space="preserve">
-    <value>Create a new folder</value>
-  </data>
-  <data name="NewExchangeSourceTooltip" xml:space="preserve">
-    <value>Create a new exchange source</value>
-  </data>
-  <data name="NewEmailSourceTooltip" xml:space="preserve">
-    <value>Create a new email source</value>
-  </data>
-  <data name="NewDropboxSourceTooltip" xml:space="preserve">
-    <value>Create a new dropbox source</value>
-  </data>
-  <data name="NewSqlServerSourceTooltip" xml:space="preserve">
-    <value>Create a new Microsoft SQL Server source</value>
-  </data>
-  <data name="NewMySqlSourceTooltip" xml:space="preserve">
-    <value>Create a new MySQL database source</value>
-  </data>
-  <data name="NewPostgreSqlSourceTooltip" xml:space="preserve">
-    <value>Create a new PostgreSQL database source</value>
-  </data>
-  <data name="NewOracleSourceTooltip" xml:space="preserve">
-    <value>Create a new Oracle database source</value>
-  </data>
-  <data name="NewOdbcSourceTooltip" xml:space="preserve">
-    <value>Create a new ODBC database source</value>
-  </data>
-  <data name="NewComPluginSourceTooltip" xml:space="preserve">
-    <value>Create a new com plugin source</value>
+  <data name="NewChatCompletionsSourceTooltip" xml:space="preserve">
+    <value>Create a new chat completions source</value>
   </data>
   <data name="NativeActivityToolTipPuterrorinthisvariable" xml:space="preserve">
     <value>If an error occurs the error message will be placed into this variable as well the result variable.
@@ -2675,5 +2639,47 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="ElasticsearchCertificateFingerprintTooltip" xml:space="preserve">
     <value>The fingerprint for the certificate.</value>
+  </data>
+  <data name="NewDropboxSourceTooltip" xml:space="preserve">
+    <value>Create a new Dropbox Source</value>
+  </data>
+  <data name="NewEmailSourceTooltip" xml:space="preserve">
+    <value>Create a new email source</value>
+  </data>
+  <data name="NewExchangeSourceTooltip" xml:space="preserve">
+    <value>Create a new exchange source</value>
+  </data>
+  <data name="NewPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new plugin source</value>
+  </data>
+  <data name="NewComPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new com plugin source</value>
+  </data>
+  <data name="NewSqlServerSourceTooltip" xml:space="preserve">
+    <value>Create a new Microsoft SQL Server source</value>
+  </data>
+  <data name="NewMySqlSourceTooltip" xml:space="preserve">
+    <value>Create a new MySQL database source</value>
+  </data>
+  <data name="NewPostgreSqlSourceTooltip" xml:space="preserve">
+    <value>Create a new PostgreSQL database source</value>
+  </data>
+  <data name="NewOracleSourceTooltip" xml:space="preserve">
+    <value>Create a new Oracle database source</value>
+  </data>
+  <data name="NewOdbcSourceTooltip" xml:space="preserve">
+    <value>Create a new ODBC database source</value>
+  </data>
+  <data name="NewFolderTooltip" xml:space="preserve">
+    <value>Create a new folder</value>
+  </data>
+  <data name="QueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
+  </data>
+  <data name="QueueConcurrencyTooltip" xml:space="preserve">
+    <value>Set the concurrency of the queue</value>
+  </data>
+  <data name="DeadLetterQueueSourceTooltip" xml:space="preserve">
+    <value>Select the source message dead-letter queue</value>
   </data>
 </root>

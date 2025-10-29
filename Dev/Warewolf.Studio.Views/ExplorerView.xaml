@@ -447,6 +447,17 @@
                                                 <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
+                                        <MenuItem Name="NewChatCompletionsSourceItem"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  Command="{Binding NewChatCompletionsSourceCommand}"
+                                                  CommandParameter="ChatCompletionsSource"
+                                                  Header="New Chat Completions Source"
+                                                  IsEnabled="{Binding CanCreateSource}"
+                                                  ToolTip="{Binding ExplorerTooltips.NewChatCompletionsSourceTooltip}">
+                                            <MenuItem.Icon>
+                                                <Image Style="{StaticResource NewChatCompletionsSourceIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
                                     </MenuItem>
 
                                     <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
@@ -1113,6 +1124,17 @@
                                                           ToolTip="{Binding ExplorerTooltips.NewElasticsearchSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="NewChatCompletionsSourceItem"
+									                      Style="{StaticResource MenuItemStyle}"
+									                      Command="{Binding NewChatCompletionsSourceCommand}"
+									                      CommandParameter="ChatCompletionsSource"
+									                      Header="New Chat Completions Source"
+									                      IsEnabled="{Binding CanCreateSource}"
+									                      ToolTip="{Binding ExplorerTooltips.NewChatCompletionsSourceTooltip}">
+                                                    <MenuItem.Icon>
+                                                        <Image Style="{StaticResource NewChatCompletionsSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                             </MenuItem>

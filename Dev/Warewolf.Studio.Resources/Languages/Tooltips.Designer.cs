@@ -3351,6 +3351,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new chat completions source.
+        /// </summary>
+        public static string NewChatCompletionsSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewChatCompletionsSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new com plugin source.
         /// </summary>
         public static string NewComPluginSourceTooltip {
@@ -3360,11 +3369,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new dropbox source.
+        ///   Looks up a localized string similar to Create a new Dropbox Source.
         /// </summary>
         public static string NewDropboxSourceTooltip {
             get {
                 return ResourceManager.GetString("NewDropboxSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new elasticsearch source.
+        /// </summary>
+        public static string NewElasticsearchSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewElasticsearchSourceTooltip", resourceCulture);
             }
         }
         
@@ -3900,7 +3918,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the source message queue.
+        ///   Looks up a localized string similar to Select the source message dead-letter queue.
         /// </summary>
         public static string QueueSourceTooltip {
             get {
@@ -3981,7 +3999,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aknowledge message after consume?.
+        ///   Looks up a localized string similar to Acknowledge message after consume?.
         /// </summary>
         public static string RabbitMQToolTipAcknowledge {
             get {
