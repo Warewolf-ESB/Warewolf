@@ -516,7 +516,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveRabbitMQServiceSource");
-            var serialiser = new Dev2Json Serializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
