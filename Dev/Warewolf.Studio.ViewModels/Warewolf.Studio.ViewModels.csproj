@@ -81,6 +81,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatCompletionsSourceViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DatabaseSourceViewModelBase.cs" />
     <Compile Include="DeploySourceExplorerViewModel.cs" />

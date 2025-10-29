@@ -130,6 +130,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatCompletionsSource.xaml.cs" />
     <Compile Include="ChooseDLLView.xaml.cs">
       <DependentUpon>ChooseDLLView.xaml</DependentUpon>
     </Compile>
@@ -228,6 +229,9 @@
     <None Include="Warewolf.Studio.Views.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ChatCompletionsSource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ChooseDLLView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
