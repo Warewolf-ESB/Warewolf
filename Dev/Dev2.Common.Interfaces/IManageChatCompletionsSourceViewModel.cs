@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Windows.Input;
 
@@ -6,7 +16,7 @@ namespace Dev2.Common.Interfaces
     public interface IManageChatCompletionsSourceViewModel
     {
         /// <summary>
-        /// The API Key for the completions service
+        /// The API Key for authentication
         /// </summary>
         string ApiKey { get; set; }
 
@@ -20,6 +30,9 @@ namespace Dev2.Common.Interfaces
         /// </summary>
         ICommand TestCommand { get; set; }
 
+        /// <summary>
+        /// Cancel the test connection
+        /// </summary>
         ICommand CancelTestCommand { get; set; }
 
         /// <summary>
@@ -30,7 +43,7 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// Command for save/ok
         /// </summary>
-        ICommand OkCommand { get; set; }
+        ICommand SaveCommand { get; set; }
 
         /// <summary>
         /// Header text that is used on the view
@@ -43,12 +56,12 @@ namespace Dev2.Common.Interfaces
         bool TestPassed { get; set; }
 
         /// <summary>
-        /// has test failed
+        /// Has test failed
         /// </summary>
         bool TestFailed { get; set; }
 
         /// <summary>
-        /// IsTesting
+        /// Is testing in progress
         /// </summary>
         bool Testing { get; }
 
@@ -58,14 +71,12 @@ namespace Dev2.Common.Interfaces
         string ResourceName { get; set; }
     }
 
-    public interface IManageChatCompletionsSourceModel
+    public interface IChatCompletionsSourceModel
     {
         void TestConnection(IChatCompletionsSource resource);
 
-        void Save(IChatCompletionsSource toSource);
+        void Save(IChatCompletionsSource source);
 
-        string ServerName { get; set; }
-
-        IChatCompletionsSource FetchSource(Guid id);
+        IChatCompletionsSource FetchSource(Guid resourceID);
     }
 }
