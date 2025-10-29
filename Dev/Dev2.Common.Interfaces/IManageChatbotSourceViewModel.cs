@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IManageChatCompletionsSourceViewModel
+    public interface IManageChatbotSourceViewModel
     {
         /// <summary>
         /// The API Key for authentication
@@ -71,12 +71,14 @@ namespace Dev2.Common.Interfaces
         string ResourceName { get; set; }
     }
 
-    public interface IChatCompletionsSourceModel
+    public interface IManageChatbotSourceModel
     {
-        void TestConnection(IChatCompletionsSource resource);
+        void TestConnection(IChatbotSource resource);
 
-        void Save(IChatCompletionsSource source);
+        void Save(IChatbotSource toSource);
 
-        IChatCompletionsSource FetchSource(Guid resourceID);
+        string ServerName { get; set; }
+
+        IChatbotSource FetchSource(Guid id);
     }
 }

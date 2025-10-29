@@ -18,21 +18,21 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class ChatCompletionsSource : Resource, IDisposable, IResourceSource
+    public class ChatbotSource : Resource, IDisposable, IResourceSource
     {
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
 
-        public ChatCompletionsSource()
+        public ChatbotSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = "ChatCompletionsSource";
+            ResourceType = "ChatbotSource";
         }
 
-        public ChatCompletionsSource(XElement xml)
+        public ChatbotSource(XElement xml)
             : base(xml)
         {
-            ResourceType = "ChatCompletionsSource";
+            ResourceType = "ChatbotSource";
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "ApiKey", string.Empty },

@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
         string _newDropboxSourceTooltip;
         string _newSharepointSourceTooltip;
         string _newElasticsearchSourceTooltip;
-        string _newChatCompletionsSourceTooltip;
+        string _newChatbotSourceTooltip;
         string _debugInputsTooltip;
         string _debugStudioTooltip;
         string _debugBrowserTooltip;
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
             NewSharepointSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : noPermissionsToolTip;
             NewWcfSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewWcfSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
             NewElasticsearchSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewElasticsearchSourceTooltip : noPermissionsToolTip;
-            NewChatCompletionsSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewChatCompletionsSourceTooltip : noPermissionsToolTip;
+            NewChatbotSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewChatbotSourceTooltip : noPermissionsToolTip;
 
             SetEmailTooltips(canCreateSource, noPermissionsToolTip);
             SetDatabaseTooltips(canCreateSource, noPermissionsToolTip);
@@ -261,13 +261,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string NewChatCompletionsSourceTooltip
+        public string NewChatbotSourceTooltip
         {
-            get => _newChatCompletionsSourceTooltip;
+            get => _newChatbotSourceTooltip;
             set
             {
-                _newChatCompletionsSourceTooltip = value;
-                OnPropertyChanged(() => NewChatCompletionsSourceTooltip);
+                _newChatbotSourceTooltip = value;
+                OnPropertyChanged(() => NewChatbotSourceTooltip);
             }
         }
 

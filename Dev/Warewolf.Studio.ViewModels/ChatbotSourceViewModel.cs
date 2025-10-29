@@ -25,12 +25,12 @@ using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ChatCompletionsSourceViewModel : SourceBaseImpl<IChatCompletionsSource>, IManageChatCompletionsSourceViewModel, IDisposable
+    public class ChatbotSourceViewModel : SourceBaseImpl<IChatbotSource>, IManageChatbotSourceViewModel, IDisposable
     {
         public IAsyncWorker AsyncWorker { get; set; }
-        IChatCompletionsSource _chatCompletionsSource;
+        IChatbotSource _chatbotSource;
         readonly IServer _environment;
-        readonly IChatCompletionsSourceModel _updateManager;
+        readonly IManageChatbotSourceModel _updateManager;
         string _apiKey;
         string _completionsEndpoint;
         string _testMessage;
@@ -44,8 +44,8 @@ namespace Warewolf.Studio.ViewModels
         bool _isDisposed;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
-        public ChatCompletionsSourceViewModel(IChatCompletionsSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
-            : base("ChatCompletionsSource")
+        public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
+            : base("ChatbotSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -55,29 +55,29 @@ namespace Warewolf.Studio.ViewModels
             _updateManager = updateManager;
             _apiKey = string.Empty;
             _completionsEndpoint = string.Empty;
-            HeaderText = "New Chat Completions Source";
-            Header = "New Chat Completions Source";
+            HeaderText = "New Chatbot Source";
+            Header = "New Chatbot Source";
             TestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestConnection, CanTest);
             SaveCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        public ChatCompletionsSourceViewModel(IChatCompletionsSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
+        public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ChatCompletionsSourceViewModel(IChatCompletionsSourceModel updateManager, IEventAggregator aggregator, IChatCompletionsSource chatCompletionsSource, IAsyncWorker asyncWorker, IServer environment)
+        public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, IEventAggregator aggregator, IChatbotSource chatbotSource, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
-            VerifyArgument.IsNotNull("chatCompletionsSource", chatCompletionsSource);
+            VerifyArgument.IsNotNull("chatbotSource", chatbotSource);
 
-            asyncWorker.Start(() => updateManager.FetchSource(chatCompletionsSource.Id), source =>
+            asyncWorker.Start(() => updateManager.FetchSource(chatbotSource.Id), source =>
             {
-                _chatCompletionsSource = source;
-                _chatCompletionsSource.Path = chatCompletionsSource.Path;
+                _chatbotSource = source;
+                _chatbotSource.Path = chatbotSource.Path;
                 SetupHeaderTextFromExisting();
                 ToItem();
                 FromModel(source);
@@ -86,20 +86,20 @@ namespace Warewolf.Studio.ViewModels
 
         void ToItem()
         {
-            Item = new ChatCompletionsSourceDefinition()
+            Item = new ChatbotSourceDefinition()
             {
-                Path = _chatCompletionsSource.Path,
-                ApiKey = _chatCompletionsSource.ApiKey,
-                CompletionsEndpoint = _chatCompletionsSource.CompletionsEndpoint,
-                Name = _chatCompletionsSource.Name,
-                Id = _chatCompletionsSource.Id,
+                Path = _chatbotSource.Path,
+                ApiKey = _chatbotSource.ApiKey,
+                CompletionsEndpoint = _chatbotSource.CompletionsEndpoint,
+                Name = _chatbotSource.Name,
+                Id = _chatbotSource.Id,
             };
         }
 
         void SetupHeaderTextFromExisting()
         {
-            HeaderText = (_chatCompletionsSource == null ? ResourceName : _chatCompletionsSource.Name).Trim();
-            Header = (_chatCompletionsSource == null ? ResourceName : _chatCompletionsSource.Name).Trim();
+            HeaderText = (_chatbotSource == null ? ResourceName : _chatbotSource.Name).Trim();
+            Header = (_chatbotSource == null ? ResourceName : _chatbotSource.Name).Trim();
         }
 
         public override bool CanSave() => TestPassed;
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        public override void FromModel(IChatCompletionsSource source)
+        public override void FromModel(IChatbotSource source)
         {
             ResourceName = source.Name;
             ApiKey = source.ApiKey;
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels
 
         void SaveConnection()
         {
-            if (_chatCompletionsSource == null)
+            if (_chatbotSource == null)
             {
                 var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
@@ -189,7 +189,7 @@ namespace Warewolf.Studio.ViewModels
                     }
 
                     Item = src;
-                    _chatCompletionsSource = src;
+                    _chatbotSource = src;
                     SetupHeaderTextFromExisting();
                 }
             }
@@ -198,12 +198,12 @@ namespace Warewolf.Studio.ViewModels
                 var src = ToSource();
                 Save(src);
                 Item = src;
-                _chatCompletionsSource = src;
+                _chatbotSource = src;
                 SetupHeaderTextFromExisting();
             }
         }
 
-        public void Save(IChatCompletionsSource source)
+        public void Save(IChatbotSource source)
         {
             _updateManager.Save(source);
         }
@@ -240,39 +240,39 @@ namespace Warewolf.Studio.ViewModels
                 TestFailed = false;
                 TestPassed = false;
             });
-            var chatCompletionsSource = ToNewSource();
-            _updateManager.TestConnection(chatCompletionsSource);
+            var chatbotSource = ToNewSource();
+            _updateManager.TestConnection(chatbotSource);
         }
 
-        IChatCompletionsSource ToNewSource() => new ChatCompletionsSourceDefinition
+        IChatbotSource ToNewSource() => new ChatbotSourceDefinition
         {
             ApiKey = ApiKey,
             CompletionsEndpoint = CompletionsEndpoint,
             Name = ResourceName,
-            Id = _chatCompletionsSource?.Id ?? Guid.NewGuid()
+            Id = _chatbotSource?.Id ?? Guid.NewGuid()
         };
 
-        IChatCompletionsSource ToSource()
+        IChatbotSource ToSource()
         {
-            if (_chatCompletionsSource == null)
+            if (_chatbotSource == null)
             {
-                return new ChatCompletionsSourceDefinition
+                return new ChatbotSourceDefinition
                 {
                     ApiKey = ApiKey,
                     CompletionsEndpoint = CompletionsEndpoint,
                     Name = ResourceName,
-                    Id = _chatCompletionsSource?.Id ?? Guid.NewGuid()
+                    Id = _chatbotSource?.Id ?? Guid.NewGuid()
                 };
             }
             else
             {
-                _chatCompletionsSource.ApiKey = ApiKey;
-                _chatCompletionsSource.CompletionsEndpoint = CompletionsEndpoint;
-                return _chatCompletionsSource;
+                _chatbotSource.ApiKey = ApiKey;
+                _chatbotSource.CompletionsEndpoint = CompletionsEndpoint;
+                return _chatbotSource;
             }
         }
 
-        public override IChatCompletionsSource ToModel()
+        public override IChatbotSource ToModel()
         {
             if (Item == null)
             {
@@ -280,7 +280,7 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
 
-            return new ChatCompletionsSourceDefinition
+            return new ChatbotSourceDefinition
             {
                 Name = ResourceName,
                 ApiKey = ApiKey,
@@ -426,7 +426,7 @@ namespace Warewolf.Studio.ViewModels
     }
 
     // Definition class to hold the data
-    public class ChatCompletionsSourceDefinition : IChatCompletionsSource
+    public class ChatbotSourceDefinition : IChatbotSource
     {
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels
         public string Path { get; set; }
         public Guid Id { get; set; }
 
-        public bool Equals(IChatCompletionsSource other)
+        public bool Equals(IChatbotSource other)
         {
             if (other == null) return false;
             return ApiKey == other.ApiKey &&
@@ -445,7 +445,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as IChatCompletionsSource);
+            return Equals(obj as IChatbotSource);
         }
 
         public override int GetHashCode()

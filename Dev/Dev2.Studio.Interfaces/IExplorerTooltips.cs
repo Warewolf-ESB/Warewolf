@@ -30,7 +30,7 @@ namespace Dev2.Studio.Interfaces
         string NewDropboxSourceTooltip { get; set; }
         string NewSharepointSourceTooltip { get; set; }
         string NewElasticsearchSourceTooltip { get; set; }
-        string NewChatCompletionsSourceTooltip { get; set; }
+        string NewChatbotSourceTooltip { get; set; }
         string DebugInputsTooltip { get; set; }
         string DebugStudioTooltip { get; set; }
         string DebugBrowserTooltip { get; set; }

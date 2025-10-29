@@ -1020,7 +1020,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewElasticsearchSourceTooltip" xml:space="preserve">
     <value>Create a new elasticsearch source</value>
   </data>
-  <data name="NewChatCompletionsSourceTooltip" xml:space="preserve">
+  <data name="NewChatbotSourceTooltip" xml:space="preserve">
     <value>Create a new chat completions source</value>
   </data>
   <data name="NativeActivityToolTipPuterrorinthisvariable" xml:space="preserve">

@@ -1,4 +1,4 @@
-<UserControl x:Class="Warewolf.Studio.Views.ChatCompletionsSource"
+<UserControl x:Class="Warewolf.Studio.Views.ChatbotSource"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,7 +15,7 @@
              FocusManager.FocusedElement="{Binding ElementName=CompletionsEndpointTextBox, UpdateSourceTrigger=LostFocus}"
              views:FocusExtension.IsFocused="True"
              d:DesignHeight="300" d:DesignWidth="600" 
-             d:DataContext="{d:DesignInstance Type=interfaces:IManageChatCompletionsSourceViewModel, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type=interfaces:IManageChatbotSourceViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>

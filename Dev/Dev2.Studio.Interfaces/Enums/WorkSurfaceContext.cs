@@ -62,6 +62,6 @@ namespace Dev2.Studio.Interfaces.Enums
         ServiceTestsViewer,
         MergeConflicts,
         SearchViewer,
-        ChatCompletionsSource
+        ChatbotSource
     }
 }

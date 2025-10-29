@@ -18,11 +18,11 @@ using Warewolf.Studio.ViewModels;
 namespace Warewolf.Studio.Views
 {
     /// <summary>
-    /// Interaction logic for ChatCompletionsSource.xaml
+    /// Interaction logic for ChatbotSource.xaml
     /// </summary>
-    public partial class ChatCompletionsSource : IView, ICheckControlEnabledView
+    public partial class ChatbotSource : IView, ICheckControlEnabledView
     {
-        public ChatCompletionsSource()
+        public ChatbotSource()
         {
             InitializeComponent();
         }
@@ -55,7 +55,7 @@ namespace Warewolf.Studio.Views
             switch (controlName)
             {
                 case "Save":
-                    var viewModel = DataContext as ChatCompletionsSourceViewModel;
+                    var viewModel = DataContext as ChatbotSourceViewModel;
                     return viewModel != null && viewModel.SaveCommand.CanExecute(null);
                 case "Test Connection":
                     return TestConnectionButton.Command.CanExecute(null);
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.Views
 
         public void PerformSave()
         {
-            var viewModel = DataContext as ChatCompletionsSourceViewModel;
+            var viewModel = DataContext as ChatbotSourceViewModel;
             viewModel?.SaveCommand.Execute(null);
         }
 

@@ -3353,9 +3353,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Create a new chat completions source.
         /// </summary>
-        public static string NewChatCompletionsSourceTooltip {
+        public static string NewChatbotSourceTooltip {
             get {
-                return ResourceManager.GetString("NewChatCompletionsSourceTooltip", resourceCulture);
+                return ResourceManager.GetString("NewChatbotSourceTooltip", resourceCulture);
             }
         }
         

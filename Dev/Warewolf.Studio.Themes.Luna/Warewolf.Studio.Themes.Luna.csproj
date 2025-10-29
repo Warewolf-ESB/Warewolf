@@ -412,7 +412,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Images\ChatCompletions.xaml">
+    <Page Include="Images\Chatbot.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Images\ControlFlow-Gate.xaml">

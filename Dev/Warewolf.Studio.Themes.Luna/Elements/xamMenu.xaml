@@ -459,10 +459,10 @@
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource ElasticsearchSource}"/>
     </Style>
-    <Style TargetType="Image" x:Key="NewChatCompletionsSourceIcon">
+    <Style TargetType="Image" x:Key="NewChatbotSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>
-        <Setter Property="Source" Value="{StaticResource ChatCompletionsSource}"/>
+        <Setter Property="Source" Value="{StaticResource ChatbotSource}"/>
     </Style>
     <Style TargetType="Image" x:Key="NewPluginSourceIcon">
         <Setter Property="Height" Value="12"/>

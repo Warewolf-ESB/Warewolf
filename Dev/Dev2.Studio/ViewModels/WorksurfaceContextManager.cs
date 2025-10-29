@@ -61,7 +61,7 @@ using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
 using Dev2.Triggers;
 using Warewolf.Data;
-using ChatCompletionsSource = Warewolf.Studio.Views.ChatCompletionsSource;
+using ChatbotSource = Warewolf.Studio.Views.ChatbotSource;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -112,7 +112,7 @@ namespace Dev2.Studio.ViewModels
         void NewDropboxSource(String resourcePath);
         void NewRabbitMQSource(String resourcePath);
         void NewSharepointSource(String resourcePath);
-        void NewChatCompletionsSource(String resourcePath);
+        void NewChatbotSource(String resourcePath);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
         void NewEmailSource(String resourcePath);
@@ -1659,13 +1659,13 @@ namespace Dev2.Studio.ViewModels
             return true;
         }
 
-        public void NewChatCompletionsSource(string resourcePath)
+        public void NewChatbotSource(string resourcePath)
         {
-            var saveViewModel = GetSaveViewModel(resourcePath, "New Chat Completions Source");
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatCompletionsSource);
+            var saveViewModel = GetSaveViewModel(resourcePath, "New Chatbot Source");
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatbotSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatCompletionsSource>(_shellViewModel.EventPublisher, new ChatCompletionsSourceViewModel(new ChatCompletionsSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ChatCompletionsSource(), ActiveServer));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatbotSource>(_shellViewModel.EventPublisher, new ChatbotSourceViewModel(new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ChatbotSource(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
     }

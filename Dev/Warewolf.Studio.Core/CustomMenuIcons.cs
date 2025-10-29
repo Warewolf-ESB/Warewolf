@@ -45,7 +45,7 @@ namespace Warewolf.Studio.Core
             RabbitMqSource,
             ExchangeSource,
             MergeConflicts,
-            ChatCompletionsSource
+            ChatbotSource
         }
 
         static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
@@ -73,7 +73,7 @@ namespace Warewolf.Studio.Core
             {MenuIcons.Server, "System-Logo"},
             {MenuIcons.StartPage, "Fa-Home"},
             {MenuIcons.MergeConflicts, "Source-Merge-Logo"},
-            {MenuIcons.ChatCompletionsSource, "ChatCompletionsSource"}
+            {MenuIcons.ChatbotSource, "ChatbotSource"}
         };
 
         public static string ServerSource => MenuIconsDictionary[MenuIcons.ServerSource];
@@ -104,6 +104,6 @@ namespace Warewolf.Studio.Core
 
         public static string MergeConflicts => MenuIconsDictionary[MenuIcons.MergeConflicts];
 
-        public static string ChatCompletionsSource => MenuIconsDictionary[MenuIcons.ChatCompletionsSource];
+        public static string ChatbotSource => MenuIconsDictionary[MenuIcons.ChatbotSource];
     }
 }

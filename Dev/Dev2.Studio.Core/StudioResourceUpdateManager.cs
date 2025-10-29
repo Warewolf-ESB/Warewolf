@@ -110,9 +110,9 @@ namespace Dev2.Studio.Core
         
         public void Save(IElasticsearchSourceDefinition elasticsearchServiceSource) => UpdateManagerProxy.SaveElasticsearchServiceSource(elasticsearchServiceSource, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IChatCompletionsSource chatCompletionsSource) => UpdateManagerProxy.SaveChatCompletionsSource(chatCompletionsSource, GlobalConstants.ServerWorkspaceID);
+        public void Save(IChatbotSource chatbotSource) => UpdateManagerProxy.SaveChatbotSource(chatbotSource, GlobalConstants.ServerWorkspaceID);
 
-        public string TestConnection(IChatCompletionsSource chatCompletionsSource) => UpdateManagerProxy.TestChatCompletionsSource(chatCompletionsSource);
+        public string TestConnection(IChatbotSource chatbotSource) => UpdateManagerProxy.TestChatbotSource(chatbotSource);
 
         public void Save(ISharepointServerSource sharePointServiceSource)
         {

@@ -33,7 +33,7 @@
 		<ResourceDictionary Source="Images/AdvancedRecordset.xaml" />
         <ResourceDictionary Source="Images/Dropbox.xaml" />
         <ResourceDictionary Source="Images/Elasticsearch.xaml" />
-        <ResourceDictionary Source="Images/ChatCompletions.xaml" />
+        <ResourceDictionary Source="Images/Chatbot.xaml" />
 
         <ResourceDictionary Source="Images/ControlFlow-Descision.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Rules.xaml" />

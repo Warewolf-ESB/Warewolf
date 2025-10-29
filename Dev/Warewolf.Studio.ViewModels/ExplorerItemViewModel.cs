@@ -308,9 +308,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.NewElasticsearchSourceCommand(ResourcePath, Server);
             });
-            NewChatCompletionsSourceCommand = new DelegateCommand(o =>
+            NewChatbotSourceCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.NewChatCompletionsSourceCommand(ResourcePath, Server);
+                _explorerItemViewModelCommandController.NewChatbotSourceCommand(ResourcePath, Server);
             });
             NewEmailSourceSourceCommand = new DelegateCommand(o =>
             {
@@ -1010,7 +1010,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewRedisSourceCommand { get; set; }
         public ICommand NewElasticsearchSourceCommand { get; set; }
-        public ICommand NewChatCompletionsSourceCommand { get; set; }
+        public ICommand NewChatbotSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }

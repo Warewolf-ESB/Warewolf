@@ -447,15 +447,15 @@
                                                 <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Name="NewChatCompletionsSourceItem"
+                                        <MenuItem Name="NewChatbotSourceItem"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewChatCompletionsSourceCommand}"
-                                                  CommandParameter="ChatCompletionsSource"
-                                                  Header="New Chat Completions Source"
+                                                  Command="{Binding NewChatbotSourceCommand}"
+                                                  CommandParameter="ChatbotSource"
+                                                  Header="New Chatbot Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding ExplorerTooltips.NewChatCompletionsSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewChatbotSourceTooltip}">
                                             <MenuItem.Icon>
-                                                <Image Style="{StaticResource NewChatCompletionsSourceIcon}"/>
+                                                <Image Style="{StaticResource NewChatbotSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                     </MenuItem>
@@ -1126,15 +1126,15 @@
                                                         <Image Style="{StaticResource NewElasticsearchSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem Name="NewChatCompletionsSourceItem"
+                                                <MenuItem Name="NewChatbotSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewChatCompletionsSourceCommand}"
-									                      CommandParameter="ChatCompletionsSource"
-									                      Header="New Chat Completions Source"
+									                      Command="{Binding NewChatbotSourceCommand}"
+									                      CommandParameter="ChatbotSource"
+									                      Header="New Chatbot Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding ExplorerTooltips.NewChatCompletionsSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewChatbotSourceTooltip}">
                                                     <MenuItem.Icon>
-                                                        <Image Style="{StaticResource NewChatCompletionsSourceIcon}"/>
+                                                        <Image Style="{StaticResource NewChatbotSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                             </MenuItem>

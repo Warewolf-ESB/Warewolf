@@ -13,14 +13,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Core
 {
-    public class ChatCompletionsSourceDefinition : IChatCompletionsSource, IEquatable<ChatCompletionsSourceDefinition>
+    public class ChatbotSourceDefinition : IChatbotSource, IEquatable<ChatbotSourceDefinition>
     {
         [ExcludeFromCodeCoverage]
-        public ChatCompletionsSourceDefinition()
+        public ChatbotSourceDefinition()
         {
         }
 
-        public bool Equals(ChatCompletionsSourceDefinition other)
+        public bool Equals(ChatbotSourceDefinition other)
         {
             if (other is null)
             {
@@ -40,7 +40,7 @@ namespace Dev2.Common.Interfaces.Core
             return equals;
         }
 
-        public bool Equals(IChatCompletionsSource other)
+        public bool Equals(IChatbotSource other)
         {
             if (other is null)
             {
@@ -72,7 +72,7 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return false;
             }
-            return Equals((ChatCompletionsSourceDefinition)obj);
+            return Equals((ChatbotSourceDefinition)obj);
         }
 
         public override int GetHashCode()
@@ -87,9 +87,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(ChatCompletionsSourceDefinition left, ChatCompletionsSourceDefinition right) => Equals(left, right);
+        public static bool operator ==(ChatbotSourceDefinition left, ChatbotSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(ChatCompletionsSourceDefinition left, ChatCompletionsSourceDefinition right) => !Equals(left, right);
+        public static bool operator !=(ChatbotSourceDefinition left, ChatbotSourceDefinition right) => !Equals(left, right);
 
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }

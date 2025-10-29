@@ -139,10 +139,10 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewElasticsearchSource(resourcePath);
         }
-        public void NewChatCompletionsSourceCommand(string resourcePath, IServer server)
+        public void NewChatbotSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);
-            _shellViewModel.NewChatCompletionsSource(resourcePath);
+            _shellViewModel.NewChatbotSource(resourcePath);
         }
         public void NewPluginSourceCommand(string resourcePath, IServer server)
         {

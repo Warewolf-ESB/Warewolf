@@ -109,7 +109,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newExchangeSourceCommand;
         private AuthorizeCommand<string> _newRabbitMQSourceCommand;
         private AuthorizeCommand<string> _newSharepointSourceCommand;
-        private AuthorizeCommand<string> _newChatCompletionsSourceCommand;
+        private AuthorizeCommand<string> _newChatbotSourceCommand;
         private AuthorizeCommand<string> _newDropboxSourceCommand;
         private AuthorizeCommand<string> _newWcfSourceCommand;
         private ICommand _deployCommand;
@@ -246,7 +246,7 @@ namespace Dev2.Studio.ViewModels
             NewServerSourceCommand.UpdateContext(ActiveServer);
             NewSharepointSourceCommand.UpdateContext(ActiveServer);
             NewRabbitMQSourceCommand.UpdateContext(ActiveServer);
-            NewChatCompletionsSourceCommand.UpdateContext(ActiveServer);
+            NewChatbotSourceCommand.UpdateContext(ActiveServer);
             NewDropboxSourceCommand.UpdateContext(ActiveServer);
             NewEmailSourceCommand.UpdateContext(ActiveServer);
             NewExchangeSourceCommand.UpdateContext(ActiveServer);
@@ -535,9 +535,9 @@ namespace Dev2.Studio.ViewModels
             get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
         }
 
-        public IAuthorizeCommand<string> NewChatCompletionsSourceCommand
+        public IAuthorizeCommand<string> NewChatbotSourceCommand
         {
-            get => _newChatCompletionsSourceCommand ?? (_newChatCompletionsSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewChatCompletionsSource(@""), param => IsActiveServerConnected()));
+            get => _newChatbotSourceCommand ?? (_newChatbotSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewChatbotSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewDropboxSourceCommand
@@ -2416,9 +2416,9 @@ namespace Dev2.Studio.ViewModels
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
 
-        public void NewChatCompletionsSource(string resourcePath)
+        public void NewChatbotSource(string resourcePath)
         {
-            _worksurfaceContextManager.NewChatCompletionsSource(resourcePath);
+            _worksurfaceContextManager.NewChatbotSource(resourcePath);
         }
     }
 }
