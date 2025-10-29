@@ -13,14 +13,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Core
 {
-    public class CompletionsSourceDefinition : ICompletionsSource, IEquatable<CompletionsSourceDefinition>
+    public class ChatCompletionsSourceDefinition : IChatCompletionsSource, IEquatable<ChatCompletionsSourceDefinition>
     {
         [ExcludeFromCodeCoverage]
-        public CompletionsSourceDefinition()
+        public ChatCompletionsSourceDefinition()
         {
         }
 
-        public bool Equals(CompletionsSourceDefinition other)
+        public bool Equals(ChatCompletionsSourceDefinition other)
         {
             if (other is null)
             {
@@ -38,7 +38,7 @@ namespace Dev2.Common.Interfaces.Core
             return equals;
         }
 
-        public bool Equals(ICompletionsSource other)
+        public bool Equals(IChatCompletionsSource other)
         {
             if (other is null)
             {
@@ -70,7 +70,7 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return false;
             }
-            return Equals((CompletionsSourceDefinition)obj);
+            return Equals((ChatCompletionsSourceDefinition)obj);
         }
 
         public override int GetHashCode()
@@ -83,9 +83,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(CompletionsSourceDefinition left, CompletionsSourceDefinition right) => Equals(left, right);
+        public static bool operator ==(ChatCompletionsSourceDefinition left, ChatCompletionsSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(CompletionsSourceDefinition left, CompletionsSourceDefinition right) => !Equals(left, right);
+        public static bool operator !=(ChatCompletionsSourceDefinition left, ChatCompletionsSourceDefinition right) => !Equals(left, right);
 
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
