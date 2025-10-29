@@ -68,13 +68,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder($"Failed to connect to Chat Completions API: {err.Message}");
-                Dev2.Logger.Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);
         }
 
-        private string ReconstructModelsEndpoint(string completionsEndpoint)
+        private static string ReconstructModelsEndpoint(string completionsEndpoint)
         {
             if (string.IsNullOrEmpty(completionsEndpoint))
             {
