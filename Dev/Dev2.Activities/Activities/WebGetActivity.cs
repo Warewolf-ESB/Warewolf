@@ -203,102 +203,43 @@ namespace Dev2.Activities
         public override void ToX6Json(Cell cell)
         {
             if (cell.data == null) cell.data = new Dictionary<string, object>();
-
             base.ToX6Json(cell);
 
             cell.shape = Constants.WEBGETACTIVITY;
-            // Set the activity type
             cell.data[Constants.TYPE] = Constants.WEBGETACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBGET;
-
-            cell.data.Add(Constants.WEBMETHOD_HEADERS, Headers);
-            cell.data.Add(Constants.WEBMETHOD_QUERYSTRING, QueryString);
-            cell.data.Add(Constants.WEBMETHOD_ISRESPONSEBASE64, IsResponseBase64);
-            cell.data.Add(Constants.WEBMETHOD_SOURCEID, SourceId);
-            cell.data.Add(Constants.WEBMETHOD_INPUTS, Inputs);
-            cell.data.Add(Constants.WEBMETHOD_OUTPUTS, Outputs);
-            cell.data.Add(Constants.WEBMETHOD_ISOBJECT, IsObject);
-            cell.data.Add(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.WEBMETHOD_HEADERS] = Headers;
+            cell.data[Constants.WEBMETHOD_QUERYSTRING] = QueryString;
+            cell.data[Constants.WEBMETHOD_SOURCEID] = SourceId;
+            cell.data[Constants.WEBMETHOD_OUTPUTDESCRIPTION] = OutputDescription;
+            cell.data[Constants.WEBMETHOD_INPUTS] = Inputs;
+            cell.data[Constants.WEBMETHOD_OUTPUTS] = Outputs;
+            cell.data[Constants.WEBMETHOD_ISOBJECT] = IsObject;
+            cell.data[Constants.WEBMETHOD_OBJECTNAME] = ObjectName;
+            cell.data[Constants.WEBMETHOD_OBJECTRESULT] = ObjectResult;
+            cell.data[Constants.WEBMETHOD_ISRESPONSEBASE64] = IsResponseBase64;
         }
 
         public override void FromX6Json(Cell cell)
         {
             if (cell == null || cell.data == null) return;
-
             base.FromX6Json(cell);
 
-            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
-                this.DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out var objectResult)) ObjectResult = objectResult;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out var queryString)) QueryString = queryString;
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out var isObject)) IsObject = isObject;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out var objectName)) ObjectName = objectName;
 
-            // Read QueryString
-            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out string queryString))
-            {
-                this.QueryString = queryString;
-            }
-
-            // Read IsResponseBase64
-            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISRESPONSEBASE64, out bool isResponseBase64))
-            {
-                this.IsResponseBase64 = isResponseBase64;
-            }
-
-            // Read SourceId
-            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out Guid sourceId))
-            {
-                this.SourceId = sourceId;
-            }
-
-            // Read IsObject
-            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out bool isObject))
-            {
-                this.IsObject = isObject;
-            }
-
-            // Read ObjectName
-            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out string objectName))
-            {
-                this.ObjectName = objectName;
-            }
-
-            // Read Headers (check for updated version first)
-            object headersObject = null;
-            cell.data.TryGetValue(Constants.WEBMETHOD_UPDATEDHEADERS, out headersObject);
-            if (headersObject == null)
-            {
-                cell.data.TryGetValue(Constants.WEBMETHOD_HEADERS, out headersObject);
-            }
-            var headersArray = headersObject as JArray;
-            if (headersArray != null)
-            {
-                var headersList = headersArray.ToObject<List<NameValue>>();
-                Headers = headersList.Cast<INameValue>().ToList();
-            }
-
-            // Read Inputs
-            object inputsObject = null;
-            cell.data.TryGetValue(Constants.WEBMETHOD_INPUTS, out inputsObject);
-            var inputsArray = inputsObject as JArray;
-            if (inputsArray != null)
-            {
-                var inputsList = inputsArray.ToObject<List<ServiceInput>>();
-                Inputs = inputsList.Cast<Common.Interfaces.DB.IServiceInput>().ToList();
-            }
-
-            // Read Outputs
-            object outputsObject = null;
-            cell.data.TryGetValue(Constants.WEBMETHOD_OUTPUTS, out outputsObject);
-            var outputsArray = outputsObject as JArray;
-            if (outputsArray != null)
-            {
-                // Use JsonSerializerSettings that support type metadata deserialization
-                var settings = new Newtonsoft.Json.JsonSerializerSettings
-                {
-                    TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto,
-                    TypeNameAssemblyFormatHandling = Newtonsoft.Json.TypeNameAssemblyFormatHandling.Simple
-                };
-                var outputsList = outputsArray.ToObject<List<ServiceOutputMapping>>(Newtonsoft.Json.JsonSerializer.Create(settings));
-                Outputs = outputsList.Cast<Common.Interfaces.DB.IServiceOutputMapping>().ToList();
-            }
+            if (cell.data.TryGetHeaders(out var headers)) Headers = headers;
+            if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
+            if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
+            if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISRESPONSEBASE64, out var isResponseBase64)) IsResponseBase64 = isResponseBase64;
         }
+
     }
 }
