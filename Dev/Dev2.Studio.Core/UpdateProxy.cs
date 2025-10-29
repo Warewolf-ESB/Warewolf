@@ -381,6 +381,26 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public string TestChatCompletionsSource(IChatCompletionsSource chatCompletionsSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestChatCompletionsSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ChatCompletionsSource", serialiser.SerializeToBuilder(chatCompletionsSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
+            return output.Message.ToString();
+        }
+
         public string TestPluginService(IPluginService inputValues)
         {
             var con = Connection;
@@ -496,7 +516,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveRabbitMQServiceSource");
-            var serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2Json Serializer();
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
