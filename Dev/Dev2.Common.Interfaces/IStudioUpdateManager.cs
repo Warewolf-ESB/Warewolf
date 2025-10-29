@@ -35,6 +35,7 @@ namespace Dev2.Common.Interfaces
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         void Save(IWcfServerSource wcfSource);        
         void Save(IOAuthSource sharePointServiceSource);
+        void Save(IChatCompletionsSource chatCompletionsSource);
     }
 
     public interface IStudioUpdateManagerTest

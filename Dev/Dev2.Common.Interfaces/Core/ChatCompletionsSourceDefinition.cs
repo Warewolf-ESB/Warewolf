@@ -34,6 +34,8 @@ namespace Dev2.Common.Interfaces.Core
             var equals = true;
             equals &= string.Equals(ApiKey, other.ApiKey);
             equals &= string.Equals(CompletionsEndpoint, other.CompletionsEndpoint);
+            equals &= string.Equals(Name, other.Name);
+            equals &= Id == other.Id;
 
             return equals;
         }
@@ -79,6 +81,8 @@ namespace Dev2.Common.Interfaces.Core
             {
                 var hashCode = ApiKey?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (CompletionsEndpoint?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 return hashCode;
             }
         }
@@ -89,5 +93,8 @@ namespace Dev2.Common.Interfaces.Core
 
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }
