@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        private string ReconstructModelsEndpoint(string completionsEndpoint)
+        private static string ReconstructModelsEndpoint(string completionsEndpoint)
         {
             if (string.IsNullOrEmpty(completionsEndpoint))
             {
