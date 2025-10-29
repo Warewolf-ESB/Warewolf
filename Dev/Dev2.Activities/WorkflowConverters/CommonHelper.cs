@@ -12,6 +12,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Data.Options;
+using Warewolf.Options;
 
 namespace Dev2.WorkflowConverters
 {
@@ -235,11 +236,67 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetConditions(IDictionary<string, object> data, out IList<FormDataConditionExpression> conditions)
         {
             conditions = null;
-            if (!TryGetList<FormDataConditionExpression, FormDataConditionExpression>(data, out var list, Constants.WEBMETHOD_CONDITIONS))
-                return false;
-            conditions = list;
+            if (!data.TryGetValue(Constants.WEBMETHOD_CONDITIONS, out var raw) || raw is not JArray arr) return false;
+
+            conditions = arr
+                .Children<JObject>()
+                .Select(child =>
+                {
+                    var key = child.Value<string>(nameof(FormDataConditionExpression.Key)) ?? string.Empty;
+
+                    IFormDataCondition formDataCond = null;
+                    if (child[nameof(FormDataConditionExpression.Cond)] is JObject condObj)
+                    {
+                        // TableType (enum may come as int or string)
+                        var tableType = enFormDataTableType.Text;
+                        var tableTypeToken = condObj[nameof(FormDataCondition.TableType)];
+                        if (tableTypeToken != null)
+                        {
+                            if (tableTypeToken.Type == JTokenType.Integer)
+                            {
+                                tableType = (enFormDataTableType)tableTypeToken.Value<int>();
+                            }
+                            else if (tableTypeToken.Type == JTokenType.String)
+                            {
+                                Enum.TryParse(tableTypeToken.Value<string>(), true, out tableType);
+                            }
+                        }
+
+                        var valueToken = condObj[nameof(FormDataConditionText.Value)];
+                        var fileBase64Token = condObj[nameof(FormDataConditionFile.FileBase64)];
+                        var fileNameToken = condObj[nameof(FormDataConditionFile.FileName)];
+
+                        // Decide concrete condition
+                        if (fileBase64Token != null || fileNameToken != null || tableType == enFormDataTableType.File)
+                        {
+                            formDataCond = new FormDataConditionFile
+                            {
+                                TableType = enFormDataTableType.File,
+                                FileBase64 = fileBase64Token?.Value<string>() ?? string.Empty,
+                                FileName = fileNameToken?.Value<string>() ?? string.Empty
+                            };
+                        }
+                        else
+                        {
+                            formDataCond = new FormDataConditionText
+                            {
+                                TableType = enFormDataTableType.Text,
+                                Value = valueToken?.Value<string>() ?? string.Empty
+                            };
+                        }
+                    }
+
+                    return new FormDataConditionExpression
+                    {
+                        Key = key,
+                        Cond = formDataCond
+                    };
+                })
+                .ToList();
+
             return true;
         }
+
     }
 
     public static class CommonHelperExtensions
