@@ -12,7 +12,7 @@ using System;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IChatCompletionsSource : IEquatable<IChatCompletionsSource>
+    public interface IChatbotSource : IEquatable<IChatbotSource>
     {
         string ApiKey { get; set; }
         string CompletionsEndpoint { get; set; }

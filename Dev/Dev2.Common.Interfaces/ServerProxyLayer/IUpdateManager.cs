@@ -37,7 +37,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource, Guid serverWorkspaceID);
         void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID);
-        void SaveChatCompletionsSource(IChatCompletionsSource chatCompletionsSource, Guid serverWorkspaceID);
+        void SaveChatbotSource(IChatbotSource chatbotSource, Guid serverWorkspaceID);
     }
 
     public interface IUpdateManagerTest
@@ -59,7 +59,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         string TestWcfServiceSource(IWcfServerSource wcfServerSource);
         string TestWcfService(IWcfService service);
-        string TestChatCompletionsSource(IChatCompletionsSource chatCompletionsSource);
+        string TestChatbotSource(IChatbotSource chatbotSource);
     }
 
     /// <summary>

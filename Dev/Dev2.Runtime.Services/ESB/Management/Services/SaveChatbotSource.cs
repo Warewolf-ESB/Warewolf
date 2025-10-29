@@ -24,23 +24,23 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SaveChatCompletionsSource : IEsbManagementEndpoint
+    public class SaveChatbotSource : IEsbManagementEndpoint
     {
         IResourceCatalog _resourceCatalog;
 
-        public const string ChatCompletionsSource = "ChatCompletionsSource";
+        public const string ChatbotSource = "ChatbotSource";
 
-        public SaveChatCompletionsSource()
+        public SaveChatbotSource()
         {
 
         }
 
-        public SaveChatCompletionsSource(IResourceCatalog resourceCatalog)
+        public SaveChatbotSource(IResourceCatalog resourceCatalog)
         {
             _resourceCatalog = resourceCatalog;
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ChatCompletionsSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ChatbotSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -49,31 +49,31 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save Chat Completions Source Service", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Save Chatbot Source Service", GlobalConstants.WarewolfInfo);
 
-                values.TryGetValue(ChatCompletionsSource, out StringBuilder resourceDefinition);
+                values.TryGetValue(ChatbotSource, out StringBuilder resourceDefinition);
 
-                IChatCompletionsSource chatCompletionsSourceDef = serializer.Deserialize<ChatCompletionsSourceDefinition>(resourceDefinition);
+                IChatbotSource chatbotSourceDef = serializer.Deserialize<ChatbotSourceDefinition>(resourceDefinition);
 
-                if (chatCompletionsSourceDef.Path == null)
+                if (chatbotSourceDef.Path == null)
                 {
-                    chatCompletionsSourceDef.Path = string.Empty;
+                    chatbotSourceDef.Path = string.Empty;
                 }
 
-                if (chatCompletionsSourceDef.Path.EndsWith("\\"))
+                if (chatbotSourceDef.Path.EndsWith("\\"))
                 {
-                    chatCompletionsSourceDef.Path = chatCompletionsSourceDef.Path.Substring(0, chatCompletionsSourceDef.Path.LastIndexOf("\\", StringComparison.Ordinal));
+                    chatbotSourceDef.Path = chatbotSourceDef.Path.Substring(0, chatbotSourceDef.Path.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
-                var chatCompletionsSource = new Data.ServiceModel.ChatCompletionsSource
+                var chatbotSource = new Data.ServiceModel.ChatbotSource
                 {
-                    ResourceID = chatCompletionsSourceDef.Id,
-                    ApiKey = chatCompletionsSourceDef.ApiKey,
-                    CompletionsEndpoint = chatCompletionsSourceDef.CompletionsEndpoint,
-                    ResourceName = chatCompletionsSourceDef.Name
+                    ResourceID = chatbotSourceDef.Id,
+                    ApiKey = chatbotSourceDef.ApiKey,
+                    CompletionsEndpoint = chatbotSourceDef.CompletionsEndpoint,
+                    ResourceName = chatbotSourceDef.Name
                 };
 
-                ResourceCat.SaveResource(GlobalConstants.ServerWorkspaceID, chatCompletionsSource, chatCompletionsSourceDef.Path);
+                ResourceCat.SaveResource(GlobalConstants.ServerWorkspaceID, chatbotSource, chatbotSourceDef.Path);
                 msg.HasError = false;
             }
             catch (Exception err)
@@ -96,6 +96,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public string HandlesType() => nameof(SaveChatCompletionsSource);
+        public string HandlesType() => nameof(SaveChatbotSource);
     }
 }

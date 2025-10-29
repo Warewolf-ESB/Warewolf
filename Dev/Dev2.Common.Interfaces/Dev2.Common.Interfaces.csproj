@@ -62,7 +62,7 @@
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
     <Compile Include="Container\IWarewolfQueue.cs" />
-    <Compile Include="Core\ChatCompletionsSourceDefinition.cs" />
+    <Compile Include="Core\ChatbotSourceDefinition.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
@@ -143,7 +143,7 @@
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="IAdminManager.cs" />
-    <Compile Include="IChatCompletionsSource.cs" />
+    <Compile Include="IChatbotSource.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
     <Compile Include="ICircularDependency.cs" />
@@ -195,7 +195,7 @@
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
-    <Compile Include="IManageChatCompletionsSourceViewModel.cs" />
+    <Compile Include="IManageChatbotSourceViewModel.cs" />
     <Compile Include="IManageComPluginSourceModel.cs" />
     <Compile Include="IManageComPluginSourceViewModel.cs" />
     <Compile Include="IManageDatabaseSourceModel.cs" />

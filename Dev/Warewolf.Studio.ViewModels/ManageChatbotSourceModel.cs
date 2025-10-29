@@ -17,12 +17,12 @@ using Dev2.Common.Interfaces.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageChatCompletionsSourceModel : IManageChatCompletionsSourceModel
+    public class ManageChatbotSourceModel : IManageChatbotSourceModel
     {
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
 
-        public ManageChatCompletionsSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
+        public ManageChatbotSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
         {
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
@@ -34,9 +34,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        #region Implementation of IManageChatCompletionsSourceModel
+        #region Implementation of IManageChatbotSourceModel
 
-        public void TestConnection(IChatCompletionsSource resource)
+        public void TestConnection(IChatbotSource resource)
         {
             // Test the chat completions API endpoint by calling the models endpoint
             try
@@ -53,13 +53,13 @@ namespace Warewolf.Studio.ViewModels
                     if (!response.IsSuccessStatusCode)
                     {
                         var content = response.Content.ReadAsStringAsync().Result;
-                        throw new Exception($"Chat Completions API connection failed: {response.StatusCode} - {content}");
+                        throw new Exception($"Chatbot API connection failed: {response.StatusCode} - {content}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to connect to Chat Completions API: {ex.Message}", ex);
+                throw new Exception($"Failed to connect to Chatbot API: {ex.Message}", ex);
             }
         }
 
@@ -103,19 +103,19 @@ namespace Warewolf.Studio.ViewModels
             return modelsEndpoint;
         }
 
-        public void Save(IChatCompletionsSource toSource)
+        public void Save(IChatbotSource toSource)
         {
             _updateRepository.Save(toSource);
         }
 
         public string ServerName { get; set; }
 
-        public IChatCompletionsSource FetchSource(Guid id)
+        public IChatbotSource FetchSource(Guid id)
         {
             var xaml = _queryProxy.FetchResourceXaml(id);
-            var source = new Dev2.Data.ServiceModel.ChatCompletionsSource(xaml.ToXElement());
+            var source = new Dev2.Data.ServiceModel.ChatbotSource(xaml.ToXElement());
 
-            var def = new ChatCompletionsSourceDefinition
+            var def = new ChatbotSourceDefinition
             {
                 Id = source.ResourceID,
                 Name = source.ResourceName,

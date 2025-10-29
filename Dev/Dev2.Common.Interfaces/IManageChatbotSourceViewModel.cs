@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IManageChatCompletionsSourceViewModel
+    public interface IManageChatbotSourceViewModel
     {
         /// <summary>
         /// The API Key for the completions service
@@ -58,14 +58,14 @@ namespace Dev2.Common.Interfaces
         string ResourceName { get; set; }
     }
 
-    public interface IManageChatCompletionsSourceModel
+    public interface IManageChatbotSourceModel
     {
-        void TestConnection(IChatCompletionsSource resource);
+        void TestConnection(IChatbotSource resource);
 
-        void Save(IChatCompletionsSource toSource);
+        void Save(IChatbotSource toSource);
 
         string ServerName { get; set; }
 
-        IChatCompletionsSource FetchSource(Guid id);
+        IChatbotSource FetchSource(Guid id);
     }
 }

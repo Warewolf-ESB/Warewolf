@@ -21,9 +21,9 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class TestChatCompletionsSource : IEsbManagementEndpoint
+    public class TestChatbotSource : IEsbManagementEndpoint
     {
-        public const string ChatCompletionsSource = "ChatCompletionsSource";
+        public const string ChatbotSource = "ChatbotSource";
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -35,18 +35,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Test Chat Completions Source", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Test Chatbot Source", GlobalConstants.WarewolfInfo);
                 msg.HasError = false;
-                values.TryGetValue(ChatCompletionsSource, out StringBuilder resourceDefinition);
+                values.TryGetValue(ChatbotSource, out StringBuilder resourceDefinition);
 
-                var chatCompletionsSourceDefinition = serializer.Deserialize<ChatCompletionsSourceDefinition>(resourceDefinition);
+                var chatbotSourceDefinition = serializer.Deserialize<ChatbotSourceDefinition>(resourceDefinition);
                 
                 // Test the connection by calling the models endpoint
-                var modelsEndpoint = ReconstructModelsEndpoint(chatCompletionsSourceDefinition.CompletionsEndpoint);
+                var modelsEndpoint = ReconstructModelsEndpoint(chatbotSourceDefinition.CompletionsEndpoint);
                 
                 using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {chatCompletionsSourceDefinition.ApiKey}");
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}");
                     client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
                     
                     var response = client.GetAsync(modelsEndpoint).Result;
@@ -60,14 +60,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var content = response.Content.ReadAsStringAsync().Result;
                         msg.HasError = true;
-                        msg.Message = new StringBuilder($"Chat Completions API connection failed: {response.StatusCode} - {content}");
+                        msg.Message = new StringBuilder($"Chatbot API connection failed: {response.StatusCode} - {content}");
                     }
                 }
             }
             catch (Exception err)
             {
                 msg.HasError = true;
-                msg.Message = new StringBuilder($"Failed to connect to Chat Completions API: {err.Message}");
+                msg.Message = new StringBuilder($"Failed to connect to Chatbot API: {err.Message}");
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
@@ -107,8 +107,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return modelsEndpoint;
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ChatCompletionsSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ChatbotSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => nameof(TestChatCompletionsSource);
+        public string HandlesType() => nameof(TestChatbotSource);
     }
 }

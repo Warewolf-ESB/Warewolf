@@ -368,12 +368,12 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void SaveChatCompletionsSource(IChatCompletionsSource chatCompletionsSource, Guid serverWorkspaceID)
+        public void SaveChatbotSource(IChatbotSource chatbotSource, Guid serverWorkspaceID)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveChatCompletionsSource));
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveChatbotSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ChatCompletionsSource", serialiser.SerializeToBuilder(chatCompletionsSource));
+            comsController.AddPayloadArgument("ChatbotSource", serialiser.SerializeToBuilder(chatbotSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
             {
@@ -381,12 +381,12 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public string TestChatCompletionsSource(IChatCompletionsSource chatCompletionsSource)
+        public string TestChatbotSource(IChatbotSource chatbotSource)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController(nameof(TestChatCompletionsSource));
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestChatbotSource));
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ChatCompletionsSource", serialiser.SerializeToBuilder(chatCompletionsSource));
+            comsController.AddPayloadArgument("ChatbotSource", serialiser.SerializeToBuilder(chatbotSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {

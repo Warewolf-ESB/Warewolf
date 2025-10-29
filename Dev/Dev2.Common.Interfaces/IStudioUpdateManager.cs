@@ -35,7 +35,7 @@ namespace Dev2.Common.Interfaces
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         void Save(IWcfServerSource wcfSource);        
         void Save(IOAuthSource sharePointServiceSource);
-        void Save(IChatCompletionsSource chatCompletionsSource);
+        void Save(IChatbotSource chatbotSource);
     }
 
     public interface IStudioUpdateManagerTest
@@ -48,7 +48,7 @@ namespace Dev2.Common.Interfaces
         string TestConnection(IEmailServiceSource emailServiceSource);
         string TestConnection(IExchangeSource emailServiceSource);
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
-        string TestConnection(IChatCompletionsSource chatCompletionsSource);
+        string TestConnection(IChatbotSource chatbotSource);
         IList<string> TestDbConnection(IDbSource serverSource);
 		IList<string> TestSqliteConnection(ISqliteDBSource serverSource);
 		DataTable TestDbService(IDatabaseService inputValues);
