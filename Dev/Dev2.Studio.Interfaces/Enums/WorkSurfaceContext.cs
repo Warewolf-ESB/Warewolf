@@ -61,6 +61,7 @@ namespace Dev2.Studio.Interfaces.Enums
         WcfSource,
         ServiceTestsViewer,
         MergeConflicts,
-        SearchViewer
+        SearchViewer,
+        ChatCompletionsSource
     }
 }

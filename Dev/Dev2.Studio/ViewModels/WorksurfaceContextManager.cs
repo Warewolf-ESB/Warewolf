@@ -61,6 +61,7 @@ using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
 using Dev2.Triggers;
 using Warewolf.Data;
+using ChatCompletionsSource = Warewolf.Studio.Views.ChatCompletionsSource;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -102,19 +103,20 @@ namespace Dev2.Studio.ViewModels
         void NewOracleSource(string resourcePath);
         void NewOdbcSource(string resourcePath);
         bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
-        void NewWebSource(string resourcePath);
-        void NewRedisSource(string resourcePath);
-        void NewElasticsearchSource(string resourcePath);
-        void NewPluginSource(string resourcePath);
-        void NewComPluginSource(string resourcePath);
-        void NewWcfSource(string resourcePath);
-        void NewDropboxSource(string resourcePath);
-        void NewRabbitMQSource(string resourcePath);
-        void NewSharepointSource(string resourcePath);
+        void NewWebSource(String resourcePath);
+        void NewRedisSource(String resourcePath);
+        void NewElasticsearchSource(String resourcePath);
+        void NewPluginSource(String resourcePath);
+        void NewComPluginSource(String resourcePath);
+        void NewWcfSource(String resourcePath);
+        void NewDropboxSource(String resourcePath);
+        void NewRabbitMQSource(String resourcePath);
+        void NewSharepointSource(String resourcePath);
+        void NewChatCompletionsSource(String resourcePath);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
-        void NewEmailSource(string resourcePath);
-        void NewExchangeSource(string resourcePath);
+        void NewEmailSource(String resourcePath);
+        void NewExchangeSource(String resourcePath);
         bool IsWorkFlowOpened(IContextualResourceModel resource);
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
         void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server);
@@ -139,8 +141,8 @@ namespace Dev2.Studio.ViewModels
         void EditResource(IOAuthSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(ISharepointServerSource selectedSource, IView view);
         void EditResource(ISharepointServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
-        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header);
-        Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel);
+        Task<IRequestServiceNameViewModel> GetSaveViewModel(String resourcePath, String header);
+        Task<IRequestServiceNameViewModel> GetSaveViewModel(String resourcePath, String header, IExplorerItemViewModel explorerItemViewModel);
         void TryShowDependencies(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
         void AddSchedulerWorkSurface();
@@ -165,9 +167,9 @@ namespace Dev2.Studio.ViewModels
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey);
         void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
-        void RunAllTestsForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor);
+        void RunAllTestsForFolder(String ResourcePath, IExternalProcessExecutor ProcessExecutor);
         void RunAllTestCoverageForService(IContextualResourceModel contextualResourceModel);
-        void RunAllTestCoverageForFolder(string secureResourcePath, IExternalProcessExecutor processExecutor);
+        void RunAllTestCoverageForFolder(String secureResourcePath, IExternalProcessExecutor processExecutor);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
 
         IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID);
@@ -247,7 +249,6 @@ namespace Dev2.Studio.ViewModels
                 AddAndActivateWorkSurface(workSurfaceContextViewModel);
             }
         }
-
 
         public void EditServer(IServerSource selectedServer, IServer activeServer, IView view)
         {
@@ -1656,6 +1657,16 @@ namespace Dev2.Studio.ViewModels
             }
 
             return true;
+        }
+
+        public void NewChatCompletionsSource(string resourcePath)
+        {
+            var saveViewModel = GetSaveViewModel(resourcePath, "New Chat Completions Source");
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatCompletionsSource);
+            key.ServerID = ActiveServer.ServerID;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatCompletionsSource>(_shellViewModel.EventPublisher, new ChatCompletionsSourceViewModel(new ChatCompletionsSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ChatCompletionsSource(), ActiveServer));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
     }
 }

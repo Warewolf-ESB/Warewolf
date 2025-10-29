@@ -78,6 +78,7 @@ namespace Dev2.Studio.Interfaces
         void NewExchangeSource(string resourcePath);
         void NewRabbitMQSource(string resourcePath);
         void NewSharepointSource(string resourcePath);
+        void NewChatCompletionsSource(string resourcePath);
         void NewDropboxSource(string resourcePath);
         void NewWcfSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
@@ -155,6 +156,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewExchangeSourceCommand { get; }
         IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
         IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
+        IAuthorizeCommand<string> NewChatCompletionsSourceCommand { get; }
         IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }

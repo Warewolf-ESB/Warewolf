@@ -109,6 +109,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newExchangeSourceCommand;
         private AuthorizeCommand<string> _newRabbitMQSourceCommand;
         private AuthorizeCommand<string> _newSharepointSourceCommand;
+        private AuthorizeCommand<string> _newChatCompletionsSourceCommand;
         private AuthorizeCommand<string> _newDropboxSourceCommand;
         private AuthorizeCommand<string> _newWcfSourceCommand;
         private ICommand _deployCommand;
@@ -245,6 +246,7 @@ namespace Dev2.Studio.ViewModels
             NewServerSourceCommand.UpdateContext(ActiveServer);
             NewSharepointSourceCommand.UpdateContext(ActiveServer);
             NewRabbitMQSourceCommand.UpdateContext(ActiveServer);
+            NewChatCompletionsSourceCommand.UpdateContext(ActiveServer);
             NewDropboxSourceCommand.UpdateContext(ActiveServer);
             NewEmailSourceCommand.UpdateContext(ActiveServer);
             NewExchangeSourceCommand.UpdateContext(ActiveServer);
@@ -533,6 +535,11 @@ namespace Dev2.Studio.ViewModels
             get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
         }
 
+        public IAuthorizeCommand<string> NewChatCompletionsSourceCommand
+        {
+            get => _newChatCompletionsSourceCommand ?? (_newChatCompletionsSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewChatCompletionsSource(@""), param => IsActiveServerConnected()));
+        }
+
         public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
             get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
@@ -595,8 +602,8 @@ namespace Dev2.Studio.ViewModels
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
-            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController,
-            IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController, IPopupController popupController,
+            IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
             _file = new FileWrapper();
@@ -2408,5 +2415,10 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
+
+        public void NewChatCompletionsSource(string resourcePath)
+        {
+            _worksurfaceContextManager.NewChatCompletionsSource(resourcePath);
+        }
     }
 }
