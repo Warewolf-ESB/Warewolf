@@ -267,7 +267,7 @@ namespace Dev2.WorkflowConverters
                         var fileNameToken = condObj[nameof(FormDataConditionFile.FileName)];
 
                         // Decide concrete condition
-                        if (fileBase64Token != null || fileNameToken != null || tableType == enFormDataTableType.File)
+                        if (tableType == enFormDataTableType.File)
                         {
                             formDataCond = new FormDataConditionFile
                             {
