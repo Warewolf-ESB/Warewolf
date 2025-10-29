@@ -368,6 +368,19 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public void SaveChatCompletionsSource(IChatCompletionsSource chatCompletionsSource, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveChatCompletionsSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ChatCompletionsSource", serialiser.SerializeToBuilder(chatCompletionsSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+
         public string TestPluginService(IPluginService inputValues)
         {
             var con = Connection;

@@ -110,6 +110,8 @@ namespace Dev2.Studio.Core
         
         public void Save(IElasticsearchSourceDefinition elasticsearchServiceSource) => UpdateManagerProxy.SaveElasticsearchServiceSource(elasticsearchServiceSource, GlobalConstants.ServerWorkspaceID);
 
+        public void Save(IChatCompletionsSource chatCompletionsSource) => UpdateManagerProxy.SaveChatCompletionsSource(chatCompletionsSource, GlobalConstants.ServerWorkspaceID);
+
         public void Save(ISharepointServerSource sharePointServiceSource)
         {
             try
