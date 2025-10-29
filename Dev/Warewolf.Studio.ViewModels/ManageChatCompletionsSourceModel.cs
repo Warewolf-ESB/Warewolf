@@ -11,6 +11,7 @@
 
 using System;
 using System.Net.Http;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 
@@ -112,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
         public IChatCompletionsSource FetchSource(Guid id)
         {
             var xaml = _queryProxy.FetchResourceXaml(id);
-            var source = new Data.ServiceModel.ChatCompletionsSource(xaml.ToXElement());
+            var source = new Dev2.Data.ServiceModel.ChatCompletionsSource(xaml.ToXElement());
 
             var def = new ChatCompletionsSourceDefinition
             {
