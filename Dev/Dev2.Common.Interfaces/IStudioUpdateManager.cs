@@ -48,6 +48,7 @@ namespace Dev2.Common.Interfaces
         string TestConnection(IEmailServiceSource emailServiceSource);
         string TestConnection(IExchangeSource emailServiceSource);
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
+        string TestConnection(IChatCompletionsSource chatCompletionsSource);
         IList<string> TestDbConnection(IDbSource serverSource);
 		IList<string> TestSqliteConnection(ISqliteDBSource serverSource);
 		DataTable TestDbService(IDatabaseService inputValues);

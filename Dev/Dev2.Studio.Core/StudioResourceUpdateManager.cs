@@ -112,6 +112,8 @@ namespace Dev2.Studio.Core
 
         public void Save(IChatCompletionsSource chatCompletionsSource) => UpdateManagerProxy.SaveChatCompletionsSource(chatCompletionsSource, GlobalConstants.ServerWorkspaceID);
 
+        public string TestConnection(IChatCompletionsSource chatCompletionsSource) => UpdateManagerProxy.TestChatCompletionsSource(chatCompletionsSource);
+
         public void Save(ISharepointServerSource sharePointServiceSource)
         {
             try
