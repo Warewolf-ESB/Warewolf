@@ -9,15 +9,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.WorkflowConverters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Warewolf.Core;
 using Warewolf.Storage;
 
@@ -71,6 +75,47 @@ namespace Dev2.Activities
                 query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
             }
             return (head, query, null);
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.WEBDELETEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.WEBDELETEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBDELETE;
+            cell.data.Add(Constants.UNIQUEID, UniqueID);
+
+            cell.data.Add(Constants.WEBMETHOD_HEADERS, Headers);
+            cell.data.Add(Constants.WEBMETHOD_QUERYSTRING, QueryString);
+            cell.data.Add(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTDESCRIPTION, OutputDescription);
+            cell.data.Add(Constants.WEBMETHOD_INPUTS, Inputs);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTS, Outputs);
+            cell.data.Add(Constants.WEBMETHOD_ISOBJECT, IsObject);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTRESULT, ObjectResult);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell?.data == null) return;
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueid)) UniqueID = uniqueid;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out var objectresult)) ObjectResult = objectresult;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out var queryString)) QueryString = queryString;
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out var isObject)) IsObject = isObject;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out var objectName)) ObjectName = objectName;
+
+            if (cell.data.TryGetHeaders(out var headers)) Headers = headers;
+            if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
+            if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
+            if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
+
         }
     }
 }

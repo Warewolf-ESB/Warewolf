@@ -570,6 +570,9 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPutActivity(node);
 
+                case var t when t.Contains(Constants.WEBDELETEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebDeleteActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

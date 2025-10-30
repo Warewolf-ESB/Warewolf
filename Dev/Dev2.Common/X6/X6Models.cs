@@ -85,6 +85,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
+        public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -136,6 +137,7 @@ namespace Dev2.Common.X6
         public const string WEBPUTACTIVITY = "WebPutActivity";
         public const string DISPLAYNAME_WEBPUT = "PUT Web Method";
         public const string WEBMETHOD_ISPUTDATABASE64 = "isputdatabase64";
+        public const string WEBDELETEACTIVITY = "DsfWebDeleteActivity";
         
         
     }

@@ -576,6 +576,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebPutActivity(webPutActivity, nodeId);
             }
+            else if (activity is DsfWebDeleteActivity webDeleteActivity)
+            {
+                cell = CreateWebDeleteActivity(webDeleteActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
