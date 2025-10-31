@@ -288,8 +288,7 @@ namespace Dev2.Activities.WF
 
         /// <summary>
         /// Checks if a node represents a ForEach activity
-        /// </summary>
-        /// <param name="node">The node to check</param>
+        /// /// <param name="node">The node to check</param>
         /// <returns>True if the node is a ForEach activity</returns>
         private static bool IsForEachNode(Cell node)
         {
@@ -518,66 +517,48 @@ namespace Dev2.Activities.WF
                 case var t when t == Constants.START:
                     isStartNode = true;
                     return new WriteLine { Text = "Workflow Start Node" };
-
                 case var t when t.Contains("dsfdotnetmultiassignactivity"):
                     return CreateAssignActivity(node);
-
                 case var t when t.Contains("dsfdotnetmultiassignobjectactivity"):
                     return CreateAssignObectActivity(node);
-
                 case var t when t.Contains("flowdecision"):
                     return CreateFlowDecisionActivity(node);
-
                 case var t when t.Contains("dsfdecision"):
                     return CreateDecisionActivity(node);
-
                 case var t when t.Contains("dsfflowswitchactivity") || t.Contains("flowswitch"):
                     return CreateSwitchActivity(node);
-
                 case var t when t.Contains("dsfforeachactivity") || t.Contains("foreach"):
                     return CreateForEachActivity(node);
-
                 case var t when t.Contains("dsfsequenceactivity"):
                     return CreateSequenceActivity(node);
-
                 case var t when t.Contains(Constants.DSFSELECTANDAPPLYACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSelectAndApplyActivity(node);
-
                 case var t when t.Contains(Constants.DSFDATAMERGEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDataMergeActivity(node);
-
                 case var t when t.Contains(Constants.DSFDATASPLITACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDataSplitActivity(node);
-
                 case var t when t.Contains(Constants.DSFBASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateBaseConvertActivity(node);
-
                 case var t when t.Contains(Constants.DSFREPLACEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateReplaceActivity(node);
-
                 case var t when t.Contains(Constants.DSFCASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCaseConvertActivity(node);
-
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
-
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
-
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPostActivity(node);
-
                 case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPutActivity(node);
-
                 case var t when t.Contains(Constants.WEBDELETEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebDeleteActivity(node);
-
+                case var t when t.Contains(Constants.SQLSERVERDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSqlServerDatabaseActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }
-
         
 
         /// <summary>

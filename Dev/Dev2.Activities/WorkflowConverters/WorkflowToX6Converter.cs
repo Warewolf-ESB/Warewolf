@@ -580,6 +580,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebDeleteActivity(webDeleteActivity, nodeId);
             }
+            else if (activity is DsfSqlServerDatabaseActivity sqlServerDatabaseActivity)
+            {
+                cell = CreateSqlServerDatabaseActivity(sqlServerDatabaseActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
@@ -594,7 +598,6 @@ namespace Dev2.Activities.WF
                 cell.data.Add(Constants.DISPLAYNAME, activity.DisplayName);
 
             cell.data.Add(Constants.PROPERTIES, ExtractActivityProperties(activity));
-            // Extract and include ForEach nesting information if present
             ExtractForEachNestingInfo(activity, cell);
 
             return cell;

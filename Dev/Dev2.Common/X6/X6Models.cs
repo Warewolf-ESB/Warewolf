@@ -29,7 +29,6 @@ namespace Dev2.Common.X6
         public const string SWITCH_VARIABLE = "variable";
 
         public const string TRUE = "true";
-
         public const string FALSE = "false";
 
         public const string DISPLAYTEXT = "displaytext";
@@ -52,6 +51,11 @@ namespace Dev2.Common.X6
         public const string PROPERTY_ISENDEDONERROR = "IsEndedOnError";
         public const string PROPERTY_UNIQUEID = "UniqueID";
 
+        public const string DATABASE_PROCEDURENAME = "procedurename";
+        public const string DATABASE_EXECUTEACTIONSTRING = "executeactionstring";
+        public const string DATABASE_SERVICESERVER = "serviceserver";
+        public const string DATABASE_COMMANDTIMEOUT = "commandtimeout";
+
         public const string DSFSEQUENCE = "dsfsequenceactivity";
 
         public const string DSFDOTNETMULTIASSIGNACTIVITY = "DsfDotNetMultiAssignActivity";
@@ -66,11 +70,10 @@ namespace Dev2.Common.X6
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
 
-
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
         public const string SEQUENCE_NESTED_ACTIVITY_INDEX = "index";
-        
+
         public const string ISNESTED_INFOREACH = "isNestedInForEach";
         public const string PARENTID_FOREACH = "forEachParentId";
 
@@ -79,7 +82,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
-        
+
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
@@ -91,7 +94,6 @@ namespace Dev2.Common.X6
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
         public const string SELECTANDAPPLY_APPLYACTIVITYFUNC = "applyActivityFunc";
 
-
         public const string NGARGUMENTS = "ngArguments";
         public const string DATAACTION = "Data Action";
 
@@ -102,7 +104,6 @@ namespace Dev2.Common.X6
         public const string CONVERTCOLLECTION = "convertcollection";
         public const string UPDATEDCONVERTCOLLECTION = "updatedconvertcollection";
         public const string RESULTSCOLLECTION = "resultscollection";
-
 
         public const string DATASPLIT_SOURCESTRING = "sourcestring";
         public const string DATASPLIT_REVERSEORDER = "reverseorder";
@@ -121,7 +122,7 @@ namespace Dev2.Common.X6
         public const string WEBMETHOD_QUERYSTRING = "querystring";
         public const string WEBMETHOD_ISRESPONSEBASE64 = "isresponsebase64";
         public const string WEBMETHOD_SOURCEID = "sourceId";
-        
+
         public const string WEBMETHOD_OUTPUTDESCRIPTION = "outputdescription";
         public const string WEBMETHOD_INPUTS = "inputs";
         public const string WEBMETHOD_OUTPUTS = "outputs";
@@ -138,8 +139,9 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_WEBPUT = "PUT Web Method";
         public const string WEBMETHOD_ISPUTDATABASE64 = "isputdatabase64";
         public const string WEBDELETEACTIVITY = "DsfWebDeleteActivity";
-        
-        
+
+        public const string SQLSERVERDATABASEACTIVITY = "DsfSqlServerDatabaseActivity";
+        public const string DISPLAYNAME_SQLSERVERDATABASE = "SQL Server Database";
     }
     public class X6WorkflowLoadModel
     {
