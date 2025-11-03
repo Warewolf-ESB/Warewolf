@@ -177,5 +177,6 @@ namespace Dev2.Studio.Interfaces
 
         ISubscriptionData SubscriptionData { get; }
         void UpdateStudioLicense(bool isLicensed);
+        void ShowAIChat();
     }
 }

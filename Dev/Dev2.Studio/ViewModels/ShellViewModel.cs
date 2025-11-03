@@ -563,6 +563,11 @@ namespace Dev2.Studio.ViewModels
             }));
         }
 
+        public void ShowAIChat()
+        {
+            _worksurfaceContextManager.AddWorkSurface(new AIChatViewModel());
+        }
+
         public IVersionChecker Version { get; }
 
         public ShellViewModel()
