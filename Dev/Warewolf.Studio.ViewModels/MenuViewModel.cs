@@ -75,6 +75,7 @@ namespace Warewolf.Studio.ViewModels
             });
             IsOverLockCommand = new DelegateCommand(() => _isOverLock = true);
             IsNotOverLockCommand = new DelegateCommand(() => _isOverLock = false);
+            AIChatCommand = new DelegateCommand(() => _viewModel.ShowAIChat());
             ButtonWidth = ButtonWidthLarge;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
@@ -152,6 +153,8 @@ namespace Warewolf.Studio.ViewModels
         public ICommand IsNotOverLockCommand { get; private set; }
 
         public ICommand StartPageCommand { get; private set; }
+
+        public ICommand AIChatCommand { get; set; }
 
         public void UpdateHelpDescriptor(string helpText)
         {

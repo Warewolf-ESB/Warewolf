@@ -280,7 +280,13 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <ContentControl Width="60" SizeChanged="SlidingMenuPane_OnSizeChanged">
-                    <views1:MenuView DataContext="{Binding MenuViewModel}"/>
+                    <views1:MenuView DataContext="{Binding MenuViewModel}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="AIChatButtonClick">
+                                <cal:ActionMessage MethodName="ShowAIChat" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </views1:MenuView>
                     <ContentControl.Style>
                         <Style>
                             <Style.Triggers>
