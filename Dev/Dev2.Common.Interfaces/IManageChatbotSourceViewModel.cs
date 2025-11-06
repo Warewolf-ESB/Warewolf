@@ -16,6 +16,11 @@ namespace Dev2.Common.Interfaces
         string CompletionsEndpoint { get; set; }
 
         /// <summary>
+        /// The Models Endpoint URL (used for testing connection)
+        /// </summary>
+        string ModelsEndpoint { get; set; }
+
+        /// <summary>
         /// Test if connection is successful
         /// </summary>
         ICommand TestCommand { get; set; }

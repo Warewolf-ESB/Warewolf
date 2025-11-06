@@ -41,7 +41,9 @@ namespace Warewolf.Studio.ViewModels
             // Test the chat completions API endpoint by calling the models endpoint
             try
             {
-                var modelsEndpoint = ReconstructModelsEndpoint(resource.CompletionsEndpoint);
+                var modelsEndpoint = string.IsNullOrEmpty(resource.ModelsEndpoint) 
+                    ? resource.CompletionsEndpoint 
+                    : resource.ModelsEndpoint;
                 
                 using (var client = new HttpClient())
                 {
@@ -63,46 +65,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string ReconstructModelsEndpoint(string completionsEndpoint)
-        {
-            if (string.IsNullOrEmpty(completionsEndpoint))
-            {
-                throw new ArgumentException("Completions endpoint cannot be null or empty", nameof(completionsEndpoint));
-            }
-
-            // Remove "chat/completions" from the endpoint and replace with "models"
-            // Handle various possible formats:
-            // - https://api.example.com/v1/chat/completions -> https://api.example.com/v1/models
-            // - https://api.example.com/chat/completions -> https://api.example.com/models
-            
-            var uri = new Uri(completionsEndpoint);
-            var path = uri.AbsolutePath;
-            
-            // Replace "chat/completions" with "models"
-            if (path.Contains("chat/completions"))
-            {
-                path = path.Replace("chat/completions", "models");
-            }
-            else if (path.EndsWith("/completions"))
-            {
-                // Handle case where it might just be "/completions"
-                path = path.Substring(0, path.LastIndexOf("/completions")) + "/models";
-            }
-            else if (path.EndsWith("/chat"))
-            {
-                // Handle case where it might be "/chat"
-                path = path.Substring(0, path.LastIndexOf("/chat")) + "/models";
-            }
-            else
-            {
-                // If no recognizable pattern, just append /models
-                path = path.TrimEnd('/') + "/models";
-            }
-            
-            var modelsEndpoint = $"{uri.Scheme}://{uri.Authority}{path}";
-            return modelsEndpoint;
-        }
-
         public void Save(IChatbotSource toSource)
         {
             _updateRepository.Save(toSource);
@@ -121,7 +83,8 @@ namespace Warewolf.Studio.ViewModels
                 Name = source.ResourceName,
                 Path = source.GetSavePath(),
                 ApiKey = source.ApiKey,
-                CompletionsEndpoint = source.CompletionsEndpoint
+                CompletionsEndpoint = source.CompletionsEndpoint,
+                ModelsEndpoint = source.ModelsEndpoint
             };
             return def;
         }

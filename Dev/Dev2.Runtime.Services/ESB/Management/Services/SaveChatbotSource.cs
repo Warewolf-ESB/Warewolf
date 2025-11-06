@@ -70,6 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = chatbotSourceDef.Id,
                     ApiKey = chatbotSourceDef.ApiKey,
                     CompletionsEndpoint = chatbotSourceDef.CompletionsEndpoint,
+                    ModelsEndpoint = chatbotSourceDef.ModelsEndpoint,
                     ResourceName = chatbotSourceDef.Name
                 };
 
