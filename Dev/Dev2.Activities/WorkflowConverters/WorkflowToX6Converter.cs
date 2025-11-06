@@ -584,6 +584,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateSqlServerDatabaseActivity(sqlServerDatabaseActivity, nodeId);
             }
+            else if (activity is DsfMySqlDatabaseActivity mySqlDatabaseActivity)
+            {
+                cell = CreateMySqlDatabaseActivity(mySqlDatabaseActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
