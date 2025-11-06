@@ -22,6 +22,7 @@ namespace Dev2.Data.ServiceModel
     {
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
+        public string ModelsEndpoint { get; set; }
 
         public ChatbotSource()
         {
@@ -36,7 +37,8 @@ namespace Dev2.Data.ServiceModel
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "ApiKey", string.Empty },
-                { "CompletionsEndpoint", string.Empty }
+                { "CompletionsEndpoint", string.Empty },
+                { "ModelsEndpoint", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
@@ -45,6 +47,7 @@ namespace Dev2.Data.ServiceModel
             ParseProperties(connectionString, properties);
             ApiKey = properties["ApiKey"];
             CompletionsEndpoint = properties["CompletionsEndpoint"];
+            ModelsEndpoint = properties["ModelsEndpoint"];
         }
 
         public override XElement ToXml()
@@ -52,7 +55,8 @@ namespace Dev2.Data.ServiceModel
             var result = base.ToXml();
             var connectionString = string.Join(";",
                 $"ApiKey={ApiKey}",
-                $"CompletionsEndpoint={CompletionsEndpoint}"
+                $"CompletionsEndpoint={CompletionsEndpoint}",
+                $"ModelsEndpoint={ModelsEndpoint}"
                 );
 
             result.Add(

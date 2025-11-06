@@ -42,14 +42,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var chatbotSourceDefinition = serializer.Deserialize<ChatbotSourceDefinition>(resourceDefinition);
                 
                 // Test the connection by calling the models endpoint
-                var modelsEndpoint = ReconstructModelsEndpoint(chatbotSourceDefinition.CompletionsEndpoint);
                 
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}");
                     client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
                     
-                    var response = client.GetAsync(modelsEndpoint).Result;
+                    var response = client.GetAsync(chatbotSourceDefinition.ModelsEndpoint).Result;
                     
                     if (response.IsSuccessStatusCode)
                     {
@@ -72,39 +71,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
-        }
-
-        private static string ReconstructModelsEndpoint(string completionsEndpoint)
-        {
-            if (string.IsNullOrEmpty(completionsEndpoint))
-            {
-                throw new ArgumentException("Completions endpoint cannot be null or empty", nameof(completionsEndpoint));
-            }
-
-            // Remove "chat/completions" from the endpoint and replace with "models"
-            var uri = new Uri(completionsEndpoint);
-            var path = uri.AbsolutePath;
-            
-            // Replace "chat/completions" with "models"
-            if (path.Contains("chat/completions"))
-            {
-                path = path.Replace("chat/completions", "models");
-            }
-            else if (path.EndsWith("/completions"))
-            {
-                path = path.Substring(0, path.LastIndexOf("/completions")) + "/models";
-            }
-            else if (path.EndsWith("/chat"))
-            {
-                path = path.Substring(0, path.LastIndexOf("/chat")) + "/models";
-            }
-            else
-            {
-                path = path.TrimEnd('/') + "/models";
-            }
-            
-            var modelsEndpoint = $"{uri.Scheme}://{uri.Authority}{path}";
-            return modelsEndpoint;
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ChatbotSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
