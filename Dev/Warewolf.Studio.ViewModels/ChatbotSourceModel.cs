@@ -41,7 +41,10 @@ namespace Warewolf.Studio.ViewModels
             // Test the chat completions API endpoint by calling the models endpoint
             try
             {
-                var modelsEndpoint = ReconstructModelsEndpoint(resource.CompletionsEndpoint);
+                // Use ModelsEndpoint if provided, otherwise reconstruct from CompletionsEndpoint
+                var modelsEndpoint = !string.IsNullOrEmpty(resource.ModelsEndpoint) 
+                    ? resource.ModelsEndpoint 
+                    : ReconstructModelsEndpoint(resource.CompletionsEndpoint);
 
                 using (var client = new HttpClient())
                 {
@@ -121,6 +124,7 @@ namespace Warewolf.Studio.ViewModels
                 Name = source.ResourceName,
                 Path = source.GetSavePath(),
                 ApiKey = source.ApiKey,
+                ModelsEndpoint = source.ModelsEndpoint,
                 CompletionsEndpoint = source.CompletionsEndpoint
             };
             return def;

@@ -32,6 +32,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IServer _environment;
         readonly IManageChatbotSourceModel _updateManager;
         string _apiKey;
+        string _modelsEndpoint;
         string _completionsEndpoint;
         string _testMessage;
         CancellationTokenSource _token;
@@ -54,6 +55,7 @@ namespace Warewolf.Studio.ViewModels
             _environment = environment;
             _updateManager = updateManager;
             _apiKey = string.Empty;
+            _modelsEndpoint = string.Empty;
             _completionsEndpoint = string.Empty;
             HeaderText = "New Chatbot Source";
             Header = "New Chatbot Source";
@@ -90,6 +92,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Path = _chatbotSource.Path,
                 ApiKey = _chatbotSource.ApiKey,
+                ModelsEndpoint = _chatbotSource.ModelsEndpoint,
                 CompletionsEndpoint = _chatbotSource.CompletionsEndpoint,
                 Name = _chatbotSource.Name,
                 Id = _chatbotSource.Id,
@@ -152,6 +155,7 @@ namespace Warewolf.Studio.ViewModels
         {
             ResourceName = source.Name;
             ApiKey = source.ApiKey;
+            ModelsEndpoint = source.ModelsEndpoint;
             CompletionsEndpoint = source.CompletionsEndpoint;
         }
 
@@ -247,6 +251,7 @@ namespace Warewolf.Studio.ViewModels
         IChatbotSource ToNewSource() => new ChatbotSourceDefinition
         {
             ApiKey = ApiKey,
+            ModelsEndpoint = ModelsEndpoint,
             CompletionsEndpoint = CompletionsEndpoint,
             Name = ResourceName,
             Id = _chatbotSource?.Id ?? Guid.NewGuid()
@@ -259,6 +264,7 @@ namespace Warewolf.Studio.ViewModels
                 return new ChatbotSourceDefinition
                 {
                     ApiKey = ApiKey,
+                    ModelsEndpoint = ModelsEndpoint,
                     CompletionsEndpoint = CompletionsEndpoint,
                     Name = ResourceName,
                     Id = _chatbotSource?.Id ?? Guid.NewGuid()
@@ -267,6 +273,7 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 _chatbotSource.ApiKey = ApiKey;
+                _chatbotSource.ModelsEndpoint = ModelsEndpoint;
                 _chatbotSource.CompletionsEndpoint = CompletionsEndpoint;
                 return _chatbotSource;
             }
@@ -284,6 +291,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Name = ResourceName,
                 ApiKey = ApiKey,
+                ModelsEndpoint = ModelsEndpoint,
                 CompletionsEndpoint = CompletionsEndpoint,
                 Id = Item.Id,
                 Path = Path
@@ -312,6 +320,22 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => ApiKey);
                 OnPropertyChanged(() => Header);
                 TestPassed = false;
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+                ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
+            }
+        }
+
+        public string ModelsEndpoint
+        {
+            get => _modelsEndpoint;
+            set
+            {
+                if (_modelsEndpoint != value)
+                {
+                    TestPassed = false;
+                }
+                _modelsEndpoint = value;
+                OnPropertyChanged(() => ModelsEndpoint);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
@@ -429,6 +453,7 @@ namespace Warewolf.Studio.ViewModels
     public class ChatbotSourceDefinition : IChatbotSource
     {
         public string ApiKey { get; set; }
+        public string ModelsEndpoint { get; set; }
         public string CompletionsEndpoint { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
@@ -438,6 +463,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (other == null) return false;
             return ApiKey == other.ApiKey &&
+                   ModelsEndpoint == other.ModelsEndpoint &&
                    CompletionsEndpoint == other.CompletionsEndpoint &&
                    Name == other.Name &&
                    Id == other.Id;
@@ -453,6 +479,7 @@ namespace Warewolf.Studio.ViewModels
             unchecked
             {
                 var hashCode = ApiKey?.GetHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (ModelsEndpoint?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (CompletionsEndpoint?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
