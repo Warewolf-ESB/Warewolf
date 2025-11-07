@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -447,44 +448,5 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #endregion
-    }
-
-    // Definition class to hold the data
-    public class ChatbotSourceDefinition : IChatbotSource
-    {
-        public string ApiKey { get; set; }
-        public string ModelsEndpoint { get; set; }
-        public string CompletionsEndpoint { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public Guid Id { get; set; }
-
-        public bool Equals(IChatbotSource other)
-        {
-            if (other == null) return false;
-            return ApiKey == other.ApiKey &&
-                   ModelsEndpoint == other.ModelsEndpoint &&
-                   CompletionsEndpoint == other.CompletionsEndpoint &&
-                   Name == other.Name &&
-                   Id == other.Id;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IChatbotSource);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = ApiKey?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (ModelsEndpoint?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (CompletionsEndpoint?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                return hashCode;
-            }
-        }
     }
 }
