@@ -160,20 +160,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     server.GetProcedureInOutParams(command.CommandText, out List<NpgsqlParameter> inParameters, out List<NpgsqlParameter> outParams);
 
                     var returnType = server.GetProcedureReturnType(command.CommandText);
-                    command.Parameters.Clear();
 
-                    // Add input parameters with preserved values
-                    AddParametersToCommand(command, inParameters, originalParamValues);
+                    // Configure command using the new unified method
+                    ConfigureCommandForExecution(command, inParameters, outParams, originalParamValues, returnType);
 
-                    // Add output parameters
-                    AddParametersToCommand(command, outParams, null);
-
-                    if (!returnType.Equals("void"))
-                    {
-                        TransformCommandForFunction(command);
-                    }
-
-                    var dataTable = returnType.Equals("void") ? new DataTable() : server.FetchDataTable(command);
+                    // Execute based on return type
+                    var dataTable = returnType == "<procedure>" ? new DataTable() : server.FetchDataTable(command);
 
                     result = CreateOutputDescription(dataTable);
                 }
@@ -225,9 +217,34 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // Add output parameters
             AddParametersToCommand(command, outParameters, null);
 
-            // Transform command for functions (non-void return type)
-            if (!returnType.Equals("void"))
+            // Handle different PostgreSQL routine types
+            if (returnType == "<procedure>")
             {
+                // Procedures use CALL statement
+                command.CommandType = CommandType.Text;
+                
+                var allParams = command.Parameters.Cast<NpgsqlParameter>();
+                //var paramList = string.Join(", ", allParams.Select(p => p.ParameterName));
+                var paramList = string.Join(", ", allParams.Select(p =>
+                    $"{p.ParameterName.TrimStart('@')} => @{p.ParameterName}"));
+                command.CommandText = $"CALL {command.CommandText}({paramList})";
+            }
+            else if (returnType == "<void>")
+            {
+                // Functions with void return type - use SELECT
+                command.CommandType = CommandType.Text;
+                
+                var inputParams = command.Parameters.Cast<NpgsqlParameter>()
+                    .Where(p => p.Direction == ParameterDirection.Input || p.Direction == ParameterDirection.InputOutput);
+                
+                var paramNames = string.Join(", ", inputParams.Select(p => 
+                    $"{p.ParameterName.TrimStart('@')} => @{p.ParameterName}"));
+                
+                command.CommandText = $"SELECT {command.CommandText}({paramNames})";
+            }
+            else
+            {
+                // Functions with a return type - use SELECT * FROM
                 TransformCommandForFunction(command);
             }
         }

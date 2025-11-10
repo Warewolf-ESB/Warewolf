@@ -100,7 +100,7 @@ namespace Dev2.Services.Sql
             {
                 return new DataTable();
             }
-            return ds.Tables[0];
+            return ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
         }
 
         public DataSet FetchDataSet(IDbCommand command)

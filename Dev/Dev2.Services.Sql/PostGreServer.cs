@@ -403,7 +403,7 @@ namespace Dev2.Services.Sql
 
             var lower = pgType.ToLowerInvariant();
 
-            // Handle PostgreSQL array types (prefixed with underscore, e.g., _int4)
+            // Handle PostgreSQL array types (prefixed with "_", e.g., "_int4")
             if (lower.StartsWith("_"))
             {
                 var elementType = lower.Substring(1);
@@ -601,16 +601,24 @@ namespace Dev2.Services.Sql
 
         /// <summary>
         /// This method returns the type of the provided procedure/function
+        /// Returns: "<procedure>" for procedures, "<void>" for functions returning void, or the actual return type name for functions
         /// </summary>
         /// <param name="fullProcedureName"></param>
-        /// <returns>return type of the object, Default "void"</returns>
+        /// <returns>return type identifier</returns>
         public string GetProcedureReturnType(string fullProcedureName)
         {
             using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
                 var originalCommandText = command.CommandText;
 
-                var proc = string.Format(GlobalConstants.ReturnTypePostgreSql, fullProcedureName);
+                // Query to get both the routine type (procedure/function) and return type
+                var proc = string.Format(@"
+                    SELECT 
+                        r.routine_type,
+                        r.data_type AS return_type
+                    FROM information_schema.routines r
+                    WHERE r.specific_schema='public' 
+                    AND r.routine_name ='{0}'", fullProcedureName);
 
                 command.CommandType = CommandType.Text;
                 command.CommandText = proc;
@@ -620,10 +628,27 @@ namespace Dev2.Services.Sql
 
                 if (dataTable.Rows.Count > 0)
                 {
-                    return dataTable.Rows[0].ItemArray[0].ToString();
+                    var row = dataTable.Rows[0];
+                    var routineType = row["routine_type"]?.ToString()?.ToUpper() ?? "";
+                    var returnType = row["return_type"]?.ToString() ?? "";
+
+                    // Check if it's a procedure
+                    if (routineType == "PROCEDURE")
+                    {
+                        return "<procedure>";
+                    }
+
+                    // It's a function - check the return type
+                    if (string.IsNullOrEmpty(returnType) || returnType.Equals("void", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "<void>";
+                    }
+
+                    // Return the actual type name for functions
+                    return returnType;
                 }
                
-                return "void";
+                return "<void>";
             }
         }
 
