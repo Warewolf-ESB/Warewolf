@@ -25,15 +25,58 @@ namespace Dev2.Services.Sql
 
         public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText, int? commandTimeout)
         {
-            var command = new NpgsqlCommand(commandText, connection as NpgsqlConnection)
+            var command = new NpgsqlCommand(commandText, connection as NpgsqlConnection);
+            
+            // PostgreSQL functions that return data must be called with SELECT, not CALL
+            // Only use StoredProcedure CommandType for actual procedures (void return)
+            if (commandType == CommandType.StoredProcedure)
             {
-                CommandType = commandType,
-            };
+                // Check if this is a function by querying return type
+                var returnType = GetFunctionReturnType(connection, commandText);
+                
+                if (!string.IsNullOrEmpty(returnType) && !returnType.Equals("void", StringComparison.OrdinalIgnoreCase))
+                {
+                    // It's a function that returns data - use SELECT syntax
+                    command.CommandType = CommandType.Text;
+                    // The actual SELECT statement will be built when parameters are added
+                }
+                else
+                {
+                    // It's a procedure or void function - use CALL syntax
+                    command.CommandType = CommandType.StoredProcedure;
+                }
+            }
+            else
+            {
+                command.CommandType = commandType;
+            }
+            
             if (commandTimeout != null)
             {
                 command.CommandTimeout = commandTimeout.Value;
             }
             return command;
+        }
+
+        private string GetFunctionReturnType(IDbConnection connection, string functionName)
+        {
+            try
+            {
+                var query = $@"SELECT routines.data_type AS proc_return_type 
+                               FROM information_schema.routines
+                               WHERE routines.specific_schema='public' 
+                               AND routine_name = '{functionName.ToLower()}';";
+                
+                using (var cmd = new NpgsqlCommand(query, connection as NpgsqlConnection))
+                {
+                    var result = cmd.ExecuteScalar();
+                    return result?.ToString() ?? "void";
+                }
+            }
+            catch
+            {
+                return "void";
+            }
         }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)

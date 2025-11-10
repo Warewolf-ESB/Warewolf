@@ -9,16 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Dev2.Common;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
@@ -150,28 +152,30 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     var command = CommandFromServiceMethod(server, dbService.Method);
-                    
-                    var outParams = server.GetProcedureOutParams(command.CommandText);
+
+                    // Store the original parameter values before they are replaced
+                    var originalParamValues = command.Parameters.Cast<IDbDataParameter>()
+                        .ToDictionary(p => p.ParameterName.TrimStart('@'), p => p.Value, StringComparer.OrdinalIgnoreCase);
+
+                    server.GetProcedureInOutParams(command.CommandText, out List<NpgsqlParameter> inParameters, out List<NpgsqlParameter> outParams);
 
                     var returnType = server.GetProcedureReturnType(command.CommandText);
+                    command.Parameters.Clear();
 
-                    foreach (var dbDataParameter in outParams)
+                    // Add input parameters with preserved values
+                    AddParametersToCommand(command, inParameters, originalParamValues);
+
+                    // Add output parameters
+                    AddParametersToCommand(command, outParams, null);
+
+                    if (!returnType.Equals("void"))
                     {
-                        if (command.Parameters.Contains(dbDataParameter))
-                        {
-                            continue;
-                        }
-
-                        command.Parameters.Add(dbDataParameter);
+                        TransformCommandForFunction(command);
                     }
-                    var dataTable = returnType.Equals("void") ? new DataTable() : server.FetchDataTable(command);
-                   
-                    result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-                    var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-                    result.DataSourceShapes.Add(dataSourceShape);
 
-                    var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                    var dataTable = returnType.Equals("void") ? new DataTable() : server.FetchDataTable(command);
+
+                    result = CreateOutputDescription(dataTable);
                 }
                 catch (Exception ex)
                 {
@@ -183,6 +187,162 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     server.RollbackTransaction();
                 }
             }
+
+            return result;
+        }
+
+        public static Dictionary<string, object> BuildInputParameterDictionary(ICollection<IServiceInput> inputs)
+        {
+            var originalParamValues = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            if (inputs != null)
+            {
+                foreach (var input in inputs)
+                {
+                    if (!string.IsNullOrEmpty(input.Name))
+                    {
+                        var value = input.EmptyIsNull && string.IsNullOrEmpty(input.Value)
+                            ? DBNull.Value
+                            : (object)input.Value;
+                        originalParamValues[input.Name] = value;
+                    }
+                }
+            }
+            return originalParamValues;
+        }
+
+        public static void ConfigureCommandForExecution(
+            IDbCommand command,
+            IEnumerable<NpgsqlParameter> inParameters,
+            IEnumerable<NpgsqlParameter> outParameters,
+            Dictionary<string, object> originalParamValues,
+            string returnType)
+        {
+            command.Parameters.Clear();
+
+            // Add input parameters with preserved values
+            AddParametersToCommand(command, inParameters, originalParamValues);
+
+            // Add output parameters
+            AddParametersToCommand(command, outParameters, null);
+
+            // Transform command for functions (non-void return type)
+            if (!returnType.Equals("void"))
+            {
+                TransformCommandForFunction(command);
+            }
+        }
+
+        private static Dictionary<string, object> BuildParameterValueDictionary(IDbCommand command)
+        {
+            return command.Parameters.Cast<IDbDataParameter>()
+                .ToDictionary(
+                    p => p.ParameterName.TrimStart('@'), 
+                    p => p.Value, 
+                    StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static void AddParametersToCommand(
+            IDbCommand command, 
+            IEnumerable<NpgsqlParameter> parameters, 
+            Dictionary<string, object> originalParamValues)
+        {
+            foreach (var dbDataParameter in parameters)
+            {
+                var paramValue = GetParameterValue(dbDataParameter, originalParamValues);
+
+                var newParam = new NpgsqlParameter(dbDataParameter.ParameterName, dbDataParameter.NpgsqlDbType)
+                {
+                    Value = paramValue,
+                    Direction = dbDataParameter.Direction
+                };
+                command.Parameters.Add(newParam);
+            }
+        }
+
+        private static object GetParameterValue(
+            NpgsqlParameter dbDataParameter, 
+            Dictionary<string, object> originalParamValues)
+        {
+            if (originalParamValues != null)
+            {
+                var paramName = dbDataParameter.ParameterName.TrimStart('@');
+                
+                if (originalParamValues.TryGetValue(paramName, out var originalValue) && originalValue != null)
+                {
+                    // Convert string values to appropriate types based on NpgsqlDbType
+                    if (originalValue is string stringValue && !string.IsNullOrWhiteSpace(stringValue))
+                    {
+                        try
+                        {
+                            switch (dbDataParameter.NpgsqlDbType)
+                            {
+                                case NpgsqlTypes.NpgsqlDbType.Numeric:
+                                case NpgsqlTypes.NpgsqlDbType.Money:
+                                    return decimal.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Integer:
+                                case NpgsqlTypes.NpgsqlDbType.Oid:
+                                    return int.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Bigint:
+                                    return long.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Smallint:
+                                    return short.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Real:
+                                    return float.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Double:
+                                    return double.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Boolean:
+                                    return bool.Parse(stringValue);
+                                
+                                case NpgsqlTypes.NpgsqlDbType.Date:
+                                case NpgsqlTypes.NpgsqlDbType.Timestamp:
+                                case NpgsqlTypes.NpgsqlDbType.TimestampTz:
+                                    return DateTime.Parse(stringValue);
+                                
+                                default:
+                                    return originalValue;
+                            }
+                        }
+                        catch
+                        {
+                            // If conversion fails, return original value and let Npgsql handle the error
+                            return originalValue;
+                        }
+                    }
+                    
+                    return originalValue;
+                }
+            }
+
+            return dbDataParameter.Value ?? DBNull.Value;
+        }
+
+        private static void TransformCommandForFunction(IDbCommand command)
+        {
+            command.CommandType = CommandType.Text;
+            
+            var inputParams = command.Parameters.Cast<NpgsqlParameter>()
+                .Where(p => p.Direction == ParameterDirection.Input || p.Direction == ParameterDirection.InputOutput);
+            
+            var paramNames = string.Join(", ", inputParams.Select(p => 
+                $"{p.ParameterName.TrimStart('@')} => @{p.ParameterName}"));
+            
+            command.CommandText = $"SELECT * FROM {command.CommandText}({paramNames})";
+        }
+
+        private static IOutputDescription CreateOutputDescription(DataTable dataTable)
+        {
+            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            result.DataSourceShapes.Add(dataSourceShape);
+
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
 
             return result;
         }
