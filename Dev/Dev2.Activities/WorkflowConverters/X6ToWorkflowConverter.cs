@@ -555,6 +555,8 @@ namespace Dev2.Activities.WF
                     return CreateWebDeleteActivity(node);
                 case var t when t.Contains(Constants.SQLSERVERDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSqlServerDatabaseActivity(node);
+                case var t when t.Contains(Constants.POSTGRESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePostgresqlDatabaseActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

@@ -14,9 +14,11 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -140,6 +142,52 @@ namespace Dev2.Activities
                 }
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.POSTGRESQLDATABASEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.POSTGRESQLDATABASEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_POSTGRESQLDATABASE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.DATABASE_PROCEDURENAME, ProcedureName);
+            cell.data.TryAdd(Constants.DATABASE_SERVICESERVER, ServiceServer);
+            cell.data.TryAdd(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.TryAdd(Constants.DATABASE_COMMANDTIMEOUT, CommandTimeout);
+            
+            cell.data.TryAdd(Constants.WEBMETHOD_ISOBJECT, IsObject);
+            cell.data.TryAdd(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
+            cell.data.TryAdd(Constants.WEBMETHOD_OBJECTRESULT, ObjectResult);
+
+            cell.data.TryAdd(Constants.WEBMETHOD_INPUTS, Inputs);
+            cell.data.TryAdd(Constants.WEBMETHOD_OUTPUTS, Outputs);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.DATABASE_PROCEDURENAME, out var procedureName)) ProcedureName = procedureName;
+            if (cell.data.TryGetGuid(Constants.DATABASE_SERVICESERVER, out var serviceServer)) ServiceServer = serviceServer;
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetInt(Constants.DATABASE_COMMANDTIMEOUT, out var commandtimeout)) CommandTimeout = commandtimeout;
+
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out var isObject)) IsObject = isObject;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out var objectName)) ObjectName = objectName;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out var objectResult)) ObjectResult = objectResult;
+
+            if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
+            if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
         }
     }
 }

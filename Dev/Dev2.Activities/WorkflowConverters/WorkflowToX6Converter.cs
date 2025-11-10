@@ -584,6 +584,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateSqlServerDatabaseActivity(sqlServerDatabaseActivity, nodeId);
             }
+            else if (activity is DsfPostgreSqlActivity postgresqlDatabaseActivity)
+            {
+                cell = CreatePostgreSQLDatabaseActivity(postgresqlDatabaseActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
