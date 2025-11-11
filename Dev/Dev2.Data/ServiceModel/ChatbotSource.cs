@@ -65,6 +65,20 @@ namespace Dev2.Data.ServiceModel
                 new XElement("TypeOf", ResourceType)
                 );
 
+            if (VersionInfo != null)
+            {
+                result.Add(
+                    new XElement("VersionInfo",
+                        new XAttribute("DateTimeStamp", VersionInfo.DateTimeStamp),
+                        new XAttribute("Reason", VersionInfo.Reason ?? string.Empty),
+                        new XAttribute("User", VersionInfo.User ?? string.Empty),
+                        new XAttribute("VersionNumber", VersionInfo.VersionNumber ?? string.Empty),
+                        new XAttribute("ResourceId", VersionInfo.ResourceId),
+                        new XAttribute("VersionId", VersionInfo.VersionId)
+                    )
+                );
+            }
+
             return result;
         }
 
