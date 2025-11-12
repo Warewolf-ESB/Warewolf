@@ -222,9 +222,12 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     case WebRequestMethod.Get:
                         return client.DownloadData(address).ToBase64String();
+                    case WebRequestMethod.Delete:
+                        // DELETE should not send a body
+                        return client.UploadString(address, "DELETE", string.Empty);
                     case WebRequestMethod.Put:
                         return client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
-                    default: //classic calls are handled here like: delete and post
+                    default: //post
                         return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
                 }
             }
