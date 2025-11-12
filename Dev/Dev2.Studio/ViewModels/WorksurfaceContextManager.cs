@@ -545,6 +545,23 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+		public void EditResource(IChatbotSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
+		public void EditResource(IChatbotSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
+		{
+			var chatbotSourceViewModel = new ChatbotSourceViewModel(
+				new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
+				new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
+				selectedSource,
+				_shellViewModel.AsyncWorker,
+				ActiveServer);
+			var vm = new SourceViewModel<IChatbotSource>(_shellViewModel.EventPublisher, chatbotSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
+
+			workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ChatbotSource, selectedSource.Id);
+			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
+			OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
+			AddAndActivateWorkSurface(workSurfaceContextViewModel);
+		}
 
         IServer ActiveServer => _shellViewModel.ActiveServer;
 
@@ -935,6 +952,7 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("Oracle", EditOracleSource);
             _editHandler.TryAdd("ODBC", EditOdbcSource);
             _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
+			_editHandler.TryAdd("ChatbotSource", EditChatbotSource);
         }
 
         public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
@@ -1235,7 +1253,20 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, view, workSurfaceKey);
         }
 
-        public void EditServer(IContextualResourceModel resourceModel, IView view)
+		public void EditChatbotSource(IContextualResourceModel resourceModel, IView view)
+		{
+			var chatbotSourceModel = new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
+			var def = chatbotSourceModel.FetchSource(resourceModel.ID);
+			def.Path = resourceModel.GetSavePath();
+
+			var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatbotSource);
+			workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
+			workSurfaceKey.ResourceID = resourceModel.ID;
+			workSurfaceKey.ServerID = resourceModel.ServerID;
+			EditResource(def, view, workSurfaceKey);
+		}
+
+		public void EditServer(IContextualResourceModel resourceModel, IView view)
         {
             var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
             string address = null;
