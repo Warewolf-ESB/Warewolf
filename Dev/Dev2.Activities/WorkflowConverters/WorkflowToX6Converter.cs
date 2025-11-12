@@ -588,6 +588,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePostgreSQLDatabaseActivity(postgresqlDatabaseActivity, nodeId);
             }
+            else if (activity is DsfMySqlDatabaseActivity mySqlDatabaseActivity)
+            {
+                cell = CreateMySqlDatabaseActivity(mySqlDatabaseActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

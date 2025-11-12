@@ -145,6 +145,9 @@ namespace Dev2.Common.X6
 
         public const string POSTGRESQLDATABASEACTIVITY = "DsfPostgreSqlActivity";
         public const string DISPLAYNAME_POSTGRESQLDATABASE = "Postgre SQL Database";
+
+        public const string MYSQLDATABASEACTIVITY = "DsfMySqlDatabaseActivity";
+        public const string DISPLAYNAME_MYSQLDATABASE = "MySQL Database";
     }
     public class X6WorkflowLoadModel
     {

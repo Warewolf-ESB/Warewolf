@@ -557,6 +557,8 @@ namespace Dev2.Activities.WF
                     return CreateSqlServerDatabaseActivity(node);
                 case var t when t.Contains(Constants.POSTGRESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreatePostgresqlDatabaseActivity(node);
+                case var t when t.Contains(Constants.MYSQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateMySqlDatabaseActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
