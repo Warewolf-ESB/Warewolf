@@ -2654,7 +2654,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(nameof(DsfSelectAndApplyActivity),
                 testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
