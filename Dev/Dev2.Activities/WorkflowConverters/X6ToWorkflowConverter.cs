@@ -559,6 +559,8 @@ namespace Dev2.Activities.WF
                     return CreatePostgresqlDatabaseActivity(node);
                 case var t when t.Contains(Constants.MYSQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateMySqlDatabaseActivity(node);
+                case var t when t.Contains(Constants.SQLBULKINSERTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSqlBulkInsertActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
@@ -1026,6 +1028,7 @@ namespace Dev2.Activities.WF
                 ProcessReferencesForImplementation(doc);
                 ReplaceDefaultNamespace(doc);
                 var finalXml = ReplaceBadCollection(doc.ToString());
+                finalXml = ReplaceSystemNamespace(finalXml);
                 return new StringBuilder(finalXml);
             }
             catch (Exception)
@@ -1199,6 +1202,55 @@ namespace Dev2.Activities.WF
             // If no direct containment found, try to find the closest ForEach node
             // This is a fallback strategy - you might want to implement more sophisticated logic here
             return allNodes.FirstOrDefault(IsForEachNode)?.id;
+        }
+
+        public static string ReplaceSystemNamespace(string xml)
+        {
+            if (string.IsNullOrWhiteSpace(xml)) return xml;
+
+            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
+
+            const string badNs = "clr-namespace:System;assembly=System.Private.CoreLib";
+            var systemNs = XNamespace.Get("clr-namespace:System;assembly=mscorlib");
+
+            // ensure root has xmlns:s declared with correct namespace
+            var root = doc.Root;
+            if (root != null)
+            {
+                var existingSystemNs = root.GetNamespaceOfPrefix("s");
+                if (existingSystemNs == null)
+                {
+                    // Add the correct namespace if it doesn't exist
+                    root.Add(new XAttribute(XNamespace.Xmlns + "s", systemNs.NamespaceName));
+                }
+                else if (existingSystemNs.NamespaceName == badNs)
+                {
+                    // Replace the bad namespace declaration
+                    var badAttr = root.Attributes()
+                        .FirstOrDefault(a => a.IsNamespaceDeclaration && 
+                                           a.Name.LocalName == "s" && 
+                                           a.Value == badNs);
+                    if (badAttr != null)
+                    {
+                        badAttr.Value = systemNs.NamespaceName;
+                    }
+                }
+            }
+
+            // find all elements with bad namespace
+            var elementMatches = doc
+                .Descendants()
+                .Where(el => el.Name.NamespaceName == badNs)
+                .ToList();
+
+            foreach (var el in elementMatches)
+            {
+                // Replace element namespace
+                el.Name = systemNs + el.Name.LocalName;
+            }
+
+
+            return doc.ToString(SaveOptions.DisableFormatting);
         }
     }
 }
