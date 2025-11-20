@@ -148,7 +148,11 @@ namespace Dev2.Common.X6
 
         public const string MYSQLDATABASEACTIVITY = "DsfMySqlDatabaseActivity";
         public const string DISPLAYNAME_MYSQLDATABASE = "MySQL Database";
+    
+        public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
+        public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
     }
+
     public class X6WorkflowLoadModel
     {
         [JsonProperty("workflowxml")]
