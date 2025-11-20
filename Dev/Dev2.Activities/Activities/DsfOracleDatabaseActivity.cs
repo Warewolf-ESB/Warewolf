@@ -169,9 +169,9 @@ namespace Dev2.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.POSTGRESQLDATABASEACTIVITY;
-            cell.data[Constants.TYPE] = Constants.POSTGRESQLDATABASEACTIVITY.ToLower();
-            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_POSTGRESQLDATABASE;
+            cell.shape = Constants.ORACLESQLDATABASEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.ORACLESQLDATABASEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_ORACLESQLDATABASE;
             cell.data[Constants.UNIQUEID] = UniqueID;
 
             cell.data.TryAdd(Constants.DATABASE_PROCEDURENAME, ProcedureName);
