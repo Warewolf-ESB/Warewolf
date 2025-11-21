@@ -330,40 +330,86 @@ namespace Dev2.Services.Sql
             }
         }
 
+        /// <summary>
+        /// Gets the help text (definition) for a given stored procedure or function
+        /// </summary>
+        /// <param name="connection">Connection</param>
+        /// <param name="objectName">ObjectName</param>
+        /// <returns>Definition of the Database Object</returns>
         string GetHelpText(IDbConnection connection, string objectName)
         {
-            using (
-                IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName), CommandTimeout))
+            if (string.IsNullOrWhiteSpace(objectName))
+                return string.Empty;
+
+            // Parse database and object name efficiently
+            var (databaseName, procName) = ParseObjectName(objectName);
+
+            // Try to get the routine definition from INFORMATION_SCHEMA
+            const string query = @"
+SELECT ROUTINE_DEFINITION
+FROM INFORMATION_SCHEMA.ROUTINES
+WHERE ROUTINE_SCHEMA = @database 
+  AND ROUTINE_NAME = @procname
+LIMIT 1";
+
+            using (var command = _factory.CreateCommand(connection, CommandType.Text, query, CommandTimeout))
             {
-                return ExecuteReader(command, delegate (IDataAdapter reader)
+                AddParameter(command, "@database", databaseName);
+                AddParameter(command, "@procname", procName);
+
+                return ExecuteReader(command, adapter =>
+                {
+                    using (var ds = new DataSet())
                     {
-                        var sb = new StringBuilder();
-                        var ds = new DataSet(); //conn is opened by dataadapter
-                        reader.Fill(ds);
-                        var t = ds.Tables[0];
-                        var dataTableReader = t.CreateDataReader();
-                        while (dataTableReader.Read())
+                        adapter.Fill(ds);
+
+                        // Check if we have valid results
+                        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                         {
-                            var value = dataTableReader.GetValue(2);
-                            if (value != null)
-                            {
-                                sb.Append(value);
-                            }
+                            var value = ds.Tables[0].Rows[0]["ROUTINE_DEFINITION"];
+                            return value != DBNull.Value ? value.ToString() : string.Empty;
                         }
-                        return sb.ToString();
-                    });
+
+                        return string.Empty;
+                    }
+                });
             }
+        }
+
+        private static (string database, string name) ParseObjectName(string objectName)
+        {
+            var dotIndex = objectName.IndexOf('.');
+
+            return dotIndex > 0
+                ? (objectName.Substring(0, dotIndex), objectName.Substring(dotIndex + 1))
+                : (string.Empty, objectName);
+        }
+
+        /// <summary>
+        /// Extracted helper method for creating and adding parameters to database commands.
+        /// Reduces code redundancy when building parameterized queries.
+        /// </summary>
+        /// <param name="command">The database command to add the parameter to</param>
+        /// <param name="name">The parameter name (e.g., "@database", "@procname")</param>
+        /// <param name="value">The parameter value to be used in the query</param>
+        /// <remarks>
+        /// This method prevents SQL injection by properly parameterizing query values
+        /// instead of using string concatenation or formatting.
+        /// </remarks>
+        private void AddParameter(IDbCommand command, string name, string value)
+        {
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = name;
+            parameter.Value = value;
+            command.Parameters.Add(parameter);
         }
 
         public List<MySqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
             using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
-
                 GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a => a as MySqlParameter).ToList();
-
             }
         }
 
@@ -375,137 +421,137 @@ namespace Dev2.Services.Sql
             var parameters = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
             command.CommandText =
-                string.Format(
-                    "SELECT PARAMETER_NAME, PARAMETER_MODE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_SCHEMA='{0}' AND SPECIFIC_NAME='{1}' ORDER BY ORDINAL_POSITION",
-                    dbName, procedureName);
+                     string.Format(
+     "SELECT PARAMETER_NAME, PARAMETER_MODE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_SCHEMA='{0}' AND SPECIFIC_NAME='{1}' ORDER BY ORDINAL_POSITION",
+         dbName, procedureName);
             var dataTable = FetchDataTable(command);
-            foreach (DataRow row in dataTable.Rows)
-            {
-                GetProcInputsFromRow(command, outParams, parameters, row);
-            }
-            command.CommandText = originalCommandText;
-            return parameters;
+           foreach (DataRow row in dataTable.Rows)
+    {
+            GetProcInputsFromRow(command, outParams, parameters, row);
+     }
+      command.CommandText = originalCommandText;
+         return parameters;
+         }
+
+         private static void GetProcInputsFromRow(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, DataRow row)
+         {
+         var parameterName = row["PARAMETER_NAME"]?.ToString();
+          var parameterMode = row["PARAMETER_MODE"]?.ToString();
+ var dataType = row["DATA_TYPE"]?.ToString();
+
+    if (string.IsNullOrEmpty(parameterName) || string.IsNullOrEmpty(dataType))
+  {
+       return;
         }
 
-        private static void GetProcInputsFromRow(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, DataRow row)
+      var direction = ParameterDirection.Input;
+             var isOut = false;
+
+        if (parameterMode == "OUT")
         {
-            var parameterName = row["PARAMETER_NAME"]?.ToString();
-            var parameterMode = row["PARAMETER_MODE"]?.ToString();
-            var dataType = row["DATA_TYPE"]?.ToString();
+        direction = ParameterDirection.Output;
+            isOut = true;
+    }
+    else if (parameterMode == "INOUT")
+    {
+           direction = ParameterDirection.InputOutput;
+             isOut = false;
+           }
 
-            if (string.IsNullOrEmpty(parameterName) || string.IsNullOrEmpty(dataType))
-            {
-                return;
-            }
+   // Map MySQL data types to MySqlDbType
+ if (!Enum.TryParse(dataType, true, out MySqlDbType sqlType))
+           {
+ // Handle common type mappings that don't match enum names exactly
+            sqlType = MapDataTypeToMySqlDbType(dataType);
+     }
 
-            var direction = ParameterDirection.Input;
-            var isOut = false;
+   var sqlParameter = new MySqlParameter(parameterName, sqlType) { Direction = direction };
 
-            if (parameterMode == "OUT")
-            {
-                direction = ParameterDirection.Output;
-                isOut = true;
-            }
-            else if (parameterMode == "INOUT")
-            {
-                direction = ParameterDirection.InputOutput;
-                isOut = false;
-            }
+// Set size for varchar and other sized types
+             if (row["CHARACTER_MAXIMUM_LENGTH"] != DBNull.Value && row["CHARACTER_MAXIMUM_LENGTH"] != null)
+     {
+                 var maxLength = Convert.ToInt32(row["CHARACTER_MAXIMUM_LENGTH"]);
+           if (maxLength > 0)
+ {
+                sqlParameter.Size = maxLength;
+       }
+         }
 
-            // Map MySQL data types to MySqlDbType
-            if (!Enum.TryParse(dataType, true, out MySqlDbType sqlType))
-            {
-                // Handle common type mappings that don't match enum names exactly
-                sqlType = MapDataTypeToMySqlDbType(dataType);
-            }
+   command.Parameters.Add(sqlParameter);
 
-            var sqlParameter = new MySqlParameter(parameterName, sqlType) { Direction = direction };
+ if (!isOut)
+       {
+      parameters.Add(sqlParameter);
+      }
+   else
+       {
+    sqlParameter.Value = "@a";
+      outParams.Add(sqlParameter);
+   }
+       }
 
-            // Set size for varchar and other sized types
-            if (row["CHARACTER_MAXIMUM_LENGTH"] != DBNull.Value && row["CHARACTER_MAXIMUM_LENGTH"] != null)
-            {
-                var maxLength = Convert.ToInt32(row["CHARACTER_MAXIMUM_LENGTH"]);
-                if (maxLength > 0)
-                {
-                    sqlParameter.Size = maxLength;
-                }
-            }
-
-            command.Parameters.Add(sqlParameter);
-
-            if (!isOut)
-            {
-                parameters.Add(sqlParameter);
-            }
-            else
-            {
-                sqlParameter.Value = "@a";
-                outParams.Add(sqlParameter);
-            }
-        }
-
-        private static MySqlDbType MapDataTypeToMySqlDbType(string dataType)
-        {
-            switch (dataType.ToLower())
-            {
-                case "varchar":
-                case "char":
-                    return MySqlDbType.VarChar;
-                case "text":
-                    return MySqlDbType.Text;
-                case "int":
-                case "integer":
-                    return MySqlDbType.Int32;
-                case "bigint":
-                    return MySqlDbType.Int64;
-                case "smallint":
-                    return MySqlDbType.Int16;
-                case "tinyint":
-                    return MySqlDbType.Byte;
-                case "decimal":
-                case "numeric":
-                    return MySqlDbType.Decimal;
-                case "float":
-                    return MySqlDbType.Float;
-                case "double":
-                    return MySqlDbType.Double;
-                case "datetime":
-                    return MySqlDbType.DateTime;
-                case "timestamp":
-                    return MySqlDbType.Timestamp;
-                case "date":
-                    return MySqlDbType.Date;
-                case "time":
-                    return MySqlDbType.Time;
-                case "blob":
-                    return MySqlDbType.Blob;
-                case "longblob":
-                    return MySqlDbType.LongBlob;
-                case "mediumblob":
-                    return MySqlDbType.MediumBlob;
-                case "tinyblob":
-                    return MySqlDbType.TinyBlob;
-                case "longtext":
-                    return MySqlDbType.LongText;
-                case "mediumtext":
-                    return MySqlDbType.MediumText;
-                case "tinytext":
-                    return MySqlDbType.TinyText;
-                case "bit":
-                    return MySqlDbType.Bit;
-                case "binary":
-                case "varbinary":
-                    return MySqlDbType.VarBinary;
-                case "enum":
-                    return MySqlDbType.Enum;
-                case "set":
-                    return MySqlDbType.Set;
-                case "json":
-                    return MySqlDbType.JSON;
-                default:
-                    return MySqlDbType.VarChar; // Default fallback
-            }
-        }
+   private static MySqlDbType MapDataTypeToMySqlDbType(string dataType)
+     {
+           switch (dataType.ToLower())
+      {
+  case "varchar":
+ case "char":
+   return MySqlDbType.VarChar;
+          case "text":
+             return MySqlDbType.Text;
+     case "int":
+       case "integer":
+   return MySqlDbType.Int32;
+     case "bigint":
+        return MySqlDbType.Int64;
+    case "smallint":
+      return MySqlDbType.Int16;
+case "tinyint":
+          return MySqlDbType.Byte;
+   case "decimal":
+      case "numeric":
+          return MySqlDbType.Decimal;
+ case "float":
+   return MySqlDbType.Float;
+             case "double":
+          return MySqlDbType.Double;
+    case "datetime":
+     return MySqlDbType.DateTime;
+   case "timestamp":
+  return MySqlDbType.Timestamp;
+       case "date":
+   return MySqlDbType.Date;
+  case "time":
+       return MySqlDbType.Time;
+ case "blob":
+  return MySqlDbType.Blob;
+         case "longblob":
+         return MySqlDbType.LongBlob;
+      case "mediumblob":
+         return MySqlDbType.MediumBlob;
+          case "tinyblob":
+   return MySqlDbType.TinyBlob;
+   case "longtext":
+     return MySqlDbType.LongText;
+            case "mediumtext":
+   return MySqlDbType.MediumText;
+    case "tinytext":
+        return MySqlDbType.TinyText;
+ case "bit":
+   return MySqlDbType.Bit;
+ case "binary":
+      case "varbinary":
+    return MySqlDbType.VarBinary;
+       case "enum":
+   return MySqlDbType.Enum;
+ case "set":
+         return MySqlDbType.Set;
+     case "json":
+         return MySqlDbType.JSON;
+  default:
+     return MySqlDbType.VarChar; // Default fallback
+     }
+    }
 
         #region IDisposable
 
