@@ -17,7 +17,6 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
 using Dev2.WorkflowConverters;
-using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
