@@ -9,11 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -21,6 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -28,6 +24,12 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
 using Dev2.Utilities;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Warewolf.Core;
 using Warewolf.Data;
 using Warewolf.Exceptions;
@@ -535,6 +537,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.data.Add(Constants.FIELDS, FieldsCollection);
+            cell.shape = Constants.DSFDOTNETMULTIASSIGNACTIVITY;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            object fieldObject = null;
+            cell.data?.TryGetValue(Constants.UPDATEDFIELDS, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data?.TryGetValue(Constants.FIELDS, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                FieldsCollection = array.ToObject<List<ActivityDTO>>();
+            }
+
+
+        }
         public override int GetHashCode()
         {
             var hashCode = -838835648;

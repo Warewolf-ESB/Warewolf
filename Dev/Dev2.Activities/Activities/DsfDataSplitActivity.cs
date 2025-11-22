@@ -40,6 +40,9 @@ using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -845,6 +848,61 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ ReverseOrder.GetHashCode();
                 hashCode = (hashCode * 397) ^ SkipBlankRows.GetHashCode();
                 return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDATASPLITACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFDATASPLITACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DATASPLIT;
+
+            cell.data.Add(Constants.DATASPLIT_SOURCESTRING, SourceString);
+            cell.data.Add(Constants.DATASPLIT_REVERSEORDER, ReverseOrder);
+            cell.data.Add(Constants.DATASPLIT_SKIPBLANKROWS, SkipBlankRows);
+
+            cell.data.Add(Constants.RESULTSCOLLECTION, ResultsCollection);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Read Source String
+            if (cell.data.TryGetString(Constants.DATASPLIT_SOURCESTRING, out string sourcestring))
+            {
+                this.SourceString = sourcestring;
+            }
+
+            // Read ReverseOrder
+            if (cell.data.TryGetBool(Constants.DATASPLIT_REVERSEORDER, out bool reverseorder))
+            {                
+                this.ReverseOrder = reverseorder;
+            }
+
+            // Read SkipBlankRows
+            if (cell.data.TryGetBool(Constants.DATASPLIT_SKIPBLANKROWS, out bool skipblankrows))
+            {
+                this.SkipBlankRows = skipblankrows;
+            }
+
+            // Read ResultsCollection
+            object fieldObject = null;
+            cell.data.TryGetValue(Constants.RESULTSCOLLECTION, out fieldObject);
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                ResultsCollection = array.ToObject<List<DataSplitDTO>>();
             }
         }
     }

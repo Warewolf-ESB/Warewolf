@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 USER ContainerAdministrator
 
 RUN curl -o dotnet-core-installer.exe https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.413/dotnet-sdk-6.0.413-win-x64.exe
@@ -8,16 +8,22 @@ RUN del dotnet-core-installer.exe
 EXPOSE 3142
 EXPOSE 3143
 
-RUN mkdir Server
+SHELL ["powershell", "-Command"]
+RUN New-Item -Path "Server" -ItemType Directory
 ADD . Server
-RUN ["powershell", ".\\Server\\Perfmon.ps1"]
+RUN &".\\Server\\Perfmon.ps1"
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_WORKINGDIR "C:\programdata\Warewolf"
 ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
-RUN mkdir "programdata\Warewolf"
-RUN ["powershell.exe", "-Command", "Copy-Item -Path 'Server\\Resources - Release\\*' -Destination 'programdata\\Warewolf' -Recurse -Force"]
+RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
+RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
+RUN New-Service -Name \"Warewolf PerfMon\" \
+                -BinaryPathName C:\Server\Warewolf.PerfMon.exe \
+                -StartupType Automatic \
+				-Description \"Warewolf Performance Monitoring Service\"
 
-CMD ["powershell", ".\\Server\\StartAsService.ps1"]
+
+CMD ["powershell", "-Command", "Start-Job -ScriptBlock { & 'C:\\Server\\PerfMon.ps1' }; .\\Server\\StartAsService.ps1"]

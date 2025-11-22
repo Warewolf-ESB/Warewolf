@@ -8,23 +8,26 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.WorkflowConverters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -40,7 +43,7 @@ namespace Dev2.Activities
         private IDSFDataObject _dataObject;
 
         public IList<INameValue> Headers { get; set; }
-        
+
         public IList<INameValue> Settings { get; set; }
         private bool IsFormDataChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
         private bool IsManualChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
@@ -122,7 +125,7 @@ namespace Dev2.Activities
                     var conditionExpression = dds.Current;
 
                     text.Append("\n");
-                    if(conditionExpression != null)
+                    if (conditionExpression != null)
                         conditionExpression.RenderDescription(text);
                 }
 
@@ -144,7 +147,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(_dataObject,serviceName, allErrors);
+                    DisplayAndWriteError(_dataObject, serviceName, allErrors);
                 }
             }
         }
@@ -164,8 +167,8 @@ namespace Dev2.Activities
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
                 var timeout = Convert.ToInt32(Settings?.FirstOrDefault(s => s.Name == nameof(Timeout))?.Value);
-                
-                if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
+
+                if (isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
                     var webPostOptions = new WebPostOptions
                     {
@@ -182,7 +185,7 @@ namespace Dev2.Activities
                         IsUrlEncodedChecked = isUrlEncodedChecked,
                         Timeout = Timeout,
                     };
-                    
+
                     webRequestResult = PerformWebPostRequest(webPostOptions);
                 }
             }
@@ -225,7 +228,7 @@ namespace Dev2.Activities
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateFormDataContentType();
                 }
-                else if(IsUrlEncodedChecked)
+                else if (IsUrlEncodedChecked)
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateUrlEncodedContentType();
@@ -327,6 +330,60 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
-    }
 
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.WEBPOSTACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.WEBPOSTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBPOST;
+            cell.data.Add(Constants.UNIQUEID, UniqueID);
+
+
+            cell.data.Add(Constants.WEBMETHOD_HEADERS, Headers);
+            cell.data.Add(Constants.WEBMETHOD_QUERYSTRING, QueryString);
+            cell.data.Add(Constants.WEBMETHOD_SETTINGS, Settings);
+            cell.data.Add(Constants.WEBMETHOD_CONDITIONS, Conditions);
+            cell.data.Add(Constants.WEBMETHOD_TIMEOUT, Timeout);
+            cell.data.Add(Constants.WEBMETHOD_POSTDATA, PostData);
+
+            cell.data.Add(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTDESCRIPTION, OutputDescription);
+
+            cell.data.Add(Constants.WEBMETHOD_INPUTS, Inputs);
+            cell.data.Add(Constants.WEBMETHOD_OUTPUTS, Outputs);
+            cell.data.Add(Constants.WEBMETHOD_ISOBJECT, IsObject);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTNAME, ObjectName);
+            cell.data.Add(Constants.WEBMETHOD_OBJECTRESULT, ObjectResult);
+
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueid)) UniqueID = uniqueid;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out var objectresult)) ObjectResult = objectresult;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out var queryString)) QueryString = queryString;
+            if (cell.data.TryGetInt(Constants.WEBMETHOD_TIMEOUT, out var timeout)) Timeout = timeout;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_POSTDATA, out var postData)) PostData = postData;
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out var isObject)) IsObject = isObject;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out var objectName)) ObjectName = objectName;
+
+            if (cell.data.TryGetSettings(out var settings)) Settings = settings;
+            if (cell.data.TryGetConditions(out var conditions)) Conditions = conditions;
+            if (cell.data.TryGetHeaders(out var headers)) Headers = headers;
+            if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
+            if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
+            if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
+        }
+    }
 }

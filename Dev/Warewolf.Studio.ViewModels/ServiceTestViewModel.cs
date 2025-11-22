@@ -1477,23 +1477,30 @@ namespace Warewolf.Studio.ViewModels
 			if (outputs != null && outputs.Count > 0)
 			{
 				var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
-				serviceTestStep.StepOutputs = outputs
-												.Select(output => new ServiceTestOutput(output, "", "", "")
-												{
-													HasOptionsForValue = false,
-													AddStepOutputRow = serviceTestStep.AddNewOutput
-												})
-												.Cast<IServiceTestOutput>()
-												.ToObservableCollection();
-				
-				SetStepIcon(act.GetType(), serviceTestStep);
-				parentTestStep.Children.Add(serviceTestStep); 
-			}
-			else
-			{
-				CheckForAndAddSpecialNodes(parentTestStep, act as Activity);
-			}
-		}
+                if (outputs.Count > 0 && outputs.Any(output => !string.IsNullOrEmpty(output)))
+                {
+                    serviceTestStep.StepOutputs = outputs
+                        .Select(output => new ServiceTestOutput(output, "", "", "")
+                        {
+                            HasOptionsForValue = false,
+                            AddStepOutputRow = serviceTestStep.AddNewOutput
+                        })
+                        .Cast<IServiceTestOutput>()
+                        .ToObservableCollection();
+                }
+                else
+				{
+					serviceTestStep.StepOutputs = GetDefaultOutputs();
+				}
+
+                SetStepIcon(act.GetType(), serviceTestStep);
+                parentTestStep.Children.Add(serviceTestStep);
+            }
+            else
+            {
+                CheckForAndAddSpecialNodes(parentTestStep, act as Activity);
+            }
+        }
 
 		void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
 		{

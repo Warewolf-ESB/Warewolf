@@ -36,6 +36,8 @@ using Dev2.Common.State;
 using Dev2.Utilities;
 using Warewolf.Data;
 using Warewolf.Exceptions;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -512,6 +514,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.data.Add(Constants.FIELDS, FieldsCollection);
+            cell.shape = Constants.DSFDOTNETMULTIASSIGNAOBJECTCTIVITY;
+
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            object fieldObject = null;
+            cell.data?.TryGetValue(Constants.UPDATEDFIELDS, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data?.TryGetValue(Constants.FIELDS, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                FieldsCollection = array.ToObject<List<AssignObjectDTO>>();
+            }
         }
     }
 }

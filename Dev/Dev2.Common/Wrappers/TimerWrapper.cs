@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Dev2.Common.Wrappers
 {
-    public class TimerWrapper : ITimer
+    public class TimerWrapper : Interfaces.Wrappers.ITimer
     {
         Timer _timer;
 
@@ -36,7 +36,7 @@ namespace Dev2.Common.Wrappers
 
     public class TimerWrapperFactory : ITimerFactory
     {
-        public ITimer New(TimerCallback callback, object state, int dueTime, int period)
+        public Interfaces.Wrappers.ITimer New(TimerCallback callback, object state, int dueTime, int period)
         {
             return new TimerWrapper(callback, state, dueTime, period);
         }

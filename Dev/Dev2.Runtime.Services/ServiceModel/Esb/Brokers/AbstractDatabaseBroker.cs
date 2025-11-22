@@ -57,21 +57,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
 
             var serviceMethods = new ServiceMethodList();
-            
+
             Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-            
+
             Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-            
+
             using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
@@ -106,7 +106,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     var dataTable = server.FetchDataTable(command);
-                    
+
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);
@@ -126,44 +126,44 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return result;
         }
-		public virtual IOutputDescription TestSqliteService(SqliteDBService dbService)
-		{
-			VerifyArgument.IsNotNull("SqliteDBService", dbService);
-			VerifyArgument.IsNotNull("SqliteDBService.Source", dbService.Source);
+        public virtual IOutputDescription TestSqliteService(SqliteDBService dbService)
+        {
+            VerifyArgument.IsNotNull("SqliteDBService", dbService);
+            VerifyArgument.IsNotNull("SqliteDBService.Source", dbService.Source);
 
-			IOutputDescription result;
-			using (var server = CreateSqliteDbServer(dbService.Source as SqliteDBSource))
-			{
-				server.Connect(((SqliteDBSource)dbService.Source).ConnectionString);
-				server.BeginTransaction();
-				try
-				{
-					var command = CommandFromServiceMethod(server, dbService.Method);
-					var dataTable = server.FetchDataTable(command);
+            IOutputDescription result;
+            using (var server = CreateSqliteDbServer(dbService.Source as SqliteDBSource))
+            {
+                server.Connect(((SqliteDBSource)dbService.Source).ConnectionString);
+                server.BeginTransaction();
+                try
+                {
+                    var command = CommandFromServiceMethod(server, dbService.Method);
+                    var dataTable = server.FetchDataTable(command);
 
-					result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-					var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-					result.DataSourceShapes.Add(dataSourceShape);
+                    result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+                    var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+                    result.DataSourceShapes.Add(dataSourceShape);
 
-					var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-					dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
-				}
-				catch (Exception ex)
-				{
-					throw new WarewolfDbException(ex.Message);
-				}
-				finally
-				{
-					server.RollbackTransaction();
-				}
-			}
+                    var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                    dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                }
+                catch (Exception ex)
+                {
+                    throw new WarewolfDbException(ex.Message);
+                }
+                finally
+                {
+                    server.RollbackTransaction();
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		protected virtual TDbServer CreateDbServer(DbSource dbSource) => new TDbServer();
-		protected virtual TDbServer CreateSqliteDbServer(SqliteDBSource dbSource) => new TDbServer();
-		protected virtual string NormalizeXmlPayload(string payload) => payload.Replace("&lt;", "<").Replace("&gt;", ">");
+        protected virtual TDbServer CreateDbServer(DbSource dbSource) => new TDbServer();
+        protected virtual TDbServer CreateSqliteDbServer(SqliteDBSource dbSource) => new TDbServer();
+        protected virtual string NormalizeXmlPayload(string payload) => payload.Replace("&lt;", "<").Replace("&gt;", ">");
 
         static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction) => new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
 
@@ -202,7 +202,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = $"@{methodParameter.Name.Replace("`", "")}";
-            parameter.Value = methodParameter.Value;
+
+            // Handle EmptyToNull condition
+            if (string.IsNullOrEmpty(methodParameter.Value) && methodParameter.EmptyToNull)
+            {
+                parameter.Value = DBNull.Value;
+            }
+            else
+            {
+                parameter.Value = methodParameter.Value;
+            }
+
             return parameter;
         }
     }

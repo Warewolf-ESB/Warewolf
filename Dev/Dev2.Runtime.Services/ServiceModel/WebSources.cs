@@ -454,24 +454,90 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     if (header != ":")
                     {
+                        try
+                        {
+                            var parts = header.Trim().Split(new[] { ':' }, 2);
+                            if (parts.Length == 2)
+                            {
+                                var headerName = parts[0].Trim().ToLowerInvariant();
+                                var headerValue = parts[1].Trim();
+                                
+                                // Handle special headers that can't be set directly via Headers.Add()
+                                switch (headerName)
+                                {
+                                    case "accept":
+                                        // For Accept header, we need to handle it differently
+                                        // WebClient doesn't have a direct Accept property, but we can add it to Headers
+                                        // after checking if it's a valid accept header format
+                                        webClient.Headers[HttpRequestHeader.Accept] = headerValue;
+                                        break;
+                                    case "user-agent":
+                                        webClient.Headers[HttpRequestHeader.UserAgent] = headerValue;
+                                        break;
+                                    case "content-type":
+                                        webClient.Headers[HttpRequestHeader.ContentType] = headerValue;
+                                        break;
+                                    case "authorization":
+                                        webClient.Headers[HttpRequestHeader.Authorization] = headerValue;
+                                        break;
+                                    default:
+                                        webClient.Headers.Add(header.Trim());
+                                        break;
+                                }
+                            }
+                            else
+                            {
                         webClient.Headers.Add(header.Trim());
                     }
                 }
-            }
-        }
-        
-        private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
-        {
-            if (headers != null)
-            {
-                foreach (var header in headers)
-                {
-                    if (header != ":" && !header.ToLower().StartsWith("content-type:") && !header.ToLower().Contains(":bearer"))
-                    {
-                        wr.AddHeader(header.Trim());
+                        catch (ArgumentException ex)
+                        {
+                            throw new ArgumentException($"Invalid character in header: {header.Trim()}. {ex.Message}");
+                        }
                     }
-                }
             }
         }
-    }
+        }
+
+		private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
+		{
+			if (headers == null) return;
+
+			foreach (var rawHeader in headers)
+			{
+				if (string.IsNullOrWhiteSpace(rawHeader) || rawHeader == ":")
+					continue;
+
+				var parts = rawHeader.Split(new[] { ':' }, 2);
+				if (parts.Length != 2)
+					continue;
+
+				var name = parts[0].Trim();
+				var value = parts[1].Trim();
+
+				// Skip restricted/ignored headers
+				if (name.Equals("Content-Type", StringComparison.OrdinalIgnoreCase) ||
+					value.StartsWith("Bearer", StringComparison.OrdinalIgnoreCase))
+					continue;
+
+				if (name.Equals("Accept", StringComparison.OrdinalIgnoreCase))
+				{
+					if (wr is WebRequestWrapper webRequestWrapper)
+						webRequestWrapper.SetAcceptHeader(value);
+					else
+						try
+						{
+							wr.AddHeader($"{name}: {value}");
+						}
+						catch
+						{
+						}
+				}
+				else
+				{
+					wr.AddHeader($"{name}: {value}");
+				}
+			}
+		}
+	}
 }

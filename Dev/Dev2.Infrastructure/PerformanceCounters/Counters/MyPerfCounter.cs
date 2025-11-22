@@ -9,6 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.PerformanceCounters.Management;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -67,9 +70,29 @@ namespace Dev2.PerformanceCounters.Counters
     {
         readonly PerformanceCounter _counter;
         public RealWarewolfPerformanceCounter(string categoryName, string counterName, string instanceName)
-        {
-            _counter = new PerformanceCounter(categoryName, counterName, instanceName);
-            _counter.MachineName = ".";
+		{
+			Dev2Logger.Info("Attempting to get performance counter.", "Warewolf Info");
+			try
+            {
+                _counter = new PerformanceCounter(categoryName, counterName, instanceName);
+            }
+            catch (System.InvalidOperationException ex)
+			{
+				var allCounters = PerformanceCounterPersistence.DefaultCounters;
+				var register = new WarewolfPerformanceCounterRegister(allCounters, new List<IResourcePerformanceCounter>());
+				register.RegisterCountersOnMachine(allCounters, "Warewolf");
+                Dev2Logger.Info("Failed to create performance counter. Attempting to re-register all counters.", "Warewolf Info");
+				_counter = new PerformanceCounter(categoryName, counterName, instanceName);
+			}
+            if (_counter == null)
+            {
+                throw new InvalidOperationException($"Performance counter '{counterName}' in category '{categoryName}' with instance '{instanceName}' could not be created.");
+            }
+            else
+            {
+                Dev2Logger.Info("Got performance counter: \\" + _counter.CategoryName + "(" + _counter.InstanceName + ")\\" + _counter.CounterName, "Warewolf Info");
+            }
+			_counter.MachineName = ".";
             _counter.ReadOnly = false;
             _counter.InstanceLifetime = PerformanceCounterInstanceLifetime.Global;
         }

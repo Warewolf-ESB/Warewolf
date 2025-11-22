@@ -341,6 +341,27 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
+
+        public override void ToX6Json(Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            if (this.Inner != null)
+            {
+                this.Inner.ToX6Json(cell);
+            }
+            else
+            {
+                base.ToX6Json(cell);
+            }
+        }
+
+        public override void FromX6Json(Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+        }
     }
 
     public class TestMockSwitchStep : DsfActivityAbstract<string>
@@ -448,5 +469,7 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        
     }
 }

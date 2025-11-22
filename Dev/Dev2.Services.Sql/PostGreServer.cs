@@ -279,9 +279,10 @@ namespace Dev2.Services.Sql
                 commandType = CommandType.Text;
             }
 
+            _connection.Open();
+
             _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
 
-            _connection.Open();
             return true;
         }
 
@@ -331,30 +332,88 @@ namespace Dev2.Services.Sql
             }
         }
 
+        /// <summary>
+        /// Gets the help text (definition) for a given stored procedure or function
+        /// </summary>
+        /// <param name="connection">Connection</param>
+        /// <param name="objectName">ObjectName</param>
+        /// <returns>Definition of the Database Object</returns>
         string GetHelpText(IDbConnection connection, string objectName)
         {
-            using (
-                var command = _factory.CreateCommand(connection, CommandType.Text,
+            if (string.IsNullOrWhiteSpace(objectName))
+                return string.Empty;
 
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName), CommandTimeout))
+            // Parse schema and object name efficiently
+            var (schemaName, procName) = ParseObjectName(objectName);
+
+            const string query = @"
+SELECT pg_get_functiondef(p.oid) AS definition
+FROM pg_proc p
+JOIN pg_namespace n ON p.pronamespace = n.oid
+WHERE n.nspname = @schema 
+  AND p.proname = @procname
+LIMIT 1";
+
+            using (var command = _factory.CreateCommand(connection, CommandType.Text, query, CommandTimeout))
             {
-                return ExecuteReader(command, delegate (IDataAdapter reader)
+                AddParameter(command, "@schema", schemaName);
+                AddParameter(command, "@procname", procName);
+
+                return ExecuteReader(command, adapter =>
+                {
+                    using (var ds = new DataSet())
                     {
-                        var sb = new StringBuilder();
-                        var ds = new DataSet(); //conn is opened by dataadapter
-                        reader.Fill(ds);
-                        var t = ds.Tables[0];
-                        var dataTableReader = t.CreateDataReader();
-                        while (dataTableReader.Read())
+                        adapter.Fill(ds);
+
+                        // Check if we have valid results
+                        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                         {
-                            var value = dataTableReader.GetValue(2);
-                            if (value != null)
-                            {
-                                sb.Append(value);
-                            }
+                            var value = ds.Tables[0].Rows[0]["definition"];
+                            return value != DBNull.Value ? value.ToString() : string.Empty;
                         }
-                        return sb.ToString();
-                    });
+
+                        return string.Empty;
+                    }
+                });
+            }
+        }
+
+        
+        private static (string schema, string name) ParseObjectName(string objectName)
+        {
+            var dotIndex = objectName.IndexOf('.');
+
+            return dotIndex > 0
+  ? (objectName.Substring(0, dotIndex), objectName.Substring(dotIndex + 1))
+     : ("public", objectName);
+        }
+
+        /// <summary>
+        /// Extracted helper method for creating and adding parameters to database commands.
+        /// Reduces code redundancy when building parameterized queries.
+        /// </summary>
+      /// <param name="command">The database command to add the parameter to</param>
+        /// <param name="name">The parameter name (e.g., "@schema", "@procname")</param>
+   /// <param name="value">The parameter value to be used in the query</param>
+      /// <remarks>
+        /// This method prevents SQL injection by properly parameterizing query values
+        /// instead of using string concatenation or formatting.
+        /// </remarks>
+        private void AddParameter(IDbCommand command, string name, string value)
+        {
+            var parameter = command.CreateParameter();
+    parameter.ParameterName = name;
+          parameter.Value = value;
+            command.Parameters.Add(parameter);
+        }
+
+        public void GetProcedureInOutParams(string fullProcedureName, out List<NpgsqlParameter> inParameters, out List<NpgsqlParameter> outParameters)
+        {
+            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
+            {
+                var inPramas = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
+                inParameters = inPramas.Select(a => a as NpgsqlParameter).ToList();
+                outParameters = isOut.Select(a => a as NpgsqlParameter).ToList();
             }
         }
 
@@ -367,12 +426,165 @@ namespace Dev2.Services.Sql
             }
         }
 
+        public List<NpgsqlParameter> GetProcedureInParams(string fullProcedureName)
+        {
+            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
+            {
+                var inPramas = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
+                return inPramas.Select(a => a as NpgsqlParameter).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Maps PostgreSQL data types to NpgsqlDbType. Uses Enum.TryParse first, then fallback mapping.
+        /// </summary>
+        /// <param name="pgType">The PostgreSQL data type from information_schema.udt_name</param>
+        /// <param name="npgsqlType">Represents a PostgreSQL data type that can be written or read to the database</param>
+        /// <returns>True if mapping succeeded; otherwise false</returns>
+        static bool TryMapPostgresType(string pgType, out NpgsqlDbType npgsqlType)
+        {
+            if (string.IsNullOrWhiteSpace(pgType))
+            {
+                npgsqlType = NpgsqlDbType.Unknown;
+                return false;
+            }
+
+            var lower = pgType.ToLowerInvariant();
+
+            // Handle PostgreSQL array types (prefixed with "_", e.g., "_int4")
+            if (lower.StartsWith("_"))
+            {
+                var elementType = lower.Substring(1);
+                if (TryMapPostgresType(elementType, out var baseType) && baseType != NpgsqlDbType.Unknown)
+                {
+                    // Npgsql 9.0.4 supports Array flag combination
+                    npgsqlType = NpgsqlDbType.Array | baseType;
+                    return true;
+                }
+            }
+
+            // First attempt: Try direct enum parse (handles exact enum name matches)
+            if (Enum.TryParse(lower, true, out npgsqlType))
+            {
+                return true;
+            }
+
+            // Second attempt: Manual mapping for PostgreSQL udt_name types that don't match enum names
+            switch (lower)
+            {
+                // Numeric types - PostgreSQL udt_name -> NpgsqlDbType
+                case "int2":
+                    npgsqlType = NpgsqlDbType.Smallint; return true;
+                case "int4":
+                    npgsqlType = NpgsqlDbType.Integer; return true;
+                case "int8":
+                    npgsqlType = NpgsqlDbType.Bigint; return true;
+                case "float4":
+                    npgsqlType = NpgsqlDbType.Real; return true;
+                case "float8":
+                    npgsqlType = NpgsqlDbType.Double; return true;
+                
+                // Character types
+                case "bpchar":
+                    npgsqlType = NpgsqlDbType.Char; return true;
+                case "character varying":
+                    npgsqlType = NpgsqlDbType.Varchar; return true;
+                
+                // Boolean
+                case "bool":
+                    npgsqlType = NpgsqlDbType.Boolean; return true;
+                
+                // Date/Time types with timezone
+                case "timestamptz":
+                case "timestamp with time zone":
+                    npgsqlType = NpgsqlDbType.TimestampTz; return true; 
+                
+                case "timetz":
+                case "time with time zone":
+                    npgsqlType = NpgsqlDbType.TimeTz; return true; 
+                
+                // Date/Time types without timezone
+                case "timestamp without time zone":
+                    npgsqlType = NpgsqlDbType.Timestamp; return true;
+                
+                case "time without time zone":
+                    npgsqlType = NpgsqlDbType.Time; return true;
+                
+                // Geometric types
+                case "lseg":
+                    npgsqlType = NpgsqlDbType.LSeg; return true;
+                
+                // Network address types
+                case "macaddr":
+                    npgsqlType = NpgsqlDbType.MacAddr; return true;
+                case "macaddr8":
+                    npgsqlType = NpgsqlDbType.MacAddr8; return true;
+                
+                // Text search types
+                case "tsvector":
+                    npgsqlType = NpgsqlDbType.TsVector; return true;
+                case "tsquery":
+                    npgsqlType = NpgsqlDbType.TsQuery; return true;
+                
+                // Internal types
+                case "int2vector":
+                    npgsqlType = NpgsqlDbType.Int2Vector; return true;
+                
+                // JSON types
+                case "jsonpath":
+                    npgsqlType = NpgsqlDbType.JsonPath; return true;
+                
+                // PostgreSQL LSN (Log Sequence Number)
+                case "pg_lsn":
+                    npgsqlType = NpgsqlDbType.PgLsn; return true;
+                
+                // ltree extension types
+                case "ltree":
+                    npgsqlType = NpgsqlDbType.LTree; return true;
+                case "lquery":
+                    npgsqlType = NpgsqlDbType.LQuery; return true;
+                case "ltxtquery":
+                    npgsqlType = NpgsqlDbType.LTxtQuery; return true;
+                
+                // Range types
+                case "int4range":
+                    npgsqlType = NpgsqlDbType.IntegerRange; return true;
+                case "int8range":
+                    npgsqlType = NpgsqlDbType.BigIntRange; return true;
+                case "numrange":
+                    npgsqlType = NpgsqlDbType.NumericRange; return true;
+                case "tsrange":
+                    npgsqlType = NpgsqlDbType.TimestampRange; return true;
+                case "tstzrange":
+                    npgsqlType = NpgsqlDbType.TimestampTzRange; return true;
+                case "daterange":
+                    npgsqlType = NpgsqlDbType.DateRange; return true;
+                
+                // Multirange types (PostgreSQL 14+)
+                case "int4multirange":
+                    npgsqlType = NpgsqlDbType.IntegerMultirange; return true;
+                case "int8multirange":
+                    npgsqlType = NpgsqlDbType.BigIntMultirange; return true;
+                case "nummultirange":
+                    npgsqlType = NpgsqlDbType.NumericMultirange; return true;
+                case "tsmultirange":
+                    npgsqlType = NpgsqlDbType.TimestampMultirange; return true;
+                case "tstzmultirange":
+                    npgsqlType = NpgsqlDbType.TimestampTzMultirange; return true;
+                case "datemultirange":
+                    npgsqlType = NpgsqlDbType.DateMultirange; return true;
+                
+                default:
+                    npgsqlType = NpgsqlDbType.Unknown;
+                    return false;
+            }
+        }
+
         List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
             var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-
 
             var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
                 JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
@@ -387,22 +599,36 @@ namespace Dev2.Services.Sql
             {
                 if (row != null)
                 {
-                    var value = row[0].ToString();
+                    var paramName = row[0].ToString();
                     var datatype = row[1].ToString();
                     var direction = row[2].ToString();
 
-
-                    Enum.TryParse(datatype, true, out NpgsqlDbType sqlType);
-
-                    var sqlParameter = new NpgsqlParameter(value, sqlType);
-                    
-                    var isout = direction.ToUpper().Trim().Contains("OUT".Trim());
-                    if (direction.ToUpper().Trim().Contains("IN".Trim()))
+                    // Try direct enum parse first, then use type mapping for PostgreSQL-specific names
+                    if (!Enum.TryParse(datatype, true, out NpgsqlDbType sqlType))
                     {
-                        isout = false;
+                        // Fallback to custom mapping for types that don't match enum names
+                        if (!TryMapPostgresType(datatype, out sqlType))
+                        {
+                            // If mapping fails, leave as Unknown and let Npgsql infer from value
+                            sqlType = NpgsqlDbType.Unknown;
+                        }
                     }
 
-                    if (!isout)
+                    var sqlParameter = new NpgsqlParameter(paramName, sqlType);
+                    
+                    // Only explicitly set type if we successfully mapped it
+                    if (sqlType != NpgsqlDbType.Unknown)
+                    {
+                        sqlParameter.NpgsqlDbType = sqlType;
+                    }
+
+                    var isOutput = direction.ToUpper().Trim().Contains("OUT");
+                    if (direction.ToUpper().Trim().Contains("IN"))
+                    {
+                        isOutput = false;
+                    }
+
+                    if (!isOutput)
                     {
                         command.Parameters.Add(sqlParameter);
                         parameters.Add(sqlParameter);
@@ -417,23 +643,30 @@ namespace Dev2.Services.Sql
             }
 
             command.CommandText = originalCommandText;
-
             return parameters;
         }
 
 
         /// <summary>
         /// This method returns the type of the provided procedure/function
+        /// Returns: "<procedure>" for procedures, "<void>" for functions returning void, or the actual return type name for functions
         /// </summary>
         /// <param name="fullProcedureName"></param>
-        /// <returns>return type of the object, Default "void"</returns>
+        /// <returns>return type identifier</returns>
         public string GetProcedureReturnType(string fullProcedureName)
         {
             using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
                 var originalCommandText = command.CommandText;
 
-                var proc = string.Format(GlobalConstants.ReturnTypePostgreSql, fullProcedureName);
+                // Query to get both the routine type (procedure/function) and return type
+                var proc = string.Format(@"
+                    SELECT 
+                        r.routine_type,
+                        r.data_type AS return_type
+                    FROM information_schema.routines r
+                    WHERE r.specific_schema='public' 
+                    AND r.routine_name ='{0}'", fullProcedureName);
 
                 command.CommandType = CommandType.Text;
                 command.CommandText = proc;
@@ -443,10 +676,27 @@ namespace Dev2.Services.Sql
 
                 if (dataTable.Rows.Count > 0)
                 {
-                    return dataTable.Rows[0].ItemArray[0].ToString();
+                    var row = dataTable.Rows[0];
+                    var routineType = row["routine_type"]?.ToString()?.ToUpper() ?? "";
+                    var returnType = row["return_type"]?.ToString() ?? "";
+
+                    // Check if it's a procedure
+                    if (routineType == "PROCEDURE")
+                    {
+                        return "<procedure>";
+                    }
+
+                    // It's a function - check the return type
+                    if (string.IsNullOrEmpty(returnType) || returnType.Equals("void", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "<void>";
+                    }
+
+                    // Return the actual type name for functions
+                    return returnType;
                 }
                
-                return "void";
+                return "<void>";
             }
         }
 

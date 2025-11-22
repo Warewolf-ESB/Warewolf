@@ -27,6 +27,7 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 
 namespace Dev2.Activities
 {
@@ -348,6 +349,49 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Activities != null ? Activities.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the DsfSequence activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to be filled with Sequence data</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFSEQUENCE;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFSEQUENCE;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_SEQUENCE;
+        }
+
+        /// <summary>
+        /// Deserializes the DsfSequence activity from X6 JSON data
+        /// </summary>
+        /// <param name="cell">The X6 cell containing DsfSequence data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            try
+            {
+                object displayName;
+                if(cell.data.TryGetValue(Constants.DISPLAYNAME, out displayName))
+                {
+                    this.DisplayName = displayName.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't throw - graceful degradation
+                Dev2Logger.Error($"Error deserializing DsfSequence data from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
         }
     }

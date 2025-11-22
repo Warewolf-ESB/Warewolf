@@ -140,7 +140,7 @@ namespace Dev2.Services.Sql
 
             return _factory.FetchDataSet(command);
         }
-        public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
+        public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
         {
             var command = _connection.CreateCommand();
             command.CommandText = _command.CommandText;
@@ -149,7 +149,7 @@ namespace Dev2.Services.Sql
 
             VerifyConnection();
             AddParameters(command, parameters);
-            foreach(var par in outparameters)
+            foreach (var par in outparameters)
             {
                 command.Parameters.Add(par);
             }
@@ -263,7 +263,7 @@ namespace Dev2.Services.Sql
 
         public void Connect(string connectionString)
         {
-            _connection = (MySqlConnection)_factory.CreateConnection(connectionString);            
+            _connection = (MySqlConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
         }
 
@@ -278,7 +278,7 @@ namespace Dev2.Services.Sql
             }
 
             _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
-            
+
             _connection.Open();
             return true;
         }
@@ -358,16 +358,16 @@ namespace Dev2.Services.Sql
 
         public List<MySqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
-            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName, CommandTimeout))
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
 
                 GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
-                return isOut.Select(a=>a as MySqlParameter).ToList();
+                return isOut.Select(a => a as MySqlParameter).ToList();
 
             }
         }
 
-        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName,out List<IDbDataParameter> outParams)
+        public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
@@ -376,60 +376,134 @@ namespace Dev2.Services.Sql
             command.CommandType = CommandType.Text;
             command.CommandText =
                 string.Format(
-                    "SELECT param_list FROM mysql.proc WHERE db='{0}' AND name='{1}'",
+                    "SELECT PARAMETER_NAME, PARAMETER_MODE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_SCHEMA='{0}' AND SPECIFIC_NAME='{1}' ORDER BY ORDINAL_POSITION",
                     dbName, procedureName);
             var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                if (row?[0] is byte[] bytes)
-                {
-                    GetProcInputs(command, outParams, parameters, bytes);
-                }
+                GetProcInputsFromRow(command, outParams, parameters, row);
             }
             command.CommandText = originalCommandText;
             return parameters;
         }
 
-        private static void GetProcInputs(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, byte[] bytes)
+        private static void GetProcInputsFromRow(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, DataRow row)
         {
-            var parameterName = Encoding.Default.GetString(bytes);
-            parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
-            var parameternames = parameterName.Split(',');
-            foreach (var parameter in parameternames)
+            var parameterName = row["PARAMETER_NAME"]?.ToString();
+            var parameterMode = row["PARAMETER_MODE"]?.ToString();
+            var dataType = row["DATA_TYPE"]?.ToString();
+
+            if (string.IsNullOrEmpty(parameterName) || string.IsNullOrEmpty(dataType))
             {
-                var isout = false;
-                const ParameterDirection direction = ParameterDirection.Input;
-                if (parameter.Contains("OUT "))
+                return;
+            }
+
+            var direction = ParameterDirection.Input;
+            var isOut = false;
+
+            if (parameterMode == "OUT")
+            {
+                direction = ParameterDirection.Output;
+                isOut = true;
+            }
+            else if (parameterMode == "INOUT")
+            {
+                direction = ParameterDirection.InputOutput;
+                isOut = false;
+            }
+
+            // Map MySQL data types to MySqlDbType
+            if (!Enum.TryParse(dataType, true, out MySqlDbType sqlType))
+            {
+                // Handle common type mappings that don't match enum names exactly
+                sqlType = MapDataTypeToMySqlDbType(dataType);
+            }
+
+            var sqlParameter = new MySqlParameter(parameterName, sqlType) { Direction = direction };
+
+            // Set size for varchar and other sized types
+            if (row["CHARACTER_MAXIMUM_LENGTH"] != DBNull.Value && row["CHARACTER_MAXIMUM_LENGTH"] != null)
+            {
+                var maxLength = Convert.ToInt32(row["CHARACTER_MAXIMUM_LENGTH"]);
+                if (maxLength > 0)
                 {
-                    isout = true;
+                    sqlParameter.Size = maxLength;
                 }
+            }
 
-                if (parameter.Contains("INOUT"))
-                {
-                    isout = false;
-                }
+            command.Parameters.Add(sqlParameter);
 
-                var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
-                if (!String.IsNullOrEmpty(parameterName))
-                {
-                    var split = parameterx.Split(' ');
+            if (!isOut)
+            {
+                parameters.Add(sqlParameter);
+            }
+            else
+            {
+                sqlParameter.Value = "@a";
+                outParams.Add(sqlParameter);
+            }
+        }
 
-                    Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
-
-                    var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
-                    if (!isout)
-                    {
-                        command.Parameters.Add(sqlParameter);
-                        parameters.Add(sqlParameter);
-                    }
-                    else
-                    {
-                        sqlParameter.Direction = ParameterDirection.Output;
-                        outParams.Add(sqlParameter);
-                        sqlParameter.Value = "@a";
-                        command.Parameters.Add(sqlParameter);
-                    }
-                }
+        private static MySqlDbType MapDataTypeToMySqlDbType(string dataType)
+        {
+            switch (dataType.ToLower())
+            {
+                case "varchar":
+                case "char":
+                    return MySqlDbType.VarChar;
+                case "text":
+                    return MySqlDbType.Text;
+                case "int":
+                case "integer":
+                    return MySqlDbType.Int32;
+                case "bigint":
+                    return MySqlDbType.Int64;
+                case "smallint":
+                    return MySqlDbType.Int16;
+                case "tinyint":
+                    return MySqlDbType.Byte;
+                case "decimal":
+                case "numeric":
+                    return MySqlDbType.Decimal;
+                case "float":
+                    return MySqlDbType.Float;
+                case "double":
+                    return MySqlDbType.Double;
+                case "datetime":
+                    return MySqlDbType.DateTime;
+                case "timestamp":
+                    return MySqlDbType.Timestamp;
+                case "date":
+                    return MySqlDbType.Date;
+                case "time":
+                    return MySqlDbType.Time;
+                case "blob":
+                    return MySqlDbType.Blob;
+                case "longblob":
+                    return MySqlDbType.LongBlob;
+                case "mediumblob":
+                    return MySqlDbType.MediumBlob;
+                case "tinyblob":
+                    return MySqlDbType.TinyBlob;
+                case "longtext":
+                    return MySqlDbType.LongText;
+                case "mediumtext":
+                    return MySqlDbType.MediumText;
+                case "tinytext":
+                    return MySqlDbType.TinyText;
+                case "bit":
+                    return MySqlDbType.Bit;
+                case "binary":
+                case "varbinary":
+                    return MySqlDbType.VarBinary;
+                case "enum":
+                    return MySqlDbType.Enum;
+                case "set":
+                    return MySqlDbType.Set;
+                case "json":
+                    return MySqlDbType.JSON;
+                default:
+                    return MySqlDbType.VarChar; // Default fallback
             }
         }
 

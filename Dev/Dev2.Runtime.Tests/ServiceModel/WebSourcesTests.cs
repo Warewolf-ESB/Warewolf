@@ -550,8 +550,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
 
             mockWebRequest.Verify(o => o.AddHeader(It.IsAny<string>()), Times.Exactly(2)); 
-            mockWebRequest.Verify(o => o.AddHeader("a:x"), Times.Once);
-            mockWebRequest.Verify(o => o.AddHeader("b:e"), Times.Once);
+            mockWebRequest.Verify(o => o.AddHeader("a: x"), Times.Once);
+            mockWebRequest.Verify(o => o.AddHeader("b: e"), Times.Once);
         }
 
         [TestMethod]

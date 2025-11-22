@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -35,6 +36,8 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Activities.Factories.Case;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Newtonsoft.Json;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -328,7 +331,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			if (listOfValidRows.Count > 0)
 			{
 				var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
-				foreach (string s in listToAdd)
+				foreach (string s in listToAdd
+)
 				{
 					ConvertCollection.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
 					startIndex++;
@@ -539,6 +543,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 return (base.GetHashCode() * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the CaseConvert activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with CaseConvert data</param>
+        public override void ToX6Json(Cell cell)
+		{
+			if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+			base.ToX6Json(cell);
+
+			cell.shape = Constants.DSFCASECONVERTACTIVITY;
+
+			cell.data[Constants.TYPE] = Constants.DSFCASECONVERTACTIVITY;
+			cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_CASECONVERT;
+			cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.Add(Constants.CONVERTCOLLECTION, ConvertCollection);
+        }
+
+        /// <summary>
+        /// Deserializes X6 JSON to populate the CaseConvert activity
+        /// </summary>
+        /// <param name="cell">The X6 cell containing CaseConvert data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Deserialize ConvertCollection
+            if (cell.data.TryGetValue(Constants.CONVERTCOLLECTION, out var convertCollectionObj))
+            {
+                var convertCollectionJson = convertCollectionObj?.ToString();
+                if (!string.IsNullOrEmpty(convertCollectionJson))
+                {
+                    try
+                    {
+                        var deserializedCollection = JsonConvert.DeserializeObject<List<CaseConvertTO>>(convertCollectionJson);
+                        if (deserializedCollection != null)
+                        {
+                            ConvertCollection = new List<ICaseConvertTO>(deserializedCollection);
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        Dev2Logger.Error($"Error deserializing ConvertCollection: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                    }
+                }
             }
         }
     }

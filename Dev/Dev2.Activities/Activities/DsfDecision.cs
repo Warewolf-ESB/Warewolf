@@ -32,6 +32,8 @@ using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Utilities;
 using Warewolf.Exceptions;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
 
 namespace Dev2.Activities
 {
@@ -282,7 +284,7 @@ namespace Dev2.Activities
                 {
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {
@@ -507,8 +509,63 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
-    }
 
+        public override void ToX6Json(Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            if (this._inner != null)
+            {
+                this._inner.ToX6Json(cell);
+            }
+            else
+            {
+                base.ToX6Json(cell);
+            }
+
+            var label = GetDisplayName();
+            cell.label = label;
+            cell.shape = Constants.DSFDECISION;
+            cell.data.Add(Constants.TYPE, Constants.FLOWDECISION);
+            cell.data.Add(Constants.DISPLAYTEXT, label);
+            cell.data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
+            cell.data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);
+            cell.data.Add(Constants.EXPRESSION, Conditions.ToWebModel());
+            cell.data.Add(Constants.AND, And);
+        }
+
+        public override void FromX6Json(Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            object expression, and;
+            cell.data.TryGetValue(Constants.EXPRESSION, out expression);
+            cell.data.TryGetValue(Constants.AND, out and);
+
+            if (and != null)
+            {
+                this.And = And;
+            }
+
+            if (expression != null)
+            {
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.ToString());
+                if (string.IsNullOrEmpty(eval))
+                    eval = expression.ToString();
+
+                if (!string.IsNullOrEmpty(eval))
+                {
+                    var ser = new Dev2JsonSerializer();
+                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                    this.Conditions = dds;
+                }
+            }
+        }
+
+
+    }
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
         readonly DsfDecision _dsfDecision;
@@ -606,5 +663,8 @@ namespace Dev2.Activities
             }
             return false;
         }
+
+
+
     }
 }

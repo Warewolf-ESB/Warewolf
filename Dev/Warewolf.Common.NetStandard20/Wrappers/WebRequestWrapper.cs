@@ -84,5 +84,16 @@ namespace Warewolf.Common.NetStandard20
         {
             _request.Headers.Add(header);
         }
-    }
+
+        public WebRequest GetRequest()
+        {
+            return _request;
+        }
+
+		public void SetAcceptHeader(string acceptHeader)
+		{
+			if (_request is HttpWebRequest httpReq)
+				httpReq.Accept = acceptHeader;
+		}
+	}
 }

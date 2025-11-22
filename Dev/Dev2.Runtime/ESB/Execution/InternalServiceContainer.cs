@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.X6;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.TO;
@@ -21,9 +22,12 @@ using Dev2.Data.Util;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -43,8 +47,8 @@ namespace Dev2.Runtime.ESB.Execution
         public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
-            
-            if(request.Args == null)
+
+            if (request.Args == null)
             {
                 if (sa.DataListSpecification == null)
                 {
@@ -52,9 +56,9 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 var dataListTo = new DataListTO(sa.DataListSpecification.ToString());
                 request.Args = new Dictionary<string, StringBuilder>();
-                foreach(var input in dataListTo.Inputs)
+                foreach (var input in dataListTo.Inputs)
                 {
-                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
+                    var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input), 0);
                     if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
                     {
                         request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
@@ -79,17 +83,19 @@ namespace Dev2.Runtime.ESB.Execution
                 if (eme != null)
                 {
                     // Web request for internal service ;)
-                    if(Request.Args == null)
+                    if (Request.Args == null)
                     {
                         GenerateRequestDictionaryFromDataObject(out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                     }
                     if (CanExecute(eme))
                     {
-                        Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser,()=>
+                        OnBeforeRequestExecution(Request);
+                        Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
                         {
                             ExecuteService(eme);
                             result = DataObject.DataListID;
+                            OnAfterRequestExecution(Request);
                         });
                         errors.MergeErrors(invokeErrors);
                     }
@@ -167,6 +173,22 @@ namespace Dev2.Runtime.ESB.Execution
         {
             errors = null;
             Request.Args = new Dictionary<string, StringBuilder>();
+        }
+
+        private void OnBeforeRequestExecution(EsbExecuteRequest request)
+        {
+            if (request.ServiceName == SaveResourceJSON.ServiceName())
+            {
+                JsonToWorkflowMapper.Process(request);
+            }
+        }
+
+        private void OnAfterRequestExecution(EsbExecuteRequest request)
+        {
+            if (request.ServiceName == FetchJSONResourceDefinition.ServiceName())
+            {
+                WorkflowToJsonMapper.Process(request);
+            }
         }
     }
 }

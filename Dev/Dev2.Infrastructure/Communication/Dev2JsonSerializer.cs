@@ -12,11 +12,12 @@
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Communication;
-using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Communication
 {
@@ -29,7 +30,8 @@ namespace Dev2.Communication
             TypeNameHandling = TypeNameHandling.Objects,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            Converters = { new PortableTypeJsonConverter() }
         };
         readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
         {
@@ -37,7 +39,8 @@ namespace Dev2.Communication
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            SerializationBinder = new DotNetCompatibleSerializationBinder()
+            SerializationBinder = new DotNetCompatibleSerializationBinder(),
+            Converters = { new PortableTypeJsonConverter() }
         };
         public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
         public string Serialize<T>(T obj, Formatting formatting) => JsonConvert.SerializeObject(obj, formatting, _serializerSettings);
@@ -68,6 +71,8 @@ namespace Dev2.Communication
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
+                jsonSerializer.Converters.Add(new PortableTypeJsonConverter());
+
                 using (var jsonTextWriter = new JsonTextWriter(sw))
                 {
                     jsonSerializer.Serialize(jsonTextWriter, obj);
@@ -88,8 +93,10 @@ namespace Dev2.Communication
                     TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling,
-                    SerializationBinder= _deSerializerSettings.SerializationBinder
+                    SerializationBinder = _deSerializerSettings.SerializationBinder
                 };
+                serializer.Converters.Add(new PortableTypeJsonConverter());
+
                 using (MemoryStream ms = new MemoryStream(message.Length))
                 {
                     // now load the stream ;)
@@ -144,6 +151,8 @@ namespace Dev2.Communication
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
+                jsonSerializer.Converters.Add(new PortableTypeJsonConverter());
+
                 using (var jsonTextWriter = new JsonTextWriter(streamWriter))
                 {
                     jsonSerializer.Serialize(jsonTextWriter, obj);
@@ -178,7 +187,7 @@ namespace Dev2.Communication
     {
         private const string CoreLibAssembly = "System.Private.CoreLib";
         private const string AltCoreLibAssembly = "System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e";
-		private const string MscorlibAssembly = "mscorlib";
+        private const string MscorlibAssembly = "mscorlib";
 
         public override Type BindToType(string assemblyName, string typeName)
         {
@@ -193,6 +202,184 @@ namespace Dev2.Communication
                 typeName = typeName.Replace(AltCoreLibAssembly, MscorlibAssembly);
             }
             return base.BindToType(assemblyName, typeName);
+        }
+    }
+
+    internal sealed class PortableTypeJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType) => objectType == typeof(Type);
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
+            var type = (Type)value;
+
+            // For simple types we just emit FullName (e.g., System.Int32).
+            // Arrays or generics can be added if required later.
+            writer.WriteValue(type.FullName);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+
+            var raw = reader.Value?.ToString();
+            if (string.IsNullOrWhiteSpace(raw)) return null;
+
+            // If assembly-qualified, try binder first
+            var commaIndex = raw.IndexOf(',');
+            if (commaIndex > 0 && serializer.SerializationBinder is DefaultSerializationBinder binder)
+            {
+                // Split "Namespace.Type, Assembly, Version=..., Culture=..., PublicKeyToken=..."
+                var typePart = raw.Substring(0, commaIndex).Trim();
+                var asmPart = raw.Substring(commaIndex + 1).Trim();
+                try
+                {
+                    var t = binder.BindToType(asmPart, typePart);
+                    if (t != null) return t;
+                }
+                catch { /* fall through */ }
+            }
+
+            var resolved = TryGetSystemType(raw) ?? MapDbSpecificTypeName(raw);
+            return resolved ?? typeof(object);
+        }
+
+        static Type TryGetSystemType(string fullName)
+        {
+            // Try without assembly (works for many in current AppDomain)
+            var t = Type.GetType(fullName);
+            if (t != null) return t;
+
+            // .NET Framework core
+            t = Type.GetType($"{fullName}, mscorlib");
+            if (t != null) return t;
+
+            // .NET Core / .NET 6 core
+            t = Type.GetType($"{fullName}, System.Private.CoreLib");
+            if (t != null) return t;
+
+            // Common primitive aliases
+            switch (fullName)
+            {
+                case "string": return typeof(string);
+                case "bool":
+                case "boolean": return typeof(bool);
+                case "byte": return typeof(byte);
+                case "short":
+                case "Int16": return typeof(short);
+                case "int":
+                case "Int32": return typeof(int);
+                case "long":
+                case "Int64": return typeof(long);
+                case "float":
+                case "Single": return typeof(float);
+                case "double":
+                case "Double": return typeof(double);
+                case "decimal": return typeof(decimal);
+                case "Guid":
+                case "System.Guid": return typeof(Guid);
+                case "DateTime": return typeof(DateTime);
+                case "TimeSpan": return typeof(TimeSpan);
+            }
+
+            return null;
+        }
+
+        static Type MapDbSpecificTypeName(string name)
+        {
+            // Normalize DB type names (various providers)
+            var upper = name.Trim().ToUpperInvariant();
+
+            switch (upper)
+            {
+                // Character / text
+                case "CHAR":
+                case "NCHAR":
+                case "VARCHAR":
+                case "NVARCHAR":
+                case "VARCHAR2":
+                case "NVARCHAR2":
+                case "TEXT":
+                case "NTEXT":
+                case "CLOB":
+                case "NCLOB":
+                case "XML":
+                case "JSON":
+                case "UUID": // treat UUID as Guid elsewhere
+                    if (upper == "UUID") return typeof(Guid);
+                    return typeof(string);
+
+                // Integer family
+                case "INT":
+                case "INTEGER":
+                case "INT4":
+                case "MEDIUMINT":
+                case "SMALLINT":
+                case "INT2":
+                case "NUMBER(10)": // example Oracle numeric mapping
+                    return typeof(int);
+                case "BIGINT":
+                case "INT8":
+                    return typeof(long);
+                case "TINYINT":
+                    return typeof(byte);
+
+                // Decimal / numeric
+                case "DECIMAL":
+                case "NUMERIC":
+                case "NUMBER":
+                case "MONEY":
+                case "SMALLMONEY":
+                    return typeof(decimal);
+
+                // Floating point
+                case "FLOAT":
+                case "REAL":
+                case "DOUBLE":
+                case "DOUBLE PRECISION":
+                    return typeof(double);
+
+                // Date / time
+                case "DATE":
+                case "DATETIME":
+                case "SMALLDATETIME":
+                case "TIMESTAMP":
+                case "TIMESTAMPTZ":
+                case "DATETIME2":
+                case "DATETIMEOFFSET":
+                    return typeof(DateTime);
+                case "TIME":
+                case "TIMETZ":
+                    return typeof(TimeSpan);
+
+                // Boolean
+                case "BIT":
+                case "BOOLEAN":
+                case "BOOL":
+                    return typeof(bool);
+
+                // GUID
+                case "UNIQUEIDENTIFIER":
+                    return typeof(Guid);
+
+                // Binary / blob
+                case "BLOB":
+                case "BYTEA":
+                case "VARBINARY":
+                case "BINARY":
+                case "IMAGE":
+                case "ROWVERSION":
+                    return typeof(byte[]);
+
+                default:
+                    return null;
+            }
         }
     }
 }

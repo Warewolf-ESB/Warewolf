@@ -32,7 +32,10 @@ namespace Dev2
     {
         public StringBuilder GetResourceDefinition( bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
+            
             var serializer = new Dev2JsonSerializer();
+            //return serializer.SerializeToBuilder(this.GetRawResourceDefinition(prepairForDeployment, resourceId, contents));
+
             var res = new ExecuteMessage();
             try
             {
@@ -81,8 +84,60 @@ namespace Dev2
                 }
             }
 
-
             return serializer.SerializeToBuilder(res);
+        }
+
+        public IExecuteMessage GetRawResourceDefinition(bool prepairForDeployment, Guid resourceId, StringBuilder contents)
+        {
+            var result = new ExecuteMessage(); 
+            try
+            {
+                if (!contents.IsNullOrEmpty())
+                {
+                    var assembly = Assembly.Load("Dev2.Data");
+                    var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
+                    var instance = Activator.CreateInstance(type, contents.ToXElement());
+
+                    var resource = (IResource)instance;
+                    if (resource.ResourceType == @"DbSource")
+                    {
+                        result.Message.Append(contents);
+                    }
+                    else
+                    {
+                        DoWorkflowServiceMessage(contents, result);
+                    }
+                }
+            }
+            catch (ServiceNotAuthorizedException ex)
+            {
+                result.Message = ex.Message.ToStringBuilder();
+                result.HasError = true;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(string.Format(ErrorResource.ErrorGettingResourceDefinition, resourceId), e, GlobalConstants.WarewolfError);
+            }
+
+            if (!result.Message.IsNullOrEmpty())
+            {
+                var dev2XamlCleaner = new Dev2XamlCleaner();
+                result.Message = dev2XamlCleaner.StripNaughtyNamespaces(result.Message);
+            }
+            if (prepairForDeployment)
+            {
+                try
+                {
+                    result.Message = DecryptAllPasswords(result.Message);
+                }
+                catch (CryptographicException e)
+                {
+                    Dev2Logger.Error(@"Encryption had issues.", e, GlobalConstants.WarewolfError);
+                }
+            }
+
+            return result;
         }
 
         private static void DoWorkflowServiceMessage(StringBuilder result, IExecuteMessage res)

@@ -20,6 +20,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -28,6 +29,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -386,6 +388,102 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
                 hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Find Index activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate</param>
+        public override void ToX6Json(Cell cell)
+        {
+            base.ToX6Json(cell);
+
+            cell.data[Constants.TYPE] = Constants.DSFINDEXACTIVITY;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FINDINDEX;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.shape = Constants.RECT;
+
+            // Add Find Index specific data
+            cell.data["InField"] = InField ?? string.Empty;
+            cell.data["Index"] = Index ?? "First Occurrence";
+            cell.data["Characters"] = Characters ?? string.Empty;
+            cell.data["Direction"] = Direction ?? "Left to Right";
+            cell.data["Result"] = Result ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Deserializes the Find Index activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Find Index data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            try
+            {
+                // Deserialize DisplayName
+                if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
+                {
+                    DisplayName = displayName;
+                }
+
+                // Deserialize UniqueID
+                if (cell.data.TryGetValue(Constants.UNIQUEID, out var uniqueIdObj) && uniqueIdObj is string uniqueId)
+                {
+                    UniqueID = uniqueId;
+                }
+
+                if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
+                {
+                    Dictionary<string, object> properties = null;
+
+                    if (propertiesObj is Dictionary<string, object> dict)
+                    {
+                        properties = dict;
+                    }
+                    else
+                    {
+                        var propertiesJson = propertiesObj?.ToString();
+                        if (!string.IsNullOrEmpty(propertiesJson))
+                        {
+                            try
+                            {
+                                properties = JsonConvert.DeserializeObject<Dictionary<string, object>>(propertiesJson);
+                            }
+                            catch (JsonException)
+                            {
+                                // Ignore and use direct properties
+                            }
+                        }
+                    }
+
+                    if (properties != null)
+                    {
+                        // Only use properties from the nested object if not already set from direct access
+                        if (string.IsNullOrEmpty(InField) && properties.TryGetValue("InField", out var inFieldProp))
+                            InField = inFieldProp?.ToString() ?? string.Empty;
+
+                        if (Index == "First Occurrence" && properties.TryGetValue("Index", out var indexProp))
+                            Index = indexProp?.ToString() ?? "First Occurrence";
+
+                        if (string.IsNullOrEmpty(Characters) && properties.TryGetValue("Characters", out var charactersProp))
+                            Characters = charactersProp?.ToString() ?? string.Empty;
+
+                        if (Direction == "Left to Right" && properties.TryGetValue("Direction", out var directionProp))
+                            Direction = directionProp?.ToString() ?? "Left to Right";
+
+                        if (string.IsNullOrEmpty(Result) && properties.TryGetValue("Result", out var resultProp))
+                            Result = resultProp?.ToString() ?? string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing Find Index data from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
         }
     }

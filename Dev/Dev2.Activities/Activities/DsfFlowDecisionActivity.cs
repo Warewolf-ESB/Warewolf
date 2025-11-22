@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
@@ -68,5 +69,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new StateVariable[0];
         }
+
+        public override void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            object expression, displayText;
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.EXPRESSION, out expression);
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.DISPLAYTEXT, out displayText);
+
+            if (expression != null)
+            {
+                var expresionText = expression.ToString().Replace("\"", "!");
+                this.ExpressionText = string.Format(@"Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(""{0}"",AmbientDataList)", expresionText);
+            }
+
+            if (displayText != null)
+            {
+                this.DisplayName = displayText.ToString();
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+        }
+
     }
 }

@@ -202,7 +202,7 @@ namespace Dev2.Services.Security
         protected void DumpPermissionsOnError(IPrincipal principal)
         {
 
-            Dev2Logger.Error(principal.Identity != null ? "PERM DUMP FOR [ " + principal.Identity.Name + " ]" : "PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
+            Dev2Logger.Error(principal.Identity != null ? "PERM DUMP FOR [ " + GetIdentityName(principal.Identity) + " ]" : "PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
 
 
             foreach (var perm in _securityService.Permissions)
@@ -298,7 +298,7 @@ namespace Dev2.Services.Security
                 var windowsGroup = p.WindowsGroup;
                 if (windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
-                    var principleName = principal.Identity.Name;
+                    var principleName = GetIdentityName(principal.Identity);
                     if (!string.IsNullOrEmpty(principleName))
                     {
                         return TryIsInRole(principal, windowsGroup);
@@ -331,6 +331,22 @@ namespace Dev2.Services.Security
             }
 
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        private string GetIdentityName(IIdentity identity)
+        {
+            if (identity == null) return string.Empty;
+
+            try
+            {
+                if (identity is WindowsIdentity windowsIdentity && windowsIdentity.AccessToken.IsClosed) { return string.Empty; }
+
+                return identity.Name;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         bool TryIsInRole(IPrincipal principal, string windowsGroup)
@@ -409,8 +425,9 @@ namespace Dev2.Services.Security
 
         bool DoFallBackCheck(IPrincipal principal)
         {
-            var username = principal?.Identity?.Name;
-            if (username == null)
+            var identity = principal?.Identity;
+            var username = GetIdentityName(identity);
+            if (string.IsNullOrEmpty(username))
             {
                 return false;
             }

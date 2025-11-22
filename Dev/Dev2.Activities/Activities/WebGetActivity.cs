@@ -28,6 +28,9 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Activities
 {
@@ -196,5 +199,47 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.WEBGETACTIVITY;
+            cell.data[Constants.TYPE] = Constants.WEBGETACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBGET;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.WEBMETHOD_HEADERS] = Headers;
+            cell.data[Constants.WEBMETHOD_QUERYSTRING] = QueryString;
+            cell.data[Constants.WEBMETHOD_SOURCEID] = SourceId;
+            cell.data[Constants.WEBMETHOD_OUTPUTDESCRIPTION] = OutputDescription;
+            cell.data[Constants.WEBMETHOD_INPUTS] = Inputs;
+            cell.data[Constants.WEBMETHOD_OUTPUTS] = Outputs;
+            cell.data[Constants.WEBMETHOD_ISOBJECT] = IsObject;
+            cell.data[Constants.WEBMETHOD_OBJECTNAME] = ObjectName;
+            cell.data[Constants.WEBMETHOD_OBJECTRESULT] = ObjectResult;
+            cell.data[Constants.WEBMETHOD_ISRESPONSEBASE64] = IsResponseBase64;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTRESULT, out var objectResult)) ObjectResult = objectResult;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_QUERYSTRING, out var queryString)) QueryString = queryString;
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISOBJECT, out var isObject)) IsObject = isObject;
+            if (cell.data.TryGetString(Constants.WEBMETHOD_OBJECTNAME, out var objectName)) ObjectName = objectName;
+
+            if (cell.data.TryGetHeaders(out var headers)) Headers = headers;
+            if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
+            if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
+            if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
+            if (cell.data.TryGetBool(Constants.WEBMETHOD_ISRESPONSEBASE64, out var isResponseBase64)) IsResponseBase64 = isResponseBase64;
+        }
+
     }
 }
