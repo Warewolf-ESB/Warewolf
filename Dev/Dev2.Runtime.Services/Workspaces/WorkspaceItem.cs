@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace Dev2.Workspaces
 {
-    [Serializable]
+    [DataContract]
     public class WorkspaceItem : IWorkspaceItem
     {
         public static readonly string ServiceServiceType = "DynamicService";
@@ -32,6 +32,7 @@ namespace Dev2.Workspaces
             EnvironmentID = environmentId;
         }
 
+        [DataMember]
         public Guid EnvironmentID { get; private set; }
 
         #endregion
@@ -41,6 +42,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// The unique ID of the item.
         /// </summary>
+        [DataMember]
         public Guid ID
         {
             get;
@@ -54,6 +56,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets or sets the workspace ID.
         /// </summary>
+        [DataMember]
         public Guid WorkspaceID
         {
             get;
@@ -67,6 +70,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets or sets the server ID.
         /// </summary>
+        [DataMember]
         public Guid ServerID
         {
             get;
@@ -80,6 +84,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets or sets the action to be taken on the item.
         /// </summary>
+        [DataMember]
         public WorkspaceItemAction Action
         {
             get;
@@ -93,6 +98,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets or sets the name of the service.
         /// </summary>
+        [DataMember]
         public string ServiceName
         {
             get;
@@ -106,6 +112,7 @@ namespace Dev2.Workspaces
         /// <summary>
         /// Gets or sets the type of the service.
         /// </summary>
+        [DataMember]
         public string ServiceType
         {
             get;
@@ -114,8 +121,13 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        #region ISerializable
+        #region ISerializable - DEPRECATED: Kept for backward compatibility with BinaryFormatter only
 
+        /// <summary>
+        /// DEPRECATED: This constructor is for backward compatibility with BinaryFormatter.
+        /// DataContractSerializer does not use this constructor.
+        /// </summary>
+        [Obsolete("This constructor is for backward compatibility with BinaryFormatter only. Do not use in new code.")]
         protected WorkspaceItem(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -130,6 +142,11 @@ namespace Dev2.Workspaces
             IsWorkflowSaved = (bool)info.GetValue("IsWorkflowSaved", typeof(bool));
         }
 
+        /// <summary>
+        /// DEPRECATED: This method is for backward compatibility with BinaryFormatter.
+        /// DataContractSerializer does not use this method.
+        /// </summary>
+        [Obsolete("This method is for backward compatibility with BinaryFormatter only. Do not use in new code.")]
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -138,7 +155,7 @@ namespace Dev2.Workspaces
             }
             info.AddValue("ID", ID);
             info.AddValue("WorkspaceID", WorkspaceID);
-            info.AddValue("ServerID", ServerID); 
+            info.AddValue("ServerID", ServerID);
             info.AddValue("Action", Action);
             info.AddValue("ServiceName", ServiceName);
             info.AddValue("IsWorkflowSaved", IsWorkflowSaved);
@@ -146,6 +163,7 @@ namespace Dev2.Workspaces
 
         #endregion
 
+        [DataMember]
         public bool IsWorkflowSaved
         {
             get;

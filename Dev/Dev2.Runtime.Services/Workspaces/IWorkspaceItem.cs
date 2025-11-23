@@ -18,7 +18,10 @@ namespace Dev2.Workspaces
     /// <summary>
     /// Defines the requirements for a <see cref="IWorkspace"/> item.
     /// </summary>
-    public interface IWorkspaceItem : ISerializable, IEquatable<IWorkspaceItem>
+    /// <remarks>
+    /// ISerializable removed for .NET 8+ compatibility. Use DataContractSerializer instead of BinaryFormatter.
+    /// </remarks>
+    public interface IWorkspaceItem : IEquatable<IWorkspaceItem>
     {
         /// <summary>
         /// The unique ID of the item.

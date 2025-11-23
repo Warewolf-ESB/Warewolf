@@ -10,25 +10,49 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 
 namespace Dev2.Diagnostics
 {
-    [Serializable]
+    [DataContract]
     public class DebugItemResult : IDebugItemResult
     {
+        [DataMember]
         public DebugItemResultType Type { get; set; }
+
+        [DataMember]
         public string Label { get; set; }
+
+        [DataMember]
         public string Variable { get; set; }
+
+        [DataMember]
         public string TruncatedValue { get; set; }
+
+        [DataMember]
         public string Operator { get; set; }
+
+        [DataMember]
         public string Value { get; set; }
+
+        [DataMember]
         public string GroupName { get; set; }
+
+        [DataMember]
         public int GroupIndex { get; set; }
+
+        [DataMember]
         public string MoreLink { get; set; }
+
+        [DataMember]
         public bool HasError { get; set; }
+
+        [DataMember]
         public bool TestStepHasError { get; set; }
+
+        [DataMember]
         public bool MockSelected { get; set; }
 
         public string GetMoreLinkItem() => string.IsNullOrEmpty(Variable) ? Value : string.Format("{0} {1} {2}", Variable, Operator, Value);

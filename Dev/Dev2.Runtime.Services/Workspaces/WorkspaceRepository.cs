@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
@@ -318,10 +317,12 @@ namespace Dev2.Workspaces
             }
 
             var filePath = GetFileName(workspace.ID);
+            var knownTypes = new List<Type> { typeof(List<IWorkspaceItem>) };
+            var serializer = new DataContractSerializer(typeof(Workspace), knownTypes);
+
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, workspace);
+                serializer.WriteObject(stream, workspace);
             }
         }
 
@@ -451,8 +452,6 @@ namespace Dev2.Workspaces
             var filePath = GetUserMapFileName();
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                // var formatter = new BinaryFormatter();
-                //formatter.Serialize(stream, userMap);
                 MessagePack.MessagePackSerializer.Typeless.Serialize(stream, userMap);
             }
         }

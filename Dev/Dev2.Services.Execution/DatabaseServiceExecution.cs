@@ -34,7 +34,7 @@ using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
 using System.Xml;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.IO;
 using TSQL;
 using System.Linq;
@@ -853,8 +853,8 @@ namespace Dev2.Services.Execution
                         long size = 0;
                         using (Stream s = new MemoryStream())
                         {
-                            var formatter = new BinaryFormatter();
-                            formatter.Serialize(s, dataSet);
+                            var serializer = new DataContractSerializer(typeof(DataSet));
+                            serializer.WriteObject(s, dataSet);
                             size = s.Length;
                         }
                         TranslateDataSetToEnvironment(dataSet, DataObj.Environment, update);

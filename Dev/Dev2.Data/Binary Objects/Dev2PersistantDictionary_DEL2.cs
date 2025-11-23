@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml;
 using Dev2.Data.Storage;
 
 namespace Dev2.Data.Binary_Objects
@@ -276,17 +276,19 @@ namespace Dev2.Data.Binary_Objects
 
         private T ConvertFromBytes(byte[] payload)
         {
-            BinaryFormatter bf = new BinaryFormatter();
             T convertFromBytes = null;
             lock (_opsLock)
             {
                 using (MemoryStream ms = new MemoryStream(payload))
                 {
-
                     ms.Position = 0;
                     try
                     {
-                        convertFromBytes = (T)bf.Deserialize(ms);
+                        var serializer = new DataContractSerializer(typeof(T));
+                        using (var reader = XmlDictionaryReader.CreateBinaryReader(ms, XmlDictionaryReaderQuotas.Max))
+                        {
+                            convertFromBytes = (T)serializer.ReadObject(reader);
+                        }
                     }
                     catch (SerializationException e)
                     {
@@ -300,14 +302,16 @@ namespace Dev2.Data.Binary_Objects
 
         private MemoryStream ConvertToStream(T payload)
         {
-            // TODO : Fix this, it keeps bombing out ?!
-            BinaryFormatter bf = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
 
             try
             {
-                bf.Serialize(ms, payload);
-
+                var serializer = new DataContractSerializer(typeof(T));
+                using (var writer = XmlDictionaryWriter.CreateBinaryWriter(ms, null, null, false))
+                {
+                    serializer.WriteObject(writer, payload);
+                    writer.Flush();
+                }
             }
             catch (Exception e)
             {
