@@ -52,7 +52,7 @@ namespace Dev2.Services.Sql
         {
             var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
-            var t = ds.Tables[0];
+            var t = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
             return t;
         }
 

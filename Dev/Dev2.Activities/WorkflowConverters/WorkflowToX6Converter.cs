@@ -592,6 +592,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateMySqlDatabaseActivity(mySqlDatabaseActivity, nodeId);
             }
+            else if (activity is DsfSqlBulkInsertActivity sqlBulkInsertActivity)
+            {
+                cell = CreateSqlBulkInsertActivity(sqlBulkInsertActivity, nodeId);
+            }
             else if (activity is DsfOracleDatabaseActivity oracleDatabaseActivity)
             {
                 cell = CreateOracleDatabaseActivity(oracleDatabaseActivity, nodeId);

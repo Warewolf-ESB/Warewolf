@@ -148,6 +148,21 @@ namespace Dev2.Common.X6
 
         public const string MYSQLDATABASEACTIVITY = "DsfMySqlDatabaseActivity";
         public const string DISPLAYNAME_MYSQLDATABASE = "MySQL Database";
+
+        public const string SQLBULKINSERTACTIVITY = "DsfSqlBulkInsertActivity";
+        public const string DISPLAYNAME_SQLBULKINSERT = "SQL Bulk Insert";
+
+        public const string SQLBULKINSERT_TABLENAME = "tablename";
+        public const string SQLBULKINSERT_BATCHSIZE = "batchsize";
+        public const string SQLBULKINSERT_TIMEOUT = "timeout";
+        public const string SQLBULKINSERT_CHECKCONSTRAINTS = "checkconstraints";
+        public const string SQLBULKINSERT_FIRETRIGGERS = "firetriggers";
+        public const string SQLBULKINSERT_USEINTERNALTRANSACTION = "useinternaltransaction";
+        public const string SQLBULKINSERT_KEEPIDENTITY = "keepidentity";
+        public const string SQLBULKINSERT_KEEPTABLELOCK = "keeptablelock";
+        public const string SQLBULKINSERT_IGNOREBLANKROWS = "ignoreblankrows";
+        public const string SQLBULKINSERT_INPUTMAPPINGS = "inputmappings";
+        public const string SQLBULKINSERT_DATABASE = "database";
     
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";

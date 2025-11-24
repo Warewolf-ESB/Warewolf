@@ -332,31 +332,79 @@ namespace Dev2.Services.Sql
             }
         }
 
+        /// <summary>
+        /// Gets the help text (definition) for a given stored procedure or function
+        /// </summary>
+        /// <param name="connection">Connection</param>
+        /// <param name="objectName">ObjectName</param>
+        /// <returns>Definition of the Database Object</returns>
         string GetHelpText(IDbConnection connection, string objectName)
         {
-            using (
-                var command = _factory.CreateCommand(connection, CommandType.Text,
+            if (string.IsNullOrWhiteSpace(objectName))
+                return string.Empty;
 
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName), CommandTimeout))
+            // Parse schema and object name efficiently
+            var (schemaName, procName) = ParseObjectName(objectName);
+
+            const string query = @"
+SELECT pg_get_functiondef(p.oid) AS definition
+FROM pg_proc p
+JOIN pg_namespace n ON p.pronamespace = n.oid
+WHERE n.nspname = @schema 
+  AND p.proname = @procname
+LIMIT 1";
+
+            using (var command = _factory.CreateCommand(connection, CommandType.Text, query, CommandTimeout))
             {
-                return ExecuteReader(command, delegate (IDataAdapter reader)
+                AddParameter(command, "@schema", schemaName);
+                AddParameter(command, "@procname", procName);
+
+                return ExecuteReader(command, adapter =>
+                {
+                    using (var ds = new DataSet())
                     {
-                        var sb = new StringBuilder();
-                        var ds = new DataSet(); //conn is opened by dataadapter
-                        reader.Fill(ds);
-                        var t = ds.Tables[0];
-                        var dataTableReader = t.CreateDataReader();
-                        while (dataTableReader.Read())
+                        adapter.Fill(ds);
+
+                        // Check if we have valid results
+                        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                         {
-                            var value = dataTableReader.GetValue(2);
-                            if (value != null)
-                            {
-                                sb.Append(value);
-                            }
+                            var value = ds.Tables[0].Rows[0]["definition"];
+                            return value != DBNull.Value ? value.ToString() : string.Empty;
                         }
-                        return sb.ToString();
-                    });
+
+                        return string.Empty;
+                    }
+                });
             }
+        }
+
+        
+        private static (string schema, string name) ParseObjectName(string objectName)
+        {
+            var dotIndex = objectName.IndexOf('.');
+
+            return dotIndex > 0
+  ? (objectName.Substring(0, dotIndex), objectName.Substring(dotIndex + 1))
+     : ("public", objectName);
+        }
+
+        /// <summary>
+        /// Extracted helper method for creating and adding parameters to database commands.
+        /// Reduces code redundancy when building parameterized queries.
+        /// </summary>
+      /// <param name="command">The database command to add the parameter to</param>
+        /// <param name="name">The parameter name (e.g., "@schema", "@procname")</param>
+   /// <param name="value">The parameter value to be used in the query</param>
+      /// <remarks>
+        /// This method prevents SQL injection by properly parameterizing query values
+        /// instead of using string concatenation or formatting.
+        /// </remarks>
+        private void AddParameter(IDbCommand command, string name, string value)
+        {
+            var parameter = command.CreateParameter();
+    parameter.ParameterName = name;
+          parameter.Value = value;
+            command.Parameters.Add(parameter);
         }
 
         public void GetProcedureInOutParams(string fullProcedureName, out List<NpgsqlParameter> inParameters, out List<NpgsqlParameter> outParameters)
