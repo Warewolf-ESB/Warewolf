@@ -24,6 +24,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -51,11 +52,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
+                var decryptedPassword = DpapiWrapper.DecryptIfEncrypted(src.Password);
                 var res = new DbSource
                 {
                     AuthenticationType = src.AuthenticationType,
                     Server = src.ServerName,
-                    Password = src.Password,
+                    Password = decryptedPassword,
                     ServerType = src.Type,
                     UserID = src.UserName,
                     ConnectionTimeout = src.ConnectionTimeout,
@@ -72,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
-                        Password = src.Password,
+                        Password = decryptedPassword,
                         ServerType = src.Type,
                         UserID = src.UserName,
                         ConnectionTimeout = src.ConnectionTimeout
