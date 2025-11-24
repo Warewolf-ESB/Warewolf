@@ -22,7 +22,6 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -61,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
-                        Password = DpapiWrapper.DecryptIfEncrypted(src.Password),
+                        Password = src.Password,
                         ServerType = src.Type,
                         ConnectionTimeout = src.ConnectionTimeout,
                         UserID = src.UserName

@@ -21,7 +21,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -42,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Id = res.ResourceID,
                         Name = res.ResourceName,
                         Path = res.GetSavePath(),
-                        Password = DpapiWrapper.EncryptIfDecrypted(res.Password),
+                        Password = res.Password,
                         ConnectionTimeout = res.ConnectionTimeout,
                         ServerName = res.Server,
                         Type = res.ServerType,
