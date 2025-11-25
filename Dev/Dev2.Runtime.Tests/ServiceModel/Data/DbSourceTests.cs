@@ -108,6 +108,85 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(contains);
         }
 
+        [TestMethod]
+        [Owner("GitHub Copilot")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_Oracle_WithDatabaseName_ShouldIncludeDatabaseParameter()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = new DbSource
+            {
+                Server = "localhost:1521/XEPDB1", 
+                ServerType = enSourceType.Oracle, 
+                AuthenticationType = AuthenticationType.User,
+                UserID = "orderdb",
+                Password = "orderdb123", 
+                DatabaseName = "ORDERDB",
+                ConnectionTimeout = 30
+            };
+            //------------Execute Test---------------------------
+            var connectionString = dbSource.ConnectionString;
+            //------------Assert Results-------------------------
+            StringAssert.Contains(connectionString, "Database=ORDERDB;");
+            StringAssert.Contains(connectionString, "User Id=orderdb");
+            StringAssert.Contains(connectionString, "Password=orderdb123");
+            StringAssert.Contains(connectionString, "Data Source=localhost:1521/XEPDB1");
+            StringAssert.Contains(connectionString, "Connection Timeout=30");
+            // Ensure no double semicolons
+            Assert.IsFalse(connectionString.Contains(";;"));
+        }
+
+        [TestMethod]
+        [Owner("GitHub Copilot")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_Oracle_WithoutDatabaseName_ShouldNotIncludeDatabaseParameter()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = new DbSource
+            {
+                Server = "localhost:1521/XEPDB1", 
+                ServerType = enSourceType.Oracle, 
+                AuthenticationType = AuthenticationType.User,
+                UserID = "orderdb",
+                Password = "orderdb123", 
+                DatabaseName = null,
+                ConnectionTimeout = 30
+            };
+            //------------Execute Test---------------------------
+            var connectionString = dbSource.ConnectionString;
+            //------------Assert Results-------------------------
+            Assert.IsFalse(connectionString.Contains("Database="));
+            StringAssert.Contains(connectionString, "User Id=orderdb");
+            StringAssert.Contains(connectionString, "Data Source=localhost:1521/XEPDB1");
+            // Ensure no double semicolons
+            Assert.IsFalse(connectionString.Contains(";;"));
+        }
+
+        [TestMethod]
+        [Owner("GitHub Copilot")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_Oracle_ParsesAndRetainsDatabaseName()
+        {
+            //------------Setup for test--------------------------
+            var connectionString = "User Id=orderdb;Password=orderdb123;Data Source=localhost:1521/XEPDB1;Database=ORDERDB;Connection Timeout=30;";
+            var dbSource = new DbSource
+            {
+                ServerType = enSourceType.Oracle
+            };
+            //------------Execute Test---------------------------
+            dbSource.ConnectionString = connectionString;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("ORDERDB", dbSource.DatabaseName);
+            Assert.AreEqual("orderdb", dbSource.UserID);
+            Assert.AreEqual("orderdb123", dbSource.Password);
+            Assert.AreEqual("localhost:1521/XEPDB1", dbSource.Server);
+            Assert.AreEqual(30, dbSource.ConnectionTimeout);
+            
+            // Now get the connection string back
+            var regeneratedConnectionString = dbSource.ConnectionString;
+            StringAssert.Contains(regeneratedConnectionString, "Database=ORDERDB;");
+        }
+
         #region ToXml Tests
 
         [TestMethod]

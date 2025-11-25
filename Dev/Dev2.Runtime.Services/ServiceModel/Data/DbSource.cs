@@ -149,8 +149,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.Oracle:
                         portString = Port > 0 ? $":{Port}" : string.Empty;
-                        var dbString = DatabaseName != null ? $"Database={DatabaseName};" : string.Empty;
-                        return $"User Id={UserID};Password={Password};Data Source={Server}{portString};{dbString};Connection Timeout={ConnectionTimeout};";
+                        var dbString = !string.IsNullOrEmpty(DatabaseName) ? $"Database={DatabaseName};" : string.Empty;
+                        return $"User Id={UserID};Password={Password};Data Source={Server}{portString};{dbString}Connection Timeout={ConnectionTimeout};";
 
                     case enSourceType.ODBC:
                         return $"DSN={DatabaseName};";
