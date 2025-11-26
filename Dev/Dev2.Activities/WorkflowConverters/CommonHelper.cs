@@ -1,7 +1,11 @@
 ﻿using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.X6;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -297,6 +301,95 @@ namespace Dev2.WorkflowConverters
             return true;
         }
 
+        public static bool TryGetInputMappings(IDictionary<string, object> data, out IList<DataColumnMapping> inputMappings)
+        {
+            inputMappings = null;
+            if (!data.TryGetValue(Constants.SQLBULKINSERT_INPUTMAPPINGS, out var raw)) return false;
+
+            try
+            {
+                if (raw is JArray arr)
+                {
+                    var mappings = arr
+                        .Children<JObject>()
+                        .Select(child =>
+                        {
+                            var mapping = new DataColumnMapping
+                            {
+                                InputColumn = child.Value<string>(nameof(DataColumnMapping.InputColumn)) ?? string.Empty,
+                                IndexNumber = child.Value<int?>(nameof(DataColumnMapping.IndexNumber)) ?? 0,
+                                Inserted = child.Value<bool?>(nameof(DataColumnMapping.Inserted)) ?? false
+                            };
+
+                            if (child[nameof(DataColumnMapping.OutputColumn)] is JObject outputColObj)
+                            {
+                                mapping.OutputColumn = new DbColumn
+                                {
+                                    ColumnName = outputColObj.Value<string>(nameof(DbColumn.ColumnName)) ?? string.Empty,
+                                    MaxLength = outputColObj.Value<int?>(nameof(DbColumn.MaxLength)) ?? 0,
+                                    IsNullable = outputColObj.Value<bool?>(nameof(DbColumn.IsNullable)) ?? false,
+                                    IsAutoIncrement = outputColObj.Value<bool?>(nameof(DbColumn.IsAutoIncrement)) ?? false
+                                };
+
+                                // Handle SqlDataType enum
+                                var sqlDataTypeToken = outputColObj[nameof(DbColumn.SqlDataType)];
+                                if (sqlDataTypeToken != null)
+                                {
+                                    if (sqlDataTypeToken.Type == JTokenType.Integer)
+                                    {
+                                        mapping.OutputColumn.SqlDataType = (System.Data.SqlDbType)sqlDataTypeToken.Value<int>();
+                                    }
+                                    else if (sqlDataTypeToken.Type == JTokenType.String && Enum.TryParse<System.Data.SqlDbType>(sqlDataTypeToken.Value<string>(), true, out var sqlDbType))
+                                    {
+                                        mapping.OutputColumn.SqlDataType = sqlDbType;
+                                    }
+                                }
+
+                                // Handle DataType
+                                var dataTypeToken = outputColObj[nameof(DbColumn.DataType)];
+                                if (dataTypeToken != null)
+                                {
+                                    var dataTypeName = dataTypeToken.Value<string>();
+                                    if (!string.IsNullOrEmpty(dataTypeName))
+                                    {
+                                        // Map common type names to .NET types
+                                        mapping.OutputColumn.DataType = dataTypeName switch
+                                        {
+                                            "System.String" or "String" => typeof(string),
+                                            "System.Int32" or "Int32" => typeof(int),
+                                            "System.Int64" or "Int64" => typeof(long),
+                                            "System.Decimal" or "Decimal" => typeof(decimal),
+                                            "System.DateTime" or "DateTime" => typeof(DateTime),
+                                            "System.Boolean" or "Boolean" => typeof(bool),
+                                            "System.Byte[]" or "Byte[]" => typeof(byte[]),
+                                            "System.Guid" or "Guid" => typeof(Guid),
+                                            _ => Type.GetType(dataTypeName) ?? typeof(string)
+                                        };
+                                    }
+                                }
+                            }
+
+                            return mapping;
+                        })
+                        .ToList();
+
+                    inputMappings = mappings;
+                    return true;
+                }
+                else if (raw is IList<DataColumnMapping> existingMappings)
+                {
+                    inputMappings = existingMappings;
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                inputMappings = null;
+                return false;
+            }
+        }
     }
 
     public static class CommonHelperExtensions
@@ -330,5 +423,8 @@ namespace Dev2.WorkflowConverters
 
         public static bool TryGetConditions(this IDictionary<string, object> data, out IList<FormDataConditionExpression> conditions) =>
             CommonHelper.TryGetConditions(data, out conditions);
+
+        public static bool TryGetInputMappings(this IDictionary<string, object> data, out IList<DataColumnMapping> inputMappings) =>
+            CommonHelper.TryGetInputMappings(data, out inputMappings);
     }
 }
