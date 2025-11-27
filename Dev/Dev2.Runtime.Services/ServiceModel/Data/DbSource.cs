@@ -16,6 +16,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
@@ -71,7 +72,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            // Try SecurityEncryption first (new encryption method from server)
+            // If that fails, fall back to DpapiWrapper (legacy encryption)
+            var connectionString = SecurityEncryption.TryDecrypt(conString);
+            if (connectionString == conString && conString.CanBeDecrypted())
+            {
+                // SecurityEncryption failed, try DpapiWrapper for legacy encrypted values
+                connectionString = DpapiWrapper.Decrypt(conString);
+            }
             ResourceType = ServerType.ToString();
             ConnectionString = connectionString;
         }

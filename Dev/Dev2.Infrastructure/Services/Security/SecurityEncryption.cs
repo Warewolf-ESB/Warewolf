@@ -87,7 +87,9 @@ namespace Dev2.Services.Security
                 }
                 plainTextBytes = memoryStream.ToArray();
             }
-            var plainText = Encoding.UTF8.GetString(plainTextBytes);  
+            var plainText = Encoding.UTF8.GetString(plainTextBytes);
+            // Remove trailing null bytes from zero padding
+            plainText = plainText.TrimEnd('\0');
             return plainText;
         }
 
