@@ -69,6 +69,8 @@ namespace Dev2.Common.X6
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
+        public const string DSFFILEREAD = "DsfFileRead";
+        public const string FILEREADWITHBASE64 = "FileReadWithBase64";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -89,6 +91,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_REPLACE = "Replace";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
+        public const string DISPLAYNAME_FILEREAD = "Read File";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";

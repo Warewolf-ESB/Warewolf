@@ -564,6 +564,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFindIndexActivity(findIndexActivity, nodeId);
             }
+            else if (activity is DsfFileRead fileReadActivity)
+            {
+                cell = CreateFileReadActivity(fileReadActivity, nodeId);
+            }
+            else if (activity is FileReadWithBase64 fileReadWithBase64Activity)
+            {
+                cell = CreateFileReadWithBase64Activity(fileReadWithBase64Activity, nodeId);
+            }
             else if (activity is WebGetActivity webGetActivity)
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);

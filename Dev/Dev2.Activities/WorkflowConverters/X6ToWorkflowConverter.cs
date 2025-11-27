@@ -545,6 +545,8 @@ namespace Dev2.Activities.WF
                     return CreateCaseConvertActivity(node);
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
+                case var t when t.Contains(Constants.DSFFILEREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):

@@ -13,8 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -22,6 +24,7 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -194,6 +197,118 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             unchecked
             {
                 return (base.GetHashCode() * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the File Read activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate</param>
+        public override void ToX6Json(Cell cell)
+        {
+            base.ToX6Json(cell);
+
+            cell.data[Constants.TYPE] = Constants.DSFFILEREAD;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FILEREAD;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.shape = Constants.RECT;
+
+            // Add File Read specific data
+            cell.data["InputPath"] = InputPath ?? string.Empty;
+            cell.data["Username"] = Username ?? string.Empty;
+            cell.data["Password"] = Password ?? string.Empty;
+            cell.data["PrivateKeyFile"] = PrivateKeyFile ?? string.Empty;
+            cell.data["Result"] = Result ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Deserializes the File Read activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing File Read data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            base.FromX6Json(cell);
+
+            try
+            {
+                // Deserialize DisplayName
+                if (cell.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) && displayNameObj is string displayName)
+                {
+                    DisplayName = displayName;
+                }
+
+                // Deserialize UniqueID
+                if (cell.data.TryGetValue(Constants.UNIQUEID, out var uniqueIdObj) && uniqueIdObj is string uniqueId)
+                {
+                    UniqueID = uniqueId;
+                }
+
+                if (cell.data.TryGetValue(Constants.PROPERTIES, out var propertiesObj))
+                {
+                    Dictionary<string, object> properties = null;
+
+                    if (propertiesObj is Dictionary<string, object> dict)
+                    {
+                        properties = dict;
+                    }
+                    else
+                    {
+                        var propertiesJson = propertiesObj?.ToString();
+                        if (!string.IsNullOrEmpty(propertiesJson))
+                        {
+                            try
+                            {
+                                properties = JsonConvert.DeserializeObject<Dictionary<string, object>>(propertiesJson);
+                            }
+                            catch (JsonException)
+                            {
+                                // Ignore and use direct properties
+                            }
+                        }
+                    }
+
+                    if (properties != null)
+                    {
+                        // Only use properties from the nested object if not already set from direct access
+                        if (string.IsNullOrEmpty(InputPath) && properties.TryGetValue("InputPath", out var inputPathProp))
+                            InputPath = inputPathProp?.ToString() ?? string.Empty;
+
+                        if (string.IsNullOrEmpty(Username) && properties.TryGetValue("Username", out var usernameProp))
+                            Username = usernameProp?.ToString() ?? string.Empty;
+
+                        if (string.IsNullOrEmpty(Password) && properties.TryGetValue("Password", out var passwordProp))
+                            Password = passwordProp?.ToString() ?? string.Empty;
+
+                        if (string.IsNullOrEmpty(PrivateKeyFile) && properties.TryGetValue("PrivateKeyFile", out var privateKeyProp))
+                            PrivateKeyFile = privateKeyProp?.ToString() ?? string.Empty;
+
+                        if (string.IsNullOrEmpty(Result) && properties.TryGetValue("Result", out var resultProp))
+                            Result = resultProp?.ToString() ?? string.Empty;
+                    }
+                }
+
+                // Also try to get properties directly from data (not nested in properties object)
+                if (string.IsNullOrEmpty(InputPath) && cell.data.TryGetValue("InputPath", out var directInputPath))
+                    InputPath = directInputPath?.ToString() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(Username) && cell.data.TryGetValue("Username", out var directUsername))
+                    Username = directUsername?.ToString() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(Password) && cell.data.TryGetValue("Password", out var directPassword))
+                    Password = directPassword?.ToString() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(PrivateKeyFile) && cell.data.TryGetValue("PrivateKeyFile", out var directPrivateKey))
+                    PrivateKeyFile = directPrivateKey?.ToString() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(Result) && cell.data.TryGetValue("Result", out var directResult))
+                    Result = directResult?.ToString() ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing File Read data from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
         }
     }
