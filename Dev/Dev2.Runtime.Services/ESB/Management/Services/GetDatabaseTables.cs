@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                return serializer.SerializeToBuilder(TryExecute(dbSource));
+                return serializer.SerializeToBuilder(TryExecute(runtimeDbSource));
             }
             catch (Exception ex)
             {
