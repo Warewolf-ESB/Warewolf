@@ -600,6 +600,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateOracleDatabaseActivity(oracleDatabaseActivity, nodeId);
             }
+            else if (activity is RedisCache.RedisCacheActivity redisCacheActivity)
+            {
+                cell = CreateRedisCacheActivity(redisCacheActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
