@@ -170,6 +170,7 @@ namespace Dev2.Common.X6
 
         public const string REDISCACHEACTIVITY = "RedisCacheActivity";
         public const string DISPLAYNAME_REDISCACHE = "Redis Cache";
+        public const string REDISCACHE_ACTIVITYFUNC = "ActivityFunc";
 
         public const string REDISCACHE_KEY = "key";
         public const string REDISCACHE_TTL = "ttl";

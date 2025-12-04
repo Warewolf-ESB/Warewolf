@@ -591,6 +591,60 @@ namespace Dev2.Activities.RedisCache
             }
         }
 
+        private object SerializeRedisCacheActivityFunc()
+        {
+            if (ActivityFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = ActivityFunc.DisplayName ?? "Data Action",
+                    argumentName = ActivityFunc.Argument?.Name ?? string.Empty,
+                    handlerType = ActivityFunc.Handler.GetType().Name,
+                    handlerUniqueId = (ActivityFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (ActivityFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing RedisCache ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        } 
+
+        private void DeserializeRedisCacheActivityFunc(dynamic redisCacheActivityFuncData)
+        {
+            if (redisCacheActivityFuncData == null) return;
+
+            try
+            {
+                if (ActivityFunc == null)
+                {
+                    ActivityFunc = new ActivityFunc<string, bool>();
+                }
+
+                if (redisCacheActivityFuncData.displayName != null)
+                {
+                    ActivityFunc.DisplayName = redisCacheActivityFuncData.displayName.ToString();
+                }
+
+                if (redisCacheActivityFuncData.argumentName != null && ActivityFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing RedisCache ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+
 
         public override void ToX6Json(Cell cell)
         {
@@ -608,6 +662,12 @@ namespace Dev2.Activities.RedisCache
             cell.data.TryAdd(Constants.REDISCACHE_SOURCEID, SourceId);
             cell.data.TryAdd(Constants.REDISCACHE_RESPONSE, Response);
             cell.data.TryAdd(Constants.RESULT, Result);
+
+            var redisCacheActivityFuncInfo = SerializeRedisCacheActivityFunc();
+            if (redisCacheActivityFuncInfo != null)
+            {
+                cell.data[Constants.REDISCACHE_ACTIVITYFUNC] = redisCacheActivityFuncInfo;
+            }
         }
 
         public override void FromX6Json(Cell cell)
@@ -624,6 +684,11 @@ namespace Dev2.Activities.RedisCache
             if (cell.data.TryGetString(Constants.REDISCACHE_RESPONSE, out var response)) Response = response;
             if (cell.data.TryGetGuid(Constants.REDISCACHE_SOURCEID, out var sourceId)) SourceId = sourceId;
             if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+
+            if (cell.data.TryGetValue(Constants.REDISCACHE_ACTIVITYFUNC, out var redisCacheActivityFuncObj))
+            {
+                DeserializeRedisCacheActivityFunc(redisCacheActivityFuncObj);
+            }
         }
     }
 }

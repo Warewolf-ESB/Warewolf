@@ -157,6 +157,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
+            EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
         }
 
 

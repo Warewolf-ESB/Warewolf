@@ -1,3 +1,4 @@
+using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
 using Dev2.Common.X6;
@@ -94,6 +95,7 @@ namespace Dev2.Activities.WF
                 DsfForEachActivity forEachActivity => ProcessDsfForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId, previousNodeId),
                 DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
                 DsfSelectAndApplyActivity selectAndApplyActivity => ProcessDsfSelectAndApplyActivity(selectAndApplyActivity, graphData, activityNodeMap, previousNodeId),
+                RedisCacheActivity redisCacheActivity => ProcessRedisCacheActivity(redisCacheActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -457,6 +459,7 @@ namespace Dev2.Activities.WF
                 DsfForEachActivity => true,
                 DsfSequenceActivity => true,
                 DsfSelectAndApplyActivity => true,
+                RedisCacheActivity => true,
                 _ => false
             };
         }
