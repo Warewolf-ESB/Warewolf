@@ -56,7 +56,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentException("AdvancedRecordsetService parameter is required");
                 }
 
-                var serviceRequest = serializer.Deserialize<AdvancedRecordsetServiceRequest>(serviceDefinition);
+                // Remove extra curly braces if present (double-serialization issue)
+                var jsonString = serviceDefinition.ToString().Trim();
+                if (jsonString.StartsWith("{{") && jsonString.EndsWith("}}"))
+                {
+                    jsonString = jsonString.Substring(1, jsonString.Length - 2);
+                }
+
+                var serviceRequest = serializer.Deserialize<AdvancedRecordsetServiceRequest>(jsonString);
                 
                 if (string.IsNullOrWhiteSpace(serviceRequest.SqlQuery))
                 {
@@ -92,7 +99,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        private void ValidateDeclareVariables(List<INameValue> declareVariables)
+        private void ValidateDeclareVariables(List<NameValue> declareVariables)
         {
             if (declareVariables != null)
             {
@@ -328,9 +335,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class AdvancedRecordsetServiceRequest
     {
         public string SqlQuery { get; set; }
-        public List<INameValue> DeclareVariables { get; set; }
+        public List<NameValue> DeclareVariables { get; set; }
         public List<RecordsetDefinition> Recordsets { get; set; }
         public string RecordsetName { get; set; }
+    }
+    
+    /// <summary>
+    /// Concrete implementation of name-value pair for JSON deserialization
+    /// </summary>
+    public class NameValue
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 
     /// <summary>
