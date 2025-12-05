@@ -600,6 +600,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateOracleDatabaseActivity(oracleDatabaseActivity, nodeId);
             }
+            else if (activity is AdvancedRecordsetActivity advancedRecordsetActivity)
+            {
+                cell = CreateAdvancedRecordsetActivity(advancedRecordsetActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

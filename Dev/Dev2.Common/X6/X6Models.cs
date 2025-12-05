@@ -166,6 +166,12 @@ namespace Dev2.Common.X6
     
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
+
+        public const string ADVANCEDRECORDSETACTIVITY = "AdvancedRecordsetActivity";
+        public const string DISPLAYNAME_ADVANCEDRECORDSET = "Advanced Recordset";
+        public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
+        public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
+        public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
     }
 
     public class X6WorkflowLoadModel

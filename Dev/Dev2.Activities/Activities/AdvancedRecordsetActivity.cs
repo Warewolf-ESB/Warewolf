@@ -13,6 +13,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -20,6 +21,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -200,6 +202,66 @@ namespace Dev2.Activities
                     hashCode = (hashCode * 397) ^ (SqlQuery.GetHashCode());
                 }
                 return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null)
+            {
+                cell.data = new Dictionary<string, object>();
+            }
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.ADVANCEDRECORDSETACTIVITY;
+            cell.data[Constants.TYPE] = Constants.ADVANCEDRECORDSETACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_ADVANCEDRECORDSET;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.ADVANCEDRECORDSET_SQLQUERY, SqlQuery);
+            cell.data.TryAdd(Constants.ADVANCEDRECORDSET_RECORDSETNAME, RecordsetName);
+            cell.data.TryAdd(Constants.ADVANCEDRECORDSET_DECLAREVARIABLES, DeclareVariables);
+            cell.data.TryAdd(Constants.WEBMETHOD_SOURCEID, SourceId);
+            cell.data.TryAdd(Constants.WEBMETHOD_OUTPUTS, Outputs);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null)
+            {
+                return;
+            }
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+            {
+                DisplayName = displayName;
+            }
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+            {
+                UniqueID = uniqueId;
+            }
+            if (cell.data.TryGetString(Constants.ADVANCEDRECORDSET_SQLQUERY, out var sqlQuery))
+            {
+                SqlQuery = sqlQuery;
+            }
+            if (cell.data.TryGetString(Constants.ADVANCEDRECORDSET_RECORDSETNAME, out var recordsetName))
+            {
+                RecordsetName = recordsetName;
+            }
+            if (cell.data.TryGetList<NameValue, INameValue>(Constants.ADVANCEDRECORDSET_DECLAREVARIABLES, out var declareVariables))
+            {
+                DeclareVariables = declareVariables;
+            }
+            if (cell.data.TryGetGuid(Constants.WEBMETHOD_SOURCEID, out var sourceId))
+            {
+                SourceId = sourceId;
+            }
+            if (cell.data.TryGetOutputs(out var outputs))
+            {
+                Outputs = outputs;
             }
         }
 
