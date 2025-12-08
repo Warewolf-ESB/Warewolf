@@ -138,3 +138,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 !/Dev/Binaries/Infragistcs_Net6/**
 /Dev/Dev2.Studio.Core/Models
 /Dev/.claude/settings.local.json
+/.claude/settings.local.json
