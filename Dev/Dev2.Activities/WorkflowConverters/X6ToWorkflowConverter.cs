@@ -563,6 +563,8 @@ namespace Dev2.Activities.WF
                     return CreateSqlBulkInsertActivity(node);
                 case var t when t.Contains(Constants.ORACLESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateOracleDatabaseActivity(node);
+                case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisRemoveActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

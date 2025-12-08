@@ -166,6 +166,13 @@ namespace Dev2.Common.X6
     
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
+
+        public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
+        public const string DISPLAYNAME_REDISREMOVE = "Redis Remove";
+
+        public const string REDIS_KEY = "key";
+        public const string REDIS_RESPONSE = "response";
+        public const string REDIS_SOURCEID = "sourceid";
     }
 
     public class X6WorkflowLoadModel
