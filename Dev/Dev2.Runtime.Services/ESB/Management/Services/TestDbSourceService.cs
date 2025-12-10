@@ -53,13 +53,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                
-                var dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
-                
-                DbSource sourceToTest;
-                if (dbSource == null)
+                DatabaseValidationResult result = null;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-                    sourceToTest = new DbSource
+                    result = _dbSources.DoDatabaseValidation(new DbSource
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
@@ -67,27 +64,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ServerType = src.Type,
                         ConnectionTimeout = src.ConnectionTimeout,
                         UserID = src.UserName
-                    };
-                }
-                else
-                {
-                    sourceToTest = new DbSource
-                    {
-                        AuthenticationType = dbSource.AuthenticationType,
-                        Server = dbSource.Server,
-                        Password = dbSource.Password,
-                        ServerType = dbSource.ServerType,
-                        ConnectionTimeout = dbSource.ConnectionTimeout,
-                        UserID = dbSource.UserID
-                    };
-                }
+                    });
 
-                DatabaseValidationResult result = null;
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
-                {
-                    result = _dbSources.DoDatabaseValidation(sourceToTest);
                 });
-                
                 if (result == null)
                 {
                     result = new DatabaseValidationResult { ErrorMessage = "Problem testing connection.", IsValid = false };

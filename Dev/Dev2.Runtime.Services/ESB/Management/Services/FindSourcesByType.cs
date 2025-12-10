@@ -75,25 +75,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public static string RemovePasswordsFromJson(string json)
+        private string RemovePasswordsFromJson(string json)
         {
             if (string.IsNullOrEmpty(json))
             {
                 return json;
             }
 
-            // Handle both escaped and unescaped JSON quotes
-            // First, handle escaped quotes: \"Password\":\"any value\" -> \"Password\":\"\"
-            var escapedPattern = @"\\""Password\\""\s*:\s*\\""(?:[^\\]|\\.)*?\\""";
-            var escapedReplacement = @"\""Password\"":\""\""";
-            json = Regex.Replace(json, escapedPattern, escapedReplacement, RegexOptions.IgnoreCase);
-
-            // Then handle unescaped quotes: "Password":"any value" -> "Password":""
-            var unescapedPattern = @"""Password""\s*:\s*""[^""]*""";
-            var unescapedReplacement = @"""Password"":""""";
-            json = Regex.Replace(json, unescapedPattern, unescapedReplacement, RegexOptions.IgnoreCase);
+            // Replace password field values with empty string
+            // Pattern matches: "Password":"any value" and replaces with "Password":""
+            // This handles escaped quotes and various characters in password values
+            var pattern = @"""Password""\s*:\s*""[^""]*""";
+            var replacement = @"""Password"":""""";
             
-            return json;
+            return Regex.Replace(json, pattern, replacement, RegexOptions.IgnoreCase);
         }
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
