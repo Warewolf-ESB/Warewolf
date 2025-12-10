@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Id = res.ResourceID,
                         Name = res.ResourceName,
                         Path = res.GetSavePath(),
-                        Password = res.Password,
+                        Password = RemovePassword ? "" : res.Password,
                         ConnectionTimeout = res.ConnectionTimeout,
                         ServerName = res.Server,
                         Type = res.ServerType,
