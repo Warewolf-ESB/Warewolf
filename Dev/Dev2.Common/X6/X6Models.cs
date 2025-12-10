@@ -69,6 +69,7 @@ namespace Dev2.Common.X6
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
+        public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -82,6 +83,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
+        public const string DISPLAYNAME_FINDRECORDS = "Find Records";
 
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
@@ -173,6 +175,14 @@ namespace Dev2.Common.X6
         public const string REDIS_KEY = "key";
         public const string REDIS_RESPONSE = "response";
         public const string REDIS_SOURCEID = "sourceid";
+
+        // Add these constants for Find Records specific properties
+        public const string FINDRECORDS_FIELDSTOSEARCH = "fieldsToSearch";
+        public const string FINDRECORDS_STARTINDEX = "startIndex";
+        public const string FINDRECORDS_MATCHCASE = "matchCase";
+        public const string FINDRECORDS_REQUIREALLTRUE = "requireAllTrue";
+        public const string FINDRECORDS_REQUIREALLFIELDSTOMATCH = "requireAllFieldsToMatch";
+        public const string FINDRECORDS_RESULTSCOLLECTION = "resultsCollection";
     }
 
     public class X6WorkflowLoadModel

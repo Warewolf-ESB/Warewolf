@@ -1,8 +1,6 @@
 ﻿using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Security;
 using Dev2.Common.X6;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
@@ -12,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
@@ -390,6 +389,64 @@ namespace Dev2.WorkflowConverters
                 return false;
             }
         }
+
+        public static bool TryGetFindRecordsCollection(IDictionary<string, object> data, out IList<FindRecordsTO> findRecordsCollection)
+        {
+            findRecordsCollection = null;
+            if (!data.TryGetValue(Constants.FINDRECORDS_RESULTSCOLLECTION, out var raw)) return false;
+
+            try
+            {
+                if (raw is JArray arr)
+                {
+                    var collection = arr
+                        .Children<JObject>()
+                        .Select(child =>
+                        {
+                            var findRecord = new FindRecordsTO
+                            {
+                                SearchType = child.Value<string>(nameof(FindRecordsTO.SearchType)) ?? string.Empty,
+                                SearchCriteria = child.Value<string>(nameof(FindRecordsTO.SearchCriteria)) ?? string.Empty,
+                                From = child.Value<string>(nameof(FindRecordsTO.From)) ?? string.Empty,
+                                To = child.Value<string>(nameof(FindRecordsTO.To)) ?? string.Empty,
+                                IndexNumber = child.Value<int?>(nameof(FindRecordsTO.IndexNumber)) ?? 0,
+                                Inserted = child.Value<bool?>(nameof(FindRecordsTO.Inserted)) ?? false,
+                                IsFromFocused = child.Value<bool?>(nameof(FindRecordsTO.IsFromFocused)) ?? false,
+                                IsToFocused = child.Value<bool?>(nameof(FindRecordsTO.IsToFocused)) ?? false,
+                                IsSearchCriteriaEnabled = child.Value<bool?>(nameof(FindRecordsTO.IsSearchCriteriaEnabled)) ?? false,
+                                IsSearchCriteriaFocused = child.Value<bool?>(nameof(FindRecordsTO.IsSearchCriteriaFocused)) ?? false,
+                                IsSearchCriteriaVisible = child.Value<bool?>(nameof(FindRecordsTO.IsSearchCriteriaVisible)) ?? true,
+                                IsSearchTypeFocused = child.Value<bool?>(nameof(FindRecordsTO.IsSearchTypeFocused)) ?? false
+                            };
+
+                            // Deserialize WhereOptionList if present
+                            var whereOptionListToken = child[nameof(FindRecordsTO.WhereOptionList)];
+                            if (whereOptionListToken is JArray whereOptionArray)
+                            {
+                                findRecord.WhereOptionList = whereOptionArray.ToObject<List<string>>();
+                            }
+
+                            return findRecord;
+                        })
+                        .ToList();
+
+                    findRecordsCollection = collection;
+                    return true;
+                }
+                else if (raw is IList<FindRecordsTO> existingCollection)
+                {
+                    findRecordsCollection = existingCollection;
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                findRecordsCollection = null;
+                return false;
+            }
+        }
     }
 
     public static class CommonHelperExtensions
@@ -426,5 +483,8 @@ namespace Dev2.WorkflowConverters
 
         public static bool TryGetInputMappings(this IDictionary<string, object> data, out IList<DataColumnMapping> inputMappings) =>
             CommonHelper.TryGetInputMappings(data, out inputMappings);
+
+        public static bool TryGetFindRecordsCollection(this IDictionary<string, object> data, out IList<FindRecordsTO> findRecordsCollection) =>
+            CommonHelper.TryGetFindRecordsCollection(data, out findRecordsCollection);
     }
 }

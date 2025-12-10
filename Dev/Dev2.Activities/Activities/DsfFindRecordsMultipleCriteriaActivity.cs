@@ -36,6 +36,8 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -593,6 +595,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FINDRECORDS;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.FINDRECORDS_FIELDSTOSEARCH, FieldsToSearch);
+            cell.data.TryAdd(Constants.RESULT, Result);
+            cell.data.TryAdd(Constants.FINDRECORDS_STARTINDEX, StartIndex);
+            cell.data.TryAdd(Constants.FINDRECORDS_MATCHCASE, MatchCase);
+            cell.data.TryAdd(Constants.FINDRECORDS_REQUIREALLTRUE, RequireAllTrue);
+            cell.data.TryAdd(Constants.FINDRECORDS_REQUIREALLFIELDSTOMATCH, RequireAllFieldsToMatch);
+            cell.data.TryAdd(Constants.FINDRECORDS_RESULTSCOLLECTION, ResultsCollection);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.FINDRECORDS_FIELDSTOSEARCH, out var fieldsToSearch)) FieldsToSearch = fieldsToSearch;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+            if (cell.data.TryGetString(Constants.FINDRECORDS_STARTINDEX, out var startIndex)) StartIndex = startIndex;
+            if (cell.data.TryGetBool(Constants.FINDRECORDS_MATCHCASE, out var matchCase)) MatchCase = matchCase;
+            if (cell.data.TryGetBool(Constants.FINDRECORDS_REQUIREALLTRUE, out var requireAllTrue)) RequireAllTrue = requireAllTrue;
+            if (cell.data.TryGetBool(Constants.FINDRECORDS_REQUIREALLFIELDSTOMATCH, out var requireAllFieldsToMatch)) RequireAllFieldsToMatch = requireAllFieldsToMatch;
+
+            // Deserialize ResultsCollection
+            if (cell.data.TryGetFindRecordsCollection(out var resultsCollection)) ResultsCollection = resultsCollection;
         }
     }
 
