@@ -89,6 +89,8 @@ Dev/SonarQube/SolutionBinding.sqconfig
 ####################################################################################
 /Dev/.claude/settings.local.json
 /.claude/settings.local.json
+/Dev/nul
+/nul
 
 ####################################################################################
 # Tests

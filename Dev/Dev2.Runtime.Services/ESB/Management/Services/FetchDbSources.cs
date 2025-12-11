@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Id = res.ResourceID,
                         Name = res.ResourceName,
                         Path = res.GetSavePath(),
-                        Password = RemovePassword ? "" : res.Password,
+                        Password = removePassword ? "" : res.Password,
                         ConnectionTimeout = res.ConnectionTimeout,
                         ServerName = res.Server,
                         Type = res.ServerType,
