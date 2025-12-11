@@ -607,6 +607,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateRedisCacheActivity(redisCacheActivity, nodeId);
             }
+            else if (activity is RedisRemove.RedisRemoveActivity redisRemoveActivity)
+            {
+                return CreateRedisRemoveActivity(redisRemoveActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

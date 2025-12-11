@@ -176,6 +176,13 @@ namespace Dev2.Common.X6
         public const string REDISCACHE_TTL = "ttl";
         public const string REDISCACHE_RESPONSE = "response";   
         public const string REDISCACHE_SOURCEID = "sourceid";
+
+        public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
+        public const string DISPLAYNAME_REDISREMOVE = "Redis Remove";
+
+        public const string REDIS_KEY = "key";
+        public const string REDIS_RESPONSE = "response";
+        public const string REDIS_SOURCEID = "sourceid";
     }
 
     public class X6WorkflowLoadModel

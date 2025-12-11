@@ -567,6 +567,8 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisCacheActivity(node);
 
+                case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisRemoveActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
