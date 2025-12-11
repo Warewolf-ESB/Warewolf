@@ -611,6 +611,10 @@ namespace Dev2.Activities.WF
             {
                 return CreateRedisRemoveActivity(redisRemoveActivity, nodeId);
             }
+            else if (activity is DsfFindRecordsMultipleCriteriaActivity findRecordsActivity)
+            {
+                cell = CreateFindRecordsMultipleCriteriaActivity(findRecordsActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

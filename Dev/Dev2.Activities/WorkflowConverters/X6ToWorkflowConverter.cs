@@ -569,6 +569,8 @@ namespace Dev2.Activities.WF
 
                 case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisRemoveActivity(node);
+                case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFindRecordsMultipleCriteriaActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
