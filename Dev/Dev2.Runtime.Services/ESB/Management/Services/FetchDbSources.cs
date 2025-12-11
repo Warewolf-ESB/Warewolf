@@ -29,8 +29,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-
-            var list = ResourceCatalog.Instance.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+			bool removePassword = false;
+			values.TryGetValue("RemovePassword", out StringBuilder tmp);
+			if (tmp != null)
+			{
+				bool.TryParse(tmp.ToString(), out removePassword);
+			}
+			var list = ResourceCatalog.Instance.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is DbSource res)
                 {
@@ -53,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
 
-        }
+		}
 
         public IResourceCatalog Resources => ResourceCatalog.Instance;
 
