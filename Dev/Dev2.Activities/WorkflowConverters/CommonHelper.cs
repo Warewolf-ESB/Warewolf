@@ -463,6 +463,11 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetGuid(this Dictionary<string, object> data, string key, out Guid value) =>
             CommonHelper.TryGetGuid(data, key, out value);
 
+        public static bool TryGetList<TConcrete, TInterface>(this Dictionary<string, object> data, string key, out IList<TInterface> list)
+            where TConcrete : class, TInterface
+            where TInterface : class =>
+            CommonHelper.TryGetList<TConcrete, TInterface>(data, out list, key);
+
         public static bool TryGetOutputs(this IDictionary<string, object> data, out IList<IServiceOutputMapping> outputs) =>
             CommonHelper.TryGetOutputs(data, out outputs);
 

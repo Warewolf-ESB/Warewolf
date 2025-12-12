@@ -193,6 +193,12 @@ namespace Dev2.Common.X6
         public const string FINDRECORDS_REQUIREALLTRUE = "requireAllTrue";
         public const string FINDRECORDS_REQUIREALLFIELDSTOMATCH = "requireAllFieldsToMatch";
         public const string FINDRECORDS_RESULTSCOLLECTION = "resultsCollection";
+
+        public const string ADVANCEDRECORDSETACTIVITY = "AdvancedRecordsetActivity";
+        public const string DISPLAYNAME_ADVANCEDRECORDSET = "Advanced Recordset";
+        public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
+        public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
+        public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
     }
 
     public class X6WorkflowLoadModel

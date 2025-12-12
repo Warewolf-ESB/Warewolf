@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             var webService = new Warewolf.Core.WebServiceDefinition()
             {
                 Source = new WebServiceSourceDefinition(mockWebSource.Object),
-                Headers = new List<INameValue> { new NameValue("Content-Type", "multipart/form-data") },
+                Headers = new List<INameValue> { new Common.Interfaces.NameValue("Content-Type", "multipart/form-data") },
                 FormDataParameters = null
             };
 
@@ -154,7 +154,7 @@ namespace Dev2.Tests.Runtime.Services
             var webService = new Warewolf.Core.WebServiceDefinition()
             {
                 Source = new WebServiceSourceDefinition(mockWebSource.Object),
-                Headers = new List<INameValue> { new NameValue("Content-Type", "multipart/form-data") },
+                Headers = new List<INameValue> { new Common.Interfaces.NameValue("Content-Type", "multipart/form-data") },
                 IsManualChecked = false,
                 IsFormDataChecked = true,
                 FormDataParameters = new List<IFormDataParameters>
