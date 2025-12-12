@@ -54,6 +54,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
+
+                if (src == null)
+                {
+                    Dev2Logger.Error("Invalid DbSource data", GlobalConstants.WarewolfError);
+                    msg.HasError = true;
+                    msg.Message = new StringBuilder("Invalid DbSource data");
+                    return serializer.SerializeToBuilder(msg);
+                }
+
                 DbSource dbSource = null;
                 if(!HasPassword(src))
                 {
@@ -112,8 +121,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        private bool HasPassword(IDbSource src) =>
-            src != null && !string.IsNullOrEmpty(src.Password) && !src.Password.All(c => c == '*');
+        private bool HasPassword(IDbSource src) => !string.IsNullOrEmpty(src.Password) && !src.Password.All(c => c == '*');
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
