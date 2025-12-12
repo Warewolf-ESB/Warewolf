@@ -9,16 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -82,13 +84,64 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return json;
             }
 
-            // Replace password field values with empty string
-            // Pattern matches: "Password":"any value" and replaces with "Password":""
-            // This handles escaped quotes and various characters in password values
-            var pattern = @"""Password""\s*:\s*""[^""]*""";
-            var replacement = @"""Password"":""""";
-            
-            return Regex.Replace(json, pattern, replacement, RegexOptions.IgnoreCase);
+            try
+            {
+                using var document = JsonDocument.Parse(json);
+                return RemovePasswordsFromElement(document.RootElement);
+            }
+            catch
+            {
+                // Fallback to original if parsing fails
+                return json;
+            }
+        }
+
+        private string RemovePasswordsFromElement(JsonElement element)
+        {
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = false });
+
+            WriteElementWithPasswordsRemoved(writer, element);
+            writer.Flush();
+
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
+        private void WriteElementWithPasswordsRemoved(Utf8JsonWriter writer, JsonElement element)
+        {
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.Object:
+                    writer.WriteStartObject();
+                    foreach (var property in element.EnumerateObject())
+                    {
+                        writer.WritePropertyName(property.Name);
+
+                        if (property.Name.Equals("Password", StringComparison.OrdinalIgnoreCase))
+                        {
+                            writer.WriteStringValue("");
+                        }
+                        else
+                        {
+                            WriteElementWithPasswordsRemoved(writer, property.Value);
+                        }
+                    }
+                    writer.WriteEndObject();
+                    break;
+
+                case JsonValueKind.Array:
+                    writer.WriteStartArray();
+                    foreach (var item in element.EnumerateArray())
+                    {
+                        WriteElementWithPasswordsRemoved(writer, item);
+                    }
+                    writer.WriteEndArray();
+                    break;
+
+                default:
+                    element.WriteTo(writer);
+                    break;
+            }
         }
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

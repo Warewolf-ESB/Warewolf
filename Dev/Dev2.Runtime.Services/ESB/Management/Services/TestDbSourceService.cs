@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -53,8 +54,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                
-                var dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+                DbSource dbSource = null;
+                if(!HasPassword(src))
+                {
+                    dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+                }
                 
                 DbSource sourceToTest;
                 if (dbSource == null)
@@ -107,6 +111,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return serializer.SerializeToBuilder(msg);
         }
+
+        private bool HasPassword(IDbSource src) =>
+            src != null && !string.IsNullOrEmpty(src.Password) && !src.Password.All(c => c == '*');
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
