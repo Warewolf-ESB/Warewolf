@@ -619,6 +619,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFindRecordsMultipleCriteriaActivity(findRecordsActivity, nodeId);
             }
+            else if (activity is DsfDeleteRecordNullHandlerActivity deleteRecordNullHanlderActivity)
+            {
+                cell = CreateDsfDeleteRecordNullHandlerActivity(deleteRecordNullHanlderActivity, nodeId);
+            }
+            else if (activity is DsfDeleteRecordActivity deleteRecordActivity)
+            {
+                cell = CreateDsfDeleteRecordActivity(deleteRecordActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
