@@ -333,6 +333,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RecordsetLengthActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RedisCacheActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RedisRemoveActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlBulkInsertActivityHelper.cs" />
@@ -354,6 +355,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RecordsetLengthActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RedisCacheActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RedisRemoveActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SqlBulkInsertActivityHelper.cs" />

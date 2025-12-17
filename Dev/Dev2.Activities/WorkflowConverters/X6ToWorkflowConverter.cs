@@ -575,6 +575,8 @@ namespace Dev2.Activities.WF
                     return CreateFindRecordsMultipleCriteriaActivity(node);
                 case var t when t.Contains(Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCountRecordsetActivity(node);
+                case var t when t.Contains(Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRecordsetLengthActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
