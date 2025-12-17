@@ -327,6 +327,17 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_AdvancedRecordsetActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RedisCacheActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RedisRemoveActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlBulkInsertActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlServerDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebDeleteActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GETWebMethodHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_BaseConvertActivityHelper.cs" />
@@ -335,6 +346,18 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindIndexActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RedisCacheActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RedisRemoveActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SqlBulkInsertActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SqlServerDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebDeleteActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GETWebMethodHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ReplaceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_BaseConvertActivityHelper.cs" />
@@ -382,6 +405,7 @@
     <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPutActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

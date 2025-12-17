@@ -6,14 +6,14 @@ namespace Dev2.Activities.WF
 {
     public partial class X6ToWorkflowConverter
     {
-        private static DsfMySqlDatabaseActivity CreateMySqlDatabaseActivity(Cell node)
+        private static DsfSqlServerDatabaseActivity CreateSqlServerDatabaseActivity(Cell node)
         {
             var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
 
             if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
-            var activity = new DsfMySqlDatabaseActivity();
+            var activity = new DsfSqlServerDatabaseActivity();
             activity.FromX6Json(node);
             return activity;
         }

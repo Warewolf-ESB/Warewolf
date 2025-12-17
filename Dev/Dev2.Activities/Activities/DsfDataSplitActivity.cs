@@ -893,7 +893,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Read SkipBlankRows
             if (cell.data.TryGetBool(Constants.DATASPLIT_SKIPBLANKROWS, out bool skipblankrows))
             {
-                this.SkipBlankRows = reverseorder;
+                this.SkipBlankRows = skipblankrows;
             }
 
             // Read ResultsCollection

@@ -27,6 +27,8 @@ using Warewolf.Driver.Redis;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.RedisRemove
 {
@@ -211,6 +213,38 @@ namespace Dev2.Activities.RedisRemove
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.REDISREMOVEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.REDISREMOVEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_REDISREMOVE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.REDIS_KEY, Key);
+            cell.data.TryAdd(Constants.REDIS_RESPONSE, Response);
+            cell.data.TryAdd(Constants.REDIS_SOURCEID, SourceId);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.REDIS_KEY, out var key)) Key = key;
+            if (cell.data.TryGetString(Constants.REDIS_RESPONSE, out var response)) Response = response;
+            if (cell.data.TryGetGuid(Constants.REDIS_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
         }
     }
 }

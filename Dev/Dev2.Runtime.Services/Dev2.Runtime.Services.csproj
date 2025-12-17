@@ -45,6 +45,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
+    <Compile Include="ESB\Management\Services\GenerateAdvancedRecordsetOutputs.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\IsLicensed.cs" />
     <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
@@ -515,7 +516,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
     <PackageReference Include="MySql.Data" Version="9.2.0" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -583,7 +584,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
     <PackageReference Include="Npgsql">
-      <Version>3.2.7</Version>
+      <Version>9.0.4</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>

@@ -38,6 +38,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using TSQL;
 using System.Linq;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Services.Execution
 {
@@ -739,19 +740,39 @@ namespace Dev2.Services.Execution
         {
             try
             {
-                var parameters = GetPostgreSqlParameters(Inputs);
                 using (var server = SetupPostgreServer(errors))
                 {
-
-                    if (parameters != null)
+                    if (server == null)
                     {
+                        return false;
+                    }
 
-                        using (var dataSet = server.FetchDataTable(parameters.ToArray(), server.GetProcedureOutParams(ProcedureName)))
+                    var command = server.CreateCommand();
+                    command.CommandText = ProcedureName;
+                    command.CommandType = CommandType.StoredProcedure;
 
-                        {
-                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
-                            return true;
-                        }
+                    // Build parameter dictionary from Inputs using broker helper
+                    var originalParamValues = PostgreSqlDataBaseBroker.BuildInputParameterDictionary(Inputs);
+
+                    // Get input and output parameters from the procedure metadata
+                    server.GetProcedureInOutParams(command.CommandText, out List<NpgsqlParameter> inParameters, out List<NpgsqlParameter> outParams);
+
+                    // Get the return type to determine if it's a function
+                    var returnType = server.GetProcedureReturnType(command.CommandText);
+
+                    // Configure command using broker helper (handles parameter setup and function transformation)
+                    Runtime.ServiceModel.Esb.Brokers.PostgreSqlDataBaseBroker.ConfigureCommandForExecution(
+                        command,
+                        inParameters,
+                        outParams,
+                        originalParamValues,
+                        returnType);
+
+                    // Fetch data
+                    using (var dataTable = server.FetchDataTable(command))
+                    {
+                        TranslateDataTableToEnvironment(dataTable, DataObj.Environment, update);
+                        return true;
                     }
                 }
             }

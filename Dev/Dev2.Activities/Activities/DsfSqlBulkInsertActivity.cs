@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.TO;
@@ -33,6 +34,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -228,7 +230,7 @@ namespace Dev2.Activities
                         var errorString = allErrors.MakeDisplayReady();
                         dataObject.Environment.AddError(errorString);
                     }
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                     if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, "", "="));
@@ -522,25 +524,25 @@ namespace Dev2.Activities
 
         DataTable BuildDataTableToInsert()
         {
-            if(InputMappings == null)
+            if (InputMappings == null)
             {
                 return null;
             }
 
             var dataTableToInsert = new DataTable();
-   
-            foreach(var dataColumnMapping in InputMappings)
+
+            foreach (var dataColumnMapping in InputMappings)
             {
-                if(string.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                if (string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                 {
                     // Nulls are ok ;)
-                    if(dataColumnMapping.OutputColumn.IsNullable)
+                    if (dataColumnMapping.OutputColumn.IsNullable)
                     {
                         continue;
                     }
 
                     // Check identity flag ;)
-                    if(dataColumnMapping.OutputColumn.IsAutoIncrement)
+                    if (dataColumnMapping.OutputColumn.IsAutoIncrement)
                     {
                         CheckIdentityKeepValue(dataColumnMapping);
 
@@ -560,7 +562,7 @@ namespace Dev2.Activities
                 }
 
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
-                if(dataColumn.DataType == typeof(string))
+                if (dataColumn.DataType == typeof(string))
                 {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }
@@ -714,6 +716,63 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (BatchSize != null ? BatchSize.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IgnoreBlankRows.GetHashCode();
                 return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.SQLBULKINSERTACTIVITY;
+            cell.data[Constants.TYPE] = Constants.SQLBULKINSERTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_SQLBULKINSERT;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.SQLBULKINSERT_TABLENAME, TableName);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_BATCHSIZE, BatchSize);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_TIMEOUT, Timeout);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_CHECKCONSTRAINTS, CheckConstraints);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_FIRETRIGGERS, FireTriggers);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_USEINTERNALTRANSACTION, UseInternalTransaction);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_KEEPIDENTITY, KeepIdentity);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_KEEPTABLELOCK, KeepTableLock);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_IGNOREBLANKROWS, IgnoreBlankRows);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_INPUTMAPPINGS, InputMappings);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_DATABASE, Database.ResourceID);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.SQLBULKINSERT_TABLENAME, out var tableName)) TableName = tableName;
+            if (cell.data.TryGetString(Constants.SQLBULKINSERT_BATCHSIZE, out var batchSize)) BatchSize = batchSize;
+            if (cell.data.TryGetString(Constants.SQLBULKINSERT_TIMEOUT, out var timeout)) Timeout = timeout;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_CHECKCONSTRAINTS, out var checkConstraints)) CheckConstraints = checkConstraints;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_FIRETRIGGERS, out var fireTriggers)) FireTriggers = fireTriggers;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_USEINTERNALTRANSACTION, out var useInternalTransaction)) UseInternalTransaction = useInternalTransaction;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_KEEPIDENTITY, out var keepIdentity)) KeepIdentity = keepIdentity;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_KEEPTABLELOCK, out var keepTableLock)) KeepTableLock = keepTableLock;
+            if (cell.data.TryGetBool(Constants.SQLBULKINSERT_IGNOREBLANKROWS, out var ignoreBlankRows)) IgnoreBlankRows = ignoreBlankRows;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+
+            // Deserialize InputMappings
+            if (cell.data.TryGetInputMappings(out var inputMappings)) InputMappings = inputMappings;
+
+            // Deserialize Database
+            //if (cell.data.TryGetDatabase(out var database)) Database = database;
+            if (cell.data.TryGetGuid(Constants.SQLBULKINSERT_DATABASE, out Guid databaseResourceId))
+            {
+                var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(Guid.Empty, databaseResourceId);
+                this.Database = runtimeDatabase;
             }
         }
     }

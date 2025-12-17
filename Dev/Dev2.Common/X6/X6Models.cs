@@ -29,7 +29,6 @@ namespace Dev2.Common.X6
         public const string SWITCH_VARIABLE = "variable";
 
         public const string TRUE = "true";
-
         public const string FALSE = "false";
 
         public const string DISPLAYTEXT = "displaytext";
@@ -52,6 +51,11 @@ namespace Dev2.Common.X6
         public const string PROPERTY_ISENDEDONERROR = "IsEndedOnError";
         public const string PROPERTY_UNIQUEID = "UniqueID";
 
+        public const string DATABASE_PROCEDURENAME = "procedurename";
+        public const string DATABASE_EXECUTEACTIONSTRING = "executeactionstring";
+        public const string DATABASE_SERVICESERVER = "serviceserver";
+        public const string DATABASE_COMMANDTIMEOUT = "commandtimeout";
+
         public const string DSFSEQUENCE = "dsfsequenceactivity";
 
         public const string DSFDOTNETMULTIASSIGNACTIVITY = "DsfDotNetMultiAssignActivity";
@@ -65,31 +69,32 @@ namespace Dev2.Common.X6
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
-
+        public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
         public const string SEQUENCE_NESTED_ACTIVITY_INDEX = "index";
-        
+
         public const string ISNESTED_INFOREACH = "isNestedInForEach";
         public const string PARENTID_FOREACH = "forEachParentId";
-
 
         public const string DISPLAYNAME_SEQUENCE = "Sequence";
         public const string DISPLAYNAME_FOREACH = "For Each";
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
-        
+        public const string DISPLAYNAME_FINDRECORDS = "Find Records";
+
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
+        public const string DISPLAYNAME_WEBPOST = "Post Web Method";
+        public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
         public const string SELECTANDAPPLY_APPLYACTIVITYFUNC = "applyActivityFunc";
-
 
         public const string NGARGUMENTS = "ngArguments";
         public const string DATAACTION = "Data Action";
@@ -101,7 +106,6 @@ namespace Dev2.Common.X6
         public const string CONVERTCOLLECTION = "convertcollection";
         public const string UPDATEDCONVERTCOLLECTION = "updatedconvertcollection";
         public const string RESULTSCOLLECTION = "resultscollection";
-
 
         public const string DATASPLIT_SOURCESTRING = "sourcestring";
         public const string DATASPLIT_REVERSEORDER = "reverseorder";
@@ -115,18 +119,88 @@ namespace Dev2.Common.X6
 
         public const string WEBGETACTIVITY = "WebGetActivity";
         public const string DISPLAYNAME_WEBGET = "GET Web Method";
-        public const string WEBGET_HEADERS = "headers";
-        public const string WEBGET_UPDATEDHEADERS = "updatedheaders";
-        public const string WEBGET_QUERYSTRING = "querystring";
-        public const string WEBGET_ISRESPONSEBASE64 = "isresponsebase64";
-        public const string WEBGET_SOURCEID = "sourceId";
-        public const string WEBGET_INPUTS = "inputs";
-        public const string WEBGET_OUTPUTS = "outputs";
-        public const string WEBGET_ISOBJECT = "isOutputToObject";
-        public const string WEBGET_OBJECTNAME = "objectname";
-        public const string WEBGET_OBJECTRESULT = "objectresult";
+        public const string WEBMETHOD_HEADERS = "headers";
+        public const string WEBMETHOD_UPDATEDHEADERS = "updatedheaders";
+        public const string WEBMETHOD_QUERYSTRING = "querystring";
+        public const string WEBMETHOD_ISRESPONSEBASE64 = "isresponsebase64";
+        public const string WEBMETHOD_SOURCEID = "sourceId";
 
+        public const string WEBMETHOD_OUTPUTDESCRIPTION = "outputdescription";
+        public const string WEBMETHOD_INPUTS = "inputs";
+        public const string WEBMETHOD_OUTPUTS = "outputs";
+        public const string WEBMETHOD_ISOBJECT = "isOutputToObject";
+        public const string WEBMETHOD_OBJECTNAME = "objectname";
+        public const string WEBMETHOD_OBJECTRESULT = "objectresult";
+
+        public const string WEBPOSTACTIVITY = "WebPostActivityNew";
+        public const string WEBMETHOD_SETTINGS = "settings";
+        public const string WEBMETHOD_CONDITIONS = "conditions";
+        public const string WEBMETHOD_TIMEOUT = "timeout";
+        public const string WEBMETHOD_POSTDATA = "postdata";
+        public const string WEBPUTACTIVITY = "WebPutActivity";
+        public const string DISPLAYNAME_WEBPUT = "PUT Web Method";
+        public const string WEBMETHOD_ISPUTDATABASE64 = "isputdatabase64";
+        public const string WEBDELETEACTIVITY = "DsfWebDeleteActivity";
+
+        public const string SQLSERVERDATABASEACTIVITY = "DsfSqlServerDatabaseActivity";
+        public const string DISPLAYNAME_SQLSERVERDATABASE = "SQL Server Database";
+
+        public const string POSTGRESQLDATABASEACTIVITY = "DsfPostgreSqlActivity";
+        public const string DISPLAYNAME_POSTGRESQLDATABASE = "Postgre SQL Database";
+
+        public const string MYSQLDATABASEACTIVITY = "DsfMySqlDatabaseActivity";
+        public const string DISPLAYNAME_MYSQLDATABASE = "MySQL Database";
+
+        public const string SQLBULKINSERTACTIVITY = "DsfSqlBulkInsertActivity";
+        public const string DISPLAYNAME_SQLBULKINSERT = "SQL Bulk Insert";
+
+        public const string SQLBULKINSERT_TABLENAME = "tablename";
+        public const string SQLBULKINSERT_BATCHSIZE = "batchsize";
+        public const string SQLBULKINSERT_TIMEOUT = "timeout";
+        public const string SQLBULKINSERT_CHECKCONSTRAINTS = "checkconstraints";
+        public const string SQLBULKINSERT_FIRETRIGGERS = "firetriggers";
+        public const string SQLBULKINSERT_USEINTERNALTRANSACTION = "useinternaltransaction";
+        public const string SQLBULKINSERT_KEEPIDENTITY = "keepidentity";
+        public const string SQLBULKINSERT_KEEPTABLELOCK = "keeptablelock";
+        public const string SQLBULKINSERT_IGNOREBLANKROWS = "ignoreblankrows";
+        public const string SQLBULKINSERT_INPUTMAPPINGS = "inputmappings";
+        public const string SQLBULKINSERT_DATABASE = "database";
+    
+        public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
+        public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
+
+
+        public const string REDISCACHEACTIVITY = "RedisCacheActivity";
+        public const string DISPLAYNAME_REDISCACHE = "Redis Cache";
+        public const string REDISCACHE_ACTIVITYFUNC = "ActivityFunc";
+
+        public const string REDISCACHE_KEY = "key";
+        public const string REDISCACHE_TTL = "ttl";
+        public const string REDISCACHE_RESPONSE = "response";   
+        public const string REDISCACHE_SOURCEID = "sourceid";
+
+        public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
+        public const string DISPLAYNAME_REDISREMOVE = "Redis Remove";
+
+        public const string REDIS_KEY = "key";
+        public const string REDIS_RESPONSE = "response";
+        public const string REDIS_SOURCEID = "sourceid";
+
+        // Add these constants for Find Records specific properties
+        public const string FINDRECORDS_FIELDSTOSEARCH = "fieldsToSearch";
+        public const string FINDRECORDS_STARTINDEX = "startIndex";
+        public const string FINDRECORDS_MATCHCASE = "matchCase";
+        public const string FINDRECORDS_REQUIREALLTRUE = "requireAllTrue";
+        public const string FINDRECORDS_REQUIREALLFIELDSTOMATCH = "requireAllFieldsToMatch";
+        public const string FINDRECORDS_RESULTSCOLLECTION = "resultsCollection";
+
+        public const string ADVANCEDRECORDSETACTIVITY = "AdvancedRecordsetActivity";
+        public const string DISPLAYNAME_ADVANCEDRECORDSET = "Advanced Recordset";
+        public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
+        public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
+        public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
     }
+
     public class X6WorkflowLoadModel
     {
         [JsonProperty("workflowxml")]

@@ -157,6 +157,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
+            EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
         }
 
 
@@ -288,8 +289,7 @@ namespace Dev2.Activities.WF
 
         /// <summary>
         /// Checks if a node represents a ForEach activity
-        /// </summary>
-        /// <param name="node">The node to check</param>
+        /// /// <param name="node">The node to check</param>
         /// <returns>True if the node is a ForEach activity</returns>
         private static bool IsForEachNode(Cell node)
         {
@@ -518,57 +518,65 @@ namespace Dev2.Activities.WF
                 case var t when t == Constants.START:
                     isStartNode = true;
                     return new WriteLine { Text = "Workflow Start Node" };
-
                 case var t when t.Contains("dsfdotnetmultiassignactivity"):
                     return CreateAssignActivity(node);
-
                 case var t when t.Contains("dsfdotnetmultiassignobjectactivity"):
                     return CreateAssignObectActivity(node);
-
                 case var t when t.Contains("flowdecision"):
                     return CreateFlowDecisionActivity(node);
-
                 case var t when t.Contains("dsfdecision"):
                     return CreateDecisionActivity(node);
-
                 case var t when t.Contains("dsfflowswitchactivity") || t.Contains("flowswitch"):
                     return CreateSwitchActivity(node);
-
                 case var t when t.Contains("dsfforeachactivity") || t.Contains("foreach"):
                     return CreateForEachActivity(node);
-
                 case var t when t.Contains("dsfsequenceactivity"):
                     return CreateSequenceActivity(node);
-
                 case var t when t.Contains(Constants.DSFSELECTANDAPPLYACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSelectAndApplyActivity(node);
-
                 case var t when t.Contains(Constants.DSFDATAMERGEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDataMergeActivity(node);
-
                 case var t when t.Contains(Constants.DSFDATASPLITACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDataSplitActivity(node);
-
                 case var t when t.Contains(Constants.DSFBASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateBaseConvertActivity(node);
-
                 case var t when t.Contains(Constants.DSFREPLACEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateReplaceActivity(node);
-
                 case var t when t.Contains(Constants.DSFCASECONVERTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCaseConvertActivity(node);
-
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
-
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
+                case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebPostActivity(node);
+                case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebPutActivity(node);
+                case var t when t.Contains(Constants.WEBDELETEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebDeleteActivity(node);
+                case var t when t.Contains(Constants.SQLSERVERDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSqlServerDatabaseActivity(node);
+                case var t when t.Contains(Constants.POSTGRESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePostgresqlDatabaseActivity(node);
+                case var t when t.Contains(Constants.MYSQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateMySqlDatabaseActivity(node);
+                case var t when t.Contains(Constants.SQLBULKINSERTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSqlBulkInsertActivity(node);
+                case var t when t.Contains(Constants.ORACLESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateOracleDatabaseActivity(node);
+                case var t when t.Contains(Constants.ADVANCEDRECORDSETACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateAdvancedRecordsetActivity(node);
+                case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisCacheActivity(node);
 
+                case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisRemoveActivity(node);
+                case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFindRecordsMultipleCriteriaActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }
-
         
 
         /// <summary>
@@ -1032,6 +1040,7 @@ namespace Dev2.Activities.WF
                 ProcessReferencesForImplementation(doc);
                 ReplaceDefaultNamespace(doc);
                 var finalXml = ReplaceBadCollection(doc.ToString());
+                finalXml = ReplaceSystemNamespace(finalXml);
                 return new StringBuilder(finalXml);
             }
             catch (Exception)
@@ -1205,6 +1214,55 @@ namespace Dev2.Activities.WF
             // If no direct containment found, try to find the closest ForEach node
             // This is a fallback strategy - you might want to implement more sophisticated logic here
             return allNodes.FirstOrDefault(IsForEachNode)?.id;
+        }
+
+        public static string ReplaceSystemNamespace(string xml)
+        {
+            if (string.IsNullOrWhiteSpace(xml)) return xml;
+
+            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
+
+            const string badNs = "clr-namespace:System;assembly=System.Private.CoreLib";
+            var systemNs = XNamespace.Get("clr-namespace:System;assembly=mscorlib");
+
+            // ensure root has xmlns:s declared with correct namespace
+            var root = doc.Root;
+            if (root != null)
+            {
+                var existingSystemNs = root.GetNamespaceOfPrefix("s");
+                if (existingSystemNs == null)
+                {
+                    // Add the correct namespace if it doesn't exist
+                    root.Add(new XAttribute(XNamespace.Xmlns + "s", systemNs.NamespaceName));
+                }
+                else if (existingSystemNs.NamespaceName == badNs)
+                {
+                    // Replace the bad namespace declaration
+                    var badAttr = root.Attributes()
+                        .FirstOrDefault(a => a.IsNamespaceDeclaration && 
+                                           a.Name.LocalName == "s" && 
+                                           a.Value == badNs);
+                    if (badAttr != null)
+                    {
+                        badAttr.Value = systemNs.NamespaceName;
+                    }
+                }
+            }
+
+            // find all elements with bad namespace
+            var elementMatches = doc
+                .Descendants()
+                .Where(el => el.Name.NamespaceName == badNs)
+                .ToList();
+
+            foreach (var el in elementMatches)
+            {
+                // Replace element namespace
+                el.Name = systemNs + el.Name.LocalName;
+            }
+
+
+            return doc.ToString(SaveOptions.DisableFormatting);
         }
     }
 }

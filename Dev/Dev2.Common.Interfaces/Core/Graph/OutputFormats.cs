@@ -15,5 +15,6 @@ namespace Dev2.Common.Interfaces.Core.Graph
     {
         Unknown,
         ShapedXML,
+        JSON
     }
 }
