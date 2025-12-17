@@ -347,6 +347,17 @@
                                                      WindowPositionMenuVisibility="Hidden" >
                                 <views1:ToolboxView DataContext="{Binding ToolboxViewModel}" x:Name="Toolboxcontrol" AutomationProperties.AutomationId="UI_ToolboxControl_AutoID" />
                             </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Chatbot"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="CHATBOT"
+                                                     IsPinned="True"
+                                                     Style="{StaticResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden" >
+                                <views1:ChatbotView x:Name="ChatbotViewControl" AutomationProperties.AutomationId="UI_ChatbotViewControl_AutoID"/>
+                            </igDock:ContentPane>
+                            <!-- HELP (Hidden by default - can be shown by changing Visibility to Visible) -->
                             <igDock:ContentPane x:Name="Help"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
@@ -354,7 +365,8 @@
                                                      Header="WHAT DOES THIS DO?"
                                                      IsPinned="True"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
-                                                     WindowPositionMenuVisibility="Hidden" >
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     Visibility="Collapsed" >
                                 <views1:HelpView DataContext="{Binding HelpViewModel}" x:Name="HelpViewControl" AutomationProperties.AutomationId="UI_HelpViewControl_AutoID"/>
                             </igDock:ContentPane>
                         </igDock:SplitPane>
