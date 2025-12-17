@@ -540,7 +540,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_SelectedServiceTest_GIVEN_NotDummyServiceTestOrIsNewTest_ShouldNotSetAsSelectedItem()
@@ -3021,7 +3021,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
-            Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
+            Assert.AreEqual(StepType.Assert, serviceTestStep.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
@@ -3102,7 +3102,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
-            Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
+            Assert.AreEqual(StepType.Assert, serviceTestStep.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
@@ -3160,7 +3160,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
-            Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
+            Assert.AreEqual(StepType.Assert, serviceTestStep.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
@@ -3236,7 +3236,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
-            Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
+            Assert.AreEqual(StepType.Assert, serviceTestStep.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
             Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 

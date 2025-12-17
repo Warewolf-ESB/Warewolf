@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Select-Object -First 20)",
+      "Bash(dotnet build:*)",
+      "Bash(Select-String -Pattern \"FileRead|DsfFileRead\" -Context 2)",
+      "Bash(git add:*)",
+      "Bash(del PasswordEncryptionTest.cs PasswordEncryptionTest.csproj)",
+      "Bash(find:*)",
+      "Bash(dotnet msbuild:*)",
+      "Bash(csc:*)",
+      "Bash(dotnet test:*)",
+      "Bash(msbuild:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
