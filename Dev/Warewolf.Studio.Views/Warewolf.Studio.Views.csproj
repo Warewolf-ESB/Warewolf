@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatbotSource.xaml.cs" />
+    <Compile Include="ChatbotView.xaml.cs" />
     <Compile Include="ChooseDLLView.xaml.cs">
       <DependentUpon>ChooseDLLView.xaml</DependentUpon>
     </Compile>
@@ -230,6 +231,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ChatbotSource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChatbotView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChooseDLLView.xaml">
