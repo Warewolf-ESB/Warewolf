@@ -70,6 +70,7 @@ namespace Dev2.Common.X6
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
         public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
+        public const string DSFSORTRECORDSACTIVITY = "DsfSortRecordsActivity";
         public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
 
         public const string ISNESTED = "isNested";
@@ -201,6 +202,12 @@ namespace Dev2.Common.X6
         public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
         public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
         public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
+
+        public const string DISPLAYNAME_SORTACTIVITY = "Sort Records";
+        public const string SORTACTIVITY_FIELD = "sortfield";
+        public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
+        
+
 
         public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
         public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
