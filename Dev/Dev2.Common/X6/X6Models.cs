@@ -70,6 +70,7 @@ namespace Dev2.Common.X6
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
         public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
+        public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -89,6 +90,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
+        public const string DISPLAYNAME_COUNTRECORDS = "Count Records";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
 
@@ -199,6 +201,10 @@ namespace Dev2.Common.X6
         public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
         public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
         public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
+
+        public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
+        public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
+        public const string COUNTRECORDS_TREATNULLASZERO = "treatnullaszero";
     }
 
     public class X6WorkflowLoadModel

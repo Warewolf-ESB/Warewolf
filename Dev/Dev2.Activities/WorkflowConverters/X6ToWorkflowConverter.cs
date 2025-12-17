@@ -573,6 +573,8 @@ namespace Dev2.Activities.WF
                     return CreateRedisRemoveActivity(node);
                 case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindRecordsMultipleCriteriaActivity(node);
+                case var t when t.Contains(Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCountRecordsetActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
