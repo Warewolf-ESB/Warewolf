@@ -49,6 +49,7 @@
 		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
 			<Link>Properties\AssemblyCommonInfo.cs</Link>
 		</Compile>
+		<Compile Include="ChatbotView.xaml.cs" />
 		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 		<None Include="app.config" />
 		<None Include="Warewolf.Studio.Views.ruleset" />
@@ -505,6 +506,11 @@
     </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Reference Include="System.Activities.Presentation" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Include="ChatbotView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -87,6 +87,9 @@
         <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
             <Link>Properties\AssemblyCommonInfo.cs</Link>
         </Compile>
+        <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
+        <Compile Include="Settings\Chatbot\ChatbotView.xaml.cs" />
+        <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
 		<Compile Include="Startup.cs" />
     </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
@@ -938,6 +941,11 @@
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Reference Include="System.Activities.Core.Presentation" />
 		<Reference Include="System.Activities.Presentation" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Include="Settings\Chatbot\ChatbotView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
