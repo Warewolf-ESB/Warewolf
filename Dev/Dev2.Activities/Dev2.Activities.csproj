@@ -328,6 +328,7 @@
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_AdvancedRecordsetActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_DeleteRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DeleteRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
