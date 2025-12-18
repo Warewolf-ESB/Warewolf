@@ -19,8 +19,14 @@ using System.Windows.Input;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Prism.Commands;
+using Dev2.Common;
+using Prism.Mvvm;
+#endif
 using Newtonsoft.Json;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
@@ -28,9 +34,13 @@ using Warewolf.Configuration;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
     public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase
-    {
-        private readonly IServer _server;
+#else
+	public class ChatbotViewModel : BindableBase2
+#endif
+	{
+		private readonly IServer _server;
         private string _message;
         private ObservableCollection<string> _messages;
         private string _displayName;
@@ -74,7 +84,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _message = value;
                 OnPropertyChanged(nameof(Message));
-                ((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
+				((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
             }
         }
 
