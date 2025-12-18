@@ -50,6 +50,7 @@
 			<Link>Properties\AssemblyCommonInfo.cs</Link>
 		</Compile>
 		<Compile Include="ChatbotView.xaml.cs" />
+		<Compile Include="ManageChatbotSourceControl.xaml.cs" />
 		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 		<None Include="app.config" />
 		<None Include="Warewolf.Studio.Views.ruleset" />
@@ -509,6 +510,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Include="ChatbotView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	  <Page Include="ManageChatbotSourceControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
