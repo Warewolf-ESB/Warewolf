@@ -8,8 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Dev2.Common;
+using Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.Rendering;
+#endif
 using System.Windows.Controls;
+using System.Threading.Tasks;
 
 namespace Warewolf.Studio.Views
 {
@@ -19,5 +28,14 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
         }
-    }
+
+#if !NETFRAMEWORK
+		public string Path => throw new System.NotImplementedException();
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+#endif
+	}
 }

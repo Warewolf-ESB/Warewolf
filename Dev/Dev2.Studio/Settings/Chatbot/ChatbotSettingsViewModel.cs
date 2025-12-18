@@ -180,8 +180,10 @@ namespace Dev2.Settings.Chatbot
         public ICommand NewChatbotSourceCommand => _newChatbotSourceCommand;
         public ICommand EditChatbotSourceCommand => _editChatbotSourceCommand;
 
-        private void NewChatbotSource()
-        {
+#pragma warning disable CC0091 // Use static method
+		private void NewChatbotSource()
+#pragma warning restore CC0091 // Use static method
+		{
             // Trigger the creation of a new chatbot source
             // Pass null to create a new source
             CustomContainer.Get<IShellViewModel>()?.NewChatbotSourceCommand?.Execute(null);

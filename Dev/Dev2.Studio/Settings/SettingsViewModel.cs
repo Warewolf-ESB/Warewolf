@@ -378,9 +378,11 @@ namespace Dev2.Settings
 
         public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? StringResources.SettingsLogging + " *" : StringResources.SettingsLogging;
         public string PersistenceHeader => _persistenceSettingsViewModel != null && _persistenceSettingsViewModel.IsDirty ? StringResources.SettingsPersistence + " *" : StringResources.SettingsPersistence;
-        public string ChatbotHeader => _chatbotSettingsViewModel != null && _chatbotSettingsViewModel.IsDirty ? "Chatbot *" : "Chatbot";
+#pragma warning disable CC0021 // Use nameof
+		public string ChatbotHeader => _chatbotSettingsViewModel != null && _chatbotSettingsViewModel.IsDirty ? "Chatbot *" : "Chatbot";
+#pragma warning restore CC0021 // Use nameof
 
-        public bool HasLogSettings
+		public bool HasLogSettings
         {
             get
             {

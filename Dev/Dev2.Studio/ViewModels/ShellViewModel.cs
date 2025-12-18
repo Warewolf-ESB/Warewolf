@@ -109,7 +109,8 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newExchangeSourceCommand;
         private AuthorizeCommand<string> _newRabbitMQSourceCommand;
         private AuthorizeCommand<string> _newSharepointSourceCommand;
-        private AuthorizeCommand<string> _newDropboxSourceCommand;
+		private AuthorizeCommand<string> _newChatbotSourceCommand;
+		private AuthorizeCommand<string> _newDropboxSourceCommand;
         private AuthorizeCommand<string> _newWcfSourceCommand;
         private ICommand _deployCommand;
         private ICommand _mergeCommand;
@@ -547,9 +548,14 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand<string> NewSharepointSourceCommand
         {
             get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
-        }
+		}
 
-        public IAuthorizeCommand<string> NewDropboxSourceCommand
+		public IAuthorizeCommand<string> NewChatbotSourceCommand
+		{
+			get => _newChatbotSourceCommand ?? (_newChatbotSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewChatbotSource(@""), param => IsActiveServerConnected()));
+		}
+
+		public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
             get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
         }
@@ -1172,8 +1178,12 @@ namespace Dev2.Studio.ViewModels
 
             var viewModel = new ChatbotSourceViewModel(
                 new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+#if NETFRAMEWORK
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, ActiveServer);
-            var vm = new SourceViewModel<IChatbotSource>(EventPublisher, viewModel, PopupProvider, new ManageChatbotSourceControl(), ActiveServer);
+#else
+			    new Prism.Events.EventAggregator(), def, AsyncWorker, ActiveServer);
+#endif
+			var vm = new SourceViewModel<IChatbotSource>(EventPublisher, viewModel, PopupProvider, new ManageChatbotSourceControl(), ActiveServer);
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
@@ -2518,6 +2528,11 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
+
+		public void NewChatbotSource(string resourcePath)
+		{
+			_worksurfaceContextManager.NewChatbotSource(resourcePath);
+		}
 
 		public Task HandleAsync(DeleteResourcesMessage message, CancellationToken cancellationToken) => new Task(() => { Handle(message); });
 
