@@ -1092,6 +1092,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             return output;
         }
+        public ExecuteMessage SaveChatbotSettings(IServer currentEnv, ChatbotSettingsData chatbotSettingsData)
+        {
+            var comController = new CommunicationController {ServiceName = "SaveChatbotSettings"};
+            comController.AddPayloadArgument("ChatbotSettings", _serializer.Serialize(chatbotSettingsData));
+            var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+
+            return output;
+        }
+        public T GetChatbotSettings<T>(IServer currentEnv) where T : ChatbotSettingsData, new()
+        {
+            var comController = new CommunicationController {ServiceName =nameof(Warewolf.Service.GetChatbotSettings)};
+            var output = comController.ExecuteCommand<T>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+            return output;
+        }
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
             var settingsDataTypeName = auditingSettingsData.GetType().Name;

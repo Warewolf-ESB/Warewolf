@@ -152,6 +152,21 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public ChatbotViewModel ChatbotViewModel
+        {
+            get => _chatbotViewModel;
+            set
+            {
+                if (_chatbotViewModel == value)
+                {
+                    return;
+                }
+
+                _chatbotViewModel = value;
+                NotifyOfPropertyChange(() => ChatbotViewModel);
+            }
+        }
+
         public bool ShouldUpdateActiveState { get; set; }
 
         public IServer ActiveServer
@@ -255,7 +270,8 @@ namespace Dev2.Studio.ViewModels
             TasksCommand.UpdateContext(ActiveServer);
             DebugCommand.UpdateContext(ActiveServer);
             SaveCommand.UpdateContext(ActiveServer);
-        }
+            NewChatbotSourceCommand.UpdateContext(ActiveServer);
+		}
 
         public IAuthorizeCommand SaveCommand
         {
@@ -548,9 +564,9 @@ namespace Dev2.Studio.ViewModels
         public IAuthorizeCommand<string> NewWcfSourceCommand
         {
             get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
-        }
+		}
 
-        public ICommand ExitCommand
+		public ICommand ExitCommand
         {
             get => _exitCommand ?? (_exitCommand = new RelayCommand(param => Application.Current.Shutdown(), param => true));
         }
@@ -630,6 +646,7 @@ namespace Dev2.Studio.ViewModels
             _menuExpanded = false;
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
+            ChatbotViewModel = new ChatbotViewModel(ActiveServer, SettingsCommand);
 
             AddWorkspaceItems(popupController);
             ShowStartPageAsync();
@@ -1122,6 +1139,19 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceContextViewModel;
         }
 
+        WorkSurfaceContextViewModel ProcessChatbotSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
+        {
+            var def = new ChatbotSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
+
+            var viewModel = new ChatbotSourceViewModel(
+                new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, ActiveServer);
+            var vm = new SourceViewModel<IChatbotSource>(EventPublisher, viewModel, PopupProvider, new ManageChatbotSourceControl(), ActiveServer);
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
+            return workSurfaceContextViewModel;
+        }
+
         WorkSurfaceContextViewModel ProcessWebSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
             var def = new WebServiceSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
@@ -1477,9 +1507,9 @@ namespace Dev2.Studio.ViewModels
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.SqlServerSource, selectedSource.Id);
             ProcessDBSource(ProcessSQLDBSource(selectedSource), key);
-        }
+		}
 
-        public void EditMySqlResource(IDbSource selectedSource) => EditMySqlResource(selectedSource, null);
+		public void EditMySqlResource(IDbSource selectedSource) => EditMySqlResource(selectedSource, null);
 
         public void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
@@ -2283,6 +2313,7 @@ namespace Dev2.Studio.ViewModels
         IMenuViewModel _menuViewModel;
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
+        ChatbotViewModel _chatbotViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
         public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData(false);
 

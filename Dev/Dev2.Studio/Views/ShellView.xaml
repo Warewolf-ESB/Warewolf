@@ -355,7 +355,9 @@
                                                      IsPinned="True"
                                                      Style="{StaticResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden" >
-                                <views1:ChatbotView x:Name="ChatbotViewControl" AutomationProperties.AutomationId="UI_ChatbotViewControl_AutoID"/>
+                                <views1:ChatbotView x:Name="ChatbotViewControl"
+                                                    DataContext="{Binding ChatbotViewModel}"
+                                                    AutomationProperties.AutomationId="UI_ChatbotViewControl_AutoID"/>
                             </igDock:ContentPane>
                             <!-- HELP (Hidden by default - can be shown by changing Visibility to Visible) -->
                             <igDock:ContentPane x:Name="Help"

@@ -169,7 +169,8 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         WcfSource,
         ComPluginSource,
         RedisSource,
-        ElasticsearchSource
+        ElasticsearchSource,
+        ChatbotSource
     }
 
     /// <summary>

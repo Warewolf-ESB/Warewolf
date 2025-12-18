@@ -172,6 +172,9 @@
     <Compile Include="ManageComPluginSourceControl.xaml.cs">
       <DependentUpon>ManageComPluginSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageChatbotSourceControl.xaml.cs">
+      <DependentUpon>ManageChatbotSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManagePluginSourceControl.xaml.cs">
       <DependentUpon>ManagePluginSourceControl.xaml</DependentUpon>
     </Compile>
@@ -287,6 +290,10 @@
     <Page Include="ManageComPluginSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManageChatbotSourceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManagePluginSourceControl.xaml">
       <SubType>Designer</SubType>

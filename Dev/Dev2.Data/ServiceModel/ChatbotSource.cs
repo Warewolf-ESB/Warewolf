@@ -13,12 +13,13 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class ChatbotSource : Resource, IDisposable, IResourceSource
+    public class ChatbotSource : Resource, IDisposable, IResourceSource, IChatbotSourceResource
     {
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }

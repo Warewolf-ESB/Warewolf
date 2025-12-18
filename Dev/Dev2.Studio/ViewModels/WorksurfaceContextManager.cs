@@ -61,7 +61,6 @@ using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
 using Dev2.Triggers;
 using Warewolf.Data;
-using ChatbotSource = Warewolf.Studio.Views.ChatbotSource;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1696,7 +1695,7 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatbotSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatbotSource>(_shellViewModel.EventPublisher, new ChatbotSourceViewModel(new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ChatbotSource(), ActiveServer));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatbotSource>(_shellViewModel.EventPublisher, new ChatbotSourceViewModel(new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManageChatbotSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
     }

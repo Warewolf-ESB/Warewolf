@@ -217,6 +217,11 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
+    <Compile Include="Settings\Chatbot\ChatbotView.xaml.cs">
+      <DependentUpon>ChatbotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
     <Compile Include="Settings\Persistence\IPersistenceSettings.cs" />
     <Compile Include="Settings\Persistence\PersistenceView.xaml.cs" />
     <Compile Include="Settings\Persistence\PersistenceSettingsViewModel.cs" />
@@ -453,6 +458,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Persistence\PersistenceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Chatbot\ChatbotView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

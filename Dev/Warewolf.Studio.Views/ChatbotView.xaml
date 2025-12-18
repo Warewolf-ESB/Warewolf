@@ -8,9 +8,6 @@
          mc:Ignorable="d" 
          d:DesignHeight="450" d:DesignWidth="800"
          d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
-<UserControl.DataContext>
-    <viewModels:ChatbotViewModel />
-</UserControl.DataContext>
 <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -36,24 +33,54 @@
                        Foreground="White"/>
         </Border>
 
-        <!-- Messages List -->
-        <ScrollViewer Grid.Row="1" 
-                      VerticalScrollBarVisibility="Auto"
-                      Margin="10">
-            <ItemsControl ItemsSource="{Binding Messages}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" 
-                                   TextWrapping="Wrap" 
-                                   Margin="5"
-                                   Padding="5"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <!-- Content Area -->
+        <Grid Grid.Row="1">
+            <!-- No Configuration Message -->
+            <StackPanel Visibility="{Binding ShowConfigurationMessage, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           Margin="20">
+                    <Run Text="No Chatbot Source has been configured. " />
+                    <Hyperlink Command="{Binding OpenSettingsCommand}"
+                               Style="{StaticResource HyperLinkStyle}">
+                        <Run Text="Open Settings" />
+                    </Hyperlink>
+                    <Run Text=" to select a Chatbot Source." />
+                </TextBlock>
+            </StackPanel>
 
-        <!-- Input Area -->
-        <Grid Grid.Row="2" Margin="10">
+            <!-- Chat Interface (Messages List) -->
+            <ScrollViewer Visibility="{Binding IsChatbotConfigured, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                          VerticalScrollBarVisibility="Auto"
+                          Margin="10">
+                <ItemsControl ItemsSource="{Binding Messages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       TextWrapping="Wrap"
+                                       Margin="5"
+                                       Padding="5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Loading Indicator -->
+            <TextBlock Text="Sending..."
+                       Visibility="{Binding IsSending, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Margin="10"
+                       FontStyle="Italic"
+                       Foreground="{StaticResource WareWolfOrangeBrush}"/>
+        </Grid>
+
+        <!-- Input Area - Only visible when configured -->
+        <Grid Grid.Row="2"
+              Margin="10"
+              Visibility="{Binding IsChatbotConfigured, Converter={StaticResource BoolToVisibilityConverterPositive}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

@@ -34,6 +34,7 @@ namespace Dev2.Common
         public static AuditingSettings Auditing = new AuditingSettings();
         public static LegacySettings Legacy = new LegacySettings();
         public static PersistenceSettings Persistence = new PersistenceSettings();
+        public static ChatbotSettings Chatbot = new ChatbotSettings();
     }
     public class PersistenceSettings : ConfigSettingsBase<PersistenceSettingsData>
     {
@@ -467,13 +468,61 @@ namespace Dev2.Common
 
         public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
 
-        public bool IncludeEnvironmentVariable 
-        { 
+        public bool IncludeEnvironmentVariable
+        {
             get => _settings.IncludeEnvironmentVariable;
             set
             {
                 _settings.IncludeEnvironmentVariable = value;
             }
-        }       
+        }
+    }
+
+    public class ChatbotSettings : ConfigSettingsBase<ChatbotSettingsData>
+    {
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "chatbotSettings.json");
+
+        public ChatbotSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        public ChatbotSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public ChatbotSettingsData Get()
+        {
+            var result = new ChatbotSettingsData();
+            foreach (var prop in typeof(ChatbotSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+
+            return result;
+        }
+
+        public bool EncryptDataSource
+        {
+            get => _settings?.EncryptDataSource ?? true;
+            set
+            {
+                _settings.EncryptDataSource = value;
+                Save();
+            }
+        }
+
+        public NamedGuidWithEncryptedPayload ChatbotSource
+        {
+            get => _settings.ChatbotSource ?? new NamedGuidWithEncryptedPayload();
+            set
+            {
+                _settings.ChatbotSource = value;
+                Save();
+            }
+        }
     }
 }

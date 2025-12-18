@@ -101,3 +101,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Data1.Tests
 /Dev/.idea
 
+/Dev/.claude/settings.local.json
