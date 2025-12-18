@@ -57,6 +57,15 @@ namespace Warewolf.Service
         public const string PersistenceSettings = nameof(PersistenceSettings);
     }
 
+    public static class SaveChatbotSettings
+    {
+        public const string ChatbotSettings = nameof(ChatbotSettings);
+    }
+    public static class GetChatbotSettings
+    {
+        public const string ChatbotSettings = nameof(ChatbotSettings);
+    }
+
     public static class SaveAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);

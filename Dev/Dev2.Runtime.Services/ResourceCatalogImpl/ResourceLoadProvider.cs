@@ -326,6 +326,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         return typeof(ComPluginSource);
                     case nameof(enSourceType.ElasticsearchSource):
                         return typeof(ElasticsearchSource);
+                    case nameof(enSourceType.ChatbotSource):
+                        return typeof(ChatbotSource);
                     case "WorkflowService":
                         return typeof(Workflow);
                 }

@@ -39,7 +39,6 @@ namespace Dev2.Common.Interfaces.Studio
         string DebugLabel { get; }
         string SettingsLabel { get; }
         string SupportLabel { get; }
-        string ChatbotLabel { get; }
         string NewVersionLabel { get; }
         string LockLabel { get; }
         string MenuSaveToolTip { get; }
@@ -48,7 +47,6 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand IsOverLockCommand { get; }
         ICommand IsNotOverLockCommand { get; }
         ICommand SupportCommand { get; }
-        ICommand ChatbotCommand { get; set; }
         bool IsProcessing { get; set; }
         ICommand StartPageCommand { get; }
 

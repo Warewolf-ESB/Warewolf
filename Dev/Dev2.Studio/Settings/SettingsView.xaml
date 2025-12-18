@@ -7,6 +7,7 @@
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
              xmlns:persistence="clr-namespace:Dev2.Settings.Persistence"
+             xmlns:chatbot="clr-namespace:Dev2.Settings.Chatbot"
              xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
              Padding="5"
@@ -25,6 +26,8 @@
                                AutomationProperties.AutomationId="PerfmonViewContent" DataContext="{Binding PerfmonViewModel, Mode=OneWay}" />
         <persistence:PersistenceView x:Key="PersistenceSettingsView"
                                  AutomationProperties.AutomationId="PersistenceViewContent" DataContext="{Binding PersistenceSettingsViewModel, Mode=OneWay}"/>
+        <chatbot:ChatbotView x:Key="ChatbotSettingsView"
+                                 AutomationProperties.AutomationId="ChatbotViewContent" DataContext="{Binding ChatbotSettingsViewModel, Mode=OneWay}"/>
     </UserControl.Resources>
 
     <Grid>
@@ -83,6 +86,17 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <StaticResource ResourceKey="PersistenceSettingsView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="Magic" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding ChatbotHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="ChatbotSettingsView" />
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>

@@ -402,37 +402,6 @@
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <!--  CHATBOT  -->
-            <Button Grid.Row="14"
-                    Grid.Column="1"
-                    Width="{Binding ButtonWidth}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding ChatbotCommand}"
-                    Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="Open Chatbot">
-                <DockPanel Width="{Binding ButtonWidth}"
-                           Height="35"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           Background="Transparent">
-                    <TextBlock Width="35"
-                               MaxWidth="35"
-                               MaxHeight="35"
-                               Padding="8.5,6.5,.5,6.5"
-                               Style="{StaticResource MenuTextBlockStyle}">
-                        <fa:FontAwesome FontSize="22"
-                                        FontWeight="Light"
-                                        Icon="Magic" />
-                    </TextBlock>
-                    <TextBlock Padding="15,8,0,5"
-                               Style="{StaticResource MenuTextBlockStyle}"
-                               Text="{Binding Path=ChatbotLabel}" />
-                </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="Open the Chatbot assistant" />
-                </i:Interaction.Behaviors>
-            </Button>
-
             <!--  HELP (Collapsed by default)  -->
             <Button Grid.Row="14"
                     Grid.Column="1"
