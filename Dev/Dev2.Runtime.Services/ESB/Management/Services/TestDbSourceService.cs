@@ -51,11 +51,22 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
+                values.TryGetValue("TestFromDefinition", out StringBuilder testFromDefinitionValue);
+
+                var testFromDefinition = false;
+                if (testFromDefinitionValue != null)
+                {
+                    bool.TryParse(testFromDefinitionValue.ToString(), out testFromDefinition);
+                }
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                
-                var dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
-                
+
+                DbSource dbSource = null;
+                if (!testFromDefinition)
+                {
+                    dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+                }
+
                 DbSource sourceToTest;
                 if (dbSource == null)
                 {
@@ -108,7 +119,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><TestFromDefinition ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "TestDbSourceService";
     }

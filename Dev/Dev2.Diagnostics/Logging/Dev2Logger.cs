@@ -373,38 +373,25 @@ namespace Dev2.Common
 
         public static Dev2.Data.Interfaces.Enums.LogLevel ConvertToLogLevelEnum(this string LogLevelString)
         {
-            if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.OFF.ToString())
+            if (string.IsNullOrWhiteSpace(LogLevelString))
             {
-                return Dev2.Data.Interfaces.Enums.LogLevel.OFF;
+                throw new ArgumentOutOfRangeException(nameof(LogLevelString), "String must be a recognized log level.");
             }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.FATAL.ToString())
+
+            // Try case-insensitive enum parsing first (handles both "DEBUG" and "Debug")
+            if (Enum.TryParse<Dev2.Data.Interfaces.Enums.LogLevel>(LogLevelString, ignoreCase: true, out var result))
             {
-                return Dev2.Data.Interfaces.Enums.LogLevel.FATAL;
+                return result;
             }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.ERROR.ToString())
+
+            // Fallback: Try to extract the log level from descriptive strings like "Debug: Log all system activity..."
+            var logLevelPart = LogLevelString.Split(new[] { ':', '-' }, 2)[0].Trim();
+            if (Enum.TryParse<Dev2.Data.Interfaces.Enums.LogLevel>(logLevelPart, ignoreCase: true, out result))
             {
-                return Dev2.Data.Interfaces.Enums.LogLevel.ERROR;
+                return result;
             }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.TRACE.ToString())
-            {
-                return Dev2.Data.Interfaces.Enums.LogLevel.TRACE;
-            }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.WARN.ToString())
-            {
-                return Dev2.Data.Interfaces.Enums.LogLevel.WARN;
-            }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG.ToString())
-            {
-                return Dev2.Data.Interfaces.Enums.LogLevel.DEBUG;
-            }
-            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.INFO.ToString())
-            {
-                return Dev2.Data.Interfaces.Enums.LogLevel.INFO;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("String must be a recognized log level.");
-            }
+
+            throw new ArgumentOutOfRangeException(nameof(LogLevelString), $"String must be a recognized log level. Received: '{LogLevelString}'");
         }
     }
 
