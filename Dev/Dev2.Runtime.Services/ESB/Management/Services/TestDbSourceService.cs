@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
 
                 DbSource dbSource = null;
-                if (!testFromDefinition)
+                if (testFromDefinition)
                 {
                     dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
                 }
