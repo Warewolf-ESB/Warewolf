@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Resources;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Settings.Chatbot
 {

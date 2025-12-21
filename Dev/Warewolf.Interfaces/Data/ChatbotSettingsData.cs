@@ -24,12 +24,6 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _chatbotSource, value);
         }
 
-        public bool? EncryptDataSource
-        {
-            get => _encryptDataSource ?? true;
-            set => SetProperty(ref _encryptDataSource, value);
-        }
-
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
@@ -42,7 +36,6 @@ namespace Warewolf.Configuration
             if (obj is ChatbotSettingsData other)
             {
                 var equals = ChatbotSource.Equals(other.ChatbotSource);
-                equals &= EncryptDataSource.Equals(other.EncryptDataSource);
                 return equals;
             }
 

@@ -35,7 +35,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var updatedChatbotSettings = serializer.Deserialize<ChatbotSettingsData>(settings);
                 Config.Chatbot.ChatbotSource = updatedChatbotSettings.ChatbotSource;
-                Config.Chatbot.EncryptDataSource = updatedChatbotSettings?.EncryptDataSource ?? true;
 
                 msg.Message = new StringBuilder();
                 msg.HasError = false;

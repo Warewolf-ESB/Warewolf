@@ -157,10 +157,7 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 var payload = settingsData.ChatbotSource.Payload;
-                if (settingsData.EncryptDataSource ?? true)
-                {
-                    payload = DpapiWrapper.Decrypt(payload);
-                }
+                payload = DpapiWrapper.Decrypt(payload);
 
                 var serializer = new Dev2JsonSerializer();
                 _configuredSource = serializer.Deserialize<ChatbotSource>(payload);
@@ -433,44 +430,45 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void CollectResources(Dev2.Common.Interfaces.Explorer.IExplorerItem item, System.Collections.Generic.List<object> resourceList)
-        {
-            // This method is no longer needed but kept for compatibility
-        }
-
         private string GetSystemLog()
         {
             try
             {
-                // Get recent log entries (last 100 lines or so)
-                var logPath = System.IO.Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                    "Warewolf",
-                    "Server Log",
-                    "warewolf-Server.log");
-
-                if (!System.IO.File.Exists(logPath))
+                // Use the communication controller to fetch server log via SignalR
+                var comsController = new Dev2.Controller.CommunicationController 
+                { 
+                    ServiceName = "FetchCurrentServerLogService" 
+                };
+                
+                var result = comsController.ExecuteCommand<Dev2.Communication.ExecuteMessage>(
+                    _server.Connection, 
+                    _server.Connection.WorkspaceID);
+                
+                if (result == null || result.HasError)
                 {
-                    return "No log file found.";
+                    var errorMsg = result?.Message?.ToString() ?? "Failed to fetch server log";
+                    Dev2.Common.Dev2Logger.Warn($"Failed to fetch server log: {errorMsg}", "Warewolf Info");
+                    return "Unable to fetch server log: " + errorMsg;
                 }
 
-                // Read last 200 lines (approximately)
-                var lines = System.IO.File.ReadAllLines(logPath);
-                var recentLines = lines.Length > 200 ? lines.Skip(lines.Length - 200).ToArray() : lines;
+                var logContent = result.Message?.ToString();
                 
-                var log = string.Join(Environment.NewLine, recentLines);
+                if (string.IsNullOrEmpty(logContent))
+                {
+                    return "No log data available.";
+                }
                 
                 // Limit size to avoid token limits (approximately 20KB of log)
-                if (log.Length > 20000)
+                if (logContent.Length > 20000)
                 {
-                    log = "... (earlier entries truncated)\n" + log.Substring(log.Length - 20000);
+                    logContent = "... (earlier entries truncated)\n" + logContent.Substring(logContent.Length - 20000);
                 }
 
-                return log;
+                return logContent;
             }
             catch (Exception ex)
             {
-                Dev2.Common.Dev2Logger.Error("Error getting system log", ex, "Warewolf Error");
+                Dev2.Common.Dev2Logger.Error("Error getting system log via API", ex, "Warewolf Error");
                 return "Error reading system log: " + ex.Message;
             }
         }

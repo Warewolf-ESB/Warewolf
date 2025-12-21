@@ -516,16 +516,6 @@ namespace Dev2.Common
             return result;
         }
 
-        public bool EncryptDataSource
-        {
-            get => _settings?.EncryptDataSource ?? true;
-            set
-            {
-                _settings.EncryptDataSource = value;
-                Save();
-            }
-        }
-
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
             get => _settings.ChatbotSource ?? new NamedGuidWithEncryptedPayload();
