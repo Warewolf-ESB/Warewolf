@@ -145,5 +145,5 @@ namespace Dev2.Studio.Core
         public Action<Guid, bool> ServerSaved { get; set; }
 
         public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironment) => UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, deployTriggers, destinationEnvironment);
-    }
+	}
 }

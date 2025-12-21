@@ -337,8 +337,99 @@ namespace Warewolf.Studio.ViewModels
                 }
                 _modelsEndpoint = value;
                 OnPropertyChanged(() => ModelsEndpoint);
+                
+                // Auto-populate CompletionsEndpoint if it's empty or compatible
+                UpdateCompletionsEndpointFromModels();
+                
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
+            }
+        }
+
+        private void UpdateCompletionsEndpointFromModels()
+        {
+            // Only update if ModelsEndpoint is not empty
+            if (string.IsNullOrEmpty(_modelsEndpoint))
+            {
+                return;
+            }
+
+            // Check if CompletionsEndpoint is empty or if it's compatible with ModelsEndpoint
+            if (string.IsNullOrEmpty(_completionsEndpoint) || IsCompatibleEndpoint(_completionsEndpoint, _modelsEndpoint))
+            {
+                // Try to derive completions endpoint from models endpoint
+                var completionsEndpoint = DeriveCompletionsEndpoint(_modelsEndpoint);
+                if (!string.IsNullOrEmpty(completionsEndpoint))
+                {
+                    _completionsEndpoint = completionsEndpoint;
+                    OnPropertyChanged(() => CompletionsEndpoint);
+                }
+            }
+        }
+
+        private bool IsCompatibleEndpoint(string completionsEndpoint, string modelsEndpoint)
+        {
+            if (string.IsNullOrEmpty(completionsEndpoint) || string.IsNullOrEmpty(modelsEndpoint))
+            {
+                return false;
+            }
+
+            try
+            {
+                var completionsUri = new Uri(completionsEndpoint);
+                var modelsUri = new Uri(modelsEndpoint);
+
+                // Check if they have the same scheme and authority (host)
+                if (completionsUri.Scheme != modelsUri.Scheme || completionsUri.Authority != modelsUri.Authority)
+                {
+                    return false;
+                }
+
+                // Check if the completions endpoint looks like it was derived from the models endpoint
+                var modelsPath = modelsUri.AbsolutePath.TrimEnd('/');
+                var completionsPath = completionsUri.AbsolutePath.TrimEnd('/');
+
+                // Check if completions path is the expected derivation from models path
+                if (modelsPath.EndsWith("/models"))
+                {
+                    var basePath = modelsPath.Substring(0, modelsPath.Length - "/models".Length);
+                    return completionsPath == basePath + "/chat/completions";
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private string DeriveCompletionsEndpoint(string modelsEndpoint)
+        {
+            if (string.IsNullOrEmpty(modelsEndpoint))
+            {
+                return null;
+            }
+
+            try
+            {
+                var uri = new Uri(modelsEndpoint);
+                var path = uri.AbsolutePath.TrimEnd('/');
+
+                // Replace "/models" with "/chat/completions"
+                if (path.EndsWith("/models"))
+                {
+                    var basePath = path.Substring(0, path.Length - "/models".Length);
+                    var completionsPath = basePath + "/chat/completions";
+                    return $"{uri.Scheme}://{uri.Authority}{completionsPath}";
+                }
+
+                // If path doesn't end with /models, try appending /chat/completions to the base
+                return $"{uri.Scheme}://{uri.Authority}{path}/chat/completions";
+            }
+            catch
+            {
+                return null;
             }
         }
 

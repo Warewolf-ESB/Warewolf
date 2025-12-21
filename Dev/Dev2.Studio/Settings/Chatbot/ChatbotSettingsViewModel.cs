@@ -221,8 +221,10 @@ namespace Dev2.Settings.Chatbot
         public ICommand NewChatbotSourceCommand => _newChatbotSourceCommand;
         public ICommand EditChatbotSourceCommand => _editChatbotSourceCommand;
 
-        private void NewChatbotSource()
-        {
+#pragma warning disable CC0091 // Use static method
+		private void NewChatbotSource()
+#pragma warning restore CC0091 // Use static method
+		{
             // Trigger the creation of a new chatbot source
             // Pass null to create a new source
             CustomContainer.Get<IShellViewModel>()?.NewChatbotSourceCommand?.Execute(null);
@@ -232,9 +234,9 @@ namespace Dev2.Settings.Chatbot
         {
             if (_selectedChatbotSource != null)
             {
-                // Trigger editing of the selected chatbot source
-                // Pass the source to edit it (same command, different parameter)
-                CustomContainer.Get<IShellViewModel>()?.NewChatbotSourceCommand?.Execute(_selectedChatbotSource);
+                // Trigger editing of the selected chatbot source by opening the resource
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                shellViewModel?.OpenResource(_selectedChatbotSource.ResourceID, CurrentEnvironment.EnvironmentID, CurrentEnvironment);
             }
         }
 
