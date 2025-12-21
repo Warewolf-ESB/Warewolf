@@ -40,7 +40,6 @@ namespace Dev2.Settings.Chatbot
         IServer _currentEnvironment;
         private Guid _resourceSourceId;
         private ChatbotSettingsViewModel _item;
-        private bool _encryptDataSource;
         private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
@@ -68,7 +67,7 @@ namespace Dev2.Settings.Chatbot
                     _resourceSourceId = _selectedChatbotSource.ResourceID;
                 }
 			}
-			_encryptDataSource = settingsData.EncryptDataSource ?? true;
+            FetchAvailableModels();
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
@@ -231,7 +230,19 @@ namespace Dev2.Settings.Chatbot
                     }
 
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                    
+                    // First, try to deserialize as a wrapper object with a 'data' property
+                    List<ChatbotModelInfo> models = null;
+                    try
+                    {
+                        var wrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelsResponseWrapper>(responseContent);
+                        models = wrapper?.Data;
+                    }
+                    catch
+                    {
+                        // If that fails, try to deserialize directly as an array
+                        models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                    }
                     
                     if (models != null && models.Count > 0)
                     {
@@ -248,6 +259,7 @@ namespace Dev2.Settings.Chatbot
                             // Select a good default
                             SelectedModel = AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o-mini")) 
                                          ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o"))
+                                         ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("grok"))
                                          ?? AvailableModels.FirstOrDefault();
                         }
                     }
@@ -295,14 +307,10 @@ namespace Dev2.Settings.Chatbot
 
             var serializer = new Dev2JsonSerializer();
             var payload = serializer.Serialize(source);
-            if (_encryptDataSource)
-            {
-                payload = DpapiWrapper.Encrypt(payload);
-            }
+            payload = DpapiWrapper.Encrypt(payload);
 
             var data = new ChatbotSettingsData
             {
-                EncryptDataSource = _encryptDataSource,
                 ChatbotSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = _selectedChatbotSource.ResourceName,
@@ -385,8 +393,7 @@ namespace Dev2.Settings.Chatbot
 
         bool EqualsSeq(ChatbotSettingsViewModel other)
         {
-            var equalsSeq = Equals(_encryptDataSource, other._encryptDataSource);
-            equalsSeq &= Equals(_resourceSourceId, other._resourceSourceId);
+            var equalsSeq = Equals(_resourceSourceId, other._resourceSourceId);
             return equalsSeq;
         }
 
@@ -394,6 +401,16 @@ namespace Dev2.Settings.Chatbot
 		{
 			throw new NotImplementedException();
 		}
+    }
+
+    // Wrapper class for APIs that return models in a "data" array (like OpenAI/xAI)
+    public class ModelsResponseWrapper
+    {
+        [JsonProperty("data")]
+        public List<ChatbotModelInfo> Data { get; set; }
+
+        [JsonProperty("object")]
+        public string Object { get; set; }
     }
 
     public class ChatbotModelInfo
@@ -419,8 +436,60 @@ namespace Dev2.Settings.Chatbot
         [JsonProperty("tags")]
         public List<string> Tags { get; set; }
 
-        public string DisplayName => !string.IsNullOrEmpty(Name) ? $"{Name} ({Id})" : Id;
+        // OpenAI/xAI format fields
+        [JsonProperty("object")]
+        public string Object { get; set; }
 
-        public string Tooltip => !string.IsNullOrEmpty(Summary) ? $"{Summary}\n\nPublisher: {Publisher}" : Id;
+        [JsonProperty("created")]
+        public long? Created { get; set; }
+
+        [JsonProperty("owned_by")]
+        public string OwnedBy { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                // If Name is available (GitHub Models format), use it with ID
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    return $"{Name} ({Id})";
+                }
+                // Otherwise just use ID (OpenAI/xAI format)
+                return Id;
+            }
+        }
+
+        public string Tooltip
+        {
+            get
+            {
+                var tooltipParts = new List<string>();
+
+                // Add summary if available
+                if (!string.IsNullOrEmpty(Summary))
+                {
+                    tooltipParts.Add(Summary);
+                }
+
+                // Add publisher/owner information
+                if (!string.IsNullOrEmpty(Publisher))
+                {
+                    tooltipParts.Add($"Publisher: {Publisher}");
+                }
+                else if (!string.IsNullOrEmpty(OwnedBy))
+                {
+                    tooltipParts.Add($"Owned by: {OwnedBy}");
+                }
+
+                // Add tags if available
+                if (Tags != null && Tags.Count > 0)
+                {
+                    tooltipParts.Add($"Tags: {string.Join(", ", Tags)}");
+                }
+
+                return tooltipParts.Count > 0 ? string.Join("\n\n", tooltipParts) : Id;
+            }
+        }
     }
 }
