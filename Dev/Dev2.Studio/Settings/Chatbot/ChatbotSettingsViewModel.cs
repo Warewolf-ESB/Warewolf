@@ -59,13 +59,19 @@ namespace Dev2.Settings.Chatbot
             if (settingsData.ChatbotSource != null)
             {
                 var selectedSource = ChatbotSources.FirstOrDefault(o => o.ResourceID == settingsData.ChatbotSource.Value);
-                SelectedChatbotSource = selectedSource;
+                _selectedChatbotSource = selectedSource;
+                if (_selectedChatbotSource != null)
+                {
+                    _resourceSourceId = _selectedChatbotSource.ResourceID;
+                }
 			}
 			_encryptDataSource = settingsData.EncryptDataSource ?? true;
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
 
+            // Set the baseline for dirty checking after loading initial values
+            SetItem(this);
             IsDirty = false;
         }
 
@@ -120,24 +126,12 @@ namespace Dev2.Settings.Chatbot
             return new List<IChatbotSourceResource>();
         }
 
-        public bool EncryptDataSource
-        {
-            get => _encryptDataSource;
-            set
-            {
-                IsDirty = !Equals(Item);
-                _encryptDataSource = value;
-                OnPropertyChanged();
-            }
-        }
-
         [JsonIgnore]
         public IChatbotSourceResource SelectedChatbotSource
         {
             get => _selectedChatbotSource;
             set
             {
-                IsDirty = !Equals(Item);
                 _selectedChatbotSource = value;
                 if (_selectedChatbotSource != null)
                 {
@@ -146,6 +140,12 @@ namespace Dev2.Settings.Chatbot
 
                 OnPropertyChanged();
                 ((Microsoft.Practices.Prism.Commands.DelegateCommand)_editChatbotSourceCommand)?.RaiseCanExecuteChanged();
+                
+                // Check if the value has changed from the saved state
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
             }
         }
 
@@ -186,7 +186,10 @@ namespace Dev2.Settings.Chatbot
                 }
             };
             CurrentEnvironment.ResourceRepository.SaveChatbotSettings(CurrentEnvironment, data);
+            
+            // Update the baseline for dirty checking
             SetItem(this);
+            IsDirty = false;
         }
 
         [JsonIgnore]

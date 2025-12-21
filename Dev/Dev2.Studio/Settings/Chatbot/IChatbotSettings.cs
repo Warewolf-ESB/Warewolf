@@ -18,6 +18,5 @@ namespace Dev2.Settings.Chatbot
     {
         List<IChatbotSourceResource> ChatbotSources { get; }
 		IChatbotSourceResource SelectedChatbotSource { get; set; }
-        bool EncryptDataSource { get; set; }
     }
 }
