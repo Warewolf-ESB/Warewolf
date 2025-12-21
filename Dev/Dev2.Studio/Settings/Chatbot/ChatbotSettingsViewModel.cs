@@ -65,9 +65,11 @@ namespace Dev2.Settings.Chatbot
                 if (_selectedChatbotSource != null)
                 {
                     _resourceSourceId = _selectedChatbotSource.ResourceID;
+                    
+                    // Fetch models after the source is set, so we can select the correct saved model
+                    FetchAvailableModels();
                 }
 			}
-            FetchAvailableModels();
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
@@ -394,6 +396,12 @@ namespace Dev2.Settings.Chatbot
         bool EqualsSeq(ChatbotSettingsViewModel other)
         {
             var equalsSeq = Equals(_resourceSourceId, other._resourceSourceId);
+            
+            // Compare selected model IDs
+            var thisModelId = _selectedModel?.Id;
+            var otherModelId = other._selectedModel?.Id;
+            equalsSeq &= string.Equals(thisModelId, otherModelId);
+            
             return equalsSeq;
         }
 
