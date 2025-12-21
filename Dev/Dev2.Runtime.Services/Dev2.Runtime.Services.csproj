@@ -61,7 +61,6 @@
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveChatbotSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveChatbotSource.cs" />
-    <Compile Include="ESB\Management\Services\SaveQueuedResource.cs" />
     <Compile Include="ESB\Management\Services\SaveResourceJSON.cs" />
     <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
