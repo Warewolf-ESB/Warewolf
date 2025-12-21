@@ -53,12 +53,14 @@ namespace Dev2.Settings.Chatbot
             _resourceRepository = CurrentEnvironment.ResourceRepository;
 
             var settingsData = CurrentEnvironment.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(CurrentEnvironment);
+            if (settingsData.ChatbotSource != null)
+            {
+                var selectedSource = ChatbotSources.FirstOrDefault(o => o.ResourceID == settingsData.ChatbotSource.Value);
+                SelectedChatbotSource = selectedSource;
+			}
+			_encryptDataSource = settingsData.EncryptDataSource ?? true;
 
-            var selectedSource = ChatbotSources.FirstOrDefault(o => o.ResourceID == settingsData.ChatbotSource.Value);
-            SelectedChatbotSource = selectedSource;
-            _encryptDataSource = settingsData.EncryptDataSource ?? true;
-
-            _newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
+			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
 
             IsDirty = false;
