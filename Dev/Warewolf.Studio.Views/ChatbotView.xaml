@@ -65,6 +65,15 @@
                        Margin="10"
                        FontStyle="Italic"
                        Foreground="{StaticResource WareWolfOrangeBrush}"/>
+            
+            <!-- System Prompt Loading Indicator -->
+            <TextBlock Text="Loading workspace context..."
+                       Visibility="{Binding IsInitializingPrompt, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Margin="10,40,10,10"
+                       FontStyle="Italic"
+                       Foreground="{StaticResource WareWolfOrangeBrush}"/>
         </Grid>
 
         <!-- Input Area - Only visible when configured -->
