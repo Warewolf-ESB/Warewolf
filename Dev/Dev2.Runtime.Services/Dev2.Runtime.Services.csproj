@@ -39,6 +39,7 @@
     <Compile Include="ESB\Management\Services\DeleteTestCoverage.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
+    <Compile Include="ESB\Management\Services\FetchChatbotSources.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
     <Compile Include="ESB\Management\Services\FetchJSONResourceDefinition.cs" />
     <Compile Include="ESB\Management\Services\FetchTestsAndTriggers.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GenerateAdvancedRecordsetOutputs.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\GetChatbotSettings.cs" />
     <Compile Include="ESB\Management\Services\IsLicensed.cs" />
     <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\SaveChatbotSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveChatbotSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveQueuedResource.cs" />
     <Compile Include="ESB\Management\Services\SaveResourceJSON.cs" />
     <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
