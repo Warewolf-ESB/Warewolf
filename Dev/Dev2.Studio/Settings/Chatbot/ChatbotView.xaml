@@ -87,19 +87,6 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </Button>
-
-                        <CheckBox Grid.Column="1"
-                                  Grid.Row="1"
-                                  Content="Encrypt Data Source"
-                                  Margin="{StaticResource ControlBorderTop}"
-                                  IsChecked="{Binding EncryptDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="Encrypt the chatbot source connection details for added security">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter
-                                    Text="Enable this option to encrypt the chatbot source details when stored."
-                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
                     </Grid>
                 </Grid>
             </StackPanel>

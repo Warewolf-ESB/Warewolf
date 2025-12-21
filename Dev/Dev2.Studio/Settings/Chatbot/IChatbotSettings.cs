@@ -15,8 +15,7 @@ namespace Dev2.Settings.Chatbot
 {
     public interface IChatbotSettings
     {
-        List<IResource> ChatbotSources { get; }
-        IResource SelectedChatbotSource { get; set; }
-        bool EncryptDataSource { get; set; }
+        List<IChatbotSourceResource> ChatbotSources { get; }
+		IChatbotSourceResource SelectedChatbotSource { get; set; }
     }
 }

@@ -126,6 +126,11 @@ namespace Warewolf.Studio.ViewModels
         public ICommand SendCommand { get; }
         public ICommand OpenSettingsCommand { get; }
 
+        public void RefreshConfiguration()
+        {
+            LoadChatbotConfiguration();
+        }
+
         private void LoadChatbotConfiguration()
         {
             try
