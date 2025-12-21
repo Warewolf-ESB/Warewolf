@@ -234,9 +234,9 @@ namespace Dev2.Settings.Chatbot
         {
             if (_selectedChatbotSource != null)
             {
-                // Trigger editing of the selected chatbot source
-                // Pass the source to edit it (same command, different parameter)
-                CustomContainer.Get<IShellViewModel>()?.NewChatbotSourceCommand?.Execute(_selectedChatbotSource);
+                // Trigger editing of the selected chatbot source by opening the resource
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                shellViewModel?.OpenResource(_selectedChatbotSource.ResourceID, CurrentEnvironment.EnvironmentID, CurrentEnvironment);
             }
         }
 

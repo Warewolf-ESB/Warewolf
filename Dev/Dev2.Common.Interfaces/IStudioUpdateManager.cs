@@ -56,7 +56,7 @@ namespace Dev2.Common.Interfaces
         string TestPluginService(IPluginService inputValues);
         string TestPluginService(IComPluginService inputValues);
         string TestWcfService(IWcfService inputValues);
-    }
+	}
 
     public interface IStudioUpdateManager : IStudioUpdateManagerSave, IStudioUpdateManagerTest
     {
@@ -66,7 +66,7 @@ namespace Dev2.Common.Interfaces
         void FireServerSaved(Guid savedServerID, bool isDeleted);
 
         List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironment);
-    }
+	}
 
     public delegate void ItemSaved(bool refresh);
 

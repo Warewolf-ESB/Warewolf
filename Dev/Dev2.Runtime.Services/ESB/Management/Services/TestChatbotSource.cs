@@ -46,8 +46,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}");
-                    client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
-                    
+#pragma warning disable CC0021 // Use nameof
+					client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+#pragma warning restore CC0021 // Use nameof
+
                     var response = client.GetAsync(chatbotSourceDefinition.ModelsEndpoint).Result;
                     
                     if (response.IsSuccessStatusCode)

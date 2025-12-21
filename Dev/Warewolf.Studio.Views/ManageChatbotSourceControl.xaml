@@ -24,7 +24,7 @@
     </UserControl.Resources>
     <Grid x:Name="SourceGrid"
           Margin="{StaticResource ElementBorder}"
-          FocusManager.FocusedElement="{Binding ElementName=CompletionsEndpointTextBox}">
+          FocusManager.FocusedElement="{Binding ElementName=ModelsEndpointTextBox}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -48,36 +48,36 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Margin="{StaticResource ControlBorderTop}"
-                       VerticalAlignment="Center"
-                       Grid.Column="0"
-                       Grid.Row="0"
-                       Text="Completions Endpoint"/>
-            <TextBox x:Name="CompletionsEndpointTextBox"
-                     Margin="{StaticResource ControlBorderTop}"
-                     Grid.Column="1"
-                     Grid.Row="0"
-                     Text="{Binding CompletionsEndpoint, UpdateSourceTrigger=PropertyChanged}"
-                     ToolTip="The API endpoint URL for chat completions (e.g., https://api.openai.com/v1/chat/completions)"
-                     Focusable="True"
-                     views:FocusExtension.IsFocused="True">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="Enter the URL of the chatbot API endpoint for completions." DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </TextBox>
             <TextBlock VerticalAlignment="Center"
                        Grid.Column="0"
-                       Grid.Row="1"
+                       Grid.Row="0"
                        Margin="{StaticResource ControlBorderTop}"
                        Text="Models Endpoint"/>
             <TextBox x:Name="ModelsEndpointTextBox"
                      Grid.Column="1"
-                     Grid.Row="1"
+                     Grid.Row="0"
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding ModelsEndpoint, UpdateSourceTrigger=PropertyChanged}"
-                     ToolTip="The API endpoint URL for models (optional, e.g., https://api.openai.com/v1/models)">
+                     ToolTip="The API endpoint URL for models (e.g., https://api.openai.com/v1/models)"
+                     Focusable="True"
+                     views:FocusExtension.IsFocused="True">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="Enter the URL of the chatbot API endpoint for models (optional)." DataContext="{Binding}" />
+                    <core:HelpSetter Text="Enter the URL of the chatbot API endpoint for models." DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Margin="{StaticResource ControlBorderTop}"
+                       VerticalAlignment="Center"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Text="Completions Endpoint"/>
+            <TextBox x:Name="CompletionsEndpointTextBox"
+                     Margin="{StaticResource ControlBorderTop}"
+                     Grid.Column="1"
+                     Grid.Row="1"
+                     Text="{Binding CompletionsEndpoint, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="The API endpoint URL for chat completions (e.g., https://api.openai.com/v1/chat/completions)">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="Enter the URL of the chatbot API endpoint for completions." DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
             <TextBlock Grid.Row="2"
