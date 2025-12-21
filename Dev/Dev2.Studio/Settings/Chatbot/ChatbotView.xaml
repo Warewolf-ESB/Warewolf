@@ -101,7 +101,6 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                                   Grid.Row="1"
                                   Grid.ColumnSpan="3"
                                   Margin="0,10,0,0"
-                                  DisplayMemberPath="DisplayName"
                                   SelectedItem="{Binding SelectedModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding AvailableModels}"
                                   IsEnabled="{Binding SelectedChatbotSource, Converter={StaticResource NullToBoolConverter}}">
