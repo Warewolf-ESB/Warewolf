@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -29,6 +30,7 @@ using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Core;
 
 namespace Dev2.Settings.Chatbot
 {
@@ -78,8 +80,44 @@ namespace Dev2.Settings.Chatbot
 
         private List<IChatbotSourceResource> LoadChatbotSources()
         {
-            var chatbotSources = _resourceRepository.GetResourceList<ChatbotSource>(_currentEnvironment);
-            return chatbotSources.Cast<IChatbotSourceResource>().ToList();
+            try
+            {
+                // Use the communication controller to fetch chatbot sources from the server
+                var comsController = new Dev2.Controller.CommunicationController 
+                { 
+                    ServiceName = "FetchChatbotSources" 
+                };
+                
+                var result = comsController.ExecuteCommand<ExecuteMessage>(
+                    _currentEnvironment.Connection, 
+                    GlobalConstants.ServerWorkspaceID);
+                
+                if (result != null && !result.HasError)
+                {
+                    var serializer = new Dev2JsonSerializer();
+                    var chatbotSourcesJson = result.Message.ToString();
+                    var chatbotSources = serializer.Deserialize<List<ChatbotSourceDefinition>>(chatbotSourcesJson);
+                    
+                    // Convert ChatbotSourceDefinition to ChatbotSource (which implements IChatbotSourceResource)
+                    return chatbotSources
+                        .Where(def => def != null)
+                        .Select(def => new ChatbotSource
+                        {
+                            ResourceID = def.Id,
+                            ResourceName = def.Name,
+                            ApiKey = def.ApiKey,
+                            CompletionsEndpoint = def.CompletionsEndpoint,
+                            ModelsEndpoint = def.ModelsEndpoint
+                        } as IChatbotSourceResource)
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error loading chatbot sources", ex, "Warewolf Error");
+            }
+            
+            return new List<IChatbotSourceResource>();
         }
 
         public bool EncryptDataSource
