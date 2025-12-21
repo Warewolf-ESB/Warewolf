@@ -10,6 +10,7 @@
 */
 
 using System.Windows.Controls;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -21,6 +22,29 @@ namespace Warewolf.Studio.Views
         public ChatbotView()
         {
             InitializeComponent();
+            Loaded += ChatbotView_Loaded;
+            IsVisibleChanged += ChatbotView_IsVisibleChanged;
+        }
+
+        private void ChatbotView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            RefreshChatbotConfiguration();
+        }
+
+        private void ChatbotView_IsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                RefreshChatbotConfiguration();
+            }
+        }
+
+        private void RefreshChatbotConfiguration()
+        {
+            if (DataContext is ChatbotViewModel viewModel)
+            {
+                viewModel.RefreshConfiguration();
+            }
         }
     }
 }

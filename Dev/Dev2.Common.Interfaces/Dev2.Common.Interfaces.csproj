@@ -503,4 +503,7 @@
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
+  </ItemGroup>
 </Project>

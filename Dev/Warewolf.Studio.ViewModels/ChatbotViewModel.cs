@@ -37,6 +37,10 @@ namespace Warewolf.Studio.ViewModels
         private bool _isChatbotConfigured;
         private bool _isSending;
         private ChatbotSource _configuredSource;
+        private string _systemPrompt;
+        private bool _systemPromptInitialized;
+        private System.Collections.Generic.List<string> _availableModels;
+        private string _selectedModel;
 
         public ChatbotViewModel()
         {
@@ -119,6 +123,9 @@ namespace Warewolf.Studio.ViewModels
         public void RefreshConfiguration()
         {
             LoadChatbotConfiguration();
+            // Clear any existing system prompt so it gets regenerated
+            _systemPromptInitialized = false;
+            _systemPrompt = null;
         }
 
         private void LoadChatbotConfiguration()
@@ -151,11 +158,310 @@ namespace Warewolf.Studio.ViewModels
                 IsChatbotConfigured = _configuredSource != null
                     && !string.IsNullOrWhiteSpace(_configuredSource.CompletionsEndpoint)
                     && !string.IsNullOrWhiteSpace(_configuredSource.ApiKey);
+
+                if (IsChatbotConfigured)
+                {
+                    // Use the selected model from settings if available
+                    if (!string.IsNullOrEmpty(_configuredSource.SelectedModel))
+                    {
+                        _selectedModel = _configuredSource.SelectedModel;
+                        Dev2.Common.Dev2Logger.Info($"Using model from settings: {_selectedModel}", "Warewolf Info");
+                    }
+                    else
+                    {
+                        // Fallback: Fetch available models from the Models endpoint
+                        FetchAvailableModels();
+                    }
+                    
+                    // Initialize the system prompt with workspace context
+                    InitializeSystemPrompt();
+                }
             }
             catch
             {
                 IsChatbotConfigured = false;
                 _configuredSource = null;
+            }
+        }
+
+        private async void FetchAvailableModels()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(_configuredSource.ModelsEndpoint))
+                {
+                    // If no models endpoint, use a default model
+                    _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
+                    _selectedModel = "gpt-4o-mini";
+                    return;
+                }
+
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
+                    
+                    var response = await client.GetAsync(_configuredSource.ModelsEndpoint);
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Dev2.Common.Dev2Logger.Warn($"Failed to fetch models: {response.StatusCode}", "Warewolf Info");
+                        // Fallback to default
+                        _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
+                        _selectedModel = "gpt-4o-mini";
+                        return;
+                    }
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    dynamic result = JsonConvert.DeserializeObject(responseContent);
+                    
+                    _availableModels = new System.Collections.Generic.List<string>();
+                    
+                    // Parse the models from the response
+                    if (result?.data != null)
+                    {
+                        foreach (var model in result.data)
+                        {
+                            var modelId = model.id?.ToString();
+                            if (!string.IsNullOrWhiteSpace(modelId))
+                            {
+                                _availableModels.Add(modelId);
+                            }
+                        }
+                    }
+
+                    // Select a good default model if available
+                    if (_availableModels.Count > 0)
+                    {
+                        // Prefer gpt-4o-mini if available
+                        if (_availableModels.Contains("gpt-4o-mini"))
+                        {
+                            _selectedModel = "gpt-4o-mini";
+                        }
+                        else if (_availableModels.Contains("gpt-4o"))
+                        {
+                            _selectedModel = "gpt-4o";
+                        }
+                        else if (_availableModels.Contains("gpt-3.5-turbo"))
+                        {
+                            _selectedModel = "gpt-3.5-turbo";
+                        }
+                        else
+                        {
+                            // Use the first available model
+                            _selectedModel = _availableModels[0];
+                        }
+
+                        Dev2.Common.Dev2Logger.Info($"Fetched {_availableModels.Count} models from API. Selected: {_selectedModel}", "Warewolf Info");
+                    }
+                    else
+                    {
+                        // No models returned, use fallback
+                        _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
+                        _selectedModel = "gpt-4o-mini";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error fetching available models", ex, "Warewolf Error");
+                // Fallback to default model
+                _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
+                _selectedModel = "gpt-4o-mini";
+            }
+        }
+
+        private void InitializeSystemPrompt()
+        {
+            if (_systemPromptInitialized)
+            {
+                return;
+            }
+
+            try
+            {
+                var promptBuilder = new StringBuilder();
+                promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
+                promptBuilder.AppendLine();
+                promptBuilder.AppendLine("## Your Capabilities:");
+                promptBuilder.AppendLine("- Analyze workflow resources and their XAML structure");
+                promptBuilder.AppendLine("- Help debug issues using the system log");
+                promptBuilder.AppendLine("- Explain workflow logic, activities, and data flow");
+                promptBuilder.AppendLine("- Identify potential issues in workflows");
+                promptBuilder.AppendLine("- Answer questions about workflow structure and dependencies");
+                promptBuilder.AppendLine();
+                promptBuilder.AppendLine("## Important Rules:");
+                promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
+                promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
+                promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
+                promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
+                promptBuilder.AppendLine("- When analyzing workflows, refer to the XAML structure provided");
+                promptBuilder.AppendLine();
+
+                // Get all resources as X6 JSON with XAML
+                var resourcesJson = GetWorkspaceResourcesAsJson();
+                if (!string.IsNullOrEmpty(resourcesJson))
+                {
+                    promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
+                    promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
+                    promptBuilder.AppendLine("```json");
+                    promptBuilder.AppendLine(resourcesJson);
+                    promptBuilder.AppendLine("```");
+                    promptBuilder.AppendLine();
+                }
+
+                // Get system log
+                var systemLog = GetSystemLog();
+                if (!string.IsNullOrEmpty(systemLog))
+                {
+                    promptBuilder.AppendLine("## System Log (Recent Entries):");
+                    promptBuilder.AppendLine("```");
+                    promptBuilder.AppendLine(systemLog);
+                    promptBuilder.AppendLine("```");
+                    promptBuilder.AppendLine();
+                }
+
+                _systemPrompt = promptBuilder.ToString();
+                _systemPromptInitialized = true;
+
+                // Add a welcome message
+                Messages.Clear();
+                Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
+                    "all resources and recent system logs. I can help you understand your workflows, debug issues, and answer " +
+                    "questions about your Warewolf environment. What would you like to know?");
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error initializing chatbot system prompt", ex, "Warewolf Error");
+                _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
+                _systemPromptInitialized = true;
+            }
+        }
+
+        private string GetWorkspaceResourcesAsJson()
+        {
+            try
+            {
+                // Get all resources from the server using the resource repository
+                var allResources = _server?.ResourceRepository?.All();
+                if (allResources == null || allResources.Count == 0)
+                {
+                    return null;
+                }
+
+                var serializer = new Dev2JsonSerializer();
+                var resourceList = new System.Collections.Generic.List<object>();
+
+                foreach (var resource in allResources)
+                {
+                    var resourceInfo = new
+                    {
+                        id = resource.ID,
+                        name = resource.ResourceName,
+                        type = resource.ResourceType.ToString(),
+                        category = resource.Category,
+                        displayName = resource.DisplayName,
+                        hasErrors = resource.HasErrors,
+                        xaml = GetResourceXaml(resource)
+                    };
+                    resourceList.Add(resourceInfo);
+                }
+
+                if (resourceList.Count == 0)
+                {
+                    return null;
+                }
+
+                // Serialize to JSON with formatting
+                var json = JsonConvert.SerializeObject(resourceList, Formatting.Indented);
+                
+                // Limit size to avoid token limits (approximately 100KB of JSON to allow for XAML)
+                if (json.Length > 100000)
+                {
+                    json = json.Substring(0, 100000) + "\n... (truncated for size)";
+                }
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error getting workspace resources", ex, "Warewolf Error");
+                return null;
+            }
+        }
+
+        private string GetResourceXaml(Dev2.Studio.Interfaces.IResourceModel resource)
+        {
+            try
+            {
+                // Get the workflow XAML definition from WorkflowXaml property for workflows only
+                var xamlBuilder = resource.WorkflowXaml;
+                if (xamlBuilder == null)
+                {
+                    return null;
+                }
+
+                var xaml = xamlBuilder.ToString();
+                
+                // Only include if there's actual content
+                if (string.IsNullOrWhiteSpace(xaml))
+                {
+                    return null;
+                }
+                
+                // Limit XAML size per resource to avoid excessive data (max 10KB per workflow)
+                if (xaml.Length > 10000)
+                {
+                    xaml = xaml.Substring(0, 10000) + "\n... (XAML truncated)";
+                }
+
+                return xaml;
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error($"Error getting XAML for resource {resource.ResourceName}", ex, "Warewolf Error");
+                return null;
+            }
+        }
+
+        private void CollectResources(Dev2.Common.Interfaces.Explorer.IExplorerItem item, System.Collections.Generic.List<object> resourceList)
+        {
+            // This method is no longer needed but kept for compatibility
+        }
+
+        private string GetSystemLog()
+        {
+            try
+            {
+                // Get recent log entries (last 100 lines or so)
+                var logPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    "Warewolf",
+                    "Server Log",
+                    "warewolf-Server.log");
+
+                if (!System.IO.File.Exists(logPath))
+                {
+                    return "No log file found.";
+                }
+
+                // Read last 200 lines (approximately)
+                var lines = System.IO.File.ReadAllLines(logPath);
+                var recentLines = lines.Length > 200 ? lines.Skip(lines.Length - 200).ToArray() : lines;
+                
+                var log = string.Join(Environment.NewLine, recentLines);
+                
+                // Limit size to avoid token limits (approximately 20KB of log)
+                if (log.Length > 20000)
+                {
+                    log = "... (earlier entries truncated)\n" + log.Substring(log.Length - 20000);
+                }
+
+                return log;
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error getting system log", ex, "Warewolf Error");
+                return "Error reading system log: " + ex.Message;
             }
         }
 
@@ -203,21 +509,44 @@ namespace Warewolf.Studio.ViewModels
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
 
+                // Build messages array with system prompt
+                var messages = new System.Collections.Generic.List<object>();
+
+                // Add system prompt if we have one
+                if (!string.IsNullOrEmpty(_systemPrompt))
+                {
+                    messages.Add(new { role = "system", content = _systemPrompt });
+                }
+
+                // Add user message
+                messages.Add(new { role = "user", content = userMessage });
+
+                // Use the selected model from the fetched list, or fall back to default
+                var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
+
+                // Create the request payload with the model parameter
                 var payload = new
                 {
-                    messages = new[]
-                    {
-                        new { role = "user", content = userMessage }
-                    }
+                    model = modelToUse,
+                    messages = messages.ToArray(),
+                    temperature = 0.7, // Moderate creativity
+                    max_tokens = 2000 // Reasonable response length
                 };
 
                 var json = JsonConvert.SerializeObject(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
-                response.EnsureSuccessStatusCode();
-
+                
+                // Get the response content for better error messages
                 var responseContent = await response.Content.ReadAsStringAsync();
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    Dev2.Common.Dev2Logger.Error($"Chatbot API Error: {response.StatusCode} - {responseContent}", "Warewolf Error");
+                    throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
+                }
+
                 dynamic result = JsonConvert.DeserializeObject(responseContent);
 
                 return result.choices[0].message.content.ToString();

@@ -24,6 +24,7 @@ namespace Dev2.Data.ServiceModel
         public string ApiKey { get; set; }
         public string CompletionsEndpoint { get; set; }
         public string ModelsEndpoint { get; set; }
+        public string SelectedModel { get; set; }
 
         public ChatbotSource()
         {
@@ -39,7 +40,8 @@ namespace Dev2.Data.ServiceModel
             {
                 { "ApiKey", string.Empty },
                 { "CompletionsEndpoint", string.Empty },
-                { "ModelsEndpoint", string.Empty }
+                { "ModelsEndpoint", string.Empty },
+                { "SelectedModel", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
@@ -49,6 +51,7 @@ namespace Dev2.Data.ServiceModel
             ApiKey = properties["ApiKey"];
             CompletionsEndpoint = properties["CompletionsEndpoint"];
             ModelsEndpoint = properties["ModelsEndpoint"];
+            SelectedModel = properties["SelectedModel"];
         }
 
         public override XElement ToXml()
@@ -57,7 +60,8 @@ namespace Dev2.Data.ServiceModel
             var connectionString = string.Join(";",
                 $"ApiKey={ApiKey}",
                 $"CompletionsEndpoint={CompletionsEndpoint}",
-                $"ModelsEndpoint={ModelsEndpoint}"
+                $"ModelsEndpoint={ModelsEndpoint}",
+                $"SelectedModel={SelectedModel}"
                 );
 
             result.Add(
