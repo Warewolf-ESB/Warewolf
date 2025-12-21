@@ -79,7 +79,7 @@ namespace Dev2.Settings.Chatbot
         private List<IChatbotSourceResource> LoadChatbotSources()
         {
             var chatbotSources = _resourceRepository.GetResourceList<ChatbotSource>(_currentEnvironment);
-            return chatbotSources.Cast<IResource>().ToList();
+            return chatbotSources.Cast<IChatbotSourceResource>().ToList();
         }
 
         public bool EncryptDataSource
