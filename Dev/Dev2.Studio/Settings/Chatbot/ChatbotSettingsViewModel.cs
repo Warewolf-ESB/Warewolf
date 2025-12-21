@@ -28,6 +28,7 @@ using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Settings.Chatbot
 {
@@ -38,7 +39,7 @@ namespace Dev2.Settings.Chatbot
         private Guid _resourceSourceId;
         private ChatbotSettingsViewModel _item;
         private bool _encryptDataSource;
-        private IResource _selectedChatbotSource;
+        private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
 
@@ -71,11 +72,11 @@ namespace Dev2.Settings.Chatbot
         }
 
         [JsonIgnore]
-        public List<IResource> ChatbotSources => LoadChatbotSources();
+        public List<IChatbotSourceResource> ChatbotSources => LoadChatbotSources();
 
-        private List<IResource> LoadChatbotSources()
+        private List<IChatbotSourceResource> LoadChatbotSources()
         {
-            var chatbotSources = _resourceRepository.FindResourcesByType<IChatbotSourceResource>(_currentEnvironment);
+            var chatbotSources = _resourceRepository.FindSourcesByType<IChatbotSourceResource>(_currentEnvironment, enSourceType.ChatbotSource);
             return chatbotSources;
         }
 
@@ -91,7 +92,7 @@ namespace Dev2.Settings.Chatbot
         }
 
         [JsonIgnore]
-        public IResource SelectedChatbotSource
+        public IChatbotSourceResource SelectedChatbotSource
         {
             get => _selectedChatbotSource;
             set

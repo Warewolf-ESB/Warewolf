@@ -8,15 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Resources;
+using System.Collections.Generic;
 
 namespace Dev2.Settings.Chatbot
 {
     public interface IChatbotSettings
     {
-        List<IResource> ChatbotSources { get; }
-        IResource SelectedChatbotSource { get; set; }
+        List<IChatbotSourceResource> ChatbotSources { get; }
+		IChatbotSourceResource SelectedChatbotSource { get; set; }
         bool EncryptDataSource { get; set; }
     }
 }

@@ -78,14 +78,17 @@
     </Compile>
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
+    <Compile Include="ESB\Management\Services\ChatbotSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\DeleteTestCoverage.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
+    <Compile Include="ESB\Management\Services\FetchChatbotSources.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\GetChatbotSettings.cs" />
     <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
@@ -95,6 +98,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\SaveChatbotSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveChatbotSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
