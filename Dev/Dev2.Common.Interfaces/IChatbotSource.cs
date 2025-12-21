@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
         string ApiKey { get; set; }
         string CompletionsEndpoint { get; set; }
         string ModelsEndpoint { get; set; }
+        string SelectedModel { get; set; }
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }

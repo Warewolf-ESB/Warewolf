@@ -60,7 +60,8 @@ namespace Warewolf.Studio.ViewModels
                 Path = source.GetSavePath(),
                 ApiKey = source.ApiKey,
                 ModelsEndpoint = source.ModelsEndpoint,
-                CompletionsEndpoint = source.CompletionsEndpoint
+                CompletionsEndpoint = source.CompletionsEndpoint,
+                SelectedModel = source.SelectedModel
             };
             return def;
         }

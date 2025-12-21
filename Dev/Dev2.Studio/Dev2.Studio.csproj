@@ -90,6 +90,7 @@
         <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
         <Compile Include="Settings\Chatbot\ChatbotView.xaml.cs" />
         <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
+        <Compile Include="Settings\Chatbot\NullToBoolConverter.cs" />
 		<Compile Include="Startup.cs" />
     </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">

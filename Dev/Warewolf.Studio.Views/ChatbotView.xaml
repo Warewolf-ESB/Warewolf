@@ -23,16 +23,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" 
-                Background="{StaticResource WareWolfMenuBrush}"
-                Padding="10">
-            <TextBlock Text="Chatbot" 
-                       FontSize="18" 
-                       FontWeight="Bold"
-                       Foreground="White"/>
-        </Border>
-
         <!-- Content Area -->
         <Grid Grid.Row="1">
             <!-- No Configuration Message -->

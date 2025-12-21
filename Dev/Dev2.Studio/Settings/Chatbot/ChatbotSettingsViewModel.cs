@@ -44,6 +44,9 @@ namespace Dev2.Settings.Chatbot
         private IResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
+        private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
+        private ChatbotModelInfo _selectedModel;
+        private bool _isFetchingModels;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -113,7 +116,8 @@ namespace Dev2.Settings.Chatbot
                             ResourceName = def.Name,
                             ApiKey = def.ApiKey,
                             CompletionsEndpoint = def.CompletionsEndpoint,
-                            ModelsEndpoint = def.ModelsEndpoint
+                            ModelsEndpoint = def.ModelsEndpoint,
+                            SelectedModel = def.SelectedModel
                         } as IChatbotSourceResource)
                         .ToList();
                 }
@@ -136,6 +140,13 @@ namespace Dev2.Settings.Chatbot
                 if (_selectedChatbotSource != null)
                 {
                     ResourceSourceId = _selectedChatbotSource.ResourceID;
+                    // Fetch models when a source is selected
+                    FetchAvailableModels();
+                }
+                else
+                {
+                    AvailableModels?.Clear();
+                    SelectedModel = null;
                 }
 
                 OnPropertyChanged();
@@ -146,6 +157,114 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
+            }
+        }
+
+        [JsonIgnore]
+        public System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> AvailableModels
+        {
+            get => _availableModels;
+            set
+            {
+                _availableModels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public ChatbotModelInfo SelectedModel
+        {
+            get => _selectedModel;
+            set
+            {
+                _selectedModel = value;
+                OnPropertyChanged();
+                
+                // Mark as dirty when model changes
+                if (Item != null && _selectedModel != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsFetchingModels
+        {
+            get => _isFetchingModels;
+            set
+            {
+                _isFetchingModels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async void FetchAvailableModels()
+        {
+            if (_selectedChatbotSource == null)
+            {
+                return;
+            }
+
+            var source = _selectedChatbotSource as ChatbotSource;
+            if (source == null || string.IsNullOrWhiteSpace(source.ModelsEndpoint))
+            {
+                AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+                return;
+            }
+
+            IsFetchingModels = true;
+
+            try
+            {
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {source.ApiKey}");
+                    
+                    var response = await client.GetAsync(source.ModelsEndpoint);
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Dev2Logger.Warn($"Failed to fetch models: {response.StatusCode}", "Warewolf Info");
+                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+                        return;
+                    }
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                    
+                    if (models != null && models.Count > 0)
+                    {
+                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>(models);
+                        
+                        // Try to select the previously saved model
+                        if (!string.IsNullOrEmpty(source.SelectedModel))
+                        {
+                            var savedModel = AvailableModels.FirstOrDefault(m => m.Id == source.SelectedModel);
+                            SelectedModel = savedModel ?? AvailableModels.FirstOrDefault();
+                        }
+                        else
+                        {
+                            // Select a good default
+                            SelectedModel = AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o-mini")) 
+                                         ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o"))
+                                         ?? AvailableModels.FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error fetching available models", ex, "Warewolf Error");
+                AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+            }
+            finally
+            {
+                IsFetchingModels = false;
             }
         }
 
@@ -166,6 +285,12 @@ namespace Dev2.Settings.Chatbot
             if (source is null)
             {
                 return;
+            }
+
+            // Update the selected model on the source
+            if (_selectedModel != null)
+            {
+                source.SelectedModel = _selectedModel.Id;
             }
 
             var serializer = new Dev2JsonSerializer();
@@ -269,5 +394,33 @@ namespace Dev2.Settings.Chatbot
 		{
 			throw new NotImplementedException();
 		}
+    }
+
+    public class ChatbotModelInfo
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("publisher")]
+        public string Publisher { get; set; }
+
+        [JsonProperty("summary")]
+        public string Summary { get; set; }
+
+        [JsonProperty("supported_input_modalities")]
+        public List<string> SupportedInputModalities { get; set; }
+
+        [JsonProperty("supported_output_modalities")]
+        public List<string> SupportedOutputModalities { get; set; }
+
+        [JsonProperty("tags")]
+        public List<string> Tags { get; set; }
+
+        public string DisplayName => !string.IsNullOrEmpty(Name) ? $"{Name} ({Id})" : Id;
+
+        public string Tooltip => !string.IsNullOrEmpty(Summary) ? $"{Summary}\n\nPublisher: {Publisher}" : Id;
     }
 }
