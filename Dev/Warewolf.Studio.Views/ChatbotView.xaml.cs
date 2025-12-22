@@ -19,22 +19,20 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ChatbotView : UserControl
     {
+        private bool _isFirstLoad = true;
+
         public ChatbotView()
         {
             InitializeComponent();
-            Loaded += ChatbotView_Loaded;
             IsVisibleChanged += ChatbotView_IsVisibleChanged;
-        }
-
-        private void ChatbotView_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            RefreshChatbotConfiguration();
         }
 
         private void ChatbotView_IsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
-            if (IsVisible)
+            // Only refresh when becoming visible, and only once on first load
+            if (IsVisible && _isFirstLoad)
             {
+                _isFirstLoad = false;
                 RefreshChatbotConfiguration();
             }
         }
