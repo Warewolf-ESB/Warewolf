@@ -46,6 +46,7 @@ namespace Dev2.Settings.Chatbot
         private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
+        private bool _isInitialLoad;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -65,8 +66,33 @@ namespace Dev2.Settings.Chatbot
                 if (_selectedChatbotSource != null)
                 {
                     _resourceSourceId = _selectedChatbotSource.ResourceID;
-                    
+
+                    // Load the saved model from the encrypted payload
+                    // The ChatbotSource from ChatbotSources doesn't have SelectedModel populated,
+                    // because it's stored separately in the encrypted settings payload
+                    if (!string.IsNullOrEmpty(settingsData.ChatbotSource.Payload))
+                    {
+                        try
+                        {
+                            var decryptedPayload = DpapiWrapper.Decrypt(settingsData.ChatbotSource.Payload);
+                            var serializer = new Dev2JsonSerializer();
+                            var savedSource = serializer.Deserialize<ChatbotSource>(decryptedPayload);
+							// Copy the saved model to the selected source
+							if (savedSource != null && !string.IsNullOrEmpty(savedSource.SelectedModel) && _selectedChatbotSource is ChatbotSource chatbotSource)
+							{
+								chatbotSource.SelectedModel = savedSource.SelectedModel;
+							}
+
+						}
+                        catch (Exception ex)
+                        {
+                            Dev2Logger.Warn($"Could not load saved model from settings: {ex.Message}", "Warewolf Info");
+                        }
+                    }
+
                     // Fetch models after the source is set, so we can select the correct saved model
+                    // Mark as initial load so baseline is set after models are loaded
+                    _isInitialLoad = true;
                     FetchAvailableModels();
                 }
 			}
@@ -74,9 +100,13 @@ namespace Dev2.Settings.Chatbot
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
 
-            // Set the baseline for dirty checking after loading initial values
-            SetItem(this);
-            IsDirty = false;
+            // Only set baseline here if no source is selected (no async model fetch pending)
+            // Otherwise, baseline will be set after FetchAvailableModels completes
+            if (!_isInitialLoad)
+            {
+                SetItem(this);
+                IsDirty = false;
+            }
         }
 
         public IServer CurrentEnvironment
@@ -204,6 +234,7 @@ namespace Dev2.Settings.Chatbot
         {
             if (_selectedChatbotSource == null)
             {
+                SetBaselineIfInitialLoad();
                 return;
             }
 
@@ -211,6 +242,7 @@ namespace Dev2.Settings.Chatbot
             if (source == null || string.IsNullOrWhiteSpace(source.ModelsEndpoint))
             {
                 AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+                SetBaselineIfInitialLoad();
                 return;
             }
 
@@ -279,6 +311,17 @@ namespace Dev2.Settings.Chatbot
             finally
             {
                 IsFetchingModels = false;
+                SetBaselineIfInitialLoad();
+            }
+        }
+
+        private void SetBaselineIfInitialLoad()
+        {
+            if (_isInitialLoad)
+            {
+                _isInitialLoad = false;
+                SetItem(this);
+                IsDirty = false;
             }
         }
 

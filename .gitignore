@@ -102,3 +102,5 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/.idea
 
 /Dev/.claude/settings.local.json
+/Dev/nul
+/nul

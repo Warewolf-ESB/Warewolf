@@ -731,6 +731,8 @@ namespace Dev2.Settings
                     if (ChatbotSettingsViewModel.IsDirty)
                     {
                         ChatbotSettingsViewModel.Save(Settings.Chatbot);
+                        // Notify any open ChatbotViewModel instances to refresh their configuration
+                        RefreshOpenChatbotWindows();
                     }
 
                     if (PerfmonViewModel.IsDirty)
@@ -837,6 +839,19 @@ namespace Dev2.Settings
             }
 
             return true;
+        }
+
+        void RefreshOpenChatbotWindows()
+        {
+            try
+            {
+                // Publish an event to notify any open ChatbotViewModel instances to refresh
+                EventPublisher?.Publish(new Warewolf.Data.ChatbotSettingsSavedMessage());
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error notifying chatbot windows", ex, GlobalConstants.WarewolfError);
+            }
         }
 
         Data.Settings.Settings ReadSettings()
