@@ -518,7 +518,7 @@ namespace Dev2.Common
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
-            get => _settings.ChatbotSource ?? new NamedGuidWithEncryptedPayload();
+            get => _settings?.ChatbotSource ?? new NamedGuidWithEncryptedPayload();
             set
             {
                 _settings.ChatbotSource = value;
