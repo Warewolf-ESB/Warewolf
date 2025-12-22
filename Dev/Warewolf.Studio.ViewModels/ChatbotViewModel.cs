@@ -52,8 +52,8 @@ namespace Warewolf.Studio.ViewModels
         private System.Collections.Generic.List<string> _availableModels;
         private string _selectedModel;
         private bool _isInitializingPrompt;
-
-        public ChatbotViewModel()
+		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
+		public ChatbotViewModel()
         {
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<string>();
@@ -77,7 +77,9 @@ namespace Warewolf.Studio.ViewModels
                 _eventAggregator = Dev2.Services.Events.EventPublishers.Aggregator;
                 if (_eventAggregator != null)
                 {
+#if NETFRAMEWORK
                     _eventAggregator.Subscribe(this);
+#endif
                 }
             }
             catch (Exception ex)
