@@ -5,18 +5,12 @@
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-                    <!-- Chat bubble background -->
-                    <GeometryDrawing Brush="#FF00A4EF" Geometry="F1 M 40,50 L 40,180 Q 40,200 60,200 L 140,200 L 160,220 L 160,200 L 220,200 Q 240,200 240,180 L 240,50 Q 240,30 220,30 L 60,30 Q 40,30 40,50 Z" />
-                    <!-- Inner chat bubble -->
-                    <GeometryDrawing Brush="#FF0078D4" Geometry="F1 M 55,60 L 55,170 Q 55,185 70,185 L 145,185 L 155,195 L 155,185 L 210,185 Q 225,185 225,170 L 225,60 Q 225,45 210,45 L 70,45 Q 55,45 55,60 Z" />
-                    <!-- AI spark/star icon top left -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 80,70 L 85,85 L 100,90 L 85,95 L 80,110 L 75,95 L 60,90 L 75,85 Z" />
-                    <!-- AI spark/star icon top right -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 200,70 L 205,85 L 220,90 L 205,95 L 200,110 L 195,95 L 180,90 L 195,85 Z" />
-                    <!-- Chat lines -->
-                    <GeometryDrawing Brush="#FFFFFF" Geometry="F1 M 75,120 L 205,120 L 205,125 L 75,125 Z" />
-                    <GeometryDrawing Brush="#FFFFFF" Geometry="F1 M 75,140 L 180,140 L 180,145 L 75,145 Z" />
-                    <GeometryDrawing Brush="#FFFFFF" Geometry="F1 M 75,160 L 200,160 L 200,165 L 75,165 Z" />
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingBrush.Drawing>
@@ -26,18 +20,12 @@
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-                    <!-- Chat bubble background -->
-                    <GeometryDrawing Brush="#FF00A4EF" Geometry="F1 M 40,50 L 40,180 Q 40,200 60,200 L 140,200 L 160,220 L 160,200 L 220,200 Q 240,200 240,180 L 240,50 Q 240,30 220,30 L 60,30 Q 40,30 40,50 Z" />
-                    <!-- Inner chat bubble -->
-                    <GeometryDrawing Brush="#FF0078D4" Geometry="F1 M 55,60 L 55,170 Q 55,185 70,185 L 145,185 L 155,195 L 155,185 L 210,185 Q 225,185 225,170 L 225,60 Q 225,45 210,45 L 70,45 Q 55,45 55,60 Z" />
-                    <!-- AI spark/star icon top left -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 80,70 L 85,85 L 100,90 L 85,95 L 80,110 L 75,95 L 60,90 L 75,85 Z" />
-                    <!-- AI spark/star icon top right -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 200,70 L 205,85 L 220,90 L 205,95 L 200,110 L 195,95 L 180,90 L 195,85 Z" />
-                    <!-- Chat lines -->
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,120 L 205,120 L 205,125 L 75,125 Z" />
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,140 L 180,140 L 180,145 L 75,145 Z" />
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,160 L 200,160 L 200,165 L 75,165 Z" />
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
@@ -47,22 +35,12 @@
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-                    <!-- Chat bubble background -->
-                    <GeometryDrawing Brush="#FF00A4EF" Geometry="F1 M 40,50 L 40,180 Q 40,200 60,200 L 140,200 L 160,220 L 160,200 L 220,200 Q 240,200 240,180 L 240,50 Q 240,30 220,30 L 60,30 Q 40,30 40,50 Z" />
-                    <!-- Inner chat bubble -->
-                    <GeometryDrawing Brush="#FF0078D4" Geometry="F1 M 55,60 L 55,170 Q 55,185 70,185 L 145,185 L 155,195 L 155,185 L 210,185 Q 225,185 225,170 L 225,60 Q 225,45 210,45 L 70,45 Q 55,45 55,60 Z" />
-                    <!-- AI spark/star icon top left -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 80,70 L 85,85 L 100,90 L 85,95 L 80,110 L 75,95 L 60,90 L 75,85 Z" />
-                    <!-- AI spark/star icon top right -->
-                    <GeometryDrawing Brush="#FFFFD700" Geometry="F1 M 200,70 L 205,85 L 220,90 L 205,95 L 200,110 L 195,95 L 180,90 L 195,85 Z" />
-                    <!-- Chat lines -->
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,120 L 205,120 L 205,125 L 75,125 Z" />
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,140 L 180,140 L 180,145 L 75,145 Z" />
-                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 75,160 L 200,160 L 200,165 L 75,165 Z" />
-                    <!-- Plus indicator circle (to show it's a source) -->
-                    <GeometryDrawing Brush="#FFEC6300" Geometry="F1 M 170,100 C 170,75.147 190.147,55 215,55 C 239.853,55 260,75.147 260,100 C 260,124.853 239.853,145 215,145 C 190.147,145 170,124.853 170,100 Z "/>
-                    <!-- Plus sign -->
-                    <GeometryDrawing Brush="#FF333333" Geometry="F1 M 200,90 L 200,110 L 210,110 L 210,125 L 220,125 L 220,110 L 230,110 L 230,90 L 220,90 L 220,75 L 210,75 L 210,90 Z"/>
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
