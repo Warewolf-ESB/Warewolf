@@ -523,9 +523,18 @@ namespace Dev2.Settings
         {
             if (Settings.Chatbot != null)
             {
-                var chatbotSettingsViewModel = new ChatbotSettingsViewModel(CurrentEnvironment);
-                chatbotSettingsViewModel.SetItem(chatbotSettingsViewModel);
-                return chatbotSettingsViewModel;
+                try
+                {
+                    var chatbotSettingsViewModel = new ChatbotSettingsViewModel(CurrentEnvironment);
+                    chatbotSettingsViewModel.SetItem(chatbotSettingsViewModel);
+                    return chatbotSettingsViewModel;
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error("Error loading chatbot settings", ex, GlobalConstants.WarewolfError);
+                    ShowError("Chatbot Settings Error", ex.Message);
+                    return null;
+                }
             }
 
             return null;
