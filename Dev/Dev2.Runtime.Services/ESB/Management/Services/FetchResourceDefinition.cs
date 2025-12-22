@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
@@ -26,8 +27,18 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
+        // Static compiled regex patterns for optimal performance
+        private static readonly Regex JsonPasswordRegex = new Regex(
+            @"""Password""\s*:\s*""(?:[^""\\]|\\.)*""",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex ConnectionStringPasswordRegex = new Regex(
+            @"Password\s*=\s*[^;""]+(?=[;""])",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private IResourceDefinationCleaner _resourceDefinationCleaner;
         private IResourceCatalog _resourceCatalog;
+        
         public IResourceCatalog ResourceCat
         {
             private get
@@ -60,7 +71,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return resourceId;
             }
 
-
             return Guid.Empty;
         }
 
@@ -78,6 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 string serviceId = null;
                 var prepairForDeployment = false;
+                var removePassword = false;
                 values.TryGetValue(@"ResourceID", out StringBuilder tmp);
 
                 if (tmp != null)
@@ -89,7 +100,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (tmp != null)
                 {
-                    prepairForDeployment = bool.Parse(tmp.ToString());
+                    bool.TryParse(tmp.ToString(), out prepairForDeployment);
+                }
+
+                values.TryGetValue(@"RemovePass", out tmp);
+                if (tmp != null)
+                {
+                    bool.TryParse(tmp.ToString(), out removePassword);
                 }
 
                 Guid.TryParse(serviceId, out Guid resourceId);
@@ -98,7 +115,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var result = ResourceCat.GetResourceContents(theWorkspace.ID, resourceId);
                 var resourceDefinition = Cleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
 
-                return resourceDefinition;
+                
+                return removePassword ? RemovePasswordsFromJson(resourceDefinition.ToString()) : resourceDefinition;
             }
             catch (Exception err)
             {
@@ -107,10 +125,46 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
+        /// <summary>
+        /// Removes passwords from JSON strings including both JSON properties and connection strings.
+        /// Handles escaped quotes within password values.
+        /// </summary>
+        /// <param name="json">The JSON string containing passwords</param>
+        /// <returns>JSON StringBuilder with passwords removed</returns>
+        public static StringBuilder RemovePasswordsFromJson(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return new StringBuilder();
+            }
+
+            try
+            {
+                // Remove JSON password properties: "Password":"value"
+                // Pattern: "Password"\s*:\s*"(?:[^"\\]|\\.)*"
+                // - (?:[^"\\]|\\.)* matches any char except " and \, OR any escaped character
+                // - This handles escaped quotes \" inside password values
+                json = JsonPasswordRegex.Replace(json, @"""Password"":""""");
+
+                // Remove connection string passwords: Password=value; or Password=value"
+                // Pattern: Password\s*=\s*[^;"]+(?=[;"])
+                // - [^;"]+ matches password value until ; or "
+                // - (?=[;"]) positive lookahead ensures terminator is preserved
+                json = ConnectionStringPasswordRegex.Replace(json, "Password=");
+
+                return new StringBuilder(json);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                return new StringBuilder(json); // return original json if error occurs
+            }
+        }
+
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder) => Cleaner.DecryptAllPasswords(stringBuilder);
+        
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => @"FetchResourceDefinitionService";
-
     }
 }

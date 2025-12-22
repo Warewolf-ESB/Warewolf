@@ -10,14 +10,19 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -54,16 +59,182 @@ namespace Dev2.Runtime.ESB.Management.Services
                     if (result != null)
                     {
                         var serializer = new Dev2JsonSerializer();
-                        var serializedResult = serializer.SerializeToBuilder(result);
-
-                        if (removePassword)
+                        
+                        // Cast IEnumerable to specific type based on sourceType and create definition instances
+                        switch (sourceType)
                         {
-                            // Remove password values from the serialized JSON
-                            var sanitized = RemovePasswordsFromJson(serializedResult.ToString());
-                            return new StringBuilder(sanitized);
-                        }
+                            case enSourceType.SqlDatabase:
+                            case enSourceType.MySqlDatabase:
+                            case enSourceType.PostgreSQL:
+                            case enSourceType.Oracle:
+                            case enSourceType.ODBC:
+                            {
+                                var list = result.Cast<DbSource>().Select(res =>
+                                {
+                                    return new DbSourceDefinition
+                                    {
+                                        AuthenticationType = res.AuthenticationType,
+                                        DbName = res.DatabaseName,
+                                        Id = res.ResourceID,
+                                        Name = res.ResourceName,
+                                        Path = res.GetSavePath(),
+                                        Password = removePassword ? "" : res.Password,
+                                        ConnectionTimeout = res.ConnectionTimeout,
+                                        ServerName = res.Server,
+                                        Type = res.ServerType,
+                                        UserName = res.UserID
+                                    };
+                                }).ToList();
 
-                        return serializedResult;
+                                return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
+                            }
+
+                            case enSourceType.EmailSource:
+                            {
+                                var list = result.Cast<EmailSource>().Select(res =>
+                                {
+                                    return new EmailSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        Host = res.Host,
+                                        UserName = res.UserName,
+                                        Password = removePassword ? "" : res.Password,
+                                        Port = res.Port,
+                                        EnableSsl = res.EnableSsl,
+                                        Timeout = res.Timeout
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.WebSource:
+                            {
+                                var list = result.Cast<WebSource>().Select(res =>
+                                {
+                                    return new WebSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        Address = res.Address,
+                                        DefaultQuery = res.DefaultQuery,
+                                        AuthenticationType = res.AuthenticationType,
+                                        UserName = res.UserName,
+                                        Password = removePassword ? "" : res.Password
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.RedisSource:
+                            {
+                                var list = result.Cast<RedisSource>().Select(res =>
+                                {
+                                    return new RedisSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        HostName = res.HostName,
+                                        Port = res.Port,
+                                        AuthenticationType = res.AuthenticationType,
+                                        Password = removePassword ? "" : res.Password
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.RabbitMQSource:
+                            {
+                                var list = result.Cast<RabbitMQSource>().Select(res =>
+                                {
+                                    return new RabbitMQSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        HostName = res.HostName,
+                                        Port = res.Port,
+                                        UserName = res.UserName,
+                                        Password = removePassword ? "" : res.Password,
+                                        VirtualHost = res.VirtualHost
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.ElasticsearchSource:
+                            {
+                                var list = result.Cast<ElasticsearchSource>().Select(res =>
+                                {
+                                    return new ElasticsearchSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        HostName = res.HostName,
+                                        Port = res.Port,
+                                        SearchIndex = res.SearchIndex,
+                                        AuthenticationType = res.AuthenticationType,
+                                        Username = res.Username,
+                                        Password = removePassword ? "" : res.Password
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.ExchangeSource:
+                            {
+                                var list = result.Cast<ExchangeSource>().Select(res =>
+                                {
+                                    return new ExchangeSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        AutoDiscoverUrl = res.AutoDiscoverUrl,
+                                        UserName = res.UserName,
+                                        Password = removePassword ? "" : res.Password,
+                                        Timeout = res.Timeout
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            case enSourceType.SharepointServerSource:
+                            {
+                                var list = result.Cast<SharepointSource>().Select(res =>
+                                {
+                                    return new SharepointSource
+                                    {
+                                        ResourceID = res.ResourceID,
+                                        ResourceName = res.ResourceName,
+                                        ResourceType = res.ResourceType,
+                                        Server = res.Server,
+                                        AuthenticationType = res.AuthenticationType,
+                                        UserName = res.UserName,
+                                        Password = removePassword ? "" : res.Password,
+                                        IsSharepointOnline = res.IsSharepointOnline
+                                    };
+                                }).ToList();
+
+                                return serializer.SerializeToBuilder(list);
+                            }
+
+                            default:
+                            {
+                                // For other source types without Password property (e.g., OauthSource, Dev2Server, PluginSource)
+                                return serializer.SerializeToBuilder(result);
+                            }
+                        }
                     }
                 }
                 return new StringBuilder();
@@ -73,22 +244,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
-        }
-
-        private string RemovePasswordsFromJson(string json)
-        {
-            if (string.IsNullOrEmpty(json))
-            {
-                return json;
-            }
-
-            // Replace password field values with empty string
-            // Pattern matches: "Password":"any value" and replaces with "Password":""
-            // This handles escaped quotes and various characters in password values
-            var pattern = @"""Password""\s*:\s*""[^""]*""";
-            var replacement = @"""Password"":""""";
-            
-            return Regex.Replace(json, pattern, replacement, RegexOptions.IgnoreCase);
         }
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
