@@ -70,6 +70,25 @@ namespace Warewolf.Studio.ViewModels
             SendCommand = new DelegateCommand(Send, CanSend);
 
             LoadChatbotConfiguration();
+
+            // Subscribe to settings saved event
+            try
+            {
+                _eventAggregator = Dev2.Services.Events.EventPublishers.Aggregator;
+                if (_eventAggregator != null)
+                {
+                    _eventAggregator.Subscribe(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error subscribing to chatbot settings saved event", ex, "Warewolf Error");
+            }
+        }
+
+        public void Handle(Warewolf.Data.ChatbotSettingsSavedMessage message)
+        {
+            RefreshConfiguration();
         }
 
         public string DisplayName
@@ -124,6 +143,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSending = value;
                 OnPropertyChanged(nameof(IsSending));
+                OnPropertyChanged(nameof(IsLoading));
                 ((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
             }
         }
@@ -135,8 +155,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isInitializingPrompt = value;
                 OnPropertyChanged(nameof(IsInitializingPrompt));
+                OnPropertyChanged(nameof(IsLoading));
             }
         }
+
+        public bool IsLoading => IsInitializingPrompt || IsSending;
 
         public ICommand SendCommand { get; }
         public ICommand OpenSettingsCommand { get; }
