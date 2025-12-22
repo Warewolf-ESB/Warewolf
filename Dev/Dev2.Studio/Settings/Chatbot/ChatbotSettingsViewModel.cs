@@ -116,9 +116,9 @@ namespace Dev2.Settings.Chatbot
         }
 
         [JsonIgnore]
-        public List<IResource> ChatbotSources => LoadChatbotSources();
+        public List<IChatbotSourceResource> ChatbotSources => LoadChatbotSources();
 
-        private List<IResource> LoadChatbotSources()
+        private List<IChatbotSourceResource> LoadChatbotSources()
         {
             try
             {
@@ -162,7 +162,7 @@ namespace Dev2.Settings.Chatbot
         }
 
         [JsonIgnore]
-        public IResource SelectedChatbotSource
+        public IChatbotSourceResource SelectedChatbotSource
         {
             get => _selectedChatbotSource;
             set
