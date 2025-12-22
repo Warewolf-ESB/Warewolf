@@ -133,6 +133,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void RefreshConfiguration()
         {
+            // Clear messages when configuration is refreshed
+            Messages.Clear();
+            
             LoadChatbotConfiguration();
             // Clear any existing system prompt so it gets regenerated
             _systemPromptInitialized = false;
@@ -169,17 +172,12 @@ namespace Warewolf.Studio.ViewModels
 
                 if (IsChatbotConfigured)
                 {
-                    // Use the selected model from settings if available
-                    if (!string.IsNullOrEmpty(_configuredSource.SelectedModel))
-                    {
-                        _selectedModel = _configuredSource.SelectedModel;
-                        Dev2.Common.Dev2Logger.Info($"Using model from settings: {_selectedModel}", "Warewolf Info");
-                    }
-                    else
-                    {
-                        // Fallback: Fetch available models from the Models endpoint
-                        FetchAvailableModels();
-                    }
+                    // Always use the selected model from settings
+                    _selectedModel = !string.IsNullOrEmpty(_configuredSource.SelectedModel) 
+                        ? _configuredSource.SelectedModel 
+                        : "gpt-4o-mini";
+                    
+                    Dev2.Common.Dev2Logger.Info($"Using model from settings: {_selectedModel}", "Warewolf Info");
                     
                     // Initialize the system prompt with workspace context
                     InitializeSystemPrompt();
@@ -672,7 +670,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
 
-                // Build messages array with system prompt
+                // Build messages array with system prompt and full conversation history
                 var messages = new System.Collections.Generic.List<object>();
 
                 // Add system prompt if we have one
@@ -681,10 +679,29 @@ namespace Warewolf.Studio.ViewModels
                     messages.Add(new { role = "system", content = _systemPrompt });
                 }
 
-                // Add user message
+                // Add entire conversation history
+                foreach (var msg in Messages)
+                {
+                    if (msg.StartsWith("You: "))
+                    {
+                        messages.Add(new { role = "user", content = msg.Substring(5) });
+                    }
+                    else if (msg.StartsWith("Bot: "))
+                    {
+                        messages.Add(new { role = "assistant", content = msg.Substring(5) });
+                    }
+                    else if (msg.StartsWith("Chatbot: "))
+                    {
+                        // This is the initial greeting, include as assistant message
+                        messages.Add(new { role = "assistant", content = msg.Substring(9) });
+                    }
+                    // Skip error messages and other system messages
+                }
+
+                // Add the current user message
                 messages.Add(new { role = "user", content = userMessage });
 
-                // Use the selected model from the fetched list, or fall back to default
+                // Use the selected model
                 var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
 
                 // Create the request payload with the model parameter
