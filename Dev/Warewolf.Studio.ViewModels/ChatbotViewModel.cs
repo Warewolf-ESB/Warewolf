@@ -52,7 +52,10 @@ namespace Warewolf.Studio.ViewModels
         private System.Collections.Generic.List<string> _availableModels;
         private string _selectedModel;
         private bool _isInitializingPrompt;
+        private string _resourcesJson;
+        private string _systemLog;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
+
 		public ChatbotViewModel()
         {
             DisplayName = "Chatbot";
@@ -344,24 +347,24 @@ namespace Warewolf.Studio.ViewModels
                     promptBuilder.AppendLine();
 
                     // Get all resources as X6 JSON with XAML
-                    var resourcesJson = GetWorkspaceResourcesAsJson();
-                    if (!string.IsNullOrEmpty(resourcesJson))
+                    _resourcesJson = GetWorkspaceResourcesAsJson();
+                    if (!string.IsNullOrEmpty(_resourcesJson))
                     {
                         promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
                         promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
                         promptBuilder.AppendLine("```json");
-                        promptBuilder.AppendLine(resourcesJson);
+                        promptBuilder.AppendLine(_resourcesJson);
                         promptBuilder.AppendLine("```");
                         promptBuilder.AppendLine();
                     }
 
                     // Get system log
-                    var systemLog = GetSystemLog();
-                    if (!string.IsNullOrEmpty(systemLog))
+                    _systemLog = GetSystemLog();
+                    if (!string.IsNullOrEmpty(_systemLog))
                     {
                         promptBuilder.AppendLine("## System Log (Recent Entries):");
                         promptBuilder.AppendLine("```");
-                        promptBuilder.AppendLine(systemLog);
+                        promptBuilder.AppendLine(_systemLog);
                         promptBuilder.AppendLine("```");
                         promptBuilder.AppendLine();
                     }
@@ -371,12 +374,12 @@ namespace Warewolf.Studio.ViewModels
 
                     // Count actual resources loaded - use the resourceList that was already built
                     var resourceCount = 0;
-                    if (!string.IsNullOrEmpty(resourcesJson))
+                    if (!string.IsNullOrEmpty(_resourcesJson))
                     {
                         // Parse the JSON we built (which is an array of resources)
                         try
                         {
-                            var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(resourcesJson);
+                            var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(_resourcesJson);
                             resourceCount = resources?.Count ?? 0;
                         }
                         catch (Exception ex)
@@ -421,7 +424,7 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
-        private string GetWorkspaceResourcesAsJson()
+        private string GetWorkspaceResourcesAsJson(bool includeXaml = true)
         {
             try
             {
@@ -498,7 +501,7 @@ namespace Warewolf.Studio.ViewModels
                 var resourceList = new System.Collections.Generic.List<object>();
                 
                 // Recursively extract resources from explorer tree
-                ExtractResourcesFromExplorerItem(explorerItems, resourceList);
+                ExtractResourcesFromExplorerItem(explorerItems, resourceList, includeXaml);
                 
                 if (resourceList.Count == 0)
                 {
@@ -506,7 +509,7 @@ namespace Warewolf.Studio.ViewModels
                     return null;
                 }
 
-                Dev2.Common.Dev2Logger.Info($"Loading {resourceList.Count} resources into chatbot context", "Warewolf Info");
+                Dev2.Common.Dev2Logger.Info($"Loading {resourceList.Count} resources into chatbot context (includeXaml: {includeXaml})", "Warewolf Info");
 
                 // Serialize to JSON with formatting
                 var json = JsonConvert.SerializeObject(resourceList, Formatting.Indented);
@@ -526,7 +529,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ExtractResourcesFromExplorerItem(dynamic item, System.Collections.Generic.List<object> resourceList)
+        private void ExtractResourcesFromExplorerItem(dynamic item, System.Collections.Generic.List<object> resourceList, bool includeXaml = true)
         {
             try
             {
@@ -539,9 +542,9 @@ namespace Warewolf.Studio.ViewModels
                     
                     if (!string.IsNullOrEmpty(resourceId) && resourceId != "00000000-0000-0000-0000-000000000000")
                     {
-                        // Fetch the resource XAML if it's a workflow
+                        // Fetch the resource XAML if it's a workflow and we want XAML
                         string xaml = null;
-                        if (resourceType == "WorkflowService" || resourceType == "Service")
+                        if (includeXaml && (resourceType == "WorkflowService" || resourceType == "Service"))
                         {
                             xaml = FetchResourceXaml(resourceId);
                         }
@@ -563,7 +566,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     foreach (var child in item.Children)
                     {
-                        ExtractResourcesFromExplorerItem(child, resourceList);
+                        ExtractResourcesFromExplorerItem(child, resourceList, includeXaml);
                     }
                 }
             }
@@ -701,6 +704,45 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task<string> CallChatbotApiAsync(string userMessage)
         {
+            // Try with full context first
+            try
+            {
+                return await CallChatbotApiWithContextAsync(userMessage, includeXaml: true, includeResources: true);
+            }
+            catch (HttpRequestException ex) when (IsTokenLimitError(ex))
+            {
+                Dev2.Common.Dev2Logger.Warn("Token limit reached with full context, retrying without XAML", "Warewolf Info");
+                
+                // Retry without XAML
+                try
+                {
+                    return await CallChatbotApiWithContextAsync(userMessage, includeXaml: false, includeResources: true);
+                }
+                catch (HttpRequestException ex2) when (IsTokenLimitError(ex2))
+                {
+                    Dev2.Common.Dev2Logger.Warn("Token limit reached without XAML, retrying with only logs", "Warewolf Info");
+                    
+                    // Retry with only logs
+                    return await CallChatbotApiWithContextAsync(userMessage, includeXaml: false, includeResources: false);
+                }
+            }
+        }
+
+        private bool IsTokenLimitError(HttpRequestException ex)
+        {
+            if (ex.Message == null)
+            {
+                return false;
+            }
+
+            var message = ex.Message.ToLower();
+            return message.Contains("token") && (message.Contains("limit") || message.Contains("exceeded") || message.Contains("maximum"))
+                || message.Contains("413") // Payload too large
+                || message.Contains("context_length_exceeded");
+        }
+
+        private async Task<string> CallChatbotApiWithContextAsync(string userMessage, bool includeXaml, bool includeResources)
+        {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
@@ -708,10 +750,11 @@ namespace Warewolf.Studio.ViewModels
                 // Build messages array with system prompt and full conversation history
                 var messages = new System.Collections.Generic.List<object>();
 
-                // Add system prompt if we have one
-                if (!string.IsNullOrEmpty(_systemPrompt))
+                // Build system prompt based on context level
+                var systemPrompt = BuildSystemPrompt(includeXaml, includeResources);
+                if (!string.IsNullOrEmpty(systemPrompt))
                 {
-                    messages.Add(new { role = "system", content = _systemPrompt });
+                    messages.Add(new { role = "system", content = systemPrompt });
                 }
 
                 // Add entire conversation history
@@ -739,19 +782,50 @@ namespace Warewolf.Studio.ViewModels
                 // Use the selected model
                 var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
 
-                // Create the request payload with the model parameter
-                var payload = new
-                {
-                    model = modelToUse,
-                    messages = messages.ToArray(),
-                    temperature = 0.7, // Moderate creativity
-                    max_tokens = 2000 // Reasonable response length
-                };
-
+                // Try with max_completion_tokens first (newer API standard)
+                var payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: true, includeTemperature: true);
                 var json = JsonConvert.SerializeObject(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
+                
+                // If we get an error about unsupported parameters, retry with different combinations
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    
+                    // Check if max_completion_tokens is not supported
+                    if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+                    {
+                        Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
+                        
+                        // Retry with max_tokens
+                        payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: false, includeTemperature: true);
+                        json = JsonConvert.SerializeObject(payload);
+                        content = new StringContent(json, Encoding.UTF8, "application/json");
+                        response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
+                        
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            errorContent = await response.Content.ReadAsStringAsync();
+                        }
+                    }
+                    
+                    // Check if temperature is not supported
+                    if (!response.IsSuccessStatusCode && errorContent.Contains("temperature") && errorContent.Contains("not support"))
+                    {
+                        Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
+                        
+                        // Determine which token parameter worked (or try max_completion_tokens by default)
+                        var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
+                        
+                        // Retry without temperature
+                        payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
+                        json = JsonConvert.SerializeObject(payload);
+                        content = new StringContent(json, Encoding.UTF8, "application/json");
+                        response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
+                    }
+                }
                 
                 // Get the response content for better error messages
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -766,6 +840,176 @@ namespace Warewolf.Studio.ViewModels
 
                 return result.choices[0].message.content.ToString();
             }
+        }
+
+        private object CreatePayload(string model, object[] messages, bool useMaxCompletionTokens, bool includeTemperature = true)
+        {
+            if (useMaxCompletionTokens)
+            {
+                if (includeTemperature)
+                {
+                    return new
+                    {
+                        model = model,
+                        messages = messages,
+                        temperature = 0.7,
+                        max_completion_tokens = 2000
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        model = model,
+                        messages = messages,
+                        max_completion_tokens = 2000
+                    };
+                }
+            }
+            else
+            {
+                if (includeTemperature)
+                {
+                    return new
+                    {
+                        model = model,
+                        messages = messages,
+                        temperature = 0.7,
+                        max_tokens = 2000
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        model = model,
+                        messages = messages,
+                        max_tokens = 2000
+                    };
+                }
+            }
+        }
+
+        private string BuildSystemPrompt(bool includeXaml, bool includeResources)
+        {
+            var promptBuilder = new StringBuilder();
+            promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
+            promptBuilder.AppendLine();
+
+            // Build context availability notice based on what's included
+            var hasResources = includeResources && !string.IsNullOrEmpty(_resourcesJson);
+            var hasLog = !string.IsNullOrEmpty(_systemLog);
+
+            if (!includeXaml && hasResources)
+            {
+                promptBuilder.AppendLine("## ?? IMPORTANT CONTEXT LIMITATION:");
+                promptBuilder.AppendLine("Due to token/context size constraints, workflow XAML details have been REMOVED from this conversation.");
+                promptBuilder.AppendLine("You can see resource names and types, but CANNOT analyze workflow internals, activities, or data flow.");
+                promptBuilder.AppendLine("If asked about workflow implementation details, explain this limitation clearly.");
+                promptBuilder.AppendLine();
+            }
+            else if (!includeResources && hasLog)
+            {
+                promptBuilder.AppendLine("## ?? IMPORTANT CONTEXT LIMITATION:");
+                promptBuilder.AppendLine("Due to token/context size constraints, workspace resources have been REMOVED from this conversation.");
+                promptBuilder.AppendLine("You can ONLY analyze the system log. You CANNOT answer questions about specific workflows or resources.");
+                promptBuilder.AppendLine("If asked about workflows or resources, explain this limitation clearly and focus on log analysis.");
+                promptBuilder.AppendLine();
+            }
+
+            promptBuilder.AppendLine("## Your Capabilities:");
+            if (includeResources && includeXaml)
+            {
+                promptBuilder.AppendLine("- Analyze workflow resources and their XAML structure");
+                promptBuilder.AppendLine("- Explain workflow logic, activities, and data flow");
+                promptBuilder.AppendLine("- Identify potential issues in workflows");
+                promptBuilder.AppendLine("- Answer questions about workflow structure and dependencies");
+            }
+            else if (includeResources && !includeXaml)
+            {
+                promptBuilder.AppendLine("- List available workflow resources by name and type");
+                promptBuilder.AppendLine("- Provide general information about resource organization");
+                promptBuilder.AppendLine("- CANNOT analyze workflow internals without XAML");
+            }
+            
+            if (hasLog)
+            {
+                promptBuilder.AppendLine("- Help debug issues using the system log");
+                promptBuilder.AppendLine("- Identify errors and warnings in recent activity");
+                promptBuilder.AppendLine("- Trace execution flow from log entries");
+            }
+            promptBuilder.AppendLine();
+
+            promptBuilder.AppendLine("## Important Rules:");
+            promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
+            promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
+            promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
+            if (!includeXaml && hasResources)
+            {
+                promptBuilder.AppendLine("- Do NOT attempt to answer questions about workflow implementation details (no XAML available)");
+                promptBuilder.AppendLine("- Do NOT guess at workflow logic or activities");
+            }
+            if (!includeResources && hasLog)
+            {
+                promptBuilder.AppendLine("- Do NOT attempt to answer questions about specific workflows (no resource data available)");
+                promptBuilder.AppendLine("- Focus exclusively on system log analysis");
+            }
+            promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
+            if (includeXaml)
+            {
+                promptBuilder.AppendLine("- When analyzing workflows, refer to the XAML structure provided");
+            }
+            promptBuilder.AppendLine();
+
+            if (includeResources)
+            {
+                // Get resources without XAML if needed
+                var resourcesJson = includeXaml ? _resourcesJson : GetWorkspaceResourcesAsJson(includeXaml: false);
+                
+                if (!string.IsNullOrEmpty(resourcesJson))
+                {
+                    if (includeXaml)
+                    {
+                        promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
+                        promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
+                    }
+                    else
+                    {
+                        promptBuilder.AppendLine("## Workspace Resources (JSON - Names and Types Only):");
+                        promptBuilder.AppendLine("?? XAML workflow definitions OMITTED due to context size constraints.");
+                        promptBuilder.AppendLine("You can see what resources exist but cannot analyze their internal implementation.");
+                    }
+                    promptBuilder.AppendLine("```json");
+                    promptBuilder.AppendLine(resourcesJson);
+                    promptBuilder.AppendLine("```");
+                    promptBuilder.AppendLine();
+                }
+            }
+            else if (!includeResources && hasLog)
+            {
+                promptBuilder.AppendLine("## ?? NO RESOURCE DATA AVAILABLE");
+                promptBuilder.AppendLine("Workspace resources have been omitted. You can only work with the system log below.");
+                promptBuilder.AppendLine();
+            }
+
+            if (!string.IsNullOrEmpty(_systemLog))
+            {
+                if (!includeResources)
+                {
+                    promptBuilder.AppendLine("## System Log (Recent Entries - PRIMARY CONTEXT):");
+                    promptBuilder.AppendLine("This is your ONLY available context. Focus all analysis on these log entries.");
+                }
+                else
+                {
+                    promptBuilder.AppendLine("## System Log (Recent Entries):");
+                }
+                promptBuilder.AppendLine("```");
+                promptBuilder.AppendLine(_systemLog);
+                promptBuilder.AppendLine("```");
+                promptBuilder.AppendLine();
+            }
+
+            return promptBuilder.ToString();
         }
     }
 }
