@@ -34,7 +34,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue(Warewolf.Service.SaveChatbotSettings.ChatbotSettings, out StringBuilder settings);
 
                 var updatedChatbotSettings = serializer.Deserialize<ChatbotSettingsData>(settings);
-                Config.Chatbot.ChatbotSource = updatedChatbotSettings.ChatbotSource;
+                if (updatedChatbotSettings?.ChatbotSource != null)
+                {
+                    Config.Chatbot.ChatbotSource = updatedChatbotSettings.ChatbotSource;
+                }
 
                 msg.Message = new StringBuilder();
                 msg.HasError = false;

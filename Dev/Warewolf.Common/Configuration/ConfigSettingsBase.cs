@@ -35,7 +35,7 @@ namespace Warewolf.Configuration
             if (_fileWrapper.Exists(_settingsPath))
             {
                 var text = _fileWrapper.ReadAllText(_settingsPath);
-                _settings = JsonConvert.DeserializeObject<T>(text);
+                _settings = JsonConvert.DeserializeObject<T>(text) ?? new T();
             }
         }
 
