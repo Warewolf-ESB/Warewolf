@@ -16,7 +16,7 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
-                <ResourceDictionary Source="../Resources/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <chatbot:NullToBoolConverter x:Key="NullToBoolConverter" />
         </ResourceDictionary>
