@@ -850,12 +850,16 @@ namespace Dev2.Settings
             return true;
         }
 
-        void RefreshOpenChatbotWindows()
-        {
+#pragma warning disable CC0091 // Use static method
+		void RefreshOpenChatbotWindows()
+#pragma warning restore CC0091 // Use static method
+		{
             try
             {
+#if NETFRAMEWORK
                 // Publish an event to notify any open ChatbotViewModel instances to refresh
                 EventPublisher?.Publish(new Warewolf.Data.ChatbotSettingsSavedMessage());
+#endif
             }
             catch (Exception ex)
             {
