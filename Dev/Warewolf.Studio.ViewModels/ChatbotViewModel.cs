@@ -336,20 +336,21 @@ namespace Warewolf.Studio.ViewModels
                     _systemPrompt = promptBuilder.ToString();
                     _systemPromptInitialized = true;
 
-                    // Count actual resources loaded from the resources JSON
+                    // Count actual resources loaded - use the resourceList that was already built
                     var resourceCount = 0;
-                    try
+                    if (!string.IsNullOrEmpty(resourcesJson))
                     {
-                        if (!string.IsNullOrEmpty(resourcesJson))
+                        // Parse the JSON we built (which is an array of resources)
+                        try
                         {
-                            var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<dynamic>>(resourcesJson);
+                            var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(resourcesJson);
                             resourceCount = resources?.Count ?? 0;
                         }
-                    }
-                    catch
-                    {
-                        // If parsing fails, just show 0
-                        resourceCount = 0;
+                        catch (Exception ex)
+                        {
+                            Dev2.Common.Dev2Logger.Error("Error counting resources from JSON", ex, "Warewolf Error");
+                            resourceCount = 0;
+                        }
                     }
 
                     // Update UI on the dispatcher thread
@@ -391,32 +392,74 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                // Use the same method that populates the explorer to get resources
-                var comsController = new Dev2.Controller.CommunicationController 
-                { 
-                    ServiceName = "FetchExplorerItemsService" 
+                // Ensure server connection is established
+                if (_server?.Connection == null || !_server.Connection.IsConnected)
+                {
+                    Dev2.Common.Dev2Logger.Warn("Server connection not established, waiting for connection...", "Warewolf Info");
+                    
+                    // Wait up to 10 seconds for connection
+                    var retries = 0;
+                    while ((_server?.Connection == null || !_server.Connection.IsConnected) && retries < 20)
+                    {
+                        System.Threading.Thread.Sleep(500);
+                        retries++;
+                    }
+                    
+                    if (_server?.Connection == null || !_server.Connection.IsConnected)
+                    {
+                        Dev2.Common.Dev2Logger.Warn("Server connection not available after waiting", "Warewolf Info");
+                        return null;
+                    }
+                }
+
+                // Build the request payload manually
+                var serializer = new Dev2JsonSerializer();
+                var servicePayload = new Dev2.Communication.EsbExecuteRequest
+                {
+                    ServiceName = "FetchExplorerItemsService"
                 };
                 
-                // Use ExecuteCompressedCommand since FetchExplorerItems returns compressed data
-                var result = comsController.ExecuteCompressedCommand<Dev2.Communication.ExecuteMessage>(
-                    _server.Connection, 
-                    _server.Connection.WorkspaceID);
+                var toSend = serializer.SerializeToBuilder(servicePayload);
                 
-                if (result == null || result.HasError)
+                // Execute the command and get raw response
+                var rawPayload = _server.Connection.ExecuteCommand(toSend, _server.Connection.WorkspaceID);
+                
+                if (rawPayload == null || rawPayload.Length == 0)
                 {
-                    Dev2.Common.Dev2Logger.Warn("Failed to fetch explorer items", "Warewolf Info");
+                    Dev2.Common.Dev2Logger.Warn("No response from FetchExplorerItemsService", "Warewolf Info");
                     return null;
                 }
 
-                var explorerItemsJson = result.Message?.ToString();
+                string explorerItemsJson;
+                
+                try
+                {
+                    // Try to deserialize as CompressedExecuteMessage first
+                    var compressedMessage = serializer.Deserialize<Dev2.Communication.CompressedExecuteMessage>(rawPayload);
+                    if (compressedMessage != null && compressedMessage.IsCompressed)
+                    {
+                        explorerItemsJson = compressedMessage.GetDecompressedMessage().ToString();
+                    }
+                    else
+                    {
+                        // Not compressed, try as ExecuteMessage
+                        var executeMessage = serializer.Deserialize<Dev2.Communication.ExecuteMessage>(rawPayload);
+                        explorerItemsJson = executeMessage?.Message?.ToString();
+                    }
+                }
+                catch
+                {
+                    // Last resort - use raw payload as string
+                    explorerItemsJson = rawPayload.ToString();
+                }
+
                 if (string.IsNullOrEmpty(explorerItemsJson))
                 {
-                    Dev2.Common.Dev2Logger.Warn("No explorer items returned", "Warewolf Info");
+                    Dev2.Common.Dev2Logger.Warn("No explorer items after decompression", "Warewolf Info");
                     return null;
                 }
 
                 // Parse the explorer items to extract resources
-                var serializer = new Dev2JsonSerializer();
                 dynamic explorerItems = JsonConvert.DeserializeObject(explorerItemsJson);
                 
                 var resourceList = new System.Collections.Generic.List<object>();
@@ -524,10 +567,13 @@ namespace Warewolf.Studio.ViewModels
 
                 var xaml = result.Message?.ToString();
                 
-                // Limit XAML size per resource to avoid excessive data (max 10KB per workflow)
-                if (!string.IsNullOrEmpty(xaml) && xaml.Length > 10000)
+                // Limit XAML size per resource to avoid excessive data (max 5KB per workflow)
+                // This prevents token limit issues and keeps the context manageable
+                if (!string.IsNullOrEmpty(xaml) && xaml.Length > 5000)
                 {
-                    xaml = xaml.Substring(0, 10000) + "\n... (XAML truncated)";
+                    // Return null for large XAML files to avoid bloating the context
+                    // The chatbot can still see resource names and types without the full XAML
+                    return null;
                 }
 
                 return xaml;
