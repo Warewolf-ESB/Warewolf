@@ -27,18 +27,25 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
-        // Static compiled regex patterns for optimal performance
+        // Regex for JSON password properties: "Password":"value"
         private static readonly Regex JsonPasswordRegex = new Regex(
-            @"""Password""\s*:\s*""(?:[^""\\]|\\.)*""",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+           @"""(?:Password|PWD)""\s*:\s*""(?:[^""\\]|\\.)*""",
+           RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        // Regex for connection string passwords
+        // Pattern matches: Password=<value><terminator>
+        // Where <value> can contain any characters including escaped quotes
+        // And <terminator> is either:
+        //   - ; (semicolon for next param)
+        //   - \" (escaped quote - end of XML attribute in JSON context)
+        //   - \"; (semicolon after escaped quote - password ends the ConnectionString)
         private static readonly Regex ConnectionStringPasswordRegex = new Regex(
-            @"Password\s*=\s*[^;""]+(?=[;""])",
+            @"(?:Password|PWD)\s*=\s*(?:[^;\\]|\\[""\\])*?([;]|\\"")",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private IResourceDefinationCleaner _resourceDefinationCleaner;
         private IResourceCatalog _resourceCatalog;
-        
+
         public IResourceCatalog ResourceCat
         {
             private get
@@ -111,11 +118,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 Guid.TryParse(serviceId, out Guid resourceId);
 
-                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);               
+                Dev2Logger.Info($"Fetch Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
                 var result = ResourceCat.GetResourceContents(theWorkspace.ID, resourceId);
                 var resourceDefinition = Cleaner.GetResourceDefinition(prepairForDeployment, resourceId, result);
 
-                
+
                 return removePassword ? RemovePasswordsFromJson(resourceDefinition.ToString()) : resourceDefinition;
             }
             catch (Exception err)
@@ -127,7 +134,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         /// <summary>
         /// Removes passwords from JSON strings including both JSON properties and connection strings.
-        /// Handles escaped quotes within password values.
+        /// Handles escaped quotes within password values and multiple password field variations.
+        /// Supported variations: Password, password, PASSWORD, PWD, Pwd, pwd
         /// </summary>
         /// <param name="json">The JSON string containing passwords</param>
         /// <returns>JSON StringBuilder with passwords removed</returns>
@@ -140,17 +148,35 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                // Remove JSON password properties: "Password":"value"
-                // Pattern: "Password"\s*:\s*"(?:[^"\\]|\\.)*"
-                // - (?:[^"\\]|\\.)* matches any char except " and \, OR any escaped character
-                // - This handles escaped quotes \" inside password values
-                json = JsonPasswordRegex.Replace(json, @"""Password"":""""");
+                
 
-                // Remove connection string passwords: Password=value; or Password=value"
-                // Pattern: Password\s*=\s*[^;"]+(?=[;"])
-                // - [^;"]+ matches password value until ; or "
-                // - (?=[;"]) positive lookahead ensures terminator is preserved
-                json = ConnectionStringPasswordRegex.Replace(json, "Password=");
+                // Remove JSON password properties: "Password":"value", "PWD":"value", etc.
+                json = JsonPasswordRegex.Replace(json, match =>
+                {
+                    // Preserve the original key casing in the replacement
+                    var key = match.Value.Substring(0, match.Value.IndexOf(':'));
+                    return $"{key}:\"\"";
+                });
+
+                // Remove connection string passwords
+                // This handles:
+                // - Password=test;Port=80\" -> Password=;Port=80\",
+                // - Password=test\" -> Password=\",
+                // - Password=test;\" -> Password=;\",
+                // - Password=hello \" world;\" -> Password=;\",
+                json = ConnectionStringPasswordRegex.Replace(json, match =>
+                {
+                    var equalsIndex = match.Value.IndexOf('=');
+                    if (equalsIndex == -1)
+                    {
+                        return match.Value;
+                    }
+
+                    var key = match.Value.Substring(0, equalsIndex);
+                    var terminator = match.Groups[1].Value; // Gets ; or \"
+                    
+                    return $"{key}={terminator}";
+                });
 
                 return new StringBuilder(json);
             }
@@ -162,7 +188,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder) => Cleaner.DecryptAllPasswords(stringBuilder);
-        
+
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => @"FetchResourceDefinitionService";
