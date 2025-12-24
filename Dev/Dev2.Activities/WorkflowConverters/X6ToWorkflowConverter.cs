@@ -579,6 +579,8 @@ namespace Dev2.Activities.WF
                     return CreateDsfDeleteRecordActivity(node);
                 case var t when t.Contains(Constants.DSFSORTRECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDsfSortRecordsActivity(node);
+                case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfUniqueRecordsActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

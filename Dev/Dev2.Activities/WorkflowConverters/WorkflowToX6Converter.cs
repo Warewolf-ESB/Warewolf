@@ -631,6 +631,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateDsfSortRecordsActivity(sortRecordsActivity, nodeId);
             }
+            else if (activity is DsfUniqueActivity uniqueActivity)
+            {
+                cell = CreateDsfUniqueRecordsActivity(uniqueActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

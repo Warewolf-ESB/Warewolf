@@ -72,8 +72,9 @@ namespace Dev2.Common.X6
         public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
         public const string DSFDELETERECORDNULLHANDLERACTIVITY = "DsfDeleteRecordNullHandlerActivity";
         public const string DSFDELETERECORDACTIVITY = "DsfDeleteRecordActivity";
-        
         public const string DSFSORTRECORDSACTIVITY = "DsfSortRecordsActivity";
+        public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
+
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -211,7 +212,10 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SORTACTIVITY = "Sort Records";
         public const string SORTACTIVITY_FIELD = "sortfield";
         public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
-        
+
+        public const string DISPLAYNAME_UNIQUEACTIVITY = "Unique Records";
+        public const string UNIQUEACTIVITY_INFIELDS = "infields";
+        public const string UNIQUEACTIVITY_RESULTFIELDS = "resultfields";
 
     }
 

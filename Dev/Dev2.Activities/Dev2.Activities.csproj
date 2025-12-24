@@ -338,6 +338,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SortRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlBulkInsertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlServerDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_UniqueRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GETWebMethodHelper.cs" />
@@ -360,6 +361,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SortRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SqlBulkInsertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SqlServerDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_UniqueRecordsActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GETWebMethodHelper.cs" />
