@@ -369,6 +369,7 @@ namespace Dev2.Activities
 
             cell.data.TryAdd(Constants.UNIQUEACTIVITY_INFIELDS, InFields);
             cell.data.TryAdd(Constants.UNIQUEACTIVITY_RESULTFIELDS, ResultFields);
+            cell.data.TryAdd(Constants.RESULT, Result);
         }
 
         public override void FromX6Json(Cell cell)
@@ -382,6 +383,7 @@ namespace Dev2.Activities
 
             if (cell.data.TryGetString(Constants.UNIQUEACTIVITY_INFIELDS, out var inFields)) InFields = inFields;
             if (cell.data.TryGetString(Constants.UNIQUEACTIVITY_RESULTFIELDS, out var resultFields)) ResultFields = resultFields;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
 
         }
     }
