@@ -74,12 +74,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     sourceToTest = new DbSource
                     {
-                        AuthenticationType = dbSource.AuthenticationType,
-                        Server = dbSource.Server,
-                        Password = IsNotMasked(src.Password) ? src.Password :  dbSource.Password,
-                        ServerType = dbSource.ServerType,
-                        ConnectionTimeout = dbSource.ConnectionTimeout,
-                        UserID = dbSource.UserID
+                        AuthenticationType = src.AuthenticationType,
+                        Server = src.ServerName,
+                        Password = IsNotMasked(src.Password) ? src.Password : dbSource.Password,
+                        ServerType = src.Type,
+                        ConnectionTimeout = src.ConnectionTimeout,
+                        UserID = src.UserName
                     };
                 }
 
