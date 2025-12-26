@@ -50,11 +50,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
+                var webSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+
+
+                var dbSourcePass = webSource != null && !TestDbSourceService.IsNotMasked(src.Password) ? webSource.Password : src.Password;
+
                 var res = new WebSource
                 {
                     AuthenticationType = src.AuthenticationType,
                     Address = src.HostName,
-                    Password = src.Password,
+                    Password = dbSourcePass,
                     UserName = src.UserName,
                     ResourceID = src.Id,
                     DefaultQuery = src.DefaultQuery,

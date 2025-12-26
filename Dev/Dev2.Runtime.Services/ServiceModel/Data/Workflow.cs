@@ -68,6 +68,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var action = xml.Descendants("Action").FirstOrDefault();
             if (action == null)
             {
+                XamlDefinition = new StringBuilder();
                 return;
             }
 
@@ -369,7 +370,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = new StringBuilder();
 
-            var xaml = new StringBuilder(XmlSanitizer.EncodeXmlAttributeValues(XamlDefinition.ToString()));
+            var xaml = new StringBuilder(XamlDefinition == null || XamlDefinition.Length == 0 ? "" : XmlSanitizer.EncodeXmlAttributeValues(XamlDefinition.ToString()));
 
             var service = CreateWorkflowXElement(xaml);
             var xws = new XmlWriterSettings { OmitXmlDeclaration = true };

@@ -74,6 +74,8 @@ namespace Dev2.Common.X6
         public const string DSFDELETERECORDACTIVITY = "DsfDeleteRecordActivity";
         
         public const string DSFSORTRECORDSACTIVITY = "DsfSortRecordsActivity";
+        public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
+        public const string DSFRECORDSETNULLHANDLERLENGTHACTIVITY = "DsfRecordsetNullhandlerLengthActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -94,6 +96,8 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
+        public const string DISPLAYNAME_COUNTRECORDS = "Count Records";
+        public const string DISPLAYNAME_LENGTH = "Length";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
 
@@ -213,6 +217,14 @@ namespace Dev2.Common.X6
         public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
         
 
+
+        public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
+        public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
+        public const string COUNTRECORDS_TREATNULLASZERO = "treatnullaszero";
+
+        public const string LENGTH_RECORDSETNAME = "recordsetname";
+        public const string LENGTH_RECORDSLENGTH = "recordslength";
+        public const string LENGTH_TREATNULLASZERO = "treatnullaszero";
     }
 
     public class X6WorkflowLoadModel
