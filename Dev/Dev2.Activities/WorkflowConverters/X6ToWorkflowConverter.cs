@@ -579,6 +579,10 @@ namespace Dev2.Activities.WF
                     return CreateDsfDeleteRecordActivity(node);
                 case var t when t.Contains(Constants.DSFSORTRECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDsfSortRecordsActivity(node);
+                case var t when t.Contains(Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCountRecordsetActivity(node);
+                case var t when t.Contains(Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRecordsetLengthActivity(node);
                 case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDsfUniqueRecordsActivity(node);
                 default:

@@ -16,18 +16,20 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-using System.Linq;
-using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -318,6 +320,59 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (RecordsLength != null ? RecordsLength.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Length activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with Length data</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY;
+
+            cell.data[Constants.TYPE] = Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_LENGTH;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data[Constants.LENGTH_RECORDSETNAME] = RecordsetName ?? string.Empty;
+            cell.data[Constants.LENGTH_RECORDSLENGTH] = RecordsLength ?? string.Empty;
+            cell.data[Constants.LENGTH_TREATNULLASZERO] = TreatNullAsZero;
+        }
+
+        /// <summary>
+        /// Deserializes X6 JSON to populate the Length activity
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Length data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.LENGTH_RECORDSETNAME, out string recordsetName))
+                this.RecordsetName = recordsetName;
+
+            if (cell.data.TryGetString(Constants.LENGTH_RECORDSLENGTH, out string recordsLength))
+                this.RecordsLength = recordsLength;
+
+            if (cell.data.TryGetValue(Constants.LENGTH_TREATNULLASZERO, out var treatNullAsZeroObj))
+            {
+                if (treatNullAsZeroObj is bool treatNullAsZero)
+                {
+                    this.TreatNullAsZero = treatNullAsZero;
+                }
+                else if (bool.TryParse(treatNullAsZeroObj?.ToString(), out var parsed))
+                {
+                    this.TreatNullAsZero = parsed;
+                }
             }
         }
     }

@@ -9,9 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
@@ -20,6 +17,9 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -41,16 +41,35 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("WebserviceSource", out StringBuilder resourceDefinition);
 
                 var src = serializer.Deserialize<WebServiceSourceDefinition>(resourceDefinition);
-                var con = new WebSources();
-                var result = con.Test(new WebSource
-                {
-                    Address = src.HostName,
-                    DefaultQuery = src.DefaultQuery,
-                    AuthenticationType = src.AuthenticationType,
-                    UserName = src.UserName,
-                    Password = src.Password
-                });
+                var webSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Id);
 
+                WebSource sourceToTest;
+                if (webSource == null)
+                {
+                    sourceToTest = new WebSource
+                    {
+                        Address = src.HostName,
+                        DefaultQuery = src.DefaultQuery,
+                        AuthenticationType = src.AuthenticationType,
+                        UserName = src.UserName,
+                        Password = src.Password
+                    };
+                }
+                else
+                {
+                    sourceToTest = new WebSource
+                    {
+                        Address = src.HostName,
+                        DefaultQuery = src.DefaultQuery,
+                        AuthenticationType = src.AuthenticationType,
+                        UserName = src.UserName,
+                        Password = TestDbSourceService.IsNotMasked(src.Password) ? src.Password : webSource.Password,
+                    };
+                }
+
+
+                var con = new WebSources();
+                var result = con.Test(sourceToTest);
 
                 msg.HasError = false;
                 msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);

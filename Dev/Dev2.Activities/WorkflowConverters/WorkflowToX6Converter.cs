@@ -630,6 +630,16 @@ namespace Dev2.Activities.WF
             else if (activity is DsfSortRecordsActivity sortRecordsActivity)
             {
                 cell = CreateDsfSortRecordsActivity(sortRecordsActivity, nodeId);
+			}
+			else if (activity is DsfCountRecordsetNullHandlerActivity countRecordsetActivity)
+			{
+				cell = CreateCountRecordsetActivity(countRecordsetActivity, nodeId);
+			}
+			else if (activity is DsfRecordsetNullhandlerLengthActivity recordsetLengthActivity)
+			{
+				cell = CreateRecordsetLengthActivity(recordsetLengthActivity, nodeId);
+			}
+			else
             }
             else if (activity is DsfUniqueActivity uniqueActivity)
             {
