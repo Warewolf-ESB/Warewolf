@@ -639,8 +639,6 @@ namespace Dev2.Activities.WF
 			{
 				cell = CreateRecordsetLengthActivity(recordsetLengthActivity, nodeId);
 			}
-			else
-            }
             else if (activity is DsfUniqueActivity uniqueActivity)
             {
                 cell = CreateDsfUniqueRecordsActivity(uniqueActivity, nodeId);
