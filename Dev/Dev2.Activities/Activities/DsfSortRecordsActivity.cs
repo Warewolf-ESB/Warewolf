@@ -17,10 +17,12 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -285,5 +287,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return hashCode;
             }
         }
+
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFSORTRECORDSACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFSORTRECORDSACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_SORTACTIVITY;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.SORTACTIVITY_FIELD, SortField);
+            cell.data.TryAdd(Constants.SORTACTIVITY_SELECTEDSORT, SelectedSort);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.SORTACTIVITY_FIELD, out var sortField)) SortField = sortField;
+            if (cell.data.TryGetString(Constants.SORTACTIVITY_SELECTEDSORT, out var selectedSort)) SelectedSort = selectedSort;
+
+        }
+
     }
 }

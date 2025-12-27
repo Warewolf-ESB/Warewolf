@@ -71,6 +71,14 @@ namespace Dev2.Common.X6
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
         public const string DSFFILEREAD = "DsfFileRead";
         public const string FILEREADWITHBASE64 = "FileReadWithBase64";
+        public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
+        public const string DSFDELETERECORDNULLHANDLERACTIVITY = "DsfDeleteRecordNullHandlerActivity";
+        public const string DSFDELETERECORDACTIVITY = "DsfDeleteRecordActivity";
+        public const string DSFSORTRECORDSACTIVITY = "DsfSortRecordsActivity";
+        public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
+        public const string DSFRECORDSETNULLHANDLERLENGTHACTIVITY = "DsfRecordsetNullhandlerLengthActivity";
+        public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
+
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -84,11 +92,15 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_SELECTANDAPPLY = "Select and apply";
         public const string DISPLAYNAME_DATAMERGE = "Data Merge";
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
+        public const string DISPLAYNAME_FINDRECORDS = "Find Records";
+        public const string DISPLAYNAME_DELETERECORDS = "Delete Records";
 
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
         public const string DISPLAYNAME_REPLACE = "Replace";
+        public const string DISPLAYNAME_COUNTRECORDS = "Count Records";
+        public const string DISPLAYNAME_LENGTH = "Length";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
         public const string DISPLAYNAME_FILEREAD = "Read File";
@@ -169,6 +181,58 @@ namespace Dev2.Common.X6
     
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
+
+
+        public const string REDISCACHEACTIVITY = "RedisCacheActivity";
+        public const string DISPLAYNAME_REDISCACHE = "Redis Cache";
+        public const string REDISCACHE_ACTIVITYFUNC = "ActivityFunc";
+
+        public const string REDISCACHE_KEY = "key";
+        public const string REDISCACHE_TTL = "ttl";
+        public const string REDISCACHE_RESPONSE = "response";   
+        public const string REDISCACHE_SOURCEID = "sourceid";
+
+        public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
+        public const string DISPLAYNAME_REDISREMOVE = "Redis Remove";
+
+        public const string REDIS_KEY = "key";
+        public const string REDIS_RESPONSE = "response";
+        public const string REDIS_SOURCEID = "sourceid";
+
+        // Add these constants for Find Records specific properties
+        public const string FINDRECORDS_FIELDSTOSEARCH = "fieldsToSearch";
+        public const string FINDRECORDS_STARTINDEX = "startIndex";
+        public const string FINDRECORDS_MATCHCASE = "matchCase";
+        public const string FINDRECORDS_REQUIREALLTRUE = "requireAllTrue";
+        public const string FINDRECORDS_REQUIREALLFIELDSTOMATCH = "requireAllFieldsToMatch";
+        public const string FINDRECORDS_RESULTSCOLLECTION = "resultsCollection";
+
+        public const string ADVANCEDRECORDSETACTIVITY = "AdvancedRecordsetActivity";
+        public const string DISPLAYNAME_ADVANCEDRECORDSET = "Advanced Recordset";
+        public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
+        public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
+        public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
+        
+        public const string DELETERECORDS_TREATNULLASZERO = "treatNullAsZero";
+        public const string DELETERECORDS_RECORDSETNAME = "recordsetname";
+
+        public const string DISPLAYNAME_SORTACTIVITY = "Sort Records";
+        public const string SORTACTIVITY_FIELD = "sortfield";
+        public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
+        
+
+
+        public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
+        public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
+        public const string COUNTRECORDS_TREATNULLASZERO = "treatnullaszero";
+
+        public const string DISPLAYNAME_UNIQUEACTIVITY = "Unique Records";
+        public const string UNIQUEACTIVITY_INFIELDS = "infields";
+        public const string UNIQUEACTIVITY_RESULTFIELDS = "resultfields";
+
+        public const string LENGTH_RECORDSETNAME = "recordsetname";
+        public const string LENGTH_RECORDSLENGTH = "recordslength";
+        public const string LENGTH_TREATNULLASZERO = "treatnullaszero";
     }
 
     public class X6WorkflowLoadModel

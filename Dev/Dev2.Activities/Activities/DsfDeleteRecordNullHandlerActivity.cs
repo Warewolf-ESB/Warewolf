@@ -18,10 +18,12 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -260,6 +262,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDELETERECORDNULLHANDLERACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDELETERECORDNULLHANDLERACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DELETERECORDS;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.DELETERECORDS_RECORDSETNAME, RecordsetName);
+            cell.data.TryAdd(Constants.RESULT, Result);
+            cell.data.TryAdd(Constants.DELETERECORDS_TREATNULLASZERO, TreatNullAsZero);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.DELETERECORDS_RECORDSETNAME, out var recordsetName)) RecordsetName = recordsetName;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+            if (cell.data.TryGetBool(Constants.DELETERECORDS_TREATNULLASZERO, out var treatNullAsZero)) TreatNullAsZero = treatNullAsZero;
         }
     }
 }

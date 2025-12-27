@@ -1,3 +1,4 @@
+using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
 using Dev2.Common.X6;
@@ -94,6 +95,7 @@ namespace Dev2.Activities.WF
                 DsfForEachActivity forEachActivity => ProcessDsfForEachActivity(forEachActivity, graphData, activityNodeMap, nodeId, previousNodeId),
                 DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
                 DsfSelectAndApplyActivity selectAndApplyActivity => ProcessDsfSelectAndApplyActivity(selectAndApplyActivity, graphData, activityNodeMap, previousNodeId),
+                RedisCacheActivity redisCacheActivity => ProcessRedisCacheActivity(redisCacheActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -457,6 +459,7 @@ namespace Dev2.Activities.WF
                 DsfForEachActivity => true,
                 DsfSequenceActivity => true,
                 DsfSelectAndApplyActivity => true,
+                RedisCacheActivity => true,
                 _ => false
             };
         }
@@ -607,6 +610,46 @@ namespace Dev2.Activities.WF
             else if (activity is DsfOracleDatabaseActivity oracleDatabaseActivity)
             {
                 cell = CreateOracleDatabaseActivity(oracleDatabaseActivity, nodeId);
+            }
+            else if (activity is AdvancedRecordsetActivity advancedRecordsetActivity)
+            {
+                cell = CreateAdvancedRecordsetActivity(advancedRecordsetActivity, nodeId);
+            }
+            else if (activity is RedisCache.RedisCacheActivity redisCacheActivity)
+            {
+                cell = CreateRedisCacheActivity(redisCacheActivity, nodeId);
+            }
+            else if (activity is RedisRemove.RedisRemoveActivity redisRemoveActivity)
+            {
+                return CreateRedisRemoveActivity(redisRemoveActivity, nodeId);
+            }
+            else if (activity is DsfFindRecordsMultipleCriteriaActivity findRecordsActivity)
+            {
+                cell = CreateFindRecordsMultipleCriteriaActivity(findRecordsActivity, nodeId);
+            }
+            else if (activity is DsfDeleteRecordNullHandlerActivity deleteRecordNullHanlderActivity)
+            {
+                cell = CreateDsfDeleteRecordNullHandlerActivity(deleteRecordNullHanlderActivity, nodeId);
+            }
+            else if (activity is DsfDeleteRecordActivity deleteRecordActivity)
+            {
+                cell = CreateDsfDeleteRecordActivity(deleteRecordActivity, nodeId);
+            }
+            else if (activity is DsfSortRecordsActivity sortRecordsActivity)
+            {
+                cell = CreateDsfSortRecordsActivity(sortRecordsActivity, nodeId);
+			}
+			else if (activity is DsfCountRecordsetNullHandlerActivity countRecordsetActivity)
+			{
+				cell = CreateCountRecordsetActivity(countRecordsetActivity, nodeId);
+			}
+			else if (activity is DsfRecordsetNullhandlerLengthActivity recordsetLengthActivity)
+			{
+				cell = CreateRecordsetLengthActivity(recordsetLengthActivity, nodeId);
+			}
+            else if (activity is DsfUniqueActivity uniqueActivity)
+            {
+                cell = CreateDsfUniqueRecordsActivity(uniqueActivity, nodeId);
             }
             else
             {

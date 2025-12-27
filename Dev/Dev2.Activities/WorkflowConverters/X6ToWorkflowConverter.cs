@@ -157,6 +157,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
+            EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
         }
 
 
@@ -565,6 +566,27 @@ namespace Dev2.Activities.WF
                     return CreateSqlBulkInsertActivity(node);
                 case var t when t.Contains(Constants.ORACLESQLDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateOracleDatabaseActivity(node);
+                case var t when t.Contains(Constants.ADVANCEDRECORDSETACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateAdvancedRecordsetActivity(node);
+                case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisCacheActivity(node);
+
+                case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRedisRemoveActivity(node);
+                case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFindRecordsMultipleCriteriaActivity(node);
+                case var t when t.Contains(Constants.DSFDELETERECORDNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfDeleteRecordNullHandlerActivity(node);
+                case var t when t.Contains(Constants.DSFDELETERECORDACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfDeleteRecordActivity(node);
+                case var t when t.Contains(Constants.DSFSORTRECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfSortRecordsActivity(node);
+                case var t when t.Contains(Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCountRecordsetActivity(node);
+                case var t when t.Contains(Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRecordsetLengthActivity(node);
+                case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfUniqueRecordsActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

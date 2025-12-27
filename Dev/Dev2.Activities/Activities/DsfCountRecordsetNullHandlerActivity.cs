@@ -18,12 +18,14 @@ using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -294,6 +296,59 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (CountNumber != null ? CountNumber.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Count Records activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with Count Records data</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY;
+
+            cell.data[Constants.TYPE] = Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY;
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_COUNTRECORDS;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data[Constants.COUNTRECORDS_RECORDSETNAME] = RecordsetName ?? string.Empty;
+            cell.data[Constants.COUNTRECORDS_COUNTNUMBER] = CountNumber ?? string.Empty;
+            cell.data[Constants.COUNTRECORDS_TREATNULLASZERO] = TreatNullAsZero;
+        }
+
+        /// <summary>
+        /// Deserializes X6 JSON to populate the Count Records activity
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Count Records data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.COUNTRECORDS_RECORDSETNAME, out string recordsetName))
+                this.RecordsetName = recordsetName;
+
+            if (cell.data.TryGetString(Constants.COUNTRECORDS_COUNTNUMBER, out string countNumber))
+                this.CountNumber = countNumber;
+
+            if (cell.data.TryGetValue(Constants.COUNTRECORDS_TREATNULLASZERO, out var treatNullAsZeroObj))
+            {
+                if (treatNullAsZeroObj is bool treatNullAsZero)
+                {
+                    this.TreatNullAsZero = treatNullAsZero;
+                }
+                else if (bool.TryParse(treatNullAsZeroObj?.ToString(), out var parsed))
+                {
+                    this.TreatNullAsZero = parsed;
+                }
             }
         }
     }

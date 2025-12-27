@@ -51,11 +51,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
+                var dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+
+                
+                var dbSourcePass = dbSource != null && !TestDbSourceService.IsNotMasked(src.Password) ? dbSource.Password : src.Password;
+                 
                 var res = new DbSource
                 {
                     AuthenticationType = src.AuthenticationType,
                     Server = src.ServerName,
-                    Password = src.Password,
+                    Password = dbSourcePass,
                     ServerType = src.Type,
                     UserID = src.UserName,
                     ConnectionTimeout = src.ConnectionTimeout,
@@ -72,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
-                        Password = src.Password,
+                        Password = dbSourcePass,
                         ServerType = src.Type,
                         UserID = src.UserName,
                         ConnectionTimeout = src.ConnectionTimeout
