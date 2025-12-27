@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("fileListing", out StringBuilder currentFolder);
             if (currentFolder != null)
             {
-                var src = serializer.Deserialize(currentFolder.ToString(), typeof(IFileListing)) as IFileListing;
+                var src = serializer.Deserialize(currentFolder.ToString(), typeof(FileListing)) as IFileListing;
                 try
                 {
                     msg.HasError = false;
