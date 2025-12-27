@@ -47,6 +47,9 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Chatbot Source" />
@@ -153,6 +156,56 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                                                             Margin="0,5,0,0"
                                                             HorizontalAlignment="Left"
                                                             Visibility="{Binding IsFetchingModels, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                        
+                        <!-- System Prompt Options Section -->
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="2"
+                                   Grid.ColumnSpan="4"
+                                   Text="System Prompt Options"
+                                   FontWeight="Bold"
+                                   Margin="0,20,0,10"/>
+
+                        <CheckBox Grid.Column="0"
+                                  Grid.Row="3"
+                                  Grid.ColumnSpan="4"
+                                  Content="Include System Log"
+                                  IsChecked="{Binding IncludeSystemLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="Include recent system log entries in the chatbot context"
+                                  Margin="0,5,0,5">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter
+                                    Text="When enabled, the chatbot can analyze recent system log entries to help debug issues."
+                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
+
+                        <CheckBox Grid.Column="0"
+                                  Grid.Row="4"
+                                  Grid.ColumnSpan="4"
+                                  Content="Include Resources XAML"
+                                  IsChecked="{Binding IncludeResourcesXaml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="Include workflow XAML definitions in the chatbot context (increases token usage)"
+                                  Margin="0,5,0,5">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter
+                                    Text="When enabled, the chatbot can analyze workflow XAML to understand activities and data flow. This uses more tokens."
+                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
+
+                        <CheckBox Grid.Column="0"
+                                  Grid.Row="6"
+                                  Grid.ColumnSpan="4"
+                                  Content="Include Resources JSON"
+                                  IsChecked="{Binding IncludeResourcesJson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="Include resource metadata (names, types, IDs) in the chatbot context"
+                                  Margin="0,5,0,5">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter
+                                    Text="When enabled, the chatbot can see the list of available resources and their metadata."
+                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
                     </Grid>
                 </Grid>
             </StackPanel>

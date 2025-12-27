@@ -17,6 +17,9 @@ namespace Warewolf.Configuration
     {
         private NamedGuidWithEncryptedPayload _chatbotSource = new NamedGuidWithEncryptedPayload();
         private bool? _encryptDataSource;
+        private bool _includeSystemLog = true;
+        private bool _includeResourcesXaml = true;
+        private bool _includeResourcesJson = true;
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
@@ -24,10 +27,31 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _chatbotSource, value);
         }
 
+        public bool IncludeSystemLog
+        {
+            get => _includeSystemLog;
+            set => SetProperty(ref _includeSystemLog, value);
+        }
+
+        public bool IncludeResourcesXaml
+        {
+            get => _includeResourcesXaml;
+            set => SetProperty(ref _includeResourcesXaml, value);
+        }
+
+        public bool IncludeResourcesJson
+        {
+            get => _includeResourcesJson;
+            set => SetProperty(ref _includeResourcesJson, value);
+        }
+
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
             result._chatbotSource = ChatbotSource.Clone();
+            result._includeSystemLog = IncludeSystemLog;
+            result._includeResourcesXaml = IncludeResourcesXaml;
+            result._includeResourcesJson = IncludeResourcesJson;
             return result;
         }
 
@@ -36,6 +60,9 @@ namespace Warewolf.Configuration
             if (obj is ChatbotSettingsData other)
             {
                 var equals = ChatbotSource.Equals(other.ChatbotSource);
+                equals &= IncludeSystemLog == other.IncludeSystemLog;
+                equals &= IncludeResourcesXaml == other.IncludeResourcesXaml;
+                equals &= IncludeResourcesJson == other.IncludeResourcesJson;
                 return equals;
             }
 
