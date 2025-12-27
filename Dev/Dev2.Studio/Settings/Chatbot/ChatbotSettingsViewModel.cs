@@ -47,6 +47,9 @@ namespace Dev2.Settings.Chatbot
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
         private bool _isInitialLoad;
+        private bool _includeSystemLog = true;
+        private bool _includeResourcesXaml = true;
+        private bool _includeResourcesJson = true;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -59,6 +62,12 @@ namespace Dev2.Settings.Chatbot
             _resourceRepository = CurrentEnvironment.ResourceRepository;
 
             var settingsData = CurrentEnvironment.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(CurrentEnvironment);
+            
+            // Load checkbox settings
+            _includeSystemLog = settingsData.IncludeSystemLog;
+            _includeResourcesXaml = settingsData.IncludeResourcesXaml;
+            _includeResourcesJson = settingsData.IncludeResourcesJson;
+            
             if (settingsData.ChatbotSource != null)
             {
                 var selectedSource = ChatbotSources.FirstOrDefault(o => o.ResourceID == settingsData.ChatbotSource.Value);
@@ -230,6 +239,51 @@ namespace Dev2.Settings.Chatbot
             }
         }
 
+        [JsonIgnore]
+        public bool IncludeSystemLog
+        {
+            get => _includeSystemLog;
+            set
+            {
+                _includeSystemLog = value;
+                OnPropertyChanged();
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public bool IncludeResourcesXaml
+        {
+            get => _includeResourcesXaml;
+            set
+            {
+                _includeResourcesXaml = value;
+                OnPropertyChanged();
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public bool IncludeResourcesJson
+        {
+            get => _includeResourcesJson;
+            set
+            {
+                _includeResourcesJson = value;
+                OnPropertyChanged();
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+            }
+        }
+
         private async void FetchAvailableModels()
         {
             if (_selectedChatbotSource == null)
@@ -250,57 +304,17 @@ namespace Dev2.Settings.Chatbot
 
             try
             {
-                using (var client = new System.Net.Http.HttpClient())
+                // Try with default Bearer authentication first
+                try
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {source.ApiKey}");
+                    await FetchModelsWithAuthAsync(source, "Authorization", "Bearer ", null);
+                }
+                catch (System.Net.Http.HttpRequestException ex) when (IsAuthenticationError(ex))
+                {
+                    Dev2Logger.Info("Bearer authentication failed for models endpoint, retrying with x-api-key authentication", "Warewolf Info");
                     
-                    var response = await client.GetAsync(source.ModelsEndpoint);
-                    
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Dev2Logger.Warn($"Failed to fetch models: {response.StatusCode}", "Warewolf Info");
-                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
-                        return;
-                    }
-
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    
-                    // First, try to deserialize as a wrapper object with a 'data' property
-                    List<ChatbotModelInfo> models = null;
-                    try
-                    {
-                        var wrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelsResponseWrapper>(responseContent);
-                        models = wrapper?.Data;
-                    }
-                    catch
-                    {
-                        // If that fails, try to deserialize directly as an array
-                        models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
-                    }
-                    
-                    if (models != null && models.Count > 0)
-                    {
-                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>(models);
-                        
-                        // Try to select the previously saved model
-                        if (!string.IsNullOrEmpty(source.SelectedModel))
-                        {
-                            var savedModel = AvailableModels.FirstOrDefault(m => m.Id == source.SelectedModel);
-                            SelectedModel = savedModel ?? AvailableModels.FirstOrDefault();
-                        }
-                        else
-                        {
-                            // Select a good default
-                            SelectedModel = AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o-mini")) 
-                                         ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o"))
-                                         ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("grok"))
-                                         ?? AvailableModels.FirstOrDefault();
-                        }
-                    }
-                    else
-                    {
-                        AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
-                    }
+                    // Retry with Claude-style authentication (x-api-key header + anthropic-version)
+                    await FetchModelsWithAuthAsync(source, "x-api-key", "", "anthropic-version=2023-06-01");
                 }
             }
             catch (Exception ex)
@@ -312,6 +326,96 @@ namespace Dev2.Settings.Chatbot
             {
                 IsFetchingModels = false;
                 SetBaselineIfInitialLoad();
+            }
+        }
+
+        private static bool IsAuthenticationError(System.Net.Http.HttpRequestException ex)
+        {
+            if (ex.Message == null)
+            {
+                return false;
+            }
+
+            var message = ex.Message.ToLower();
+            return message.Contains("401") || message.Contains("unauthorized") || 
+                   message.Contains("403") || message.Contains("forbidden") ||
+                   message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+        }
+
+        private async System.Threading.Tasks.Task FetchModelsWithAuthAsync(ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+        {
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                // Set authentication header
+                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + source.ApiKey);
+
+                // Add any additional headers if specified
+                if (!string.IsNullOrWhiteSpace(additionalHeaders))
+                {
+                    var headerPairs = additionalHeaders.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var headerPair in headerPairs)
+                    {
+                        var parts = headerPair.Split(new[] { '=' }, 2);
+                        if (parts.Length == 2)
+                        {
+                            var headerName = parts[0].Trim();
+                            var headerValue = parts[1].Trim();
+                            if (!string.IsNullOrWhiteSpace(headerName) && !string.IsNullOrWhiteSpace(headerValue))
+                            {
+                                client.DefaultRequestHeaders.Add(headerName, headerValue);
+                            }
+                        }
+                    }
+                }
+                
+                var response = await client.GetAsync(source.ModelsEndpoint);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new System.Net.Http.HttpRequestException($"API returned {response.StatusCode}: {errorContent}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                
+                // Try to deserialize as a wrapper object with a 'data' property
+                List<ChatbotModelInfo> models = null;
+                try
+                {
+                    var wrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelsResponseWrapper>(responseContent);
+                    models = wrapper?.Data;
+                }
+                catch
+                {
+                    // If that fails, try to deserialize directly as an array
+                    models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                }
+                
+                if (models != null && models.Count > 0)
+                {
+                    AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>(models);
+                    
+                    // Try to select the previously saved model
+                    if (!string.IsNullOrEmpty(source.SelectedModel))
+                    {
+                        var savedModel = AvailableModels.FirstOrDefault(m => m.Id == source.SelectedModel);
+                        SelectedModel = savedModel ?? AvailableModels.FirstOrDefault();
+                    }
+                    else
+                    {
+                        // Select a good default
+                        SelectedModel = AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o-mini")) 
+                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("claude-3-5-sonnet"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("claude-3"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("grok"))
+                                     ?? AvailableModels.FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    AvailableModels = new System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo>();
+                }
             }
         }
 
@@ -361,7 +465,10 @@ namespace Dev2.Settings.Chatbot
                     Name = _selectedChatbotSource.ResourceName,
                     Value = _selectedChatbotSource.ResourceID,
                     Payload = payload
-                }
+                },
+                IncludeSystemLog = _includeSystemLog,
+                IncludeResourcesXaml = _includeResourcesXaml,
+                IncludeResourcesJson = _includeResourcesJson
             };
             CurrentEnvironment.ResourceRepository.SaveChatbotSettings(CurrentEnvironment, data);
             
@@ -444,6 +551,11 @@ namespace Dev2.Settings.Chatbot
             var thisModelId = _selectedModel?.Id;
             var otherModelId = other._selectedModel?.Id;
             equalsSeq &= string.Equals(thisModelId, otherModelId);
+            
+            // Compare checkbox settings
+            equalsSeq &= _includeSystemLog == other._includeSystemLog;
+            equalsSeq &= _includeResourcesXaml == other._includeResourcesXaml;
+            equalsSeq &= _includeResourcesJson == other._includeResourcesJson;
             
             return equalsSeq;
         }

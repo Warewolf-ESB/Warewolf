@@ -54,6 +54,9 @@ namespace Warewolf.Studio.ViewModels
         private bool _isInitializingPrompt;
         private string _resourcesJson;
         private string _systemLog;
+        private bool _includeSystemLog = true;
+        private bool _includeResourcesXaml = true;
+        private bool _includeResourcesJson = true;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 
 		public ChatbotViewModel()
@@ -191,6 +194,11 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 var settingsData = _server.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(_server);
+
+                // Load checkbox settings
+                _includeSystemLog = settingsData.IncludeSystemLog;
+                _includeResourcesXaml = settingsData.IncludeResourcesXaml;
+                _includeResourcesJson = settingsData.IncludeResourcesJson;
 
                 if (settingsData?.ChatbotSource?.Value == null || settingsData.ChatbotSource.Value == Guid.Empty)
                 {
@@ -332,79 +340,124 @@ namespace Warewolf.Studio.ViewModels
                     promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
                     promptBuilder.AppendLine();
                     promptBuilder.AppendLine("## Your Capabilities:");
-                    promptBuilder.AppendLine("- Analyze workflow resources and their XAML structure");
-                    promptBuilder.AppendLine("- Help debug issues using the system log");
-                    promptBuilder.AppendLine("- Explain workflow logic, activities, and data flow");
-                    promptBuilder.AppendLine("- Identify potential issues in workflows");
-                    promptBuilder.AppendLine("- Answer questions about workflow structure and dependencies");
+                    
+                    var capabilities = new System.Collections.Generic.List<string>();
+                    
+                    if (_includeResourcesJson || _includeResourcesXaml)
+                    {
+                        capabilities.Add("- List and identify available workflow resources");
+                        
+                        if (_includeResourcesXaml)
+                        {
+                            capabilities.Add("- Analyze workflow XAML structure, activities, and data flow");
+                            capabilities.Add("- Explain workflow logic and identify potential issues");
+                            capabilities.Add("- Answer questions about workflow structure and dependencies");
+                        }
+                    }
+                    
+                    if (_includeSystemLog)
+                    {
+                        capabilities.Add("- Help debug issues using the system log");
+                        capabilities.Add("- Identify errors and warnings in recent activity");
+                        capabilities.Add("- Trace execution flow from log entries");
+                    }
+                    
+                    if (capabilities.Count > 0)
+                    {
+                        promptBuilder.AppendLine(string.Join("\n", capabilities));
+                    }
+                    else
+                    {
+                        promptBuilder.AppendLine("- Answer general questions about Warewolf workflows");
+                    }
+                    
                     promptBuilder.AppendLine();
                     promptBuilder.AppendLine("## Important Rules:");
                     promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
                     promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
                     promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
                     promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
-                    promptBuilder.AppendLine("- When analyzing workflows, refer to the XAML structure provided");
                     promptBuilder.AppendLine();
 
-                    // Get all resources as X6 JSON with XAML
-                    _resourcesJson = GetWorkspaceResourcesAsJson();
-                    if (!string.IsNullOrEmpty(_resourcesJson))
+                    int resourceCount = 0;
+
+                    // Get resources based on settings
+                    if (_includeResourcesJson || _includeResourcesXaml)
                     {
-                        promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
-                        promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
-                        promptBuilder.AppendLine("```json");
-                        promptBuilder.AppendLine(_resourcesJson);
-                        promptBuilder.AppendLine("```");
-                        promptBuilder.AppendLine();
+                        _resourcesJson = GetWorkspaceResourcesAsJson(includeXaml: _includeResourcesXaml);
+                        
+                        if (!string.IsNullOrEmpty(_resourcesJson))
+                        {
+                            if (_includeResourcesXaml)
+                            {
+                                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
+                                promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
+                            }
+                            else
+                            {
+                                promptBuilder.AppendLine("## Workspace Resources (JSON - Metadata Only):");
+                                promptBuilder.AppendLine("Resource names, types, and IDs are provided below.");
+                            }
+                            promptBuilder.AppendLine("```json");
+                            promptBuilder.AppendLine(_resourcesJson);
+                            promptBuilder.AppendLine("```");
+                            promptBuilder.AppendLine();
+                            
+                            // Count resources
+                            try
+                            {
+                                var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(_resourcesJson);
+                                resourceCount = resources?.Count ?? 0;
+                            }
+                            catch (Exception ex)
+                            {
+                                Dev2.Common.Dev2Logger.Error("Error counting resources from JSON", ex, "Warewolf Error");
+                            }
+                        }
                     }
 
-                    // Get system log
-                    _systemLog = GetSystemLog();
-                    if (!string.IsNullOrEmpty(_systemLog))
+                    // Get system log based on settings
+                    if (_includeSystemLog)
                     {
-                        promptBuilder.AppendLine("## System Log (Recent Entries):");
-                        promptBuilder.AppendLine("```");
-                        promptBuilder.AppendLine(_systemLog);
-                        promptBuilder.AppendLine("```");
-                        promptBuilder.AppendLine();
+                        _systemLog = GetSystemLog();
+                        if (!string.IsNullOrEmpty(_systemLog))
+                        {
+                            promptBuilder.AppendLine("## System Log (Recent Entries):");
+                            promptBuilder.AppendLine("```");
+                            promptBuilder.AppendLine(_systemLog);
+                            promptBuilder.AppendLine("```");
+                            promptBuilder.AppendLine();
+                        }
                     }
 
                     _systemPrompt = promptBuilder.ToString();
                     _systemPromptInitialized = true;
 
-                    // Count actual resources loaded - use the resourceList that was already built
-                    var resourceCount = 0;
-                    if (!string.IsNullOrEmpty(_resourcesJson))
-                    {
-                        // Parse the JSON we built (which is an array of resources)
-                        try
-                        {
-                            var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(_resourcesJson);
-                            resourceCount = resources?.Count ?? 0;
-                        }
-                        catch (Exception ex)
-                        {
-                            Dev2.Common.Dev2Logger.Error("Error counting resources from JSON", ex, "Warewolf Error");
-                            resourceCount = 0;
-                        }
-                    }
-
                     // Update UI on the dispatcher thread
                     System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
                     {
                         IsInitializingPrompt = false;
-                        if (resourceCount > 0)
+                        if (resourceCount > 0 || _includeSystemLog)
                         {
+                            var contextParts = new System.Collections.Generic.List<string>();
+                            if (resourceCount > 0)
+                            {
+                                contextParts.Add($"{resourceCount} resource{(resourceCount == 1 ? "" : "s")}");
+                            }
+                            if (_includeSystemLog)
+                            {
+                                contextParts.Add("recent system logs");
+                            }
+                            
                             Messages.Add($"Chatbot: Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
-                                $"{resourceCount} resource{(resourceCount == 1 ? "" : "s")} and recent system logs. " +
+                                $"{string.Join(" and ", contextParts)}. " +
                                 "I can help you understand your workflows, debug issues, and answer questions about your Warewolf environment. " +
                                 "What would you like to know?");
                         }
                         else
                         {
                             Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
-                                "Note: No resources were found in the workspace. I can still help with general questions, " +
-                                "but I won't have specific workflow context available.");
+                                "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context.");
                         }
                     }));
                 }
@@ -704,27 +757,18 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task<string> CallChatbotApiAsync(string userMessage)
         {
-            // Try with full context first
             try
             {
-                return await CallChatbotApiWithContextAsync(userMessage, includeXaml: true, includeResources: true);
+                return await CallChatbotApiWithContextAsync(userMessage);
             }
             catch (HttpRequestException ex) when (IsTokenLimitError(ex))
             {
-                Dev2.Common.Dev2Logger.Warn("Token limit reached with full context, retrying without XAML", "Warewolf Info");
+                Dev2.Common.Dev2Logger.Warn($"Token limit reached: {ex.Message}", "Warewolf Info");
                 
-                // Retry without XAML
-                try
-                {
-                    return await CallChatbotApiWithContextAsync(userMessage, includeXaml: false, includeResources: true);
-                }
-                catch (HttpRequestException ex2) when (IsTokenLimitError(ex2))
-                {
-                    Dev2.Common.Dev2Logger.Warn("Token limit reached without XAML, retrying with only logs", "Warewolf Info");
-                    
-                    // Retry with only logs
-                    return await CallChatbotApiWithContextAsync(userMessage, includeXaml: false, includeResources: false);
-                }
+                // Return a helpful error message with a link to settings
+                return "The token limit has been exceeded. The context is too large for the selected model. " +
+                       "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
+                       "(System Log, Resources XAML, or Resources JSON) to reduce the context size.";
             }
         }
 
@@ -741,20 +785,76 @@ namespace Warewolf.Studio.ViewModels
                 || message.Contains("context_length_exceeded");
         }
 
-        private async Task<string> CallChatbotApiWithContextAsync(string userMessage, bool includeXaml, bool includeResources)
+        private async Task<string> CallChatbotApiWithContextAsync(string userMessage)
+        {
+            // Try with default Bearer authentication first
+            try
+            {
+                return await CallChatbotApiWithAuthAsync(userMessage, "Authorization", "Bearer ", null);
+            }
+            catch (HttpRequestException ex) when (IsAuthenticationError(ex))
+            {
+                Dev2.Common.Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key authentication", "Warewolf Info");
+                
+                // Retry with Claude-style authentication (x-api-key header + anthropic-version)
+                try
+                {
+                    return await CallChatbotApiWithAuthAsync(userMessage, "x-api-key", "", "anthropic-version=2023-06-01");
+                }
+                catch (HttpRequestException ex2)
+                {
+                    // If both fail, throw the original error
+                    throw new HttpRequestException($"Authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}", ex);
+                }
+            }
+        }
+
+        private bool IsAuthenticationError(HttpRequestException ex)
+        {
+            if (ex.Message == null)
+            {
+                return false;
+            }
+
+            var message = ex.Message.ToLower();
+            return message.Contains("401") || message.Contains("unauthorized") || 
+                   message.Contains("403") || message.Contains("forbidden") ||
+                   message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+        }
+
+        private async Task<string> CallChatbotApiWithAuthAsync(string userMessage, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
         {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
+                // Set authentication header
+                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + _configuredSource.ApiKey);
+
+                // Add any additional headers if specified
+                if (!string.IsNullOrWhiteSpace(additionalHeaders))
+                {
+                    var headerPairs = additionalHeaders.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var headerPair in headerPairs)
+                    {
+                        var parts = headerPair.Split(new[] { '=' }, 2);
+                        if (parts.Length == 2)
+                        {
+                            var headerName = parts[0].Trim();
+                            var headerValue = parts[1].Trim();
+                            if (!string.IsNullOrWhiteSpace(headerName) && !string.IsNullOrWhiteSpace(headerValue))
+                            {
+                                client.DefaultRequestHeaders.Add(headerName, headerValue);
+                            }
+                        }
+                    }
+                }
 
                 // Build messages array with system prompt and full conversation history
                 var messages = new System.Collections.Generic.List<object>();
 
-                // Build system prompt based on context level
-                var systemPrompt = BuildSystemPrompt(includeXaml, includeResources);
-                if (!string.IsNullOrEmpty(systemPrompt))
+                // Use the initialized system prompt
+                if (!string.IsNullOrEmpty(_systemPrompt))
                 {
-                    messages.Add(new { role = "system", content = systemPrompt });
+                    messages.Add(new { role = "system", content = _systemPrompt });
                 }
 
                 // Add entire conversation history
@@ -838,7 +938,20 @@ namespace Warewolf.Studio.ViewModels
 
                 dynamic result = JsonConvert.DeserializeObject(responseContent);
 
-                return result.choices[0].message.content.ToString();
+                // Try OpenAI-compatible response format first
+                try
+                {
+                    return result.choices[0].message.content.ToString();
+                }
+                catch
+                {
+                    // Try Claude response format: { "content": [{ "type": "text", "text": "..." }] }
+                    if (result.content != null && result.content.Count > 0)
+                    {
+                        return result.content[0].text.ToString();
+                    }
+                    throw new HttpRequestException("Unexpected API response format");
+                }
             }
         }
 
@@ -888,128 +1001,6 @@ namespace Warewolf.Studio.ViewModels
                     };
                 }
             }
-        }
-
-        private string BuildSystemPrompt(bool includeXaml, bool includeResources)
-        {
-            var promptBuilder = new StringBuilder();
-            promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
-            promptBuilder.AppendLine();
-
-            // Build context availability notice based on what's included
-            var hasResources = includeResources && !string.IsNullOrEmpty(_resourcesJson);
-            var hasLog = !string.IsNullOrEmpty(_systemLog);
-
-            if (!includeXaml && hasResources)
-            {
-                promptBuilder.AppendLine("## ?? IMPORTANT CONTEXT LIMITATION:");
-                promptBuilder.AppendLine("Due to token/context size constraints, workflow XAML details have been REMOVED from this conversation.");
-                promptBuilder.AppendLine("You can see resource names and types, but CANNOT analyze workflow internals, activities, or data flow.");
-                promptBuilder.AppendLine("If asked about workflow implementation details, explain this limitation clearly.");
-                promptBuilder.AppendLine();
-            }
-            else if (!includeResources && hasLog)
-            {
-                promptBuilder.AppendLine("## ?? IMPORTANT CONTEXT LIMITATION:");
-                promptBuilder.AppendLine("Due to token/context size constraints, workspace resources have been REMOVED from this conversation.");
-                promptBuilder.AppendLine("You can ONLY analyze the system log. You CANNOT answer questions about specific workflows or resources.");
-                promptBuilder.AppendLine("If asked about workflows or resources, explain this limitation clearly and focus on log analysis.");
-                promptBuilder.AppendLine();
-            }
-
-            promptBuilder.AppendLine("## Your Capabilities:");
-            if (includeResources && includeXaml)
-            {
-                promptBuilder.AppendLine("- Analyze workflow resources and their XAML structure");
-                promptBuilder.AppendLine("- Explain workflow logic, activities, and data flow");
-                promptBuilder.AppendLine("- Identify potential issues in workflows");
-                promptBuilder.AppendLine("- Answer questions about workflow structure and dependencies");
-            }
-            else if (includeResources && !includeXaml)
-            {
-                promptBuilder.AppendLine("- List available workflow resources by name and type");
-                promptBuilder.AppendLine("- Provide general information about resource organization");
-                promptBuilder.AppendLine("- CANNOT analyze workflow internals without XAML");
-            }
-            
-            if (hasLog)
-            {
-                promptBuilder.AppendLine("- Help debug issues using the system log");
-                promptBuilder.AppendLine("- Identify errors and warnings in recent activity");
-                promptBuilder.AppendLine("- Trace execution flow from log entries");
-            }
-            promptBuilder.AppendLine();
-
-            promptBuilder.AppendLine("## Important Rules:");
-            promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
-            promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
-            promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
-            if (!includeXaml && hasResources)
-            {
-                promptBuilder.AppendLine("- Do NOT attempt to answer questions about workflow implementation details (no XAML available)");
-                promptBuilder.AppendLine("- Do NOT guess at workflow logic or activities");
-            }
-            if (!includeResources && hasLog)
-            {
-                promptBuilder.AppendLine("- Do NOT attempt to answer questions about specific workflows (no resource data available)");
-                promptBuilder.AppendLine("- Focus exclusively on system log analysis");
-            }
-            promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
-            if (includeXaml)
-            {
-                promptBuilder.AppendLine("- When analyzing workflows, refer to the XAML structure provided");
-            }
-            promptBuilder.AppendLine();
-
-            if (includeResources)
-            {
-                // Get resources without XAML if needed
-                var resourcesJson = includeXaml ? _resourcesJson : GetWorkspaceResourcesAsJson(includeXaml: false);
-                
-                if (!string.IsNullOrEmpty(resourcesJson))
-                {
-                    if (includeXaml)
-                    {
-                        promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
-                        promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
-                    }
-                    else
-                    {
-                        promptBuilder.AppendLine("## Workspace Resources (JSON - Names and Types Only):");
-                        promptBuilder.AppendLine("?? XAML workflow definitions OMITTED due to context size constraints.");
-                        promptBuilder.AppendLine("You can see what resources exist but cannot analyze their internal implementation.");
-                    }
-                    promptBuilder.AppendLine("```json");
-                    promptBuilder.AppendLine(resourcesJson);
-                    promptBuilder.AppendLine("```");
-                    promptBuilder.AppendLine();
-                }
-            }
-            else if (!includeResources && hasLog)
-            {
-                promptBuilder.AppendLine("## ?? NO RESOURCE DATA AVAILABLE");
-                promptBuilder.AppendLine("Workspace resources have been omitted. You can only work with the system log below.");
-                promptBuilder.AppendLine();
-            }
-
-            if (!string.IsNullOrEmpty(_systemLog))
-            {
-                if (!includeResources)
-                {
-                    promptBuilder.AppendLine("## System Log (Recent Entries - PRIMARY CONTEXT):");
-                    promptBuilder.AppendLine("This is your ONLY available context. Focus all analysis on these log entries.");
-                }
-                else
-                {
-                    promptBuilder.AppendLine("## System Log (Recent Entries):");
-                }
-                promptBuilder.AppendLine("```");
-                promptBuilder.AppendLine(_systemLog);
-                promptBuilder.AppendLine("```");
-                promptBuilder.AppendLine();
-            }
-
-            return promptBuilder.ToString();
         }
     }
 }
