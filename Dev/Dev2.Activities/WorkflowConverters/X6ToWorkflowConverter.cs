@@ -568,7 +568,6 @@ namespace Dev2.Activities.WF
                     return CreateAdvancedRecordsetActivity(node);
                 case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisCacheActivity(node);
-
                 case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisRemoveActivity(node);
                 case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -585,6 +584,8 @@ namespace Dev2.Activities.WF
                     return CreateRecordsetLengthActivity(node);
                 case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDsfUniqueRecordsActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREADACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderReadActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
