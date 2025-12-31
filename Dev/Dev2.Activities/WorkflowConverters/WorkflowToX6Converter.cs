@@ -1,3 +1,4 @@
+using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
@@ -642,6 +643,14 @@ namespace Dev2.Activities.WF
             else if (activity is DsfUniqueActivity uniqueActivity)
             {
                 cell = CreateDsfUniqueRecordsActivity(uniqueActivity, nodeId);
+            }
+            else if (activity is DsfPublishRabbitMQActivity publishDsfRabbitMQActivity)
+            {
+                cell = CreateDsfPublishRabbitMQActivity(publishDsfRabbitMQActivity, nodeId);
+            }
+            else if (activity is PublishRabbitMQActivity publishRabbitMQActivity)
+            {
+                cell = CreatePublishRabbitMQActivity(publishRabbitMQActivity, nodeId);
             }
             else
             {

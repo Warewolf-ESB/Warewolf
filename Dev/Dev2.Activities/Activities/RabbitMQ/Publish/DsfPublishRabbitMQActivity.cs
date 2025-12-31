@@ -23,6 +23,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Dev2.Common.State;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
@@ -240,5 +242,46 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return hashCode;
             }
         }
+
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.RABBITMQPUBLISHACTIVITY;
+            cell.data[Constants.TYPE] = Constants.RABBITMQPUBLISHACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_RABBITMQPUBLISH;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_SOURCEID, RabbitMQSourceResourceId);
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_QUEUENAME, QueueName);
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_SETTINGS_DURABLE, IsDurable);
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_SETTINGS_EXCLUSIVE, IsExclusive);
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_SETTINGS_AUTODELETE, IsAutoDelete);
+            cell.data.TryAdd(Constants.RABBITMQPUBLISH_MESSAGE, Message);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetGuid(Constants.RABBITMQPUBLISH_SOURCEID, out var resourceid)) RabbitMQSourceResourceId = resourceid;
+            if (cell.data.TryGetString(Constants.RABBITMQPUBLISH_QUEUENAME, out var queuename)) QueueName = queuename;
+            if (cell.data.TryGetBool(Constants.RABBITMQPUBLISH_SETTINGS_DURABLE, out var isdurable)) IsDurable = isdurable;
+            if (cell.data.TryGetBool(Constants.RABBITMQPUBLISH_SETTINGS_EXCLUSIVE, out var isexclusive)) IsExclusive = isexclusive;
+            if (cell.data.TryGetBool(Constants.RABBITMQPUBLISH_SETTINGS_AUTODELETE, out var isautodelete)) IsAutoDelete = isautodelete;
+            if (cell.data.TryGetString(Constants.RABBITMQPUBLISH_MESSAGE, out var message)) Message = message;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+           
+        }
     }
+
 }

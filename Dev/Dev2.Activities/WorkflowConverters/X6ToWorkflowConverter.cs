@@ -585,6 +585,10 @@ namespace Dev2.Activities.WF
                     return CreateRecordsetLengthActivity(node);
                 case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDsfUniqueRecordsActivity(node);
+                case var t when t.Contains(Constants.RABBITDSFMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfRabbitMQPublishActivity(node);
+                case var t when t.Contains(Constants.RABBITMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRabbitMQPublishActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

@@ -447,6 +447,74 @@ namespace Dev2.WorkflowConverters
                 return false;
             }
         }
+
+        public static bool TryGetRabbitMqPublishOptions(IDictionary<string, object> data, out RabbitMqPublishOptions basicProperties)
+        {
+            basicProperties = null;
+            if (!data.TryGetValue(Constants.RABBITMQPUBLISH_BASICPROPERTIES, out var raw)) return false;
+
+            try
+            {
+                if (raw is JObject obj)
+                {
+                    basicProperties = new RabbitMqPublishOptions();
+
+                    // Deserialize AutoCorrelation
+                    var autoCorrelationToken = obj[nameof(RabbitMqPublishOptions.AutoCorrelation)];
+                    if (autoCorrelationToken is JObject autoCorrelationObj)
+                    {
+                        var correlationTypeToken = autoCorrelationObj[nameof(AutoCorrelation.Correlation)];
+                        if (correlationTypeToken != null)
+                        {
+                            var correlationAction = CorrelationAction.ExecutionID;
+
+                            if (correlationTypeToken.Type == JTokenType.Integer)
+                            {
+                                correlationAction = (CorrelationAction)correlationTypeToken.Value<int>();
+                            }
+                            else if (correlationTypeToken.Type == JTokenType.String)
+                            {
+                                Enum.TryParse(correlationTypeToken.Value<string>(), true, out correlationAction);
+                            }
+
+                            switch (correlationAction)
+                            {
+                                case CorrelationAction.Manual:
+                                    var manual = new Manual();
+                                    var correlationIdToken = autoCorrelationObj[nameof(Manual.CorrelationID)];
+                                    if (correlationIdToken != null)
+                                    {
+                                        manual.CorrelationID = correlationIdToken.Value<string>() ?? string.Empty;
+                                    }
+                                    basicProperties.AutoCorrelation = manual;
+                                    break;
+                                case CorrelationAction.CustomTransactionID:
+                                    basicProperties.AutoCorrelation = new CustomTransactionID();
+                                    break;
+                                case CorrelationAction.ExecutionID:
+                                default:
+                                    basicProperties.AutoCorrelation = new ExecutionID();
+                                    break;
+                            }
+                        }
+                    }
+
+                    return true;
+                }
+                else if (raw is RabbitMqPublishOptions existing)
+                {
+                    basicProperties = existing;
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                basicProperties = null;
+                return false;
+            }
+        }
     }
 
     public static class CommonHelperExtensions
@@ -491,5 +559,8 @@ namespace Dev2.WorkflowConverters
 
         public static bool TryGetFindRecordsCollection(this IDictionary<string, object> data, out IList<FindRecordsTO> findRecordsCollection) =>
             CommonHelper.TryGetFindRecordsCollection(data, out findRecordsCollection);
+
+        public static bool TryGetRabbitMqPublishOptions(this IDictionary<string, object> data, out RabbitMqPublishOptions basicProperties) =>
+            CommonHelper.TryGetRabbitMqPublishOptions(data, out basicProperties);
     }
 }

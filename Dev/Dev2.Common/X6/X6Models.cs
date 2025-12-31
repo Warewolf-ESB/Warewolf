@@ -230,6 +230,21 @@ namespace Dev2.Common.X6
         public const string LENGTH_RECORDSETNAME = "recordsetname";
         public const string LENGTH_RECORDSLENGTH = "recordslength";
         public const string LENGTH_TREATNULLASZERO = "treatnullaszero";
+
+        public const string RABBITDSFMQPUBLISHACTIVITY = "DsfPublishRabbitMQActivity";
+        public const string RABBITMQPUBLISHACTIVITY = "PublishRabbitMQActivity";
+        public const string DISPLAYNAME_RABBITMQPUBLISH = "RabbitMQ Publish";
+        public const string RABBITMQPUBLISH_SOURCEID = "rabbitmqsourceresourceid";
+        public const string RABBITMQPUBLISH_QUEUENAME = "queuename";
+        public const string RABBITMQPUBLISH_MESSAGE = "message";
+        public const string RABBITMQPUBLISH_BASICPROPERTIES = "basicproperties";
+        public const string RABBITMQPUBLISH_SETTINGS_DURABLE = "isdurable";
+        public const string RABBITMQPUBLISH_SETTINGS_EXCLUSIVE = "isexclusive";
+        public const string RABBITMQPUBLISH_SETTINGS_AUTODELETE = "isautodelete";
+
+
+
+
     }
 
     public class X6WorkflowLoadModel
