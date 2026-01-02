@@ -77,6 +77,7 @@ namespace Dev2.Common.X6
         public const string DSFRECORDSETNULLHANDLERLENGTHACTIVITY = "DsfRecordsetNullhandlerLengthActivity";
         public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
         public const string DSFFOLDERREADACTIVITY = "DsfFolderReadActivity";
+        public const string DSFFOLDERREAD = "DsfFolderRead";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";

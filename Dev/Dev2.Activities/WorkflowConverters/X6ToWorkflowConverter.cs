@@ -586,6 +586,8 @@ namespace Dev2.Activities.WF
                     return CreateDsfUniqueRecordsActivity(node);
                 case var t when t.Contains(Constants.DSFFOLDERREADACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFolderReadActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderRead(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
