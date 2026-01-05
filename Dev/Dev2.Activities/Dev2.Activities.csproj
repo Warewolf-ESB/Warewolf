@@ -327,6 +327,7 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileReadWithBase64ActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CountRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DeleteRecordsActivityHelper.cs" />
@@ -352,8 +353,10 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindIndexActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FileReadWithBase64ActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CountRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DeleteRecordsActivityHelper.cs" />
@@ -379,6 +382,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CaseConvertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DataMergeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindIndexActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FileReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SelectAndApplyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SelectAndApplyActivityHelper.cs" />
