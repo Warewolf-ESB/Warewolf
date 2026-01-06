@@ -659,6 +659,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFolderRead(folderRead, nodeId);
             }
+            else if (activity is DsfPathCreate pathCreateActivity)
+            {
+                cell = CreatePathCreateActivity(pathCreateActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

@@ -80,6 +80,7 @@ namespace Dev2.Common.X6
         public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
         public const string DSFFOLDERREADACTIVITY = "DsfFolderReadActivity";
         public const string DSFFOLDERREAD = "DsfFolderRead";
+        public const string DSFPATHCREATE = "DsfPathCreate";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -106,6 +107,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
         public const string DISPLAYNAME_FILEREAD = "Read File";
         public const string DISPLAYNAME_FOLDERREAD = "Folder Read";
+        public const string DISPLAYNAME_PATHCREATE = "Create";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -244,6 +246,9 @@ namespace Dev2.Common.X6
         public const string LENGTH_RECORDSETNAME = "recordsetname";
         public const string LENGTH_RECORDSLENGTH = "recordslength";
         public const string LENGTH_TREATNULLASZERO = "treatnullaszero";
+
+        public const string PATHCREATE_OUTPUTPATH = "outputpath";
+        public const string PATHCREATE_OVERWRITE = "overwrite";
     }
 
     public class X6WorkflowLoadModel
