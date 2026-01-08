@@ -9,15 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.PathOperations;
+using Dev2.Common.X6;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -25,6 +22,12 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
+using Microsoft.AspNetCore.Components.Forms;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage.Interfaces;
@@ -32,73 +35,73 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-	public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify, IEquatable<DsfAbstractFileActivity>
-	{
+    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify, IEquatable<DsfAbstractFileActivity>
+    {
 
-		string _username;
-		string _password;
+        string _username;
+        string _password;
 
-		protected DsfAbstractFileActivity(string displayName)
-			: base(displayName)
-		{
-			Username = string.Empty;
-			Password = string.Empty;
-			Result = string.Empty;
-			PrivateKeyFile = string.Empty;
-		}
+        protected DsfAbstractFileActivity(string displayName)
+            : base(displayName)
+        {
+            Username = string.Empty;
+            Password = string.Empty;
+            Result = string.Empty;
+            PrivateKeyFile = string.Empty;
+        }
 
-		protected override void OnExecute(NativeActivityContext context)
-		{
-			var dataObject = context.GetExtension<IDSFDataObject>();
-			ExecuteTool(dataObject, 0);
-		}
+        protected override void OnExecute(NativeActivityContext context)
+        {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject, 0);
+        }
 
-		protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-		{
-			var allErrors = new ErrorResultTO();
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            var allErrors = new ErrorResultTO();
 
-			// Process if no errors
+            // Process if no errors
 
-			if (dataObject.IsDebugMode())
-			{
-				InitializeDebug(dataObject);
-			}
-            
-			try
+            if (dataObject.IsDebugMode())
+            {
+                InitializeDebug(dataObject);
+            }
+
+            try
             {
                 TryExecuteTool(dataObject, update, allErrors);
             }
             catch (Exception ex)
-			{
-				allErrors.AddError(ex.Message);
-			}
-			finally
-			{
-				// Handle Errors
-				if (allErrors.HasErrors())
-				{
-					if (!this.IsErrorHandled)
-					{
-						foreach (var err in allErrors.FetchErrors())
-						{
-							dataObject.Environment.Errors.Add(err);
-						}
+            {
+                allErrors.AddError(ex.Message);
+            }
+            finally
+            {
+                // Handle Errors
+                if (allErrors.HasErrors())
+                {
+                    if (!this.IsErrorHandled)
+                    {
+                        foreach (var err in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.Errors.Add(err);
+                        }
                     }
-					RunOnErrorSteps(dataObject, allErrors, update);
-					DisplayAndWriteError(dataObject,DisplayName, allErrors);
-					foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-					{
-						dataObject.Environment.Assign(region, "", update);
-					}
-				}
+                    RunOnErrorSteps(dataObject, allErrors, update);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                    {
+                        dataObject.Environment.Assign(region, "", update);
+                    }
+                }
 
-				if (dataObject.IsDebugMode())
-				{
-					DispatchDebugState(dataObject, StateType.Before, update);
-					DispatchDebugState(dataObject, StateType.After, update);
-				}
-			}
-		}
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
 
         private ErrorResultTO TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
@@ -143,7 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                 {
-					errors.AddError(value);
+                    errors.AddError(value);
                 }
                 else
                 {
@@ -160,184 +163,207 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Gets or sets the password.
-		/// </summary>
-		[Inputs("Password")]
-		[FindMissing]
-		public string Password
-		{
-			get => _password;
-			set
-			{
-				if (DataListUtil.ShouldEncrypt(value))
-				{
-					try
-					{
-						_password = DpapiWrapper.Encrypt(value);
-					}
-					catch (Exception)
-					{
-						_password = value;
-					}
-				}
-				else
-				{
-					_password = value;
-				}
-			}
-		}
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        [Inputs("Password")]
+        [FindMissing]
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                if (DataListUtil.ShouldEncrypt(value))
+                {
+                    try
+                    {
+                        _password = DpapiWrapper.Encrypt(value);
+                    }
+                    catch (Exception)
+                    {
+                        _password = value;
+                    }
+                }
+                else
+                {
+                    _password = value;
+                }
+            }
+        }
 
-		protected abstract bool AssignEmptyOutputsToRecordSet {get;}
+        protected abstract bool AssignEmptyOutputsToRecordSet { get; }
 
-		/// <summary>
-		/// Gets or sets the username.
-		/// </summary>
-		[Inputs("Username")]
-		[FindMissing]
-		public string Username
-		{
-			get { return _username; }
-			set { _username = value; }
-		}
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        [Inputs("Username")]
+        [FindMissing]
+        public string Username
+        {
+            get { return _username; }
+            set { _username = value; }
+        }
 
-		[Inputs("PrivateKeyFile")]
-		[FindMissing]
-		public string PrivateKeyFile { get; set; }
+        [Inputs("PrivateKeyFile")]
+        [FindMissing]
+        public string PrivateKeyFile { get; set; }
 
-		/// <summary>
-		/// Gets or sets the result.
-		/// </summary>
-		[Outputs("Result")]
-		[FindMissing]
-		public new string Result
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        [Outputs("Result")]
+        [FindMissing]
+        public new string Result
+        {
+            get;
+            set;
+        }
 
-		public override List<string> GetOutputs() => new List<string> { Result };
+        public override List<string> GetOutputs() => new List<string> { Result };
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance is not cert verifiable.
-		/// </summary>
-		[Inputs("Is Not Certificate Verifiable")]
-		public bool IsNotCertVerifiable
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is not cert verifiable.
+        /// </summary>
+        [Inputs("Is Not Certificate Verifiable")]
+        public bool IsNotCertVerifiable
+        {
+            get;
+            set;
+        }
 
 
-		#endregion Properties
+        #endregion Properties
 
-		#region Get Debug Inputs/Outputs
+        #region Get Debug Inputs/Outputs
 
-		public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-		{
-			foreach (IDebugItem debugInput in _debugInputs)
-			{
-				debugInput.FetchResultsList();
-			}
-			return _debugInputs;
-		}
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            foreach (IDebugItem debugInput in _debugInputs)
+            {
+                debugInput.FetchResultsList();
+            }
+            return _debugInputs;
+        }
 
-		public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-		{
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
+        {
 
-			foreach (IDebugItem debugOutput in _debugOutputs)
-			{
-				debugOutput.FlushStringBuilder();
-			}
-			return _debugOutputs;
-		}
+            foreach (IDebugItem debugOutput in _debugOutputs)
+            {
+                debugOutput.FlushStringBuilder();
+            }
+            return _debugOutputs;
+        }
 
-		#endregion Get Inputs/Outputs
+        #endregion Get Inputs/Outputs
 
-		#region Internal Methods
+        #region Internal Methods
 
-		internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
-		{
-			AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
-		}
+        internal void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        {
+            AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
+        }
 
-		#endregion
+        #endregion
 
-		protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
-		{
-			AddDebugInputItem(Username, "Username", environment, update);
-			AddDebugInputItemPassword("Password", Password);
-		}
+        protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
+        {
+            AddDebugInputItem(Username, "Username", environment, update);
+            AddDebugInputItemPassword("Password", Password);
+        }
 
-		protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName, int update)
-		{
-			AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment, update));
-			AddDebugInputItemPassword("Destination Password", destinationPassword);
-		}
+        protected void AddDebugInputItemDestinationUsernamePassword(IExecutionEnvironment environment, string destinationPassword, string userName, int update)
+        {
+            AddDebugInputItem(new DebugEvalResult(userName, "Destination Username", environment, update));
+            AddDebugInputItemPassword("Destination Password", destinationPassword);
+        }
 
-		protected void AddDebugInputItemPassword(string label, string password)
-		{
-			AddDebugInputItem(new DebugItemStaticDataParams(GetBlankedOutPassword(password), label));
-		}
+        protected void AddDebugInputItemPassword(string label, string password)
+        {
+            AddDebugInputItem(new DebugItemStaticDataParams(GetBlankedOutPassword(password), label));
+        }
 
-		static string GetBlankedOutPassword(string password) => "".PadRight((password ?? "").Length, '*');
+        static string GetBlankedOutPassword(string password) => "".PadRight((password ?? "").Length, '*');
 
-		public bool Equals(DsfAbstractFileActivity other)
-		{
-			if (ReferenceEquals(null, other))
-			{
-				return false;
-			}
+        public bool Equals(DsfAbstractFileActivity other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
 
-			if (ReferenceEquals(this, other))
-			{
-				return true;
-			}
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
-			var passWordsCompare = CommonEqualityOps.PassWordsCompare(Password, other.Password);
-			return base.Equals(other)
-				&& string.Equals(Username, other.Username)
-				&& passWordsCompare
-				&& string.Equals(DisplayName, other.DisplayName)
-				&& string.Equals(PrivateKeyFile, other.PrivateKeyFile)
-				&& string.Equals(Result, other.Result)
-				&& IsNotCertVerifiable == other.IsNotCertVerifiable;
-		}
+            var passWordsCompare = CommonEqualityOps.PassWordsCompare(Password, other.Password);
+            return base.Equals(other)
+                && string.Equals(Username, other.Username)
+                && passWordsCompare
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(PrivateKeyFile, other.PrivateKeyFile)
+                && string.Equals(Result, other.Result)
+                && IsNotCertVerifiable == other.IsNotCertVerifiable;
+        }
 
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj))
-			{
-				return false;
-			}
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
 
-			if (ReferenceEquals(this, obj))
-			{
-				return true;
-			}
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
-			if (obj.GetType() != this.GetType())
-			{
-				return false;
-			}
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
 
-			return Equals((DsfAbstractFileActivity)obj);
-		}
+            return Equals((DsfAbstractFileActivity)obj);
+        }
 
-		public override int GetHashCode()
-		{
-			unchecked
-			{
-				var hashCode = base.GetHashCode();
-				hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
-				hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
-				hashCode = (hashCode * 397) ^ (PrivateKeyFile != null ? PrivateKeyFile.GetHashCode() : 0);
-				hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
-				hashCode = (hashCode * 397) ^ IsNotCertVerifiable.GetHashCode();
-				return hashCode;
-			}
-		}
-	}
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PrivateKeyFile != null ? PrivateKeyFile.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsNotCertVerifiable.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            base.ToX6Json(cell);
+
+            // Authentication (from base class DsfAbstractFileActivity)
+            cell.data.TryAdd(Constants.FILE_FOLDER_USERNAME, Username);
+            cell.data.TryAdd(Constants.FILE_FOLDER_PASSWORD, Password);
+            cell.data.TryAdd(Constants.FILE_FOLDER_PRIVATEKEYFILE, PrivateKeyFile);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            base.FromX6Json(cell);
+
+            // Authentication properties
+            if (cell.data.TryGetString(Constants.FILE_FOLDER_USERNAME, out var username))
+                Username = username;
+            if (cell.data.TryGetString(Constants.FILE_FOLDER_PASSWORD, out var password))
+                Password = password;
+            if (cell.data.TryGetString(Constants.FILE_FOLDER_PRIVATEKEYFILE, out var privateKeyFile))
+                PrivateKeyFile = privateKeyFile;
+        }
+    }
 }

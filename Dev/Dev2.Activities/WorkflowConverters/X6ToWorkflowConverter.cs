@@ -546,6 +546,10 @@ namespace Dev2.Activities.WF
                     return CreateCaseConvertActivity(node);
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
+                case var t when t.Contains(Constants.FILEREADWITHBASE64, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileReadWithBase64Activity(node);
+                case var t when t.Contains(Constants.DSFFILEREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -568,7 +572,6 @@ namespace Dev2.Activities.WF
                     return CreateAdvancedRecordsetActivity(node);
                 case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisCacheActivity(node);
-
                 case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisRemoveActivity(node);
                 case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -589,6 +592,12 @@ namespace Dev2.Activities.WF
                     return CreateDsfRabbitMQPublishActivity(node);
                 case var t when t.Contains(Constants.RABBITMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRabbitMQPublishActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREADACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderReadActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderRead(node);
+                case var t when t.Contains(Constants.DSFPATHCREATE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathCreateActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

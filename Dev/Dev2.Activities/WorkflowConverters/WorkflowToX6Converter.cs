@@ -568,6 +568,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFindIndexActivity(findIndexActivity, nodeId);
             }
+            else if (activity is DsfFileRead fileReadActivity)
+            {
+                cell = CreateFileReadActivity(fileReadActivity, nodeId);
+            }
+            else if (activity is FileReadWithBase64 fileReadWithBase64Activity)
+            {
+                cell = CreateFileReadWithBase64Activity(fileReadWithBase64Activity, nodeId);
+            }
             else if (activity is WebGetActivity webGetActivity)
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
@@ -651,6 +659,18 @@ namespace Dev2.Activities.WF
             else if (activity is PublishRabbitMQActivity publishRabbitMQActivity)
             {
                 cell = CreatePublishRabbitMQActivity(publishRabbitMQActivity, nodeId);
+            }
+            else if (activity is DsfFolderReadActivity folderReadActivity)
+            {
+                cell = CreateFolderReadActivity(folderReadActivity, nodeId);
+            }
+            else if (activity is DsfFolderRead folderRead)
+            {
+                cell = CreateFolderRead(folderRead, nodeId);
+            }
+            else if (activity is DsfPathCreate pathCreateActivity)
+            {
+                cell = CreatePathCreateActivity(pathCreateActivity, nodeId);
             }
             else
             {

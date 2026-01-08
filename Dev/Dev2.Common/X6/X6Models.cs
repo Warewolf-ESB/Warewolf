@@ -69,6 +69,8 @@ namespace Dev2.Common.X6
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
+        public const string DSFFILEREAD = "DsfFileRead";
+        public const string FILEREADWITHBASE64 = "FileReadWithBase64";
         public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
         public const string DSFDELETERECORDNULLHANDLERACTIVITY = "DsfDeleteRecordNullHandlerActivity";
         public const string DSFDELETERECORDACTIVITY = "DsfDeleteRecordActivity";
@@ -76,7 +78,9 @@ namespace Dev2.Common.X6
         public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
         public const string DSFRECORDSETNULLHANDLERLENGTHACTIVITY = "DsfRecordsetNullhandlerLengthActivity";
         public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
-
+        public const string DSFFOLDERREADACTIVITY = "DsfFolderReadActivity";
+        public const string DSFFOLDERREAD = "DsfFolderRead";
+        public const string DSFPATHCREATE = "DsfPathCreate";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -101,6 +105,9 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_LENGTH = "Length";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
+        public const string DISPLAYNAME_FILEREAD = "Read File";
+        public const string DISPLAYNAME_FOLDERREAD = "Folder Read";
+        public const string DISPLAYNAME_PATHCREATE = "Create";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -175,7 +182,7 @@ namespace Dev2.Common.X6
         public const string SQLBULKINSERT_IGNOREBLANKROWS = "ignoreblankrows";
         public const string SQLBULKINSERT_INPUTMAPPINGS = "inputmappings";
         public const string SQLBULKINSERT_DATABASE = "database";
-    
+
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
 
@@ -186,7 +193,7 @@ namespace Dev2.Common.X6
 
         public const string REDISCACHE_KEY = "key";
         public const string REDISCACHE_TTL = "ttl";
-        public const string REDISCACHE_RESPONSE = "response";   
+        public const string REDISCACHE_RESPONSE = "response";
         public const string REDISCACHE_SOURCEID = "sourceid";
 
         public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
@@ -209,16 +216,25 @@ namespace Dev2.Common.X6
         public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
         public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
         public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
-        
+
         public const string DELETERECORDS_TREATNULLASZERO = "treatNullAsZero";
         public const string DELETERECORDS_RECORDSETNAME = "recordsetname";
 
         public const string DISPLAYNAME_SORTACTIVITY = "Sort Records";
         public const string SORTACTIVITY_FIELD = "sortfield";
         public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
+
+        public const string FOLDERREAD_INPUTPATH = "inputpath";
+        public const string FOLDERREAD_ISFILESSELECTED = "isfilesselected";
+        public const string FOLDERREAD_ISFOLDERSSELECTED = "isfoldersselected";
+        public const string FOLDERREAD_ISFILESANDFOLDERSSELECTED = "isfilesandfoldersselected";
+        public const string FILE_FOLDER_PRIVATEKEYFILE = "privatekeyfile";
+        public const string FILE_FOLDER_USERNAME = "username";
+        public const string FILE_FOLDER_PASSWORD = "password";
+
+        public const string FILEREAD_INPUTPATH = "inputpath";
+        public const string FILEREAD_ISRESULTBASE64 = "isresultbase64";
         
-
-
         public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
         public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
         public const string COUNTRECORDS_TREATNULLASZERO = "treatnullaszero";
@@ -245,6 +261,9 @@ namespace Dev2.Common.X6
 
 
 
+
+        public const string PATHCREATE_OUTPUTPATH = "outputpath";
+        public const string PATHCREATE_OVERWRITE = "overwrite";
     }
 
     public class X6WorkflowLoadModel
