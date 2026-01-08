@@ -259,7 +259,17 @@ namespace Dev2.Common.X6
         public const string RABBITMQPUBLISH_SETTINGS_AUTODELETE = "isautodelete";
 
 
-
+        public const string RABBITDSFMQCONSUMEACTIVITY = "DsfConsumeRabbitMQActivity";
+        public const string DISPLAYNAME_RABBITMQCONSUME = "RabbitMQ Consume";
+        public const string RABBITMQCONSUME_SOURCEID = "rabbitmqsourceresourceid";
+        public const string RABBITMQCONSUME_QUEUENAME = "queuename";
+        public const string RABBITMQCONSUME_ISOBJECT = "isobject";
+        public const string RABBITMQCONSUME_OBJECTNAME = "objectname";
+        public const string RABBITMQCONSUME_RESPONSE = "response";
+        public const string RABBITMQCONSUME_PREFETCH = "prefetch";
+        public const string RABBITMQCONSUME_TIMEOUT = "timeout";
+        public const string RABBITMQCONSUME_ACKNOWLEDGE = "acknowledge";
+        public const string RABBITMQCONSUME_REQUEUE = "requeue";
 
 
         public const string PATHCREATE_OUTPUTPATH = "outputpath";

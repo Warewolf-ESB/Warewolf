@@ -592,6 +592,8 @@ namespace Dev2.Activities.WF
                     return CreateDsfRabbitMQPublishActivity(node);
                 case var t when t.Contains(Constants.RABBITMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRabbitMQPublishActivity(node);
+                case var t when t.Contains(Constants.RABBITDSFMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfRabbitMQConsumeActivity(node);
                 case var t when t.Contains(Constants.DSFFOLDERREADACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFolderReadActivity(node);
                 case var t when t.Contains(Constants.DSFFOLDERREAD, StringComparison.OrdinalIgnoreCase):

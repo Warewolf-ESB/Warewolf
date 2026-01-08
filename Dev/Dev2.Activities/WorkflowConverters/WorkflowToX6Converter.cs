@@ -1,3 +1,4 @@
+using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
@@ -659,6 +660,10 @@ namespace Dev2.Activities.WF
             else if (activity is PublishRabbitMQActivity publishRabbitMQActivity)
             {
                 cell = CreatePublishRabbitMQActivity(publishRabbitMQActivity, nodeId);
+            }
+            else if (activity is DsfConsumeRabbitMQActivity consumeRabbitMQActivity)
+            {
+                cell = CreateDsfConsumeRabbitMQActivity(consumeRabbitMQActivity, nodeId);
             }
             else if (activity is DsfFolderReadActivity folderReadActivity)
             {

@@ -338,6 +338,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCreateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RabbitMQConsumeActivity.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RabbitMQPublishActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RecordsetLengthActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RedisCacheActivityHelper.cs" />
@@ -369,6 +370,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCreateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_MySqlDatabaseActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RabbitMQConsumeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RabbitMQPublishActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RecordsetLengthActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RedisCacheActivityHelper.cs" />
