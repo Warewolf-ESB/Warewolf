@@ -250,8 +250,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.RABBITMQPUBLISHACTIVITY;
-            cell.data[Constants.TYPE] = Constants.RABBITMQPUBLISHACTIVITY.ToLower();
+            cell.shape = Constants.RABBITDSFMQPUBLISHACTIVITY;
+            cell.data[Constants.TYPE] = Constants.RABBITDSFMQPUBLISHACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_RABBITMQPUBLISH;
             cell.data[Constants.UNIQUEID] = UniqueID;
 
