@@ -11,7 +11,7 @@ namespace Dev2.Activities.WF
             {
                 id = nodeId,
                 position = new Position(_currentX, _currentY),
-                label = rabbitMQConsumeActivity.DisplayName ?? Constants.DISPLAYNAME_DELETERECORDS,
+                label = rabbitMQConsumeActivity.DisplayName ?? Constants.DISPLAYNAME_RABBITMQCONSUME,
                 data = new System.Collections.Generic.Dictionary<string, object>()
             };
 

@@ -569,8 +569,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
             if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
             if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
 
-            if (cell.data.TryGetGuid(Constants.RABBITMQPUBLISH_SOURCEID, out var resourceid)) RabbitMQSourceResourceId = resourceid;
-            if (cell.data.TryGetString(Constants.RABBITMQPUBLISH_QUEUENAME, out var queuename)) QueueName = queuename;
+            if (cell.data.TryGetGuid(Constants.RABBITMQCONSUME_SOURCEID, out var resourceid)) RabbitMQSourceResourceId = resourceid;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_QUEUENAME, out var queuename)) QueueName = queuename;
             if (cell.data.TryGetBool(Constants.RABBITMQCONSUME_ISOBJECT, out var isobject)) IsObject = isobject;
             if (cell.data.TryGetString(Constants.RABBITMQCONSUME_OBJECTNAME, out var objectname)) ObjectName = objectname;
             if (cell.data.TryGetString(Constants.RABBITMQCONSUME_RESPONSE, out var response)) Response = response;
