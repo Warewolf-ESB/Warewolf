@@ -598,6 +598,8 @@ namespace Dev2.Activities.WF
                     return CreateFolderRead(node);
                 case var t when t.Contains(Constants.DSFPATHCREATE, StringComparison.OrdinalIgnoreCase):
                     return CreatePathCreateActivity(node);
+                case var t when t.Contains(Constants.DSFPATHCOPY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathCopyActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
