@@ -677,6 +677,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathCreateActivity(pathCreateActivity, nodeId);
             }
+            else if (activity is DsfPathCopy pathCopyActivity)
+            {
+                cell = CreatePathCopyActivity(pathCopyActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
