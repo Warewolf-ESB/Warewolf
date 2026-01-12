@@ -337,6 +337,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCreateActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_MySqlDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RabbitMQConsumeActivity.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCreateActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_MySqlDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RabbitMQConsumeActivityHelper.cs" />
