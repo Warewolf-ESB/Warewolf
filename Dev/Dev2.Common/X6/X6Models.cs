@@ -82,6 +82,7 @@ namespace Dev2.Common.X6
         public const string DSFFOLDERREAD = "DsfFolderRead";
         public const string DSFPATHCREATE = "DsfPathCreate";
         public const string DSFPATHCOPY = "DsfPathCopy";
+        public const string DSFPATHMOVE = "DsfPathMove";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -110,6 +111,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_FOLDERREAD = "Folder Read";
         public const string DISPLAYNAME_PATHCREATE = "Create";
         public const string DISPLAYNAME_PATHCOPY = "Copy";
+        public const string DISPLAYNAME_PATHMOVE = "Move";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -283,6 +285,13 @@ namespace Dev2.Common.X6
         public const string PATHCOPY_DESTINATIONUSERNAME = "destinationusername";
         public const string PATHCOPY_DESTINATIONPASSWORD = "destinationpassword";
         public const string PATHCOPY_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string PATHMOVE_INPUTPATH = "inputpath";
+        public const string PATHMOVE_OUTPUTPATH = "outputpath";
+        public const string PATHMOVE_OVERWRITE = "overwrite";
+        public const string PATHMOVE_DESTINATIONUSERNAME = "destinationusername";
+        public const string PATHMOVE_DESTINATIONPASSWORD = "destinationpassword";
+        public const string PATHMOVE_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
     }
 
     public class X6WorkflowLoadModel
