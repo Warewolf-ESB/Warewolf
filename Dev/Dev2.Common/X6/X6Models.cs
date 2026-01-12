@@ -83,6 +83,7 @@ namespace Dev2.Common.X6
         public const string DSFPATHCREATE = "DsfPathCreate";
         public const string DSFPATHCOPY = "DsfPathCopy";
         public const string DSFPATHMOVE = "DsfPathMove";
+        public const string DSFPATHRENAME = "DsfPathRename";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -112,6 +113,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_PATHCREATE = "Create";
         public const string DISPLAYNAME_PATHCOPY = "Copy";
         public const string DISPLAYNAME_PATHMOVE = "Move";
+        public const string DISPLAYNAME_PATHRENAME = "Rename";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";

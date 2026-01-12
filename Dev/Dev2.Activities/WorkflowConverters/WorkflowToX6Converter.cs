@@ -685,6 +685,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathMoveActivity(pathMoveActivity, nodeId);
             }
+            else if (activity is DsfPathRename pathRenameActivity)
+            {
+                cell = CreatePathRenameActivity(pathRenameActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
