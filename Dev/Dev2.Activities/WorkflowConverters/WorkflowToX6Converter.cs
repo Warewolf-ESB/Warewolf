@@ -689,6 +689,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathRenameActivity(pathRenameActivity, nodeId);
             }
+            else if (activity is DsfZip zipActivity)
+            {
+                cell = CreateZipActivity(zipActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

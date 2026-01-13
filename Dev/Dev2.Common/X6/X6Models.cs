@@ -294,6 +294,21 @@ namespace Dev2.Common.X6
         public const string PATHMOVE_DESTINATIONUSERNAME = "destinationusername";
         public const string PATHMOVE_DESTINATIONPASSWORD = "destinationpassword";
         public const string PATHMOVE_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string DSFZIP = "DsfZip";
+        public const string DISPLAYNAME_ZIP = "Zip";
+        public const string ZIP_ARCHIVENAME = "archivename";
+        public const string ZIP_COMPRESSIONRATIO = "compressionratio";
+        public const string ZIP_ARCHIVEPASSWORD = "archivepassword";
+        public const string ZIP_INPUTPATH = "inputpath";
+        public const string ZIP_OUTPUTPATH = "outputpath";
+        public const string ZIP_OVERWRITE = "overwrite";
+        public const string ZIP_USERNAME = "username";
+        public const string ZIP_PASSWORD = "password";
+        public const string ZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string ZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string ZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
     }
 
     public class X6WorkflowLoadModel

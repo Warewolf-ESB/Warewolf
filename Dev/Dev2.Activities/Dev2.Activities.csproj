@@ -362,6 +362,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_ZipActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FileReadWithBase64ActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CountRecordsetActivityHelper.cs" />
@@ -436,6 +437,7 @@
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ZipActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
