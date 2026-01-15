@@ -685,6 +685,11 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
             }
+            else if (activity is DsfFileWrite pathFileWriteActivity)
+            {
+                cell = CreateFileWriteActivity(pathFileWriteActivity, nodeId);
+            }
+
             else
             {
                 cell.shape = Constants.RECT;

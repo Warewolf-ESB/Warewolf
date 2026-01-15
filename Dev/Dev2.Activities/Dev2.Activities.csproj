@@ -331,6 +331,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CountRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DeleteRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileWriteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindRecordsActivityHelper.cs" />
@@ -365,6 +366,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CountRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DeleteRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FileWriteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindRecordsActivityHelper.cs" />

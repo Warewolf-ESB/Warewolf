@@ -30,6 +30,8 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -341,6 +343,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ AppendBottom.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFFILEWRITE;
+            cell.data[Constants.TYPE] = Constants.DSFFILEWRITE.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FILEWRITE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // File Write specific properties
+            cell.data.TryAdd(Constants.FILEWRITE_OUTPUTPATH, OutputPath);
+            cell.data.TryAdd(Constants.FILEWRITE_FILECONTENTS, FileContents);
+            cell.data.TryAdd(Constants.FILEWRITE_OVERWRITE, Overwrite);
+            cell.data.TryAdd(Constants.FILEWRITE_APPENDTOP, AppendTop);
+            cell.data.TryAdd(Constants.FILEWRITE_APPENDBOTTOM, AppendBottom);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) 
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) 
+                UniqueID = uniqueId;
+
+            // File Write specific properties
+            if (cell.data.TryGetString(Constants.FILEWRITE_OUTPUTPATH, out var outputPath)) 
+                OutputPath = outputPath;
+            if (cell.data.TryGetString(Constants.FILEWRITE_FILECONTENTS, out var fileContents)) 
+                FileContents = fileContents;
+            if (cell.data.TryGetBool(Constants.FILEWRITE_OVERWRITE, out var overwrite)) 
+                Overwrite = overwrite;
+            if (cell.data.TryGetBool(Constants.FILEWRITE_APPENDTOP, out var appendTop)) 
+                AppendTop = appendTop;
+            if (cell.data.TryGetBool(Constants.FILEWRITE_APPENDBOTTOM, out var appendBottom)) 
+                AppendBottom = appendBottom;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) 
+                Result = result;
+
+            // Defensive initialization
+            OutputPath ??= string.Empty;
+            FileContents ??= string.Empty;
         }
     }
 }
