@@ -608,6 +608,8 @@ namespace Dev2.Activities.WF
                     return CreatePathRenameActivity(node);
                 case var t when t.Contains(Constants.DSFZIP, StringComparison.OrdinalIgnoreCase):
                     return CreateZipActivity(node);
+                case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathDeleteActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

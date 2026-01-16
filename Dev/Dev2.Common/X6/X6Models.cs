@@ -84,6 +84,7 @@ namespace Dev2.Common.X6
         public const string DSFPATHCOPY = "DsfPathCopy";
         public const string DSFPATHMOVE = "DsfPathMove";
         public const string DSFPATHRENAME = "DsfPathRename";
+        public const string DSFPATHDELETE = "DsfPathDelete";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -114,6 +115,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_PATHCOPY = "Copy";
         public const string DISPLAYNAME_PATHMOVE = "Move";
         public const string DISPLAYNAME_PATHRENAME = "Rename";
+        public const string DISPLAYNAME_PATHDELETE = "Delete";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -309,6 +311,8 @@ namespace Dev2.Common.X6
         public const string ZIP_DESTINATIONUSERNAME = "destinationusername";
         public const string ZIP_DESTINATIONPASSWORD = "destinationpassword";
         public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string PATHDELETE_INPUTPATH = "inputpath";
     }
 
     public class X6WorkflowLoadModel

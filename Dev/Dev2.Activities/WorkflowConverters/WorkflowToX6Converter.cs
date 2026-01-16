@@ -693,6 +693,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateZipActivity(zipActivity, nodeId);
             }
+            else if (activity is DsfPathDelete pathDeleteActivity)
+            {
+                cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
