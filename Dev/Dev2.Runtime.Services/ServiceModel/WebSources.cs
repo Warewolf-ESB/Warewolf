@@ -189,6 +189,26 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 ValidateSource(source);
+                
+                // Log detailed information about headers received
+                Dev2Logger.Info($"WebSources.Execute - Method: {method}, RelativeUrl: {relativeUrl}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"WebSources.Execute - Source Address: {source?.Address}", GlobalConstants.WarewolfInfo);
+                
+                if (headers != null && headers.Any())
+                {
+                    Dev2Logger.Info($"WebSources.Execute - Received Headers Count: {headers.Count()}", GlobalConstants.WarewolfInfo);
+                    var headerIndex = 0;
+                    foreach (var header in headers)
+                    {
+                        Dev2Logger.Info($"WebSources.Execute - Received Header[{headerIndex}]: '{header}'", GlobalConstants.WarewolfInfo);
+                        headerIndex++;
+                    }
+                }
+                else
+                {
+                    Dev2Logger.Info("WebSources.Execute - No headers received", GlobalConstants.WarewolfInfo);
+                }
+                
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
@@ -371,11 +391,23 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData, int timeout = 0, IEnumerable<string> headers = null)
         {
+            Dev2Logger.Info($"WebSources.PerformMultipartWebRequest - Address: {address}, Data Length: {bytesData?.Length ?? 0} bytes, Timeout: {timeout}s", GlobalConstants.WarewolfInfo);
+            
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             wr.ContentLength = bytesData.Length;
+            
+            Dev2Logger.Info($"WebSources.PerformMultipartWebRequest - Authorization Header: {(string.IsNullOrEmpty(client.Headers[HttpRequestHeader.Authorization]) ? "[Not Set]" : "[REDACTED]")}", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info($"WebSources.PerformMultipartWebRequest - Content-Type: {client.Headers[HttpRequestHeader.ContentType]}", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info($"WebSources.PerformMultipartWebRequest - Method: POST, Content-Length: {bytesData.Length}", GlobalConstants.WarewolfInfo);
+            
+            if (headers != null && headers.Any())
+            {
+                Dev2Logger.Info($"WebSources.PerformMultipartWebRequest - Adding {headers.Count()} additional header(s)", GlobalConstants.WarewolfInfo);
+            }
+            
             AddHeaders(wr, headers);
             if (timeout > 0)
             {
@@ -446,6 +478,8 @@ namespace Dev2.Runtime.ServiceModel
         {
             if (headers != null)
             {
+                Dev2Logger.Info($"WebSources.AddHeaders - Starting to add {headers.Count()} header(s) to WebClient", GlobalConstants.WarewolfInfo);
+                var processedHeaderCount = 0;
                 foreach (var header in headers)
                 {
                     if (header != ":")
@@ -458,6 +492,8 @@ namespace Dev2.Runtime.ServiceModel
                                 var headerName = parts[0].Trim().ToLowerInvariant();
                                 var headerValue = parts[1].Trim();
                                 
+                                Dev2Logger.Info($"WebSources.AddHeaders - Processing header[{processedHeaderCount}]: Name='{headerName}', Value='{headerValue}'", GlobalConstants.WarewolfInfo);
+                                
                                 // Handle special headers that can't be set directly via Headers.Add()
                                 switch (headerName)
                                 {
@@ -466,32 +502,42 @@ namespace Dev2.Runtime.ServiceModel
                                         // WebClient doesn't have a direct Accept property, but we can add it to Headers
                                         // after checking if it's a valid accept header format
                                         webClient.Headers[HttpRequestHeader.Accept] = headerValue;
+                                        Dev2Logger.Info($"WebSources.AddHeaders - Added special header 'Accept': '{headerValue}'", GlobalConstants.WarewolfInfo);
                                         break;
                                     case "user-agent":
                                         webClient.Headers[HttpRequestHeader.UserAgent] = headerValue;
+                                        Dev2Logger.Info($"WebSources.AddHeaders - Added special header 'User-Agent': '{headerValue}'", GlobalConstants.WarewolfInfo);
                                         break;
                                     case "content-type":
                                         webClient.Headers[HttpRequestHeader.ContentType] = headerValue;
+                                        Dev2Logger.Info($"WebSources.AddHeaders - Added special header 'Content-Type': '{headerValue}'", GlobalConstants.WarewolfInfo);
                                         break;
                                     case "authorization":
                                         webClient.Headers[HttpRequestHeader.Authorization] = headerValue;
+                                        Dev2Logger.Info($"WebSources.AddHeaders - Added special header 'Authorization': '[REDACTED]'", GlobalConstants.WarewolfInfo);
                                         break;
                                     default:
                                         webClient.Headers.Add(header.Trim());
+                                        Dev2Logger.Info($"WebSources.AddHeaders - Added general header: '{headerName}'", GlobalConstants.WarewolfInfo);
                                         break;
                                 }
+                                processedHeaderCount++;
                             }
                             else
                             {
                         webClient.Headers.Add(header.Trim());
+                                Dev2Logger.Info($"WebSources.AddHeaders - Added header without split: '{header.Trim()}'", GlobalConstants.WarewolfInfo);
+                                processedHeaderCount++;
                     }
                 }
                         catch (ArgumentException ex)
                         {
+                            Dev2Logger.Error($"WebSources.AddHeaders - Error adding header '{header.Trim()}': {ex.Message}", GlobalConstants.WarewolfError);
                             throw new ArgumentException($"Invalid character in header: {header.Trim()}. {ex.Message}");
                         }
                     }
             }
+                Dev2Logger.Info($"WebSources.AddHeaders - Successfully added {processedHeaderCount} header(s) to WebClient", GlobalConstants.WarewolfInfo);
         }
         }
 
