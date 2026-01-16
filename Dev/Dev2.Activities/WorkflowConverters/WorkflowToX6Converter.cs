@@ -697,6 +697,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
             }
+            else if (activity is DsfCommentActivity commentActivity)
+            {
+                cell = CreateCommentActivity(commentActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

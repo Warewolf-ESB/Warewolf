@@ -610,6 +610,8 @@ namespace Dev2.Activities.WF
                     return CreateZipActivity(node);
                 case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
                     return CreatePathDeleteActivity(node);
+                case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCommentActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

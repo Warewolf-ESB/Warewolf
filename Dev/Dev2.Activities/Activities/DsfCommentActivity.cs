@@ -16,8 +16,10 @@ using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.WorkflowConverters;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
@@ -159,6 +161,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Value = Text
                 }
             };
+        }
+
+        public void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            cell.shape = Constants.RECT;
+            cell.data[Constants.TYPE] = Constants.DSFCOMMENTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_COMMENT;
+            cell.data[Constants.COMMENT_TEXT] = Text ?? string.Empty;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+        }
+
+        public void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.COMMENT_TEXT, out var text))
+                Text = text;
+
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
         }
     }
 }
