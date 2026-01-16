@@ -681,6 +681,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathCopyActivity(pathCopyActivity, nodeId);
             }
+            else if (activity is DsfUnZip unZipActivity)
+            {
+                cell = CreateUnZipActivity(unZipActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
