@@ -167,13 +167,36 @@ namespace Dev2.Activities
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
                 var timeout = Convert.ToInt32(Settings?.FirstOrDefault(s => s.Name == nameof(Timeout))?.Value);
-
+                
+                // Log POST activity execution details focusing on headers
+                Dev2Logger.Info($"POST Activity Execution Started - ResourceID: {SourceId}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"POST Activity - Source Address: {source?.Address}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"POST Activity - Query String: {query}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"POST Activity - IsManualChecked: {isManualChecked}, IsFormDataChecked: {isFormDataChecked}, IsUrlEncodedChecked: {isUrlEncodedChecked}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"POST Activity - Timeout: {timeout}s", GlobalConstants.WarewolfInfo);
+                
+                if (head != null && head.Any())
+                {
+                    Dev2Logger.Info($"POST Activity - Headers Count: {head.Count()}", GlobalConstants.WarewolfInfo);
+                    var headerIndex = 0;
+                    foreach (var header in head)
+                    {
+                        Dev2Logger.Info($"POST Activity - Header[{headerIndex}]: Name='{header.Name}', Value='{header.Value}'", GlobalConstants.WarewolfInfo);
+                        headerIndex++;
+                    }
+                }
+                else
+                {
+                    Dev2Logger.Info("POST Activity - No headers configured", GlobalConstants.WarewolfInfo);
+                }
+                
                 if (isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
+                    var headersArray = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0];
                     var webPostOptions = new WebPostOptions
                     {
                         Head = head,
-                        Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
+                        Headers = headersArray,
                         Method = WebRequestMethod.Post,
                         Parameters = conditions,
                         Query = query,
@@ -185,7 +208,8 @@ namespace Dev2.Activities
                         IsUrlEncodedChecked = isUrlEncodedChecked,
                         Timeout = Timeout,
                     };
-
+                    
+                    Dev2Logger.Info($"POST Activity - Calling PerformWebPostRequest with {headersArray.Length} header(s): {string.Join("; ", headersArray)}", GlobalConstants.WarewolfInfo);
                     webRequestResult = PerformWebPostRequest(webPostOptions);
                 }
             }
