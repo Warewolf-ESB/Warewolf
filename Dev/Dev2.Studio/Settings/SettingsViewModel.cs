@@ -606,10 +606,11 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SecurityViewModel != null && LogSettingsViewModel != null && PersistenceSettingsViewModel != null && ChatbotSettingsViewModel != null)
-            {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || PersistenceSettingsViewModel.IsDirty || ChatbotSettingsViewModel.IsDirty;
-            }
+            IsDirty = (SecurityViewModel != null && SecurityViewModel.IsDirty) 
+                   || (LogSettingsViewModel != null && LogSettingsViewModel.IsDirty) 
+                   || (PerfmonViewModel != null && PerfmonViewModel.IsDirty) 
+                   || (PersistenceSettingsViewModel != null && PersistenceSettingsViewModel.IsDirty) 
+                   || (ChatbotSettingsViewModel != null && ChatbotSettingsViewModel.IsDirty);
 
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
@@ -732,12 +733,12 @@ namespace Dev2.Settings
                         return false;
                     }
 
-                    if (PersistenceSettingsViewModel.IsDirty)
+                    if (PersistenceSettingsViewModel != null && PersistenceSettingsViewModel.IsDirty)
                     {
                         PersistenceSettingsViewModel.Save(Settings.Persistence);
                     }
 
-                    if (ChatbotSettingsViewModel.IsDirty)
+                    if (ChatbotSettingsViewModel != null && ChatbotSettingsViewModel.IsDirty)
                     {
                         ChatbotSettingsViewModel.Save(Settings.Chatbot);
                         // Notify any open ChatbotViewModel instances to refresh their configuration
@@ -778,7 +779,7 @@ namespace Dev2.Settings
 
         private bool SaveLogSettingsChanges()
         {
-            if (LogSettingsViewModel.IsDirty)
+            if (LogSettingsViewModel != null && LogSettingsViewModel.IsDirty)
             {
                 LogSettingsViewModel.Save(Settings.Logging);
                 if (!LogSettingsViewModel.HasAuditFilePathMoved)
