@@ -26,6 +26,8 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -218,6 +220,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFPATHCREATE;
+            cell.data[Constants.TYPE] = Constants.DSFPATHCREATE.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_PATHCREATE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Path Create specific properties
+            cell.data.TryAdd(Constants.PATHCREATE_OUTPUTPATH, OutputPath);
+            cell.data.TryAdd(Constants.PATHCREATE_OVERWRITE, Overwrite);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) 
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) 
+                UniqueID = uniqueId;
+
+            // Path Create specific properties
+            if (cell.data.TryGetString(Constants.PATHCREATE_OUTPUTPATH, out var outputPath)) 
+                OutputPath = outputPath;
+            if (cell.data.TryGetBool(Constants.PATHCREATE_OVERWRITE, out var overwrite)) 
+                Overwrite = overwrite;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) 
+                Result = result;
+
+            // Defensive initialization
+            OutputPath ??= string.Empty;
         }
     }
 }

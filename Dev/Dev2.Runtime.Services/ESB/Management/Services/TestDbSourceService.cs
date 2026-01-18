@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -73,12 +74,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     sourceToTest = new DbSource
                     {
-                        AuthenticationType = dbSource.AuthenticationType,
-                        Server = dbSource.Server,
-                        Password = dbSource.Password,
-                        ServerType = dbSource.ServerType,
-                        ConnectionTimeout = dbSource.ConnectionTimeout,
-                        UserID = dbSource.UserID
+                        AuthenticationType = src.AuthenticationType,
+                        Server = src.ServerName,
+                        Password = IsNotMasked(src.Password) ? src.Password : dbSource.Password,
+                        ServerType = src.Type,
+                        ConnectionTimeout = src.ConnectionTimeout,
+                        UserID = src.UserName
                     };
                 }
 
@@ -106,6 +107,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        public static bool IsNotMasked(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            // Check if any character is not an asterisk
+            return password.Any(c => c != '*');
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

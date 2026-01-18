@@ -101,16 +101,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Guid.TryParse(serviceId, out Guid resourceId);
 
                 Dev2Logger.Info($"Fetch JSON Resource definition. ResourceId: {resourceId}", GlobalConstants.WarewolfInfo);
+                var resource = ResourceCat.GetResource(theWorkspace.ID, resourceId);
                 var result = ResourceCat.GetResourceContents(theWorkspace.ID, resourceId);
                 var serviceXaml = new StringBuilder(result.ToString());
                 finalresult = (ExecuteMessage)Cleaner.GetRawResourceDefinition(prepairForDeployment, resourceId, result);
 
                 if (finalresult != null && !finalresult.HasError)
                 {
-                    var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
-                    var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
 
-                    finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
+                    if (resource.IsServer || resource.IsSource)
+                    {
+                        var info = new X6RequestInfo() { ResourceName = resource.ResourceName, ActivityXaml = "", WorkflowXML = "" };
+                        finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
+                    }
+                    else
+                    {
+                        var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
+                        var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
+                        finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
+                    }
                 }
             }
             catch (Exception err)

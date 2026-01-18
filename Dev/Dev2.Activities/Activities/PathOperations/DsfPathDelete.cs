@@ -25,6 +25,8 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -160,5 +162,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InputPath);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFPATHDELETE;
+            cell.data[Constants.TYPE] = Constants.DSFPATHDELETE.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_PATHDELETE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Path Delete specific properties
+            cell.data.TryAdd(Constants.PATHDELETE_INPUTPATH, InputPath);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) 
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) 
+                UniqueID = uniqueId;
+
+            // Path Delete specific properties
+            if (cell.data.TryGetString(Constants.PATHDELETE_INPUTPATH, out var inputPath)) 
+                InputPath = inputPath;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) 
+                Result = result;
+
+            // Defensive initialization
+            InputPath ??= string.Empty;
+        }
     }
 }

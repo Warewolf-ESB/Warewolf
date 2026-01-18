@@ -546,6 +546,10 @@ namespace Dev2.Activities.WF
                     return CreateCaseConvertActivity(node);
                 case var t when t.Contains(Constants.DSFINDEXACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindIndexActivity(node);
+                case var t when t.Contains(Constants.FILEREADWITHBASE64, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileReadWithBase64Activity(node);
+                case var t when t.Contains(Constants.DSFFILEREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -568,11 +572,44 @@ namespace Dev2.Activities.WF
                     return CreateAdvancedRecordsetActivity(node);
                 case var t when t.Contains(Constants.REDISCACHEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisCacheActivity(node);
-
                 case var t when t.Contains(Constants.REDISREMOVEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRedisRemoveActivity(node);
                 case var t when t.Contains(Constants.DSFFINDRECORDSMULTIPLECRITERIAACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateFindRecordsMultipleCriteriaActivity(node);
+                case var t when t.Contains(Constants.DSFDELETERECORDNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfDeleteRecordNullHandlerActivity(node);
+                case var t when t.Contains(Constants.DSFDELETERECORDACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfDeleteRecordActivity(node);
+                case var t when t.Contains(Constants.DSFSORTRECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfSortRecordsActivity(node);
+                case var t when t.Contains(Constants.DSFCOUNTRECORDSETNULLHANDLERACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCountRecordsetActivity(node);
+                case var t when t.Contains(Constants.DSFRECORDSETNULLHANDLERLENGTHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRecordsetLengthActivity(node);
+                case var t when t.Contains(Constants.DSFUNIQUERECORDSACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfUniqueRecordsActivity(node);
+                case var t when t.Contains(Constants.RABBITDSFMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfRabbitMQPublishActivity(node);
+                case var t when t.Contains(Constants.RABBITMQPUBLISHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRabbitMQPublishActivity(node);
+                case var t when t.Contains(Constants.RABBITDSFMQCONSUMEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfRabbitMQConsumeActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREADACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderReadActivity(node);
+                case var t when t.Contains(Constants.DSFFOLDERREAD, StringComparison.OrdinalIgnoreCase):
+                    return CreateFolderRead(node);
+                case var t when t.Contains(Constants.DSFPATHCREATE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathCreateActivity(node);
+                case var t when t.Contains(Constants.DSFPATHCOPY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathCopyActivity(node);
+                case var t when t.Contains(Constants.DSFPATHMOVE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathMoveActivity(node);
+                case var t when t.Contains(Constants.DSFPATHRENAME, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathRenameActivity(node);
+                case var t when t.Contains(Constants.DSFZIP, StringComparison.OrdinalIgnoreCase):
+                    return CreateZipActivity(node);
+                case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathDeleteActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

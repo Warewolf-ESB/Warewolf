@@ -204,7 +204,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 { enSourceType.SharepointServerSource, ()=>BuildSourceList<SharepointSource>(resources) },
                 { enSourceType.ExchangeSource, ()=>BuildSourceList<ExchangeSource>(resources) },
                 { enSourceType.RedisSource, ()=>BuildSourceList<RedisSource>(resources) },
-                { enSourceType.ElasticsearchSource, ()=>BuildSourceList<ElasticsearchSource>(resources) }
+                { enSourceType.ElasticsearchSource, ()=>BuildSourceList<ElasticsearchSource>(resources) },
+                { enSourceType.RabbitMQSource, ()=>BuildSourceList<RabbitMQSource>(resources) }
             };
 
             var result = commands.ContainsKey(sourceType) ? commands[sourceType].Invoke() : null;

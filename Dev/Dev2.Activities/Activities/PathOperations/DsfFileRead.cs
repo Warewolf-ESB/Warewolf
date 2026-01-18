@@ -9,12 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -22,6 +21,11 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -195,6 +199,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return (base.GetHashCode() * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
             }
+        }
+
+        /// <summary>
+        /// Serializes the File Read activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate</param>
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFFILEREAD;
+            cell.data[Constants.TYPE] = Constants.DSFFILEREAD.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FILEREAD;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // File operation specific properties
+            cell.data.TryAdd(Constants.FILEREAD_INPUTPATH, InputPath);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        /// <summary>
+        /// Deserializes the File Read activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing File Read data</param>
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // File operation specific properties
+            if (cell.data.TryGetString(Constants.FILEREAD_INPUTPATH, out var inputPath))
+                InputPath = inputPath;
+            if (cell.data.TryGetString(Constants.RESULT, out var result))
+                Result = result;
+
+            // Defensive initialization
+            InputPath ??= string.Empty;
+
         }
     }
 }

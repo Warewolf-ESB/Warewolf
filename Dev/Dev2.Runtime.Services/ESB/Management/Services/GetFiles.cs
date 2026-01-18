@@ -32,123 +32,157 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Info("Get Files", GlobalConstants.WarewolfInfo);
 
             values.TryGetValue("fileListing", out StringBuilder currentFolder);
-            if (currentFolder != null)
+            
+            try
             {
-                var src = serializer.Deserialize(currentFolder.ToString(), typeof(IFileListing)) as IFileListing;
-                try
-                {
-                    msg.HasError = false;
-                    var filesAndFolders = GetFilesAndFolders(src);
-                    msg.Message = serializer.SerializeToBuilder(filesAndFolders);
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                    msg.HasError = true;
-                    msg.SetMessage(ex.Message);
-                }
-            }
-            else
-            {
+                var src = DeserializeFileListing(currentFolder, serializer);
                 msg.HasError = false;
-                msg.Message = serializer.SerializeToBuilder(GetFilesAndFolders(null));
+                var filesAndFolders = GetFilesAndFolders(src);
+                msg.Message = serializer.SerializeToBuilder(filesAndFolders);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                msg.HasError = true;
+                msg.SetMessage(ex.Message);
             }
 
             return serializer.SerializeToBuilder(msg);
         }
 
+        IFileListing DeserializeFileListing(StringBuilder currentFolder, Dev2JsonSerializer serializer)
+        {
+            if (currentFolder == null || currentFolder.Length == 0)
+            {
+                return null;
+            }
+
+            var jsonString = currentFolder.ToString();
+            
+            // Determine concrete type based on JSON properties
+            var targetType = jsonString.Contains("\"Is32Bit\"", StringComparison.OrdinalIgnoreCase) || 
+                           jsonString.Contains("\"ClsId\"", StringComparison.OrdinalIgnoreCase)
+                ? typeof(DllListing)
+                : typeof(FileListing);
+
+            return serializer.Deserialize(jsonString, targetType) as IFileListing;
+        }
+
         public List<IFileListing> GetFilesAndFolders(IFileListing src)
         {
-            var completeList = new List<IFileListing>();
-      
-
             if (src == null)
             {
-                var drives = DriveInfo.GetDrives();
-                try
-                {
-                    var listing = drives.Select(BuildFileListing);
-            
-                    return new List<IFileListing>(listing);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
-                }
+                return GetDriveListings();
+            }
 
-            }
-            else
+            if (src.IsDirectory)
             {
-                if(src.IsDirectory)
-                {
-                    completeList = GetChildren(new DirectoryInfo(src.FullName));
-                }
+                return GetChildren(new DirectoryInfo(src.FullName));
             }
-            return completeList;
+
+            return new List<IFileListing>();
+        }
+
+        List<IFileListing> GetDriveListings()
+        {
+            try
+            {
+                var drives = DriveInfo.GetDrives();
+                var listing = drives.Select(BuildFileListing).Where(l => l != null);
+                return new List<IFileListing>(listing);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+                return new List<IFileListing>();
+            }
         }
 
         public IFileListing BuildFileListing(DriveInfo info)
         {
-
             try
             {
-                var directory = info.RootDirectory;
-                var dllListing = BuildFileListing(directory);
+                var dllListing = BuildFileListing(info.RootDirectory);
                 dllListing.IsDirectory = true;
                 return dllListing;
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
+                return null;
             }
-            return null;
         }
 
         public FileListing BuildFileListing(DirectoryInfo directory)
         {
             var dllListing = BuildFileListing(directory as FileSystemInfo);
+            
             try
             {
                 dllListing.Children = GetChildren(directory);
-
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
+            
             return dllListing;
         }
 
         public List<IFileListing> GetChildren(DirectoryInfo directory)
         {
-            var directories = directory.EnumerateDirectories();
             var childList = new List<IFileListing>();
-            foreach (var directoryInfo in directories)
+
+            if (!directory.Exists) return childList;
+
+            try
             {
-                if (directoryInfo.Attributes != (FileAttributes.Hidden | FileAttributes.System | FileAttributes.Directory))
-                {
-                    var directoryItem = BuildFileListing((FileSystemInfo)directoryInfo);
-                    directoryItem.IsDirectory = true;
-                    childList.Add(directoryItem);
-                }
+                var directories = directory.EnumerateDirectories()
+                    .Where(d => d.Attributes != (FileAttributes.Hidden | FileAttributes.System | FileAttributes.Directory))
+                    .Select(d =>
+                    {
+                        var item = BuildFileListing((FileSystemInfo)d);
+                        item.IsDirectory = true;
+                        return item;
+                    });
+
+                childList.AddRange(directories);
+
+                var files = directory.EnumerateFiles()
+                    .Select(f =>
+                    {
+                        var item = BuildFileListing(f);
+                        item.IsDirectory = false;
+                        return item;
+                    });
+
+                childList.AddRange(files);
             }
-            var files = directory.EnumerateFiles();
-            foreach (var fileInfo in files)
+            catch (UnauthorizedAccessException uae)
             {
-                var fileItem = BuildFileListing(fileInfo);
-                fileItem.IsDirectory = false;
-                childList.Add(fileItem);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, uae, GlobalConstants.WarewolfError);
             }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
+            }
+
             return childList;
         }
 
         public FileListing BuildFileListing(FileSystemInfo fileInfo)
         {
-            var dllListing = new FileListing { Name = fileInfo.Name, FullName = fileInfo.FullName };
-            return dllListing;
+            return new FileListing 
+            { 
+                Name = fileInfo.Name, 
+                FullName = fileInfo.FullName 
+            };
         }
 
-        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        public override DynamicService CreateServiceEntry() => 
+            EsbManagementServiceEntry.CreateESBManagementServiceEntry(
+                HandlesType(), 
+                "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public override string HandlesType() => "GetFiles";
     }
