@@ -1,3 +1,5 @@
+using Dev2.Activities.RabbitMQ.Consume;
+using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
@@ -567,6 +569,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFindIndexActivity(findIndexActivity, nodeId);
             }
+            else if (activity is DsfFileRead fileReadActivity)
+            {
+                cell = CreateFileReadActivity(fileReadActivity, nodeId);
+            }
+            else if (activity is FileReadWithBase64 fileReadWithBase64Activity)
+            {
+                cell = CreateFileReadWithBase64Activity(fileReadWithBase64Activity, nodeId);
+            }
             else if (activity is WebGetActivity webGetActivity)
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
@@ -639,7 +649,55 @@ namespace Dev2.Activities.WF
 			{
 				cell = CreateRecordsetLengthActivity(recordsetLengthActivity, nodeId);
 			}
-			else
+            else if (activity is DsfUniqueActivity uniqueActivity)
+            {
+                cell = CreateDsfUniqueRecordsActivity(uniqueActivity, nodeId);
+            }
+            else if (activity is DsfPublishRabbitMQActivity publishDsfRabbitMQActivity)
+            {
+                cell = CreateDsfPublishRabbitMQActivity(publishDsfRabbitMQActivity, nodeId);
+            }
+            else if (activity is PublishRabbitMQActivity publishRabbitMQActivity)
+            {
+                cell = CreatePublishRabbitMQActivity(publishRabbitMQActivity, nodeId);
+            }
+            else if (activity is DsfConsumeRabbitMQActivity consumeRabbitMQActivity)
+            {
+                cell = CreateDsfConsumeRabbitMQActivity(consumeRabbitMQActivity, nodeId);
+            }
+            else if (activity is DsfFolderReadActivity folderReadActivity)
+            {
+                cell = CreateFolderReadActivity(folderReadActivity, nodeId);
+            }
+            else if (activity is DsfFolderRead folderRead)
+            {
+                cell = CreateFolderRead(folderRead, nodeId);
+            }
+            else if (activity is DsfPathCreate pathCreateActivity)
+            {
+                cell = CreatePathCreateActivity(pathCreateActivity, nodeId);
+            }
+            else if (activity is DsfPathCopy pathCopyActivity)
+            {
+                cell = CreatePathCopyActivity(pathCopyActivity, nodeId);
+            }
+            else if (activity is DsfPathMove pathMoveActivity)
+            {
+                cell = CreatePathMoveActivity(pathMoveActivity, nodeId);
+            }
+            else if (activity is DsfPathRename pathRenameActivity)
+            {
+                cell = CreatePathRenameActivity(pathRenameActivity, nodeId);
+            }
+            else if (activity is DsfZip zipActivity)
+            {
+                cell = CreateZipActivity(zipActivity, nodeId);
+            }
+            else if (activity is DsfPathDelete pathDeleteActivity)
+            {
+                cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
+            }
+            else
             {
                 cell.shape = Constants.RECT;
             }

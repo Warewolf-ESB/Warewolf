@@ -19,10 +19,12 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -352,6 +354,37 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFUNIQUERECORDSACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFUNIQUERECORDSACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_UNIQUEACTIVITY;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.UNIQUEACTIVITY_INFIELDS, InFields);
+            cell.data.TryAdd(Constants.UNIQUEACTIVITY_RESULTFIELDS, ResultFields);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.UNIQUEACTIVITY_INFIELDS, out var inFields)) InFields = inFields;
+            if (cell.data.TryGetString(Constants.UNIQUEACTIVITY_RESULTFIELDS, out var resultFields)) ResultFields = resultFields;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+
         }
     }
 }

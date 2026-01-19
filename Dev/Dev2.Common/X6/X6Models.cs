@@ -69,13 +69,22 @@ namespace Dev2.Common.X6
         public const string DSFREPLACEACTIVITY = "DsfReplaceActivity";
         public const string DSFCASECONVERTACTIVITY = "DsfCaseConvertActivity";
         public const string DSFINDEXACTIVITY = "DsfIndexActivity";
+        public const string DSFFILEREAD = "DsfFileRead";
+        public const string FILEREADWITHBASE64 = "FileReadWithBase64";
         public const string DSFFINDRECORDSMULTIPLECRITERIAACTIVITY = "DsfFindRecordsMultipleCriteriaActivity";
         public const string DSFDELETERECORDNULLHANDLERACTIVITY = "DsfDeleteRecordNullHandlerActivity";
         public const string DSFDELETERECORDACTIVITY = "DsfDeleteRecordActivity";
-        
         public const string DSFSORTRECORDSACTIVITY = "DsfSortRecordsActivity";
         public const string DSFCOUNTRECORDSETNULLHANDLERACTIVITY = "DsfCountRecordsetNullHandlerActivity";
         public const string DSFRECORDSETNULLHANDLERLENGTHACTIVITY = "DsfRecordsetNullhandlerLengthActivity";
+        public const string DSFUNIQUERECORDSACTIVITY = "DsfUniqueActivity";
+        public const string DSFFOLDERREADACTIVITY = "DsfFolderReadActivity";
+        public const string DSFFOLDERREAD = "DsfFolderRead";
+        public const string DSFPATHCREATE = "DsfPathCreate";
+        public const string DSFPATHCOPY = "DsfPathCopy";
+        public const string DSFPATHMOVE = "DsfPathMove";
+        public const string DSFPATHRENAME = "DsfPathRename";
+        public const string DSFPATHDELETE = "DsfPathDelete";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -100,6 +109,13 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_LENGTH = "Length";
         public const string DISPLAYNAME_WEBPOST = "Post Web Method";
         public const string DISPLAYNAME_WEBDELETE = "DELETE Web Method";
+        public const string DISPLAYNAME_FILEREAD = "Read File";
+        public const string DISPLAYNAME_FOLDERREAD = "Folder Read";
+        public const string DISPLAYNAME_PATHCREATE = "Create";
+        public const string DISPLAYNAME_PATHCOPY = "Copy";
+        public const string DISPLAYNAME_PATHMOVE = "Move";
+        public const string DISPLAYNAME_PATHRENAME = "Rename";
+        public const string DISPLAYNAME_PATHDELETE = "Delete";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -174,7 +190,7 @@ namespace Dev2.Common.X6
         public const string SQLBULKINSERT_IGNOREBLANKROWS = "ignoreblankrows";
         public const string SQLBULKINSERT_INPUTMAPPINGS = "inputmappings";
         public const string SQLBULKINSERT_DATABASE = "database";
-    
+
         public const string ORACLESQLDATABASEACTIVITY = "DsfOracleDatabaseActivity";
         public const string DISPLAYNAME_ORACLESQLDATABASE = "Oracle Database";
 
@@ -185,7 +201,7 @@ namespace Dev2.Common.X6
 
         public const string REDISCACHE_KEY = "key";
         public const string REDISCACHE_TTL = "ttl";
-        public const string REDISCACHE_RESPONSE = "response";   
+        public const string REDISCACHE_RESPONSE = "response";
         public const string REDISCACHE_SOURCEID = "sourceid";
 
         public const string REDISREMOVEACTIVITY = "RedisRemoveActivity";
@@ -208,23 +224,95 @@ namespace Dev2.Common.X6
         public const string ADVANCEDRECORDSET_SQLQUERY = "sqlquery";
         public const string ADVANCEDRECORDSET_RECORDSETNAME = "recordsetname";
         public const string ADVANCEDRECORDSET_DECLAREVARIABLES = "declarevariables";
-        
+
         public const string DELETERECORDS_TREATNULLASZERO = "treatNullAsZero";
         public const string DELETERECORDS_RECORDSETNAME = "recordsetname";
 
         public const string DISPLAYNAME_SORTACTIVITY = "Sort Records";
         public const string SORTACTIVITY_FIELD = "sortfield";
         public const string SORTACTIVITY_SELECTEDSORT = "selectedsort";
+
+        public const string FOLDERREAD_INPUTPATH = "inputpath";
+        public const string FOLDERREAD_ISFILESSELECTED = "isfilesselected";
+        public const string FOLDERREAD_ISFOLDERSSELECTED = "isfoldersselected";
+        public const string FOLDERREAD_ISFILESANDFOLDERSSELECTED = "isfilesandfoldersselected";
+        public const string FILE_FOLDER_PRIVATEKEYFILE = "privatekeyfile";
+        public const string FILE_FOLDER_USERNAME = "username";
+        public const string FILE_FOLDER_PASSWORD = "password";
+
+        public const string FILEREAD_INPUTPATH = "inputpath";
+        public const string FILEREAD_ISRESULTBASE64 = "isresultbase64";
         
-
-
         public const string COUNTRECORDS_RECORDSETNAME = "recordsetname";
         public const string COUNTRECORDS_COUNTNUMBER = "countnumber";
         public const string COUNTRECORDS_TREATNULLASZERO = "treatnullaszero";
 
+        public const string DISPLAYNAME_UNIQUEACTIVITY = "Unique Records";
+        public const string UNIQUEACTIVITY_INFIELDS = "infields";
+        public const string UNIQUEACTIVITY_RESULTFIELDS = "resultfields";
+
         public const string LENGTH_RECORDSETNAME = "recordsetname";
         public const string LENGTH_RECORDSLENGTH = "recordslength";
         public const string LENGTH_TREATNULLASZERO = "treatnullaszero";
+
+        public const string RABBITDSFMQPUBLISHACTIVITY = "DsfPublishRabbitMQActivity";
+        public const string RABBITMQPUBLISHACTIVITY = "PublishRabbitMQActivity";
+        public const string DISPLAYNAME_RABBITMQPUBLISH = "RabbitMQ Publish";
+        public const string RABBITMQPUBLISH_SOURCEID = "rabbitmqsourceresourceid";
+        public const string RABBITMQPUBLISH_QUEUENAME = "queuename";
+        public const string RABBITMQPUBLISH_MESSAGE = "message";
+        public const string RABBITMQPUBLISH_BASICPROPERTIES = "basicproperties";
+        public const string RABBITMQPUBLISH_SETTINGS_DURABLE = "isdurable";
+        public const string RABBITMQPUBLISH_SETTINGS_EXCLUSIVE = "isexclusive";
+        public const string RABBITMQPUBLISH_SETTINGS_AUTODELETE = "isautodelete";
+
+
+        public const string RABBITDSFMQCONSUMEACTIVITY = "DsfConsumeRabbitMQActivity";
+        public const string DISPLAYNAME_RABBITMQCONSUME = "RabbitMQ Consume";
+        public const string RABBITMQCONSUME_SOURCEID = "rabbitmqsourceresourceid";
+        public const string RABBITMQCONSUME_QUEUENAME = "queuename";
+        public const string RABBITMQCONSUME_ISOBJECT = "isobject";
+        public const string RABBITMQCONSUME_OBJECTNAME = "objectname";
+        public const string RABBITMQCONSUME_RESPONSE = "response";
+        public const string RABBITMQCONSUME_PREFETCH = "prefetch";
+        public const string RABBITMQCONSUME_TIMEOUT = "timeout";
+        public const string RABBITMQCONSUME_ACKNOWLEDGE = "acknowledge";
+        public const string RABBITMQCONSUME_REQUEUE = "requeue";
+
+
+        public const string PATHCREATE_OUTPUTPATH = "outputpath";
+        public const string PATHCREATE_OVERWRITE = "overwrite";
+
+        public const string PATHCOPY_INPUTPATH = "inputpath";
+        public const string PATHCOPY_OUTPUTPATH = "outputpath";
+        public const string PATHCOPY_OVERWRITE = "overwrite";
+        public const string PATHCOPY_DESTINATIONUSERNAME = "destinationusername";
+        public const string PATHCOPY_DESTINATIONPASSWORD = "destinationpassword";
+        public const string PATHCOPY_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string PATHMOVE_INPUTPATH = "inputpath";
+        public const string PATHMOVE_OUTPUTPATH = "outputpath";
+        public const string PATHMOVE_OVERWRITE = "overwrite";
+        public const string PATHMOVE_DESTINATIONUSERNAME = "destinationusername";
+        public const string PATHMOVE_DESTINATIONPASSWORD = "destinationpassword";
+        public const string PATHMOVE_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string DSFZIP = "DsfZip";
+        public const string DISPLAYNAME_ZIP = "Zip";
+        public const string ZIP_ARCHIVENAME = "archivename";
+        public const string ZIP_COMPRESSIONRATIO = "compressionratio";
+        public const string ZIP_ARCHIVEPASSWORD = "archivepassword";
+        public const string ZIP_INPUTPATH = "inputpath";
+        public const string ZIP_OUTPUTPATH = "outputpath";
+        public const string ZIP_OVERWRITE = "overwrite";
+        public const string ZIP_USERNAME = "username";
+        public const string ZIP_PASSWORD = "password";
+        public const string ZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string ZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string ZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string PATHDELETE_INPUTPATH = "inputpath";
     }
 
     public class X6WorkflowLoadModel
