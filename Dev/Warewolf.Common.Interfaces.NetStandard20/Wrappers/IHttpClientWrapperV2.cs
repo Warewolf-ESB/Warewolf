@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Warewolf.Common.Interfaces.NetStandard20
 {
     /// <summary>
-    /// V2 HttpClient wrapper interface designed for POST activity needs
+    /// V2 HttpClient wrapper interface for all HTTP methods
     /// Replaces deprecated WebClient with modern HttpClient
     /// </summary>
     public interface IHttpClientWrapperV2 : IDisposable
@@ -30,6 +30,13 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         /// Gets whether credentials are configured
         /// </summary>
         bool HasCredentials { get; }
+
+        /// <summary>
+        /// Performs an HTTP GET request
+        /// </summary>
+        /// <param name="url">The complete URL including query string</param>
+        /// <returns>Base64 encoded response</returns>
+        Task<string> GetAsync(string url);
 
         /// <summary>
         /// Performs an HTTP POST with string content
@@ -64,6 +71,21 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         Task<string> PostUrlEncodedAsync(string url, FormUrlEncodedContent formData);
 
         /// <summary>
+        /// Performs an HTTP PUT with string content
+        /// </summary>
+        /// <param name="url">The complete URL including query string</param>
+        /// <param name="data">The string data to put</param>
+        /// <returns>Base64 encoded response</returns>
+        Task<string> PutAsync(string url, string data);
+
+        /// <summary>
+        /// Performs an HTTP DELETE request
+        /// </summary>
+        /// <param name="url">The complete URL including query string</param>
+        /// <returns>Base64 encoded response</returns>
+        Task<string> DeleteAsync(string url);
+
+        /// <summary>
         /// Sets a header on the HttpClient
         /// </summary>
         /// <param name="name">Header name</param>
@@ -77,3 +99,4 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         void SetTimeout(TimeSpan timeout);
     }
 }
+

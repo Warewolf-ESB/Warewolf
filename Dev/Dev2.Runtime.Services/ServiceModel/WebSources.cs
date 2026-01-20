@@ -572,6 +572,90 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
+        /// <summary>
+        /// HttpClient-based execution for GET, PUT, DELETE methods
+        /// </summary>
+        public static string ExecuteWithHttpClientV2(WebSource source, WebRequestMethod method, string relativeUri, string data, string[] headers, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            
+            try
+            {
+                Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Using HttpClient for {method} execution", GlobalConstants.WarewolfInfo);
+                
+                var wrapper = string.IsNullOrEmpty(source?.UserName)
+                    ? new HttpClientWrapperV2()
+                    : new HttpClientWrapperV2(source.UserName, source.Password);
+                
+                try
+                {
+                    // Add headers
+                    if (headers != null)
+                    {
+                        Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Adding {headers.Length} header(s)", GlobalConstants.WarewolfInfo);
+                        
+                        foreach (var header in headers)
+                        {
+                            if (string.IsNullOrEmpty(header) || header == ":")
+                            {
+                                continue;
+                            }
+                            
+                            var parts = header.Split(new[] { ':' }, 2);
+                            if (parts.Length == 2)
+                            {
+                                var headerName = parts[0].Trim();
+                                var headerValue = parts[1].Trim();
+                                
+                                if (!string.IsNullOrEmpty(headerName))
+                                {
+                                    wrapper.SetHeader(headerName, headerValue);
+                                }
+                            }
+                        }
+                    }
+                    
+                    var address = GetAddress(source, relativeUri);
+                    Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Executing {method} to: {address}", GlobalConstants.WarewolfInfo);
+                    
+                    string result;
+                    switch (method)
+                    {
+                        case WebRequestMethod.Get:
+                            result = wrapper.GetAsync(address).Result;
+                            break;
+                        case WebRequestMethod.Put:
+                            result = wrapper.PutAsync(address, data ?? string.Empty).Result;
+                            break;
+                        case WebRequestMethod.Delete:
+                            result = wrapper.DeleteAsync(address).Result;
+                            break;
+                        default:
+                            throw new NotSupportedException($"HTTP method {method} is not supported by ExecuteWithHttpClientV2");
+                    }
+                    
+                    return result;
+                }
+                finally
+                {
+                    wrapper?.Dispose();
+                }
+            }
+            catch (AggregateException aggEx)
+            {
+                var ex = aggEx.InnerException ?? aggEx;
+                Dev2Logger.Error($"WebSources.ExecuteWithHttpClientV2 - {method} request failed", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WebSources.ExecuteWithHttpClientV2 - Unexpected error during {method}", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+        }
+
         private static IHttpClientWrapperV2 CreateHttpClientWrapper(IWebPostOptions options)
         {
             Dev2Logger.Info($"WebSources - Creating HttpClient for source: {options.Source?.Address}", GlobalConstants.WarewolfInfo);
