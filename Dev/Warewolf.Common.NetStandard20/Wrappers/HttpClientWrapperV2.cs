@@ -145,39 +145,46 @@ namespace Warewolf.Common.NetStandard20
                 _httpClient.DefaultRequestHeaders.Remove(headerName);
             }
 
-            // Special handling for certain headers
-            switch (headerName.ToLowerInvariant())
+            // Handle restricted headers that HttpClient doesn't allow in DefaultRequestHeaders
+            // These must be set using TryAddWithoutValidation or will throw exceptions
+            var lowerHeaderName = headerName.ToLowerInvariant();
+            
+            // List of restricted headers in HttpClient:
+            // Host, Content-Length, Content-Type, Transfer-Encoding, Connection, Expect, Date, If-Modified-Since, Range, Referer
+            var restrictedHeaders = new[]
             {
-                case "content-type":
-                    // Content-Type will be set on the content, not the client
-                    // Store it temporarily in default headers to be used when creating content
-                    _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
-                    break;
+                "host", "content-length", "content-type", "transfer-encoding", 
+                "connection", "expect", "date", "if-modified-since", "range", "referer"
+            };
 
-                case "accept":
-                    _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", headerValue);
-                    break;
+            if (restrictedHeaders.Contains(lowerHeaderName))
+            {
+                // For restricted headers, always use TryAddWithoutValidation
+                var success = _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
+                if (!success)
+                {
+                    Dev2Logger.Warn($"HttpClientWrapperV2.SetHeader - Failed to add restricted header: {headerName}", GlobalConstants.WarewolfWarn);
+                }
+                return;
+            }
 
-                case "user-agent":
-                    _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", headerValue);
-                    break;
-
-                case "authorization":
-                    _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", headerValue);
-                    break;
-
-                default:
-                    // Try to add as a regular header
-                    try
-                    {
-                        _httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
-                    }
-                    catch (FormatException)
-                    {
-                        // If standard Add fails, try without validation
-                        _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
-                    }
-                    break;
+            // For non-restricted headers, try normal Add first, then fall back to TryAddWithoutValidation
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
+            }
+            catch (FormatException)
+            {
+                // If standard Add fails due to format validation, try without validation
+                var success = _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
+                if (!success)
+                {
+                    Dev2Logger.Warn($"HttpClientWrapperV2.SetHeader - Failed to add header: {headerName}", GlobalConstants.WarewolfWarn);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"HttpClientWrapperV2.SetHeader - Error adding header: {headerName}", ex, GlobalConstants.WarewolfError);
             }
         }
 
