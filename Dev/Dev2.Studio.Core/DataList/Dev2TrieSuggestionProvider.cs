@@ -262,14 +262,14 @@ namespace Dev2.Studio.Core.DataList
             string filter;
             if (tokenise)
             {
-                if (caretPosition > originalText.Length)
+                if (caretPosition > originalText?.Length)
                 {
                     caretPosition = originalText.Length;
                 }
 
-                var textTrimmedRight = originalText.Substring(0, caretPosition);
-                var start = textTrimmedRight.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
-                filter = textTrimmedRight.Substring(start);
+                var textTrimmedRight = originalText?.Substring(0, caretPosition);
+                var start = textTrimmedRight?.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
+                filter = textTrimmedRight.Substring(start??0);
             }
             else
             {
