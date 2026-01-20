@@ -191,7 +191,12 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
+                // Evaluate headers and filter out empty ones (both name and value are empty)
+                head = Headers
+                    .Select(a => new NameValue(
+                        ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), 
+                        ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))))
+                    .Where(h => !string.IsNullOrEmpty(h.Name) || !string.IsNullOrEmpty(h.Value));
                 if (IsFormDataChecked)
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
@@ -242,12 +247,20 @@ namespace Dev2.Activities
 
         protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
-            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, throwError: true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+            var headersArray = head?
+                .Where(h => !string.IsNullOrEmpty(h.Name) || !string.IsNullOrEmpty(h.Value))
+                .Select(h => h.Name + ":" + h.Value)
+                .ToArray() ?? new string[0];
+            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, throwError: true, out _errorsTo, headersArray);
         }
 
         protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
         {
-            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
+            var headersArray = head?
+                .Where(h => !string.IsNullOrEmpty(h.Name) || !string.IsNullOrEmpty(h.Value))
+                .Select(h => h.Name + ":" + h.Value)
+                .ToArray() ?? new string[0];
+            return WebSources.Execute(source, method, headersArray, query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
         }
 
         public bool Equals(WebPostActivity other)
