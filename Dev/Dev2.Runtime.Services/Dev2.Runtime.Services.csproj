@@ -338,10 +338,14 @@
     <Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqliteDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\HttpClientExecutionStrategy.cs" />
     <Compile Include="ServiceModel\HubFactory.cs" />
+    <Compile Include="ServiceModel\IWebExecutionStrategy.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\RedisSources.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelper.cs" />
+    <Compile Include="ServiceModel\WebClientExecutionStrategy.cs" />
+    <Compile Include="ServiceModel\WebExecutionStrategyFactory.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\ResourceCatalog.cs" />
