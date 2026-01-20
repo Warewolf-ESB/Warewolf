@@ -316,12 +316,12 @@ namespace Dev2.Studio.Core.DataList
                     break;
             }
 
-            if (filter.EndsWith("[["))
+            if (filter != null && filter.EndsWith("[["))
             {
                 return trie.Retrieve("[[");
             }
 
-            if (!filter.StartsWith("[[") && filter.Contains("[["))
+            if (filter != null && !filter.StartsWith("[[") && filter.Contains("[["))
             {
                 return trie.Retrieve(filter.Substring(filter.LastIndexOf("[[", StringComparison.Ordinal)));
             }
@@ -330,7 +330,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            return trie.Retrieve(filter);
+            return trie.Retrieve(filter??"");
         }
 
         static IEnumerable<string> PermuteCapitalizations(string key)

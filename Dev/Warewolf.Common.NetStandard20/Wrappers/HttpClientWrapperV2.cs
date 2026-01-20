@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -145,37 +146,10 @@ namespace Warewolf.Common.NetStandard20
                 _httpClient.DefaultRequestHeaders.Remove(headerName);
             }
 
-            // Handle restricted headers that HttpClient doesn't allow in DefaultRequestHeaders
-            // These must be set using TryAddWithoutValidation or will throw exceptions
-            var lowerHeaderName = headerName.ToLowerInvariant();
-            
-            // List of restricted headers in HttpClient:
-            // Host, Content-Length, Content-Type, Transfer-Encoding, Connection, Expect, Date, If-Modified-Since, Range, Referer
-            var restrictedHeaders = new[]
-            {
-                "host", "content-length", "content-type", "transfer-encoding", 
-                "connection", "expect", "date", "if-modified-since", "range", "referer"
-            };
-
-            if (restrictedHeaders.Contains(lowerHeaderName))
-            {
-                // For restricted headers, always use TryAddWithoutValidation
-                var success = _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
-                if (!success)
-                {
-                    Dev2Logger.Warn($"HttpClientWrapperV2.SetHeader - Failed to add restricted header: {headerName}", GlobalConstants.WarewolfWarn);
-                }
-                return;
-            }
-
-            // For non-restricted headers, try normal Add first, then fall back to TryAddWithoutValidation
+            // Always use TryAddWithoutValidation to avoid exceptions with restricted headers
+            // This handles ALL headers including: Host, User-Agent, Content-Type, etc.
             try
             {
-                _httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
-            }
-            catch (FormatException)
-            {
-                // If standard Add fails due to format validation, try without validation
                 var success = _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
                 if (!success)
                 {
@@ -185,6 +159,7 @@ namespace Warewolf.Common.NetStandard20
             catch (Exception ex)
             {
                 Dev2Logger.Error($"HttpClientWrapperV2.SetHeader - Error adding header: {headerName}", ex, GlobalConstants.WarewolfError);
+                throw;
             }
         }
 
