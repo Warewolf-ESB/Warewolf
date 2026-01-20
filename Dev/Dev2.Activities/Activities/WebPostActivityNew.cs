@@ -220,7 +220,13 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebPostRequest(IWebPostOptions webPostOptions)
         {
-            return WebSources.Execute(webPostOptions, out _errorsTo);
+            // Use strategy pattern to allow switching between WebClient and HttpClient
+            var strategy = WebExecutionStrategyFactory.CreateStrategy();
+            var strategyName = WebExecutionStrategyFactory.GetCurrentStrategyName();
+            
+            Dev2Logger.Info($"POST Activity - Using execution strategy: {strategyName}", GlobalConstants.WarewolfInfo);
+            
+            return strategy.Execute(webPostOptions, out _errorsTo);
         }
 
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
