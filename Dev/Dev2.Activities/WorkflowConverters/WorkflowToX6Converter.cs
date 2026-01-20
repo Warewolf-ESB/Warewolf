@@ -681,6 +681,22 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathCopyActivity(pathCopyActivity, nodeId);
             }
+            else if (activity is DsfPathMove pathMoveActivity)
+            {
+                cell = CreatePathMoveActivity(pathMoveActivity, nodeId);
+            }
+            else if (activity is DsfPathRename pathRenameActivity)
+            {
+                cell = CreatePathRenameActivity(pathRenameActivity, nodeId);
+            }
+            else if (activity is DsfZip zipActivity)
+            {
+                cell = CreateZipActivity(zipActivity, nodeId);
+            }
+            else if (activity is DsfPathDelete pathDeleteActivity)
+            {
+                cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
+            }
             else if (activity is DsfUnZip unZipActivity)
             {
                 cell = CreateUnZipActivity(unZipActivity, nodeId);
