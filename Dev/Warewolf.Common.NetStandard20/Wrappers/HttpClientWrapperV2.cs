@@ -29,6 +29,7 @@ namespace Warewolf.Common.NetStandard20
         private readonly HttpClientHandler _handler;
         private bool _disposed;
         private HttpStatusCode _lastStatusCode;
+        private string _contentType; // Store Content-Type separately since it's a content header, not a request header
 
         public HttpClientWrapperV2()
         {
@@ -103,13 +104,11 @@ namespace Warewolf.Common.NetStandard20
 
             var content = new StringContent(data ?? string.Empty, Encoding.UTF8);
 
-            // Check if Content-Type header was set via SetHeader
-            if (_httpClient.DefaultRequestHeaders.Contains("Content-Type"))
+            // Apply Content-Type if it was set via SetHeader
+            if (!string.IsNullOrEmpty(_contentType))
             {
-                var contentType = string.Join(",", _httpClient.DefaultRequestHeaders.GetValues("Content-Type"));
-                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
-                _httpClient.DefaultRequestHeaders.Remove("Content-Type");
-                Dev2Logger.Info($"HttpClientWrapperV2.PostAsync - Content-Type set to: {contentType}", GlobalConstants.WarewolfInfo);
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(_contentType);
+                Dev2Logger.Info($"HttpClientWrapperV2.PostAsync - Content-Type set to: {_contentType}", GlobalConstants.WarewolfInfo);
             }
 
             return await PostAsync(url, content);
@@ -169,13 +168,11 @@ namespace Warewolf.Common.NetStandard20
 
                 var content = new StringContent(data ?? string.Empty, Encoding.UTF8);
 
-                // Check if Content-Type header was set via SetHeader
-                if (_httpClient.DefaultRequestHeaders.Contains("Content-Type"))
+                // Apply Content-Type if it was set via SetHeader
+                if (!string.IsNullOrEmpty(_contentType))
                 {
-                    var contentType = string.Join(",", _httpClient.DefaultRequestHeaders.GetValues("Content-Type"));
-                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
-                    _httpClient.DefaultRequestHeaders.Remove("Content-Type");
-                    Dev2Logger.Info($"HttpClientWrapperV2.PutAsync - Content-Type set to: {contentType}", GlobalConstants.WarewolfInfo);
+                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(_contentType);
+                    Dev2Logger.Info($"HttpClientWrapperV2.PutAsync - Content-Type set to: {_contentType}", GlobalConstants.WarewolfInfo);
                 }
 
                 var response = await _httpClient.PutAsync(url, content);
@@ -250,6 +247,14 @@ namespace Warewolf.Common.NetStandard20
 
             Dev2Logger.Info($"HttpClientWrapperV2.SetHeader - Setting header: {headerName} = {(headerName.Equals("Authorization", StringComparison.OrdinalIgnoreCase) ? "[REDACTED]" : headerValue)}", GlobalConstants.WarewolfInfo);
 
+            // Special handling for Content-Type since it's a content header, not a request header
+            if (headerName.Equals("Content-Type", StringComparison.OrdinalIgnoreCase))
+            {
+                _contentType = headerValue;
+                Dev2Logger.Info($"HttpClientWrapperV2.SetHeader - Stored Content-Type for later use: {headerValue}", GlobalConstants.WarewolfInfo);
+                return;
+            }
+
             // Remove existing header if present
             if (_httpClient.DefaultRequestHeaders.Contains(headerName))
             {
@@ -257,7 +262,7 @@ namespace Warewolf.Common.NetStandard20
             }
 
             // Always use TryAddWithoutValidation to avoid exceptions with restricted headers
-            // This handles ALL headers including: Host, User-Agent, Content-Type, etc.
+            // This handles ALL request headers including: Host, User-Agent, etc.
             try
             {
                 var success = _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(headerName, headerValue);
