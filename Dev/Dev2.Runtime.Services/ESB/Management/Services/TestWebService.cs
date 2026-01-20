@@ -85,6 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 };
 
+                Dev2Logger.Info("TestWebService - Using HttpClient for web service test", GlobalConstants.WarewolfInfo);
                 WebServices.TestWebService(res);
                 msg.HasError = false;
                 msg.Message = serializer.SerializeToBuilder(res);

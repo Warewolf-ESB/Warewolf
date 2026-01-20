@@ -220,17 +220,53 @@ namespace Dev2.Runtime.ServiceModel
                 }).ToList());
 
             }
-            var webExecuteStringArgs = new WebExecuteStringArgs
-            {
-                IsManualChecked = service.IsManualChecked,
-                IsFormDataChecked = service.IsFormDataChecked,
-                IsUrlEncodedChecked = service.IsUrlEncodedChecked,
-                FormDataParameters = service.FormDataParameters,
-                WebRequestFactory = null
-            };
-            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), webExecuteStringArgs);
 
-            service.RequestResponse = Scrubber.Scrub(webResponse);
+            // Use HttpClient for POST requests instead of deprecated WebClient
+            if (service.RequestMethod == WebRequestMethod.Post)
+            {
+                Dev2Logger.Info("WebServices.ExecuteRequest - Using HttpClient for POST request", GlobalConstants.WarewolfInfo);
+                
+                var settings = new List<INameValue>
+                {
+                    new NameValue("IsManualChecked", service.IsManualChecked.ToString()),
+                    new NameValue("IsFormDataChecked", service.IsFormDataChecked.ToString()),
+                    new NameValue("IsUrlEncodedChecked", service.IsUrlEncodedChecked.ToString()),
+                    new NameValue("Timeout", "0")
+                };
+
+                var webPostOptions = new WebPostOptions
+                {
+                    Source = service.Source as WebSource,
+                    Method = WebRequestMethod.Post,
+                    Query = requestUrl,
+                    PostData = requestBody,
+                    Head = evaluatedHeaders,
+                    Headers = headers.ToArray(),
+                    Parameters = formDataParameters,
+                    Settings = settings,
+                    IsManualChecked = service.IsManualChecked,
+                    IsFormDataChecked = service.IsFormDataChecked,
+                    IsUrlEncodedChecked = service.IsUrlEncodedChecked,
+                    Timeout = 0
+                };
+
+                var webResponse = WebSources.ExecuteWithHttpClient(webPostOptions, out errors);
+                service.RequestResponse = Scrubber.Scrub(webResponse);
+            }
+            else
+            {
+                // Use old WebClient for non-POST requests (GET, PUT, DELETE)
+                var webExecuteStringArgs = new WebExecuteStringArgs
+                {
+                    IsManualChecked = service.IsManualChecked,
+                    IsFormDataChecked = service.IsFormDataChecked,
+                    IsUrlEncodedChecked = service.IsUrlEncodedChecked,
+                    FormDataParameters = service.FormDataParameters,
+                    WebRequestFactory = null
+                };
+                var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), webExecuteStringArgs);
+                service.RequestResponse = Scrubber.Scrub(webResponse);
+            }
 
             if (!String.IsNullOrEmpty(service.JsonPath))
             {
