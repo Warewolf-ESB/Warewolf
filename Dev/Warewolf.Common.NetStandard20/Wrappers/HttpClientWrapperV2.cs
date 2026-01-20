@@ -64,6 +64,39 @@ namespace Warewolf.Common.NetStandard20
 
         public bool HasCredentials { get; private set; }
 
+        public async Task<string> GetAsync(string url)
+        {
+            try
+            {
+                Dev2Logger.Info($"HttpClientWrapperV2.GetAsync - URL: {url}", GlobalConstants.WarewolfInfo);
+
+                var response = await _httpClient.GetAsync(url);
+                _lastStatusCode = response.StatusCode;
+
+                Dev2Logger.Info($"HttpClientWrapperV2.GetAsync - Response Status: {response.StatusCode}", GlobalConstants.WarewolfInfo);
+
+                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var base64Response = Convert.ToBase64String(responseBytes);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Dev2Logger.Warn($"HttpClientWrapperV2.GetAsync - Non-success status code: {response.StatusCode}", GlobalConstants.WarewolfWarn);
+                }
+
+                return base64Response;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Dev2Logger.Error("HttpClientWrapperV2.GetAsync - Request timed out", ex, GlobalConstants.WarewolfError);
+                throw new TimeoutException($"HTTP GET request to {url} timed out", ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                Dev2Logger.Error($"HttpClientWrapperV2.GetAsync - HTTP request failed for URL: {url}", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
+        }
+
         public async Task<string> PostAsync(string url, string data)
         {
             Dev2Logger.Info($"HttpClientWrapperV2.PostAsync - URL: {url}, Data Length: {data?.Length ?? 0}", GlobalConstants.WarewolfInfo);
@@ -126,6 +159,83 @@ namespace Warewolf.Common.NetStandard20
         {
             Dev2Logger.Info($"HttpClientWrapperV2.PostUrlEncodedAsync - URL: {url}", GlobalConstants.WarewolfInfo);
             return await PostAsync(url, formData);
+        }
+
+        public async Task<string> PutAsync(string url, string data)
+        {
+            try
+            {
+                Dev2Logger.Info($"HttpClientWrapperV2.PutAsync - URL: {url}, Data Length: {data?.Length ?? 0}", GlobalConstants.WarewolfInfo);
+
+                var content = new StringContent(data ?? string.Empty, Encoding.UTF8);
+
+                // Check if Content-Type header was set via SetHeader
+                if (_httpClient.DefaultRequestHeaders.Contains("Content-Type"))
+                {
+                    var contentType = string.Join(",", _httpClient.DefaultRequestHeaders.GetValues("Content-Type"));
+                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+                    _httpClient.DefaultRequestHeaders.Remove("Content-Type");
+                    Dev2Logger.Info($"HttpClientWrapperV2.PutAsync - Content-Type set to: {contentType}", GlobalConstants.WarewolfInfo);
+                }
+
+                var response = await _httpClient.PutAsync(url, content);
+                _lastStatusCode = response.StatusCode;
+
+                Dev2Logger.Info($"HttpClientWrapperV2.PutAsync - Response Status: {response.StatusCode}", GlobalConstants.WarewolfInfo);
+
+                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var base64Response = Convert.ToBase64String(responseBytes);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Dev2Logger.Warn($"HttpClientWrapperV2.PutAsync - Non-success status code: {response.StatusCode}", GlobalConstants.WarewolfWarn);
+                }
+
+                return base64Response;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Dev2Logger.Error("HttpClientWrapperV2.PutAsync - Request timed out", ex, GlobalConstants.WarewolfError);
+                throw new TimeoutException($"HTTP PUT request to {url} timed out", ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                Dev2Logger.Error($"HttpClientWrapperV2.PutAsync - HTTP request failed for URL: {url}", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
+        }
+
+        public async Task<string> DeleteAsync(string url)
+        {
+            try
+            {
+                Dev2Logger.Info($"HttpClientWrapperV2.DeleteAsync - URL: {url}", GlobalConstants.WarewolfInfo);
+
+                var response = await _httpClient.DeleteAsync(url);
+                _lastStatusCode = response.StatusCode;
+
+                Dev2Logger.Info($"HttpClientWrapperV2.DeleteAsync - Response Status: {response.StatusCode}", GlobalConstants.WarewolfInfo);
+
+                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                var base64Response = Convert.ToBase64String(responseBytes);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Dev2Logger.Warn($"HttpClientWrapperV2.DeleteAsync - Non-success status code: {response.StatusCode}", GlobalConstants.WarewolfWarn);
+                }
+
+                return base64Response;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Dev2Logger.Error("HttpClientWrapperV2.DeleteAsync - Request timed out", ex, GlobalConstants.WarewolfError);
+                throw new TimeoutException($"HTTP DELETE request to {url} timed out", ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                Dev2Logger.Error($"HttpClientWrapperV2.DeleteAsync - HTTP request failed for URL: {url}", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
         }
 
         public void SetHeader(string name, string value)
