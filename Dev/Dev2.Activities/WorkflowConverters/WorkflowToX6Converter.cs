@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 
 namespace Dev2.Activities.WF
 {
@@ -685,7 +686,11 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
             }
-            else if (activity is DsfFileWrite pathFileWriteActivity)
+            else if (activity is DsfFileWrite dsfFileWriteActivity)
+            {
+                cell = CreateFileWriteActivity(dsfFileWriteActivity, nodeId);
+            }
+            else if (activity is FileWriteActivity pathFileWriteActivity)
             {
                 cell = CreateFileWriteActivity(pathFileWriteActivity, nodeId);
             }

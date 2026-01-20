@@ -351,12 +351,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.DSFFILEWRITE;
-            cell.data[Constants.TYPE] = Constants.DSFFILEWRITE.ToLower();
+            cell.shape = Constants.FILEWRITEWITHBASE64;
+            cell.data[Constants.TYPE] = Constants.FILEWRITEWITHBASE64.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_FILEWRITE;
             cell.data[Constants.UNIQUEID] = UniqueID;
 
             // File Write specific properties
+            cell.data.TryAdd(Constants.FILEWRITEWITHBASE64, FileContentsAsBase64);
             cell.data.TryAdd(Constants.FILEWRITE_OUTPUTPATH, OutputPath);
             cell.data.TryAdd(Constants.FILEWRITE_FILECONTENTS, FileContents);
             cell.data.TryAdd(Constants.FILEWRITE_OVERWRITE, Overwrite);
@@ -377,6 +378,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 UniqueID = uniqueId;
 
             // File Write specific properties
+            if (cell.data.TryGetBool(Constants.FILEWRITEWITHBASE64, out var fileContentsAsBase64)) 
+                FileContentsAsBase64 = fileContentsAsBase64;    
             if (cell.data.TryGetString(Constants.FILEWRITE_OUTPUTPATH, out var outputPath)) 
                 OutputPath = outputPath;
             if (cell.data.TryGetString(Constants.FILEWRITE_FILECONTENTS, out var fileContents)) 

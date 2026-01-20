@@ -604,8 +604,9 @@ namespace Dev2.Activities.WF
                     return CreatePathCopyActivity(node);
                 case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
                     return CreatePathDeleteActivity(node);
-                case var t when t.Contains(Constants.DSFFILEWRITE, StringComparison.OrdinalIgnoreCase):
+                case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
                     return CreateFileWriteActivity(node);
+                 
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

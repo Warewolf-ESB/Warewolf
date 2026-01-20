@@ -1,5 +1,6 @@
 using Dev2.Common.X6;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 
 namespace Dev2.Activities.WF
 {
@@ -8,14 +9,14 @@ namespace Dev2.Activities.WF
     /// </summary>
     public partial class X6ToWorkflowConverter
     {
-        private static DsfFileWrite CreateFileWriteActivity(Cell node)
+        private static FileWriteActivity CreateFileWriteActivity(Cell node)
         {
             var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
 
             if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
-            var activity = new DsfFileWrite();
+            var activity = new FileWriteActivity();
             activity.FromX6Json(node);
             return activity;
         }
