@@ -220,6 +220,11 @@ namespace Dev2.Runtime.ServiceModel
                 }).ToList());
 
             }
+            else if (service.FormDataParameters != null)
+            {
+                // Pass form data parameters unevaluated when not in FormData/UrlEncoded mode
+                formDataParameters.AddRange(service.FormDataParameters);
+            }
 
             // Use HttpClient for all HTTP methods instead of deprecated WebClient
             Dev2Logger.Info($"WebServices.ExecuteRequest - Using HttpClient for {service.RequestMethod} request", GlobalConstants.WarewolfInfo);
@@ -232,39 +237,23 @@ namespace Dev2.Runtime.ServiceModel
                 new NameValue("Timeout", "0")
             };
 
-            if (service.RequestMethod == WebRequestMethod.Post)
+            var webExecuteStringArgs = new WebExecuteStringArgs
             {
-                var webPostOptions = new WebPostOptions
-                {
-                    Source = service.Source as WebSource,
-                    Method = WebRequestMethod.Post,
-                    Query = requestUrl,
-                    PostData = requestBody,
-                    Head = evaluatedHeaders,
-                    Headers = headers.ToArray(),
-                    Parameters = formDataParameters,
-                    Settings = settings,
-                    IsManualChecked = service.IsManualChecked,
-                    IsFormDataChecked = service.IsFormDataChecked,
-                    IsUrlEncodedChecked = service.IsUrlEncodedChecked,
-                    Timeout = 0
-                };
+                FormDataParameters = formDataParameters
+            };
 
-                var webResponse = WebSources.ExecuteWithHttpClient(webPostOptions, out errors);
-                service.RequestResponse = Scrubber.Scrub(webResponse);
-            }
-            else
-            {
-                // Use HttpClient for GET, PUT, DELETE
-                var webResponse = WebSources.ExecuteWithHttpClientV2(
-                    service.Source as WebSource, 
-                    service.RequestMethod, 
-                    requestUrl, 
-                    requestBody, 
-                    headers.ToArray(), 
-                    out errors);
-                service.RequestResponse = Scrubber.Scrub(webResponse);
-            }
+            // Use the injected webExecute delegate if provided (for testability), otherwise use default implementation
+            var webResponse = webExecute(
+                service.Source as WebSource,
+                service.RequestMethod,
+                requestUrl,
+                requestBody,
+                throwError,
+                out errors,
+                headers.ToArray(),
+                webExecuteStringArgs);
+
+            service.RequestResponse = Scrubber.Scrub(webResponse);
 
             if (!String.IsNullOrEmpty(service.JsonPath))
             {
