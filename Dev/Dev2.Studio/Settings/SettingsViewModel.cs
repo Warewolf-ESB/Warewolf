@@ -732,12 +732,12 @@ namespace Dev2.Settings
                         return false;
                     }
 
-                    if (PersistenceSettingsViewModel.IsDirty)
+                    if (PersistenceSettingsViewModel != null && PersistenceSettingsViewModel.IsDirty)
                     {
                         PersistenceSettingsViewModel.Save(Settings.Persistence);
                     }
 
-                    if (ChatbotSettingsViewModel.IsDirty)
+                    if (ChatbotSettingsViewModel != null && ChatbotSettingsViewModel.IsDirty)
                     {
                         ChatbotSettingsViewModel.Save(Settings.Chatbot);
                         // Notify any open ChatbotViewModel instances to refresh their configuration
