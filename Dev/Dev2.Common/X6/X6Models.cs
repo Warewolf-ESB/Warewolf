@@ -327,6 +327,10 @@ namespace Dev2.Common.X6
         public const string UNZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
         public const string UNZIP_OVERWRITE = "overwrite";
         public const string UNZIP_ARCHIVEPASSWORD = "archivepassword";
+
+        public const string DSFCOMMENTACTIVITY = "DsfCommentActivity";
+        public const string DISPLAYNAME_COMMENT = "Comment";
+        public const string COMMENT_TEXT = "text";
     }
 
     public class X6WorkflowLoadModel
