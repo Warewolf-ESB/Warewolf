@@ -84,6 +84,7 @@ namespace Dev2.Common.X6
         public const string DSFPATHCOPY = "DsfPathCopy";
         public const string DSFPATHDELETE = "DsfPathDelete";
         public const string FILEWRITEWITHBASE64 = "FileWriteWithBase64";
+        public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -114,6 +115,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_PATHCOPY = "Copy";
         public const string DISPLAYNAME_PATHDELETE = "Delete";
         public const string DISPLAYNAME_FILEWRITE = "Write File";
+        public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -296,6 +298,10 @@ namespace Dev2.Common.X6
         public const string FILEWRITE_APPENDTOP = "appendtop";
         public const string FILEWRITE_APPENDBOTTOM = "appendbottom";
         public const string FILEWRITE_ASBASE64 = "filecontentsasbase64";
+
+        public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
+        public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
+        public const string COMMANDLINE_COMMANDRESULT = "commandresult";
     }
 
     public class X6WorkflowLoadModel

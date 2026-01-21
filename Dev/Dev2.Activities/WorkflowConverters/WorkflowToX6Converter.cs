@@ -694,6 +694,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateFileWriteActivity(pathFileWriteActivity, nodeId);
             }
+            else if (activity is DsfExecuteCommandLineActivity dsfExecuteCommandLineActivity)
+            {
+                cell = CreateCommandLineActivity(dsfExecuteCommandLineActivity, nodeId);
+            }
 
             else
             {

@@ -606,7 +606,9 @@ namespace Dev2.Activities.WF
                     return CreatePathDeleteActivity(node);
                 case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
                     return CreateFileWriteActivity(node);
-                 
+                case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCommandLineActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
