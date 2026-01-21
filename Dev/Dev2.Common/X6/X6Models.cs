@@ -317,6 +317,13 @@ namespace Dev2.Common.X6
         public const string DSFCOMMENTACTIVITY = "DsfCommentActivity";
         public const string DISPLAYNAME_COMMENT = "Comment";
         public const string COMMENT_TEXT = "text";
+
+        public const string DSFJAVASCRIPTACTIVITY = "DsfJavascriptActivity";
+        public const string DISPLAYNAME_JAVASCRIPT = "JavaScript";
+        public const string JAVASCRIPT_SCRIPT = "script";
+        public const string JAVASCRIPT_ESCAPESCRIPT = "escapescript";
+        public const string JAVASCRIPT_INCLUDEFILE = "includefile";
+        public const string JAVASCRIPT_RESULT = "result";
     }
 
     public class X6WorkflowLoadModel

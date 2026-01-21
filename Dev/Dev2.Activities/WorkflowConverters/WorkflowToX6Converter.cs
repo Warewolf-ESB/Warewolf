@@ -805,6 +805,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCommentActivity(commentActivity, nodeId);
             }
+            else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
+            {
+                cell = CreateJavascriptActivity(javascriptActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

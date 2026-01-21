@@ -612,6 +612,8 @@ namespace Dev2.Activities.WF
                     return CreatePathDeleteActivity(node);
                 case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommentActivity(node);
+                case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateJavascriptActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }
