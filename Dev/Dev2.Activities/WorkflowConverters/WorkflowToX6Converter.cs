@@ -819,6 +819,10 @@ namespace Dev2.Activities.WF
                 cell = CreateFileWriteActivity(pathFileWriteActivity, nodeId);
             }
 
+            else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
+            {
+                cell = CreateJavascriptActivity(javascriptActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

@@ -340,6 +340,13 @@ namespace Dev2.Common.X6
         public const string FILEWRITE_APPENDTOP = "appendtop";
         public const string FILEWRITE_APPENDBOTTOM = "appendbottom";
         public const string FILEWRITE_ASBASE64 = "filecontentsasbase64";
+
+        public const string DSFJAVASCRIPTACTIVITY = "DsfJavascriptActivity";
+        public const string DISPLAYNAME_JAVASCRIPT = "JavaScript";
+        public const string JAVASCRIPT_SCRIPT = "script";
+        public const string JAVASCRIPT_ESCAPESCRIPT = "escapescript";
+        public const string JAVASCRIPT_INCLUDEFILE = "includefile";
+        public const string JAVASCRIPT_RESULT = "result";
     }
 
     public class X6WorkflowLoadModel

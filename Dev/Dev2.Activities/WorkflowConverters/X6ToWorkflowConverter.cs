@@ -617,6 +617,8 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
                     return CreateFileWriteActivity(node);
                  
+                case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateJavascriptActivity(node);
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

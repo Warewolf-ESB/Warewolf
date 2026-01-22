@@ -337,6 +337,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_JavascriptActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCreateActivityHelper.cs" />
@@ -377,6 +378,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_JavascriptActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCreateActivityHelper.cs" />
