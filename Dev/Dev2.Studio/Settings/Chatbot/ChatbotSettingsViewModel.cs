@@ -63,10 +63,10 @@ namespace Dev2.Settings.Chatbot
 
             var settingsData = CurrentEnvironment.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(CurrentEnvironment);
             
-            // Load checkbox settings
-            _includeSystemLog = settingsData.IncludeSystemLog;
-            _includeResourcesXaml = settingsData.IncludeResourcesXaml;
-            _includeResourcesJson = settingsData.IncludeResourcesJson;
+            // Load checkbox settings using properties to trigger property change notifications
+            IncludeSystemLog = settingsData.IncludeSystemLog;
+            IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
+            IncludeResourcesJson = settingsData.IncludeResourcesJson;
             
             if (settingsData.ChatbotSource != null)
             {
