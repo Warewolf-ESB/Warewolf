@@ -119,7 +119,12 @@ namespace Dev2.Tests.Runtime.ESB
             {
                 Headers.Add(header);
             }
-        }
+
+			public void SetUserAgentHeader(string userAgent)
+			{
+				throw new NotImplementedException();
+			}
+		}
 
         [TestMethod]
         [Owner("Rory McGuire")]
