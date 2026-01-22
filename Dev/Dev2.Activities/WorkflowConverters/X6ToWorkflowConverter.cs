@@ -602,8 +602,18 @@ namespace Dev2.Activities.WF
                     return CreatePathCreateActivity(node);
                 case var t when t.Contains(Constants.DSFPATHCOPY, StringComparison.OrdinalIgnoreCase):
                     return CreatePathCopyActivity(node);
+                case var t when t.Contains(Constants.DSFPATHMOVE, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathMoveActivity(node);
+                case var t when t.Contains(Constants.DSFPATHRENAME, StringComparison.OrdinalIgnoreCase):
+                    return CreatePathRenameActivity(node);
+                case var t when t.Contains(Constants.DSFZIP, StringComparison.OrdinalIgnoreCase):
+                    return CreateZipActivity(node);
                 case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
                     return CreatePathDeleteActivity(node);
+                case var t when t.Contains(Constants.UNZIPACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateUnZipActivity(node);
+                case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCommentActivity(node);
                 case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
                     return CreateFileWriteActivity(node);
                  
