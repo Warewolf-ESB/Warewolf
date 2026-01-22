@@ -52,16 +52,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
 
-        public string LoadingStatusText
-        {
-            get => _loadingStatusText;
-            set
-            {
-                _loadingStatusText = value;
-                OnPropertyChanged(nameof(LoadingStatusText));
-            }
-        }
-
         public bool IncludeSystemLog
         {
             get => _includeSystemLog;
