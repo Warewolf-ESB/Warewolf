@@ -509,7 +509,7 @@ namespace Dev2.Common
             foreach (var prop in typeof(ChatbotSettingsData).GetProperties())
             {
                 var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
+                var value = thisProp?.GetValue(this);
                 prop.SetValue(result, value);
             }
 
