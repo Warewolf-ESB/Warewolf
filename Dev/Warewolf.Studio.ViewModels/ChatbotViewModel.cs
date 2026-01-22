@@ -59,7 +59,37 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeResourcesJson = true;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 
-		public ChatbotViewModel()
+        public bool IncludeSystemLog
+        {
+            get => _includeSystemLog;
+            set
+            {
+                _includeSystemLog = value;
+                OnPropertyChanged(nameof(IncludeSystemLog));
+            }
+        }
+
+        public bool IncludeResourcesXaml
+        {
+            get => _includeResourcesXaml;
+            set
+            {
+                _includeResourcesXaml = value;
+                OnPropertyChanged(nameof(IncludeResourcesXaml));
+            }
+        }
+
+        public bool IncludeResourcesJson
+        {
+            get => _includeResourcesJson;
+            set
+            {
+                _includeResourcesJson = value;
+                OnPropertyChanged(nameof(IncludeResourcesJson));
+            }
+        }
+
+        public ChatbotViewModel()
         {
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<string>();
@@ -195,10 +225,10 @@ namespace Warewolf.Studio.ViewModels
 
                 var settingsData = _server.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(_server);
 
-                // Load checkbox settings
-                _includeSystemLog = settingsData.IncludeSystemLog;
-                _includeResourcesXaml = settingsData.IncludeResourcesXaml;
-                _includeResourcesJson = settingsData.IncludeResourcesJson;
+                // Load checkbox settings using properties to trigger property change notifications
+                IncludeSystemLog = settingsData.IncludeSystemLog;
+                IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
+                IncludeResourcesJson = settingsData.IncludeResourcesJson;
 
                 if (settingsData?.ChatbotSource?.Value == null || settingsData.ChatbotSource.Value == Guid.Empty)
                 {
