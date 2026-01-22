@@ -156,7 +156,7 @@ namespace Dev2.Activities
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
 
-            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
+            // User-Agent header is only sent if explicitly provided by the user
             var address = source.Address;
             if (query != null)
             {

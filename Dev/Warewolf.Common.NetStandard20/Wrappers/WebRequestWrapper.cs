@@ -95,5 +95,28 @@ namespace Warewolf.Common.NetStandard20
 			if (_request is HttpWebRequest httpReq)
 				httpReq.Accept = acceptHeader;
 		}
+
+		public void SetUserAgentHeader(string userAgent)
+		{
+			if (_request is HttpWebRequest httpReq)
+				httpReq.UserAgent = userAgent;
+		}
+
+		public void ClearUserAgentHeader()
+		{
+			if (_request is HttpWebRequest httpReq)
+			{
+				// .NET Framework doesn't allow empty UserAgent, but we can set it to a space
+				// This prevents the default User-Agent from being sent
+				httpReq.UserAgent = " ";
+			}
+		}
+
+		public string GetUserAgent()
+		{
+			if (_request is HttpWebRequest httpReq)
+				return httpReq.UserAgent;
+			return null;
+		}
 	}
 }

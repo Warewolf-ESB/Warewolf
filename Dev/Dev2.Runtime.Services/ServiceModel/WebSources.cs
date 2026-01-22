@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -158,6 +158,13 @@ namespace Dev2.Runtime.ServiceModel
         
         public static string Execute(IWebPostOptions options, out ErrorResultTO errors)
         {
+            // Use HttpClient for all POST requests (matches modern HTTP clients like Postman)
+            if (options.Method == WebRequestMethod.Post)
+            {
+                Dev2Logger.Info("WebSources.Execute - Using HttpClient for POST request", GlobalConstants.WarewolfInfo);
+                return ExecuteWithHttpClient(options, out errors);
+            }
+
             return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
                 data: options.PostData, throwError: true, errors: out errors, formDataParameters: options.Parameters, settings: options.Settings, timeout: options.Timeout);
         }
@@ -178,6 +185,34 @@ namespace Dev2.Runtime.ServiceModel
             string data, bool throwError, out ErrorResultTO errors,
             IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null, int timeout = 0)
         {
+            errors = new ErrorResultTO();
+
+            var isManualChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+            var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+            var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+
+            // Use HttpClient for all POST requests (matches modern HTTP clients like Postman)
+            if (method == WebRequestMethod.Post)
+            {
+                Dev2Logger.Info("WebSources.Execute - Using HttpClient for POST request", GlobalConstants.WarewolfInfo);
+
+                var options = new WebPostOptions
+                {
+                    Source = source as WebSource,
+                    Method = method,
+                    Headers = headers,
+                    Query = relativeUrl,
+                    PostData = data,
+                    IsManualChecked = isManualChecked,
+                    IsFormDataChecked = isFormDataChecked,
+                    IsUrlEncodedChecked = isUrlEncodedChecked,
+                    Parameters = formDataParameters,
+                    Settings = settings,
+                    Timeout = timeout
+                };
+                return ExecuteWithHttpClient(options, out errors);
+            }
+
             IWebClientWrapper client = null;
 
             if (webRequestFactory == null)
@@ -185,17 +220,12 @@ namespace Dev2.Runtime.ServiceModel
                 webRequestFactory = new WebRequestFactory();
             }
 
-            errors = new ErrorResultTO();
             try
             {
                 ValidateSource(source);
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-                
-                var isManualChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
-                var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
-                var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
                 
                 if (isFormDataChecked || isUrlEncodedChecked)
                 {
@@ -214,7 +244,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (method == WebRequestMethod.Post)
                 {
-                    var bytesData = Encoding.ASCII.GetBytes(data);
+                    var bytesData = Encoding.UTF8.GetBytes(data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, headers);
                 }
 
@@ -376,37 +406,67 @@ namespace Dev2.Runtime.ServiceModel
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             wr.ContentLength = bytesData.Length;
-            AddHeaders(wr, headers);
+
+            // Explicitly clear User-Agent to ensure it's not sent
+            if (wr is WebRequestWrapper webRequestWrapper)
+                webRequestWrapper.ClearUserAgentHeader();
+
+            // User-Agent header is only sent if explicitly provided in headers parameter
+            // Do not copy from client.Headers as it may have been set by legacy code
+
+			AddHeaders(wr, headers);
+
             if (timeout > 0)
             {
                 wr.Timeout = timeout * 1000;
             }
 
-            using (var requestStream = wr.GetRequestStream())
+            try
             {
-                requestStream.Write(bytesData, 0, bytesData.Length);
-                requestStream.Close();
-            }
-
-            using (var wresp = wr.GetResponse() as HttpWebResponse)
-            {
-                if (wresp != null && IsSuccessCode(wresp.StatusCode))
+                using (var requestStream = wr.GetRequestStream())
                 {
-                    using (var responseStream = wresp.GetResponseStream())
+                    requestStream.Write(bytesData, 0, bytesData.Length);
+                    requestStream.Close();
+                }
+
+                using (var wresp = wr.GetResponse() as HttpWebResponse)
+                {
+                    if (wresp != null && IsSuccessCode(wresp.StatusCode))
                     {
-                        if (responseStream == null)
+                        using (var responseStream = wresp.GetResponseStream())
                         {
-                            return null;
+                            if (responseStream == null)
+                            {
+                                return null;
+                            }
+                            using (var responseReader = new StreamReader(responseStream))
+                            {
+                                var responseBody = responseReader.ReadToEnd();
+                                return responseBody;
+                            }
                         }
-                        using (var responseReader = new StreamReader(responseStream))
+                    }
+
+                    var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
+                    throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
+                }
+            }
+            catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
+            {
+                // Handle error responses (4xx, 5xx) - these are still valid responses
+                using (var responseStream = httpResponse.GetResponseStream())
+                {
+                    if (responseStream != null)
+                    {
+                        using (var reader = new StreamReader(responseStream))
                         {
-                            return responseReader.ReadToEnd();
+                            var responseBody = reader.ReadToEnd();
+                            return responseBody;
                         }
                     }
                 }
 
-                var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
-                throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
+                throw;
             }
         }
 
@@ -444,55 +504,53 @@ namespace Dev2.Runtime.ServiceModel
 
         private static void AddHeaders(IWebClientWrapper webClient, IEnumerable<string> headers)
         {
-            if (headers != null)
+            if (headers == null) return;
+            
+            foreach (var header in headers)
             {
-                foreach (var header in headers)
+                // Skip empty, whitespace-only, or malformed headers
+                if (string.IsNullOrWhiteSpace(header) || header.Trim() == ":")
+                    continue;
+                
+                try
                 {
-                    if (header != ":")
+                    var parts = header.Trim().Split(new[] { ':' }, 2);
+                    if (parts.Length != 2)
+                        continue;
+                    
+                    var headerName = parts[0].Trim();
+                    var headerValue = parts[1].Trim();
+                    
+                    // Skip headers with empty names
+                    if (string.IsNullOrWhiteSpace(headerName))
+                        continue;
+                    
+                    // Handle special headers that can't be set directly via Headers.Add()
+                    switch (headerName.ToLowerInvariant())
                     {
-                        try
-                        {
-                            var parts = header.Trim().Split(new[] { ':' }, 2);
-                            if (parts.Length == 2)
-                            {
-                                var headerName = parts[0].Trim().ToLowerInvariant();
-                                var headerValue = parts[1].Trim();
-                                
-                                // Handle special headers that can't be set directly via Headers.Add()
-                                switch (headerName)
-                                {
-                                    case "accept":
-                                        // For Accept header, we need to handle it differently
-                                        // WebClient doesn't have a direct Accept property, but we can add it to Headers
-                                        // after checking if it's a valid accept header format
-                                        webClient.Headers[HttpRequestHeader.Accept] = headerValue;
-                                        break;
-                                    case "user-agent":
-                                        webClient.Headers[HttpRequestHeader.UserAgent] = headerValue;
-                                        break;
-                                    case "content-type":
-                                        webClient.Headers[HttpRequestHeader.ContentType] = headerValue;
-                                        break;
-                                    case "authorization":
-                                        webClient.Headers[HttpRequestHeader.Authorization] = headerValue;
-                                        break;
-                                    default:
-                                        webClient.Headers.Add(header.Trim());
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                        webClient.Headers.Add(header.Trim());
+                        case "accept":
+                            webClient.Headers[HttpRequestHeader.Accept] = headerValue;
+                            break;
+                        case "user-agent":
+                            webClient.Headers[HttpRequestHeader.UserAgent] = headerValue;
+                            break;
+                        case "content-type":
+                            // Use Content-Type exactly as provided by the user
+                            webClient.Headers[HttpRequestHeader.ContentType] = headerValue;
+                            break;
+                        case "authorization":
+                            webClient.Headers[HttpRequestHeader.Authorization] = headerValue;
+                            break;
+                        default:
+                            webClient.Headers.Add(header.Trim());
+                            break;
                     }
                 }
-                        catch (ArgumentException ex)
-                        {
-                            throw new ArgumentException($"Invalid character in header: {header.Trim()}. {ex.Message}");
-                        }
-                    }
+                catch (ArgumentException ex)
+                {
+                    throw new ArgumentException($"Invalid character in header: {header.Trim()}. {ex.Message}");
+                }
             }
-        }
         }
 
 		private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
@@ -520,6 +578,19 @@ namespace Dev2.Runtime.ServiceModel
 				{
 					if (wr is WebRequestWrapper webRequestWrapper)
 						webRequestWrapper.SetAcceptHeader(value);
+					else
+						try
+						{
+							wr.AddHeader($"{name}: {value}");
+						}
+						catch
+						{
+						}
+				}
+				else if (name.Equals("User-Agent", StringComparison.OrdinalIgnoreCase))
+				{
+					if (wr is WebRequestWrapper webRequestWrapper)
+						webRequestWrapper.SetUserAgentHeader(value);
 					else
 						try
 						{

@@ -30,5 +30,6 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         Task<WebResponse> GetResponseAsync();
         int Timeout { get; set; }
         void AddHeader(string header);
+        void SetUserAgentHeader(string userAgent);
     }
 }

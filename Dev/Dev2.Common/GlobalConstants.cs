@@ -522,7 +522,7 @@ where pn.nspname = 'public';
             }
         }
 
-        public static string UserAgentString => "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+        public static string UserAgentString => "PostmanRuntime/7.32.3";
 
         public static string TempLocation
         {

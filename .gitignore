@@ -86,6 +86,11 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/.axoCover/runs
 
 ####################################################################################
+# Claude Code
+####################################################################################
+/Dev/.azure/.claude/settings.local.json
+/Dev/.claude/settings.local.json
+####################################################################################
 # Tests
 ####################################################################################
 /Dev/Dev2.IntegrationTests/TestEditorFlakeyTests.cs
