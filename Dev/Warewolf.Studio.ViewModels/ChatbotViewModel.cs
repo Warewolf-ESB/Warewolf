@@ -213,8 +213,7 @@ namespace Warewolf.Studio.ViewModels
                 _configuredSource = serializer.Deserialize<ChatbotSource>(payload);
 
                 IsChatbotConfigured = _configuredSource != null
-                    && !string.IsNullOrWhiteSpace(_configuredSource.CompletionsEndpoint)
-                    && !string.IsNullOrWhiteSpace(_configuredSource.ApiKey);
+                    && !string.IsNullOrWhiteSpace(_configuredSource.CompletionsEndpoint);
 
                 if (IsChatbotConfigured)
                 {
@@ -250,7 +249,11 @@ namespace Warewolf.Studio.ViewModels
 
                 using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
+                    // Only add authorization header if API key is provided
+                    if (!string.IsNullOrWhiteSpace(_configuredSource.ApiKey))
+                    {
+                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
+                    }
                     
                     var response = await client.GetAsync(_configuredSource.ModelsEndpoint);
                     
@@ -826,8 +829,11 @@ namespace Warewolf.Studio.ViewModels
         {
             using (var client = new HttpClient())
             {
-                // Set authentication header
-                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + _configuredSource.ApiKey);
+                // Set authentication header only if API key is provided
+                if (!string.IsNullOrWhiteSpace(_configuredSource.ApiKey))
+                {
+                    client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + _configuredSource.ApiKey);
+                }
 
                 // Add any additional headers if specified
                 if (!string.IsNullOrWhiteSpace(additionalHeaders))
