@@ -93,7 +93,7 @@ namespace Dev2.Activities
                 }
             }
 
-            // User-Agent header is only sent if explicitly provided by the user
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(GlobalConstants.UserAgentString);
 
             var address = source.Address;
             if (!string.IsNullOrEmpty(query))
