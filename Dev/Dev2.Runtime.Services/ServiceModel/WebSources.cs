@@ -191,28 +191,6 @@ namespace Dev2.Runtime.ServiceModel
             var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
             var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
 
-            // Use HttpClient for all POST requests (matches modern HTTP clients like Postman)
-            if (method == WebRequestMethod.Post)
-            {
-                Dev2Logger.Info("WebSources.Execute - Using HttpClient for POST request", GlobalConstants.WarewolfInfo);
-
-                var options = new WebPostOptions
-                {
-                    Source = source as WebSource,
-                    Method = method,
-                    Headers = headers,
-                    Query = relativeUrl,
-                    PostData = data,
-                    IsManualChecked = isManualChecked,
-                    IsFormDataChecked = isFormDataChecked,
-                    IsUrlEncodedChecked = isUrlEncodedChecked,
-                    Parameters = formDataParameters,
-                    Settings = settings,
-                    Timeout = timeout
-                };
-                return ExecuteWithHttpClient(options, out errors);
-            }
-
             IWebClientWrapper client = null;
 
             if (webRequestFactory == null)
@@ -244,9 +222,27 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (method == WebRequestMethod.Post)
                 {
-                    var bytesData = Encoding.UTF8.GetBytes(data);
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, headers);
+                    // Use HttpClient for POST requests that are NOT manual multipart/form-urlencoded
+                    // Manual multipart/form-urlencoded are handled above with IWebRequest for raw HTTP formatting
+                    Dev2Logger.Info("WebSources.Execute - Using HttpClient for POST request", GlobalConstants.WarewolfInfo);
+
+                    var options = new WebPostOptions
+                    {
+                        Source = source as WebSource,
+                        Method = method,
+                        Headers = headers,
+                        Query = relativeUrl,
+                        PostData = data,
+                        IsManualChecked = isManualChecked,
+                        IsFormDataChecked = isFormDataChecked,
+                        IsUrlEncodedChecked = isUrlEncodedChecked,
+                        Parameters = formDataParameters,
+                        Settings = settings,
+                        Timeout = timeout
+                    };
+                    return ExecuteWithHttpClient(options, out errors);
                 }
+
 
                 switch (method)
                 {
