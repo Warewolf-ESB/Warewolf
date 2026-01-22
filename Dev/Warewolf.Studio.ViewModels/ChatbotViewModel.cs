@@ -1003,26 +1003,6 @@ namespace Warewolf.Studio.ViewModels
 					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization is still in progress", "Warewolf Info");
 				}
 
-				messages.Add(new { role = "system", content = systemPromptToUse });
-
-				// Add entire conversation history (which already includes the current message from SendAsync)
-				foreach (var msg in Messages)
-				{
-					if (msg.StartsWith("You: "))
-					{
-						messages.Add(new { role = "user", content = msg.Substring(5) });
-					}
-					else if (msg.StartsWith("Bot: "))
-					{
-						messages.Add(new { role = "assistant", content = msg.Substring(5) });
-					}
-					// Skip "Chatbot:" greeting messages - they're UI-only and not part of the AI conversation
-					// Also skip error messages and other system messages
-				}
-
-				// Build messages array with system prompt and full conversation history
-				var messages = new System.Collections.Generic.List<object>();
-
                 // Use the initialized system prompt
                 if (!string.IsNullOrEmpty(_systemPrompt))
                 {
@@ -1124,7 +1104,7 @@ namespace Warewolf.Studio.ViewModels
 				}
 
 				// Prepend a notice if fallback prompt was used
-				if (usedFallbackPrompt)
+				if (!_systemPromptInitialized)
 				{
 					botResponse = "(Note: Limited context - full workspace analysis is still loading. Responses may improve in subsequent messages.)\n\n" + botResponse;
 				}
