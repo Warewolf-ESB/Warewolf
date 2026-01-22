@@ -708,12 +708,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool CanSend()
-        {
-            return IsChatbotConfigured && !string.IsNullOrWhiteSpace(Message) && !IsSending;
-        }
+		private bool CanSend()
+		{
+			return IsChatbotConfigured && !string.IsNullOrWhiteSpace(Message) && !IsSending && !IsInitializingPrompt;
+		}
 
-        private async void Send()
+		private async void Send()
         {
             await SendAsync();
         }
@@ -841,17 +841,52 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                 }
+				// Wait for system prompt initialization with timeout (max 10 seconds)
+				var waitCount = 0;
+				while (!_systemPromptInitialized && waitCount < 20)
+				{
+					await Task.Delay(500);
+					waitCount++;
+				}
 
-                // Build messages array with system prompt and full conversation history
-                var messages = new System.Collections.Generic.List<object>();
+				// Build messages array with system prompt and full conversation history
+				var messages = new System.Collections.Generic.List<object>();
+
+				// Use the initialized system prompt, or fallback to a minimal prompt if initialization timed out
+				var systemPromptToUse = _systemPrompt;
+				if (string.IsNullOrEmpty(systemPromptToUse))
+				{
+					// Fallback prompt if initialization is still in progress or failed
+					systemPromptToUse = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
+					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization is still in progress", "Warewolf Info");
+				}
+
+				messages.Add(new { role = "system", content = systemPromptToUse });
+
+				// Add entire conversation history (which already includes the current message from SendAsync)
+				foreach (var msg in Messages)
+				{
+					if (msg.StartsWith("You: "))
+					{
+						messages.Add(new { role = "user", content = msg.Substring(5) });
+					}
+					else if (msg.StartsWith("Bot: "))
+					{
+						messages.Add(new { role = "assistant", content = msg.Substring(5) });
+					}
+					// Skip "Chatbot:" greeting messages - they're UI-only and not part of the AI conversation
+					// Also skip error messages and other system messages
+				}
+
+				// Build messages array with system prompt and full conversation history
+				var messages = new System.Collections.Generic.List<object>();
 
                 // Use the initialized system prompt
                 if (!string.IsNullOrEmpty(_systemPrompt))
                 {
                     messages.Add(new { role = "system", content = _systemPrompt });
                 }
-
-                // Add entire conversation history
+                // Add entire conversation history (which already includes the current message from SendAsync)
                 foreach (var msg in Messages)
                 {
                     if (msg.StartsWith("You: "))
@@ -869,9 +904,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     // Skip error messages and other system messages
                 }
-
-                // Add the current user message
-                messages.Add(new { role = "user", content = userMessage });
 
                 // Use the selected model
                 var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
@@ -930,23 +962,36 @@ namespace Warewolf.Studio.ViewModels
                     throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
                 }
 
-                dynamic result = JsonConvert.DeserializeObject(responseContent);
+				dynamic result = JsonConvert.DeserializeObject(responseContent);
 
-                // Try OpenAI-compatible response format first
-                try
-                {
-                    return result.choices[0].message.content.ToString();
-                }
-                catch
-                {
-                    // Try Claude response format: { "content": [{ "type": "text", "text": "..." }] }
-                    if (result.content != null && result.content.Count > 0)
-                    {
-                        return result.content[0].text.ToString();
-                    }
-                    throw new HttpRequestException("Unexpected API response format");
-                }
-            }
+				string botResponse;
+
+				// Try OpenAI-compatible response format first
+				try
+				{
+					botResponse = result.choices[0].message.content.ToString();
+				}
+				catch
+				{
+					// Try Claude response format: { "content": [{ "type": "text", "text": "..." }] }
+					if (result.content != null && result.content.Count > 0)
+					{
+						botResponse = result.content[0].text.ToString();
+					}
+					else
+					{
+						throw new HttpRequestException("Unexpected API response format");
+					}
+				}
+
+				// Prepend a notice if fallback prompt was used
+				if (usedFallbackPrompt)
+				{
+					botResponse = "(Note: Limited context - full workspace analysis is still loading. Responses may improve in subsequent messages.)\n\n" + botResponse;
+				}
+
+				return botResponse;
+			}
         }
 
         private object CreatePayload(string model, object[] messages, bool useMaxCompletionTokens, bool includeTemperature = true)
