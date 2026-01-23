@@ -52,6 +52,16 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
 
+        public string LoadingStatusText
+        {
+            get => _loadingStatusText;
+            set
+            {
+                _loadingStatusText = value;
+                OnPropertyChanged(nameof(LoadingStatusText));
+            }
+        }
+
         public bool IncludeSystemLog
         {
             get => _includeSystemLog;
@@ -984,21 +994,20 @@ namespace Warewolf.Studio.ViewModels
 				// Build messages array with system prompt and full conversation history
 				var messages = new System.Collections.Generic.List<object>();
 
-				// Use the initialized system prompt, or fallback to a minimal prompt if initialization timed out
-				var systemPromptToUse = _systemPrompt;
-				if (string.IsNullOrEmpty(systemPromptToUse))
+				// Use the initialized system prompt
+				if (!string.IsNullOrEmpty(_systemPrompt))
 				{
-					// Fallback prompt if initialization is still in progress or failed
-					systemPromptToUse = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
-					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization is still in progress", "Warewolf Info");
+					messages.Add(new { role = "system", content = _systemPrompt });
 				}
-
-                // Use the initialized system prompt
-                if (!string.IsNullOrEmpty(_systemPrompt))
-                {
-                    messages.Add(new { role = "system", content = _systemPrompt });
-                }
-                // Add entire conversation history (which already includes the current message from SendAsync)
+				else
+				{
+					// Fallback if initialization timed out
+					var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
+					messages.Add(new { role = "system", content = fallbackPrompt });
+					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+				}
+				
+				// Add entire conversation history (which already includes the current message from SendAsync)
                 foreach (var msg in Messages)
                 {
                     if (msg.StartsWith("You: "))
@@ -1091,12 +1100,6 @@ namespace Warewolf.Studio.ViewModels
 					{
 						throw new HttpRequestException("Unexpected API response format");
 					}
-				}
-
-				// Prepend a notice if fallback prompt was used
-				if (!_systemPromptInitialized)
-				{
-					botResponse = "(Note: Limited context - full workspace analysis is still loading. Responses may improve in subsequent messages.)\n\n" + botResponse;
 				}
 
 				return botResponse;
