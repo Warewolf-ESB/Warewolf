@@ -43,11 +43,22 @@ namespace Warewolf.Studio.ViewModels
         private System.Collections.Generic.List<string> _availableModels;
         private string _selectedModel;
         private bool _isInitializingPrompt;
+        private string _loadingStatusText;
         private string _resourcesJson;
         private string _systemLog;
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
+
+        public string LoadingStatusText
+        {
+            get => _loadingStatusText;
+            set
+            {
+                _loadingStatusText = value;
+                OnPropertyChanged(nameof(LoadingStatusText));
+            }
+        }
 
         public bool IncludeSystemLog
         {
@@ -351,10 +362,13 @@ namespace Warewolf.Studio.ViewModels
             }
 
             IsInitializingPrompt = true;
+            LoadingStatusText = "Initializing chatbot context...";
 
             // Run initialization asynchronously to not block the UI
             System.Threading.Tasks.Task.Run(() =>
             {
+                var overallStopwatch = System.Diagnostics.Stopwatch.StartNew();
+                
                 try
                 {
                     var promptBuilder = new StringBuilder();
@@ -405,7 +419,18 @@ namespace Warewolf.Studio.ViewModels
                     // Get resources based on settings
                     if (_includeResourcesJson || _includeResourcesXaml)
                     {
+                        System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
+                        {
+                            LoadingStatusText = _includeResourcesXaml 
+                                ? "Loading workspace resources with XAML definitions..." 
+                                : "Loading workspace resources metadata...";
+                        }));
+                        
+                        var resourceStopwatch = System.Diagnostics.Stopwatch.StartNew();
                         _resourcesJson = GetWorkspaceResourcesAsJson(includeXaml: _includeResourcesXaml);
+                        resourceStopwatch.Stop();
+                        
+                        Dev2.Common.Dev2Logger.Info($"ChatbotContext: Resource loading completed in {resourceStopwatch.ElapsedMilliseconds}ms (includeXaml: {_includeResourcesXaml})", "Warewolf Performance");
                         
                         if (!string.IsNullOrEmpty(_resourcesJson))
                         {
@@ -429,6 +454,7 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 var resources = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(_resourcesJson);
                                 resourceCount = resources?.Count ?? 0;
+                                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Loaded {resourceCount} resources, JSON size: {_resourcesJson.Length} chars", "Warewolf Info");
                             }
                             catch (Exception ex)
                             {
@@ -440,7 +466,17 @@ namespace Warewolf.Studio.ViewModels
                     // Get system log based on settings
                     if (_includeSystemLog)
                     {
+                        System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
+                        {
+                            LoadingStatusText = "Loading recent system logs...";
+                        }));
+                        
+                        var logStopwatch = System.Diagnostics.Stopwatch.StartNew();
                         _systemLog = GetSystemLog();
+                        logStopwatch.Stop();
+                        
+                        Dev2.Common.Dev2Logger.Info($"ChatbotContext: System log loading completed in {logStopwatch.ElapsedMilliseconds}ms, size: {_systemLog?.Length ?? 0} chars", "Warewolf Performance");
+                        
                         if (!string.IsNullOrEmpty(_systemLog))
                         {
                             promptBuilder.AppendLine("## System Log (Recent Entries):");
@@ -454,10 +490,15 @@ namespace Warewolf.Studio.ViewModels
                     _systemPrompt = promptBuilder.ToString();
                     _systemPromptInitialized = true;
 
+                    overallStopwatch.Stop();
+                    Dev2.Common.Dev2Logger.Info($"ChatbotContext: Total initialization completed in {overallStopwatch.ElapsedMilliseconds}ms, system prompt size: {_systemPrompt.Length} chars", "Warewolf Performance");
+
                     // Update UI on the dispatcher thread
                     System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
                     {
                         IsInitializingPrompt = false;
+                        LoadingStatusText = string.Empty;
+                        
                         if (resourceCount > 0 || _includeSystemLog)
                         {
                             var contextParts = new System.Collections.Generic.List<string>();
@@ -484,13 +525,16 @@ namespace Warewolf.Studio.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Dev2.Common.Dev2Logger.Error("Error initializing chatbot system prompt", ex, "Warewolf Error");
+                    overallStopwatch.Stop();
+                    Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error initializing chatbot system prompt after {overallStopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
+                    
                     _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
                     _systemPromptInitialized = true;
 
                     System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
                     {
                         IsInitializingPrompt = false;
+                        LoadingStatusText = string.Empty;
                         Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
                             "Note: I had trouble loading workspace context, but I can still help answer general questions.");
                     }));
@@ -500,6 +544,8 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetWorkspaceResourcesAsJson(bool includeXaml = true)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            
             try
             {
                 // Ensure server connection is established
@@ -517,7 +563,8 @@ namespace Warewolf.Studio.ViewModels
                     
                     if (_server?.Connection == null || !_server.Connection.IsConnected)
                     {
-                        Dev2.Common.Dev2Logger.Warn("Server connection not available after waiting", "Warewolf Info");
+                        stopwatch.Stop();
+                        Dev2.Common.Dev2Logger.Warn($"Server connection not available after waiting ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Info");
                         return null;
                     }
                 }
@@ -531,8 +578,14 @@ namespace Warewolf.Studio.ViewModels
                 
                 var toSend = serializer.SerializeToBuilder(servicePayload);
                 
+                var requestStopwatch = System.Diagnostics.Stopwatch.StartNew();
+                Dev2.Common.Dev2Logger.Debug("ChatbotContext: Sending FetchExplorerItemsService request", "Warewolf Debug");
+                
                 // Execute the command and get raw response
                 var rawPayload = _server.Connection.ExecuteCommand(toSend, _server.Connection.WorkspaceID);
+                
+                requestStopwatch.Stop();
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: FetchExplorerItemsService response received in {requestStopwatch.ElapsedMilliseconds}ms, payload size: {rawPayload?.Length ?? 0} bytes", "Warewolf Performance");
                 
                 if (rawPayload == null || rawPayload.Length == 0)
                 {
@@ -575,7 +628,11 @@ namespace Warewolf.Studio.ViewModels
                 var resourceList = new System.Collections.Generic.List<object>();
                 
                 // Recursively extract resources from explorer tree
+                var extractStopwatch = System.Diagnostics.Stopwatch.StartNew();
                 ExtractResourcesFromExplorerItem(explorerItems, resourceList, includeXaml);
+                extractStopwatch.Stop();
+                
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Extracted {resourceList.Count} resources in {extractStopwatch.ElapsedMilliseconds}ms (includeXaml: {includeXaml})", "Warewolf Performance");
                 
                 if (resourceList.Count == 0)
                 {
@@ -583,22 +640,31 @@ namespace Warewolf.Studio.ViewModels
                     return null;
                 }
 
-                Dev2.Common.Dev2Logger.Info($"Loading {resourceList.Count} resources into chatbot context (includeXaml: {includeXaml})", "Warewolf Info");
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Loading {resourceList.Count} resources into chatbot context (includeXaml: {includeXaml})", "Warewolf Info");
 
                 // Serialize to JSON with formatting
+                var serializeStopwatch = System.Diagnostics.Stopwatch.StartNew();
                 var json = JsonConvert.SerializeObject(resourceList, Formatting.Indented);
+                serializeStopwatch.Stop();
+                
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: JSON serialization completed in {serializeStopwatch.ElapsedMilliseconds}ms, size: {json.Length} chars", "Warewolf Performance");
                 
                 // Limit size to avoid token limits (approximately 100KB of JSON to allow for XAML)
                 if (json.Length > 100000)
                 {
                     json = json.Substring(0, 100000) + "\n... (truncated for size)";
+                    Dev2.Common.Dev2Logger.Warn($"ChatbotContext: JSON truncated from {json.Length} to 100KB to avoid token limits", "Warewolf Info");
                 }
 
+                stopwatch.Stop();
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: GetWorkspaceResourcesAsJson completed in {stopwatch.ElapsedMilliseconds}ms total", "Warewolf Performance");
+                
                 return json;
             }
             catch (Exception ex)
             {
-                Dev2.Common.Dev2Logger.Error("Error getting workspace resources", ex, "Warewolf Error");
+                stopwatch.Stop();
+                Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error getting workspace resources after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return null;
             }
         }
@@ -652,6 +718,8 @@ namespace Warewolf.Studio.ViewModels
 
         private string FetchResourceXaml(string resourceId)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            
             try
             {
                 if (!Guid.TryParse(resourceId, out Guid guid))
@@ -670,8 +738,11 @@ namespace Warewolf.Studio.ViewModels
                     _server.Connection, 
                     _server.Connection.WorkspaceID);
                 
+                stopwatch.Stop();
+                
                 if (result == null || result.HasError)
                 {
+                    Dev2.Common.Dev2Logger.Debug($"ChatbotContext: Failed to fetch XAML for resource {resourceId} in {stopwatch.ElapsedMilliseconds}ms", "Warewolf Debug");
                     return null;
                 }
 
@@ -681,24 +752,31 @@ namespace Warewolf.Studio.ViewModels
                 // This prevents token limit issues and keeps the context manageable
                 if (!string.IsNullOrEmpty(xaml) && xaml.Length > 5000)
                 {
+                    Dev2.Common.Dev2Logger.Debug($"ChatbotContext: XAML for resource {resourceId} too large ({xaml.Length} chars), excluding from context ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Debug");
                     // Return null for large XAML files to avoid bloating the context
                     // The chatbot can still see resource names and types without the full XAML
                     return null;
                 }
 
+                Dev2.Common.Dev2Logger.Debug($"ChatbotContext: Fetched XAML for resource {resourceId} in {stopwatch.ElapsedMilliseconds}ms, size: {xaml?.Length ?? 0} chars", "Warewolf Debug");
                 return xaml;
             }
             catch (Exception ex)
             {
-                Dev2.Common.Dev2Logger.Error($"Error fetching XAML for resource {resourceId}", ex, "Warewolf Error");
+                stopwatch.Stop();
+                Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error fetching XAML for resource {resourceId} after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return null;
             }
         }
 
         private string GetSystemLog()
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            
             try
             {
+                Dev2.Common.Dev2Logger.Debug("ChatbotContext: Sending FetchCurrentServerLogService request", "Warewolf Debug");
+                
                 // Use the communication controller to fetch server log via SignalR
                 var comsController = new Dev2.Controller.CommunicationController 
                 { 
@@ -709,10 +787,12 @@ namespace Warewolf.Studio.ViewModels
                     _server.Connection, 
                     _server.Connection.WorkspaceID);
                 
+                stopwatch.Stop();
+                
                 if (result == null || result.HasError)
                 {
                     var errorMsg = result?.Message?.ToString() ?? "Failed to fetch server log";
-                    Dev2.Common.Dev2Logger.Warn($"Failed to fetch server log: {errorMsg}", "Warewolf Info");
+                    Dev2.Common.Dev2Logger.Warn($"ChatbotContext: Failed to fetch server log in {stopwatch.ElapsedMilliseconds}ms: {errorMsg}", "Warewolf Info");
                     return "Unable to fetch server log: " + errorMsg;
                 }
 
@@ -720,6 +800,7 @@ namespace Warewolf.Studio.ViewModels
                 
                 if (string.IsNullOrEmpty(logContent))
                 {
+                    Dev2.Common.Dev2Logger.Info($"ChatbotContext: No log data available ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Info");
                     return "No log data available.";
                 }
                 
@@ -727,13 +808,19 @@ namespace Warewolf.Studio.ViewModels
                 if (logContent.Length > 20000)
                 {
                     logContent = "... (earlier entries truncated)\n" + logContent.Substring(logContent.Length - 20000);
+                    Dev2.Common.Dev2Logger.Info($"ChatbotContext: Server log fetched and truncated in {stopwatch.ElapsedMilliseconds}ms, size: 20KB (truncated)", "Warewolf Performance");
+                }
+                else
+                {
+                    Dev2.Common.Dev2Logger.Info($"ChatbotContext: Server log fetched in {stopwatch.ElapsedMilliseconds}ms, size: {logContent.Length} chars", "Warewolf Performance");
                 }
 
                 return logContent;
             }
             catch (Exception ex)
             {
-                Dev2.Common.Dev2Logger.Error("Error getting system log via API", ex, "Warewolf Error");
+                stopwatch.Stop();
+                Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error getting system log after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return "Error reading system log: " + ex.Message;
             }
         }
@@ -882,21 +969,20 @@ namespace Warewolf.Studio.ViewModels
 				// Build messages array with system prompt and full conversation history
 				var messages = new System.Collections.Generic.List<object>();
 
-				// Use the initialized system prompt, or fallback to a minimal prompt if initialization timed out
-				var systemPromptToUse = _systemPrompt;
-				if (string.IsNullOrEmpty(systemPromptToUse))
+				// Use the initialized system prompt
+				if (!string.IsNullOrEmpty(_systemPrompt))
 				{
-					// Fallback prompt if initialization is still in progress or failed
-					systemPromptToUse = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
-					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization is still in progress", "Warewolf Info");
+					messages.Add(new { role = "system", content = _systemPrompt });
 				}
-
-                // Use the initialized system prompt
-                if (!string.IsNullOrEmpty(_systemPrompt))
-                {
-                    messages.Add(new { role = "system", content = _systemPrompt });
-                }
-                // Add entire conversation history (which already includes the current message from SendAsync)
+				else
+				{
+					// Fallback if initialization timed out
+					var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
+					messages.Add(new { role = "system", content = fallbackPrompt });
+					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+				}
+				
+				// Add entire conversation history (which already includes the current message from SendAsync)
                 foreach (var msg in Messages)
                 {
                     if (msg.StartsWith("You: "))
@@ -992,12 +1078,6 @@ namespace Warewolf.Studio.ViewModels
 					{
 						throw new HttpRequestException("Unexpected API response format");
 					}
-				}
-
-				// Prepend a notice if fallback prompt was used
-				if (!_systemPromptInitialized)
-				{
-					botResponse = "(Note: Limited context - full workspace analysis is still loading. Responses may improve in subsequent messages.)\n\n" + botResponse;
 				}
 
 				return botResponse;
