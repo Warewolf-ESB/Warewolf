@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ServerName = "TestServer",
                 UserName = "TestUser",
                 Password = "TestPassword",
-                AuthenticationType = Common.Interfaces.Runtime.ServiceModel.AuthenticationType.User,
+                AuthenticationType = AuthenticationType.User,
                 ConnectionTimeout = 30
             };
 

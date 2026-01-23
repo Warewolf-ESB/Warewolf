@@ -327,6 +327,9 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_ZipActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommandLineActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommentActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_UnZipActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CommentActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CommandLineActivityHelper.cs" />
