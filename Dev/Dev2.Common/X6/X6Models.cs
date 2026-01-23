@@ -313,6 +313,20 @@ namespace Dev2.Common.X6
         public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
 
         public const string PATHDELETE_INPUTPATH = "inputpath";
+
+
+        public const string UNZIPACTIVITY = "DsfUnZip";
+        public const string DISPLAYNAME_UNZIP = "UnZip";
+        public const string UNZIP_INPUTPATH = "inputpath";
+        public const string UNZIP_USERNAME = "username";
+        public const string UNZIP_PASSWORD = "password";
+        public const string UNZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string UNZIP_DESTINATIONOUTPUTPATH = "outputpath";
+        public const string UNZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string UNZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string UNZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+        public const string UNZIP_OVERWRITE = "overwrite";
+        public const string UNZIP_ARCHIVEPASSWORD = "archivepassword";
     }
 
     public class X6WorkflowLoadModel

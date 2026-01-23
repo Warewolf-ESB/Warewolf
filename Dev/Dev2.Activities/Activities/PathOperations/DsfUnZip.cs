@@ -9,16 +9,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
+using ServiceStack.Messaging;
+using System;
+using System.Collections.Generic;
+using System.Security.AccessControl;
+using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
@@ -191,6 +196,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return (base.GetHashCode() * 397) ^ (ArchivePassword != null ? ArchivePassword.GetHashCode() : 0);
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.UNZIPACTIVITY;
+            cell.data[Constants.TYPE] = Constants.UNZIPACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_UNZIP;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.UNZIP_INPUTPATH, InputPath);
+            cell.data.TryAdd(Constants.UNZIP_USERNAME, Username);
+            cell.data.TryAdd(Constants.UNZIP_PASSWORD, Password);
+            cell.data.TryAdd(Constants.UNZIP_PRIVATEKEYFILE, PrivateKeyFile);
+            cell.data.TryAdd(Constants.UNZIP_DESTINATIONOUTPUTPATH, OutputPath);
+            cell.data.TryAdd(Constants.UNZIP_DESTINATIONUSERNAME, DestinationUsername);
+            cell.data.TryAdd(Constants.UNZIP_DESTINATIONPASSWORD, DestinationPassword);
+            cell.data.TryAdd(Constants.UNZIP_DESTINATIONPRIVATEKEYFILE, DestinationPrivateKeyFile);
+            cell.data.TryAdd(Constants.UNZIP_OVERWRITE, Overwrite);
+            cell.data.TryAdd(Constants.UNZIP_ARCHIVEPASSWORD, ArchivePassword);
+            cell.data.TryAdd(Constants.RESULT, Result);
+
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.UNZIP_INPUTPATH, out var inputpath)) InputPath = inputpath;
+            if (cell.data.TryGetString(Constants.UNZIP_USERNAME, out var username)) Username = username;
+            if (cell.data.TryGetString(Constants.UNZIP_PASSWORD, out var password)) Password = password;
+            if (cell.data.TryGetString(Constants.UNZIP_PRIVATEKEYFILE, out var pvtkeyfile)) PrivateKeyFile = pvtkeyfile;
+            if (cell.data.TryGetString(Constants.UNZIP_DESTINATIONOUTPUTPATH, out var outputpath)) OutputPath = outputpath;
+            if (cell.data.TryGetString(Constants.UNZIP_DESTINATIONUSERNAME, out var outputusername)) DestinationUsername = outputusername;
+            if (cell.data.TryGetString(Constants.UNZIP_DESTINATIONPASSWORD, out var outputpwd)) DestinationPassword = outputpwd;
+            if (cell.data.TryGetString(Constants.UNZIP_DESTINATIONPRIVATEKEYFILE, out var outputpvtkeyfile)) DestinationPrivateKeyFile = outputpvtkeyfile;
+            if (cell.data.TryGetBool(Constants.UNZIP_OVERWRITE, out var overwrite)) Overwrite = overwrite;
+            if (cell.data.TryGetString(Constants.UNZIP_ARCHIVEPASSWORD, out var archivepassword)) ArchivePassword = archivepassword;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
         }
     }
 }

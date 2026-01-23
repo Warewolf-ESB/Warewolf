@@ -170,10 +170,16 @@ namespace Dev2.Activities
 
                 if (isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
+                    // Filter out headers where both name and value are empty to prevent sending ':' strings
+                    var headersArray = head?.
+                        Where(h => !string.IsNullOrEmpty(h.Name) || !string.IsNullOrEmpty(h.Value))
+                        .Select(h => h.Name + ":" + h.Value)
+                        .ToArray() ?? new string[0];
+                    
                     var webPostOptions = new WebPostOptions
                     {
                         Head = head,
-                        Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
+                        Headers = headersArray,
                         Method = WebRequestMethod.Post,
                         Parameters = conditions,
                         Query = query,
@@ -214,7 +220,8 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebPostRequest(IWebPostOptions webPostOptions)
         {
-            return WebSources.Execute(webPostOptions, out _errorsTo);
+            Dev2Logger.Info("POST Activity - Using HttpClient for web request execution", GlobalConstants.WarewolfInfo);
+            return WebSources.ExecuteWithHttpClient(webPostOptions, out _errorsTo);
         }
 
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
@@ -222,7 +229,12 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
+                // Evaluate headers and filter out empty ones (both name and value are empty)
+                head = Headers
+                    .Select(a => new NameValue(
+                        ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), 
+                        ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))))
+                    .Where(h => !string.IsNullOrEmpty(h.Name) || !string.IsNullOrEmpty(h.Value));
                 if (IsFormDataChecked)
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
