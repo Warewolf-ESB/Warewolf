@@ -525,5 +525,35 @@ namespace Dev2.Common
                 Save();
             }
         }
+
+        public bool IncludeSystemLog
+        {
+            get => _settings?.IncludeSystemLog ?? true;
+            set
+            {
+                _settings.IncludeSystemLog = value;
+                Save();
+            }
+        }
+
+        public bool IncludeResourcesXaml
+        {
+            get => _settings?.IncludeResourcesXaml ?? true;
+            set
+            {
+                _settings.IncludeResourcesXaml = value;
+                Save();
+            }
+        }
+
+        public bool IncludeResourcesJson
+        {
+            get => _settings?.IncludeResourcesJson ?? true;
+            set
+            {
+                _settings.IncludeResourcesJson = value;
+                Save();
+            }
+        }
     }
 }

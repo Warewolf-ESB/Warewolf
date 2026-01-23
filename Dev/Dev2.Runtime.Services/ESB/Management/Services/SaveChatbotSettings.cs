@@ -33,10 +33,38 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue(Warewolf.Service.SaveChatbotSettings.ChatbotSettings, out StringBuilder settings);
 
-                var updatedChatbotSettings = serializer.Deserialize<ChatbotSettingsData>(settings);
-                if (updatedChatbotSettings?.ChatbotSource != null)
+                // Try to deserialize as ChatbotSettingsData first (from direct save)
+                ChatbotSettingsData updatedChatbotSettings = null;
+                try
                 {
+                    updatedChatbotSettings = serializer.Deserialize<ChatbotSettingsData>(settings);
+                    // Full save - update everything including ChatbotSource
+                    Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsData - updating all properties", GlobalConstants.WarewolfInfo);
                     Config.Chatbot.ChatbotSource = updatedChatbotSettings.ChatbotSource;
+                    Config.Chatbot.IncludeSystemLog = updatedChatbotSettings.IncludeSystemLog;
+                    Config.Chatbot.IncludeResourcesXaml = updatedChatbotSettings.IncludeResourcesXaml;
+                    Config.Chatbot.IncludeResourcesJson = updatedChatbotSettings.IncludeResourcesJson;
+                }
+                catch
+                {
+                    // If that fails, try as ChatbotSettingsTo (from SettingsWriteService)
+                    try
+                    {
+                        var chatbotSettingsTo = serializer.Deserialize<Dev2.Services.Chatbot.ChatbotSettingsTo>(settings);
+                        if (chatbotSettingsTo != null)
+                        {
+                            // Partial save - only update checkbox properties, preserve existing ChatbotSource
+                            Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsTo - updating only checkbox properties", GlobalConstants.WarewolfInfo);
+                            Config.Chatbot.IncludeSystemLog = chatbotSettingsTo.IncludeSystemLog;
+                            Config.Chatbot.IncludeResourcesXaml = chatbotSettingsTo.IncludeResourcesXaml;
+                            Config.Chatbot.IncludeResourcesJson = chatbotSettingsTo.IncludeResourcesJson;
+                            Dev2Logger.Info($"SaveChatbotSettings: Set checkbox values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, IncludeResourcesXaml={chatbotSettingsTo.IncludeResourcesXaml}, IncludeResourcesJson={chatbotSettingsTo.IncludeResourcesJson}", GlobalConstants.WarewolfInfo);
+                        }
+                    }
+                    catch (Exception ex2)
+                    {
+                        Dev2Logger.Error($"SaveChatbotSettings: Failed to deserialize as ChatbotSettingsTo", ex2, GlobalConstants.WarewolfError);
+                    }
                 }
 
                 msg.Message = new StringBuilder();
