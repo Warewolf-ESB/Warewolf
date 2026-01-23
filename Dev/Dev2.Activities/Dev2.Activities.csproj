@@ -327,6 +327,8 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_UnZipActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_CommentActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CommandLineActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileReadWithBase64ActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_AdvancedRecordsetActivityHelper.cs" />
@@ -336,9 +338,12 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_JavascriptActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathCreateActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathMoveActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathRenameActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PathDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_MySqlDatabaseActivityHelper.cs" />
@@ -351,6 +356,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlBulkInsertActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SqlServerDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_UniqueRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_UnZipActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPostActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GETWebMethodHelper.cs" />
@@ -363,7 +369,6 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_FileReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SequenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_WebPutActivityHelper.cs" />
-    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommandLineActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FileReadWithBase64ActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_AdvancedRecordsetActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CountRecordsetActivityHelper.cs" />
@@ -372,9 +377,12 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FolderReadActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_FindRecordsActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_JavascriptActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_OracleDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCopyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathCreateActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathMoveActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathRenameActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PathDeleteActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PostgreSQLDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_MySqlDatabaseActivityHelper.cs" />
@@ -438,6 +446,7 @@
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ZipActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

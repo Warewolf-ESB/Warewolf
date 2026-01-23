@@ -82,6 +82,8 @@ namespace Dev2.Common.X6
         public const string DSFFOLDERREAD = "DsfFolderRead";
         public const string DSFPATHCREATE = "DsfPathCreate";
         public const string DSFPATHCOPY = "DsfPathCopy";
+        public const string DSFPATHMOVE = "DsfPathMove";
+        public const string DSFPATHRENAME = "DsfPathRename";
         public const string DSFPATHDELETE = "DsfPathDelete";
         public const string FILEWRITEWITHBASE64 = "FileWriteWithBase64";
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";
@@ -113,6 +115,8 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_FOLDERREAD = "Folder Read";
         public const string DISPLAYNAME_PATHCREATE = "Create";
         public const string DISPLAYNAME_PATHCOPY = "Copy";
+        public const string DISPLAYNAME_PATHMOVE = "Move";
+        public const string DISPLAYNAME_PATHRENAME = "Rename";
         public const string DISPLAYNAME_PATHDELETE = "Delete";
         public const string DISPLAYNAME_FILEWRITE = "Write File";
         public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";
@@ -290,7 +294,47 @@ namespace Dev2.Common.X6
         public const string PATHCOPY_DESTINATIONPASSWORD = "destinationpassword";
         public const string PATHCOPY_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
 
+        public const string PATHMOVE_INPUTPATH = "inputpath";
+        public const string PATHMOVE_OUTPUTPATH = "outputpath";
+        public const string PATHMOVE_OVERWRITE = "overwrite";
+        public const string PATHMOVE_DESTINATIONUSERNAME = "destinationusername";
+        public const string PATHMOVE_DESTINATIONPASSWORD = "destinationpassword";
+        public const string PATHMOVE_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
+        public const string DSFZIP = "DsfZip";
+        public const string DISPLAYNAME_ZIP = "Zip";
+        public const string ZIP_ARCHIVENAME = "archivename";
+        public const string ZIP_COMPRESSIONRATIO = "compressionratio";
+        public const string ZIP_ARCHIVEPASSWORD = "archivepassword";
+        public const string ZIP_INPUTPATH = "inputpath";
+        public const string ZIP_OUTPUTPATH = "outputpath";
+        public const string ZIP_OVERWRITE = "overwrite";
+        public const string ZIP_USERNAME = "username";
+        public const string ZIP_PASSWORD = "password";
+        public const string ZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string ZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string ZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+
         public const string PATHDELETE_INPUTPATH = "inputpath";
+
+
+        public const string UNZIPACTIVITY = "DsfUnZip";
+        public const string DISPLAYNAME_UNZIP = "UnZip";
+        public const string UNZIP_INPUTPATH = "inputpath";
+        public const string UNZIP_USERNAME = "username";
+        public const string UNZIP_PASSWORD = "password";
+        public const string UNZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string UNZIP_DESTINATIONOUTPUTPATH = "outputpath";
+        public const string UNZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string UNZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string UNZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+        public const string UNZIP_OVERWRITE = "overwrite";
+        public const string UNZIP_ARCHIVEPASSWORD = "archivepassword";
+
+        public const string DSFCOMMENTACTIVITY = "DsfCommentActivity";
+        public const string DISPLAYNAME_COMMENT = "Comment";
+        public const string COMMENT_TEXT = "text";
 
         public const string FILEWRITE_OUTPUTPATH = "outputpath";
         public const string FILEWRITE_FILECONTENTS = "filecontents";
@@ -298,6 +342,13 @@ namespace Dev2.Common.X6
         public const string FILEWRITE_APPENDTOP = "appendtop";
         public const string FILEWRITE_APPENDBOTTOM = "appendbottom";
         public const string FILEWRITE_ASBASE64 = "filecontentsasbase64";
+
+        public const string DSFJAVASCRIPTACTIVITY = "DsfJavascriptActivity";
+        public const string DISPLAYNAME_JAVASCRIPT = "JavaScript";
+        public const string JAVASCRIPT_SCRIPT = "script";
+        public const string JAVASCRIPT_ESCAPESCRIPT = "escapescript";
+        public const string JAVASCRIPT_INCLUDEFILE = "includefile";
+        public const string JAVASCRIPT_RESULT = "result";
 
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";

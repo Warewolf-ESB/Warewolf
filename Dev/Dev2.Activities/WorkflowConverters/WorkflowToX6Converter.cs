@@ -124,7 +124,123 @@ namespace Dev2.Activities.WF
         {
             if (flowchart.StartNode == null) return parentNodeId;
 
-            return ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
+            // Process the start node first
+            var lastNodeId = ProcessFlowNode(flowchart.StartNode, graphData, activityNodeMap, parentNodeId);
+
+            // Process additional nodes in the flowchart.Nodes collection
+            // This ensures all nodes are processed, including disconnected ones
+            if (flowchart.Nodes != null)
+            {
+                foreach (var node in flowchart.Nodes)
+                {
+                    // Skip the start node as it's already processed
+                    if (node == flowchart.StartNode)
+                        continue;
+
+                    // Extract the activity from the flow node
+                    var activity = GetActivityFromFlowNode(node);
+                    if (activity == null)
+                        continue;
+
+                    // Check if this activity has already been processed
+                    if (!activityNodeMap.ContainsKey(activity))
+                    {
+                        // Activity not yet processed - process the node without creating an edge from parentNodeId
+                        // This handles disconnected nodes that aren't reachable from StartNode
+                        // The edges will be created during normal flow traversal
+                        ProcessFlowNode(node, graphData, activityNodeMap, null);
+                    }
+                    // If activity is already processed, it means it was reached during the normal flow traversal
+                    // from StartNode, so we don't need to do anything - edges are already correct
+                }
+            }
+
+            return lastNodeId;
+        }
+
+        /// <summary>
+        /// Extracts the Activity from a FlowNode
+        /// </summary>
+        /// <param name="flowNode">The flow node to extract activity from</param>
+        /// <returns>The activity contained in the flow node, or null if none found</returns>
+        private static Activity GetActivityFromFlowNode(FlowNode flowNode)
+        {
+            return flowNode switch
+            {
+                FlowStep flowStep => flowStep.Action,
+                FlowDecision flowDecision => flowDecision.Condition,
+                FlowSwitch<string> flowSwitch => flowSwitch.Expression,
+                FlowSwitch<object> flowSwitchObj => flowSwitchObj.Expression,
+                _ => null
+            };
+        }
+
+        /// <summary>
+        /// Checks if an edge already exists between source and target nodes
+        /// </summary>
+        /// <param name="graphData">The X6 graph data</param>
+        /// <param name="sourceId">Source node ID</param>
+        /// <param name="targetId">Target node ID</param>
+        /// <param name="label">Optional edge label</param>
+        /// <returns>True if edge exists, false otherwise</returns>
+        private static bool EdgeExists(X6WorkflowLoadModel graphData, string sourceId, string targetId, string label = null)
+        {
+            return graphData.Edges.Exists(e => 
+                e.Source?.Id == sourceId && 
+                e.Target?.Id == targetId && 
+                (string.IsNullOrEmpty(label) || e.label == label));
+        }
+
+        /// <summary>
+        /// Safely creates an edge only if it doesn't already exist
+        /// </summary>
+        /// <param name="graphData">The X6 graph data</param>
+        /// <param name="sourceId">Source node ID</param>
+        /// <param name="targetId">Target node ID</param>
+        /// <param name="label">Optional edge label</param>
+        private static void CreateEdgeIfNotExists(X6WorkflowLoadModel graphData, string sourceId, string targetId, string label = "")
+        {
+            if (string.IsNullOrEmpty(sourceId) || string.IsNullOrEmpty(targetId))
+                return;
+                
+            if (!EdgeExists(graphData, sourceId, targetId, label))
+            {
+                graphData.Edges.Add(CommonHelper.CreateEdge(sourceId, targetId, label));
+            }
+        }
+
+        /// <summary>
+        /// Processes a flow node or creates an edge if the node is already processed
+        /// </summary>
+        /// <param name="flowNode">The flow node to process</param>
+        /// <param name="graphData">The X6 graph data</param>
+        /// <param name="activityNodeMap">Map of activities to their node IDs</param>
+        /// <param name="sourceNodeId">The source node ID for edge creation</param>
+        /// <param name="edgeLabel">Optional label for the edge</param>
+        /// <returns>The node ID of the processed or existing node</returns>
+        private string ProcessOrLinkFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
+            Dictionary<Activity, string> activityNodeMap, string sourceNodeId, string edgeLabel = "")
+        {
+            if (flowNode == null) return sourceNodeId;
+            
+            var activity = GetActivityFromFlowNode(flowNode);
+            
+            if (activity != null && activityNodeMap.TryGetValue(activity, out var existingNodeId))
+            {
+                // Node already processed - just create edge if needed
+                CreateEdgeIfNotExists(graphData, sourceNodeId, existingNodeId, edgeLabel);
+                return existingNodeId;
+            }
+            else
+            {
+                // Node not yet processed - process it and create edge with label
+                var targetNodeId = ProcessFlowNode(flowNode, graphData, activityNodeMap, null);
+                
+                // Create edge from source to the newly processed node with the appropriate label
+                CreateEdgeIfNotExists(graphData, sourceNodeId, targetNodeId, edgeLabel);
+                
+                return targetNodeId;
+            }
         }
 
         private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
@@ -146,7 +262,7 @@ namespace Dev2.Activities.WF
 
             if (flowStep.Next != null)
             {
-                ProcessFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
+                ProcessOrLinkFlowNode(flowStep.Next, graphData, activityNodeMap, nodeId);
             }
 
             return nodeId;
@@ -160,25 +276,18 @@ namespace Dev2.Activities.WF
             graphData.Nodes.Add(decisionNode);
             //graphData.ActivityNodeMap[flowDecision] = decisionNode;
 
-            if (!string.IsNullOrEmpty(previousNodeId))
-            {
-                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, decisionNodeId));
-            }
+            CreateEdgeIfNotExists(graphData, previousNodeId, decisionNodeId);
 
             // Process True branch
             if (flowDecision.True != null)
             {
-                var trueNodeId = ProcessFlowNode(flowDecision.True, graphData, activityNodeMap, null);
-                var targetNodeId = activityNodeMap.ContainsValue(trueNodeId) ? trueNodeId : GetFirstNodeId(flowDecision.True, activityNodeMap);
-                graphData.Edges.Add(CommonHelper.CreateEdge(decisionNodeId, targetNodeId, Constants.TRUE));
+                ProcessOrLinkFlowNode(flowDecision.True, graphData, activityNodeMap, decisionNodeId, Constants.TRUE);
             }
 
             // Process False branch
             if (flowDecision.False != null)
             {
-                var falseNodeId = ProcessFlowNode(flowDecision.False, graphData, activityNodeMap, null);
-                var targetNodeId = activityNodeMap.ContainsValue(falseNodeId) ? falseNodeId : GetFirstNodeId(flowDecision.False, activityNodeMap);
-                graphData.Edges.Add(CommonHelper.CreateEdge(decisionNodeId, targetNodeId, Constants.FALSE));
+                ProcessOrLinkFlowNode(flowDecision.False, graphData, activityNodeMap, decisionNodeId, Constants.FALSE);
             }
 
             return decisionNodeId;
@@ -204,23 +313,21 @@ namespace Dev2.Activities.WF
             graphData.Nodes.Add(switchNode);
             //graphData.ActivityNodeMap[flowSwitch] = switchNode;
 
+            CreateEdgeIfNotExists(graphData, previousNodeId, switchNodeId);
 
-            if (!string.IsNullOrEmpty(previousNodeId))
-            {
-                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, switchNodeId));
-            }
+            // Process each case
             foreach (var caseItem in flowSwitch.Cases)
             {
-                ProcessFlowNode(caseItem.Value, graphData, activityNodeMap, null);
-                var targetNodeIdValue = GetFirstNodeId(caseItem.Value, activityNodeMap);
                 var label = caseItem.Key?.ToString() ?? "Case";
-                graphData.Edges.Add(CommonHelper.CreateEdge(switchNodeId, targetNodeIdValue, label));
+                ProcessOrLinkFlowNode(caseItem.Value, graphData, activityNodeMap, switchNodeId, label);
             }
 
             // Process default case
-            ProcessFlowNode(flowSwitch.Default, graphData, activityNodeMap, null);
-            var targetNodeIdDefault = GetFirstNodeId(flowSwitch.Default, activityNodeMap);
-            graphData.Edges.Add(CommonHelper.CreateEdge(switchNodeId, targetNodeIdDefault, "Default"));
+            if (flowSwitch.Default != null)
+            {
+                ProcessOrLinkFlowNode(flowSwitch.Default, graphData, activityNodeMap, switchNodeId, "Default");
+            }
+
             return switchNodeId;
         }
 
@@ -274,7 +381,7 @@ namespace Dev2.Activities.WF
             var bodyNodeId = ProcessActivity(whileActivity.Body, graphData, activityNodeMap, parentNodeId);
 
             // Create loop back edge
-            graphData.Edges.Add(CommonHelper.CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            CreateEdgeIfNotExists(graphData, bodyNodeId, parentNodeId, "Loop");
             return bodyNodeId;
         }
 
@@ -285,7 +392,7 @@ namespace Dev2.Activities.WF
 
             var bodyNodeId = ProcessActivity(doWhileActivity.Body, graphData, activityNodeMap, parentNodeId);
             // Create loop back edge
-            graphData.Edges.Add(CommonHelper.CreateEdge(bodyNodeId, parentNodeId, "Loop"));
+            CreateEdgeIfNotExists(graphData, bodyNodeId, parentNodeId, "Loop");
             return bodyNodeId;
         }
 
@@ -355,10 +462,7 @@ namespace Dev2.Activities.WF
             graphData.ActivityNodeMap[forEachActivity] = forEachNode;
 
             // Create edge from previous node to this ForEach node
-            if (!string.IsNullOrEmpty(previousNodeId))
-            {
-                graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, forEachNodeId));
-            }
+            CreateEdgeIfNotExists(graphData, previousNodeId, forEachNodeId);
 
             // Process nested activities from DataFunc.Handler
             ProcessForEachNestedActivities(forEachActivity, forEachNodeId, graphData, activityNodeMap);
@@ -682,9 +786,29 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePathCopyActivity(pathCopyActivity, nodeId);
             }
+            else if (activity is DsfPathMove pathMoveActivity)
+            {
+                cell = CreatePathMoveActivity(pathMoveActivity, nodeId);
+            }
+            else if (activity is DsfPathRename pathRenameActivity)
+            {
+                cell = CreatePathRenameActivity(pathRenameActivity, nodeId);
+            }
+            else if (activity is DsfZip zipActivity)
+            {
+                cell = CreateZipActivity(zipActivity, nodeId);
+            }
             else if (activity is DsfPathDelete pathDeleteActivity)
             {
                 cell = CreatePathDeleteActivity(pathDeleteActivity, nodeId);
+            }
+            else if (activity is DsfUnZip unZipActivity)
+            {
+                cell = CreateUnZipActivity(unZipActivity, nodeId);
+            }
+            else if (activity is DsfCommentActivity commentActivity)
+            {
+                cell = CreateCommentActivity(commentActivity, nodeId);
             }
             else if (activity is DsfFileWrite dsfFileWriteActivity)
             {
@@ -699,6 +823,10 @@ namespace Dev2.Activities.WF
                 cell = CreateCommandLineActivity(dsfExecuteCommandLineActivity, nodeId);
             }
 
+            else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
+            {
+                cell = CreateJavascriptActivity(javascriptActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

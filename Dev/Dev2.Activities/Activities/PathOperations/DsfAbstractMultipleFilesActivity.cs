@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -24,6 +25,7 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -324,6 +326,51 @@ namespace Dev2.Activities.PathOperations
                 hashCode = (hashCode * 397) ^ (DestinationPrivateKeyFile != null ? DestinationPrivateKeyFile.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            base.ToX6Json(cell);
+
+            // Path operation specific properties
+            cell.data.TryAdd(Constants.PATHMOVE_INPUTPATH, InputPath);
+            cell.data.TryAdd(Constants.PATHMOVE_OUTPUTPATH, OutputPath);
+            cell.data.TryAdd(Constants.RESULT, Result);
+            cell.data.TryAdd(Constants.PATHMOVE_OVERWRITE, Overwrite);
+            
+            // Destination credentials
+            cell.data.TryAdd(Constants.PATHMOVE_DESTINATIONUSERNAME, DestinationUsername);
+            cell.data.TryAdd(Constants.PATHMOVE_DESTINATIONPASSWORD, DestinationPassword);
+            cell.data.TryAdd(Constants.PATHMOVE_DESTINATIONPRIVATEKEYFILE, DestinationPrivateKeyFile);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            // Path operation specific properties
+            if (cell.data.TryGetString(Constants.PATHMOVE_INPUTPATH, out var inputPath)) 
+                InputPath = inputPath;
+            if (cell.data.TryGetString(Constants.PATHMOVE_OUTPUTPATH, out var outputPath)) 
+                OutputPath = outputPath;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) 
+                Result = result;
+            if (cell.data.TryGetBool(Constants.PATHMOVE_OVERWRITE, out var overwrite)) 
+                Overwrite = overwrite;
+
+            // Destination credentials
+            if (cell.data.TryGetString(Constants.PATHMOVE_DESTINATIONUSERNAME, out var destUsername)) 
+                DestinationUsername = destUsername;
+            if (cell.data.TryGetString(Constants.PATHMOVE_DESTINATIONPASSWORD, out var destPassword)) 
+                DestinationPassword = destPassword;
+            if (cell.data.TryGetString(Constants.PATHMOVE_DESTINATIONPRIVATEKEYFILE, out var destPrivateKey)) 
+                DestinationPrivateKeyFile = destPrivateKey;
+
+            // Defensive initialization
+            InputPath ??= string.Empty;
+            OutputPath ??= string.Empty;
         }
     }
 }
