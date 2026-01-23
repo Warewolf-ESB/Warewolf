@@ -68,6 +68,8 @@ namespace Dev2.Settings.Chatbot
             IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
             IncludeResourcesJson = settingsData.IncludeResourcesJson;
             
+            Dev2Logger.Info($"ChatbotSettings: Loaded settings - IncludeSystemLog={IncludeSystemLog}, IncludeResourcesXaml={IncludeResourcesXaml}, IncludeResourcesJson={IncludeResourcesJson}", "Warewolf Info");
+            
             if (settingsData.ChatbotSource != null)
             {
                 var selectedSource = ChatbotSources.FirstOrDefault(o => o.ResourceID == settingsData.ChatbotSource.Value);
@@ -239,7 +241,6 @@ namespace Dev2.Settings.Chatbot
             }
         }
 
-        [JsonIgnore]
         public bool IncludeSystemLog
         {
             get => _includeSystemLog;
@@ -247,6 +248,7 @@ namespace Dev2.Settings.Chatbot
             {
                 _includeSystemLog = value;
                 OnPropertyChanged();
+                Dev2Logger.Debug($"ChatbotSettings: IncludeSystemLog changed to {value}", "Warewolf Debug");
                 if (Item != null)
                 {
                     IsDirty = !Equals(Item);
@@ -254,7 +256,6 @@ namespace Dev2.Settings.Chatbot
             }
         }
 
-        [JsonIgnore]
         public bool IncludeResourcesXaml
         {
             get => _includeResourcesXaml;
@@ -262,6 +263,7 @@ namespace Dev2.Settings.Chatbot
             {
                 _includeResourcesXaml = value;
                 OnPropertyChanged();
+                Dev2Logger.Debug($"ChatbotSettings: IncludeResourcesXaml changed to {value}", "Warewolf Debug");
                 if (Item != null)
                 {
                     IsDirty = !Equals(Item);
@@ -269,7 +271,6 @@ namespace Dev2.Settings.Chatbot
             }
         }
 
-        [JsonIgnore]
         public bool IncludeResourcesJson
         {
             get => _includeResourcesJson;
@@ -277,6 +278,7 @@ namespace Dev2.Settings.Chatbot
             {
                 _includeResourcesJson = value;
                 OnPropertyChanged();
+                Dev2Logger.Debug($"ChatbotSettings: IncludeResourcesJson changed to {value}", "Warewolf Debug");
                 if (Item != null)
                 {
                     IsDirty = !Equals(Item);
@@ -470,7 +472,21 @@ namespace Dev2.Settings.Chatbot
                 IncludeResourcesXaml = _includeResourcesXaml,
                 IncludeResourcesJson = _includeResourcesJson
             };
+            
+            Dev2Logger.Info($"ChatbotSettings: Saving settings - IncludeSystemLog={_includeSystemLog}, IncludeResourcesXaml={_includeResourcesXaml}, IncludeResourcesJson={_includeResourcesJson}", "Warewolf Info");
+            
+            // Populate the transfer object with checkbox settings so it gets serialized
+            if (settings != null)
+            {
+                settings.IncludeSystemLog = _includeSystemLog;
+                settings.IncludeResourcesXaml = _includeResourcesXaml;
+                settings.IncludeResourcesJson = _includeResourcesJson;
+                Dev2Logger.Info($"ChatbotSettings: Updated ChatbotSettingsTo - IncludeSystemLog={settings.IncludeSystemLog}, IncludeResourcesXaml={settings.IncludeResourcesXaml}, IncludeResourcesJson={settings.IncludeResourcesJson}", "Warewolf Info");
+            }
+            
             CurrentEnvironment.ResourceRepository.SaveChatbotSettings(CurrentEnvironment, data);
+            
+            Dev2Logger.Info("ChatbotSettings: Settings saved successfully", "Warewolf Info");
             
             // Update the baseline for dirty checking
             SetItem(this);

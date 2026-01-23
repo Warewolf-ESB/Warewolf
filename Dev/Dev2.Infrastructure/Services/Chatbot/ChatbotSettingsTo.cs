@@ -11,6 +11,8 @@ namespace Dev2.Services.Chatbot
 {
     public class ChatbotSettingsTo
     {
-
+        public bool IncludeSystemLog { get; set; } = true;
+        public bool IncludeResourcesXaml { get; set; } = true;
+        public bool IncludeResourcesJson { get; set; } = true;
     }
 }
