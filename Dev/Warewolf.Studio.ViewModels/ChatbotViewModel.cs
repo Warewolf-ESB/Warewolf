@@ -28,13 +28,15 @@ using Warewolf.Configuration;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase, 
-        Caliburn.Micro.IHandle<Warewolf.Data.ChatbotSettingsSavedMessage>,
-        Caliburn.Micro.IHandle<Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage>
-    {
-        private readonly IServer _server;
-        private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
-        private string _message;
+#if NETFRAMEWORK
+    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase
+#else
+	public class ChatbotViewModel : BindableBase2
+#endif
+	{
+		private readonly IServer _server;
+		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
+		private string _message;
         private ObservableCollection<string> _messages;
         private string _displayName;
         private bool _isChatbotConfigured;
@@ -128,6 +130,25 @@ namespace Warewolf.Studio.ViewModels
         public void Handle(Warewolf.Data.ChatbotSettingsSavedMessage message)
         {
             RefreshConfiguration();
+        }
+
+        public void Handle(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message)
+        {
+            // Check if the deleted resource is the currently configured chatbot source
+            if (message?.ResourceToRemove != null && _configuredSource != null)
+            {
+                // Compare the resource ID of the deleted resource with the configured chatbot source ID
+                var deletedResourceId = message.ResourceToRemove.ID;
+                var configuredSourceId = _configuredSource.ResourceID;
+                
+                if (deletedResourceId == configuredSourceId)
+                {
+                    Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
+                    
+                    // The configured source was deleted, refresh to show unconfigured state
+                    RefreshConfiguration();
+                }
+            }
         }
 
         public void Handle(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message)
