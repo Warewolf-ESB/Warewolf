@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
@@ -41,7 +41,8 @@ namespace Warewolf.Studio.ViewModels
 #endif
 	{
 		private readonly IServer _server;
-        private string _message;
+		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
+		private string _message;
         private ObservableCollection<string> _messages;
         private string _displayName;
         private bool _isChatbotConfigured;
@@ -140,6 +141,25 @@ namespace Warewolf.Studio.ViewModels
             RefreshConfiguration();
         }
 
+        public void Handle(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message)
+        {
+            // Check if the deleted resource is the currently configured chatbot source
+            if (message?.ResourceToRemove != null && _configuredSource != null)
+            {
+                // Compare the resource ID of the deleted resource with the configured chatbot source ID
+                var deletedResourceId = message.ResourceToRemove.ID;
+                var configuredSourceId = _configuredSource.ResourceID;
+                
+                if (deletedResourceId == configuredSourceId)
+                {
+                    Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
+                    
+                    // The configured source was deleted, refresh to show unconfigured state
+                    RefreshConfiguration();
+                }
+            }
+        }
+
         public string DisplayName
         {
             get => _displayName;
@@ -218,10 +238,12 @@ namespace Warewolf.Studio.ViewModels
             // Clear messages when configuration is refreshed
             Messages.Clear();
             
-            LoadChatbotConfiguration();
             // Clear any existing system prompt so it gets regenerated
+            // Do this BEFORE loading config to avoid race condition with background initialization
             _systemPromptInitialized = false;
             _systemPrompt = null;
+            
+            LoadChatbotConfiguration();
         }
 
         private void LoadChatbotConfiguration()
@@ -902,7 +924,9 @@ namespace Warewolf.Studio.ViewModels
             var message = ex.Message.ToLower();
             return message.Contains("token") && (message.Contains("limit") || message.Contains("exceeded") || message.Contains("maximum"))
                 || message.Contains("413") // Payload too large
-                || message.Contains("context_length_exceeded");
+                || message.Contains("context_length_exceeded")
+                || message.Contains("context") && message.Contains("overflow") // LM Studio context overflow
+                || message.Contains("context length") && message.Contains("not enough"); // LM Studio context length error
         }
 
         private async Task<string> CallChatbotApiWithContextAsync(string userMessage)
@@ -1005,12 +1029,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         messages.Add(new { role = "assistant", content = msg.Substring(5) });
                     }
-                    else if (msg.StartsWith("Chatbot: "))
-                    {
-                        // This is the initial greeting, include as assistant message
-                        messages.Add(new { role = "assistant", content = msg.Substring(9) });
-                    }
-                    // Skip error messages and other system messages
+                    // Skip "Chatbot: " messages (initial greetings) - they're UI only and would break
+                    // the required user/assistant/user/assistant alternating pattern
+                    // Also skip error messages and other system messages
                 }
 
                 // Use the selected model
