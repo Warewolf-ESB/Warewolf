@@ -40,6 +40,7 @@
     <Compile Include="ESB\Management\Services\DeleteTestCoverage.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
+    <Compile Include="ESB\Management\Services\FetchChatbotModels.cs" />
     <Compile Include="ESB\Management\Services\FetchChatbotSources.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
     <Compile Include="ESB\Management\Services\FetchJSONResourceDefinition.cs" />
