@@ -619,6 +619,8 @@ namespace Dev2.Activities.WF
                  
                 case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateJavascriptActivity(node);
+                case var t when t.Contains(Constants.DSFRUBYACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRubyActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
 
