@@ -353,6 +353,33 @@ namespace Dev2.Common.X6
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
         public const string COMMANDLINE_COMMANDRESULT = "commandresult";
+
+        // SMTP Email Activity
+        public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
+        public const string DISPLAYNAME_SMTPEMAIL = "SMTP Email";
+        public const string SMTPEMAIL_SOURCEID = "emailsourceid";
+        public const string SMTPEMAIL_FROMACCOUNT = "fromaccount";
+        public const string SMTPEMAIL_PASSWORD = "password";
+        public const string SMTPEMAIL_TO = "to";
+        public const string SMTPEMAIL_CC = "cc";
+        public const string SMTPEMAIL_BCC = "bcc";
+        public const string SMTPEMAIL_PRIORITY = "priority";
+        public const string SMTPEMAIL_SUBJECT = "subject";
+        public const string SMTPEMAIL_ATTACHMENTS = "attachments";
+        public const string SMTPEMAIL_BODY = "body";
+        public const string SMTPEMAIL_ISHTML = "ishtml";
+
+        // Exchange Email Activity
+        public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
+        public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
+        public const string EXCHANGEEMAIL_SOURCEID = "exchangesourceid";
+        public const string EXCHANGEEMAIL_TO = "to";
+        public const string EXCHANGEEMAIL_CC = "cc";
+        public const string EXCHANGEEMAIL_BCC = "bcc";
+        public const string EXCHANGEEMAIL_SUBJECT = "subject";
+        public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
+        public const string EXCHANGEEMAIL_BODY = "body";
+        public const string EXCHANGEEMAIL_ISHTML = "ishtml";
     }
 
     public class X6WorkflowLoadModel

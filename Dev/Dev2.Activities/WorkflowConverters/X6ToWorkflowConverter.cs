@@ -1,6 +1,7 @@
 ﻿using Dev2.Common;
 using Dev2.Common.X6;
 using Dev2.Utilities;
+using Dev2.Activities.Exchange;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -621,6 +622,10 @@ namespace Dev2.Activities.WF
                     return CreateJavascriptActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.DSFSENDEMAILACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSendEmailActivity(node);
+                case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateExchangeEmailActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };

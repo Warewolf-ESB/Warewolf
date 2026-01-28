@@ -1,3 +1,4 @@
+using Dev2.Activities.Exchange;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
@@ -826,6 +827,14 @@ namespace Dev2.Activities.WF
             else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
             {
                 cell = CreateJavascriptActivity(javascriptActivity, nodeId);
+            }
+            else if (activity is DsfSendEmailActivity sendEmailActivity)
+            {
+                cell = CreateSendEmailActivity(sendEmailActivity, nodeId);
+            }
+            else if (activity is DsfExchangeEmailNewActivity exchangeEmailActivity)
+            {
+                cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
             }
             else
             {

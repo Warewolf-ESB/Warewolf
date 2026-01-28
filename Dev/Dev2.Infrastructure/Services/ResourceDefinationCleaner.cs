@@ -220,6 +220,14 @@ namespace Dev2
                                                                                   GroupNumbers = new[] { 3 },
                                                                                   TransformFunction = DpapiWrapper.DecryptIfEncrypted
                                                                               }
+                                                                   },
+                                                                   {
+                                                                       "DsfSendEmailActivity", new StringTransform
+                                                                              {
+                                                                                  SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?DsfSendEmailActivity .*?Password=""([^""]+)"" .*?&gt;"),
+                                                                                  GroupNumbers = new[] { 2 },
+                                                                                  TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                              }
                                                                    }
                                                                };
             var xml = stringBuilder.ToString();
