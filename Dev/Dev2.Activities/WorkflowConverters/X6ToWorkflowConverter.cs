@@ -615,10 +615,11 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommentActivity(node);
                 case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
-                    return CreateFileWriteActivity(node);
-                 
+                    return CreateFileWriteActivity(node);                 
                 case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateJavascriptActivity(node);
+                case var t when t.Contains(Constants.DSFPYTHONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePythonActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
 

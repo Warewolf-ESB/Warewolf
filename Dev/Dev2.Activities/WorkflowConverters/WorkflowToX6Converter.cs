@@ -822,10 +822,13 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCommandLineActivity(dsfExecuteCommandLineActivity, nodeId);
             }
-
             else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
             {
                 cell = CreateJavascriptActivity(javascriptActivity, nodeId);
+            }
+            else if (activity is Scripting.DsfPythonActivity pythonscriptActivity)
+            {
+                cell = CreatePythonActivity(pythonscriptActivity, nodeId);
             }
             else
             {
