@@ -828,6 +828,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateJavascriptActivity(javascriptActivity, nodeId);
             }
+            else if (activity is Scripting.DsfRubyActivity rubyActivity)
+            {
+                cell = CreateRubyActivity(rubyActivity, nodeId);
+            }
             else if (activity is DsfSendEmailActivity sendEmailActivity)
             {
                 cell = CreateSendEmailActivity(sendEmailActivity, nodeId);
