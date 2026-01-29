@@ -10,16 +10,8 @@
 
 namespace Warewolf.FSharp
 open System.Reflection;
-
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-[<assembly: AssemblyCompany("Warewolf")>]
-[<assembly: AssemblyProduct("Warewolf")>]
-[<assembly: AssemblyCopyright("Copyright Warewolf 2020")>]
-
+[<assembly: AssemblyCompany(@"Warewolf")>]
+[<assembly: AssemblyProduct(@"Warewolf")>]
 
 // Version information for an assembly consists of the following four values:
 //
