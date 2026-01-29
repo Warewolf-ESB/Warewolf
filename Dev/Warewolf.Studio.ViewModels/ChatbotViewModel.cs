@@ -59,7 +59,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
-		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 
         public string LoadingStatusText
         {

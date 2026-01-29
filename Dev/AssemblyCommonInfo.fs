@@ -1,7 +1,6 @@
 ﻿namespace Warewolf.FSharp
 namespace Warewolf.FSharp
 open System.Reflection;
-#nowarn
 [<assembly: AssemblyCompany(@"Warewolf")>]
 [<assembly: AssemblyProduct(@"Warewolf")>]
 
