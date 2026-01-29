@@ -341,11 +341,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         if ($OutputFolderName -eq "Warewolf.COMIPC") {
             $OutputFolderName = "COMIPCProject"
         }
-        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
-            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
-        } else {
-            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
-        }
+        $SolutionParameterIsPresent = @(Get-Variable "$OutputFolderName*")[0].Value.IsPresent
         if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
