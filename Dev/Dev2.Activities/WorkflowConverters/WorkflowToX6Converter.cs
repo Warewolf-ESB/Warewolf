@@ -830,6 +830,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePythonActivity(pythonscriptActivity, nodeId);
             }
+            else if (activity is GateActivity gateActivity)
+            {
+                cell = CreateGateActivity(gateActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

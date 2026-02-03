@@ -14,10 +14,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.WorkflowConverters;
 using Newtonsoft.Json;
 using System;
 using System.Activities;
@@ -496,6 +498,73 @@ namespace Dev2.Activities
 
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.GATEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.GATEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Gate activity specific properties
+            var serializer = new Dev2JsonSerializer();
+            cell.data.TryAdd(Constants.GATE_CONDITIONS, serializer.Serialize(Conditions));
+            cell.data.TryAdd(Constants.GATE_RETRYENTRYPOINTID, RetryEntryPointId.ToString());
+            cell.data.TryAdd(Constants.GATE_GATEOPTIONS, serializer.Serialize(GateOptions));
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Gate activity specific properties
+            var serializer = new Dev2JsonSerializer();
+            
+            if (cell.data.TryGetString(Constants.GATE_CONDITIONS, out var conditionsJson))
+            {
+                try
+                {
+                    Conditions = serializer.Deserialize<List<ConditionExpression>>(conditionsJson);
+                }
+                catch
+                {
+                    Conditions = new List<ConditionExpression>();
+                }
+            }
+
+            if (cell.data.TryGetString(Constants.GATE_RETRYENTRYPOINTID, out var retryIdStr) && Guid.TryParse(retryIdStr, out var retryId))
+            {
+                RetryEntryPointId = retryId;
+            }
+
+
+            if (cell.data.TryGetString(Constants.GATE_GATEOPTIONS, out var gateOptionsJson))
+            {
+                try
+                {
+                    GateOptions = serializer.Deserialize<GateOptions>(gateOptionsJson);
+                }
+                catch
+                {
+                    GateOptions = new GateOptions();
+                }
+            }
+
+            // Defensive initialization
+            Conditions ??= new List<ConditionExpression>();
+            GateOptions ??= new GateOptions();
         }
 
         public override List<string> GetOutputs() => new List<string>();

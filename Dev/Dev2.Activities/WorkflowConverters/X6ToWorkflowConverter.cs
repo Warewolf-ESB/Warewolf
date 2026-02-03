@@ -622,6 +622,8 @@ namespace Dev2.Activities.WF
                     return CreatePythonActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.GATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGateActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };
