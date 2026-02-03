@@ -66,6 +66,12 @@ namespace Warewolf.Service
         public const string ChatbotSettings = nameof(ChatbotSettings);
     }
 
+    public static class SendChatbotMessage
+    {
+        public const string Message = nameof(Message);
+        public const string ConversationHistory = nameof(ConversationHistory);
+    }
+
     public static class SaveAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);
