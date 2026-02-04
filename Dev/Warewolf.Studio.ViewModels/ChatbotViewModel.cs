@@ -29,11 +29,12 @@ using Warewolf.Configuration;
 namespace Warewolf.Studio.ViewModels
 {
 #if NETFRAMEWORK
-    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase
+    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase, IDisposable
 #else
-	public class ChatbotViewModel : BindableBase2
+	public class ChatbotViewModel : BindableBase2, IDisposable
 #endif
 	{
+		private bool _disposed;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 		private string _message;
@@ -1172,6 +1173,15 @@ namespace Warewolf.Studio.ViewModels
                         max_tokens = 2000
                     };
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _eventAggregator?.Unsubscribe(this);
+                _disposed = true;
             }
         }
     }

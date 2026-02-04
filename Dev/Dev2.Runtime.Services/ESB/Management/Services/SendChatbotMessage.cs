@@ -139,7 +139,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private string SendMessageToProvider(ChatbotSource source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        private static string SendMessageToProvider(ChatbotSource source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
         {
             using (var client = new HttpClient())
             {
@@ -321,7 +321,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private bool IsAuthenticationError(HttpRequestException ex)
+        private static bool IsAuthenticationError(HttpRequestException ex)
         {
             if (ex.Message == null)
             {
@@ -334,7 +334,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                    message.Contains("authentication") || (message.Contains("invalid") && (message.Contains("key") || message.Contains("token")));
         }
 
-        private StringBuilder CreateErrorResponse(Dev2JsonSerializer serializer, string errorMessage)
+        private static StringBuilder CreateErrorResponse(Dev2JsonSerializer serializer, string errorMessage)
         {
             var result = new
             {
