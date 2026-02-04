@@ -86,6 +86,7 @@
     <Compile Include="ChatbotSourceModel.cs" />
     <Compile Include="ChatbotSourceViewModel.cs" />
     <Compile Include="ChatbotViewModel.cs" />
+    <Compile Include="ChatMessage.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DatabaseSourceViewModelBase.cs" />
     <Compile Include="DeploySourceExplorerViewModel.cs" />
