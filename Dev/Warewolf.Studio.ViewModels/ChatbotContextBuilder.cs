@@ -11,9 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Studio.Interfaces;
@@ -135,7 +137,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (options.IncludeResourcesXaml)
                 {
-                    capabilities.Add("- Analyze workflow XAML structure, activities, and data flow");
+                    capabilities.Add("- Analyze workflow structure summaries, activities, and data flow");
                     capabilities.Add("- Explain workflow logic and identify potential issues");
                     capabilities.Add("- Answer questions about workflow structure and dependencies");
                 }
@@ -175,8 +177,8 @@ namespace Warewolf.Studio.ViewModels
 
             if (options.IncludeResourcesXaml)
             {
-                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
-                promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
+                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow Summaries):");
+                promptBuilder.AppendLine("Each workflow resource includes a structural summary showing activities, variables, and flow connections.");
             }
             else
             {
@@ -394,12 +396,12 @@ namespace Warewolf.Studio.ViewModels
 
                     if (!string.IsNullOrEmpty(resourceId) && resourceId != "00000000-0000-0000-0000-000000000000")
                     {
-                        string xaml = null;
+                        string workflowSummary = null;
 #pragma warning disable CC0021 // Use nameof - these are string values from API, not type names
                         if (includeXaml && (resourceType == "WorkflowService" || resourceType == "Service"))
 #pragma warning restore CC0021
                         {
-                            xaml = FetchResourceXaml(server, resourceId);
+                            workflowSummary = FetchAndSummarizeResourceXaml(server, resourceId);
                         }
 
                         // Sanitize resource metadata fields to prevent prompt injection via crafted resource names
@@ -408,7 +410,7 @@ namespace Warewolf.Studio.ViewModels
                             id = resourceId,
                             name = SanitizeContentForPrompt(resourceName),
                             type = SanitizeContentForPrompt(resourceType),
-                            xaml = xaml
+                            summary = workflowSummary
                         };
 
                         resourceList.Add(resourceInfo);
@@ -429,7 +431,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static string FetchResourceXaml(IServer server, string resourceId)
+        private static string FetchAndSummarizeResourceXaml(IServer server, string resourceId)
         {
             var stopwatch = Stopwatch.StartNew();
 
@@ -461,24 +463,140 @@ namespace Warewolf.Studio.ViewModels
 
                 var xaml = result.Message?.ToString();
 
-                if (!string.IsNullOrEmpty(xaml) && xaml.Length > MaxResourceXamlLength)
+                if (string.IsNullOrEmpty(xaml))
                 {
-                    Dev2Logger.Debug($"ChatbotContext: XAML for resource {resourceId} too large ({xaml.Length} chars), excluding from context ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Debug");
                     return null;
                 }
 
-                // Sanitize XAML content to prevent prompt injection via malicious workflow definitions
-                xaml = SanitizeContentForPrompt(xaml);
+                var summary = SummarizeXaml(xaml);
 
-                Dev2Logger.Debug($"ChatbotContext: Fetched XAML for resource {resourceId} in {stopwatch.ElapsedMilliseconds}ms, size: {xaml?.Length ?? 0} chars", "Warewolf Debug");
-                return xaml;
+                // Sanitize summary to prevent prompt injection
+                summary = SanitizeContentForPrompt(summary);
+
+                Dev2Logger.Debug($"ChatbotContext: Summarized XAML for resource {resourceId} in {stopwatch.ElapsedMilliseconds}ms, original: {xaml.Length} chars, summary: {summary?.Length ?? 0} chars", "Warewolf Debug");
+                return summary;
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Dev2Logger.Error($"ChatbotContext: Error fetching XAML for resource {resourceId} after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
+                Dev2Logger.Error($"ChatbotContext: Error fetching/summarizing XAML for resource {resourceId} after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return null;
             }
+        }
+
+        internal static string SummarizeXaml(string xaml)
+        {
+            try
+            {
+                var doc = XDocument.Parse(xaml);
+                var sb = new StringBuilder();
+
+                // Extract activities (elements with DisplayName attribute)
+                var activities = doc.Descendants()
+                    .Where(e => e.Attribute("DisplayName") != null)
+                    .Select(e => new
+                    {
+                        DisplayName = e.Attribute("DisplayName")?.Value,
+                        TypeName = e.Name.LocalName
+                    })
+                    .Where(a => !string.IsNullOrEmpty(a.DisplayName))
+                    .ToList();
+
+                if (activities.Count > 0)
+                {
+                    sb.AppendLine("Activities: " + string.Join(", ",
+                        activities.Select(a => $"{a.DisplayName} ({a.TypeName})")));
+                }
+
+                // Extract variables
+                var variables = doc.Descendants()
+                    .Where(e => e.Name.LocalName == "Variable")
+                    .Select(e => new
+                    {
+                        Name = e.Attribute("Name")?.Value,
+                        TypeName = ExtractVariableTypeName(e.Attribute("Type")?.Value)
+                    })
+                    .Where(v => !string.IsNullOrEmpty(v.Name))
+                    .ToList();
+
+                if (variables.Count > 0)
+                {
+                    sb.AppendLine("Variables: " + string.Join(", ",
+                        variables.Select(v => $"{v.Name} ({v.TypeName})")));
+                }
+
+                // Extract FlowStep/FlowDecision/FlowSwitch structure
+                var flowSteps = doc.Descendants()
+                    .Where(e => e.Name.LocalName == "FlowStep"
+                             || e.Name.LocalName == "FlowDecision"
+                             || e.Name.LocalName == "FlowSwitch")
+                    .Select(e => e.Name.LocalName)
+                    .ToList();
+
+                if (flowSteps.Count > 0)
+                {
+                    sb.AppendLine("Flow structure: " + string.Join(" -> ", flowSteps));
+                }
+
+                // Extract DataList fields if present
+                var dataListElements = doc.Descendants()
+                    .Where(e => e.Name.LocalName == "DataList")
+                    .SelectMany(e => e.Elements())
+                    .Select(e => e.Name.LocalName)
+                    .ToList();
+
+                if (dataListElements.Count > 0)
+                {
+                    sb.AppendLine("DataList fields: " + string.Join(", ", dataListElements));
+                }
+
+                var summary = sb.ToString().Trim();
+                return string.IsNullOrEmpty(summary) ? null : summary;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Debug($"ChatbotContext: Failed to parse XAML for summarization, falling back to truncated content: {ex.Message}", "Warewolf Debug");
+
+                // Fall back to truncated raw XAML if parsing fails
+                if (xaml.Length > MaxResourceXamlLength)
+                {
+                    return xaml.Substring(0, MaxResourceXamlLength) + "\n... (truncated)";
+                }
+                return xaml;
+            }
+        }
+
+        private static string ExtractVariableTypeName(string typeAttribute)
+        {
+            if (string.IsNullOrEmpty(typeAttribute))
+            {
+                return "Object";
+            }
+
+            // Type attributes look like: "x:String", "scg:List(x:String)", "System.Int32", etc.
+            // Extract just the simple type name
+            var typeName = typeAttribute;
+
+            var colonIndex = typeName.LastIndexOf(':');
+            if (colonIndex >= 0 && colonIndex < typeName.Length - 1)
+            {
+                typeName = typeName.Substring(colonIndex + 1);
+            }
+
+            var dotIndex = typeName.LastIndexOf('.');
+            if (dotIndex >= 0 && dotIndex < typeName.Length - 1)
+            {
+                typeName = typeName.Substring(dotIndex + 1);
+            }
+
+            // Remove trailing parentheses/brackets
+            var parenIndex = typeName.IndexOf(')');
+            if (parenIndex >= 0)
+            {
+                typeName = typeName.Substring(0, parenIndex);
+            }
+
+            return typeName;
         }
 
         private static string GetSystemLog(IServer server)

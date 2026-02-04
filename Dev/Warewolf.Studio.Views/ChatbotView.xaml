@@ -1,12 +1,12 @@
 <UserControl x:Class="Warewolf.Studio.Views.ChatbotView"
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
 xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
 xmlns:views="clr-namespace:Warewolf.Studio.Views"
-mc:Ignorable="d" 
+mc:Ignorable="d"
 d:DesignHeight="450" d:DesignWidth="800"
 d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
 <UserControl.Resources>
@@ -16,13 +16,31 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <!-- Conversation History Toolbar -->
+        <Grid Grid.Row="0" Margin="10,5"
+              Visibility="{Binding IsChatbotConfigured, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding SavedConversations}"
+                      SelectedItem="{Binding SelectedConversation}"
+                      DisplayMemberPath="Title"
+                      Height="30"
+                      VerticalContentAlignment="Center"/>
+            <Button Grid.Column="1" Content="New Chat"
+                    Command="{Binding NewConversationCommand}"
+                    Margin="5,0,0,0" Width="80" Height="30"/>
+        </Grid>
 
         <!-- Content Area -->
         <Grid Grid.Row="1">
@@ -52,7 +70,14 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
                             <TextBlock Text="{Binding}"
                                        TextWrapping="Wrap"
                                        Margin="5"
-                                       Padding="5"/>
+                                       Padding="5">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Copy Message" Click="CopyMessage_Click" Tag="{Binding}"/>
+                                        <MenuItem Header="Copy All Messages" Click="CopyAllMessages_Click"/>
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -75,8 +100,8 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" 
-                     Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Grid.Column="0"
+                     Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                      Padding="5"
                      VerticalContentAlignment="Center"
                      Height="30">
@@ -85,8 +110,8 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
                 </TextBox.InputBindings>
             </TextBox>
 
-            <Button Grid.Column="1" 
-                    Content="Send" 
+            <Button Grid.Column="1"
+                    Content="Send"
                     Command="{Binding SendCommand}"
                     Margin="5,0,0,0"
                     Width="80"

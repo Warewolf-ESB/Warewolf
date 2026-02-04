@@ -10,6 +10,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -38,33 +40,42 @@ namespace Warewolf.Studio.ViewModels
     /// </summary>
     public class ChatMessage
     {
+        /// <summary>Unique identifier for this message.</summary>
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         /// <summary>The type of message (User, Bot, System, or Error).</summary>
+        [JsonProperty("type")]
         public ChatMessageType Type { get; set; }
 
         /// <summary>The text content of the message.</summary>
+        [JsonProperty("content")]
         public string Content { get; set; }
 
         /// <summary>The timestamp when the message was created.</summary>
+        [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// Gets the display text for the message, including a prefix based on the message type.
+        /// Gets the display text for the message, including a timestamp and prefix based on the message type.
         /// Used for UI binding to maintain the existing display format.
         /// </summary>
+        [JsonIgnore]
         public string DisplayText
         {
             get
             {
+                var time = Timestamp.ToString("HH:mm");
                 switch (Type)
                 {
                     case ChatMessageType.User:
-                        return $"You: {Content}";
+                        return $"[{time}] You: {Content}";
                     case ChatMessageType.Bot:
-                        return $"Bot: {Content}";
+                        return $"[{time}] Bot: {Content}";
                     case ChatMessageType.Error:
-                        return $"Error: {Content}";
+                        return $"[{time}] Error: {Content}";
                     case ChatMessageType.System:
-                        return $"Chatbot: {Content}";
+                        return $"[{time}] Chatbot: {Content}";
                     default:
                         return Content;
                 }
@@ -72,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         /// <summary>
-        /// Creates a new ChatMessage with the current timestamp.
+        /// Creates a new ChatMessage with a unique ID and the current timestamp.
         /// </summary>
         /// <param name="type">The message type.</param>
         /// <param name="content">The message content.</param>
@@ -81,9 +92,51 @@ namespace Warewolf.Studio.ViewModels
         {
             return new ChatMessage
             {
+                Id = Guid.NewGuid().ToString("N"),
                 Type = type,
                 Content = content,
                 Timestamp = DateTime.Now
+            };
+        }
+    }
+
+    /// <summary>
+    /// Represents a saved chatbot conversation with metadata for the conversation history dropdown.
+    /// </summary>
+    public class ChatConversation
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("createdAt")]
+        public DateTime CreatedAt { get; set; }
+
+        [JsonProperty("lastMessageAt")]
+        public DateTime LastMessageAt { get; set; }
+
+        [JsonProperty("messages")]
+        public List<ChatMessage> Messages { get; set; }
+
+        [JsonProperty("conversationSummary")]
+        public string ConversationSummary { get; set; }
+
+        public ChatConversation()
+        {
+            Messages = new List<ChatMessage>();
+        }
+
+        public static ChatConversation CreateNew()
+        {
+            return new ChatConversation
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Title = "New Chat",
+                CreatedAt = DateTime.Now,
+                LastMessageAt = DateTime.Now,
+                Messages = new List<ChatMessage>()
             };
         }
     }
