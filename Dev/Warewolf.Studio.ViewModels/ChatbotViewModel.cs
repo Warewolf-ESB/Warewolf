@@ -28,6 +28,8 @@ using Prism.Mvvm;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.Configuration;
+using System.Net.Sockets;
+using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -403,7 +405,15 @@ namespace Warewolf.Studio.ViewModels
 
 		private bool CanSend()
 		{
-			return IsChatbotConfigured && !string.IsNullOrWhiteSpace(Message) && !IsSending && !IsInitializingPrompt;
+			// Check basic conditions
+			if (!IsChatbotConfigured || string.IsNullOrWhiteSpace(Message) || IsSending || IsInitializingPrompt)
+			{
+				return false;
+			}
+
+			// Enforce rate limiting: ensure minimum delay between sends
+			var timeSinceLastSend = DateTime.Now - _lastSendTime;
+			return timeSinceLastSend.TotalMilliseconds >= MinSendDelayMs;
 		}
 
 		private async void Send()
@@ -411,35 +421,49 @@ namespace Warewolf.Studio.ViewModels
             await SendAsync();
         }
 
-        private async Task SendAsync()
-        {
-            if (!CanSend())
-            {
-                return;
-            }
+		private async Task SendAsync()
+		{
+			if (!CanSend())
+			{
+				return;
+			}
 
-            var userMessage = Message;
-            Message = string.Empty;
-            Messages.Add(ChatMessage.Create(ChatMessageType.User, userMessage));
+			// Record send time for rate limiting
+			_lastSendTime = DateTime.Now;
 
-            IsSending = true;
+			var userMessage = Message;
+			Message = string.Empty;
+			Messages.Add(ChatMessage.Create(ChatMessageType.User, userMessage));
 
-            try
-            {
-                var response = await CallChatbotApiAsync(userMessage);
-                Messages.Add(ChatMessage.Create(ChatMessageType.Bot, response));
-            }
-            catch (Exception ex)
-            {
-                Messages.Add(ChatMessage.Create(ChatMessageType.Error, ex.Message));
-            }
-            finally
-            {
-                IsSending = false;
-            }
-        }
+			IsSending = true;
 
-        private async Task<string> CallChatbotApiAsync(string userMessage)
+			try
+			{
+				var response = await CallChatbotApiAsync(userMessage);
+				Messages.Add(ChatMessage.Create(ChatMessageType.Bot, response));
+			}
+			catch (Exception ex)
+			{
+				// Log full exception details for debugging (includes stack trace, inner exceptions, etc.)
+				Dev2.Common.Dev2Logger.Error("Chatbot send message failed", ex, "Warewolf Error");
+
+				// Display user-friendly error message without sensitive details
+				var userFriendlyError = GetUserFriendlyErrorMessage(ex);
+				Messages.Add(ChatMessage.Create(ChatMessageType.Error, userFriendlyError));
+			}
+			finally
+			{
+				IsSending = false;
+
+				// Schedule a refresh of CanExecute after the rate limit period
+				_ = Task.Delay(MinSendDelayMs).ContinueWith(_ =>
+				{
+					InvokeOnUiThread(() => ((DelegateCommand)SendCommand).RaiseCanExecuteChanged());
+				});
+			}
+		}
+
+		private async Task<string> CallChatbotApiAsync(string userMessage)
         {
             try
             {
@@ -517,7 +541,47 @@ namespace Warewolf.Studio.ViewModels
                 || message.Contains("context length") && message.Contains("not enough"); // LM Studio context length error
         }
 
-        public void Dispose()
+		/// <summary>
+		/// Converts exception details into user-friendly error messages without exposing sensitive information.
+		/// Full exception details are logged separately for debugging.
+		/// </summary>
+		private static string GetUserFriendlyErrorMessage(Exception ex)
+		{
+			// Check for specific exception types and provide appropriate user-friendly messages
+			switch (ex)
+			{
+				case HttpRequestException httpEx:
+					if (httpEx.Message.Contains("401") || httpEx.Message.ToLower().Contains("unauthorized"))
+						return "Authentication failed. Please check your API key configuration.";
+					if (httpEx.Message.Contains("403") || httpEx.Message.ToLower().Contains("forbidden"))
+						return "Access forbidden. Please verify your API permissions.";
+					if (httpEx.Message.Contains("429") || httpEx.Message.ToLower().Contains("rate limit"))
+						return "Rate limit exceeded. Please wait a moment before trying again.";
+					if (httpEx.Message.Contains("500") || httpEx.Message.Contains("502") || httpEx.Message.Contains("503"))
+						return "The AI service is currently unavailable. Please try again later.";
+					if (httpEx.Message.ToLower().Contains("timeout"))
+						return "The request timed out. Please try again.";
+					if (httpEx.Message.ToLower().Contains("network") || httpEx.Message.ToLower().Contains("connection"))
+						return "Network connection error. Please check your internet connection.";
+					return "Failed to communicate with the AI service. Please check your connection and try again.";
+
+				case TaskCanceledException:
+					return "The request was cancelled or timed out. Please try again.";
+
+				case SocketException:
+					return "Network connection error. Please check your internet connection.";
+
+				case JsonException:
+					return "Failed to process the AI response. Please try again.";
+
+				default:
+					// Generic error for any other exception type
+					// Do not expose ex.Message as it may contain sensitive information
+					return "An unexpected error occurred. Please try again or contact support if the problem persists.";
+			}
+		}
+
+		public void Dispose()
         {
             if (!_disposed)
             {
