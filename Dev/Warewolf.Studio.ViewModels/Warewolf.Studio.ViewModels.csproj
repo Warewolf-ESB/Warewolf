@@ -81,6 +81,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatbotApiService.cs" />
+    <Compile Include="ChatbotContextBuilder.cs" />
     <Compile Include="ChatbotSourceModel.cs" />
     <Compile Include="ChatbotSourceViewModel.cs" />
     <Compile Include="ChatbotViewModel.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="FileChooserModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IProcessor.cs" />
+    <Compile Include="ManageChatbotSourceModel.cs" />
     <Compile Include="ManageMySqlSourceViewModel.cs" />
     <Compile Include="ManageOdbcSourceViewModel.cs" />
     <Compile Include="ManageOracleSourceViewModel.cs" />
