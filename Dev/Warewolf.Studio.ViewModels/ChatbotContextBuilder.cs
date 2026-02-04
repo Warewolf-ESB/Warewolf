@@ -76,113 +76,9 @@ namespace Warewolf.Studio.ViewModels
                 try
                 {
                     var promptBuilder = new StringBuilder(4096);
-                    promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
-                    promptBuilder.AppendLine();
-                    promptBuilder.AppendLine("## Your Capabilities:");
-
-                    var capabilities = new List<string>();
-
-                    if (options.IncludeResourcesJson || options.IncludeResourcesXaml)
-                    {
-                        capabilities.Add("- List and identify available workflow resources");
-
-                        if (options.IncludeResourcesXaml)
-                        {
-                            capabilities.Add("- Analyze workflow XAML structure, activities, and data flow");
-                            capabilities.Add("- Explain workflow logic and identify potential issues");
-                            capabilities.Add("- Answer questions about workflow structure and dependencies");
-                        }
-                    }
-
-                    if (options.IncludeSystemLog)
-                    {
-                        capabilities.Add("- Help debug issues using the system log");
-                        capabilities.Add("- Identify errors and warnings in recent activity");
-                        capabilities.Add("- Trace execution flow from log entries");
-                    }
-
-                    if (capabilities.Count > 0)
-                    {
-                        promptBuilder.AppendLine(string.Join("\n", capabilities));
-                    }
-                    else
-                    {
-                        promptBuilder.AppendLine("- Answer general questions about Warewolf workflows");
-                    }
-
-                    promptBuilder.AppendLine();
-                    promptBuilder.AppendLine("## Important Rules:");
-                    promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
-                    promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
-                    promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
-                    promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
-                    promptBuilder.AppendLine();
-
-                    // Get resources based on settings
-                    if (options.IncludeResourcesJson || options.IncludeResourcesXaml)
-                    {
-                        options.StatusUpdateCallback?.Invoke(options.IncludeResourcesXaml
-                            ? "Loading workspace resources with XAML definitions..."
-                            : "Loading workspace resources metadata...");
-
-                        var resourceStopwatch = Stopwatch.StartNew();
-                        result.ResourcesJson = GetWorkspaceResourcesAsJson(options.Server, options.IncludeResourcesXaml);
-                        resourceStopwatch.Stop();
-
-                        Dev2Logger.Info($"ChatbotContext: Resource loading completed in {resourceStopwatch.ElapsedMilliseconds}ms (includeXaml: {options.IncludeResourcesXaml})", "Warewolf Performance");
-
-                        if (!string.IsNullOrEmpty(result.ResourcesJson))
-                        {
-                            if (options.IncludeResourcesXaml)
-                            {
-                                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
-                                promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
-                            }
-                            else
-                            {
-                                promptBuilder.AppendLine("## Workspace Resources (JSON - Metadata Only):");
-                                promptBuilder.AppendLine("Resource names, types, and IDs are provided below.");
-                            }
-                            promptBuilder.AppendLine("```json");
-                            promptBuilder.AppendLine(result.ResourcesJson);
-                            promptBuilder.AppendLine("```");
-                            promptBuilder.AppendLine();
-
-                            // Count resources
-                            try
-                            {
-                                var resources = JsonConvert.DeserializeObject<List<object>>(result.ResourcesJson);
-                                result.ResourceCount = resources?.Count ?? 0;
-                                Dev2Logger.Info($"ChatbotContext: Loaded {result.ResourceCount} resources, JSON size: {result.ResourcesJson.Length} chars", "Warewolf Info");
-                            }
-                            catch (Exception ex)
-                            {
-                                Dev2Logger.Error("Error counting resources from JSON", ex, "Warewolf Error");
-                            }
-                        }
-                    }
-
-                    // Get system log based on settings
-                    if (options.IncludeSystemLog)
-                    {
-                        options.StatusUpdateCallback?.Invoke("Loading recent system logs...");
-
-                        var logStopwatch = Stopwatch.StartNew();
-                        result.SystemLog = GetSystemLog(options.Server);
-                        logStopwatch.Stop();
-
-                        Dev2Logger.Info($"ChatbotContext: System log loading completed in {logStopwatch.ElapsedMilliseconds}ms, size: {result.SystemLog?.Length ?? 0} chars", "Warewolf Performance");
-
-                        if (!string.IsNullOrEmpty(result.SystemLog))
-                        {
-                            result.HasSystemLog = true;
-                            promptBuilder.AppendLine("## System Log (Recent Entries):");
-                            promptBuilder.AppendLine("```");
-                            promptBuilder.AppendLine(result.SystemLog);
-                            promptBuilder.AppendLine("```");
-                            promptBuilder.AppendLine();
-                        }
-                    }
+                    BuildSystemPromptHeader(promptBuilder, options);
+                    AppendResourcesContext(promptBuilder, options, result);
+                    AppendSystemLogContext(promptBuilder, options, result);
 
                     result.SystemPrompt = promptBuilder.ToString();
 
@@ -202,72 +98,160 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        private static void BuildSystemPromptHeader(StringBuilder promptBuilder, ChatbotContextOptions options)
+        {
+            promptBuilder.AppendLine("You are a Warewolf workflow debugging assistant. You are non-agentic and can only answer questions about the Warewolf resources and system logs provided to you.");
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine("## Your Capabilities:");
+
+            var capabilities = BuildCapabilitiesList(options);
+
+            if (capabilities.Count > 0)
+            {
+                promptBuilder.AppendLine(string.Join("\n", capabilities));
+            }
+            else
+            {
+                promptBuilder.AppendLine("- Answer general questions about Warewolf workflows");
+            }
+
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine("## Important Rules:");
+            promptBuilder.AppendLine("- You can ONLY discuss the resources and logs provided below");
+            promptBuilder.AppendLine("- Do NOT provide information about resources not in this context");
+            promptBuilder.AppendLine("- Do NOT make assumptions about system behavior beyond what's in the logs");
+            promptBuilder.AppendLine("- If asked about something not in your context, politely explain you only have access to the provided resources and logs");
+            promptBuilder.AppendLine();
+        }
+
+        private static List<string> BuildCapabilitiesList(ChatbotContextOptions options)
+        {
+            var capabilities = new List<string>();
+
+            if (options.IncludeResourcesJson || options.IncludeResourcesXaml)
+            {
+                capabilities.Add("- List and identify available workflow resources");
+
+                if (options.IncludeResourcesXaml)
+                {
+                    capabilities.Add("- Analyze workflow XAML structure, activities, and data flow");
+                    capabilities.Add("- Explain workflow logic and identify potential issues");
+                    capabilities.Add("- Answer questions about workflow structure and dependencies");
+                }
+            }
+
+            if (options.IncludeSystemLog)
+            {
+                capabilities.Add("- Help debug issues using the system log");
+                capabilities.Add("- Identify errors and warnings in recent activity");
+                capabilities.Add("- Trace execution flow from log entries");
+            }
+
+            return capabilities;
+        }
+
+        private void AppendResourcesContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
+        {
+            if (!options.IncludeResourcesJson && !options.IncludeResourcesXaml)
+            {
+                return;
+            }
+
+            options.StatusUpdateCallback?.Invoke(options.IncludeResourcesXaml
+                ? "Loading workspace resources with XAML definitions..."
+                : "Loading workspace resources metadata...");
+
+            var resourceStopwatch = Stopwatch.StartNew();
+            result.ResourcesJson = GetWorkspaceResourcesAsJson(options.Server, options.IncludeResourcesXaml);
+            resourceStopwatch.Stop();
+
+            Dev2Logger.Info($"ChatbotContext: Resource loading completed in {resourceStopwatch.ElapsedMilliseconds}ms (includeXaml: {options.IncludeResourcesXaml})", "Warewolf Performance");
+
+            if (string.IsNullOrEmpty(result.ResourcesJson))
+            {
+                return;
+            }
+
+            if (options.IncludeResourcesXaml)
+            {
+                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow XAML):");
+                promptBuilder.AppendLine("Each workflow resource includes its XAML definition showing activities, connections, and data mappings.");
+            }
+            else
+            {
+                promptBuilder.AppendLine("## Workspace Resources (JSON - Metadata Only):");
+                promptBuilder.AppendLine("Resource names, types, and IDs are provided below.");
+            }
+            promptBuilder.AppendLine("```json");
+            promptBuilder.AppendLine(result.ResourcesJson);
+            promptBuilder.AppendLine("```");
+            promptBuilder.AppendLine();
+
+            result.ResourceCount = CountResourcesFromJson(result.ResourcesJson);
+        }
+
+        private static int CountResourcesFromJson(string resourcesJson)
+        {
+            try
+            {
+                var resources = JsonConvert.DeserializeObject<List<object>>(resourcesJson);
+                var count = resources?.Count ?? 0;
+                Dev2Logger.Info($"ChatbotContext: Loaded {count} resources, JSON size: {resourcesJson.Length} chars", "Warewolf Info");
+                return count;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error counting resources from JSON", ex, "Warewolf Error");
+                return 0;
+            }
+        }
+
+        private static void AppendSystemLogContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
+        {
+            if (!options.IncludeSystemLog)
+            {
+                return;
+            }
+
+            options.StatusUpdateCallback?.Invoke("Loading recent system logs...");
+
+            var logStopwatch = Stopwatch.StartNew();
+            result.SystemLog = GetSystemLog(options.Server);
+            logStopwatch.Stop();
+
+            Dev2Logger.Info($"ChatbotContext: System log loading completed in {logStopwatch.ElapsedMilliseconds}ms, size: {result.SystemLog?.Length ?? 0} chars", "Warewolf Performance");
+
+            if (!string.IsNullOrEmpty(result.SystemLog))
+            {
+                result.HasSystemLog = true;
+                promptBuilder.AppendLine("## System Log (Recent Entries):");
+                promptBuilder.AppendLine("```");
+                promptBuilder.AppendLine(result.SystemLog);
+                promptBuilder.AppendLine("```");
+                promptBuilder.AppendLine();
+            }
+        }
+
         private string GetWorkspaceResourcesAsJson(IServer server, bool includeXaml)
         {
             var stopwatch = Stopwatch.StartNew();
 
             try
             {
-                // Ensure server connection is established
-                if (server?.Connection == null || !server.Connection.IsConnected)
+                if (!WaitForServerConnection(server))
                 {
-                    Dev2Logger.Warn("Server connection not established, waiting for connection...", "Warewolf Info");
-
-                    var retries = 0;
-                    while ((server?.Connection == null || !server.Connection.IsConnected) && retries < MaxRetryAttempts)
-                    {
-                        System.Threading.Thread.Sleep(RetryDelayMs);
-                        retries++;
-                    }
-
-                    if (server?.Connection == null || !server.Connection.IsConnected)
-                    {
-                        stopwatch.Stop();
-                        Dev2Logger.Warn($"Server connection not available after waiting ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Info");
-                        return null;
-                    }
-                }
-
-                var serializer = new Dev2JsonSerializer();
-                var servicePayload = new EsbExecuteRequest
-                {
-                    ServiceName = "FetchExplorerItemsService"
-                };
-
-                var toSend = serializer.SerializeToBuilder(servicePayload);
-
-                var requestStopwatch = Stopwatch.StartNew();
-                Dev2Logger.Debug("ChatbotContext: Sending FetchExplorerItemsService request", "Warewolf Debug");
-
-                var rawPayload = server.Connection.ExecuteCommand(toSend, server.Connection.WorkspaceID);
-
-                requestStopwatch.Stop();
-                Dev2Logger.Info($"ChatbotContext: FetchExplorerItemsService response received in {requestStopwatch.ElapsedMilliseconds}ms, payload size: {rawPayload?.Length ?? 0} bytes", "Warewolf Performance");
-
-                if (rawPayload == null || rawPayload.Length == 0)
-                {
-                    Dev2Logger.Warn("No response from FetchExplorerItemsService", "Warewolf Info");
+                    stopwatch.Stop();
+                    Dev2Logger.Warn($"Server connection not available after waiting ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Info");
                     return null;
                 }
 
-                var explorerItemsJson = ExtractExplorerItemsJson(serializer, rawPayload);
-
+                var explorerItemsJson = FetchExplorerItems(server);
                 if (string.IsNullOrEmpty(explorerItemsJson))
                 {
-                    Dev2Logger.Warn("No explorer items after decompression", "Warewolf Info");
                     return null;
                 }
 
-                dynamic explorerItems = JsonConvert.DeserializeObject(explorerItemsJson);
-
-                var resourceList = new List<object>();
-
-                var extractStopwatch = Stopwatch.StartNew();
-                ExtractResourcesFromExplorerItem(server, explorerItems, resourceList, includeXaml);
-                extractStopwatch.Stop();
-
-                Dev2Logger.Info($"ChatbotContext: Extracted {resourceList.Count} resources in {extractStopwatch.ElapsedMilliseconds}ms (includeXaml: {includeXaml})", "Warewolf Performance");
-
+                var resourceList = ExtractResources(server, explorerItemsJson, includeXaml);
                 if (resourceList.Count == 0)
                 {
                     Dev2Logger.Warn("No resources extracted from explorer items", "Warewolf Info");
@@ -276,17 +260,7 @@ namespace Warewolf.Studio.ViewModels
 
                 Dev2Logger.Info($"ChatbotContext: Loading {resourceList.Count} resources into chatbot context (includeXaml: {includeXaml})", "Warewolf Info");
 
-                var serializeStopwatch = Stopwatch.StartNew();
-                var json = JsonConvert.SerializeObject(resourceList, Formatting.Indented);
-                serializeStopwatch.Stop();
-
-                Dev2Logger.Info($"ChatbotContext: JSON serialization completed in {serializeStopwatch.ElapsedMilliseconds}ms, size: {json.Length} chars", "Warewolf Performance");
-
-                if (json.Length > MaxResourcesJsonLength)
-                {
-                    json = json.Substring(0, MaxResourcesJsonLength) + "\n... (truncated for size)";
-                    Dev2Logger.Warn($"ChatbotContext: JSON truncated from {json.Length} to {MaxResourcesJsonLength} chars to avoid token limits", "Warewolf Info");
-                }
+                var json = SerializeAndTruncateResources(resourceList);
 
                 stopwatch.Stop();
                 Dev2Logger.Info($"ChatbotContext: GetWorkspaceResourcesAsJson completed in {stopwatch.ElapsedMilliseconds}ms total", "Warewolf Performance");
@@ -299,6 +273,91 @@ namespace Warewolf.Studio.ViewModels
                 Dev2Logger.Error($"ChatbotContext: Error getting workspace resources after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return null;
             }
+        }
+
+        private static bool WaitForServerConnection(IServer server)
+        {
+            if (server?.Connection != null && server.Connection.IsConnected)
+            {
+                return true;
+            }
+
+            Dev2Logger.Warn("Server connection not established, waiting for connection...", "Warewolf Info");
+
+            var retries = 0;
+            while ((server?.Connection == null || !server.Connection.IsConnected) && retries < MaxRetryAttempts)
+            {
+                System.Threading.Thread.Sleep(RetryDelayMs);
+                retries++;
+            }
+
+            return server?.Connection != null && server.Connection.IsConnected;
+        }
+
+        private static string FetchExplorerItems(IServer server)
+        {
+            var serializer = new Dev2JsonSerializer();
+            var servicePayload = new EsbExecuteRequest
+            {
+                ServiceName = "FetchExplorerItemsService"
+            };
+
+            var toSend = serializer.SerializeToBuilder(servicePayload);
+
+            var requestStopwatch = Stopwatch.StartNew();
+            Dev2Logger.Debug("ChatbotContext: Sending FetchExplorerItemsService request", "Warewolf Debug");
+
+            var rawPayload = server.Connection.ExecuteCommand(toSend, server.Connection.WorkspaceID);
+
+            requestStopwatch.Stop();
+            Dev2Logger.Info($"ChatbotContext: FetchExplorerItemsService response received in {requestStopwatch.ElapsedMilliseconds}ms, payload size: {rawPayload?.Length ?? 0} bytes", "Warewolf Performance");
+
+            if (rawPayload == null || rawPayload.Length == 0)
+            {
+                Dev2Logger.Warn("No response from FetchExplorerItemsService", "Warewolf Info");
+                return null;
+            }
+
+            var explorerItemsJson = ExtractExplorerItemsJson(serializer, rawPayload);
+
+            if (string.IsNullOrEmpty(explorerItemsJson))
+            {
+                Dev2Logger.Warn("No explorer items after decompression", "Warewolf Info");
+            }
+
+            return explorerItemsJson;
+        }
+
+        private List<object> ExtractResources(IServer server, string explorerItemsJson, bool includeXaml)
+        {
+            dynamic explorerItems = JsonConvert.DeserializeObject(explorerItemsJson);
+
+            var resourceList = new List<object>();
+
+            var extractStopwatch = Stopwatch.StartNew();
+            ExtractResourcesFromExplorerItem(server, explorerItems, resourceList, includeXaml);
+            extractStopwatch.Stop();
+
+            Dev2Logger.Info($"ChatbotContext: Extracted {resourceList.Count} resources in {extractStopwatch.ElapsedMilliseconds}ms (includeXaml: {includeXaml})", "Warewolf Performance");
+
+            return resourceList;
+        }
+
+        private static string SerializeAndTruncateResources(List<object> resourceList)
+        {
+            var serializeStopwatch = Stopwatch.StartNew();
+            var json = JsonConvert.SerializeObject(resourceList, Formatting.Indented);
+            serializeStopwatch.Stop();
+
+            Dev2Logger.Info($"ChatbotContext: JSON serialization completed in {serializeStopwatch.ElapsedMilliseconds}ms, size: {json.Length} chars", "Warewolf Performance");
+
+            if (json.Length > MaxResourcesJsonLength)
+            {
+                Dev2Logger.Warn($"ChatbotContext: JSON truncated from {json.Length} to {MaxResourcesJsonLength} chars to avoid token limits", "Warewolf Info");
+                json = json.Substring(0, MaxResourcesJsonLength) + "\n... (truncated for size)";
+            }
+
+            return json;
         }
 
         private static string ExtractExplorerItemsJson(Dev2JsonSerializer serializer, StringBuilder rawPayload)

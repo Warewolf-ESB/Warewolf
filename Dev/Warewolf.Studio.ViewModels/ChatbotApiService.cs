@@ -108,47 +108,7 @@ namespace Warewolf.Studio.ViewModels
             var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
             var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
 
-            // Try with max_completion_tokens first (newer API standard)
-            var payload = CreatePayload(modelToUse, messagesArray, useMaxCompletionTokens: true, includeTemperature: true);
-            var json = JsonConvert.SerializeObject(payload);
-
-            var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-            var response = await _httpClient.SendAsync(request);
-
-            // If we get an error about unsupported parameters, retry with different combinations
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-
-                // Check if max_completion_tokens is not supported
-                if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
-                {
-                    Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
-
-                    payload = CreatePayload(modelToUse, messagesArray, useMaxCompletionTokens: false, includeTemperature: true);
-                    json = JsonConvert.SerializeObject(payload);
-                    request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-                    response = await _httpClient.SendAsync(request);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        errorContent = await response.Content.ReadAsStringAsync();
-                    }
-                }
-
-                // Check if temperature is not supported
-                if (!response.IsSuccessStatusCode && errorContent.Contains("temperature") && errorContent.Contains("not support"))
-                {
-                    Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
-
-                    var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
-
-                    payload = CreatePayload(modelToUse, messagesArray, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
-                    json = JsonConvert.SerializeObject(payload);
-                    request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-                    response = await _httpClient.SendAsync(request);
-                }
-            }
+            var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, authHeaderName, authHeaderPrefix, additionalHeaders);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -159,6 +119,60 @@ namespace Warewolf.Studio.ViewModels
             }
 
             return ParseResponseContent(responseContent);
+        }
+
+        /// <summary>
+        /// Sends the request, automatically retrying with different payload parameters when the API
+        /// rejects max_completion_tokens or temperature as unsupported.
+        /// </summary>
+        private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object[] messagesArray, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+        {
+            // Try with max_completion_tokens first (newer API standard)
+            var payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: true, includeTemperature: true);
+            var json = JsonConvert.SerializeObject(payload);
+
+            var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+
+            // Retry with max_tokens if max_completion_tokens is not supported
+            if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+            {
+                Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
+
+                payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: false, includeTemperature: true);
+                json = JsonConvert.SerializeObject(payload);
+                request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+                response = await _httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                errorContent = await response.Content.ReadAsStringAsync();
+            }
+
+            // Retry without temperature if not supported
+            if (errorContent.Contains("temperature") && errorContent.Contains("not support"))
+            {
+                Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
+
+                var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
+
+                payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
+                json = JsonConvert.SerializeObject(payload);
+                request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+                response = await _httpClient.SendAsync(request);
+            }
+
+            return response;
         }
 
         private static string ParseResponseContent(string responseContent)

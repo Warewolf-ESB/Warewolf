@@ -326,13 +326,7 @@ namespace Warewolf.Studio.ViewModels
                     IncludeResourcesXaml = _includeResourcesXaml,
                     IncludeResourcesJson = _includeResourcesJson,
                     Server = _server,
-                    StatusUpdateCallback = status =>
-                    {
-                        System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
-                        {
-                            LoadingStatusText = status;
-                        }));
-                    }
+                    StatusUpdateCallback = status => UpdateStatusOnUiThread(status)
                 };
 
                 var result = await _contextBuilder.BuildContextAsync(options);
@@ -342,35 +336,7 @@ namespace Warewolf.Studio.ViewModels
                 _systemLog = result.SystemLog;
                 _systemPromptInitialized = true;
 
-                // Update UI on the dispatcher thread
-                System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
-                {
-                    IsInitializingPrompt = false;
-                    LoadingStatusText = string.Empty;
-
-                    if (result.ResourceCount > 0 || result.HasSystemLog)
-                    {
-                        var contextParts = new System.Collections.Generic.List<string>();
-                        if (result.ResourceCount > 0)
-                        {
-                            contextParts.Add($"{result.ResourceCount} resource{(result.ResourceCount == 1 ? "" : "s")}");
-                        }
-                        if (result.HasSystemLog)
-                        {
-                            contextParts.Add("recent system logs");
-                        }
-
-                        Messages.Add($"Chatbot: Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
-                            $"{string.Join(" and ", contextParts)}. " +
-                            "I can help you understand your workflows, debug issues, and answer questions about your Warewolf environment. " +
-                            "What would you like to know?");
-                    }
-                    else
-                    {
-                        Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
-                            "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context.");
-                    }
-                }));
+                InvokeOnUiThread(() => DisplayContextLoadedGreeting(result));
             }
             catch (Exception ex)
             {
@@ -379,14 +345,53 @@ namespace Warewolf.Studio.ViewModels
                 _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
                 _systemPromptInitialized = true;
 
-                System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
+                InvokeOnUiThread(() =>
                 {
                     IsInitializingPrompt = false;
                     LoadingStatusText = string.Empty;
                     Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
                         "Note: I had trouble loading workspace context, but I can still help answer general questions.");
-                }));
+                });
             }
+        }
+
+        private void DisplayContextLoadedGreeting(ChatbotContextResult result)
+        {
+            IsInitializingPrompt = false;
+            LoadingStatusText = string.Empty;
+
+            if (result.ResourceCount > 0 || result.HasSystemLog)
+            {
+                var contextParts = new System.Collections.Generic.List<string>();
+                if (result.ResourceCount > 0)
+                {
+                    contextParts.Add($"{result.ResourceCount} resource{(result.ResourceCount == 1 ? "" : "s")}");
+                }
+                if (result.HasSystemLog)
+                {
+                    contextParts.Add("recent system logs");
+                }
+
+                Messages.Add($"Chatbot: Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
+                    $"{string.Join(" and ", contextParts)}. " +
+                    "I can help you understand your workflows, debug issues, and answer questions about your Warewolf environment. " +
+                    "What would you like to know?");
+            }
+            else
+            {
+                Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
+                    "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context.");
+            }
+        }
+
+        private void UpdateStatusOnUiThread(string status)
+        {
+            InvokeOnUiThread(() => { LoadingStatusText = status; });
+        }
+
+        private static void InvokeOnUiThread(Action action)
+        {
+            System.Windows.Application.Current?.Dispatcher?.BeginInvoke(action);
         }
 
 		private bool CanSend()
@@ -431,44 +436,9 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                // Wait for system prompt initialization with timeout
-                var waitCount = 0;
-                while (!_systemPromptInitialized && waitCount < MaxRetryAttempts)
-                {
-                    await Task.Delay(RetryDelayMs);
-                    waitCount++;
-                }
+                await WaitForSystemPromptInitializationAsync();
 
-                // Build chat messages list with system prompt and full conversation history
-                var chatMessages = new System.Collections.Generic.List<ChatCompletionMessage>();
-
-                // Use the initialized system prompt
-                if (!string.IsNullOrEmpty(_systemPrompt))
-                {
-                    chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = _systemPrompt });
-                }
-                else
-                {
-                    var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
-                    chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = fallbackPrompt });
-                    Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
-                }
-
-                // Add entire conversation history (which already includes the current message from SendAsync)
-                foreach (var msg in Messages)
-                {
-                    if (msg.StartsWith("You: "))
-                    {
-                        chatMessages.Add(new ChatCompletionMessage { Role = "user", Content = msg.Substring(5) });
-                    }
-                    else if (msg.StartsWith("Bot: "))
-                    {
-                        chatMessages.Add(new ChatCompletionMessage { Role = "assistant", Content = msg.Substring(5) });
-                    }
-                    // Skip "Chatbot: " messages (initial greetings) - they're UI only and would break
-                    // the required user/assistant/user/assistant alternating pattern
-                    // Also skip error messages and other system messages
-                }
+                var chatMessages = BuildChatMessages();
 
                 return await _chatbotApiService.SendMessageAsync(chatMessages, _configuredSource);
             }
@@ -480,6 +450,49 @@ namespace Warewolf.Studio.ViewModels
                        "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
                        "(System Log, Resources XAML, or Resources JSON) to reduce the context size.";
             }
+        }
+
+        private async Task WaitForSystemPromptInitializationAsync()
+        {
+            var waitCount = 0;
+            while (!_systemPromptInitialized && waitCount < MaxRetryAttempts)
+            {
+                await Task.Delay(RetryDelayMs);
+                waitCount++;
+            }
+        }
+
+        private System.Collections.Generic.List<ChatCompletionMessage> BuildChatMessages()
+        {
+            var chatMessages = new System.Collections.Generic.List<ChatCompletionMessage>();
+
+            // Add system prompt (or fallback if initialization timed out)
+            if (!string.IsNullOrEmpty(_systemPrompt))
+            {
+                chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = _systemPrompt });
+            }
+            else
+            {
+                var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
+                chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = fallbackPrompt });
+                Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+            }
+
+            // Add conversation history; skip "Chatbot: " greetings and error/system messages
+            // to maintain the required user/assistant alternating pattern
+            foreach (var msg in Messages)
+            {
+                if (msg.StartsWith("You: "))
+                {
+                    chatMessages.Add(new ChatCompletionMessage { Role = "user", Content = msg.Substring(5) });
+                }
+                else if (msg.StartsWith("Bot: "))
+                {
+                    chatMessages.Add(new ChatCompletionMessage { Role = "assistant", Content = msg.Substring(5) });
+                }
+            }
+
+            return chatMessages;
         }
 
         private static bool IsTokenLimitError(HttpRequestException ex)
