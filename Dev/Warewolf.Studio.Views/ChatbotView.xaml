@@ -37,9 +37,25 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
                       DisplayMemberPath="Title"
                       Height="30"
                       VerticalContentAlignment="Center"/>
-            <Button Grid.Column="1" Content="New Chat"
-                    Command="{Binding NewConversationCommand}"
-                    Margin="5,0,0,0" Width="80" Height="30"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="New Chat"
+                        Command="{Binding NewConversationCommand}"
+                        Margin="5,0,0,0" Width="80" Height="30"/>
+                <Button Content="Export"
+                        Margin="5,0,0,0" Width="60" Height="30">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Export as Text" Command="{Binding ExportAsTextCommand}"/>
+                            <MenuItem Header="Export as JSON" Command="{Binding ExportAsJsonCommand}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <EventSetter Event="Click" Handler="ExportButton_Click"/>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
         </Grid>
 
         <!-- Content Area -->

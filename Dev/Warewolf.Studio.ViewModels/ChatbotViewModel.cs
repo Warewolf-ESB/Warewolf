@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Communication;
@@ -61,6 +62,7 @@ namespace Warewolf.Studio.ViewModels
 		private const int MaxConversationTitleLength = 50;
 
 		private bool _disposed;
+		private CancellationTokenSource _streamingCts;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 		private readonly IChatbotContextBuilder _contextBuilder;
@@ -171,6 +173,8 @@ namespace Warewolf.Studio.ViewModels
             SavedConversations = new ObservableCollection<ChatConversation>();
             SendCommand = new DelegateCommand(Send, CanSend);
             NewConversationCommand = new DelegateCommand(NewConversation);
+            ExportAsTextCommand = new DelegateCommand(ExportAsText, () => Messages.Count > 0);
+            ExportAsJsonCommand = new DelegateCommand(ExportAsJson, () => Messages.Count > 0);
         }
 
         public ChatbotViewModel(IServer server, ICommand openSettingsCommand)
@@ -189,6 +193,8 @@ namespace Warewolf.Studio.ViewModels
             SavedConversations = new ObservableCollection<ChatConversation>();
             SendCommand = new DelegateCommand(Send, CanSend);
             NewConversationCommand = new DelegateCommand(NewConversation);
+            ExportAsTextCommand = new DelegateCommand(ExportAsText, () => Messages.Count > 0);
+            ExportAsJsonCommand = new DelegateCommand(ExportAsJson, () => Messages.Count > 0);
 
             LoadSavedConversationsList();
             LoadChatbotConfiguration();
@@ -324,6 +330,8 @@ namespace Warewolf.Studio.ViewModels
         public ICommand SendCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand NewConversationCommand { get; }
+        public ICommand ExportAsTextCommand { get; }
+        public ICommand ExportAsJsonCommand { get; }
 
         public void RefreshConfiguration()
         {
@@ -529,8 +537,7 @@ namespace Warewolf.Studio.ViewModels
 				// Apply sliding window before sending
 				ApplySlidingWindow();
 
-				var response = await CallChatbotApiAsync(userMessage);
-				Messages.Add(ChatMessage.Create(ChatMessageType.Bot, response));
+				await CallChatbotApiStreamingAsync(userMessage);
 			}
 			catch (Exception ex)
 			{
@@ -540,10 +547,14 @@ namespace Warewolf.Studio.ViewModels
 				// Display user-friendly error message without sensitive details
 				var userFriendlyError = GetUserFriendlyErrorMessage(ex);
 				Messages.Add(ChatMessage.Create(ChatMessageType.Error, userFriendlyError));
+
+				// Restore the user's message to the input box so they can retry
+				Message = userMessage;
 			}
 			finally
 			{
 				IsSending = false;
+				_streamingCts = null;
 
 				// Schedule a refresh of CanExecute after the rate limit period
 				_ = Task.Delay(MinSendDelayMs).ContinueWith(_ =>
@@ -585,6 +596,60 @@ namespace Warewolf.Studio.ViewModels
                 return "The token limit has been exceeded. The context is too large for the selected model. " +
                        "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
                        "(System Log, Resources XAML, or Resources JSON) to reduce the context size.";
+            }
+        }
+
+        private async Task CallChatbotApiStreamingAsync(string userMessage)
+        {
+            await WaitForSystemPromptInitializationAsync();
+
+            var chatMessages = BuildChatMessages();
+
+            // Create a placeholder bot message for streaming tokens into
+            var botMessage = ChatMessage.Create(ChatMessageType.Bot, "");
+            InvokeOnUiThread(() => Messages.Add(botMessage));
+
+            _streamingCts = new CancellationTokenSource();
+
+            try
+            {
+                await _chatbotApiService.SendMessageStreamingAsync(chatMessages, _configuredSource, token =>
+                {
+                    InvokeOnUiThread(() => botMessage.AppendContent(token));
+                }, _streamingCts.Token);
+            }
+            catch (HttpRequestException ex) when (IsTokenLimitError(ex))
+            {
+                Dev2.Common.Dev2Logger.Warn($"Token limit reached during streaming, attempting to trim: {ex.Message}", "Warewolf Info");
+
+                // Remove the incomplete bot message
+                InvokeOnUiThread(() => Messages.Remove(botMessage));
+
+                var trimmed = TrimConversationHistory();
+                if (trimmed)
+                {
+                    try
+                    {
+                        chatMessages = BuildChatMessages();
+                        var retryMessage = ChatMessage.Create(ChatMessageType.Bot, "");
+                        InvokeOnUiThread(() => Messages.Add(retryMessage));
+
+                        await _chatbotApiService.SendMessageStreamingAsync(chatMessages, _configuredSource, token =>
+                        {
+                            InvokeOnUiThread(() => retryMessage.AppendContent(token));
+                        }, _streamingCts.Token);
+                        return;
+                    }
+                    catch (HttpRequestException retryEx) when (IsTokenLimitError(retryEx))
+                    {
+                        Dev2.Common.Dev2Logger.Warn($"Token limit still exceeded after trimming: {retryEx.Message}", "Warewolf Info");
+                    }
+                }
+
+                InvokeOnUiThread(() => Messages.Add(ChatMessage.Create(ChatMessageType.Error,
+                    "The token limit has been exceeded. The context is too large for the selected model. " +
+                    "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
+                    "(System Log, Resources XAML, or Resources JSON) to reduce the context size.")));
             }
         }
 
@@ -937,6 +1002,88 @@ namespace Warewolf.Studio.ViewModels
 			}
 		}
 
+        private void ExportAsText()
+        {
+            try
+            {
+                var exportFolder = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Warewolf", "ChatExports");
+                Directory.CreateDirectory(exportFolder);
+
+                var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                var title = _currentConversation?.Title ?? "Chat";
+                // Sanitize title for filename
+                foreach (var c in Path.GetInvalidFileNameChars())
+                {
+                    title = title.Replace(c, '_');
+                }
+                var filePath = Path.Combine(exportFolder, $"{title}_{timestamp}.txt");
+
+                var sb = new StringBuilder();
+                foreach (var msg in Messages)
+                {
+                    sb.AppendLine(msg.DisplayText);
+                    sb.AppendLine();
+                }
+
+                File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+
+                Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                    $"Conversation exported to: {filePath}"));
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error exporting conversation as text", ex, "Warewolf Error");
+                Messages.Add(ChatMessage.Create(ChatMessageType.Error,
+                    "Failed to export conversation. Check the log for details."));
+            }
+        }
+
+        private void ExportAsJson()
+        {
+            try
+            {
+                var exportFolder = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Warewolf", "ChatExports");
+                Directory.CreateDirectory(exportFolder);
+
+                var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                var title = _currentConversation?.Title ?? "Chat";
+                foreach (var c in Path.GetInvalidFileNameChars())
+                {
+                    title = title.Replace(c, '_');
+                }
+                var filePath = Path.Combine(exportFolder, $"{title}_{timestamp}.json");
+
+                var exportData = new
+                {
+                    title = _currentConversation?.Title ?? "Chat",
+                    exportedAt = DateTime.Now,
+                    messages = Messages.Select(m => new
+                    {
+                        id = m.Id,
+                        type = m.Type.ToString(),
+                        content = m.Content,
+                        timestamp = m.Timestamp
+                    }).ToArray()
+                };
+
+                var json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
+                File.WriteAllText(filePath, json, Encoding.UTF8);
+
+                Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                    $"Conversation exported to: {filePath}"));
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error exporting conversation as JSON", ex, "Warewolf Error");
+                Messages.Add(ChatMessage.Create(ChatMessageType.Error,
+                    "Failed to export conversation. Check the log for details."));
+            }
+        }
+
 		public void Dispose()
         {
             if (!_disposed)
@@ -944,6 +1091,8 @@ namespace Warewolf.Studio.ViewModels
                 // Auto-save current conversation on dispose
                 SaveCurrentConversation();
 
+                _streamingCts?.Cancel();
+                _streamingCts?.Dispose();
                 _eventAggregator?.Unsubscribe(this);
                 _disposed = true;
             }
