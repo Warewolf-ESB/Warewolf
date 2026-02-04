@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
 		private readonly IChatbotContextBuilder _contextBuilder;
 		private readonly IChatbotApiService _chatbotApiService;
 		private string _message;
-        private ObservableCollection<string> _messages;
+        private ObservableCollection<ChatMessage> _messages;
         private string _displayName;
         private bool _isChatbotConfigured;
         private bool _isSending;
@@ -107,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
         public ChatbotViewModel()
         {
             DisplayName = "Chatbot";
-            Messages = new ObservableCollection<string>();
+            Messages = new ObservableCollection<ChatMessage>();
             SendCommand = new DelegateCommand(Send, CanSend);
         }
 
@@ -123,7 +123,7 @@ namespace Warewolf.Studio.ViewModels
             _chatbotApiService = chatbotApiService ?? throw new ArgumentNullException(nameof(chatbotApiService));
 
             DisplayName = "Chatbot";
-            Messages = new ObservableCollection<string>();
+            Messages = new ObservableCollection<ChatMessage>();
             SendCommand = new DelegateCommand(Send, CanSend);
 
             LoadChatbotConfiguration();
@@ -207,7 +207,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ObservableCollection<string> Messages
+        public ObservableCollection<ChatMessage> Messages
         {
             get => _messages;
             set
@@ -365,8 +365,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsInitializingPrompt = false;
                     LoadingStatusText = string.Empty;
-                    Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
-                        "Note: I had trouble loading workspace context, but I can still help answer general questions.");
+                    Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                        "Hello! I'm your Warewolf debugging assistant. " +
+                        "Note: I had trouble loading workspace context, but I can still help answer general questions."));
                 });
             }
         }
@@ -388,15 +389,17 @@ namespace Warewolf.Studio.ViewModels
                     contextParts.Add("recent system logs");
                 }
 
-                Messages.Add($"Chatbot: Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
+                Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                    $"Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
                     $"{string.Join(" and ", contextParts)}. " +
                     "I can help you understand your workflows, debug issues, and answer questions about your Warewolf environment. " +
-                    "What would you like to know?");
+                    "What would you like to know?"));
             }
             else
             {
-                Messages.Add("Chatbot: Hello! I'm your Warewolf debugging assistant. " +
-                    "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context.");
+                Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                    "Hello! I'm your Warewolf debugging assistant. " +
+                    "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context."));
             }
         }
 
@@ -429,18 +432,18 @@ namespace Warewolf.Studio.ViewModels
 
             var userMessage = Message;
             Message = string.Empty;
-            Messages.Add($"You: {userMessage}");
+            Messages.Add(ChatMessage.Create(ChatMessageType.User, userMessage));
 
             IsSending = true;
 
             try
             {
                 var response = await CallChatbotApiAsync(userMessage);
-                Messages.Add($"Bot: {response}");
+                Messages.Add(ChatMessage.Create(ChatMessageType.Bot, response));
             }
             catch (Exception ex)
             {
-                Messages.Add($"Error: {ex.Message}");
+                Messages.Add(ChatMessage.Create(ChatMessageType.Error, ex.Message));
             }
             finally
             {
@@ -494,17 +497,17 @@ namespace Warewolf.Studio.ViewModels
                 Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
             }
 
-            // Add conversation history; skip "Chatbot: " greetings and error/system messages
+            // Add conversation history; skip System and Error messages
             // to maintain the required user/assistant alternating pattern
             foreach (var msg in Messages)
             {
-                if (msg.StartsWith("You: "))
+                if (msg.Type == ChatMessageType.User)
                 {
-                    chatMessages.Add(new ChatCompletionMessage { Role = "user", Content = msg.Substring(5) });
+                    chatMessages.Add(new ChatCompletionMessage { Role = "user", Content = msg.Content });
                 }
-                else if (msg.StartsWith("Bot: "))
+                else if (msg.Type == ChatMessageType.Bot)
                 {
-                    chatMessages.Add(new ChatCompletionMessage { Role = "assistant", Content = msg.Substring(5) });
+                    chatMessages.Add(new ChatCompletionMessage { Role = "assistant", Content = msg.Content });
                 }
             }
 
