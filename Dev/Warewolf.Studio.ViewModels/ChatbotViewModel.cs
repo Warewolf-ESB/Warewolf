@@ -10,8 +10,12 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Communication;
@@ -48,6 +52,15 @@ namespace Warewolf.Studio.ViewModels
 		/// <summary>Minimum delay in milliseconds between consecutive send operations to prevent API abuse and excessive costs.</summary>
 		private const int MinSendDelayMs = 1000;
 
+		/// <summary>Maximum number of user+bot messages to keep in the sliding window before summarizing older messages.</summary>
+		private const int MaxConversationMessages = 40;
+
+		/// <summary>Number of user+bot messages that triggers conversation summarization.</summary>
+		private const int SummarizationThreshold = 30;
+
+		/// <summary>Maximum character length for conversation title derived from first user message.</summary>
+		private const int MaxConversationTitleLength = 50;
+
 		private bool _disposed;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
@@ -70,6 +83,14 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
+        private string _conversationSummary;
+        private ChatConversation _currentConversation;
+        private ChatConversation _selectedConversation;
+        private ObservableCollection<ChatConversation> _savedConversations;
+
+        private static readonly string ChatHistoryFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Warewolf", "ChatHistory");
 
         public string LoadingStatusText
         {
@@ -111,11 +132,46 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ObservableCollection<ChatConversation> SavedConversations
+        {
+            get => _savedConversations;
+            set
+            {
+                _savedConversations = value;
+                OnPropertyChanged(nameof(SavedConversations));
+            }
+        }
+
+        public ChatConversation SelectedConversation
+        {
+            get => _selectedConversation;
+            set
+            {
+                if (_selectedConversation == value)
+                {
+                    return;
+                }
+
+                // Auto-save current conversation before switching
+                SaveCurrentConversation();
+
+                _selectedConversation = value;
+                OnPropertyChanged(nameof(SelectedConversation));
+
+                if (value != null)
+                {
+                    LoadConversation(value);
+                }
+            }
+        }
+
         public ChatbotViewModel()
         {
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
+            SavedConversations = new ObservableCollection<ChatConversation>();
             SendCommand = new DelegateCommand(Send, CanSend);
+            NewConversationCommand = new DelegateCommand(NewConversation);
         }
 
         public ChatbotViewModel(IServer server, ICommand openSettingsCommand)
@@ -131,8 +187,11 @@ namespace Warewolf.Studio.ViewModels
 
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
+            SavedConversations = new ObservableCollection<ChatConversation>();
             SendCommand = new DelegateCommand(Send, CanSend);
+            NewConversationCommand = new DelegateCommand(NewConversation);
 
+            LoadSavedConversationsList();
             LoadChatbotConfiguration();
 
             // Subscribe to settings saved event
@@ -165,11 +224,11 @@ namespace Warewolf.Studio.ViewModels
                 // Compare the resource ID of the deleted resource with the configured chatbot source ID
                 var deletedResourceId = message.ResourceToRemove.ID;
                 var configuredSourceId = _configuredSource.ResourceID;
-                
+
                 if (deletedResourceId == configuredSourceId)
                 {
                     Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
-                    
+
                     // The configured source was deleted, refresh to show unconfigured state
                     RefreshConfiguration();
                 }
@@ -248,17 +307,23 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand SendCommand { get; }
         public ICommand OpenSettingsCommand { get; }
+        public ICommand NewConversationCommand { get; }
 
         public void RefreshConfiguration()
         {
+            // Save current conversation before clearing
+            SaveCurrentConversation();
+
             // Clear messages when configuration is refreshed
             Messages.Clear();
-            
+            _conversationSummary = null;
+            _currentConversation = null;
+
             // Clear any existing system prompt so it gets regenerated
             // Do this BEFORE loading config to avoid race condition with background initialization
             _systemPromptInitialized = false;
             _systemPrompt = null;
-            
+
             LoadChatbotConfiguration();
         }
 
@@ -297,12 +362,12 @@ namespace Warewolf.Studio.ViewModels
                 if (IsChatbotConfigured)
                 {
                     // Always use the selected model from settings
-                    _selectedModel = !string.IsNullOrEmpty(_configuredSource.SelectedModel) 
-                        ? _configuredSource.SelectedModel 
+                    _selectedModel = !string.IsNullOrEmpty(_configuredSource.SelectedModel)
+                        ? _configuredSource.SelectedModel
                         : "gpt-4o-mini";
-                    
+
                     Dev2.Common.Dev2Logger.Info($"Using model from settings: {_selectedModel}", "Warewolf Info");
-                    
+
                     // Initialize the system prompt with workspace context
                     InitializeSystemPrompt();
                 }
@@ -369,7 +434,7 @@ namespace Warewolf.Studio.ViewModels
 
             if (result.ResourceCount > 0 || result.HasSystemLog)
             {
-                var contextParts = new System.Collections.Generic.List<string>();
+                var contextParts = new List<string>();
                 if (result.ResourceCount > 0)
                 {
                     contextParts.Add($"{result.ResourceCount} resource{(result.ResourceCount == 1 ? "" : "s")}");
@@ -391,6 +456,9 @@ namespace Warewolf.Studio.ViewModels
                     "Hello! I'm your Warewolf debugging assistant. " +
                     "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context."));
             }
+
+            // Create a new conversation for this session
+            _currentConversation = ChatConversation.CreateNew();
         }
 
         private void UpdateStatusOnUiThread(string status)
@@ -435,10 +503,16 @@ namespace Warewolf.Studio.ViewModels
 			Message = string.Empty;
 			Messages.Add(ChatMessage.Create(ChatMessageType.User, userMessage));
 
+			// Update conversation title from first user message
+			UpdateConversationTitle(userMessage);
+
 			IsSending = true;
 
 			try
 			{
+				// Apply sliding window before sending
+				ApplySlidingWindow();
+
 				var response = await CallChatbotApiAsync(userMessage);
 				Messages.Add(ChatMessage.Create(ChatMessageType.Bot, response));
 			}
@@ -475,7 +549,22 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (HttpRequestException ex) when (IsTokenLimitError(ex))
             {
-                Dev2.Common.Dev2Logger.Warn($"Token limit reached: {ex.Message}", "Warewolf Info");
+                Dev2.Common.Dev2Logger.Warn($"Token limit reached, attempting to trim conversation history: {ex.Message}", "Warewolf Info");
+
+                // Attempt recovery by trimming oldest 50% of conversation messages
+                var trimmed = TrimConversationHistory();
+                if (trimmed)
+                {
+                    try
+                    {
+                        var chatMessages = BuildChatMessages();
+                        return await _chatbotApiService.SendMessageAsync(chatMessages, _configuredSource);
+                    }
+                    catch (HttpRequestException retryEx) when (IsTokenLimitError(retryEx))
+                    {
+                        Dev2.Common.Dev2Logger.Warn($"Token limit still exceeded after trimming: {retryEx.Message}", "Warewolf Info");
+                    }
+                }
 
                 return "The token limit has been exceeded. The context is too large for the selected model. " +
                        "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
@@ -493,9 +582,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private System.Collections.Generic.List<ChatCompletionMessage> BuildChatMessages()
+        private List<ChatCompletionMessage> BuildChatMessages()
         {
-            var chatMessages = new System.Collections.Generic.List<ChatCompletionMessage>();
+            var chatMessages = new List<ChatCompletionMessage>();
 
             // Add system prompt (or fallback if initialization timed out)
             if (!string.IsNullOrEmpty(_systemPrompt))
@@ -507,6 +596,16 @@ namespace Warewolf.Studio.ViewModels
                 var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
                 chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = fallbackPrompt });
                 Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+            }
+
+            // Add conversation summary if older messages have been summarized
+            if (!string.IsNullOrEmpty(_conversationSummary))
+            {
+                chatMessages.Add(new ChatCompletionMessage
+                {
+                    Role = "system",
+                    Content = "Summary of earlier conversation:\n" + _conversationSummary
+                });
             }
 
             // Add conversation history; skip System and Error messages
@@ -524,6 +623,247 @@ namespace Warewolf.Studio.ViewModels
             }
 
             return chatMessages;
+        }
+
+        /// <summary>
+        /// Applies a sliding window to conversation history when it exceeds the threshold.
+        /// Summarizes the oldest messages into a condensed text and removes them from the collection.
+        /// </summary>
+        private void ApplySlidingWindow()
+        {
+            var conversationMessages = Messages
+                .Where(m => m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
+                .ToList();
+
+            if (conversationMessages.Count < SummarizationThreshold)
+            {
+                return;
+            }
+
+            var messagesToSummarize = conversationMessages.Count - (MaxConversationMessages / 2);
+            if (messagesToSummarize <= 0)
+            {
+                return;
+            }
+
+            var oldMessages = conversationMessages.Take(messagesToSummarize).ToList();
+
+            // Build summary from old messages
+            var summaryBuilder = new StringBuilder();
+            if (!string.IsNullOrEmpty(_conversationSummary))
+            {
+                summaryBuilder.AppendLine(_conversationSummary);
+                summaryBuilder.AppendLine();
+            }
+
+            foreach (var msg in oldMessages)
+            {
+                var prefix = msg.Type == ChatMessageType.User ? "User" : "Assistant";
+                var truncatedContent = msg.Content.Length > 200
+                    ? msg.Content.Substring(0, 200) + "..."
+                    : msg.Content;
+                summaryBuilder.AppendLine($"{prefix}: {truncatedContent}");
+            }
+
+            _conversationSummary = summaryBuilder.ToString().Trim();
+
+            // Remove summarized messages from the collection
+            foreach (var msg in oldMessages)
+            {
+                Messages.Remove(msg);
+            }
+
+            Dev2.Common.Dev2Logger.Info($"ChatbotContext: Summarized {oldMessages.Count} messages, {Messages.Count} remaining", "Warewolf Info");
+        }
+
+        /// <summary>
+        /// Trims the oldest 50% of conversation messages as a recovery mechanism when token limits are hit.
+        /// Returns true if messages were trimmed.
+        /// </summary>
+        private bool TrimConversationHistory()
+        {
+            var conversationMessages = Messages
+                .Where(m => m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
+                .ToList();
+
+            if (conversationMessages.Count < 2)
+            {
+                return false;
+            }
+
+            var messagesToRemove = conversationMessages.Count / 2;
+            var oldMessages = conversationMessages.Take(messagesToRemove).ToList();
+
+            foreach (var msg in oldMessages)
+            {
+                Messages.Remove(msg);
+            }
+
+            // Clear any existing summary since we're doing emergency trimming
+            _conversationSummary = null;
+
+            Dev2.Common.Dev2Logger.Info($"ChatbotContext: Emergency trimmed {oldMessages.Count} messages due to token limit", "Warewolf Info");
+            return true;
+        }
+
+        // --- Conversation History Management ---
+
+        private void NewConversation()
+        {
+            SaveCurrentConversation();
+
+            Messages.Clear();
+            _conversationSummary = null;
+            _currentConversation = ChatConversation.CreateNew();
+
+            // Don't change SelectedConversation via property to avoid re-triggering save/load
+            _selectedConversation = null;
+            OnPropertyChanged(nameof(SelectedConversation));
+
+            // Re-add the greeting message if system prompt is initialized
+            if (_systemPromptInitialized)
+            {
+                Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                    "New conversation started. How can I help you?"));
+            }
+        }
+
+        private void UpdateConversationTitle(string firstUserMessage)
+        {
+            if (_currentConversation == null)
+            {
+                _currentConversation = ChatConversation.CreateNew();
+            }
+
+            if (_currentConversation.Title == "New Chat" && !string.IsNullOrWhiteSpace(firstUserMessage))
+            {
+                _currentConversation.Title = firstUserMessage.Length > MaxConversationTitleLength
+                    ? firstUserMessage.Substring(0, MaxConversationTitleLength) + "..."
+                    : firstUserMessage;
+            }
+        }
+
+        private void SaveCurrentConversation()
+        {
+            if (_currentConversation == null)
+            {
+                return;
+            }
+
+            // Only save if there are user messages
+            var hasUserMessages = Messages.Any(m => m.Type == ChatMessageType.User);
+            if (!hasUserMessages)
+            {
+                return;
+            }
+
+            try
+            {
+                _currentConversation.Messages = Messages.ToList();
+                _currentConversation.ConversationSummary = _conversationSummary;
+                _currentConversation.LastMessageAt = DateTime.Now;
+
+                Directory.CreateDirectory(ChatHistoryFolder);
+
+                var filePath = Path.Combine(ChatHistoryFolder, _currentConversation.Id + ".json");
+                var json = JsonConvert.SerializeObject(_currentConversation, Formatting.Indented);
+                File.WriteAllText(filePath, json, Encoding.UTF8);
+
+                // Update or add to saved conversations list
+                var existing = SavedConversations.FirstOrDefault(c => c.Id == _currentConversation.Id);
+                if (existing != null)
+                {
+                    var index = SavedConversations.IndexOf(existing);
+                    SavedConversations[index] = _currentConversation;
+                }
+                else
+                {
+                    SavedConversations.Insert(0, _currentConversation);
+                }
+
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Saved conversation '{_currentConversation.Title}' ({_currentConversation.Id})", "Warewolf Info");
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("ChatbotContext: Error saving conversation", ex, "Warewolf Error");
+            }
+        }
+
+        private void LoadConversation(ChatConversation conversation)
+        {
+            try
+            {
+                var filePath = Path.Combine(ChatHistoryFolder, conversation.Id + ".json");
+                if (!File.Exists(filePath))
+                {
+                    Dev2.Common.Dev2Logger.Warn($"ChatbotContext: Conversation file not found: {filePath}", "Warewolf Info");
+                    return;
+                }
+
+                var json = File.ReadAllText(filePath, Encoding.UTF8);
+                var loaded = JsonConvert.DeserializeObject<ChatConversation>(json);
+
+                if (loaded == null)
+                {
+                    return;
+                }
+
+                Messages.Clear();
+                foreach (var msg in loaded.Messages)
+                {
+                    Messages.Add(msg);
+                }
+
+                _conversationSummary = loaded.ConversationSummary;
+                _currentConversation = loaded;
+
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Loaded conversation '{loaded.Title}' with {loaded.Messages.Count} messages", "Warewolf Info");
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error loading conversation {conversation.Id}", ex, "Warewolf Error");
+            }
+        }
+
+        private void LoadSavedConversationsList()
+        {
+            SavedConversations = new ObservableCollection<ChatConversation>();
+
+            try
+            {
+                if (!Directory.Exists(ChatHistoryFolder))
+                {
+                    return;
+                }
+
+                var files = Directory.GetFiles(ChatHistoryFolder, "*.json")
+                    .OrderByDescending(f => File.GetLastWriteTime(f));
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        var json = File.ReadAllText(file, Encoding.UTF8);
+                        var conversation = JsonConvert.DeserializeObject<ChatConversation>(json);
+                        if (conversation != null)
+                        {
+                            // Don't load full messages into the list, just metadata
+                            conversation.Messages = new List<ChatMessage>();
+                            SavedConversations.Add(conversation);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2.Common.Dev2Logger.Debug($"ChatbotContext: Skipping corrupt conversation file: {file}: {ex.Message}", "Warewolf Debug");
+                    }
+                }
+
+                Dev2.Common.Dev2Logger.Info($"ChatbotContext: Loaded {SavedConversations.Count} saved conversations", "Warewolf Info");
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("ChatbotContext: Error loading saved conversations list", ex, "Warewolf Error");
+            }
         }
 
         private static bool IsTokenLimitError(HttpRequestException ex)
@@ -585,6 +925,9 @@ namespace Warewolf.Studio.ViewModels
         {
             if (!_disposed)
             {
+                // Auto-save current conversation on dispose
+                SaveCurrentConversation();
+
                 _eventAggregator?.Unsubscribe(this);
                 _disposed = true;
             }

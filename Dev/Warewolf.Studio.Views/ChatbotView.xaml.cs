@@ -9,6 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Studio.ViewModels;
 
@@ -27,7 +30,7 @@ namespace Warewolf.Studio.Views
             IsVisibleChanged += ChatbotView_IsVisibleChanged;
         }
 
-        private void ChatbotView_IsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        private void ChatbotView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             // Only refresh when becoming visible, and only once on first load
             if (IsVisible && _isFirstLoad)
@@ -42,6 +45,38 @@ namespace Warewolf.Studio.Views
             if (DataContext is ChatbotViewModel viewModel)
             {
                 viewModel.RefreshConfiguration();
+            }
+        }
+
+        private void CopyMessage_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is MenuItem menuItem && menuItem.Tag is ChatMessage message)
+                {
+                    Clipboard.SetText(message.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error copying message to clipboard", ex, "Warewolf Error");
+            }
+        }
+
+        private void CopyAllMessages_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DataContext is ChatbotViewModel vm && vm.Messages.Count > 0)
+                {
+                    var allText = string.Join(Environment.NewLine + Environment.NewLine,
+                        vm.Messages.Select(m => m.DisplayText));
+                    Clipboard.SetText(allText);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2.Common.Dev2Logger.Error("Error copying all messages to clipboard", ex, "Warewolf Error");
             }
         }
     }
