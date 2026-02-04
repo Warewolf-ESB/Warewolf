@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Data.ServiceModel;
 
@@ -30,6 +32,17 @@ namespace Dev2.Studio.Interfaces
         /// <returns>The assistant's response text.</returns>
         /// <exception cref="System.Net.Http.HttpRequestException">Thrown when the API returns an error or the response format is unrecognized.</exception>
         Task<string> SendMessageAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source);
+
+        /// <summary>
+        /// Sends a chat completion request with streaming enabled, invoking the callback as each token arrives.
+        /// Falls back to non-streaming SendMessageAsync if the API does not support streaming.
+        /// </summary>
+        /// <param name="chatMessages">The full conversation history including system prompt.</param>
+        /// <param name="source">The configured chatbot source.</param>
+        /// <param name="onTokenReceived">Callback invoked with each token chunk as it arrives.</param>
+        /// <param name="cancellationToken">Token to cancel the streaming operation.</param>
+        /// <returns>The complete response text after streaming finishes.</returns>
+        Task<string> SendMessageStreamingAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, Action<string> onTokenReceived, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

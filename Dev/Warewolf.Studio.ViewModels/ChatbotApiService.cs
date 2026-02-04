@@ -11,13 +11,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -343,6 +346,154 @@ namespace Warewolf.Studio.ViewModels
             return message.Contains("401") || message.Contains("unauthorized") ||
                    message.Contains("403") || message.Contains("forbidden") ||
                    message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+        }
+
+        /// <inheritdoc />
+        public async Task<string> SendMessageStreamingAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, Action<string> onTokenReceived, CancellationToken cancellationToken = default)
+        {
+            if (chatMessages == null)
+            {
+                throw new ArgumentNullException(nameof(chatMessages));
+            }
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (onTokenReceived == null)
+            {
+                throw new ArgumentNullException(nameof(onTokenReceived));
+            }
+
+            try
+            {
+                return await SendStreamingWithAuthAsync(chatMessages, source, "Authorization", "Bearer ", null, onTokenReceived, cancellationToken);
+            }
+            catch (HttpRequestException ex) when (IsAuthenticationError(ex))
+            {
+                Dev2.Common.Dev2Logger.Info("Bearer streaming auth failed, retrying with x-api-key", "Warewolf Info");
+
+                try
+                {
+                    return await SendStreamingWithAuthAsync(chatMessages, source, "x-api-key", "", "anthropic-version=2023-06-01", onTokenReceived, cancellationToken);
+                }
+                catch (HttpRequestException)
+                {
+                    throw new HttpRequestException($"Streaming authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}", ex);
+                }
+            }
+        }
+
+        private async Task<string> SendStreamingWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders, Action<string> onTokenReceived, CancellationToken cancellationToken)
+        {
+            var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
+            var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+
+            var payload = CreateStreamingPayload(modelToUse, messagesArray);
+            var json = JsonConvert.SerializeObject(payload);
+
+            var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+
+            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Dev2.Common.Dev2Logger.Error($"Chatbot Streaming API Error: {response.StatusCode} - {errorContent}", "Warewolf Error");
+                throw new HttpRequestException($"API returned {response.StatusCode}: {errorContent}");
+            }
+
+            var contentType = response.Content.Headers.ContentType?.MediaType ?? "";
+
+            // If the server doesn't support streaming and returns a normal JSON response, parse it
+            if (contentType.Contains("application/json"))
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var fullText = ParseResponseContent(responseContent);
+                onTokenReceived(fullText);
+                return fullText;
+            }
+
+            // Parse SSE stream
+            return await ReadSseStreamAsync(response, onTokenReceived, cancellationToken);
+        }
+
+        private async Task<string> ReadSseStreamAsync(HttpResponseMessage response, Action<string> onTokenReceived, CancellationToken cancellationToken)
+        {
+            var fullResponse = new StringBuilder();
+
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                string line;
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    // SSE format: lines starting with "data: "
+                    if (!line.StartsWith("data: "))
+                    {
+                        continue;
+                    }
+
+                    var data = line.Substring(6); // Remove "data: " prefix
+
+                    // Check for stream termination signals
+                    if (data == "[DONE]" || data.Trim().Length == 0)
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        var token = ExtractTokenFromSseData(data);
+                        if (token != null)
+                        {
+                            fullResponse.Append(token);
+                            onTokenReceived(token);
+                        }
+                    }
+                    catch (JsonException)
+                    {
+                        // Skip malformed SSE data chunks
+                        Dev2.Common.Dev2Logger.Debug($"Skipping malformed SSE chunk: {TruncateStringSafely(data, 100, "...")}", "Warewolf Debug");
+                    }
+                }
+            }
+
+            return fullResponse.ToString();
+        }
+
+        private static string ExtractTokenFromSseData(string jsonData)
+        {
+            var obj = JObject.Parse(jsonData);
+
+            // OpenAI format: choices[0].delta.content
+            var content = obj.SelectToken("choices[0].delta.content")?.Value<string>();
+            if (content != null)
+            {
+                return content;
+            }
+
+            // Anthropic format: type=content_block_delta, delta.text
+            var type = obj.SelectToken("type")?.Value<string>();
+            if (type == "content_block_delta")
+            {
+                return obj.SelectToken("delta.text")?.Value<string>();
+            }
+
+            return null;
+        }
+
+        private static object CreateStreamingPayload(string model, object[] messages)
+        {
+            return new
+            {
+                model = model,
+                messages = messages,
+                temperature = ChatTemperature,
+                max_tokens = MaxCompletionTokens,
+                stream = true
+            };
         }
     }
 }

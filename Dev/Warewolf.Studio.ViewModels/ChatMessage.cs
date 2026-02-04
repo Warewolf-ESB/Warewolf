@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Warewolf.Studio.ViewModels
@@ -38,8 +39,12 @@ namespace Warewolf.Studio.ViewModels
     /// Represents a single message in the chatbot conversation with typed metadata.
     /// Replaces raw string-based messages that relied on prefix parsing (e.g. "You: ", "Bot: ").
     /// </summary>
-    public class ChatMessage
+    public class ChatMessage : INotifyPropertyChanged
     {
+        private string _content;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>Unique identifier for this message.</summary>
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -50,7 +55,16 @@ namespace Warewolf.Studio.ViewModels
 
         /// <summary>The text content of the message.</summary>
         [JsonProperty("content")]
-        public string Content { get; set; }
+        public string Content
+        {
+            get => _content;
+            set
+            {
+                _content = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Content)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayText)));
+            }
+        }
 
         /// <summary>The timestamp when the message was created.</summary>
         [JsonProperty("timestamp")]
@@ -80,6 +94,14 @@ namespace Warewolf.Studio.ViewModels
                         return Content;
                 }
             }
+        }
+
+        /// <summary>
+        /// Appends a token chunk to the message content. Used during streaming responses.
+        /// </summary>
+        public void AppendContent(string token)
+        {
+            Content = (_content ?? "") + token;
         }
 
         /// <summary>
