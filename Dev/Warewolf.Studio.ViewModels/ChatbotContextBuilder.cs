@@ -529,5 +529,95 @@ namespace Warewolf.Studio.ViewModels
                 return "Error reading system log: " + ex.Message;
             }
         }
+
+        /// <summary>
+        /// Safely truncates a string to a maximum byte length, ensuring no multi-byte UTF-8 characters are split.
+        /// Adds a suffix after truncation.
+        /// </summary>
+        /// <param name="text">The text to truncate.</param>
+        /// <param name="maxLength">Maximum character length (approximately - actual length may be slightly less to avoid splitting characters).</param>
+        /// <param name="suffix">Text to append after truncation.</param>
+        /// <returns>The safely truncated string with suffix.</returns>
+        private static string TruncateStringSafely(string text, int maxLength, string suffix)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            {
+                return text;
+            }
+
+            // Convert to UTF-8 bytes
+            var encoding = Encoding.UTF8;
+            var bytes = encoding.GetBytes(text);
+
+            // Calculate max bytes (reserve space for suffix)
+            var suffixBytes = encoding.GetBytes(suffix);
+            var maxBytes = maxLength * 3; // UTF-8 can use up to 3 bytes per character for most text
+            var targetBytes = maxBytes - suffixBytes.Length;
+
+            if (targetBytes <= 0 || bytes.Length <= targetBytes)
+            {
+                return text;
+            }
+
+            // Truncate at byte boundary
+            var truncatedBytes = new byte[targetBytes];
+            Array.Copy(bytes, truncatedBytes, targetBytes);
+
+            // Decode and remove any incomplete characters at the end
+            var truncated = encoding.GetString(truncatedBytes);
+            
+            // Remove any replacement characters (?) that indicate incomplete multi-byte sequences
+            truncated = truncated.TrimEnd('\uFFFD');
+
+            return truncated + suffix;
+        }
+
+        /// <summary>
+        /// Safely truncates a string from the end, keeping the last N characters.
+        /// Ensures no multi-byte UTF-8 characters are split. Adds a prefix before the kept portion.
+        /// </summary>
+        /// <param name="text">The text to truncate.</param>
+        /// <param name="maxLength">Maximum character length to keep from the end.</param>
+        /// <param name="prefix">Text to prepend before the kept portion.</param>
+        /// <returns>The safely truncated string with prefix.</returns>
+        private static string TruncateStringFromEndSafely(string text, int maxLength, string prefix)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            {
+                return text;
+            }
+
+            // Convert to UTF-8 bytes
+            var encoding = Encoding.UTF8;
+            var bytes = encoding.GetBytes(text);
+
+            // Calculate how many bytes to keep (reserve space for prefix)
+            var prefixBytes = encoding.GetBytes(prefix);
+            var maxBytes = maxLength * 3; // UTF-8 can use up to 3 bytes per character
+            var targetBytes = maxBytes - prefixBytes.Length;
+
+            if (targetBytes <= 0)
+            {
+                return prefix;
+            }
+
+            // Take the last targetBytes
+            var startIndex = bytes.Length - targetBytes;
+            if (startIndex < 0)
+            {
+                return text;
+            }
+
+            var truncatedBytes = new byte[targetBytes];
+            Array.Copy(bytes, startIndex, truncatedBytes, 0, targetBytes);
+
+            // Decode and remove any incomplete characters at the beginning
+            var truncated = encoding.GetString(truncatedBytes);
+            
+            // Remove any replacement characters (?) that indicate incomplete multi-byte sequences
+            truncated = truncated.TrimStart('\uFFFD');
+
+            return prefix + truncated;
+        }
     }
 }

@@ -213,7 +213,46 @@ namespace Warewolf.Studio.ViewModels
                 // Not Anthropic format either
             }
 
-            throw new HttpRequestException($"Unexpected API response format. Response: {responseContent.Substring(0, Math.Min(200, responseContent.Length))}...");
+            // Safely truncate response for error message
+            var truncatedResponse = TruncateStringSafely(responseContent, 200, "...");
+            throw new HttpRequestException($"Unexpected API response format. Response: {truncatedResponse}");
+        }
+
+        /// <summary>
+        /// Safely truncates a string to a maximum length, ensuring no multi-byte UTF-8 characters are split.
+        /// </summary>
+        private static string TruncateStringSafely(string text, int maxLength, string suffix)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            {
+                return text;
+            }
+
+            // Convert to UTF-8 bytes
+            var encoding = System.Text.Encoding.UTF8;
+            var bytes = encoding.GetBytes(text);
+
+            // Calculate max bytes (reserve space for suffix)
+            var suffixBytes = encoding.GetBytes(suffix);
+            var maxBytes = maxLength * 3; // UTF-8 can use up to 3 bytes per character
+            var targetBytes = maxBytes - suffixBytes.Length;
+
+            if (targetBytes <= 0 || bytes.Length <= targetBytes)
+            {
+                return text;
+            }
+
+            // Truncate at byte boundary
+            var truncatedBytes = new byte[targetBytes];
+            System.Array.Copy(bytes, truncatedBytes, targetBytes);
+
+            // Decode and remove any incomplete characters at the end
+            var truncated = encoding.GetString(truncatedBytes);
+            
+            // Remove any replacement characters (?) that indicate incomplete multi-byte sequences
+            truncated = truncated.TrimEnd('\uFFFD');
+
+            return truncated + suffix;
         }
 
         private static HttpRequestMessage CreateHttpRequestMessage(ChatbotSource source, string jsonBody, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
