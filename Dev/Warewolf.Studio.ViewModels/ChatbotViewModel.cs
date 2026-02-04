@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
 	public class ChatbotViewModel : BindableBase2, IDisposable
 #endif
 	{
+		private static readonly HttpClient _httpClient = new HttpClient();
 		private bool _disposed;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
@@ -888,153 +889,161 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task<string> CallChatbotApiWithAuthAsync(string userMessage, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
         {
-            using (var client = new HttpClient())
-            {
-                // Set authentication header only if API key is provided
-                if (!string.IsNullOrWhiteSpace(_configuredSource.ApiKey))
-                {
-                    client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + _configuredSource.ApiKey);
-                }
+			// Wait for system prompt initialization with timeout (max 10 seconds)
+			var waitCount = 0;
+			while (!_systemPromptInitialized && waitCount < 20)
+			{
+				await Task.Delay(500);
+				waitCount++;
+			}
 
-                // Add any additional headers if specified
-                if (!string.IsNullOrWhiteSpace(additionalHeaders))
+			// Build messages array with system prompt and full conversation history
+			var messages = new System.Collections.Generic.List<object>();
+
+			// Use the initialized system prompt
+			if (!string.IsNullOrEmpty(_systemPrompt))
+			{
+				messages.Add(new { role = "system", content = _systemPrompt });
+			}
+			else
+			{
+				// Fallback if initialization timed out
+				var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
+				messages.Add(new { role = "system", content = fallbackPrompt });
+				Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+			}
+
+			// Add entire conversation history (which already includes the current message from SendAsync)
+            foreach (var msg in Messages)
+            {
+                if (msg.StartsWith("You: "))
                 {
-                    var headerPairs = additionalHeaders.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var headerPair in headerPairs)
+                    messages.Add(new { role = "user", content = msg.Substring(5) });
+                }
+                else if (msg.StartsWith("Bot: "))
+                {
+                    messages.Add(new { role = "assistant", content = msg.Substring(5) });
+                }
+                // Skip "Chatbot: " messages (initial greetings) - they're UI only and would break
+                // the required user/assistant/user/assistant alternating pattern
+                // Also skip error messages and other system messages
+            }
+
+            // Use the selected model
+            var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
+
+            // Try with max_completion_tokens first (newer API standard)
+            var payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: true, includeTemperature: true);
+            var json = JsonConvert.SerializeObject(payload);
+
+            var request = CreateHttpRequestMessage(_configuredSource.CompletionsEndpoint, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+            var response = await _httpClient.SendAsync(request);
+
+            // If we get an error about unsupported parameters, retry with different combinations
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+
+                // Check if max_completion_tokens is not supported
+                if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+                {
+                    Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
+
+                    // Retry with max_tokens
+                    payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: false, includeTemperature: true);
+                    json = JsonConvert.SerializeObject(payload);
+                    request = CreateHttpRequestMessage(_configuredSource.CompletionsEndpoint, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+                    response = await _httpClient.SendAsync(request);
+
+                    if (!response.IsSuccessStatusCode)
                     {
-                        var parts = headerPair.Split(new[] { '=' }, 2);
-                        if (parts.Length == 2)
-                        {
-                            var headerName = parts[0].Trim();
-                            var headerValue = parts[1].Trim();
-                            if (!string.IsNullOrWhiteSpace(headerName) && !string.IsNullOrWhiteSpace(headerValue))
-                            {
-                                client.DefaultRequestHeaders.Add(headerName, headerValue);
-                            }
-                        }
+                        errorContent = await response.Content.ReadAsStringAsync();
                     }
                 }
-				// Wait for system prompt initialization with timeout (max 10 seconds)
-				var waitCount = 0;
-				while (!_systemPromptInitialized && waitCount < 20)
-				{
-					await Task.Delay(500);
-					waitCount++;
-				}
 
-				// Build messages array with system prompt and full conversation history
-				var messages = new System.Collections.Generic.List<object>();
+                // Check if temperature is not supported
+                if (!response.IsSuccessStatusCode && errorContent.Contains("temperature") && errorContent.Contains("not support"))
+                {
+                    Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
 
-				// Use the initialized system prompt
-				if (!string.IsNullOrEmpty(_systemPrompt))
+                    // Determine which token parameter worked (or try max_completion_tokens by default)
+                    var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
+
+                    // Retry without temperature
+                    payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
+                    json = JsonConvert.SerializeObject(payload);
+                    request = CreateHttpRequestMessage(_configuredSource.CompletionsEndpoint, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+                    response = await _httpClient.SendAsync(request);
+                }
+            }
+
+            // Get the response content for better error messages
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Dev2.Common.Dev2Logger.Error($"Chatbot API Error: {response.StatusCode} - {responseContent}", "Warewolf Error");
+                throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
+            }
+
+			dynamic result = JsonConvert.DeserializeObject(responseContent);
+
+			string botResponse;
+
+			// Try OpenAI-compatible response format first
+			try
+			{
+				botResponse = result.choices[0].message.content.ToString();
+			}
+			catch
+			{
+				// Try Claude response format: { "content": [{ "type": "text", "text": "..." }] }
+				if (result.content != null && result.content.Count > 0)
 				{
-					messages.Add(new { role = "system", content = _systemPrompt });
+					botResponse = result.content[0].text.ToString();
 				}
 				else
 				{
-					// Fallback if initialization timed out
-					var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
-					messages.Add(new { role = "system", content = fallbackPrompt });
-					Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
+					throw new HttpRequestException("Unexpected API response format");
 				}
-				
-				// Add entire conversation history (which already includes the current message from SendAsync)
-                foreach (var msg in Messages)
+			}
+
+			return botResponse;
+        }
+
+        private HttpRequestMessage CreateHttpRequestMessage(string endpoint, string jsonBody, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+            {
+                Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+            };
+
+            // Set authentication header only if API key is provided
+            if (!string.IsNullOrWhiteSpace(_configuredSource.ApiKey))
+            {
+                request.Headers.Add(authHeaderName, authHeaderPrefix + _configuredSource.ApiKey);
+            }
+
+            // Add any additional headers if specified
+            if (!string.IsNullOrWhiteSpace(additionalHeaders))
+            {
+                var headerPairs = additionalHeaders.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var headerPair in headerPairs)
                 {
-                    if (msg.StartsWith("You: "))
+                    var parts = headerPair.Split(new[] { '=' }, 2);
+                    if (parts.Length == 2)
                     {
-                        messages.Add(new { role = "user", content = msg.Substring(5) });
-                    }
-                    else if (msg.StartsWith("Bot: "))
-                    {
-                        messages.Add(new { role = "assistant", content = msg.Substring(5) });
-                    }
-                    // Skip "Chatbot: " messages (initial greetings) - they're UI only and would break
-                    // the required user/assistant/user/assistant alternating pattern
-                    // Also skip error messages and other system messages
-                }
-
-                // Use the selected model
-                var modelToUse = !string.IsNullOrEmpty(_selectedModel) ? _selectedModel : "gpt-4o-mini";
-
-                // Try with max_completion_tokens first (newer API standard)
-                var payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: true, includeTemperature: true);
-                var json = JsonConvert.SerializeObject(payload);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
-                
-                // If we get an error about unsupported parameters, retry with different combinations
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    
-                    // Check if max_completion_tokens is not supported
-                    if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
-                    {
-                        Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
-                        
-                        // Retry with max_tokens
-                        payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: false, includeTemperature: true);
-                        json = JsonConvert.SerializeObject(payload);
-                        content = new StringContent(json, Encoding.UTF8, "application/json");
-                        response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
-                        
-                        if (!response.IsSuccessStatusCode)
+                        var headerName = parts[0].Trim();
+                        var headerValue = parts[1].Trim();
+                        if (!string.IsNullOrWhiteSpace(headerName) && !string.IsNullOrWhiteSpace(headerValue))
                         {
-                            errorContent = await response.Content.ReadAsStringAsync();
+                            request.Headers.Add(headerName, headerValue);
                         }
                     }
-                    
-                    // Check if temperature is not supported
-                    if (!response.IsSuccessStatusCode && errorContent.Contains("temperature") && errorContent.Contains("not support"))
-                    {
-                        Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
-                        
-                        // Determine which token parameter worked (or try max_completion_tokens by default)
-                        var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
-                        
-                        // Retry without temperature
-                        payload = CreatePayload(modelToUse, messages.ToArray(), useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
-                        json = JsonConvert.SerializeObject(payload);
-                        content = new StringContent(json, Encoding.UTF8, "application/json");
-                        response = await client.PostAsync(_configuredSource.CompletionsEndpoint, content);
-                    }
                 }
-                
-                // Get the response content for better error messages
-                var responseContent = await response.Content.ReadAsStringAsync();
-                
-                if (!response.IsSuccessStatusCode)
-                {
-                    Dev2.Common.Dev2Logger.Error($"Chatbot API Error: {response.StatusCode} - {responseContent}", "Warewolf Error");
-                    throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
-                }
+            }
 
-				dynamic result = JsonConvert.DeserializeObject(responseContent);
-
-				string botResponse;
-
-				// Try OpenAI-compatible response format first
-				try
-				{
-					botResponse = result.choices[0].message.content.ToString();
-				}
-				catch
-				{
-					// Try Claude response format: { "content": [{ "type": "text", "text": "..." }] }
-					if (result.content != null && result.content.Count > 0)
-					{
-						botResponse = result.content[0].text.ToString();
-					}
-					else
-					{
-						throw new HttpRequestException("Unexpected API response format");
-					}
-				}
-
-				return botResponse;
-			}
+            return request;
         }
 
         private object CreatePayload(string model, object[] messages, bool useMaxCompletionTokens, bool includeTemperature = true)
