@@ -516,6 +516,40 @@ namespace Dev2.Activities
             cell.data.TryAdd(Constants.GATE_CONDITIONS, serializer.Serialize(Conditions));
             cell.data.TryAdd(Constants.GATE_RETRYENTRYPOINTID, RetryEntryPointId.ToString());
             cell.data.TryAdd(Constants.GATE_GATEOPTIONS, serializer.Serialize(GateOptions));
+
+            // Note: droppedNodes are no longer included here as nested activities are now handled 
+            // separately as standalone nodes with nesting properties by the workflow converter
+            cell.data["droppedNodes"] = new List<object>();
+
+            // Add ngArguments for the frontend framework integration
+            if (cell.id != null)
+            {
+                cell.data["ngArguments"] = new
+                {
+                    graphId = Guid.NewGuid().ToString(), // Generate a graph ID for UI purposes
+                    nodeId = cell.id
+                };
+            }
+
+            // Serialize the DataFunc (child activities) information for legacy support
+            if (DataFunc?.Handler != null)
+            {
+                try
+                {
+                    cell.data["dataFunc"] = new
+                    {
+                        displayName = DataFunc.DisplayName ?? "Data Action",
+                        argumentName = DataFunc.Argument?.Name ?? string.Empty,
+                        handlerType = DataFunc.Handler.GetType().Name,
+                        handlerUniqueId = (DataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                        handlerDisplayName = (DataFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error($"Error serializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                }
+            }
         }
 
         public override void FromX6Json(Cell cell)
@@ -549,7 +583,6 @@ namespace Dev2.Activities
                 RetryEntryPointId = retryId;
             }
 
-
             if (cell.data.TryGetString(Constants.GATE_GATEOPTIONS, out var gateOptionsJson))
             {
                 try
@@ -560,6 +593,34 @@ namespace Dev2.Activities
                 {
                     GateOptions = new GateOptions();
                 }
+            }
+
+            // Handle dataFunc if present (legacy support)
+            if (cell.data.TryGetValue("dataFunc", out var dataFuncObj))
+            {
+                try
+                {
+                    if (DataFunc == null)
+                    {
+                        DataFunc = new ActivityFunc<string, bool>
+                        {
+                            DisplayName = "Data Action",
+                            Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
+                        };
+                    }
+                    // Note: Actual Handler restoration handled at higher level during workflow reconstruction
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error($"Error deserializing dataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                }
+            }
+
+            // Handle ngArguments if present (UI framework data)
+            if (cell.data.TryGetValue("ngArguments", out var ngArgumentsObj))
+            {
+                // Store for potential UI integration needs
+                // This typically doesn't affect the core activity logic
             }
 
             // Defensive initialization
