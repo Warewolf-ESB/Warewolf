@@ -49,6 +49,7 @@
 		<None Include="app.config" />
 		<None Include="Warewolf.Studio.ViewModels.ruleset" />
 		<Compile Include="ChatbotApiService.cs" />
+		<Compile Include="ChatMessage.cs" />
 		<Compile Include="ChatbotContextBuilder.cs" />
 		<Compile Include="ChatbotSourceViewModel.cs" />
 		<Compile Include="ChatbotViewModel.cs" />
