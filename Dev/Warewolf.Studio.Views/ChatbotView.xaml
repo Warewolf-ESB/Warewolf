@@ -83,7 +83,7 @@ d:DataContext="{d:DesignInstance Type={x:Type viewModels:ChatbotViewModel}}">
                 <ItemsControl ItemsSource="{Binding Messages}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}"
+                            <TextBlock Text="{Binding DisplayText}"
                                        TextWrapping="Wrap"
                                        Margin="5"
                                        Padding="5">

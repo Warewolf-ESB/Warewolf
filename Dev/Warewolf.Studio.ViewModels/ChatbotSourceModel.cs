@@ -17,12 +17,12 @@ using Dev2.Common.Interfaces.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageChatbotSourceModel : IManageChatbotSourceModel
+    public class ChatbotSourceModel : IManageChatbotSourceModel
     {
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
 
-        public ManageChatbotSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
+        public ChatbotSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
         {
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;

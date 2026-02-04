@@ -24,11 +24,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-#else
-using Prism.Commands;
-using Dev2.Common;
-using Prism.Mvvm;
-#endif
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.Configuration;
@@ -168,6 +163,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ChatbotViewModel()
         {
+            _contextBuilder = new ChatbotContextBuilder();
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
             SavedConversations = new ObservableCollection<ChatConversation>();
@@ -187,6 +183,7 @@ namespace Warewolf.Studio.ViewModels
             _server = server ?? throw new ArgumentNullException(nameof(server));
             OpenSettingsCommand = openSettingsCommand ?? throw new ArgumentNullException(nameof(openSettingsCommand));
             _chatbotApiService = chatbotApiService ?? throw new ArgumentNullException(nameof(chatbotApiService));
+            _contextBuilder = new ChatbotContextBuilder();
 
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
@@ -232,25 +229,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
 
-                    // The configured source was deleted, refresh to show unconfigured state
-                    RefreshConfiguration();
-                }
-            }
-        }
-
-        public void Handle(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message)
-        {
-            // Check if the deleted resource is the currently configured chatbot source
-            if (message?.ResourceToRemove != null && _configuredSource != null)
-            {
-                // Compare the resource ID of the deleted resource with the configured chatbot source ID
-                var deletedResourceId = message.ResourceToRemove.ID;
-                var configuredSourceId = _configuredSource.ResourceID;
-                
-                if (deletedResourceId == configuredSourceId)
-                {
-                    Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
-                    
                     // The configured source was deleted, refresh to show unconfigured state
                     RefreshConfiguration();
                 }
@@ -424,7 +402,7 @@ namespace Warewolf.Studio.ViewModels
                     StatusUpdateCallback = status => UpdateStatusOnUiThread(status)
                 };
 
-                var result = await _contextBuilder.BuildContextAsync(options);
+                var result = await _contextBuilder?.BuildContextAsync(options);
 
                 _systemPrompt = result.SystemPrompt;
                 _resourcesJson = result.ResourcesJson;
@@ -969,36 +947,39 @@ namespace Warewolf.Studio.ViewModels
 		private static string GetUserFriendlyErrorMessage(Exception ex)
 		{
 			// Check for specific exception types and provide appropriate user-friendly messages
-			switch (ex)
+			if (ex is HttpRequestException httpEx)
 			{
-				case HttpRequestException httpEx:
-					if (httpEx.Message.Contains("401") || httpEx.Message.ToLower().Contains("unauthorized"))
-						return "Authentication failed. Please check your API key configuration.";
-					if (httpEx.Message.Contains("403") || httpEx.Message.ToLower().Contains("forbidden"))
-						return "Access forbidden. Please verify your API permissions.";
-					if (httpEx.Message.Contains("429") || httpEx.Message.ToLower().Contains("rate limit"))
-						return "Rate limit exceeded. Please wait a moment before trying again.";
-					if (httpEx.Message.Contains("500") || httpEx.Message.Contains("502") || httpEx.Message.Contains("503"))
-						return "The AI service is currently unavailable. Please try again later.";
-					if (httpEx.Message.ToLower().Contains("timeout"))
-						return "The request timed out. Please try again.";
-					if (httpEx.Message.ToLower().Contains("network") || httpEx.Message.ToLower().Contains("connection"))
-						return "Network connection error. Please check your internet connection.";
-					return "Failed to communicate with the AI service. Please check your connection and try again.";
-
-				case TaskCanceledException:
-					return "The request was cancelled or timed out. Please try again.";
-
-				case SocketException:
+				if (httpEx.Message.Contains("401") || httpEx.Message.ToLower().Contains("unauthorized"))
+					return "Authentication failed. Please check your API key configuration.";
+				if (httpEx.Message.Contains("403") || httpEx.Message.ToLower().Contains("forbidden"))
+					return "Access forbidden. Please verify your API permissions.";
+				if (httpEx.Message.Contains("429") || httpEx.Message.ToLower().Contains("rate limit"))
+					return "Rate limit exceeded. Please wait a moment before trying again.";
+				if (httpEx.Message.Contains("500") || httpEx.Message.Contains("502") || httpEx.Message.Contains("503"))
+					return "The AI service is currently unavailable. Please try again later.";
+				if (httpEx.Message.ToLower().Contains("timeout"))
+					return "The request timed out. Please try again.";
+				if (httpEx.Message.ToLower().Contains("network") || httpEx.Message.ToLower().Contains("connection"))
 					return "Network connection error. Please check your internet connection.";
-
-				case JsonException:
-					return "Failed to process the AI response. Please try again.";
-
-				default:
-					// Generic error for any other exception type
-					// Do not expose ex.Message as it may contain sensitive information
-					return "An unexpected error occurred. Please try again or contact support if the problem persists.";
+				return "Failed to communicate with the AI service. Please check your connection and try again.";
+			}
+			else if (ex is TaskCanceledException)
+			{
+				return "The request was cancelled or timed out. Please try again.";
+			}
+			else if (ex is SocketException)
+			{
+				return "Network connection error. Please check your internet connection.";
+			}
+			else if (ex is JsonException)
+			{
+				return "Failed to process the AI response. Please try again.";
+			}
+			else
+			{
+				// Generic error for any other exception type
+				// Do not expose ex.Message as it may contain sensitive information
+				return "An unexpected error occurred. Please try again or contact support if the problem persists.";
 			}
 		}
 
