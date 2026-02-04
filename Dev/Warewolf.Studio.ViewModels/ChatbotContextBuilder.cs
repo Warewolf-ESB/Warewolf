@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Communication;
@@ -401,11 +402,12 @@ namespace Warewolf.Studio.ViewModels
                             xaml = FetchResourceXaml(server, resourceId);
                         }
 
+                        // Sanitize resource metadata fields to prevent prompt injection via crafted resource names
                         var resourceInfo = new
                         {
                             id = resourceId,
-                            name = resourceName,
-                            type = resourceType,
+                            name = SanitizeContentForPrompt(resourceName),
+                            type = SanitizeContentForPrompt(resourceType),
                             xaml = xaml
                         };
 
@@ -465,6 +467,9 @@ namespace Warewolf.Studio.ViewModels
                     return null;
                 }
 
+                // Sanitize XAML content to prevent prompt injection via malicious workflow definitions
+                xaml = SanitizeContentForPrompt(xaml);
+
                 Dev2Logger.Debug($"ChatbotContext: Fetched XAML for resource {resourceId} in {stopwatch.ElapsedMilliseconds}ms, size: {xaml?.Length ?? 0} chars", "Warewolf Debug");
                 return xaml;
             }
@@ -510,6 +515,9 @@ namespace Warewolf.Studio.ViewModels
                     return "No log data available.";
                 }
 
+                // Sanitize log content to prevent prompt injection via crafted log entries
+                logContent = SanitizeContentForPrompt(logContent);
+
                 if (logContent.Length > MaxSystemLogLength)
                 {
                     logContent = "... (earlier entries truncated)\n" + logContent.Substring(logContent.Length - MaxSystemLogLength);
@@ -528,6 +536,36 @@ namespace Warewolf.Studio.ViewModels
                 Dev2Logger.Error($"ChatbotContext: Error getting system log after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
                 return "Error reading system log: " + ex.Message;
             }
+        }
+
+        /// <summary>
+        /// Sanitizes untrusted content before including it in the system prompt.
+        /// Removes control characters, prompt injection patterns, and role-override attempts
+        /// that could manipulate the LLM's behavior.
+        /// </summary>
+        /// <param name="content">The raw content to sanitize (XAML, log text, etc.).</param>
+        /// <returns>The sanitized content safe for inclusion in a system prompt.</returns>
+        internal static string SanitizeContentForPrompt(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                return content;
+            }
+
+            // Remove control characters (except common whitespace: tab, newline, carriage return)
+            var sanitized = Regex.Replace(content, @"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", string.Empty);
+
+            // Remove zero-width and invisible Unicode characters that could hide injected instructions
+            sanitized = Regex.Replace(sanitized, @"[\u200B-\u200F\u2028-\u202F\uFEFF\u00AD]", string.Empty);
+
+            // Neutralize markdown-style heading patterns that could mimic prompt structure
+            // e.g., "## New System Instructions:" → "\\## New System Instructions:"
+            sanitized = Regex.Replace(sanitized, @"^(#{1,6}\s)", @"\$1", RegexOptions.Multiline);
+
+            // Neutralize triple-backtick fence closers/openers that could break out of code blocks
+            sanitized = sanitized.Replace("```", "'''");
+
+            return sanitized;
         }
     }
 }
