@@ -51,7 +51,6 @@ namespace Warewolf.Studio.ViewModels
         private ChatbotSource _configuredSource;
         private string _systemPrompt;
         private bool _systemPromptInitialized;
-        private System.Collections.Generic.List<string> _availableModels;
         private string _selectedModel;
         private bool _isInitializingPrompt;
         private string _loadingStatusText;
@@ -295,96 +294,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsChatbotConfigured = false;
                 _configuredSource = null;
-            }
-        }
-
-        private async void FetchAvailableModels()
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(_configuredSource.ModelsEndpoint))
-                {
-                    // If no models endpoint, use a default model
-                    _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
-                    _selectedModel = "gpt-4o-mini";
-                    return;
-                }
-
-                using (var client = new HttpClient())
-                {
-                    // Only add authorization header if API key is provided
-                    if (!string.IsNullOrWhiteSpace(_configuredSource.ApiKey))
-                    {
-                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuredSource.ApiKey}");
-                    }
-                    
-                    var response = await client.GetAsync(_configuredSource.ModelsEndpoint);
-                    
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Dev2.Common.Dev2Logger.Warn($"Failed to fetch models: {response.StatusCode}", "Warewolf Info");
-                        // Fallback to default
-                        _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
-                        _selectedModel = "gpt-4o-mini";
-                        return;
-                    }
-
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    dynamic result = JsonConvert.DeserializeObject(responseContent);
-                    
-                    _availableModels = new System.Collections.Generic.List<string>();
-                    
-                    // Parse the models from the response
-                    if (result?.data != null)
-                    {
-                        foreach (var model in result.data)
-                        {
-                            var modelId = model.id?.ToString();
-                            if (!string.IsNullOrWhiteSpace(modelId))
-                            {
-                                _availableModels.Add(modelId);
-                            }
-                        }
-                    }
-
-                    // Select a good default model if available
-                    if (_availableModels.Count > 0)
-                    {
-                        // Prefer gpt-4o-mini if available
-                        if (_availableModels.Contains("gpt-4o-mini"))
-                        {
-                            _selectedModel = "gpt-4o-mini";
-                        }
-                        else if (_availableModels.Contains("gpt-4o"))
-                        {
-                            _selectedModel = "gpt-4o";
-                        }
-                        else if (_availableModels.Contains("gpt-3.5-turbo"))
-                        {
-                            _selectedModel = "gpt-3.5-turbo";
-                        }
-                        else
-                        {
-                            // Use the first available model
-                            _selectedModel = _availableModels[0];
-                        }
-
-                        Dev2.Common.Dev2Logger.Info($"Fetched {_availableModels.Count} models from API. Selected: {_selectedModel}", "Warewolf Info");
-                    }
-                    else
-                    {
-                        // No models returned, use fallback
-                        _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
-                        _selectedModel = "gpt-4o-mini";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2.Common.Dev2Logger.Error("Error fetching available models", ex, "Warewolf Error");
-                // Fallback to default model
-                _availableModels = new System.Collections.Generic.List<string> { "gpt-4o-mini" };
-                _selectedModel = "gpt-4o-mini";
             }
         }
 
