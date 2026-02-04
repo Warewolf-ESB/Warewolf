@@ -42,11 +42,15 @@ namespace Warewolf.Studio.ViewModels
 		/// <summary>Delay in milliseconds between retry attempts for system prompt initialization.</summary>
 		private const int RetryDelayMs = 500;
 
+		/// <summary>Minimum delay in milliseconds between consecutive send operations to prevent API abuse and excessive costs.</summary>
+		private const int MinSendDelayMs = 1000;
+
 		private bool _disposed;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
 		private readonly IChatbotContextBuilder _contextBuilder;
 		private readonly IChatbotApiService _chatbotApiService;
+		private DateTime _lastSendTime = DateTime.MinValue;
 		private string _message;
         private ObservableCollection<ChatMessage> _messages;
         private string _displayName;
