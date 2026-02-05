@@ -106,10 +106,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task<string> SendWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
-        {
-            var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
-            var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+		private async Task<string> SendWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+		{
+			var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
+			var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
 
             var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, authHeaderName, authHeaderPrefix, additionalHeaders);
 
@@ -499,16 +499,43 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
 
-        private static object CreateStreamingPayload(string model, object[] messages)
-        {
-            return new
-            {
-                model = model,
-                messages = messages,
-                temperature = ChatTemperature,
-                max_tokens = MaxCompletionTokens,
-                stream = true
-            };
-        }
-    }
+		private static object CreateStreamingPayload(string model, object[] messages)
+		{
+			return new
+			{
+				model = model,
+				messages = messages,
+				temperature = ChatTemperature,
+				max_tokens = MaxCompletionTokens,
+				stream = true
+			};
+		}
+
+		// Overload to support useMaxCompletionTokens for streaming payloads
+		private static object CreateStreamingPayload(string model, object[] messages, bool useMaxCompletionTokens)
+		{
+			if (useMaxCompletionTokens)
+			{
+				return new
+				{
+					model = model,
+					messages = messages,
+					temperature = ChatTemperature,
+					max_completion_tokens = MaxCompletionTokens,
+					stream = true
+				};
+			}
+			else
+			{
+				return new
+				{
+					model = model,
+					messages = messages,
+					temperature = ChatTemperature,
+					max_tokens = MaxCompletionTokens,
+					stream = true
+				};
+			}
+		}
+	}
 }
