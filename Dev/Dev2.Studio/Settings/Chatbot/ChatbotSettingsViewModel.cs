@@ -134,8 +134,10 @@ namespace Dev2.Settings.Chatbot
             // Initialize system prompt preview
             UpdateSystemPromptPreview();
             
-            // Build resource tree
-            BuildResourceTree();
+            // Build resource tree - but delay slightly to allow resources to load
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(
+                System.Windows.Threading.DispatcherPriority.Loaded,
+                new System.Action(() => BuildResourceTree()));
             }
             
         public IServer CurrentEnvironment
@@ -190,158 +192,185 @@ namespace Dev2.Settings.Chatbot
             return new List<IChatbotSourceResource>();
         }
 
-        private void BuildResourceTree()
-        {
-            try
-            {
-                var treeItems = new ObservableCollection<ResourceTreeItemViewModel>();
-                var allResources = _resourceRepository.All();
+		private void BuildResourceTree()
+		{
+			try
+			{
+				var treeItems = new ObservableCollection<ResourceTreeItemViewModel>();
+				var allResources = _resourceRepository.All();
 
-                if (allResources == null || allResources.Count == 0)
-                {
-                    ResourceTree = treeItems;
-                    return;
-                }
+				if (allResources == null || allResources.Count == 0)
+				{
+					// Try to force load resources from the explorer
+					try
+					{
+						_currentEnvironment.ForceLoadResources();
+						allResources = _resourceRepository.All();
+					}
+					catch (Exception ex)
+					{
+						Dev2Logger.Error("ChatbotSettings: BuildResourceTree - Error calling ForceLoadResources", ex, "Warewolf Error");
+					}
+					
+					if (allResources == null || allResources.Count == 0)
+					{
+						ResourceTree = treeItems;
+						return;
+					}
+				}
 
-                // Filter out source resources
-                var filteredResources = allResources.Where(r => 
-                    !r.ResourceType.ToString().Contains("Source") && 
-                    r.ResourceType.ToString() != nameof(ServerSource) &&
-                    r.ResourceType.ToString() != "Version").ToList();
+				// Filter out source resources
+				var filteredResources = allResources.Where(r =>
+					!r.ResourceType.ToString().Contains("Source") &&
+					r.ResourceType.ToString() != nameof(ServerSource) &&
+					r.ResourceType.ToString() != "Version").ToList();
 
-                // Build tree structure
-                var rootItems = new Dictionary<string, ResourceTreeItemViewModel>();
+				if (filteredResources.Count == 0)
+				{
+					ResourceTree = treeItems;
+					return;
+				}
 
-                foreach (var resource in filteredResources)
-                {
-                    // Use Category for the resource path
-                    var resourcePath = resource.Category ?? "";
-                    var pathParts = resourcePath.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    if (pathParts.Length == 0 && !string.IsNullOrEmpty(resource.ResourceName))
-                    {
-                        // Root level resource with no folder
-                        var rootResourceItem = new ResourceTreeItemViewModel
-                        {
-                            ResourceId = resource.ID,
-                            ResourceName = resource.ResourceName,
-                            DisplayName = resource.ResourceName,
-                            ResourcePath = "",
-                            IsFolder = false,
-                            ResourceType = resource.ResourceType.ToString(),
-                            Parent = null
-                        };
+				// Build tree structure
+				var rootItems = new Dictionary<string, ResourceTreeItemViewModel>();
+				var processedCount = 0;
 
-                        // Check if this resource was previously selected
-                        if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
-                        {
-                            rootResourceItem.IsChecked = true;
-                        }
+				foreach (var resource in filteredResources)
+				{
+					processedCount++;
+					// Use Category for the resource path
+					var resourcePath = resource.Category ?? "";
+					var pathParts = resourcePath.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        // Subscribe to IsChecked changes to update selected resources
-                        rootResourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+					if (pathParts.Length == 0 && !string.IsNullOrEmpty(resource.ResourceName))
+					{
+						// Root level resource with no folder
+						var rootResourceItem = new ResourceTreeItemViewModel
+						{
+							ResourceId = resource.ID,
+							ResourceName = resource.ResourceName,
+							DisplayName = resource.ResourceName,
+							ResourcePath = "",
+							IsFolder = false,
+							ResourceType = resource.ResourceType.ToString(),
+							Parent = null
+						};
 
-                        treeItems.Add(rootResourceItem);
-                        continue;
-                    }
+						// Check if this resource was previously selected
+						if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
+						{
+							rootResourceItem.IsChecked = true;
+						}
 
-                    ResourceTreeItemViewModel currentParent = null;
-                    var currentPath = "";
+						// Subscribe to IsChecked changes to update selected resources
+						rootResourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+
+						treeItems.Add(rootResourceItem);
+						continue;
+					}
+
+					ResourceTreeItemViewModel currentParent = null;
+					var currentPath = "";
 
                     // Create folder hierarchy
                     for (int i = 0; i < pathParts.Length - 1; i++)
-                    {
-                        currentPath += "\\" + pathParts[i];
-                        
-                        if (currentParent == null)
-                        {
-                            // Root level folder
-                            if (!rootItems.ContainsKey(currentPath))
-                            {
-                                var folderItem = new ResourceTreeItemViewModel
-                                {
-                                    ResourceId = Guid.Empty,
-                                    ResourceName = pathParts[i],
-                                    DisplayName = pathParts[i],
-                                    ResourcePath = currentPath,
-                                    IsFolder = true,
-                                    ResourceType = "Folder"
-                                };
-                                rootItems[currentPath] = folderItem;
-                                treeItems.Add(folderItem);
-                            }
-                            currentParent = rootItems[currentPath];
-                        }
-                        else
-                        {
-                            // Check if folder exists in current parent's children
-                            var existingFolder = currentParent.Children.FirstOrDefault(c => 
-                                c.IsFolder && c.ResourceName == pathParts[i]);
-                            
-                            if (existingFolder == null)
-                            {
-                                var folderItem = new ResourceTreeItemViewModel
-                                {
-                                    ResourceId = Guid.Empty,
-                                    ResourceName = pathParts[i],
-                                    DisplayName = pathParts[i],
-                                    ResourcePath = currentPath,
-                                    IsFolder = true,
-                                    ResourceType = "Folder",
-                                    Parent = currentParent
-                                };
-                                currentParent.Children.Add(folderItem);
-                                currentParent = folderItem;
-                            }
-                            else
-                            {
-                                currentParent = existingFolder;
-                            }
-                        }
-                    }
+					{
+						currentPath += "\\" + pathParts[i];
 
-                    // Add the resource item
-                    var resourceItem = new ResourceTreeItemViewModel
-                    {
-                        ResourceId = resource.ID,
-                        ResourceName = resource.ResourceName,
-                        DisplayName = resource.ResourceName,
-                        ResourcePath = resourcePath,
-                        IsFolder = false,
-                        ResourceType = resource.ResourceType.ToString(),
-                        Parent = currentParent
-                    };
+						if (currentParent == null)
+						{
+							// Root level folder
+							if (!rootItems.ContainsKey(currentPath))
+							{
+								var folderItem = new ResourceTreeItemViewModel
+								{
+									ResourceId = Guid.Empty,
+									ResourceName = pathParts[i],
+									DisplayName = pathParts[i],
+									ResourcePath = currentPath,
+									IsFolder = true,
+									ResourceType = "Folder"
+								};
+								rootItems[currentPath] = folderItem;
+								treeItems.Add(folderItem);
+							}
+							currentParent = rootItems[currentPath];
+						}
+						else
+						{
+							// Check if folder exists in current parent's children
+							var existingFolder = currentParent.Children.FirstOrDefault(c =>
+								c.IsFolder && c.ResourceName == pathParts[i]);
 
-                    // Check if this resource was previously selected
-                    if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
-                    {
-                        resourceItem.IsChecked = true;
-                    }
+							if (existingFolder == null)
+							{
+								var folderItem = new ResourceTreeItemViewModel
+								{
+									ResourceId = Guid.Empty,
+									ResourceName = pathParts[i],
+									DisplayName = pathParts[i],
+									ResourcePath = currentPath,
+									IsFolder = true,
+									ResourceType = "Folder",
+									Parent = currentParent
+								};
+								currentParent.Children.Add(folderItem);
+								currentParent = folderItem;
+							}
+							else
+							{
+								currentParent = existingFolder;
+							}
+						}
+					}
 
-                    // Subscribe to IsChecked changes to update selected resources
-                    resourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+					// Add the resource item
+					var resourceItem = new ResourceTreeItemViewModel
+					{
+						ResourceId = resource.ID,
+						ResourceName = resource.ResourceName,
+						DisplayName = resource.ResourceName,
+						ResourcePath = resourcePath,
+						IsFolder = false,
+						ResourceType = resource.ResourceType.ToString(),
+						Parent = currentParent
+					};
 
-                    if (currentParent != null)
-                    {
-                        currentParent.Children.Add(resourceItem);
-                    }
-                    else
-                    {
-                        // Root level resource
-                        treeItems.Add(resourceItem);
-                    }
-                }
+					// Check if this resource was previously selected
+					if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
+					{
+						resourceItem.IsChecked = true;
+					}
 
-                ResourceTree = treeItems;
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error("ChatbotSettings: Error building resource tree", ex, "Warewolf Error");
-                ResourceTree = new ObservableCollection<ResourceTreeItemViewModel>();
-            }
-        }
+					// Subscribe to IsChecked changes to update selected resources
+					resourceItem.PropertyChanged += ResourceItem_PropertyChanged;
 
-        private void ResourceItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+					if (currentParent != null)
+					{
+						currentParent.Children.Add(resourceItem);
+					}
+					else
+					{
+						// Root level resource
+						treeItems.Add(resourceItem);
+					}
+				}
+
+				ResourceTree = treeItems;
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Error("ChatbotSettings: Error building resource tree", ex, "Warewolf Error");
+				ResourceTree = new ObservableCollection<ResourceTreeItemViewModel>();
+			}
+		}
+
+		public void RefreshResourceTree()
+		{
+			BuildResourceTree();
+		}
+
+		private void ResourceItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ResourceTreeItemViewModel.IsChecked))
             {
