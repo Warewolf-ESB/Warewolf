@@ -63,6 +63,7 @@ namespace Warewolf.Studio.ViewModels
 		private readonly IChatbotContextBuilder _contextBuilder;
 		private readonly IChatbotApiService _chatbotApiService;
 		private DateTime _lastSendTime = DateTime.MinValue;
+		private bool _isSavingConversation;
 		private string _message;
         private ObservableCollection<ChatMessage> _messages;
         private string _displayName;
@@ -836,20 +837,27 @@ namespace Warewolf.Studio.ViewModels
 
         private void SaveCurrentConversation()
         {
-            if (_currentConversation == null)
+            // Prevent recursive calls - check and set guard IMMEDIATELY before any other operations
+            if (_isSavingConversation)
             {
                 return;
             }
-
-            // Only save if there are user messages
-            var hasUserMessages = Messages.Any(m => m.Type == ChatMessageType.User);
-            if (!hasUserMessages)
-            {
-                return;
-            }
+            _isSavingConversation = true;
 
             try
             {
+                if (_currentConversation == null)
+                {
+                    return;
+                }
+
+                // Only save if there are user messages
+                var hasUserMessages = Messages.Any(m => m.Type == ChatMessageType.User);
+                if (!hasUserMessages)
+                {
+                    return;
+                }
+
                 _currentConversation.Messages = Messages.ToList();
                 _currentConversation.ConversationSummary = _conversationSummary;
                 _currentConversation.LastMessageAt = DateTime.Now;
@@ -877,6 +885,10 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 Dev2.Common.Dev2Logger.Error("ChatbotContext: Error saving conversation", ex, "Warewolf Error");
+            }
+            finally
+            {
+                _isSavingConversation = false;
             }
         }
 
