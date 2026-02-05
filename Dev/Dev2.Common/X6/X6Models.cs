@@ -365,6 +365,8 @@ namespace Dev2.Common.X6
         public const string GATE_CONDITIONS = "gate_conditions";
         public const string GATE_RETRYENTRYPOINTID = "gate_retryentrypointid";
         public const string GATE_GATEOPTIONS = "gate_gateoptions";
+        public const string GATE_DATAFUNC = "dataFunc";
+        public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
     }
 
     public class X6WorkflowLoadModel

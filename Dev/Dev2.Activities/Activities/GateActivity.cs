@@ -500,31 +500,102 @@ namespace Dev2.Activities
             }
         }
 
+        /// <summary>
+        /// Serializes the DataFunc (child activity) to a JSON-friendly format
+        /// </summary>
+        /// <returns>Serialized DataFunc data</returns>
+        private object SerializeDataFunc()
+        {
+            if (DataFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = DataFunc.DisplayName ?? "Data Action",
+                    argumentName = DataFunc.Argument?.Name ?? string.Empty,
+                    handlerType = DataFunc.Handler.GetType().Name,
+                    handlerUniqueId = (DataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (DataFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the DataFunc (child activity) from JSON format
+        /// </summary>
+        /// <param name="dataFuncData">The serialized DataFunc data</param>
+        private void DeserializeDataFunc(dynamic dataFuncData)
+        {
+            if (dataFuncData == null) return;
+
+            try
+            {
+                // Note: For full deserialization of child activities, we would need access to the 
+                // activity factory and the complete activity definition. For now, we preserve
+                // the basic structure and properties that can be restored.
+
+                if (DataFunc == null)
+                {
+                    DataFunc = new ActivityFunc<string, bool>();
+                }
+
+                // Restore basic properties
+                if (dataFuncData.displayName != null)
+                {
+                    DataFunc.DisplayName = dataFuncData.displayName.ToString();
+                }
+
+                if (dataFuncData.argumentName != null && DataFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+
+                // The actual Handler restoration would require more complex logic involving
+                // activity factories and full activity serialization/deserialization
+                // This is typically handled at a higher level during workflow reconstruction
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        /// <summary>
+        /// Serializes the Gate activity to X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with Gate data</param>
         public override void ToX6Json(Cell cell)
         {
             if (cell.data == null) cell.data = new Dictionary<string, object>();
 
+            // Call base implementation for common properties (OnError handling, etc.)
             base.ToX6Json(cell);
 
             cell.shape = Constants.GATEACTIVITY;
+            // Set the activity type
             cell.data[Constants.TYPE] = Constants.GATEACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATE;
-            cell.data[Constants.UNIQUEID] = UniqueID;
 
-            // Gate activity specific properties
+            // Create comprehensive Gate data structure matching the rich JSON format
             var serializer = new Dev2JsonSerializer();
-            cell.data.TryAdd(Constants.GATE_CONDITIONS, serializer.Serialize(Conditions));
-            cell.data.TryAdd(Constants.GATE_RETRYENTRYPOINTID, RetryEntryPointId.ToString());
-            cell.data.TryAdd(Constants.GATE_GATEOPTIONS, serializer.Serialize(GateOptions));
-
-            // Note: droppedNodes are no longer included here as nested activities are now handled 
-            // separately as standalone nodes with nesting properties by the workflow converter
-            cell.data["droppedNodes"] = new List<object>();
+            cell.data[Constants.GATE_CONDITIONS] = serializer.Serialize(Conditions);
+            cell.data[Constants.GATE_RETRYENTRYPOINTID] = RetryEntryPointId.ToString();
+            cell.data[Constants.GATE_GATEOPTIONS] = serializer.Serialize(GateOptions);
 
             // Add ngArguments for the frontend framework integration
             if (cell.id != null)
             {
-                cell.data["ngArguments"] = new
+                cell.data[Constants.NGARGUMENTS] = new
                 {
                     graphId = Guid.NewGuid().ToString(), // Generate a graph ID for UI purposes
                     nodeId = cell.id
@@ -532,100 +603,77 @@ namespace Dev2.Activities
             }
 
             // Serialize the DataFunc (child activities) information for legacy support
-            if (DataFunc?.Handler != null)
+            var dataFuncInfo = SerializeDataFunc();
+            if (dataFuncInfo != null)
             {
-                try
-                {
-                    cell.data["dataFunc"] = new
-                    {
-                        displayName = DataFunc.DisplayName ?? "Data Action",
-                        argumentName = DataFunc.Argument?.Name ?? string.Empty,
-                        handlerType = DataFunc.Handler.GetType().Name,
-                        handlerUniqueId = (DataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
-                        handlerDisplayName = (DataFunc.Handler as Activity)?.DisplayName ?? string.Empty
-                    };
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error($"Error serializing DataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
-                }
+                cell.data[Constants.GATE_DATAFUNC] = dataFuncInfo;
             }
         }
 
+        /// <summary>
+        /// Deserializes the Gate activity from X6 JSON format using the comprehensive structure
+        /// </summary>
+        /// <param name="cell">The X6 cell containing Gate data</param>
         public override void FromX6Json(Cell cell)
         {
             if (cell == null || cell.data == null) return;
 
+            // Call base implementation for common properties (OnError handling, etc.)
             base.FromX6Json(cell);
 
-            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
-                DisplayName = displayName;
-            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
-                UniqueID = uniqueId;
-
-            // Gate activity specific properties
-            var serializer = new Dev2JsonSerializer();
-            
-            if (cell.data.TryGetString(Constants.GATE_CONDITIONS, out var conditionsJson))
+            // Deserialize comprehensive Gate data
+            try
             {
-                try
-                {
-                    Conditions = serializer.Deserialize<List<ConditionExpression>>(conditionsJson);
-                }
-                catch
-                {
-                    Conditions = new List<ConditionExpression>();
-                }
-            }
+                if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                    this.DisplayName = displayName;
 
-            if (cell.data.TryGetString(Constants.GATE_RETRYENTRYPOINTID, out var retryIdStr) && Guid.TryParse(retryIdStr, out var retryId))
-            {
-                RetryEntryPointId = retryId;
-            }
+                // Gate activity specific properties
+                var serializer = new Dev2JsonSerializer();
 
-            if (cell.data.TryGetString(Constants.GATE_GATEOPTIONS, out var gateOptionsJson))
-            {
-                try
+                if (cell.data.TryGetString(Constants.GATE_CONDITIONS, out string conditionsJson))
                 {
-                    GateOptions = serializer.Deserialize<GateOptions>(gateOptionsJson);
-                }
-                catch
-                {
-                    GateOptions = new GateOptions();
-                }
-            }
-
-            // Handle dataFunc if present (legacy support)
-            if (cell.data.TryGetValue("dataFunc", out var dataFuncObj))
-            {
-                try
-                {
-                    if (DataFunc == null)
+                    try
                     {
-                        DataFunc = new ActivityFunc<string, bool>
-                        {
-                            DisplayName = "Data Action",
-                            Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-                        };
+                        Conditions = serializer.Deserialize<List<ConditionExpression>>(conditionsJson);
                     }
-                    // Note: Actual Handler restoration handled at higher level during workflow reconstruction
+                    catch
+                    {
+                        Conditions = new List<ConditionExpression>();
+                    }
                 }
-                catch (Exception ex)
+
+                if (cell.data.TryGetString(Constants.GATE_RETRYENTRYPOINTID, out string retryIdStr) && Guid.TryParse(retryIdStr, out Guid retryId))
                 {
-                    Dev2Logger.Error($"Error deserializing dataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                    RetryEntryPointId = retryId;
                 }
-            }
 
-            // Handle ngArguments if present (UI framework data)
-            if (cell.data.TryGetValue("ngArguments", out var ngArgumentsObj))
+                if (cell.data.TryGetString(Constants.GATE_GATEOPTIONS, out string gateOptionsJson))
+                {
+                    try
+                    {
+                        GateOptions = serializer.Deserialize<GateOptions>(gateOptionsJson);
+                    }
+                    catch
+                    {
+                        GateOptions = new GateOptions();
+                    }
+                }
+
+                // Deserialize DataFunc if present (legacy support)
+                if (cell.data.TryGetValue(Constants.GATE_DATAFUNC, out var dataFuncObj))
+                {
+                    DeserializeDataFunc(dataFuncObj);
+                }
+
+                // Defensive initialization
+                Conditions ??= new List<ConditionExpression>();
+                GateOptions ??= new GateOptions();
+            }
+            catch (Exception ex)
             {
-                // Store for potential UI integration needs
-                // This typically doesn't affect the core activity logic
+                // Log error but don't throw - graceful degradation
+                Dev2Logger.Error($"Error deserializing Gate data from comprehensive X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
             }
-
-            // Defensive initialization
-            Conditions ??= new List<ConditionExpression>();
-            GateOptions ??= new GateOptions();
         }
 
         public override List<string> GetOutputs() => new List<string>();

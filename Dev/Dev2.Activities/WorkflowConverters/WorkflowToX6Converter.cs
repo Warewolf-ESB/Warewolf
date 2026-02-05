@@ -99,6 +99,7 @@ namespace Dev2.Activities.WF
                 DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
                 DsfSelectAndApplyActivity selectAndApplyActivity => ProcessDsfSelectAndApplyActivity(selectAndApplyActivity, graphData, activityNodeMap, previousNodeId),
                 RedisCacheActivity redisCacheActivity => ProcessRedisCacheActivity(redisCacheActivity, graphData, activityNodeMap, previousNodeId),
+                GateActivity gateActivity => ProcessGateActivity(gateActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -567,6 +568,7 @@ namespace Dev2.Activities.WF
                 DsfSequenceActivity => true,
                 DsfSelectAndApplyActivity => true,
                 RedisCacheActivity => true,
+                GateActivity => true,
                 _ => false
             };
         }
