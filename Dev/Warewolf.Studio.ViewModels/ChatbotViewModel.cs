@@ -83,9 +83,9 @@ namespace Warewolf.Studio.ViewModels
         private string _resourcesJson;
         private string _systemLog;
         private bool _includeSystemLog = true;
-        private bool _includeResourcesXaml = true;
-        private bool _includeResourcesJson = true;
+        private bool _loadResourcesAsXaml = true;
         private int _numberOfLogLines = 1000;
+        private List<Guid> _selectedResourceIds = new List<Guid>();
         private string _conversationSummary;
         private ChatConversation _currentConversation;
         private ChatConversation _selectedConversation;
@@ -115,23 +115,23 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IncludeResourcesXaml
+        public bool LoadResourcesAsXaml
         {
-            get => _includeResourcesXaml;
+            get => _loadResourcesAsXaml;
             set
             {
-                _includeResourcesXaml = value;
-                OnPropertyChanged(nameof(IncludeResourcesXaml));
+                _loadResourcesAsXaml = value;
+                OnPropertyChanged(nameof(LoadResourcesAsXaml));
             }
         }
 
-        public bool IncludeResourcesJson
+        public List<Guid> SelectedResourceIds
         {
-            get => _includeResourcesJson;
+            get => _selectedResourceIds;
             set
             {
-                _includeResourcesJson = value;
-                OnPropertyChanged(nameof(IncludeResourcesJson));
+                _selectedResourceIds = value ?? new List<Guid>();
+                OnPropertyChanged(nameof(SelectedResourceIds));
             }
         }
 
@@ -361,9 +361,9 @@ namespace Warewolf.Studio.ViewModels
 
                 // Load checkbox settings using properties to trigger property change notifications
                 IncludeSystemLog = settingsData.IncludeSystemLog;
-                IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
-                IncludeResourcesJson = settingsData.IncludeResourcesJson;
+                LoadResourcesAsXaml = settingsData.LoadResourcesAsXaml;
                 NumberOfLogLines = settingsData.NumberOfLogLines;
+                SelectedResourceIds = settingsData.SelectedResourceIds ?? new List<Guid>();
 
                 if (settingsData?.ChatbotSource?.Value == null || settingsData.ChatbotSource.Value == Guid.Empty)
                 {
@@ -415,9 +415,9 @@ namespace Warewolf.Studio.ViewModels
                 var options = new ChatbotContextOptions
                 {
                     IncludeSystemLog = _includeSystemLog,
-                    IncludeResourcesXaml = _includeResourcesXaml,
-                    IncludeResourcesJson = _includeResourcesJson,
+                    LoadResourcesAsXaml = _loadResourcesAsXaml,
                     NumberOfLogLines = _numberOfLogLines,
+                    SelectedResourceIds = _selectedResourceIds,
                     Server = _server,
                     StatusUpdateCallback = status => UpdateStatusOnUiThread(status)
                 };

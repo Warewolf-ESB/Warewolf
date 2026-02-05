@@ -7,7 +7,7 @@ xmlns:chatbot="clr-namespace:Dev2.Settings.Chatbot"
 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-d:DesignHeight="300"
+d:DesignHeight="600"
 d:DesignWidth="800"
 mc:Ignorable="d"
 d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
@@ -51,6 +51,9 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Chatbot Source" />
@@ -149,15 +152,15 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                         </ComboBox>
 
                         <!-- Loading Spinner -->
-                        <customControls:CircularProgressBar Grid.Column="1" 
-                                                            Grid.Row="2" 
+                        <customControls:CircularProgressBar Grid.Column="1"
+                                                            Grid.Row="2"
                                                             Grid.ColumnSpan="3"
                                                             Width="30"
                                                             Height="30"
                                                             Margin="0,5,0,0"
                                                             HorizontalAlignment="Left"
                                                             Visibility="{Binding IsFetchingModels, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-                        
+
                         <!-- System Prompt Options Section -->
                         <TextBlock Grid.Column="0"
                                    Grid.Row="2"
@@ -212,33 +215,116 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                             </TextBox>
                         </StackPanel>
 
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="5"
-                                  Grid.ColumnSpan="4"
-                                  Content="Include Resources XAML"
-                                  IsChecked="{Binding IncludeResourcesXaml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="Include workflow XAML definitions in the chatbot context (increases token usage)"
-                                  Margin="0,5,0,5">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter
-                                    Text="When enabled, the chatbot can analyze workflow XAML to understand activities and data flow. This uses more tokens."
-                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
+                        <!-- Selected Resources Section -->
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="5"
+                                   Grid.ColumnSpan="4"
+                                   Text="Selected Resources"
+                                   FontWeight="Bold"
+                                   Margin="0,15,0,5"/>
 
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="6"
-                                  Grid.ColumnSpan="4"
-                                  Content="Include Resources JSON"
-                                  IsChecked="{Binding IncludeResourcesJson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="Include resource metadata (names, types, IDs) in the chatbot context"
-                                  Margin="0,5,0,5">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter
-                                    Text="When enabled, the chatbot can see the list of available resources and their metadata."
-                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
+                        <Grid Grid.Column="0"
+                              Grid.Row="6"
+                              Grid.ColumnSpan="4"
+                              Margin="0,5,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Resource List -->
+                            <ListBox Grid.Column="0"
+                                     Grid.Row="0"
+                                     Height="120"
+                                     ItemsSource="{Binding SelectedResources}"
+                                     SelectedItem="{Binding SelectedResourceItem, Mode=TwoWay}"
+                                     DisplayMemberPath="DisplayText"
+                                     ToolTip="Resources to include in the chatbot system prompt">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter
+                                        Text="List of resources that will be loaded into the chatbot's context. Select a resource and click Remove to delete it."
+                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </ListBox>
+
+                            <!-- Buttons -->
+                            <StackPanel Grid.Column="1"
+                                        Grid.Row="0"
+                                        Orientation="Vertical"
+                                        Margin="5,0,0,0">
+                                <Button Content="Add..."
+                                        Command="{Binding AddResourceCommand}"
+                                        MinWidth="80"
+                                        Margin="0,0,0,5"
+                                        ToolTip="Add a resource to include in the system prompt">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter
+                                            Text="Click to open the resource picker and select a resource to add to the chatbot context."
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                                <Button Content="Remove"
+                                        Command="{Binding RemoveResourceCommand}"
+                                        MinWidth="80"
+                                        ToolTip="Remove the selected resource">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter
+                                            Text="Click to remove the selected resource from the chatbot context."
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Load as XAML checkbox -->
+                            <CheckBox Grid.Column="0"
+                                      Grid.Row="1"
+                                      Grid.ColumnSpan="2"
+                                      Content="Load resources as XAML (provides more detail, uses more tokens)"
+                                      IsChecked="{Binding LoadResourcesAsXaml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="When enabled, resources are loaded with full XAML structure. When disabled, only JSON metadata is loaded."
+                                      Margin="0,10,0,5">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter
+                                        Text="When enabled, the chatbot receives detailed XAML definitions allowing it to analyze workflow structure. When disabled, only basic JSON metadata is provided."
+                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                        </Grid>
+
+                        <!-- System Prompt Preview Section -->
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="7"
+                                   Grid.ColumnSpan="4"
+                                   Text="System Prompt Preview"
+                                   FontWeight="Bold"
+                                   Margin="0,15,0,5"/>
+
+                        <Border Grid.Column="0"
+                                Grid.Row="8"
+                                Grid.ColumnSpan="4"
+                                BorderBrush="{StaticResource WarewolfOrangeBrush}"
+                                BorderThickness="1"
+                                Margin="0,5,0,10">
+                            <TextBox Text="{Binding SystemPromptPreview, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Height="200"
+                                     FontFamily="Consolas"
+                                     FontSize="11"
+                                     Background="{StaticResource WindowBackgroundBrush}"
+                                     ToolTip="Preview of the system prompt that will be sent to the AI model">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter
+                                        Text="This preview shows the structure of the system prompt including selected resources and settings. The token count is an estimate."
+                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </Border>
                     </Grid>
                 </Grid>
             </StackPanel>
