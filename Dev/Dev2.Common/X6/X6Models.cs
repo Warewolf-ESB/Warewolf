@@ -351,6 +351,13 @@ namespace Dev2.Common.X6
         public const string JAVASCRIPT_INCLUDEFILE = "includefile";
         public const string JAVASCRIPT_RESULT = "result";
 
+        public const string DSFRUBYACTIVITY = "DsfRubyActivity";
+        public const string DISPLAYNAME_RUBY = "Ruby";
+        public const string RUBY_SCRIPT = "script";
+        public const string RUBY_ESCAPESCRIPT = "escapescript";
+        public const string RUBY_INCLUDEFILE = "includefile";
+        public const string RUBY_RESULT = "result";
+
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
         public const string COMMANDLINE_COMMANDRESULT = "commandresult";

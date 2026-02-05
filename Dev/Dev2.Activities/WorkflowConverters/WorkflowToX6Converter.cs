@@ -826,6 +826,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateJavascriptActivity(javascriptActivity, nodeId);
             }
+            else if (activity is Scripting.DsfRubyActivity rubyActivity)
+            {
+                cell = CreateRubyActivity(rubyActivity, nodeId);
+            }
             else if (activity is Scripting.DsfPythonActivity pythonscriptActivity)
             {
                 cell = CreatePythonActivity(pythonscriptActivity, nodeId);
