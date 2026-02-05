@@ -230,7 +230,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // For now, we'll skip this to keep the initial implementation simple
             }
 
-            if (settings.IncludeResourcesXaml || settings.IncludeResourcesJson)
+            if (settings.SelectedResourceIds != null && settings.SelectedResourceIds.Count > 0)
             {
                 // TODO: In a future enhancement, retrieve and add relevant resource definitions
                 // For now, we'll skip this to keep the initial implementation simple

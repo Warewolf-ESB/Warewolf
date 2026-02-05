@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -541,6 +542,16 @@ namespace Dev2.Common
             set
             {
                 _settings.NumberOfLogLines = value;
+                Save();
+            }
+        }
+
+        public List<Guid> SelectedResourceIds
+        {
+            get => _settings?.SelectedResourceIds ?? new List<Guid>();
+            set
+            {
+                _settings.SelectedResourceIds = value ?? new List<Guid>();
                 Save();
             }
         }
