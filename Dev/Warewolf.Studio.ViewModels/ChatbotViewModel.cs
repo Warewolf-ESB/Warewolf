@@ -85,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
+        private int _numberOfLogLines = 1000;
         private string _conversationSummary;
         private ChatConversation _currentConversation;
         private ChatConversation _selectedConversation;
@@ -131,6 +132,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _includeResourcesJson = value;
                 OnPropertyChanged(nameof(IncludeResourcesJson));
+            }
+        }
+
+        public int NumberOfLogLines
+        {
+            get => _numberOfLogLines;
+            set
+            {
+                _numberOfLogLines = value;
+                OnPropertyChanged(nameof(NumberOfLogLines));
             }
         }
 
@@ -351,6 +362,7 @@ namespace Warewolf.Studio.ViewModels
                 IncludeSystemLog = settingsData.IncludeSystemLog;
                 IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
                 IncludeResourcesJson = settingsData.IncludeResourcesJson;
+                NumberOfLogLines = settingsData.NumberOfLogLines;
 
                 if (settingsData?.ChatbotSource?.Value == null || settingsData.ChatbotSource.Value == Guid.Empty)
                 {
@@ -404,6 +416,7 @@ namespace Warewolf.Studio.ViewModels
                     IncludeSystemLog = _includeSystemLog,
                     IncludeResourcesXaml = _includeResourcesXaml,
                     IncludeResourcesJson = _includeResourcesJson,
+                    NumberOfLogLines = _numberOfLogLines,
                     Server = _server,
                     StatusUpdateCallback = status => UpdateStatusOnUiThread(status)
                 };

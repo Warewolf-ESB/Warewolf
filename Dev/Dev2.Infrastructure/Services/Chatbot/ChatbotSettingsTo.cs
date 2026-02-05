@@ -14,5 +14,6 @@ namespace Dev2.Services.Chatbot
         public bool IncludeSystemLog { get; set; } = true;
         public bool IncludeResourcesXaml { get; set; } = true;
         public bool IncludeResourcesJson { get; set; } = true;
+        public int NumberOfLogLines { get; set; } = 1000;
     }
 }

@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         public bool IncludeSystemLog { get; set; }
         public bool IncludeResourcesXaml { get; set; }
         public bool IncludeResourcesJson { get; set; }
+        public int NumberOfLogLines { get; set; } = 1000;
         public IServer Server { get; set; }
         public Action<string> StatusUpdateCallback { get; set; }
     }
@@ -219,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
             options.StatusUpdateCallback?.Invoke("Loading recent system logs...");
 
             var logStopwatch = Stopwatch.StartNew();
-            result.SystemLog = GetSystemLog(options.Server);
+            result.SystemLog = GetSystemLog(options.Server, options.NumberOfLogLines);
             logStopwatch.Stop();
 
             Dev2Logger.Info($"ChatbotContext: System log loading completed in {logStopwatch.ElapsedMilliseconds}ms, size: {result.SystemLog?.Length ?? 0} chars", "Warewolf Performance");
@@ -599,7 +600,7 @@ namespace Warewolf.Studio.ViewModels
             return typeName;
         }
 
-        private static string GetSystemLog(IServer server)
+        private static string GetSystemLog(IServer server, int numberOfLogLines)
         {
             var stopwatch = Stopwatch.StartNew();
 
@@ -636,14 +637,26 @@ namespace Warewolf.Studio.ViewModels
                 // Sanitize log content to prevent prompt injection via crafted log entries
                 logContent = SanitizeContentForPrompt(logContent);
 
-                if (logContent.Length > MaxSystemLogLength)
+                // Truncate to the configured number of lines
+                var lines = logContent.Split(new[] { '\n' }, StringSplitOptions.None);
+                var totalLines = lines.Length;
+
+                if (totalLines > numberOfLogLines)
                 {
-                    logContent = "... (earlier entries truncated)\n" + logContent.Substring(logContent.Length - MaxSystemLogLength);
-                    Dev2Logger.Info($"ChatbotContext: Server log fetched and truncated in {stopwatch.ElapsedMilliseconds}ms, size: {MaxSystemLogLength} chars (truncated)", "Warewolf Performance");
+                    var truncatedLines = lines.Skip(totalLines - numberOfLogLines).ToArray();
+                    logContent = "... (earlier entries truncated)\n" + string.Join("\n", truncatedLines);
+                    Dev2Logger.Info($"ChatbotContext: Server log fetched and truncated in {stopwatch.ElapsedMilliseconds}ms, {numberOfLogLines} of {totalLines} lines included", "Warewolf Performance");
                 }
                 else
                 {
-                    Dev2Logger.Info($"ChatbotContext: Server log fetched in {stopwatch.ElapsedMilliseconds}ms, size: {logContent.Length} chars", "Warewolf Performance");
+                    Dev2Logger.Info($"ChatbotContext: Server log fetched in {stopwatch.ElapsedMilliseconds}ms, {totalLines} lines", "Warewolf Performance");
+                }
+
+                // Also apply character limit as a safety measure
+                if (logContent.Length > MaxSystemLogLength)
+                {
+                    logContent = "... (content truncated for size)\n" + logContent.Substring(logContent.Length - MaxSystemLogLength);
+                    Dev2Logger.Info($"ChatbotContext: Server log also truncated by character limit to {MaxSystemLogLength} chars", "Warewolf Performance");
                 }
 
                 return logContent;

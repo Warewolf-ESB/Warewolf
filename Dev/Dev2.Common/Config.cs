@@ -555,5 +555,15 @@ namespace Dev2.Common
                 Save();
             }
         }
+
+        public int NumberOfLogLines
+        {
+            get => _settings?.NumberOfLogLines ?? 1000;
+            set
+            {
+                _settings.NumberOfLogLines = value;
+                Save();
+            }
+        }
     }
 }
