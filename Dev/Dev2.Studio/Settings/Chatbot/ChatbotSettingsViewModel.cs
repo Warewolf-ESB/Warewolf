@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
@@ -19,9 +20,11 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
+using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Chatbot;
 using Dev2.Studio.Core;
+using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
@@ -31,6 +34,7 @@ using Warewolf.Security.Encryption;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Chatbot
 {
@@ -43,14 +47,18 @@ namespace Dev2.Settings.Chatbot
         private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
+        private ICommand _addResourceCommand;
+        private ICommand _removeResourceCommand;
         private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
         private bool _isInitialLoad;
         private bool _includeSystemLog = true;
-        private bool _includeResourcesXaml = true;
-        private bool _includeResourcesJson = true;
+        private bool _loadResourcesAsXaml = true;
         private int _numberOfLogLines = 1000;
+        private ObservableCollection<SelectedResourceInfo> _selectedResources;
+        private SelectedResourceInfo _selectedResourceItem;
+        private string _systemPromptPreview;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -61,16 +69,19 @@ namespace Dev2.Settings.Chatbot
         {
             CurrentEnvironment = server ?? throw new ArgumentNullException(nameof(server));
             _resourceRepository = CurrentEnvironment.ResourceRepository;
+            _selectedResources = new ObservableCollection<SelectedResourceInfo>();
 
             var settingsData = CurrentEnvironment.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(CurrentEnvironment);
-            
+
             // Load checkbox settings using properties to trigger property change notifications
             IncludeSystemLog = settingsData.IncludeSystemLog;
-            IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
-            IncludeResourcesJson = settingsData.IncludeResourcesJson;
+            LoadResourcesAsXaml = settingsData.LoadResourcesAsXaml;
             NumberOfLogLines = settingsData.NumberOfLogLines;
-            
-            Dev2Logger.Info($"ChatbotSettings: Loaded settings - IncludeSystemLog={IncludeSystemLog}, IncludeResourcesXaml={IncludeResourcesXaml}, IncludeResourcesJson={IncludeResourcesJson}, NumberOfLogLines={NumberOfLogLines}", "Warewolf Info");
+
+            // Load selected resources
+            LoadSelectedResources(settingsData.SelectedResourceIds);
+
+            Dev2Logger.Info($"ChatbotSettings: Loaded settings - IncludeSystemLog={IncludeSystemLog}, LoadResourcesAsXaml={LoadResourcesAsXaml}, NumberOfLogLines={NumberOfLogLines}, SelectedResources={SelectedResources?.Count ?? 0}", "Warewolf Info");
             
             if (settingsData.ChatbotSource != null)
             {
@@ -112,6 +123,8 @@ namespace Dev2.Settings.Chatbot
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
+            _addResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddResource);
+            _removeResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveResource, CanRemoveResource);
 
             // Only set baseline here if no source is selected (no async model fetch pending)
             // Otherwise, baseline will be set after FetchAvailableModels completes
@@ -120,6 +133,9 @@ namespace Dev2.Settings.Chatbot
                 SetItem(this);
                 IsDirty = false;
             }
+
+            // Initialize system prompt preview
+            UpdateSystemPromptPreview();
             }
             
         public IServer CurrentEnvironment
@@ -255,17 +271,34 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
+                UpdateSystemPromptPreview();
             }
         }
 
-        public bool IncludeResourcesXaml
+        public bool LoadResourcesAsXaml
         {
-            get => _includeResourcesXaml;
+            get => _loadResourcesAsXaml;
             set
             {
-                _includeResourcesXaml = value;
+                _loadResourcesAsXaml = value;
                 OnPropertyChanged();
-                Dev2Logger.Debug($"ChatbotSettings: IncludeResourcesXaml changed to {value}", "Warewolf Debug");
+                Dev2Logger.Debug($"ChatbotSettings: LoadResourcesAsXaml changed to {value}", "Warewolf Debug");
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+                UpdateSystemPromptPreview();
+            }
+        }
+
+        [JsonIgnore]
+        public ObservableCollection<SelectedResourceInfo> SelectedResources
+        {
+            get => _selectedResources;
+            set
+            {
+                _selectedResources = value;
+                OnPropertyChanged();
                 if (Item != null)
                 {
                     IsDirty = !Equals(Item);
@@ -273,20 +306,34 @@ namespace Dev2.Settings.Chatbot
             }
         }
 
-        public bool IncludeResourcesJson
+        [JsonIgnore]
+        public SelectedResourceInfo SelectedResourceItem
         {
-            get => _includeResourcesJson;
+            get => _selectedResourceItem;
             set
             {
-                _includeResourcesJson = value;
+                _selectedResourceItem = value;
                 OnPropertyChanged();
-                Dev2Logger.Debug($"ChatbotSettings: IncludeResourcesJson changed to {value}", "Warewolf Debug");
-                if (Item != null)
-                {
-                    IsDirty = !Equals(Item);
-                }
+                ((Microsoft.Practices.Prism.Commands.DelegateCommand)_removeResourceCommand)?.RaiseCanExecuteChanged();
             }
         }
+
+        [JsonIgnore]
+        public string SystemPromptPreview
+        {
+            get => _systemPromptPreview;
+            set
+            {
+                _systemPromptPreview = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public ICommand AddResourceCommand => _addResourceCommand;
+
+        [JsonIgnore]
+        public ICommand RemoveResourceCommand => _removeResourceCommand;
 
         public int NumberOfLogLines
         {
@@ -300,6 +347,7 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
+                UpdateSystemPromptPreview();
             }
         }
 
@@ -558,21 +606,21 @@ namespace Dev2.Settings.Chatbot
                     Payload = payload
                 },
                 IncludeSystemLog = _includeSystemLog,
-                IncludeResourcesXaml = _includeResourcesXaml,
-                IncludeResourcesJson = _includeResourcesJson,
-                NumberOfLogLines = _numberOfLogLines
+                LoadResourcesAsXaml = _loadResourcesAsXaml,
+                NumberOfLogLines = _numberOfLogLines,
+                SelectedResourceIds = _selectedResources?.Select(r => r.ResourceId).ToList() ?? new List<Guid>()
             };
-            
-            Dev2Logger.Info($"ChatbotSettings: Saving settings - IncludeSystemLog={_includeSystemLog}, IncludeResourcesXaml={_includeResourcesXaml}, IncludeResourcesJson={_includeResourcesJson}, NumberOfLogLines={_numberOfLogLines}", "Warewolf Info");
-            
+
+            Dev2Logger.Info($"ChatbotSettings: Saving settings - IncludeSystemLog={_includeSystemLog}, LoadResourcesAsXaml={_loadResourcesAsXaml}, NumberOfLogLines={_numberOfLogLines}, SelectedResources={data.SelectedResourceIds.Count}", "Warewolf Info");
+
             // Populate the transfer object with checkbox settings so it gets serialized
             if (settings != null)
             {
                 settings.IncludeSystemLog = _includeSystemLog;
-                settings.IncludeResourcesXaml = _includeResourcesXaml;
-                settings.IncludeResourcesJson = _includeResourcesJson;
+                settings.LoadResourcesAsXaml = _loadResourcesAsXaml;
                 settings.NumberOfLogLines = _numberOfLogLines;
-                Dev2Logger.Info($"ChatbotSettings: Updated ChatbotSettingsTo - IncludeSystemLog={settings.IncludeSystemLog}, IncludeResourcesXaml={settings.IncludeResourcesXaml}, IncludeResourcesJson={settings.IncludeResourcesJson}, NumberOfLogLines={settings.NumberOfLogLines}", "Warewolf Info");
+                settings.SelectedResourceIds = data.SelectedResourceIds;
+                Dev2Logger.Info($"ChatbotSettings: Updated ChatbotSettingsTo - IncludeSystemLog={settings.IncludeSystemLog}, LoadResourcesAsXaml={settings.LoadResourcesAsXaml}, NumberOfLogLines={settings.NumberOfLogLines}", "Warewolf Info");
             }
             
             CurrentEnvironment.ResourceRepository.SaveChatbotSettings(CurrentEnvironment, data);
@@ -640,6 +688,209 @@ namespace Dev2.Settings.Chatbot
             return _selectedChatbotSource != null;
         }
 
+        private async void AddResource()
+        {
+            try
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                var activeEnvironment = shellViewModel?.ActiveServer;
+
+                if (activeEnvironment == null)
+                {
+                    Dev2Logger.Warn("ChatbotSettings: Cannot open resource picker - no active environment", "Warewolf Info");
+                    return;
+                }
+
+                var environmentViewModel = new EnvironmentViewModel(activeEnvironment, shellViewModel, false);
+                var picker = await ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel);
+
+                if (picker.ShowDialog(activeEnvironment))
+                {
+                    var selectedItem = picker.SelectedResource;
+                    if (selectedItem != null && selectedItem.ResourceId != Guid.Empty)
+                    {
+                        // Check if already added
+                        if (_selectedResources.Any(r => r.ResourceId == selectedItem.ResourceId))
+                        {
+                            Dev2Logger.Info($"ChatbotSettings: Resource '{selectedItem.ResourceName}' already in list", "Warewolf Info");
+                            return;
+                        }
+
+                        var resourceInfo = new SelectedResourceInfo
+                        {
+                            ResourceId = selectedItem.ResourceId,
+                            ResourceName = selectedItem.ResourceName,
+                            ResourceType = selectedItem.ResourceType
+                        };
+
+                        _selectedResources.Add(resourceInfo);
+                        OnPropertyChanged(nameof(SelectedResources));
+
+                        if (Item != null)
+                        {
+                            IsDirty = !Equals(Item);
+                        }
+
+                        UpdateSystemPromptPreview();
+
+                        Dev2Logger.Info($"ChatbotSettings: Added resource '{selectedItem.ResourceName}' ({selectedItem.ResourceId})", "Warewolf Info");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("ChatbotSettings: Error adding resource", ex, "Warewolf Error");
+            }
+        }
+
+        private void RemoveResource()
+        {
+            if (_selectedResourceItem == null)
+            {
+                return;
+            }
+
+            var resourceName = _selectedResourceItem.ResourceName;
+            _selectedResources.Remove(_selectedResourceItem);
+            _selectedResourceItem = null;
+
+            OnPropertyChanged(nameof(SelectedResources));
+            OnPropertyChanged(nameof(SelectedResourceItem));
+
+            if (Item != null)
+            {
+                IsDirty = !Equals(Item);
+            }
+
+            UpdateSystemPromptPreview();
+
+            Dev2Logger.Info($"ChatbotSettings: Removed resource '{resourceName}'", "Warewolf Info");
+        }
+
+        private bool CanRemoveResource()
+        {
+            return _selectedResourceItem != null;
+        }
+
+        private void LoadSelectedResources(List<Guid> resourceIds)
+        {
+            _selectedResources.Clear();
+
+            if (resourceIds == null || resourceIds.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                // Load resource names from the server
+                foreach (var resourceId in resourceIds)
+                {
+                    var resource = _resourceRepository.FindSingle(r => r.ID == resourceId);
+                    if (resource != null)
+                    {
+                        _selectedResources.Add(new SelectedResourceInfo
+                        {
+                            ResourceId = resource.ID,
+                            ResourceName = resource.ResourceName,
+                            ResourceType = resource.ResourceType.ToString()
+                        });
+                    }
+                    else
+                    {
+                        // Resource may have been deleted, still add it with unknown name
+                        _selectedResources.Add(new SelectedResourceInfo
+                        {
+                            ResourceId = resourceId,
+                            ResourceName = $"(Unknown: {resourceId})",
+                            ResourceType = "Unknown"
+                        });
+                    }
+                }
+
+                Dev2Logger.Info($"ChatbotSettings: Loaded {_selectedResources.Count} selected resources", "Warewolf Info");
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("ChatbotSettings: Error loading selected resources", ex, "Warewolf Error");
+            }
+        }
+
+        private void UpdateSystemPromptPreview()
+        {
+            try
+            {
+                var promptPreview = BuildSystemPromptPreview();
+                SystemPromptPreview = promptPreview;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("ChatbotSettings: Error updating system prompt preview", ex, "Warewolf Error");
+                SystemPromptPreview = "Error generating preview";
+            }
+        }
+
+        private string BuildSystemPromptPreview()
+        {
+            var sb = new System.Text.StringBuilder();
+
+            sb.AppendLine("=== SYSTEM PROMPT PREVIEW ===");
+            sb.AppendLine();
+            sb.AppendLine("You are a Warewolf workflow debugging assistant...");
+            sb.AppendLine();
+
+            // Resources section
+            if (_selectedResources != null && _selectedResources.Count > 0)
+            {
+                sb.AppendLine($"## Selected Resources ({_selectedResources.Count}):");
+                foreach (var resource in _selectedResources)
+                {
+                    var format = _loadResourcesAsXaml ? "XAML" : "JSON";
+                    sb.AppendLine($"  - {resource.ResourceName} ({resource.ResourceType}) [{format}]");
+                }
+                sb.AppendLine();
+            }
+            else
+            {
+                sb.AppendLine("## Selected Resources: None");
+                sb.AppendLine();
+            }
+
+            // System log section
+            if (_includeSystemLog)
+            {
+                sb.AppendLine($"## System Log: Enabled ({_numberOfLogLines} lines)");
+            }
+            else
+            {
+                sb.AppendLine("## System Log: Disabled");
+            }
+            sb.AppendLine();
+
+            // Token estimate
+            var estimatedTokens = EstimateTokenCount(sb.ToString());
+            sb.AppendLine($"--- Estimated Token Count: ~{estimatedTokens:N0} tokens ---");
+            sb.AppendLine("(Note: Actual count depends on resource content)");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Estimates the number of tokens in a string using a simple heuristic.
+        /// Most LLMs use approximately 4 characters per token on average.
+        /// </summary>
+        private static int EstimateTokenCount(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return 0;
+            }
+
+            // Simple heuristic: ~4 characters per token for English text
+            // This is a rough estimate; actual tokenization varies by model
+            return (int)Math.Ceiling(text.Length / 4.0);
+        }
+
         public bool Equals(ChatbotSettingsViewModel other)
         {
             if (ReferenceEquals(null, other))
@@ -661,11 +912,26 @@ namespace Dev2.Settings.Chatbot
 
             // Compare checkbox settings
             equalsSeq &= _includeSystemLog == other._includeSystemLog;
-            equalsSeq &= _includeResourcesXaml == other._includeResourcesXaml;
-            equalsSeq &= _includeResourcesJson == other._includeResourcesJson;
+            equalsSeq &= _loadResourcesAsXaml == other._loadResourcesAsXaml;
             equalsSeq &= _numberOfLogLines == other._numberOfLogLines;
 
+            // Compare selected resources
+            equalsSeq &= AreSelectedResourcesEqual(other);
+
             return equalsSeq;
+        }
+
+        private bool AreSelectedResourcesEqual(ChatbotSettingsViewModel other)
+        {
+            var thisList = _selectedResources?.Select(r => r.ResourceId).ToList() ?? new List<Guid>();
+            var otherList = other._selectedResources?.Select(r => r.ResourceId).ToList() ?? new List<Guid>();
+
+            if (thisList.Count != otherList.Count) return false;
+            for (int i = 0; i < thisList.Count; i++)
+            {
+                if (thisList[i] != otherList[i]) return false;
+            }
+            return true;
         }
 
 		protected override void CloseHelp()
@@ -824,5 +1090,19 @@ namespace Dev2.Settings.Chatbot
                 return tooltipParts.Count > 0 ? string.Join("\n\n", tooltipParts) : EffectiveId;
             }
         }
+    }
+
+    /// <summary>
+    /// Represents a selected resource for inclusion in the chatbot system prompt.
+    /// </summary>
+    public class SelectedResourceInfo
+    {
+        public Guid ResourceId { get; set; }
+        public string ResourceName { get; set; }
+        public string ResourceType { get; set; }
+
+        public string DisplayText => $"{ResourceName} ({ResourceType})";
+
+        public override string ToString() => DisplayText;
     }
 }

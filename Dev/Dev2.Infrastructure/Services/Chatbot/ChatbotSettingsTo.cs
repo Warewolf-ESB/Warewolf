@@ -7,13 +7,17 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
+using System;
+using System.Collections.Generic;
+
 namespace Dev2.Services.Chatbot
 {
     public class ChatbotSettingsTo
     {
         public bool IncludeSystemLog { get; set; } = true;
-        public bool IncludeResourcesXaml { get; set; } = true;
-        public bool IncludeResourcesJson { get; set; } = true;
+        public bool LoadResourcesAsXaml { get; set; } = true;
         public int NumberOfLogLines { get; set; } = 1000;
+        public List<Guid> SelectedResourceIds { get; set; } = new List<Guid>();
     }
 }

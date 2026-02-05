@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Warewolf.Data;
 
 namespace Warewolf.Configuration
@@ -18,9 +19,9 @@ namespace Warewolf.Configuration
         private NamedGuidWithEncryptedPayload _chatbotSource = new NamedGuidWithEncryptedPayload();
         private bool? _encryptDataSource;
         private bool _includeSystemLog = true;
-        private bool _includeResourcesXaml = true;
-        private bool _includeResourcesJson = true;
+        private bool _loadResourcesAsXaml = true;
         private int _numberOfLogLines = 1000;
+        private List<Guid> _selectedResourceIds = new List<Guid>();
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
@@ -34,16 +35,10 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _includeSystemLog, value);
         }
 
-        public bool IncludeResourcesXaml
+        public bool LoadResourcesAsXaml
         {
-            get => _includeResourcesXaml;
-            set => SetProperty(ref _includeResourcesXaml, value);
-        }
-
-        public bool IncludeResourcesJson
-        {
-            get => _includeResourcesJson;
-            set => SetProperty(ref _includeResourcesJson, value);
+            get => _loadResourcesAsXaml;
+            set => SetProperty(ref _loadResourcesAsXaml, value);
         }
 
         public int NumberOfLogLines
@@ -52,14 +47,20 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _numberOfLogLines, value);
         }
 
+        public List<Guid> SelectedResourceIds
+        {
+            get => _selectedResourceIds;
+            set => SetProperty(ref _selectedResourceIds, value ?? new List<Guid>());
+        }
+
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
             result._chatbotSource = ChatbotSource.Clone();
             result._includeSystemLog = IncludeSystemLog;
-            result._includeResourcesXaml = IncludeResourcesXaml;
-            result._includeResourcesJson = IncludeResourcesJson;
+            result._loadResourcesAsXaml = LoadResourcesAsXaml;
             result._numberOfLogLines = NumberOfLogLines;
+            result._selectedResourceIds = new List<Guid>(SelectedResourceIds ?? new List<Guid>());
             return result;
         }
 
@@ -69,13 +70,25 @@ namespace Warewolf.Configuration
             {
                 var equals = ChatbotSource.Equals(other.ChatbotSource);
                 equals &= IncludeSystemLog == other.IncludeSystemLog;
-                equals &= IncludeResourcesXaml == other.IncludeResourcesXaml;
-                equals &= IncludeResourcesJson == other.IncludeResourcesJson;
+                equals &= LoadResourcesAsXaml == other.LoadResourcesAsXaml;
                 equals &= NumberOfLogLines == other.NumberOfLogLines;
+                equals &= AreResourceListsEqual(SelectedResourceIds, other.SelectedResourceIds);
                 return equals;
             }
 
             return false;
+        }
+
+        private static bool AreResourceListsEqual(List<Guid> list1, List<Guid> list2)
+        {
+            if (list1 == null && list2 == null) return true;
+            if (list1 == null || list2 == null) return false;
+            if (list1.Count != list2.Count) return false;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                if (list1[i] != list2[i]) return false;
+            }
+            return true;
         }
     }
 }

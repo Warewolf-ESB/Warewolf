@@ -29,9 +29,9 @@ namespace Warewolf.Studio.ViewModels
     public class ChatbotContextOptions
     {
         public bool IncludeSystemLog { get; set; }
-        public bool IncludeResourcesXaml { get; set; }
-        public bool IncludeResourcesJson { get; set; }
+        public bool LoadResourcesAsXaml { get; set; }
         public int NumberOfLogLines { get; set; } = 1000;
+        public List<Guid> SelectedResourceIds { get; set; } = new List<Guid>();
         public IServer Server { get; set; }
         public Action<string> StatusUpdateCallback { get; set; }
     }
@@ -131,11 +131,11 @@ namespace Warewolf.Studio.ViewModels
         {
             var capabilities = new List<string>();
 
-            if (options.IncludeResourcesJson || options.IncludeResourcesXaml)
+            if (options.SelectedResourceIds != null && options.SelectedResourceIds.Count > 0)
             {
                 capabilities.Add("- List and identify available workflow resources");
 
-                if (options.IncludeResourcesXaml)
+                if (options.LoadResourcesAsXaml)
                 {
                     capabilities.Add("- Analyze workflow structure summaries, activities, and data flow");
                     capabilities.Add("- Explain workflow logic and identify potential issues");
@@ -155,34 +155,34 @@ namespace Warewolf.Studio.ViewModels
 
         private void AppendResourcesContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
         {
-            if (!options.IncludeResourcesJson && !options.IncludeResourcesXaml)
+            if (options.SelectedResourceIds == null || options.SelectedResourceIds.Count == 0)
             {
                 return;
             }
 
-            options.StatusUpdateCallback?.Invoke(options.IncludeResourcesXaml
-                ? "Loading workspace resources with XAML definitions..."
-                : "Loading workspace resources metadata...");
+            options.StatusUpdateCallback?.Invoke(options.LoadResourcesAsXaml
+                ? "Loading selected resources with XAML definitions..."
+                : "Loading selected resources metadata...");
 
             var resourceStopwatch = Stopwatch.StartNew();
-            result.ResourcesJson = GetWorkspaceResourcesAsJson(options.Server, options.IncludeResourcesXaml);
+            result.ResourcesJson = GetSelectedResourcesAsJson(options.Server, options.SelectedResourceIds, options.LoadResourcesAsXaml);
             resourceStopwatch.Stop();
 
-            Dev2Logger.Info($"ChatbotContext: Resource loading completed in {resourceStopwatch.ElapsedMilliseconds}ms (includeXaml: {options.IncludeResourcesXaml})", "Warewolf Performance");
+            Dev2Logger.Info($"ChatbotContext: Resource loading completed in {resourceStopwatch.ElapsedMilliseconds}ms (loadAsXaml: {options.LoadResourcesAsXaml})", "Warewolf Performance");
 
             if (string.IsNullOrEmpty(result.ResourcesJson))
             {
                 return;
             }
 
-            if (options.IncludeResourcesXaml)
+            if (options.LoadResourcesAsXaml)
             {
-                promptBuilder.AppendLine("## Workspace Resources (JSON with Workflow Summaries):");
+                promptBuilder.AppendLine("## Selected Resources (JSON with Workflow Summaries):");
                 promptBuilder.AppendLine("Each workflow resource includes a structural summary showing activities, variables, and flow connections.");
             }
             else
             {
-                promptBuilder.AppendLine("## Workspace Resources (JSON - Metadata Only):");
+                promptBuilder.AppendLine("## Selected Resources (JSON - Metadata Only):");
                 promptBuilder.AppendLine("Resource names, types, and IDs are provided below.");
             }
             promptBuilder.AppendLine("```json");
@@ -232,6 +232,98 @@ namespace Warewolf.Studio.ViewModels
                 promptBuilder.AppendLine(result.SystemLog);
                 promptBuilder.AppendLine("```");
                 promptBuilder.AppendLine();
+            }
+        }
+
+        private string GetSelectedResourcesAsJson(IServer server, List<Guid> selectedResourceIds, bool loadAsXaml)
+        {
+            var stopwatch = Stopwatch.StartNew();
+
+            try
+            {
+                if (!WaitForServerConnection(server))
+                {
+                    stopwatch.Stop();
+                    Dev2Logger.Warn($"Server connection not available after waiting ({stopwatch.ElapsedMilliseconds}ms)", "Warewolf Info");
+                    return null;
+                }
+
+                if (selectedResourceIds == null || selectedResourceIds.Count == 0)
+                {
+                    Dev2Logger.Info("ChatbotContext: No resources selected", "Warewolf Info");
+                    return null;
+                }
+
+                var resourceList = new List<object>();
+
+                foreach (var resourceId in selectedResourceIds)
+                {
+                    var resourceInfo = FetchResourceInfo(server, resourceId, loadAsXaml);
+                    if (resourceInfo != null)
+                    {
+                        resourceList.Add(resourceInfo);
+                    }
+                }
+
+                if (resourceList.Count == 0)
+                {
+                    Dev2Logger.Warn("No resources could be loaded from selected IDs", "Warewolf Info");
+                    return null;
+                }
+
+                Dev2Logger.Info($"ChatbotContext: Loading {resourceList.Count} selected resources into chatbot context (loadAsXaml: {loadAsXaml})", "Warewolf Info");
+
+                var json = SerializeAndTruncateResources(resourceList);
+
+                stopwatch.Stop();
+                Dev2Logger.Info($"ChatbotContext: GetSelectedResourcesAsJson completed in {stopwatch.ElapsedMilliseconds}ms total", "Warewolf Performance");
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                Dev2Logger.Error($"ChatbotContext: Error getting selected resources after {stopwatch.ElapsedMilliseconds}ms", ex, "Warewolf Error");
+                return null;
+            }
+        }
+
+        private object FetchResourceInfo(IServer server, Guid resourceId, bool loadAsXaml)
+        {
+            try
+            {
+                // Use FindSingle to get resource information
+                var resource = server.ResourceRepository?.FindSingle(r => r.ID == resourceId);
+                if (resource == null)
+                {
+                    Dev2Logger.Warn($"ChatbotContext: Resource {resourceId} not found", "Warewolf Info");
+                    return null;
+                }
+
+                string workflowSummary = null;
+                var resourceType = resource.ResourceType.ToString();
+
+#pragma warning disable CC0021 // Use nameof - these are string values from API, not type names
+                if (loadAsXaml && (resourceType == "WorkflowService" || resourceType == "Service"))
+#pragma warning restore CC0021
+                {
+                    workflowSummary = FetchAndSummarizeResourceXaml(server, resourceId.ToString());
+                }
+
+                var resourceInfo = new
+                {
+                    id = resourceId.ToString(),
+                    name = SanitizeContentForPrompt(resource.ResourceName),
+                    type = SanitizeContentForPrompt(resourceType),
+                    summary = workflowSummary
+                };
+
+                return resourceInfo;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"ChatbotContext: Error fetching resource info for {resourceId}", ex, "Warewolf Error");
+                return null;
             }
         }
 
