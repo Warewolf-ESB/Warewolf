@@ -360,6 +360,14 @@ namespace Dev2.Common.X6
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
         public const string COMMANDLINE_COMMANDRESULT = "commandresult";
+
+        public const string MANUALRESUMPTIONACTIVITY = "DsfManualResumptionActivity";
+        public const string MANUALRESUMPTION_DISPLAYNAME = "Manual Resumption";
+        public const string MANUALRESUMPTION_SUSPENSIONID = "suspensionid";
+        public const string MANUALRESUMPTION_OVERRIDEINPUTVARIABLE = "overrideinputvariables";
+        public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
+
+        
     }
 
     public class X6WorkflowLoadModel

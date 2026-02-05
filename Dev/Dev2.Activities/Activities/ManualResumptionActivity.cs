@@ -8,18 +8,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Security.AccessControl;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Core;
@@ -318,6 +322,101 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (OverrideDataFunc != null ? OverrideDataFunc.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        private object SerializeManualResumptionActivityFunc()
+        {
+            if (OverrideDataFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = OverrideDataFunc.DisplayName ?? "Data Action",
+                    argumentName = OverrideDataFunc.Argument?.Name ?? string.Empty,
+                    handlerType = OverrideDataFunc.Handler.GetType().Name,
+                    handlerUniqueId = (OverrideDataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (OverrideDataFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing Manual Resumption ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+        private void DeserializeManualResumptionActivityFunc(dynamic manualResumptionActivityFuncData)
+        {
+            if (manualResumptionActivityFuncData == null) return;
+
+            try
+            {
+                if (OverrideDataFunc == null)
+                {
+                    OverrideDataFunc = new ActivityFunc<string, bool>
+                    {
+                        DisplayName = "Data Action",
+                        Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
+                        Handler = new DsfSequenceActivity(),
+                    };
+                }
+
+                if (manualResumptionActivityFuncData.displayName != null)
+                {
+                    OverrideDataFunc.DisplayName = manualResumptionActivityFuncData.displayName.ToString();
+                }
+
+                if (manualResumptionActivityFuncData.argumentName != null && OverrideDataFunc.Argument != null)
+                {
+                     
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing Manual Resumption ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.MANUALRESUMPTIONACTIVITY;
+            cell.data[Constants.TYPE] = Constants.MANUALRESUMPTIONACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.MANUALRESUMPTION_DISPLAYNAME;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.MANUALRESUMPTION_SUSPENSIONID, SuspensionId);
+            cell.data.TryAdd(Constants.MANUALRESUMPTION_OVERRIDEINPUTVARIABLE, OverrideInputVariables);
+            cell.data.TryAdd(Constants.RESULT, Result);
+
+            var manualResumptionActivityFuncInfo = SerializeManualResumptionActivityFunc();
+            if (manualResumptionActivityFuncInfo != null)
+                cell.data[Constants.MANUALRESUMPTION_ACTIVITYFUNC] = manualResumptionActivityFuncInfo;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.MANUALRESUMPTION_SUSPENSIONID, out var suspensionid)) SuspensionId = suspensionid;
+            if (cell.data.TryGetBool(Constants.MANUALRESUMPTION_OVERRIDEINPUTVARIABLE, out var overrideinputvariable)) OverrideInputVariables = overrideinputvariable;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+
+            if (cell.data.TryGetValue(Constants.MANUALRESUMPTION_ACTIVITYFUNC, out var manualResumptionActivityFuncObj))
+                DeserializeManualResumptionActivityFunc(manualResumptionActivityFuncObj);
+
         }
     }
 }

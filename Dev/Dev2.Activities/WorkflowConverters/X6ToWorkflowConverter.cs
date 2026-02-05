@@ -158,6 +158,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
             EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
+            EmbedNestedActivitiesIntoManualResumptionActivities(allNodes);
         }
 
 
@@ -623,6 +624,8 @@ namespace Dev2.Activities.WF
                     return CreateRubyActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.MANUALRESUMPTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateManualResumptionActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };
