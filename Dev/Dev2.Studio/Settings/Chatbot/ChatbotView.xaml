@@ -1,4 +1,5 @@
-<UserControl x:Class="Dev2.Settings.Chatbot.ChatbotView"
+
+    <UserControl x:Class="Dev2.Settings.Chatbot.ChatbotView"
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -219,7 +220,7 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                         <TextBlock Grid.Column="0"
                                    Grid.Row="5"
                                    Grid.ColumnSpan="4"
-                                   Text="Selected Resources"
+                                   Text="Select Resources"
                                    FontWeight="Bold"
                                    Margin="0,15,0,5"/>
 
@@ -227,62 +228,67 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                               Grid.Row="6"
                               Grid.ColumnSpan="4"
                               Margin="0,5,0,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!-- Resource List -->
-                            <ListBox Grid.Column="0"
-                                     Grid.Row="0"
-                                     Height="120"
-                                     ItemsSource="{Binding SelectedResources}"
-                                     SelectedItem="{Binding SelectedResourceItem, Mode=TwoWay}"
-                                     DisplayMemberPath="DisplayText"
-                                     ToolTip="Resources to include in the chatbot system prompt">
+                            <!-- Resource Tree -->
+                            <TreeView Grid.Row="0"
+                                      Height="250"
+                                      ItemsSource="{Binding ResourceTree}"
+                                      ToolTip="Check resources to include in the chatbot system prompt">
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="TreeViewItem">
+                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,5,0" />
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontWeight" Value="Normal"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsFolder}" Value="True">
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding ResourceType, StringFormat=' ({0})'}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="Gray"
+                                                       Margin="5,0,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsFolder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter
-                                        Text="List of resources that will be loaded into the chatbot's context. Select a resource and click Remove to delete it."
+                                        Text="Check the resources you want to include in the chatbot context. Checking a folder will check all resources inside it."
                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </i:Interaction.Behaviors>
-                            </ListBox>
-
-                            <!-- Buttons -->
-                            <StackPanel Grid.Column="1"
-                                        Grid.Row="0"
-                                        Orientation="Vertical"
-                                        Margin="5,0,0,0">
-                                <Button Content="Add..."
-                                        Command="{Binding AddResourceCommand}"
-                                        MinWidth="80"
-                                        Margin="0,0,0,5"
-                                        ToolTip="Add a resource to include in the system prompt">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter
-                                            Text="Click to open the resource picker and select a resource to add to the chatbot context."
-                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                                <Button Content="Remove"
-                                        Command="{Binding RemoveResourceCommand}"
-                                        MinWidth="80"
-                                        ToolTip="Remove the selected resource">
-                                    <i:Interaction.Behaviors>
-                                        <core:HelpSetter
-                                            Text="Click to remove the selected resource from the chatbot context."
-                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                            </StackPanel>
+                            </TreeView>
 
                             <!-- Load as XAML checkbox -->
-                            <CheckBox Grid.Column="0"
-                                      Grid.Row="1"
-                                      Grid.ColumnSpan="2"
+                            <CheckBox Grid.Row="1"
                                       Content="Load resources as XAML (provides more detail, uses more tokens)"
                                       IsChecked="{Binding LoadResourcesAsXaml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="When enabled, resources are loaded with full XAML structure. When disabled, only JSON metadata is loaded."
@@ -306,7 +312,7 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                         <Border Grid.Column="0"
                                 Grid.Row="8"
                                 Grid.ColumnSpan="4"
-                                BorderBrush="{StaticResource WarewolfOrangeBrush}"
+                                BorderBrush="{StaticResource WareWolfOrangeBrush}"
                                 BorderThickness="1"
                                 Margin="0,5,0,10">
                             <TextBox Text="{Binding SystemPromptPreview, Mode=OneWay}"
