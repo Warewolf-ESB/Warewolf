@@ -33,9 +33,9 @@ using Newtonsoft.Json;
 namespace Warewolf.Studio.ViewModels
 {
 #if NETFRAMEWORK
-    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase, IDisposable
+    public class ChatbotViewModel : Microsoft.Practices.Prism.Mvvm.BindableBase, IDisposable, Caliburn.Micro.IHandle<ChatbotSettingsSavedMessage>, Caliburn.Micro.IHandle<Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage>
 #else
-	public class ChatbotViewModel : BindableBase2, IDisposable
+	public class ChatbotViewModel : BindableBase2, IDisposable, Caliburn.Micro.IHandle<ChatbotSettingsSavedMessage>, Caliburn.Micro.IHandle<Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage>
 #endif
 	{
 		/// <summary>Number of retry attempts when waiting for system prompt initialization (each attempt waits RetryDelayMs).</summary>
