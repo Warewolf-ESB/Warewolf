@@ -47,7 +47,21 @@ namespace Warewolf.Studio.ViewModels
                 
                 using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {resource.ApiKey}");
+                    // Check if this is a Google Gemini endpoint
+                    var isGemini = IsGoogleGeminiEndpoint(modelsEndpoint);
+                    
+                    if (isGemini)
+                    {
+                        // Google Gemini uses API key as a query parameter
+                        var separator = modelsEndpoint.Contains("?") ? "&" : "?";
+                        modelsEndpoint = $"{modelsEndpoint}{separator}key={resource.ApiKey}";
+                    }
+                    else
+                    {
+                        // Other providers use Bearer token authentication
+                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {resource.ApiKey}");
+                    }
+                    
                     client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
                     
                     var response = client.GetAsync(modelsEndpoint).Result;
@@ -63,6 +77,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new Exception($"Failed to connect to Chatbot API: {ex.Message}", ex);
             }
+        }
+
+        private static bool IsGoogleGeminiEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+
+            var lowerEndpoint = endpoint.ToLower();
+            return lowerEndpoint.Contains("generativelanguage.googleapis.com") || lowerEndpoint.Contains("gemini");
         }
 
         public void Save(IChatbotSource toSource)

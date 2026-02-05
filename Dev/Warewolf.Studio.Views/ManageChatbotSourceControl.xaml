@@ -47,15 +47,54 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock VerticalAlignment="Center"
                        Grid.Column="0"
                        Grid.Row="0"
                        Margin="{StaticResource ControlBorderTop}"
+                       Text="Provider Preset"/>
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="ProviderComboBox"
+                          Grid.Column="0"
+                          ItemsSource="{Binding Providers}"
+                          SelectedItem="{Binding SelectedProvider, UpdateSourceTrigger=PropertyChanged}"
+                          ToolTip="Select a preset AI provider to automatically fill in endpoints">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="Select a preset AI provider (Anthropic, GitHub Models, Google Gemini, OpenAI, or XAI) to automatically populate the endpoint URLs." DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+                <Button x:Name="ProviderHelpButton"
+                        Grid.Column="1"
+                        Width="24"
+                        Height="24"
+                        Margin="5,0,0,0"
+                        Command="{Binding OpenProviderDocumentationCommand}"
+                        ToolTip="Open documentation for API key generation"
+                        Style="{StaticResource ButtonTransparentStyle}">
+                    <fa:ImageAwesome Icon="QuestionCircle"
+                                     Width="16"
+                                     Height="16"
+                                     Foreground="{StaticResource WareWolfOrangeBrush}"/>
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="Click to open documentation for generating an API key for the selected provider." DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+            </Grid>
+            <TextBlock VerticalAlignment="Center"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Margin="{StaticResource ControlBorderTop}"
                        Text="Models Endpoint"/>
             <TextBox x:Name="ModelsEndpointTextBox"
                      Grid.Column="1"
-                     Grid.Row="0"
+                     Grid.Row="1"
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding ModelsEndpoint, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="The API endpoint URL for models (e.g., https://api.openai.com/v1/models)"
@@ -68,26 +107,26 @@
             <TextBlock Margin="{StaticResource ControlBorderTop}"
                        VerticalAlignment="Center"
                        Grid.Column="0"
-                       Grid.Row="1"
+                       Grid.Row="2"
                        Text="Completions Endpoint"/>
             <TextBox x:Name="CompletionsEndpointTextBox"
                      Margin="{StaticResource ControlBorderTop}"
                      Grid.Column="1"
-                     Grid.Row="1"
+                     Grid.Row="2"
                      Text="{Binding CompletionsEndpoint, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="The API endpoint URL for chat completions (e.g., https://api.openai.com/v1/chat/completions)">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="Enter the URL of the chatbot API endpoint for completions." DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </TextBox>
-            <TextBlock Grid.Row="2"
+            <TextBlock Grid.Row="3"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
                        VerticalAlignment="Center"
                        Text="API Key"/>
             <customControls:PasswordBoxUserControl x:Name="ApiKeyPasswordBox"
                          Grid.Column="1"
-                         Grid.Row="2"
+                         Grid.Row="3"
                          ToolTip="The API key for authentication with the chatbot service"
                          Margin="{StaticResource ControlBorderTop}"
                          Text="{Binding Path=ApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
