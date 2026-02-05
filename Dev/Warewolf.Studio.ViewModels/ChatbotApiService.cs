@@ -84,6 +84,13 @@ namespace Warewolf.Studio.ViewModels
 				throw new ArgumentNullException(nameof(source));
 			}
 
+			// Detect if this is an Anthropic endpoint and use the correct auth from the start
+			if (IsAnthropicEndpoint(source.CompletionsEndpoint))
+			{
+				Dev2.Common.Dev2Logger.Info("Detected Anthropic endpoint, using x-api-key authentication", "Warewolf Info");
+				return await SendWithAuthAsync(chatMessages, source, "x-api-key", "", "anthropic-version=2023-06-01");
+			}
+
 			// Try with default Bearer authentication first
 			try
 			{
@@ -106,77 +113,103 @@ namespace Warewolf.Studio.ViewModels
 			}
 		}
 
-		private async Task<string> SendWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+	private async Task<string> SendWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+	{
+		var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
+		
+		// For Anthropic, extract system messages as a separate parameter
+		string systemMessage = null;
+		IEnumerable<ChatCompletionMessage> messagesToSend = chatMessages;
+		
+		if (IsAnthropicEndpoint(source.CompletionsEndpoint))
 		{
-			var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
-			var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+			var systemMessages = chatMessages.Where(m => m.Role.Equals("system", StringComparison.OrdinalIgnoreCase)).ToList();
+			if (systemMessages.Any())
+			{
+				// Combine all system messages into one
+				systemMessage = string.Join("\n\n", systemMessages.Select(m => m.Content));
+				// Remove system messages from the messages array
+				messagesToSend = chatMessages.Where(m => !m.Role.Equals("system", StringComparison.OrdinalIgnoreCase));
+			}
+		}
+		
+		var messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
 
-			var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, authHeaderName, authHeaderPrefix, additionalHeaders);
+		var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, systemMessage, IsAnthropicEndpoint(source.CompletionsEndpoint), authHeaderName, authHeaderPrefix, additionalHeaders);
 
 			var responseContent = await response.Content.ReadAsStringAsync();
 
 			if (!response.IsSuccessStatusCode)
 			{
 				Dev2.Common.Dev2Logger.Error($"Chatbot API Error: {response.StatusCode} - {responseContent}", "Warewolf Error");
+				
+				// Check if this is an authentication error by status code
+				if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					throw new HttpRequestException($"Authentication failed: API returned {response.StatusCode}: {responseContent}");
+				}
+				
 				throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
 			}
 
 			return ParseResponseContent(responseContent);
 		}
 
-		/// <summary>
-		/// Sends the request, automatically retrying with different payload parameters when the API
-		/// rejects max_completion_tokens or temperature as unsupported.
-		/// </summary>
-		private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object[] messagesArray, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
-		{
-			// Try with max_completion_tokens first (newer API standard)
-			var payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: true, includeTemperature: true);
-			var json = JsonConvert.SerializeObject(payload);
+	/// <summary>
+	/// Sends the request, automatically retrying with different payload parameters when the API
+	/// rejects max_completion_tokens or temperature as unsupported.
+	/// </summary>
+	private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object[] messagesArray, string systemMessage, bool isAnthropicEndpoint, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+	{
+		// Anthropic requires max_tokens (not max_completion_tokens), so skip the negotiation for Anthropic
+		var useMaxCompletionTokens = !isAnthropicEndpoint; // Use max_tokens for Anthropic, max_completion_tokens for others
+		
+		var payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens, includeTemperature: true);
+		var json = JsonConvert.SerializeObject(payload);
 
-			var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-			var response = await _httpClient.SendAsync(request);
+		var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+		var response = await _httpClient.SendAsync(request);
+
+		if (response.IsSuccessStatusCode)
+		{
+			return response;
+		}
+
+		var errorContent = await response.Content.ReadAsStringAsync();
+
+		// Only retry with max_tokens if we tried max_completion_tokens first (non-Anthropic endpoints)
+		if (!isAnthropicEndpoint && errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+		{
+			Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
+
+			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
+			json = JsonConvert.SerializeObject(payload);
+			request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+			response = await _httpClient.SendAsync(request);
 
 			if (response.IsSuccessStatusCode)
 			{
 				return response;
 			}
 
-			var errorContent = await response.Content.ReadAsStringAsync();
-
-			// Retry with max_tokens if max_completion_tokens is not supported
-			if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
-			{
-				Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
-
-				payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: false, includeTemperature: true);
-				json = JsonConvert.SerializeObject(payload);
-				request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-				response = await _httpClient.SendAsync(request);
-
-				if (response.IsSuccessStatusCode)
-				{
-					return response;
-				}
-
-				errorContent = await response.Content.ReadAsStringAsync();
-			}
-
-			// Retry without temperature if not supported
-			if (errorContent.Contains("temperature") && errorContent.Contains("not support"))
-			{
-				Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
-
-				var useMaxCompletionTokensParam = !errorContent.Contains("max_tokens");
-
-				payload = CreatePayload(model, messagesArray, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
-				json = JsonConvert.SerializeObject(payload);
-				request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-				response = await _httpClient.SendAsync(request);
-			}
-
-			return response;
+			errorContent = await response.Content.ReadAsStringAsync();
 		}
+
+		// Retry without temperature if not supported
+		if (errorContent.Contains("temperature") && errorContent.Contains("not support"))
+		{
+			Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
+
+			var useMaxCompletionTokensParam = !isAnthropicEndpoint && !errorContent.Contains("max_tokens");
+
+			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
+			json = JsonConvert.SerializeObject(payload);
+			request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+			response = await _httpClient.SendAsync(request);
+		}
+
+		return response;
+	}
 
 		private static string ParseResponseContent(string responseContent)
 		{
@@ -293,47 +326,36 @@ namespace Warewolf.Studio.ViewModels
 			return request;
 		}
 
-		private static object CreatePayload(string model, object[] messages, bool useMaxCompletionTokens, bool includeTemperature)
+	private static object CreatePayload(string model, object[] messages, string systemMessage, bool useMaxCompletionTokens, bool includeTemperature)
+	{
+		// Build payload dynamically to include system message only if provided
+		var payload = new Dictionary<string, object>
 		{
-			if (useMaxCompletionTokens)
-			{
-				if (includeTemperature)
-				{
-					return new
-					{
-						model = model,
-						messages = messages,
-						temperature = ChatTemperature,
-						max_completion_tokens = MaxCompletionTokens
-					};
-				}
+			{ "model", model },
+			{ "messages", messages }
+		};
 
-				return new
-				{
-					model = model,
-					messages = messages,
-					max_completion_tokens = MaxCompletionTokens
-				};
-			}
-
-			if (includeTemperature)
-			{
-				return new
-				{
-					model = model,
-					messages = messages,
-					temperature = ChatTemperature,
-					max_tokens = MaxCompletionTokens
-				};
-			}
-
-			return new
-			{
-				model = model,
-				messages = messages,
-				max_tokens = MaxCompletionTokens
-			};
+		if (!string.IsNullOrWhiteSpace(systemMessage))
+		{
+			payload["system"] = systemMessage;
 		}
+
+		if (includeTemperature)
+		{
+			payload["temperature"] = ChatTemperature;
+		}
+
+		if (useMaxCompletionTokens)
+		{
+			payload["max_completion_tokens"] = MaxCompletionTokens;
+		}
+		else
+		{
+			payload["max_tokens"] = MaxCompletionTokens;
+		}
+
+		return payload;
+	}
 
 		private static bool IsAuthenticationError(HttpRequestException ex)
 		{
@@ -346,6 +368,20 @@ namespace Warewolf.Studio.ViewModels
 			return message.Contains("401") || message.Contains("unauthorized") ||
 				   message.Contains("403") || message.Contains("forbidden") ||
 				   message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+		}
+
+		/// <summary>
+		/// Detects if the endpoint is an Anthropic API endpoint.
+		/// </summary>
+		private static bool IsAnthropicEndpoint(string endpoint)
+		{
+			if (string.IsNullOrWhiteSpace(endpoint))
+			{
+				return false;
+			}
+
+			var lowerEndpoint = endpoint.ToLower();
+			return lowerEndpoint.Contains("anthropic.com") || lowerEndpoint.Contains("claude");
 		}
 
 		/// <inheritdoc />
@@ -362,6 +398,13 @@ namespace Warewolf.Studio.ViewModels
 			if (onTokenReceived == null)
 			{
 				throw new ArgumentNullException(nameof(onTokenReceived));
+			}
+
+			// Detect if this is an Anthropic endpoint and use the correct auth from the start
+			if (IsAnthropicEndpoint(source.CompletionsEndpoint))
+			{
+				Dev2.Common.Dev2Logger.Info("Detected Anthropic endpoint for streaming, using x-api-key authentication", "Warewolf Info");
+				return await SendStreamingWithAuthAsync(chatMessages, source, "x-api-key", "", "anthropic-version=2023-06-01", onTokenReceived, cancellationToken);
 			}
 
 			try
@@ -385,11 +428,30 @@ namespace Warewolf.Studio.ViewModels
 
 	private async Task<string> SendStreamingWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders, Action<string> onTokenReceived, CancellationToken cancellationToken)
 	{
-			var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
-		var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+	var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
+		
+	// For Anthropic, extract system messages as a separate parameter
+	string systemMessage = null;
+	IEnumerable<ChatCompletionMessage> messagesToSend = chatMessages;
+		
+	if (IsAnthropicEndpoint(source.CompletionsEndpoint))
+	{
+	var systemMessages = chatMessages.Where(m => m.Role.Equals("system", StringComparison.OrdinalIgnoreCase)).ToList();
+	if (systemMessages.Any())
+	{
+	// Combine all system messages into one
+	systemMessage = string.Join("\n\n", systemMessages.Select(m => m.Content));
+	// Remove system messages from the messages array
+	messagesToSend = chatMessages.Where(m => !m.Role.Equals("system", StringComparison.OrdinalIgnoreCase));
+	}
+	}
+		
+	var messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
 
-		// Try with max_completion_tokens first (newer API standard)
-		var payload = CreateStreamingPayload(modelToUse, messagesArray, useMaxCompletionTokens: true);
+	// Anthropic requires max_tokens (not max_completion_tokens)
+	var isAnthropicEndpoint = IsAnthropicEndpoint(source.CompletionsEndpoint);
+	var useMaxCompletionTokens = !isAnthropicEndpoint;
+	var payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens);
 		var json = JsonConvert.SerializeObject(payload);
 		var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 		var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -399,11 +461,11 @@ namespace Warewolf.Studio.ViewModels
 		{
 			var errorContent = await response.Content.ReadAsStringAsync();
 			
-			if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+			if (!isAnthropicEndpoint && errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
 			{
 				Dev2.Common.Dev2Logger.Info("Streaming: Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
 				
-				payload = CreateStreamingPayload(modelToUse, messagesArray, useMaxCompletionTokens: false);
+				payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: false);
 				json = JsonConvert.SerializeObject(payload);
 				request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 				response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -499,43 +561,32 @@ namespace Warewolf.Studio.ViewModels
 			return null;
 		}
 
-		private static object CreateStreamingPayload(string model, object[] messages)
+	private static object CreateStreamingPayload(string model, object[] messages, string systemMessage, bool useMaxCompletionTokens)
+	{
+		// Build payload dynamically to include system message only if provided
+		var payload = new Dictionary<string, object>
 		{
-			return new
-			{
-				model = model,
-				messages = messages,
-				temperature = ChatTemperature,
-				max_tokens = MaxCompletionTokens,
-				stream = true
-			};
+			{ "model", model },
+			{ "messages", messages },
+			{ "temperature", ChatTemperature },
+			{ "stream", true }
+		};
+
+		if (!string.IsNullOrWhiteSpace(systemMessage))
+		{
+			payload["system"] = systemMessage;
 		}
 
-		// Overload to support useMaxCompletionTokens for streaming payloads
-		private static object CreateStreamingPayload(string model, object[] messages, bool useMaxCompletionTokens)
+		if (useMaxCompletionTokens)
 		{
-			if (useMaxCompletionTokens)
-			{
-				return new
-				{
-					model = model,
-					messages = messages,
-					temperature = ChatTemperature,
-					max_completion_tokens = MaxCompletionTokens,
-					stream = true
-				};
-			}
-			else
-			{
-				return new
-				{
-					model = model,
-					messages = messages,
-					temperature = ChatTemperature,
-					max_tokens = MaxCompletionTokens,
-					stream = true
-				};
-			}
+			payload["max_completion_tokens"] = MaxCompletionTokens;
 		}
+		else
+		{
+			payload["max_tokens"] = MaxCompletionTokens;
+		}
+
+		return payload;
+	}
 	}
 }
