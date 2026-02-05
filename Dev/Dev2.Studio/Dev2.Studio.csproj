@@ -223,6 +223,7 @@
     </Compile>
     <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
     <Compile Include="Settings\Chatbot\NullToBoolConverter.cs" />
+    <Compile Include="Settings\Chatbot\ResourceTreeItemViewModel.cs" />
     <Compile Include="Settings\Persistence\IPersistenceSettings.cs" />
     <Compile Include="Settings\Persistence\PersistenceView.xaml.cs" />
     <Compile Include="Settings\Persistence\PersistenceSettingsViewModel.cs" />

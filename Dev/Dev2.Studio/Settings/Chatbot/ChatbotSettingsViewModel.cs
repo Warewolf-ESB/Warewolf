@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
@@ -47,18 +48,16 @@ namespace Dev2.Settings.Chatbot
         private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
-        private ICommand _addResourceCommand;
-        private ICommand _removeResourceCommand;
         private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
         private bool _isInitialLoad;
         private bool _includeSystemLog = true;
-        private bool _loadResourcesAsXaml = true;
+        private bool _loadResourcesAsXaml = false;
         private int _numberOfLogLines = 1000;
         private ObservableCollection<SelectedResourceInfo> _selectedResources;
-        private SelectedResourceInfo _selectedResourceItem;
         private string _systemPromptPreview;
+        private ObservableCollection<ResourceTreeItemViewModel> _resourceTree;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -123,8 +122,6 @@ namespace Dev2.Settings.Chatbot
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
-            _addResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddResource);
-            _removeResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveResource, CanRemoveResource);
 
             // Only set baseline here if no source is selected (no async model fetch pending)
             // Otherwise, baseline will be set after FetchAvailableModels completes
@@ -136,6 +133,9 @@ namespace Dev2.Settings.Chatbot
 
             // Initialize system prompt preview
             UpdateSystemPromptPreview();
+            
+            // Build resource tree
+            BuildResourceTree();
             }
             
         public IServer CurrentEnvironment
@@ -188,6 +188,224 @@ namespace Dev2.Settings.Chatbot
             }
             
             return new List<IChatbotSourceResource>();
+        }
+
+        private void BuildResourceTree()
+        {
+            try
+            {
+                var treeItems = new ObservableCollection<ResourceTreeItemViewModel>();
+                var allResources = _resourceRepository.All();
+
+                if (allResources == null || allResources.Count == 0)
+                {
+                    ResourceTree = treeItems;
+                    return;
+                }
+
+                // Filter out source resources
+                var filteredResources = allResources.Where(r => 
+                    !r.ResourceType.ToString().Contains("Source") && 
+                    r.ResourceType.ToString() != nameof(ServerSource) &&
+                    r.ResourceType.ToString() != "Version").ToList();
+
+                // Build tree structure
+                var rootItems = new Dictionary<string, ResourceTreeItemViewModel>();
+
+                foreach (var resource in filteredResources)
+                {
+                    // Use Category for the resource path
+                    var resourcePath = resource.Category ?? "";
+                    var pathParts = resourcePath.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                    
+                    if (pathParts.Length == 0 && !string.IsNullOrEmpty(resource.ResourceName))
+                    {
+                        // Root level resource with no folder
+                        var rootResourceItem = new ResourceTreeItemViewModel
+                        {
+                            ResourceId = resource.ID,
+                            ResourceName = resource.ResourceName,
+                            DisplayName = resource.ResourceName,
+                            ResourcePath = "",
+                            IsFolder = false,
+                            ResourceType = resource.ResourceType.ToString(),
+                            Parent = null
+                        };
+
+                        // Check if this resource was previously selected
+                        if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
+                        {
+                            rootResourceItem.IsChecked = true;
+                        }
+
+                        // Subscribe to IsChecked changes to update selected resources
+                        rootResourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+
+                        treeItems.Add(rootResourceItem);
+                        continue;
+                    }
+
+                    ResourceTreeItemViewModel currentParent = null;
+                    var currentPath = "";
+
+                    // Create folder hierarchy
+                    for (int i = 0; i < pathParts.Length - 1; i++)
+                    {
+                        currentPath += "\\" + pathParts[i];
+                        
+                        if (currentParent == null)
+                        {
+                            // Root level folder
+                            if (!rootItems.ContainsKey(currentPath))
+                            {
+                                var folderItem = new ResourceTreeItemViewModel
+                                {
+                                    ResourceId = Guid.Empty,
+                                    ResourceName = pathParts[i],
+                                    DisplayName = pathParts[i],
+                                    ResourcePath = currentPath,
+                                    IsFolder = true,
+                                    ResourceType = "Folder"
+                                };
+                                rootItems[currentPath] = folderItem;
+                                treeItems.Add(folderItem);
+                            }
+                            currentParent = rootItems[currentPath];
+                        }
+                        else
+                        {
+                            // Check if folder exists in current parent's children
+                            var existingFolder = currentParent.Children.FirstOrDefault(c => 
+                                c.IsFolder && c.ResourceName == pathParts[i]);
+                            
+                            if (existingFolder == null)
+                            {
+                                var folderItem = new ResourceTreeItemViewModel
+                                {
+                                    ResourceId = Guid.Empty,
+                                    ResourceName = pathParts[i],
+                                    DisplayName = pathParts[i],
+                                    ResourcePath = currentPath,
+                                    IsFolder = true,
+                                    ResourceType = "Folder",
+                                    Parent = currentParent
+                                };
+                                currentParent.Children.Add(folderItem);
+                                currentParent = folderItem;
+                            }
+                            else
+                            {
+                                currentParent = existingFolder;
+                            }
+                        }
+                    }
+
+                    // Add the resource item
+                    var resourceItem = new ResourceTreeItemViewModel
+                    {
+                        ResourceId = resource.ID,
+                        ResourceName = resource.ResourceName,
+                        DisplayName = resource.ResourceName,
+                        ResourcePath = resourcePath,
+                        IsFolder = false,
+                        ResourceType = resource.ResourceType.ToString(),
+                        Parent = currentParent
+                    };
+
+                    // Check if this resource was previously selected
+                    if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == resource.ID))
+                    {
+                        resourceItem.IsChecked = true;
+                    }
+
+                    // Subscribe to IsChecked changes to update selected resources
+                    resourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+
+                    if (currentParent != null)
+                    {
+                        currentParent.Children.Add(resourceItem);
+                    }
+                    else
+                    {
+                        // Root level resource
+                        treeItems.Add(resourceItem);
+                    }
+                }
+
+                ResourceTree = treeItems;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("ChatbotSettings: Error building resource tree", ex, "Warewolf Error");
+                ResourceTree = new ObservableCollection<ResourceTreeItemViewModel>();
+            }
+        }
+
+        private void ResourceItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ResourceTreeItemViewModel.IsChecked))
+            {
+                UpdateSelectedResourcesFromTree();
+            }
+        }
+
+        private void UpdateSelectedResourcesFromTree()
+        {
+            try
+            {
+                // Get all checked items from the tree
+                var checkedItems = GetCheckedResourcesFromTree(ResourceTree);
+                
+                // Update the SelectedResources collection
+                _selectedResources.Clear();
+                foreach (var item in checkedItems)
+                {
+                    _selectedResources.Add(new SelectedResourceInfo
+                    {
+                        ResourceId = item.ResourceId,
+                        ResourceName = item.ResourceName,
+                        ResourceType = item.ResourceType
+                    });
+                }
+
+                OnPropertyChanged(nameof(SelectedResources));
+
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+
+                UpdateSystemPromptPreview();
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("ChatbotSettings: Error updating selected resources from tree", ex, "Warewolf Error");
+            }
+        }
+
+        private List<ResourceTreeItemViewModel> GetCheckedResourcesFromTree(ObservableCollection<ResourceTreeItemViewModel> items)
+        {
+            var result = new List<ResourceTreeItemViewModel>();
+            
+            if (items == null)
+            {
+                return result;
+            }
+
+            foreach (var item in items)
+            {
+                if (item.IsChecked && !item.IsFolder)
+                {
+                    result.Add(item);
+                }
+
+                if (item.Children.Count > 0)
+                {
+                    result.AddRange(GetCheckedResourcesFromTree(item.Children));
+                }
+            }
+
+            return result;
         }
 
         [JsonIgnore]
@@ -307,14 +525,13 @@ namespace Dev2.Settings.Chatbot
         }
 
         [JsonIgnore]
-        public SelectedResourceInfo SelectedResourceItem
+        public ObservableCollection<ResourceTreeItemViewModel> ResourceTree
         {
-            get => _selectedResourceItem;
+            get => _resourceTree;
             set
             {
-                _selectedResourceItem = value;
+                _resourceTree = value;
                 OnPropertyChanged();
-                ((Microsoft.Practices.Prism.Commands.DelegateCommand)_removeResourceCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -328,12 +545,6 @@ namespace Dev2.Settings.Chatbot
                 OnPropertyChanged();
             }
         }
-
-        [JsonIgnore]
-        public ICommand AddResourceCommand => _addResourceCommand;
-
-        [JsonIgnore]
-        public ICommand RemoveResourceCommand => _removeResourceCommand;
 
         public int NumberOfLogLines
         {
@@ -688,90 +899,6 @@ namespace Dev2.Settings.Chatbot
             return _selectedChatbotSource != null;
         }
 
-        private async void AddResource()
-        {
-            try
-            {
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                var activeEnvironment = shellViewModel?.ActiveServer;
-
-                if (activeEnvironment == null)
-                {
-                    Dev2Logger.Warn("ChatbotSettings: Cannot open resource picker - no active environment", "Warewolf Info");
-                    return;
-                }
-
-                var environmentViewModel = new EnvironmentViewModel(activeEnvironment, shellViewModel, false);
-                var picker = await ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel);
-
-                if (picker.ShowDialog(activeEnvironment))
-                {
-                    var selectedItem = picker.SelectedResource;
-                    if (selectedItem != null && selectedItem.ResourceId != Guid.Empty)
-                    {
-                        // Check if already added
-                        if (_selectedResources.Any(r => r.ResourceId == selectedItem.ResourceId))
-                        {
-                            Dev2Logger.Info($"ChatbotSettings: Resource '{selectedItem.ResourceName}' already in list", "Warewolf Info");
-                            return;
-                        }
-
-                        var resourceInfo = new SelectedResourceInfo
-                        {
-                            ResourceId = selectedItem.ResourceId,
-                            ResourceName = selectedItem.ResourceName,
-                            ResourceType = selectedItem.ResourceType
-                        };
-
-                        _selectedResources.Add(resourceInfo);
-                        OnPropertyChanged(nameof(SelectedResources));
-
-                        if (Item != null)
-                        {
-                            IsDirty = !Equals(Item);
-                        }
-
-                        UpdateSystemPromptPreview();
-
-                        Dev2Logger.Info($"ChatbotSettings: Added resource '{selectedItem.ResourceName}' ({selectedItem.ResourceId})", "Warewolf Info");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error("ChatbotSettings: Error adding resource", ex, "Warewolf Error");
-            }
-        }
-
-        private void RemoveResource()
-        {
-            if (_selectedResourceItem == null)
-            {
-                return;
-            }
-
-            var resourceName = _selectedResourceItem.ResourceName;
-            _selectedResources.Remove(_selectedResourceItem);
-            _selectedResourceItem = null;
-
-            OnPropertyChanged(nameof(SelectedResources));
-            OnPropertyChanged(nameof(SelectedResourceItem));
-
-            if (Item != null)
-            {
-                IsDirty = !Equals(Item);
-            }
-
-            UpdateSystemPromptPreview();
-
-            Dev2Logger.Info($"ChatbotSettings: Removed resource '{resourceName}'", "Warewolf Info");
-        }
-
-        private bool CanRemoveResource()
-        {
-            return _selectedResourceItem != null;
-        }
-
         private void LoadSelectedResources(List<Guid> resourceIds)
         {
             _selectedResources.Clear();
@@ -809,6 +936,8 @@ namespace Dev2.Settings.Chatbot
                 }
 
                 Dev2Logger.Info($"ChatbotSettings: Loaded {_selectedResources.Count} selected resources", "Warewolf Info");
+                
+                // Note: The tree will be synced with these selections when BuildResourceTree is called
             }
             catch (Exception ex)
             {
