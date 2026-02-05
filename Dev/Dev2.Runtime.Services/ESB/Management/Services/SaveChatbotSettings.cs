@@ -40,9 +40,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Full save - update everything
                     Config.Chatbot.ChatbotSource = chatbotSettingsData.ChatbotSource;
                     Config.Chatbot.IncludeSystemLog = chatbotSettingsData.IncludeSystemLog;
-                    Config.Chatbot.IncludeResourcesXaml = chatbotSettingsData.IncludeResourcesXaml;
-                    Config.Chatbot.IncludeResourcesJson = chatbotSettingsData.IncludeResourcesJson;
+                    Config.Chatbot.LoadResourcesAsXaml = chatbotSettingsData.LoadResourcesAsXaml;
                     Config.Chatbot.NumberOfLogLines = chatbotSettingsData.NumberOfLogLines;
+                    Config.Chatbot.SelectedResourceIds = chatbotSettingsData.SelectedResourceIds;
                 }
                 else
                 {
@@ -53,10 +53,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                         // Partial save - only update checkbox properties, preserve existing ChatbotSource
                         Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsTo - updating only checkbox properties", GlobalConstants.WarewolfInfo);
                         Config.Chatbot.IncludeSystemLog = chatbotSettingsTo.IncludeSystemLog;
-                        Config.Chatbot.IncludeResourcesXaml = chatbotSettingsTo.IncludeResourcesXaml;
-                        Config.Chatbot.IncludeResourcesJson = chatbotSettingsTo.IncludeResourcesJson;
+                        Config.Chatbot.LoadResourcesAsXaml = chatbotSettingsTo.LoadResourcesAsXaml;
                         Config.Chatbot.NumberOfLogLines = chatbotSettingsTo.NumberOfLogLines;
-                        Dev2Logger.Info($"SaveChatbotSettings: Set values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, IncludeResourcesXaml={chatbotSettingsTo.IncludeResourcesXaml}, IncludeResourcesJson={chatbotSettingsTo.IncludeResourcesJson}, NumberOfLogLines={chatbotSettingsTo.NumberOfLogLines}", GlobalConstants.WarewolfInfo);
+                        Config.Chatbot.SelectedResourceIds = chatbotSettingsTo.SelectedResourceIds;
+                        Dev2Logger.Info($"SaveChatbotSettings: Set values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, LoadResourcesAsXaml={chatbotSettingsTo.LoadResourcesAsXaml}, NumberOfLogLines={chatbotSettingsTo.NumberOfLogLines}", GlobalConstants.WarewolfInfo);
                     }
                 }
 

@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels
             return capabilities;
         }
 
-        private void AppendResourcesContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
+        private static void AppendResourcesContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
         {
             if (options.SelectedResourceIds == null || options.SelectedResourceIds.Count == 0)
             {
@@ -235,7 +235,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string GetSelectedResourcesAsJson(IServer server, List<Guid> selectedResourceIds, bool loadAsXaml)
+        private static string GetSelectedResourcesAsJson(IServer server, List<Guid> selectedResourceIds, bool loadAsXaml)
         {
             var stopwatch = Stopwatch.StartNew();
 
@@ -288,7 +288,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private object FetchResourceInfo(IServer server, Guid resourceId, bool loadAsXaml)
+        private static object FetchResourceInfo(IServer server, Guid resourceId, bool loadAsXaml)
         {
             try
             {
