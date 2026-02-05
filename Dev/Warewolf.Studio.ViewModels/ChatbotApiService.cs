@@ -91,6 +91,13 @@ namespace Warewolf.Studio.ViewModels
 				return await SendWithAuthAsync(chatMessages, source, "x-api-key", "", "anthropic-version=2023-06-01");
 			}
 
+			// Detect if this is a Google Gemini endpoint - uses query parameter authentication
+			if (IsGoogleGeminiEndpoint(source.CompletionsEndpoint))
+			{
+				Dev2.Common.Dev2Logger.Info("Detected Google Gemini endpoint, using query parameter authentication", "Warewolf Info");
+				return await SendWithAuthAsync(chatMessages, source, "Authorization", "Bearer ", null);
+			}
+
 			// Try with default Bearer authentication first
 			try
 			{
@@ -133,9 +140,20 @@ namespace Warewolf.Studio.ViewModels
 			}
 		}
 		
-		var messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+		var isGeminiEndpoint = IsGoogleGeminiEndpoint(source.CompletionsEndpoint);
+		
+		object messagesArray;
+		if (isGeminiEndpoint)
+		{
+			// Convert to Gemini format
+			messagesArray = ConvertToGeminiFormat(chatMessages);
+		}
+		else
+		{
+			messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+		}
 
-		var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, systemMessage, IsAnthropicEndpoint(source.CompletionsEndpoint), authHeaderName, authHeaderPrefix, additionalHeaders);
+	var response = await SendWithParameterNegotiationAsync(source, modelToUse, messagesArray, systemMessage, IsAnthropicEndpoint(source.CompletionsEndpoint), isGeminiEndpoint, authHeaderName, authHeaderPrefix, additionalHeaders);
 
 			var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -152,19 +170,19 @@ namespace Warewolf.Studio.ViewModels
 				throw new HttpRequestException($"API returned {response.StatusCode}: {responseContent}");
 			}
 
-			return ParseResponseContent(responseContent);
+			return ParseResponseContent(responseContent, isGeminiEndpoint);
 		}
 
 	/// <summary>
 	/// Sends the request, automatically retrying with different payload parameters when the API
 	/// rejects max_completion_tokens or temperature as unsupported.
 	/// </summary>
-	private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object[] messagesArray, string systemMessage, bool isAnthropicEndpoint, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
+	private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object messagesArray, string systemMessage, bool isAnthropicEndpoint, bool isGeminiEndpoint, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
 	{
 		// Anthropic requires max_tokens (not max_completion_tokens), so skip the negotiation for Anthropic
-		var useMaxCompletionTokens = !isAnthropicEndpoint; // Use max_tokens for Anthropic, max_completion_tokens for others
+		var useMaxCompletionTokens = !isAnthropicEndpoint && !isGeminiEndpoint;
 		
-		var payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens, includeTemperature: true);
+		var payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens, includeTemperature: true, isGeminiFormat: isGeminiEndpoint);
 		var json = JsonConvert.SerializeObject(payload);
 
 		var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
@@ -182,7 +200,7 @@ namespace Warewolf.Studio.ViewModels
 		{
 			Dev2.Common.Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
 
-			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
+			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: false, includeTemperature: true, isGeminiFormat: isGeminiEndpoint);
 			json = JsonConvert.SerializeObject(payload);
 			request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 			response = await _httpClient.SendAsync(request);
@@ -202,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
 
 			var useMaxCompletionTokensParam = !isAnthropicEndpoint && !errorContent.Contains("max_tokens");
 
-			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false);
+			payload = CreatePayload(model, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokensParam, includeTemperature: false, isGeminiFormat: isGeminiEndpoint);
 			json = JsonConvert.SerializeObject(payload);
 			request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 			response = await _httpClient.SendAsync(request);
@@ -293,13 +311,32 @@ namespace Warewolf.Studio.ViewModels
 
 		private static HttpRequestMessage CreateHttpRequestMessage(ChatbotSource source, string jsonBody, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
 		{
-			var request = new HttpRequestMessage(HttpMethod.Post, source.CompletionsEndpoint)
+			var endpoint = source.CompletionsEndpoint;
+			
+		// Google Gemini uses API key as query parameter
+		if (IsGoogleGeminiEndpoint(endpoint) && !string.IsNullOrWhiteSpace(source.ApiKey))
+		{
+			// For Gemini, the model name must be part of the URL path, not in the payload
+			// If a model is selected, construct the proper Gemini URL
+			if (!string.IsNullOrWhiteSpace(source.SelectedModel))
+			{
+				// Extract base URL and construct with selected model
+				var baseUrl = "https://generativelanguage.googleapis.com/v1beta";
+				var modelName = source.SelectedModel; // e.g., "models/gemini-2.5-flash-image"
+				endpoint = $"{baseUrl}/{modelName}:generateContent";
+			}
+			
+			var separator = endpoint.Contains("?") ? "&" : "?";
+			endpoint = $"{endpoint}{separator}key={source.ApiKey}";
+		}
+			
+			var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
 			{
 				Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
 			};
 
-			// Set authentication header only if API key is provided
-			if (!string.IsNullOrWhiteSpace(source.ApiKey))
+			// Set authentication header only if API key is provided and not Gemini
+			if (!string.IsNullOrWhiteSpace(source.ApiKey) && !IsGoogleGeminiEndpoint(source.CompletionsEndpoint))
 			{
 				request.Headers.Add(authHeaderName, authHeaderPrefix + source.ApiKey);
 			}
@@ -326,8 +363,15 @@ namespace Warewolf.Studio.ViewModels
 			return request;
 		}
 
-	private static object CreatePayload(string model, object[] messages, string systemMessage, bool useMaxCompletionTokens, bool includeTemperature)
+	private static object CreatePayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool includeTemperature, bool isGeminiFormat = false)
 	{
+		// Gemini uses a completely different payload format
+		if (isGeminiFormat)
+		{
+			// Gemini payload is just the contents array (already formatted)
+			return messages;
+		}
+		
 		// Build payload dynamically to include system message only if provided
 		var payload = new Dictionary<string, object>
 		{
@@ -384,6 +428,115 @@ namespace Warewolf.Studio.ViewModels
 			return lowerEndpoint.Contains("anthropic.com") || lowerEndpoint.Contains("claude");
 		}
 
+		/// <summary>
+		/// Detects if the endpoint is a Google Gemini API endpoint.
+		/// </summary>
+		private static bool IsGoogleGeminiEndpoint(string endpoint)
+		{
+			if (string.IsNullOrWhiteSpace(endpoint))
+			{
+				return false;
+			}
+
+			var lowerEndpoint = endpoint.ToLower();
+			return lowerEndpoint.Contains("generativelanguage.googleapis.com") || lowerEndpoint.Contains("gemini");
+		}
+
+		/// <summary>
+		/// Converts OpenAI-format messages to Google Gemini format.
+		/// </summary>
+		private static object ConvertToGeminiFormat(IList<ChatCompletionMessage> chatMessages)
+		{
+			var contents = new List<object>();
+			
+			foreach (var message in chatMessages)
+			{
+				// Gemini uses "user" and "model" roles, not "assistant"
+				var role = message.Role.Equals("assistant", StringComparison.OrdinalIgnoreCase) ? "model" : message.Role;
+				
+				// Skip system messages for now - Gemini handles them differently
+				if (role.Equals("system", StringComparison.OrdinalIgnoreCase))
+				{
+					continue;
+				}
+				
+				contents.Add(new
+				{
+					role = role,
+					parts = new[]
+					{
+						new { text = message.Content }
+					}
+				});
+			}
+			
+			return new { contents = contents };
+		}
+
+		/// <summary>
+		/// Parse response content with support for different API formats.
+		/// </summary>
+		private static string ParseResponseContent(string responseContent, bool isGeminiFormat = false)
+		{
+			// Try Google Gemini format first if indicated
+			if (isGeminiFormat)
+			{
+				try
+				{
+					var geminiResponse = JObject.Parse(responseContent);
+					var text = geminiResponse.SelectToken("candidates[0].content.parts[0].text")?.Value<string>();
+					if (!string.IsNullOrEmpty(text))
+					{
+						return text;
+					}
+				}
+				catch (JsonException)
+				{
+					// Not Gemini format, try other formats
+				}
+			}
+			
+			// Try OpenAI-compatible response format first
+			try
+			{
+				var openAiResponse = JsonConvert.DeserializeObject<OpenAiChatResponse>(responseContent);
+				if (openAiResponse?.Choices != null && openAiResponse.Choices.Length > 0)
+				{
+					var botResponse = openAiResponse.Choices[0]?.Message?.Content;
+					if (!string.IsNullOrEmpty(botResponse))
+					{
+						return botResponse;
+					}
+				}
+			}
+			catch (JsonException)
+			{
+				// Not OpenAI format, try Anthropic format
+			}
+
+			// Try Anthropic response format: { "content": [{ "type": "text", "text": "..." }] }
+			try
+			{
+				var anthropicResponse = JsonConvert.DeserializeObject<AnthropicChatResponse>(responseContent);
+				if (anthropicResponse?.Content != null && anthropicResponse.Content.Length > 0)
+				{
+					var botResponse = anthropicResponse.Content[0]?.Text;
+					if (!string.IsNullOrEmpty(botResponse))
+					{
+						return botResponse;
+					}
+				}
+			}
+			catch (JsonException)
+			{
+				// Not Anthropic format either
+			}
+
+			// Safely truncate response for error message
+			var truncatedResponse = TruncateStringSafely(responseContent, 200, "...");
+			throw new HttpRequestException($"Unexpected API response format. Response: {truncatedResponse}");
+		}
+
 		/// <inheritdoc />
 		public async Task<string> SendMessageStreamingAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, Action<string> onTokenReceived, CancellationToken cancellationToken = default)
 		{
@@ -405,6 +558,13 @@ namespace Warewolf.Studio.ViewModels
 			{
 				Dev2.Common.Dev2Logger.Info("Detected Anthropic endpoint for streaming, using x-api-key authentication", "Warewolf Info");
 				return await SendStreamingWithAuthAsync(chatMessages, source, "x-api-key", "", "anthropic-version=2023-06-01", onTokenReceived, cancellationToken);
+			}
+
+			// Detect if this is a Google Gemini endpoint - uses query parameter authentication
+			if (IsGoogleGeminiEndpoint(source.CompletionsEndpoint))
+			{
+				Dev2.Common.Dev2Logger.Info("Detected Google Gemini endpoint for streaming, using query parameter authentication", "Warewolf Info");
+				return await SendStreamingWithAuthAsync(chatMessages, source, "Authorization", "Bearer ", null, onTokenReceived, cancellationToken);
 			}
 
 			try
@@ -446,12 +606,23 @@ namespace Warewolf.Studio.ViewModels
 	}
 	}
 		
-	var messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+	var isGeminiEndpoint = IsGoogleGeminiEndpoint(source.CompletionsEndpoint);
+	
+	object messagesArray;
+	if (isGeminiEndpoint)
+	{
+		// Convert to Gemini format
+		messagesArray = ConvertToGeminiFormat(chatMessages);
+	}
+	else
+	{
+		messagesArray = messagesToSend.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+	}
 
-	// Anthropic requires max_tokens (not max_completion_tokens)
+	// Anthropic requires max_tokens (not max_completion_tokens), Gemini uses different format
 	var isAnthropicEndpoint = IsAnthropicEndpoint(source.CompletionsEndpoint);
-	var useMaxCompletionTokens = !isAnthropicEndpoint;
-	var payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens);
+	var useMaxCompletionTokens = !isAnthropicEndpoint && !isGeminiEndpoint;
+	var payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: useMaxCompletionTokens, isGeminiFormat: isGeminiEndpoint);
 		var json = JsonConvert.SerializeObject(payload);
 		var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 		var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -465,7 +636,7 @@ namespace Warewolf.Studio.ViewModels
 			{
 				Dev2.Common.Dev2Logger.Info("Streaming: Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
 				
-				payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: false);
+				payload = CreateStreamingPayload(modelToUse, messagesArray, systemMessage, useMaxCompletionTokens: false, isGeminiFormat: isGeminiEndpoint);
 				json = JsonConvert.SerializeObject(payload);
 				request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
 				response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -484,9 +655,9 @@ namespace Warewolf.Studio.ViewModels
 			// If the server doesn't support streaming and returns a normal JSON response, parse it
 			if (contentType.Contains("application/json"))
 			{
-				var responseContent = await response.Content.ReadAsStringAsync();
-				var fullText = ParseResponseContent(responseContent);
-				onTokenReceived(fullText);
+			var responseContent = await response.Content.ReadAsStringAsync();
+			var fullText = ParseResponseContent(responseContent, isGeminiEndpoint);
+			onTokenReceived(fullText);
 				return fullText;
 			}
 
@@ -561,8 +732,15 @@ namespace Warewolf.Studio.ViewModels
 			return null;
 		}
 
-	private static object CreateStreamingPayload(string model, object[] messages, string systemMessage, bool useMaxCompletionTokens)
+	private static object CreateStreamingPayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool isGeminiFormat = false)
 	{
+		// Gemini uses a completely different payload format
+		if (isGeminiFormat)
+		{
+			// Gemini payload is just the contents array (already formatted)
+			return messages;
+		}
+		
 		// Build payload dynamically to include system message only if provided
 		var payload = new Dictionary<string, object>
 		{

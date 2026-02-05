@@ -9,12 +9,23 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
     public interface IManageChatbotSourceViewModel
     {
+        /// <summary>
+        /// The selected AI provider preset
+        /// </summary>
+        string SelectedProvider { get; set; }
+
+        /// <summary>
+        /// Available AI provider presets
+        /// </summary>
+        IEnumerable<string> Providers { get; }
+
         /// <summary>
         /// The API Key for authentication
         /// </summary>
@@ -49,6 +60,11 @@ namespace Dev2.Common.Interfaces
         /// Command for save/ok
         /// </summary>
         ICommand SaveCommand { get; set; }
+
+        /// <summary>
+        /// Opens documentation for API key generation for the selected provider
+        /// </summary>
+        ICommand OpenProviderDocumentationCommand { get; set; }
 
         /// <summary>
         /// Header text that is used on the view

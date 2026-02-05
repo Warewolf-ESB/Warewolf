@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,7 +45,28 @@ namespace Warewolf.Studio.ViewModels
         bool _testFailed;
         string _path;
         bool _isDisposed;
+        string _selectedProvider;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+
+        // AI Provider presets
+        private static readonly Dictionary<string, (string ModelsEndpoint, string CompletionsEndpoint)> ProviderPresets = new Dictionary<string, (string, string)>
+        {
+            { "Anthropic", ("https://api.anthropic.com/v1/models", "https://api.anthropic.com/v1/messages") },
+            { "GitHub Models", ("https://models.github.com/v1/models", "https://models.github.com/v1/chat/completions") },
+            { "Google Gemini", ("https://generativelanguage.googleapis.com/v1beta/models", "https://generativelanguage.googleapis.com/v1beta/{model}:generateContent") },
+            { "OpenAI", ("https://api.openai.com/v1/models", "https://api.openai.com/v1/chat/completions") },
+            { "XAI", ("https://api.x.ai/v1/models", "https://api.x.ai/v1/chat/completions") }
+        };
+
+        // Documentation URLs for API key generation
+        private static readonly Dictionary<string, string> ProviderDocumentationUrls = new Dictionary<string, string>
+        {
+            { "Anthropic", "https://console.anthropic.com/settings/keys" },
+            { "GitHub Models", "https://github.com/settings/tokens" },
+            { "Google Gemini", "https://aistudio.google.com/app/apikey" },
+            { "OpenAI", "https://platform.openai.com/api-keys" },
+            { "XAI", "https://console.x.ai/" }
+        };
 
         public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : base("ChatbotSource")
@@ -63,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
             TestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestConnection, CanTest);
             SaveCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
+            OpenProviderDocumentationCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(OpenProviderDocumentation, CanOpenProviderDocumentation);
         }
 
         public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
@@ -144,6 +167,27 @@ namespace Warewolf.Studio.ViewModels
             }
 
             return true;
+        }
+
+        bool CanOpenProviderDocumentation()
+        {
+            return !string.IsNullOrEmpty(SelectedProvider) && ProviderDocumentationUrls.ContainsKey(SelectedProvider);
+        }
+
+        void OpenProviderDocumentation()
+        {
+            if (!string.IsNullOrEmpty(SelectedProvider) && ProviderDocumentationUrls.ContainsKey(SelectedProvider))
+            {
+                var url = ProviderDocumentationUrls[SelectedProvider];
+                try
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error($"Failed to open documentation URL: {url}", ex, "Warewolf Error");
+                }
+            }
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -484,6 +528,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand TestCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelTestCommand { get; set; }
+        public ICommand OpenProviderDocumentationCommand { get; set; }
 
         public bool Testing
         {
@@ -517,6 +562,30 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Path);
             }
         }
+
+        public IEnumerable<string> Providers => ProviderPresets.Keys;
+
+        public string SelectedProvider
+        {
+            get => _selectedProvider;
+            set
+            {
+                _selectedProvider = value;
+                OnPropertyChanged(() => SelectedProvider);
+                
+                // Auto-populate endpoints when a provider is selected
+                if (!string.IsNullOrEmpty(_selectedProvider) && ProviderPresets.ContainsKey(_selectedProvider))
+                {
+                    var preset = ProviderPresets[_selectedProvider];
+                    ModelsEndpoint = preset.ModelsEndpoint;
+                    CompletionsEndpoint = preset.CompletionsEndpoint;
+                }
+                
+                ViewModelUtils.RaiseCanExecuteChanged(OpenProviderDocumentationCommand);
+            }
+        }
+
+
 
         #region Implementation of IDisposable
 

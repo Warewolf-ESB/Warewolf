@@ -306,17 +306,26 @@ namespace Dev2.Settings.Chatbot
 
             try
             {
-                // Try with default Bearer authentication first
-                try
+                // Check if this is a Google Gemini endpoint
+                if (IsGoogleGeminiEndpoint(source.ModelsEndpoint))
                 {
+                    Dev2Logger.Info("Detected Google Gemini endpoint for models, using query parameter authentication", "Warewolf Info");
                     await FetchModelsWithAuthAsync(source, "Authorization", "Bearer ", null);
                 }
-                catch (System.Net.Http.HttpRequestException ex) when (IsAuthenticationError(ex))
+                // Try with default Bearer authentication first
+                else
                 {
-                    Dev2Logger.Info("Bearer authentication failed for models endpoint, retrying with x-api-key authentication", "Warewolf Info");
-                    
-                    // Retry with Claude-style authentication (x-api-key header + anthropic-version)
-                    await FetchModelsWithAuthAsync(source, "x-api-key", "", "anthropic-version=2023-06-01");
+                    try
+                    {
+                        await FetchModelsWithAuthAsync(source, "Authorization", "Bearer ", null);
+                    }
+                    catch (System.Net.Http.HttpRequestException ex) when (IsAuthenticationError(ex))
+                    {
+                        Dev2Logger.Info("Bearer authentication failed for models endpoint, retrying with x-api-key authentication", "Warewolf Info");
+                        
+                        // Retry with Claude-style authentication (x-api-key header + anthropic-version)
+                        await FetchModelsWithAuthAsync(source, "x-api-key", "", "anthropic-version=2023-06-01");
+                    }
                 }
             }
             catch (Exception ex)
@@ -344,12 +353,37 @@ namespace Dev2.Settings.Chatbot
                    message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
         }
 
+        private static bool IsGoogleGeminiEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+
+            var lowerEndpoint = endpoint.ToLower();
+            return lowerEndpoint.Contains("generativelanguage.googleapis.com") || lowerEndpoint.Contains("gemini");
+        }
+
         private async System.Threading.Tasks.Task FetchModelsWithAuthAsync(ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
         {
             using (var client = new System.Net.Http.HttpClient())
             {
-                // Set authentication header
-                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + source.ApiKey);
+                var modelsEndpoint = source.ModelsEndpoint;
+                
+                // Check if this is a Google Gemini endpoint
+                var isGemini = IsGoogleGeminiEndpoint(modelsEndpoint);
+                
+                if (isGemini)
+                {
+                    // Google Gemini uses API key as a query parameter
+                    var separator = modelsEndpoint.Contains("?") ? "&" : "?";
+                    modelsEndpoint = $"{modelsEndpoint}{separator}key={source.ApiKey}";
+                }
+                else
+                {
+                    // Set authentication header for non-Gemini endpoints
+                    client.DefaultRequestHeaders.Add(authHeaderName, authHeaderPrefix + source.ApiKey);
+                }
 
                 // Add any additional headers if specified
                 if (!string.IsNullOrWhiteSpace(additionalHeaders))
@@ -370,7 +404,7 @@ namespace Dev2.Settings.Chatbot
                     }
                 }
                 
-                var response = await client.GetAsync(source.ModelsEndpoint);
+                var response = await client.GetAsync(modelsEndpoint);
                 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -380,17 +414,46 @@ namespace Dev2.Settings.Chatbot
 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 
-                // Try to deserialize as a wrapper object with a 'data' property
+                // Try to deserialize based on different API response formats
                 List<ChatbotModelInfo> models = null;
                 try
                 {
-                    var wrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelsResponseWrapper>(responseContent);
-                    models = wrapper?.Data;
+                    // Try Google Gemini format first (has a 'models' property)
+                    var geminiWrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<GeminiModelsResponseWrapper>(responseContent);
+                    if (geminiWrapper?.Models != null && geminiWrapper.Models.Count > 0)
+                    {
+                        models = geminiWrapper.Models;
+                    }
                 }
                 catch
                 {
-                    // If that fails, try to deserialize directly as an array
-                    models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                    // Not Gemini format, continue trying other formats
+                }
+                
+                if (models == null)
+                {
+                    try
+                    {
+                        // Try OpenAI/xAI format (has a 'data' property)
+                        var wrapper = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelsResponseWrapper>(responseContent);
+                        models = wrapper?.Data;
+                    }
+                    catch
+                    {
+                        // If that fails, try to deserialize directly as an array
+                        try
+                        {
+                            models = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatbotModelInfo>>(responseContent);
+                        }
+                        catch
+                        {
+                            // Failed all parsing attempts
+                            var truncatedResponse = responseContent != null && responseContent.Length > 200 
+                                ? responseContent.Substring(0, 200) 
+                                : responseContent;
+                            Dev2Logger.Warn($"Failed to parse models response. Response: {truncatedResponse}", "Warewolf Warn");
+                        }
+                    }
                 }
                 
                 if (models != null && models.Count > 0)
@@ -400,7 +463,7 @@ namespace Dev2.Settings.Chatbot
                     // Try to select the previously saved model
                     if (!string.IsNullOrEmpty(source.SelectedModel))
                     {
-                        var savedModel = AvailableModels.FirstOrDefault(m => m.Id == source.SelectedModel);
+                        var savedModel = AvailableModels.FirstOrDefault(m => m.EffectiveId == source.SelectedModel);
                         
                         if (savedModel != null)
                         {
@@ -414,11 +477,12 @@ namespace Dev2.Settings.Chatbot
                     else
                     {
                         // Select a good default
-                        SelectedModel = AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o-mini")) 
-                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("gpt-4o"))
-                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("claude-3-5-sonnet"))
-                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("claude-3"))
-                                     ?? AvailableModels.FirstOrDefault(m => m.Id.Contains("grok"))
+                        SelectedModel = AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("gpt-4o-mini")) 
+                                     ?? AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("gpt-4o"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("gemini-pro"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("claude-3-5-sonnet"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("claude-3"))
+                                     ?? AvailableModels.FirstOrDefault(m => m.EffectiveId.Contains("grok"))
                                      ?? AvailableModels.FirstOrDefault();
                     }
                 }
@@ -458,10 +522,10 @@ namespace Dev2.Settings.Chatbot
                 return;
             }
 
-            // Update the selected model on the source
+            // Update the selected model on the source using EffectiveId (works for both Gemini "models/..." format and regular IDs)
             if (_selectedModel != null)
             {
-                source.SelectedModel = _selectedModel.Id;
+                source.SelectedModel = _selectedModel.EffectiveId;
             }
 
             var serializer = new Dev2JsonSerializer();
@@ -571,9 +635,9 @@ namespace Dev2.Settings.Chatbot
         {
             var equalsSeq = Equals(_resourceSourceId, other._resourceSourceId);
             
-            // Compare selected model IDs
-            var thisModelId = _selectedModel?.Id;
-            var otherModelId = other._selectedModel?.Id;
+            // Compare selected model IDs using EffectiveId
+            var thisModelId = _selectedModel?.EffectiveId;
+            var otherModelId = other._selectedModel?.EffectiveId;
             equalsSeq &= string.Equals(thisModelId, otherModelId);
             
             // Compare checkbox settings
@@ -600,13 +664,26 @@ namespace Dev2.Settings.Chatbot
         public string Object { get; set; }
     }
 
+    // Wrapper class for Google Gemini API that returns models in a "models" array
+    public class GeminiModelsResponseWrapper
+    {
+        [JsonProperty("models")]
+        public List<ChatbotModelInfo> Models { get; set; }
+    }
+
     public class ChatbotModelInfo
     {
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        // Google Gemini uses 'name' as the primary identifier (e.g., "models/gemini-pro")
+        // GitHub Models uses 'name' as a friendly display name
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        // Google Gemini also has a displayName field
+        [JsonProperty("displayName")]
+        public string GeminiDisplayName { get; set; }
 
         [JsonProperty("publisher")]
         public string Publisher { get; set; }
@@ -614,11 +691,18 @@ namespace Dev2.Settings.Chatbot
         [JsonProperty("summary")]
         public string Summary { get; set; }
 
+        // Google Gemini has 'description' instead of 'summary'
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
         [JsonProperty("supported_input_modalities")]
         public List<string> SupportedInputModalities { get; set; }
 
         [JsonProperty("supported_output_modalities")]
         public List<string> SupportedOutputModalities { get; set; }
+
+        [JsonProperty("supportedGenerationMethods")]
+        public List<string> SupportedGenerationMethods { get; set; }
 
         [JsonProperty("tags")]
         public List<string> Tags { get; set; }
@@ -633,17 +717,49 @@ namespace Dev2.Settings.Chatbot
         [JsonProperty("owned_by")]
         public string OwnedBy { get; set; }
 
+        // Property to get the effective ID (Gemini uses 'name' as ID, others use 'id')
+        public string EffectiveId
+        {
+            get
+            {
+                // For Gemini, 'name' is the model identifier (e.g., "models/gemini-pro")
+                if (!string.IsNullOrEmpty(Name) && Name.StartsWith("models/"))
+                {
+                    return Name;
+                }
+                // Otherwise use 'id'
+                return Id ?? Name;
+            }
+        }
+
         public string DisplayName
         {
             get
             {
-                // If Name is available (GitHub Models format), use it with ID
-                if (!string.IsNullOrEmpty(Name))
+                // For Google Gemini, use displayName if available
+                if (!string.IsNullOrEmpty(GeminiDisplayName))
                 {
-                    return $"{Name} ({Id})";
+                    return GeminiDisplayName;
                 }
-                // Otherwise just use ID (OpenAI/xAI format)
-                return Id;
+                
+                // If Name is available and looks like a friendly name (not starting with "models/"), use it with ID
+                if (!string.IsNullOrEmpty(Name) && !Name.StartsWith("models/"))
+                {
+                    if (!string.IsNullOrEmpty(Id))
+                    {
+                        return $"{Name} ({Id})";
+                    }
+                    return Name;
+                }
+                
+                // For Gemini format "models/gemini-pro", extract just "gemini-pro"
+                if (!string.IsNullOrEmpty(Name) && Name.StartsWith("models/"))
+                {
+                    return Name.Substring("models/".Length);
+                }
+                
+                // Otherwise just use ID
+                return Id ?? Name ?? "Unknown";
             }
         }
 
@@ -653,8 +769,12 @@ namespace Dev2.Settings.Chatbot
             {
                 var tooltipParts = new List<string>();
 
-                // Add summary if available
-                if (!string.IsNullOrEmpty(Summary))
+                // Add description (Gemini) or summary (others) if available
+                if (!string.IsNullOrEmpty(Description))
+                {
+                    tooltipParts.Add(Description);
+                }
+                else if (!string.IsNullOrEmpty(Summary))
                 {
                     tooltipParts.Add(Summary);
                 }
@@ -669,13 +789,19 @@ namespace Dev2.Settings.Chatbot
                     tooltipParts.Add($"Owned by: {OwnedBy}");
                 }
 
+                // Add supported generation methods for Gemini
+                if (SupportedGenerationMethods != null && SupportedGenerationMethods.Count > 0)
+                {
+                    tooltipParts.Add($"Supported methods: {string.Join(", ", SupportedGenerationMethods)}");
+                }
+
                 // Add tags if available
                 if (Tags != null && Tags.Count > 0)
                 {
                     tooltipParts.Add($"Tags: {string.Join(", ", Tags)}");
                 }
 
-                return tooltipParts.Count > 0 ? string.Join("\n\n", tooltipParts) : Id;
+                return tooltipParts.Count > 0 ? string.Join("\n\n", tooltipParts) : EffectiveId;
             }
         }
     }

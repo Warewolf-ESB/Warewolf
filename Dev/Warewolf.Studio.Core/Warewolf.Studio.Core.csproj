@@ -93,6 +93,7 @@
     <Compile Include="ResourceTypeToIconConverter.cs" />
     <Compile Include="ResourceTypeToIconVisibility.cs" />
     <Compile Include="ServerAddedEvent.cs" />
+    <Compile Include="StringNotEmptyConverter.cs" />
     <Compile Include="Views\JsonObjectsView.xaml.cs">
       <DependentUpon>JsonObjectsView.xaml</DependentUpon>
     </Compile>
