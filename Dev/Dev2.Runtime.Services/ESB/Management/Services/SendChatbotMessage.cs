@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -22,6 +23,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -94,6 +96,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (string.IsNullOrWhiteSpace(chatbotSource.SelectedModel))
                 {
                     return CreateErrorResponse(serializer, "No AI model selected. Please select a model in chatbot settings.");
+                }
+
+                // Decrypt API key if encrypted
+                if (!string.IsNullOrWhiteSpace(chatbotSource.ApiKey))
+                {
+                    chatbotSource.ApiKey = DpapiWrapper.DecryptIfEncrypted(chatbotSource.ApiKey);
                 }
 
                 // Send message to AI provider
@@ -226,14 +234,36 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             if (settings.IncludeSystemLog)
             {
-                // TODO: In a future enhancement, retrieve and add recent system log entries
-                // For now, we'll skip this to keep the initial implementation simple
+                try
+                {
+                    var logEntries = ReadRecentLogEntries(settings.NumberOfLogLines);
+                    if (logEntries.Any())
+                    {
+                        var logContext = "Recent System Log Entries:\n" + string.Join("\n", logEntries);
+                        contextParts.Add(logContext);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Warn($"Failed to retrieve system log entries: {ex.Message}", GlobalConstants.WarewolfWarn);
+                }
             }
 
             if (settings.SelectedResourceIds != null && settings.SelectedResourceIds.Count > 0)
             {
-                // TODO: In a future enhancement, retrieve and add relevant resource definitions
-                // For now, we'll skip this to keep the initial implementation simple
+                try
+                {
+                    var resourceDefinitions = GetResourceDefinitions(settings.SelectedResourceIds, settings.LoadResourcesAsXaml);
+                    if (resourceDefinitions.Any())
+                    {
+                        var resourceContext = "Available Workflow Definitions:\n" + string.Join("\n\n", resourceDefinitions);
+                        contextParts.Add(resourceContext);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Warn($"Failed to retrieve resource definitions: {ex.Message}", GlobalConstants.WarewolfWarn);
+                }
             }
 
             if (contextParts.Any())
@@ -343,6 +373,80 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
 
             return serializer.SerializeToBuilder(result);
+        }
+
+        private static List<string> ReadRecentLogEntries(int numberOfLines)
+        {
+            var logEntries = new List<string>();
+            var serverLogPath = EnvironmentVariables.ServerLogFile;
+            
+            if (string.IsNullOrWhiteSpace(serverLogPath) || !File.Exists(serverLogPath))
+            {
+                return logEntries;
+            }
+
+            try
+            {
+                using (var fileStream = new FileStream(serverLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var streamReader = new StreamReader(fileStream))
+                {
+                    var allLines = new List<string>();
+                    while (!streamReader.EndOfStream)
+                    {
+                        allLines.Add(streamReader.ReadLine());
+                    }
+
+                    if (allLines.Count > numberOfLines)
+                    {
+                        logEntries = allLines.Skip(allLines.Count - numberOfLines).ToList();
+                    }
+                    else
+                    {
+                        logEntries = allLines;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Warn($"Failed to read log file: {ex.Message}", GlobalConstants.WarewolfWarn);
+            }
+
+            return logEntries;
+        }
+
+        private static List<string> GetResourceDefinitions(List<Guid> resourceIds, bool loadAsXaml)
+        {
+            var definitions = new List<string>();
+
+            foreach (var resourceId in resourceIds)
+            {
+                try
+                {
+                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                    if (resource != null)
+                    {
+                        if (loadAsXaml)
+                        {
+                            var resourceXml = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+                            if (resourceXml != null && resourceXml.Length > 0)
+                            {
+                                definitions.Add($"Resource: {resource.ResourceName} (ID: {resourceId})\n{resourceXml}");
+                            }
+                        }
+                        else
+                        {
+                            var resourceInfo = $"Resource: {resource.ResourceName}\nType: {resource.ResourceType}\nPath: {resource.GetResourcePath(GlobalConstants.ServerWorkspaceID)}";
+                            definitions.Add(resourceInfo);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Warn($"Failed to load resource {resourceId}: {ex.Message}", GlobalConstants.WarewolfWarn);
+                }
+            }
+
+            return definitions;
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(

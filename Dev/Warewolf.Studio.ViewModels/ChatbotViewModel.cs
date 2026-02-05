@@ -1113,5 +1113,19 @@ namespace Warewolf.Studio.ViewModels
                 _disposed = true;
             }
         }
+
+        public Task HandleAsync(ChatbotSettingsSavedMessage message, CancellationToken cancellationToken)
+        {
+            // Call the existing synchronous Handle method
+            Handle(message);
+            return Task.CompletedTask;
+        }
+
+        public Task HandleAsync(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message, CancellationToken cancellationToken)
+        {
+            // Call the existing synchronous Handle method
+            Handle(message);
+            return Task.CompletedTask;
+        }
     }
 }
