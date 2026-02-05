@@ -211,11 +211,8 @@ namespace Warewolf.Studio.ViewModels
 
         private static void AppendSystemLogContext(StringBuilder promptBuilder, ChatbotContextOptions options, ChatbotContextResult result)
         {
-            Dev2Logger.Info($"ChatbotContext: AppendSystemLogContext called, IncludeSystemLog={options.IncludeSystemLog}, NumberOfLogLines={options.NumberOfLogLines}", "Warewolf Info");
-
             if (!options.IncludeSystemLog)
             {
-                Dev2Logger.Info("ChatbotContext: IncludeSystemLog is false, skipping system log", "Warewolf Info");
                 return;
             }
 
@@ -230,18 +227,11 @@ namespace Warewolf.Studio.ViewModels
             if (!string.IsNullOrEmpty(result.SystemLog))
             {
                 result.HasSystemLog = true;
-                var logLines = result.SystemLog.Split('\n').Length;
-                Dev2Logger.Info($"ChatbotContext: Appending system log to prompt, {logLines} lines, {result.SystemLog.Length} chars", "Warewolf Info");
                 promptBuilder.AppendLine("## System Log (Recent Entries):");
                 promptBuilder.AppendLine("```");
                 promptBuilder.AppendLine(result.SystemLog);
                 promptBuilder.AppendLine("```");
                 promptBuilder.AppendLine();
-                Dev2Logger.Info($"ChatbotContext: Prompt builder length after appending log: {promptBuilder.Length} chars", "Warewolf Info");
-            }
-            else
-            {
-                Dev2Logger.Info("ChatbotContext: System log is empty, not appending to prompt", "Warewolf Info");
             }
         }
 
@@ -612,12 +602,9 @@ namespace Warewolf.Studio.ViewModels
         private static string GetSystemLog(IServer server, int numberOfLogLines)
         {
             var stopwatch = Stopwatch.StartNew();
-            Dev2Logger.Info($"ChatbotContext: GetSystemLog called with numberOfLogLines={numberOfLogLines}", "Warewolf Info");
 
             try
             {
-                Dev2Logger.Debug("ChatbotContext: Sending FetchCurrentServerLogService request", "Warewolf Debug");
-
                 var comsController = new Dev2.Controller.CommunicationController
                 {
                     ServiceName = "FetchCurrentServerLogService"
@@ -638,7 +625,6 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 var logContent = result.Message?.ToString();
-                Dev2Logger.Info($"ChatbotContext: Raw log content received from server, length={logContent?.Length ?? 0} chars", "Warewolf Info");
 
                 if (string.IsNullOrEmpty(logContent))
                 {
@@ -648,25 +634,10 @@ namespace Warewolf.Studio.ViewModels
 
                 // Sanitize log content to prevent prompt injection via crafted log entries
                 logContent = SanitizeContentForPrompt(logContent);
-                Dev2Logger.Info($"ChatbotContext: After sanitization, length={logContent.Length} chars", "Warewolf Info");
 
-                // Truncate to the configured number of lines
                 var lines = logContent.Split(new[] { '\n' }, StringSplitOptions.None);
-                var totalLines = lines.Length;
-                Dev2Logger.Info($"ChatbotContext: Log has {totalLines} total lines, requesting {numberOfLogLines} lines", "Warewolf Info");
+                Dev2Logger.Info($"ChatbotContext: Server log fetched in {stopwatch.ElapsedMilliseconds}ms, {lines.Length} lines", "Warewolf Performance");
 
-                if (totalLines > numberOfLogLines)
-                {
-                    var truncatedLines = lines.Skip(totalLines - numberOfLogLines).ToArray();
-                    logContent = "... (earlier entries truncated)\n" + string.Join("\n", truncatedLines);
-                    Dev2Logger.Info($"ChatbotContext: Server log fetched and truncated in {stopwatch.ElapsedMilliseconds}ms, {numberOfLogLines} of {totalLines} lines included, final length={logContent.Length} chars", "Warewolf Performance");
-                }
-                else
-                {
-                    Dev2Logger.Info($"ChatbotContext: Server log fetched in {stopwatch.ElapsedMilliseconds}ms, {totalLines} lines, final length={logContent.Length} chars", "Warewolf Performance");
-                }
-
-                Dev2Logger.Info($"ChatbotContext: Returning log content with {logContent.Split('\n').Length} lines", "Warewolf Info");
                 return logContent;
             }
             catch (Exception ex)
