@@ -20,6 +20,7 @@ namespace Warewolf.Configuration
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
+        private int _numberOfLogLines = 1000;
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
@@ -45,6 +46,12 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _includeResourcesJson, value);
         }
 
+        public int NumberOfLogLines
+        {
+            get => _numberOfLogLines;
+            set => SetProperty(ref _numberOfLogLines, value);
+        }
+
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
@@ -52,6 +59,7 @@ namespace Warewolf.Configuration
             result._includeSystemLog = IncludeSystemLog;
             result._includeResourcesXaml = IncludeResourcesXaml;
             result._includeResourcesJson = IncludeResourcesJson;
+            result._numberOfLogLines = NumberOfLogLines;
             return result;
         }
 
@@ -63,6 +71,7 @@ namespace Warewolf.Configuration
                 equals &= IncludeSystemLog == other.IncludeSystemLog;
                 equals &= IncludeResourcesXaml == other.IncludeResourcesXaml;
                 equals &= IncludeResourcesJson == other.IncludeResourcesJson;
+                equals &= NumberOfLogLines == other.NumberOfLogLines;
                 return equals;
             }
 

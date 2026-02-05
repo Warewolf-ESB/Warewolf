@@ -50,6 +50,7 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Chatbot Source" />
@@ -179,8 +180,40 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                             </i:Interaction.Behaviors>
                         </CheckBox>
 
+                        <!-- Number of Log Lines -->
+                        <StackPanel Grid.Column="0"
+                                    Grid.Row="4"
+                                    Grid.ColumnSpan="4"
+                                    Orientation="Horizontal"
+                                    Margin="20,5,0,5"
+                                    IsEnabled="{Binding IncludeSystemLog}">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IncludeSystemLog}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Number of Log Lines:"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                            <TextBox Text="{Binding NumberOfLogLines, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="80"
+                                     VerticalAlignment="Center"
+                                     ToolTip="Number of log lines to include in the system prompt (default: 1000)">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter
+                                        Text="Set the number of recent log lines to include in the chatbot context. Higher values provide more context but use more tokens."
+                                        DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </StackPanel>
+
                         <CheckBox Grid.Column="0"
-                                  Grid.Row="4"
+                                  Grid.Row="5"
                                   Grid.ColumnSpan="4"
                                   Content="Include Resources XAML"
                                   IsChecked="{Binding IncludeResourcesXaml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

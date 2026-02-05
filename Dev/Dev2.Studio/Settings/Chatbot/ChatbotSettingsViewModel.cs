@@ -50,6 +50,7 @@ namespace Dev2.Settings.Chatbot
         private bool _includeSystemLog = true;
         private bool _includeResourcesXaml = true;
         private bool _includeResourcesJson = true;
+        private int _numberOfLogLines = 1000;
 
         [ExcludeFromCodeCoverage]
         public ChatbotSettingsViewModel()
@@ -67,8 +68,9 @@ namespace Dev2.Settings.Chatbot
             IncludeSystemLog = settingsData.IncludeSystemLog;
             IncludeResourcesXaml = settingsData.IncludeResourcesXaml;
             IncludeResourcesJson = settingsData.IncludeResourcesJson;
+            NumberOfLogLines = settingsData.NumberOfLogLines;
             
-            Dev2Logger.Info($"ChatbotSettings: Loaded settings - IncludeSystemLog={IncludeSystemLog}, IncludeResourcesXaml={IncludeResourcesXaml}, IncludeResourcesJson={IncludeResourcesJson}", "Warewolf Info");
+            Dev2Logger.Info($"ChatbotSettings: Loaded settings - IncludeSystemLog={IncludeSystemLog}, IncludeResourcesXaml={IncludeResourcesXaml}, IncludeResourcesJson={IncludeResourcesJson}, NumberOfLogLines={NumberOfLogLines}", "Warewolf Info");
             
             if (settingsData.ChatbotSource != null)
             {
@@ -279,6 +281,21 @@ namespace Dev2.Settings.Chatbot
                 _includeResourcesJson = value;
                 OnPropertyChanged();
                 Dev2Logger.Debug($"ChatbotSettings: IncludeResourcesJson changed to {value}", "Warewolf Debug");
+                if (Item != null)
+                {
+                    IsDirty = !Equals(Item);
+                }
+            }
+        }
+
+        public int NumberOfLogLines
+        {
+            get => _numberOfLogLines;
+            set
+            {
+                _numberOfLogLines = value;
+                OnPropertyChanged();
+                Dev2Logger.Debug($"ChatbotSettings: NumberOfLogLines changed to {value}", "Warewolf Debug");
                 if (Item != null)
                 {
                     IsDirty = !Equals(Item);
@@ -542,10 +559,11 @@ namespace Dev2.Settings.Chatbot
                 },
                 IncludeSystemLog = _includeSystemLog,
                 IncludeResourcesXaml = _includeResourcesXaml,
-                IncludeResourcesJson = _includeResourcesJson
+                IncludeResourcesJson = _includeResourcesJson,
+                NumberOfLogLines = _numberOfLogLines
             };
             
-            Dev2Logger.Info($"ChatbotSettings: Saving settings - IncludeSystemLog={_includeSystemLog}, IncludeResourcesXaml={_includeResourcesXaml}, IncludeResourcesJson={_includeResourcesJson}", "Warewolf Info");
+            Dev2Logger.Info($"ChatbotSettings: Saving settings - IncludeSystemLog={_includeSystemLog}, IncludeResourcesXaml={_includeResourcesXaml}, IncludeResourcesJson={_includeResourcesJson}, NumberOfLogLines={_numberOfLogLines}", "Warewolf Info");
             
             // Populate the transfer object with checkbox settings so it gets serialized
             if (settings != null)
@@ -553,7 +571,8 @@ namespace Dev2.Settings.Chatbot
                 settings.IncludeSystemLog = _includeSystemLog;
                 settings.IncludeResourcesXaml = _includeResourcesXaml;
                 settings.IncludeResourcesJson = _includeResourcesJson;
-                Dev2Logger.Info($"ChatbotSettings: Updated ChatbotSettingsTo - IncludeSystemLog={settings.IncludeSystemLog}, IncludeResourcesXaml={settings.IncludeResourcesXaml}, IncludeResourcesJson={settings.IncludeResourcesJson}", "Warewolf Info");
+                settings.NumberOfLogLines = _numberOfLogLines;
+                Dev2Logger.Info($"ChatbotSettings: Updated ChatbotSettingsTo - IncludeSystemLog={settings.IncludeSystemLog}, IncludeResourcesXaml={settings.IncludeResourcesXaml}, IncludeResourcesJson={settings.IncludeResourcesJson}, NumberOfLogLines={settings.NumberOfLogLines}", "Warewolf Info");
             }
             
             CurrentEnvironment.ResourceRepository.SaveChatbotSettings(CurrentEnvironment, data);
@@ -634,17 +653,18 @@ namespace Dev2.Settings.Chatbot
         bool EqualsSeq(ChatbotSettingsViewModel other)
         {
             var equalsSeq = Equals(_resourceSourceId, other._resourceSourceId);
-            
+
             // Compare selected model IDs using EffectiveId
             var thisModelId = _selectedModel?.EffectiveId;
             var otherModelId = other._selectedModel?.EffectiveId;
             equalsSeq &= string.Equals(thisModelId, otherModelId);
-            
+
             // Compare checkbox settings
             equalsSeq &= _includeSystemLog == other._includeSystemLog;
             equalsSeq &= _includeResourcesXaml == other._includeResourcesXaml;
             equalsSeq &= _includeResourcesJson == other._includeResourcesJson;
-            
+            equalsSeq &= _numberOfLogLines == other._numberOfLogLines;
+
             return equalsSeq;
         }
 

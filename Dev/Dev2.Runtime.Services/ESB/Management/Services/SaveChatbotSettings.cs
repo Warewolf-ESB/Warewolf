@@ -42,6 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Config.Chatbot.IncludeSystemLog = chatbotSettingsData.IncludeSystemLog;
                     Config.Chatbot.IncludeResourcesXaml = chatbotSettingsData.IncludeResourcesXaml;
                     Config.Chatbot.IncludeResourcesJson = chatbotSettingsData.IncludeResourcesJson;
+                    Config.Chatbot.NumberOfLogLines = chatbotSettingsData.NumberOfLogLines;
                 }
                 else
                 {
@@ -50,11 +51,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     if (chatbotSettingsTo != null)
                     {
                         // Partial save - only update checkbox properties, preserve existing ChatbotSource
-                    Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsTo - updating only checkbox properties", GlobalConstants.WarewolfInfo);
+                        Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsTo - updating only checkbox properties", GlobalConstants.WarewolfInfo);
                         Config.Chatbot.IncludeSystemLog = chatbotSettingsTo.IncludeSystemLog;
                         Config.Chatbot.IncludeResourcesXaml = chatbotSettingsTo.IncludeResourcesXaml;
                         Config.Chatbot.IncludeResourcesJson = chatbotSettingsTo.IncludeResourcesJson;
-                        Dev2Logger.Info($"SaveChatbotSettings: Set checkbox values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, IncludeResourcesXaml={chatbotSettingsTo.IncludeResourcesXaml}, IncludeResourcesJson={chatbotSettingsTo.IncludeResourcesJson}", GlobalConstants.WarewolfInfo);
+                        Config.Chatbot.NumberOfLogLines = chatbotSettingsTo.NumberOfLogLines;
+                        Dev2Logger.Info($"SaveChatbotSettings: Set values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, IncludeResourcesXaml={chatbotSettingsTo.IncludeResourcesXaml}, IncludeResourcesJson={chatbotSettingsTo.IncludeResourcesJson}, NumberOfLogLines={chatbotSettingsTo.NumberOfLogLines}", GlobalConstants.WarewolfInfo);
                     }
                 }
 
