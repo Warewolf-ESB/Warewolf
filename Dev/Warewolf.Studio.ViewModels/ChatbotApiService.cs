@@ -174,8 +174,8 @@ namespace Warewolf.Studio.ViewModels
 		}
 
 	/// <summary>
-	/// Sends the request, automatically retrying with different payload parameters when the API
-	/// rejects max_completion_tokens or temperature as unsupported.
+	/// Sends the request with the correct parameters for the detected provider.
+	/// No retries - we know exactly which format each provider uses.
 	/// </summary>
 	private async Task<HttpResponseMessage> SendWithParameterNegotiationAsync(ChatbotSource source, string model, object messagesArray, string systemMessage, bool isAnthropicEndpoint, bool isGeminiEndpoint, string authHeaderName, string authHeaderPrefix, string additionalHeaders)
 	{
@@ -214,7 +214,7 @@ namespace Warewolf.Studio.ViewModels
 		}
 
 		// Retry without temperature if not supported
-		if (errorContent.Contains("temperature") && errorContent.Contains("not support"))
+		if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
 		{
 			Dev2.Common.Dev2Logger.Info("Retrying without temperature parameter", "Warewolf Info");
 
@@ -440,6 +440,20 @@ namespace Warewolf.Studio.ViewModels
 
 			var lowerEndpoint = endpoint.ToLower();
 			return lowerEndpoint.Contains("generativelanguage.googleapis.com") || lowerEndpoint.Contains("gemini");
+		}
+
+		/// <summary>
+		/// Detects if the endpoint is a GitHub Models API endpoint.
+		/// </summary>
+		private static bool IsGitHubModelsEndpoint(string endpoint)
+		{
+			if (string.IsNullOrWhiteSpace(endpoint))
+			{
+				return false;
+			}
+
+			var lowerEndpoint = endpoint.ToLower();
+			return lowerEndpoint.Contains("models.github.com");
 		}
 
 		/// <summary>
@@ -732,7 +746,7 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
 
-	private static object CreateStreamingPayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool isGeminiFormat = false)
+	private static object CreateStreamingPayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool isGeminiFormat = false, bool includeTemperature = true)
 	{
 		// Gemini uses a completely different payload format
 		if (isGeminiFormat)
@@ -746,9 +760,13 @@ namespace Warewolf.Studio.ViewModels
 		{
 			{ "model", model },
 			{ "messages", messages },
-			{ "temperature", ChatTemperature },
 			{ "stream", true }
 		};
+
+		if (includeTemperature)
+		{
+			payload["temperature"] = ChatTemperature;
+		}
 
 		if (!string.IsNullOrWhiteSpace(systemMessage))
 		{
