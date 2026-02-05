@@ -263,7 +263,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _message = value;
                 OnPropertyChanged(nameof(Message));
-                ((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SendCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -285,7 +285,7 @@ namespace Warewolf.Studio.ViewModels
                 _isChatbotConfigured = value;
                 OnPropertyChanged(nameof(IsChatbotConfigured));
                 OnPropertyChanged(nameof(ShowConfigurationMessage));
-                ((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SendCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -299,7 +299,7 @@ namespace Warewolf.Studio.ViewModels
                 _isSending = value;
                 OnPropertyChanged(nameof(IsSending));
                 OnPropertyChanged(nameof(IsLoading));
-                ((DelegateCommand)SendCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)SendCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -311,6 +311,7 @@ namespace Warewolf.Studio.ViewModels
                 _isInitializingPrompt = value;
                 OnPropertyChanged(nameof(IsInitializingPrompt));
                 OnPropertyChanged(nameof(IsLoading));
+                ((DelegateCommand)SendCommand)?.RaiseCanExecuteChanged();
             }
         }
 
@@ -417,12 +418,30 @@ namespace Warewolf.Studio.ViewModels
 
                 var result = await _contextBuilder?.BuildContextAsync(options);
 
-                _systemPrompt = result.SystemPrompt;
-                _resourcesJson = result.ResourcesJson;
-                _systemLog = result.SystemLog;
-                _systemPromptInitialized = true;
+                if (result != null)
+                {
+                    _systemPrompt = result.SystemPrompt;
+                    _resourcesJson = result.ResourcesJson;
+                    _systemLog = result.SystemLog;
+                    _systemPromptInitialized = true;
 
-                InvokeOnUiThread(() => DisplayContextLoadedGreeting(result));
+                    InvokeOnUiThread(() => DisplayContextLoadedGreeting(result));
+                }
+                else
+                {
+                    // Handle null result
+                    _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
+                    _systemPromptInitialized = true;
+
+                    InvokeOnUiThread(() =>
+                    {
+                        IsInitializingPrompt = false;
+                        LoadingStatusText = string.Empty;
+                        Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                            "Hello! I'm your Warewolf debugging assistant. " +
+                            "Note: I had trouble loading workspace context, but I can still help answer general questions."));
+                    });
+                }
             }
             catch (Exception ex)
             {
