@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -30,7 +31,6 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
         private const int TimeoutSeconds = 30;
-        private const int MaxMessageLength = 10000;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -51,10 +51,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 var message = messageBuilder.ToString();
-                if (message.Length > MaxMessageLength)
-                {
-                    return CreateErrorResponse(serializer, $"Message is too long. Maximum length is {MaxMessageLength} characters");
-                }
 
                 // Parse conversation history (optional)
                 List<ConversationMessage> conversationHistory = null;
@@ -80,32 +76,60 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return CreateErrorResponse(serializer, "Chatbot is not configured. Please configure a chatbot source in settings.");
                 }
 
-                // Get chatbot source
-                var chatbotSource = ResourceCatalog.Instance.GetResource<ChatbotSource>(GlobalConstants.ServerWorkspaceID, settings.ChatbotSource.Value);
-                if (chatbotSource == null)
+                // Parse chatbot source definition from payload
+                ChatbotSourceDefinition chatbotSourceDef = null;
+                if (!string.IsNullOrWhiteSpace(settings.ChatbotSource.Payload))
                 {
-                    return CreateErrorResponse(serializer, "Selected chatbot source not found or invalid.");
+                    try
+                    {
+                        chatbotSourceDef = JsonConvert.DeserializeObject<ChatbotSourceDefinition>(settings.ChatbotSource.Payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Warn($"Failed to parse chatbot source definition from payload: {ex.Message}", GlobalConstants.WarewolfWarn);
+                    }
+                }
+
+                // Fallback to getting from ResourceCatalog if payload parsing failed
+                if (chatbotSourceDef == null)
+                {
+                    var chatbotSource = ResourceCatalog.Instance.GetResource<ChatbotSource>(GlobalConstants.ServerWorkspaceID, settings.ChatbotSource.Value);
+                    if (chatbotSource == null)
+                    {
+                        return CreateErrorResponse(serializer, "Selected chatbot source not found or invalid.");
+                    }
+                    
+                    // Convert ChatbotSource to ChatbotSourceDefinition
+                    chatbotSourceDef = new ChatbotSourceDefinition
+                    {
+                        Id = chatbotSource.ResourceID,
+                        Name = chatbotSource.ResourceName,
+                        ApiKey = chatbotSource.ApiKey,
+                        CompletionsEndpoint = chatbotSource.CompletionsEndpoint,
+                        ModelsEndpoint = chatbotSource.ModelsEndpoint,
+                        SelectedModel = chatbotSource.SelectedModel
+                    };
                 }
 
                 // Validate endpoint and model
-                if (string.IsNullOrWhiteSpace(chatbotSource.CompletionsEndpoint))
+                if (string.IsNullOrWhiteSpace(chatbotSourceDef.CompletionsEndpoint))
                 {
                     return CreateErrorResponse(serializer, "Chatbot source does not have a completions endpoint configured.");
                 }
 
-                if (string.IsNullOrWhiteSpace(chatbotSource.SelectedModel))
+                if (string.IsNullOrWhiteSpace(chatbotSourceDef.SelectedModel))
                 {
                     return CreateErrorResponse(serializer, "No AI model selected. Please select a model in chatbot settings.");
                 }
 
                 // Decrypt API key if encrypted
-                if (!string.IsNullOrWhiteSpace(chatbotSource.ApiKey))
+                if (!string.IsNullOrWhiteSpace(chatbotSourceDef.ApiKey))
                 {
-                    chatbotSource.ApiKey = DpapiWrapper.DecryptIfEncrypted(chatbotSource.ApiKey);
+                    chatbotSourceDef.ApiKey = DpapiWrapper.DecryptIfEncrypted(chatbotSourceDef.ApiKey);
                 }
 
                 // Send message to AI provider
-                var response = SendMessageToProvider(chatbotSource, message, conversationHistory, settings);
+                var response = SendMessageToProvider(chatbotSourceDef, message, conversationHistory, settings);
 
                 // Return success response
                 var result = new
@@ -147,7 +171,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private static string SendMessageToProvider(ChatbotSource source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        private static string SendMessageToProvider(ChatbotSourceDefinition source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
         {
             using (var client = new HttpClient())
             {
