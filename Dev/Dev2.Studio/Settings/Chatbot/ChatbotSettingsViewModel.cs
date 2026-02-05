@@ -118,8 +118,8 @@ namespace Dev2.Settings.Chatbot
                 SetItem(this);
                 IsDirty = false;
             }
-        }
-
+            }
+            
         public IServer CurrentEnvironment
         {
             private get => _currentEnvironment;
@@ -401,7 +401,15 @@ namespace Dev2.Settings.Chatbot
                     if (!string.IsNullOrEmpty(source.SelectedModel))
                     {
                         var savedModel = AvailableModels.FirstOrDefault(m => m.Id == source.SelectedModel);
-                        SelectedModel = savedModel ?? AvailableModels.FirstOrDefault();
+                        
+                        if (savedModel != null)
+                        {
+                            SelectedModel = savedModel;
+                        }
+                        else
+                        {
+                            SelectedModel = AvailableModels.FirstOrDefault();
+                        }
                     }
                     else
                     {

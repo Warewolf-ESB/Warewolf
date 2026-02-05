@@ -383,24 +383,39 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task<string> SendStreamingWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders, Action<string> onTokenReceived, CancellationToken cancellationToken)
-        {
-            var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
-            var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
+	private async Task<string> SendStreamingWithAuthAsync(IList<ChatCompletionMessage> chatMessages, ChatbotSource source, string authHeaderName, string authHeaderPrefix, string additionalHeaders, Action<string> onTokenReceived, CancellationToken cancellationToken)
+	{
+			var modelToUse = !string.IsNullOrEmpty(source.SelectedModel) ? source.SelectedModel : "gpt-4o-mini";
+		var messagesArray = chatMessages.Select(m => new { role = m.Role, content = m.Content }).ToArray();
 
-            var payload = CreateStreamingPayload(modelToUse, messagesArray);
-            var json = JsonConvert.SerializeObject(payload);
+		// Try with max_completion_tokens first (newer API standard)
+		var payload = CreateStreamingPayload(modelToUse, messagesArray, useMaxCompletionTokens: true);
+		var json = JsonConvert.SerializeObject(payload);
+		var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+		var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
-            var request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
-
-            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Dev2.Common.Dev2Logger.Error($"Chatbot Streaming API Error: {response.StatusCode} - {errorContent}", "Warewolf Error");
-                throw new HttpRequestException($"API returned {response.StatusCode}: {errorContent}");
-            }
+		// If max_completion_tokens not supported, retry with max_tokens
+		if (!response.IsSuccessStatusCode)
+		{
+			var errorContent = await response.Content.ReadAsStringAsync();
+			
+			if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+			{
+				Dev2.Common.Dev2Logger.Info("Streaming: Retrying with max_tokens instead of max_completion_tokens", "Warewolf Info");
+				
+				payload = CreateStreamingPayload(modelToUse, messagesArray, useMaxCompletionTokens: false);
+				json = JsonConvert.SerializeObject(payload);
+				request = CreateHttpRequestMessage(source, json, authHeaderName, authHeaderPrefix, additionalHeaders);
+				response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+			}
+			
+			if (!response.IsSuccessStatusCode)
+			{
+				errorContent = await response.Content.ReadAsStringAsync();
+				Dev2.Common.Dev2Logger.Error($"Chatbot Streaming API Error: {response.StatusCode} - {errorContent}", "Warewolf Error");
+				throw new HttpRequestException($"API returned {response.StatusCode}: {errorContent}");
+			}
+		}
 
             var contentType = response.Content.Headers.ContentType?.MediaType ?? "";
 
