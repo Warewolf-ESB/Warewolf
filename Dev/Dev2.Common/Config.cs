@@ -536,22 +536,12 @@ namespace Dev2.Common
             }
         }
 
-        public bool IncludeResourcesXaml
+        public bool LoadResourcesAsXaml
         {
-            get => _settings?.IncludeResourcesXaml ?? true;
+            get => _settings?.LoadResourcesAsXaml ?? true;
             set
             {
-                _settings.IncludeResourcesXaml = value;
-                Save();
-            }
-        }
-
-        public bool IncludeResourcesJson
-        {
-            get => _settings?.IncludeResourcesJson ?? true;
-            set
-            {
-                _settings.IncludeResourcesJson = value;
+                _settings.LoadResourcesAsXaml = value;
                 Save();
             }
         }
