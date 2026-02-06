@@ -360,6 +360,15 @@ namespace Dev2.Common.X6
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
         public const string COMMANDLINE_COMMANDRESULT = "commandresult";
+
+        public const string SUSPENDEXECUTIONACTIVITY = "SuspendExecutionActivity";
+        public const string DISPLAYNAME_SUSPENDEXECUTION = "Suspend Execution";
+        public const string SUSPENDEXECUTION_SUSPENDOPTION = "suspendoption";
+        public const string SUSPENDEXECUTION_PERSISTVALUE = "persistvalue";
+        public const string SUSPENDEXECUTION_ALLOWMANUALRESUMPTION = "allowmanualresumption";
+        public const string SUSPENDEXECUTION_ENCRYPTDATA = "encryptdata";
+        public const string SUSPENDEXECUTION_RESPONSE = "response";
+        public const string SUSPENDEXECUTION_SAVEDATAFUNC = "savedatafunc";
     }
 
     public class X6WorkflowLoadModel
