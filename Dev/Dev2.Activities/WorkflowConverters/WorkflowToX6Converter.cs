@@ -102,6 +102,7 @@ namespace Dev2.Activities.WF
                 RedisCacheActivity redisCacheActivity => ProcessRedisCacheActivity(redisCacheActivity, graphData, activityNodeMap, previousNodeId),
                 SuspendExecutionActivity suspendExecutionActivity => ProcessSuspendExecutionActivity(suspendExecutionActivity, graphData, activityNodeMap, previousNodeId),
                 ManualResumptionActivity manualResumptionActivity => ProcessManualResumptionActivity(manualResumptionActivity, graphData, activityNodeMap, previousNodeId),
+                GateActivity gateActivity => ProcessGateActivity(gateActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -572,6 +573,7 @@ namespace Dev2.Activities.WF
                 RedisCacheActivity => true,
                 SuspendExecutionActivity => true,
                 ManualResumptionActivity => true,
+                GateActivity => true,
                 _ => false
             };
         }
@@ -854,6 +856,10 @@ namespace Dev2.Activities.WF
             else if (activity is DsfExchangeEmailNewActivity exchangeEmailActivity)
             {
                 cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
+            }
+            else if (activity is GateActivity gateActivity)
+            {
+                cell = CreateGateActivity(gateActivity, nodeId);
             }
             else
             {

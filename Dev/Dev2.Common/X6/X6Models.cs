@@ -88,6 +88,7 @@ namespace Dev2.Common.X6
         public const string FILEWRITEWITHBASE64 = "FileWriteWithBase64";
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
         public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
+        public const string GATEACTIVITY = "GateActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -121,6 +122,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_FILEWRITE = "Write File";
         public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
         public const string DISPLAYNAME_PYTHON = "Python";
+        public const string DISPLAYNAME_GATE = "Gate";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -383,6 +385,12 @@ namespace Dev2.Common.X6
         public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
 
         
+
+        public const string GATE_CONDITIONS = "gate_conditions";
+        public const string GATE_RETRYENTRYPOINTID = "gate_retryentrypointid";
+        public const string GATE_GATEOPTIONS = "gate_gateoptions";
+        public const string GATE_DATAFUNC = "dataFunc";
+        public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
 
         // SMTP Email Activity
         public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";

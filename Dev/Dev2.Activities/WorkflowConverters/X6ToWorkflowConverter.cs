@@ -161,6 +161,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
             EmbedNestedActivitiesIntoSuspendExecutionActivities(allNodes);
             EmbedNestedActivitiesIntoManualResumptionActivities(allNodes);
+            EmbedNestedActivitiesIntoGateActivities(allNodes);
         }
 
 
@@ -631,6 +632,8 @@ namespace Dev2.Activities.WF
                     return CreateSuspendExecutionActivity(node);
                 case var t when t.Contains(Constants.MANUALRESUMPTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateManualResumptionActivity(node);
+                case var t when t.Contains(Constants.GATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGateActivity(node);
                 case var t when t.Contains(Constants.DSFSENDEMAILACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSendEmailActivity(node);
                 case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):
