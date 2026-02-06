@@ -158,6 +158,7 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
             EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
+            EmbedNestedActivitiesIntoSuspendExecutionActivities(allNodes);
         }
 
 
@@ -624,6 +625,8 @@ namespace Dev2.Activities.WF
                     return CreatePythonActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.SUSPENDEXECUTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSuspendExecutionActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };
