@@ -159,6 +159,8 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
             EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
+            EmbedNestedActivitiesIntoSuspendExecutionActivities(allNodes);
+            EmbedNestedActivitiesIntoManualResumptionActivities(allNodes);
         }
 
 
@@ -616,14 +618,19 @@ namespace Dev2.Activities.WF
                 case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommentActivity(node);
                 case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
-                    return CreateFileWriteActivity(node);
-                 
+                    return CreateFileWriteActivity(node);                 
                 case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateJavascriptActivity(node);
                 case var t when t.Contains(Constants.DSFRUBYACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRubyActivity(node);
+                case var t when t.Contains(Constants.DSFPYTHONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePythonActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.SUSPENDEXECUTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSuspendExecutionActivity(node);
+                case var t when t.Contains(Constants.MANUALRESUMPTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateManualResumptionActivity(node);
                 case var t when t.Contains(Constants.DSFSENDEMAILACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateSendEmailActivity(node);
                 case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):

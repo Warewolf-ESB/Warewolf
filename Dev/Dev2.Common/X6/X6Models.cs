@@ -86,7 +86,8 @@ namespace Dev2.Common.X6
         public const string DSFPATHRENAME = "DsfPathRename";
         public const string DSFPATHDELETE = "DsfPathDelete";
         public const string FILEWRITEWITHBASE64 = "FileWriteWithBase64";
-        public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";
+        public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
+        public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -102,7 +103,6 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
         public const string DISPLAYNAME_FINDRECORDS = "Find Records";
         public const string DISPLAYNAME_DELETERECORDS = "Delete Records";
-
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
@@ -119,7 +119,8 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_PATHRENAME = "Rename";
         public const string DISPLAYNAME_PATHDELETE = "Delete";
         public const string DISPLAYNAME_FILEWRITE = "Write File";
-        public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";
+        public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
+        public const string DISPLAYNAME_PYTHON = "Python";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -360,6 +361,28 @@ namespace Dev2.Common.X6
         public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
         public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
         public const string COMMANDLINE_COMMANDRESULT = "commandresult";
+
+        public const string SUSPENDEXECUTIONACTIVITY = "SuspendExecutionActivity";
+        public const string DISPLAYNAME_SUSPENDEXECUTION = "Suspend Execution";
+        public const string SUSPENDEXECUTION_SUSPENDOPTION = "suspendoption";
+        public const string SUSPENDEXECUTION_PERSISTVALUE = "persistvalue";
+        public const string SUSPENDEXECUTION_ALLOWMANUALRESUMPTION = "allowmanualresumption";
+        public const string SUSPENDEXECUTION_ENCRYPTDATA = "encryptdata";
+        public const string SUSPENDEXECUTION_RESPONSE = "response";
+        public const string SUSPENDEXECUTION_SAVEDATAFUNC = "savedatafunc";
+
+        public const string PYTHON_SCRIPT = "python_script";
+        public const string PYTHON_ESCAPESCRIPT = "python_escapescript";
+        public const string PYTHON_INCLUDEFILE = "python_includefile";
+        public const string PYTHON_RESULT = "python_result";
+
+        public const string MANUALRESUMPTIONACTIVITY = "DsfManualResumptionActivity";
+        public const string MANUALRESUMPTION_DISPLAYNAME = "Manual Resumption";
+        public const string MANUALRESUMPTION_SUSPENSIONID = "suspensionid";
+        public const string MANUALRESUMPTION_OVERRIDEINPUTVARIABLE = "overrideinputvariables";
+        public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
+
+        
 
         // SMTP Email Activity
         public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";

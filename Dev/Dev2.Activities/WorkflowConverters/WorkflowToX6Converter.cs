@@ -100,6 +100,8 @@ namespace Dev2.Activities.WF
                 DsfSequenceActivity sequenceActivity => ProcessDsfSequenceActivity(sequenceActivity, graphData, activityNodeMap, previousNodeId),
                 DsfSelectAndApplyActivity selectAndApplyActivity => ProcessDsfSelectAndApplyActivity(selectAndApplyActivity, graphData, activityNodeMap, previousNodeId),
                 RedisCacheActivity redisCacheActivity => ProcessRedisCacheActivity(redisCacheActivity, graphData, activityNodeMap, previousNodeId),
+                SuspendExecutionActivity suspendExecutionActivity => ProcessSuspendExecutionActivity(suspendExecutionActivity, graphData, activityNodeMap, previousNodeId),
+                ManualResumptionActivity manualResumptionActivity => ProcessManualResumptionActivity(manualResumptionActivity, graphData, activityNodeMap, previousNodeId),
                 _ => ProcessGenericActivity(activity, graphData, activityNodeMap, nodeId)
             };
         }
@@ -568,6 +570,8 @@ namespace Dev2.Activities.WF
                 DsfSequenceActivity => true,
                 DsfSelectAndApplyActivity => true,
                 RedisCacheActivity => true,
+                SuspendExecutionActivity => true,
+                ManualResumptionActivity => true,
                 _ => false
             };
         }
@@ -823,7 +827,6 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCommandLineActivity(dsfExecuteCommandLineActivity, nodeId);
             }
-
             else if (activity is Scripting.DsfJavascriptActivity javascriptActivity)
             {
                 cell = CreateJavascriptActivity(javascriptActivity, nodeId);
@@ -831,6 +834,18 @@ namespace Dev2.Activities.WF
             else if (activity is Scripting.DsfRubyActivity rubyActivity)
             {
                 cell = CreateRubyActivity(rubyActivity, nodeId);
+            }
+            else if (activity is Scripting.DsfPythonActivity pythonscriptActivity)
+            {
+                cell = CreatePythonActivity(pythonscriptActivity, nodeId);
+            }
+            else if (activity is SuspendExecutionActivity suspendExecutionActivity)
+            {
+                cell = CreateSuspendExecutionActivity(suspendExecutionActivity, nodeId);
+            }
+            else if(activity is ManualResumptionActivity manualResumptionActivity)
+            {
+                cell = CreateManualResumptionActivity(manualResumptionActivity, nodeId);
             }
             else if (activity is DsfSendEmailActivity sendEmailActivity)
             {
