@@ -82,37 +82,37 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static List<ChatbotModelDefinition> FetchModelsFromProvider(ChatbotSource source)
         {
+            // Anthropic doesn't have a models list endpoint - return known models directly
+            if (IsAnthropicEndpoint(source.ModelsEndpoint) || IsAnthropicEndpoint(source.CompletionsEndpoint))
+            {
+                return GetAnthropicModels();
+            }
+
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
 
-                // Try Bearer authentication first (OpenAI, Azure OpenAI)
-                try
+                if (IsGoogleGeminiEndpoint(source.ModelsEndpoint))
                 {
-                    return FetchModelsWithAuth(client, source, "Authorization", $"Bearer {source.ApiKey}", null);
+                    // Gemini uses API key as query parameter
+                    var endpoint = source.ModelsEndpoint;
+                    var separator = endpoint.Contains("?") ? "&" : "?";
+                    endpoint = $"{endpoint}{separator}key={source.ApiKey}";
+                    return FetchModelsWithAuth(client, endpoint, null, null, null);
                 }
-                catch (HttpRequestException ex) when (IsAuthenticationError(ex))
-                {
-                    Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key", GlobalConstants.WarewolfInfo);
-                    
-                    // Retry with Anthropic-style authentication
-                    try
-                    {
-                        return FetchModelsWithAuth(client, source, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
-                    }
-                    catch (Exception)
-                    {
-                        // If both methods fail, throw the original exception
-                        throw new Exception($"Failed to authenticate with chatbot API: {ex.Message}", ex);
-                    }
-                }
+
+                // Default: OpenAI-compatible (OpenAI, XAI, GitHub Models, Azure OpenAI, etc.)
+                return FetchModelsWithAuth(client, source.ModelsEndpoint, "Authorization", $"Bearer {source.ApiKey}", null);
             }
         }
 
-        private static List<ChatbotModelDefinition> FetchModelsWithAuth(HttpClient client, ChatbotSource source, string authHeaderName, string authHeaderValue, string additionalHeaders)
+        private static List<ChatbotModelDefinition> FetchModelsWithAuth(HttpClient client, string endpoint, string authHeaderName, string authHeaderValue, string additionalHeaders)
         {
             client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+            if (!string.IsNullOrWhiteSpace(authHeaderName))
+            {
+                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+            }
 #pragma warning disable CC0021 // Use nameof
             client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
 #pragma warning restore CC0021 // Use nameof
@@ -136,7 +136,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            var response = client.GetAsync(source.ModelsEndpoint).Result;
+            var response = client.GetAsync(endpoint).Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -145,19 +145,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var content = response.Content.ReadAsStringAsync().Result;
-            return ParseModelsResponse(content, source.ModelsEndpoint);
+            return ParseModelsResponse(content);
         }
 
-        private static List<ChatbotModelDefinition> ParseModelsResponse(string jsonContent, string endpoint)
+        private static List<ChatbotModelDefinition> ParseModelsResponse(string jsonContent)
         {
             var models = new List<ChatbotModelDefinition>();
 
             try
             {
-                var json = JObject.Parse(jsonContent);
+                var json = JToken.Parse(jsonContent);
 
                 // OpenAI / Azure OpenAI format: { "data": [ {...}, {...} ] }
-                if (json["data"] is JArray dataArray)
+                if (json is JObject obj && obj["data"] is JArray dataArray)
                 {
                     foreach (var modelToken in dataArray)
                     {
@@ -170,10 +170,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         });
                     }
                 }
-                // Alternative format: direct array [ {...}, {...} ]
-                else if (json.Type == JTokenType.Array)
+                // Direct array format: [ {...}, {...} ]
+                else if (json is JArray array)
                 {
-                    var array = JArray.Parse(jsonContent);
                     foreach (var modelToken in array)
                     {
                         models.Add(new ChatbotModelDefinition
@@ -185,11 +184,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                         });
                     }
                 }
-                // Anthropic doesn't have a models endpoint, return empty list
-                else if (endpoint.Contains("anthropic.com"))
+                // Google Gemini format: { "models": [ { "name": "models/gemini-...", "displayName": "..." } ] }
+                else if (json is JObject geminiObj && geminiObj["models"] is JArray geminiModels)
                 {
-                    Dev2Logger.Warn("Anthropic does not provide a models list endpoint", GlobalConstants.WarewolfWarn);
-                    return GetAnthropicModels();
+                    foreach (var modelToken in geminiModels)
+                    {
+                        models.Add(new ChatbotModelDefinition
+                        {
+                            Id = modelToken["name"]?.ToString() ?? string.Empty,
+                            Object = "model",
+                            Created = 0,
+                            OwnedBy = "google"
+                        });
+                    }
                 }
             }
             catch (JsonException ex)
@@ -214,17 +221,24 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-        private static bool IsAuthenticationError(HttpRequestException ex)
+        private static bool IsAnthropicEndpoint(string endpoint)
         {
-            if (ex.Message == null)
+            if (string.IsNullOrWhiteSpace(endpoint))
             {
                 return false;
             }
+            var lower = endpoint.ToLower();
+            return lower.Contains("anthropic.com") || lower.Contains("claude");
+        }
 
-            var message = ex.Message.ToLower();
-            return message.Contains("401") || message.Contains("unauthorized") ||
-                   message.Contains("403") || message.Contains("forbidden") ||
-                   message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+        private static bool IsGoogleGeminiEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+            var lower = endpoint.ToLower();
+            return lower.Contains("generativelanguage.googleapis.com") || lower.Contains("gemini");
         }
 
         public override DynamicService CreateServiceEntry() => 

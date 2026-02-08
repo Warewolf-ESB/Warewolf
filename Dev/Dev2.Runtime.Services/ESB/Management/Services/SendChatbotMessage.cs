@@ -31,6 +31,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
         private const int TimeoutSeconds = 30;
+        private const int MaxCompletionTokens = 2000;
+        private const double ChatTemperature = 0.7;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -177,40 +179,194 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
 
-                // Build messages array
-                var messages = BuildMessagesArray(message, conversationHistory, settings);
+                var endpoint = source.CompletionsEndpoint;
 
-                // Build request body
-                var requestBody = new
+                if (IsAnthropicEndpoint(endpoint))
                 {
-                    model = source.SelectedModel,
-                    messages = messages,
-                    temperature = 0.7,
-                    max_tokens = 2000
-                };
-
-                var requestJson = JsonConvert.SerializeObject(requestBody);
-                var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-
-                // Try Bearer authentication first (OpenAI, Azure OpenAI, GitHub Models, Grok)
-                try
-                {
-                    return SendWithAuth(client, source.CompletionsEndpoint, content, "Authorization", $"Bearer {source.ApiKey}", null);
+                    return SendToAnthropic(client, source, message, conversationHistory, settings);
                 }
-                catch (HttpRequestException ex) when (IsAuthenticationError(ex))
+
+                if (IsGoogleGeminiEndpoint(endpoint))
                 {
-                    Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key", GlobalConstants.WarewolfInfo);
-                    
-                    // Retry with Anthropic-style authentication
-                    return SendWithAuth(client, source.CompletionsEndpoint, content, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
+                    return SendToGemini(client, source, message, conversationHistory, settings);
                 }
+
+                // Default: OpenAI-compatible (OpenAI, XAI, GitHub Models, Azure OpenAI, etc.)
+                return SendToOpenAI(client, source, message, conversationHistory, settings);
             }
         }
 
-        private static string SendWithAuth(HttpClient client, string endpoint, HttpContent content, string authHeaderName, string authHeaderValue, string additionalHeaders)
+        private static string SendToOpenAI(HttpClient client, ChatbotSourceDefinition source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        {
+            var messages = BuildMessagesArray(message, conversationHistory, settings);
+
+            // Try max_completion_tokens first (newer OpenAI parameter)
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: true, includeTemperature: true);
+            var response = PostWithAuth(client, source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return ReadAndParseResponse(response);
+            }
+
+            var errorContent = response.Content.ReadAsStringAsync().Result;
+
+            // Retry with max_tokens if max_completion_tokens is not supported
+            if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
+            {
+                Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", GlobalConstants.WarewolfInfo);
+
+                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
+                response = PostWithAuth(client, source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return ReadAndParseResponse(response);
+                }
+
+                errorContent = response.Content.ReadAsStringAsync().Result;
+            }
+
+            // Retry without temperature if not supported
+            if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
+            {
+                Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
+
+                var useMaxCompletionTokensRetry = !errorContent.Contains("max_tokens");
+                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: useMaxCompletionTokensRetry, includeTemperature: false);
+                response = PostWithAuth(client, source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return ReadAndParseResponse(response);
+                }
+
+                errorContent = response.Content.ReadAsStringAsync().Result;
+            }
+
+            throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
+        }
+
+        private static string SendToAnthropic(HttpClient client, ChatbotSourceDefinition source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        {
+            // Anthropic requires system messages as a top-level "system" field, not in the messages array
+            var allMessages = BuildMessagesArray(message, conversationHistory, settings);
+            string systemMessage = null;
+            var nonSystemMessages = new List<object>();
+
+            foreach (var msg in allMessages)
+            {
+                var json = JObject.FromObject(msg);
+                if (json["role"]?.ToString() == "system")
+                {
+                    systemMessage = (systemMessage == null ? "" : systemMessage + "\n\n") + json["content"]?.ToString();
+                }
+                else
+                {
+                    nonSystemMessages.Add(msg);
+                }
+            }
+
+            // Anthropic always uses max_tokens (not max_completion_tokens)
+            var payload = CreatePayload(source.SelectedModel, nonSystemMessages, systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
+            return SendWithAuth(client, source.CompletionsEndpoint, payload, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
+        }
+
+        private static string SendToGemini(HttpClient client, ChatbotSourceDefinition source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        {
+            // Gemini uses a different payload format with "contents" and "parts"
+            var allMessages = BuildMessagesArray(message, conversationHistory, settings);
+            var contents = new List<object>();
+
+            foreach (var msg in allMessages)
+            {
+                var json = JObject.FromObject(msg);
+                var role = json["role"]?.ToString();
+
+                // Skip system messages — Gemini handles them differently
+                if (role == "system")
+                {
+                    continue;
+                }
+
+                // Gemini uses "model" instead of "assistant"
+                var geminiRole = role == "assistant" ? "model" : role;
+
+                contents.Add(new
+                {
+                    role = geminiRole,
+                    parts = new[] { new { text = json["content"]?.ToString() } }
+                });
+            }
+
+            // Gemini payload is just the contents array — no model/max_tokens/temperature in body
+            var requestBody = new { contents = contents };
+
+            // Gemini uses API key as query parameter and model in URL path
+            var baseUrl = "https://generativelanguage.googleapis.com/v1beta";
+            var modelName = source.SelectedModel;
+            var endpoint = $"{baseUrl}/{modelName}:generateContent?key={source.ApiKey}";
+
+            return SendWithAuth(client, endpoint, requestBody, null, null, null);
+        }
+
+        private static Dictionary<string, object> CreatePayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool includeTemperature)
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "model", model },
+                { "messages", messages }
+            };
+
+            if (!string.IsNullOrWhiteSpace(systemMessage))
+            {
+                payload["system"] = systemMessage;
+            }
+
+            if (includeTemperature)
+            {
+                payload["temperature"] = ChatTemperature;
+            }
+
+            if (useMaxCompletionTokens)
+            {
+                payload["max_completion_tokens"] = MaxCompletionTokens;
+            }
+            else
+            {
+                payload["max_tokens"] = MaxCompletionTokens;
+            }
+
+            return payload;
+        }
+
+        /// <summary>
+        /// Sends payload and throws on failure. Used by providers that don't need parameter negotiation.
+        /// </summary>
+        private static string SendWithAuth(HttpClient client, string endpoint, object payload, string authHeaderName, string authHeaderValue, string additionalHeaders)
+        {
+            var response = PostWithAuth(client, endpoint, payload, authHeaderName, authHeaderValue, additionalHeaders);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
+            }
+
+            return ReadAndParseResponse(response);
+        }
+
+        /// <summary>
+        /// Posts a JSON payload and returns the raw HttpResponseMessage for inspection.
+        /// Used by providers that need parameter negotiation (retry on unsupported parameters).
+        /// </summary>
+        private static HttpResponseMessage PostWithAuth(HttpClient client, string endpoint, object payload, string authHeaderName, string authHeaderValue, string additionalHeaders)
         {
             client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+            if (!string.IsNullOrWhiteSpace(authHeaderName))
+            {
+                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+            }
 #pragma warning disable CC0021 // Use nameof
             client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
 #pragma warning restore CC0021 // Use nameof
@@ -234,14 +390,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            var response = client.PostAsync(endpoint, content).Result;
+            var json = JsonConvert.SerializeObject(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return client.PostAsync(endpoint, content).Result;
+        }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = response.Content.ReadAsStringAsync().Result;
-                throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
-            }
-
+        private static string ReadAndParseResponse(HttpResponseMessage response)
+        {
             var responseContent = response.Content.ReadAsStringAsync().Result;
             return ParseResponse(responseContent);
         }
@@ -310,6 +465,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     // Map message type to API role
                     var role = MapMessageTypeToRole(historyMessage.Type);
+                    
+                    // Skip system messages from history - we build our own system prompt from settings
+                    if (role == "system")
+                    {
+                        continue;
+                    }
+                    
                     if (!string.IsNullOrEmpty(role))
                     {
                         messages.Add(new { role = role, content = historyMessage.Content });
@@ -345,7 +507,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var responseObject = JObject.Parse(responseJson);
 
-                // OpenAI-compatible format
+                // OpenAI-compatible format: choices[0].message.content
                 var choices = responseObject["choices"] as JArray;
                 if (choices != null && choices.Count > 0)
                 {
@@ -359,11 +521,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
 
-                // Anthropic format (if different)
-                var content2 = responseObject["content"]?[0]?["text"]?.ToString();
-                if (!string.IsNullOrEmpty(content2))
+                // Anthropic format: content[0].text
+                var anthropicContent = responseObject["content"]?[0]?["text"]?.ToString();
+                if (!string.IsNullOrEmpty(anthropicContent))
                 {
-                    return content2;
+                    return anthropicContent;
+                }
+
+                // Google Gemini format: candidates[0].content.parts[0].text
+                var geminiContent = responseObject.SelectToken("candidates[0].content.parts[0].text")?.ToString();
+                if (!string.IsNullOrEmpty(geminiContent))
+                {
+                    return geminiContent;
                 }
 
                 throw new Exception("Could not parse response content from AI service");
@@ -375,17 +544,24 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private static bool IsAuthenticationError(HttpRequestException ex)
+        private static bool IsAnthropicEndpoint(string endpoint)
         {
-            if (ex.Message == null)
+            if (string.IsNullOrWhiteSpace(endpoint))
             {
                 return false;
             }
+            var lower = endpoint.ToLower();
+            return lower.Contains("anthropic.com") || lower.Contains("claude");
+        }
 
-            var message = ex.Message.ToLower();
-            return message.Contains("401") || message.Contains("unauthorized") ||
-                   message.Contains("403") || message.Contains("forbidden") ||
-                   message.Contains("authentication") || (message.Contains("invalid") && (message.Contains("key") || message.Contains("token")));
+        private static bool IsGoogleGeminiEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+            var lower = endpoint.ToLower();
+            return lower.Contains("generativelanguage.googleapis.com") || lower.Contains("gemini");
         }
 
         private static StringBuilder CreateErrorResponse(Dev2JsonSerializer serializer, string errorMessage)
