@@ -170,8 +170,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         });
                     }
                 }
-                // Direct array format: [ {...}, {...} ]
-                else if (json is JArray array)
+				// Direct array format: [ {...}, {...} ]
+#pragma warning disable CC0021 // Use nameof
+				else if (json is JArray array)
                 {
                     foreach (var modelToken in array)
                     {
@@ -198,7 +199,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         });
                     }
                 }
-            }
+#pragma warning restore CC0021 // Use nameof
+			}
             catch (JsonException ex)
             {
                 Dev2Logger.Error("Failed to parse models response", ex, GlobalConstants.WarewolfError);
