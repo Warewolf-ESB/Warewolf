@@ -302,9 +302,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Gemini payload is just the contents array — no model/max_tokens/temperature in body
             var requestBody = new { contents = contents };
 
-            // Gemini uses API key as query parameter and model in URL path
-            var baseUrl = "https://generativelanguage.googleapis.com/v1beta";
-            var modelName = source.SelectedModel;
+			// Gemini uses API key as query parameter and model in URL path
+			const string baseUrl = "https://generativelanguage.googleapis.com/v1beta";
+			var modelName = source.SelectedModel;
             var endpoint = $"{baseUrl}/{modelName}:generateContent?key={source.ApiKey}";
 
             return SendWithAuth(client, endpoint, requestBody, null, null, null);
@@ -312,13 +312,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static Dictionary<string, object> CreatePayload(string model, object messages, string systemMessage, bool useMaxCompletionTokens, bool includeTemperature)
         {
-            var payload = new Dictionary<string, object>
+#pragma warning disable CC0021 // Use nameof
+			var payload = new Dictionary<string, object>
             {
                 { "model", model },
                 { "messages", messages }
             };
+#pragma warning restore CC0021 // Use nameof
 
-            if (!string.IsNullOrWhiteSpace(systemMessage))
+			if (!string.IsNullOrWhiteSpace(systemMessage))
             {
                 payload["system"] = systemMessage;
             }
