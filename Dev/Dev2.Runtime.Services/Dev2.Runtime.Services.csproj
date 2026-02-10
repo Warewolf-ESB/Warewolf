@@ -41,6 +41,7 @@
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchEmailToolPassword.cs" />
     <Compile Include="ESB\Management\Services\FetchJSONResourceDefinition.cs" />
     <Compile Include="ESB\Management\Services\FetchTestsAndTriggers.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
