@@ -857,6 +857,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
             }
+            else if (activity is DsfCreateJsonActivity createJsonActivity)
+            {
+                cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);

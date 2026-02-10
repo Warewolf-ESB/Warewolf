@@ -427,6 +427,13 @@ namespace Dev2.Common.X6
         public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
         public const string EXCHANGEEMAIL_BODY = "body";
         public const string EXCHANGEEMAIL_ISHTML = "ishtml";
+
+        // Create JSON Activity
+        public const string DSFCREATEJSONACTIVITY = "DsfCreateJsonActivity";
+        public const string DISPLAYNAME_CREATEJSON = "Create JSON";
+        public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
+        public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
+        public const string CREATEJSON_JSONSTRING = "jsonstring";
     }
 
     public class X6WorkflowLoadModel
