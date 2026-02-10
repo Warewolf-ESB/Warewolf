@@ -464,6 +464,8 @@ namespace Dev2.Settings
                 PersistenceSettingsViewModel = CreatePersistenceViewModel();
                 ChatbotSettingsViewModel = CreateChatbotViewModel();
                 AddPropertyChangedHandlers();
+                ResetIsDirtyForChildren();
+                IsDirty = false;
 
                 if (Settings.HasError)
                 {
