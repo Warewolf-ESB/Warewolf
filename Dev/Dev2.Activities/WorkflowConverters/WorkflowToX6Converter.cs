@@ -861,6 +861,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
             }
+            else if (activity is DsfRandomActivity randomActivity)
+            {
+                cell = CreateRandomActivity(randomActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

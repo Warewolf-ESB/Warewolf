@@ -25,7 +25,9 @@ using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Common.X6;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -414,6 +416,46 @@ namespace Dev2.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFRANDOMACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFRANDOMACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_RANDOM;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.RANDOM_TYPE] = RandomType.ToString();
+            cell.data[Constants.RANDOM_FROM] = From ?? string.Empty;
+            cell.data[Constants.RANDOM_TO] = To ?? string.Empty;
+            cell.data[Constants.RANDOM_LENGTH] = Length ?? string.Empty;
+            cell.data[Constants.RANDOM_RESULT] = Result ?? string.Empty;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.RANDOM_TYPE, out var randomTypeStr) &&
+                Enum.TryParse<enRandomType>(randomTypeStr, true, out var randomType))
+                RandomType = randomType;
+            if (cell.data.TryGetString(Constants.RANDOM_FROM, out var from))
+                From = from;
+            if (cell.data.TryGetString(Constants.RANDOM_TO, out var to))
+                To = to;
+            if (cell.data.TryGetString(Constants.RANDOM_LENGTH, out var length))
+                Length = length;
+            if (cell.data.TryGetString(Constants.RANDOM_RESULT, out var result))
+                Result = result;
+        }
 
         public bool Equals(DsfRandomActivity other)
         {

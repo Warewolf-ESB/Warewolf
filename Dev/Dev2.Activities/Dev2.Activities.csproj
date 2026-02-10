@@ -464,6 +464,8 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ExchangeEmailActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SendEmailActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ExchangeEmailActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RandomActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RandomActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

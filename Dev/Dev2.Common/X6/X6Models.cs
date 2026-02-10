@@ -407,6 +407,15 @@ namespace Dev2.Common.X6
         public const string SMTPEMAIL_BODY = "body";
         public const string SMTPEMAIL_ISHTML = "ishtml";
 
+        // Random Activity
+        public const string DSFRANDOMACTIVITY = "DsfRandomActivity";
+        public const string DISPLAYNAME_RANDOM = "Random";
+        public const string RANDOM_TYPE = "randomtype";
+        public const string RANDOM_FROM = "from";
+        public const string RANDOM_TO = "to";
+        public const string RANDOM_LENGTH = "length";
+        public const string RANDOM_RESULT = "result";
+
         // Exchange Email Activity
         public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
         public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";

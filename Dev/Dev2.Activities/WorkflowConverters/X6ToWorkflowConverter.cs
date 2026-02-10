@@ -638,6 +638,8 @@ namespace Dev2.Activities.WF
                     return CreateSendEmailActivity(node);
                 case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateExchangeEmailActivity(node);
+                case var t when t.Contains(Constants.DSFRANDOMACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRandomActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };
