@@ -86,10 +86,10 @@ namespace Warewolf.Studio.ViewModels
             _completionsEndpoint = string.Empty;
             HeaderText = "New Chatbot Source";
             Header = "New Chatbot Source";
-            TestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestConnection, CanTest);
-            SaveCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SaveConnection, CanSave);
-            CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
-            OpenProviderDocumentationCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(OpenProviderDocumentation, CanOpenProviderDocumentation);
+            TestCommand = new DelegateCommand(o => TestConnection(), o => CanTest());
+            SaveCommand = new DelegateCommand(o => SaveConnection(), o => CanSave());
+            CancelTestCommand = new DelegateCommand(o => CancelTest(), o => CanCancelTest());
+            OpenProviderDocumentationCommand = new DelegateCommand(o => OpenProviderDocumentation(), o => CanOpenProviderDocumentation());
         }
 
 		public ChatbotSourceViewModel(IManageChatbotSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
