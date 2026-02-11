@@ -217,8 +217,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DotNetPluginErrorHandling.feature</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="OnErrorFramework\OnErrorFrameworkSteps.cs" />
   </ItemGroup>
   <ItemGroup>
