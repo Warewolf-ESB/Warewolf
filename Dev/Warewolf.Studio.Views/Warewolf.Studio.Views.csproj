@@ -144,12 +144,12 @@
 		<Compile Include="ActivityDefaultWindow.xaml.cs">
 			<DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
 		</Compile>
-	<Compile Include="ChatbotView.xaml.cs">
-      <DependentUpon>ChatbotView.xaml</DependentUpon>
-	</Compile>
-	  <Compile Include="ManageChatbotSourceControl.xaml.cs">
-      <DependentUpon>ManageChatbotSourceControl.xaml</DependentUpon>
-	</Compile>
+		<Compile Include="ChatbotView.xaml.cs">
+			<DependentUpon>ChatbotView.xaml</DependentUpon>
+		</Compile>
+		<Compile Include="ManageChatbotSourceControl.xaml.cs">
+			<DependentUpon>ManageChatbotSourceControl.xaml</DependentUpon>
+		</Compile>
 		<Page Include="ChooseDLLView.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
@@ -266,14 +266,20 @@
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
-    <Page Include="ChatbotView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageChatbotSourceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+		<Page Include="ChatbotView.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="ManageChatbotSourceControl.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="ChatbotView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="ManageChatbotSourceControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -517,14 +523,6 @@
     </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Reference Include="System.Activities.Presentation" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Include="ChatbotView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	  <Page Include="ManageChatbotSourceControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
 	</ItemGroup>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
