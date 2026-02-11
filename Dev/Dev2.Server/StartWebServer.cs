@@ -54,7 +54,6 @@ namespace Dev2
 			{
 				try
 				{
-					_writer.WriteLine("\r\nWeb Server Starting Now");
 					DoStartWebServer(webServerConfig);
 				}
 				catch (Exception e)
