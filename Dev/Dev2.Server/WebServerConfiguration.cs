@@ -114,21 +114,28 @@ namespace Dev2
                  
                 if (!string.IsNullOrEmpty(sslCertPath))
                 {
-                    var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                    var httpsUrl = $"https://*:{webServerSslPort}/";
-#if NETFRAMEWORK
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
-#else
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, httpsEndpoint);
-#endif
-
-					if (canEnableSsl)
+                    if (!_fileWrapper.Exists(sslCertPath))
                     {
-                        endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
+                        _writer.WriteLine($"Could not start webserver to listen for SSL traffic. Certificate file not found: {sslCertPath}");
                     }
                     else
                     {
-                        _writer.WriteLine("Could not start webserver to listen for SSL traffic...");
+                        var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
+                        var httpsUrl = $"https://*:{webServerSslPort}/";
+#if NETFRAMEWORK
+                        var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
+#else
+                        var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, httpsEndpoint);
+#endif
+
+					    if (canEnableSsl)
+                        {
+                            endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
+                        }
+                        else
+                        {
+                            _writer.WriteLine("Could not start webserver to listen for SSL traffic...");
+                        }
                     }
                 }
             }

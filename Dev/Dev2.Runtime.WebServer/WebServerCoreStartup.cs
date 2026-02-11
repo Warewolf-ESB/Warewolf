@@ -35,15 +35,24 @@ namespace Dev2.Runtime.WebServer
 
         public static IDisposable Start(Dev2Endpoint[] endpoints, WebApplicationBuilder builder)
         {
-            var sslCertPfxPath =  ConfigurationManager.AppSettings["sslPFXCertificateName"];
-            var certificate = new X509Certificate2(sslCertPfxPath, GlobalConstants.WarewolfSSLCertificatePassword, 
-                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            X509Certificate2 certificate = null;
+            var hasHttpsEndpoints = endpoints.Any(endpoint => Dev2Endpoint.IsHttpsEndPoint(endpoint));
+            
+            if (hasHttpsEndpoints)
+            {
+                var sslCertPfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
+                if (!string.IsNullOrEmpty(sslCertPfxPath) && System.IO.File.Exists(sslCertPfxPath))
+                {
+                    certificate = new X509Certificate2(sslCertPfxPath, GlobalConstants.WarewolfSSLCertificatePassword,
+                        X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                }
+            }
             
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
                 foreach (var endpoint in endpoints)
                 {
-                    if (Dev2Endpoint.IsHttpsEndPoint(endpoint))
+                    if (Dev2Endpoint.IsHttpsEndPoint(endpoint) && certificate != null)
                     {
                         serverOptions.Listen(endpoint.TheIPEndPoint.Address, endpoint.TheIPEndPoint.Port, listenOptions =>
                         {
