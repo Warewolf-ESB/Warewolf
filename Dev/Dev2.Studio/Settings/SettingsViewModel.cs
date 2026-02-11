@@ -608,10 +608,11 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SecurityViewModel != null && LogSettingsViewModel != null && PersistenceSettingsViewModel != null && ChatbotSettingsViewModel != null)
-            {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || PersistenceSettingsViewModel.IsDirty || ChatbotSettingsViewModel.IsDirty;
-            }
+            IsDirty = (SecurityViewModel?.IsDirty ?? false) 
+                   || (LogSettingsViewModel?.IsDirty ?? false) 
+                   || (PerfmonViewModel?.IsDirty ?? false) 
+                   || (PersistenceSettingsViewModel?.IsDirty ?? false) 
+                   || (ChatbotSettingsViewModel?.IsDirty ?? false);
 
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
