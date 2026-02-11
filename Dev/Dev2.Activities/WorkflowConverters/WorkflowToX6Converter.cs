@@ -869,6 +869,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateRandomActivity(randomActivity, nodeId);
             }
+            else if (activity is DsfNumberFormatActivity numberFormatActivity)
+            {
+                cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

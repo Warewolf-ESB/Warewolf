@@ -428,6 +428,15 @@ namespace Dev2.Common.X6
         public const string EXCHANGEEMAIL_BODY = "body";
         public const string EXCHANGEEMAIL_ISHTML = "ishtml";
 
+        // Format Number Activity
+        public const string DSFNUMBERFORMATACTIVITY = "DsfNumberFormatActivity";
+        public const string DISPLAYNAME_NUMBERFORMAT = "Format Number";
+        public const string NUMBERFORMAT_EXPRESSION = "expression";
+        public const string NUMBERFORMAT_ROUNDINGTYPE = "roundingtype";
+        public const string NUMBERFORMAT_ROUNDINGDECIMALPLACES = "roundingdecimalplaces";
+        public const string NUMBERFORMAT_DECIMALPLACESTOSHOW = "decimalplacestoshow";
+        public const string NUMBERFORMAT_RESULT = "result";
+
         // Create JSON Activity
         public const string DSFCREATEJSONACTIVITY = "DsfCreateJsonActivity";
         public const string DISPLAYNAME_CREATEJSON = "Create JSON";
