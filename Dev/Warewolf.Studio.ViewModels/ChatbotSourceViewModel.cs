@@ -15,7 +15,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows.Threading;
+#endif
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;

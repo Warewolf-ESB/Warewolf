@@ -51,7 +51,6 @@
 		<Compile Include="ChatbotApiService.cs" />
 		<Compile Include="ChatMessage.cs" />
 		<Compile Include="ChatbotContextBuilder.cs" />
-		<Compile Include="ChatbotSourceViewModel.cs" />
 		<Compile Include="ChatbotViewModel.cs" />
 		<Compile Include="ManageChatbotSourceModel.cs" />
 		<Compile Include="ManageRabbitMQSourceModel.cs" />
@@ -135,6 +134,7 @@
 		<Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
 		<Compile Include="VersionViewModel.cs" />
 		<Reference Include="System.Activities.Presentation" />
+    <Compile Include="ChatbotSourceViewModel.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
