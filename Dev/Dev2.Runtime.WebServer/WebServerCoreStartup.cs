@@ -36,9 +36,11 @@ namespace Dev2.Runtime.WebServer
         public static IDisposable Start(Dev2Endpoint[] endpoints, WebApplicationBuilder builder)
         {
             X509Certificate2 certificate = null;
-            var hasHttpsEndpoints = endpoints.Any(endpoint => Dev2Endpoint.IsHttpsEndPoint(endpoint));
-            
-            if (hasHttpsEndpoints)
+#pragma warning disable CC0020 // You should remove the lambda expression when it only invokes a method with the same signature
+			var hasHttpsEndpoints = endpoints.Any(endpoint => Dev2Endpoint.IsHttpsEndPoint(endpoint));
+#pragma warning restore CC0020 // You should remove the lambda expression when it only invokes a method with the same signature
+
+			if (hasHttpsEndpoints)
             {
                 var sslCertPfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
                 if (!string.IsNullOrEmpty(sslCertPfxPath) && System.IO.File.Exists(sslCertPfxPath))
