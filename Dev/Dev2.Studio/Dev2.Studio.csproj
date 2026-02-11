@@ -482,10 +482,13 @@
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
-    <Page Include="Settings\Chatbot\ChatbotView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+		<Page Include="Settings\Chatbot\ChatbotView.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="Settings\Chatbot\ChatbotView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
     </ItemGroup>
     <ItemGroup>
         <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
@@ -945,11 +948,6 @@
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
 		<Reference Include="System.Activities.Core.Presentation" />
 		<Reference Include="System.Activities.Presentation" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Include="Settings\Chatbot\ChatbotView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
 	</ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
