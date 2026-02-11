@@ -85,6 +85,10 @@ namespace Dev2.Common.X6
         public const string DSFPATHMOVE = "DsfPathMove";
         public const string DSFPATHRENAME = "DsfPathRename";
         public const string DSFPATHDELETE = "DsfPathDelete";
+        public const string FILEWRITEWITHBASE64 = "FileWriteWithBase64";
+        public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
+        public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
+        public const string GATEACTIVITY = "GateActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -100,7 +104,6 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_DATASPLIT = "Data Split";
         public const string DISPLAYNAME_FINDRECORDS = "Find Records";
         public const string DISPLAYNAME_DELETERECORDS = "Delete Records";
-
         public const string DISPLAYNAME_BASECONVERT = "Base Conversion";
         public const string DISPLAYNAME_CASECONVERT = "Case Conversion";
         public const string DISPLAYNAME_FINDINDEX = "Find Index";
@@ -116,6 +119,10 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_PATHMOVE = "Move";
         public const string DISPLAYNAME_PATHRENAME = "Rename";
         public const string DISPLAYNAME_PATHDELETE = "Delete";
+        public const string DISPLAYNAME_FILEWRITE = "Write File";
+        public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
+        public const string DISPLAYNAME_PYTHON = "Python";
+        public const string DISPLAYNAME_GATE = "Gate";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -313,6 +320,129 @@ namespace Dev2.Common.X6
         public const string ZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
 
         public const string PATHDELETE_INPUTPATH = "inputpath";
+
+
+        public const string UNZIPACTIVITY = "DsfUnZip";
+        public const string DISPLAYNAME_UNZIP = "UnZip";
+        public const string UNZIP_INPUTPATH = "inputpath";
+        public const string UNZIP_USERNAME = "username";
+        public const string UNZIP_PASSWORD = "password";
+        public const string UNZIP_PRIVATEKEYFILE = "privatekeyfile";
+        public const string UNZIP_DESTINATIONOUTPUTPATH = "outputpath";
+        public const string UNZIP_DESTINATIONUSERNAME = "destinationusername";
+        public const string UNZIP_DESTINATIONPASSWORD = "destinationpassword";
+        public const string UNZIP_DESTINATIONPRIVATEKEYFILE = "destinationprivatekeyfile";
+        public const string UNZIP_OVERWRITE = "overwrite";
+        public const string UNZIP_ARCHIVEPASSWORD = "archivepassword";
+
+        public const string DSFCOMMENTACTIVITY = "DsfCommentActivity";
+        public const string DISPLAYNAME_COMMENT = "Comment";
+        public const string COMMENT_TEXT = "text";
+
+        public const string FILEWRITE_OUTPUTPATH = "outputpath";
+        public const string FILEWRITE_FILECONTENTS = "filecontents";
+        public const string FILEWRITE_OVERWRITE = "overwrite";
+        public const string FILEWRITE_APPENDTOP = "appendtop";
+        public const string FILEWRITE_APPENDBOTTOM = "appendbottom";
+        public const string FILEWRITE_ASBASE64 = "filecontentsasbase64";
+
+        public const string DSFJAVASCRIPTACTIVITY = "DsfJavascriptActivity";
+        public const string DISPLAYNAME_JAVASCRIPT = "JavaScript";
+        public const string JAVASCRIPT_SCRIPT = "script";
+        public const string JAVASCRIPT_ESCAPESCRIPT = "escapescript";
+        public const string JAVASCRIPT_INCLUDEFILE = "includefile";
+        public const string JAVASCRIPT_RESULT = "result";
+
+        public const string DSFRUBYACTIVITY = "DsfRubyActivity";
+        public const string DISPLAYNAME_RUBY = "Ruby";
+        public const string RUBY_SCRIPT = "script";
+        public const string RUBY_ESCAPESCRIPT = "escapescript";
+        public const string RUBY_INCLUDEFILE = "includefile";
+        public const string RUBY_RESULT = "result";
+
+        public const string COMMANDLINE_COMMANDFILENAME = "commandfilename";
+        public const string COMMANDLINE_COMMANDPRIORITY = "commandpriority";
+        public const string COMMANDLINE_COMMANDRESULT = "commandresult";
+
+        public const string SUSPENDEXECUTIONACTIVITY = "SuspendExecutionActivity";
+        public const string DISPLAYNAME_SUSPENDEXECUTION = "Suspend Execution";
+        public const string SUSPENDEXECUTION_SUSPENDOPTION = "suspendoption";
+        public const string SUSPENDEXECUTION_PERSISTVALUE = "persistvalue";
+        public const string SUSPENDEXECUTION_ALLOWMANUALRESUMPTION = "allowmanualresumption";
+        public const string SUSPENDEXECUTION_ENCRYPTDATA = "encryptdata";
+        public const string SUSPENDEXECUTION_RESPONSE = "response";
+        public const string SUSPENDEXECUTION_SAVEDATAFUNC = "savedatafunc";
+
+        public const string PYTHON_SCRIPT = "python_script";
+        public const string PYTHON_ESCAPESCRIPT = "python_escapescript";
+        public const string PYTHON_INCLUDEFILE = "python_includefile";
+        public const string PYTHON_RESULT = "python_result";
+
+        public const string MANUALRESUMPTIONACTIVITY = "DsfManualResumptionActivity";
+        public const string MANUALRESUMPTION_DISPLAYNAME = "Manual Resumption";
+        public const string MANUALRESUMPTION_SUSPENSIONID = "suspensionid";
+        public const string MANUALRESUMPTION_OVERRIDEINPUTVARIABLE = "overrideinputvariables";
+        public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
+
+        
+
+        public const string GATE_CONDITIONS = "gate_conditions";
+        public const string GATE_RETRYENTRYPOINTID = "gate_retryentrypointid";
+        public const string GATE_GATEOPTIONS = "gate_gateoptions";
+        public const string GATE_DATAFUNC = "dataFunc";
+        public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
+
+        // SMTP Email Activity
+        public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
+        public const string DISPLAYNAME_SMTPEMAIL = "SMTP Email";
+        public const string SMTPEMAIL_SOURCEID = "emailsourceid";
+        public const string SMTPEMAIL_FROMACCOUNT = "fromaccount";
+        public const string SMTPEMAIL_PASSWORD = "password";
+        public const string SMTPEMAIL_TO = "to";
+        public const string SMTPEMAIL_CC = "cc";
+        public const string SMTPEMAIL_BCC = "bcc";
+        public const string SMTPEMAIL_PRIORITY = "priority";
+        public const string SMTPEMAIL_SUBJECT = "subject";
+        public const string SMTPEMAIL_ATTACHMENTS = "attachments";
+        public const string SMTPEMAIL_BODY = "body";
+        public const string SMTPEMAIL_ISHTML = "ishtml";
+
+        // Random Activity
+        public const string DSFRANDOMACTIVITY = "DsfRandomActivity";
+        public const string DISPLAYNAME_RANDOM = "Random";
+        public const string RANDOM_TYPE = "randomtype";
+        public const string RANDOM_FROM = "from";
+        public const string RANDOM_TO = "to";
+        public const string RANDOM_LENGTH = "length";
+        public const string RANDOM_RESULT = "result";
+
+        // Exchange Email Activity
+        public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
+        public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
+        public const string EXCHANGEEMAIL_SOURCEID = "exchangesourceid";
+        public const string EXCHANGEEMAIL_TO = "to";
+        public const string EXCHANGEEMAIL_CC = "cc";
+        public const string EXCHANGEEMAIL_BCC = "bcc";
+        public const string EXCHANGEEMAIL_SUBJECT = "subject";
+        public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
+        public const string EXCHANGEEMAIL_BODY = "body";
+        public const string EXCHANGEEMAIL_ISHTML = "ishtml";
+
+        // Format Number Activity
+        public const string DSFNUMBERFORMATACTIVITY = "DsfNumberFormatActivity";
+        public const string DISPLAYNAME_NUMBERFORMAT = "Format Number";
+        public const string NUMBERFORMAT_EXPRESSION = "expression";
+        public const string NUMBERFORMAT_ROUNDINGTYPE = "roundingtype";
+        public const string NUMBERFORMAT_ROUNDINGDECIMALPLACES = "roundingdecimalplaces";
+        public const string NUMBERFORMAT_DECIMALPLACESTOSHOW = "decimalplacestoshow";
+        public const string NUMBERFORMAT_RESULT = "result";
+
+        // Create JSON Activity
+        public const string DSFCREATEJSONACTIVITY = "DsfCreateJsonActivity";
+        public const string DISPLAYNAME_CREATEJSON = "Create JSON";
+        public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
+        public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
+        public const string CREATEJSON_JSONSTRING = "jsonstring";
     }
 
     public class X6WorkflowLoadModel

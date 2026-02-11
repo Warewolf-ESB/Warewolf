@@ -1,6 +1,7 @@
 ﻿using Dev2.Common;
 using Dev2.Common.X6;
 using Dev2.Utilities;
+using Dev2.Activities.Exchange;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -158,6 +159,9 @@ namespace Dev2.Activities.WF
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
             EmbedNestedActivitiesIntoRedisCacheActivities(allNodes);
+            EmbedNestedActivitiesIntoSuspendExecutionActivities(allNodes);
+            EmbedNestedActivitiesIntoManualResumptionActivities(allNodes);
+            EmbedNestedActivitiesIntoGateActivities(allNodes);
         }
 
 
@@ -610,6 +614,35 @@ namespace Dev2.Activities.WF
                     return CreateZipActivity(node);
                 case var t when t.Contains(Constants.DSFPATHDELETE, StringComparison.OrdinalIgnoreCase):
                     return CreatePathDeleteActivity(node);
+                case var t when t.Contains(Constants.UNZIPACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateUnZipActivity(node);
+                case var t when t.Contains(Constants.DSFCOMMENTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCommentActivity(node);
+                case var t when t.Contains(Constants.FILEWRITEWITHBASE64, StringComparison.OrdinalIgnoreCase):
+                    return CreateFileWriteActivity(node);                 
+                case var t when t.Contains(Constants.DSFJAVASCRIPTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateJavascriptActivity(node);
+                case var t when t.Contains(Constants.DSFRUBYACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRubyActivity(node);
+                case var t when t.Contains(Constants.DSFPYTHONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreatePythonActivity(node);
+                case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCommandLineActivity(node);
+                case var t when t.Contains(Constants.SUSPENDEXECUTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSuspendExecutionActivity(node);
+                case var t when t.Contains(Constants.MANUALRESUMPTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateManualResumptionActivity(node);
+                case var t when t.Contains(Constants.GATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGateActivity(node);
+                case var t when t.Contains(Constants.DSFSENDEMAILACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateSendEmailActivity(node);
+                case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateExchangeEmailActivity(node);
+                case var t when t.Contains(Constants.DSFRANDOMACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateRandomActivity(node);
+                case var t when t.Contains(Constants.DSFNUMBERFORMATACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateNumberFormatActivity(node);
+
                 default:
                     return new WriteLine { Text = "Unknown type" };
             }

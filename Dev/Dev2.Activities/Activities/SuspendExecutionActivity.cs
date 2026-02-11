@@ -8,11 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -27,6 +22,12 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Core;
@@ -499,6 +500,140 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SaveDataFunc != null ? SaveDataFunc.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Serializes the ApplyActivityFunc (child activity) to a JSON-friendly format
+        /// </summary>
+        /// <returns>Serialized ApplyActivityFunc data</returns>
+        private object SerializeSaveDataFunc()
+        {
+            if (SaveDataFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = SaveDataFunc.DisplayName ?? "Data Action",
+                    argumentName = SaveDataFunc.Argument?.Name ?? string.Empty,
+                    handlerType = SaveDataFunc.Handler.GetType().Name,
+                    handlerUniqueId = (SaveDataFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (SaveDataFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing SaveDataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Deserializes the SaveDataFunc (child activity) from JSON format
+        /// </summary>
+        /// <param name="saveDatFunc">The serialized DataFunc data</param>
+        private void DeserializeSaveDataFunc(dynamic saveDatFunc)
+        {
+            if (saveDatFunc == null) return;
+
+            try
+            {
+                // Note: For full deserialization of child activities, we would need access to the 
+                // activity factory and the complete activity definition. For now, we preserve
+                // the basic structure and properties that can be restored.
+
+                if (SaveDataFunc == null)
+                {
+                    SaveDataFunc = new ActivityFunc<string, bool>();
+                }
+
+                // Restore basic properties
+                if (saveDatFunc.displayName != null)
+                {
+                    SaveDataFunc.DisplayName = saveDatFunc.displayName.ToString();
+                }
+
+                if (saveDatFunc.argumentName != null && SaveDataFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+
+                // The actual Handler restoration would require more complex logic involving
+                // activity factories and full activity serialization/deserialization
+                // This is typically handled at a higher level during workflow reconstruction
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing DeserializeSaveDataFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+        public override void ToX6Json(Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Common.X6.Constants.SUSPENDEXECUTIONACTIVITY;
+            cell.data[Common.X6.Constants.TYPE] = Common.X6.Constants.SUSPENDEXECUTIONACTIVITY.ToLower();
+            cell.data[Common.X6.Constants.DISPLAYNAME] = DisplayName ?? Common.X6.Constants.DISPLAYNAME_SUSPENDEXECUTION;
+            cell.data[Common.X6.Constants.UNIQUEID] = UniqueID;
+            cell.data[Common.X6.Constants.SUSPENDEXECUTION_SUSPENDOPTION] = ((int)SuspendOption);
+            cell.data[Common.X6.Constants.SUSPENDEXECUTION_PERSISTVALUE] = PersistValue ?? string.Empty; 
+            cell.data[Common.X6.Constants.SUSPENDEXECUTION_ALLOWMANUALRESUMPTION] = AllowManualResumption;
+            cell.data[Common.X6.Constants.SUSPENDEXECUTION_ENCRYPTDATA] = EncryptData;
+            cell.data[Common.X6.Constants.SUSPENDEXECUTION_RESPONSE] = Response ?? string.Empty;
+            cell.data[Common.X6.Constants.RESULT] = Result ?? string.Empty;
+            
+            // Serialize the DataFunc (child activities) information for legacy support
+            var applyActivityFuncInfo = SerializeSaveDataFunc();
+            if (applyActivityFuncInfo != null)
+            {
+                cell.data[Common.X6.Constants.SUSPENDEXECUTION_SAVEDATAFUNC] = applyActivityFuncInfo;
+            }
+        }
+
+        public override void FromX6Json(Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Common.X6.Constants.DISPLAYNAME, out string displayName))
+                DisplayName = displayName;
+
+            if (cell.data.TryGetString(Common.X6.Constants.UNIQUEID, out string uniqueId))
+                UniqueID = uniqueId;
+
+            if (cell.data.TryGetInt(Common.X6.Constants.SUSPENDEXECUTION_SUSPENDOPTION, out int suspendOptionInt))
+                SuspendOption = (enSuspendOption)suspendOptionInt;
+
+            if (cell.data.TryGetString(Common.X6.Constants.SUSPENDEXECUTION_PERSISTVALUE, out var persistValueObj) &&
+                persistValueObj is string persistValue)
+                PersistValue = persistValue;
+
+            if (cell.data.TryGetBool(Common.X6.Constants.SUSPENDEXECUTION_ALLOWMANUALRESUMPTION, out bool allowManualResumptionBool))
+                AllowManualResumption = allowManualResumptionBool;
+
+            if (cell.data.TryGetBool(Common.X6.Constants.SUSPENDEXECUTION_ENCRYPTDATA, out bool encryptDataBool))
+                EncryptData = encryptDataBool;
+
+            if (cell.data.TryGetString(Common.X6.Constants.SUSPENDEXECUTION_RESPONSE, out string response))
+                Response = response;
+
+            if (cell.data.TryGetString(Common.X6.Constants.RESULT, out string result))
+                Result = result;
+
+            // Deserialize SaveDataFunc if present (legacy support)
+            if (cell.data.TryGetValue(Common.X6.Constants.SUSPENDEXECUTION_SAVEDATAFUNC, out var saveDataFuncObj))
+            {
+                DeserializeSaveDataFunc(saveDataFuncObj);
             }
         }
     }
