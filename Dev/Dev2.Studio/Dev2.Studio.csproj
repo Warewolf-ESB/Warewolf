@@ -87,11 +87,6 @@
         <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
             <Link>Properties\AssemblyCommonInfo.cs</Link>
         </Compile>
-        <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
-        <Compile Include="Settings\Chatbot\ChatbotView.xaml.cs" />
-        <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
-        <Compile Include="Settings\Chatbot\NullToBoolConverter.cs" />
-        <Compile Include="Settings\Chatbot\ResourceTreeItemViewModel.cs" />
 		<Compile Include="Startup.cs" />
     </ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
@@ -311,8 +306,11 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-    </ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
+    <Compile Include="Settings\Chatbot\ChatbotView.xaml.cs" />
+    <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
+    <Compile Include="Settings\Chatbot\NullToBoolConverter.cs" />
+    <Compile Include="Settings\Chatbot\ResourceTreeItemViewModel.cs" />
 		<ApplicationDefinition Include="App.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
@@ -484,6 +482,10 @@
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
+    <Page Include="Settings\Chatbot\ChatbotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     </ItemGroup>
     <ItemGroup>
         <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />

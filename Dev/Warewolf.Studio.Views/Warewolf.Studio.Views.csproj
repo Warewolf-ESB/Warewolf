@@ -49,8 +49,6 @@
 		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
 			<Link>Properties\AssemblyCommonInfo.cs</Link>
 		</Compile>
-		<Compile Include="ChatbotView.xaml.cs" />
-		<Compile Include="ManageChatbotSourceControl.xaml.cs" />
 		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 		<None Include="app.config" />
 		<None Include="Warewolf.Studio.Views.ruleset" />
@@ -146,8 +144,12 @@
 		<Compile Include="ActivityDefaultWindow.xaml.cs">
 			<DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
 		</Compile>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+	<Compile Include="ChatbotView.xaml.cs">
+      <DependentUpon>ChatbotView.xaml</DependentUpon>
+	</Compile>
+	  <Compile Include="ManageChatbotSourceControl.xaml.cs">
+      <DependentUpon>ManageChatbotSourceControl.xaml</DependentUpon>
+	</Compile>
 		<Page Include="ChooseDLLView.xaml">
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
@@ -264,6 +266,14 @@
 			<SubType>Designer</SubType>
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
+    <Page Include="ChatbotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageChatbotSourceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">

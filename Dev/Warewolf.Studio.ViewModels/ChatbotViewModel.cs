@@ -507,9 +507,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         private static void InvokeOnUiThread(Action action)
-        {
-            System.Windows.Application.Current?.Dispatcher?.BeginInvoke(action);
-        }
+		{
+#if WINDOWS || NETFRAMEWORK
+			System.Windows.Application.Current?.Dispatcher?.BeginInvoke(action);
+#endif
+		}
 
 		private bool CanSend()
 		{
