@@ -638,8 +638,10 @@ namespace Dev2.Activities.WF
                     return CreateSendEmailActivity(node);
                 case var t when t.Contains(Constants.DSFEXCHANGEEMAILNEWACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateExchangeEmailActivity(node);
-                case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                case var t when t.Contains(Constants.DSFDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDateTimeDifferenceActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetDateTimeDifferenceActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };

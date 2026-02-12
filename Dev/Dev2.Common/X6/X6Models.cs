@@ -89,6 +89,7 @@ namespace Dev2.Common.X6
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
         public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
         public const string GATEACTIVITY = "GateActivity";
+        public const string DSFDATETIMEDIFFERENCEACTIVITY = "DsfDateTimeDifferenceActivity";
         public const string DSFDOTNETDATETIMEDIFFERENCEACTIVITY = "DsfDotNetDateTimeDifferenceActivity";
 
         public const string ISNESTED = "isNested";

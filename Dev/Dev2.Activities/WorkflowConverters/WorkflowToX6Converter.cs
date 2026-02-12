@@ -862,9 +862,13 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
             }
-            else if (activity is DsfDotNetDateTimeDifferenceActivity dateTimeDifferenceActivity)
+            else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
             {
                 cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetDateTimeDifferenceActivity dotnetDateTimeDifferenceActivity)
+            {
+                cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
             }
             else
             {
