@@ -327,6 +327,7 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_CalculateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CreateJsonActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ManualResumptionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RubyActivityHelper.cs" />

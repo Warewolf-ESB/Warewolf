@@ -873,6 +873,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
             }
+            else if (activity is DsfDotNetCalculateActivity calculateActivity)
+            {
+                cell = CreateCalculateActivity(calculateActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

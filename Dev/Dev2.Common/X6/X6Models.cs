@@ -443,6 +443,12 @@ namespace Dev2.Common.X6
         public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
         public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
         public const string CREATEJSON_JSONSTRING = "jsonstring";
+
+        // Calculate Activity
+        public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
+        public const string DISPLAYNAME_CALCULATE = "Calculate";
+        public const string CALCULATE_EXPRESSION = "expression";
+        public const string CALCULATE_RESULT = "result";
     }
 
     public class X6WorkflowLoadModel
