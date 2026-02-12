@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -51,12 +52,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
+                values.TryGetValue("TestFromDefinition", out StringBuilder testFromDefinitionValue);
+
+                var testFromDefinition = false;
+                if (testFromDefinitionValue != null)
+                {
+                    bool.TryParse(testFromDefinitionValue.ToString(), out testFromDefinition);
+                }
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                DatabaseValidationResult result = null;
-                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
+
+                DbSource dbSource = null;
+                if (testFromDefinition)
                 {
-                    result = _dbSources.DoDatabaseValidation(new DbSource
+                    dbSource = Runtime.Hosting.ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Id);
+                }
+
+                DbSource sourceToTest;
+                if (dbSource == null)
+                {
+                    sourceToTest = new DbSource
                     {
                         AuthenticationType = src.AuthenticationType,
                         Server = src.ServerName,
@@ -64,9 +79,27 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ServerType = src.Type,
                         ConnectionTimeout = src.ConnectionTimeout,
                         UserID = src.UserName
-                    });
+                    };
+                }
+                else
+                {
+                    sourceToTest = new DbSource
+                    {
+                        AuthenticationType = src.AuthenticationType,
+                        Server = src.ServerName,
+                        Password = IsNotMasked(src.Password) ? src.Password : dbSource.Password,
+                        ServerType = src.Type,
+                        ConnectionTimeout = src.ConnectionTimeout,
+                        UserID = src.UserName
+                    };
+                }
 
+                DatabaseValidationResult result = null;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
+                {
+                    result = _dbSources.DoDatabaseValidation(sourceToTest);
                 });
+                
                 if (result == null)
                 {
                     result = new DatabaseValidationResult { ErrorMessage = "Problem testing connection.", IsValid = false };
@@ -85,6 +118,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        public static bool IsNotMasked(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            // Check if any character is not an asterisk
+            return password.Any(c => c != '*');
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

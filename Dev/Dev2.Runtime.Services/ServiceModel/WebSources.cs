@@ -539,5 +539,242 @@ namespace Dev2.Runtime.ServiceModel
 				}
 			}
 		}
+
+        /// <summary>
+        /// HttpClient-based execution method - replaces deprecated WebClient
+        /// </summary>
+        public static string ExecuteWithHttpClient(IWebPostOptions options, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            
+            try
+            {
+                Dev2Logger.Info("WebSources.ExecuteWithHttpClient - Using HttpClient for POST execution", GlobalConstants.WarewolfInfo);
+                
+                using (var httpClient = CreateHttpClientWrapper(options))
+                {
+                    var result = ExecutePostAsync(httpClient, options).Result; // Blocking for now
+                    return result;
+                }
+            }
+            catch (AggregateException aggEx)
+            {
+                var ex = aggEx.InnerException ?? aggEx;
+                Dev2Logger.Error("WebSources.ExecuteWithHttpClient - Request failed", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("WebSources.ExecuteWithHttpClient - Unexpected error", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// HttpClient-based execution for GET, PUT, DELETE methods
+        /// </summary>
+        public static string ExecuteWithHttpClientV2(WebSource source, WebRequestMethod method, string relativeUri, string data, string[] headers, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            
+            try
+            {
+                Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Using HttpClient for {method} execution", GlobalConstants.WarewolfInfo);
+                
+                var wrapper = string.IsNullOrEmpty(source?.UserName)
+                    ? new HttpClientWrapperV2()
+                    : new HttpClientWrapperV2(source.UserName, source.Password);
+                
+                try
+                {
+                    // Add headers
+                    if (headers != null)
+                    {
+                        Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Adding {headers.Length} header(s)", GlobalConstants.WarewolfInfo);
+                        
+                        foreach (var header in headers)
+                        {
+                            if (string.IsNullOrEmpty(header) || header == ":")
+                            {
+                                continue;
+                            }
+                            
+                            var parts = header.Split(new[] { ':' }, 2);
+                            if (parts.Length == 2)
+                            {
+                                var headerName = parts[0].Trim();
+                                var headerValue = parts[1].Trim();
+                                
+                                if (!string.IsNullOrEmpty(headerName))
+                                {
+                                    wrapper.SetHeader(headerName, headerValue);
+                                }
+                            }
+                        }
+                    }
+                    
+                    var address = GetAddress(source, relativeUri);
+                    Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Executing {method} to: {address}", GlobalConstants.WarewolfInfo);
+                    
+                    string result;
+                    switch (method)
+                    {
+                        case WebRequestMethod.Get:
+                            result = wrapper.GetAsync(address).Result;
+                            break;
+                        case WebRequestMethod.Put:
+                            result = wrapper.PutAsync(address, data ?? string.Empty).Result;
+                            break;
+                        case WebRequestMethod.Delete:
+                            result = wrapper.DeleteAsync(address).Result;
+                            break;
+                        default:
+                            throw new NotSupportedException($"HTTP method {method} is not supported by ExecuteWithHttpClientV2");
+                    }
+                    
+                    return result;
+                }
+                finally
+                {
+                    wrapper?.Dispose();
+                }
+            }
+            catch (AggregateException aggEx)
+            {
+                var ex = aggEx.InnerException ?? aggEx;
+                Dev2Logger.Error($"WebSources.ExecuteWithHttpClientV2 - {method} request failed", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WebSources.ExecuteWithHttpClientV2 - Unexpected error during {method}", ex, GlobalConstants.WarewolfError);
+                errors.AddError(ex.Message);
+                return string.Empty;
+            }
+        }
+
+        private static IHttpClientWrapperV2 CreateHttpClientWrapper(IWebPostOptions options)
+        {
+            Dev2Logger.Info($"WebSources - Creating HttpClient for source: {options.Source?.Address}", GlobalConstants.WarewolfInfo);
+            
+            var wrapper = string.IsNullOrEmpty(options.Source?.UserName)
+                ? new HttpClientWrapperV2()
+                : new HttpClientWrapperV2(options.Source.UserName, options.Source.Password);
+            
+            if (options.Timeout > 0)
+            {
+                wrapper.SetTimeout(TimeSpan.FromSeconds(options.Timeout));
+            }
+            
+            if (options.Headers != null)
+            {
+                Dev2Logger.Info($"WebSources - Adding {options.Headers.Count()} header(s)", GlobalConstants.WarewolfInfo);
+                
+                foreach (var header in options.Headers)
+                {
+                    if (string.IsNullOrEmpty(header) || header == ":")
+                    {
+                        continue;
+                    }
+                    
+                    var parts = header.Split(new[] { ':' }, 2);
+                    if (parts.Length == 2)
+                    {
+                        var headerName = parts[0].Trim();
+                        var headerValue = parts[1].Trim();
+                        
+                        if (!string.IsNullOrEmpty(headerName))
+                        {
+                            wrapper.SetHeader(headerName, headerValue);
+                        }
+                    }
+                }
+            }
+            
+            return wrapper;
+        }
+
+        private static async System.Threading.Tasks.Task<string> ExecutePostAsync(IHttpClientWrapperV2 httpClient, IWebPostOptions options)
+        {
+            var address = GetAddress(options.Source, options.Query);
+            
+            Dev2Logger.Info($"WebSources - Executing POST to: {address}", GlobalConstants.WarewolfInfo);
+            
+            if (options.IsFormDataChecked)
+            {
+                return await ExecuteFormDataPostAsync(httpClient, address, options);
+            }
+            else if (options.IsUrlEncodedChecked)
+            {
+                return await ExecuteUrlEncodedPostAsync(httpClient, address, options);
+            }
+            else if (options.IsManualChecked)
+            {
+                return await ExecuteManualPostAsync(httpClient, address, options);
+            }
+            
+            Dev2Logger.Warn("WebSources - No POST mode selected", GlobalConstants.WarewolfWarn);
+            return string.Empty;
+        }
+
+        private static async System.Threading.Tasks.Task<string> ExecuteManualPostAsync(IHttpClientWrapperV2 httpClient, string address, IWebPostOptions options)
+        {
+            Dev2Logger.Info("WebSources - Executing manual POST", GlobalConstants.WarewolfInfo);
+            return await httpClient.PostAsync(address, options.PostData ?? string.Empty);
+        }
+
+        private static async System.Threading.Tasks.Task<string> ExecuteFormDataPostAsync(IHttpClientWrapperV2 httpClient, string address, IWebPostOptions options)
+        {
+            Dev2Logger.Info("WebSources - Executing form data POST", GlobalConstants.WarewolfInfo);
+            
+            var formData = new System.Net.Http.MultipartFormDataContent();
+            
+            if (options.Parameters != null)
+            {
+                foreach (var param in options.Parameters)
+                {
+                    if (param is FileParameter fileParam)
+                    {
+                        var fileContent = new System.Net.Http.ByteArrayContent(fileParam.FileBytes);
+                        formData.Add(fileContent, fileParam.Key, fileParam.FileName ?? fileParam.Key);
+                        
+                        if (!string.IsNullOrEmpty(fileParam.ContentType))
+                        {
+                            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(fileParam.ContentType);
+                        }
+                    }
+                    else if (param is TextParameter textParam)
+                    {
+                        formData.Add(new System.Net.Http.StringContent(textParam.Value ?? string.Empty), textParam.Key);
+                    }
+                }
+            }
+            
+            return await httpClient.PostFormDataAsync(address, formData);
+        }
+
+        private static async System.Threading.Tasks.Task<string> ExecuteUrlEncodedPostAsync(IHttpClientWrapperV2 httpClient, string address, IWebPostOptions options)
+        {
+            Dev2Logger.Info("WebSources - Executing URL encoded POST", GlobalConstants.WarewolfInfo);
+            
+            var formValues = new Dictionary<string, string>();
+            
+            if (options.Parameters != null)
+            {
+                foreach (var param in options.Parameters)
+                {
+                    if (param is TextParameter textParam)
+                    {
+                        formValues[textParam.Key] = textParam.Value ?? string.Empty;
+                    }
+                }
+            }
+            
+            var formContent = new System.Net.Http.FormUrlEncodedContent(formValues);
+            return await httpClient.PostUrlEncodedAsync(address, formContent);
+        }
 	}
 }

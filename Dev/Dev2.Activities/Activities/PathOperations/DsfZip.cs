@@ -19,11 +19,13 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Security.Encryption;
@@ -306,6 +308,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (ArchiveName != null ? ArchiveName.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFZIP;
+            cell.data[Constants.TYPE] = Constants.DSFZIP.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_ZIP;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.ZIP_ARCHIVENAME] = ArchiveName ?? string.Empty;
+            cell.data[Constants.ZIP_COMPRESSIONRATIO] = CompressionRatio ?? string.Empty;
+            cell.data[Constants.ZIP_ARCHIVEPASSWORD] = ArchivePassword ?? string.Empty;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.ZIP_ARCHIVENAME, out var archiveName))
+                ArchiveName = archiveName;
+            if (cell.data.TryGetString(Constants.ZIP_COMPRESSIONRATIO, out var compressionRatio))
+                CompressionRatio = compressionRatio;
+            if (cell.data.TryGetString(Constants.ZIP_ARCHIVEPASSWORD, out var archivePassword))
+                ArchivePassword = archivePassword;
         }
     }
 }

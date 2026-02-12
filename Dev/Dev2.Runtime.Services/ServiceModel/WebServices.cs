@@ -228,15 +228,38 @@ namespace Dev2.Runtime.ServiceModel
                 }).ToList());
 
             }
+            else if (service.FormDataParameters != null)
+            {
+                // Pass form data parameters unevaluated when not in FormData/UrlEncoded mode
+                formDataParameters.AddRange(service.FormDataParameters);
+            }
+
+            // Use HttpClient for all HTTP methods instead of deprecated WebClient
+            Dev2Logger.Info($"WebServices.ExecuteRequest - Using HttpClient for {service.RequestMethod} request", GlobalConstants.WarewolfInfo);
+            
+            var settings = new List<INameValue>
+            {
+                new NameValue("IsManualChecked", service.IsManualChecked.ToString()),
+                new NameValue("IsFormDataChecked", service.IsFormDataChecked.ToString()),
+                new NameValue("IsUrlEncodedChecked", service.IsUrlEncodedChecked.ToString()),
+                new NameValue("Timeout", "0")
+            };
+
             var webExecuteStringArgs = new WebExecuteStringArgs
             {
-                IsManualChecked = service.IsManualChecked,
-                IsFormDataChecked = service.IsFormDataChecked,
-                IsUrlEncodedChecked = service.IsUrlEncodedChecked,
-                FormDataParameters = service.FormDataParameters,
-                WebRequestFactory = null
+                FormDataParameters = formDataParameters
             };
-            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), webExecuteStringArgs);
+
+            // Use the injected webExecute delegate if provided (for testability), otherwise use default implementation
+            var webResponse = webExecute(
+                service.Source as WebSource,
+                service.RequestMethod,
+                requestUrl,
+                requestBody,
+                throwError,
+                out errors,
+                headers.ToArray(),
+                webExecuteStringArgs);
 
             service.RequestResponse = Scrubber.Scrub(webResponse);
 

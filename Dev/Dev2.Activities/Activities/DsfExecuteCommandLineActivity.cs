@@ -36,6 +36,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 
 namespace Dev2.Activities
@@ -565,6 +567,54 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (int) _commandPriority;
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFEXECUTECOMMANDLINEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFEXECUTECOMMANDLINEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_COMMANDLINE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Command Line activity specific properties
+            cell.data.TryAdd(Constants.COMMANDLINE_COMMANDFILENAME, CommandFileName);
+            cell.data.TryAdd(Constants.COMMANDLINE_COMMANDPRIORITY, ((int)CommandPriority).ToString());
+            cell.data.TryAdd(Constants.COMMANDLINE_COMMANDRESULT, CommandResult);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) 
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) 
+                UniqueID = uniqueId;
+
+            // Command Line activity specific properties
+            if (cell.data.TryGetString(Constants.COMMANDLINE_COMMANDFILENAME, out var commandFileName)) 
+                CommandFileName = commandFileName;
+            
+            if (cell.data.TryGetString(Constants.COMMANDLINE_COMMANDPRIORITY, out var priorityStr))
+            {
+                if (int.TryParse(priorityStr, out var priorityInt))
+                {
+                    CommandPriority = (ProcessPriorityClass)priorityInt;
+                }
+            }
+            
+            if (cell.data.TryGetString(Constants.COMMANDLINE_COMMANDRESULT, out var commandResult)) 
+                CommandResult = commandResult;
+
+            // Defensive initialization
+            CommandFileName ??= string.Empty;
+            CommandResult ??= string.Empty;
         }
     }
 }

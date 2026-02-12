@@ -38,6 +38,8 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities
 {
@@ -653,6 +655,81 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFSENDEMAILACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFSENDEMAILACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_SMTPEMAIL;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // SMTP Email specific properties
+            cell.data.TryAdd(Constants.SMTPEMAIL_SOURCEID, SelectedEmailSource?.ResourceID ?? Guid.Empty);
+            cell.data.TryAdd(Constants.SMTPEMAIL_FROMACCOUNT, FromAccount);
+            cell.data.TryAdd(Constants.SMTPEMAIL_PASSWORD, Password);
+            cell.data.TryAdd(Constants.SMTPEMAIL_TO, To);
+            cell.data.TryAdd(Constants.SMTPEMAIL_CC, Cc);
+            cell.data.TryAdd(Constants.SMTPEMAIL_BCC, Bcc);
+            cell.data.TryAdd(Constants.SMTPEMAIL_PRIORITY, Priority.ToString());
+            cell.data.TryAdd(Constants.SMTPEMAIL_SUBJECT, Subject);
+            cell.data.TryAdd(Constants.SMTPEMAIL_ATTACHMENTS, Attachments);
+            cell.data.TryAdd(Constants.SMTPEMAIL_BODY, Body);
+            cell.data.TryAdd(Constants.SMTPEMAIL_ISHTML, IsHtml);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // SMTP Email specific properties
+            if (cell.data.TryGetGuid(Constants.SMTPEMAIL_SOURCEID, out var sourceId))
+                SelectedEmailSource = new EmailSource { ResourceID = sourceId };
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_FROMACCOUNT, out var fromAccount))
+                FromAccount = fromAccount;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_PASSWORD, out var password))
+                Password = password;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_TO, out var to))
+                To = to;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_CC, out var cc))
+                Cc = cc;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_BCC, out var bcc))
+                Bcc = bcc;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_PRIORITY, out var priorityStr) &&
+                Enum.TryParse<enMailPriorityEnum>(priorityStr, out var priority))
+                Priority = priority;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_SUBJECT, out var subject))
+                Subject = subject;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_ATTACHMENTS, out var attachments))
+                Attachments = attachments;
+            if (cell.data.TryGetString(Constants.SMTPEMAIL_BODY, out var body))
+                Body = body;
+            if (cell.data.TryGetBool(Constants.SMTPEMAIL_ISHTML, out var isHtml))
+                IsHtml = isHtml;
+            if (cell.data.TryGetString(Constants.RESULT, out var result))
+                Result = result;
+
+            // Defensive initialization
+            FromAccount ??= string.Empty;
+            To ??= string.Empty;
+            Cc ??= string.Empty;
+            Bcc ??= string.Empty;
+            Subject ??= string.Empty;
+            Attachments ??= string.Empty;
+            Body ??= string.Empty;
+            Result ??= string.Empty;
         }
     }
 }

@@ -31,6 +31,8 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.RabbitMQ.Consume
 {
@@ -533,6 +535,51 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 hashCode = (hashCode * 397) ^ (RabbitSource != null ? RabbitSource.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.RABBITDSFMQCONSUMEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.RABBITDSFMQCONSUMEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_RABBITMQCONSUME;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_SOURCEID, RabbitMQSourceResourceId);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_QUEUENAME, QueueName);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_ISOBJECT, IsObject);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_OBJECTNAME, ObjectName);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_RESPONSE, Response);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_PREFETCH, Prefetch);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_TIMEOUT, TimeOut);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_ACKNOWLEDGE, Acknowledge);
+            cell.data.TryAdd(Constants.RABBITMQCONSUME_REQUEUE, ReQueue);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetGuid(Constants.RABBITMQCONSUME_SOURCEID, out var resourceid)) RabbitMQSourceResourceId = resourceid;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_QUEUENAME, out var queuename)) QueueName = queuename;
+            if (cell.data.TryGetBool(Constants.RABBITMQCONSUME_ISOBJECT, out var isobject)) IsObject = isobject;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_OBJECTNAME, out var objectname)) ObjectName = objectname;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_RESPONSE, out var response)) Response = response;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_PREFETCH, out var prefetch)) Prefetch = prefetch;
+            if (cell.data.TryGetString(Constants.RABBITMQCONSUME_TIMEOUT, out var timeout)) TimeOut = timeout;
+            if (cell.data.TryGetBool(Constants.RABBITMQCONSUME_ACKNOWLEDGE, out var acknowledge)) Acknowledge = acknowledge;
+            if (cell.data.TryGetBool(Constants.RABBITMQCONSUME_REQUEUE, out var requeue)) ReQueue = requeue;
+
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
         }
     }
 }

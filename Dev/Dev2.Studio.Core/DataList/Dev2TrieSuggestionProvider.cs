@@ -265,15 +265,15 @@ namespace Dev2.Studio.Core.DataList
             string filter;
             if (tokenise)
             {
-                if (caretPosition > originalText.Length)
+                if (caretPosition > originalText?.Length)
                 {
                     caretPosition = originalText.Length;
                 }
 
-                var textTrimmedRight = originalText.Substring(0, caretPosition);
-                var tokenizerLastPart = textTrimmedRight.Split(_tokenisers).Last();
+                var textTrimmedRight = originalText?.Substring(0, caretPosition);
+                var tokenizerLastPart = textTrimmedRight?.Split(_tokenisers).Last();
                 var start = string.IsNullOrEmpty(tokenizerLastPart) ? textTrimmedRight.LastIndexOf(tokenizerLastPart, StringComparison.Ordinal) - 1 : textTrimmedRight.LastIndexOf(tokenizerLastPart, StringComparison.Ordinal);
-                filter = textTrimmedRight.Substring(start);
+                filter = textTrimmedRight?.Substring(start);
             }
             else
             {
@@ -316,12 +316,12 @@ namespace Dev2.Studio.Core.DataList
                     break;
             }
 
-            if (filter.EndsWith("[["))
+            if (filter != null && filter.EndsWith("[["))
             {
                 return trie.Retrieve("[[");
             }
 
-            if (!filter.StartsWith("[[") && filter.Contains("[["))
+            if (filter != null && !filter.StartsWith("[[") && filter.Contains("[["))
             {
                 return trie.Retrieve(filter.Substring(filter.LastIndexOf("[[", StringComparison.Ordinal)));
             }
@@ -330,7 +330,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 return new string[0];
             }
-            return trie.Retrieve(filter);
+            return trie.Retrieve(filter??"");
         }
 
         static IEnumerable<string> PermuteCapitalizations(string key)

@@ -36,6 +36,9 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Exchange.Email.Wrapper;
 using Dev2.Common.State;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
+using Dev2.Common.Interfaces.Core;
 
 namespace Dev2.Activities.Exchange
 {
@@ -438,6 +441,70 @@ namespace Dev2.Activities.Exchange
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFEXCHANGEEMAILNEWACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFEXCHANGEEMAILNEWACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_EXCHANGEEMAIL;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Exchange Email specific properties
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_SOURCEID, SavedSource?.ResourceID ?? Guid.Empty);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_TO, To);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_CC, Cc);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_BCC, Bcc);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_SUBJECT, Subject);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_ATTACHMENTS, Attachments);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_BODY, Body);
+            cell.data.TryAdd(Constants.EXCHANGEEMAIL_ISHTML, IsHtml);
+            cell.data.TryAdd(Constants.RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Exchange Email specific properties
+            if (cell.data.TryGetGuid(Constants.EXCHANGEEMAIL_SOURCEID, out var sourceId))
+                SavedSource = new ExchangeSourceDefinition { ResourceID = sourceId };
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_TO, out var to))
+                To = to;
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_CC, out var cc))
+                Cc = cc;
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_BCC, out var bcc))
+                Bcc = bcc;
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_SUBJECT, out var subject))
+                Subject = subject;
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_ATTACHMENTS, out var attachments))
+                Attachments = attachments;
+            if (cell.data.TryGetString(Constants.EXCHANGEEMAIL_BODY, out var body))
+                Body = body;
+            if (cell.data.TryGetBool(Constants.EXCHANGEEMAIL_ISHTML, out var isHtml))
+                IsHtml = isHtml;
+            if (cell.data.TryGetString(Constants.RESULT, out var result))
+                Result = result;
+
+            // Defensive initialization
+            To ??= string.Empty;
+            Cc ??= string.Empty;
+            Bcc ??= string.Empty;
+            Subject ??= string.Empty;
+            Attachments ??= string.Empty;
+            Body ??= string.Empty;
+            Result ??= string.Empty;
         }
     }
 }

@@ -41,6 +41,8 @@ using Warewolf.Data;
 using Warewolf.Exceptions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Threading;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.RedisCache
 {
@@ -586,6 +588,106 @@ namespace Dev2.Activities.RedisCache
             if (_execution.CurrentCount >= 1)
             {
                 _execution.Wait();
+            }
+        }
+
+        private object SerializeRedisCacheActivityFunc()
+        {
+            if (ActivityFunc?.Handler == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return new
+                {
+                    displayName = ActivityFunc.DisplayName ?? "Data Action",
+                    argumentName = ActivityFunc.Argument?.Name ?? string.Empty,
+                    handlerType = ActivityFunc.Handler.GetType().Name,
+                    handlerUniqueId = (ActivityFunc.Handler as IDev2Activity)?.UniqueID ?? string.Empty,
+                    handlerDisplayName = (ActivityFunc.Handler as Activity)?.DisplayName ?? string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error serializing RedisCache ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return null;
+            }
+        } 
+
+        private void DeserializeRedisCacheActivityFunc(dynamic redisCacheActivityFuncData)
+        {
+            if (redisCacheActivityFuncData == null) return;
+
+            try
+            {
+                if (ActivityFunc == null)
+                {
+                    ActivityFunc = new ActivityFunc<string, bool>();
+                }
+
+                if (redisCacheActivityFuncData.displayName != null)
+                {
+                    ActivityFunc.DisplayName = redisCacheActivityFuncData.displayName.ToString();
+                }
+
+                if (redisCacheActivityFuncData.argumentName != null && ActivityFunc.Argument != null)
+                {
+                    // Note: Argument name is typically auto-generated and may not need restoration
+                    // but we preserve it for consistency
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"Error deserializing RedisCache ActivityFunc: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
+        }
+
+
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.REDISCACHEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.REDISCACHEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_REDISCACHE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            cell.data.TryAdd(Constants.REDISCACHE_KEY, Key);
+            cell.data.TryAdd(Constants.REDISCACHE_TTL, TTL);
+            cell.data.TryAdd(Constants.REDISCACHE_SOURCEID, SourceId);
+            cell.data.TryAdd(Constants.REDISCACHE_RESPONSE, Response);
+            cell.data.TryAdd(Constants.RESULT, Result);
+
+            var redisCacheActivityFuncInfo = SerializeRedisCacheActivityFunc();
+            if (redisCacheActivityFuncInfo != null)
+            {
+                cell.data[Constants.REDISCACHE_ACTIVITYFUNC] = redisCacheActivityFuncInfo;
+            }
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Constants.REDISCACHE_KEY, out var key)) Key = key;
+            if (cell.data.TryGetInt(Constants.REDISCACHE_TTL, out var ttl)) TTL = ttl;
+            if (cell.data.TryGetString(Constants.REDISCACHE_RESPONSE, out var response)) Response = response;
+            if (cell.data.TryGetGuid(Constants.REDISCACHE_SOURCEID, out var sourceId)) SourceId = sourceId;
+            if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
+
+            if (cell.data.TryGetValue(Constants.REDISCACHE_ACTIVITYFUNC, out var redisCacheActivityFuncObj))
+            {
+                DeserializeRedisCacheActivityFunc(redisCacheActivityFuncObj);
             }
         }
     }

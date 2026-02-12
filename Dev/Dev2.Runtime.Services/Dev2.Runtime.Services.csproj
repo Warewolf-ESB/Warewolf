@@ -3,7 +3,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
 	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -45,6 +46,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
+    <Compile Include="ESB\Management\Services\GenerateAdvancedRecordsetOutputs.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\IsLicensed.cs" />
     <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
