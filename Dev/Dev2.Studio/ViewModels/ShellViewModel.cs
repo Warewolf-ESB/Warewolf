@@ -277,7 +277,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if (!SubscriptionData.IsLicensed || ActiveItem is null)
+                if (SubscriptionData == null || !SubscriptionData.IsLicensed || ActiveItem is null)
                 {
                     return new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false);
                 }
@@ -1852,7 +1852,7 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            if (!SubscriptionData.IsLicensed)
+            if (SubscriptionData == null || !SubscriptionData.IsLicensed)
             {
                 var result = PopupProvider.UnRegisteredDialog();
                 if (result == MessageBoxResult.Yes)
@@ -2376,7 +2376,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 var serverName = ActiveServer.Name;
-                switch (SubscriptionData.Status)
+                switch (SubscriptionData?.Status)
                 {
                     case SubscriptionStatus.NotActive:
                         return serverName + " [ Not registered ]";
