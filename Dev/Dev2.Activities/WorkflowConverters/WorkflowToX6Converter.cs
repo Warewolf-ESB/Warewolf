@@ -4,6 +4,7 @@ using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
+using Dev2.Activities.DateAndTime;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.WorkflowConverters;
@@ -860,6 +861,10 @@ namespace Dev2.Activities.WF
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
+            }
+            else if (activity is DsfDotNetDateTimeDifferenceActivity dateTimeDifferenceActivity)
+            {
+                cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
             }
             else
             {

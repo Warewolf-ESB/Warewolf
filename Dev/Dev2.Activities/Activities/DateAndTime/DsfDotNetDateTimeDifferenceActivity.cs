@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -34,6 +35,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities.DateAndTime
 {
@@ -362,6 +364,56 @@ namespace Dev2.Activities.DateAndTime
                     Value = Result
                 }
             };
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DATETIMEDIFFERENCE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Date Time Difference specific properties
+            cell.data.TryAdd(Constants.DATETIMEDIFF_INPUT1, Input1);
+            cell.data.TryAdd(Constants.DATETIMEDIFF_INPUT2, Input2);
+            cell.data.TryAdd(Constants.DATETIMEDIFF_INPUTFORMAT, InputFormat);
+            cell.data.TryAdd(Constants.DATETIMEDIFF_OUTPUTTYPE, OutputType);
+            cell.data.TryAdd(Constants.DATETIMEDIFF_RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Date Time Difference specific properties
+            if (cell.data.TryGetString(Constants.DATETIMEDIFF_INPUT1, out var input1))
+                Input1 = input1;
+            if (cell.data.TryGetString(Constants.DATETIMEDIFF_INPUT2, out var input2))
+                Input2 = input2;
+            if (cell.data.TryGetString(Constants.DATETIMEDIFF_INPUTFORMAT, out var inputFormat))
+                InputFormat = inputFormat;
+            if (cell.data.TryGetString(Constants.DATETIMEDIFF_OUTPUTTYPE, out var outputType))
+                OutputType = outputType;
+            if (cell.data.TryGetString(Constants.DATETIMEDIFF_RESULT, out var result))
+                Result = result;
+
+            // Defensive initialization
+            Input1 ??= string.Empty;
+            Input2 ??= string.Empty;
+            InputFormat ??= string.Empty;
+            OutputType ??= "Years";
+            Result ??= string.Empty;
         }
     }
 }
