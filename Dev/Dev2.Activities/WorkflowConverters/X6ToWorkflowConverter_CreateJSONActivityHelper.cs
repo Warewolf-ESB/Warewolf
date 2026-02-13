@@ -9,14 +9,14 @@ namespace Dev2.Activities.WF
     /// </summary>
     public partial class X6ToWorkflowConverter
     {
-        private static DsfZip CreateCreateJsonActivity(Cell node)
+        private static DsfCreateJsonActivity CreateCreateJsonActivity(Cell node)
         {
             var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
 
             if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
-            var activity = new DsfZip();
+            var activity = new DsfCreateJsonActivity();
             activity.FromX6Json(node);
             return activity;
         }
