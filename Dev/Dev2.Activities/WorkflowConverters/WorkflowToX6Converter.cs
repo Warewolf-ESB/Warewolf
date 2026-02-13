@@ -868,8 +868,8 @@ namespace Dev2.Activities.WF
             else if (activity is DsfRandomActivity randomActivity)
             {
                 cell = CreateRandomActivity(randomActivity, nodeId);
-            }
-            else
+			}
+			else
             {
                 cell.shape = Constants.RECT;
             }
