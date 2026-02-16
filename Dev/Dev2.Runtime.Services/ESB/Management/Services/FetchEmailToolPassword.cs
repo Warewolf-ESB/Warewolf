@@ -9,16 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -66,7 +68,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var activityId = activityIdStr.ToString().Trim();
 
-                Dev2Logger.Info($"FetchEmailToolPassword for ResourceId: {resourceId}, ActivityID: {activityId}", GlobalConstants.WarewolfInfo);
+                if (string.IsNullOrEmpty(activityId))
+                {
+                    result.HasError = true;
+                    result.SetMessage("ActivityID cannot be empty");
+                    return serializer.SerializeToBuilder(result);
+                }
+
+				Dev2Logger.Info($"FetchEmailToolPassword for ResourceId: {resourceId}, ActivityID: {activityId}", GlobalConstants.WarewolfInfo);
 
                 var resourceContents = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
                 if (resourceContents == null || resourceContents.Length == 0)
@@ -86,10 +95,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    var decryptedPassword = DpapiWrapper.DecryptIfEncrypted(password);
-                    result.SetMessage(decryptedPassword);
+                    result.SetMessage(DpapiWrapper.DecryptIfEncrypted(password));
                 }
             }
+			catch (System.Security.Cryptography.CryptographicException cryptEx)
+			{
+				Dev2Logger.Error("Decryption failed for email tool password", cryptEx, GlobalConstants.WarewolfError);
+				result.HasError = true;
+				result.SetMessage("Failed to decrypt email tool password");
+			}
+			catch (System.Xml.XmlException xmlEx)
+			{
+				Dev2Logger.Error("Failed to parse resource XAML", xmlEx, GlobalConstants.WarewolfError);
+				result.HasError = true;
+				result.SetMessage("Failed to parse resource definition");
+			}
             catch (Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
@@ -97,7 +117,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.SetMessage("Failed to fetch email tool password: " + err.Message);
             }
 
-            return serializer.SerializeToBuilder(result);
+			return serializer.SerializeToBuilder(result);
         }
 
         /// <summary>
@@ -106,23 +126,37 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// </summary>
         static string ExtractPasswordForActivity(string xaml, string activityId)
         {
-            // Try both attribute orderings (UniqueID before Password, and vice versa)
-            foreach (var regex in new[] { SendEmailWithUniqueIdAndPassword, SendEmailWithPasswordAndUniqueId })
+            var doc = XDocument.Parse(xaml);
+            XNamespace[] namespaces = doc.Root.Attributes()
+                .Where(a => a.IsNamespaceDeclaration)
+                .Select(a => (XNamespace)a.Value)
+                .ToArray();
+            foreach (var ns in namespaces)
             {
-                var matches = regex.Matches(xaml);
-                foreach (Match match in matches)
+                var elements = doc.Descendants(ns + "DsfSendEmailActivity");
+                foreach (var element in elements)
                 {
-                    if (match.Groups["uid"].Value.Equals(activityId, StringComparison.OrdinalIgnoreCase))
+                    var uid = element.Attribute("UniqueID")?.Value;
+                    if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
                     {
-                        return match.Groups["pwd"].Value;
+                        return element.Attribute("Password")?.Value;
                     }
                 }
             }
-
+            // Also check elements without namespace prefix
+            var localElements = doc.Descendants("DsfSendEmailActivity");
+            foreach (var element in localElements)
+            {
+                var uid = element.Attribute("UniqueID")?.Value;
+                if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
+                {
+                    return element.Attribute("Password")?.Value;
+                }
+            }
             return null;
         }
 
-        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(
+		public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(
             HandlesType(),
             "<DataList><ResourceID ColumnIODirection=\"Input\"/><ActivityID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
