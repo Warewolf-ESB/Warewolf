@@ -540,9 +540,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw new ArgumentNullException(nameof(resourceName));
             }
 
-            var resourceNameToSearchFor = resourceName.Replace("/", "\\");
+            var resourceNameToSearchFor = resourceName.Replace("/", "\\").Replace("\\", Path.DirectorySeparatorChar.ToString());
             var resourcePath = resourceNameToSearchFor;
-            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
+            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf(Path.DirectorySeparatorChar);
             if (endOfResourcePath >= 0)
             {
                 resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);

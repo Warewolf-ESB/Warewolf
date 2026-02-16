@@ -110,7 +110,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     continue;
                 }
-                var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
+                var files = dir.GetFilesByExtensions(path, ".xml", ".bite").ToList();
                 foreach (var file in files)
                 {
                     var fa = File.GetAttributes(file);

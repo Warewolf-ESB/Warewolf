@@ -170,7 +170,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return ResourceName;
             }
-            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\", "").Replace(".xml", "").Replace(".bite", "") ?? "";
+            var sep = System.IO.Path.DirectorySeparatorChar;
+            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + sep, "").Replace(".xml", "").Replace(".bite", "") ?? "";
         }
 
         public string GetResourceFromUnknownWorkspacePath()
@@ -181,15 +182,16 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             var filePath = FilePath;
+            var sep = System.IO.Path.DirectorySeparatorChar.ToString();
             var workspacePath = EnvironmentVariables.WorkspacePath;
             if (filePath.StartsWith(workspacePath))
             {
-                var removeWorkspacePath = FilePath.Replace(workspacePath + "\\", "");
-                var workspaceIdEnd = removeWorkspacePath.IndexOf("\\", StringComparison.Ordinal);
+                var removeWorkspacePath = FilePath.Replace(workspacePath + sep, "");
+                var workspaceIdEnd = removeWorkspacePath.IndexOf(sep, StringComparison.Ordinal);
                 var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
                 var resourcesDir = removeWorkspacePath.Replace(workspaceId, "");
-                var programData = resourcesDir.Replace("\\ProgramData\\", "");
-                var resourceFile = programData.Replace("\\Resources\\", "");
+                var programData = resourcesDir.Replace(sep + "ProgramData" + sep, "");
+                var resourceFile = programData.Replace(sep + "Resources" + sep, "");
 
                 var removeXml = resourceFile.Replace(".xml", "");
                 var removeBite = removeXml.Replace(".bite", "");
