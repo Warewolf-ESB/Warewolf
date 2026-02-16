@@ -1,4 +1,5 @@
 using Dev2.Activities.Exchange;
+using Dev2.Activities.DateAndTime;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
@@ -840,6 +841,14 @@ namespace Dev2.Activities.WF
             else if (activity is Scripting.DsfPythonActivity pythonscriptActivity)
             {
                 cell = CreatePythonActivity(pythonscriptActivity, nodeId);
+            }
+            else if (activity is DateAndTime.DsfDotNetDateTimeActivity dotNetDateTimeActivity)
+            {
+                cell = CreateDotNetDateTimeActivity(dotNetDateTimeActivity, nodeId);
+            }
+            else if (activity is DsfDateTimeActivity dateTimeActivity)
+            {
+                cell = CreateDateTimeActivity(dateTimeActivity, nodeId);
             }
             else if (activity is SuspendExecutionActivity suspendExecutionActivity)
             {

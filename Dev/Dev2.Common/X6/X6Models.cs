@@ -384,40 +384,47 @@ namespace Dev2.Common.X6
         public const string MANUALRESUMPTION_OVERRIDEINPUTVARIABLE = "overrideinputvariables";
         public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
 
-        
-
         public const string GATE_CONDITIONS = "gate_conditions";
         public const string GATE_RETRYENTRYPOINTID = "gate_retryentrypointid";
         public const string GATE_GATEOPTIONS = "gate_gateoptions";
         public const string GATE_DATAFUNC = "dataFunc";
         public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
 
-        // SMTP Email Activity
-        public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
-        public const string DISPLAYNAME_SMTPEMAIL = "SMTP Email";
-        public const string SMTPEMAIL_SOURCEID = "emailsourceid";
-        public const string SMTPEMAIL_FROMACCOUNT = "fromaccount";
-        public const string SMTPEMAIL_PASSWORD = "password";
-        public const string SMTPEMAIL_TO = "to";
-        public const string SMTPEMAIL_CC = "cc";
-        public const string SMTPEMAIL_BCC = "bcc";
-        public const string SMTPEMAIL_PRIORITY = "priority";
-        public const string SMTPEMAIL_SUBJECT = "subject";
-        public const string SMTPEMAIL_ATTACHMENTS = "attachments";
-        public const string SMTPEMAIL_BODY = "body";
-        public const string SMTPEMAIL_ISHTML = "ishtml";
+        public const string DSFDOTNETDATETIMEACTIVITY = "DsfDotNetDateTimeActivity";
+        public const string DSFDATETIMEACTIVITY = "DsfDateTimeActivity";
+        public const string DISPLAYNAME_DOTNETDATETIME = "Date and Time";
+        public const string DOTNETDATETIME_DATETIME = "datetime";
+        public const string DOTNETDATETIME_INPUTFORMAT = "inputformat";
+        public const string DOTNETDATETIME_OUTPUTFORMAT = "outputformat";
+        public const string DOTNETDATETIME_TIMEMODIFIERTYPE = "timemodifiertype";
+        public const string DOTNETDATETIME_TIMEMODIFIERAMOUNTDISPLAY = "timemodifieramountdisplay";
+        public const string DOTNETDATETIME_TIMEMODIFIERAMOUNT = "timemodifieramount";
+        public const string DOTNETDATETIME_RESULT = "result";
 
-        // Exchange Email Activity
+        public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
+        public const string DISPLAYNAME_SMTPEMAIL = "Send Email";
+        public const string SMTPEMAIL_SOURCEID = "smtpemail_sourceid";
+        public const string SMTPEMAIL_FROMACCOUNT = "smtpemail_fromaccount";
+        public const string SMTPEMAIL_PASSWORD = "smtpemail_password";
+        public const string SMTPEMAIL_TO = "smtpemail_to";
+        public const string SMTPEMAIL_CC = "smtpemail_cc";
+        public const string SMTPEMAIL_BCC = "smtpemail_bcc";
+        public const string SMTPEMAIL_PRIORITY = "smtpemail_priority";
+        public const string SMTPEMAIL_SUBJECT = "smtpemail_subject";
+        public const string SMTPEMAIL_ATTACHMENTS = "smtpemail_attachments";
+        public const string SMTPEMAIL_BODY = "smtpemail_body";
+        public const string SMTPEMAIL_ISHTML = "smtpemail_ishtml";
+
         public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
         public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
-        public const string EXCHANGEEMAIL_SOURCEID = "exchangesourceid";
-        public const string EXCHANGEEMAIL_TO = "to";
-        public const string EXCHANGEEMAIL_CC = "cc";
-        public const string EXCHANGEEMAIL_BCC = "bcc";
-        public const string EXCHANGEEMAIL_SUBJECT = "subject";
-        public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
-        public const string EXCHANGEEMAIL_BODY = "body";
-        public const string EXCHANGEEMAIL_ISHTML = "ishtml";
+        public const string EXCHANGEEMAIL_SOURCEID = "exchangeemail_sourceid";
+        public const string EXCHANGEEMAIL_TO = "exchangeemail_to";
+        public const string EXCHANGEEMAIL_CC = "exchangeemail_cc";
+        public const string EXCHANGEEMAIL_BCC = "exchangeemail_bcc";
+        public const string EXCHANGEEMAIL_SUBJECT = "exchangeemail_subject";
+        public const string EXCHANGEEMAIL_ATTACHMENTS = "exchangeemail_attachments";
+        public const string EXCHANGEEMAIL_BODY = "exchangeemail_body";
+        public const string EXCHANGEEMAIL_ISHTML = "exchangeemail_ishtml";
     }
 
     public class X6WorkflowLoadModel

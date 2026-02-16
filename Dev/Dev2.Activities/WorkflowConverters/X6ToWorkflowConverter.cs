@@ -2,6 +2,7 @@
 using Dev2.Common.X6;
 using Dev2.Utilities;
 using Dev2.Activities.Exchange;
+using Dev2.Activities.DateAndTime;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -626,6 +627,10 @@ namespace Dev2.Activities.WF
                     return CreateRubyActivity(node);
                 case var t when t.Contains(Constants.DSFPYTHONACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreatePythonActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETDATETIMEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetDateTimeActivity(node);
+                case var t when t.Contains(Constants.DSFDATETIMEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDateTimeActivity(node);
                 case var t when t.Contains(Constants.DSFEXECUTECOMMANDLINEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateCommandLineActivity(node);
                 case var t when t.Contains(Constants.SUSPENDEXECUTIONACTIVITY, StringComparison.OrdinalIgnoreCase):
