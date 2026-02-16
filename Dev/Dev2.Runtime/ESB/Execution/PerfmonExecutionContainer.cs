@@ -31,10 +31,10 @@ namespace Dev2.Runtime.ESB.Execution
             VerifyArgument.IsNotNull(nameof(Container), container);
             _container = container;
             _locater = CustomContainer.Get<IWarewolfPerformanceCounterLocater>();
-            _recPerSecondCounter = _locater.GetCounter("Request Per Second");
-            _currentConnections = _locater.GetCounter("Concurrent requests currently executing");
-            _avgTime = _locater.GetCounter("Average workflow execution time");
-            _totalErrors = _locater.GetCounter("Total Errors");
+            _recPerSecondCounter = _locater?.GetCounter("Request Per Second");
+            _currentConnections = _locater?.GetCounter("Concurrent requests currently executing");
+            _avgTime = _locater?.GetCounter("Average workflow execution time");
+            _totalErrors = _locater?.GetCounter("Total Errors");
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
         }
@@ -46,17 +46,17 @@ namespace Dev2.Runtime.ESB.Execution
             var start = _stopwatch.ElapsedTicks;
             var resourceId = GetDataObject().ResourceID;
 
-            var errorsInstanceCounter = _locater.GetCounter(resourceId, WarewolfPerfCounterType.ExecutionErrors);
-            var concurrentInstanceCounter = _locater.GetCounter(resourceId, WarewolfPerfCounterType.ConcurrentRequests);
-            var avgExecutionsInstance = _locater.GetCounter(resourceId, WarewolfPerfCounterType.AverageExecutionTime);
-            var reqPerSecond = _locater.GetCounter(resourceId, WarewolfPerfCounterType.RequestsPerSecond);
+            var errorsInstanceCounter = _locater?.GetCounter(resourceId, WarewolfPerfCounterType.ExecutionErrors);
+            var concurrentInstanceCounter = _locater?.GetCounter(resourceId, WarewolfPerfCounterType.ConcurrentRequests);
+            var avgExecutionsInstance = _locater?.GetCounter(resourceId, WarewolfPerfCounterType.AverageExecutionTime);
+            var reqPerSecond = _locater?.GetCounter(resourceId, WarewolfPerfCounterType.RequestsPerSecond);
             var outErrors = new ErrorResultTO();
             try
             {
-                _recPerSecondCounter.Increment();
-                _currentConnections.Increment();
-                reqPerSecond.Increment();
-                concurrentInstanceCounter.Increment();
+                _recPerSecondCounter?.Increment();
+                _currentConnections?.Increment();
+                reqPerSecond?.Increment();
+                concurrentInstanceCounter?.Increment();
                 var ret = Container.Execute(out outErrors, update);
                 // BUG: why do we only report errors if Execute completes successfully?
                 errors = outErrors;
@@ -65,16 +65,16 @@ namespace Dev2.Runtime.ESB.Execution
             finally 
             {
                 
-                _currentConnections.Decrement();
-                concurrentInstanceCounter.Decrement();
+                _currentConnections?.Decrement();
+                concurrentInstanceCounter?.Decrement();
                 var time = _stopwatch.ElapsedTicks-start;
-                _avgTime.IncrementBy(time);
-                avgExecutionsInstance.IncrementBy(time);
+                _avgTime?.IncrementBy(time);
+                avgExecutionsInstance?.IncrementBy(time);
                 if(outErrors != null)
                 {
                     var errorCount = outErrors.FetchErrors().Count;
-                    _totalErrors.IncrementBy(errorCount);
-                    errorsInstanceCounter.IncrementBy(errorCount);
+                    _totalErrors?.IncrementBy(errorCount);
+                    errorsInstanceCounter?.IncrementBy(errorCount);
                 }
             }
             
