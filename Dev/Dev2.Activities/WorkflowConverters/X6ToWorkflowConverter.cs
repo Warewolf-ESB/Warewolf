@@ -642,6 +642,10 @@ namespace Dev2.Activities.WF
                     return CreateRandomActivity(node);
                 case var t when t.Contains(Constants.DSFNUMBERFORMATACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateNumberFormatActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCalculateActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };

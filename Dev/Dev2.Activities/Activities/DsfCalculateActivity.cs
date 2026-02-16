@@ -17,12 +17,14 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
@@ -280,6 +282,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             };
         }
+
+
+        public override void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Dev2.Common.X6.Constants.DSFDOTNETCALCULATEACTIVITY;
+            cell.data[Dev2.Common.X6.Constants.TYPE] = Dev2.Common.X6.Constants.DSFDOTNETCALCULATEACTIVITY.ToLower();
+            cell.data[Dev2.Common.X6.Constants.DISPLAYNAME] = DisplayName ?? Dev2.Common.X6.Constants.DISPLAYNAME_CALCULATE;
+            cell.data[Dev2.Common.X6.Constants.UNIQUEID] = UniqueID;
+
+            cell.data[Dev2.Common.X6.Constants.CALCULATE_EXPRESSION] = Expression ?? string.Empty;
+            cell.data[Dev2.Common.X6.Constants.CALCULATE_RESULT] = Result ?? string.Empty;
+        }
+
+        public void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.CALCULATE_EXPRESSION, out var expression))
+                Expression = expression;
+
+            if (cell.data.TryGetString(Constants.CALCULATE_RESULT, out var result))
+                Result = result;
+
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            Expression ??= string.Empty;
+            Result ??= string.Empty;
+
+        }
+
     }
 }
 

@@ -873,7 +873,11 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
             }
-            else if (activity is DsfDotNetCalculateActivity calculateActivity)
+            else if (activity is DsfDotNetCalculateActivity dotnetCalculateActivity)
+            {
+                cell = CreateDotNetCalculateActivity(dotnetCalculateActivity, nodeId);
+            }
+            else if (activity is DsfCalculateActivity calculateActivity)
             {
                 cell = CreateCalculateActivity(calculateActivity, nodeId);
             }

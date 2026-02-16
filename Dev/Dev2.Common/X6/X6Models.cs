@@ -445,6 +445,7 @@ namespace Dev2.Common.X6
         public const string CREATEJSON_JSONSTRING = "jsonstring";
 
         // Calculate Activity
+        public const string DSFCALCULATEACTIVITY = "DsfCalculateActivity";
         public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
         public const string DISPLAYNAME_CALCULATE = "Calculate";
         public const string CALCULATE_EXPRESSION = "expression";

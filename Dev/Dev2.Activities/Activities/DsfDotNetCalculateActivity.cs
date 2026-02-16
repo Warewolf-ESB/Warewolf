@@ -9,21 +9,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Exceptions;
@@ -68,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(dataObject.Environment, update);
                 }
@@ -84,20 +86,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var inputIterator = new WarewolfIterator(warewolfEvalResult, FunctionEvaluatorOption.DotNetDateTimeFormat);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 var counter = 1;
-                while(warewolfListIterator.HasMoreData())
+                while (warewolfListIterator.HasMoreData())
                 {
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
                     dataObject.Environment.Assign(Result, result, update == 0 ? counter : update);
                     counter++;
                 }
 
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, dataObject.Environment, update);
                 }
                 allErrors.MergeErrors(errors);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Calculate Exception", ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
@@ -120,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
             if (dataObject.IsDebugMode())
             {
@@ -147,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -156,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -166,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
 
-            if(updates != null && updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Expression = updates[0].Item2;
             }
@@ -175,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
@@ -235,6 +237,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             cell.data[Dev2.Common.X6.Constants.CALCULATE_EXPRESSION] = Expression ?? string.Empty;
             cell.data[Dev2.Common.X6.Constants.CALCULATE_RESULT] = Result ?? string.Empty;
+        }
+
+        public void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+
+            if (cell.data.TryGetString(Constants.CALCULATE_EXPRESSION, out var expression))
+                Expression = expression;
+
+            if (cell.data.TryGetString(Constants.CALCULATE_RESULT, out var result))
+                Result = result;
+
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            Expression ??= string.Empty;
+            Result ??= string.Empty;
+
         }
     }
 }

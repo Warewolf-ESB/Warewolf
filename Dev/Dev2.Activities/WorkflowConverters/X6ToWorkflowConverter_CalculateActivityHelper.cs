@@ -27,5 +27,19 @@ namespace Dev2.Activities.WF
             activity.FromX6Json(node);
             return activity;
         }
+
+
+        private static DsfDotNetCalculateActivity CreateDotNetCalculateActivity(Cell node)
+        {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
+
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfDotNetCalculateActivity();
+            activity.FromX6Json(node);
+            return activity;
+        }
     }
 }
