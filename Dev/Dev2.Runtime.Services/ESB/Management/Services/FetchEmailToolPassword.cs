@@ -119,42 +119,44 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 			return serializer.SerializeToBuilder(result);
         }
-
+        
         /// <summary>
-        /// Extracts the encrypted password attribute from a DsfSendEmailActivity element
-        /// matching the given UniqueID in the workflow XAML.
-        /// </summary>
-        static string ExtractPasswordForActivity(string xaml, string activityId)
-        {
-            var doc = XDocument.Parse(xaml);
-            XNamespace[] namespaces = doc.Root.Attributes()
-                .Where(a => a.IsNamespaceDeclaration)
-                .Select(a => (XNamespace)a.Value)
-                .ToArray();
-            foreach (var ns in namespaces)
-            {
-                var elements = doc.Descendants(ns + "DsfSendEmailActivity");
-                foreach (var element in elements)
-                {
-                    var uid = element.Attribute("UniqueID")?.Value;
-                    if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return element.Attribute("Password")?.Value;
-                    }
-                }
-            }
-            // Also check elements without namespace prefix
-            var localElements = doc.Descendants("DsfSendEmailActivity");
-            foreach (var element in localElements)
-            {
-                var uid = element.Attribute("UniqueID")?.Value;
-                if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
-                {
-                    return element.Attribute("Password")?.Value;
-                }
-            }
-            return null;
-        }
+		 /// Extracts the encrypted password attribute from a DsfSendEmailActivity element
+		 /// matching the given UniqueID in the workflow XAML.
+		 /// </summary>
+		static string ExtractPasswordForActivity(string xaml, string activityId)
+		{
+			var doc = XDocument.Parse(xaml);
+			XNamespace[] namespaces = doc.Descendants()
+				.SelectMany(e => e.Attributes())
+				.Where(a => a.IsNamespaceDeclaration)
+				.Select(a => (XNamespace)a.Value)
+				.Distinct()
+				.ToArray();
+			foreach (var ns in namespaces)
+			{
+				var elements = doc.Descendants(ns + "DsfSendEmailActivity");
+				foreach (var element in elements)
+				{
+					var uid = element.Attribute("UniqueID")?.Value;
+					if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
+					{
+						return element.Attribute("Password")?.Value;
+					}
+				}
+			}
+			// Also check elements without namespace prefix
+			var localElements = doc.Descendants("DsfSendEmailActivity");
+			foreach (var element in localElements)
+			{
+				var uid = element.Attribute("UniqueID")?.Value;
+				if (string.Equals(uid, activityId, StringComparison.OrdinalIgnoreCase))
+				{
+					return element.Attribute("Password")?.Value;
+				}
+			}
+			return null;
+		}
 
 		public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(
             HandlesType(),
