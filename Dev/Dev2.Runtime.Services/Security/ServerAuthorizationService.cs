@@ -66,7 +66,7 @@ namespace Dev2.Runtime.Security
             _timeOutPeriod = securityService.TimeOutPeriod;            
             try
             {
-                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>()?.GetCounter("Count of Not Authorised errors");
             }
             catch (Exception e)
             {

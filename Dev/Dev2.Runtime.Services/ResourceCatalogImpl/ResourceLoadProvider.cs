@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             // UnCommented as outcome of syncing of develop branch with 7232 branch.
             try
             {
-                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>()?.GetCounter("Count of requests for workflows which don't exist");
             }
             catch (Exception e)
             {
