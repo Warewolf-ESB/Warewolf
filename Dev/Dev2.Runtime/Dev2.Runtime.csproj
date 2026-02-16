@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +12,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Runtime</RootNamespace>
-    <AssemblyName>Dev2.Runtime</AssemblyName>    
+    <AssemblyName>Dev2.Runtime</AssemblyName>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -39,14 +39,14 @@
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -253,11 +253,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-		<ItemGroup>
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-		</ItemGroup>
-	</Target>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

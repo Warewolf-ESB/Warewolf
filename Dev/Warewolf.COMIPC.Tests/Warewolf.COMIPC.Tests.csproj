@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -37,7 +37,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -62,12 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-  <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
-  <PackageReference Include="Moq" Version="4.18.2" />
-  <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-  <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
-  <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
+    <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>

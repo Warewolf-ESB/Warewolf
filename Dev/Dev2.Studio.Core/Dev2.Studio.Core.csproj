@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -412,7 +412,7 @@
     <PackageReference Include="TrieNet.Core" Version="1.0.4" />
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
-	  <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
-    <AssemblyName>Dev2.Infrastructure</AssemblyName>    
+    <AssemblyName>Dev2.Infrastructure</AssemblyName>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -25,7 +25,7 @@
     <RestorePackages>true</RestorePackages>
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <TargetFrameworkProfile />
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,8 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.DirectoryServices.AccountManagement" />
-	  
-	  <!--<Reference Include="System.Reactive.Windows.Thread">
+    <!--<Reference Include="System.Reactive.Windows.Thread">
       <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
     </Reference>-->
   </ItemGroup>
@@ -208,10 +207,10 @@
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
-    </PackageReference>    
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
-    </PackageReference>    
+    </PackageReference>
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">

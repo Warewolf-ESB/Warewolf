@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
@@ -7,13 +7,13 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
-	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-	<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
-	<PackageReference Include="Moq" Version="4.18.2" />
-	<PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-	<PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-	<PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
+    <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj" />

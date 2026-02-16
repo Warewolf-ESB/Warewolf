@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
@@ -7,7 +7,7 @@
     <AssemblyName>WarewolfLogger</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-     <!--<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <!--<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <SelfContained>true</SelfContained>-->
   </PropertyGroup>
   <PropertyGroup>
@@ -15,7 +15,7 @@
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
@@ -46,7 +46,7 @@
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj" />
   </ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">

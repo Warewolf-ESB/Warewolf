@@ -1,195 +1,194 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
-		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-		<EnableDefaultItems>false</EnableDefaultItems>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Warewolf.Studio.Core</RootNamespace>
-		<AssemblyName>Warewolf.Studio.Core</AssemblyName>
-		<RuntimeIdentifier>win</RuntimeIdentifier>
-		<FileAlignment>512</FileAlignment>
-		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-		<RestorePackages>true</RestorePackages>
-		<TargetFrameworkProfile />
-
-		<LangVersion>10.0</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-		<WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-		<WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="AsyncObservableCollection.cs" />
-		<Compile Include="CookieHelper.cs" />
-		<Compile Include="CustomMenuIcons.cs" />
-		<Compile Include="DllListingModel.cs" />
-		<Compile Include="Extensions\ImageAwesomeExtensions.cs" />
-		<Compile Include="FileListingModel.cs" />
-		<Compile Include="HelpSetter.cs" />
-		<Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
-		<Compile Include="IWebBrowser.cs" />
-		<Compile Include="PopupViewManageEffects.cs" />
-		<Compile Include="Popup\PopupMessage.cs" />
-		<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-			<Link>Properties\AssemblyCommonInfo.cs</Link>
-		</Compile>
-		<Compile Include="ResourceIdToIconConverter.cs" />
-		<Compile Include="ResourceTypeToIconConverter.cs" />
-		<Compile Include="ResourceTypeToIconVisibility.cs" />
-		<Compile Include="ServerAddedEvent.cs" />
-		<Compile Include="Views\JsonObjectsView.xaml.cs">
-			<DependentUpon>JsonObjectsView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="WidthConvertForWrapPanel.cs" />
-		<AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-		<None Include="Warewolf.Studio.Core.ruleset" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-			<Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
-			<Name>Dev2.Common.Interfaces</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-			<Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
-			<Name>Dev2.Common</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-			<Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
-			<Name>Dev2.Core</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-			<Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-			<Name>Dev2.Infrastructure</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
-			<Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
-			<Name>Dev2.Studio.Interfaces</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-			<Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-			<Name>Warewolf.Resource</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
-			<Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
-			<Name>Warewolf.Studio.Resources</Name>
-		</ProjectReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
-		<Page Include="Views\JsonObjectsView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="codecracker.CSharp">
-			<Version>1.1.0</Version>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json">
-			<Version>13.0.2</Version>
-		</PackageReference>
-		<PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-		<PackageReference Include="Prism.Core" Version="9.0.537" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-		<PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
-		<PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-		<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>false</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-		</Reference>
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="System" />
-		<Reference Include="System.Configuration" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Windows.Presentation" />
-		<Reference Include="System.Xaml" />
-		<Reference Include="System.Xml.Linq" />
-		<Reference Include="System.Data.DataSetExtensions" />
-		<Reference Include="Microsoft.CSharp" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Xml" />
-		<Reference Include="WindowsBase" />
-		<PackageReference Include="Expression.Blend.Sdk">
-			<Version>1.0.2</Version>
-		</PackageReference>
-		<PackageReference Include="FontAwesome.WPF">
-			<Version>4.7.0.9</Version>
-		</PackageReference>
-		<PackageReference Include="Prism.UnityExtensions">
-			<Version>5.0.1</Version>
-		</PackageReference>
-	</ItemGroup>
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Warewolf.Studio.Core</RootNamespace>
+    <AssemblyName>Warewolf.Studio.Core</AssemblyName>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="CookieHelper.cs" />
+    <Compile Include="CustomMenuIcons.cs" />
+    <Compile Include="DllListingModel.cs" />
+    <Compile Include="Extensions\ImageAwesomeExtensions.cs" />
+    <Compile Include="FileListingModel.cs" />
+    <Compile Include="HelpSetter.cs" />
+    <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
+    <Compile Include="IWebBrowser.cs" />
+    <Compile Include="PopupViewManageEffects.cs" />
+    <Compile Include="Popup\PopupMessage.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="ResourceIdToIconConverter.cs" />
+    <Compile Include="ResourceTypeToIconConverter.cs" />
+    <Compile Include="ResourceTypeToIconVisibility.cs" />
+    <Compile Include="ServerAddedEvent.cs" />
+    <Compile Include="Views\JsonObjectsView.xaml.cs">
+      <DependentUpon>JsonObjectsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WidthConvertForWrapPanel.cs" />
+    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <None Include="Warewolf.Studio.Core.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Page Include="Views\JsonObjectsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="codecracker.CSharp">
+      <Version>1.1.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
+    <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>false</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <PackageReference Include="Expression.Blend.Sdk">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="FontAwesome.WPF">
+      <Version>4.7.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.UnityExtensions">
+      <Version>5.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-	<Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
-		<ItemGroup>
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
-			<TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
-		</ItemGroup>
-	</Target>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

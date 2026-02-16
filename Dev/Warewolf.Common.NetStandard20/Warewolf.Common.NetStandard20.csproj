@@ -1,12 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>none</DebugType>
   </PropertyGroup>
@@ -19,7 +17,6 @@
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
@@ -27,7 +24,6 @@
     <ProjectReference Include="..\Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
-
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />

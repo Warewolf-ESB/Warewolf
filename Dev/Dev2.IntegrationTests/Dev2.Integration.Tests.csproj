@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -38,7 +38,7 @@
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
     <SonarQubeTestProject>True</SonarQubeTestProject>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -341,16 +341,16 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <!--<PackageReference Include="Oracle.ManagedDataAccess" Version="21.8.0" />-->
-  <!--<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.80" />-->
+    <!--<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.80" />-->
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System.Activities.Presentation" />
-	<Reference Include="Weave">
-		<HintPath>..\Binaries\Weave.dll</HintPath>
-	</Reference>
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json" />

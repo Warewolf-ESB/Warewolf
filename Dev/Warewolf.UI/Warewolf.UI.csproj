@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,15 +11,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UI</RootNamespace>
     <AssemblyName>Warewolf.UI</AssemblyName>
-    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
-		<UseWpf>true</UseWpf>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <UseWpf>true</UseWpf>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -54,7 +54,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-	<PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
+    <PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">

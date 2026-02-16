@@ -1,30 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net48</TargetFramework>
-    </PropertyGroup>
-    <PropertyGroup>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
-    <ItemGroup>
-      <Compile Include="..\AssemblyCommonInfo.cs">
-        <Link>AssemblyCommonInfo.cs</Link>
-      </Compile>
-    </ItemGroup>
-    <ItemGroup>
-      <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.6.0" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>AssemblyCommonInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+  </ItemGroup>
 </Project>

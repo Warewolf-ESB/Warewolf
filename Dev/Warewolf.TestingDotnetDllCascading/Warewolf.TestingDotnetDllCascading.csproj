@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,14 +11,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestingDotnetDllCascading</RootNamespace>
     <AssemblyName>Warewolf.TestingDotnetDllCascading</AssemblyName>
-    
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SonarQubeExclude>True</SonarQubeExclude>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-   <LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

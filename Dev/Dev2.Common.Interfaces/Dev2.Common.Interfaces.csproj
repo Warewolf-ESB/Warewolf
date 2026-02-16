@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Common.Interfaces</RootNamespace>
-    <AssemblyName>Dev2.Common.Interfaces</AssemblyName>    
+    <AssemblyName>Dev2.Common.Interfaces</AssemblyName>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -25,7 +25,7 @@
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
     <SonarQubeTestProject>False</SonarQubeTestProject>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -465,20 +465,20 @@
       <Version>2.10.1</Version>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-	<PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-	  <PackageReference Include="Microsoft.Exchange.WebServices.NETStandard" Version="1.1.3" />
-	  <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-	  <PackageReference Include="UiPath.Workflow">
-		  <Version>6.0.3</Version>
-	  </PackageReference>
-	  <PackageReference Include="Boxed.AspNetCore" Version="8.1.2" />
-	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
-	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Exchange.WebServices.NETStandard" Version="1.1.3" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    <PackageReference Include="UiPath.Workflow">
+      <Version>6.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Boxed.AspNetCore" Version="8.1.2" />
+    <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-	  <PackageReference Include="Microsoft.Exchange.WebServices" Version="1.1.3" />
+    <PackageReference Include="Microsoft.Exchange.WebServices" Version="1.1.3" />
     <PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.22615.12000</Version>
     </PackageReference>

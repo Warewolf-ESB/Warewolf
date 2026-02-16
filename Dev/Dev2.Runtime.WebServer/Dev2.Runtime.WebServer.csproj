@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -26,7 +26,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -227,47 +227,47 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <Reference Include="System.Web" />
   </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-      <Compile Include="WebServerStartup.cs" />
-      <Reference Include="System.Runtime.DurableInstancing" />
-        <PackageReference Include="Microsoft.AspNet.Cors">
-            <Version>5.2.7</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
-            <Version>2.4.1</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client">
-            <Version>5.2.7</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNet.WebApi.Core">
-            <Version>5.2.7</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNet.WebApi.Cors">
-            <Version>5.2.7</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
-            <Version>5.2.7</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Cors">
-            <Version>4.2.2</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Host.HttpListener">
-            <Version>4.2.2</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Security">
-            <Version>4.2.2</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.SelfHost">
-            <Version>4.2.2</Version>
-        </PackageReference>
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-      <Compile Include="WebServerCoreStartup.cs" />
-      <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Compile Include="WebServerStartup.cs" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <PackageReference Include="Microsoft.AspNet.Cors">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
+      <Version>2.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Cors">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin.Cors">
+      <Version>4.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin.Host.HttpListener">
+      <Version>4.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin.Security">
+      <Version>4.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin.SelfHost">
+      <Version>4.2.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <Compile Include="WebServerCoreStartup.cs" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
+  </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />

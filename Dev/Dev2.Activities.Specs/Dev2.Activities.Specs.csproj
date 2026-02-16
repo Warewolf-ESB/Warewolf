@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -31,14 +31,14 @@
     <SonarQubeTestProject>True</SonarQubeTestProject>
     <SonarQubeExclude>True</SonarQubeExclude>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -264,8 +264,8 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-	  <PackageReference Include="Prism.Core" Version="9.0.537" />
-	  <PackageReference Include="SharpZipLib">
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="SharpZipLib">
       <Version>1.3.3</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
@@ -280,7 +280,7 @@
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
     </PackageReference>
-	  <PackageReference Include="TaskScheduler" Version="2.10.1" />
+    <PackageReference Include="TaskScheduler" Version="2.10.1" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
@@ -557,8 +557,8 @@
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System.Activities" />
-	<Reference Include="System.Activities.Presentation" />
-	<Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Runtime.DurableInstancing" />
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>

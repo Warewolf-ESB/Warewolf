@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,7 +11,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Studio.Interfaces</RootNamespace>
     <AssemblyName>Dev2.Studio.Interfaces</AssemblyName>
-    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -165,15 +164,15 @@
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-  	<Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
-  	<Reference Include="Weave">
-  		<HintPath>..\Binaries\Weave.dll</HintPath>
-  	</Reference>
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows')) and '$(TargetFramework)' != 'net48'">
-  	<ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
+    <ProjectReference Include="..\Warewolf.Weave\Warewolf.Weave.csproj" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
