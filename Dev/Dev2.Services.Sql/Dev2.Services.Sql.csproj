@@ -119,7 +119,7 @@
       <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-    <PackageReference Include="MySql.Data" Version="9.2.0" />
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
