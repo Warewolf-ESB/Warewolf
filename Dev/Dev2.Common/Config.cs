@@ -230,6 +230,7 @@ namespace Dev2.Common
         public bool CollectUsageStats => _settings.CollectUsageStats ?? false;
         public int DaysToKeepTempFiles => _settings.DaysToKeepTempFiles ?? 0;
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
+        public bool EnablePerformanceCounters => _settings.EnablePerformanceCounters ?? false;
 
         public ServerSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())

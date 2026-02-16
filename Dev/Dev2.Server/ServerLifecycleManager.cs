@@ -123,8 +123,8 @@ namespace Dev2
 
         Timer _timer;
         IStartWebServer _startWebServer;
-        readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
-        readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
+        IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
+        IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         readonly IUsageLogger _usageLogger;
         //IIpcClient _ipcClient;
 
@@ -161,8 +161,6 @@ namespace Dev2
             _usageLogger = startupConfiguration.UsageLogger;
             _usageTrackerWrapper = startupConfiguration.UsageTracker;
 
-            _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
-            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
@@ -215,85 +213,80 @@ namespace Dev2
             //    _writer.WriteLine("Deprecated ...");
             //}
 
-            return Task.Run(LoadPerformanceCounters)
-                .ContinueWith(
-                    (t) =>
-                    {
-                        // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+			return Task.Run(() =>
+					{
+						if (Config.Server.EnablePerformanceCounters)
+						{
+							Task.Run(LoadPerformanceCounters);
+							_writer.WriteLine("Performance counter initialization started in background.");
+						}
+						else
+						{
+							_writer.WriteLine("Performance counters disabled. Skipping initialization.");
+						}
+
+						// ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-                        try
-                        {
-                            var miq = MoqInstallerActionFactory.CreateInstallerActions();
-                            miq.ExecuteMoqInstallerActions();
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-                        }
+						try
+						{
+							var miq = MoqInstallerActionFactory.CreateInstallerActions();
+							miq.ExecuteMoqInstallerActions();
+						}
+						catch (Exception e)
+						{
+							Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+						}
 #endif
 
-                        try
-                        {
-                            foreach (var worker in initWorkers)
-                            {
-                                worker.Execute();
-                            }
+						try
+						{
+							foreach (var worker in initWorkers)
+							{
+								worker.Execute();
+							}
 
-                            _loggingProcessMonitor.Start();
-                            var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+							_loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
+							LoadHostSecurityProvider();
+							_loadResources.CheckExampleResources();
+							_loadResources.MigrateOldTests();
+							LoadSubscriptionProvider();
+							var webServerConfig = _webServerConfiguration;
+							webServerConfig.Execute();
+							new LoadRuntimeConfigurations(_writer).Execute();
 
-                            _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
-                            LoadHostSecurityProvider();
-                            _loadResources.CheckExampleResources();
-                            _loadResources.MigrateOldTests();
-                            LoadSubscriptionProvider();
-                            var webServerConfig = _webServerConfiguration;
-                            webServerConfig.Execute();
-                            new LoadRuntimeConfigurations(_writer).Execute();
+							/* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
+							* Hence not opening stream for COM IPC
+							* 
+							*/
+							// OpenCOMStream(null);
 
-                            /* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
-                            * Hence not opening stream for COM IPC
-                            * 
-                            */
-                            // OpenCOMStream(null);
-
-                            _loadResources.LoadResourceCatalog();
+							_loadResources.LoadResourceCatalog();
 #if WINDOWS || NETFRAMEWORK
-                            _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+							_timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
 #endif
 							_loadResources.LoadServerWorkspace();
-                            _loadResources.LoadActivityCache(_assemblyLoader);
-                            LoadTestCatalog();
-                            LoadTriggersCatalog();
+							_loadResources.LoadActivityCache(_assemblyLoader);
+							LoadTestCatalog();
+							LoadTriggersCatalog();
 
-                            _startWebServer.Execute(webServerConfig, _pauseHelper);
-                            _queueProcessMonitor.Start();
+							_startWebServer.Execute(webServerConfig, _pauseHelper);
+							_queueProcessMonitor.Start();
 
-                            _hangfireServerMonitor.Start();
-#if WINDOWS || NETFRAMEWORK
-                            var checkLogServerConnectionTask = CheckLogServerConnection();
-                            var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
-                            var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
-                            var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
-                            if (!logServerConnectedOkayNoTimeout)
-                            {
-                                _writer.WriteLine("unable to connect to logging server");
-                                if (checkLogServerConnectionTask.IsFaulted)
-                                {
-                                    _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
-                                }
+							_hangfireServerMonitor.Start();
 
-                                Stop(false, 0, true);
-                            }
-#endif
-                            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-                            LogWarewolfVersion(logger);
+							_pulseLogger = new PulseLogger(60000, _loggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
+							_pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
+
+							StartLoggingServiceAsync();
+
+							var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+							LogWarewolfVersion(logger);
 							if (EnvironmentVariables.IsServerOnline)
-                            {
-                                SetAsStarted();
-                            }
+							{
+								SetAsStarted();
+							}
 #if RELEASE
-                            TrackUsage(UsageType.ServerStart, logger);
+							TrackUsage(UsageType.ServerStart, logger);
 #endif
                         }
                         catch (Exception e)
@@ -322,6 +315,41 @@ namespace Dev2
                     var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
                     return webSocketWrapper.IsOpen();
                 });
+        }
+
+        private void StartLoggingServiceAsync()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    _loggingProcessMonitor.Start();
+#if WINDOWS || NETFRAMEWORK
+                    var checkLogServerConnectionTask = CheckLogServerConnection();
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+                    var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
+                    var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+                    var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+                    if (!logServerConnectedOkayNoTimeout)
+                    {
+                        _writer.WriteLine("unable to connect to logging server");
+                        if (checkLogServerConnectionTask.IsFaulted)
+                        {
+                            _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
+                        }
+                    }
+                    else
+                    {
+                        _writer.WriteLine("Logging service connected.");
+                    }
+#endif
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Error starting logging service", e, GlobalConstants.WarewolfError);
+                    _writer.WriteLine("Logging service startup failed: " + e.Message);
+                }
+            });
         }
 
         private void LoadTriggersCatalog()
