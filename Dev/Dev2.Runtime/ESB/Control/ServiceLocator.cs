@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Control
                 ret = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();                
                 if (ret == null)
                 {
-                    _perfCounter.Increment();
+                    _perfCounter?.Increment();
                 }
             }
             return ret;
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if (firstOrDefault == null)
                 {
-                    _perfCounter.Increment();
+                    _perfCounter?.Increment();
                 }
             }
 

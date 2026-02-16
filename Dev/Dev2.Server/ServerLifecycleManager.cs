@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Management;
 using Dev2.Runtime.Interfaces;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dev2.Activities;
 using Warewolf.Trigger.Queue;
@@ -97,7 +98,9 @@ namespace Dev2
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
-                SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
+                SecurityIdentityFactory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? new SecurityIdentityFactoryForWindows()
+                    : new SecurityIdentityFactoryForLinux(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
                 LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
@@ -330,6 +333,10 @@ namespace Dev2
 
         int GetNumberOfCores()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Environment.ProcessorCount;
+            }
             var coreCount = 0;
             foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
             {
@@ -488,6 +495,11 @@ namespace Dev2
         {
             try
             {
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Dev2Logger.Info("Performance counters are not supported on this platform. Skipping initialization.", GlobalConstants.WarewolfInfo);
+                    return;
+                }
                 var perf = new PerformanceCounterPersistence(new FileWrapper());
                 var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
                 var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);

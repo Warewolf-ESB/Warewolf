@@ -122,6 +122,19 @@ namespace Dev2.Common.Common
         }
     }
 
+    public class SecurityIdentityFactoryForLinux : ISecurityIdentityFactory
+    {
+        public ISecurityIdentity Current => new SecurityIdentityForLinux();
+    }
+
+    internal class SecurityIdentityForLinux : ISecurityIdentity
+    {
+        public List<string> GetHosts()
+        {
+            return new List<string> { Environment.MachineName };
+        }
+    }
+
     public interface IGetComputerNames
     {
         List<string> ComputerNames { get; }
