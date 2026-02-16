@@ -24,7 +24,7 @@
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
     <Configurations>Debug</Configurations>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -61,7 +61,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
   <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
   <PackageReference Include="Moq" Version="4.18.2" />

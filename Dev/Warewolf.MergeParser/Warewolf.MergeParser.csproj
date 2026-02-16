@@ -13,7 +13,7 @@
     <AssemblyName>Warewolf.MergeParser</AssemblyName>
     
     <RuntimeIdentifier>win</RuntimeIdentifier>
-    <FileAlignment>512</FileAlignment>
+    <FileAlignment>512</FileAlignment>
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

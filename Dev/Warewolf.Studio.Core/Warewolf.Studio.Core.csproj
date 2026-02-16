@@ -133,7 +133,7 @@
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<PackageReference Include="Prism.Core" Version="9.0.537" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
 		<PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
 		<PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
 	</ItemGroup>
