@@ -464,6 +464,7 @@
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_WebPutActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CreateJSONActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ZipActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SendEmailActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ExchangeEmailActivityHelper.cs" />
