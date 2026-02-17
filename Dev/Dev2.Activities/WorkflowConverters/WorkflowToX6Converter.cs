@@ -858,9 +858,25 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
             }
+            else if (activity is DsfCreateJsonActivity createJsonActivity)
+            {
+                cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
+            }
+            else if (activity is DsfRandomActivity randomActivity)
+            {
+                cell = CreateRandomActivity(randomActivity, nodeId);
+            }
+            else if (activity is DsfNumberFormatActivity numberFormatActivity)
+            {
+                cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
+            }
+            else if (activity is DsfDotNetCalculateActivity calculateActivity)
+            {
+                cell = CreateCalculateActivity(calculateActivity, nodeId);
             }
             else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
             {

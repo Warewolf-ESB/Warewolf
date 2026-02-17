@@ -327,6 +327,8 @@
     <Compile Include="WorkflowConverters\ActivityPropertiesReaderHelper.cs" />
     <Compile Include="WorkflowConverters\CellOrganizer.cs" />
     <Compile Include="WorkflowConverters\CommonHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_CalculateActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_CreateJsonActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DateTimeDifferenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ManualResumptionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RubyActivityHelper.cs" />
@@ -334,6 +336,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_PythonActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ZipActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CalculateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommandLineActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommentActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DateTimeDifferenceActivityHelper.cs" />
@@ -466,6 +469,10 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ExchangeEmailActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SendEmailActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ExchangeEmailActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RandomActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_NumberFormatActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_RandomActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_NumberFormatActivityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

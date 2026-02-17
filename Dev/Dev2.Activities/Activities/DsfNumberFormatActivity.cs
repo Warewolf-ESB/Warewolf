@@ -32,6 +32,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -342,6 +344,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion GetForEachInputs/Outputs
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFNUMBERFORMATACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFNUMBERFORMATACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_NUMBERFORMAT;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.NUMBERFORMAT_EXPRESSION] = Expression ?? string.Empty;
+            cell.data[Constants.NUMBERFORMAT_ROUNDINGTYPE] = RoundingType ?? string.Empty;
+            cell.data[Constants.NUMBERFORMAT_ROUNDINGDECIMALPLACES] = RoundingDecimalPlaces ?? string.Empty;
+            cell.data[Constants.NUMBERFORMAT_DECIMALPLACESTOSHOW] = DecimalPlacesToShow ?? string.Empty;
+            cell.data[Constants.NUMBERFORMAT_RESULT] = Result ?? string.Empty;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.NUMBERFORMAT_EXPRESSION, out var expression))
+                Expression = expression;
+            if (cell.data.TryGetString(Constants.NUMBERFORMAT_ROUNDINGTYPE, out var roundingType))
+                RoundingType = roundingType;
+            if (cell.data.TryGetString(Constants.NUMBERFORMAT_ROUNDINGDECIMALPLACES, out var roundingDecimalPlaces))
+                RoundingDecimalPlaces = roundingDecimalPlaces;
+            if (cell.data.TryGetString(Constants.NUMBERFORMAT_DECIMALPLACESTOSHOW, out var decimalPlacesToShow))
+                DecimalPlacesToShow = decimalPlacesToShow;
+            if (cell.data.TryGetString(Constants.NUMBERFORMAT_RESULT, out var result))
+                Result = result;
+        }
 
         public bool Equals(DsfNumberFormatActivity other)
         {

@@ -417,6 +417,15 @@ namespace Dev2.Common.X6
         public const string SMTPEMAIL_BODY = "body";
         public const string SMTPEMAIL_ISHTML = "ishtml";
 
+        // Random Activity
+        public const string DSFRANDOMACTIVITY = "DsfRandomActivity";
+        public const string DISPLAYNAME_RANDOM = "Random";
+        public const string RANDOM_TYPE = "randomtype";
+        public const string RANDOM_FROM = "from";
+        public const string RANDOM_TO = "to";
+        public const string RANDOM_LENGTH = "length";
+        public const string RANDOM_RESULT = "result";
+
         // Exchange Email Activity
         public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
         public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
@@ -428,6 +437,28 @@ namespace Dev2.Common.X6
         public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
         public const string EXCHANGEEMAIL_BODY = "body";
         public const string EXCHANGEEMAIL_ISHTML = "ishtml";
+
+        // Format Number Activity
+        public const string DSFNUMBERFORMATACTIVITY = "DsfNumberFormatActivity";
+        public const string DISPLAYNAME_NUMBERFORMAT = "Format Number";
+        public const string NUMBERFORMAT_EXPRESSION = "expression";
+        public const string NUMBERFORMAT_ROUNDINGTYPE = "roundingtype";
+        public const string NUMBERFORMAT_ROUNDINGDECIMALPLACES = "roundingdecimalplaces";
+        public const string NUMBERFORMAT_DECIMALPLACESTOSHOW = "decimalplacestoshow";
+        public const string NUMBERFORMAT_RESULT = "result";
+
+        // Create JSON Activity
+        public const string DSFCREATEJSONACTIVITY = "DsfCreateJsonActivity";
+        public const string DISPLAYNAME_CREATEJSON = "Create JSON";
+        public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
+        public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
+        public const string CREATEJSON_JSONSTRING = "jsonstring";
+
+        // Calculate Activity
+        public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
+        public const string DISPLAYNAME_CALCULATE = "Calculate";
+        public const string CALCULATE_EXPRESSION = "expression";
+        public const string CALCULATE_RESULT = "result";
     }
 
     public class X6WorkflowLoadModel
