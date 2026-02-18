@@ -21,19 +21,18 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
         private const int TimeoutSeconds = 30;
-        private const int MaxMessageLength = 10000;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            
+
             try
             {
                 Dev2Logger.Info("Send Chatbot Message Service", GlobalConstants.WarewolfInfo);
@@ -71,18 +70,45 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 // Get chatbot settings
                 var settings = Config.Chatbot.Get();
-                
+
                 // Validate configuration
                 if (settings.ChatbotSource == null || settings.ChatbotSource.Value == Guid.Empty)
                 {
                     return CreateErrorResponse(serializer, "Chatbot is not configured. Please configure a chatbot source in settings.");
                 }
 
-                // Get chatbot source
-                var chatbotSource = ResourceCatalog.Instance.GetResource<ChatbotSource>(GlobalConstants.ServerWorkspaceID, settings.ChatbotSource.Value);
-                if (chatbotSource == null)
+                // Parse chatbot source definition from payload
+                ChatbotSourceDefinition chatbotSourceDef = null;
+                if (!string.IsNullOrWhiteSpace(settings.ChatbotSource.Payload))
                 {
-                    return CreateErrorResponse(serializer, "Selected chatbot source not found or invalid.");
+                    try
+                    {
+                        chatbotSourceDef = JsonConvert.DeserializeObject<ChatbotSourceDefinition>(settings.ChatbotSource.Payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Warn($"Failed to parse chatbot source definition from payload: {ex.Message}", GlobalConstants.WarewolfWarn);
+                    }
+                }
+
+                // Fallback to getting from ResourceCatalog if payload parsing failed
+                if (chatbotSourceDef == null)
+                {
+                    var chatbotSource = ResourceCatalog.Instance.GetResource<ChatbotSource>(GlobalConstants.ServerWorkspaceID, settings.ChatbotSource.Value);
+                    if (chatbotSource == null)
+                    {
+                        return CreateErrorResponse(serializer, "Selected chatbot source not found or invalid.");
+                    }
+
+                    chatbotSourceDef = new ChatbotSourceDefinition
+                    {
+                        Id = chatbotSource.ResourceID,
+                        Name = chatbotSource.ResourceName,
+                        ApiKey = chatbotSource.ApiKey,
+                        CompletionsEndpoint = chatbotSource.CompletionsEndpoint,
+                        ModelsEndpoint = chatbotSource.ModelsEndpoint,
+                        SelectedModel = chatbotSource.SelectedModel
+                    };
                 }
 
                 // Validate endpoint and model
@@ -96,22 +122,37 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return CreateErrorResponse(serializer, "No AI model selected. Please select a model in chatbot settings.");
                 }
 
-                // Send message to AI provider
-                var response = SendMessageToProvider(chatbotSource, message, conversationHistory, settings);
-
-                // Return success response
-                var result = new
+                // Decrypt API key if encrypted
+                if (!string.IsNullOrWhiteSpace(chatbotSourceDef.ApiKey))
                 {
-                    Response = response,
-                    Error = (string)null
-                };
+                    chatbotSourceDef.ApiKey = DpapiWrapper.DecryptIfEncrypted(chatbotSourceDef.ApiKey);
+                }
 
-                return serializer.SerializeToBuilder(result);
+                // Build the messages array: system prompt (with context) + conversation history + current message
+                var contextBuilder = new ChatbotContextBuilder();
+                var systemPrompt = contextBuilder.BuildSystemPrompt(settings);
+                var messages = BuildMessagesArray(systemPrompt, message, conversationHistory);
+
+                // Send to AI provider
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
+                    var apiService = new ChatbotApiService(client);
+                    var response = apiService.SendMessage(chatbotSourceDef, messages);
+
+                    var result = new
+                    {
+                        Response = response,
+                        Error = (string)null
+                    };
+
+                    return serializer.SerializeToBuilder(result);
+                }
             }
             catch (HttpRequestException ex)
             {
                 Dev2Logger.Error("SendChatbotMessage HTTP Error", ex, GlobalConstants.WarewolfError);
-                
+
                 var errorMessage = ex.Message;
                 if (errorMessage.Contains("401") || errorMessage.ToLower().Contains("unauthorized"))
                 {
@@ -139,109 +180,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private static string SendMessageToProvider(ChatbotSource source, string message, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
-        {
-            using (var client = new HttpClient())
-            {
-                client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
-
-                // Build messages array
-                var messages = BuildMessagesArray(message, conversationHistory, settings);
-
-                // Build request body
-                var requestBody = new
-                {
-                    model = source.SelectedModel,
-                    messages = messages,
-                    temperature = 0.7,
-                    max_tokens = 2000
-                };
-
-                var requestJson = JsonConvert.SerializeObject(requestBody);
-                var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-
-                // Try Bearer authentication first (OpenAI, Azure OpenAI, GitHub Models, Grok)
-                try
-                {
-                    return SendWithAuth(client, source.CompletionsEndpoint, content, "Authorization", $"Bearer {source.ApiKey}", null);
-                }
-                catch (HttpRequestException ex) when (IsAuthenticationError(ex))
-                {
-                    Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key", GlobalConstants.WarewolfInfo);
-                    
-                    // Retry with Anthropic-style authentication
-                    return SendWithAuth(client, source.CompletionsEndpoint, content, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
-                }
-            }
-        }
-
-        private static string SendWithAuth(HttpClient client, string endpoint, HttpContent content, string authHeaderName, string authHeaderValue, string additionalHeaders)
-        {
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
-#pragma warning disable CC0021 // Use nameof
-            client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
-#pragma warning restore CC0021 // Use nameof
-
-            // Add any additional headers if specified
-            if (!string.IsNullOrWhiteSpace(additionalHeaders))
-            {
-                var headerPairs = additionalHeaders.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var headerPair in headerPairs)
-                {
-                    var parts = headerPair.Split(new[] { '=' }, 2);
-                    if (parts.Length == 2)
-                    {
-                        var headerName = parts[0].Trim();
-                        var headerValue = parts[1].Trim();
-                        if (!string.IsNullOrWhiteSpace(headerName) && !string.IsNullOrWhiteSpace(headerValue))
-                        {
-                            client.DefaultRequestHeaders.Add(headerName, headerValue);
-                        }
-                    }
-                }
-            }
-
-            var response = client.PostAsync(endpoint, content).Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = response.Content.ReadAsStringAsync().Result;
-                throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
-            }
-
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-            return ParseResponse(responseContent);
-        }
-
-        private static List<object> BuildMessagesArray(string currentMessage, List<ConversationMessage> conversationHistory, Warewolf.Configuration.ChatbotSettingsData settings)
+        private static List<object> BuildMessagesArray(string systemPrompt, string currentMessage, List<ConversationMessage> conversationHistory)
         {
             var messages = new List<object>();
 
-            // Add system message
-            var systemMessage = "You are a helpful AI assistant for a workflow automation platform.";
-            
-            // Add additional context if enabled
-            var contextParts = new List<string>();
-            
-            if (settings.IncludeSystemLog)
-            {
-                // TODO: In a future enhancement, retrieve and add recent system log entries
-                // For now, we'll skip this to keep the initial implementation simple
-            }
-
-            if (settings.SelectedResourceIds != null && settings.SelectedResourceIds.Count > 0)
-            {
-                // TODO: In a future enhancement, retrieve and add relevant resource definitions
-                // For now, we'll skip this to keep the initial implementation simple
-            }
-
-            if (contextParts.Any())
-            {
-                systemMessage += "\n\n" + string.Join("\n\n", contextParts);
-            }
-
-            messages.Add(new { role = "system", content = systemMessage });
+            messages.Add(new { role = "system", content = systemPrompt });
 
             // Add conversation history if provided
             if (conversationHistory != null && conversationHistory.Any())
@@ -254,8 +197,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                         continue;
                     }
 
-                    // Map message type to API role
                     var role = MapMessageTypeToRole(historyMessage.Type);
+
+                    // Skip system messages from history — we build our own system prompt from settings
+                    if (role == "system")
+                    {
+                        continue;
+                    }
+
                     if (!string.IsNullOrEmpty(role))
                     {
                         messages.Add(new { role = role, content = historyMessage.Content });
@@ -285,55 +234,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private static string ParseResponse(string responseJson)
-        {
-            try
-            {
-                var responseObject = JObject.Parse(responseJson);
-
-                // OpenAI-compatible format
-                var choices = responseObject["choices"] as JArray;
-                if (choices != null && choices.Count > 0)
-                {
-                    var firstChoice = choices[0] as JObject;
-                    var message = firstChoice?["message"] as JObject;
-                    var content = message?["content"]?.ToString();
-
-                    if (!string.IsNullOrEmpty(content))
-                    {
-                        return content;
-                    }
-                }
-
-                // Anthropic format (if different)
-                var content2 = responseObject["content"]?[0]?["text"]?.ToString();
-                if (!string.IsNullOrEmpty(content2))
-                {
-                    return content2;
-                }
-
-                throw new Exception("Could not parse response content from AI service");
-            }
-            catch (JsonException ex)
-            {
-                Dev2Logger.Error("Failed to parse AI response", ex, GlobalConstants.WarewolfError);
-                throw new Exception($"Failed to parse AI service response: {ex.Message}");
-            }
-        }
-
-        private static bool IsAuthenticationError(HttpRequestException ex)
-        {
-            if (ex.Message == null)
-            {
-                return false;
-            }
-
-            var message = ex.Message.ToLower();
-            return message.Contains("401") || message.Contains("unauthorized") ||
-                   message.Contains("403") || message.Contains("forbidden") ||
-                   message.Contains("authentication") || (message.Contains("invalid") && (message.Contains("key") || message.Contains("token")));
-        }
-
         private static StringBuilder CreateErrorResponse(Dev2JsonSerializer serializer, string errorMessage)
         {
             var result = new
@@ -346,7 +246,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(
-            HandlesType(), 
+            HandlesType(),
             "<DataList><Message ColumnIODirection=\"Input\"/><ConversationHistory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;

@@ -78,6 +78,8 @@
     </Compile>
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
+    <Compile Include="ESB\Management\Services\ChatbotApiService.cs" />
+    <Compile Include="ESB\Management\Services\ChatbotContextBuilder.cs" />
     <Compile Include="ESB\Management\Services\ChatbotSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\DeleteTestCoverage.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
