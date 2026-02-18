@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// Builds the system prompt for the chatbot by aggregating workspace context
     /// (resource definitions, XAML summaries, and system logs) from server-side sources.
     /// </summary>
-    internal class ChatbotContextBuilder
+    public class ChatbotContextBuilder
     {
         private const int MaxResourceXamlLength = 5_000;
 
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// Delegate set at server startup (by Dev2.Server) to convert raw workflow XAML to X6 JSON.
         /// Avoids a circular project reference between Dev2.Runtime.Services and Dev2.Activities.
         /// </summary>
-        internal static Func<Dev2.Common.X6.X6RequestInfo, string> XamlToX6Json { get; set; }
+        public static Func<Dev2.Common.X6.X6RequestInfo, string> XamlToX6Json { get; set; }
 
         /// <summary>
         /// Builds the structured system prompt including workspace context.
