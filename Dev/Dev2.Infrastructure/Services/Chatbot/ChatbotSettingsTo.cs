@@ -19,5 +19,11 @@ namespace Dev2.Services.Chatbot
         public bool LoadResourcesAsXaml { get; set; } = true;
         public int NumberOfLogLines { get; set; } = 1000;
         public List<Guid> SelectedResourceIds { get; set; } = new List<Guid>();
+        public string UserMessageColor { get; set; } = "#ff6600";
+        public string UserMessageTextColor { get; set; } = "#ffffff";
+        public string BotMessageColor { get; set; } = "#f8f9fa";
+        public string BotMessageTextColor { get; set; } = "#333333";
+        public int SlidingWindowSummaryLength { get; set; } = 200;
+        public bool EnableSlidingWindowTrimming { get; set; } = false;
     }
 }
