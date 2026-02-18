@@ -30,6 +30,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         private const int MaxResourceXamlLength = 5_000;
 
         /// <summary>
+        /// Delegate set at server startup (by Dev2.Server) to convert raw workflow XAML to X6 JSON.
+        /// Avoids a circular project reference between Dev2.Runtime.Services and Dev2.Activities.
+        /// </summary>
+        internal static Func<Dev2.Common.X6.X6RequestInfo, string> XamlToX6Json { get; set; }
+
+        /// <summary>
         /// Builds the structured system prompt including workspace context.
         /// Reads settings, resources and logs directly from server-side APIs.
         /// </summary>
@@ -75,8 +81,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         else
                         {
-                            promptBuilder.AppendLine("## Selected Resources (Metadata Only):");
-                            promptBuilder.AppendLine("Resource names, types, and IDs are provided below.");
+                            promptBuilder.AppendLine("## Selected Resources (JSON Definitions):");
+                            promptBuilder.AppendLine("Each resource includes its X6 graph JSON definition showing the full workflow structure.");
                         }
 
                         foreach (var def in resourceDefinitions)
@@ -131,6 +137,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     capabilities.Add("- Explain workflow logic and identify potential issues");
                     capabilities.Add("- Answer questions about workflow structure and dependencies");
                 }
+                else
+                {
+                    capabilities.Add("- Analyze workflow JSON definitions showing nodes, edges, and activity configuration");
+                    capabilities.Add("- Explain workflow logic and identify potential issues");
+                    capabilities.Add("- Answer questions about workflow structure and dependencies");
+                }
             }
 
             if (settings.IncludeSystemLog)
@@ -178,6 +190,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                     else
                     {
                         var resourcePath = SanitizeContentForPrompt(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
+                        if (XamlToX6Json != null)
+                        {
+                            var resourceXml = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+                            if (resourceXml != null && resourceXml.Length > 0)
+                            {
+                                var xaml = resourceXml.ToString();
+                                var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = xaml, WorkflowXML = xaml, ResourceName = sanitizedName });
+                                if (!string.IsNullOrEmpty(x6Json))
+                                {
+                                    definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, Path: {resourcePath}, ID: {resourceId})\n```json\n{x6Json}\n```");
+                                    continue;
+                                }
+                            }
+                        }
                         definitions.Add($"Resource: {sanitizedName}\nType: {sanitizedType}\nPath: {resourcePath}\nID: {resourceId}");
                     }
                 }
