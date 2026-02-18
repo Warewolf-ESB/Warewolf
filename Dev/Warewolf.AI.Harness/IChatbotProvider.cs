@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core;
 
-namespace Dev2.Runtime.ESB.Management.Services
+namespace Warewolf.AI.Harness
 {
-    internal interface IChatbotProvider
+    public interface IChatbotProvider
     {
         string Send(ChatbotSourceDefinition source, List<object> messages);
     }

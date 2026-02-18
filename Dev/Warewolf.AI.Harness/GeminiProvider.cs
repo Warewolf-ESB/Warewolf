@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core;
 
-namespace Dev2.Runtime.ESB.Management.Services
+namespace Warewolf.AI.Harness
 {
-    internal class GeminiProvider : IChatbotProvider
+    public class GeminiProvider : IChatbotProvider
     {
-        internal const string ProviderName = "Google Gemini";
+        public const string ProviderName = "Google Gemini";
 
         private readonly ChatbotApiService _serviceWrapper;
 

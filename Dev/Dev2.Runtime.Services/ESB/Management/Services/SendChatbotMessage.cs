@@ -23,6 +23,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
+using Warewolf.AI.Harness;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

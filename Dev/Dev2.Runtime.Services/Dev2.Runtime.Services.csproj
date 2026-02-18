@@ -36,9 +36,6 @@
     </Compile>
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
-    <Compile Include="ESB\Management\Services\AnthropicProvider.cs" />
-    <Compile Include="ESB\Management\Services\ChatbotApiService.cs" />
-    <Compile Include="ESB\Management\Services\ChatbotContextBuilder.cs" />
     <Compile Include="ESB\Management\Services\ChatbotSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\DeleteTestCoverage.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
@@ -51,11 +48,9 @@
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
-    <Compile Include="ESB\Management\Services\GeminiProvider.cs" />
     <Compile Include="ESB\Management\Services\GenerateAdvancedRecordsetOutputs.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\GetChatbotSettings.cs" />
-    <Compile Include="ESB\Management\Services\IChatbotProvider.cs" />
     <Compile Include="ESB\Management\Services\IsLicensed.cs" />
     <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
@@ -64,8 +59,6 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
-    <Compile Include="ESB\Management\Services\OpenAIProvider.cs" />
-    <Compile Include="ESB\Management\Services\OpenRouterProvider.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveChatbotSettings.cs" />
@@ -77,6 +70,7 @@
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
+    <Compile Include="ESB\Management\Services\ChatbotContextBuilder.cs" />
     <Compile Include="ESB\Management\Services\SendChatbotMessage.cs" />
     <Compile Include="ESB\Management\Services\TestChatbotSource.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
@@ -440,6 +434,7 @@
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
+    <ProjectReference Include="..\Warewolf.AI.Harness\Warewolf.AI.Harness.csproj" />
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>

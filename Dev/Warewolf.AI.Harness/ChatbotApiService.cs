@@ -290,48 +290,9 @@ namespace Warewolf.AI.Harness
 
         private string SendToOpenRouter_Internal(ChatbotSourceDefinition source, List<object> messages)
         {
-            // OpenRouter's endpoint may reject a top-level "messages" field in some routing configurations.
-            // Build a minimal OpenRouter-compatible payload by concatenating the messages into a single
-            // `input` string and using `max_tokens` (OpenRouter expects max_tokens rather than max_completion_tokens).
-            var sb = new StringBuilder();
-            foreach (var msg in messages)
-            {
-                try
-                {
-                    var json = JObject.FromObject(msg);
-                    var role = json["role"]?.ToString();
-                    var content = json["content"]?.ToString();
-                    if (!string.IsNullOrEmpty(role) || !string.IsNullOrEmpty(content))
-                    {
-                        if (!string.IsNullOrEmpty(role))
-                        {
-                            sb.Append(role);
-                            sb.Append(": ");
-                        }
-                        if (!string.IsNullOrEmpty(content))
-                        {
-                            sb.Append(content);
-                        }
-                        sb.AppendLine();
-                        sb.AppendLine();
-                    }
-                }
-                catch
-                {
-                    // Fall back to a simple ToString() if conversion fails
-                    sb.Append(msg?.ToString());
-                    sb.AppendLine();
-                    sb.AppendLine();
-                }
-            }
-
-            var payload = new Dictionary<string, object>
-            {
-                { "model", source.SelectedModel },
-                { "input", sb.ToString() },
-                { "max_tokens", MaxCompletionTokens }
-            };
-
+            // OpenRouter is OpenAI-compatible but does not support temperature for all routed models.
+            // Use a minimal payload: messages + model + max_tokens, no temperature.
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
             return SendWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
         }
 
@@ -362,6 +323,7 @@ namespace Warewolf.AI.Harness
         private string SendToGemini_Internal(ChatbotSourceDefinition source, List<object> messages)
         {
             // Gemini uses a different payload format with "contents" and "parts"
+            string systemPrompt = null;
             var contents = new List<object>();
 
             foreach (var msg in messages)
@@ -369,9 +331,10 @@ namespace Warewolf.AI.Harness
                 var json = JObject.FromObject(msg);
                 var role = json["role"]?.ToString();
 
-                // Skip system messages — Gemini handles them differently
+                // Gemini supports system instructions via a top-level "system_instruction" field
                 if (role == "system")
                 {
+                    systemPrompt = (systemPrompt == null ? "" : systemPrompt + "\n\n") + json["content"]?.ToString();
                     continue;
                 }
 
@@ -385,7 +348,19 @@ namespace Warewolf.AI.Harness
                 });
             }
 
-            var requestBody = new { contents = contents };
+            object requestBody;
+            if (!string.IsNullOrWhiteSpace(systemPrompt))
+            {
+                requestBody = new
+                {
+                    system_instruction = new { parts = new[] { new { text = systemPrompt } } },
+                    contents
+                };
+            }
+            else
+            {
+                requestBody = new { contents };
+            }
 
             // Gemini uses API key as query parameter and model in URL path
             const string baseUrl = "https://generativelanguage.googleapis.com/v1beta";
