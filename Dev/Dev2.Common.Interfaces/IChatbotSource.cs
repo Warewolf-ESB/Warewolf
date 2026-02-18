@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
         string CompletionsEndpoint { get; set; }
         string ModelsEndpoint { get; set; }
         string SelectedModel { get; set; }
+        string Provider { get; set; }
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }

@@ -106,7 +106,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ApiKey = chatbotSource.ApiKey,
                         CompletionsEndpoint = chatbotSource.CompletionsEndpoint,
                         ModelsEndpoint = chatbotSource.ModelsEndpoint,
-                        SelectedModel = chatbotSource.SelectedModel
+                        SelectedModel = chatbotSource.SelectedModel,
+                        Provider = chatbotSource.Provider
                     };
                 }
 
@@ -128,7 +129,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 // Build the messages array: system prompt (with context) + conversation history + current message
-                var contextBuilder = new ChatbotContextBuilder();
                 var systemPrompt = ChatbotContextBuilder.BuildSystemPrompt(settings);
                 var messages = BuildMessagesArray(systemPrompt, message, conversationHistory);
 
