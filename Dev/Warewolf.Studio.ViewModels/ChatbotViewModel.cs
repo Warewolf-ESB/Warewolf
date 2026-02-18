@@ -118,7 +118,6 @@ namespace Warewolf.Studio.ViewModels
 
         public ChatbotViewModel()
         {
-            _contextBuilder = new ChatbotContextBuilder();
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
             SavedConversations = new ObservableCollection<ChatConversation>();

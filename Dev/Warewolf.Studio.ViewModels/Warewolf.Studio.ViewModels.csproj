@@ -81,8 +81,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatbotApiService.cs" />
-    <Compile Include="ChatbotContextBuilder.cs" />
     <Compile Include="ChatbotSourceModel.cs" />
     <Compile Include="ChatbotSourceViewModel.cs" />
     <Compile Include="ChatbotViewModel.cs" />

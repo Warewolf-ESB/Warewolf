@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -28,6 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
         private const int TimeoutSeconds = 30;
+        private const int MaxMessageLength = 32_000;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -77,13 +79,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return CreateErrorResponse(serializer, "Chatbot is not configured. Please configure a chatbot source in settings.");
                 }
 
-                // Parse chatbot source definition from payload
+                // Parse chatbot source definition from payload (payload is DPAPI-encrypted)
                 ChatbotSourceDefinition chatbotSourceDef = null;
                 if (!string.IsNullOrWhiteSpace(settings.ChatbotSource.Payload))
                 {
                     try
                     {
-                        chatbotSourceDef = JsonConvert.DeserializeObject<ChatbotSourceDefinition>(settings.ChatbotSource.Payload);
+                        var decryptedPayload = DpapiWrapper.DecryptIfEncrypted(settings.ChatbotSource.Payload);
+                        chatbotSourceDef = JsonConvert.DeserializeObject<ChatbotSourceDefinition>(decryptedPayload);
                     }
                     catch (Exception ex)
                     {
@@ -112,12 +115,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 // Validate endpoint and model
-                if (string.IsNullOrWhiteSpace(chatbotSource.CompletionsEndpoint))
+                if (string.IsNullOrWhiteSpace(chatbotSourceDef.CompletionsEndpoint))
                 {
                     return CreateErrorResponse(serializer, "Chatbot source does not have a completions endpoint configured.");
                 }
 
-                if (string.IsNullOrWhiteSpace(chatbotSource.SelectedModel))
+                if (string.IsNullOrWhiteSpace(chatbotSourceDef.SelectedModel))
                 {
                     return CreateErrorResponse(serializer, "No AI model selected. Please select a model in chatbot settings.");
                 }
@@ -130,7 +133,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 // Build the messages array: system prompt (with context) + conversation history + current message
                 var contextBuilder = new ChatbotContextBuilder();
-                var systemPrompt = contextBuilder.BuildSystemPrompt(settings);
+                var systemPrompt = ChatbotContextBuilder.BuildSystemPrompt(settings);
                 var messages = BuildMessagesArray(systemPrompt, message, conversationHistory);
 
                 // Send to AI provider
