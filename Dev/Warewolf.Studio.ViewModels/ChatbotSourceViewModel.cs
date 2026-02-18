@@ -55,6 +55,7 @@ namespace Warewolf.Studio.ViewModels
             { "GitHub Models", ("https://models.github.com/v1/models", "https://models.github.com/v1/chat/completions") },
             { "Google Gemini", ("https://generativelanguage.googleapis.com/v1beta/models", "https://generativelanguage.googleapis.com/v1beta/{model}:generateContent") },
             { "OpenAI", ("https://api.openai.com/v1/models", "https://api.openai.com/v1/chat/completions") },
+            { "OpenRouter", ("https://openrouter.ai/api/v1/models", "https://openrouter.ai/api/v1/chat/completions") },
             { "XAI", ("https://api.x.ai/v1/models", "https://api.x.ai/v1/chat/completions") }
         };
 
@@ -65,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
             { "GitHub Models", "https://github.com/settings/tokens" },
             { "Google Gemini", "https://aistudio.google.com/app/apikey" },
             { "OpenAI", "https://platform.openai.com/api-keys" },
+            { "OpenRouter", "https://openrouter.ai/settings/keys" },
             { "XAI", "https://console.x.ai/" }
         };
 
@@ -196,13 +198,15 @@ namespace Warewolf.Studio.ViewModels
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        public override void FromModel(IChatbotSource source)
-        {
-            ResourceName = source.Name;
-            ApiKey = source.ApiKey;
-            ModelsEndpoint = source.ModelsEndpoint;
-            CompletionsEndpoint = source.CompletionsEndpoint;
-        }
+		public override void FromModel(IChatbotSource source)
+		{
+			ResourceName = source.Name;
+			ApiKey = source.ApiKey;
+			ModelsEndpoint = source.ModelsEndpoint;
+			CompletionsEndpoint = source.CompletionsEndpoint;
+			_selectedProvider = source.Provider;
+			OnPropertyChanged(() => SelectedProvider);
+		}
 
         public override string Name
         {
@@ -293,36 +297,39 @@ namespace Warewolf.Studio.ViewModels
             _updateManager.TestConnection(chatbotSource);
         }
 
-        IChatbotSource ToNewSource() => new ChatbotSourceDefinition
-        {
-            ApiKey = ApiKey,
-            ModelsEndpoint = ModelsEndpoint,
-            CompletionsEndpoint = CompletionsEndpoint,
-            Name = ResourceName,
-            Id = _chatbotSource?.Id ?? Guid.NewGuid()
-        };
+		IChatbotSource ToNewSource() => new ChatbotSourceDefinition
+		{
+			ApiKey = ApiKey,
+			ModelsEndpoint = ModelsEndpoint,
+			CompletionsEndpoint = CompletionsEndpoint,
+			Provider = SelectedProvider,
+			Name = ResourceName,
+			Id = _chatbotSource?.Id ?? Guid.NewGuid()
+		};
 
-        IChatbotSource ToSource()
-        {
-            if (_chatbotSource == null)
-            {
-                return new ChatbotSourceDefinition
-                {
-                    ApiKey = ApiKey,
-                    ModelsEndpoint = ModelsEndpoint,
-                    CompletionsEndpoint = CompletionsEndpoint,
-                    Name = ResourceName,
-                    Id = _chatbotSource?.Id ?? Guid.NewGuid()
-                };
-            }
-            else
-            {
-                _chatbotSource.ApiKey = ApiKey;
-                _chatbotSource.ModelsEndpoint = ModelsEndpoint;
-                _chatbotSource.CompletionsEndpoint = CompletionsEndpoint;
-                return _chatbotSource;
-            }
-        }
+		IChatbotSource ToSource()
+		{
+			if (_chatbotSource == null)
+			{
+				return new ChatbotSourceDefinition
+				{
+					ApiKey = ApiKey,
+					ModelsEndpoint = ModelsEndpoint,
+					CompletionsEndpoint = CompletionsEndpoint,
+					Provider = SelectedProvider,
+					Name = ResourceName,
+					Id = _chatbotSource?.Id ?? Guid.NewGuid()
+				};
+			}
+			else
+			{
+				_chatbotSource.ApiKey = ApiKey;
+				_chatbotSource.ModelsEndpoint = ModelsEndpoint;
+				_chatbotSource.CompletionsEndpoint = CompletionsEndpoint;
+				_chatbotSource.Provider = SelectedProvider;
+				return _chatbotSource;
+			}
+		}
 
         public override IChatbotSource ToModel()
         {
@@ -332,16 +339,17 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
 
-            return new ChatbotSourceDefinition
-            {
-                Name = ResourceName,
-                ApiKey = ApiKey,
-                ModelsEndpoint = ModelsEndpoint,
-                CompletionsEndpoint = CompletionsEndpoint,
-                Id = Item.Id,
-                Path = Path
-            };
-        }
+			return new ChatbotSourceDefinition
+			{
+				Name = ResourceName,
+				ApiKey = ApiKey,
+				ModelsEndpoint = ModelsEndpoint,
+				CompletionsEndpoint = CompletionsEndpoint,
+				Provider = SelectedProvider,
+				Id = Item.Id,
+				Path = Path
+			};
+		}
 
         private IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {

@@ -36,6 +36,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(CompletionsEndpoint, other.CompletionsEndpoint);
             equals &= string.Equals(ModelsEndpoint, other.ModelsEndpoint);
             equals &= string.Equals(SelectedModel, other.SelectedModel);
+            equals &= string.Equals(Provider, other.Provider);
             equals &= string.Equals(Name, other.Name);
             equals &= Id == other.Id;
 
@@ -58,6 +59,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(CompletionsEndpoint, other.CompletionsEndpoint);
             equals &= string.Equals(ModelsEndpoint, other.ModelsEndpoint);
             equals &= string.Equals(SelectedModel, other.SelectedModel);
+            equals &= string.Equals(Provider, other.Provider);
 
             return equals;
         }
@@ -87,6 +89,7 @@ namespace Dev2.Common.Interfaces.Core
                 hashCode = (hashCode * 397) ^ (CompletionsEndpoint?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (ModelsEndpoint?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SelectedModel?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (Provider?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Name?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 return hashCode;
@@ -101,6 +104,7 @@ namespace Dev2.Common.Interfaces.Core
         public string CompletionsEndpoint { get; set; }
         public string ModelsEndpoint { get; set; }
         public string SelectedModel { get; set; }
+        public string Provider { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }

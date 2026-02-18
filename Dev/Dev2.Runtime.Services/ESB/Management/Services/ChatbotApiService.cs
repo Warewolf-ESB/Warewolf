@@ -36,30 +36,67 @@ namespace Dev2.Runtime.ESB.Management.Services
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
+        // Known provider name constants
+        internal const string ProviderAnthropic = "Anthropic";
+        internal const string ProviderGitHubModels = "GitHub Models";
+        internal const string ProviderGoogleGemini = "Google Gemini";
+        internal const string ProviderOpenAI = "OpenAI";
+        internal const string ProviderOpenRouter = "OpenRouter";
+        internal const string ProviderXAI = "XAI";
+
         /// <summary>
         /// Sends a list of messages to the configured AI provider and returns the response text.
+        /// Provider is determined first by the explicit Provider field, then by URL heuristics for backward compatibility.
         /// </summary>
         public string SendMessage(ChatbotSourceDefinition source, List<object> messages)
         {
-            var endpoint = source.CompletionsEndpoint;
+            var provider = ResolveProvider(source);
 
+            switch (provider)
+            {
+                case ProviderAnthropic:
+                    return SendToAnthropic(source, messages);
+                case ProviderGoogleGemini:
+                    return SendToGemini(source, messages);
+                case ProviderOpenRouter:
+                    return SendToOpenRouter(source, messages);
+                default:
+                    // OpenAI, GitHub Models, XAI, and any unknown OpenAI-compatible endpoint
+                    return SendToOpenAI(source, messages);
+            }
+        }
+
+        /// <summary>
+        /// Resolves the provider from the explicit Provider field or falls back to URL heuristics.
+        /// </summary>
+        internal static string ResolveProvider(ChatbotSourceDefinition source)
+        {
+            if (!string.IsNullOrWhiteSpace(source.Provider))
+            {
+                return source.Provider;
+            }
+
+            // Fallback: detect from endpoint URL for backward compatibility
+            var endpoint = source.CompletionsEndpoint ?? string.Empty;
             if (IsAnthropicEndpoint(endpoint))
             {
-                return SendToAnthropic(source, messages);
+                return ProviderAnthropic;
             }
-
             if (IsGoogleGeminiEndpoint(endpoint))
             {
-                return SendToGemini(source, messages);
+                return ProviderGoogleGemini;
             }
-
-            return SendToOpenAI(source, messages);
+            if (IsOpenRouterEndpoint(endpoint))
+            {
+                return ProviderOpenRouter;
+            }
+            return ProviderOpenAI;
         }
 
         private string SendToOpenAI(ChatbotSourceDefinition source, List<object> messages)
         {
-            // Try max_completion_tokens first (newer OpenAI parameter)
-            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: true, includeTemperature: true);
+            // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
             var response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
 
             if (response.IsSuccessStatusCode)
@@ -69,29 +106,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var errorContent = response.Content.ReadAsStringAsync().Result;
 
-            // Retry with max_tokens if max_completion_tokens is not supported
-            if (errorContent.Contains("max_completion_tokens") && errorContent.Contains("not supported"))
-            {
-                Dev2Logger.Info("Retrying with max_tokens instead of max_completion_tokens", GlobalConstants.WarewolfInfo);
-
-                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
-                response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return ReadAndParseResponse(response);
-                }
-
-                errorContent = response.Content.ReadAsStringAsync().Result;
-            }
-
-            // Retry without temperature if not supported
+            // Retry without temperature if not supported by this model
             if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
             {
                 Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
 
-                var useMaxCompletionTokensRetry = !errorContent.Contains("max_tokens");
-                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: useMaxCompletionTokensRetry, includeTemperature: false);
+                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
                 response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
 
                 if (response.IsSuccessStatusCode)
@@ -103,6 +123,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
+        }
+
+        private string SendToOpenRouter(ChatbotSourceDefinition source, List<object> messages)
+        {
+            // OpenRouter is OpenAI-compatible but requires max_tokens (not max_completion_tokens)
+            // and does not support temperature for all routed models; use a minimal payload
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
+            return SendWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
         }
 
         private string SendToAnthropic(ChatbotSourceDefinition source, List<object> messages)
@@ -317,6 +345,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             var lower = endpoint.ToLower();
             return lower.Contains("generativelanguage.googleapis.com") || lower.Contains("gemini");
+        }
+
+        internal static bool IsOpenRouterEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+            return endpoint.ToLower().Contains("openrouter.ai");
         }
     }
 }
