@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// Builds the structured system prompt including workspace context.
         /// Reads settings, resources and logs directly from server-side APIs.
         /// </summary>
-        public string BuildSystemPrompt(ChatbotSettingsData settings)
+        public static string BuildSystemPrompt(ChatbotSettingsData settings)
         {
             var promptBuilder = new StringBuilder(4096);
 
