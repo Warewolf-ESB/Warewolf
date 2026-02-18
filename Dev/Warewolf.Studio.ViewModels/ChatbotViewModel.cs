@@ -389,14 +389,20 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         private async Task<string> SendMessageViaServerAsync(string userMessage)
         {
-            // Build conversation history payload
+            // Build conversation history from prior completed exchanges only.
+            // The current user message was already added to Messages before this call, and an empty
+            // bot placeholder may have been added for streaming UI — exclude both from the history.
+            // The server receives the current message separately via the "Message" argument.
+            var currentUserMsg = Messages.LastOrDefault(m => m.Type == ChatMessageType.User && m.Content == userMessage);
             var conversationHistory = Messages
-                .Where(m => m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
+                .Where(m => (m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
+                            && !string.IsNullOrEmpty(m.Content)
+                            && m != currentUserMsg)
                 .Select(m => new
                 {
                     type = m.Type == ChatMessageType.User ? "user" : "bot",
                     content = m.Content,
-                    timestamp = DateTime.UtcNow.ToString("o")
+                    timestamp = m.Timestamp.ToString("o")
                 })
                 .ToList();
 
@@ -408,8 +414,10 @@ namespace Warewolf.Studio.ViewModels
                 ServiceName = "SendChatbotMessage"
             };
 
+            var historyJson = JsonConvert.SerializeObject(conversationHistory);
+
             request.AddArgument("Message", new StringBuilder(userMessage ?? string.Empty));
-            request.AddArgument("ConversationHistory", new StringBuilder(JsonConvert.SerializeObject(conversationHistory)));
+            request.AddArgument("ConversationHistory", new StringBuilder(historyJson));
 
             // Serialize and execute on server
             var payload = serializer.SerializeToBuilder(request);
