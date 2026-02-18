@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string Send(ChatbotSourceDefinition source, List<object> messages)
         {
-            return _serviceWrapper.SendToGemini_Public(source, messages);
+            return _serviceWrapper.SendToGemini(source, messages);
         }
     }
 }

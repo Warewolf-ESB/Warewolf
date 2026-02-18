@@ -21,13 +21,22 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
     /// Handles HTTP communication with external AI provider APIs.
-    /// Supports OpenAI-compatible endpoints, Anthropic (Claude), and Google Gemini.
-    /// Manages authentication negotiation and provider-specific payload formats.
+    /// Supports OpenAI-compatible endpoints, Anthropic (Claude), Google Gemini, and OpenRouter.
+    /// Provider is selected by the explicit Provider field on the source definition, with URL
+    /// heuristics as a fallback for backward compatibility with older saved sources.
     /// </summary>
     internal class ChatbotApiService
     {
         private const int MaxCompletionTokens = 2000;
         private const double ChatTemperature = 0.7;
+
+        // Known provider name constants — must match the preset keys in ChatbotSourceViewModel
+        internal const string ProviderAnthropic = "Anthropic";
+        internal const string ProviderGitHubModels = "GitHub Models";
+        internal const string ProviderGoogleGemini = "Google Gemini";
+        internal const string ProviderOpenAI = "OpenAI";
+        internal const string ProviderOpenRouter = "OpenRouter";
+        internal const string ProviderXAI = "XAI";
 
         private readonly HttpClient _client;
 
@@ -36,31 +45,63 @@ namespace Dev2.Runtime.ESB.Management.Services
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        // Expose provider-facing methods for new provider classes to call.
-        internal string SendToOpenAI_Public(ChatbotSourceDefinition source, List<object> messages)
+        /// <summary>
+        /// Sends a list of messages to the configured AI provider and returns the response text.
+        /// Provider is determined first by the explicit Provider field, then by URL heuristics for backward compatibility.
+        /// </summary>
+        public string SendMessage(ChatbotSourceDefinition source, List<object> messages)
         {
-            return SendToOpenAI_Internal(source, messages);
+            var provider = ResolveProvider(source);
+
+            if (provider == ProviderAnthropic)
+            {
+                return SendToAnthropic(source, messages);
+            }
+
+            if (provider == ProviderGoogleGemini)
+            {
+                return SendToGemini(source, messages);
+            }
+
+            if (provider == ProviderOpenRouter)
+            {
+                return SendToOpenRouter(source, messages);
+            }
+
+            // OpenAI, GitHub Models, XAI, and any unknown OpenAI-compatible endpoint
+            return SendToOpenAI(source, messages);
         }
 
-        internal string SendToOpenRouter_Public(ChatbotSourceDefinition source, List<object> messages)
+        /// <summary>
+        /// Resolves the provider from the explicit Provider field or falls back to URL heuristics.
+        /// </summary>
+        internal static string ResolveProvider(ChatbotSourceDefinition source)
         {
-            return SendToOpenRouter_Internal(source, messages);
+            if (!string.IsNullOrWhiteSpace(source.Provider))
+            {
+                return source.Provider;
+            }
+
+            // Fallback: detect from endpoint URL for backward compatibility with older saved sources
+            var endpoint = source.CompletionsEndpoint ?? string.Empty;
+            if (IsAnthropicEndpoint(endpoint))
+            {
+                return ProviderAnthropic;
+            }
+            if (IsGoogleGeminiEndpoint(endpoint))
+            {
+                return ProviderGoogleGemini;
+            }
+            if (IsOpenRouterEndpoint(endpoint))
+            {
+                return ProviderOpenRouter;
+            }
+            return ProviderOpenAI;
         }
 
-        internal string SendToAnthropic_Public(ChatbotSourceDefinition source, List<object> messages)
+        public string SendToOpenAI(ChatbotSourceDefinition source, List<object> messages)
         {
-            return SendToAnthropic_Internal(source, messages);
-        }
-
-        internal string SendToGemini_Public(ChatbotSourceDefinition source, List<object> messages)
-        {
-            return SendToGemini_Internal(source, messages);
-        }
-
-        // Internalized original provider implementations
-        private string SendToOpenAI_Internal(ChatbotSourceDefinition source, List<object> messages)
-        {
-            // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
+            // Use max_tokens — universally supported by OpenAI-compatible APIs (GitHub Models, XAI, etc.)
             var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
             var response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
 
@@ -71,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var errorContent = response.Content.ReadAsStringAsync().Result;
 
-            // Retry without temperature if not supported by this model
+            // Retry without temperature if not supported by this model (e.g. OpenAI o1/o3)
             if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
             {
                 Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
@@ -90,54 +131,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
         }
 
-        private string SendToOpenRouter_Internal(ChatbotSourceDefinition source, List<object> messages)
+        public string SendToOpenRouter(ChatbotSourceDefinition source, List<object> messages)
         {
-            // OpenRouter's endpoint may reject a top-level "messages" field in some routing configurations.
-            // Build a minimal OpenRouter-compatible payload by concatenating the messages into a single
-            // `input` string and using `max_tokens` (OpenRouter expects max_tokens rather than max_completion_tokens).
-            var sb = new StringBuilder();
-            foreach (var msg in messages)
-            {
-                try
-                {
-                    var json = JObject.FromObject(msg);
-                    var role = json["role"]?.ToString();
-                    var content = json["content"]?.ToString();
-                    if (!string.IsNullOrEmpty(role) || !string.IsNullOrEmpty(content))
-                    {
-                        if (!string.IsNullOrEmpty(role))
-                        {
-                            sb.Append(role);
-                            sb.Append(": ");
-                        }
-                        if (!string.IsNullOrEmpty(content))
-                        {
-                            sb.Append(content);
-                        }
-                        sb.AppendLine();
-                        sb.AppendLine();
-                    }
-                }
-                catch
-                {
-                    // Fall back to a simple ToString() if conversion fails
-                    sb.Append(msg?.ToString());
-                    sb.AppendLine();
-                    sb.AppendLine();
-                }
-            }
-
-            var payload = new Dictionary<string, object>
-            {
-                { "model", source.SelectedModel },
-                { "input", sb.ToString() },
-                { "max_tokens", MaxCompletionTokens }
-            };
-
+            // OpenRouter is OpenAI-compatible but does not support temperature for all routed models.
+            // Use a minimal payload: messages + model + max_tokens, no temperature.
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
             return SendWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
         }
 
-        private string SendToAnthropic_Internal(ChatbotSourceDefinition source, List<object> messages)
+        public string SendToAnthropic(ChatbotSourceDefinition source, List<object> messages)
         {
             // Anthropic requires system messages as a top-level "system" field, not in the messages array
             string systemMessage = null;
@@ -161,7 +163,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return SendWithAuth(source.CompletionsEndpoint, payload, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
         }
 
-        private string SendToGemini_Internal(ChatbotSourceDefinition source, List<object> messages)
+        public string SendToGemini(ChatbotSourceDefinition source, List<object> messages)
         {
             // Gemini uses a different payload format with "contents" and "parts"
             var contents = new List<object>();
@@ -196,55 +198,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return SendWithAuth(endpoint, requestBody, null, null, null);
         }
-
-        // Provider name constants have been moved into their respective provider classes.
-
-        /// <summary>
-        /// Sends a list of messages to the configured AI provider and returns the response text.
-        /// Provider is determined first by the explicit Provider field, then by URL heuristics for backward compatibility.
-        /// </summary>
-        public string SendMessage(ChatbotSourceDefinition source, List<object> messages)
-        {
-            var provider = ResolveProvider(source);
-            var impl = provider switch
-            {
-                AnthropicProvider.ProviderName => (IChatbotProvider)new AnthropicProvider(this),
-                GeminiProvider.ProviderName => (IChatbotProvider)new GeminiProvider(this),
-                OpenRouterProvider.ProviderName => (IChatbotProvider)new OpenRouterProvider(this),
-                _ => (IChatbotProvider)new OpenAIProvider(this)
-            };
-
-            return impl.Send(source, messages);
-        }
-
-        /// <summary>
-        /// Resolves the provider from the explicit Provider field or falls back to URL heuristics.
-        /// </summary>
-        internal static string ResolveProvider(ChatbotSourceDefinition source)
-        {
-            if (!string.IsNullOrWhiteSpace(source.Provider))
-            {
-                return source.Provider;
-            }
-
-            // Fallback: detect from endpoint URL for backward compatibility
-            var endpoint = source.CompletionsEndpoint ?? string.Empty;
-            if (IsAnthropicEndpoint(endpoint))
-            {
-                return AnthropicProvider.ProviderName;
-            }
-            if (IsGoogleGeminiEndpoint(endpoint))
-            {
-                return GeminiProvider.ProviderName;
-            }
-            if (IsOpenRouterEndpoint(endpoint))
-            {
-                return OpenRouterProvider.ProviderName;
-            }
-            return OpenAIProvider.ProviderName;
-        }
-
-        
 
         /// <summary>
         /// Sends payload and throws on failure. Used by providers that don't need parameter negotiation.

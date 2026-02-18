@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string Send(ChatbotSourceDefinition source, List<object> messages)
         {
-            return _serviceWrapper.SendToOpenRouter_Public(source, messages);
+            return _serviceWrapper.SendToOpenRouter(source, messages);
         }
     }
 }
