@@ -1,13 +1,3 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -17,14 +7,14 @@ using Dev2.Common.Interfaces.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Dev2.Runtime.ESB.Management.Services
+namespace Warewolf.AI.Harness
 {
     /// <summary>
     /// Handles HTTP communication with external AI provider APIs.
     /// Supports OpenAI-compatible endpoints, Anthropic (Claude), and Google Gemini.
     /// Manages authentication negotiation and provider-specific payload formats.
     /// </summary>
-    internal class ChatbotApiService
+    public class ChatbotApiService
     {
         private const int MaxCompletionTokens = 2000;
         private const double ChatTemperature = 0.7;
@@ -35,169 +25,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
-
-        // Expose provider-facing methods for new provider classes to call.
-        internal string SendToOpenAI_Public(ChatbotSourceDefinition source, List<object> messages)
-        {
-            return SendToOpenAI_Internal(source, messages);
-        }
-
-        internal string SendToOpenRouter_Public(ChatbotSourceDefinition source, List<object> messages)
-        {
-            return SendToOpenRouter_Internal(source, messages);
-        }
-
-        internal string SendToAnthropic_Public(ChatbotSourceDefinition source, List<object> messages)
-        {
-            return SendToAnthropic_Internal(source, messages);
-        }
-
-        internal string SendToGemini_Public(ChatbotSourceDefinition source, List<object> messages)
-        {
-            return SendToGemini_Internal(source, messages);
-        }
-
-        // Internalized original provider implementations
-        private string SendToOpenAI_Internal(ChatbotSourceDefinition source, List<object> messages)
-        {
-            // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
-            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
-            var response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return ReadAndParseResponse(response);
-            }
-
-            var errorContent = response.Content.ReadAsStringAsync().Result;
-
-            // Retry without temperature if not supported by this model
-            if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
-            {
-                Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
-
-                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
-                response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return ReadAndParseResponse(response);
-                }
-
-                errorContent = response.Content.ReadAsStringAsync().Result;
-            }
-
-            throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
-        }
-
-        private string SendToOpenRouter_Internal(ChatbotSourceDefinition source, List<object> messages)
-        {
-            // OpenRouter's endpoint may reject a top-level "messages" field in some routing configurations.
-            // Build a minimal OpenRouter-compatible payload by concatenating the messages into a single
-            // `input` string and using `max_tokens` (OpenRouter expects max_tokens rather than max_completion_tokens).
-            var sb = new StringBuilder();
-            foreach (var msg in messages)
-            {
-                try
-                {
-                    var json = JObject.FromObject(msg);
-                    var role = json["role"]?.ToString();
-                    var content = json["content"]?.ToString();
-                    if (!string.IsNullOrEmpty(role) || !string.IsNullOrEmpty(content))
-                    {
-                        if (!string.IsNullOrEmpty(role))
-                        {
-                            sb.Append(role);
-                            sb.Append(": ");
-                        }
-                        if (!string.IsNullOrEmpty(content))
-                        {
-                            sb.Append(content);
-                        }
-                        sb.AppendLine();
-                        sb.AppendLine();
-                    }
-                }
-                catch
-                {
-                    // Fall back to a simple ToString() if conversion fails
-                    sb.Append(msg?.ToString());
-                    sb.AppendLine();
-                    sb.AppendLine();
-                }
-            }
-
-            var payload = new Dictionary<string, object>
-            {
-                { "model", source.SelectedModel },
-                { "input", sb.ToString() },
-                { "max_tokens", MaxCompletionTokens }
-            };
-
-            return SendWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
-        }
-
-        private string SendToAnthropic_Internal(ChatbotSourceDefinition source, List<object> messages)
-        {
-            // Anthropic requires system messages as a top-level "system" field, not in the messages array
-            string systemMessage = null;
-            var nonSystemMessages = new List<object>();
-
-            foreach (var msg in messages)
-            {
-                var json = JObject.FromObject(msg);
-                if (json["role"]?.ToString() == "system")
-                {
-                    systemMessage = (systemMessage == null ? "" : systemMessage + "\n\n") + json["content"]?.ToString();
-                }
-                else
-                {
-                    nonSystemMessages.Add(msg);
-                }
-            }
-
-            // Anthropic always uses max_tokens (not max_completion_tokens)
-            var payload = CreatePayload(source.SelectedModel, nonSystemMessages, systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
-            return SendWithAuth(source.CompletionsEndpoint, payload, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
-        }
-
-        private string SendToGemini_Internal(ChatbotSourceDefinition source, List<object> messages)
-        {
-            // Gemini uses a different payload format with "contents" and "parts"
-            var contents = new List<object>();
-
-            foreach (var msg in messages)
-            {
-                var json = JObject.FromObject(msg);
-                var role = json["role"]?.ToString();
-
-                // Skip system messages — Gemini handles them differently
-                if (role == "system")
-                {
-                    continue;
-                }
-
-                // Gemini uses "model" instead of "assistant"
-                var geminiRole = role == "assistant" ? "model" : role;
-
-                contents.Add(new
-                {
-                    role = geminiRole,
-                    parts = new[] { new { text = json["content"]?.ToString() } }
-                });
-            }
-
-            var requestBody = new { contents = contents };
-
-            // Gemini uses API key as query parameter and model in URL path
-            const string baseUrl = "https://generativelanguage.googleapis.com/v1beta";
-            var modelName = source.SelectedModel;
-            var endpoint = $"{baseUrl}/{modelName}:generateContent?key={source.ApiKey}";
-
-            return SendWithAuth(endpoint, requestBody, null, null, null);
-        }
-
-        // Provider name constants have been moved into their respective provider classes.
 
         /// <summary>
         /// Sends a list of messages to the configured AI provider and returns the response text.
@@ -243,8 +70,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return OpenAIProvider.ProviderName;
         }
-
-        
 
         /// <summary>
         /// Sends payload and throws on failure. Used by providers that don't need parameter negotiation.
@@ -407,6 +232,167 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return false;
             }
             return endpoint.ToLower().Contains("openrouter.ai");
+        }
+
+        // Expose provider-facing methods for new provider classes to call.
+        public string SendToOpenAI_Public(ChatbotSourceDefinition source, List<object> messages)
+        {
+            return SendToOpenAI_Internal(source, messages);
+        }
+
+        public string SendToOpenRouter_Public(ChatbotSourceDefinition source, List<object> messages)
+        {
+            return SendToOpenRouter_Internal(source, messages);
+        }
+
+        public string SendToAnthropic_Public(ChatbotSourceDefinition source, List<object> messages)
+        {
+            return SendToAnthropic_Internal(source, messages);
+        }
+
+        public string SendToGemini_Public(ChatbotSourceDefinition source, List<object> messages)
+        {
+            return SendToGemini_Internal(source, messages);
+        }
+
+        // Internalized original provider implementations
+        private string SendToOpenAI_Internal(ChatbotSourceDefinition source, List<object> messages)
+        {
+            // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
+            var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
+            var response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return ReadAndParseResponse(response);
+            }
+
+            var errorContent = response.Content.ReadAsStringAsync().Result;
+
+            // Retry without temperature if not supported by this model
+            if (errorContent.Contains("temperature") && (errorContent.Contains("not support") || errorContent.Contains("does not support") || errorContent.Contains("unsupported")))
+            {
+                Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
+
+                payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
+                response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return ReadAndParseResponse(response);
+                }
+
+                errorContent = response.Content.ReadAsStringAsync().Result;
+            }
+
+            throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
+        }
+
+        private string SendToOpenRouter_Internal(ChatbotSourceDefinition source, List<object> messages)
+        {
+            // OpenRouter's endpoint may reject a top-level "messages" field in some routing configurations.
+            // Build a minimal OpenRouter-compatible payload by concatenating the messages into a single
+            // `input` string and using `max_tokens` (OpenRouter expects max_tokens rather than max_completion_tokens).
+            var sb = new StringBuilder();
+            foreach (var msg in messages)
+            {
+                try
+                {
+                    var json = JObject.FromObject(msg);
+                    var role = json["role"]?.ToString();
+                    var content = json["content"]?.ToString();
+                    if (!string.IsNullOrEmpty(role) || !string.IsNullOrEmpty(content))
+                    {
+                        if (!string.IsNullOrEmpty(role))
+                        {
+                            sb.Append(role);
+                            sb.Append(": ");
+                        }
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            sb.Append(content);
+                        }
+                        sb.AppendLine();
+                        sb.AppendLine();
+                    }
+                }
+                catch
+                {
+                    // Fall back to a simple ToString() if conversion fails
+                    sb.Append(msg?.ToString());
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+            }
+
+            var payload = new Dictionary<string, object>
+            {
+                { "model", source.SelectedModel },
+                { "input", sb.ToString() },
+                { "max_tokens", MaxCompletionTokens }
+            };
+
+            return SendWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+        }
+
+        private string SendToAnthropic_Internal(ChatbotSourceDefinition source, List<object> messages)
+        {
+            // Anthropic requires system messages as a top-level "system" field, not in the messages array
+            string systemMessage = null;
+            var nonSystemMessages = new List<object>();
+
+            foreach (var msg in messages)
+            {
+                var json = JObject.FromObject(msg);
+                if (json["role"]?.ToString() == "system")
+                {
+                    systemMessage = (systemMessage == null ? "" : systemMessage + "\n\n") + json["content"]?.ToString();
+                }
+                else
+                {
+                    nonSystemMessages.Add(msg);
+                }
+            }
+
+            // Anthropic always uses max_tokens (not max_completion_tokens)
+            var payload = CreatePayload(source.SelectedModel, nonSystemMessages, systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
+            return SendWithAuth(source.CompletionsEndpoint, payload, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
+        }
+
+        private string SendToGemini_Internal(ChatbotSourceDefinition source, List<object> messages)
+        {
+            // Gemini uses a different payload format with "contents" and "parts"
+            var contents = new List<object>();
+
+            foreach (var msg in messages)
+            {
+                var json = JObject.FromObject(msg);
+                var role = json["role"]?.ToString();
+
+                // Skip system messages — Gemini handles them differently
+                if (role == "system")
+                {
+                    continue;
+                }
+
+                // Gemini uses "model" instead of "assistant"
+                var geminiRole = role == "assistant" ? "model" : role;
+
+                contents.Add(new
+                {
+                    role = geminiRole,
+                    parts = new[] { new { text = json["content"]?.ToString() } }
+                });
+            }
+
+            var requestBody = new { contents = contents };
+
+            // Gemini uses API key as query parameter and model in URL path
+            const string baseUrl = "https://generativelanguage.googleapis.com/v1beta";
+            var modelName = source.SelectedModel;
+            var endpoint = $"{baseUrl}/{modelName}:generateContent?key={source.ApiKey}";
+
+            return SendWithAuth(endpoint, requestBody, null, null, null);
         }
     }
 }
