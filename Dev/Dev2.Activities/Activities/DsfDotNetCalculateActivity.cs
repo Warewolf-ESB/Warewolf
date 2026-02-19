@@ -221,6 +221,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             };
         }
+
+        public override void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Dev2.Common.X6.Constants.DSFDOTNETCALCULATEACTIVITY;
+            cell.data[Dev2.Common.X6.Constants.TYPE] = Dev2.Common.X6.Constants.DSFDOTNETCALCULATEACTIVITY.ToLower();
+            cell.data[Dev2.Common.X6.Constants.DISPLAYNAME] = DisplayName ?? Dev2.Common.X6.Constants.DISPLAYNAME_CALCULATE;
+            cell.data[Dev2.Common.X6.Constants.UNIQUEID] = UniqueID;
+
+            cell.data[Dev2.Common.X6.Constants.CALCULATE_EXPRESSION] = Expression ?? string.Empty;
+            cell.data[Dev2.Common.X6.Constants.CALCULATE_RESULT] = Result ?? string.Empty;
+        }
     }
 }
 

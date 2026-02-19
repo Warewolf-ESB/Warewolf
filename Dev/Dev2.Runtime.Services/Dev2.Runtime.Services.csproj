@@ -3,7 +3,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
 	<LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -43,6 +44,7 @@
     <Compile Include="ESB\Management\Services\FetchChatbotModels.cs" />
     <Compile Include="ESB\Management\Services\FetchChatbotSources.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchEmailToolPassword.cs" />
     <Compile Include="ESB\Management\Services\FetchJSONResourceDefinition.cs" />
     <Compile Include="ESB\Management\Services\FetchTestsAndTriggers.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
