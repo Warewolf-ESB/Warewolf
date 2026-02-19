@@ -37,12 +37,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             // Allow caller to provide ChatbotSettings (preview) - otherwise use persisted settings
             Warewolf.Configuration.ChatbotSettingsData settings = null;
-            if (values.TryGetValue("ChatbotSettings", out StringBuilder settingsValue) && settingsValue != null && settingsValue.Length > 0)
+#pragma warning disable CC0021 // Use nameof
+			if (values.TryGetValue("ChatbotSettings", out StringBuilder settingsValue) && settingsValue != null && settingsValue.Length > 0)
             {
                 settings = serializer.Deserialize<Warewolf.Configuration.ChatbotSettingsData>(settingsValue);
             }
+#pragma warning restore CC0021 // Use nameof
 
-            if (settings == null)
+			if (settings == null)
             {
                 settings = Config.Chatbot.Get();
             }
