@@ -302,12 +302,20 @@ d:DataContext="{d:DesignInstance chatbot:IChatbotSettings}">
                         </Grid>
 
                         <!-- System Prompt Preview Section -->
-                        <TextBlock Grid.Column="0"
-                                   Grid.Row="7"
-                                   Grid.ColumnSpan="4"
-                                   Text="System Prompt Preview"
-                                   FontWeight="Bold"
-                                   Margin="0,15,0,5"/>
+                        <StackPanel Grid.Column="0"
+                                    Grid.Row="7"
+                                    Grid.ColumnSpan="4"
+                                    Orientation="Horizontal"
+                                    Margin="0,15,0,5">
+                            <TextBlock Text="System Prompt Preview"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                            <Button Content="Refresh Preview"
+                                    Command="{Binding RefreshSystemPromptPreviewCommand}"
+                                    Margin="10,0,0,0"
+                                    Padding="8,2"
+                                    ToolTip="Regenerate the system prompt preview"/>
+                        </StackPanel>
 
                         <Border Grid.Column="0"
                                 Grid.Row="8"

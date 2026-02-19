@@ -52,6 +52,7 @@
 		<Compile Include="ESB\Management\Services\GenerateAdvancedRecordsetOutputs.cs" />
 		<Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
 		<Compile Include="ESB\Management\Services\GetChatbotSettings.cs" />
+		<Compile Include="ESB\Management\Services\GetChatbotSystemPrompt.cs" />
 		<Compile Include="ESB\Management\Services\IsLicensed.cs" />
 		<Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
 		<Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />

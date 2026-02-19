@@ -48,6 +48,7 @@ namespace Dev2.Settings.Chatbot
         private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
+        private ICommand _refreshSystemPromptPreviewCommand;
         private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
@@ -122,6 +123,7 @@ namespace Dev2.Settings.Chatbot
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
+            _refreshSystemPromptPreviewCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(UpdateSystemPromptPreview);
 
             // Only set baseline here if no source is selected (no async model fetch pending)
             // Otherwise, baseline will be set after FetchAvailableModels completes
@@ -197,26 +199,24 @@ namespace Dev2.Settings.Chatbot
 			try
 			{
 				var treeItems = new ObservableCollection<ResourceTreeItemViewModel>();
+
+				// Use already-loaded explorer items to avoid a slow ForceLoadResources call
+				var explorerItems = GetExplorerItems();
+
+				if (explorerItems != null && explorerItems.Count > 0)
+				{
+					BuildResourceTreeFromExplorerItems(explorerItems, treeItems);
+					ResourceTree = treeItems;
+					return;
+				}
+
+				// Fall back to resource repository if explorer items are not yet available
 				var allResources = _resourceRepository.All();
 
 				if (allResources == null || allResources.Count == 0)
 				{
-					// Try to force load resources from the explorer
-					try
-					{
-						_currentEnvironment.ForceLoadResources();
-						allResources = _resourceRepository.All();
-					}
-					catch (Exception ex)
-					{
-						Dev2Logger.Error("ChatbotSettings: BuildResourceTree - Error calling ForceLoadResources", ex, "Warewolf Error");
-					}
-					
-					if (allResources == null || allResources.Count == 0)
-					{
-						ResourceTree = treeItems;
-						return;
-					}
+					ResourceTree = treeItems;
+					return;
 				}
 
 				// Filter out source resources
@@ -370,6 +370,148 @@ namespace Dev2.Settings.Chatbot
 			BuildResourceTree();
 		}
 
+		private ICollection<IExplorerItemViewModel> GetExplorerItems()
+		{
+			try
+			{
+				var shellViewModel = CustomContainer.Get<IShellViewModel>();
+				if (shellViewModel?.ExplorerViewModel?.Environments == null)
+				{
+					return null;
+				}
+
+				var matchingEnv = shellViewModel.ExplorerViewModel.Environments
+					.FirstOrDefault(e => e.ResourceId == _currentEnvironment.EnvironmentID);
+
+				return matchingEnv?.AsList();
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Error("ChatbotSettings: BuildResourceTree - Error getting explorer items", ex, "Warewolf Error");
+				return null;
+			}
+		}
+
+		private void BuildResourceTreeFromExplorerItems(ICollection<IExplorerItemViewModel> explorerItems, ObservableCollection<ResourceTreeItemViewModel> treeItems)
+		{
+			// Filter to non-source, non-version, non-folder leaf items
+			var filteredItems = explorerItems.Where(r =>
+				!r.IsFolder &&
+				!r.IsSource &&
+				!r.IsVersion &&
+				r.ResourceType != "Version").ToList();
+
+			var rootItems = new Dictionary<string, ResourceTreeItemViewModel>();
+
+			foreach (var item in filteredItems)
+			{
+				var resourcePath = item.ResourcePath ?? "";
+				var pathParts = resourcePath.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+
+				if (pathParts.Length == 0 && !string.IsNullOrEmpty(item.ResourceName))
+				{
+					var rootResourceItem = new ResourceTreeItemViewModel
+					{
+						ResourceId = item.ResourceId,
+						ResourceName = item.ResourceName,
+						DisplayName = item.ResourceName,
+						ResourcePath = "",
+						IsFolder = false,
+						ResourceType = item.ResourceType,
+						Parent = null
+					};
+
+					if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == item.ResourceId))
+					{
+						rootResourceItem.IsChecked = true;
+					}
+
+					rootResourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+					treeItems.Add(rootResourceItem);
+					continue;
+				}
+
+				ResourceTreeItemViewModel currentParent = null;
+				var currentPath = "";
+
+				for (int i = 0; i < pathParts.Length - 1; i++)
+				{
+					currentPath += "\\" + pathParts[i];
+
+					if (currentParent == null)
+					{
+						if (!rootItems.ContainsKey(currentPath))
+						{
+							var folderItem = new ResourceTreeItemViewModel
+							{
+								ResourceId = Guid.Empty,
+								ResourceName = pathParts[i],
+								DisplayName = pathParts[i],
+								ResourcePath = currentPath,
+								IsFolder = true,
+								ResourceType = "Folder"
+							};
+							rootItems[currentPath] = folderItem;
+							treeItems.Add(folderItem);
+						}
+						currentParent = rootItems[currentPath];
+					}
+					else
+					{
+						var existingFolder = currentParent.Children.FirstOrDefault(c =>
+							c.IsFolder && c.ResourceName == pathParts[i]);
+
+						if (existingFolder == null)
+						{
+							var folderItem = new ResourceTreeItemViewModel
+							{
+								ResourceId = Guid.Empty,
+								ResourceName = pathParts[i],
+								DisplayName = pathParts[i],
+								ResourcePath = currentPath,
+								IsFolder = true,
+								ResourceType = "Folder",
+								Parent = currentParent
+							};
+							currentParent.Children.Add(folderItem);
+							currentParent = folderItem;
+						}
+						else
+						{
+							currentParent = existingFolder;
+						}
+					}
+				}
+
+				var resourceItem = new ResourceTreeItemViewModel
+				{
+					ResourceId = item.ResourceId,
+					ResourceName = item.ResourceName,
+					DisplayName = item.ResourceName,
+					ResourcePath = resourcePath,
+					IsFolder = false,
+					ResourceType = item.ResourceType,
+					Parent = currentParent
+				};
+
+				if (_selectedResources != null && _selectedResources.Any(sr => sr.ResourceId == item.ResourceId))
+				{
+					resourceItem.IsChecked = true;
+				}
+
+				resourceItem.PropertyChanged += ResourceItem_PropertyChanged;
+
+				if (currentParent != null)
+				{
+					currentParent.Children.Add(resourceItem);
+				}
+				else
+				{
+					treeItems.Add(resourceItem);
+				}
+			}
+		}
+
 		private void ResourceItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ResourceTreeItemViewModel.IsChecked))
@@ -403,8 +545,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-
-                UpdateSystemPromptPreview();
             }
             catch (Exception ex)
             {
@@ -518,7 +658,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -534,7 +673,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -587,7 +725,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -903,6 +1040,7 @@ namespace Dev2.Settings.Chatbot
 
         public ICommand NewChatbotSourceCommand => _newChatbotSourceCommand;
         public ICommand EditChatbotSourceCommand => _editChatbotSourceCommand;
+        public ICommand RefreshSystemPromptPreviewCommand => _refreshSystemPromptPreviewCommand;
 
 #pragma warning disable CC0091 // Use static method
 		private void NewChatbotSource()
