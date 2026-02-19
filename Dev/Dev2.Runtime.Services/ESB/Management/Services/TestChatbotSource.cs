@@ -44,7 +44,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // Try with Bearer authentication first
                 try
                 {
-                    TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
+                    bool isGemini = chatbotSourceDefinition.ModelsEndpoint.Contains("generativelanguage.googleapis.com");
+                    if (isGemini)
+                        TestGoogleAIStudioConnectionWithKey(chatbotSourceDefinition);
+                    else
+                        TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
                     msg.HasError = false;
                     msg.Message = new StringBuilder("Connection successful");
                 }
@@ -74,6 +78,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        private static void TestGoogleAIStudioConnectionWithKey(ChatbotSourceDefinition chatbotSourceDefinition)
+        {
+            using (var client = new HttpClient())
+            {
+#pragma warning disable CC0021 // Use nameof
+                client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+#pragma warning restore CC0021 // Use nameof
+
+                var endpoint = $"{chatbotSourceDefinition.ModelsEndpoint}?key={chatbotSourceDefinition.ApiKey}";
+                var response = client.GetAsync(endpoint).Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    throw new HttpRequestException($"Chatbot API connection failed: {response.StatusCode} - {content}");
+                }
+            }
         }
 
         private static bool IsAuthenticationError(HttpRequestException ex)

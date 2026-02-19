@@ -7,6 +7,12 @@ using Dev2.Common.Interfaces.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+using System;
+using System.Text;
+using Newtonsoft.Json;
+
+
+
 namespace Warewolf.AI.Harness
 {
     /// <summary>
@@ -88,6 +94,22 @@ namespace Warewolf.AI.Harness
         }
 
         /// <summary>
+        /// Sends payload and throws on failure. Used by providers that don't need parameter negotiation.
+        /// </summary>
+        private string SendWithAuthAndTelemetry(string endpoint, object payload, string authHeaderName, string authHeaderValue, string additionalHeaders)
+        {
+            var response = PostWithAuthAndTelemetry(endpoint, payload, authHeaderName, authHeaderValue, additionalHeaders);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                throw new HttpRequestException($"AI service error: {response.StatusCode} - {errorContent}");
+            }
+
+            return ReadAndParseResponse(response);
+        }
+
+        /// <summary>
         /// Posts a JSON payload and returns the raw HttpResponseMessage.
         /// Used by providers that need parameter negotiation (retry on unsupported parameters).
         /// </summary>
@@ -124,6 +146,177 @@ namespace Warewolf.AI.Harness
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             return _client.PostAsync(endpoint, content).Result;
         }
+
+
+        private HttpResponseMessage PostWithAuthAndTelemetry(
+    string endpoint,
+    object payload,
+    string authHeaderName,
+    string authHeaderValue,
+    string additionalHeaders)
+        {
+            _client.DefaultRequestHeaders.Clear();
+
+            if (!string.IsNullOrWhiteSpace(authHeaderName))
+                _client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+
+            _client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+
+            if (!string.IsNullOrWhiteSpace(additionalHeaders))
+            {
+                var headerPairs = additionalHeaders.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var headerPair in headerPairs)
+                {
+                    var parts = headerPair.Split(new[] { '=' }, 2);
+                    if (parts.Length == 2)
+                        _client.DefaultRequestHeaders.Add(parts[0].Trim(), parts[1].Trim());
+                }
+            }
+
+            var json = JsonConvert.SerializeObject(payload);
+
+            // 🔹 1️⃣ Estimate BEFORE sending
+            var estimate = TokenEstimator.EstimateRequestTokens(payload, expectedResponseTokens: 1000);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var response = _client.PostAsync(endpoint, content).Result;
+            stopwatch.Stop();
+
+            var telemetry = new LlmTelemetry
+            {
+                Model = endpoint,//ExtractModelFromEndpoint(endpoint),
+                TimestampUtc = DateTime.UtcNow,
+                LatencyMs = stopwatch.ElapsedMilliseconds,
+                PromptCharacters = json.Length,
+                EstimatedPromptTokens = estimate.EstimatedPromptTokens,
+                EstimatedTotalTokens = estimate.EstimatedTotalTokens
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = response.Content.ReadAsStringAsync().Result;
+                dynamic parsed = JsonConvert.DeserializeObject(responseString);
+
+                if (parsed?.usageMetadata != null)
+                {
+                    telemetry.ActualPromptTokens =
+                        parsed.usageMetadata.promptTokenCount ?? 0;
+
+                    telemetry.ActualCompletionTokens =
+                        parsed.usageMetadata.candidatesTokenCount ?? 0;
+
+                    telemetry.ActualTotalTokens =
+                        parsed.usageMetadata.totalTokenCount ?? 0;
+                }
+
+                if (parsed?.candidates != null && parsed.candidates.Count > 0)
+                {
+                    telemetry.FinishReason =
+                        parsed.candidates[0].finishReason;
+                }
+
+                // 🔹 2️⃣ Compare Estimate vs Actual
+                if (telemetry.ActualPromptTokens > 0)
+                {
+                    telemetry.EstimationErrorPercentage =
+                        CalculateErrorPercentage(
+                            telemetry.EstimatedPromptTokens,
+                            telemetry.ActualPromptTokens);
+                }
+            }
+
+            // 🔹 3️⃣ Persist or Log Telemetry
+            telemetry.SaveTelemetry();
+
+            return response;
+        }
+
+        private double CalculateErrorPercentage(int estimated, int actual)
+        {
+            if (actual == 0) return 0;
+
+            return Math.Round(
+                ((double)(estimated - actual) / actual) * 100,
+                2);
+        }
+
+
+
+        private HttpResponseMessage PostWithAuthAndTelemetry2(
+    string endpoint,
+    object payload,
+    string authHeaderName,
+    string authHeaderValue,
+    string additionalHeaders)
+        {
+            _client.DefaultRequestHeaders.Clear();
+
+            if (!string.IsNullOrWhiteSpace(authHeaderName))
+            {
+                _client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+            }
+
+            _client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+
+            if (!string.IsNullOrWhiteSpace(additionalHeaders))
+            {
+                var headerPairs = additionalHeaders.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var headerPair in headerPairs)
+                {
+                    var parts = headerPair.Split(new[] { '=' }, 2);
+                    if (parts.Length == 2)
+                    {
+                        _client.DefaultRequestHeaders.Add(parts[0].Trim(), parts[1].Trim());
+                    }
+                }
+            }
+
+            var json = JsonConvert.SerializeObject(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var response = _client.PostAsync(endpoint, content).Result;
+            stopwatch.Stop();
+
+            //var telemetry = new LlmTelemetry
+            //{
+            //    Model = ExtractModelFromEndpoint(endpoint),
+            //    TimestampUtc = DateTime.UtcNow,
+            //    LatencyMs = stopwatch.ElapsedMilliseconds,
+            //    PromptCharacters = json.Length
+            //};
+
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var promptTokens = 0;
+                var completionTokens = 0;
+                var TotalTokens = 0;
+                object reason;
+
+                var responseString = response.Content.ReadAsStringAsync().Result;
+
+                dynamic parsed = JsonConvert.DeserializeObject(responseString);
+
+                if (parsed?.usageMetadata != null)
+                {
+                    promptTokens = parsed.usageMetadata.promptTokenCount ?? 0;
+                    completionTokens = parsed.usageMetadata.candidatesTokenCount ?? 0;
+                    TotalTokens = parsed.usageMetadata.totalTokenCount ?? 0;
+                }
+
+                if (parsed?.candidates != null && parsed.candidates.Count > 0)
+                {
+                    reason = parsed.candidates[0].finishReason;
+                }
+            }
+
+            return response;
+        }
+
 
         private static string ReadAndParseResponse(HttpResponseMessage response)
         {
@@ -367,7 +560,125 @@ namespace Warewolf.AI.Harness
             var modelName = source.SelectedModel;
             var endpoint = $"{baseUrl}/{modelName}:generateContent?key={source.ApiKey}";
 
-            return SendWithAuth(endpoint, requestBody, null, null, null);
+            return SendWithAuthAndTelemetry(endpoint, requestBody, null, null, null);
         }
+    }
+
+    public static class TokenEstimator
+    {
+        // Conservative average for Gemini-style models
+        private const double CharsPerToken = 3.5;
+
+        public static TokenEstimate EstimateRequestTokens(
+            object requestPayload,
+            int expectedResponseTokens = 1000)
+        {
+            if (requestPayload == null)
+                throw new ArgumentNullException(nameof(requestPayload));
+
+            // Serialize full payload exactly as sent
+            var json = JsonConvert.SerializeObject(requestPayload);
+            var totalChars = Encoding.UTF8.GetByteCount(json);
+
+            // Approximate tokens
+            int promptTokens = (int)Math.Ceiling(totalChars / CharsPerToken);
+            int totalEstimated = promptTokens + expectedResponseTokens;
+
+            return new TokenEstimate
+            {
+                CharacterCount = totalChars,
+                EstimatedPromptTokens = promptTokens,
+                EstimatedResponseTokens = expectedResponseTokens,
+                EstimatedTotalTokens = totalEstimated
+            };
+        }
+    }
+
+    public class TokenEstimate
+    {
+        public int CharacterCount { get; set; }
+        public int EstimatedPromptTokens { get; set; }
+        public int EstimatedResponseTokens { get; set; }
+        public int EstimatedTotalTokens { get; set; }
+
+        public override string ToString()
+        {
+            return $"Chars: {CharacterCount}, " +
+                   $"PromptTokens: {EstimatedPromptTokens}, " +
+                   $"ResponseTokens: {EstimatedResponseTokens}, " +
+                   $"Total: {EstimatedTotalTokens}";
+        }
+    }
+
+    public class LlmTelemetry
+    {
+        public string Model { get; set; }
+        public DateTime TimestampUtc { get; set; }
+
+        public long LatencyMs { get; set; }
+
+        public int PromptCharacters { get; set; }
+
+        // Estimated
+        public int EstimatedPromptTokens { get; set; }
+        public int EstimatedTotalTokens { get; set; }
+
+        // Actual
+        public int ActualPromptTokens { get; set; }
+        public int ActualCompletionTokens { get; set; }
+        public int ActualTotalTokens { get; set; }
+
+        public double EstimationErrorPercentage { get; set; }
+
+        public string FinishReason { get; set; }
+
+        public void SaveTelemetry()
+        {
+
+
+            try
+            {
+                var logMessage = new StringBuilder();
+
+                logMessage.AppendLine("===== LLM TELEMETRY =====");
+                logMessage.AppendLine($"Model: {Model}");
+                logMessage.AppendLine($"Timestamp (UTC): {TimestampUtc:O}");
+                logMessage.AppendLine($"Latency (ms): {LatencyMs}");
+                logMessage.AppendLine($"Prompt Characters: {PromptCharacters}");
+
+                logMessage.AppendLine("---- Token Estimates ----");
+                logMessage.AppendLine($"Estimated Prompt Tokens: {EstimatedPromptTokens}");
+                logMessage.AppendLine($"Estimated Total Tokens: {EstimatedTotalTokens}");
+
+                logMessage.AppendLine("---- Actual Usage ----");
+                logMessage.AppendLine($"Actual Prompt Tokens: {ActualPromptTokens}");
+                logMessage.AppendLine($"Actual Completion Tokens: {ActualCompletionTokens}");
+                logMessage.AppendLine($"Actual Total Tokens: {ActualTotalTokens}");
+
+                logMessage.AppendLine($"Estimation Error (%): {EstimationErrorPercentage}");
+                logMessage.AppendLine($"Finish Reason: {FinishReason}");
+
+                // ⚠️ Large prompt warning
+                if (ActualPromptTokens > 200_000)
+                {
+                    logMessage.AppendLine("WARNING: Very large prompt token usage detected.");
+                }
+
+                // ⚠️ Estimation deviation warning
+                if (Math.Abs(EstimationErrorPercentage) > 15)
+                {
+                    logMessage.AppendLine("WARNING: Token estimation deviation exceeds 15%.");
+                }
+
+                logMessage.AppendLine("==========================");
+
+                Dev2Logger.Debug(logMessage.ToString(), "SaveTelemetry");
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Debug($"LLM Telemetry logging failed: {ex.Message}", "SaveTelemetry");
+            }
+        }
+
     }
 }
