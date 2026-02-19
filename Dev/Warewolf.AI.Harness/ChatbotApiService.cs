@@ -119,13 +119,6 @@ namespace Warewolf.AI.Harness
                         {
                             _client.DefaultRequestHeaders.Add(headerName, headerValue);
                         }
-
-        private static bool EndpointContainsApiKey(string endpoint)
-        {
-            if (string.IsNullOrWhiteSpace(endpoint))
-                return false;
-            return endpoint.ToLower().Contains("key=");
-        }
                     }
                 }
             }
@@ -133,6 +126,13 @@ namespace Warewolf.AI.Harness
             var json = JsonConvert.SerializeObject(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             return _client.PostAsync(endpoint, content).Result;
+        }
+
+        private static bool EndpointContainsApiKey(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                return false;
+            return endpoint.ToLower().Contains("key=");
         }
 
         private static string ReadAndParseResponse(HttpResponseMessage response)
