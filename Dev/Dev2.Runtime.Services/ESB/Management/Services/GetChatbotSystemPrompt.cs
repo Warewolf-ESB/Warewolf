@@ -35,7 +35,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
 
-            var settings = Config.Chatbot.Get();
+            // Allow caller to provide ChatbotSettings (preview) - otherwise use persisted settings
+            Warewolf.Configuration.ChatbotSettingsData settings = null;
+            if (values.TryGetValue("ChatbotSettings", out StringBuilder settingsValue) && settingsValue != null && settingsValue.Length > 0)
+            {
+                settings = serializer.Deserialize<Warewolf.Configuration.ChatbotSettingsData>(settingsValue);
+            }
+
+            if (settings == null)
+            {
+                settings = Config.Chatbot.Get();
+            }
 
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(ChatbotContextBuilder.BuildSystemPrompt(settings));
@@ -46,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override DynamicService CreateServiceEntry() =>
             EsbManagementServiceEntry.CreateESBManagementServiceEntry(
                 HandlesType(),
-                "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+                "<DataList><ChatbotSettings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public override string HandlesType() => nameof(Warewolf.Service.GetChatbotSystemPrompt);
     }
