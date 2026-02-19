@@ -89,6 +89,8 @@ namespace Dev2.Common.X6
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
         public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
         public const string GATEACTIVITY = "GateActivity";
+        public const string DSFDATETIMEDIFFERENCEACTIVITY = "DsfDateTimeDifferenceActivity";
+        public const string DSFDOTNETDATETIMEDIFFERENCEACTIVITY = "DsfDotNetDateTimeDifferenceActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -123,6 +125,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
         public const string DISPLAYNAME_PYTHON = "Python";
         public const string DISPLAYNAME_GATE = "Gate";
+        public const string DISPLAYNAME_DATETIMEDIFFERENCE = "Date and Time Difference";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -392,6 +395,13 @@ namespace Dev2.Common.X6
         public const string GATE_DATAFUNC = "dataFunc";
         public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
 
+        // Date Time Difference Activity
+        public const string DATETIMEDIFF_INPUT1 = "input1";
+        public const string DATETIMEDIFF_INPUT2 = "input2";
+        public const string DATETIMEDIFF_INPUTFORMAT = "inputformat";
+        public const string DATETIMEDIFF_OUTPUTTYPE = "outputtype";
+        public const string DATETIMEDIFF_RESULT = "result";
+
         // SMTP Email Activity
         public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
         public const string DISPLAYNAME_SMTPEMAIL = "SMTP Email";
@@ -443,6 +453,12 @@ namespace Dev2.Common.X6
         public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
         public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
         public const string CREATEJSON_JSONSTRING = "jsonstring";
+
+        // Calculate Activity
+        public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
+        public const string DISPLAYNAME_CALCULATE = "Calculate";
+        public const string CALCULATE_EXPRESSION = "expression";
+        public const string CALCULATE_RESULT = "result";
     }
 
     public class X6WorkflowLoadModel

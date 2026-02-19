@@ -640,10 +640,16 @@ namespace Dev2.Activities.WF
                     return CreateExchangeEmailActivity(node);
                 case var t when t.Contains(Constants.DSFRANDOMACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateRandomActivity(node);
+				case var t when t.Contains(Constants.DSFCREATEJSONACTIVITY, StringComparison.OrdinalIgnoreCase):
+					return CreateCreateJsonActivity(node);
                 case var t when t.Contains(Constants.DSFNUMBERFORMATACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateNumberFormatActivity(node);
+                case var t when t.Contains(Constants.DSFDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDateTimeDifferenceActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetDateTimeDifferenceActivity(node);
 
-                default:
+				default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }
