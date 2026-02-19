@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Warewolf.Configuration;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
