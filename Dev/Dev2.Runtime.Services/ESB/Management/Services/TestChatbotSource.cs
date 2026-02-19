@@ -40,29 +40,63 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue(ChatbotSource, out StringBuilder resourceDefinition);
 
                 var chatbotSourceDefinition = serializer.Deserialize<ChatbotSourceDefinition>(resourceDefinition);
-                
-                // Try with Bearer authentication first
+
+                // For Google Gemini endpoints the authentication requirements differ.
+                // The Models/ListModels endpoint may require an OAuth2 access token (Bearer) and
+                // using the plain API key in an Authorization header will not work. Older code
+                // attempted Bearer with the stored ApiKey which is incorrect for Gemini model listing.
+                // Try a Gemini-specific request pattern first (API key as query param) and
+                // provide a helpful error if the server requires OAuth2 tokens instead.
                 try
                 {
-                    TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
-                    msg.HasError = false;
-                    msg.Message = new StringBuilder("Connection successful");
-                }
-                catch (HttpRequestException ex) when (IsAuthenticationError(ex))
-                {
-                    Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key authentication", GlobalConstants.WarewolfInfo);
-                    
-                    // Retry with Claude-style authentication
-                    try
+                    if (IsGoogleGeminiEndpoint(chatbotSourceDefinition.ModelsEndpoint))
                     {
-                        TestConnectionWithAuth(chatbotSourceDefinition, "x-api-key", chatbotSourceDefinition.ApiKey, "anthropic-version=2023-06-01");
+                        // Try using API key as a query parameter (some Gemini endpoints accept this for certain calls)
+                        TestGeminiConnection(chatbotSourceDefinition);
                         msg.HasError = false;
                         msg.Message = new StringBuilder("Connection successful");
                     }
-                    catch (Exception)
+                    else
+                    {
+                        // Try with Bearer authentication first for non-Gemini endpoints
+                        try
+                        {
+                            TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
+                            msg.HasError = false;
+                            msg.Message = new StringBuilder("Connection successful");
+                        }
+                        catch (HttpRequestException ex) when (IsAuthenticationError(ex))
+                        {
+                            Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key authentication", GlobalConstants.WarewolfInfo);
+
+                            // Retry with Claude-style authentication
+                            try
+                            {
+                                TestConnectionWithAuth(chatbotSourceDefinition, "x-api-key", chatbotSourceDefinition.ApiKey, "anthropic-version=2023-06-01");
+                                msg.HasError = false;
+                                msg.Message = new StringBuilder("Connection successful");
+                            }
+                            catch (Exception)
+                            {
+                                msg.HasError = true;
+                                msg.Message = new StringBuilder($"Authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}");
+                            }
+                        }
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    // If Gemini explicitly complains about unsupported token types, give clearer guidance
+                    var lower = ex.Message?.ToLower() ?? string.Empty;
+                    if (lower.Contains("access_token_type_unsupported") || lower.Contains("expected oauth") || lower.Contains("unauthenticated"))
                     {
                         msg.HasError = true;
-                        msg.Message = new StringBuilder($"Authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}");
+                        msg.Message = new StringBuilder($"Authentication failed for Google Gemini models endpoint. The API is indicating that an OAuth2 access token is required rather than an API key. Original error: {ex.Message}");
+                    }
+                    else
+                    {
+                        msg.HasError = true;
+                        msg.Message = new StringBuilder($"Failed to connect to Chatbot API: {ex.Message}");
                     }
                 }
             }
@@ -87,6 +121,47 @@ namespace Dev2.Runtime.ESB.Management.Services
             return message.Contains("401") || message.Contains("unauthorized") || 
                    message.Contains("403") || message.Contains("forbidden") ||
                    message.Contains("authentication") || message.Contains("invalid") && (message.Contains("key") || message.Contains("token"));
+        }
+
+        private static bool IsGoogleGeminiEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return false;
+            }
+
+            var lower = endpoint.ToLower();
+            return lower.Contains("generativelanguage.googleapis.com") || lower.Contains("gemini");
+        }
+
+        private static void TestGeminiConnection(ChatbotSourceDefinition chatbotSourceDefinition)
+        {
+            using (var client = new HttpClient())
+            {
+                // Gemini model listing may accept API key as query parameter for simple access,
+                // otherwise it requires an OAuth2 access token. Try adding the key as a query
+                // param and performing a GET.
+                var url = chatbotSourceDefinition.ModelsEndpoint;
+                // Only append the API key as a query parameter if the endpoint does not
+                // already contain a key parameter (case-insensitive check).
+                if (url.IndexOf("key=", StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    var separator = url.Contains("?") ? "&" : "?";
+                    url = url + separator + "key=" + chatbotSourceDefinition.ApiKey;
+                }
+
+                // Keep consistency with other methods by using the same pragma to satisfy CC0021
+#pragma warning disable CC0021 // Use nameof
+                client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+#pragma warning restore CC0021 // Use nameof
+
+                var response = client.GetAsync(url).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    throw new HttpRequestException($"Chatbot API connection failed: {response.StatusCode} - {content}");
+                }
+            }
         }
 
         private static void TestConnectionWithAuth(ChatbotSourceDefinition chatbotSourceDefinition, string authHeaderName, string authHeaderValue, string additionalHeaders)

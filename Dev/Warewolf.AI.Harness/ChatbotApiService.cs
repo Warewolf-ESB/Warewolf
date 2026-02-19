@@ -94,7 +94,10 @@ namespace Warewolf.AI.Harness
         private HttpResponseMessage PostWithAuth(string endpoint, object payload, string authHeaderName, string authHeaderValue, string additionalHeaders)
         {
             _client.DefaultRequestHeaders.Clear();
-            if (!string.IsNullOrWhiteSpace(authHeaderName))
+            // If the endpoint contains an API key in the query string (key=), do not send
+            // an Authorization or other auth header, as the service may expect the API key
+            // to be provided via the query parameter instead.
+            if (!string.IsNullOrWhiteSpace(authHeaderName) && !EndpointContainsApiKey(endpoint))
             {
                 _client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
             }
@@ -116,6 +119,13 @@ namespace Warewolf.AI.Harness
                         {
                             _client.DefaultRequestHeaders.Add(headerName, headerValue);
                         }
+
+        private static bool EndpointContainsApiKey(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                return false;
+            return endpoint.ToLower().Contains("key=");
+        }
                     }
                 }
             }
