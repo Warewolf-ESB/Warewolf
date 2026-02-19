@@ -202,8 +202,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 							if (serviceXaml != null && serviceXaml.Length > 0)
                             {
 								var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
-								var info = new X6RequestInfo { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
-								var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = workflowXaml.XamlDefinition.ToString(), WorkflowXML = workflowXaml.XamlDefinition.ToString(), ResourceName = sanitizedName });
+					            var info = new X6RequestInfo { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
+					            var x6Json = XamlToX6Json(info);
                                 var deserializedObject = JsonSerializer.Deserialize<X6WorkflowLoadModel>(x6Json);
                                 deserializedObject.WorkflowXml = null;
 								x6Json = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions());
