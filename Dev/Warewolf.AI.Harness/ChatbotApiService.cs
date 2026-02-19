@@ -184,9 +184,10 @@ namespace Warewolf.AI.Harness
             var response = _client.PostAsync(endpoint, content).Result;
             stopwatch.Stop();
 
+            var baseEndpoint = new Uri(endpoint).GetLeftPart(UriPartial.Path);
             var telemetry = new LlmTelemetry
             {
-                Model = endpoint,//ExtractModelFromEndpoint(endpoint),
+                Model = baseEndpoint,
                 TimestampUtc = DateTime.UtcNow,
                 LatencyMs = stopwatch.ElapsedMilliseconds,
                 PromptCharacters = json.Length,

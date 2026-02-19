@@ -13,6 +13,8 @@ using Dev2.Common.Common;
 using Dev2.Common.X6;
 using Dev2.Communication;
 using Dev2.Runtime.Hosting;
+using Newtonsoft.Json;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -193,25 +195,35 @@ namespace Dev2.Runtime.ESB.Management.Services
                     else
                     {
                         var resourcePath = SanitizeContentForPrompt(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
-                        if (XamlToX6Json != null)
-						{
-							var result = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
-							var serviceXaml = new StringBuilder(result.ToString());
-                            var Cleaner = new ResourceDefinationCleaner();
-							var finalresult = (ExecuteMessage)Cleaner.GetRawResourceDefinition(false, resourceId, result);
-							if (serviceXaml != null && serviceXaml.Length > 0)
+                        if (XamlToX6Json != null && !resource.IsServer && !resource.IsSource)
+                        {
+                            var result = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+                            if (result != null && result.Length > 0)
                             {
-								var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
-								var info = new X6RequestInfo { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
-								var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = workflowXaml.XamlDefinition.ToString(), WorkflowXML = workflowXaml.XamlDefinition.ToString(), ResourceName = sanitizedName });
-                                var deserializedObject = JsonSerializer.Deserialize<X6WorkflowLoadModel>(x6Json);
-                                deserializedObject.WorkflowXml = null;
-								x6Json = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions());
+                                var serviceXaml = new StringBuilder(result.ToString());
+                                var cleaner = new ResourceDefinationCleaner();
+                                var finalresult = (ExecuteMessage)cleaner.GetRawResourceDefinition(false, resourceId, result);
 
-								if (!string.IsNullOrEmpty(x6Json))
+                                if (finalresult != null && !finalresult.HasError && finalresult.Message != null)
                                 {
-                                    definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, Path: {resourcePath}, ID: {resourceId}, JSON: ```json\n{x6Json}\n```)");
-                                    continue;
+                                    var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
+                                    var info = new Dev2.Common.X6.X6RequestInfo
+                                    {
+                                        ResourceName = sanitizedName,
+                                        ActivityXaml = finalresult.Message.ToString(),
+                                        WorkflowXML = workflowXaml.ToServiceDefinition().ToString()
+                                    };
+
+                                    var x6Json = XamlToX6Json?.Invoke(info);
+
+                                    x6Json = RemoveExtraData(x6Json);
+
+                                    if (!string.IsNullOrEmpty(x6Json))
+                                    {
+                                        x6Json = FetchResourceDefinition.RemovePasswordsFromJson(x6Json).ToString();
+                                        definitions.Add($"Resource: {sanitizedName}\nType: {sanitizedType}\nPath: {resourcePath}\nID: {resourceId}\nJSON: ```\n{x6Json}\n```");
+                                        continue;
+                                    }
                                 }
                             }
                         }
@@ -225,6 +237,64 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return definitions;
+        }
+
+        private static string RemoveExtraData(string x6Json)
+        {
+            var node = System.Text.Json.Nodes.JsonNode.Parse(x6Json);
+            if (node is System.Text.Json.Nodes.JsonObject rootObj)
+            {
+                rootObj.Remove("workflowxml");
+
+                // The JSON is a graph: {"nodes":[...], "edges":[...]}
+                // Iterate over each node in the "nodes" array and strip excess properties
+                if (rootObj.TryGetPropertyValue("nodes", out var nodesNode) && nodesNode is System.Text.Json.Nodes.JsonArray nodesArray)
+                {
+                    var fieldsToRemove = new[] { "ErrorMessage", "Path", "WatermarkTextValue", "WatermarkTextVariable", "Inserted", "IsFieldNameFocused", "IsFieldValueFocused", "Errors", "OutList", "HasError", "Error" };
+                    var propsToRemove = new[] { "Add", "CreateBookmark", "DatabindRecursive", "IsService", "IsSimulationEnabled", "IsUIStep", "IsWorkflow", "OnResumeClearAmbientDataList", "OnResumeClearTags", "SimulationMode", "UpdateAllOccurrences" };
+
+                    foreach (var nodeItem in nodesArray)
+                    {
+                        if (nodeItem is not System.Text.Json.Nodes.JsonObject nodeObj)
+                        {
+                            continue;
+                        }
+
+                        if (!nodeObj.TryGetPropertyValue("data", out var dataNode) || dataNode is not System.Text.Json.Nodes.JsonObject dataObj)
+                        {
+                            continue;
+                        }
+
+                        // Remove excess properties from each field in the "fields" array
+                        if (dataObj.TryGetPropertyValue("fields", out var fieldsNode) && fieldsNode is System.Text.Json.Nodes.JsonArray fieldsArray)
+                        {
+                            foreach (var fieldItem in fieldsArray)
+                            {
+                                if (fieldItem is System.Text.Json.Nodes.JsonObject fieldObj)
+                                {
+                                    foreach (var prop in fieldsToRemove)
+                                    {
+                                        fieldObj.Remove(prop);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Remove excess properties from "properties" object
+                        if (dataObj.TryGetPropertyValue("properties", out var propsNode) && propsNode is System.Text.Json.Nodes.JsonObject propsObj)
+                        {
+                            foreach (var prop in propsToRemove)
+                            {
+                                propsObj.Remove(prop);
+                            }
+                        }
+                    }
+                }
+
+                return rootObj.ToJsonString(new JsonSerializerOptions { WriteIndented = false });
+            }
+
+            return x6Json;
         }
 
         private static List<string> ReadRecentLogEntries(int numberOfLines)
