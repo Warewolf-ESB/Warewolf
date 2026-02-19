@@ -48,6 +48,7 @@ namespace Dev2.Settings.Chatbot
         private IChatbotSourceResource _selectedChatbotSource;
         private ICommand _newChatbotSourceCommand;
         private ICommand _editChatbotSourceCommand;
+        private ICommand _refreshSystemPromptPreviewCommand;
         private System.Collections.ObjectModel.ObservableCollection<ChatbotModelInfo> _availableModels;
         private ChatbotModelInfo _selectedModel;
         private bool _isFetchingModels;
@@ -122,6 +123,7 @@ namespace Dev2.Settings.Chatbot
 
 			_newChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(NewChatbotSource);
             _editChatbotSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(EditChatbotSource, CanEditChatbotSource);
+            _refreshSystemPromptPreviewCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(UpdateSystemPromptPreview);
 
             // Only set baseline here if no source is selected (no async model fetch pending)
             // Otherwise, baseline will be set after FetchAvailableModels completes
@@ -403,8 +405,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-
-                UpdateSystemPromptPreview();
             }
             catch (Exception ex)
             {
@@ -518,7 +518,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -534,7 +533,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -587,7 +585,6 @@ namespace Dev2.Settings.Chatbot
                 {
                     IsDirty = !Equals(Item);
                 }
-                UpdateSystemPromptPreview();
             }
         }
 
@@ -903,6 +900,7 @@ namespace Dev2.Settings.Chatbot
 
         public ICommand NewChatbotSourceCommand => _newChatbotSourceCommand;
         public ICommand EditChatbotSourceCommand => _editChatbotSourceCommand;
+        public ICommand RefreshSystemPromptPreviewCommand => _refreshSystemPromptPreviewCommand;
 
 #pragma warning disable CC0091 // Use static method
 		private void NewChatbotSource()
