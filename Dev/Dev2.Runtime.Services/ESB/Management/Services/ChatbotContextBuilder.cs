@@ -9,7 +9,9 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.X6;
+using Dev2.Communication;
 using Dev2.Runtime.Hosting;
 using System;
 using System.Collections.Generic;
@@ -192,12 +194,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var resourcePath = SanitizeContentForPrompt(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
                         if (XamlToX6Json != null)
-                        {
-                            var resourceXml = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
-                            if (resourceXml != null && resourceXml.Length > 0)
+						{
+							var result = ResourceCatalog.Instance.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+							var serviceXaml = new StringBuilder(result.ToString());
+                            var Cleaner = new ResourceDefinationCleaner();
+							var finalresult = (ExecuteMessage)Cleaner.GetRawResourceDefinition(false, resourceId, result);
+							if (serviceXaml != null && serviceXaml.Length > 0)
                             {
-                                var xaml = resourceXml.ToString();
-                                var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = xaml, WorkflowXML = xaml, ResourceName = sanitizedName });
+								var workflowXaml = new Dev2.Runtime.ServiceModel.Data.Workflow(serviceXaml.ToXElement(), true);
+								var info = new X6RequestInfo { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
+								var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = workflowXaml.XamlDefinition.ToString(), WorkflowXML = workflowXaml.XamlDefinition.ToString(), ResourceName = sanitizedName });
                                 var deserializedObject = JsonSerializer.Deserialize<X6WorkflowLoadModel>(x6Json);
                                 deserializedObject.WorkflowXml = null;
 								x6Json = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions());
