@@ -8,15 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
+using Dev2.Common.X6;
+using Dev2.Runtime.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Runtime.Hosting;
 using Warewolf.Configuration;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -178,9 +180,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         if (resourceXml != null && resourceXml.Length > 0)
                         {
                             var xaml = resourceXml.ToString();
-                            var summary = SummarizeXaml(xaml);
-                            summary = SanitizeContentForPrompt(summary);
-                            definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, ID: {resourceId})\n{summary}");
+                            var sanitizedXaml = SanitizeContentForPrompt(xaml);
+                            definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, ID: {resourceId}, XAML: {sanitizedXaml})");
                         }
                         else
                         {
@@ -197,9 +198,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                             {
                                 var xaml = resourceXml.ToString();
                                 var x6Json = XamlToX6Json(new Dev2.Common.X6.X6RequestInfo { ActivityXaml = xaml, WorkflowXML = xaml, ResourceName = sanitizedName });
-                                if (!string.IsNullOrEmpty(x6Json))
+                                var deserializedObject = JsonSerializer.Deserialize<X6WorkflowLoadModel>(x6Json);
+                                deserializedObject.WorkflowXml = null;
+								x6Json = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions());
+
+								if (!string.IsNullOrEmpty(x6Json))
                                 {
-                                    definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, Path: {resourcePath}, ID: {resourceId})\n```json\n{x6Json}\n```");
+                                    definitions.Add($"Resource: {sanitizedName} (Type: {sanitizedType}, Path: {resourcePath}, ID: {resourceId}, JSON: ```json\n{x6Json}\n```)");
                                     continue;
                                 }
                             }
@@ -248,109 +253,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return logEntries;
-        }
-
-        /// <summary>
-        /// Parses XAML and produces a concise human-readable summary of a workflow's structure,
-        /// including activities, variables, flow structure, and DataList fields.
-        /// </summary>
-        internal static string SummarizeXaml(string xaml)
-        {
-            if (string.IsNullOrWhiteSpace(xaml))
-            {
-                return null;
-            }
-
-            try
-            {
-                var doc = XDocument.Parse(xaml);
-                var sb = new StringBuilder();
-
-                // Extract activities (elements with a DisplayName attribute or recognisable activity elements)
-                var activityElements = doc.Descendants()
-                    .Select(e => new
-                    {
-                        DisplayName = e.Attribute("DisplayName")?.Value,
-                        TypeName = e.Name.LocalName
-                    })
-                    .Where(a => a.TypeName != null && a.TypeName != "Variable" && a.TypeName != "DataList")
-                    .ToList();
-
-                var activities = new List<(string DisplayName, string TypeName)>();
-                var unnamedCount = 0;
-                foreach (var a in activityElements)
-                {
-                    var name = a.DisplayName;
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        unnamedCount++;
-                        name = $"(unnamed {a.TypeName} #{unnamedCount})";
-                    }
-                    activities.Add((SanitizeContentForPrompt(name), a.TypeName));
-                }
-
-                if (activities.Count > 0)
-                {
-                    sb.AppendLine("Activities: " + string.Join(", ",
-                        activities.Select(a => $"{a.DisplayName} ({a.TypeName})")));
-                }
-
-                // Extract variables
-                var variables = doc.Descendants()
-                    .Where(e => e.Name.LocalName == "Variable")
-                    .Select(e => new
-                    {
-                        Name = e.Attribute("Name")?.Value,
-                        TypeName = ExtractVariableTypeName(e.Attribute("Type")?.Value)
-                    })
-                    .Where(v => !string.IsNullOrEmpty(v.Name))
-                    .ToList();
-
-                if (variables.Count > 0)
-                {
-                    sb.AppendLine("Variables: " + string.Join(", ",
-                        variables.Select(v => $"{v.Name} ({v.TypeName})")));
-                }
-
-                // Extract flow structure
-                var flowSteps = doc.Descendants()
-                    .Where(e => e.Name.LocalName == "FlowStep"
-                             || e.Name.LocalName == "FlowDecision"
-                             || e.Name.LocalName == "FlowSwitch")
-                    .Select(e => e.Name.LocalName)
-                    .ToList();
-
-                if (flowSteps.Count > 0)
-                {
-                    sb.AppendLine("Flow structure: " + string.Join(" -> ", flowSteps));
-                }
-
-                // Extract DataList fields
-                var dataListElements = doc.Descendants()
-                    .Where(e => e.Name.LocalName == "DataList")
-                    .SelectMany(e => e.Elements())
-                    .Select(e => e.Name.LocalName)
-                    .ToList();
-
-                if (dataListElements.Count > 0)
-                {
-                    sb.AppendLine("DataList fields: " + string.Join(", ", dataListElements));
-                }
-
-                var summary = sb.ToString().Trim();
-                return string.IsNullOrEmpty(summary) ? null : summary;
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Debug($"Failed to parse XAML for summarization, falling back to truncated content: {ex.Message}", GlobalConstants.WarewolfDebug);
-
-                // Fall back to truncated raw XAML if parsing fails
-                if (xaml.Length > MaxResourceXamlLength)
-                {
-                    return xaml.Substring(0, MaxResourceXamlLength) + "\n... (truncated)";
-                }
-                return xaml;
-            }
         }
 
         private static string ExtractVariableTypeName(string typeAttribute)
