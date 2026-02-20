@@ -33,6 +33,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Dev2.WorkflowConverters;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -297,5 +298,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             };
         }
+
+        public override void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Dev2.Common.X6.Constants.DSFCREATEJSONACTIVITY;
+            // Set the activity type
+            cell.data[Dev2.Common.X6.Constants.TYPE] = Dev2.Common.X6.Constants.DSFCREATEJSONACTIVITY.ToLower();
+            cell.data[Dev2.Common.X6.Constants.DISPLAYNAME] = DisplayName ?? Dev2.Common.X6.Constants.DISPLAYNAME_CREATEJSON;
+
+            cell.data.Add(Dev2.Common.X6.Constants.CREATEJSON_JSONMAPPINGS, JsonMappings);
+            cell.data.Add(Dev2.Common.X6.Constants.CREATEJSON_JSONSTRING, JsonString);
+        }
+
+        public override void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            // Read JsonString
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.CREATEJSON_JSONSTRING, out string jsonString))
+            {
+                this.JsonString = jsonString;
+            }
+
+            // Read JsonMappings or Updated JsonMappings
+            object fieldObject = null;
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.CREATEJSON_UPDATEDJSONMAPPINGS, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data.TryGetValue(Dev2.Common.X6.Constants.CREATEJSON_JSONMAPPINGS, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                JsonMappings = array.ToObject<List<JsonMappingTo>>();
+            }
+        }
     }
+
 }

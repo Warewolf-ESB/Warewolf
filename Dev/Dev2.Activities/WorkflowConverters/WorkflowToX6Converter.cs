@@ -5,6 +5,7 @@ using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
+ 
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.WorkflowConverters;
@@ -866,9 +867,33 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
             }
+            else if (activity is DsfCreateJsonActivity createJsonActivity)
+            {
+                cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
+            }
+            else if (activity is DsfRandomActivity randomActivity)
+            {
+                cell = CreateRandomActivity(randomActivity, nodeId);
+            }
+            else if (activity is DsfNumberFormatActivity numberFormatActivity)
+            {
+                cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
+            }
+            else if (activity is DsfDotNetCalculateActivity calculateActivity)
+            {
+                cell = CreateCalculateActivity(calculateActivity, nodeId);
+            }
+            else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
+            {
+                cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetDateTimeDifferenceActivity dotnetDateTimeDifferenceActivity)
+            {
+                cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
             }
             else
             {

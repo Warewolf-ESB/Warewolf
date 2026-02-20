@@ -89,6 +89,8 @@ namespace Dev2.Common.X6
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
         public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
         public const string GATEACTIVITY = "GateActivity";
+        public const string DSFDATETIMEDIFFERENCEACTIVITY = "DsfDateTimeDifferenceActivity";
+        public const string DSFDOTNETDATETIMEDIFFERENCEACTIVITY = "DsfDotNetDateTimeDifferenceActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -123,6 +125,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
         public const string DISPLAYNAME_PYTHON = "Python";
         public const string DISPLAYNAME_GATE = "Gate";
+        public const string DISPLAYNAME_DATETIMEDIFFERENCE = "Date and Time Difference";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -390,6 +393,14 @@ namespace Dev2.Common.X6
         public const string GATE_DATAFUNC = "dataFunc";
         public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
 
+        // Date Time Difference Activity
+        public const string DATETIMEDIFF_INPUT1 = "input1";
+        public const string DATETIMEDIFF_INPUT2 = "input2";
+        public const string DATETIMEDIFF_INPUTFORMAT = "inputformat";
+        public const string DATETIMEDIFF_OUTPUTTYPE = "outputtype";
+        public const string DATETIMEDIFF_RESULT = "result";
+
+        // SMTP Email Activity
         public const string DSFDOTNETDATETIMEACTIVITY = "DsfDotNetDateTimeActivity";
         public const string DSFDATETIMEACTIVITY = "DsfDateTimeActivity";
         public const string DISPLAYNAME_DOTNETDATETIME = "Date and Time";
@@ -415,16 +426,48 @@ namespace Dev2.Common.X6
         public const string SMTPEMAIL_BODY = "smtpemail_body";
         public const string SMTPEMAIL_ISHTML = "smtpemail_ishtml";
 
+        // Random Activity
+        public const string DSFRANDOMACTIVITY = "DsfRandomActivity";
+        public const string DISPLAYNAME_RANDOM = "Random";
+        public const string RANDOM_TYPE = "randomtype";
+        public const string RANDOM_FROM = "from";
+        public const string RANDOM_TO = "to";
+        public const string RANDOM_LENGTH = "length";
+        public const string RANDOM_RESULT = "result";
+
         public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
         public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
-        public const string EXCHANGEEMAIL_SOURCEID = "exchangeemail_sourceid";
-        public const string EXCHANGEEMAIL_TO = "exchangeemail_to";
-        public const string EXCHANGEEMAIL_CC = "exchangeemail_cc";
-        public const string EXCHANGEEMAIL_BCC = "exchangeemail_bcc";
-        public const string EXCHANGEEMAIL_SUBJECT = "exchangeemail_subject";
-        public const string EXCHANGEEMAIL_ATTACHMENTS = "exchangeemail_attachments";
-        public const string EXCHANGEEMAIL_BODY = "exchangeemail_body";
-        public const string EXCHANGEEMAIL_ISHTML = "exchangeemail_ishtml";
+        public const string EXCHANGEEMAIL_SOURCEID = "exchangesourceid";
+        public const string EXCHANGEEMAIL_TO = "to";
+        public const string EXCHANGEEMAIL_CC = "cc";
+        public const string EXCHANGEEMAIL_BCC = "bcc";
+        public const string EXCHANGEEMAIL_SUBJECT = "subject";
+        public const string EXCHANGEEMAIL_ATTACHMENTS = "attachments";
+        public const string EXCHANGEEMAIL_BODY = "body";
+        public const string EXCHANGEEMAIL_ISHTML = "ishtml";
+
+        // Format Number Activity
+        public const string DSFNUMBERFORMATACTIVITY = "DsfNumberFormatActivity";
+        public const string DISPLAYNAME_NUMBERFORMAT = "Format Number";
+        public const string NUMBERFORMAT_EXPRESSION = "expression";
+        public const string NUMBERFORMAT_ROUNDINGTYPE = "roundingtype";
+        public const string NUMBERFORMAT_ROUNDINGDECIMALPLACES = "roundingdecimalplaces";
+        public const string NUMBERFORMAT_DECIMALPLACESTOSHOW = "decimalplacestoshow";
+        public const string NUMBERFORMAT_RESULT = "result";
+
+        // Create JSON Activity
+        public const string DSFCREATEJSONACTIVITY = "DsfCreateJsonActivity";
+        public const string DISPLAYNAME_CREATEJSON = "Create JSON";
+        public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
+        public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
+        public const string CREATEJSON_JSONSTRING = "jsonstring";
+
+        // Calculate Activity
+        public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
+        public const string DISPLAYNAME_CALCULATE = "Calculate";
+        public const string CALCULATE_EXPRESSION = "expression";
+        public const string CALCULATE_RESULT = "result";
+    
     }
 
     public class X6WorkflowLoadModel
