@@ -428,6 +428,23 @@ namespace Warewolf.AI.Harness
             return endpoint.ToLower().Contains("openrouter.ai");
         }
 
+        /// <summary>
+        /// LM Studio's newer REST API uses /api/v1/chat which requires an 'input' field instead of 'messages'.
+        /// Transparently rewrite it to the OpenAI-compatible /v1/chat/completions path on the same host.
+        /// </summary>
+        internal static string NormalizeLmStudioEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                return endpoint;
+            }
+            if (endpoint.EndsWith("/api/v1/chat", StringComparison.OrdinalIgnoreCase))
+            {
+                return endpoint.Substring(0, endpoint.Length - "/api/v1/chat".Length) + "/v1/chat/completions";
+            }
+            return endpoint;
+        }
+
         // Expose provider-facing methods for new provider classes to call.
         public string SendToOpenAI_Public(ChatbotSourceDefinition source, List<object> messages)
         {
@@ -452,9 +469,11 @@ namespace Warewolf.AI.Harness
         // Internalized original provider implementations
         private string SendToOpenAI_Internal(ChatbotSourceDefinition source, List<object> messages)
         {
+            var endpoint = NormalizeLmStudioEndpoint(source.CompletionsEndpoint);
+
             // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
             var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
-            var response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+            var response = PostWithAuth(endpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -469,7 +488,7 @@ namespace Warewolf.AI.Harness
                 Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
 
                 payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
-                response = PostWithAuth(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+                response = PostWithAuth(endpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
 
                 if (response.IsSuccessStatusCode)
                 {

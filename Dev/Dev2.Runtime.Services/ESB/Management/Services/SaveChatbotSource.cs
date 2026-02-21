@@ -21,6 +21,8 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
+using Warewolf.Data;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -71,11 +73,27 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ApiKey = chatbotSourceDef.ApiKey,
                     CompletionsEndpoint = chatbotSourceDef.CompletionsEndpoint,
                     ModelsEndpoint = chatbotSourceDef.ModelsEndpoint,
+                    SelectedModel = chatbotSourceDef.SelectedModel,
                     Provider = chatbotSourceDef.Provider,
                     ResourceName = chatbotSourceDef.Name
                 };
 
                 ResourceCat.SaveResource(GlobalConstants.ServerWorkspaceID, chatbotSource, chatbotSourceDef.Path);
+
+                // If this source is the one currently configured in chatbot settings,
+                // refresh the encrypted payload so SendChatbotMessage uses the updated source definition.
+                var chatbotSettings = Config.Chatbot;
+                if (chatbotSettings.ChatbotSource != null && chatbotSettings.ChatbotSource.Value == chatbotSourceDef.Id)
+                {
+                    var payload = serializer.Serialize(chatbotSource);
+                    chatbotSettings.ChatbotSource = new NamedGuidWithEncryptedPayload
+                    {
+                        Name = chatbotSource.ResourceName,
+                        Value = chatbotSource.ResourceID,
+                        Payload = DpapiWrapper.Encrypt(payload)
+                    };
+                }
+
                 msg.HasError = false;
             }
             catch (Exception err)
