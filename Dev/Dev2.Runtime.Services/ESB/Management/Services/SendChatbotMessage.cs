@@ -24,12 +24,13 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
 using Warewolf.AI.Harness;
+using System.Threading.Tasks;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
-        private const int TimeoutSeconds = 30;
+        private const int TimeoutSeconds = 120;
         private const int MaxMessageLength = 32_000;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -172,6 +173,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 return CreateErrorResponse(serializer, errorMessage);
+            }
+            catch (TaskCanceledException)
+            {
+                Dev2Logger.Error("SendChatbotMessage Timeout", null, GlobalConstants.WarewolfError);
+                return CreateErrorResponse(serializer, $"Request timed out after {TimeoutSeconds} seconds. The model is taking too long to respond — try using a smaller/faster model.");
             }
             catch (Exception ex)
             {

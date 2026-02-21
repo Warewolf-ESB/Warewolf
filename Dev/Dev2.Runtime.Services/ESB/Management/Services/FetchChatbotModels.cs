@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
+                client.Timeout = TimeSpan.FromSeconds(120);
 
                 if (IsGoogleGeminiEndpoint(source.ModelsEndpoint))
                 {
