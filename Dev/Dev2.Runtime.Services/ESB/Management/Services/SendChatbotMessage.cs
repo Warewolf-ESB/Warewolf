@@ -30,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SendChatbotMessage : IEsbManagementEndpoint
     {
-        private const int TimeoutSeconds = 120;
+        private const int TimeoutSeconds = 600;
         private const int MaxMessageLength = 32_000;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)

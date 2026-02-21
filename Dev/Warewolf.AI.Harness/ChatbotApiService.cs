@@ -471,9 +471,15 @@ namespace Warewolf.AI.Harness
         {
             var endpoint = NormalizeLmStudioEndpoint(source.CompletionsEndpoint);
 
+            // When no API key is provided (local LLM servers like LM Studio / Ollama),
+            // pass null auth header names so PostWithAuth skips authorization entirely.
+            bool hasApiKey = !string.IsNullOrWhiteSpace(source.ApiKey);
+            string authName  = hasApiKey ? "Authorization" : null;
+            string authValue = hasApiKey ? $"Bearer {source.ApiKey}" : null;
+
             // Use max_tokens first — universally supported by OpenAI-compatible APIs including OpenRouter
             var payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: true);
-            var response = PostWithAuth(endpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+            var response = PostWithAuth(endpoint, payload, authName, authValue, null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -488,7 +494,7 @@ namespace Warewolf.AI.Harness
                 Dev2Logger.Info("Retrying without temperature parameter", GlobalConstants.WarewolfInfo);
 
                 payload = CreatePayload(source.SelectedModel, messages, null, useMaxCompletionTokens: false, includeTemperature: false);
-                response = PostWithAuth(endpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null);
+                response = PostWithAuth(endpoint, payload, authName, authValue, null);
 
                 if (response.IsSuccessStatusCode)
                 {
