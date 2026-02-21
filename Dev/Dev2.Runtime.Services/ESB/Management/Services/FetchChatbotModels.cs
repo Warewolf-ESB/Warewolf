@@ -145,6 +145,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var content = response.Content.ReadAsStringAsync().Result;
+            Dev2Logger.Info($"[FetchChatbotModels] Raw response from {endpoint}: {content}", GlobalConstants.WarewolfInfo);
             return ParseModelsResponse(content);
         }
 
@@ -159,11 +160,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // OpenAI / Azure OpenAI format: { "data": [ {...}, {...} ] }
                 if (json is JObject obj && obj["data"] is JArray dataArray)
                 {
+                    Dev2Logger.Info($"[FetchChatbotModels] Matched OpenAI/data-array format, {dataArray.Count} items", GlobalConstants.WarewolfInfo);
                     foreach (var modelToken in dataArray)
                     {
+                        var resolvedId = ResolveModelId(modelToken);
+                        Dev2Logger.Info($"[FetchChatbotModels] Token keys: {string.Join(", ", ((JObject)modelToken).Properties().Select(p => p.Name))} -> resolvedId: '{resolvedId}'", GlobalConstants.WarewolfInfo);
                         models.Add(new ChatbotModelDefinition
                         {
-                            Id = modelToken["id"]?.ToString() ?? string.Empty,
+                            Id = resolvedId,
+                            DisplayName = modelToken["display_name"]?.ToString() ?? modelToken["displayName"]?.ToString(),
                             Object = modelToken["object"]?.ToString() ?? "model",
                             Created = modelToken["created"]?.ToObject<long>() ?? 0,
                             OwnedBy = modelToken["owned_by"]?.ToString() ?? string.Empty
@@ -174,30 +179,56 @@ namespace Dev2.Runtime.ESB.Management.Services
 #pragma warning disable CC0021 // Use nameof
 				else if (json is JArray array)
                 {
+                    Dev2Logger.Info($"[FetchChatbotModels] Matched direct-array format, {array.Count} items", GlobalConstants.WarewolfInfo);
                     foreach (var modelToken in array)
                     {
+                        var resolvedId = ResolveModelId(modelToken);
+                        Dev2Logger.Info($"[FetchChatbotModels] Token keys: {string.Join(", ", ((JObject)modelToken).Properties().Select(p => p.Name))} -> resolvedId: '{resolvedId}'", GlobalConstants.WarewolfInfo);
                         models.Add(new ChatbotModelDefinition
                         {
-                            Id = modelToken["id"]?.ToString() ?? string.Empty,
+                            Id = resolvedId,
+                            DisplayName = modelToken["display_name"]?.ToString() ?? modelToken["displayName"]?.ToString(),
                             Object = modelToken["object"]?.ToString() ?? "model",
                             Created = modelToken["created"]?.ToObject<long>() ?? 0,
                             OwnedBy = modelToken["owned_by"]?.ToString() ?? string.Empty
                         });
                     }
                 }
-                // Google Gemini format: { "models": [ { "name": "models/gemini-...", "displayName": "..." } ] }
+                // { "models": [ ... ] } format — covers Google Gemini ("name"/"displayName")
+                // and LM Studio ("key"/"display_name") and similar providers
                 else if (json is JObject geminiObj && geminiObj["models"] is JArray geminiModels)
                 {
+                    Dev2Logger.Info($"[FetchChatbotModels] Matched models-array format, {geminiModels.Count} items", GlobalConstants.WarewolfInfo);
                     foreach (var modelToken in geminiModels)
                     {
+                        // Gemini uses "name", LM Studio uses "key"; fall back through all candidates
+                        var modelId = modelToken["name"]?.ToString();
+                        if (string.IsNullOrWhiteSpace(modelId)) modelId = modelToken["key"]?.ToString();
+                        if (string.IsNullOrWhiteSpace(modelId)) modelId = modelToken["id"]?.ToString();
+
+                        // Prefer a human-friendly display name where available
+                        var displayName = modelToken["displayName"]?.ToString();
+                        if (string.IsNullOrWhiteSpace(displayName)) displayName = modelToken["display_name"]?.ToString();
+
+                        var ownedBy = modelToken["publisher"]?.ToString()
+                                   ?? modelToken["owned_by"]?.ToString()
+                                   ?? string.Empty;
+
+                        Dev2Logger.Info($"[FetchChatbotModels] models-array token: id='{modelId}', displayName='{displayName}', ownedBy='{ownedBy}'", GlobalConstants.WarewolfInfo);
+
                         models.Add(new ChatbotModelDefinition
                         {
-                            Id = modelToken["name"]?.ToString() ?? string.Empty,
+                            Id = modelId ?? string.Empty,
+                            DisplayName = displayName,
                             Object = "model",
                             Created = 0,
-                            OwnedBy = "google"
+                            OwnedBy = ownedBy
                         });
                     }
+                }
+                else
+                {
+                    Dev2Logger.Warn($"[FetchChatbotModels] No format matched. JSON type: {json.Type}, root keys: {(json is JObject jo ? string.Join(", ", jo.Properties().Select(p => p.Name)) : "N/A")}", GlobalConstants.WarewolfInfo);
                 }
 #pragma warning restore CC0021 // Use nameof
 			}
@@ -207,7 +238,37 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new Exception($"Failed to parse models response: {ex.Message}", ex);
             }
 
-            return models;
+            var result = models.Where(m => !string.IsNullOrWhiteSpace(m.Id)).ToList();
+            Dev2Logger.Info($"[FetchChatbotModels] Parsed {models.Count} models, {result.Count} with non-empty Id", GlobalConstants.WarewolfInfo);
+            return result;
+        }
+
+        /// <summary>
+        /// Resolves a model identifier from a JSON token, trying multiple field names
+        /// to support OpenAI ("id"), Ollama ("name"/"model"), and other provider formats.
+        /// </summary>
+        private static string ResolveModelId(JToken modelToken)
+        {
+            var id = modelToken["id"]?.ToString();
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                return id;
+            }
+
+            // Ollama format uses "name" (e.g. "llama3:latest") or "model"
+            var name = modelToken["name"]?.ToString();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                return name;
+            }
+
+            var model = modelToken["model"]?.ToString();
+            if (!string.IsNullOrWhiteSpace(model))
+            {
+                return model;
+            }
+
+            return string.Empty;
         }
 
         private static List<ChatbotModelDefinition> GetAnthropicModels()
