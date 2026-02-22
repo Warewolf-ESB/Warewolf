@@ -903,6 +903,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
             }
+            else if (activity is DsfDotNetGatherSystemInformationActivity dotnetGatherSystemInfoActivity)
+            {
+                cell = CreateDotNetGatherSystemInformationActivity(dotnetGatherSystemInfoActivity, nodeId);
+            }
+            else if (activity is DsfGatherSystemInformationActivity gatherSystemInfoActivity)
+            {
+                cell = CreateGatherSystemInformationActivity(gatherSystemInfoActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

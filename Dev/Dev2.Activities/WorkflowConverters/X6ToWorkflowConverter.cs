@@ -657,6 +657,10 @@ namespace Dev2.Activities.WF
                     return CreateDotNetAggregateCalculateActivity(node);
                 case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetGatherSystemInformationActivity(node);
+                case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGatherSystemInformationActivity(node);
 
                 default:
                     return new WriteLine { Text = "Unknown type" };

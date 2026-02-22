@@ -474,6 +474,12 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_AGGREGATECALCULATE = "Aggregate Calculate";
         public const string AGGREGATECALCULATE_EXPRESSION = "expression";
         public const string AGGREGATECALCULATE_RESULT = "result";
+
+        // Gather System Information Activity
+        public const string DSFGATHERSYSTEMINFORMATIONACTIVITY = "DsfGatherSystemInformationActivity";
+        public const string DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY = "DsfDotNetGatherSystemInformationActivity";
+        public const string DISPLAYNAME_GATHERSYSTEMINFORMATION = "Gather System Information";
+        public const string GATHERSYSINFO_SYSTEMINFOCOLLECTION = "systeminformationcollection";
     
     }
 

@@ -332,6 +332,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_CreateJsonActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DateTimeDifferenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DotNetDateTimeActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_GatherSystemInformationActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ManualResumptionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RubyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SuspendExecutionActivityHelper.cs" />
@@ -344,6 +345,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_CommentActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DateTimeDifferenceActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DotNetDateTimeActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GatherSystemInformationActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ManualResumptionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RubyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SuspendExecutionActivityHelper.cs" />
