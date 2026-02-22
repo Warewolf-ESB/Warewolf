@@ -17,12 +17,14 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
@@ -284,6 +286,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Value = Result
                 }
             };
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_AGGREGATECALCULATE;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Aggregate Calculate specific properties
+            cell.data.TryAdd(Constants.AGGREGATECALCULATE_EXPRESSION, Expression);
+            cell.data.TryAdd(Constants.AGGREGATECALCULATE_RESULT, Result);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Aggregate Calculate specific properties
+            if (cell.data.TryGetString(Constants.AGGREGATECALCULATE_EXPRESSION, out var expression))
+                Expression = expression;
+            if (cell.data.TryGetString(Constants.AGGREGATECALCULATE_RESULT, out var result))
+                Result = result;
+
+            // Defensive initialization
+            Expression ??= string.Empty;
+            Result ??= string.Empty;
         }
     }
 }

@@ -653,8 +653,12 @@ namespace Dev2.Activities.WF
                     return CreateDateTimeDifferenceActivity(node);
                 case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDotNetDateTimeDifferenceActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateAggregateCalculateActivity(node);
 
-				default:
+                default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }
