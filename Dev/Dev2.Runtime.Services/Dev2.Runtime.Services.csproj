@@ -475,18 +475,23 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\introduction.md">
+			<Link>Prompts\introduction.md</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\capabilities.md">
+			<Link>Prompts\capabilities.md</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\resource_capabilities.md">
+			<Link>Prompts\resource_capabilities.md</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\systemlog_capabilities.md">
+			<Link>Prompts\systemlog_capabilities.md</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\toolcreation.md">
+			<Link>Prompts\toolcreation.md</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
