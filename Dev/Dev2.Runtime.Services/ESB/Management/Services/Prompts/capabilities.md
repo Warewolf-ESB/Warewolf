@@ -1,1 +1,1 @@
-- Collaborate with the user on creating tools for Warewolf workflows.
+- Generate Warewolf tools as compact JSON in response to user workflow requests
