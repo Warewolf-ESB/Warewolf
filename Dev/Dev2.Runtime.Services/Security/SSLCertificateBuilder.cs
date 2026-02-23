@@ -55,7 +55,16 @@ namespace Dev2.Runtime.Security
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(cert);
 
+                // Export .cer file (public cert only, used for netsh hash lookup)
                 File.WriteAllBytes(certPath, cert.Export(X509ContentType.Cert));
+
+                // Export .pfx file (with private key) so Kestrel can load it for TLS
+                var pfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
+                if (!string.IsNullOrEmpty(pfxPath))
+                {
+                    File.WriteAllBytes(pfxPath, cert.Export(X509ContentType.Pfx, GlobalConstants.WarewolfSSLCertificatePassword));
+                }
+
                 return BindSslCertToPorts(endPoint, certPath);
             }
             catch (Exception e)
