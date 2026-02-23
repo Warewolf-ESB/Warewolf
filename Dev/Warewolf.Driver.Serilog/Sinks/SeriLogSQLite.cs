@@ -19,17 +19,37 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLogSQLiteConfig : ISeriLogConfig
     {
-        static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() => new LoggerConfiguration()
-            .MinimumLevel.Verbose()
-            .WriteTo
-            .SQLite(
-                sqliteDbPath: _staticSettings.ConnectionString,
-                tableName: _staticSettings.TableName,
-                restrictedToMinimumLevel: _staticSettings.RestrictedToMinimumLevel,
-                formatProvider: _staticSettings.FormatProvider,
-                storeTimestampInUtc: _staticSettings.StoreTimestampInUtc,
-                retentionPeriod: _staticSettings.RetentionPeriod)
-            .CreateLogger());
+        static readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() =>
+        {
+            try
+            {
+                return new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo
+                    .SQLite(
+                        sqliteDbPath: _staticSettings.ConnectionString,
+                        tableName: _staticSettings.TableName,
+                        restrictedToMinimumLevel: _staticSettings.RestrictedToMinimumLevel,
+                        formatProvider: _staticSettings.FormatProvider,
+                        storeTimestampInUtc: _staticSettings.StoreTimestampInUtc,
+                        retentionPeriod: _staticSettings.RetentionPeriod)
+                    .CreateLogger();
+            }
+            catch (Exception e) when (e is DllNotFoundException || e is BadImageFormatException)
+            {
+                // SQLite.Interop.dll is unavailable or wrong architecture (e.g. Windows Nano Server
+                // has no MSVCRT/Win32 subsystem). Fall back to a rolling flat-file sink so the
+                // logger still works and the Fleck WebSocket handshake can complete normally.
+                return new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.File(
+                        path: System.IO.Path.Combine(_staticSettings.Path, "AuditLog-.txt"),
+                        restrictedToMinimumLevel: _staticSettings.RestrictedToMinimumLevel,
+                        rollingInterval: Serilog.RollingInterval.Day,
+                        formatProvider: _staticSettings.FormatProvider)
+                    .CreateLogger();
+            }
+        });
 
         static readonly Settings _staticSettings = new Settings();
 
