@@ -471,6 +471,7 @@
 		<None Include="SSL Generation\CreateCertificate.bat">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Include="ssl generation\CreateCertificate.ps1" />
 		<None Include="ssl generation\TrustCertificate.bat">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

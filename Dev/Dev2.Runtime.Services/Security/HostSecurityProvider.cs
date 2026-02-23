@@ -181,15 +181,16 @@ namespace Dev2.Runtime.Security
 #if WINDOWS
         public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
         {
-            var result = false;
+            var pfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
+            var certMissing = !fileWrapper.Exists(certPath);
+            var pfxMissing = !string.IsNullOrEmpty(pfxPath) && !fileWrapper.Exists(pfxPath);
 
-            if (!fileWrapper.Exists(certPath))
+            if (certMissing || pfxMissing)
             {
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
                     certificateBuilder.EnsureSslCertificate(certPath, endPoint);
-                    result = fileWrapper.Exists(certPath);
                 }
                 catch (Exception e)
                 {
@@ -198,10 +199,14 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                result = SslCertificateBuilder.BindSslCertToPorts(endPoint, certPath);
+                // Best-effort port binding for HTTP.sys; non-fatal for Kestrel
+                SslCertificateBuilder.BindSslCertToPorts(endPoint, certPath);
             }
 
-            return result;
+            // SSL is ready when the PFX (private key) is available for Kestrel to load
+            return string.IsNullOrEmpty(pfxPath)
+                ? fileWrapper.Exists(certPath)
+                : fileWrapper.Exists(pfxPath);
         }
 #else
         public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
