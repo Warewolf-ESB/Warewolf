@@ -45,7 +45,7 @@ namespace Warewolf.Driver.Serilog
                     .WriteTo.File(
                         path: System.IO.Path.Combine(_staticSettings.Path, "AuditLog-.txt"),
                         restrictedToMinimumLevel: _staticSettings.RestrictedToMinimumLevel,
-                        rollingInterval: Serilog.RollingInterval.Day,
+                        rollingInterval: RollingInterval.Day,
                         formatProvider: _staticSettings.FormatProvider)
                     .CreateLogger();
             }
