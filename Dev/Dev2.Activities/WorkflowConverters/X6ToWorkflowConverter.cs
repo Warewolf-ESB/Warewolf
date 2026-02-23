@@ -557,6 +557,8 @@ namespace Dev2.Activities.WF
                     return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
+                case var t when t.Contains(Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebRequestWithTimeoutActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPostActivity(node);
                 case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):

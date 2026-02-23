@@ -695,6 +695,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
             }
+            else if (activity is DsfWebGetRequestWithTimeoutActivity webRequestWithTimeoutActivity)
+            {
+                cell = CreateWebRequestWithTimeoutActivity(webRequestWithTimeoutActivity, nodeId);
+            }
             else if (activity is WebPostActivityNew webPostActivityNew)
             {
                 cell = CreateWebPostActivity(webPostActivityNew, nodeId);
