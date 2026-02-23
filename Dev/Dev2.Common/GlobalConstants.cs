@@ -39,15 +39,24 @@ namespace Dev2.Common
 		{
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                SystemEvents.TimeChanged += (sender, args) =>
+                try
                 {
-                    CultureInfo.CurrentCulture.ClearCachedData();
-                };
+                    SystemEvents.TimeChanged += (sender, args) =>
+                    {
+                        CultureInfo.CurrentCulture.ClearCachedData();
+                    };
 
-                SystemEvents.UserPreferenceChanged += (sender, args) =>
+                    SystemEvents.UserPreferenceChanged += (sender, args) =>
+                    {
+                        CultureInfo.CurrentCulture.ClearCachedData();
+                    };
+                }
+                catch (ExternalException)
                 {
-                    CultureInfo.CurrentCulture.ClearCachedData();
-                };
+                    // Windows Nano Server and other headless environments do not support
+                    // the Win32 system events window thread. Culture cache clearing on
+                    // time/preference changes is not available in these environments.
+                }
             }
 
             var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
