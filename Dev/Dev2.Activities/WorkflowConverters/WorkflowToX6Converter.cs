@@ -871,6 +871,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
             }
+            else if (activity is DsfXPathActivity xpathActivity)
+            {
+                cell = CreateXPathActivity(xpathActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);

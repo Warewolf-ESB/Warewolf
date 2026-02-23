@@ -467,7 +467,14 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_CALCULATE = "Calculate";
         public const string CALCULATE_EXPRESSION = "expression";
         public const string CALCULATE_RESULT = "result";
-    
+
+        // XPath Activity
+        public const string DSFXPATHACTIVITY = "DsfXPathActivity";
+        public const string DISPLAYNAME_XPATH = "XPath";
+        public const string XPATH_SOURCESTRING = "sourcestring";
+        public const string XPATH_RESULTSCOLLECTION = "resultscollection";
+        public const string XPATH_UPDATEDRESULTSCOLLECTION = "updatedresultscollection";
+
     }
 
     public class X6WorkflowLoadModel

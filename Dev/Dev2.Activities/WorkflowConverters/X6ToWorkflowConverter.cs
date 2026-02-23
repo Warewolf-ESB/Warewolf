@@ -647,6 +647,8 @@ namespace Dev2.Activities.WF
                     return CreateRandomActivity(node);
 				case var t when t.Contains(Constants.DSFCREATEJSONACTIVITY, StringComparison.OrdinalIgnoreCase):
 					return CreateCreateJsonActivity(node);
+                case var t when t.Contains(Constants.DSFXPATHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateXPathActivity(node);
                 case var t when t.Contains(Constants.DSFNUMBERFORMATACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateNumberFormatActivity(node);
                 case var t when t.Contains(Constants.DSFDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
