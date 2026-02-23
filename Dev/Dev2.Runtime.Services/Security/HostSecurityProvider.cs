@@ -178,7 +178,7 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSSL
 
-#if NETFRAMEWORK
+#if WINDOWS
         public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
         {
             var result = false;
