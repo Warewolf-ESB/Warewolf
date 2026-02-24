@@ -48,6 +48,7 @@ Canonical example:
 ### HTTP GET
 Key properties: headers, outputs, sourceId, querystring, isOutputToObject, objectname
 data.type value: `webgetactivity`
+IMPORTANT: When mapping JSON outputs to variables, set `Path` to `null` (never an object), `MappedFrom` to the JSON field name, and `MappedTo` to the variable.
 Canonical example:
 ```json
 {"position":{"x":100,"y":100},"size":null,"visible":null,"shape":"HttpGetWebMethodTool","id":"3c8b1f6a-924d-4e5b-a031-7f2e9d4c8a1b","data":{"onerrordata":{"errorMessage":"[[ErrorsVariable]]","webServiceUrl":"","endWorkflow":false},"type":"webgetactivity","displayname":"HTTP GET Web Method","UniqueID":"3c8b1f6a-924d-4e5b-a031-7f2e9d4c8a1b","headers":[{"Name":"Content-Type","Value":"application/json"},{"Name":"","Value":""}],"querystring":"https://example.com/api","sourceId":"","inputs":null,"outputs":[{"Path":null,"MappedFrom":"rawBody","MappedTo":"[[response().rawBody]]","RecordSetName":"response"}],"isOutputToObject":false,"objectname":null,"objectresult":"","isresponsebase64":false,"properties":{"DisplayName":"HTTP GET Web Method","UniqueID":"3c8b1f6a-924d-4e5b-a031-7f2e9d4c8a1b","OnErrorVariable":"[[ErrorsVariable]]","OnErrorWorkflow":"","IsEndedOnError":"False","IsResponseBase64":"False","IsObject":"False","QueryString":"","ObjectResult":""}},"source":null,"target":null,"label":"HTTP GET Web Method"}
@@ -57,6 +58,7 @@ Canonical example:
 Key properties: headers, querystring (the full request URL goes here), postdata, outputs, sourceId, isOutputToObject, objectname
 data.type value: `webpostactivitynew`
 IMPORTANT: The full request URL must be placed in data.querystring, not data.requestUrl.
+IMPORTANT: When mapping JSON outputs to variables, set `Path` to `null` (never an object), `MappedFrom` to the JSON field name, and `MappedTo` to the variable.
 To POST a Warewolf variable directly as the body (e.g. [[Result]]), set postdata to "[[Result]]" and add {"Name":"IsManualChecked","Value":"True"} to settings.
 Canonical example:
 ```json

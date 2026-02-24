@@ -141,9 +141,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var apiService = new ChatbotApiService(client);
                     var response = apiService.SendMessage(chatbotSourceDef, messages);
 
+                    var normalizedResponse = ChatbotToolNormalizer.NormalizeResponse(response);
+
                     var result = new
                     {
-                        Response = response,
+                        Response = normalizedResponse,
                         Error = (string)null
                     };
 
