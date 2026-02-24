@@ -210,21 +210,24 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-        using (var pcLocal = new PrincipalContext(ContextType.Machine))
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
         {
-            foreach (var account in AccountsToCheck)
+            using (var pcLocal = new PrincipalContext(ContextType.Machine))
             {
-                try
+                foreach (var account in AccountsToCheck)
                 {
-                    var members = GetGroupMembers(pcLocal, account);
-                    if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
+                    try
                     {
-                        groups.Add(account);
+                        var members = GetGroupMembers(pcLocal, account);
+                        if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
+                        {
+                            groups.Add(account);
+                        }
                     }
-                }
-                catch (Exception err)
-                {
-                    Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
+                    catch (Exception err)
+                    {
+                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
+                    }
                 }
             }
         }
@@ -232,7 +235,7 @@ public class SecurityWrapper : ISecurityWrapper
     }
 
     private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
-    {
+	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);
         if (group != null)
         {
