@@ -214,7 +214,7 @@ namespace Dev2.Runtime
             }
             catch(Exception err)
             {
-                Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(err, GlobalConstants.WarewolfWarn);
             }
         }
 
