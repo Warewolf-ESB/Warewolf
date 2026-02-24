@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     catch (ArgumentException e)
                     {
-                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                        Dev2Logger.Warn(e, "Warewolf Warn");
                     }
                     AuthenticationFailed(uri, result);
                 }

@@ -796,7 +796,7 @@ namespace Dev2.Activities
             }
             catch (JsonSerializationException e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e, "Warewolf Warn");
             }
             catch (Exception e)
             {
