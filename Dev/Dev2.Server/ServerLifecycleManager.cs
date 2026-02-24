@@ -365,13 +365,19 @@ namespace Dev2
             {
                 return Environment.ProcessorCount;
             }
-            var coreCount = 0;
-            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            try
             {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
-
-            return coreCount;
+                var coreCount = 0;
+                foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+                {
+                    coreCount += int.Parse(item["NumberOfCores"].ToString());
+				}
+				return coreCount;
+			}
+            catch (System.PlatformNotSupportedException e)
+            {
+				return Environment.ProcessorCount;
+			}
         }
 
         public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
@@ -389,7 +395,7 @@ namespace Dev2
                 _subscriptionDataInstance.Status,
                 VersionNo = _systemInformationHelper.GetWareWolfVersion(),
                 IPAddress = _systemInformationHelper.GetIPv4Adresses(),
-                Environment.ProcessorCount,
+				ProcessorCount = Environment.ProcessorCount,
                 NumberOfCores = GetNumberOfCores(),
                 OSType = _systemInformationHelper.GetOperatingSystemInformation(),
                 MachineName = _systemInformationHelper.GetComputerName(),
