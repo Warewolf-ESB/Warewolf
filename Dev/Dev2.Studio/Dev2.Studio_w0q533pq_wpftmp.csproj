@@ -1,0 +1,1247 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyName>Warewolf Studio</AssemblyName>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\</MSBuildProjectExtensionsPath>
+    <_TargetAssemblyProjectName>Dev2.Studio</_TargetAssemblyProjectName>
+    <RootNamespace>Dev2</RootNamespace>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.WindowsDesktop" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <UseWpf>true</UseWpf>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Warewolf.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>DEBUG</DefineConstants>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>DEBUG</DefineConstants>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <StartupObject>Dev2.Startup</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ResourceExtensionHelper.cs" />
+    <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
+    <Compile Include="CustomControls\TemplateGenerator.cs" />
+    <Compile Include="DesignerAttributeMap.cs" />
+    <Compile Include="Factory\IMergeFactory.cs" />
+    <Compile Include="Factory\CustomGit.cs" />
+    <Compile Include="Factory\MergeFactory.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Persistence\IPersistenceSettings.cs" />
+    <Compile Include="Settings\Persistence\PersistenceView.xaml.cs" />
+    <Compile Include="Settings\Persistence\PersistenceSettingsViewModel.cs" />
+    <Compile Include="Triggers\QueueEvents\QueueEventsView.xaml.cs">
+      <DependentUpon>QueueEventsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Triggers\QueueEvents\QueueEventsViewModel.cs" />
+    <Compile Include="Triggers\TasksItemViewModel.cs" />
+    <Compile Include="Triggers\TriggersView.xaml.cs">
+      <DependentUpon>TriggersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Triggers\TriggersViewModel.cs" />
+    <Compile Include="ViewModels\Merge\ConflictItem.cs" />
+    <Compile Include="ViewModels\Merge\ConflictRow.cs" />
+    <Compile Include="ViewModels\Merge\Utils\ConflictListStateApplier.cs" />
+    <Compile Include="ViewModels\Merge\Utils\ConflictRowList.cs" />
+    <Compile Include="ViewModels\Merge\Utils\ConflictRowListBuilder.cs" />
+    <Compile Include="ViewModels\Merge\Utils\MergePreviewWorkflowStateApplier.cs" />
+    <Compile Include="ViewModels\SearchModel.cs" />
+    <Compile Include="ViewModels\Workflow\MergePreviewWorkflowDesignerViewModel.cs" />
+    <Compile Include="Views\Dialogs\WebLatestVersionDialog.xaml.cs" />
+    <Compile Include="WorkflowDesignerWrapper.cs" />
+    <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
+    <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
+    <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
+    <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
+    <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
+    <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
+    <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerWithContextKey.cs" />
+    <Compile Include="AppResources\Converters\InverseScheduleStatusConverter.cs" />
+    <Compile Include="AppResources\Converters\CustomIcons.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
+    <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
+    <Compile Include="ClassRoutedEventHandlers.cs" />
+    <Compile Include="Controller\FlowController.cs" />
+    <Compile Include="Controller\PopupController.cs" />
+    <Compile Include="CustomControls\Dev2StatusBar.cs" />
+    <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
+    <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
+    <Compile Include="CustomControls\Progress\ILatestGetter.cs" />
+    <Compile Include="CustomControls\Progress\IProgressDialog.cs" />
+    <Compile Include="CustomControls\Progress\IProgressFileDownloader.cs" />
+    <Compile Include="CustomControls\Progress\IVersionChecker.cs" />
+    <Compile Include="CustomControls\Progress\ProgressDialogViewModel.cs" />
+    <Compile Include="CustomControls\Progress\VersionChecker.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandlerAbstract.cs" />
+    <Compile Include="Diagnostics\AppExceptionPopupController.cs" />
+    <Compile Include="Diagnostics\AppExceptionPopupControllerAbstract.cs" />
+    <Compile Include="Diagnostics\DebugStyleSelector.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\ErrorSeverity.cs" />
+    <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
+    <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
+    <Compile Include="Dock\BindingHelper.cs" />
+    <Compile Include="Dock\ContainerFactory.cs" />
+    <Compile Include="Dock\ContentPaneFactory.cs" />
+    <Compile Include="Dock\ItemBinding.cs" />
+    <Compile Include="Dock\ItemBindingCollection.cs" />
+    <Compile Include="Dock\UIElementHelper.cs" />
+    <Compile Include="Enums\enDsfActivityType.cs" />
+    <Compile Include="Factory\DebugStateFactory.cs" />
+    <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
+    <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="IApp.cs" />
+    <Compile Include="CustomControls\Progress\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
+    <Compile Include="Settings\Logging\ILogSettings.cs" />
+    <Compile Include="Settings\Logging\LoggingView.xaml.cs">
+      <DependentUpon>LoggingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\IResourcePickerDialog.cs" />
+    <Compile Include="Dialogs\ResourcePickerDialog.cs" />
+    <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">
+      <DependentUpon>PerfCounterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
+    <Compile Include="Triggers\Scheduler\CredentialUI.cs" />
+    <Compile Include="Triggers\Scheduler\DummyResource.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerTaskManager.cs" />
+    <Compile Include="Triggers\Scheduler\SchedulerView.xaml.cs">
+      <DependentUpon>SchedulerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Triggers\Scheduler\SchedulerViewModel.cs" />
+    <Compile Include="Triggers\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
+    <Compile Include="Settings\SettingsItemViewModel.cs" />
+    <Compile Include="Settings\Security\SecurityView.xaml.cs">
+      <DependentUpon>SecurityView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Security\SecurityViewModel.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsViewModel.cs" />
+    <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
+    <Compile Include="Utils\ResourceChangeHandler.cs" />
+    <Compile Include="ViewFactory.cs" />
+    <Compile Include="ViewModels\DeployWorksurfaceViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\DebugOutputViewModelUtil.cs" />
+    <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
+    <Compile Include="ViewModels\Diagnostics\IDebugOutputViewModelUtil.cs" />
+    <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
+    <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
+    <Compile Include="ViewModels\MergeViewModel.cs" />
+    <Compile Include="ViewModels\Merge\ConnectorConflictRow.cs" />
+    <Compile Include="ViewModels\Merge\ConflictModelFactory.cs" />
+    <Compile Include="ViewModels\Merge\ConnectorConflictItem.cs" />
+    <Compile Include="ViewModels\Merge\ToolConflictItem.cs" />
+    <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />
+    <Compile Include="ViewModels\Merge\ToolConflictRow.cs" />
+    <Compile Include="ViewModels\SourceViewModel.cs" />
+    <Compile Include="ViewModels\StudioTestViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
+    <Compile Include="ViewModels\WorksurfaceContextManager.cs" />
+    <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
+    <Compile Include="Views\DependencyVisualization\DependencyVisualiserView.xaml.cs">
+      <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Help\HelpViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
+    <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
+    <Compile Include="Views\Help\HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Merge\MergeWorkflowView.xaml.cs">
+      <DependentUpon>MergeWorkflowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\RenameResourceDialog.xaml.cs">
+      <DependentUpon>RenameResourceDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\DeleteFolderDialog.xaml.cs">
+      <DependentUpon>DeleteFolderDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\ResourceChangedDialog.xaml.cs">
+      <DependentUpon>ResourceChangedDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
+      <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Workflow\DragDropHelpers.cs" />
+    <Compile Include="Views\Workflow\DsfActivityDropWindow.xaml.cs">
+      <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\IDialog.cs" />
+    <Compile Include="Views\Workflow\WorkflowInputDataView.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
+    <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
+    <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
+    <Compile Include="Webs\SaveDialogHelper.cs" />
+    <Compile Include="Webs\WebHelper.cs" />
+    <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
+    <Compile Include="ViewModels\DependencyVisualization\DependencyVisualiserViewModel.cs" />
+    <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
+    <Compile Include="Factory\ExceptionFactory.cs" />
+    <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
+    <Compile Include="Model\ExceptionUIModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModel.cs" />
+    <Compile Include="Views\DataList\DataListView.xaml.cs">
+      <DependentUpon>DataListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Diagnostics\ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Diagnostics\DebugOutputView.xaml.cs">
+      <DependentUpon>DebugOutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Diagnostics\DebugOutputViewModel.cs" />
+    <Compile Include="Views\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
+      <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
+      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Settings\Chatbot\IChatbotSettings.cs" />
+    <Compile Include="Settings\Chatbot\NullToBoolConverter.cs" />
+    <Compile Include="Settings\Chatbot\ResourceTreeItemViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <Compile Include="Settings\Chatbot\ChatbotSettingsViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="Dev2.Studio.ruleset" />
+    <None Include="MergePowershellScript\customMerge.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="userStudioSettings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\licenses.licx" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Handle Images - Must be save level since MS can't write a Copy routine that moves directories, only files ;( -->
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{db2fbc8d-3271-4d1d-a6bc-f4dfc530918b}</Project>
+      <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019a92b9-9209-4930-bc96-381cb8b1c0ea}</Project>
+      <Name>Dev2.Services.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
+      <Project>{1B229665-1631-4275-AFBD-CB5B7775E4CA}</Project>
+      <Name>Dev2.TaskScheduler.Wrappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
+      <Project>{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}</Project>
+      <Name>Warewolf.MergeParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
+      <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
+      <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>
+      <Name>Warewolf.Sharepoint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+      <Project>{cc1b89cd-3222-4019-a0d1-58664f92cc47}</Project>
+      <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{A62DA168-5BF3-4C14-B880-4AD83478E3A7}</Project>
+      <Name>Warewolf.Studio.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{CB565C94-8833-4911-B20F-0921EE3C286C}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
+      <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
+      <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
+      <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
+      <Name>Warewolf.Studio.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj">
+      <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>
+      <Name>Warewolf.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <Content Include="appsettings.json" />
+    <Content Include="Help\PageNotAvailable.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\PageNotAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Administration\" />
+    <Folder Include="Views\Wizards\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
+    <PackageReference Include="codecracker.CSharp">
+      <Version>1.1.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Dropbox.Api">
+      <Version>6.15.0</Version>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="Log4Net.Async">
+      <Version>2.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.UnityExtensions">
+      <Version>5.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core">
+      <Version>1.0.118</Version>
+    </PackageReference>
+    <PackageReference Include="TaskSchedulerEditor">
+      <Version>2.10.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="Expression.Blend.Sdk">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="7-Zip.CommandLine" Version="18.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
+    <PackageReference Include="WPFTextBoxAutoComplete">
+      <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+      <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
+      <Name>Dev2.Development.Languages</Name>
+    </ProjectReference>
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
+    <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(TargetFrameworkIdentifier)\net6.0-windows\$(AssemblyName).dll" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+  </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\Accessibility.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\tulpep.activedirectoryobjectpicker\3.0.11\lib\net6.0-windows7.0\ActiveDirectoryObjectPicker.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\aerowizard\2.3.1\lib\net6.0-windows7.0\AeroWizard.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\bouncycastle.cryptography\2.4.0\lib\net6.0\BouncyCastle.Cryptography.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\boxed.aspnetcore\8.1.2\lib\net6.0\Boxed.AspNetCore.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\caliburn.micro.core\4.0.212\lib\netstandard2.0\Caliburn.Micro.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\caliburn.micro\4.0.212\lib\net6.0-windows7.0\Caliburn.Micro.Platform.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\caliburn.micro\4.0.212\lib\net6.0-windows7.0\Caliburn.Micro.Platform.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\castle.core\5.1.0\lib\net6.0\Castle.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\chargebee\2.8.9\lib\netstandard2.0\ChargeBee.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\txfilemanager\1.5.0.1\lib\netstandard2.0\ChinhDo.Transactions.FileManager.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\corewcf.http\1.2.1\lib\netstandard2.0\CoreWCF.Http.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\corewcf.nettcp\1.2.1\lib\netstandard2.0\CoreWCF.NetTcp.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\corewcf.primitives\1.2.1\lib\netstandard2.0\CoreWCF.Primitives.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\corewcf.webhttp\1.2.1\lib\netstandard2.0\CoreWCF.WebHttp.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Activities.Designers.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Activities.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Common.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Common.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.CustomControls.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Data.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Data.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Development.Languages.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Diagnostics.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Infrastructure.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Intellisense.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Net6.Compatibility.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Runtime.Configuration.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Runtime.Services.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Scheduler.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Services.Execution.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Services.Sql.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.SignalR.Wrappers.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.SignalR.Wrappers.New.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Studio.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Studio.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.TaskScheduler.Wrappers.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Dev2.Util.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dotnetzip\1.16.0\lib\netstandard2.0\DotNetZip.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dropbox.api\6.15.0\lib\netstandard2.0\Dropbox.Api.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dynamicdata\9.2.2\lib\net6.0\DynamicData.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\elastic.clients.elasticsearch\8.15.6\lib\net6.0\Elastic.Clients.Elasticsearch.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\elastic.transport\0.4.22\lib\net6.0\Elastic.Transport.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\elasticsearch.net\7.17.5\lib\netstandard2.1\Elasticsearch.Net.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\entityframework\6.4.4\lib\netstandard2.1\EntityFramework.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\entityframework\6.4.4\lib\netstandard2.1\EntityFramework.SqlServer.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fleck\1.2.0\lib\netcoreapp2.0\Fleck.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fontawesome.wpf\4.7.0.9\lib\net40\FontAwesome.WPF.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fontawesome6.fonts.winui\2.3.0\lib\net6.0\FontAwesome6.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fontawesome6.fonts\2.3.0\lib\net6.0-windows7.0\FontAwesome6.Fonts.Net.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fontawesome6.fonts\2.3.0\lib\net6.0-windows7.0\FontAwesome6.Shared.Net.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fsharp.core\10.0.103\lib\netstandard2.1\FSharp.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\fslexyacc.runtime\11.0.1\lib\netstandard2.0\FsLexYacc.Runtime.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\GACManagerApi.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\google.protobuf\3.25.1\lib\net5.0\Google.Protobuf.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\groupcontrols\1.9.0\lib\net6.0-windows7.0\GroupControls.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\hangfire.core\1.7.32\lib\netstandard2.0\Hangfire.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\hangfire.sqlserver\1.7.32\lib\netstandard2.0\Hangfire.SqlServer.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\avalonedit\6.3.0.90\lib\net6.0-windows7.0\ICSharpCode.AvalonEdit.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataVisualization.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.DockManager.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.DragDrop.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Editors.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Math.Calculators.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.Math.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Dev\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ironpython\3.4.0\lib\net6.0\IronPython.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ironpython\3.4.0\lib\net6.0\IronPython.Modules.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ironpython\3.4.0\lib\net6.0\IronPython.SQLite.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ironpython\3.4.0\lib\net6.0\IronPython.Wpf.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\jurassic\3.2.6\lib\netstandard2.0\Jurassic.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\k4os.compression.lz4\1.3.5\lib\net6.0\K4os.Compression.LZ4.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\k4os.compression.lz4.streams\1.3.5\lib\net6.0\K4os.Compression.LZ4.Streams.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\k4os.hash.xxhash\1.0.8\lib\net6.0\K4os.Hash.xxHash.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\kgysoft.corelibraries\7.1.0\lib\net6.0\KGySoft.CoreLibraries.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\log4net.async\2.0.4\lib\net40\Log4Net.Async.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\log4net\2.0.15\lib\netstandard2.0\log4net.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\messagepack.annotations\2.4.59\lib\netstandard2.0\MessagePack.Annotations.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\messagepack\2.4.59\lib\net6.0\MessagePack.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.applicationinsights\2.15.0\lib\netstandard2.0\Microsoft.ApplicationInsights.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Antiforgery.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authentication.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authentication.Cookies.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authentication.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authentication.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authentication.OAuth.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authorization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Authorization.Policy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Components.Authorization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Components.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Components.Forms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Components.Server.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Components.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.CookiePolicy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Cors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.DataProtection.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.DataProtection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.DataProtection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Diagnostics.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Diagnostics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Diagnostics.HealthChecks.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.HostFiltering.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Hosting.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Hosting.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Html.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.aspnetcore.http.connections.client\6.0.10\lib\net6.0\Microsoft.AspNetCore.Http.Connections.Client.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Connections.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Connections.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Features.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Http.Results.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.HttpLogging.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.HttpOverrides.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.HttpsPolicy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Identity.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Localization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Localization.Routing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Metadata.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.ApiExplorer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Cors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Formatters.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Formatters.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Localization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.Razor.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.RazorPages.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.TagHelpers.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Razor.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Razor.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.ResponseCaching.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.ResponseCompression.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Rewrite.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Routing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.HttpSys.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.IIS.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.IISIntegration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.Kestrel.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.Kestrel.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.aspnetcore.server.kestrel.transport.abstractions\2.1.3\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.Session.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.aspnetcore.signalr.client.core\6.0.10\lib\net6.0\Microsoft.AspNetCore.SignalR.Client.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.aspnetcore.signalr.client\6.0.10\lib\net6.0\Microsoft.AspNetCore.SignalR.Client.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.SignalR.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.SignalR.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.SignalR.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.StaticFiles.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.WebSockets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.AspNetCore.WebUtilities.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.bcl.asyncinterfaces\6.0.0\lib\netstandard2.1\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.csharp\4.0.1\lib\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.csharp.scripting\4.0.1\lib\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.common\4.0.1\lib\netcoreapp3.1\Microsoft.CodeAnalysis.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.scripting.common\4.0.1\lib\netcoreapp3.1\Microsoft.CodeAnalysis.Scripting.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.visualbasic\4.0.1\lib\netcoreapp3.1\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\uipath.workflow\6.0.3\lib\net6.0-windows7.0\Microsoft.CodeAnalysis.VisualBasic.Scripting.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dynamiclanguageruntime\1.3.3\lib\net6.0\Microsoft.Dynamic.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.exchange.webservices.netstandard\1.1.3\lib\netstandard2.0\Microsoft.Exchange.WebServices.NETStandard.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Caching.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Caching.Memory.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.Binder.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.Ini.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.KeyPerFile.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Configuration.Xml.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\8.0.2\lib\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.DependencyInjection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Features.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.FileProviders.Composite.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.FileProviders.Physical.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Hosting.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Http.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Identity.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Identity.Stores.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Localization.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Localization.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.extensions.logging.abstractions\8.0.2\lib\net6.0\Microsoft.Extensions.Logging.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.Console.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.Debug.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.EventLog.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.EventSource.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.extensions.logging.log4net.aspnetcore\6.1.0\lib\net6.0\Microsoft.Extensions.Logging.Log4Net.AspNetCore.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Logging.TraceSource.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.ObjectPool.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Options.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Options.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Extensions.WebEncoders.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.abstractions\6.23.1\lib\net6.0\Microsoft.IdentityModel.Abstractions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.logging\6.23.1\lib\net6.0\Microsoft.IdentityModel.Logging.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.protocols\6.23.1\lib\net6.0\Microsoft.IdentityModel.Protocols.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.protocols.wsfederation\6.23.1\lib\net6.0\Microsoft.IdentityModel.Protocols.WsFederation.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.protocols.wstrust\6.8.0\lib\netstandard2.0\Microsoft.IdentityModel.Protocols.WsTrust.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.tokens\6.23.1\lib\net6.0\Microsoft.IdentityModel.Tokens.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.tokens.saml\6.23.1\lib\net6.0\Microsoft.IdentityModel.Tokens.Saml.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.identitymodel.xml\6.23.1\lib\net6.0\Microsoft.IdentityModel.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.JSInterop.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.management.infrastructure\2.0.0\ref\netstandard1.6\Microsoft.Management.Infrastructure.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.management.infrastructure\2.0.0\ref\netstandard1.6\Microsoft.Management.Infrastructure.Native.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\unofficial.microsoft.mshtml\7.0.3300\lib\net40\Microsoft.mshtml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Net.Http.Headers.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.net.stringtools\17.4.0\ref\netstandard2.0\Microsoft.NET.StringTools.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.Office.Client.Policy.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.Office.Client.TranslationServices.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.openapi\1.2.3\lib\netstandard2.0\Microsoft.OpenApi.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.powerfx.core\0.2.1-preview\lib\netstandard2.0\Microsoft.PowerFx.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.powerfx.interpreter\0.2.1-preview\lib\netstandard2.0\Microsoft.PowerFx.Interpreter.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.powerfx.transport.attributes\0.2.1-preview\lib\netstandard2.0\Microsoft.PowerFx.Transport.Attributes.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.activities.core.presentation\1.0.0-alpha003\lib\netcoreapp3.1\Microsoft.PowerShell.CoreCLR.Eventing.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.composition\5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.interactivity\5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.mvvm\1.0.0\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.mvvm\1.0.0\lib\net45\Microsoft.Practices.Prism.Mvvm.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.pubsubevents\1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.mvvm\1.0.0\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.unityextensions\5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\commonservicelocator\1.2.0\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.ProjectServer.Client.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dynamiclanguageruntime\1.3.3\lib\net6.0\Microsoft.Scripting.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\dynamiclanguageruntime\1.3.3\lib\net6.0\Microsoft.Scripting.Metadata.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.DocumentManagement.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Publishing.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Runtime.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Runtime.Windows.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Search.Applications.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Search.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.Taxonomy.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.UserProfiles.Portable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ttcue.netcore.sharepointonline.csom.16.1.8029.1200\16.1.8029.1200\lib\netcoreapp2.0\Microsoft.SharePoint.Client.WorkflowServices.Portable.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\Microsoft.VisualBasic.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\Microsoft.VisualBasic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\Microsoft.VisualBasic.Forms.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mstest.testframework\3.8.3\lib\net6.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mstest.testframework\3.8.3\buildTransitive\net6.0\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Win32.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\Microsoft.Win32.Registry.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\Microsoft.Win32.Registry.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\Microsoft.Win32.SystemEvents.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\taskscheduler\2.10.1\lib\net6.0-windows7.0\Microsoft.Win32.TaskScheduler.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\taskschedulereditor\2.10.1\lib\net6.0-windows7.0\Microsoft.Win32.TaskSchedulerEditor.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.xaml.behaviors.wpf\1.1.122\lib\net6.0-windows7.0\Microsoft.Xaml.Behaviors.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mindbox.data.linq\5.0.0\lib\netstandard2.0\Mindbox.Data.Linq.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mindbox.expressions\3.2.0\lib\netstandard2.0\Mindbox.Expressions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mono.unix\7.1.0-final.1.21458.1\lib\net6.0\Mono.Unix.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\moq\4.18.2\lib\net6.0\Moq.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\mysql.data\8.4.0\lib\net6.0\MySql.Data.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\netstandard.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\newtonsoft.json.bson\1.0.1\lib\netstandard1.3\Newtonsoft.Json.Bson.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\newtonsoft.json\13.0.2\lib\net6.0\Newtonsoft.Json.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\nito.asyncex.tasks\5.1.2\lib\netstandard2.0\Nito.AsyncEx.Tasks.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\nito.disposables\2.2.1\lib\netstandard2.1\Nito.Disposables.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\npgsql\9.0.4\lib\net6.0\Npgsql.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\oracle.manageddataaccess.core\3.21.70\lib\netstandard2.1\Oracle.ManagedDataAccess.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\pipelines.sockets.unofficial\2.2.0\lib\net5.0\Pipelines.Sockets.Unofficial.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.Aero.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.Aero2.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.AeroLite.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.Classic.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.Luna.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationFramework.Royale.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\PresentationUI.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.container.abstractions\9.0.106\lib\net6.0\Prism.Container.Abstractions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.core\9.0.537\lib\net6.0\Prism.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.events\9.0.537\lib\net6.0\Prism.Events.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\prism.wpf\9.0.537\lib\net6.0-windows7.0\Prism.Wpf.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\rabbitmq.client\5.1.2\lib\netstandard2.0\RabbitMQ.Client.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\ReachFramework.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\reactiveui\18.4.1\lib\net6.0\ReactiveUI.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\reactiveui.wpf\18.4.1\lib\net6.0-windows7.0\ReactiveUI.Wpf.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\reflectionmagic\4.1.0\lib\netstandard2.0\ReflectionMagic.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\ssh.net\2024.2.0\lib\net6.0\Renci.SshNet.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog\4.0.1\lib\net6.0\Serilog.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.formatting.compact\2.0.0\lib\net6.0\Serilog.Formatting.Compact.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.formatting.elasticsearch\10.0.0\lib\netstandard2.0\Serilog.Formatting.Elasticsearch.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.sinks.elasticsearch\10.0.0\lib\net6.0\Serilog.Sinks.Elasticsearch.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.sinks.file\5.0.0\lib\net5.0\Serilog.Sinks.File.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.sinks.periodicbatching\4.0.0\lib\net6.0\Serilog.Sinks.PeriodicBatching.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\serilog.sinks.sqlite\5.5.0\lib\net5.0\Serilog.Sinks.SQLite.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack.client\6.3.0\lib\net6.0\ServiceStack.Client.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack.common\6.3.0\lib\net6.0\ServiceStack.Common.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack\6.3.0\lib\net6.0\ServiceStack.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack.interfaces\6.3.0\lib\net6.0\ServiceStack.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack.redis\6.3.0\lib\net6.0\ServiceStack.Redis.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\servicestack.text\6.3.0\lib\net6.0\ServiceStack.Text.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\splat\14.5.1\lib\net6.0\Splat.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\stackexchange.redis\2.2.88\lib\net5.0\StackExchange.Redis.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\swashbuckle.aspnetcore.swagger\6.4.0\lib\net6.0\Swashbuckle.AspNetCore.Swagger.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.activities.core.presentation\1.0.0-alpha003\lib\netcoreapp3.1\System.Activities.Core.Presentation.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\uipath.workflow.runtime\6.0.3\lib\net6.0-windows7.0\System.Activities.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.activities.metadata\1.0.0-alpha003\lib\netcoreapp3.1\System.Activities.Metadata.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.activities.core.presentation\1.0.0-alpha003\lib\netcoreapp3.1\System.Activities.Presentation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.AppContext.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Buffers.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.CodeDom.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Collections.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Collections.Immutable.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Collections.NonGeneric.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Collections.Specialized.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.componentmodel.composition\6.0.0\lib\net6.0\System.ComponentModel.Composition.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.componentmodel.composition.registration\6.0.0\lib\net6.0\System.ComponentModel.Composition.Registration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ComponentModel.TypeConverter.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.configuration.configurationmanager\8.0.0\lib\net6.0\System.Configuration.ConfigurationManager.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Console.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Data.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Data.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.data.odbc\6.0.0\lib\net6.0\System.Data.Odbc.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.data.oledb\6.0.0\lib\net6.0\System.Data.OleDb.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.data.sqlclient\4.8.3\ref\netcoreapp2.1\System.Data.SqlClient.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\stub.system.data.sqlite.core.netstandard\1.0.118\lib\netstandard2.1\System.Data.SQLite.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.data.sqlite.ef6\1.0.118\lib\netstandard2.1\System.Data.SQLite.EF6.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.diagnostics.diagnosticsource\8.0.1\lib\net6.0\System.Diagnostics.DiagnosticSource.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.EventLog.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.FileVersionInfo.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.PerformanceCounter.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.Process.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.StackTrace.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.TextWriterTraceListener.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.TraceSource.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Diagnostics.Tracing.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.directoryservices.accountmanagement\6.0.0\lib\net6.0\System.DirectoryServices.AccountManagement.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.DirectoryServices.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.directoryservices.protocols\6.0.0\lib\net6.0\System.DirectoryServices.Protocols.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Drawing.Common.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Drawing.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Drawing.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Formats.Asn1.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Globalization.Calendars.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Globalization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Globalization.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Compression.Brotli.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Compression.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Compression.ZipFile.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.FileSystem.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.FileSystem.DriveInfo.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.FileSystem.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.FileSystem.Watcher.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.IsolatedStorage.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.MemoryMappedFiles.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.IO.Packaging.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0\System.IO.Pipelines.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Pipes.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.Pipes.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.io.ports\6.0.0\lib\net6.0\System.IO.Ports.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.IO.UnmanagedMemoryStream.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Linq.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Linq.Expressions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Linq.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Linq.Queryable.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.management.automation\7.1.4\ref\net5.0\System.Management.Automation.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.management\6.0.0\lib\net6.0\System.Management.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Memory.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\microsoft.aspnet.webapi.client\5.2.7\lib\netstandard2.0\System.Net.Http.Formatting.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Http.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.HttpListener.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Mail.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.NameResolution.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Ping.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Requests.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Security.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.ServicePoint.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.Sockets.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.WebClient.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.WebHeaderCollection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.WebProxy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.WebSockets.Client.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.net.websockets.client.managed\1.0.22\lib\netstandard2.0\System.Net.WebSockets.Client.Managed.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Net.WebSockets.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.net.websockets.websocketprotocol\4.5.3\ref\netstandard2.0\System.Net.WebSockets.WebSocketProtocol.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Numerics.Vectors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ObjectModel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Printing.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.reactive.core\5.0.0\lib\netstandard2.0\System.Reactive.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.reactive\6.0.1\lib\net6.0\System.Reactive.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.reflection.context\6.0.0\lib\net6.0\System.Reflection.Context.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.DispatchProxy.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Emit.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Metadata.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Reflection.TypeExtensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Resources.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Resources.Reader.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Resources.Writer.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.runtime.caching\6.0.0\lib\net6.0\System.Runtime.Caching.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.CompilerServices.Unsafe.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.CompilerServices.VisualC.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Handles.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Intrinsics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Loader.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Serialization.Formatters.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Claims.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Algorithms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Cng.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Csp.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.OpenSsl.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Pkcs.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Primitives.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.security.cryptography.protecteddata\8.0.0\lib\net6.0\System.Security.Cryptography.ProtectedData.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.X509Certificates.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Security.Cryptography.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.security.permissions\8.0.0\lib\net6.0\System.Security.Permissions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Principal.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.Principal.Windows.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Security.SecureString.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.activities.core.presentation\1.0.0-alpha003\lib\netcoreapp3.1\System.ServiceModel.Activities.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.primitives\4.9.0\ref\net6.0\System.ServiceModel.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.duplex\4.9.0\ref\net6.0\System.ServiceModel.Duplex.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.federation\4.9.0\lib\netstandard2.0\System.ServiceModel.Federation.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.http\4.9.0\ref\net6.0\System.ServiceModel.Http.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.nettcp\4.9.0\ref\net6.0\System.ServiceModel.NetTcp.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.primitives\4.9.0\ref\net6.0\System.ServiceModel.Primitives.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.security\4.9.0\ref\net6.0\System.ServiceModel.Security.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.servicemodel.syndication\6.0.0\lib\net6.0\System.ServiceModel.Syndication.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ServiceModel.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ServiceProcess.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.serviceprocess.servicecontroller\6.0.0\lib\net6.0\System.ServiceProcess.ServiceController.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.speech\6.0.0\lib\net6.0\System.Speech.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.text.encoding.codepages\7.0.0\lib\net6.0\System.Text.Encoding.CodePages.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Text.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.text.encodings.web\8.0.0\lib\net6.0\System.Text.Encodings.Web.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.text.json\8.0.5\lib\net6.0\System.Text.Json.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Threading.AccessControl.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.threading.channels\8.0.0\lib\net6.0\System.Threading.Channels.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Overlapped.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Tasks.Dataflow.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Tasks.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Thread.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.ThreadPool.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Threading.Timer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Transactions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Transactions.Local.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Web.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Web.HttpUtility.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.web.services.description\4.10.0\lib\netstandard2.0\System.Web.Services.Description.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Controls.Ribbon.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Windows.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\system.windows.extensions\8.0.0\lib\net6.0\System.Windows.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Forms.Design.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Forms.Design.Editors.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Forms.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Input.Manipulations.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Windows.Presentation.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.XmlDocument.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.XmlSerializer.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.XPath.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.36\ref\net6.0\System.Xml.XPath.XDocument.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\timespan2.core\2.4.2\lib\net6.0\TimeSpan2.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\timespan2\2.4.2\lib\net6.0-windows7.0\TimeSpan2.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\trienet.core\1.0.4\lib\netstandard2.0\TrieNet.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\tsql.parser\2.6.0\lib\netstandard2.0\TSQL_Parser.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\UIAutomationClient.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\UIAutomationClientSideProviders.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\UIAutomationTypes.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\uipath.workflow\6.0.3\lib\net6.0-windows7.0\UiPath.Workflow.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\unity\5.11.10\lib\netcoreapp3.0\Unity.Abstractions.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\unity.configuration\5.11.2\lib\netcoreapp2.0\Unity.Configuration.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\unity\5.11.10\lib\netcoreapp3.0\Unity.Container.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\unity.registrationbyconvention\5.11.1\lib\netcoreapp2.0\Unity.RegistrationByConvention.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Auditing.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Common.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Common.Interfaces.NetStandard20.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Common.NetStandard20.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Data.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Driver.Persistence.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Driver.RabbitMQ.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Driver.Redis.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Driver.Serilog.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Exchange.Email.Wrapper.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Language.Parser.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Licensing.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.MergeParser.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Resource.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.ResourceManagement.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Security.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.ServiceDefinitions.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Sharepoint.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Storage.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Storage.Interfaces.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.AntiCorruptionLayer.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.Core.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.CustomControls.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.Models.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.Resources.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.Themes.Luna.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.ViewModels.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Studio.Views.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.Trigger.Queue.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\Warewolf.UI.dll" />
+    <ReferencePath Include="C:\Users\ultra\warewolf\Bin\ServerTests\net6.0-windows\WarewolfParserInterop.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\ref\net6.0\WindowsFormsIntegration.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\extended.wpf.toolkit\4.4.0\lib\net5.0\Xceed.Wpf.AvalonDock.NET5.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\extended.wpf.toolkit\4.4.0\lib\net5.0\Xceed.Wpf.AvalonDock.Themes.Aero.NET5.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\extended.wpf.toolkit\4.4.0\lib\net5.0\Xceed.Wpf.AvalonDock.Themes.Metro.NET5.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\extended.wpf.toolkit\4.4.0\lib\net5.0\Xceed.Wpf.AvalonDock.Themes.VS2010.NET5.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\extended.wpf.toolkit\4.4.0\lib\net5.0\Xceed.Wpf.Toolkit.NET5.dll" />
+    <ReferencePath Include="C:\Users\ultra\.nuget\packages\zstdsharp.port\0.7.1\lib\net6.0\ZstdSharp.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\CustomControls\Progress\ProgressDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\Logging\LoggingView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\Perfcounters\PerfCounterView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\Persistence\PersistenceView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Triggers\Scheduler\SchedulerView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\Security\SecurityView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\SettingsView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Triggers\QueueEvents\QueueEventsView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Triggers\TriggersView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\DependencyVisualization\DependencyVisualiserView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Dialogs\WebLatestVersionDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Merge\MergeWorkflowView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\ResourceManagement\RenameResourceDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\ResourceManagement\DeleteFolderDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\ResourceManagement\ResourceChangedDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\UserInterfaceBuilder\DataGridQuickVariableInputView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\DataList\DataListView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Diagnostics\ExceptionView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Diagnostics\DebugOutputView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Help\HelpView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\ShellView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\ResourceManagement\DeleteResourceDialog.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Workflow\DsfActivityDropWindow.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Workflow\WorkflowDesignerView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Views\Workflow\WorkflowInputDataView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Settings\Chatbot\ChatbotView.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\App.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\Warewolf Studio_Content.g.cs" />
+    <Compile Include="C:\Users\ultra\warewolf\Dev\Dev2.Studio\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files\dotnet\sdk\10.0.103\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\sdk\10.0.103\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\codecracker.csharp\1.1.0\analyzers\dotnet\cs\CodeCracker.CSharp.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\corewcf.primitives\1.2.1\analyzers\dotnet\roslyn4.0\cs\CoreWCF.BuildTools.Roslyn4.0.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\microsoft.extensions.logging.abstractions\8.0.2\analyzers\dotnet\roslyn4.4\cs\Microsoft.Extensions.Logging.Generators.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\mstest.analyzers\3.8.3\analyzers\dotnet\cs\MSTest.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\mstest.analyzers\3.8.3\analyzers\dotnet\cs\MSTest.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ultra\.nuget\packages\system.text.json\8.0.5\analyzers\dotnet\roslyn4.4\cs\System.Text.Json.SourceGeneration.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\analyzers/dotnet/cs/Microsoft.AspNetCore.App.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\analyzers/dotnet/cs/Microsoft.AspNetCore.App.CodeFixes.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\analyzers/dotnet/System.Windows.Forms.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.36\analyzers/dotnet/cs/System.Windows.Forms.Analyzers.CSharp.dll" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.WindowsDesktop" />
+</Project>

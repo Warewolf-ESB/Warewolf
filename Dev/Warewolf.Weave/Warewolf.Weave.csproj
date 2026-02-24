@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--Project was exported from assembly: C:\Builds\Warewolf\Dev\Binaries\Weave.dll-->
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}</ProjectGuid>
