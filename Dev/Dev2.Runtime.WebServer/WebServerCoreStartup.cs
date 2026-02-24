@@ -77,9 +77,23 @@ namespace Dev2.Runtime.WebServer
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
 #if WINDOWS || NETFRAMEWORK
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
-            builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SERVER_USERNAME")))
+            {
+                builder.Services.AddAuthentication("Basic").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+            }
+            else
+            {
+                builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            }
 #else
-            builder.Services.AddAuthentication("Anonymous").AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("Anonymous", null);
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SERVER_USERNAME")))
+            {
+                builder.Services.AddAuthentication("Basic").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+            }
+            else
+            {
+                builder.Services.AddAuthentication("Anonymous").AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("Anonymous", null);
+            }
 #endif
             #endregion
 

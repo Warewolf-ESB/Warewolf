@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -61,6 +61,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AnonymousAuthenticationHandler.cs" />
+    <Compile Include="BasicAuthenticationHandler.cs" />
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="Responses\StaticFileResponseWriter.cs" />
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Responses\IResponseWriter.cs" />
-    <Compile Include="WebServerCoreStartup.cs" />
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerRequestContent.cs" />
     <Compile Include="WebServerRequestContentHeaders.cs" />
