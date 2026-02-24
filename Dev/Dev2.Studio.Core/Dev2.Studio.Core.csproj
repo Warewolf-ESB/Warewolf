@@ -64,7 +64,6 @@
     </Reference>
     <Reference Include="System.Activities" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.DirectoryServices.AccountManagement" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
