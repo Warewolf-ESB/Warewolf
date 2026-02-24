@@ -9,45 +9,46 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Threading;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
+//using WarewolfCOMIPC.Client;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.WebServer;
-//using WarewolfCOMIPC.Client;
-using Dev2.Common.Interfaces.Wrappers;
-using System.Collections.Generic;
-using System.Management;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.Subscription;
+using Dev2.Runtime.WebServer;
+using Dev2.Services.Security.MoqInstallerActions;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Dev2.Activities;
-using Warewolf.Trigger.Queue;
-using Warewolf.OS;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
+using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
-using Dev2.Services.Security.MoqInstallerActions;
-using Newtonsoft.Json;
+using Warewolf.OS;
+using Warewolf.Trigger.Queue;
 using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
-using System.Diagnostics;
-using Dev2.Runtime.Subscription;
-using Warewolf.Execution;
-using Dev2.Runtime.Security;
 
 namespace Dev2
 {
@@ -361,26 +362,106 @@ namespace Dev2
 
         int GetNumberOfCores()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			{
+				try
+				{
+					var cpuDir = "/sys/devices/system/cpu/";
+					if (Directory.Exists(cpuDir))
+					{
+						var uniq = new HashSet<string>();
+						foreach (var dir in Directory.EnumerateDirectories(cpuDir, "cpu[0-9]*"))
+						{
+							var topology = Path.Combine(dir, "topology");
+							var coreIdPath = Path.Combine(topology, "core_id");
+							var physIdPath = Path.Combine(topology, "physical_package_id");
+
+							if (File.Exists(coreIdPath))
+							{
+								var coreId = File.ReadAllText(coreIdPath).Trim();
+								if (File.Exists(physIdPath))
+								{
+									var physId = File.ReadAllText(physIdPath).Trim();
+									uniq.Add($"{physId}:{coreId}");
+								}
+								else
+								{
+									uniq.Add(coreId);
+								}
+							}
+						}
+						if (uniq.Count > 0)
+							return uniq.Count;
+					}
+
+					// Fallback: parse /proc/cpuinfo grouping by (physical id, core id)
+					var cpuinfo = "/proc/cpuinfo";
+					if (File.Exists(cpuinfo))
+					{
+						var blocks = File.ReadAllText(cpuinfo).Split(new[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+						var uniq = new HashSet<string>();
+						foreach (var block in blocks)
+						{
+							string phys = null, core = null;
+							foreach (var line in block.Split('\n'))
+							{
+								var parts = line.Split(':', 2);
+								if (parts.Length < 2) continue;
+								var key = parts[0].Trim();
+								var val = parts[1].Trim();
+								if (key.Equals("physical id", StringComparison.OrdinalIgnoreCase)) phys = val;
+								if (key.Equals("core id", StringComparison.OrdinalIgnoreCase)) core = val;
+							}
+							if (core != null && phys != null) uniq.Add($"{phys}:{core}");
+							else if (core != null) uniq.Add(core);
+						}
+						if (uniq.Count > 0)
+							return uniq.Count;
+					}
+				}
+				catch
+				{
+					// ignore and fallback
+				}
+			}
+			var coreCount = -1;
+			if (IsNanoServer())
             {
-                return Environment.ProcessorCount;
-            }
-            try
-            {
-                var coreCount = 0;
                 foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
                 {
                     coreCount += int.Parse(item["NumberOfCores"].ToString());
-				}
-				return coreCount;
+                }
 			}
-            catch (System.PlatformNotSupportedException e)
-            {
-				return Environment.ProcessorCount;
-			}
-        }
+			return coreCount;
+		}
 
-        public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
+		public static bool IsNanoServer()
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				return false;
+
+			try
+			{
+				using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+				if (key == null) return false;
+
+				var productName = (key.GetValue("ProductName") as string) ?? string.Empty;
+				if (productName.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+					return true;
+
+				var installationType = (key.GetValue("InstallationType") as string) ?? string.Empty;
+				if (installationType.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+					return true;
+			}
+			catch
+			{
+				// Access denied or other problem - treat as not Nano (or handle as appropriate)
+			}
+
+			return false;
+		}
+
+		public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
         {
             if (usageType == UsageType.ServerStart)
             {
