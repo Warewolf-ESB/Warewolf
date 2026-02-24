@@ -188,7 +188,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
@@ -204,7 +204,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
@@ -232,7 +232,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
