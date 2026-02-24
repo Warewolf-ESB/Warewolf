@@ -10,7 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !NOTNANOSERVER
 using System.DirectoryServices.AccountManagement;
+#endif
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -318,8 +320,9 @@ namespace Dev2.Activities.Specs.Scheduler
         public static bool CreateLocalWindowsAccount(string username, string password, string groupName)
         {
             try
-            {
-                var context = new PrincipalContext(ContextType.Machine);
+			{
+#if !NOTNANOSERVER
+				var context = new PrincipalContext(ContextType.Machine);
                 var user = new UserPrincipal(context);
                 user.SetPassword(password);
                 user.DisplayName = username;
@@ -329,6 +332,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
                 user.Save();
                 AddUserToGroup(groupName, context, user);
+#endif
                 return true;
             }
             catch (Exception ex)
@@ -338,7 +342,8 @@ namespace Dev2.Activities.Specs.Scheduler
             }
         }
 
-        public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
+#if !NOTNANOSERVER
+		public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
         {
             var usersGroup = GroupPrincipal.FindByIdentity(context, groupName);
             if (usersGroup != null)
@@ -346,9 +351,10 @@ namespace Dev2.Activities.Specs.Scheduler
                 usersGroup.Members.Add(user);
                 usersGroup.Save();
             }
-        }
+		}
+#endif
 
-        [AfterScenario("@Scheduler")]
+		[AfterScenario("@Scheduler")]
         public static void CleanupAfterTestScheduler()
         {
             if (_scenarioContext.ContainsKey("Scheduler"))
