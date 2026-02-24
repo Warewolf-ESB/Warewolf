@@ -42,7 +42,7 @@ namespace Dev2
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn(e.Message, "");
+                    Dev2Logger.Warn(e, "");
                 }
             };
 

@@ -363,12 +363,12 @@ namespace Dev2.Services.Security
             }
             catch (ObjectDisposedException e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
                 throw;
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
             }
 
             return isInRole || p.IsBuiltInGuestsForExecution;
