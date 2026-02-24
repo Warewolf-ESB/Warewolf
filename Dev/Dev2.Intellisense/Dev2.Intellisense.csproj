@@ -212,7 +212,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.DirectoryServices" />
+    <!--<Reference Include="System.DirectoryServices" />-->
     <Reference Include="System.Reactive">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
     </Reference>

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>

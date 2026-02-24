@@ -453,7 +453,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
+    <!--<Reference Include="System.DirectoryServices" />-->
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>

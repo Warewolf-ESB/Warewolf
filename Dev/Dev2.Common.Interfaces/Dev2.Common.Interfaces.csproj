@@ -486,7 +486,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
+    <!--<Reference Include="System.DirectoryServices" />-->
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
