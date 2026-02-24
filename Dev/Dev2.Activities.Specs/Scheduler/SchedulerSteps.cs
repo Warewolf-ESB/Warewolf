@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 #endif
@@ -322,7 +322,7 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
 			{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 				var context = new PrincipalContext(ContextType.Machine);
                 var user = new UserPrincipal(context);
                 user.SetPassword(password);
@@ -343,7 +343,7 @@ namespace Dev2.Activities.Specs.Scheduler
             }
         }
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 		public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
         {
             var usersGroup = GroupPrincipal.FindByIdentity(context, groupName);

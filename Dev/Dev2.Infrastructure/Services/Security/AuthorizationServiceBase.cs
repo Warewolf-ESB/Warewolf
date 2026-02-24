@@ -12,7 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 #endif
 using System.Linq;
@@ -79,7 +79,7 @@ namespace Dev2.Services.Security
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
 			{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     return true;
@@ -132,7 +132,7 @@ namespace Dev2.Services.Security
             {
                 return string.Empty;
 			}
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -474,7 +474,7 @@ namespace Dev2.Services.Security
             {
                 return false;
 			}
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			var identity = principal?.Identity;
             var username = GetIdentityName(identity);
             if (string.IsNullOrEmpty(username))

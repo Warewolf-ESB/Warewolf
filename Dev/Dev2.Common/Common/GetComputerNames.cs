@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 #endif
 using System.Runtime.InteropServices;
@@ -109,7 +109,7 @@ namespace Dev2.Common.Common
 
         private static List<string> GetHosts(string queryStr)
 		{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			// Protect against any DirectoryServices native load issues by catching and
 			// rethrowing to the caller which will handle the fallback.
 			var root = new DirectoryEntry(queryStr);

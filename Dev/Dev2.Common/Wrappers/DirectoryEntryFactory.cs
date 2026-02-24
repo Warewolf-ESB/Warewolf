@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Runtime.InteropServices;
 using Dev2.Common;
 using System.Diagnostics.CodeAnalysis;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 #endif
 
@@ -34,7 +34,7 @@ namespace Dev2.Common.Wrappers
         [ExcludeFromCodeCoverage]
         public IDirectoryEntry Create<T>(T member)
         {
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 return new NullDirectoryEntry();
@@ -47,7 +47,7 @@ namespace Dev2.Common.Wrappers
         }
 
         // Minimal null-object implementations to avoid touching DirectoryEntry on unsupported platforms
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
         class NullDirectoryEntries : IDirectoryEntries
         {
             public SchemaNameCollection SchemaFilter => null;
@@ -70,7 +70,7 @@ namespace Dev2.Common.Wrappers
 #else
         class NullDirectoryEntries : IDirectoryEntries
         {
-            public SchemaNameCollection SchemaFilter => null;
+            public object SchemaFilter => null;
             public object Instance => null;
             public System.Collections.IEnumerator GetEnumerator()
             {

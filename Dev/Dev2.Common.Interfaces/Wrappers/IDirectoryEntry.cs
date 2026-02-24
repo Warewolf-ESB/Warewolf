@@ -14,14 +14,14 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 #endif
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
     public interface IDirectoryEntry : IWrappedObject<DirectoryEntry>, IDisposable
     {
         IDirectoryEntries Children { get; }

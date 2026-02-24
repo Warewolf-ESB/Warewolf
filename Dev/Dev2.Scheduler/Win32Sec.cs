@@ -12,7 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices.AccountManagement;
 #endif
 using System.Globalization;
@@ -212,7 +212,7 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
         {
             using (var pcLocal = new PrincipalContext(ContextType.Machine))
@@ -238,7 +238,7 @@ public class SecurityWrapper : ISecurityWrapper
         return groups;
     }
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 	private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
 	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);

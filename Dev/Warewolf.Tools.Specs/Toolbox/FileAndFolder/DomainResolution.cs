@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices.ActiveDirectory;
 #endif
 
@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
             }
             username = username.Substring(domainSeperator);
             string domainName = "";
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			Domain getDomain = null;
             try
             {

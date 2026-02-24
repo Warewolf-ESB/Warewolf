@@ -12,7 +12,7 @@
 using Dev2.Common;
 using System;
 using System.Collections;
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 using System.DirectoryServices;
 #endif
 using System.Linq;
@@ -35,7 +35,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void AddWarewolfGroup()
 		{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             { 
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -62,7 +62,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
 		public bool DoesWarewolfGroupExist()
 		{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
 			{
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -123,7 +123,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 			/// Deletes the "Warewolf Administrators" group from the local machine.
 			/// </summary>
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -167,7 +167,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 // ReSharper restore NotResolvedInText
             }
 
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -188,7 +188,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void AddAdministratorsGroupToWarewolf()
 		{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -209,7 +209,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public bool IsAdminMemberOfWarewolf()
         {
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
@@ -245,7 +245,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void DeleteWarewolfGroup()
 		{
-#if !NOTNANOSERVER
+#if NOTNANOSERVER
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
