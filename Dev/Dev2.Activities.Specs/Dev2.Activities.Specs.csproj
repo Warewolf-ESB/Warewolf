@@ -32,6 +32,7 @@
     <SonarQubeExclude>True</SonarQubeExclude>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <LangVersion>10.0</LangVersion>
+	<DefineConstants>$(DefineConstants);NOTNANOSERVER</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

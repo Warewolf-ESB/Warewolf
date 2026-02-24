@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -49,6 +49,7 @@
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
     <StartupObject>Dev2.EntryPoint</StartupObject>
     <LangVersion>10.0</LangVersion>
+    <DefineConstants>$(DefineConstants);NOTNANOSERVER</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
