@@ -124,7 +124,6 @@
     </PackageReference>
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-    <PackageReference Include="System.DirectoryServices" Version="6.0.0" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>

@@ -852,7 +852,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <!--<Reference Include="System.DirectoryServices" />-->
     <Reference Include="System.Drawing" />
     <PackageReference Include="7-Zip.CommandLine" Version="18.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />

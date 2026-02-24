@@ -617,5 +617,31 @@ where pn.nspname = 'public';
         }
 
         public static readonly string WarewolfSSLCertificatePassword = "35kIXIm1bJ2nf";
-    }
+
+		public static bool IsNanoServer()
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				return false;
+
+			try
+			{
+				using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+				if (key == null) return false;
+
+				var productName = (key.GetValue("ProductName") as string) ?? string.Empty;
+				if (productName.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+					return true;
+
+				var installationType = (key.GetValue("InstallationType") as string) ?? string.Empty;
+				if (installationType.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+					return true;
+			}
+			catch
+			{
+				// Access denied or other problem - treat as not Nano (or handle as appropriate)
+			}
+
+			return false;
+		}
+	}
 }
