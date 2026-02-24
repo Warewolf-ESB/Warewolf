@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows;net6.0</TargetFramework>
     <Configurations>Debug</Configurations>
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
