@@ -9,10 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using System;
 using System.Collections;
 using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -31,11 +33,14 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void AddWarewolfGroup()
         {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-            {
-                var newGroup = ad.Children.Add(WarewolfGroup, "Group");
-                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
-                newGroup.CommitChanges();
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            { 
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                {
+                    var newGroup = ad.Children.Add(WarewolfGroup, "Group");
+                    newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
+                    newGroup.CommitChanges();
+                }
             }
 
         /// <summary>
@@ -52,13 +57,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
         /// <returns><c>true</c> if the group exists; otherwise <c>false</c>.</returns>
 
         public bool DoesWarewolfGroupExist()
-        {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-            {
-                ad.Children.SchemaFilter.Add("group");
-                if(ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			{
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    return true;
+                    ad.Children.SchemaFilter.Add("group");
+                    if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
+                    {
+                        return true;
+                    }
                 }
 
         /// <summary>
@@ -105,29 +113,32 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 theUser = username.Substring((domainChar + 1));
             }
 
-        /// <summary>
-        /// Deletes the "Warewolf Administrators" group from the local machine.
-        /// </summary>
+            /// <summary>
+            /// Deletes the "Warewolf Administrators" group from the local machine.
+            /// </summary>
 
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
-
-                        if(members != null)
+                        if (dChildEntry.Name == WarewolfGroup)
                         {
-                            foreach(var member in (IEnumerable)members)
+                            // Now check group membership ;)
+                            var members = dChildEntry.Invoke("Members");
+
+                            if (members != null)
                             {
-                                using(var memberEntry = new DirectoryEntry(member))
+                                foreach (var member in (IEnumerable)members)
                                 {
-                                    if(memberEntry.Name == theUser)
+                                    using (var memberEntry = new DirectoryEntry(member))
                                     {
-                                        return true;
+                                        if (memberEntry.Name == theUser)
+                                        {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
@@ -148,58 +159,66 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 // ReSharper restore NotResolvedInText
             }
 
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
-
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        dChildEntry.Invoke("Add", new object[] { currentUser });
+                        if (dChildEntry.Name == WarewolfGroup)
+                        {
+                            dChildEntry.Invoke("Add", new object[] { currentUser });
+                        }
                     }
                 }
             }
         }
 
         public void AddAdministratorsGroupToWarewolf()
-        {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+		{
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        const string Entry = "WinNT://./" + AdministratorsGroup;
-                        dChildEntry.Invoke("Add", new object[] { Entry });
+                        if (dChildEntry.Name == WarewolfGroup)
+                        {
+                            const string Entry = "WinNT://./" + AdministratorsGroup;
+                            dChildEntry.Invoke("Add", new object[] { Entry });
+                        }
                     }
                 }
             }
         }
 
         public bool IsAdminMemberOfWarewolf()
-        {
-
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+		{
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
-
-                        if(members != null)
+                        if (dChildEntry.Name == WarewolfGroup)
                         {
-                            foreach(var member in (IEnumerable)members)
+                            // Now check group membership ;)
+                            var members = dChildEntry.Invoke("Members");
+
+                            if (members != null)
                             {
-                                using(var memberEntry = new DirectoryEntry(member))
+                                foreach (var member in (IEnumerable)members)
                                 {
-                                    if(memberEntry.Name == AdministratorsGroup)
+                                    using (var memberEntry = new DirectoryEntry(member))
                                     {
-                                        return true;
+                                        if (memberEntry.Name == AdministratorsGroup)
+                                        {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
@@ -213,14 +232,17 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void DeleteWarewolfGroup()
         {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach (DirectoryEntry dChildEntry in ad.Children)
                     {
-                        ad.Children.Remove(dChildEntry);
+                        if (dChildEntry.Name == WarewolfGroup)
+                        {
+                            ad.Children.Remove(dChildEntry);
+                        }
                     }
                 }
             }
