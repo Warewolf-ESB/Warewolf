@@ -10,9 +10,11 @@
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
-    public interface IDirectoryEntryFactory
+#if !NOTNANOSERVER
+	public interface IDirectoryEntryFactory
     {
         IDirectoryEntry Create(string path);
         IDirectoryEntry Create<T>(T member);
-    }
+	}
+#endif
 }

@@ -12,7 +12,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !NOTNANOSERVER
 using System.DirectoryServices;
+#endif
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -76,8 +78,9 @@ namespace Dev2.Services.Security
             _directoryEntryFactory = directoryEntryFactory;
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
-            {
-                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+#if !NOTNANOSERVER
+				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     return true;
                 }
@@ -106,8 +109,8 @@ namespace Dev2.Services.Security
                         }
                     }
                 }
-
-                return false;
+#endif
+				return false;
             };
         }
 
@@ -128,8 +131,9 @@ namespace Dev2.Services.Security
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
             {
                 return string.Empty;
-            }
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+			}
+#if !NOTNANOSERVER
+			using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
@@ -144,8 +148,11 @@ namespace Dev2.Services.Security
                 }
             }
             throw new Exception(ErrorResource.CannotFindGroup);
-        }
-        public event EventHandler PermissionsChanged;
+#else
+            return string.Empty;
+#endif
+		}
+		public event EventHandler PermissionsChanged;
         EventHandler<PermissionsModifiedEventArgs> _permissionsModifiedHandler;
         readonly object _getPermissionsLock = new object();
 
@@ -466,8 +473,9 @@ namespace Dev2.Services.Security
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return false;
-            }
-            var identity = principal?.Identity;
+			}
+#if !NOTNANOSERVER
+			var identity = principal?.Identity;
             var username = GetIdentityName(identity);
             if (string.IsNullOrEmpty(username))
             {
@@ -507,6 +515,7 @@ namespace Dev2.Services.Security
                     }
                 }
             }
+#endif
             return false;
         }
 

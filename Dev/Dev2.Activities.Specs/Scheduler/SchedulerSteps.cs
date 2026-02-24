@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 #if !NOTNANOSERVER
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 #endif
 using System.Linq;

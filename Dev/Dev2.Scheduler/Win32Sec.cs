@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if !NOTNANOSERVER
 using System.DirectoryServices.AccountManagement;
+#endif
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -210,7 +212,8 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+#if !NOTNANOSERVER
+		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
         {
             using (var pcLocal = new PrincipalContext(ContextType.Machine))
             {
@@ -231,10 +234,12 @@ public class SecurityWrapper : ISecurityWrapper
                 }
             }
         }
+#endif
         return groups;
     }
 
-    private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
+#if !NOTNANOSERVER
+	private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
 	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);
         if (group != null)
@@ -242,9 +247,10 @@ public class SecurityWrapper : ISecurityWrapper
             return group.GetMembers().ToArray();
         }
         return new Principal[] { };
-    }
+	}
+#endif
 
-    static string GetUnqualifiedName(string userName)
+	static string GetUnqualifiedName(string userName)
     {
         if (userName.Contains("\\"))
         {

@@ -12,11 +12,16 @@ using Dev2.Common;
 using Microsoft.Win32;
 using System;
 using System.Collections;
-using System.DirectoryServices;
 using System.Runtime.InteropServices;
+
+#if !NOTNANOSERVER
+using System.DirectoryServices;
+#endif
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
+
+#if !NOTNANOSERVER
     public interface IDirectoryEntry : IWrappedObject<DirectoryEntry>, IDisposable
     {
         IDirectoryEntries Children { get; }
@@ -87,34 +92,34 @@ namespace Dev2.Common.Interfaces.Wrappers
             {
                 _directoryEntry = null;
             }
-		}
+        }
 
-		public static bool IsNanoServer()
-		{
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-				return false;
+        public static bool IsNanoServer()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return false;
 
-			try
-			{
-				using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-				if (key == null) return false;
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
+                if (key == null) return false;
 
-				var productName = (key.GetValue("ProductName") as string) ?? string.Empty;
-				if (productName.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
-					return true;
+                var productName = (key.GetValue("ProductName") as string) ?? string.Empty;
+                if (productName.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
 
-				var installationType = (key.GetValue("InstallationType") as string) ?? string.Empty;
-				if (installationType.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
-					return true;
-			}
-			catch
-			{
-				// Access denied or other problem - treat as not Nano (or handle as appropriate)
-			}
+                var installationType = (key.GetValue("InstallationType") as string) ?? string.Empty;
+                if (installationType.IndexOf("Nano", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+            }
+            catch
+            {
+                // Access denied or other problem - treat as not Nano (or handle as appropriate)
+            }
 
-			return false;
-		}
-		public IDirectoryEntries Children => Instance == null ? new NullDirectoryEntries() : new Dev2DirectoryEntries(Instance.Children);
+            return false;
+        }
+        public IDirectoryEntries Children => Instance == null ? new NullDirectoryEntries() : new Dev2DirectoryEntries(Instance.Children);
 
         public string SchemaClassName => Instance == null ? string.Empty : Instance.SchemaClassName;
 
@@ -132,4 +137,77 @@ namespace Dev2.Common.Interfaces.Wrappers
             return Instance == null ? null : Instance.Invoke(methodName, args);
         }
     }
+#else
+    // Fallback definitions for Nano Server / non-Windows builds that avoid referencing System.DirectoryServices types
+    public interface IDirectoryEntry : IWrappedObject<object>, IDisposable
+    {
+        IDirectoryEntries Children { get; }
+        string SchemaClassName { get; }
+        string Name { get; }
+
+        object Invoke(string methodName, params object[] args);
+    }
+
+    class NullDirectoryEntries : IDirectoryEntries
+    {
+        public object SchemaFilter => null;
+        public object Instance => null;
+        public System.Collections.IEnumerator GetEnumerator()
+        {
+            yield break;
+        }
+    }
+
+    public interface IDirectoryEntries : IEnumerable, IWrappedObject<object>
+    {
+        object SchemaFilter { get; }
+    }
+
+    public class Dev2DirectoryEntries : IDirectoryEntries
+    {
+        readonly object _entries;
+        public Dev2DirectoryEntries(object entries)
+        {
+            _entries = entries;
+        }
+        public object Instance => _entries;
+
+        public object SchemaFilter => null;
+
+        public IEnumerator GetEnumerator()
+        {
+            yield break;
+        }
+    }
+
+    public class Dev2DirectoryEntry : IDirectoryEntry
+    {
+        readonly object _directoryEntry;
+        public Dev2DirectoryEntry(object directoryEntry)
+        {
+            _directoryEntry = directoryEntry;
+        }
+        public Dev2DirectoryEntry(string path)
+        {
+            _directoryEntry = null;
+        }
+
+        public IDirectoryEntries Children => new NullDirectoryEntries();
+
+        public string SchemaClassName => string.Empty;
+
+        public string Name => string.Empty;
+
+        public object Instance => _directoryEntry;
+
+        public void Dispose()
+        {
+        }
+
+        public object Invoke(string methodName, params object[] args)
+        {
+            return null;
+        }
+    }
+#endif
 }

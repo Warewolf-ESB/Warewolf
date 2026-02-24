@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !NOTNANOSERVER
 using System.DirectoryServices;
+#endif
 using System.Runtime.InteropServices;
 using System.Linq;
 using System.Management;
@@ -106,18 +108,22 @@ namespace Dev2.Common.Common
         }
 
         private static List<string> GetHosts(string queryStr)
-        {
-            // Protect against any DirectoryServices native load issues by catching and
-            // rethrowing to the caller which will handle the fallback.
-            var root = new DirectoryEntry(queryStr);
+		{
+#if !NOTNANOSERVER
+			// Protect against any DirectoryServices native load issues by catching and
+			// rethrowing to the caller which will handle the fallback.
+			var root = new DirectoryEntry(queryStr);
 
             var kids = root.Children;
 
             var result = (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
             return result;
-        }
+#else
+            return new List<string>();
+#endif
+		}
 
-        public static string GetWindowsDomainOrWorkgroupName(string serverUserName)
+		public static string GetWindowsDomainOrWorkgroupName(string serverUserName)
         {
             var parts = serverUserName.Split('\\');
 
