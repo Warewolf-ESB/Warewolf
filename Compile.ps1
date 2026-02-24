@@ -42,6 +42,25 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
+if ($FrameworkTarget -and $FrameworkTarget -ne "net6.0-windows") {
+	$path = "$PSScriptRoot\Dev\"
+	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
+
+	foreach ($file in $files) {
+		$xml = [xml](Get-Content $file.FullName)
+
+		# Replace target framework nodes
+		$nodes = $xml.SelectNodes("//TargetFramework | //TargetFrameworks")
+		foreach ($node in $nodes) {
+            $newNode = $xml.CreateElement("TargetFramework")
+            $newNode.InnerText = $FrameworkTarget
+            $node.ParentNode.ReplaceChild($newNode, $node)
+		}
+
+		$xml.Save($file.FullName)
+	}
+}
+
 if (!($InContainer.IsPresent)) {
 	#Find Local NuGet
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
