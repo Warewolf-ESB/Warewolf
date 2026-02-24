@@ -350,7 +350,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($FrameworkTarget) {
                 $FrameworksToBuild += $FrameworkTarget
             } else {
-                $FrameworksToBuild = @("net6.0-windows", "net6.0")
+                $FrameworksToBuild = @("net6.0-windows")
             }
 
             foreach ($CurrentFramework in $FrameworksToBuild) {
