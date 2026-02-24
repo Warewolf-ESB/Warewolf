@@ -2,6 +2,13 @@
   <PropertyGroup>
     <!-- Fix VBCSCompiler lock issues on build agents -->
     <UseSharedCompilation>false</UseSharedCompilation>
+    
+    <!-- Fix parallel build reference assembly locks -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <TrackFileAccess>false</TrackFileAccess>
+
+    <!-- Fix MSBuild treating AnyCPU and Any CPU as separate builds concurrently -->
+    <Platform Condition="'$(Platform)' == 'AnyCPU'">Any CPU</Platform>
 
     <!-- Fix parallel build missing g.cs and XAML compilation issues in wpftmp projects -->
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
