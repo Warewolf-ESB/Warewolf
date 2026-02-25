@@ -165,7 +165,7 @@ namespace Dev2.Data
                 CheckIfBackupDirectoryExist(backupDirectory);
                 AuditDBFileProperties();
 
-                long fileSizeInBytes = new FileInfo(auditFilePath).Length;
+				long fileSizeInBytes = File.Exists(auditFilePath) ? new FileInfo(auditFilePath).Length : 0;
                 long fileSizeInMB = fileSizeInBytes / (1024 * 1024); // Convert bytes to megabytes
 
                 if (fileSizeInMB >= maxLogFileSize)
