@@ -3,7 +3,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Warewolf.Driver.Persistence.Tests</AssemblyName>
     <Configurations>Debug</Configurations>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>

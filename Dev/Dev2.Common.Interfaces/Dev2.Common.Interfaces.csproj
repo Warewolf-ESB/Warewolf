@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -25,7 +25,7 @@
     <TargetFrameworkProfile />
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <LangVersion>10.0</LangVersion>
-	<DefineConstants>$(DefineConstants);NOTNANOSERVER</DefineConstants>
+	<DefineConstants>$(DefineConstants);NANOSERVER</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
