@@ -26,7 +26,7 @@
     <RestorePackages>true</RestorePackages>
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <LangVersion>10.0</LangVersion>
-    <DefineConstants>$(DefineConstants);NANOSERVER</DefineConstants>
+    <DefineConstants>$(DefineConstants);NOTNANOSERVER</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
