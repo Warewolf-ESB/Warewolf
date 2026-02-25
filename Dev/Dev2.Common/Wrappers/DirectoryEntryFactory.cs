@@ -22,14 +22,18 @@ namespace Dev2.Common.Wrappers
 	{
 		public IDirectoryEntry Create(string path)
         {
+#if NOTNANOSERVER
             // Avoid using System.DirectoryServices on non-Windows or Nano Server where
             // the native Active Directory COM libraries (eg activeds.dll) are not present.
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return new NullDirectoryEntry();
             }
-
             return new Dev2DirectoryEntry(path);
+#else
+			return new NullDirectoryEntry();
+#endif
+
         }
         [ExcludeFromCodeCoverage]
         public IDirectoryEntry Create<T>(T member)
