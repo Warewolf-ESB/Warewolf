@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <IsPackable>false</IsPackable>
     <RootNamespace>Warewolf.LicencingTests</RootNamespace>
     <Configurations>Debug</Configurations>
@@ -12,7 +12,7 @@
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
@@ -23,7 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

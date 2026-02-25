@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--Project was exported from assembly: C:\Builds\Warewolf\Dev\Binaries\Weave.dll-->
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CB79F1B2-5CC1-4A2B-974E-AB2C2E7682BC}</ProjectGuid>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
     <BuildProject>false</BuildProject>
@@ -37,26 +38,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Reference Include="System.Collections" />
-    <Reference Include="System.Collections.Concurrent" />
-    <Reference Include="System.Console" />
-    <Reference Include="System.Data.Common" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Net.NameResolution" />
-    <Reference Include="System.Net.NetworkInformation" />
-    <Reference Include="System.Net.Primitives" />
-    <Reference Include="System.Net.Sockets" />
-    <Reference Include="System.Reflection.Emit" />
-    <Reference Include="System.Reflection.Emit.ILGeneration" />
-    <Reference Include="System.Reflection.Primitives" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.InteropServices" />
-    <Reference Include="System.Security.Cryptography.Algorithms" />
-    <Reference Include="System.Security.Cryptography.Csp" />
-    <Reference Include="System.Security.Cryptography.Primitives" />
-    <Reference Include="System.Text.Encoding.Extensions" />
-    <Reference Include="System.Threading" />
-    <Reference Include="System.Threading.Thread" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDisposable.cs" />
@@ -331,6 +312,6 @@
     <Compile Include="Cryptography\SecureRemotePassword.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Management" Version="6.0.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
   </ItemGroup>
 </Project>

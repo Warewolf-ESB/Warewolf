@@ -7,7 +7,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -550,8 +550,8 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net6.0-windows\win\Dev2.Activities.Specs.dll" if not exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
-        echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net6.0-windows\win"
+      if exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win\Dev2.Activities.Specs.dll" if not exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
+        echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win"
       )
     </PostBuildEvent>
   </PropertyGroup>
@@ -560,7 +560,7 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Runtime.DurableInstancing" />
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

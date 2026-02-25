@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FF3115B2-370E-4E40-99C5-7D239BC28679}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -120,7 +120,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="Npgsql" Version="9.0.4" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
@@ -136,7 +136,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B27B3F88-100B-496F-B574-04684F612BB9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -100,13 +100,13 @@
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-		if exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\Dev2.Sql.Tests.dll" if not exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
-		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win"
+		if exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net8.0-windows\win\Dev2.Sql.Tests.dll" if not exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net8.0-windows\win"
 		)
 	</PostBuildEvent>
   </PropertyGroup>
@@ -117,7 +117,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

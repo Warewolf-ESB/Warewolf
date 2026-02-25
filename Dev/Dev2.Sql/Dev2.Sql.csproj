@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2B734597-C85D-4295-9782-C722F4645ED9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -103,7 +103,7 @@
       <Version>13.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

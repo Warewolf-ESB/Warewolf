@@ -13,6 +13,8 @@
     <!-- Fix parallel build missing g.cs and XAML compilation issues in wpftmp projects -->
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <GenerateTemporaryTargetAssemblyDebuggingInformation>false</GenerateTemporaryTargetAssemblyDebuggingInformation>
+    
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <!-- Prevent parallel build of the temporary WPF projects to avoid file locks and isolate their output paths -->

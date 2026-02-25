@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -2505,7 +2505,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">

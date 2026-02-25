@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -234,7 +234,7 @@
       <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
@@ -313,7 +313,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

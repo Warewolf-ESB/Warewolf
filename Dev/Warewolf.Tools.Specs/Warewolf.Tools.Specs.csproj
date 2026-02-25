@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -908,11 +908,11 @@
 		  )
 	  </PreBuildEvent>
     <PostBuildEvent>
-		  if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" if not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
-		    if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" (
-		  echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
-		    ) else if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0\runtimes\win-x64\native\SQLite.Interop.dll" (
-		      echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
+		  if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net8.0-windows\win\Warewolf.Tools.Specs.dll" if not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
+		    if exist "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" (
+		  echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net8.0-windows\win"
+		    ) else if exist "$(SolutionDir)Dev2.Server\bin\Debug\net8.0\runtimes\win-x64\native\SQLite.Interop.dll" (
+		      echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net8.0-windows\win"
 		    )
 		  )
 	  </PostBuildEvent>
@@ -924,7 +924,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

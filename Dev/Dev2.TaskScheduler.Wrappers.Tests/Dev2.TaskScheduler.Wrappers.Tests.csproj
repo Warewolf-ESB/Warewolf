@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -83,7 +83,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="6.23.1" />
@@ -96,7 +96,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

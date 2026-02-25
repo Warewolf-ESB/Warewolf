@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -116,7 +116,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,7 +128,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

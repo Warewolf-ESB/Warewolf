@@ -79,7 +79,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="6.23.1" />

@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -72,10 +72,10 @@
     <PostBuildEvent>
         taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
         taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-        if exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.Tests.dll" (
-        echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.exe_v4.8"
-        if not exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\SQLite.Interop.dll" (
-            echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86"
+        if exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\Warewolf.COMIPC.Tests.dll" (
+        echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\Warewolf.COMIPC.exe_v4.8"
+        if not exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\SQLite.Interop.dll" (
+            echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86"
             )
         )
     </PostBuildEvent>
