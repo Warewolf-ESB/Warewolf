@@ -467,6 +467,13 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_CALCULATE = "Calculate";
         public const string CALCULATE_EXPRESSION = "expression";
         public const string CALCULATE_RESULT = "result";
+
+        // Aggregate Calculate Activity
+        public const string DSFAGGREGATECALCULATEACTIVITY = "DsfAggregateCalculateActivity";
+        public const string DSFDOTNETAGGREGATECALCULATEACTIVITY = "DsfDotNetAggregateCalculateActivity";
+        public const string DISPLAYNAME_AGGREGATECALCULATE = "Aggregate Calculate";
+        public const string AGGREGATECALCULATE_EXPRESSION = "expression";
+        public const string AGGREGATECALCULATE_RESULT = "result";
     
     }
 
