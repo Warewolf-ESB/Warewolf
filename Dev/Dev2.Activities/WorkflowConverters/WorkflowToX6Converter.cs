@@ -529,8 +529,9 @@ namespace Dev2.Activities.WF
         {
             // Get child activities using the existing GetChildActivities method
             ActivityPropertiesReaderHelper.GetChildActivities(parentActivity, _tempChildActivities);
+            var tempChildActivitiesList = _tempChildActivities.ToList();
 
-            foreach (var childActivity in _tempChildActivities.ToList())
+			foreach (var childActivity in tempChildActivitiesList)
             {
                 // Skip if we've already processed this activity
                 if (activityNodeMap.ContainsKey(childActivity)) continue;
