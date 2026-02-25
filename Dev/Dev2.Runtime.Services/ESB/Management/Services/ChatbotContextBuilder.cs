@@ -73,6 +73,106 @@ namespace Dev2.Runtime.ESB.Management.Services
             var promptBuilder = new StringBuilder(4096);
 
             // Header
+            promptBuilder.AppendLine(LoadPromptFile("system_prompt_part1.md").TrimEnd());
+            promptBuilder.AppendLine();
+
+            // Append resource definitions
+            if (settings.SelectedResourceIds != null && settings.SelectedResourceIds.Count > 0)
+            {
+                try
+                {
+                    var resourceDefinitions = GetResourceDefinitions(settings.SelectedResourceIds, settings.LoadResourcesAsXaml);
+                    if (resourceDefinitions.Any())
+                    {
+                        if (settings.LoadResourcesAsXaml)
+                        {
+                            //promptBuilder.AppendLine("## Selected Resources (with Workflow Summaries):");
+                            promptBuilder.AppendLine("Each workflow resource includes a structural summary showing activities, variables, and flow connections.");
+                        }
+                        else
+                        {
+                            //promptBuilder.AppendLine("## Selected Resources (JSON Definitions):");
+                            promptBuilder.AppendLine("Each resource includes its X6 graph JSON definition showing the full workflow structure.");
+                        }
+
+                        promptBuilder.AppendLine("```");
+                        promptBuilder.AppendLine();
+
+                        foreach (var def in resourceDefinitions)
+                        {
+                            promptBuilder.AppendLine(def);
+                        }
+                        promptBuilder.AppendLine();
+                        promptBuilder.AppendLine("```");
+                        promptBuilder.AppendLine();
+                    }
+                    else
+                    {
+                        promptBuilder.AppendLine("0 Selected Resources found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Warn($"Failed to retrieve resource definitions: {ex.Message}", GlobalConstants.WarewolfWarn);
+                }
+            }
+            else
+            {
+                promptBuilder.AppendLine("0 Selected Resources found.");
+            }
+
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine(LoadPromptFile("system_prompt_part2.md").TrimEnd());
+            promptBuilder.AppendLine();
+
+
+            // Append system log
+            if (settings.IncludeSystemLog)
+            {
+                try
+                {
+                    var logEntries = ReadRecentLogEntries(settings.NumberOfLogLines);
+                    if (logEntries.Any())
+                    {
+                       //promptBuilder.AppendLine("## System Log (Recent Entries):");
+                        promptBuilder.AppendLine("```");
+                        var logContent = SanitizeContentForPrompt(string.Join("\n", logEntries));
+                        promptBuilder.AppendLine(logContent);
+                        promptBuilder.AppendLine("```");
+                        promptBuilder.AppendLine();
+                    }
+                    else
+                    {
+                        promptBuilder.AppendLine("0 lines of logs found.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Warn($"Failed to retrieve system log entries: {ex.Message}", GlobalConstants.WarewolfWarn);
+                }
+            }
+            else
+            {
+                promptBuilder.AppendLine("0 lines of logs found.");
+            }
+
+            // Tool creation rules
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine(LoadPromptFile("system_prompt_part3.md").TrimEnd());
+
+            return promptBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Builds the structured system prompt including workspace context.
+        /// Reads settings, resources and logs directly from server-side APIs.
+        /// </summary>
+        public static string BuildSystemPrompt_verion_1(ChatbotSettingsData settings)
+        {
+            var promptBuilder = new StringBuilder(4096);
+
+            // Header
             promptBuilder.AppendLine(LoadPromptFile("introduction.md").TrimEnd());
             promptBuilder.AppendLine();
             promptBuilder.AppendLine("## Your Capabilities:");
