@@ -891,6 +891,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCalculateActivity(calculateActivity, nodeId);
             }
+            else if (activity is DsfDotNetAggregateCalculateActivity dotnetAggregateCalculateActivity)
+            {
+                cell = CreateDotNetAggregateCalculateActivity(dotnetAggregateCalculateActivity, nodeId);
+            }
+            else if (activity is DsfAggregateCalculateActivity aggregateCalculateActivity)
+            {
+                cell = CreateAggregateCalculateActivity(aggregateCalculateActivity, nodeId);
+            }
             else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
             {
                 cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
