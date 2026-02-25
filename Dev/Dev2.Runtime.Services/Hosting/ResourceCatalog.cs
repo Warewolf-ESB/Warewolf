@@ -217,25 +217,17 @@ namespace Dev2.Runtime.Hosting
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
-            Dev2Logger.Debug($"LoadWorkspaceImpl: workspacePath={workspacePath}", GlobalConstants.WarewolfError);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
             {
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
-                Dev2Logger.Debug($"LoadWorkspaceImpl: building resources from folders count={allFolders.Count}", GlobalConstants.WarewolfError);
                 userServices = LoadWorkspaceViaBuilder(workspacePath, workspaceID == GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
-                Dev2Logger.Debug($"LoadWorkspaceImpl: builder returned resource count={userServices?.Count}", GlobalConstants.WarewolfError);
-            }
-            else
-            {
-                Dev2Logger.Warn($"LoadWorkspaceImpl: workspacePath does not exist: {workspacePath}", GlobalConstants.WarewolfError);
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
 
-            Dev2Logger.Debug($"LoadWorkspaceImpl: total resources (including management services)={resources.Count}", GlobalConstants.WarewolfError);
 
             return resources;
         }
