@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                Manager.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
+                Manager?.Save(serializer.Deserialize<IPerformanceCounterTo>(values["PerformanceCounterTo"]));
                 msg.HasError = false;
                 msg.Message = new StringBuilder();
             }
