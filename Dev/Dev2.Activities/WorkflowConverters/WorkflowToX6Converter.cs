@@ -47,7 +47,6 @@ namespace Dev2.Activities.WF
         {
             try
             {
-                Dev2Logger.Debug($"ConvertToX6Json called. xml length: {(xml?.Length ?? 0)}, workflow implementation null: {workflow?.Implementation == null}", GlobalConstants.WarewolfError);
                 var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
                 var activityNodeMap = new Dictionary<Activity, string>(64);
 
@@ -60,7 +59,6 @@ namespace Dev2.Activities.WF
                 }
 
                 var json = JsonConvert.SerializeObject(graphData);
-                Dev2Logger.Debug($"ConvertToX6Json completed. Nodes={graphData.Nodes.Count}, Edges={graphData.Edges.Count}, ActivityNodeMap={graphData.ActivityNodeMap.Count}, json length={json?.Length ?? 0}", GlobalConstants.WarewolfError);
                 return json;
             }
             catch (Exception ex)
@@ -87,7 +85,6 @@ namespace Dev2.Activities.WF
                     var node = CreateActivityNode(activity, nodeId);
                     graphData.Nodes.Add(node);
                     graphData.ActivityNodeMap[activity] = node;
-                    Dev2Logger.Debug($"ProcessActivity: added nodeId={nodeId} for activityType={activity.GetType().FullName}", GlobalConstants.WarewolfError);
 
                     if (!string.IsNullOrEmpty(previousNodeId))
                     {

@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -32,8 +32,6 @@ namespace Dev2
     {
         public StringBuilder GetResourceDefinition( bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
-            Dev2Logger.Debug($"GetResourceDefinition called for resource: {resourceId}", GlobalConstants.WarewolfError);
-            Dev2Logger.Debug($"PrepareForDeployment={prepairForDeployment}, contents null/empty={contents.IsNullOrEmpty()}", GlobalConstants.WarewolfError);
             var serializer = new Dev2JsonSerializer();
             //return serializer.SerializeToBuilder(this.GetRawResourceDefinition(prepairForDeployment, resourceId, contents));
 
@@ -42,7 +40,6 @@ namespace Dev2
             {
                 if (!contents.IsNullOrEmpty())
                 {
-                    Dev2Logger.Debug("Attempting to load Dev2.Data assembly and construct Resource instance.", GlobalConstants.WarewolfError);
                     var assembly = Assembly.Load("Dev2.Data");
                     var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
                     if (type == null)
@@ -53,17 +50,13 @@ namespace Dev2
                     {
                         var instance = Activator.CreateInstance(type, contents.ToXElement());
                         var resource = (IResource)instance;
-                        Dev2Logger.Info($"Loaded resource. Type: {resource.GetType().FullName}, ResourceType: {resource.ResourceType}", GlobalConstants.WarewolfError);
                         if (resource.ResourceType == @"DbSource")
                         {
-                            Dev2Logger.Debug("Resource is DbSource - returning raw contents.", GlobalConstants.WarewolfError);
                             res.Message.Append(contents);
                         }
                         else
                         {
-                            Dev2Logger.Debug("Processing workflow service message payload.", GlobalConstants.WarewolfError);
                             DoWorkflowServiceMessage(contents, res);
-                            Dev2Logger.Debug($"After payload extraction, message length: {res.Message.Length}", GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -82,17 +75,13 @@ namespace Dev2
             if (!res.Message.IsNullOrEmpty())
             {
                 var dev2XamlCleaner = new Dev2XamlCleaner();
-                Dev2Logger.Debug("Stripping naughty namespaces from resource message.", GlobalConstants.WarewolfError);
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
-                Dev2Logger.Debug($"After StripNaughtyNamespaces, length: {res.Message.Length}", GlobalConstants.WarewolfError);
             }
             if (prepairForDeployment)
             {
                 try
                 {
-                    Dev2Logger.Debug("Decrypting all passwords in resource message (prepare for deployment).", GlobalConstants.WarewolfError);
                     res.Message = DecryptAllPasswords(res.Message);
-                    Dev2Logger.Debug($"After DecryptAllPasswords, length: {res.Message.Length}", GlobalConstants.WarewolfError);
                 }
                 catch (CryptographicException e)
                 {
@@ -105,14 +94,11 @@ namespace Dev2
 
         public IExecuteMessage GetRawResourceDefinition(bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
-            Dev2Logger.Debug($"GetRawResourceDefinition called for resource: {resourceId}", GlobalConstants.WarewolfError);
-            Dev2Logger.Debug($"PrepareForDeployment={prepairForDeployment}, contents null/empty={contents.IsNullOrEmpty()}", GlobalConstants.WarewolfError);
             var result = new ExecuteMessage(); 
             try
             {
                 if (!contents.IsNullOrEmpty())
                 {
-                    Dev2Logger.Debug("Attempting to load Dev2.Data assembly and construct Resource instance (raw).", GlobalConstants.WarewolfError);
                     var assembly = Assembly.Load("Dev2.Data");
                     var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
                     if (type == null)
@@ -123,17 +109,13 @@ namespace Dev2
                     {
                         var instance = Activator.CreateInstance(type, contents.ToXElement());
                         var resource = (IResource)instance;
-                        Dev2Logger.Info($"Loaded resource (raw). Type: {resource.GetType().FullName}, ResourceType: {resource.ResourceType}", GlobalConstants.WarewolfError);
                         if (resource.ResourceType == @"DbSource")
                         {
-                            Dev2Logger.Debug("Resource is DbSource - returning raw contents (raw).", GlobalConstants.WarewolfError);
                             result.Message.Append(contents);
                         }
                         else
                         {
-                            Dev2Logger.Debug("Processing workflow service message payload (raw).", GlobalConstants.WarewolfError);
                             DoWorkflowServiceMessage(contents, result);
-                            Dev2Logger.Debug($"After payload extraction (raw), message length: {result.Message.Length}", GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -173,7 +155,6 @@ namespace Dev2
         {
             var workflowResult = result;
             var startIdx = workflowResult.IndexOf(GlobalConstants.PayloadStart, 0, false);
-            Dev2Logger.Debug($"DoWorkflowServiceMessage: looking for PayloadStart at index {startIdx}.", GlobalConstants.WarewolfError);
 
             if (startIdx >= 0)
             {
@@ -181,7 +162,6 @@ namespace Dev2
                 workflowResult = workflowResult.Remove(0, startIdx);
 
                 startIdx = result.IndexOf(GlobalConstants.PayloadEnd, 0, false);
-                Dev2Logger.Debug($"DoWorkflowServiceMessage: found PayloadEnd at index {startIdx}.", GlobalConstants.WarewolfError);
 
                 if (startIdx > 0)
                 {
@@ -189,20 +169,17 @@ namespace Dev2
                     workflowResult = workflowResult.Remove(startIdx, len);
 
                     res.Message.Append(workflowResult.Unescape());
-                    Dev2Logger.Debug($"DoWorkflowServiceMessage: appended unescaped payload, length now {res.Message.Length}.", GlobalConstants.WarewolfError);
                 }
             }
             else
             {
                 startIdx = result.IndexOf(GlobalConstants.AltPayloadStart, 0, false);
-                Dev2Logger.Debug($"DoWorkflowServiceMessage: looking for AltPayloadStart at index {startIdx}.", GlobalConstants.WarewolfError);
                 if (startIdx >= 0)
                 {
                     startIdx += GlobalConstants.AltPayloadStart.Length;
                     workflowResult = workflowResult.Remove(0, startIdx);
 
                     startIdx = result.IndexOf(GlobalConstants.AltPayloadEnd, 0, false);
-                    Dev2Logger.Debug($"DoWorkflowServiceMessage: found AltPayloadEnd at index {startIdx}.", GlobalConstants.WarewolfError);
 
                     if (startIdx > 0)
                     {
@@ -210,13 +187,11 @@ namespace Dev2
                         workflowResult = workflowResult.Remove(startIdx, len);
 
                         res.Message.Append(workflowResult.Unescape());
-                        Dev2Logger.Debug($"DoWorkflowServiceMessage: appended unescaped alt payload, length now {res.Message.Length}.", GlobalConstants.WarewolfError);
                     }
                 }
                 else
                 {
                     res.Message.Append(workflowResult);
-                    Dev2Logger.Debug($"DoWorkflowServiceMessage: no payload markers found, appended whole message, length now {res.Message.Length}.", GlobalConstants.WarewolfError);
                 }
             }
         }

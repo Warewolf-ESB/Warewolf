@@ -23,18 +23,14 @@ namespace Dev2.Runtime.ESB.WF
 
             if (data != null)
             {
-                Dev2Logger.Debug($"WorkflowToJsonMapper.Process called. executeResult length: {(data?.ToString()?.Length ?? 0)}", GlobalConstants.WarewolfError);
                 var executionResult = JsonConvert.DeserializeObject<ExecuteMessage>(data.ToString());
 
                 if (null != executionResult)
                 {
-                    Dev2Logger.Debug($"ExecutionResult.HasError={executionResult.HasError}, MessageLength={(executionResult.Message?.ToString()?.Length ?? 0)}", GlobalConstants.WarewolfError);
                     var requestInfo = JsonConvert.DeserializeObject<Common.X6.X6RequestInfo>(executionResult.Message.ToString());
                     if (requestInfo != null)
                     {
-                        Dev2Logger.Debug($"RequestInfo.ResourceName={requestInfo.ResourceName}, ActivityXamlLength={(requestInfo.ActivityXaml?.Length ?? 0)}, WorkflowXMLLength={(requestInfo.WorkflowXML?.Length ?? 0)}", GlobalConstants.WarewolfError);
                         var json = MapToJson(requestInfo);
-                        Dev2Logger.Debug($"MapToJson returned length={(json?.Length ?? 0)} for resource={requestInfo.ResourceName}", GlobalConstants.WarewolfError);
 
                         finalresult.Message = new StringBuilder(json ?? string.Empty);
                     }
@@ -54,17 +50,14 @@ namespace Dev2.Runtime.ESB.WF
             try
             {
                 var activityXamlLength = requestInfo?.ActivityXaml?.Length ?? 0;
-                Dev2Logger.Debug($"MapToJson called. ActivityXamlLength={activityXamlLength}, WorkflowXMLLength={(requestInfo?.WorkflowXML?.Length ?? 0)}", GlobalConstants.WarewolfError);
                 var builder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
                 if (builder == null)
                 {
-                    Dev2Logger.Warn("MapToJson: XamlActivityBuilder is null - returning empty graph.", GlobalConstants.WarewolfError);
                     return string.Empty;
                 }
 
                 var converter = new WorkflowToX6Converter();
                 var graph = converter.ConvertToX6Json(builder, requestInfo.WorkflowXML);
-                Dev2Logger.Debug($"MapToJson: converter output length={(graph?.Length ?? 0)}", GlobalConstants.WarewolfError);
                 return graph;
             }
             catch (Exception ex)
