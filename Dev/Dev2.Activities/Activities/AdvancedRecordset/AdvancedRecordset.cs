@@ -38,7 +38,9 @@ namespace Dev2.Activities
 
     public class AdvancedRecordset : IAdvancedRecordset
     {
-        readonly SqliteServer _dbManager = new SqliteServer("Data Source=:memory:");
+        // Lazy-initialized sqlite server to avoid loading native sqlite during XAML deserialization
+        SqliteServer _dbManager;
+        SqliteServer DbManager => _dbManager ??= new SqliteServer("Data Source=:memory:");
         public IExecutionEnvironment Environment { get; set; }
         public string RecordsetName { get; set; }
         public IList<INameValue> DeclareVariables { get; set; }
@@ -86,10 +88,10 @@ namespace Dev2.Activities
         {
             try
             {
-                var command = _dbManager.CreateCommand();
+                var command = DbManager.CreateCommand();
                 command.CommandText = sqlQuery;
                 command.CommandType = CommandType.Text;
-                var ds = _dbManager.FetchDataSet(command);
+                var ds = DbManager.FetchDataSet(command);
                 return ds;
             }
             catch (Exception e)
@@ -101,11 +103,11 @@ namespace Dev2.Activities
         {
             try
             {
-                using (var cmd = _dbManager.CreateCommand())
+                using (var cmd = DbManager.CreateCommand())
                 {
                     cmd.CommandText = sqlQuery;
                     cmd.CommandType = CommandType.Text;
-                    return _dbManager.ExecuteScalar(cmd);
+                    return DbManager.ExecuteScalar(cmd);
                 }
             }
             catch (Exception e)
@@ -117,11 +119,11 @@ namespace Dev2.Activities
         {
             try
             {
-                using (var cmd = _dbManager.CreateCommand())
+                using (var cmd = DbManager.CreateCommand())
                 {
                     cmd.CommandText = sqlQuery;
                     cmd.CommandType = CommandType.Text;
-                    return _dbManager.ExecuteNonQuery(cmd);
+                    return DbManager.ExecuteNonQuery(cmd);
                 }
             }
             catch (Exception e)
@@ -172,32 +174,32 @@ namespace Dev2.Activities
         }
         public void CreateVariableTable()
         {
-            using (var cmd = _dbManager.CreateCommand())
+            using (var cmd = DbManager.CreateCommand())
             {
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS Variables (Name TEXT PRIMARY KEY, Value BLOB)";
                 cmd.CommandType = CommandType.Text;
-                _dbManager.ExecuteNonQuery(cmd);
+                DbManager.ExecuteNonQuery(cmd);
             }
         }
         public void InsertIntoVariableTable(string variableName, string variableValue)
         {
-            using (var cmd = _dbManager.CreateCommand())
+            using (var cmd = DbManager.CreateCommand())
             {
                 var sql = "INSERT OR REPLACE INTO Variables VALUES ('" + variableName + "', '" + variableValue.Replace("'", "''") + "');";
                 cmd.CommandText = sql;
                 cmd.CommandType = CommandType.Text;
-                _dbManager.ExecuteNonQuery(cmd);
+                DbManager.ExecuteNonQuery(cmd);
             }
         }
         public string GetVariableValue(string variableName)
         {
             try
             {
-                var command = _dbManager.CreateCommand();
+                var command = DbManager.CreateCommand();
                 var sql = "SELECT Value FROM Variables WHERE Name = '" + variableName.Replace("@", "").Trim() + "'";
                 command.CommandText = sql;
                 command.CommandType = CommandType.Text;
-                var dt = _dbManager.FetchDataTable(command);
+                var dt = DbManager.FetchDataTable(command);
                 var row = dt.Rows[0];
                 var value = row["Value"];
                 var colDataType = row.Table.Columns["Value"].DataType;
@@ -357,7 +359,14 @@ namespace Dev2.Activities
         }
         public void Dispose()
         {
-            _dbManager.Dispose();
+            try
+            {
+                _dbManager?.Dispose();
+            }
+            catch
+            {
+                // ignore dispose errors
+            }
         }
     }
 }

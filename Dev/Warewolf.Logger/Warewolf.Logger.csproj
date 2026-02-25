@@ -7,8 +7,6 @@
     <AssemblyName>WarewolfLogger</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <!--<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-    <SelfContained>true</SelfContained>-->
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>

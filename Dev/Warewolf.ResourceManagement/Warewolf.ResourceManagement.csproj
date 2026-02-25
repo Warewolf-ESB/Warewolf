@@ -12,7 +12,6 @@
     <RootNamespace>Warewolf.ResourceManagement</RootNamespace>
     <AssemblyName>Warewolf.ResourceManagement</AssemblyName>
     
-    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <LangVersion>10.0</LangVersion>

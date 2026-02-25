@@ -11,7 +11,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.COMIPC</RootNamespace>
     <AssemblyName>Warewolf.COMIPC</AssemblyName>
-    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SonarQubeExclude>true</SonarQubeExclude>

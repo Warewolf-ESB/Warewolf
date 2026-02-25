@@ -11,7 +11,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestingDotnetDllCascading</RootNamespace>
     <AssemblyName>Warewolf.TestingDotnetDllCascading</AssemblyName>
-    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SonarQubeExclude>True</SonarQubeExclude>

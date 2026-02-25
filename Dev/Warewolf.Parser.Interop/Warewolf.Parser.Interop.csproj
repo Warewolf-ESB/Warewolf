@@ -12,7 +12,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WarewolfParserInterop</RootNamespace>
     <AssemblyName>WarewolfParserInterop</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <LangVersion>10.0</LangVersion>

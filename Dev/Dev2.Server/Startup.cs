@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+#if !NETFRAMEWORK
+using SQLitePCL;
+#endif
 
 namespace Dev2
 {
@@ -45,6 +48,17 @@ namespace Dev2
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+#if !NETFRAMEWORK
+            try
+            {
+                Batteries_V2.Init();
+            }
+            catch (Exception ex)
+            {
+                // Initialization failed — log to console to avoid startup crash
+                try { Console.WriteLine($"SQLite native bundle init failed: {ex.Message}"); } catch { }
+            }
+#endif
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
