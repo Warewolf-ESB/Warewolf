@@ -58,8 +58,15 @@ public static class XamlActivityHelper
         }
         catch (Exception ex)
         {
-            // Log the exception for debugging
-            System.Diagnostics.Debug.WriteLine($"Failed to load XAML ActivityBuilder: {ex.Message}");
+            // Log the exception for debugging with full exception details
+            try
+            {
+                Dev2Logger.Error("GetXamlActivityBuilderAsDataActivities failed while loading XAML ActivityBuilder", ex, GlobalConstants.WarewolfError);
+            }
+            catch
+            {
+                // Swallow any logging failures to avoid masking the original error
+            }
             return null;
         }
     }
@@ -119,7 +126,14 @@ public static class XamlActivityHelper
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to load XAML ActivityBuilder: {ex.Message}");
+            try
+            {
+                Dev2Logger.Error("GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution failed while loading XAML ActivityBuilder", ex, GlobalConstants.WarewolfError);
+            }
+            catch
+            {
+                // Swallow any logging failures to avoid masking the original error
+            }
             return null;
         }
         finally
@@ -158,7 +172,14 @@ public static class XamlActivityHelper
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to invoke ToX6Json: {ex.Message}");
+                try
+                {
+                    Dev2Logger.Error("TryProcessX6JsonFromActivity failed to invoke ToX6Json", ex, GlobalConstants.WarewolfError);
+                }
+                catch
+                {
+                    // ignore
+                }
             }
         }
 
@@ -202,7 +223,14 @@ public static class XamlActivityHelper
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to create type wrapper: {ex.Message}");
+                try
+                {
+                    Dev2Logger.Error("TryCastAndExecute failed to create type wrapper", ex, GlobalConstants.WarewolfError);
+                }
+                catch
+                {
+                    // ignore
+                }
             }
         }
 

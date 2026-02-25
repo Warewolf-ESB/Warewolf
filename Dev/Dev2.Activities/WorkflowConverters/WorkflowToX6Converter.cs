@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Dev2.Common;
 
 namespace Dev2.Activities.WF
 {
@@ -44,18 +45,29 @@ namespace Dev2.Activities.WF
         /// <returns>Json serialized string</returns>
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
-            var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
-            var activityNodeMap = new Dictionary<Activity, string>(64);
-
-            var startNode = CreateStartNode();
-            graphData.Nodes.Add(startNode);
-
-            if (workflow.Implementation != null)
+            try
             {
-                ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
-            }
+                Dev2Logger.Debug($"ConvertToX6Json called. xml length: {(xml?.Length ?? 0)}, workflow implementation null: {workflow?.Implementation == null}", GlobalConstants.WarewolfError);
+                var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
+                var activityNodeMap = new Dictionary<Activity, string>(64);
 
-            return JsonConvert.SerializeObject(graphData);
+                var startNode = CreateStartNode();
+                graphData.Nodes.Add(startNode);
+
+                if (workflow.Implementation != null)
+                {
+                    ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
+                }
+
+                var json = JsonConvert.SerializeObject(graphData);
+                Dev2Logger.Debug($"ConvertToX6Json completed. Nodes={graphData.Nodes.Count}, Edges={graphData.Edges.Count}, ActivityNodeMap={graphData.ActivityNodeMap.Count}, json length={json?.Length ?? 0}", GlobalConstants.WarewolfError);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"ConvertToX6Json failed: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
         }
 
         private string ProcessActivity(Activity activity, X6WorkflowLoadModel graphData,
@@ -75,6 +87,7 @@ namespace Dev2.Activities.WF
                     var node = CreateActivityNode(activity, nodeId);
                     graphData.Nodes.Add(node);
                     graphData.ActivityNodeMap[activity] = node;
+                    Dev2Logger.Debug($"ProcessActivity: added nodeId={nodeId} for activityType={activity.GetType().FullName}", GlobalConstants.WarewolfError);
 
                     if (!string.IsNullOrEmpty(previousNodeId))
                     {

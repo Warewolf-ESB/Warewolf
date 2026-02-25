@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }
             }
             else

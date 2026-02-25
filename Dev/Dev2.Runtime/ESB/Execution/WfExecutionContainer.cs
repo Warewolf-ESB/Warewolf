@@ -350,7 +350,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception exception)
 			{
-				Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
+				Dev2Logger.Error(exception, dsfDataObject.ExecutionID?.ToString());
                 dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                 dsfDataObject.StateNotifier?.LogExecuteException(new SerializableException(exception), lastActivity);
             }
