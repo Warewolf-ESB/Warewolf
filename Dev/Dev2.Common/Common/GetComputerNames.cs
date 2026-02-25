@@ -82,15 +82,19 @@ namespace Dev2.Common.Common
 
         public List<string> GetHosts()
         {
+#if NOTNANOSERVER
             // DirectoryServices relies on native Active Directory COM DLLs (eg. activeds.dll)
             // which are not available on Nano Server / some minimal Windows installs. Avoid
             // calling into DirectoryEntry on non-windows platforms or when it will fail.
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return new List<string> { Environment.MachineName };
             }
+#else
+			return new List<string> { Environment.MachineName };
+#endif
 
-            var serverUserName = _wi.Name;
+			var serverUserName = _wi.Name;
 
             var domainOrWorkgroupName = GetWindowsDomainOrWorkgroupName(serverUserName);
             var queryStr = $"WinNT://{domainOrWorkgroupName}";

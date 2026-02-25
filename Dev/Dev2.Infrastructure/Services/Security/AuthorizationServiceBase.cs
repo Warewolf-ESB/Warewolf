@@ -128,7 +128,7 @@ namespace Dev2.Services.Security
 
         static string FindGroup(SecurityIdentifier searchSid)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return string.Empty;
 			}

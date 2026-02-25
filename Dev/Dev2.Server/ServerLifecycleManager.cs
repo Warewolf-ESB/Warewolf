@@ -425,13 +425,12 @@ namespace Dev2
 				}
 			}
 			var coreCount = -1;
-			if (GlobalConstants.IsNanoServer())
+#if NOTNANOSERVER
+            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
             {
-                foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-                {
-                    coreCount += int.Parse(item["NumberOfCores"].ToString());
-                }
-			}
+                coreCount += int.Parse(item["NumberOfCores"].ToString());
+            }
+#endif
 			return coreCount;
 		}
 

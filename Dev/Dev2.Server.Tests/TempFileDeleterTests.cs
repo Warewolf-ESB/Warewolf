@@ -43,7 +43,7 @@ namespace Dev2.Server.Tests
             var expectedPeriod = GlobalConstants.NetworkComputerNameQueryFreq;
 
             var mockTimerFactory = new Mock<ITimerFactory>();
-            var mockTimer = new Mock<ITimer>();
+            var mockTimer = new Mock<Common.Interfaces.Wrappers.ITimer>();
             mockTimerFactory.Setup(o => o.New(It.IsAny<TimerCallback>(), null, expectedDueTime, expectedPeriod))
                 .Returns(mockTimer.Object)
                 .Callback<TimerCallback, object, int, int>((callback, state, dueTime, interval) => {
