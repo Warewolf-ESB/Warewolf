@@ -24,12 +24,15 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Utilities;
+using Dev2.WorkflowConverters;
+using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -524,6 +527,46 @@ namespace Dev2.Activities
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATHERSYSTEMINFORMATION;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Gather System Information specific properties
+            cell.data.TryAdd(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, SystemInformationCollection);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Gather System Information specific properties
+            if (cell.data.TryGetValue(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, out var collectionObj))
+            {
+                var array = collectionObj as JArray;
+                if (array != null)
+                {
+                    SystemInformationCollection = array.ToObject<List<GatherSystemInformationTO>>();
+                }
+            }
+
+            // Defensive initialization
+            SystemInformationCollection ??= new List<GatherSystemInformationTO>();
         }
     }
 }

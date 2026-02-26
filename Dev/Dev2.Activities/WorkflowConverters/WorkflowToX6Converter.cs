@@ -695,6 +695,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
             }
+            else if (activity is DsfWebGetRequestWithTimeoutActivity webRequestWithTimeoutActivity)
+            {
+                cell = CreateWebRequestWithTimeoutActivity(webRequestWithTimeoutActivity, nodeId);
+            }
             else if (activity is WebPostActivityNew webPostActivityNew)
             {
                 cell = CreateWebPostActivity(webPostActivityNew, nodeId);
@@ -902,6 +906,14 @@ namespace Dev2.Activities.WF
             else if (activity is DsfDotNetDateTimeDifferenceActivity dotnetDateTimeDifferenceActivity)
             {
                 cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetGatherSystemInformationActivity dotnetGatherSystemInfoActivity)
+            {
+                cell = CreateDotNetGatherSystemInformationActivity(dotnetGatherSystemInfoActivity, nodeId);
+            }
+            else if (activity is DsfGatherSystemInformationActivity gatherSystemInfoActivity)
+            {
+                cell = CreateGatherSystemInformationActivity(gatherSystemInfoActivity, nodeId);
             }
             else
             {
