@@ -3,6 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "__NOTE__": "NEVER run 'func publish --publish-local-settings' — it will overwrite AzureWebJobsStorage on the live app with UseDevelopmentStorage=true and break trigger sync.",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AzureSignalRConnectionString": "<azure-signalr-connection-string>"
   }
 }
