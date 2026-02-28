@@ -368,16 +368,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 
                 $FrameworkArg = ";TargetFramework=`"" + $CurrentFramework + "`""
 
-                if (!($InContainer.IsPresent)) {
-                    &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" /t:Restore
-                    &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" $OutputProperty $Target
-                } else {
-                    docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" $OutputProperty $Target
-                }
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Host Build failed for $CurrentFramework. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
-                    exit 1
-                }
                 if ($CurrentFramework -eq "net8.0") {
                     $DockerfileContent = @"
 FROM mcr.microsoft.com/dotnet/sdk:8.0
