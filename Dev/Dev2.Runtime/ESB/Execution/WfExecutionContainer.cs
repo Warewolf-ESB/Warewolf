@@ -671,6 +671,16 @@ namespace Dev2.Runtime.ESB.Execution
         public static string ResourceBasePath { get; set; }
 
         /// <summary>
+        /// When <see langword="true"/>, workflow executions will produce debug states
+        /// (inputs/outputs per activity) and dispatch them via <see cref="Dev2.Diagnostics.Debug.DebugDispatcher"/>.
+        /// Set to <see langword="true"/> in Azure Functions startup after registering an
+        /// <see cref="Dev2.Common.Interfaces.Diagnostics.Debug.IDebugWriter"/> (e.g.
+        /// <c>AzureSignalRDebugWriter</c>) so that connected Studio clients receive live
+        /// debug output over the Azure SignalR Service "esb" hub.
+        /// </summary>
+        public static bool IsDebugEnabled { get; set; }
+
+        /// <summary>
         /// Executes the named workflow and returns its result.
         /// </summary>
         /// <param name="workflowName">
@@ -731,7 +741,7 @@ namespace Dev2.Runtime.ESB.Execution
                 WorkspaceID = GlobalConstants.ServerWorkspaceID,
                 ExecutingUser = Thread.CurrentPrincipal,
                 ExecutionID = Guid.NewGuid(),
-                IsDebug = false,
+                IsDebug = IsDebugEnabled,
                 ServerID = Guid.NewGuid(),
                 WebUrl = $"azurefunc://{workflowName}",
             };
