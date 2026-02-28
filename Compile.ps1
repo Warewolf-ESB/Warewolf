@@ -42,7 +42,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-if ($FrameworkTarget -and $FrameworkTarget -ne "net6.0-windows") {
+if ($FrameworkTarget -and $FrameworkTarget -ne "net8.0-windows") {
 	$path = "$PSScriptRoot\Dev\"
 	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
 
@@ -350,7 +350,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($FrameworkTarget) {
                 $FrameworksToBuild += $FrameworkTarget
             } else {
-                $FrameworksToBuild = @("net6.0-windows")
+                $FrameworksToBuild = @("net8.0-windows")
             }
 
             foreach ($CurrentFramework in $FrameworksToBuild) {
@@ -378,9 +378,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                     Write-Host Build failed for $CurrentFramework. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                     exit 1
                 }
-                if ($CurrentFramework -eq "net6.0") {
+                if ($CurrentFramework -eq "net8.0") {
                     $DockerfileContent = @"
-FROM mcr.microsoft.com/dotnet/sdk:6.0
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 
 EXPOSE 3142
 EXPOSE 3143
@@ -396,7 +396,7 @@ ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 CMD ["dotnet", "./Server/Warewolf Server.dll"]
 "@
                     if ($ProjectSpecificOutputs.IsPresent) {
-                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net6.0\Dockerfile"                        
+                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net8.0\Dockerfile"
                     } else {
                         $OutputFile = "$PSScriptRoot\Bin\$OutputFolderName\Dockerfile"
                     }
