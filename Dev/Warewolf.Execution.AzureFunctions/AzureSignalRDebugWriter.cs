@@ -2,7 +2,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Microsoft.Azure.SignalR.Management;
 
-namespace Warewolf.Runtime.AzureFunctions;
+namespace Warewolf.Execution.AzureFunctions;
 
 /// <summary>
 /// IDebugWriter implementation for the Azure Functions deployment.

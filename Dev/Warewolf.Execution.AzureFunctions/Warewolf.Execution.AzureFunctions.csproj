@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-    <AssemblyName>Warewolf.Runtime.AzureFunctions</AssemblyName>
-    <RootNamespace>Warewolf.Runtime.AzureFunctions</RootNamespace>
+    <AssemblyName>Warewolf.Execution.AzureFunctions</AssemblyName>
+    <RootNamespace>Warewolf.Execution.AzureFunctions</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Suppress transitive Windows Desktop refs pulled in by Dev2.Runtime -->

@@ -6,7 +6,7 @@ using System.Net;
 using System.Security;
 using System.Text.Json;
 
-namespace Warewolf.Runtime.AzureFunctions;
+namespace Warewolf.Execution.AzureFunctions;
 
 public class WorkflowFunction
 {

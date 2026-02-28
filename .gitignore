@@ -68,7 +68,7 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/*.bat
 *.tmp_proj
 /Dev/PrecompiledWeb/**
-/Dev/Warewolf.Runtime.AzureFunctions/publish/*
+/Dev/Warewolf.Execution.AzureFunctions/publish/*
 /Dev/publish
 
 ####################################################################################

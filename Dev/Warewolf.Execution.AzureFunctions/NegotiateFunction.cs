@@ -2,7 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.SignalRService;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace Warewolf.Runtime.AzureFunctions;
+namespace Warewolf.Execution.AzureFunctions;
 
 /// <summary>
 /// Negotiate endpoint — Warewolf Studio calls POST /api/negotiate to receive
