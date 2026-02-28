@@ -210,7 +210,8 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             if (!fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)
                 && !fileName.EndsWith(".bite", StringComparison.OrdinalIgnoreCase))
             {
-                fileName += ".xml";
+                var bitePath = Path.Combine(workflowsDirectory, fileName + ".bite");
+                fileName += File.Exists(bitePath) ? ".bite" : ".xml";
             }
 
             request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName);

@@ -19,7 +19,6 @@ Param(
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential,
-  [string]$FrameworkTarget,
   [switch]$Disablemaxcpucount
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
@@ -40,25 +39,6 @@ if ($Target -ne "") {
 #find script
 if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
-
-if ($FrameworkTarget -and $FrameworkTarget -ne "net8.0-windows") {
-	$path = "$PSScriptRoot\Dev\"
-	$files = Get-ChildItem -Path $path -Include *.csproj,*.fsproj -Recurse
-
-	foreach ($file in $files) {
-		$xml = [xml](Get-Content $file.FullName)
-
-		# Replace target framework nodes
-		$nodes = $xml.SelectNodes("//TargetFramework | //TargetFrameworks")
-		foreach ($node in $nodes) {
-            $newNode = $xml.CreateElement("TargetFramework")
-            $newNode.InnerText = $FrameworkTarget
-            $node.ParentNode.ReplaceChild($newNode, $node)
-		}
-
-		$xml.Save($file.FullName)
-	}
 }
 
 if (!($InContainer.IsPresent)) {
@@ -345,108 +325,69 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($BaseOutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-
-            $FrameworksToBuild = @()
-            if ($FrameworkTarget) {
-                $FrameworksToBuild += $FrameworkTarget
+            $OutputFolderName = $BaseOutputFolderName
+            if ($ProjectSpecificOutputs.IsPresent) {
+                $OutputProperty = ""
             } else {
-                $FrameworksToBuild = @("net8.0-windows")
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
 
-            foreach ($CurrentFramework in $FrameworksToBuild) {
-                $OutputFolderName = $BaseOutputFolderName
-                if ($ProjectSpecificOutputs.IsPresent) {
-                    $OutputProperty = ""
-                } else {
-                    $OutputFolderName += "\" + $CurrentFramework
-                    $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
-                }
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+            }
 
-                if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
-                }
-
-                $FrameworkArg = ";TargetFramework=`"" + $CurrentFramework + "`""
-
-                if ($CurrentFramework -eq "net8.0") {
-                    $DockerfileContent = @"
-FROM mcr.microsoft.com/dotnet/sdk:8.0
-
-EXPOSE 3142
-EXPOSE 3143
-
-ADD . Server
-ENV SERVER_PATH "Server\Warewolf Server.exe"
-ENV SERVER_WORKINGDIR "C:\programdata\Warewolf"
-ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
-ENV SERVER_USERNAME "WarewolfAdmin"
-ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
-
-# Run the application
-CMD ["dotnet", "./Server/Warewolf Server.dll"]
-"@
-                    if ($ProjectSpecificOutputs.IsPresent) {
-                        $OutputFile = "$PSScriptRoot\dev\Dev2.Server\bin\Debug\net8.0\Dockerfile"
-                    } else {
-                        $OutputFile = "$PSScriptRoot\Bin\$OutputFolderName\Dockerfile"
-                    }
-                    if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName")) {
-                        New-Item -ItemType Directory -Path "$PSScriptRoot\Bin\$OutputFolderName" -Force | Out-Null
-                    }
-                    $DockerfileContent | Set-Content -Path $OutputFile -Encoding UTF8
-                }
-                if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                    &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
-                }
-                
-                if (!($Disablemaxcpucount.IsPresent)) {
-                    $DisablemaxcpucountProperty = "/maxcpucount"
-                }
-                if (!($InContainer.IsPresent)) {
-                    &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" "/nodeReuse:false" "/restore" $OutputProperty $Target $DisablemaxcpucountProperty
-                } else {
-                    docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" "/nodeReuse:false" "/restore" $OutputProperty $Target $NodeReuseProperty
-                }
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Host Build failed for $CurrentFramework. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
-                    exit 1
-                }
-                if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
-                    if (!($ProjectSpecificOutputs.IsPresent)) {
-                        if ($Target -eq "/t:Debug" -or $Target -eq "") {
-                            if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
-                                Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
-                            }
-                            if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
-                                Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
-                            }
-                            if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
-                                Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
-                            }
-                            if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
-                                Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
-                            }
-                            if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
-                                Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
-                            }
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                            Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-
-                            if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
-                                Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
-                            }
-                            Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
+            }
+            
+            if (!($Disablemaxcpucount.IsPresent)) {
+                $DisablemaxcpucountProperty = "/maxcpucount"
+            }
+            if (!($InContainer.IsPresent)) {
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/nodeReuse:false" "/restore" $OutputProperty $Target $DisablemaxcpucountProperty
+            } else {
+                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" "/nodeReuse:false" "/restore" $OutputProperty $Target $NodeReuseProperty
+            }
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Build failed for $CurrentFramework. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
+                exit 1
+            }
+            if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
+                if (!($ProjectSpecificOutputs.IsPresent)) {
+                    if ($Target -eq "/t:Debug" -or $Target -eq "") {
+                        if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
+                            Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
                         }
-                        if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
-                            Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                        if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
                         }
-                        Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
-                        if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
-                            @"
+                        if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
+                        }
+                        if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
+                        }
+                        if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
+                        }
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+
+                        if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
+                            Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
+                        }
+                        Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
+                    }
+                    if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
+                        Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                    }
+                    Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
+                    if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
+                        @"
 <?xml version="1.0" encoding="utf-8"?>
 
 <configuration>
@@ -498,7 +439,6 @@ CMD ["dotnet", "./Server/Warewolf Server.dll"]
 
 </configuration>
 "@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
-                        }
                     }
                 }
             }

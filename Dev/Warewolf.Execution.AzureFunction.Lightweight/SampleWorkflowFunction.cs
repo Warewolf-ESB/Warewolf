@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -35,7 +36,8 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         public SampleWorkflowFunction(IWorkflowExecutor workflowExecutor)
         {
             _workflowExecutor = workflowExecutor;
-            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory") ?? "/workflows";
+            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
+                ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 
         /// <summary>
