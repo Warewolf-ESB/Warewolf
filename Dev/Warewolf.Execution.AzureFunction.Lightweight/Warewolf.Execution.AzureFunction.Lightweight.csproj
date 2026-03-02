@@ -111,11 +111,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
   </ItemGroup>
-
-  <Compile Include="..\AssemblyCommonInfo.cs">
-    <Link>Properties\AssemblyCommonInfo.cs</Link>
-  </Compile>
   
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
