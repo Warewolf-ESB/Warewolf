@@ -23,6 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchCurrentServerLog : DefaultEsbManagementEndpoint
     {
+        const int DefaultNumberOfLines = 1000;
         readonly string _serverLogPath;
 
         public FetchCurrentServerLog()
@@ -41,52 +42,23 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
+                var numberOfLines = DefaultNumberOfLines;
+                if (values != null && values.TryGetValue("NumberOfLines", out var numberOfLinesValue))
+                {
+                    if (int.TryParse(numberOfLinesValue?.ToString(), out var parsedLines) && parsedLines > 0)
+                    {
+                        numberOfLines = parsedLines;
+                    }
+                }
 
-                Dev2Logger.Info("Fetch Server Log Started", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info($"Fetch Server Log Started, requesting {numberOfLines} lines", GlobalConstants.WarewolfInfo);
                 var result = new ExecuteMessage { HasError = false };
                 if (File.Exists(_serverLogPath))
                 {
-                    // Check if numLines parameter is provided
-                    int? numLines = null;
-                    if (values != null && values.ContainsKey("numLines"))
-                    {
-                        if (int.TryParse(values["numLines"].ToString(), out int parsedLines))
-                        {
-                            numLines = parsedLines;
-                        }
-                    }
-
-                    if (numLines.HasValue && numLines.Value > 0)
-                    {
-                        // Read only the last N lines
-                        var lines = ReadLastLines(_serverLogPath, numLines.Value);
-                        foreach (var line in lines)
-                        {
-                            result.Message.AppendLine(line);
-                        }
-                    }
-                    else if (numLines.HasValue && numLines.Value <= 0)
-					{
-                        using (var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        using (var streamReader = new StreamReader(fileStream))
-                        {
-                            while (!streamReader.EndOfStream)
-                            {
-                                result.Message.AppendLine(streamReader.ReadLine());
-                            }
-                        }
-                    }
-                    else if (!numLines.HasValue)
-					{
-						// Read only the last 10 lines
-						var lines = ReadLastLines(_serverLogPath, 10);
-						foreach (var line in lines)
-						{
-							result.Message.AppendLine(line);
-						}
-					}
+                    var allLines = ReadLastNLines(_serverLogPath, numberOfLines);
+                    result.Message.Append(string.Join("\n", allLines));
+                    Dev2Logger.Info($"Fetch Server Log returning {allLines.Count} lines", GlobalConstants.WarewolfInfo);
                 }
-                
                 var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
@@ -193,7 +165,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             return lines.ToArray();
         }
 
-        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+        private static List<string> ReadLastNLines(string filePath, int numberOfLines)
+        {
+            var lines = new List<string>();
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var streamReader = new StreamReader(fileStream))
+            {
+                while (!streamReader.EndOfStream)
+                {
+                    lines.Add(streamReader.ReadLine());
+                }
+            }
+
+            if (lines.Count > numberOfLines)
+            {
+                return lines.Skip(lines.Count - numberOfLines).ToList();
+            }
+            return lines;
+        }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><NumberOfLines ColumnIODirection=\"Input\"></NumberOfLines><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public override string HandlesType() => "FetchCurrentServerLogService";
     }

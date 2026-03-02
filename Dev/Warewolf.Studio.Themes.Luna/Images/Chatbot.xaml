@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- This resource is the icon used on the Activity view -->
+    <DrawingBrush x:Key="ChatbotIcon" Stretch="Uniform">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <!-- This resource is used on the Explorer view through CustomMenuIcons -->
+    <DrawingImage x:Key="Chatbot">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <!-- This resource is used on the Explorer view through CustomMenuIcons -->
+    <DrawingImage x:Key="ChatbotSource">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <!-- Simple speech bubble outline -->
+                    <GeometryDrawing Geometry="F1 M 30,30 L 220,30 Q 240,30 240,50 L 240,150 Q 240,170 220,170 L 90,170 L 50,210 L 60,170 L 50,170 Q 30,170 30,150 L 30,50 Q 30,30 50,30 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF333333" Thickness="12" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

@@ -110,6 +110,10 @@ namespace Dev2.Studio.Core
         
         public void Save(IElasticsearchSourceDefinition elasticsearchServiceSource) => UpdateManagerProxy.SaveElasticsearchServiceSource(elasticsearchServiceSource, GlobalConstants.ServerWorkspaceID);
 
+        public void Save(IChatbotSource chatbotSource) => UpdateManagerProxy.SaveChatbotSource(chatbotSource, GlobalConstants.ServerWorkspaceID);
+
+        public string TestConnection(IChatbotSource chatbotSource) => UpdateManagerProxy.TestChatbotSource(chatbotSource);
+
         public void Save(ISharepointServerSource sharePointServiceSource)
         {
             try
@@ -141,5 +145,5 @@ namespace Dev2.Studio.Core
         public Action<Guid, bool> ServerSaved { get; set; }
 
         public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironment) => UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, deployTriggers, destinationEnvironment);
-    }
+	}
 }

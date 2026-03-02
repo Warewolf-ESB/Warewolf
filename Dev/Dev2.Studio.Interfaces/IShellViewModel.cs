@@ -78,7 +78,8 @@ namespace Dev2.Studio.Interfaces
         void NewExchangeSource(string resourcePath);
         void NewRabbitMQSource(string resourcePath);
         void NewSharepointSource(string resourcePath);
-        void NewDropboxSource(string resourcePath);
+		void NewChatbotSource(string resourcePath);
+		void NewDropboxSource(string resourcePath);
         void NewWcfSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
         void DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
@@ -155,9 +156,11 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewExchangeSourceCommand { get; }
         IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
         IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
-        IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
+		IAuthorizeCommand<string> NewChatbotSourceCommand { get; }
+		IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
-        IExplorerViewModel ExplorerViewModel { get; set; }
+
+		IExplorerViewModel ExplorerViewModel { get; set; }
         IPopupController PopupProvider { get; set; }
         IServer LocalhostServer { get; }
         bool ResourceCalled { get; set; }

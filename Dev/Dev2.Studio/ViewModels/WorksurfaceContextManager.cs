@@ -117,7 +117,8 @@ namespace Dev2.Studio.ViewModels
         void NewDropboxSource(string resourcePath);
         void NewRabbitMQSource(string resourcePath);
         void NewSharepointSource(string resourcePath);
-        void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
+		void NewChatbotSource(String resourcePath);
+		void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
         void NewEmailSource(string resourcePath);
         void NewExchangeSource(string resourcePath);
@@ -1768,6 +1769,21 @@ namespace Dev2.Studio.ViewModels
             }
 
             return true;
+        }
+
+        public void NewChatbotSource(string resourcePath)
+        {
+            var saveViewModel = GetSaveViewModel(resourcePath, "New Chatbot Source");
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ChatbotSource);
+            key.ServerID = ActiveServer.ServerID;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IChatbotSource>(_shellViewModel.EventPublisher, new ChatbotSourceViewModel(new ManageChatbotSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel,
+#if NETFRAMEWORK
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManageChatbotSourceControl(), ActiveServer));
+#else
+				new Prism.Events.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageChatbotSourceControl(), ActiveServer));
+#endif
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
     }
 }

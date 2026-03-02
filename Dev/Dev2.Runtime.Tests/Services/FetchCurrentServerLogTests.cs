@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void FetchCurrentServerLogExecuteWithExistingLogExpectedReturnsContentsOfLog()
         {
-            const string Expected = "Hello world\r\n";
+            const string Expected = "Hello world";
             var serverLogPath = Path.Combine(_testDir, string.Format("ServerLog_{0}.txt", Guid.NewGuid()));
             File.WriteAllText(serverLogPath, Expected);
 
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
             var esb = new FetchCurrentServerLog();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification.ToString());
+            Assert.AreEqual("<DataList><NumberOfLines ColumnIODirection=\"Input\"></NumberOfLines><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification.ToString());
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];
