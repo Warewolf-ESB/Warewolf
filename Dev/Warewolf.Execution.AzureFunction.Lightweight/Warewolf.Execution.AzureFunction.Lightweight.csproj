@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- ========================================================= -->
   <!-- CORE CONFIGURATION -->
@@ -40,7 +40,7 @@
     <PublishReadyToRun>false</PublishReadyToRun>
 
     <!-- Reduce dependency duplication -->
-    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <!-- Reduce globalization payload -->
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -105,13 +105,13 @@
   <!-- ========================================================= -->
   <!-- OPTIONAL CONTENT COPYING -->
   <!-- ========================================================= -->
-  <!--
+  
   <ItemGroup>
     <Content Include="..\Resources - Release\Resources\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
   </ItemGroup>
-  -->
+  
 
 </Project>
