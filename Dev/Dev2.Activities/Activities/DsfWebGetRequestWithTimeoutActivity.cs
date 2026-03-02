@@ -30,6 +30,8 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities
 {
@@ -401,6 +403,47 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WEBREQUEST;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+            cell.data[Constants.WEBREQUEST_METHOD] = Method;
+            cell.data[Constants.WEBREQUEST_TIMEOUTSECONDS] = TimeoutSeconds;
+            cell.data[Constants.WEBREQUEST_TIMEOUTTEXT] = TimeOutText;
+            cell.data[Constants.WEBREQUEST_URL] = Url;
+            cell.data[Constants.WEBREQUEST_HEADERS] = Headers;
+            cell.data[Constants.WEBREQUEST_RESULT] = Result;
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_METHOD, out var method)) Method = method;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_TIMEOUTTEXT, out var timeOutText)) TimeOutText = timeOutText;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_URL, out var url)) Url = url;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_HEADERS, out var headers)) Headers = headers;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_RESULT, out var result)) Result = result;
+
+            if (cell.data.TryGetValue(Constants.WEBREQUEST_TIMEOUTSECONDS, out var timeoutSecondsObj) &&
+                int.TryParse(timeoutSecondsObj?.ToString(), out var timeoutSeconds))
+            {
+                TimeoutSeconds = timeoutSeconds;
+            }
+
+            Method ??= "GET";
+            Headers ??= string.Empty;
+            TimeOutText ??= "100";
         }
     }
 }

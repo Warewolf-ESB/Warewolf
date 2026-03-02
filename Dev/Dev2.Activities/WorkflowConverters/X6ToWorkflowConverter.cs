@@ -557,6 +557,8 @@ namespace Dev2.Activities.WF
                     return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
+                case var t when t.Contains(Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebRequestWithTimeoutActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPostActivity(node);
                 case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -655,8 +657,16 @@ namespace Dev2.Activities.WF
                     return CreateDateTimeDifferenceActivity(node);
                 case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDotNetDateTimeDifferenceActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetGatherSystemInformationActivity(node);
+                case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGatherSystemInformationActivity(node);
 
-				default:
+                default:
                     return new WriteLine { Text = "Unknown type" };
             }
         }

@@ -468,6 +468,30 @@ namespace Dev2.Common.X6
         public const string CALCULATE_EXPRESSION = "expression";
         public const string CALCULATE_RESULT = "result";
 
+        // Aggregate Calculate Activity
+        public const string DSFAGGREGATECALCULATEACTIVITY = "DsfAggregateCalculateActivity";
+        public const string DSFDOTNETAGGREGATECALCULATEACTIVITY = "DsfDotNetAggregateCalculateActivity";
+        public const string DISPLAYNAME_AGGREGATECALCULATE = "Aggregate Calculate";
+        public const string AGGREGATECALCULATE_EXPRESSION = "expression";
+        public const string AGGREGATECALCULATE_RESULT = "result";
+
+        // Gather System Information Activity
+        public const string DSFGATHERSYSTEMINFORMATIONACTIVITY = "DsfGatherSystemInformationActivity";
+        public const string DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY = "DsfDotNetGatherSystemInformationActivity";
+        public const string DISPLAYNAME_GATHERSYSTEMINFORMATION = "Gather System Information";
+        public const string GATHERSYSINFO_SYSTEMINFOCOLLECTION = "systeminformationcollection";
+
+        // Web Request (Utility) Activity
+        public const string DSFWEBGETREQUESTWITHTIMEOUTACTIVITY = "DsfWebGetRequestWithTimeoutActivity";
+        public const string DISPLAYNAME_WEBREQUEST = "Web Request";
+        public const string WEBREQUEST_METHOD = "webrequest_method";
+        public const string WEBREQUEST_TIMEOUTSECONDS = "webrequest_timeoutseconds";
+        public const string WEBREQUEST_TIMEOUTTEXT = "webrequest_timeouttext";
+        public const string WEBREQUEST_URL = "webrequest_url";
+        public const string WEBREQUEST_HEADERS = "webrequest_headers";
+        public const string WEBREQUEST_RESULT = "webrequest_result";
+    
+
         // XPath Activity
         public const string DSFXPATHACTIVITY = "DsfXPathActivity";
         public const string DISPLAYNAME_XPATH = "XPath";
