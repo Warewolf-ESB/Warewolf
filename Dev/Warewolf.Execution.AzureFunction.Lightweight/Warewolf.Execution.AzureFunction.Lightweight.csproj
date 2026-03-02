@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>10.0</LangVersion>
@@ -12,6 +12,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Suppress transitive Windows Desktop refs pulled in by Dev2.Runtime -->
     <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+	<SelfContained>false</SelfContained>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
@@ -50,4 +51,11 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
   </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
 </Project>

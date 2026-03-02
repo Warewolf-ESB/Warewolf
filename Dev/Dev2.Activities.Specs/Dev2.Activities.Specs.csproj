@@ -550,8 +550,8 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win\Dev2.Activities.Specs.dll" if not exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
-        echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0-windows\win"
+      if exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win\Dev2.Activities.Specs.dll" if not exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win\SQLite.Interop.dll" (
+        echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win"
       )
     </PostBuildEvent>
   </PropertyGroup>
