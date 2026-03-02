@@ -4,7 +4,7 @@
   <!-- CORE CONFIGURATION -->
   <!-- ========================================================= -->
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
 
