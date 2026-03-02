@@ -168,7 +168,7 @@ namespace Dev2.Activities.DateAndTime
             if (string.IsNullOrEmpty(DateTime))
             {
                 isDateTimeEmpty = true;
-                DateTime = string.IsNullOrEmpty(DateTime) ? System.DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss") : DateTime;
+                DateTime = string.IsNullOrEmpty(DateTime) ? System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff") : DateTime;
             }          
             
             var dtItr = CreateDataListEvaluateIterator(DateTime, dataObject.Environment, update);
