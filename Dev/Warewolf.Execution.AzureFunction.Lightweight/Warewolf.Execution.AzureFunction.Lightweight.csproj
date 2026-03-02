@@ -1,53 +1,117 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- ========================================================= -->
+  <!-- CORE CONFIGURATION -->
+  <!-- ========================================================= -->
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <LangVersion>10.0</LangVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+
     <RootNamespace>Warewolf.Execution.AzureFunction.Lightweight</RootNamespace>
     <AssemblyName>Warewolf.Execution.AzureFunction.Lightweight</AssemblyName>
-    <EnableDefaultItems>true</EnableDefaultItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputType>Exe</OutputType>
-    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!-- Suppress transitive Windows Desktop refs pulled in by Dev2.Runtime -->
-    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>true</EnableDefaultItems>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <!--
-      Only two direct project references needed:
-        - Dev2.Activities: provides ActivityParser (XAML DynamicActivity ? IDev2Activity chain)
-        - Dev2.Core: provides DsfDataObject, ExecutionEnvironmentUtils, IDev2Activity, Dev2XamlLoader
 
-      Everything else flows in transitively:
-        Dev2.Activities ? Dev2.Core, Dev2.Data, Dev2.Common, Warewolf.Storage, etc.
-        Dev2.Core       ? Dev2.Common, Dev2.Common.Interfaces, Warewolf.Interfaces,
-                          Warewolf.Storage, Warewolf.Storage.Interfaces, Dev2.Data, etc.
-    -->
+
+  <!-- ========================================================= -->
+  <!-- SIZE OPTIMIZATION (CRITICAL FOR AZURE) -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+
+    <!-- Prevent 200MB publish -->
+    <SelfContained>false</SelfContained>
+
+    <!-- Prevent native EXE host creation -->
+    <UseAppHost>false</UseAppHost>
+
+    <!-- NEVER embed runtime -->
+    <RuntimeIdentifier></RuntimeIdentifier>
+
+    <!-- Azure already provides runtime -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+
+    <!-- Reduce dependency duplication -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+
+    <!-- Reduce globalization payload -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+
+    <!-- Functions optimization -->
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- FASTEST STARTUP SETTINGS -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+
+    <!-- Faster CLR warmup -->
+    <TieredCompilation>true</TieredCompilation>
+    <TieredPGO>true</TieredPGO>
+
+    <!-- Reduce startup IO -->
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- AZURE FUNCTIONS PACKAGES -->
+  <!-- ========================================================= -->
+  <ItemGroup>
+
+    <PackageReference Include="Microsoft.Azure.Functions.Worker"
+                      Version="1.21.0" />
+
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http"
+                      Version="3.2.0" />
+
+    <!-- Analyzer only (IMPORTANT) -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk"
+                      Version="1.17.2"
+                      OutputItemType="Analyzer"
+                      PrivateAssets="all" />
+
+    <PackageReference Include="Newtonsoft.Json"
+                      Version="13.0.3" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- WAREWOLF / DEV2 REFERENCES -->
+  <!-- ========================================================= -->
+  <ItemGroup>
+
+    <!-- Activity + execution engine -->
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj" />
+
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+
   </ItemGroup>
 
+
+  <!-- ========================================================= -->
+  <!-- OPTIONAL CONTENT COPYING -->
+  <!-- ========================================================= -->
+  <!--
   <ItemGroup>
     <Content Include="..\Resources - Release\Resources\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
+  -->
+
 </Project>
