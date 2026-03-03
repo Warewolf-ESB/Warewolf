@@ -217,6 +217,7 @@ namespace Dev2.Runtime.Hosting
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Dev2Logger.Info($"[ResourceCatalog] LoadWorkspaceImpl: workspacePath='{workspacePath}' exists={Directory.Exists(workspacePath)}", GlobalConstants.WarewolfInfo);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
             {
@@ -227,6 +228,7 @@ namespace Dev2.Runtime.Hosting
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
+            Dev2Logger.Info($"[ResourceCatalog] Loaded {resources.Count} resources from workspace {workspaceID}", GlobalConstants.WarewolfInfo);
 
 
             return resources;

@@ -150,9 +150,11 @@ namespace Dev2.Runtime.WebServer.Executor
                 return ExecuteAsCoverage(webRequest, serviceName, _resource);
             }
 
+            Console.Error.WriteLine($"[DIAG][ExecutorBase] TryExecute: serviceName='{serviceName}' workspaceId='{workspaceId}' resource='{(_resource == null ? "NULL" : _resource.ResourceName)}'");
             if(_resource is null)
             {
                 var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
+                Console.Error.WriteLine($"[DIAG][ExecutorBase] SERVICE NOT FOUND: serviceName='{serviceName}' workspaceGuid='{_workspaceGuid}'");
                 _dataObject.Environment.AddError(msg);
                 _dataObject.ExecutionException = new Exception(msg);
                 _executionDataListId = GlobalConstants.NullDataListID;

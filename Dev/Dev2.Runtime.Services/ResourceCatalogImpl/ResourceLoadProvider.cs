@@ -548,6 +548,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
             }
 
+            Console.Error.WriteLine($"[DIAG][GetResource(string)] workspaceID='{workspaceID}' resourceName='{resourceName}' resourcePath='{resourcePath}' nameToSearch='{resourceNameToSearchFor}' type='{resourceType}'");
+
             Func<Guid, Func<IResource, bool>> getfilter = id =>
             {
                 Func<IResource, bool> result = r =>
@@ -556,12 +558,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     {
                         return false;
                     }
-                    return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType);
+                    var rPath = r.GetResourcePath(id) ?? "";
+                    var nameMatch = string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase);
+                    var pathMatch = string.Equals(rPath, resourcePath, StringComparison.InvariantCultureIgnoreCase);
+                    var typeMatch = resourceType == "Unknown" || r.ResourceType == resourceType;
+                    if (nameMatch)
+                    {
+                        Console.Error.WriteLine($"[DIAG][GetResource(string)] NAME MATCH: ResourceName='{r.ResourceName}' rPath='{rPath}' vs resourcePath='{resourcePath}' pathMatch={pathMatch} typeMatch={typeMatch}");
+                    }
+                    return pathMatch && nameMatch && typeMatch;
                 };
                 return result;
             };
 
-            return GetResource(ref workspaceID, getfilter);
+            var found = GetResource(ref workspaceID, getfilter);
+            Console.Error.WriteLine($"[DIAG][GetResource(string)] RESULT: {(found == null ? "NOT FOUND" : $"FOUND '{found.ResourceName}'")} for resourceName='{resourceName}'");
+            return found;
         }
         public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
         {
@@ -811,17 +823,27 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Console.Error.WriteLine($"[DIAG][LoadWorkspaceImpl] workspaceID={workspaceID} workspacePath='{workspacePath}' exists={Directory.Exists(workspacePath)}");
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
             {
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
                 allFolders.Add(workspacePath);
+                Console.Error.WriteLine($"[DIAG][LoadWorkspaceImpl] scanning {allFolders.Count} folder(s)");
                 userServices = LoadWorkspaceViaBuilder(workspacePath, workspaceID == GlobalConstants.ServerWorkspaceID, allFolders.ToArray());
+            }
+            else
+            {
+                Console.Error.WriteLine($"[DIAG][LoadWorkspaceImpl] DIRECTORY DOES NOT EXIST: '{workspacePath}'");
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
-
+            Console.Error.WriteLine($"[DIAG][LoadWorkspaceImpl] loaded {resources.Count} total resources (userServices={userServices.Count}, mgmtServices={ManagementServices.Count})");
+            foreach (var r in userServices)
+            {
+                Console.Error.WriteLine($"[DIAG][LoadWorkspaceImpl]   resource Name='{r.ResourceName}' FilePath='{r.FilePath}'");
+            }
             return resources;
         }
 

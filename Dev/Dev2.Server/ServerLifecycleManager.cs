@@ -360,9 +360,9 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        int GetNumberOfCores()
-        {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+		int GetNumberOfCores()
+		{
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
 				try
 				{
@@ -426,61 +426,86 @@ namespace Dev2
 			}
 			var coreCount = -1;
 #if NOTNANOSERVER
-            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				try
+				{
+					foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+					{
+						coreCount += int.Parse(item["NumberOfCores"].ToString());
+					}
+				}
+				catch (PlatformNotSupportedException)
+				{
+					// Fallback to Environment.ProcessorCount
+					coreCount = Environment.ProcessorCount - 1;
+				}
+			}
+			else
+			{
+				coreCount = Environment.ProcessorCount - 1;
+			}
+#else
+			coreCount = Environment.ProcessorCount - 1;
 #endif
 			return coreCount;
 		}
 
 		public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
-        {
-            if (usageType == UsageType.ServerStart)
-            {
-                ServerStats.SessionId = Guid.NewGuid();
-            }
+		{
+			try
+			{
+				if (usageType == UsageType.ServerStart)
+				{
+					ServerStats.SessionId = Guid.NewGuid();
+				}
 
-            var myData = new
-            {
-                ServerStats.SessionId,
-                _subscriptionDataInstance.SubscriptionId,
-                _subscriptionDataInstance.PlanId,
-                _subscriptionDataInstance.Status,
-                VersionNo = _systemInformationHelper.GetWareWolfVersion(),
-                IPAddress = _systemInformationHelper.GetIPv4Adresses(),
-				ProcessorCount = Environment.ProcessorCount,
-                NumberOfCores = GetNumberOfCores(),
-                OSType = _systemInformationHelper.GetOperatingSystemInformation(),
-                MachineName = _systemInformationHelper.GetComputerName(),
-                Region = _systemInformationHelper.GetRegionInformation(),
-                Executions = ServerStats.TotalExecutions,
-                Uptime = DateTime.Now - Process.GetCurrentProcess().StartTime
-            };
-            //TODO: Add whether running in container
-            var jsonData = JsonConvert.SerializeObject(myData);
-            var customerId = _subscriptionDataInstance.CustomerId;
-            if (customerId == "")
-            {
-                customerId = "UnRegistered";
-            }
+				var myData = new
+				{
+					ServerStats.SessionId,
+					_subscriptionDataInstance.SubscriptionId,
+					_subscriptionDataInstance.PlanId,
+					_subscriptionDataInstance.Status,
+					VersionNo = _systemInformationHelper.GetWareWolfVersion(),
+					IPAddress = _systemInformationHelper.GetIPv4Adresses(),
+					ProcessorCount = Environment.ProcessorCount,
+					NumberOfCores = GetNumberOfCores(),
+					OSType = _systemInformationHelper.GetOperatingSystemInformation(),
+					MachineName = _systemInformationHelper.GetComputerName(),
+					Region = _systemInformationHelper.GetRegionInformation(),
+					Executions = ServerStats.TotalExecutions,
+					Uptime = DateTime.Now - Process.GetCurrentProcess().StartTime
+				};
+				//TODO: Add whether running in container
+				var jsonData = JsonConvert.SerializeObject(myData);
+				var customerId = _subscriptionDataInstance.CustomerId;
+				if (customerId == "")
+				{
+					customerId = "UnRegistered";
+				}
 
-            var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
-            if (returnResult != UsageDataResult.ok)
-            {
-                _usageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
-                ServerStats.IncrementUsageServerRetry();
-                _writer.WriteLine("UsageTracker: Could not log usage.");
-                var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
-                logger.Warn(msg);
-                Dev2Logger.Warn(msg, "UsageTracker");
-            }
+				var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
+				if (returnResult != UsageDataResult.ok)
+				{
+					_usageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
+					ServerStats.IncrementUsageServerRetry();
+					_writer.WriteLine("UsageTracker: Could not log usage.");
+					var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
+					logger.Warn(msg);
+					Dev2Logger.Warn(msg, "UsageTracker");
+				}
 
-            if (usageType == UsageType.ServerStart)
-            {
-                _usageLogger.Start();
-            }
-        }
+				if (usageType == UsageType.ServerStart)
+				{
+					_usageLogger.Start();
+				}
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Warn("TrackUsage failed: " + ex.Message, "UsageTracker");
+				_writer.WriteLine("Warning: Usage tracking failed - " + ex.Message);
+			}
+		}
 
         public void Stop(bool didBreak, int result, bool mute)
         {

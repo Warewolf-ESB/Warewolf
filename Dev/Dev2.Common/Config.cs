@@ -28,12 +28,24 @@ namespace Dev2.Common
     [ExcludeFromCodeCoverage]
     public class Config
     {
-        public static readonly string AppDataPath = GetDirectory(GlobalConstants.ServerPathKey, Environment.SpecialFolder.CommonApplicationData);
-        public static readonly string UserDataPath = GetDirectory(GlobalConstants.UserPathKey, Environment.SpecialFolder.LocalApplicationData);
+        private static string _appDataPath;
+        private static string _userDataPath;
+
+        public static string AppDataPath => _appDataPath ?? (_appDataPath = GetDirectory(GlobalConstants.ServerPathKey, Environment.SpecialFolder.CommonApplicationData));
+        public static string UserDataPath => _userDataPath ?? (_userDataPath = GetDirectory(GlobalConstants.UserPathKey, Environment.SpecialFolder.LocalApplicationData));
 
         private static string GetDirectory(string key, Environment.SpecialFolder defaultPath)
         {
-            string path = ConfigurationManager.AppSettings[key];
+            // First try environment variable (for Linux containers)
+            string path = Environment.GetEnvironmentVariable(key);
+
+            // Fall back to ConfigurationManager.AppSettings
+            if (string.IsNullOrEmpty(path))
+            {
+                path = ConfigurationManager.AppSettings[key];
+            }
+
+            // Finally, fall back to special folder path
             if (string.IsNullOrEmpty(path))
             {
                 path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);

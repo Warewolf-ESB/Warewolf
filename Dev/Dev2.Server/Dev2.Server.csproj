@@ -134,12 +134,20 @@
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
+    <None Include="build-and-deploy-linux.ps1" />
+    <None Include="DIAGNOSTIC-LOGGING-GUIDE.md" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="AddAdminFromEnvironmentVariablesAndStart.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Dockerfile.linux" />
+    <None Include="LINUX-CONTAINER-README.md" />
+    <None Include="LINUX-FIX-SUMMARY.md" />
+    <None Include="LOGGING-CHANGES-SUMMARY.md" />
+    <None Include="QUICK-REFERENCE.md" />
+    <None Include="rebuild-with-logging.ps1" />
     <None Include="secure.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -411,13 +419,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.70" />
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <!-- Copy Resources - Release/Resources to the build output so they are included in the Linux Docker build context -->
+  <Target Name="CopyReleaseResourcesToOutput" AfterTargets="Build" Condition="Exists('$(SolutionDir)Resources - Release\Resources')">
+    <ItemGroup>
+      <ReleaseResourceFiles Include="$(SolutionDir)Resources - Release\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(ReleaseResourceFiles)"
+      DestinationFiles="@(ReleaseResourceFiles->'$(OutputPath)Resources\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+    <Message Text="Copied release resources to $(OutputPath)Resources\" Importance="normal" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
