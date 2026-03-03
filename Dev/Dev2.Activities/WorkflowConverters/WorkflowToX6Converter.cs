@@ -895,6 +895,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
             }
+            else if (activity is DsfODBCDatabaseActivity odbcDatabaseActivity)
+            {
+                cell = CreateODBCDatabaseActivity(odbcDatabaseActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;
