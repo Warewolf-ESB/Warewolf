@@ -17,20 +17,24 @@ spec:
         app: warewolf-stable
     spec:
       nodeSelector:
-        kubernetes.io/os: windows
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: acr-secret
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - warewolf-dev
-              topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - warewolf-dev
+                topologyKey: kubernetes.io/hostname
       containers:
         - name: warewolf
-          image: tudev2containerregistry.azurecr.io/warewolf:3.0.2.46
+          image: tudev2containerregistry.azurecr.io/warewolf:3.0.2.61
           imagePullPolicy: Always
           ports:
             - containerPort: 3142
@@ -40,6 +44,14 @@ spec:
               value: ashley.lewis
             - name: SERVER_PASSWORD
               value: Dev2@dmin123
+          readinessProbe:
+            httpGet:
+              path: /favicon.ico
+              port: 3142
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 30
           resources:
             requests:
               cpu: "500m"
@@ -67,20 +79,25 @@ spec:
         app: warewolf-dev
     spec:
       nodeSelector:
-        kubernetes.io/os: windows
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: acr-secret
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - warewolf-stable
-              topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - warewolf-stable
+                topologyKey: kubernetes.io/hostname
       containers:
         - name: warewolf
-          image: warewolfserver/warewolfserver:3.0.0.33
+          image: tudev2containerregistry.azurecr.io/warewolf:3.0.2.61
+          imagePullPolicy: Always
           ports:
             - containerPort: 3142
             - containerPort: 3143
@@ -89,7 +106,18 @@ spec:
               value: ashley.lewis
             - name: SERVER_PASSWORD
               value: Dev2@dmin123
+          readinessProbe:
+            httpGet:
+              path: /favicon.ico
+              port: 3142
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 30
           resources:
+            requests:
+              cpu: "500m"
+              memory: 2G
             limits:
               cpu: "2"
               memory: 4G
