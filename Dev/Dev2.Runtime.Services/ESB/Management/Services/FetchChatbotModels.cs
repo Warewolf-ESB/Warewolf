@@ -82,15 +82,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static List<ChatbotModelDefinition> FetchModelsFromProvider(ChatbotSource source)
         {
-            // Anthropic doesn't have a models list endpoint - return known models directly
-            if (IsAnthropicEndpoint(source.ModelsEndpoint) || IsAnthropicEndpoint(source.CompletionsEndpoint))
-            {
-                return GetAnthropicModels();
-            }
-
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(120);
+
+                if (IsAnthropicEndpoint(source.ModelsEndpoint) || IsAnthropicEndpoint(source.CompletionsEndpoint))
+                {
+                    // Anthropic uses x-api-key header and requires anthropic-version
+                    return FetchModelsWithAuth(client, source.ModelsEndpoint, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01");
+                }
 
                 if (IsGoogleGeminiEndpoint(source.ModelsEndpoint))
                 {
@@ -269,19 +269,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return string.Empty;
-        }
-
-        private static List<ChatbotModelDefinition> GetAnthropicModels()
-        {
-            // Anthropic doesn't have a models list API, return known models
-            return new List<ChatbotModelDefinition>
-            {
-                new ChatbotModelDefinition { Id = "claude-3-opus-20240229", Object = "model", OwnedBy = "anthropic", Created = 0 },
-                new ChatbotModelDefinition { Id = "claude-3-sonnet-20240229", Object = "model", OwnedBy = "anthropic", Created = 0 },
-                new ChatbotModelDefinition { Id = "claude-3-haiku-20240307", Object = "model", OwnedBy = "anthropic", Created = 0 },
-                new ChatbotModelDefinition { Id = "claude-2.1", Object = "model", OwnedBy = "anthropic", Created = 0 },
-                new ChatbotModelDefinition { Id = "claude-2.0", Object = "model", OwnedBy = "anthropic", Created = 0 }
-            };
         }
 
         private static bool IsAnthropicEndpoint(string endpoint)
