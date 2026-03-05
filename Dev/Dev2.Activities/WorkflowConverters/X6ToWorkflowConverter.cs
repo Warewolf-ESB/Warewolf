@@ -665,6 +665,9 @@ namespace Dev2.Activities.WF
                     return CreateDotNetGatherSystemInformationActivity(node);
                 case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateGatherSystemInformationActivity(node);
+                case var t when t.Contains(Constants.DSFWORKFLOWACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfWorkflowActivity(node);
+
 
                 default:
                     return new WriteLine { Text = "Unknown type" };

@@ -121,8 +121,13 @@ namespace Dev2.WorkflowConverters
 
         public static bool TryGetOutputs(IDictionary<string, object> data, out IList<IServiceOutputMapping> outputs)
         {
+            return TryGetOutputs(data, Constants.WEBMETHOD_OUTPUTS, out outputs);
+        }
+
+        public static bool TryGetOutputs(IDictionary<string, object> data, string key, out IList<IServiceOutputMapping> outputs)
+        {
             outputs = null;
-            if (!data.TryGetValue(Constants.WEBMETHOD_OUTPUTS, out var raw) || raw is not JArray arr) return false;
+            if (!data.TryGetValue(key, out var raw) || raw is not JArray arr) return false;
 
             outputs = arr
                 .Children<JObject>()
