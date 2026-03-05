@@ -557,6 +557,8 @@ namespace Dev2.Activities.WF
                     return CreateFileReadActivity(node);
                 case var t when t.Contains(Constants.WEBGETACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebGetActivity(node);
+                case var t when t.Contains(Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateWebRequestWithTimeoutActivity(node);
                 case var t when t.Contains(Constants.WEBPOSTACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateWebPostActivity(node);
                 case var t when t.Contains(Constants.WEBPUTACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -647,12 +649,22 @@ namespace Dev2.Activities.WF
                     return CreateRandomActivity(node);
 				case var t when t.Contains(Constants.DSFCREATEJSONACTIVITY, StringComparison.OrdinalIgnoreCase):
 					return CreateCreateJsonActivity(node);
+                case var t when t.Contains(Constants.DSFXPATHACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateXPathActivity(node);
                 case var t when t.Contains(Constants.DSFNUMBERFORMATACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateNumberFormatActivity(node);
                 case var t when t.Contains(Constants.DSFDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDateTimeDifferenceActivity(node);
                 case var t when t.Contains(Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDotNetDateTimeDifferenceActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetGatherSystemInformationActivity(node);
+                case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateGatherSystemInformationActivity(node);
                 case var t when t.Contains(Constants.ODBCDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateODBCDatabaseActivity(node);
 

@@ -34,6 +34,9 @@ using WarewolfParserInterop;
 using Dev2.Comparer;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Newtonsoft.Json.Linq;
+using Dev2.Common.X6;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities
 {
@@ -612,6 +615,46 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (SystemInformationCollection != null ? SystemInformationCollection.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override void ToX6Json(Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATHERSYSTEMINFORMATION;
+            cell.data[Constants.UNIQUEID] = UniqueID;
+
+            // Gather System Information specific properties
+            cell.data.TryAdd(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, SystemInformationCollection);
+        }
+
+        public override void FromX6Json(Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            // Gather System Information specific properties
+            if (cell.data.TryGetValue(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, out var collectionObj))
+            {
+                var array = collectionObj as JArray;
+                if (array != null)
+                {
+                    SystemInformationCollection = array.ToObject<List<GatherSystemInformationTO>>();
+                }
+            }
+
+            // Defensive initialization
+            SystemInformationCollection ??= new List<GatherSystemInformationTO>();
         }
     }
 

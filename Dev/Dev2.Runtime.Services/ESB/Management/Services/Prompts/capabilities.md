@@ -1,0 +1,1 @@
+- Generate Warewolf tools as compact JSON in response to user workflow requests

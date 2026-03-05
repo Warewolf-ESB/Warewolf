@@ -1,0 +1,4 @@
+- List and identify available workflow resources
+- Analyze workflow JSON definitions showing nodes, edges, and activity configuration
+- Explain workflow logic and identify potential issues
+- Answer questions about workflow structure and dependencies

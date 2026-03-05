@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
@@ -45,6 +46,7 @@ namespace Dev2.Common
         public static AuditingSettings Auditing = new AuditingSettings();
         public static LegacySettings Legacy = new LegacySettings();
         public static PersistenceSettings Persistence = new PersistenceSettings();
+        public static ChatbotSettings Chatbot = new ChatbotSettings();
     }
     public class PersistenceSettings : ConfigSettingsBase<PersistenceSettingsData>
     {
@@ -484,6 +486,144 @@ namespace Dev2.Common
             set
             {
                 _settings.IncludeEnvironmentVariable = value;
+            }
+        }
+    }
+
+    public class ChatbotSettings : ConfigSettingsBase<ChatbotSettingsData>
+    {
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "chatbotSettings.json");
+
+        public ChatbotSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        public ChatbotSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public ChatbotSettingsData Get()
+        {
+            var result = new ChatbotSettingsData();
+            foreach (var prop in typeof(ChatbotSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp?.GetValue(this);
+                prop.SetValue(result, value);
+            }
+
+            return result;
+        }
+
+        public NamedGuidWithEncryptedPayload ChatbotSource
+        {
+            get => _settings?.ChatbotSource ?? new NamedGuidWithEncryptedPayload();
+            set
+            {
+                _settings.ChatbotSource = value;
+                Save();
+            }
+        }
+
+        public bool IncludeSystemLog
+        {
+            get => _settings?.IncludeSystemLog ?? true;
+            set
+            {
+                _settings.IncludeSystemLog = value;
+                Save();
+            }
+        }
+
+        public bool LoadResourcesAsXaml
+        {
+            get => _settings?.LoadResourcesAsXaml ?? true;
+            set
+            {
+                _settings.LoadResourcesAsXaml = value;
+                Save();
+            }
+        }
+
+        public int NumberOfLogLines
+        {
+            get => _settings?.NumberOfLogLines ?? 1000;
+            set
+            {
+                _settings.NumberOfLogLines = value;
+                Save();
+            }
+        }
+
+        public List<Guid> SelectedResourceIds
+        {
+            get => _settings?.SelectedResourceIds ?? new List<Guid>();
+            set
+            {
+                _settings.SelectedResourceIds = value ?? new List<Guid>();
+                Save();
+            }
+        }
+
+        public string UserMessageColor
+        {
+            get => _settings?.UserMessageColor ?? "#ff6600";
+            set
+            {
+                _settings.UserMessageColor = value ?? "#ff6600";
+                Save();
+            }
+        }
+
+        public string UserMessageTextColor
+        {
+            get => _settings?.UserMessageTextColor ?? "#ffffff";
+            set
+            {
+                _settings.UserMessageTextColor = value ?? "#ffffff";
+                Save();
+            }
+        }
+
+        public string BotMessageColor
+        {
+            get => _settings?.BotMessageColor ?? "#f8f9fa";
+            set
+            {
+                _settings.BotMessageColor = value ?? "#f8f9fa";
+                Save();
+            }
+        }
+
+        public string BotMessageTextColor
+        {
+            get => _settings?.BotMessageTextColor ?? "#333333";
+            set
+            {
+                _settings.BotMessageTextColor = value ?? "#333333";
+                Save();
+            }
+        }
+
+        public int SlidingWindowSummaryLength
+        {
+            get => _settings?.SlidingWindowSummaryLength ?? 200;
+            set
+            {
+                _settings.SlidingWindowSummaryLength = value > 0 ? value : 200;
+                Save();
+            }
+        }
+
+        public bool EnableSlidingWindowTrimming
+        {
+            get => _settings?.EnableSlidingWindowTrimming ?? false;
+            set
+            {
+                _settings.EnableSlidingWindowTrimming = value;
+                Save();
             }
         }
     }

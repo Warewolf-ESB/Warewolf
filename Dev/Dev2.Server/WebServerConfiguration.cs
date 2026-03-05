@@ -116,13 +116,12 @@ namespace Dev2
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-#if NETFRAMEWORK
+#if WINDOWS
                     var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
 #else
                     var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, httpsEndpoint);
 #endif
-
-					if (canEnableSsl)
+                    if (canEnableSsl)
                     {
                         endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
                     }

@@ -695,6 +695,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
             }
+            else if (activity is DsfWebGetRequestWithTimeoutActivity webRequestWithTimeoutActivity)
+            {
+                cell = CreateWebRequestWithTimeoutActivity(webRequestWithTimeoutActivity, nodeId);
+            }
             else if (activity is WebPostActivityNew webPostActivityNew)
             {
                 cell = CreateWebPostActivity(webPostActivityNew, nodeId);
@@ -871,6 +875,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
             }
+            else if (activity is DsfXPathActivity xpathActivity)
+            {
+                cell = CreateXPathActivity(xpathActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
@@ -887,6 +895,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCalculateActivity(calculateActivity, nodeId);
             }
+            else if (activity is DsfDotNetAggregateCalculateActivity dotnetAggregateCalculateActivity)
+            {
+                cell = CreateDotNetAggregateCalculateActivity(dotnetAggregateCalculateActivity, nodeId);
+            }
+            else if (activity is DsfAggregateCalculateActivity aggregateCalculateActivity)
+            {
+                cell = CreateAggregateCalculateActivity(aggregateCalculateActivity, nodeId);
+            }
             else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
             {
                 cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
@@ -894,6 +910,14 @@ namespace Dev2.Activities.WF
             else if (activity is DsfDotNetDateTimeDifferenceActivity dotnetDateTimeDifferenceActivity)
             {
                 cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetGatherSystemInformationActivity dotnetGatherSystemInfoActivity)
+            {
+                cell = CreateDotNetGatherSystemInformationActivity(dotnetGatherSystemInfoActivity, nodeId);
+            }
+            else if (activity is DsfGatherSystemInformationActivity gatherSystemInfoActivity)
+            {
+                cell = CreateGatherSystemInformationActivity(gatherSystemInfoActivity, nodeId);
             }
             else if (activity is DsfODBCDatabaseActivity odbcDatabaseActivity)
             {

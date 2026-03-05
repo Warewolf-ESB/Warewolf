@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
+using Dev2.Services.Chatbot;
 using Dev2.Services.Persistence;
 using Dev2.Services.Security;
 
@@ -32,6 +33,8 @@ namespace Dev2.Data.Settings
         public LoggingSettingsTo Logging { get; set; }
 
         public PersistenceSettingsTo Persistence { get; set; }
+
+        public ChatbotSettingsTo Chatbot { get; set; }
 
         public bool HasError { get; set; }
         public string Error { get; set; }

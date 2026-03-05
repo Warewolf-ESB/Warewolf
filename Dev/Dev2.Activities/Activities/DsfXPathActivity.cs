@@ -10,6 +10,7 @@
 */
 
 using System;
+using Newtonsoft.Json.Linq;
 using System.Activities;
 #if WINDOWS || NETFRAMEWORK
 using System.Activities.Presentation.Model;
@@ -32,6 +33,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.WorkflowConverters;
 
 namespace Dev2.Activities
 {
@@ -646,6 +648,45 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _isDebugMode.GetHashCode();
                 return hashCode;
+            }
+        }
+
+        public override void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new System.Collections.Generic.Dictionary<string, object>();
+
+            base.ToX6Json(cell);
+
+            cell.shape = Dev2.Common.X6.Constants.DSFXPATHACTIVITY;
+            cell.data[Dev2.Common.X6.Constants.TYPE] = Dev2.Common.X6.Constants.DSFXPATHACTIVITY.ToLower();
+            cell.data[Dev2.Common.X6.Constants.DISPLAYNAME] = DisplayName ?? Dev2.Common.X6.Constants.DISPLAYNAME_XPATH;
+
+            cell.data.Add(Dev2.Common.X6.Constants.XPATH_SOURCESTRING, SourceString);
+            cell.data.Add(Dev2.Common.X6.Constants.XPATH_RESULTSCOLLECTION, ResultsCollection);
+        }
+
+        public override void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.DISPLAYNAME, out string displayName))
+                this.DisplayName = displayName;
+
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.XPATH_SOURCESTRING, out string sourceString))
+                this.SourceString = sourceString;
+
+            object fieldObject = null;
+            cell.data.TryGetValue(Dev2.Common.X6.Constants.XPATH_UPDATEDRESULTSCOLLECTION, out fieldObject);
+            if (fieldObject == null)
+            {
+                cell.data.TryGetValue(Dev2.Common.X6.Constants.XPATH_RESULTSCOLLECTION, out fieldObject);
+            }
+            var array = fieldObject as JArray;
+            if (array != null)
+            {
+                ResultsCollection = array.ToObject<System.Collections.Generic.List<Unlimited.Applications.BusinessDesignStudio.Activities.XPathDTO>>();
             }
         }
     }

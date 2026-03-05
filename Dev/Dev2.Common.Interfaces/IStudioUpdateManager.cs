@@ -35,6 +35,7 @@ namespace Dev2.Common.Interfaces
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         void Save(IWcfServerSource wcfSource);        
         void Save(IOAuthSource sharePointServiceSource);
+        void Save(IChatbotSource chatbotSource);
     }
 
     public interface IStudioUpdateManagerTest
@@ -47,6 +48,7 @@ namespace Dev2.Common.Interfaces
         string TestConnection(IEmailServiceSource emailServiceSource);
         string TestConnection(IExchangeSource emailServiceSource);
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
+        string TestConnection(IChatbotSource chatbotSource);
         IList<string> TestDbConnection(IDbSource serverSource);
 		IList<string> TestSqliteConnection(ISqliteDBSource serverSource);
 		DataTable TestDbService(IDatabaseService inputValues);
@@ -54,7 +56,7 @@ namespace Dev2.Common.Interfaces
         string TestPluginService(IPluginService inputValues);
         string TestPluginService(IComPluginService inputValues);
         string TestWcfService(IWcfService inputValues);
-    }
+	}
 
     public interface IStudioUpdateManager : IStudioUpdateManagerSave, IStudioUpdateManagerTest
     {
@@ -64,7 +66,7 @@ namespace Dev2.Common.Interfaces
         void FireServerSaved(Guid savedServerID, bool isDeleted);
 
         List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironment);
-    }
+	}
 
     public delegate void ItemSaved(bool refresh);
 

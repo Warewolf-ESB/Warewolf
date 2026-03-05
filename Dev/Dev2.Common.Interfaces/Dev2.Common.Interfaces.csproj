@@ -62,6 +62,8 @@
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
     <Compile Include="Container\IWarewolfQueue.cs" />
+    <Compile Include="Core\ChatbotModelDefinition.cs" />
+    <Compile Include="Core\ChatbotSourceDefinition.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="IAdminManager.cs" />
+    <Compile Include="IChatbotSource.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
     <Compile Include="ICircularDependency.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
     <Compile Include="ILocalPathManager.cs" />
+    <Compile Include="IManageChatbotSourceViewModel.cs" />
     <Compile Include="IManageComPluginSourceModel.cs" />
     <Compile Include="IManageComPluginSourceViewModel.cs" />
     <Compile Include="IManageDatabaseSourceModel.cs" />
@@ -309,6 +313,7 @@
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Resources\IAuditingSource.cs" />
+    <Compile Include="Resources\IChatbotSourceResource.cs" />
     <Compile Include="Resources\IPersistenceSource.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
@@ -500,6 +505,9 @@
     <PackageReference Include="System.Activities.Core.Presentation">
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>

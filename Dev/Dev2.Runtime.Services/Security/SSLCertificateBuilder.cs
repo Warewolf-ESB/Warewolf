@@ -32,52 +32,47 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-#if NETFRAMEWORK
-        const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
-
+#if WINDOWS
         public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
         {
-            var result = false;
-            var asmLoc = Location;
-            var exeBase = string.Empty;
-            var authName = AuthorityName();
-            var masterData = string.Empty;
-            var workingDir = string.Empty;
-
             try
             {
-                if(!string.IsNullOrEmpty(asmLoc))
-                {
-                    asmLoc = Path.GetDirectoryName(asmLoc);
-                    workingDir = String.Concat(asmLoc, @"\SSL Generation");
-                    exeBase = string.Concat(asmLoc, MakeCertPath);
-                    masterData = File.ReadAllText(exeBase);
-                    var writeBack = string.Format(masterData, authName);
+                using var rsaKey = RSA.Create(2048);
+                var certRequest = new CertificateRequest("CN=localhost", rsaKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-                    File.WriteAllText(exeBase, writeBack);
+                var sanBuilder = new SubjectAlternativeNameBuilder();
+                sanBuilder.AddDnsName("localhost");
+                certRequest.CertificateExtensions.Add(sanBuilder.Build());
+                certRequest.CertificateExtensions.Add(
+                    new X509EnhancedKeyUsageExtension(new OidCollection { new Oid("1.3.6.1.5.5.7.3.1") }, false));
+
+                using var tempCert = certRequest.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.Now.AddYears(10));
+                var pfxBytes = tempCert.Export(X509ContentType.Pfx);
+                using var cert = new X509Certificate2(pfxBytes, (string)null,
+                    X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+
+                using var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(cert);
+
+                // Export .cer file (public cert only, used for netsh hash lookup)
+                File.WriteAllBytes(certPath, cert.Export(X509ContentType.Cert));
+
+                // Export .pfx file (with private key) so Kestrel can load it for TLS
+                var pfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
+                if (!string.IsNullOrEmpty(pfxPath))
+                {
+                    File.WriteAllBytes(pfxPath, cert.Export(X509ContentType.Pfx, GlobalConstants.WarewolfSSLCertificatePassword));
                 }
 
-                if(ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null))
-                {
-                    result = BindSslCertToPorts(endPoint, certPath);
-                }
+                return BindSslCertToPorts(endPoint, certPath);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                return false;
             }
-            finally
-            {
-                if(!string.IsNullOrEmpty(masterData))
-                {
-                    File.WriteAllText(exeBase, masterData);
-                }
-            }
-
-            return result;
         }
-
-        static string AuthorityName() => Guid.NewGuid().ToString();
 
         public static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
         {
