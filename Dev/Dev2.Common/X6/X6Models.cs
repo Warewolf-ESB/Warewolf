@@ -499,6 +499,13 @@ namespace Dev2.Common.X6
         public const string XPATH_RESULTSCOLLECTION = "resultscollection";
         public const string XPATH_UPDATEDRESULTSCOLLECTION = "updatedresultscollection";
 
+        //ODBC
+        public const string ODBCDATABASEACTIVITY = "DsfODBCDatabaseActivity";
+        public const string DISPLAYNAME_ODBCDATABASE = "ODBC Database";
+        public const string DATABASE_COMMANDTEXT = "commandtext";
+        public const string DISPLAYNAME_ODBC = "ODBC Database";
+
+
         // DsfWorkflowActivity (Service)
         public const string DSFWORKFLOWACTIVITY = "DsfWorkflowActivity";
         public const string DISPLAYNAME_WORKFLOW = "Service";
