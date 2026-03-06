@@ -334,6 +334,7 @@
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_DotNetDateTimeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GatherSystemInformationActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_ManualResumptionActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\WorkflowToX6Converter_ODBCDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_RubyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_SuspendExecutionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter_GateActivityHelper.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_DotNetDateTimeActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GatherSystemInformationActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ManualResumptionActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ODBCDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RubyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SuspendExecutionActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GateActivityHelper.cs" />

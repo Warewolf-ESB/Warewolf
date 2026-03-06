@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
         private static readonly Dictionary<string, (string ModelsEndpoint, string CompletionsEndpoint)> ProviderPresets = new Dictionary<string, (string, string)>
         {
             { "Anthropic", ("https://api.anthropic.com/v1/models", "https://api.anthropic.com/v1/messages") },
-            { "GitHub Models", ("https://models.github.com/v1/models", "https://models.github.com/v1/chat/completions") },
+            { "GitHub Models", ("https://models.github.ai/catalog/models", "https://models.github.ai/inference/chat/completions") },
             { "Google Gemini", ("https://generativelanguage.googleapis.com/v1beta/models", "https://generativelanguage.googleapis.com/v1beta/{model}:generateContent") },
             { "OpenAI", ("https://api.openai.com/v1/models", "https://api.openai.com/v1/chat/completions") },
             { "OpenRouter", ("https://openrouter.ai/api/v1/models", "https://openrouter.ai/api/v1/chat/completions") },
