@@ -505,6 +505,24 @@ namespace Dev2.Common.X6
         public const string DATABASE_COMMANDTEXT = "commandtext";
         public const string DISPLAYNAME_ODBC = "ODBC Database";
 
+
+        // DsfWorkflowActivity (Service)
+        public const string DSFWORKFLOWACTIVITY = "DsfWorkflowActivity";
+        public const string DISPLAYNAME_WORKFLOW = "Service";
+        public const string WORKFLOW_RESOURCEID = "workflow_resourceid";
+        public const string WORKFLOW_SERVICENAME = "workflow_servicename";
+        public const string WORKFLOW_SERVICESERVER = "workflow_serviceserver";
+        public const string WORKFLOW_SOURCEID = "workflow_sourceid";
+        public const string WORKFLOW_RUNWORKFLOWASYNC = "workflow_runworkflowasync";
+        public const string WORKFLOW_ISOBJECT = "workflow_isobject";
+        public const string WORKFLOW_OBJECTNAME = "workflow_objectname";
+        public const string WORKFLOW_OBJECTRESULT = "workflow_objectresult";
+        public const string WORKFLOW_INPUTMAPPING = "workflow_inputmapping";
+        public const string WORKFLOW_OUTPUTMAPPING = "workflow_outputmapping";
+        public const string WORKFLOW_ISWORKFLOW = "workflow_isworkflow";
+        public const string WORKFLOW_INPUTS = "workflow_inputs";
+        public const string WORKFLOW_OUTPUTS = "workflow_outputs";
+        public const string WORKFLOW_CATEGORY = "workflow_category";
     }
 
     public class X6WorkflowLoadModel

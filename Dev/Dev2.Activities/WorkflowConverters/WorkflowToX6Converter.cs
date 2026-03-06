@@ -923,6 +923,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateODBCDatabaseActivity(odbcDatabaseActivity, nodeId);
             }
+            else if (activity is DsfWorkflowActivity workflowActivity)
+            {
+                cell = CreateDsfWorkflowActivity(workflowActivity, nodeId);
+            }
             else
             {
                 cell.shape = Constants.RECT;

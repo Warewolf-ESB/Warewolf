@@ -667,6 +667,9 @@ namespace Dev2.Activities.WF
                     return CreateGatherSystemInformationActivity(node);
                 case var t when t.Contains(Constants.ODBCDATABASEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateODBCDatabaseActivity(node);
+                case var t when t.Contains(Constants.DSFWORKFLOWACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDsfWorkflowActivity(node);
+
 
                 default:
                     return new WriteLine { Text = "Unknown type" };
