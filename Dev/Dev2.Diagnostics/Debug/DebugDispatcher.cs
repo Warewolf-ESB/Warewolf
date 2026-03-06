@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Logging;
@@ -23,6 +24,14 @@ namespace Dev2.Diagnostics.Debug
      */
     internal class DebugDispatcherImplementation : IDebugDispatcher
     {
+        // Per-async-context write interceptor.
+        // DsfNativeActivity captures the DebugDispatcherImplementation instance at construction
+        // (via DebugDispatcher.Instance) into a readonly _debugDispatcher field, so overriding
+        // DebugDispatcher.Instance has no effect on already-constructed activities.
+        // Placing the AsyncLocal here, inside Write(), is the only place guaranteed to be
+        // consulted on every debug dispatch regardless of when the activity was constructed.
+        internal static readonly AsyncLocal<IDebugDispatcher> AsyncLocalOverride = new();
+
         readonly ILogger _dev2Logger;
         public DebugDispatcherImplementation()
             : this(new DefaultLogger())
@@ -74,6 +83,12 @@ namespace Dev2.Diagnostics.Debug
 
         public void Write(WriteArgs writeArgs)
         {
+            if (AsyncLocalOverride.Value is { } ctx)
+            {
+                ctx.Write(writeArgs);
+                return;
+            }
+
             if (writeArgs.debugState == null)
             {
                 return;
@@ -168,13 +183,31 @@ namespace Dev2.Diagnostics.Debug
                     lock (_lock)
                     {
                         if (_instance is null)
-                        {
                             _instance = new DebugDispatcherImplementation();
-                        }
                     }
                 }
                 return _instance;
             }
+        }
+
+        /// <summary>
+        /// Overrides the dispatcher for the current async execution context only.
+        /// The override is applied inside <see cref="DebugDispatcherImplementation.Write"/> so
+        /// that it intercepts calls from activities that captured the implementation instance
+        /// at construction time. Dispose the returned scope to restore the previous dispatcher.
+        /// </summary>
+        public static IDisposable UseContextDispatcher(IDebugDispatcher dispatcher)
+        {
+            var previous = DebugDispatcherImplementation.AsyncLocalOverride.Value;
+            DebugDispatcherImplementation.AsyncLocalOverride.Value = dispatcher;
+            return new ContextScope(previous);
+        }
+
+        private sealed class ContextScope : IDisposable
+        {
+            readonly IDebugDispatcher _previous;
+            internal ContextScope(IDebugDispatcher previous) => _previous = previous;
+            public void Dispose() => DebugDispatcherImplementation.AsyncLocalOverride.Value = _previous;
         }
     }
 }

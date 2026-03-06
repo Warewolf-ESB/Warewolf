@@ -22,6 +22,11 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// </summary>
     public static class WorkflowFunctionHelper
     {
+        // Created once; reused across all requests to avoid per-request HashSet allocations.
+        static readonly HashSet<string> _reservedQueryKeys = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "workflowName", "workflowFilePath", "isDebug"
+        };
         /// <summary>
         /// Creates a <see cref="WorkflowExecutionRequest"/> from an HTTP request.
         /// </summary>
@@ -109,10 +114,6 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             }
 
             var queryParams = HttpUtility.ParseQueryString(request.Url.Query);
-            var reservedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "workflowName", "workflowFilePath", "isDebug"
-            };
 
             var workflowName = queryParams["workflowName"];
             if (!string.IsNullOrWhiteSpace(workflowName))
@@ -132,9 +133,10 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 executionRequest.IsDebug = debug;
             }
 
-            foreach (var key in queryParams.AllKeys.Where(k => k != null && !reservedKeys.Contains(k)))
+            foreach (var key in queryParams.AllKeys)
             {
-                executionRequest.InputParameters[key] = queryParams[key];
+                if (key != null && !_reservedQueryKeys.Contains(key))
+                    executionRequest.InputParameters[key] = queryParams[key];
             }
         }
 

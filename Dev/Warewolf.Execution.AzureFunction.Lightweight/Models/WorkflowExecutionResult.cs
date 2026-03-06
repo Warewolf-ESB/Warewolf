@@ -29,9 +29,25 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
         public string OutputJson { get; set; }
 
         /// <summary>
+        /// Workflow output formatted as a DataList XML string (populated for .xml requests).
+        /// Produced by <c>ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment</c>,
+        /// which evaluates each Output/Both variable against the workflow DataList — the
+        /// same path the full Warewolf server uses for .xml responses.
+        /// </summary>
+        public string OutputXml { get; set; }
+
+        /// <summary>
         /// Errors that occurred during execution.
         /// </summary>
         public List<string> Errors { get; set; } = new();
+
+        /// <summary>
+        /// Per-activity debug states captured when the request used the .debug extension.
+        /// Each entry mirrors the <c>IDebugState</c> the full Warewolf server sends to the Studio,
+        /// containing the activity name, inputs, outputs, timing, and error information.
+        /// Populated only when <c>IsDebug = true</c>; empty list otherwise.
+        /// </summary>
+        public List<DebugStepResult> DebugStates { get; set; } = new();
 
         /// <summary>
         /// Duration of the workflow execution.

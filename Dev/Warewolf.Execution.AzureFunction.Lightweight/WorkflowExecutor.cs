@@ -3,7 +3,9 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.TO;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -111,8 +113,14 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 // Step 5: Build DsfDataObject with inputs
                 var dataObject = BuildDataObject(request, executionId, resolvedName, dataList);
 
-                // Step 6: Execute the activity chain
-                ExecuteActivityChain(dataObject, startActivity);
+                // Step 6: Execute the activity chain; route debug writes to a per-request
+                // capturer so no global singleton (DebugMessageRepo) is touched.
+                PerRequestDebugCapturer debugCapturer = null;
+                if (request.IsDebug)
+                    debugCapturer = new PerRequestDebugCapturer();
+
+                using (debugCapturer != null ? DebugDispatcher.UseContextDispatcher(debugCapturer) : null)
+                    ExecuteActivityChain(dataObject, startActivity);
 
                 // Step 7: Extract outputs
                 stopwatch.Stop();
@@ -126,6 +134,14 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
                 CollectErrors(dataObject, result);
                 TryExtractOutputs(dataObject, result);
+                TryExtractXmlOutput(dataObject, dataList, result);
+                if (debugCapturer != null)
+                {
+                    result.DebugStates = debugCapturer.States
+                        .Where(s => s.StateType != StateType.Duration)
+                        .Select(MapDebugState)
+                        .ToList();
+                }
 
                 result.IsSuccess = result.Errors.Count == 0;
 
@@ -382,6 +398,56 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             catch
             {
                 // Output extraction is best-effort
+            }
+        }
+
+        static DebugStepResult MapDebugState(IDebugState state) => new()
+        {
+            DisplayName = state.DisplayName,
+            ActivityType = state.Name,
+            ActualType = state.ActualType,
+            StateType = state.StateType.ToString(),
+            HasError = state.HasError,
+            ErrorMessage = state.ErrorMessage,
+            StartTime = state.StartTime,
+            EndTime = state.EndTime,
+            Inputs = MapDebugItems(state.Inputs),
+            Outputs = MapDebugItems(state.Outputs)
+        };
+
+        static List<List<DebugLineItem>> MapDebugItems(List<IDebugItem> items) =>
+            items?.Select(item => item.FetchResultsList()
+                .Select(r => new DebugLineItem
+                {
+                    Type = r.Type.ToString(),
+                    Label = r.Label,
+                    Variable = r.Variable,
+                    Operator = r.Operator,
+                    Value = r.Value,
+                    HasError = r.HasError
+                })
+                .ToList())
+                .ToList() ?? new List<List<DebugLineItem>>();
+
+        /// <summary>
+        /// Extracts workflow output as a DataList XML string using the same path as the full
+        /// Warewolf server: <c>ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment</c> evaluates
+        /// each Output/Both variable from the DataList against the execution environment and
+        /// serialises it as <c>&lt;DataList&gt;...&lt;/DataList&gt;</c> XML.
+        /// </summary>
+        static void TryExtractXmlOutput(IDSFDataObject dataObject, string dataList, WorkflowExecutionResult result)
+        {
+            if (string.IsNullOrWhiteSpace(dataList))
+            {
+                return;
+            }
+            try
+            {
+                result.OutputXml = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0);
+            }
+            catch
+            {
+                // XML extraction is best-effort
             }
         }
     }
