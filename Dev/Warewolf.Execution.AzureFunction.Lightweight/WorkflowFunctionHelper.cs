@@ -55,6 +55,9 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
             ResolveFilePath(executionRequest, workflowsDirectory);
 
+            if (!string.IsNullOrWhiteSpace(workflowsDirectory))
+                executionRequest.WorkflowsDirectory = workflowsDirectory;
+
             return executionRequest;
         }
 
@@ -80,6 +83,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             var req = new WorkflowExecutionRequest
             {
                 WorkflowName = workflowName,
+                WorkflowsDirectory = workflowsDirectory,
                 InputParameters = inputs ?? new Dictionary<string, string>()
             };
             ResolveFilePath(req, workflowsDirectory);

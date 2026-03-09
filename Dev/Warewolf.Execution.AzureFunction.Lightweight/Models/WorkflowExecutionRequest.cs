@@ -10,6 +10,14 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
     public class WorkflowExecutionRequest
     {
         /// <summary>
+        /// Root directory that was used to resolve <see cref="WorkflowFilePath"/> from a name.
+        /// Carried through to <see cref="LightweightEsbChannel"/> so the resource cache is
+        /// always seeded from the full resource tree, not just the directory of the
+        /// requested workflow file.
+        /// </summary>
+        public string WorkflowsDirectory { get; set; }
+
+        /// <summary>
         /// Full path to the workflow resource XML file on disk.
         /// </summary>
         public string WorkflowFilePath { get; set; }

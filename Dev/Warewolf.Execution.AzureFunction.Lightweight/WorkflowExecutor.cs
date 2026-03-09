@@ -298,7 +298,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 ServiceName = workflowName,
                 ExecutionID = executionId,
                 ExecutionToken = new LightweightExecutionToken(),
-                EsbChannel = new LightweightEsbChannel(workflowDir)
+                EsbChannel = new LightweightEsbChannel(request.WorkflowsDirectory ?? workflowDir)
             };
 
             if (!string.IsNullOrEmpty(dataList)

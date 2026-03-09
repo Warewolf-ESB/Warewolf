@@ -66,6 +66,13 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         // ── Public API ────────────────────────────────────────────────────────
 
         /// <summary>
+        /// Pre-warms the index for <paramref name="baseDirectory"/> so the first
+        /// sub-workflow lookup does not pay the full scan cost.  Safe to call multiple
+        /// times; subsequent calls are no-ops once the index is built.
+        /// </summary>
+        internal void WarmUp(string baseDirectory) => GetIndex(baseDirectory);
+
+        /// <summary>
         /// Resolve a workflow file path from a ResourceId (primary) or service
         /// name (fallback).  Returns <c>null</c> when neither key matches.
         /// </summary>

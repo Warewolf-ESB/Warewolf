@@ -34,6 +34,11 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         internal LightweightEsbChannel(string workflowBaseDirectory)
         {
             _workflowBaseDirectory = workflowBaseDirectory ?? string.Empty;
+
+            // Pre-warm the resource cache for the full resource tree so that the first
+            // sub-workflow lookup does not incur the directory-scan cost at call time.
+            if (!string.IsNullOrEmpty(_workflowBaseDirectory))
+                WorkflowResourceCache.Instance.WarmUp(_workflowBaseDirectory);
         }
 
         /// <summary>
