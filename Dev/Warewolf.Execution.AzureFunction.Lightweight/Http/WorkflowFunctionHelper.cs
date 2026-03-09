@@ -2,6 +2,7 @@ using Dev2.Web;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,11 +24,10 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// </summary>
     public static class WorkflowFunctionHelper
     {
-        // Created once; reused across all requests to avoid per-request HashSet allocations.
-        static readonly HashSet<string> _reservedQueryKeys = new(StringComparer.OrdinalIgnoreCase)
-        {
-            "workflowName", "workflowFilePath", "isDebug"
-        };
+        // Frozen once at startup — lookup is allocation-free and JIT-friendly.
+        static readonly FrozenSet<string> _reservedQueryKeys =
+            new[] { "workflowName", "workflowFilePath", "isDebug" }
+                .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
         /// <summary>
         /// Creates a <see cref="WorkflowExecutionRequest"/> from an HTTP request.
         /// </summary>

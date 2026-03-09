@@ -35,14 +35,13 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     ///   Query string:  ?Name=John&amp;Age=30
     ///   JSON body:     { "inputParameters": { "Name": "John", "Age": "30" } }
     /// </summary>
-    public sealed class SampleWorkflowFunction
+    public sealed class WorkflowHttpFunction
     {
         const string JsonContentType = "application/json";
-        const string XmlContentType  = "text/xml";
         readonly IWorkflowExecutor _workflowExecutor;
         readonly string _workflowsDirectory;
 
-        public SampleWorkflowFunction(IWorkflowExecutor workflowExecutor)
+        public WorkflowHttpFunction(IWorkflowExecutor workflowExecutor)
         {
             _workflowExecutor = workflowExecutor;
             _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")

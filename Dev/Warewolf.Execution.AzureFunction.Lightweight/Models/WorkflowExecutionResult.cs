@@ -92,7 +92,8 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
             using var ms = new MemoryStream();
             await PayloadWriter(ms, ct);
             ms.Position = 0;
-            return new StreamReader(ms, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true).ReadToEnd();
+            using var reader = new StreamReader(ms, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true);
+            return await reader.ReadToEndAsync(ct);
         }
 
         /// <summary>

@@ -5,6 +5,7 @@
 */
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -20,7 +21,8 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// ─────────────
     /// • Zero startup cost — scanning is deferred to the first call that needs a
     ///   given base directory (lazy per-directory initialisation).
-    /// • O(1) lookups — two pre-built read-only dictionaries per directory:
+    /// • O(1) lookups — two pre-built <see cref="System.Collections.Frozen.FrozenDictionary{TKey,TValue}"/>
+    ///   instances per directory (zero virtual dispatch, JIT-friendly, lower memory):
     ///     - by ResourceId  (Guid, exact)
     ///     - by Name        (string, OrdinalIgnoreCase, for fallback)
     /// • Minimal I/O — each file is read only up to its first XML element; the
@@ -47,12 +49,12 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// </summary>
         private sealed class DirectoryIndex
         {
-            internal readonly IReadOnlyDictionary<Guid,   WorkflowResourceEntry> ById;
-            internal readonly IReadOnlyDictionary<string, WorkflowResourceEntry> ByName;
+            internal readonly FrozenDictionary<Guid,   WorkflowResourceEntry> ById;
+            internal readonly FrozenDictionary<string, WorkflowResourceEntry> ByName;
 
             internal DirectoryIndex(
-                IReadOnlyDictionary<Guid,   WorkflowResourceEntry> byId,
-                IReadOnlyDictionary<string, WorkflowResourceEntry> byName)
+                FrozenDictionary<Guid,   WorkflowResourceEntry> byId,
+                FrozenDictionary<string, WorkflowResourceEntry> byName)
             {
                 ById   = byId;
                 ByName = byName;
@@ -130,7 +132,9 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             var byName = new Dictionary<string, WorkflowResourceEntry>(StringComparer.OrdinalIgnoreCase);
 
             if (!Directory.Exists(directory))
-                return new DirectoryIndex(byId, byName);
+                return new DirectoryIndex(
+                    FrozenDictionary<Guid,   WorkflowResourceEntry>.Empty,
+                    FrozenDictionary<string, WorkflowResourceEntry>.Empty);
 
             foreach (var file in Directory.EnumerateFiles(directory, "*.bite", SearchOption.AllDirectories))
             {
@@ -145,7 +149,9 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 byName.TryAdd(entry.Name, entry);
             }
 
-            return new DirectoryIndex(byId, byName);
+            return new DirectoryIndex(
+                byId.ToFrozenDictionary(),
+                byName.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase));
         }
 
         /// <summary>
