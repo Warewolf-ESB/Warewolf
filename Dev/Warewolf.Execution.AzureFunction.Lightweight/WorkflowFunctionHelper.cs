@@ -1,3 +1,4 @@
+using Dev2.Web;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
@@ -113,6 +114,19 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 return;
             }
 
+            // Capture the full URI so WorkflowExecutor can embed it in OpenAPI specs.
+            executionRequest.WebServerUri = request.Url;
+
+            // Infer the desired response format from the URL path extension.
+            // This mirrors how WebServerController sets EmissionType from the request path:
+            //   .xml  → XML,  .api → OPENAPI,  (none / .json) → JSON (default).
+            var urlPath = request.Url.AbsolutePath;
+            if (urlPath.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                executionRequest.ReturnType = EmitionTypes.XML;
+            else if (urlPath.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
+                executionRequest.ReturnType = EmitionTypes.OPENAPI;
+            // else: stays EmitionTypes.JSON (the default set in WorkflowExecutionRequest)
+
             var queryParams = HttpUtility.ParseQueryString(request.Url.Query);
 
             var workflowName = queryParams["workflowName"];
@@ -200,6 +214,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         {
             if (!string.IsNullOrWhiteSpace(request.WorkflowFilePath))
             {
+                request.WorkflowFilePath = request.WorkflowFilePath.Replace('/', Path.DirectorySeparatorChar);
                 return;
             }
 
@@ -208,7 +223,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 return;
             }
 
-            var fileName = request.WorkflowName;
+            var fileName = request.WorkflowName.Replace('/', Path.DirectorySeparatorChar);
             if (!fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)
                 && !fileName.EndsWith(".bite", StringComparison.OrdinalIgnoreCase))
             {

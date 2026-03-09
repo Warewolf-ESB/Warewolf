@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Warewolf.Execution.AzureFunction.Lightweight.Models
 {
@@ -8,6 +12,31 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
     /// </summary>
     public class WorkflowExecutionResult
     {
+        /// <summary>
+        /// Ready-to-return response body in the format requested (JSON, XML, or OpenAPI spec).
+        /// Populated by WorkflowExecutor.ExtractPayload — mirrors ExecutionDtoExtensions.GetExecutePayload:
+        ///   XML     → ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment  (DataList-shaped XML)
+        ///   JSON    → ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment  (DataList-shaped JSON)
+        ///   OPENAPI → WorkflowOpenApiGenerator.Generate                       (OpenAPI 3.0 JSON spec)
+        /// </summary>
+        public string Payload { get; set; }
+
+        /// <summary>
+        /// MIME content type that matches Payload:
+        ///   "application/json" for JSON and OPENAPI,
+        ///   "text/xml"         for XML.
+        /// </summary>
+        public string ContentType { get; set; }
+
+        /// <summary>
+        /// Writes the response payload directly to a <see cref="Stream"/>, encoding chars
+        /// in chunks via <see cref="StreamWriter"/> instead of materialising a full
+        /// <c>byte[]</c> (as <c>HttpResponseData.WriteStringAsync</c> does).
+        /// Set by <c>WorkflowExecutor</c> for every successful execution; <c>null</c> for
+        /// failure results where <see cref="Payload"/> holds a small error body.
+        /// </summary>
+        public Func<Stream, CancellationToken, Task> PayloadWriter { get; internal set; }
+
         /// <summary>
         /// Whether the workflow executed successfully without errors.
         /// </summary>
@@ -22,19 +51,6 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
         /// Output data from the workflow environment as key-value pairs.
         /// </summary>
         public Dictionary<string, object> Outputs { get; set; } = new();
-
-        /// <summary>
-        /// JSON string of the full execution environment output.
-        /// </summary>
-        public string OutputJson { get; set; }
-
-        /// <summary>
-        /// Workflow output formatted as a DataList XML string (populated for .xml requests).
-        /// Produced by <c>ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment</c>,
-        /// which evaluates each Output/Both variable against the workflow DataList — the
-        /// same path the full Warewolf server uses for .xml responses.
-        /// </summary>
-        public string OutputXml { get; set; }
 
         /// <summary>
         /// Errors that occurred during execution.
@@ -63,6 +79,21 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
         /// Time the workflow execution completed.
         /// </summary>
         public DateTime EndTime { get; set; }
+
+        /// <summary>
+        /// Materialises the payload to a string — intended for tests and diagnostics only.
+        /// For HTTP responses prefer <see cref="PayloadWriter"/> which streams directly to
+        /// the response body without allocating a full <c>byte[]</c>.
+        /// </summary>
+        public async Task<string> ReadPayloadAsync(CancellationToken ct = default)
+        {
+            if (PayloadWriter == null)
+                return Payload ?? string.Empty;
+            using var ms = new MemoryStream();
+            await PayloadWriter(ms, ct);
+            ms.Position = 0;
+            return new StreamReader(ms, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true).ReadToEnd();
+        }
 
         /// <summary>
         /// Creates a failure result with the specified error message.

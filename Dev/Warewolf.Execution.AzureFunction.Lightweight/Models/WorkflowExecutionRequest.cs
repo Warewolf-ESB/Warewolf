@@ -1,3 +1,4 @@
+using Dev2.Web;
 using System;
 using System.Collections.Generic;
 
@@ -29,6 +30,21 @@ namespace Warewolf.Execution.AzureFunction.Lightweight.Models
         /// Whether to execute the workflow in debug mode.
         /// </summary>
         public bool IsDebug { get; set; }
+
+        /// <summary>
+        /// The desired output format, inferred from the URL extension:
+        ///   .xml  → EmitionTypes.XML   (text/xml)
+        ///   .api  → EmitionTypes.OPENAPI (application/json spec)
+        ///   (none / .json) → EmitionTypes.JSON (application/json, default)
+        /// Mirrors the EmitionTypes used by ExecutionDtoExtensions.GetExecutePayload.
+        /// </summary>
+        public EmitionTypes ReturnType { get; set; } = EmitionTypes.JSON;
+
+        /// <summary>
+        /// Full request URI — required when ReturnType is OPENAPI so the
+        /// generated spec can embed the correct server URL and path.
+        /// </summary>
+        public Uri WebServerUri { get; set; }
 
         /// <summary>
         /// Validates that the request has the minimum required information.

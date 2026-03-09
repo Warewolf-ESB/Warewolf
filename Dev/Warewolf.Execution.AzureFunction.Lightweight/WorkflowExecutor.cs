@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 using Warewolf.Execution.AzureFunction.Lightweight.Models;
 
@@ -93,6 +94,26 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
+                // OPENAPI — generate the spec from the DataList only; no XAML load or execution needed.
+                if (request.ReturnType == EmitionTypes.OPENAPI)
+                {
+                    var spec = WorkflowOpenApiGenerator.Generate(
+                        request.WorkflowFilePath,
+                        resolvedName,
+                        request.WebServerUri ?? new Uri("https://localhost"));
+                    stopwatch.Stop();
+                    return new WorkflowExecutionResult
+                    {
+                        IsSuccess   = true,
+                        ExecutionId = executionId,
+                        StartTime   = startTime,
+                        EndTime     = DateTime.UtcNow,
+                        Duration    = stopwatch.Elapsed,
+                        ContentType = "application/json",
+                        PayloadWriter = (stream, ct) => WriteStringToStreamAsync(stream, spec, ct)
+                    };
+                }
+
                 // Step 3: Load XAML into a DynamicActivity
                 var dynamicActivity = LoadDynamicActivity(xamlDefinition);
 
@@ -133,8 +154,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 };
 
                 CollectErrors(dataObject, result);
-                TryExtractOutputs(dataObject, result);
-                TryExtractXmlOutput(dataObject, dataList, result);
+                ExtractPayload(dataObject, dataList, request, result);
                 if (debugCapturer != null)
                 {
                     result.DebugStates = debugCapturer.States
@@ -181,7 +201,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// <summary>
         /// Step 1: Read the workflow resource XML file from disk.
         /// </summary>
-        static StringBuilder ReadWorkflowFile(string filePath)
+        internal static StringBuilder ReadWorkflowFile(string filePath)
         {
             var contents = new StringBuilder();
             using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
@@ -210,7 +230,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         ///     &lt;DataList&gt;...&lt;/DataList&gt;
         ///   &lt;/Service&gt;
         /// </summary>
-        static (StringBuilder xamlDefinition, string dataList, string workflowName) ExtractWorkflowParts(StringBuilder fileContents)
+        internal static (StringBuilder xamlDefinition, string dataList, string workflowName) ExtractWorkflowParts(StringBuilder fileContents)
         {
             var xe = fileContents.ToXElement();
 
@@ -245,7 +265,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// Step 3: Load XAML definition into a DynamicActivity using ActivityXamlServices.
         /// Applies namespace cleaning for cross-platform compatibility.
         /// </summary>
-        static DynamicActivity LoadDynamicActivity(StringBuilder xamlDefinition)
+        internal static DynamicActivity LoadDynamicActivity(StringBuilder xamlDefinition)
         {
             if (GlobalConstants.RuntimeNamespaceClean)
             {
@@ -269,14 +289,16 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             string dataList)
         {
             var rawPayload = BuildJsonPayload(request.InputParameters);
+            var workflowDir = Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
 
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), rawPayload)
             {
                 IsDebug = request.IsDebug,
-                ReturnType = EmitionTypes.JSON,
+                ReturnType = request.ReturnType,
                 ServiceName = workflowName,
                 ExecutionID = executionId,
-                ExecutionToken = new LightweightExecutionToken()
+                ExecutionToken = new LightweightExecutionToken(),
+                EsbChannel = new LightweightEsbChannel(workflowDir)
             };
 
             if (!string.IsNullOrEmpty(dataList)
@@ -315,7 +337,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// This is the stripped-down version of WfExecutionContainer.ExecuteNode —
         /// no ExecutionManager, no SubscriptionProvider, no StateNotifier overhead.
         /// </summary>
-        static void ExecuteActivityChain(IDSFDataObject dataObject, IDev2Activity startActivity)
+        internal static void ExecuteActivityChain(IDSFDataObject dataObject, IDev2Activity startActivity)
         {
             var next = startActivity;
             var environment = dataObject.Environment;
@@ -365,40 +387,72 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         }
 
         /// <summary>
-        /// Step 7: Extract output data from the execution environment.
+        /// Mirrors ExecutionDtoExtensions.GetExecutePayload
+        /// based on ReturnType and populates result.Payload + result.ContentType.
+        ///   XML  ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment  (DataList-shaped XML)
+        ///   JSON ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment  (DataList-shaped JSON)
+        ///          Falls back to environment.ToJson() when no DataList is available.
+        ///   OPENAPI is handled before execution ever starts (see short-circuit in Execute).
+        ///
+        /// Instead of storing the output as a string on the result, a <see cref="WorkflowExecutionResult.PayloadWriter"/>
+        /// delegate is set. The delegate computes the string on demand when the HTTP response is being
+        /// written and streams it via <see cref="WriteStringToStreamAsync"/> — a <see cref="StreamWriter"/>
+        /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
+        /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
         /// </summary>
-        static void TryExtractOutputs(IDSFDataObject dataObject, WorkflowExecutionResult result)
+        static void ExtractPayload(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
         {
             try
             {
-                var environment = dataObject.Environment;
-                if (environment == null)
+                switch (request.ReturnType)
                 {
-                    return;
-                }
-
-                var jsonOutput = environment.ToJson();
-                if (!string.IsNullOrWhiteSpace(jsonOutput))
-                {
-                    result.OutputJson = jsonOutput;
-                    try
-                    {
-                        var parsed = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonOutput);
-                        if (parsed != null)
+                    case EmitionTypes.XML:
+                        result.ContentType = "text/xml";
+                        // Capture dataObject + dataList; XML is computed and streamed only when
+                        // the HTTP response is written, keeping the result allocation small.
+                        result.PayloadWriter = (stream, ct) =>
                         {
-                            result.Outputs = parsed;
-                        }
-                    }
-                    catch
-                    {
-                        // Raw OutputJson is still available if dictionary parse fails
-                    }
+                            var xml = !string.IsNullOrEmpty(dataList)
+                                ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0)
+                                : "<DataList />";
+                            return WriteStringToStreamAsync(stream, xml, ct);
+                        };
+                        break;
+
+                    default: // JSON
+                        result.ContentType = "application/json";
+                        result.PayloadWriter = async (stream, ct) =>
+                        {
+                            var json = !string.IsNullOrEmpty(dataList)
+                                ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0)
+                                : dataObject.Environment.ToJson();
+                            // Populate the convenience dictionary before the string is streamed.
+                            TryPopulateOutputsDictionary(result, json);
+                            await WriteStringToStreamAsync(stream, json, ct);
+                        };
+                        break;
                 }
             }
             catch
             {
-                // Output extraction is best-effort
+                // Payload extraction is best-effort; errors are captured in result.Errors
             }
+        }
+
+        /// <summary>
+        /// Deserialises <paramref name="json"/> into the convenience <see cref="WorkflowExecutionResult.Outputs"/> dictionary.
+        /// </summary>
+        static void TryPopulateOutputsDictionary(WorkflowExecutionResult result, string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return;
+            try
+            {
+                var parsed = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                if (parsed != null)
+                    result.Outputs = parsed;
+            }
+            catch { /* best-effort */ }
         }
 
         static DebugStepResult MapDebugState(IDebugState state) => new()
@@ -429,28 +483,23 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 .ToList())
                 .ToList() ?? new List<List<DebugLineItem>>();
 
+        // UTF-8 without BOM — matches Azure Functions WriteStringAsync encoding behaviour.
+        static readonly Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
         /// <summary>
-        /// Extracts workflow output as a DataList XML string using the same path as the full
-        /// Warewolf server: <c>ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment</c> evaluates
-        /// each Output/Both variable from the DataList against the execution environment and
-        /// serialises it as <c>&lt;DataList&gt;...&lt;/DataList&gt;</c> XML.
+        /// Encodes <paramref name="content"/> to <paramref name="stream"/> via a
+        /// <see cref="StreamWriter"/> (4 KB char buffer), avoiding the full
+        /// <c>byte[]</c> heap allocation that <c>HttpResponseData.WriteStringAsync</c>
+        /// creates internally through <c>Encoding.UTF8.GetBytes(string)</c>.
+        /// <paramref name="stream"/> is left open so the caller can finalise the response.
         /// </summary>
-        static void TryExtractXmlOutput(IDSFDataObject dataObject, string dataList, WorkflowExecutionResult result)
+        static async Task WriteStringToStreamAsync(Stream stream, string content, CancellationToken ct)
         {
-            if (string.IsNullOrWhiteSpace(dataList))
-            {
-                return;
-            }
-            try
-            {
-                result.OutputXml = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0);
-            }
-            catch
-            {
-                // XML extraction is best-effort
-            }
+            await using var writer = new StreamWriter(stream, _utf8NoBom, bufferSize: 4096, leaveOpen: true);
+            await writer.WriteAsync(content.AsMemory(), ct);
         }
-    }
+
+        }
 
     /// <summary>
     /// Minimal IExecutionToken implementation — no server-side dependencies.

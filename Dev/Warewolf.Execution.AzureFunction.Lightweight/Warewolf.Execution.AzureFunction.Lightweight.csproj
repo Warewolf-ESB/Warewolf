@@ -43,7 +43,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <!-- Reduce globalization payload -->
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
 
     <!-- Functions optimization -->
     <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Warewolf.Execution.AzureFunction.Lightweight
@@ -90,16 +91,16 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         {
             var (resolvedName, isDebug, isXml, isApi) = ParseNameSuffixes(workflowName);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, resolvedName);
-            if (isApi)
-            {
-                return await CreateApiSpecResponse(req, resolvedName, executionRequest.WorkflowFilePath);
-            }
+
+            executionRequest.WebServerUri = req.Url;
+            executionRequest.ReturnType   = isXml ? Dev2.Web.EmitionTypes.XML
+                                          : isApi ? Dev2.Web.EmitionTypes.OPENAPI
+                                                  : Dev2.Web.EmitionTypes.JSON;
             if (isDebug)
-            {
                 executionRequest.IsDebug = true;
-            }
+
             var result = _workflowExecutor.Execute(executionRequest);
-            return isXml ? await CreateXmlResponse(req, result) : await CreateResponse(req, result);
+            return await CreateFormattedResponse(req, result);
         }
 
         /// <summary>
@@ -122,28 +123,30 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             }
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateResponse(req, result);
+            return await CreateFormattedResponse(req, result);
         }
 
         /// <summary>
-        /// Shared handler: strips .api/.debug/.xml suffix, builds the execution request, and runs the workflow.
+        /// Shared handler: strips .api/.debug/.xml suffix, stamps the request with
+        /// ReturnType + WebServerUri, then runs the workflow (or short-circuits for .api).
         /// </summary>
         async Task<HttpResponseData> ExecuteNamedWorkflow(HttpRequestData req, string name)
         {
             var (workflowName, isDebug, isXml, isApi) = ParseNameSuffixes(name);
 
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
-            if (isApi)
-            {
-                return await CreateApiSpecResponse(req, workflowName, executionRequest.WorkflowFilePath);
-            }
+
+            // Override what ParseRequestAsync inferred from the URL — the already-decoded
+            // suffix flags are authoritative and avoid any ambiguity in path parsing.
+            executionRequest.WebServerUri = req.Url;
+            executionRequest.ReturnType   = isXml  ? Dev2.Web.EmitionTypes.XML
+                                          : isApi  ? Dev2.Web.EmitionTypes.OPENAPI
+                                                   : Dev2.Web.EmitionTypes.JSON;
             if (isDebug)
-            {
                 executionRequest.IsDebug = true;
-            }
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return isXml ? await CreateXmlResponse(req, result) : await CreateResponse(req, result);
+            return await CreateFormattedResponse(req, result);
         }
 
         /// <summary>
@@ -163,40 +166,26 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             return (name, false, false, false);
         }
 
-        static async Task<HttpResponseData> CreateApiSpecResponse(HttpRequestData req, string workflowName, string workflowFilePath)
+        /// <summary>
+        /// Single response builder — reads result.ContentType so the caller never needs to know
+        /// which format was requested. Uses <see cref="Models.WorkflowExecutionResult.PayloadWriter"/>
+        /// to stream the payload directly to <c>response.Body</c> via a <see cref="StreamWriter"/>,
+        /// avoiding the full <c>byte[]</c> allocation that <c>WriteStringAsync</c> produces
+        /// internally through <c>Encoding.UTF8.GetBytes</c>. Falls back to <c>WriteStringAsync</c>
+        /// only for small error payloads stored in <see cref="Models.WorkflowExecutionResult.Payload"/>.
+        /// </summary>
+        static async Task<HttpResponseData> CreateFormattedResponse(HttpRequestData req, Models.WorkflowExecutionResult result)
         {
-            if (string.IsNullOrWhiteSpace(workflowFilePath) || !File.Exists(workflowFilePath))
-            {
-                var notFound = req.CreateResponse(HttpStatusCode.NotFound);
-                    notFound.Headers.Add("Content-Type", JsonContentType);
-                    await notFound.WriteStringAsync(JsonConvert.SerializeObject(new { error = $"Workflow not found: {workflowName}" }));
-                    return notFound;
-                }
+            var statusCode  = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
+            var response    = req.CreateResponse(statusCode);
+            var contentType = result.ContentType ?? JsonContentType;
+            response.Headers.Add("Content-Type", contentType);
 
-                var response = req.CreateResponse(HttpStatusCode.OK);
-                response.Headers.Add("Content-Type", JsonContentType);
-            await response.WriteStringAsync(WorkflowOpenApiGenerator.Generate(workflowFilePath, workflowName, req.Url));
-            return response;
-        }
+            if (result.PayloadWriter != null)
+                await result.PayloadWriter(response.Body, CancellationToken.None);
+            else if (!string.IsNullOrEmpty(result.Payload))
+                await response.WriteStringAsync(result.Payload);
 
-        static async Task<HttpResponseData> CreateResponse(HttpRequestData req, Models.WorkflowExecutionResult result)
-        {
-            var statusCode = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
-            var response = req.CreateResponse(statusCode);
-            response.Headers.Add("Content-Type", JsonContentType);
-            await response.WriteStringAsync(JsonConvert.SerializeObject(result, Formatting.Indented));
-            return response;
-        }
-
-        static async Task<HttpResponseData> CreateXmlResponse(HttpRequestData req, Models.WorkflowExecutionResult result)
-        {
-            var statusCode = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
-            var response = req.CreateResponse(statusCode);
-            response.Headers.Add("Content-Type", XmlContentType);
-            // result.OutputXml is populated by WorkflowExecutor.TryExtractXmlOutput via
-            // ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment — the same path the full
-            // Warewolf server uses. Falling back to an empty DataList if unavailable.
-            await response.WriteStringAsync(result.OutputXml ?? "<DataList />");
             return response;
         }
     }

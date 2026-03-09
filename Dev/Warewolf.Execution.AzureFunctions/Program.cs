@@ -3,6 +3,7 @@ using Dev2.Common;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
+using Warewolf.Execution.AzureFunctions;
 
 try
 {
