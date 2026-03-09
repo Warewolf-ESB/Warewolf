@@ -13,20 +13,20 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// Azure Function implementations mirroring the Warewolf WebServerController routes.
     ///
     /// Supported routes:
-    ///   GET/POST  /api/Services/{name}          - Execute workflow (function-key auth)
-    ///   GET/POST  /api/Services/{name}.debug     - Execute in debug mode
-    ///   GET/POST  /api/Services/{name}.xml       - Execute and return XML output
-    ///   GET/POST  /api/Services/{name}.api       - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /api/Secure/{name}             - Execute workflow (function-key auth)
-    ///   GET/POST  /api/Secure/{name}.debug       - Execute in debug mode
-    ///   GET/POST  /api/Secure/{name}.xml         - Execute and return XML output
-    ///   GET/POST  /api/Secure/{name}.api         - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /api/Public/{name}             - Execute workflow (anonymous)
-    ///   GET/POST  /api/Public/{name}.debug       - Execute in debug mode
-    ///   GET/POST  /api/Public/{name}.xml         - Execute and return XML output
-    ///   GET/POST  /api/Public/{name}.api         - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /api/workflow/{workflowName}   - Execute by name; supports .debug/.xml/.api suffixes
-    ///   GET/POST  /api/workflow                  - Execute via query string or body
+    ///   GET/POST  /Services/{name}          - Execute workflow (function-key auth)
+    ///   GET/POST  /Services/{name}.debug     - Execute in debug mode
+    ///   GET/POST  /Services/{name}.xml       - Execute and return XML output
+    ///   GET/POST  /Services/{name}.api       - Return OpenAPI 3.0 spec for the workflow
+    ///   GET/POST  /Secure/{name}             - Execute workflow (function-key auth)
+    ///   GET/POST  /Secure/{name}.debug       - Execute in debug mode
+    ///   GET/POST  /Secure/{name}.xml         - Execute and return XML output
+    ///   GET/POST  /Secure/{name}.api         - Return OpenAPI 3.0 spec for the workflow
+    ///   GET/POST  /Public/{name}             - Execute workflow (anonymous)
+    ///   GET/POST  /Public/{name}.debug       - Execute in debug mode
+    ///   GET/POST  /Public/{name}.xml         - Execute and return XML output
+    ///   GET/POST  /Public/{name}.api         - Return OpenAPI 3.0 spec for the workflow
+    ///   GET/POST  /workflow/{workflowName}   - Execute by name; supports .debug/.xml/.api suffixes
+    ///   GET/POST  /workflow                  - Execute via query string or body
     ///
     /// Not supported in lightweight mode (require full Warewolf server):
     ///   apis.json, *.tests, *.tests.trx, *.coverage*, login, getlogfile
