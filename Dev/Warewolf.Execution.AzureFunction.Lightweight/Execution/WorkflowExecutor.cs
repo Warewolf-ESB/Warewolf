@@ -192,7 +192,12 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     // mirrors Executor.DebugFromWebExecutionResponse on the full Warewolf server.
                     result.ContentType = "application/json";
                     result.PayloadWriter = (stream, ct) =>
-                        WriteStringToStreamAsync(stream, JsonConvert.SerializeObject(result.DebugStates, Formatting.Indented), ct);
+                        WriteStringToStreamAsync(stream, JsonConvert.SerializeObject(new
+                        {
+                            hasErrors  = result.Errors.Count > 0,
+                            errors     = result.Errors,
+                            debugStates = result.DebugStates
+                        }, Formatting.Indented), ct);
                 }
 
                 result.IsSuccess = result.Errors.Count == 0;
@@ -540,7 +545,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
         /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
         /// </summary>
-        static void ExtractPayload(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
+        static void ExtractPayload_old(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
         {
             try
             {
@@ -569,6 +574,89 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                             // Populate the convenience dictionary before the string is streamed.
                             TryPopulateOutputsDictionary(result, json);
                             await WriteStringToStreamAsync(stream, json, ct);
+                        };
+                        break;
+                }
+            }
+            catch
+            {
+                // Payload extraction is best-effort; errors are captured in result.Errors
+            }
+        }
+
+        /// <summary>
+        /// Mirrors ExecutionDtoExtensions.GetExecutePayload
+        /// based on ReturnType and populates result.Payload + result.ContentType.
+        ///   XML  ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment  (DataList-shaped XML)
+        ///   JSON ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment  (DataList-shaped JSON)
+        ///          Falls back to environment.ToJson() when no DataList is available.
+        ///   OPENAPI is handled before execution ever starts (see short-circuit in Execute).
+        ///
+        /// Instead of storing the output as a string on the result, a <see cref="WorkflowExecutionResult.PayloadWriter"/>
+        /// delegate is set. The delegate computes the string on demand when the HTTP response is being
+        /// written and streams it via <see cref="WriteStringToStreamAsync"/> — a <see cref="StreamWriter"/>
+        /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
+        /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
+        /// </summary>
+        static void ExtractPayload(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
+        {
+            try
+            {
+                switch (request.ReturnType)
+                {
+                    case EmitionTypes.XML:
+                        result.ContentType = "text/xml";
+                        result.PayloadWriter = (stream, ct) =>
+                        {
+                            var xml = !string.IsNullOrEmpty(dataList)
+                                ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0)
+                                : "<DataList />";
+
+                            // Inject <Errors> into the XML so the browser can see them
+                            if (result.Errors.Count > 0)
+                            {
+                                var errXml = new StringBuilder();
+                                foreach (var err in result.Errors)
+                                    errXml.Append($"<Error><![CDATA[{err}]]></Error>");
+
+                                var closeIdx = xml.LastIndexOf("</", StringComparison.Ordinal);
+                                xml = closeIdx > 0
+                                    ? xml.Insert(closeIdx, $"<Errors>{errXml}</Errors>")
+                                    : xml + $"<Errors>{errXml}</Errors>";
+                            }
+
+                            return WriteStringToStreamAsync(stream, xml, ct);
+                        };
+                        break;
+
+                    default: // JSON
+                        result.ContentType = "application/json";
+                        result.PayloadWriter = async (stream, ct) =>
+                        {
+                            var json = !string.IsNullOrEmpty(dataList)
+                                ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0)
+                                : dataObject.Environment.ToJson();
+                            TryPopulateOutputsDictionary(result, json);
+
+                            // Wrap in an error envelope so errors are visible in the browser
+                            if (result.Errors.Count > 0)
+                            {
+                                JToken output;
+                                try { output = JToken.Parse(json); }
+                                catch { output = new JValue(json); }
+
+                                var envelope = new JObject
+                                {
+                                    ["hasErrors"] = true,
+                                    ["errors"] = new JArray(result.Errors),
+                                    ["output"] = output
+                                };
+                                await WriteStringToStreamAsync(stream, envelope.ToString(Formatting.Indented), ct);
+                            }
+                            else
+                            {
+                                await WriteStringToStreamAsync(stream, json, ct);
+                            }
                         };
                         break;
                 }

@@ -341,7 +341,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, BuildFullExceptionMessage(ex)));
             }
         }
 
@@ -398,7 +398,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, BuildFullExceptionMessage(ex)));
             }
         }
 
@@ -541,6 +541,19 @@ namespace Dev2.Services.Execution
             }
 
             return command;
+        }
+
+        static string BuildFullExceptionMessage(Exception ex)
+        {
+            var sb = new StringBuilder(ex.Message);
+            var inner = ex.InnerException;
+            while (inner != null)
+            {
+                sb.AppendLine().Append($"Inner exception: {inner.Message}");
+                inner = inner.InnerException;
+            }
+            sb.AppendLine().Append(ex.StackTrace);
+            return sb.ToString();
         }
 
         string UnescapeRawXml(string innerXml)
