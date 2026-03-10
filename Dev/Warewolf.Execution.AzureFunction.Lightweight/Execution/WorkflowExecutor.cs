@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Warewolf.Execution.AzureFunction.Lightweight.Logging;
 using Warewolf.Execution.AzureFunction.Lightweight.Models;
 
 namespace Warewolf.Execution.AzureFunction.Lightweight
@@ -42,6 +43,13 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// </summary>
     public class WorkflowExecutor : IWorkflowExecutor
     {
+        readonly IExecutionLogger _executionLogger;
+
+        public WorkflowExecutor(IExecutionLogger executionLogger)
+        {
+            _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
+        }
+
         /// <summary>
         /// Executes a workflow from a file path with the provided input parameters.
         /// </summary>
@@ -166,7 +174,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     Duration = stopwatch.Elapsed
                 };
 
-                CollectErrors(dataObject, result);
+                CollectErrors(dataObject, result, executionId);
                 ExtractPayload(dataObject, dataList, request, result);
                 if (debugCapturer != null)
                 {
@@ -194,6 +202,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             catch (InvalidWorkflowException iwe)
             {
                 stopwatch.Stop();
+                _executionLogger.LogError(nameof(Execute), iwe, executionId);
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
@@ -210,11 +219,12 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             catch (Exception ex)
             {
                 stopwatch.Stop();
+                _executionLogger.LogError(nameof(Execute), ex, executionId);
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
                     ExecutionId = executionId,
-                    Errors = new List<string> { ex.Message },
+                    Errors = new List<string> { $"{ex.Message}{Environment.NewLine}{ex.StackTrace}" },
                     StartTime = startTime,
                     EndTime = DateTime.UtcNow,
                     Duration = stopwatch.Elapsed
@@ -485,8 +495,10 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
         /// <summary>
         /// Collect errors from the execution environment into the result.
+        /// Errors and the ExecutionException (if any) are also emitted via <see cref="IExecutionLogger"/>
+        /// so they appear in Application Insights / Azure Monitor with the full stack trace.
         /// </summary>
-        static void CollectErrors(IDSFDataObject dataObject, WorkflowExecutionResult result)
+        void CollectErrors(IDSFDataObject dataObject, WorkflowExecutionResult result, Guid executionId)
         {
             var errors = new ErrorResultTO();
             foreach (var err in dataObject.Environment.Errors.ToList())
@@ -501,11 +513,16 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             if (errors.HasErrors())
             {
                 result.Errors = errors.FetchErrors().ToList();
+                foreach (var err in result.Errors)
+                {
+                    _executionLogger.LogWarning(err, executionId);
+                }
             }
 
             if (dataObject.ExecutionException != null && result.Errors.Count == 0)
             {
-                result.Errors.Add(dataObject.ExecutionException.Message);
+                _executionLogger.LogError("ExecuteActivityChain", dataObject.ExecutionException, executionId);
+                result.Errors.Add($"{dataObject.ExecutionException.Message}{Environment.NewLine}{dataObject.ExecutionException.StackTrace}");
             }
         }
 
