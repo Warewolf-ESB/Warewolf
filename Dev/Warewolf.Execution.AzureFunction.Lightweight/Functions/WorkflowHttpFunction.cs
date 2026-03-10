@@ -181,9 +181,25 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             response.Headers.Add("Content-Type", contentType);
 
             if (result.PayloadWriter != null)
+            {
                 await result.PayloadWriter(response.Body, CancellationToken.None);
+            }
             else if (!string.IsNullOrEmpty(result.Payload))
+            {
                 await response.WriteStringAsync(result.Payload);
+            }
+            else if (result.Errors.Count > 0)
+            {
+                // Pure failure (file not found, invalid XAML, etc.) — write a structured
+                // JSON error body so the browser shows something meaningful instead of 500 + empty.
+                response.Headers.Remove("Content-Type");
+                response.Headers.Add("Content-Type", JsonContentType);
+                await response.WriteStringAsync(JsonConvert.SerializeObject(new
+                {
+                    hasErrors = true,
+                    errors    = result.Errors
+                }, Formatting.Indented));
+            }
 
             return response;
         }
