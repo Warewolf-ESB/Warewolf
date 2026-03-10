@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,6 +39,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     public sealed class WorkflowHttpFunction
     {
         const string JsonContentType = "application/json";
+        const string XmlContentType  = "text/xml";
         readonly IWorkflowExecutor _workflowExecutor;
         readonly string _workflowsDirectory;
 
@@ -99,7 +101,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateFormattedResponse(req, result);
+            return await CreateFormattedResponse(req, result, isXml ? XmlContentType : JsonContentType);
         }
 
         /// <summary>
@@ -145,11 +147,11 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateFormattedResponse(req, result);
+            return await CreateFormattedResponse(req, result, isXml ? XmlContentType : JsonContentType);
         }
 
         /// <summary>
-        /// Strips known suffixes (.api, .debug, .xml) from a workflow name and returns the resolved parts.
+        /// Strips known suffixes (.api, .debug, .xml) from a workflow name
         /// Suffix precedence matches WebServerController: .api checked first, then .debug, then .xml.
         /// </summary>
         static (string name, bool isDebug, bool isXml, bool isApi) ParseNameSuffixes(string name)
@@ -173,11 +175,11 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// internally through <c>Encoding.UTF8.GetBytes</c>. Falls back to <c>WriteStringAsync</c>
         /// only for small error payloads stored in <see cref="Models.WorkflowExecutionResult.Payload"/>.
         /// </summary>
-        static async Task<HttpResponseData> CreateFormattedResponse(HttpRequestData req, Models.WorkflowExecutionResult result)
+        static async Task<HttpResponseData> CreateFormattedResponse(HttpRequestData req, Models.WorkflowExecutionResult result, string requestedContentType = JsonContentType)
         {
             var statusCode  = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
             var response    = req.CreateResponse(statusCode);
-            var contentType = result.ContentType ?? JsonContentType;
+            var contentType = result.ContentType ?? requestedContentType;
             response.Headers.Add("Content-Type", contentType);
 
             if (result.PayloadWriter != null)
@@ -191,14 +193,26 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             else if (result.Errors.Count > 0)
             {
                 // Pure failure (file not found, invalid XAML, etc.) — write a structured
-                // JSON error body so the browser shows something meaningful instead of 500 + empty.
+                // error body in the requested format so the browser shows something meaningful instead of 500 + empty.
                 response.Headers.Remove("Content-Type");
-                response.Headers.Add("Content-Type", JsonContentType);
-                await response.WriteStringAsync(JsonConvert.SerializeObject(new
+                if (requestedContentType == XmlContentType)
                 {
-                    hasErrors = true,
-                    errors    = result.Errors
-                }, Formatting.Indented));
+                    response.Headers.Add("Content-Type", XmlContentType);
+                    var sb = new StringBuilder("<DataList><Errors>");
+                    foreach (var err in result.Errors)
+                        sb.Append($"<Error><![CDATA[{err}]]></Error>");
+                    sb.Append("</Errors></DataList>");
+                    await response.WriteStringAsync(sb.ToString());
+                }
+                else
+                {
+                    response.Headers.Add("Content-Type", JsonContentType);
+                    await response.WriteStringAsync(JsonConvert.SerializeObject(new
+                    {
+                        hasErrors = true,
+                        errors    = result.Errors
+                    }, Formatting.Indented));
+                }
             }
 
             return response;
