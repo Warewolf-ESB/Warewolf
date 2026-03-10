@@ -103,6 +103,13 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
 
+            if (Source == null)
+            {
+                errors.AddError("Database source is not configured.");
+                Dev2Logger.Error("Database source is null", GlobalConstants.WarewolfError);
+                return null;
+            }
+
             switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
