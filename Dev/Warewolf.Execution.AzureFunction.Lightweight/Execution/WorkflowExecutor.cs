@@ -5,6 +5,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.TO;
+using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -141,7 +142,19 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     debugCapturer = new PerRequestDebugCapturer();
 
                 using (debugCapturer != null ? DebugDispatcher.UseContextDispatcher(debugCapturer) : null)
+                {
+                    // Emit workflow Start state before activities run — mirrors the Start marker
+                    // the full Warewolf server emits from WfExecutionContainer.
+                    if (debugCapturer != null)
+                        EmitWorkflowStartState(resolvedName, request, startTime);
+
                     ExecuteActivityChain(dataObject, startActivity);
+
+                    // Emit workflow End state after activities finish — mirrors the End marker
+                    // the full Warewolf server emits, including the final output variable values.
+                    if (debugCapturer != null)
+                        EmitWorkflowEndState(dataObject, resolvedName, dataList, startTime);
+                }
 
                 // Step 7: Extract outputs
                 stopwatch.Stop();
@@ -157,10 +170,21 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 ExtractPayload(dataObject, dataList, request, result);
                 if (debugCapturer != null)
                 {
-                    result.DebugStates = debugCapturer.States
+                    // Mirror Executor.DebugFromWebExecutionResponse: build a parent?child tree
+                    // from the raw IDebugState objects (using ParentID links), then map to the
+                    // serialisable DebugStepResult model.  Duration-only states are filtered out,
+                    // matching the full server's Where(state => state.StateType != StateType.Duration).
+                    var rawStates = debugCapturer.States
                         .Where(s => s.StateType != StateType.Duration)
-                        .Select(MapDebugState)
-                        .ToList();
+                        .ToArray();
+                    var tree = DebugStateTreeBuilder.BuildTree(rawStates);
+                    result.DebugStates = tree.Select(MapDebugState).ToList();
+
+                    // Debug mode: the response IS the debug tree, NOT the normal workflow output —
+                    // mirrors Executor.DebugFromWebExecutionResponse on the full Warewolf server.
+                    result.ContentType = "application/json";
+                    result.PayloadWriter = (stream, ct) =>
+                        WriteStringToStreamAsync(stream, JsonConvert.SerializeObject(result.DebugStates, Formatting.Indented), ct);
                 }
 
                 result.IsSuccess = result.Errors.Count == 0;
@@ -294,6 +318,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), rawPayload)
             {
                 IsDebug = request.IsDebug,
+                IsDebugFromWeb = request.IsDebug,
                 ReturnType = request.ReturnType,
                 ServiceName = workflowName,
                 ExecutionID = executionId,
@@ -358,6 +383,104 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Emits a workflow-level <c>StateType.Start</c> debug state to the active
+        /// <see cref="PerRequestDebugCapturer"/> via <see cref="DebugDispatcher"/>.
+        /// Mirrors the Start marker the full Warewolf server emits from WfExecutionContainer,
+        /// including one <see cref="DebugItem"/> per input parameter so callers can see
+        /// what values were passed into the workflow.
+        /// Must be called inside a <c>DebugDispatcher.UseContextDispatcher</c> scope.
+        /// </summary>
+        static void EmitWorkflowStartState(string workflowName, WorkflowExecutionRequest request, DateTime startTime)
+        {
+            var state = new DebugState
+            {
+                StateType = StateType.Start,
+                ActivityType = ActivityType.Workflow,
+                DisplayName = workflowName,
+                Name = "Start",
+                StartTime = startTime,
+                EndTime = startTime,
+                IsDurationVisible = false,
+                ExecutionOrigin = ExecutionOrigin.External
+            };
+
+            if (request.InputParameters != null)
+            {
+                foreach (var kv in request.InputParameters)
+                {
+                    var item = new DebugItem();
+                    item.Add(new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Variable,
+                        Variable = $"[[{kv.Key}]]",
+                        Operator = "=",
+                        Value = kv.Value ?? string.Empty,
+                        TruncatedValue = kv.Value ?? string.Empty
+                    });
+                    state.Inputs.Add(item);
+                }
+            }
+
+            DebugDispatcher.Instance.Write(new WriteArgs { debugState = state, isDebugFromWeb = true });
+        }
+
+        /// <summary>
+        /// Emits a workflow-level <c>StateType.End</c> debug state to the active
+        /// <see cref="PerRequestDebugCapturer"/> via <see cref="DebugDispatcher"/>.
+        /// Mirrors the End marker the full Warewolf server emits, including the final
+        /// output variable values extracted from the execution environment via the DataList.
+        /// Must be called inside a <c>DebugDispatcher.UseContextDispatcher</c> scope.
+        /// </summary>
+        static void EmitWorkflowEndState(IDSFDataObject dataObject, string workflowName, string dataList, DateTime startTime)
+        {
+            var endTime = DateTime.UtcNow;
+            var state = new DebugState
+            {
+                StateType = StateType.End,
+                ActivityType = ActivityType.Workflow,
+                DisplayName = workflowName,
+                Name = "End",
+                StartTime = startTime,
+                EndTime = endTime,
+                IsDurationVisible = true
+            };
+
+            // Extract final output variables from the environment using the DataList schema,
+            // matching how the full server populates the End state Outputs list.
+            if (!string.IsNullOrEmpty(dataList))
+            {
+                try
+                {
+                    var json = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0);
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        var outputs = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                        if (outputs != null)
+                        {
+                            foreach (var kv in outputs)
+                            {
+                                var value = kv.Value?.ToString() ?? string.Empty;
+                                var item = new DebugItem();
+                                item.Add(new DebugItemResult
+                                {
+                                    Type = DebugItemResultType.Variable,
+                                    Variable = $"[[{kv.Key}]]",
+                                    Operator = "=",
+                                    Value = value,
+                                    TruncatedValue = value
+                                });
+                                state.Outputs.Add(item);
+                            }
+                        }
+                    }
+                }
+                catch { /* best-effort — payload extraction must not fail the debug response */ }
+            }
+
+            DebugDispatcher.Instance.Write(new WriteArgs { debugState = state, isDebugFromWeb = true });
         }
 
         /// <summary>
@@ -457,27 +580,56 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
         static DebugStepResult MapDebugState(IDebugState state) => new()
         {
-            DisplayName = state.DisplayName,
-            ActivityType = state.Name,
-            ActualType = state.ActualType,
-            StateType = state.StateType.ToString(),
-            HasError = state.HasError,
-            ErrorMessage = state.ErrorMessage,
-            StartTime = state.StartTime,
-            EndTime = state.EndTime,
-            Inputs = MapDebugItems(state.Inputs),
-            Outputs = MapDebugItems(state.Outputs)
+            // Identity
+            DisconnectedID       = state.DisconnectedID,
+            ID                   = state.ID,
+            SourceResourceID     = state.SourceResourceID,
+            OriginatingResourceID = state.OriginatingResourceID,
+            OriginalInstanceID   = state.OriginalInstanceID,
+            // Session / routing
+            SessionID            = state.SessionID,
+            WorkspaceID          = state.WorkspaceID,
+            ServerID             = state.ServerID,
+            EnvironmentID        = state.EnvironmentID,
+            ClientID             = state.ClientID,
+            // Activity metadata
+            DisplayName          = state.DisplayName,
+            ActivityType         = (int)state.ActivityType,
+            ActualType           = state.ActualType,
+            StateType            = state.StateType.ToString(),
+            // Status
+            HasError             = state.HasError,
+            ErrorMessage         = state.ErrorMessage,
+            // Execution origin
+            Origin               = state.Origin,
+            ExecutionOrigin      = (int)state.ExecutionOrigin,
+            WorkSurfaceMappingId = state.WorkSurfaceMappingId,
+            // Timing
+            IsDurationVisible    = state.IsDurationVisible,
+            Duration             = state.Duration,
+            StartTime            = state.StartTime,
+            EndTime              = state.EndTime,
+            // Debug items
+            Inputs               = MapDebugItems(state.Inputs),
+            Outputs              = MapDebugItems(state.Outputs),
+            AssertResultList     = MapDebugItems(state.AssertResultList),
+            // Tree
+            Children             = state.Children?.Select(MapDebugState).ToList() ?? new List<DebugStepResult>()
         };
 
         static List<List<DebugLineItem>> MapDebugItems(List<IDebugItem> items) =>
             items?.Select(item => item.FetchResultsList()
                 .Select(r => new DebugLineItem
                 {
-                    Type = r.Type.ToString(),
+                    Type = (int)r.Type,
                     Label = r.Label,
                     Variable = r.Variable,
                     Operator = r.Operator,
                     Value = r.Value,
+                    TruncatedValue = r.TruncatedValue,
+                    GroupName = r.GroupName,
+                    GroupIndex = r.GroupIndex,
+                    MoreLink = r.MoreLink,
                     HasError = r.HasError
                 })
                 .ToList())
