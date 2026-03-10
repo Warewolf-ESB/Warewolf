@@ -1,36 +1,37 @@
+using Dev2.Web;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Warewolf.Execution.AzureFunction.Lightweight
 {
     /// <summary>
-    /// Azure Function implementations mirroring the Warewolf WebServerController routes.
+    /// Azure Function entry points mirroring the Warewolf WebServerController routes.
+    /// Each public method is a thin wrapper: it delegates suffix parsing to
+    /// <see cref="NameSuffixParser"/>, request building to <see cref="WorkflowFunctionHelper"/>,
+    /// execution to <see cref="IWorkflowExecutor"/>, apis.json listing to
+    /// <see cref="IApisJsonGenerator"/>, and response assembly to <see cref="ResponseBuilder"/>.
     ///
     /// Supported routes:
-    ///   GET/POST  /Services/{name}          - Execute workflow (function-key auth)
-    ///   GET/POST  /Services/{name}.debug     - Execute in debug mode
-    ///   GET/POST  /Services/{name}.xml       - Execute and return XML output
-    ///   GET/POST  /Services/{name}.api       - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /Secure/{name}             - Execute workflow (function-key auth)
-    ///   GET/POST  /Secure/{name}.debug       - Execute in debug mode
-    ///   GET/POST  /Secure/{name}.xml         - Execute and return XML output
-    ///   GET/POST  /Secure/{name}.api         - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /Public/{name}             - Execute workflow (anonymous)
-    ///   GET/POST  /Public/{name}.debug       - Execute in debug mode
-    ///   GET/POST  /Public/{name}.xml         - Execute and return XML output
-    ///   GET/POST  /Public/{name}.api         - Return OpenAPI 3.0 spec for the workflow
-    ///   GET/POST  /workflow/{workflowName}   - Execute by name; supports .debug/.xml/.api suffixes
-    ///   GET/POST  /workflow                  - Execute via query string or body
+    ///   GET/POST  /Services/{name}           - Execute workflow (function-key auth)
+    ///   GET/POST  /Services/{name}.debug      - Execute in debug mode
+    ///   GET/POST  /Services/{name}.xml        - Execute and return XML output
+    ///   GET/POST  /Services/{name}.api        - Return OpenAPI 3.0 spec for the workflow
+    ///   GET/POST  /Services/{folder}/apis.json - List workflows under folder (authenticated)
+    ///   GET/POST  /Secure/{name}              - Execute workflow (function-key auth)
+    ///   GET/POST  /Secure/{folder}/apis.json  - List workflows under folder (authenticated)
+    ///   GET/POST  /Public/{name}              - Execute workflow (anonymous)
+    ///   GET/POST  /Public/{folder}/apis.json  - List workflows under folder (anonymous)
+    ///   GET       /apis.json                  - List all workflows (anonymous, root discovery)
+    ///   GET/POST  /workflow/{workflowName}    - Execute by name; supports .debug/.xml/.api suffixes
+    ///   GET/POST  /workflow                   - Execute via query string or body
     ///
     /// Not supported in lightweight mode (require full Warewolf server):
-    ///   apis.json, *.tests, *.tests.trx, *.coverage*, login, getlogfile
+    ///   *.tests, *.tests.trx, *.coverage*, login, getlogfile
     ///
     /// Input parameters (any route):
     ///   Query string:  ?Name=John&amp;Age=30
@@ -38,74 +39,84 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
     /// </summary>
     public sealed class WorkflowHttpFunction
     {
-        const string JsonContentType = "application/json";
-        const string XmlContentType  = "text/xml";
-        readonly IWorkflowExecutor _workflowExecutor;
-        readonly string _workflowsDirectory;
+        readonly IWorkflowExecutor   _workflowExecutor;
+        readonly IApisJsonGenerator  _apisJsonGenerator;
+        readonly string              _workflowsDirectory;
 
-        public WorkflowHttpFunction(IWorkflowExecutor workflowExecutor)
+        public WorkflowHttpFunction(IWorkflowExecutor workflowExecutor, IApisJsonGenerator apisJsonGenerator)
         {
-            _workflowExecutor = workflowExecutor;
+            _workflowExecutor   = workflowExecutor;
+            _apisJsonGenerator  = apisJsonGenerator;
             _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 
-        /// <summary>
-        /// Mirrors Services/{*name} — authenticated workflow execution.
-        /// Append .debug to the workflow name to enable debug mode.
-        /// </summary>
+        // ── Authenticated workflow routes ─────────────────────────────────────
+
+        /// <summary>Mirrors Services/{*name} — function-key authenticated execution.</summary>
         [Function("ExecuteService")]
         public async Task<HttpResponseData> ExecuteService(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Services/{*name}")] HttpRequestData req,
             string name)
-            => await ExecuteNamedWorkflow(req, name);
+            => await ExecuteNamedWorkflow(req, name, isPublic: false);
 
-        /// <summary>
-        /// Mirrors Secure/{*name} — authenticated workflow execution.
-        /// Append .debug to the workflow name to enable debug mode.
-        /// </summary>
+        /// <summary>Mirrors Secure/{*name} — function-key authenticated execution.</summary>
         [Function("ExecuteSecureWorkflow")]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
             string name)
-            => await ExecuteNamedWorkflow(req, name);
+            => await ExecuteNamedWorkflow(req, name, isPublic: false);
 
-        /// <summary>
-        /// Mirrors Public/{*name} — anonymous (unauthenticated) workflow execution.
-        /// Append .debug to the workflow name to enable debug mode.
-        /// </summary>
+        // ── Anonymous / public route ──────────────────────────────────────────
+
+        /// <summary>Mirrors Public/{*name} — anonymous (unauthenticated) execution.</summary>
         [Function("ExecutePublicWorkflow")]
         public async Task<HttpResponseData> ExecutePublicWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Public/{*name}")] HttpRequestData req,
             string name)
-            => await ExecuteNamedWorkflow(req, name);
+            => await ExecuteNamedWorkflow(req, name, isPublic: true);
+
+        // ── apis.json discovery routes ────────────────────────────────────────
 
         /// <summary>
-        /// Execute a workflow by name from the route. The workflow file is resolved
-        /// from the configured WorkflowsDirectory environment variable.
-        /// Supports .debug and .xml suffixes on the workflow name.
+        /// Root-level apis.json — lists all available workflows.
+        /// Mirrors <c>WebServerController.ExecuteGetRootLevelApisJson</c>.
+        /// Anonymous so that API discovery tools (Postman, etc.) can reach it without a key.
+        /// </summary>
+        [Function("ExecuteRootApisJson")]
+        public async Task<HttpResponseData> ExecuteRootApisJson(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "apis.json")] HttpRequestData req)
+            => await CreateApisJsonResponse(req, pathFilter: null, isPublic: true);
+
+        // ── Named-workflow routes ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Execute a workflow by name from the route.
+        /// Mirrors <c>WebServerController.ExecuteService</c> + suffix handling.
         /// </summary>
         [Function("ExecuteWorkflowByName")]
         public async Task<HttpResponseData> ExecuteByName(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow/{workflowName}")] HttpRequestData req,
             string workflowName)
         {
-            var (resolvedName, isDebug, isXml, isApi) = ParseNameSuffixes(workflowName);
+            var (resolvedName, isDebug, isXml, isApi) = NameSuffixParser.Parse(workflowName);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, resolvedName);
 
             executionRequest.WebServerUri = req.Url;
-            executionRequest.ReturnType   = isXml ? Dev2.Web.EmitionTypes.XML
-                                          : isApi ? Dev2.Web.EmitionTypes.OPENAPI
-                                                  : Dev2.Web.EmitionTypes.JSON;
+            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+                                          : isApi ? EmitionTypes.OPENAPI
+                                                  : EmitionTypes.JSON;
             if (isDebug)
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateFormattedResponse(req, result, isXml ? XmlContentType : JsonContentType);
+            return await ResponseBuilder.BuildAsync(req, result,
+                isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
         }
 
         /// <summary>
         /// Execute a workflow identified via query string or request body.
+        /// Mirrors <c>WebServerController.ExecuteService</c> (generic path).
         /// </summary>
         [Function("ExecuteWorkflow")]
         public async Task<HttpResponseData> Execute(
@@ -115,107 +126,53 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
             if (!executionRequest.IsValid)
             {
-                var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
-                await badRequest.WriteStringAsync(JsonConvert.SerializeObject(new
-                {
-                    error = "WorkflowFilePath or WorkflowName must be provided via query string or request body."
-                }));
-                return badRequest;
+                return await ResponseBuilder.BuildStringAsync(req,
+                    JsonConvert.SerializeObject(new
+                    {
+                        error = "WorkflowFilePath or WorkflowName must be provided via query string or request body."
+                    }),
+                    statusCode: HttpStatusCode.BadRequest);
             }
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateFormattedResponse(req, result);
+            return await ResponseBuilder.BuildAsync(req, result);
         }
 
-        /// <summary>
-        /// Shared handler: strips .api/.debug/.xml suffix, stamps the request with
-        /// ReturnType + WebServerUri, then runs the workflow (or short-circuits for .api).
-        /// </summary>
-        async Task<HttpResponseData> ExecuteNamedWorkflow(HttpRequestData req, string name)
-        {
-            var (workflowName, isDebug, isXml, isApi) = ParseNameSuffixes(name);
+        // ── Shared private helpers ────────────────────────────────────────────
 
+        /// <summary>
+        /// Handles any named route: short-circuits to apis.json listing when the
+        /// route ends with <c>apis.json</c>; otherwise parses suffix flags, builds
+        /// the execution request, runs the workflow, and returns the formatted response.
+        /// </summary>
+        async Task<HttpResponseData> ExecuteNamedWorkflow(HttpRequestData req, string name, bool isPublic)
+        {
+            if (NameSuffixParser.IsApisJsonRequest(name))
+                return await CreateApisJsonResponse(req, NameSuffixParser.ExtractApisJsonPath(name), isPublic);
+
+            var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
 
-            // Override what ParseRequestAsync inferred from the URL — the already-decoded
-            // suffix flags are authoritative and avoid any ambiguity in path parsing.
+            // Suffix flags are authoritative — override any format inferred from the URL path.
             executionRequest.WebServerUri = req.Url;
-            executionRequest.ReturnType   = isXml  ? Dev2.Web.EmitionTypes.XML
-                                          : isApi  ? Dev2.Web.EmitionTypes.OPENAPI
-                                                   : Dev2.Web.EmitionTypes.JSON;
+            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+                                          : isApi ? EmitionTypes.OPENAPI
+                                                  : EmitionTypes.JSON;
             if (isDebug)
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await CreateFormattedResponse(req, result, isXml ? XmlContentType : JsonContentType);
+            return await ResponseBuilder.BuildAsync(req, result,
+                isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
         }
 
         /// <summary>
-        /// Strips known suffixes (.api, .debug, .xml) from a workflow name
-        /// Suffix precedence matches WebServerController: .api checked first, then .debug, then .xml.
+        /// Generates and returns an apis.json discovery document for the given path.
         /// </summary>
-        static (string name, bool isDebug, bool isXml, bool isApi) ParseNameSuffixes(string name)
+        async Task<HttpResponseData> CreateApisJsonResponse(HttpRequestData req, string? pathFilter, bool isPublic)
         {
-            if (name.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
-                return (name[..^".api".Length], false, false, true);
-            if (name.EndsWith(".debug", StringComparison.OrdinalIgnoreCase))
-                return (name[..^".debug".Length], true, false, false);
-            if (name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
-                return (name[..^".xml".Length], false, true, false);
-            if (name.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
-                return (name[..^".json".Length], false, false, false);
-            return (name, false, false, false);
-        }
-
-        /// <summary>
-        /// Single response builder — reads result.ContentType so the caller never needs to know
-        /// which format was requested. Uses <see cref="Models.WorkflowExecutionResult.PayloadWriter"/>
-        /// to stream the payload directly to <c>response.Body</c> via a <see cref="StreamWriter"/>,
-        /// avoiding the full <c>byte[]</c> allocation that <c>WriteStringAsync</c> produces
-        /// internally through <c>Encoding.UTF8.GetBytes</c>. Falls back to <c>WriteStringAsync</c>
-        /// only for small error payloads stored in <see cref="Models.WorkflowExecutionResult.Payload"/>.
-        /// </summary>
-        static async Task<HttpResponseData> CreateFormattedResponse(HttpRequestData req, Models.WorkflowExecutionResult result, string requestedContentType = JsonContentType)
-        {
-            var statusCode  = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
-            var response    = req.CreateResponse(statusCode);
-            var contentType = result.ContentType ?? requestedContentType;
-            response.Headers.Add("Content-Type", contentType);
-
-            if (result.PayloadWriter != null)
-            {
-                await result.PayloadWriter(response.Body, CancellationToken.None);
-            }
-            else if (!string.IsNullOrEmpty(result.Payload))
-            {
-                await response.WriteStringAsync(result.Payload);
-            }
-            else if (result.Errors.Count > 0)
-            {
-                // Pure failure (file not found, invalid XAML, etc.) — write a structured
-                // error body in the requested format so the browser shows something meaningful instead of 500 + empty.
-                response.Headers.Remove("Content-Type");
-                if (requestedContentType == XmlContentType)
-                {
-                    response.Headers.Add("Content-Type", XmlContentType);
-                    var sb = new StringBuilder("<DataList><Errors>");
-                    foreach (var err in result.Errors)
-                        sb.Append($"<Error><![CDATA[{err}]]></Error>");
-                    sb.Append("</Errors></DataList>");
-                    await response.WriteStringAsync(sb.ToString());
-                }
-                else
-                {
-                    response.Headers.Add("Content-Type", JsonContentType);
-                    await response.WriteStringAsync(JsonConvert.SerializeObject(new
-                    {
-                        hasErrors = true,
-                        errors    = result.Errors
-                    }, Formatting.Indented));
-                }
-            }
-
-            return response;
+            var json = _apisJsonGenerator.Generate(pathFilter, req.Url, isPublic);
+            return await ResponseBuilder.BuildStringAsync(req, json, ResponseBuilder.JsonContentType);
         }
     }
 }
