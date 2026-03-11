@@ -114,6 +114,14 @@ namespace Dev2.Services.Execution
                     _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                         Service?.Source?.ResourceID, Service?.Source?.ResourceName));
                 }
+                else
+                {
+                    // Source resolved by direct ID lookup — clear any prior "Error loading resource"
+                    // that GetService() may have added when no DbService wrapper was found in the
+                    // catalog.  In lightweight / workflow-embedded execution the source is always
+                    // resolved by SourceId directly, so that earlier error is not relevant.
+                    _errorResult.ClearErrors();
+                }
             }
         }
 
@@ -378,12 +386,15 @@ namespace Dev2.Services.Execution
                 string result;
                 if (parameters.Any())
                 {
-                    result = ExecuteService(update, out errors, formater).ToString();
+                    var serviceResult = ExecuteService(update, out var invokeErrors, formater);
+                    errors.MergeErrors(invokeErrors);
+                    result = serviceResult?.ToString() ?? string.Empty;
                 }
                 else
                 {
-                    result = ExecuteService(update, out var invokeErrors, formater).ToString();
+                    var serviceResult = ExecuteService(update, out var invokeErrors, formater);
                     errors.MergeErrors(invokeErrors);
+                    result = serviceResult?.ToString() ?? string.Empty;
                 }
 
                 if (!HandlesOutputFormatting)
@@ -545,14 +556,22 @@ namespace Dev2.Services.Execution
 
         static string BuildFullExceptionMessage(Exception ex)
         {
-            var sb = new StringBuilder(ex.Message);
+            var sb = new StringBuilder();
+            sb.Append($"{ex.GetType().FullName}: {ex.Message}");
+            if (ex.StackTrace != null)
+            {
+                sb.AppendLine().Append(ex.StackTrace);
+            }
             var inner = ex.InnerException;
             while (inner != null)
             {
-                sb.AppendLine().Append($"Inner exception: {inner.Message}");
+                sb.AppendLine().Append($" ---> {inner.GetType().FullName}: {inner.Message}");
+                if (inner.StackTrace != null)
+                {
+                    sb.AppendLine().Append(inner.StackTrace);
+                }
                 inner = inner.InnerException;
             }
-            sb.AppendLine().Append(ex.StackTrace);
             return sb.ToString();
         }
 

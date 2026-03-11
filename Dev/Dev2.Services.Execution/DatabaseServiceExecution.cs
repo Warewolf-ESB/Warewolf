@@ -162,6 +162,7 @@ namespace Dev2.Services.Execution
                         return result;
                     }
                 default:
+                    errors.AddError($"Unsupported database source type: {Source.ServerType}");
                     return null;
             }
         }

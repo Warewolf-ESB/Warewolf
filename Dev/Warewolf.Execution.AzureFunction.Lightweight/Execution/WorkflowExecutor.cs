@@ -143,6 +143,12 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                 // Step 5: Build DsfDataObject with inputs
                 var dataObject = BuildDataObject(request, executionId, resolvedName, dataList);
 
+                // Pre-load any DbSource resources from the resources directory into
+                // ResourceCatalog.Instance so that SQL Server and other database activities
+                // can resolve their source connection strings without a running catalog server.
+                LightweightSourceLoader.Instance.EnsureLoaded(
+                    request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty);
+
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
                 PerRequestDebugCapturer debugCapturer = null;
