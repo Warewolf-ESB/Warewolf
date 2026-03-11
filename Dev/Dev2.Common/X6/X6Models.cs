@@ -89,6 +89,8 @@ namespace Dev2.Common.X6
         public const string DSFEXECUTECOMMANDLINEACTIVITY = "DsfExecuteCommandLineActivity";       
         public const string DSFPYTHONACTIVITY = "DsfPythonActivity";
         public const string GATEACTIVITY = "GateActivity";
+        public const string DSFDATETIMEDIFFERENCEACTIVITY = "DsfDateTimeDifferenceActivity";
+        public const string DSFDOTNETDATETIMEDIFFERENCEACTIVITY = "DsfDotNetDateTimeDifferenceActivity";
 
         public const string ISNESTED = "isNested";
         public const string PARENTID = "parentId";
@@ -123,6 +125,7 @@ namespace Dev2.Common.X6
         public const string DISPLAYNAME_COMMANDLINE = "Execute Command Line";        
         public const string DISPLAYNAME_PYTHON = "Python";
         public const string DISPLAYNAME_GATE = "Gate";
+        public const string DISPLAYNAME_DATETIMEDIFFERENCE = "Date and Time Difference";
 
         public const string SELECTANDAPPLY_ALIAS = "alias";
         public const string SELECTANDAPPLY_DATASOURCE = "dataSource";
@@ -384,28 +387,44 @@ namespace Dev2.Common.X6
         public const string MANUALRESUMPTION_OVERRIDEINPUTVARIABLE = "overrideinputvariables";
         public const string MANUALRESUMPTION_ACTIVITYFUNC = "OverrideDataFunc";
 
-        
-
         public const string GATE_CONDITIONS = "gate_conditions";
         public const string GATE_RETRYENTRYPOINTID = "gate_retryentrypointid";
         public const string GATE_GATEOPTIONS = "gate_gateoptions";
         public const string GATE_DATAFUNC = "dataFunc";
         public const string GATE_APPLYACTIVITYFUNC = "applyActivityFunc";
 
+        // Date Time Difference Activity
+        public const string DATETIMEDIFF_INPUT1 = "input1";
+        public const string DATETIMEDIFF_INPUT2 = "input2";
+        public const string DATETIMEDIFF_INPUTFORMAT = "inputformat";
+        public const string DATETIMEDIFF_OUTPUTTYPE = "outputtype";
+        public const string DATETIMEDIFF_RESULT = "result";
+
         // SMTP Email Activity
+        public const string DSFDOTNETDATETIMEACTIVITY = "DsfDotNetDateTimeActivity";
+        public const string DSFDATETIMEACTIVITY = "DsfDateTimeActivity";
+        public const string DISPLAYNAME_DOTNETDATETIME = "Date and Time";
+        public const string DOTNETDATETIME_DATETIME = "datetime";
+        public const string DOTNETDATETIME_INPUTFORMAT = "inputformat";
+        public const string DOTNETDATETIME_OUTPUTFORMAT = "outputformat";
+        public const string DOTNETDATETIME_TIMEMODIFIERTYPE = "timemodifiertype";
+        public const string DOTNETDATETIME_TIMEMODIFIERAMOUNTDISPLAY = "timemodifieramountdisplay";
+        public const string DOTNETDATETIME_TIMEMODIFIERAMOUNT = "timemodifieramount";
+        public const string DOTNETDATETIME_RESULT = "result";
+
         public const string DSFSENDEMAILACTIVITY = "DsfSendEmailActivity";
-        public const string DISPLAYNAME_SMTPEMAIL = "SMTP Email";
-        public const string SMTPEMAIL_SOURCEID = "emailsourceid";
-        public const string SMTPEMAIL_FROMACCOUNT = "fromaccount";
-        public const string SMTPEMAIL_PASSWORD = "password";
-        public const string SMTPEMAIL_TO = "to";
-        public const string SMTPEMAIL_CC = "cc";
-        public const string SMTPEMAIL_BCC = "bcc";
-        public const string SMTPEMAIL_PRIORITY = "priority";
-        public const string SMTPEMAIL_SUBJECT = "subject";
-        public const string SMTPEMAIL_ATTACHMENTS = "attachments";
-        public const string SMTPEMAIL_BODY = "body";
-        public const string SMTPEMAIL_ISHTML = "ishtml";
+        public const string DISPLAYNAME_SMTPEMAIL = "Send Email";
+        public const string SMTPEMAIL_SOURCEID = "smtpemail_sourceid";
+        public const string SMTPEMAIL_FROMACCOUNT = "smtpemail_fromaccount";
+        public const string SMTPEMAIL_PASSWORD = "smtpemail_password";
+        public const string SMTPEMAIL_TO = "smtpemail_to";
+        public const string SMTPEMAIL_CC = "smtpemail_cc";
+        public const string SMTPEMAIL_BCC = "smtpemail_bcc";
+        public const string SMTPEMAIL_PRIORITY = "smtpemail_priority";
+        public const string SMTPEMAIL_SUBJECT = "smtpemail_subject";
+        public const string SMTPEMAIL_ATTACHMENTS = "smtpemail_attachments";
+        public const string SMTPEMAIL_BODY = "smtpemail_body";
+        public const string SMTPEMAIL_ISHTML = "smtpemail_ishtml";
 
         // Random Activity
         public const string DSFRANDOMACTIVITY = "DsfRandomActivity";
@@ -416,7 +435,6 @@ namespace Dev2.Common.X6
         public const string RANDOM_LENGTH = "length";
         public const string RANDOM_RESULT = "result";
 
-        // Exchange Email Activity
         public const string DSFEXCHANGEEMAILNEWACTIVITY = "DsfExchangeEmailNewActivity";
         public const string DISPLAYNAME_EXCHANGEEMAIL = "Exchange Email";
         public const string EXCHANGEEMAIL_SOURCEID = "exchangesourceid";
@@ -443,6 +461,68 @@ namespace Dev2.Common.X6
         public const string CREATEJSON_JSONMAPPINGS = "jsonmappings";
         public const string CREATEJSON_UPDATEDJSONMAPPINGS = "updatedjsonmappings";
         public const string CREATEJSON_JSONSTRING = "jsonstring";
+
+        // Calculate Activity
+        public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
+        public const string DISPLAYNAME_CALCULATE = "Calculate";
+        public const string CALCULATE_EXPRESSION = "expression";
+        public const string CALCULATE_RESULT = "result";
+
+        // Aggregate Calculate Activity
+        public const string DSFAGGREGATECALCULATEACTIVITY = "DsfAggregateCalculateActivity";
+        public const string DSFDOTNETAGGREGATECALCULATEACTIVITY = "DsfDotNetAggregateCalculateActivity";
+        public const string DISPLAYNAME_AGGREGATECALCULATE = "Aggregate Calculate";
+        public const string AGGREGATECALCULATE_EXPRESSION = "expression";
+        public const string AGGREGATECALCULATE_RESULT = "result";
+
+        // Gather System Information Activity
+        public const string DSFGATHERSYSTEMINFORMATIONACTIVITY = "DsfGatherSystemInformationActivity";
+        public const string DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY = "DsfDotNetGatherSystemInformationActivity";
+        public const string DISPLAYNAME_GATHERSYSTEMINFORMATION = "Gather System Information";
+        public const string GATHERSYSINFO_SYSTEMINFOCOLLECTION = "systeminformationcollection";
+
+        // Web Request (Utility) Activity
+        public const string DSFWEBGETREQUESTWITHTIMEOUTACTIVITY = "DsfWebGetRequestWithTimeoutActivity";
+        public const string DISPLAYNAME_WEBREQUEST = "Web Request";
+        public const string WEBREQUEST_METHOD = "webrequest_method";
+        public const string WEBREQUEST_TIMEOUTSECONDS = "webrequest_timeoutseconds";
+        public const string WEBREQUEST_TIMEOUTTEXT = "webrequest_timeouttext";
+        public const string WEBREQUEST_URL = "webrequest_url";
+        public const string WEBREQUEST_HEADERS = "webrequest_headers";
+        public const string WEBREQUEST_RESULT = "webrequest_result";
+    
+
+        // XPath Activity
+        public const string DSFXPATHACTIVITY = "DsfXPathActivity";
+        public const string DISPLAYNAME_XPATH = "XPath";
+        public const string XPATH_SOURCESTRING = "sourcestring";
+        public const string XPATH_RESULTSCOLLECTION = "resultscollection";
+        public const string XPATH_UPDATEDRESULTSCOLLECTION = "updatedresultscollection";
+
+        //ODBC
+        public const string ODBCDATABASEACTIVITY = "DsfODBCDatabaseActivity";
+        public const string DISPLAYNAME_ODBCDATABASE = "ODBC Database";
+        public const string DATABASE_COMMANDTEXT = "commandtext";
+        public const string DISPLAYNAME_ODBC = "ODBC Database";
+
+
+        // DsfWorkflowActivity (Service)
+        public const string DSFWORKFLOWACTIVITY = "DsfWorkflowActivity";
+        public const string DISPLAYNAME_WORKFLOW = "Service";
+        public const string WORKFLOW_RESOURCEID = "workflow_resourceid";
+        public const string WORKFLOW_SERVICENAME = "workflow_servicename";
+        public const string WORKFLOW_SERVICESERVER = "workflow_serviceserver";
+        public const string WORKFLOW_SOURCEID = "workflow_sourceid";
+        public const string WORKFLOW_RUNWORKFLOWASYNC = "workflow_runworkflowasync";
+        public const string WORKFLOW_ISOBJECT = "workflow_isobject";
+        public const string WORKFLOW_OBJECTNAME = "workflow_objectname";
+        public const string WORKFLOW_OBJECTRESULT = "workflow_objectresult";
+        public const string WORKFLOW_INPUTMAPPING = "workflow_inputmapping";
+        public const string WORKFLOW_OUTPUTMAPPING = "workflow_outputmapping";
+        public const string WORKFLOW_ISWORKFLOW = "workflow_isworkflow";
+        public const string WORKFLOW_INPUTS = "workflow_inputs";
+        public const string WORKFLOW_OUTPUTS = "workflow_outputs";
+        public const string WORKFLOW_CATEGORY = "workflow_category";
     }
 
     public class X6WorkflowLoadModel

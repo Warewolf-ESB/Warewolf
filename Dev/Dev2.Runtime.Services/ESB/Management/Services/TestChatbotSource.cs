@@ -40,29 +40,50 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue(ChatbotSource, out StringBuilder resourceDefinition);
 
                 var chatbotSourceDefinition = serializer.Deserialize<ChatbotSourceDefinition>(resourceDefinition);
-                
-                // Try with Bearer authentication first
-                try
+
+                bool hasApiKey = !string.IsNullOrWhiteSpace(chatbotSourceDefinition.ApiKey);
+                bool isGemini  = chatbotSourceDefinition.ModelsEndpoint.Contains("generativelanguage.googleapis.com");
+
+                if (isGemini)
                 {
-                    TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
+                    // Google AI Studio always requires an API key as a query parameter
+                    TestGoogleAIStudioConnectionWithKey(chatbotSourceDefinition);
                     msg.HasError = false;
                     msg.Message = new StringBuilder("Connection successful");
                 }
-                catch (HttpRequestException ex) when (IsAuthenticationError(ex))
+                else if (!hasApiKey)
                 {
-                    Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key authentication", GlobalConstants.WarewolfInfo);
-                    
-                    // Retry with Claude-style authentication
+                    // No API key — local LLM server (e.g. Ollama, LM Studio).
+                    // Connect without any Authorization header.
+                    TestConnectionWithAuth(chatbotSourceDefinition, null, null, null);
+                    msg.HasError = false;
+                    msg.Message = new StringBuilder("Connection successful");
+                }
+                else
+                {
+                    // Try with Bearer authentication first
                     try
                     {
-                        TestConnectionWithAuth(chatbotSourceDefinition, "x-api-key", chatbotSourceDefinition.ApiKey, "anthropic-version=2023-06-01");
+                        TestConnectionWithAuth(chatbotSourceDefinition, "Authorization", $"Bearer {chatbotSourceDefinition.ApiKey}", null);
                         msg.HasError = false;
                         msg.Message = new StringBuilder("Connection successful");
                     }
-                    catch (Exception)
+                    catch (HttpRequestException ex) when (IsAuthenticationError(ex))
                     {
-                        msg.HasError = true;
-                        msg.Message = new StringBuilder($"Authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}");
+                        Dev2Logger.Info("Bearer authentication failed, retrying with x-api-key authentication", GlobalConstants.WarewolfInfo);
+
+                        // Retry with Claude-style authentication
+                        try
+                        {
+                            TestConnectionWithAuth(chatbotSourceDefinition, "x-api-key", chatbotSourceDefinition.ApiKey, "anthropic-version=2023-06-01");
+                            msg.HasError = false;
+                            msg.Message = new StringBuilder("Connection successful");
+                        }
+                        catch (Exception)
+                        {
+                            msg.HasError = true;
+                            msg.Message = new StringBuilder($"Authentication failed with both Bearer and x-api-key methods. Original error: {ex.Message}");
+                        }
                     }
                 }
             }
@@ -74,6 +95,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        private static void TestGoogleAIStudioConnectionWithKey(ChatbotSourceDefinition chatbotSourceDefinition)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(15);
+#pragma warning disable CC0021 // Use nameof
+                client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
+#pragma warning restore CC0021 // Use nameof
+
+                var endpoint = $"{chatbotSourceDefinition.ModelsEndpoint}?key={chatbotSourceDefinition.ApiKey}";
+                var response = client.GetAsync(endpoint).GetAwaiter().GetResult();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    throw new HttpRequestException($"Chatbot API connection failed: {response.StatusCode} - {content}");
+                }
+            }
         }
 
         private static bool IsAuthenticationError(HttpRequestException ex)
@@ -93,7 +134,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
+                client.Timeout = TimeSpan.FromSeconds(15);
+                // Only add the auth header when a non-empty value is provided.
+                // Local LLM servers (e.g. Ollama, LM Studio) require no API key,
+                // and adding an empty Authorization header causes a FormatException.
+                if (!string.IsNullOrWhiteSpace(authHeaderValue))
+                    client.DefaultRequestHeaders.Add(authHeaderName, authHeaderValue);
 #pragma warning disable CC0021 // Use nameof
                 client.DefaultRequestHeaders.Add("User-Agent", "Warewolf");
 #pragma warning restore CC0021 // Use nameof
@@ -117,11 +163,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
 
-                var response = client.GetAsync(chatbotSourceDefinition.ModelsEndpoint).Result;
-                
+                var response = client.GetAsync(chatbotSourceDefinition.ModelsEndpoint).GetAwaiter().GetResult();
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    var content = response.Content.ReadAsStringAsync().Result;
+                    var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     throw new HttpRequestException($"Chatbot API connection failed: {response.StatusCode} - {content}");
                 }
             }

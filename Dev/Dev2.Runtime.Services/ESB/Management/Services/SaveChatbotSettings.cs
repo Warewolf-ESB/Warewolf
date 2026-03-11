@@ -43,6 +43,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Config.Chatbot.LoadResourcesAsXaml = chatbotSettingsData.LoadResourcesAsXaml;
                     Config.Chatbot.NumberOfLogLines = chatbotSettingsData.NumberOfLogLines;
                     Config.Chatbot.SelectedResourceIds = chatbotSettingsData.SelectedResourceIds;
+                    Config.Chatbot.UserMessageColor = chatbotSettingsData.UserMessageColor;
+                    Config.Chatbot.UserMessageTextColor = chatbotSettingsData.UserMessageTextColor;
+                    Config.Chatbot.BotMessageColor = chatbotSettingsData.BotMessageColor;
+                    Config.Chatbot.BotMessageTextColor = chatbotSettingsData.BotMessageTextColor;
+                    Config.Chatbot.SlidingWindowSummaryLength = chatbotSettingsData.SlidingWindowSummaryLength;
+                    Config.Chatbot.EnableSlidingWindowTrimming = chatbotSettingsData.EnableSlidingWindowTrimming;
                 }
                 else
                 {
@@ -50,13 +56,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var chatbotSettingsTo = serializer.Deserialize<Dev2.Services.Chatbot.ChatbotSettingsTo>(settings);
                     if (chatbotSettingsTo != null)
                     {
-                        // Partial save - only update checkbox properties, preserve existing ChatbotSource
+                        // Partial save - only update non-source properties, preserve existing ChatbotSource
                         Dev2Logger.Info($"SaveChatbotSettings: Received ChatbotSettingsTo - updating only checkbox properties", GlobalConstants.WarewolfInfo);
                         Config.Chatbot.IncludeSystemLog = chatbotSettingsTo.IncludeSystemLog;
                         Config.Chatbot.LoadResourcesAsXaml = chatbotSettingsTo.LoadResourcesAsXaml;
                         Config.Chatbot.NumberOfLogLines = chatbotSettingsTo.NumberOfLogLines;
                         Config.Chatbot.SelectedResourceIds = chatbotSettingsTo.SelectedResourceIds;
-                        Dev2Logger.Info($"SaveChatbotSettings: Set values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, LoadResourcesAsXaml={chatbotSettingsTo.LoadResourcesAsXaml}, NumberOfLogLines={chatbotSettingsTo.NumberOfLogLines}", GlobalConstants.WarewolfInfo);
+                        Config.Chatbot.UserMessageColor = chatbotSettingsTo.UserMessageColor;
+                        Config.Chatbot.UserMessageTextColor = chatbotSettingsTo.UserMessageTextColor;
+                        Config.Chatbot.BotMessageColor = chatbotSettingsTo.BotMessageColor;
+                        Config.Chatbot.BotMessageTextColor = chatbotSettingsTo.BotMessageTextColor;
+                        Config.Chatbot.SlidingWindowSummaryLength = chatbotSettingsTo.SlidingWindowSummaryLength;
+                        Config.Chatbot.EnableSlidingWindowTrimming = chatbotSettingsTo.EnableSlidingWindowTrimming;
+                        Dev2Logger.Info($"SaveChatbotSettings: Set values to: IncludeSystemLog={chatbotSettingsTo.IncludeSystemLog}, LoadResourcesAsXaml={chatbotSettingsTo.LoadResourcesAsXaml}, NumberOfLogLines={chatbotSettingsTo.NumberOfLogLines}, EnableSlidingWindowTrimming={chatbotSettingsTo.EnableSlidingWindowTrimming}, SlidingWindowSummaryLength={chatbotSettingsTo.SlidingWindowSummaryLength}", GlobalConstants.WarewolfInfo);
                     }
                 }
 

@@ -1,0 +1,3 @@
+- Help debug issues using the system log
+- Identify errors and warnings in recent activity
+- Trace execution flow from log entries

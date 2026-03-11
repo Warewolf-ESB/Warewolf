@@ -88,6 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 string serviceId = null;
                 var prepairForDeployment = false;
+                var removePassword = false;
                 values.TryGetValue(@"ResourceID", out StringBuilder tmp);
 
                 if (tmp != null)
@@ -97,6 +98,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if (tmp != null)
                     prepairForDeployment = bool.Parse(tmp.ToString());
+
+                values.TryGetValue(@"RemovePassword", out tmp);
+                if (tmp != null)
+                {
+                    bool.TryParse(tmp.ToString(), out removePassword);
+                }
 
                 Guid.TryParse(serviceId, out Guid resourceId);
 
@@ -120,6 +127,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var info = new X6RequestInfo() { ResourceName = workflowXaml.ResourceName, ActivityXaml = finalresult.Message.ToString(), WorkflowXML = workflowXaml.ToServiceDefinition().ToString() };
                         finalresult.Message = new StringBuilder(JsonConvert.SerializeObject(info));
                     }
+                }
+
+                if (removePassword && finalresult != null && finalresult.Message != null)
+                {
+                    finalresult.Message = FetchResourceDefinition.RemovePasswordsFromJson(finalresult.Message.ToString());
                 }
             }
             catch (Exception err)

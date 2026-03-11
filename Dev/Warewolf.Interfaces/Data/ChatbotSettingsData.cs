@@ -19,9 +19,15 @@ namespace Warewolf.Configuration
         private NamedGuidWithEncryptedPayload _chatbotSource = new NamedGuidWithEncryptedPayload();
         private bool? _encryptDataSource;
         private bool _includeSystemLog = true;
-        private bool _loadResourcesAsXaml = true;
+        private bool _loadResourcesAsXaml = false;
         private int _numberOfLogLines = 1000;
         private List<Guid> _selectedResourceIds = new List<Guid>();
+        private string _userMessageColor = "#ff6600";
+        private string _userMessageTextColor = "#ffffff";
+        private string _botMessageColor = "#f8f9fa";
+        private string _botMessageTextColor = "#333333";
+        private int _slidingWindowSummaryLength = 200;
+        private bool _enableSlidingWindowTrimming = false;
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
@@ -53,6 +59,42 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _selectedResourceIds, value ?? new List<Guid>());
         }
 
+        public string UserMessageColor
+        {
+            get => _userMessageColor;
+            set => SetProperty(ref _userMessageColor, value ?? "#ff6600");
+        }
+
+        public string UserMessageTextColor
+        {
+            get => _userMessageTextColor;
+            set => SetProperty(ref _userMessageTextColor, value ?? "#ffffff");
+        }
+
+        public string BotMessageColor
+        {
+            get => _botMessageColor;
+            set => SetProperty(ref _botMessageColor, value ?? "#f8f9fa");
+        }
+
+        public string BotMessageTextColor
+        {
+            get => _botMessageTextColor;
+            set => SetProperty(ref _botMessageTextColor, value ?? "#333333");
+        }
+
+        public int SlidingWindowSummaryLength
+        {
+            get => _slidingWindowSummaryLength;
+            set => SetProperty(ref _slidingWindowSummaryLength, value > 0 ? value : 200);
+        }
+
+        public bool EnableSlidingWindowTrimming
+        {
+            get => _enableSlidingWindowTrimming;
+            set => SetProperty(ref _enableSlidingWindowTrimming, value);
+        }
+
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
@@ -61,6 +103,12 @@ namespace Warewolf.Configuration
             result._loadResourcesAsXaml = LoadResourcesAsXaml;
             result._numberOfLogLines = NumberOfLogLines;
             result._selectedResourceIds = new List<Guid>(SelectedResourceIds ?? new List<Guid>());
+            result._userMessageColor = UserMessageColor;
+            result._userMessageTextColor = UserMessageTextColor;
+            result._botMessageColor = BotMessageColor;
+            result._botMessageTextColor = BotMessageTextColor;
+            result._slidingWindowSummaryLength = SlidingWindowSummaryLength;
+            result._enableSlidingWindowTrimming = EnableSlidingWindowTrimming;
             return result;
         }
 
@@ -73,6 +121,12 @@ namespace Warewolf.Configuration
                 equals &= LoadResourcesAsXaml == other.LoadResourcesAsXaml;
                 equals &= NumberOfLogLines == other.NumberOfLogLines;
                 equals &= AreResourceListsEqual(SelectedResourceIds, other.SelectedResourceIds);
+                equals &= UserMessageColor == other.UserMessageColor;
+                equals &= UserMessageTextColor == other.UserMessageTextColor;
+                equals &= BotMessageColor == other.BotMessageColor;
+                equals &= BotMessageTextColor == other.BotMessageTextColor;
+                equals &= SlidingWindowSummaryLength == other.SlidingWindowSummaryLength;
+                equals &= EnableSlidingWindowTrimming == other.EnableSlidingWindowTrimming;
                 return equals;
             }
 

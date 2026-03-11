@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,13 +14,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism.Commands;
@@ -31,10 +29,8 @@ using Dev2.Common;
 using Prism.Mvvm;
 #endif
 using Warewolf.Data;
-using Warewolf.Security.Encryption;
-using Warewolf.Configuration;
-using System.Net.Sockets;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -66,26 +62,13 @@ namespace Warewolf.Studio.ViewModels
 		private CancellationTokenSource _streamingCts;
 		private readonly IServer _server;
 		private readonly Caliburn.Micro.IEventAggregator _eventAggregator;
-		private readonly IChatbotContextBuilder _contextBuilder;
-		private readonly IChatbotApiService _chatbotApiService;
 		private DateTime _lastSendTime = DateTime.MinValue;
 		private string _message;
         private ObservableCollection<ChatMessage> _messages;
         private string _displayName;
         private bool _isChatbotConfigured;
         private bool _isSending;
-        private ChatbotSource _configuredSource;
-        private string _systemPrompt;
-        private bool _systemPromptInitialized;
-        private string _selectedModel;
-        private bool _isInitializingPrompt;
         private string _loadingStatusText;
-        private string _resourcesJson;
-        private string _systemLog;
-        private bool _includeSystemLog = true;
-        private bool _loadResourcesAsXaml = true;
-        private int _numberOfLogLines = 1000;
-        private List<Guid> _selectedResourceIds = new List<Guid>();
         private string _conversationSummary;
         private ChatConversation _currentConversation;
         private ChatConversation _selectedConversation;
@@ -102,46 +85,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _loadingStatusText = value;
                 OnPropertyChanged(nameof(LoadingStatusText));
-            }
-        }
-
-        public bool IncludeSystemLog
-        {
-            get => _includeSystemLog;
-            set
-            {
-                _includeSystemLog = value;
-                OnPropertyChanged(nameof(IncludeSystemLog));
-            }
-        }
-
-        public bool LoadResourcesAsXaml
-        {
-            get => _loadResourcesAsXaml;
-            set
-            {
-                _loadResourcesAsXaml = value;
-                OnPropertyChanged(nameof(LoadResourcesAsXaml));
-            }
-        }
-
-        public List<Guid> SelectedResourceIds
-        {
-            get => _selectedResourceIds;
-            set
-            {
-                _selectedResourceIds = value ?? new List<Guid>();
-                OnPropertyChanged(nameof(SelectedResourceIds));
-            }
-        }
-
-        public int NumberOfLogLines
-        {
-            get => _numberOfLogLines;
-            set
-            {
-                _numberOfLogLines = value;
-                OnPropertyChanged(nameof(NumberOfLogLines));
             }
         }
 
@@ -190,15 +133,9 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ChatbotViewModel(IServer server, ICommand openSettingsCommand)
-            : this(server, openSettingsCommand, new ChatbotApiService())
-        {
-        }
-
-        public ChatbotViewModel(IServer server, ICommand openSettingsCommand, IChatbotApiService chatbotApiService)
         {
             _server = server ?? throw new ArgumentNullException(nameof(server));
             OpenSettingsCommand = openSettingsCommand ?? throw new ArgumentNullException(nameof(openSettingsCommand));
-            _chatbotApiService = chatbotApiService ?? throw new ArgumentNullException(nameof(chatbotApiService));
 
             DisplayName = "Chatbot";
             Messages = new ObservableCollection<ChatMessage>();
@@ -236,19 +173,9 @@ namespace Warewolf.Studio.ViewModels
         public void Handle(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message)
         {
             // Check if the deleted resource is the currently configured chatbot source
-            if (message?.ResourceToRemove != null && _configuredSource != null)
+            if (message?.ResourceToRemove != null)
             {
-                // Compare the resource ID of the deleted resource with the configured chatbot source ID
-                var deletedResourceId = message.ResourceToRemove.ID;
-                var configuredSourceId = _configuredSource.ResourceID;
-
-                if (deletedResourceId == configuredSourceId)
-                {
-                    Dev2.Common.Dev2Logger.Info($"Chatbot source '{message.ResourceToRemove.ResourceName}' was deleted. Refreshing chatbot configuration.", "Warewolf Info");
-
-                    // The configured source was deleted, refresh to show unconfigured state
-                    RefreshConfiguration();
-                }
+                RefreshConfiguration();
             }
         }
 
@@ -309,19 +236,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsInitializingPrompt
-        {
-            get => _isInitializingPrompt;
-            set
-            {
-                _isInitializingPrompt = value;
-                OnPropertyChanged(nameof(IsInitializingPrompt));
-                OnPropertyChanged(nameof(IsLoading));
-                ((DelegateCommand)SendCommand)?.RaiseCanExecuteChanged();
-            }
-        }
-
-        public bool IsLoading => IsInitializingPrompt || IsSending;
+        public bool IsLoading => IsSending;
 
         public ICommand SendCommand { get; }
         public ICommand OpenSettingsCommand { get; }
@@ -339,11 +254,6 @@ namespace Warewolf.Studio.ViewModels
             _conversationSummary = null;
             _currentConversation = null;
 
-            // Clear any existing system prompt so it gets regenerated
-            // Do this BEFORE loading config to avoid race condition with background initialization
-            _systemPromptInitialized = false;
-            _systemPrompt = null;
-
             LoadChatbotConfiguration();
         }
 
@@ -351,159 +261,32 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                if (_server?.ResourceRepository == null)
+                if (_server?.Connection == null || !_server.Connection.IsConnected)
                 {
                     IsChatbotConfigured = false;
                     return;
                 }
 
-                var settingsData = _server.ResourceRepository.GetChatbotSettings<ChatbotSettingsData>(_server);
+                // Configuration validation is delegated to the server.
+                // The server reads Config.Chatbot.Get() on each request and returns an error
+                // if not configured. We mark as configured if the server is connected,
+                // and let the first send reveal any configuration issues.
+                IsChatbotConfigured = true;
 
-                // Load checkbox settings using properties to trigger property change notifications
-                IncludeSystemLog = settingsData.IncludeSystemLog;
-                LoadResourcesAsXaml = settingsData.LoadResourcesAsXaml;
-                NumberOfLogLines = settingsData.NumberOfLogLines;
-                SelectedResourceIds = settingsData.SelectedResourceIds ?? new List<Guid>();
-
-                if (settingsData?.ChatbotSource?.Value == null || settingsData.ChatbotSource.Value == Guid.Empty)
+                // Show greeting
+                InvokeOnUiThread(() =>
                 {
-                    IsChatbotConfigured = false;
-                    return;
-                }
+                    Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                        "Hello! I'm your Warewolf debugging assistant. " +
+                        "How can I help you today?"));
 
-                var payload = settingsData.ChatbotSource.Payload;
-                payload = DpapiWrapper.Decrypt(payload);
-
-                var serializer = new Dev2JsonSerializer();
-                _configuredSource = serializer.Deserialize<ChatbotSource>(payload);
-
-                IsChatbotConfigured = _configuredSource != null
-                    && !string.IsNullOrWhiteSpace(_configuredSource.CompletionsEndpoint);
-
-                if (IsChatbotConfigured)
-                {
-                    // Always use the selected model from settings
-                    _selectedModel = !string.IsNullOrEmpty(_configuredSource.SelectedModel)
-                        ? _configuredSource.SelectedModel
-                        : "gpt-4o-mini";
-
-                    Dev2.Common.Dev2Logger.Info($"Using model from settings: {_selectedModel}", "Warewolf Info");
-
-                    // Initialize the system prompt with workspace context
-                    InitializeSystemPrompt();
-                }
+                    _currentConversation = ChatConversation.CreateNew();
+                });
             }
             catch
             {
                 IsChatbotConfigured = false;
-                _configuredSource = null;
             }
-        }
-
-        private async void InitializeSystemPrompt()
-        {
-            if (_systemPromptInitialized)
-            {
-                return;
-            }
-
-            IsInitializingPrompt = true;
-            LoadingStatusText = "Initializing chatbot context...";
-
-            try
-            {
-                var options = new ChatbotContextOptions
-                {
-                    IncludeSystemLog = _includeSystemLog,
-                    LoadResourcesAsXaml = _loadResourcesAsXaml,
-                    NumberOfLogLines = _numberOfLogLines,
-                    SelectedResourceIds = _selectedResourceIds,
-                    Server = _server,
-                    StatusUpdateCallback = status => UpdateStatusOnUiThread(status)
-                };
-
-                var result = await _contextBuilder.BuildContextAsync(options);
-
-                if (result != null)
-                {
-                    _systemPrompt = result.SystemPrompt;
-                    _resourcesJson = result.ResourcesJson;
-                    _systemLog = result.SystemLog;
-                    _systemPromptInitialized = true;
-
-                    InvokeOnUiThread(() => DisplayContextLoadedGreeting(result));
-                }
-                else
-                {
-                    // Handle null result
-                    _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
-                    _systemPromptInitialized = true;
-
-                    InvokeOnUiThread(() =>
-                    {
-                        IsInitializingPrompt = false;
-                        LoadingStatusText = string.Empty;
-                        Messages.Add(ChatMessage.Create(ChatMessageType.System,
-                            "Hello! I'm your Warewolf debugging assistant. " +
-                            "Note: I had trouble loading workspace context, but I can still help answer general questions."));
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2.Common.Dev2Logger.Error($"ChatbotContext: Error initializing chatbot system prompt", ex, "Warewolf Error");
-
-                _systemPrompt = "You are a Warewolf workflow debugging assistant. Note: Workspace context could not be loaded.";
-                _systemPromptInitialized = true;
-
-                InvokeOnUiThread(() =>
-                {
-                    IsInitializingPrompt = false;
-                    LoadingStatusText = string.Empty;
-                    Messages.Add(ChatMessage.Create(ChatMessageType.System,
-                        "Hello! I'm your Warewolf debugging assistant. " +
-                        "Note: I had trouble loading workspace context, but I can still help answer general questions."));
-                });
-            }
-        }
-
-        private void DisplayContextLoadedGreeting(ChatbotContextResult result)
-        {
-            IsInitializingPrompt = false;
-            LoadingStatusText = string.Empty;
-
-            if (result.ResourceCount > 0 || result.HasSystemLog)
-            {
-                var contextParts = new List<string>();
-                if (result.ResourceCount > 0)
-                {
-                    contextParts.Add($"{result.ResourceCount} resource{(result.ResourceCount == 1 ? "" : "s")}");
-                }
-                if (result.HasSystemLog)
-                {
-                    contextParts.Add("recent system logs");
-                }
-
-                Messages.Add(ChatMessage.Create(ChatMessageType.System,
-                    $"Hello! I'm your Warewolf debugging assistant. I have analyzed your workspace and loaded " +
-                    $"{string.Join(" and ", contextParts)}. " +
-                    "I can help you understand your workflows, debug issues, and answer questions about your Warewolf environment. " +
-                    "What would you like to know?"));
-            }
-            else
-            {
-                Messages.Add(ChatMessage.Create(ChatMessageType.System,
-                    "Hello! I'm your Warewolf debugging assistant. " +
-                    "Note: No context is currently loaded. You can enable system log and resources in Settings to provide more context."));
-            }
-
-            // Create a new conversation for this session
-            _currentConversation = ChatConversation.CreateNew();
-        }
-
-        private void UpdateStatusOnUiThread(string status)
-        {
-            InvokeOnUiThread(() => { LoadingStatusText = status; });
         }
 
         private static void InvokeOnUiThread(Action action)
@@ -516,7 +299,13 @@ namespace Warewolf.Studio.ViewModels
 		private bool CanSend()
 		{
 			// Check basic conditions
-			if (!IsChatbotConfigured || string.IsNullOrWhiteSpace(Message) || IsSending || IsInitializingPrompt)
+			if (!IsChatbotConfigured || string.IsNullOrWhiteSpace(Message) || IsSending)
+			{
+				return false;
+			}
+
+			// Require server connection — chatbot has no offline fallback
+			if (_server?.Connection == null || !_server.Connection.IsConnected)
 			{
 				return false;
 			}
@@ -555,11 +344,11 @@ namespace Warewolf.Studio.ViewModels
 				// Apply sliding window before sending
 				ApplySlidingWindow();
 
-				await CallChatbotApiStreamingAsync(userMessage);
+				await SendViaServerAsync(userMessage);
 			}
 			catch (Exception ex)
 			{
-				// Log full exception details for debugging (includes stack trace, inner exceptions, etc.)
+				// Log full exception details for debugging
 				Dev2.Common.Dev2Logger.Error("Chatbot send message failed", ex, "Warewolf Error");
 
 				// Display user-friendly error message without sensitive details
@@ -582,146 +371,81 @@ namespace Warewolf.Studio.ViewModels
 			}
 		}
 
-		private async Task<string> CallChatbotApiAsync(string userMessage)
+        private async Task SendViaServerAsync(string userMessage)
         {
-            try
-            {
-                await WaitForSystemPromptInitializationAsync();
-
-                var chatMessages = BuildChatMessages();
-
-                return await _chatbotApiService.SendMessageAsync(chatMessages, _configuredSource);
-            }
-            catch (HttpRequestException ex) when (IsTokenLimitError(ex))
-            {
-                Dev2.Common.Dev2Logger.Warn($"Token limit reached, attempting to trim conversation history: {ex.Message}", "Warewolf Info");
-
-                // Attempt recovery by trimming oldest 50% of conversation messages
-                var trimmed = TrimConversationHistory();
-                if (trimmed)
-                {
-                    try
-                    {
-                        var chatMessages = BuildChatMessages();
-                        return await _chatbotApiService.SendMessageAsync(chatMessages, _configuredSource);
-                    }
-                    catch (HttpRequestException retryEx) when (IsTokenLimitError(retryEx))
-                    {
-                        Dev2.Common.Dev2Logger.Warn($"Token limit still exceeded after trimming: {retryEx.Message}", "Warewolf Info");
-                    }
-                }
-
-                return "The token limit has been exceeded. The context is too large for the selected model. " +
-                       "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
-                       "(System Log, Resources XAML, or Resources JSON) to reduce the context size.";
-            }
-        }
-
-        private async Task CallChatbotApiStreamingAsync(string userMessage)
-        {
-            await WaitForSystemPromptInitializationAsync();
-
-            var chatMessages = BuildChatMessages();
-
-            // Create a placeholder bot message for streaming tokens into
+            // Create a placeholder bot message
             var botMessage = ChatMessage.Create(ChatMessageType.Bot, "");
             InvokeOnUiThread(() => Messages.Add(botMessage));
 
             _streamingCts = new CancellationTokenSource();
 
+            var fullResponse = await SendMessageViaServerAsync(userMessage);
+            InvokeOnUiThread(() => botMessage.AppendContent(fullResponse));
+        }
+
+        /// <summary>
+        /// Sends the message to the server-side SendChatbotMessage management service and returns the AI response.
+        /// The server is responsible for building context (system prompt, resources, logs) and calling the AI provider.
+        /// </summary>
+        private async Task<string> SendMessageViaServerAsync(string userMessage)
+        {
+            // Build conversation history from prior completed exchanges only.
+            // The current user message was already added to Messages before this call, and an empty
+            // bot placeholder may have been added for streaming UI — exclude both from the history.
+            // The server receives the current message separately via the "Message" argument.
+            var currentUserMsg = Messages.LastOrDefault(m => m.Type == ChatMessageType.User && m.Content == userMessage);
+            var conversationHistory = Messages
+                .Where(m => (m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
+                            && !string.IsNullOrEmpty(m.Content)
+                            && m != currentUserMsg)
+                .Select(m => new
+                {
+                    type = m.Type == ChatMessageType.User ? "user" : "bot",
+                    content = m.Content,
+                    timestamp = m.Timestamp.ToString("o")
+                })
+                .ToList();
+
+            var serializer = new Dev2JsonSerializer();
+
+            // Prepare ESB execute request
+            var request = new Dev2.Communication.EsbExecuteRequest
+            {
+                ServiceName = "SendChatbotMessage"
+            };
+
+            var historyJson = JsonConvert.SerializeObject(conversationHistory);
+
+            request.AddArgument("Message", new StringBuilder(userMessage ?? string.Empty));
+            request.AddArgument("ConversationHistory", new StringBuilder(historyJson));
+
+            // Serialize and execute on server
+            var payload = serializer.SerializeToBuilder(request);
+
+            var rawResponse = _server.Connection.ExecuteCommand(payload, _server.Connection.WorkspaceID);
+
+            var responseText = rawResponse?.ToString();
+            if (string.IsNullOrWhiteSpace(responseText))
+            {
+                throw new Exception("Empty response from server SendChatbotMessage service");
+            }
+
             try
             {
-                await _chatbotApiService.SendMessageStreamingAsync(chatMessages, _configuredSource, token =>
+                var obj = JObject.Parse(responseText);
+                var error = obj["Error"]?.ToString();
+                if (!string.IsNullOrEmpty(error))
                 {
-                    InvokeOnUiThread(() => botMessage.AppendContent(token));
-                }, _streamingCts.Token);
-            }
-            catch (HttpRequestException ex) when (IsTokenLimitError(ex))
-            {
-                Dev2.Common.Dev2Logger.Warn($"Token limit reached during streaming, attempting to trim: {ex.Message}", "Warewolf Info");
-
-                // Remove the incomplete bot message
-                InvokeOnUiThread(() => Messages.Remove(botMessage));
-
-                var trimmed = TrimConversationHistory();
-                if (trimmed)
-                {
-                    try
-                    {
-                        chatMessages = BuildChatMessages();
-                        var retryMessage = ChatMessage.Create(ChatMessageType.Bot, "");
-                        InvokeOnUiThread(() => Messages.Add(retryMessage));
-
-                        await _chatbotApiService.SendMessageStreamingAsync(chatMessages, _configuredSource, token =>
-                        {
-                            InvokeOnUiThread(() => retryMessage.AppendContent(token));
-                        }, _streamingCts.Token);
-                        return;
-                    }
-                    catch (HttpRequestException retryEx) when (IsTokenLimitError(retryEx))
-                    {
-                        Dev2.Common.Dev2Logger.Warn($"Token limit still exceeded after trimming: {retryEx.Message}", "Warewolf Info");
-                    }
+                    throw new Exception(error);
                 }
 
-                InvokeOnUiThread(() => Messages.Add(ChatMessage.Create(ChatMessageType.Error,
-                    "The token limit has been exceeded. The context is too large for the selected model. " +
-                    "Please open Settings (click the link at the top of the chatbot to configure) and uncheck some system prompt options " +
-                    "(System Log, Resources XAML, or Resources JSON) to reduce the context size.")));
+                var response = obj["Response"]?.ToString();
+                return response ?? string.Empty;
             }
-        }
-
-        private async Task WaitForSystemPromptInitializationAsync()
-        {
-            var waitCount = 0;
-            while (!_systemPromptInitialized && waitCount < MaxRetryAttempts)
+            catch (JsonException ex)
             {
-                await Task.Delay(RetryDelayMs);
-                waitCount++;
+                throw new Exception($"Invalid JSON from server SendChatbotMessage: {ex.Message}");
             }
-        }
-
-        private List<ChatCompletionMessage> BuildChatMessages()
-        {
-            var chatMessages = new List<ChatCompletionMessage>();
-
-            // Add system prompt (or fallback if initialization timed out)
-            if (!string.IsNullOrEmpty(_systemPrompt))
-            {
-                chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = _systemPrompt });
-            }
-            else
-            {
-                var fallbackPrompt = "You are a Warewolf workflow debugging assistant. Help the user understand and debug their workflows.";
-                chatMessages.Add(new ChatCompletionMessage { Role = "system", Content = fallbackPrompt });
-                Dev2.Common.Dev2Logger.Warn("Using fallback system prompt - full context initialization timed out", "Warewolf Info");
-            }
-
-            // Add conversation summary if older messages have been summarized
-            if (!string.IsNullOrEmpty(_conversationSummary))
-            {
-                chatMessages.Add(new ChatCompletionMessage
-                {
-                    Role = "system",
-                    Content = "Summary of earlier conversation:\n" + _conversationSummary
-                });
-            }
-
-            // Add conversation history; skip System and Error messages
-            // to maintain the required user/assistant alternating pattern
-            foreach (var msg in Messages)
-            {
-                if (msg.Type == ChatMessageType.User)
-                {
-                    chatMessages.Add(new ChatCompletionMessage { Role = "user", Content = msg.Content });
-                }
-                else if (msg.Type == ChatMessageType.Bot)
-                {
-                    chatMessages.Add(new ChatCompletionMessage { Role = "assistant", Content = msg.Content });
-                }
-            }
-
-            return chatMessages;
         }
 
         /// <summary>
@@ -775,36 +499,6 @@ namespace Warewolf.Studio.ViewModels
             Dev2.Common.Dev2Logger.Info($"ChatbotContext: Summarized {oldMessages.Count} messages, {Messages.Count} remaining", "Warewolf Info");
         }
 
-        /// <summary>
-        /// Trims the oldest 50% of conversation messages as a recovery mechanism when token limits are hit.
-        /// Returns true if messages were trimmed.
-        /// </summary>
-        private bool TrimConversationHistory()
-        {
-            var conversationMessages = Messages
-                .Where(m => m.Type == ChatMessageType.User || m.Type == ChatMessageType.Bot)
-                .ToList();
-
-            if (conversationMessages.Count < 2)
-            {
-                return false;
-            }
-
-            var messagesToRemove = conversationMessages.Count / 2;
-            var oldMessages = conversationMessages.Take(messagesToRemove).ToList();
-
-            foreach (var msg in oldMessages)
-            {
-                Messages.Remove(msg);
-            }
-
-            // Clear any existing summary since we're doing emergency trimming
-            _conversationSummary = null;
-
-            Dev2.Common.Dev2Logger.Info($"ChatbotContext: Emergency trimmed {oldMessages.Count} messages due to token limit", "Warewolf Info");
-            return true;
-        }
-
         // --- Conversation History Management ---
 
         private void NewConversation()
@@ -819,12 +513,8 @@ namespace Warewolf.Studio.ViewModels
             _selectedConversation = null;
             OnPropertyChanged(nameof(SelectedConversation));
 
-            // Re-add the greeting message if system prompt is initialized
-            if (_systemPromptInitialized)
-            {
-                Messages.Add(ChatMessage.Create(ChatMessageType.System,
-                    "New conversation started. How can I help you?"));
-            }
+            Messages.Add(ChatMessage.Create(ChatMessageType.System,
+                "New conversation started. How can I help you?"));
         }
 
         private void UpdateConversationTitle(string firstUserMessage)
@@ -965,58 +655,32 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static bool IsTokenLimitError(HttpRequestException ex)
-        {
-            if (ex.Message == null)
-            {
-                return false;
-            }
-
-            var message = ex.Message.ToLower();
-            return message.Contains("token") && (message.Contains("limit") || message.Contains("exceeded") || message.Contains("maximum"))
-                || message.Contains("413") // Payload too large
-                || message.Contains("context_length_exceeded")
-                || message.Contains("context") && message.Contains("overflow") // LM Studio context overflow
-                || message.Contains("context length") && message.Contains("not enough"); // LM Studio context length error
-        }
-
 		/// <summary>
 		/// Converts exception details into user-friendly error messages without exposing sensitive information.
 		/// Full exception details are logged separately for debugging.
 		/// </summary>
 		private static string GetUserFriendlyErrorMessage(Exception ex)
 		{
-			// Check for specific exception types and provide appropriate user-friendly messages
 			switch (ex)
 			{
-				case HttpRequestException httpEx:
-					if (httpEx.Message.Contains("401") || httpEx.Message.ToLower().Contains("unauthorized"))
-						return "Authentication failed. Please check your API key configuration.";
-					if (httpEx.Message.Contains("403") || httpEx.Message.ToLower().Contains("forbidden"))
-						return "Access forbidden. Please verify your API permissions.";
-					if (httpEx.Message.Contains("429") || httpEx.Message.ToLower().Contains("rate limit"))
-						return "Rate limit exceeded. Please wait a moment before trying again.";
-					if (httpEx.Message.Contains("500") || httpEx.Message.Contains("502") || httpEx.Message.Contains("503"))
-						return "The AI service is currently unavailable. Please try again later.";
-					if (httpEx.Message.ToLower().Contains("timeout"))
-						return "The request timed out. Please try again.";
-					if (httpEx.Message.ToLower().Contains("network") || httpEx.Message.ToLower().Contains("connection"))
-						return "Network connection error. Please check your internet connection.";
-					return "Failed to communicate with the AI service. Please check your connection and try again.";
-
-				case TaskCanceledException:
-					return "The request was cancelled or timed out. Please try again.";
-
-				case SocketException:
-					return "Network connection error. Please check your internet connection.";
-
-				case JsonException:
-					return "Failed to process the AI response. Please try again.";
-
 				default:
-					// Generic error for any other exception type
-					// Do not expose ex.Message as it may contain sensitive information
-					return "An unexpected error occurred. Please try again or contact support if the problem persists.";
+					// Generic error — server errors arrive as Exception with a message from the server response
+					var msg = ex.Message ?? string.Empty;
+					if (msg.Contains("401") || msg.ToLower().Contains("unauthorized"))
+						return "Authentication failed. Please check your API key configuration.";
+					if (msg.Contains("403") || msg.ToLower().Contains("forbidden"))
+						return "Access forbidden. Please verify your API permissions.";
+					if (msg.Contains("429") || msg.ToLower().Contains("rate limit"))
+						return "Rate limit exceeded. Please wait a moment before trying again.";
+					if (msg.Contains("500") || msg.Contains("502") || msg.Contains("503"))
+						return "The AI service is currently unavailable. Please try again later.";
+					if (msg.ToLower().Contains("timeout"))
+						return "The request timed out. Please try again.";
+					if (msg.ToLower().Contains("not configured") || msg.ToLower().Contains("chatbot source"))
+						return msg; // Pass through server configuration errors as-is — they are user-actionable
+					if (string.IsNullOrWhiteSpace(msg))
+						return "An unexpected error occurred. Please try again or contact support if the problem persists.";
+					return msg;
 			}
 		}
 
@@ -1118,14 +782,12 @@ namespace Warewolf.Studio.ViewModels
 
         public Task HandleAsync(ChatbotSettingsSavedMessage message, CancellationToken cancellationToken)
         {
-            // Call the existing synchronous Handle method
             Handle(message);
             return Task.CompletedTask;
         }
 
         public Task HandleAsync(Dev2.Studio.Core.Messages.RemoveResourceAndCloseTabMessage message, CancellationToken cancellationToken)
         {
-            // Call the existing synchronous Handle method
             Handle(message);
             return Task.CompletedTask;
         }

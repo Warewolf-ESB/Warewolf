@@ -58,9 +58,10 @@ namespace Warewolf.Studio.ViewModels
         private static readonly Dictionary<string, (string ModelsEndpoint, string CompletionsEndpoint)> ProviderPresets = new Dictionary<string, (string, string)>
         {
             { "Anthropic", ("https://api.anthropic.com/v1/models", "https://api.anthropic.com/v1/messages") },
-            { "GitHub Models", ("https://models.github.com/v1/models", "https://models.github.com/v1/chat/completions") },
+            { "GitHub Models", ("https://models.github.ai/catalog/models", "https://models.github.ai/inference/chat/completions") },
             { "Google Gemini", ("https://generativelanguage.googleapis.com/v1beta/models", "https://generativelanguage.googleapis.com/v1beta/{model}:generateContent") },
             { "OpenAI", ("https://api.openai.com/v1/models", "https://api.openai.com/v1/chat/completions") },
+            { "OpenRouter", ("https://openrouter.ai/api/v1/models", "https://openrouter.ai/api/v1/chat/completions") },
             { "XAI", ("https://api.x.ai/v1/models", "https://api.x.ai/v1/chat/completions") }
         };
 
@@ -71,6 +72,7 @@ namespace Warewolf.Studio.ViewModels
             { "GitHub Models", "https://github.com/settings/tokens" },
             { "Google Gemini", "https://aistudio.google.com/app/apikey" },
             { "OpenAI", "https://platform.openai.com/api-keys" },
+            { "OpenRouter", "https://openrouter.ai/settings/keys" },
             { "XAI", "https://console.x.ai/" }
         };
 
@@ -208,6 +210,8 @@ namespace Warewolf.Studio.ViewModels
 			ApiKey = source.ApiKey;
 			ModelsEndpoint = source.ModelsEndpoint;
 			CompletionsEndpoint = source.CompletionsEndpoint;
+			_selectedProvider = source.Provider;
+			OnPropertyChanged(() => SelectedProvider);
 		}
 
 		public override string Name
@@ -304,6 +308,7 @@ namespace Warewolf.Studio.ViewModels
 			ApiKey = ApiKey,
 			ModelsEndpoint = ModelsEndpoint,
 			CompletionsEndpoint = CompletionsEndpoint,
+			Provider = SelectedProvider,
 			Name = ResourceName,
 			Id = _chatbotSource?.Id ?? Guid.NewGuid()
 		};
@@ -317,6 +322,7 @@ namespace Warewolf.Studio.ViewModels
 					ApiKey = ApiKey,
 					ModelsEndpoint = ModelsEndpoint,
 					CompletionsEndpoint = CompletionsEndpoint,
+					Provider = SelectedProvider,
 					Name = ResourceName,
 					Id = _chatbotSource?.Id ?? Guid.NewGuid()
 				};
@@ -326,6 +332,7 @@ namespace Warewolf.Studio.ViewModels
 				_chatbotSource.ApiKey = ApiKey;
 				_chatbotSource.ModelsEndpoint = ModelsEndpoint;
 				_chatbotSource.CompletionsEndpoint = CompletionsEndpoint;
+				_chatbotSource.Provider = SelectedProvider;
 				return _chatbotSource;
 			}
 		}
@@ -344,6 +351,7 @@ namespace Warewolf.Studio.ViewModels
 				ApiKey = ApiKey,
 				ModelsEndpoint = ModelsEndpoint,
 				CompletionsEndpoint = CompletionsEndpoint,
+				Provider = SelectedProvider,
 				Id = Item.Id,
 				Path = Path
 			};

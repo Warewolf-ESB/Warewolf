@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces.Core
         }
 
         public string Id { get; set; }
+        public string DisplayName { get; set; }
         public string Object { get; set; }
         public long Created { get; set; }
         public string OwnedBy { get; set; }

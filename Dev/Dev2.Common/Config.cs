@@ -579,5 +579,65 @@ namespace Dev2.Common
                 Save();
             }
         }
+
+        public string UserMessageColor
+        {
+            get => _settings?.UserMessageColor ?? "#ff6600";
+            set
+            {
+                _settings.UserMessageColor = value ?? "#ff6600";
+                Save();
+            }
+        }
+
+        public string UserMessageTextColor
+        {
+            get => _settings?.UserMessageTextColor ?? "#ffffff";
+            set
+            {
+                _settings.UserMessageTextColor = value ?? "#ffffff";
+                Save();
+            }
+        }
+
+        public string BotMessageColor
+        {
+            get => _settings?.BotMessageColor ?? "#f8f9fa";
+            set
+            {
+                _settings.BotMessageColor = value ?? "#f8f9fa";
+                Save();
+            }
+        }
+
+        public string BotMessageTextColor
+        {
+            get => _settings?.BotMessageTextColor ?? "#333333";
+            set
+            {
+                _settings.BotMessageTextColor = value ?? "#333333";
+                Save();
+            }
+        }
+
+        public int SlidingWindowSummaryLength
+        {
+            get => _settings?.SlidingWindowSummaryLength ?? 200;
+            set
+            {
+                _settings.SlidingWindowSummaryLength = value > 0 ? value : 200;
+                Save();
+            }
+        }
+
+        public bool EnableSlidingWindowTrimming
+        {
+            get => _settings?.EnableSlidingWindowTrimming ?? false;
+            set
+            {
+                _settings.EnableSlidingWindowTrimming = value;
+                Save();
+            }
+        }
     }
 }

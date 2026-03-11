@@ -12,8 +12,7 @@
     <RootNamespace>Dev2.Studio.Interfaces</RootNamespace>
     <AssemblyName>Dev2.Studio.Interfaces</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <LangVersion>10.0</LangVersion>
+    <TargetFrameworkProfile />    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,7 +61,6 @@
     <Compile Include="Enums\ResourceType.cs" />
     <Compile Include="Enums\WorkSurfaceContext.cs" />
     <Compile Include="IAuthorizeCommand.cs" />
-    <Compile Include="IChatbotApiService.cs" />
     <Compile Include="ConflictModelChanged.cs" />
     <Compile Include="IComplexObjectHandler.cs" />
     <Compile Include="IConflictModelFactory.cs" />
