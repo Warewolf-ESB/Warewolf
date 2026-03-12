@@ -225,6 +225,7 @@
 		<Compile Include="IEsbExecutionContainer.cs" />
 		<Compile Include="IExecutionManager.cs" />
 		<Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
+		<Compile Include="Interfaces\IOnDemandSourceLoader.cs" />
 		<Compile Include="Interfaces\IPluginBroker.cs" />
 		<Compile Include="Interfaces\IResourceCatalog.cs" />
 		<Compile Include="Interfaces\IResourceCopyProvider.cs" />

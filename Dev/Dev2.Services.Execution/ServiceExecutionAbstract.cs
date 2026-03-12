@@ -105,23 +105,50 @@ namespace Dev2.Services.Execution
 
         public void GetSource(Guid sourceId)
         {
+            if (Source != null)
+                return;
+
+            // Fast path: source already registered in the catalog (full server or previously demand-loaded).
+            if (_catalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var resources))
+            {
+                lock (resources)
+                {
+                    Source = resources.OfType<TSource>().FirstOrDefault(r => r.ResourceID == sourceId);
+                }
+            }
+
+            if (Source != null)
+            {
+                _errorResult.ClearErrors();
+                return;
+            }
+
+            // On-demand path: load only this specific source from disk (Azure Function context).
+            // AmbientSourceLoader.Current is null on the full server — falls through to catalog scan below.
+            if (AmbientSourceLoader.Current?.EnsureSourceLoaded(sourceId) == true
+                && _catalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var updated))
+            {
+                lock (updated)
+                {
+                    Source = updated.OfType<TSource>().FirstOrDefault(r => r.ResourceID == sourceId);
+                }
+            }
+
+            // Full server fallback — GetResourceList covers sources outside WorkspaceResources.
             if (Source == null)
             {
                 var dbSources = _catalog.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID);
                 Source = dbSources.Cast<TSource>().FirstOrDefault(p => p.ResourceID.Equals(sourceId));
-                if (Source == null)
-                {
-                    _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
-                        Service?.Source?.ResourceID, Service?.Source?.ResourceName));
-                }
-                else
-                {
-                    // Source resolved by direct ID lookup — clear any prior "Error loading resource"
-                    // that GetService() may have added when no DbService wrapper was found in the
-                    // catalog.  In lightweight / workflow-embedded execution the source is always
-                    // resolved by SourceId directly, so that earlier error is not relevant.
-                    _errorResult.ClearErrors();
-                }
+            }
+
+            if (Source == null)
+            {
+                _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
+                    Service?.Source?.ResourceID, Service?.Source?.ResourceName));
+            }
+            else
+            {
+                _errorResult.ClearErrors();
             }
         }
 
@@ -557,22 +584,26 @@ namespace Dev2.Services.Execution
         static string BuildFullExceptionMessage(Exception ex)
         {
             var sb = new StringBuilder();
-            sb.Append($"{ex.GetType().FullName}: {ex.Message}");
-            if (ex.StackTrace != null)
-            {
-                sb.AppendLine().Append(ex.StackTrace);
-            }
-            var inner = ex.InnerException;
-            while (inner != null)
-            {
-                sb.AppendLine().Append($" ---> {inner.GetType().FullName}: {inner.Message}");
-                if (inner.StackTrace != null)
-                {
-                    sb.AppendLine().Append(inner.StackTrace);
-                }
-                inner = inner.InnerException;
-            }
+
+            AppendExceptionInfo(sb, ex, prefix: null);
+            for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                AppendExceptionInfo(sb, inner, prefix: " ---> ");
+
             return sb.ToString();
+
+            static void AppendExceptionInfo(StringBuilder builder, Exception exception, string? prefix)
+            {
+                if (prefix != null) builder.AppendLine();
+
+                // Chained Append avoids the intermediate string that $"..." interpolation allocates.
+                builder.Append(exception.GetType().FullName)
+                       .Append(": ")
+                       .Append(exception.Message);
+
+                // is { } pattern: null-check + binding in one, no extra bool evaluation.
+                if (exception.StackTrace is { } stackTrace)
+                    builder.AppendLine().Append(stackTrace);
+            }
         }
 
         string UnescapeRawXml(string innerXml)
