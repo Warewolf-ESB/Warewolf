@@ -551,59 +551,6 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
         /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
         /// </summary>
-        static void ExtractPayload_old(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
-        {
-            try
-            {
-                switch (request.ReturnType)
-                {
-                    case EmitionTypes.XML:
-                        result.ContentType = "text/xml";
-                        // Capture dataObject + dataList; XML is computed and streamed only when
-                        // the HTTP response is written, keeping the result allocation small.
-                        result.PayloadWriter = (stream, ct) =>
-                        {
-                            var xml = !string.IsNullOrEmpty(dataList)
-                                ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, dataList, 0)
-                                : "<DataList />";
-                            return WriteStringToStreamAsync(stream, xml, ct);
-                        };
-                        break;
-
-                    default: // JSON
-                        result.ContentType = "application/json";
-                        result.PayloadWriter = async (stream, ct) =>
-                        {
-                            var json = !string.IsNullOrEmpty(dataList)
-                                ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0)
-                                : dataObject.Environment.ToJson();
-                            // Populate the convenience dictionary before the string is streamed.
-                            TryPopulateOutputsDictionary(result, json);
-                            await WriteStringToStreamAsync(stream, json, ct);
-                        };
-                        break;
-                }
-            }
-            catch
-            {
-                // Payload extraction is best-effort; errors are captured in result.Errors
-            }
-        }
-
-        /// <summary>
-        /// Mirrors ExecutionDtoExtensions.GetExecutePayload
-        /// based on ReturnType and populates result.Payload + result.ContentType.
-        ///   XML  ? ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment  (DataList-shaped XML)
-        ///   JSON ? ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment  (DataList-shaped JSON)
-        ///          Falls back to environment.ToJson() when no DataList is available.
-        ///   OPENAPI is handled before execution ever starts (see short-circuit in Execute).
-        ///
-        /// Instead of storing the output as a string on the result, a <see cref="WorkflowExecutionResult.PayloadWriter"/>
-        /// delegate is set. The delegate computes the string on demand when the HTTP response is being
-        /// written and streams it via <see cref="WriteStringToStreamAsync"/> — a <see cref="StreamWriter"/>
-        /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
-        /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
-        /// </summary>
         static void ExtractPayload(IDSFDataObject dataObject, string dataList, WorkflowExecutionRequest request, WorkflowExecutionResult result)
         {
             try
