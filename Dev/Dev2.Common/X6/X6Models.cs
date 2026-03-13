@@ -523,6 +523,7 @@ namespace Dev2.Common.X6
         public const string WORKFLOW_INPUTS = "workflow_inputs";
         public const string WORKFLOW_OUTPUTS = "workflow_outputs";
         public const string WORKFLOW_CATEGORY = "workflow_category";
+        public const string WORKFLOW_TYPE = "workflow_type";
     }
 
     public class X6WorkflowLoadModel
