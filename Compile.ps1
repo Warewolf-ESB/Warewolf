@@ -231,6 +231,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion(@"
 "@ + $FullVersionString + @"
 ")]
+[assembly: AssemblyFileVersion(@"
+"@ + $FullVersionString + @"
+")]
 [assembly: AssemblyInformationalVersion(@"
 "@ + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + @"
 ")]
