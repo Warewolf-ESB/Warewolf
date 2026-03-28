@@ -343,6 +343,8 @@ namespace Dev2.Runtime.WebServer
         {
             IWarewolfResource localResource = null;
 
+            Console.Error.WriteLine($"[DIAG][SetResourceNameAndId] serviceName='{serviceName}' dataObject.ServiceName='{dataObject.ServiceName}' WorkspaceID='{dataObject.WorkspaceID}'");
+
             if (Guid.TryParse(serviceName, out var resourceId))
             {
                 localResource = catalog.GetResource(dataObject.WorkspaceID, resourceId);
@@ -355,6 +357,7 @@ namespace Dev2.Runtime.WebServer
             {
                 if (!string.IsNullOrEmpty(dataObject.ServiceName))
                 {
+                    Console.Error.WriteLine($"[DIAG][SetResourceNameAndId] searching by name: '{dataObject.ServiceName}' WorkspaceID='{dataObject.WorkspaceID}'");
                     localResource = catalog.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
                     if (localResource != null)
                     {
@@ -378,10 +381,12 @@ namespace Dev2.Runtime.WebServer
 
                 if (localResource == null)
                 {
+                    Console.Error.WriteLine($"[DIAG][SetResourceNameAndId] NOT FOUND after all attempts: serviceName='{serviceName}'");
                     dataObject.Environment.AddError($"Service {serviceName} not found.");
                 }
             }
 
+            Console.Error.WriteLine($"[DIAG][SetResourceNameAndId] result: localResource='{(localResource == null ? "NULL" : localResource.ResourceName)}'");
             resource = localResource;
             dataObject.Resource = resource;
         }

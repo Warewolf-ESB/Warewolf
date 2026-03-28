@@ -117,7 +117,7 @@ namespace Warewolf.Studio.Views
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e, "Warewolf Warn");
             }
         }
 
@@ -130,7 +130,7 @@ namespace Warewolf.Studio.Views
 
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e, "Warewolf Warn");
             }
         }
 

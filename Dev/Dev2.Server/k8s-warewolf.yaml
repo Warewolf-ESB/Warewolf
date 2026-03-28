@@ -1,0 +1,153 @@
+# warewolf-stable: runs ProcessOrders (new ACR image), forced onto a different node than warewolf-dev
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warewolf-stable
+  namespace: default
+  labels:
+    app: warewolf-stable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warewolf-stable
+  template:
+    metadata:
+      labels:
+        app: warewolf-stable
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: acr-secret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - warewolf-dev
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: warewolf
+          image: tudev2containerregistry.azurecr.io/warewolf:3.0.2.61
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3142
+            - containerPort: 3143
+          env:
+            - name: SERVER_USERNAME
+              value: ashley.lewis
+            - name: SERVER_PASSWORD
+              value: Dev2@dmin123
+          readinessProbe:
+            httpGet:
+              path: /favicon.ico
+              port: 3142
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 30
+          resources:
+            requests:
+              cpu: "500m"
+              memory: 2G
+            limits:
+              cpu: "2"
+              memory: 4G
+---
+# warewolf-dev: stable target for Hello World calls, forced onto a different node than warewolf-stable
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warewolf-dev
+  namespace: default
+  labels:
+    app: warewolf-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warewolf-dev
+  template:
+    metadata:
+      labels:
+        app: warewolf-dev
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: acr-secret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - warewolf-stable
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: warewolf
+          image: tudev2containerregistry.azurecr.io/warewolf:3.0.2.61
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3142
+            - containerPort: 3143
+          env:
+            - name: SERVER_USERNAME
+              value: ashley.lewis
+            - name: SERVER_PASSWORD
+              value: Dev2@dmin123
+          readinessProbe:
+            httpGet:
+              path: /favicon.ico
+              port: 3142
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            timeoutSeconds: 2
+            failureThreshold: 30
+          resources:
+            requests:
+              cpu: "500m"
+              memory: 2G
+            limits:
+              cpu: "2"
+              memory: 4G
+---
+# ClusterIP for warewolf-stable (internal access from warewolf-dev if needed)
+apiVersion: v1
+kind: Service
+metadata:
+  name: warewolf-stable
+  namespace: default
+spec:
+  selector:
+    app: warewolf-stable
+  ports:
+    - name: http
+      port: 3142
+      targetPort: 3142
+  type: ClusterIP
+---
+# ClusterIP for warewolf-dev — name MUST match the URL in ProcessOrders: http://warewolf-dev:3142/...
+apiVersion: v1
+kind: Service
+metadata:
+  name: warewolf-dev
+  namespace: default
+spec:
+  selector:
+    app: warewolf-dev
+  ports:
+    - name: http
+      port: 3142
+      targetPort: 3142
+  type: ClusterIP

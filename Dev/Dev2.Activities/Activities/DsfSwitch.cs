@@ -255,7 +255,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
             }
         }
 
@@ -281,7 +281,7 @@ namespace Dev2.Activities
 
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
             }
         }
 

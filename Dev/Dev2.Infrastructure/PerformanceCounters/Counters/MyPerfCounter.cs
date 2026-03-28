@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -128,7 +129,20 @@ namespace Dev2.PerformanceCounters.Counters
     {
         public IWarewolfPerformanceCounter New(string categoryName, string counterName, string instanceName)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return new NoOpWarewolfPerformanceCounter();
+            }
             return new RealWarewolfPerformanceCounter(categoryName, counterName, instanceName);
         }
+    }
+
+    class NoOpWarewolfPerformanceCounter : IWarewolfPerformanceCounter
+    {
+        public long RawValue { get; set; }
+        public void Increment() { }
+        public void IncrementBy(long ticks) { }
+        public void Decrement() { }
+        public void Dispose() { }
     }
 }

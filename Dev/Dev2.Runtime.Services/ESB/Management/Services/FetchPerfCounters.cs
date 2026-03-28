@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(Manager.Counters);
+            return serializer.SerializeToBuilder(Manager?.Counters);
         }
 
         IPerformanceCounterRepository Manager => CustomContainer.Get<IPerformanceCounterRepository>();

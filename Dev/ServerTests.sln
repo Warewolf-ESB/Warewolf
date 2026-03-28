@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32630.192
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11505.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -244,6 +244,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.PerfMon", "Warewolf.PerfMon\Warewolf.PerfMon.csproj", "{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AI.Harness", "Warewolf.AI.Harness\Warewolf.AI.Harness.csproj", "{452E92EC-CABF-C491-6B7D-E367C8173058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight", "Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj", "{31E13761-67F6-6ACF-BF5C-91041EE5E614}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -679,6 +683,14 @@ Global
 		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AB2200E-A294-0B11-C27C-F3DECC6D8E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{452E92EC-CABF-C491-6B7D-E367C8173058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{452E92EC-CABF-C491-6B7D-E367C8173058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{452E92EC-CABF-C491-6B7D-E367C8173058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{452E92EC-CABF-C491-6B7D-E367C8173058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31E13761-67F6-6ACF-BF5C-91041EE5E614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E13761-67F6-6ACF-BF5C-91041EE5E614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E13761-67F6-6ACF-BF5C-91041EE5E614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E13761-67F6-6ACF-BF5C-91041EE5E614}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

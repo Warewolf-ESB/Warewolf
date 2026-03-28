@@ -1,0 +1,36 @@
+<Project>
+  <PropertyGroup>
+    <!-- Fix VBCSCompiler lock issues on build agents -->
+    <UseSharedCompilation>false</UseSharedCompilation>
+    
+    <!-- Fix parallel build reference assembly locks -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <TrackFileAccess>false</TrackFileAccess>
+
+    <!-- Fix MSBuild treating AnyCPU and Any CPU as separate builds concurrently -->
+    <Platform Condition="'$(Platform)' == 'AnyCPU'">Any CPU</Platform>
+
+    <!-- Fix parallel build missing g.cs and XAML compilation issues in wpftmp projects -->
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <GenerateTemporaryTargetAssemblyDebuggingInformation>false</GenerateTemporaryTargetAssemblyDebuggingInformation>
+    
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
+
+  <!-- Prevent parallel build of the temporary WPF projects to avoid file locks and isolate their output paths -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
+    <BuildInParallel>false</BuildInParallel>
+    <OutDir>bin\wpftmp\</OutDir>
+    <PublishDir>bin\wpftmp\publish\</PublishDir>
+    <BaseIntermediateOutputPath>obj\wpftmp\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\wpftmp\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <!-- Fix for WPF temporary assembly failing to find .g.cs files due to parallel generation -->
+  <Target Name="RemoveWpfTempProjectCompileItems" BeforeTargets="CoreCompile" Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
+    <ItemGroup>
+      <Compile Remove="**\*.g.cs" />
+      <Compile Remove="**\*.g.i.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

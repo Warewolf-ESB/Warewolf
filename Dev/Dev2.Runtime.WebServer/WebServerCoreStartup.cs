@@ -35,15 +35,26 @@ namespace Dev2.Runtime.WebServer
 
         public static IDisposable Start(Dev2Endpoint[] endpoints, WebApplicationBuilder builder)
         {
-            var sslCertPfxPath =  ConfigurationManager.AppSettings["sslPFXCertificateName"];
-            var certificate = new X509Certificate2(sslCertPfxPath, GlobalConstants.WarewolfSSLCertificatePassword, 
-                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            X509Certificate2 certificate = null;
+#pragma warning disable CC0020 // You should remove the lambda expression when it only invokes a method with the same signature
+			var hasHttpsEndpoints = endpoints.Any(endpoint => Dev2Endpoint.IsHttpsEndPoint(endpoint));
+#pragma warning restore CC0020 // You should remove the lambda expression when it only invokes a method with the same signature
+
+			if (hasHttpsEndpoints)
+            {
+                var sslCertPfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
+                if (!string.IsNullOrEmpty(sslCertPfxPath) && System.IO.File.Exists(sslCertPfxPath))
+                {
+                    certificate = new X509Certificate2(sslCertPfxPath, GlobalConstants.WarewolfSSLCertificatePassword,
+                        X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                }
+            }
             
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
                 foreach (var endpoint in endpoints)
                 {
-                    if (Dev2Endpoint.IsHttpsEndPoint(endpoint))
+                    if (Dev2Endpoint.IsHttpsEndPoint(endpoint) && certificate != null)
                     {
                         serverOptions.Listen(endpoint.TheIPEndPoint.Address, endpoint.TheIPEndPoint.Port, listenOptions =>
                         {
@@ -66,9 +77,23 @@ namespace Dev2.Runtime.WebServer
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
 #if WINDOWS || NETFRAMEWORK
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
-            builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SERVER_USERNAME")))
+            {
+                builder.Services.AddAuthentication("Basic").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+            }
+            else
+            {
+                builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            }
 #else
-            builder.Services.AddAuthentication("Anonymous").AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("Anonymous", null);
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SERVER_USERNAME")))
+            {
+                builder.Services.AddAuthentication("Basic").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+            }
+            else
+            {
+                builder.Services.AddAuthentication("Anonymous").AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("Anonymous", null);
+            }
 #endif
             #endregion
 

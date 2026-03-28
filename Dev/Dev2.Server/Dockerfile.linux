@@ -1,0 +1,52 @@
+# Use .NET 8 SDK runtime-only image for smaller size
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+
+# Install dependencies for System.Drawing.Common and other Linux requirements
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 3142
+EXPOSE 3143
+
+# Add all server files
+ADD . /Server
+
+# Set environment variables
+ENV SERVER_PATH="/Server/Warewolf Server.exe"
+ENV SERVER_WORKINGDIR="/ProgramData/Warewolf"
+ENV SERVER_LOG="/ProgramData/Warewolf/Server Log/warewolf-server.log"
+ENV SERVER_USERNAME="WarewolfAdmin"
+ENV SERVER_PASSWORD="W@rEw0lf@dm1n"
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+# Set the base path for Warewolf resources (Linux path instead of Windows C:\ProgramData)
+ENV webServerBasePath="/ProgramData"
+
+# Create directory structure and copy resources
+# Using -mindepth and -type f to ensure we only copy files, preserving structure where needed
+RUN mkdir -p /ProgramData/Warewolf/Resources && \
+    mkdir -p "/ProgramData/Warewolf/Server Settings" && \
+    if [ -d "/Server/Resources" ]; then \
+        echo "Copying from /Server/Resources..." && \
+        cp -r /Server/Resources/* /ProgramData/Warewolf/Resources/ 2>/dev/null || true; \
+    fi && \
+    if [ -d "/Server/Resources - Release/Resources" ]; then \
+        echo "Copying from /Server/Resources - Release/Resources..." && \
+        cp -r "/Server/Resources - Release/Resources"/* /ProgramData/Warewolf/Resources/ 2>/dev/null || true; \
+    fi && \
+    find /Server -name "*.bite" -type f -exec cp -v {} /ProgramData/Warewolf/Resources/ \; && \
+    if [ -f "/Server/Settings.config" ]; then \
+        cp /Server/Settings.config "/ProgramData/Warewolf/Server Settings/Settings.config"; \
+    fi && \
+    if [ -f "/Server/secure.config" ]; then \
+        cp /Server/secure.config "/ProgramData/Warewolf/Server Settings/secure.config"; \
+    fi && \
+    echo "Resources copied. Listing /ProgramData/Warewolf/Resources:" && \
+    ls -la /ProgramData/Warewolf/Resources/ | head -20
+
+# Set working directory
+WORKDIR /Server
+
+# Run the application
+CMD ["dotnet", "/Server/Warewolf Server.dll"]

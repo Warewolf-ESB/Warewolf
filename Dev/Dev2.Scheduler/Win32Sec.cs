@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if NOTNANOSERVER
 using System.DirectoryServices.AccountManagement;
+#endif
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -210,38 +212,45 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-        using (var pcLocal = new PrincipalContext(ContextType.Machine))
+#if NOTNANOSERVER
+		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
         {
-            foreach (var account in AccountsToCheck)
+            using (var pcLocal = new PrincipalContext(ContextType.Machine))
             {
-                try
+                foreach (var account in AccountsToCheck)
                 {
-                    var members = GetGroupMembers(pcLocal, account);
-                    if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
+                    try
                     {
-                        groups.Add(account);
+                        var members = GetGroupMembers(pcLocal, account);
+                        if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
+                        {
+                            groups.Add(account);
+                        }
                     }
-                }
-                catch (Exception err)
-                {
-                    Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
+                    catch (Exception err)
+                    {
+                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
+                    }
                 }
             }
         }
+#endif
         return groups;
     }
 
-    private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
-    {
+#if NOTNANOSERVER
+	private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
+	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);
         if (group != null)
         {
             return group.GetMembers().ToArray();
         }
         return new Principal[] { };
-    }
+	}
+#endif
 
-    static string GetUnqualifiedName(string userName)
+	static string GetUnqualifiedName(string userName)
     {
         if (userName.Contains("\\"))
         {

@@ -164,7 +164,7 @@ namespace Dev2.Runtime.Hosting
         private static void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
             var exception = e.GetException();
-            Dev2Logger.Error(exception.Message, GlobalConstants.ServerWorkspaceID.ToString());
+            Dev2Logger.Error(exception, GlobalConstants.ServerWorkspaceID.ToString());
         }
 
         private IList<ITriggerQueue> _queues;

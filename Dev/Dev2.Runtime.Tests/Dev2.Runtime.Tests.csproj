@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <DependsOnNETStandard>true</DependsOnNETStandard>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,14 +8,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{85617545-2121-4683-9828-DAEDB5878CE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Tests.Runtime</RootNamespace>
     <AssemblyName>Dev2.Runtime.Tests</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SccProjectName>
@@ -33,14 +32,14 @@
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
     <SonarQubeTestProject>True</SonarQubeTestProject>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
- </PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -643,7 +642,7 @@
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
@@ -702,9 +701,9 @@
     <PostBuildEvent>
 		taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
 		taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-		if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
-		echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe_v4.8"
-		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
+		if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net8.0-windows\win\Dev2.Runtime.Tests.dll" if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net8.0-windows\win\Warewolf.COMIPC.exe_v4.8"
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net8.0-windows\win"
 		)
 	</PostBuildEvent>
   </PropertyGroup>
@@ -722,7 +721,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

@@ -12,8 +12,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if NOTNANOSERVER
 using System.DirectoryServices;
+#endif
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
@@ -75,7 +78,12 @@ namespace Dev2.Services.Security
             _directoryEntryFactory = directoryEntryFactory;
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
-            {
+			{
+#if NOTNANOSERVER
+				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    return true;
+                }
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
                 using (var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -101,8 +109,8 @@ namespace Dev2.Services.Security
                         }
                     }
                 }
-
-                return false;
+#endif
+				return false;
             };
         }
 
@@ -120,7 +128,12 @@ namespace Dev2.Services.Security
 
         static string FindGroup(SecurityIdentifier searchSid)
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return string.Empty;
+			}
+#if NOTNANOSERVER
+			using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
@@ -135,8 +148,11 @@ namespace Dev2.Services.Security
                 }
             }
             throw new Exception(ErrorResource.CannotFindGroup);
-        }
-        public event EventHandler PermissionsChanged;
+#else
+            return string.Empty;
+#endif
+		}
+		public event EventHandler PermissionsChanged;
         EventHandler<PermissionsModifiedEventArgs> _permissionsModifiedHandler;
         readonly object _getPermissionsLock = new object();
 
@@ -293,6 +309,31 @@ namespace Dev2.Services.Security
             {
                 return p.IsBuiltInGuestsForExecution;
             }
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                if (p.IsBuiltInGuestsForExecution)
+                {
+                    return true;
+                }
+                if (p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                {
+                    return principal.Identity?.IsAuthenticated == true;
+                }
+                if (principal is System.Security.Claims.ClaimsPrincipal claimsPrincipalLinux)
+                {
+                    try
+                    {
+                        isInRole = claimsPrincipalLinux.GetUserGroups().Any(groupName => groupName == p.WindowsGroup);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", GlobalConstants.WarewolfWarn);
+                    }
+                }
+                return isInRole || p.IsBuiltInGuestsForExecution;
+            }
+
             try
             {
                 var windowsGroup = p.WindowsGroup;
@@ -322,12 +363,12 @@ namespace Dev2.Services.Security
             }
             catch (ObjectDisposedException e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
                 throw;
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
             }
 
             return isInRole || p.IsBuiltInGuestsForExecution;
@@ -369,6 +410,10 @@ namespace Dev2.Services.Security
 
         static bool IsInRole(IPrincipal principal, string windowsGroup)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return false;
+            }
             bool isInRole;
             var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
             var windowsPrincipal = principal as WindowsPrincipal;
@@ -425,7 +470,12 @@ namespace Dev2.Services.Security
 
         bool DoFallBackCheck(IPrincipal principal)
         {
-            var identity = principal?.Identity;
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return false;
+			}
+#if NOTNANOSERVER
+			var identity = principal?.Identity;
             var username = GetIdentityName(identity);
             if (string.IsNullOrEmpty(username))
             {
@@ -465,6 +515,7 @@ namespace Dev2.Services.Security
                     }
                 }
             }
+#endif
             return false;
         }
 

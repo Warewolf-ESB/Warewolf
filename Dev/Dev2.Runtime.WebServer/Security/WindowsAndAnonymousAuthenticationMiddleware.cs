@@ -36,7 +36,7 @@ namespace Dev2.Runtime.WebServer.Security
             }
 
             var isAuthenticated = context.User.Identity?.IsAuthenticated;
-            
+
             if ((isAuthenticated ?? false) || context.User.IsAnonymous() || GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
             //if (GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
             {
@@ -44,7 +44,18 @@ namespace Dev2.Runtime.WebServer.Security
                 return;
             }
 
-            await context.ChallengeAsync(NegotiateDefaults.AuthenticationScheme);
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SERVER_USERNAME")))
+            {
+                await context.ChallengeAsync("Basic");
+            }
+            else
+            {
+#if WINDOWS || NETFRAMEWORK
+                await context.ChallengeAsync(NegotiateDefaults.AuthenticationScheme);
+#else
+                await context.ChallengeAsync("Anonymous");
+#endif
+            }
         }
 
         public static AuthenticationSchemes GetAuthenticationScheme(HttpContext context)

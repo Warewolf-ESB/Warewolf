@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -24,7 +24,7 @@
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
     <Configurations>Debug</Configurations>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +37,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -61,22 +60,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-  <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
-  <PackageReference Include="Moq" Version="4.18.2" />
-  <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
-  <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
-  <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.13.0" />
+    <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
         taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
         taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-        if exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.Tests.dll" (
-        echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.exe_v4.8"
-        if not exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\SQLite.Interop.dll" (
-            echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86"
+        if exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\Warewolf.COMIPC.Tests.dll" (
+        echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\Warewolf.COMIPC.exe_v4.8"
+        if not exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86\SQLite.Interop.dll" (
+            echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net8.0-windows\win-x86"
             )
         )
     </PostBuildEvent>

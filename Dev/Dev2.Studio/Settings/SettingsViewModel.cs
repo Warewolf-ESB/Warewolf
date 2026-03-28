@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Settings.Chatbot;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Persistence;
@@ -54,11 +55,13 @@ namespace Dev2.Settings
         SecurityViewModel _securityViewModel;
         LogSettingsViewModel _logSettingsViewModel;
         PersistenceSettingsViewModel _persistenceSettingsViewModel;
+        ChatbotSettingsViewModel _chatbotSettingsViewModel;
         IServer _currentEnvironment;
         Func<IServer, IServer> _toEnvironmentModel;
         PerfcounterViewModel _perfmonViewModel;
         string _displayName;
         private bool _showPersistence;
+        private bool _showChatbot;
 
 
         // ReSharper disable once MemberCanBeProtected.Global
@@ -292,6 +295,22 @@ namespace Dev2.Settings
             }
         }
 
+        public bool ShowChatbot
+        {
+            get => _showChatbot;
+            set
+            {
+                if (value.Equals(_showChatbot))
+                {
+                    return;
+                }
+
+                _showChatbot = value;
+                OnSelectionChanged();
+                NotifyOfPropertyChange(() => ShowChatbot);
+            }
+        }
+
         public Data.Settings.Settings Settings { get; private set; }
 
         public SecurityViewModel SecurityViewModel
@@ -340,12 +359,30 @@ namespace Dev2.Settings
             }
         }
 
+        public ChatbotSettingsViewModel ChatbotSettingsViewModel
+        {
+            get => _chatbotSettingsViewModel;
+            private set
+            {
+                if (Equals(value, _chatbotSettingsViewModel))
+                {
+                    return;
+                }
+
+                _chatbotSettingsViewModel = value;
+                NotifyOfPropertyChange(() => ChatbotSettingsViewModel);
+            }
+        }
+
         public string SecurityHeader => SecurityViewModel != null && SecurityViewModel.IsDirty ? StringResources.SettingsSecurity + " *" : StringResources.SettingsSecurity;
 
         public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? StringResources.SettingsLogging + " *" : StringResources.SettingsLogging;
         public string PersistenceHeader => _persistenceSettingsViewModel != null && _persistenceSettingsViewModel.IsDirty ? StringResources.SettingsPersistence + " *" : StringResources.SettingsPersistence;
+#pragma warning disable CC0021 // Use nameof
+		public string ChatbotHeader => _chatbotSettingsViewModel != null && _chatbotSettingsViewModel.IsDirty ? "Chatbot *" : "Chatbot";
+#pragma warning restore CC0021 // Use nameof
 
-        public bool HasLogSettings
+		public bool HasLogSettings
         {
             get
             {
@@ -373,17 +410,26 @@ namespace Dev2.Settings
                     ShowLogging = Settings?.Logging != null;
                     ShowSecurity = !ShowLogging;
                     ShowPersistence= !ShowLogging;
+                    ShowChatbot = !ShowLogging;
                     break;
 
                 case nameof(ShowSecurity):
                     ShowSecurity = true;
                     ShowLogging = !ShowSecurity;
                     ShowPersistence= !ShowSecurity;
+                    ShowChatbot = !ShowSecurity;
                     break;
                 case nameof(ShowPersistence):
                     ShowPersistence =  Settings?.Persistence != null;
                     ShowSecurity =!ShowPersistence;
                     ShowLogging = !ShowPersistence;
+                    ShowChatbot = !ShowPersistence;
+                    break;
+                case nameof(ShowChatbot):
+                    ShowChatbot = Settings?.Chatbot != null;
+                    ShowSecurity = !ShowChatbot;
+                    ShowLogging = !ShowChatbot;
+                    ShowPersistence = !ShowChatbot;
                     break;
                 default:
                     break;
@@ -416,7 +462,10 @@ namespace Dev2.Settings
                 LogSettingsViewModel = CreateLoggingViewModel();
                 PerfmonViewModel = CreatePerfmonViewModel();
                 PersistenceSettingsViewModel = CreatePersistenceViewModel();
+                ChatbotSettingsViewModel = CreateChatbotViewModel();
                 AddPropertyChangedHandlers();
+                ResetIsDirtyForChildren();
+                IsDirty = false;
 
                 if (Settings.HasError)
                 {
@@ -472,6 +521,27 @@ namespace Dev2.Settings
             return null;
         }
 
+        protected virtual ChatbotSettingsViewModel CreateChatbotViewModel()
+        {
+            if (Settings.Chatbot != null)
+            {
+                try
+                {
+                    var chatbotSettingsViewModel = new ChatbotSettingsViewModel(CurrentEnvironment);
+                    chatbotSettingsViewModel.SetItem(chatbotSettingsViewModel);
+                    return chatbotSettingsViewModel;
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error("Error loading chatbot settings", ex, GlobalConstants.WarewolfError);
+                    ShowError("Chatbot Settings Error", ex.Message);
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
@@ -522,19 +592,33 @@ namespace Dev2.Settings
                     }
                 };
             }
+
+            if (ChatbotSettingsViewModel != null)
+            {
+                isDirtyProperty.AddValueChanged(ChatbotSettingsViewModel, OnIsDirtyPropertyChanged);
+                ChatbotSettingsViewModel.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == nameof(IsDirty))
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SecurityViewModel != null && LogSettingsViewModel != null && PersistenceSettingsViewModel != null)
-            {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || PersistenceSettingsViewModel.IsDirty;
-            }
+            IsDirty = (SecurityViewModel?.IsDirty ?? false) 
+                   || (LogSettingsViewModel?.IsDirty ?? false) 
+                   || (PerfmonViewModel?.IsDirty ?? false) 
+                   || (PersistenceSettingsViewModel?.IsDirty ?? false) 
+                   || (ChatbotSettingsViewModel?.IsDirty ?? false);
 
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             NotifyOfPropertyChange(() => PerfmonHeader);
             NotifyOfPropertyChange(() => PersistenceHeader);
+            NotifyOfPropertyChange(() => ChatbotHeader);
             ClearErrors();
         }
 
@@ -562,6 +646,12 @@ namespace Dev2.Settings
             {
                 PersistenceSettingsViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => PersistenceHeader);
+            }
+
+            if (ChatbotSettingsViewModel != null)
+            {
+                ChatbotSettingsViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => ChatbotHeader);
             }
         }
 
@@ -645,9 +735,16 @@ namespace Dev2.Settings
                         return false;
                     }
 
-                    if (PersistenceSettingsViewModel.IsDirty)
+                    if (PersistenceSettingsViewModel != null && PersistenceSettingsViewModel.IsDirty)
                     {
                         PersistenceSettingsViewModel.Save(Settings.Persistence);
+                    }
+
+                    if (ChatbotSettingsViewModel != null && ChatbotSettingsViewModel.IsDirty)
+                    {
+                        ChatbotSettingsViewModel.Save(Settings.Chatbot);
+                        // Notify any open ChatbotViewModel instances to refresh their configuration
+                        RefreshOpenChatbotWindows();
                     }
 
                     if (PerfmonViewModel.IsDirty)
@@ -754,6 +851,23 @@ namespace Dev2.Settings
             }
 
             return true;
+        }
+
+#pragma warning disable CC0091 // Use static method
+		void RefreshOpenChatbotWindows()
+#pragma warning restore CC0091 // Use static method
+		{
+            try
+            {
+#if NETFRAMEWORK
+                // Publish an event to notify any open ChatbotViewModel instances to refresh
+                EventPublisher?.Publish(new Warewolf.Data.ChatbotSettingsSavedMessage());
+#endif
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error notifying chatbot windows", ex, GlobalConstants.WarewolfError);
+            }
         }
 
         Data.Settings.Settings ReadSettings()

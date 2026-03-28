@@ -52,13 +52,17 @@ namespace Dev2.Common
         /// <returns></returns>
         public StringBuilder CleanServiceDef(StringBuilder def)
         {
-            var result = StripNaughtyNamespaces(def);
-
-            result = ReplaceChangedNamespaces(result);
-
-            result = StripViewState(result);
-
-            return result;
+            try
+            {
+                var result = StripNaughtyNamespaces(def);
+                result = ReplaceChangedNamespaces(result);
+                result = StripViewState(result);
+                return result;
+            }
+            catch (Exception)
+            {
+                return def; // Return original if error occurs
+            }
         }
 
         StringBuilder StripViewState(StringBuilder def)
@@ -122,25 +126,36 @@ namespace Dev2.Common
         /// <returns></returns>
         public StringBuilder StripNaughtyNamespaces(StringBuilder def)
         {
-            var result = def;
-            foreach (string ns in badNamespaces)
+            try
             {
-                // Have to make it a string for Regex ;(
-                var defStr = def.ToString();
-                var m = Regex.Match(defStr, ns);
-                if (m.Success)
+                var result = def;
+
+                foreach (string ns in badNamespaces)
                 {
-                    // we have a hit ;)
-                    // search backward for the start xmlns: ...
-                    for (int i = 0; i < m.Groups.Count; i++)
+                    // Have to make it a string for Regex ;(
+                    var defStr = def.ToString();
+                    var m = Regex.Match(defStr, ns);
+                    if (m.Success)
                     {
-                        var val = m.Groups[i].Value;
-                        result = result.Replace(val, string.Empty);
+                        // we have a hit ;)
+                        // search backward for the start xmlns: ...
+                        for (int i = 0; i < m.Groups.Count; i++)
+                        {
+                            var val = m.Groups[i].Value;
+                            if (!string.IsNullOrEmpty(val))
+                            {
+                                result = result.Replace(val, string.Empty);
+                            }
+                        }
                     }
                 }
-            }
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                return def; // Return original if error occurs
+            }
         }
     }
 }

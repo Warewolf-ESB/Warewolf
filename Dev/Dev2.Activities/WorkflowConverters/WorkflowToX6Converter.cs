@@ -1,9 +1,11 @@
 using Dev2.Activities.Exchange;
+using Dev2.Activities.DateAndTime;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
+ 
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.WorkflowConverters;
@@ -17,6 +19,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Dev2.Common;
 
 namespace Dev2.Activities.WF
 {
@@ -44,18 +47,27 @@ namespace Dev2.Activities.WF
         /// <returns>Json serialized string</returns>
         public string ConvertToX6Json(ActivityBuilder workflow, string xml)
         {
-            var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
-            var activityNodeMap = new Dictionary<Activity, string>(64);
-
-            var startNode = CreateStartNode();
-            graphData.Nodes.Add(startNode);
-
-            if (workflow.Implementation != null)
+            try
             {
-                ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
-            }
+                var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
+                var activityNodeMap = new Dictionary<Activity, string>(64);
 
-            return JsonConvert.SerializeObject(graphData);
+                var startNode = CreateStartNode();
+                graphData.Nodes.Add(startNode);
+
+                if (workflow.Implementation != null)
+                {
+                    ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
+                }
+
+                var json = JsonConvert.SerializeObject(graphData);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"ConvertToX6Json failed: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                throw;
+            }
         }
 
         private string ProcessActivity(Activity activity, X6WorkflowLoadModel graphData,
@@ -520,7 +532,7 @@ namespace Dev2.Activities.WF
             // Get child activities using the existing GetChildActivities method
             ActivityPropertiesReaderHelper.GetChildActivities(parentActivity, _tempChildActivities);
 
-            foreach (var childActivity in _tempChildActivities)
+            foreach (var childActivity in _tempChildActivities.ToList())
             {
                 // Skip if we've already processed this activity
                 if (activityNodeMap.ContainsKey(childActivity)) continue;
@@ -693,6 +705,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateWebGetActivity(webGetActivity, nodeId);
             }
+            else if (activity is DsfWebGetRequestWithTimeoutActivity webRequestWithTimeoutActivity)
+            {
+                cell = CreateWebRequestWithTimeoutActivity(webRequestWithTimeoutActivity, nodeId);
+            }
             else if (activity is WebPostActivityNew webPostActivityNew)
             {
                 cell = CreateWebPostActivity(webPostActivityNew, nodeId);
@@ -841,6 +857,14 @@ namespace Dev2.Activities.WF
             {
                 cell = CreatePythonActivity(pythonscriptActivity, nodeId);
             }
+            else if (activity is DateAndTime.DsfDotNetDateTimeActivity dotNetDateTimeActivity)
+            {
+                cell = CreateDotNetDateTimeActivity(dotNetDateTimeActivity, nodeId);
+            }
+            else if (activity is DsfDateTimeActivity dateTimeActivity)
+            {
+                cell = CreateDateTimeActivity(dateTimeActivity, nodeId);
+            }
             else if (activity is SuspendExecutionActivity suspendExecutionActivity)
             {
                 cell = CreateSuspendExecutionActivity(suspendExecutionActivity, nodeId);
@@ -857,9 +881,61 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateExchangeEmailActivity(exchangeEmailActivity, nodeId);
             }
+            else if (activity is DsfCreateJsonActivity createJsonActivity)
+            {
+                cell = CreateCreateJsonActivity(createJsonActivity, nodeId);
+            }
+            else if (activity is DsfXPathActivity xpathActivity)
+            {
+                cell = CreateXPathActivity(xpathActivity, nodeId);
+            }
             else if (activity is GateActivity gateActivity)
             {
                 cell = CreateGateActivity(gateActivity, nodeId);
+            }
+            else if (activity is DsfRandomActivity randomActivity)
+            {
+                cell = CreateRandomActivity(randomActivity, nodeId);
+            }
+            else if (activity is DsfNumberFormatActivity numberFormatActivity)
+            {
+                cell = CreateNumberFormatActivity(numberFormatActivity, nodeId);
+            }
+            else if (activity is DsfDotNetCalculateActivity calculateActivity)
+            {
+                cell = CreateCalculateActivity(calculateActivity, nodeId);
+            }
+            else if (activity is DsfDotNetAggregateCalculateActivity dotnetAggregateCalculateActivity)
+            {
+                cell = CreateDotNetAggregateCalculateActivity(dotnetAggregateCalculateActivity, nodeId);
+            }
+            else if (activity is DsfAggregateCalculateActivity aggregateCalculateActivity)
+            {
+                cell = CreateAggregateCalculateActivity(aggregateCalculateActivity, nodeId);
+            }
+            else if (activity is DsfDateTimeDifferenceActivity dateTimeDifferenceActivity)
+            {
+                cell = CreateDateTimeDifferenceActivity(dateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetDateTimeDifferenceActivity dotnetDateTimeDifferenceActivity)
+            {
+                cell = CreateDotnetDateTimeDifferenceActivity(dotnetDateTimeDifferenceActivity, nodeId);
+            }
+            else if (activity is DsfDotNetGatherSystemInformationActivity dotnetGatherSystemInfoActivity)
+            {
+                cell = CreateDotNetGatherSystemInformationActivity(dotnetGatherSystemInfoActivity, nodeId);
+            }
+            else if (activity is DsfGatherSystemInformationActivity gatherSystemInfoActivity)
+            {
+                cell = CreateGatherSystemInformationActivity(gatherSystemInfoActivity, nodeId);
+            }
+            else if (activity is DsfODBCDatabaseActivity odbcDatabaseActivity)
+            {
+                cell = CreateODBCDatabaseActivity(odbcDatabaseActivity, nodeId);
+            }
+            else if (activity is DsfWorkflowActivity workflowActivity)
+            {
+                cell = CreateDsfWorkflowActivity(workflowActivity, nodeId);
             }
             else
             {

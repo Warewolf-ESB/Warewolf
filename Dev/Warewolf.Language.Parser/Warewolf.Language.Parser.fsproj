@@ -1,19 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <OutputType>Library</OutputType>
-    <FsLexToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fslex\net6.0</FsLexToolPath>
-    <FsYaccToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fsyacc\net6.0</FsYaccToolPath>
+    <FsLexToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fslex\net8.0</FsLexToolPath>
+    <FsYaccToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fsyacc\net8.0</FsYaccToolPath>
     <FsLexToolExe>fslex.dll</FsLexToolExe>
     <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <FSharpPreferNetFrameworkTools>True</FSharpPreferNetFrameworkTools>
-    <LangVersion>6.0</LangVersion>
+    <FSharpPreferNetFrameworkTools Condition="'$(TargetFramework)' == 'net8.0-windows'">True</FSharpPreferNetFrameworkTools>
+    <FSharpPreferNetFrameworkTools Condition="'$(TargetFramework)' == 'net8.0'">False</FSharpPreferNetFrameworkTools>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
@@ -45,9 +44,6 @@
     <Compile Include="IntellisenseStringProvider.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Name>Warewolf.Interfaces</Name>
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
@@ -60,9 +56,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Compiler.Tools">
-      <Version>10.2.3</Version>
-    </PackageReference>
     <PackageReference Include="FsLexYacc">
       <Version>11.0.1</Version>
     </PackageReference>
@@ -76,7 +69,7 @@
       <Version>4.6.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

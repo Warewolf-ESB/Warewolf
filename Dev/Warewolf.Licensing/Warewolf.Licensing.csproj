@@ -1,29 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DebugType>none</DebugType>
-    </PropertyGroup>   
-    <ItemGroup>
-      <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
-      <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj" />
-      <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
-    </ItemGroup>   
-    <ItemGroup>
-      <PackageReference Include="chargebee">
-        <Version>2.8.9</Version>
-      </PackageReference>
-      <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-    </ItemGroup>   
-    <ItemGroup>
-      <Compile Include="..\AssemblyCommonInfo.cs">
-        <Link>Properties\AssemblyCommonInfo.cs</Link>
-      </Compile>
-    </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="chargebee">
+      <Version>2.8.9</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

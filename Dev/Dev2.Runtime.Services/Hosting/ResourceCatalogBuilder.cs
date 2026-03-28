@@ -110,7 +110,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     continue;
                 }
-                var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
+                var files = dir.GetFilesByExtensions(path, ".xml", ".bite").ToList();
                 foreach (var file in files)
                 {
                     var fa = File.GetAttributes(file);
@@ -274,6 +274,9 @@ namespace Dev2.Runtime.Hosting
 
                     var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
                     var typeName = xml?.AttributeSafe("Type");
+                    var resourceName = xml?.AttributeSafe("Name");
+                    var resourceId = xml?.AttributeSafe("ID");
+
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
@@ -342,35 +345,48 @@ namespace Dev2.Runtime.Hosting
                             resource.FilePath = currentItem._filePath;
                         }
 
-                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version,
-                            a =>
-                            {
-                                var fileManager = new TxFileManager();
-                                using (TransactionScope tx = new TransactionScope())
+                        try
+                        {
+                            xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version,
+                                a =>
                                 {
-                                    try
-                                    {
-                                        var updateXml = a.ToStringBuilder();
-                                        var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                                        signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
-                                        tx.Complete();
-                                    }
-                                    catch
+                                    var fileManager = new TxFileManager();
+                                    using (TransactionScope tx = new TransactionScope())
                                     {
                                         try
                                         {
-                                            Transaction.Current.Rollback();
+                                            var updateXml = a.ToStringBuilder();
+                                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                                            signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
+                                            tx.Complete();
                                         }
-                                        catch (Exception err)
+                                        catch
                                         {
-                                            Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                                            try
+                                            {
+                                                Transaction.Current.Rollback();
+                                            }
+                                            catch (Exception err)
+                                            {
+                                                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                                            }
+
+                                            throw;
                                         }
-
-                                        throw;
                                     }
-                                }
 
-                            });
+                                });
+                        }
+                        catch (ArgumentException versionEx)
+                        {
+                            Dev2Logger.Debug($"Version issue for '{resource.ResourceName}', skipping upgrade: {versionEx.Message}", GlobalConstants.WarewolfDebug);
+                            // Continue without upgrading - resource is still valid
+                        }
+                        catch (Exception upgradeEx)
+                        {
+                            Dev2Logger.Warn($"Upgrade failed for '{resource.ResourceName}': {upgradeEx.GetType().Name}: {upgradeEx.Message}", GlobalConstants.WarewolfWarn);
+                            // Continue without upgrading - resource may still be usable
+                        }
                         if (resource.IsUpgraded)
                         {
                             // Must close the source stream first and then add a new target stream
@@ -407,9 +423,10 @@ namespace Dev2.Runtime.Hosting
                         Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem._filePath), GlobalConstants.WarewolfDebug);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Dev2Logger.Warn($"Exception loading resource {currentItem._filePath}", GlobalConstants.WarewolfWarn);
+                    Dev2Logger.Warn($"Exception loading resource {currentItem._filePath}: {ex.Message}", GlobalConstants.WarewolfWarn);
+                    Dev2Logger.Error($"Resource loading exception details", ex, GlobalConstants.WarewolfError);
                 }
             });
         }

@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -32,7 +32,6 @@ namespace Dev2
     {
         public StringBuilder GetResourceDefinition( bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
-            
             var serializer = new Dev2JsonSerializer();
             //return serializer.SerializeToBuilder(this.GetRawResourceDefinition(prepairForDeployment, resourceId, contents));
 
@@ -43,16 +42,22 @@ namespace Dev2
                 {
                     var assembly = Assembly.Load("Dev2.Data");
                     var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
-                    var instance = Activator.CreateInstance(type, contents.ToXElement());
-                    
-                     var resource = (IResource)instance;
-                    if (resource.ResourceType == @"DbSource")
+                    if (type == null)
                     {
-                        res.Message.Append(contents);
+                        Dev2Logger.Error($"Could not find type 'Dev2.Runtime.ServiceModel.Data.Resource' in assembly Dev2.Data for resource {resourceId}.", GlobalConstants.WarewolfError);
                     }
                     else
                     {
-                        DoWorkflowServiceMessage(contents, res);
+                        var instance = Activator.CreateInstance(type, contents.ToXElement());
+                        var resource = (IResource)instance;
+                        if (resource.ResourceType == @"DbSource")
+                        {
+                            res.Message.Append(contents);
+                        }
+                        else
+                        {
+                            DoWorkflowServiceMessage(contents, res);
+                        }
                     }
                 }
             }
@@ -96,16 +101,22 @@ namespace Dev2
                 {
                     var assembly = Assembly.Load("Dev2.Data");
                     var type = assembly.GetType("Dev2.Runtime.ServiceModel.Data.Resource");
-                    var instance = Activator.CreateInstance(type, contents.ToXElement());
-
-                    var resource = (IResource)instance;
-                    if (resource.ResourceType == @"DbSource")
+                    if (type == null)
                     {
-                        result.Message.Append(contents);
+                        Dev2Logger.Error($"Could not find type 'Dev2.Runtime.ServiceModel.Data.Resource' in assembly Dev2.Data for resource {resourceId}.", GlobalConstants.WarewolfError);
                     }
                     else
                     {
-                        DoWorkflowServiceMessage(contents, result);
+                        var instance = Activator.CreateInstance(type, contents.ToXElement());
+                        var resource = (IResource)instance;
+                        if (resource.ResourceType == @"DbSource")
+                        {
+                            result.Message.Append(contents);
+                        }
+                        else
+                        {
+                            DoWorkflowServiceMessage(contents, result);
+                        }
                     }
                 }
             }
@@ -144,7 +155,7 @@ namespace Dev2
         {
             var workflowResult = result;
             var startIdx = workflowResult.IndexOf(GlobalConstants.PayloadStart, 0, false);
-            
+
             if (startIdx >= 0)
             {
                 startIdx += GlobalConstants.PayloadStart.Length;

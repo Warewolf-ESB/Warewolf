@@ -110,7 +110,14 @@ namespace Dev2
                 if (!inspected.Contains(toLoad.Name))
                 {
                     inspected.Add(toLoad.Name);
-                    LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected, assemblyLoader);
+                    try
+                    {
+                        LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected, assemblyLoader);
+                    }
+                    catch (Exception e) when (e is FileNotFoundException or FileLoadException or BadImageFormatException)
+                    {
+                        _writer.WriteLine($"\nCould not load assembly '{toLoad.Name}' referenced by '{asm.GetName().Name}': {e.Message}");
+                    }
                 }
             }
         }

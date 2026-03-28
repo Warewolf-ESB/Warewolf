@@ -368,6 +368,39 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public void SaveChatbotSource(IChatbotSource chatbotSource, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveChatbotSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ChatbotSource", serialiser.SerializeToBuilder(chatbotSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+
+        public string TestChatbotSource(IChatbotSource chatbotSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestChatbotSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ChatbotSource", serialiser.SerializeToBuilder(chatbotSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
+            return output.Message.ToString();
+        }
+
         public string TestPluginService(IPluginService inputValues)
         {
             var con = Connection;

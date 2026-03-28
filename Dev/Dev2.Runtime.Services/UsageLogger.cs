@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
@@ -57,6 +58,10 @@ namespace Dev2.Runtime
 
         static int GetNumberOfCores()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Environment.ProcessorCount;
+            }
             var coreCount = 0;
             foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
             {
@@ -209,7 +214,7 @@ namespace Dev2.Runtime
             }
             catch(Exception err)
             {
-                Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Warn(err, GlobalConstants.WarewolfWarn);
             }
         }
 

@@ -103,6 +103,13 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
 
+            if (Source == null)
+            {
+                errors.AddError("Database source is not configured.");
+                Dev2Logger.Error("Database source is null", GlobalConstants.WarewolfError);
+                return null;
+            }
+
             switch (Source.ServerType)
             {
                 case enSourceType.SqlDatabase:
@@ -115,7 +122,9 @@ namespace Dev2.Services.Execution
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error(e.StackTrace, DataObj.ExecutionID.ToString());
+                            Dev2Logger.Error(e, DataObj.ExecutionID.ToString());
+                            invokeErrors.AddError($"SQL Error: {e.Message}{Environment.NewLine}{e.StackTrace}");
+                            _errorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
 
@@ -153,6 +162,7 @@ namespace Dev2.Services.Execution
                         return result;
                     }
                 default:
+                    errors.AddError($"Unsupported database source type: {Source.ServerType}");
                     return null;
             }
         }
@@ -344,8 +354,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                Dev2Logger.Error("SQL Error:", ex.StackTrace);
-                errors.AddError($"SQL Error: {ex.Message}");
+                errors.AddError($"SQL Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             finally
             {
@@ -589,8 +598,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("Oracle Error:", ex, GlobalConstants.WarewolfError);
-                Dev2Logger.Error("Oracle Error:", ex.StackTrace);
-                errors.AddError($"Oracle Error: {ex.Message}");
+                errors.AddError($"Oracle Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -681,8 +689,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("ODBC Error:", ex, GlobalConstants.WarewolfError);
-                Dev2Logger.Error("ODBC Error:", ex.StackTrace);
-                errors.AddError($"ODBC Error: {ex.Message}");
+                errors.AddError($"ODBC Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -779,8 +786,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("PostgreSql Error:", ex, GlobalConstants.WarewolfError);
-                Dev2Logger.Error("PostgreSql Error:", ex.StackTrace);
-                errors.AddError($"PostgreSql Error: {ex.Message}");
+                errors.AddError($"PostgreSql Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }
@@ -873,8 +879,7 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("SQLite Error:", ex, GlobalConstants.WarewolfError);
-                Dev2Logger.Error("SQLite Error:", ex.StackTrace);
-                errors.AddError($"SQLite Error: {ex.Message}");
+                errors.AddError($"SQLite Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
             }
             return false;
         }

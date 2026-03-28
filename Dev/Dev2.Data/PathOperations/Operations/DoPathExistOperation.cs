@@ -76,7 +76,7 @@ namespace Dev2.Data.PathOperations.Operations
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                        Dev2Logger.Error(ex, GlobalConstants.Warewolf);
                         return false;
                     }
                 }

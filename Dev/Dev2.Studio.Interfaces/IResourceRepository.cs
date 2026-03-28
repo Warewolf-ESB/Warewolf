@@ -58,9 +58,11 @@ namespace Dev2.Studio.Interfaces
         ExecuteMessage SaveServerSettings(IServer currentEnv, ServerSettingsData serverSettingsData);
         ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase serverSettingsData);
         ExecuteMessage SavePersistenceSettings(IServer currentEnv, PersistenceSettingsData persistenceSettingsData);
+        ExecuteMessage SaveChatbotSettings(IServer currentEnv, ChatbotSettingsData chatbotSettingsData);
         ServerSettingsData GetServerSettings(IServer currentEnv);
         T GetAuditingSettings<T>(IServer currentEnv) where T : AuditSettingsDataBase, new();
         T GetPersistenceSettings<T>(IServer currentEnv) where T : PersistenceSettingsData, new();
+        T GetChatbotSettings<T>(IServer currentEnv) where T : ChatbotSettingsData, new();
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);

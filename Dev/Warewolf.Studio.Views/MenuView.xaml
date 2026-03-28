@@ -402,14 +402,15 @@
                        Margin="0,5,0,5"
                        Style="{StaticResource MenuSeparator}" />
 
-            <!--  HELP  -->
+            <!--  HELP (Collapsed by default)  -->
             <Button Grid.Row="14"
                     Grid.Column="1"
                     Width="{Binding ButtonWidth}"
                     HorizontalAlignment="Left"
                     Command="{Binding SupportCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuHelpToolTip}">
+                    ToolTip="{x:Static languages:Tooltips.MenuHelpToolTip}"
+                    Visibility="Collapsed">
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"

@@ -111,23 +111,29 @@ namespace Dev2.DynamicServices.Objects
 				node.ParentNode.RemoveChild(node);
 			}
 
-			// Remove VirtualizedContainerService.HintSize elements as child elements
+			// Remove ALL child elements in the sap: presentation namespace — this covers
+			// VirtualizedContainerService.HintSize, WorkflowViewStateService.ViewState, and
+			// any other designer-only attached-property elements CoreWF cannot handle.
 			nsmgr.AddNamespace("sap", hintSizeNamespaceUri);
-			XmlNodeList hintSizeNodesToRemove = doc.SelectNodes($"//sap:{hintSizeElementName}", nsmgr);
-			foreach (XmlNode node in hintSizeNodesToRemove)
-			{
-				node.ParentNode.RemoveChild(node);
-			}
+			XmlNodeList sapNodesToRemove = doc.SelectNodes("//sap:*", nsmgr);
+			// Collect into a plain list first — modifying the DOM invalidates a live XmlNodeList.
+			var sapNodes = new System.Collections.Generic.List<XmlNode>();
+			foreach (XmlNode node in sapNodesToRemove)
+				sapNodes.Add(node);
+			foreach (var node in sapNodes)
+				node.ParentNode?.RemoveChild(node);
 
-			// Remove VirtualizedContainerService.HintSize as attributes
-			XmlNodeList elementsWithHintSize = doc.SelectNodes("//*[@sap:VirtualizedContainerService.HintSize]", nsmgr);
-			foreach (XmlNode node in elementsWithHintSize)
+			// Remove sap: attached-property attributes (e.g. sap:VirtualizedContainerService.HintSize="…")
+			XmlNodeList elementsWithSapAttrs = doc.SelectNodes("//*", nsmgr);
+			foreach (XmlNode node in elementsWithSapAttrs)
 			{
-				XmlAttribute attribute = node.Attributes["sap:VirtualizedContainerService.HintSize"];
-				if (attribute != null)
-				{
-					node.Attributes.Remove(attribute);
-				}
+				if (node.Attributes == null) continue;
+				var toRemove = new System.Collections.Generic.List<XmlAttribute>();
+				foreach (XmlAttribute attr in node.Attributes)
+					if (attr.NamespaceURI == hintSizeNamespaceUri)
+						toRemove.Add(attr);
+				foreach (var attr in toRemove)
+					node.Attributes.Remove(attr);
 			}
 
 			// Update the StringBuilder with the modified XML

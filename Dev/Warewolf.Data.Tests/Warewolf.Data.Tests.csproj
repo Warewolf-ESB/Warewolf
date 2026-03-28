@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -21,13 +21,13 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="6.0.0" />
-	<PackageReference Include="System.Security.Permissions" Version="9.0.2" />
-	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
-	<PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="6.23.1" />
-	<PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="6.23.1" />
+    <PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net6.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

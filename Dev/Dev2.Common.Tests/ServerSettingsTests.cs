@@ -64,7 +64,7 @@ namespace Dev2.Common.Tests
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(11, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            Assert.AreEqual(12, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort) 0, settings.WebServerPort);
             Assert.AreEqual((ushort) 0, settings.WebServerSslPort);
@@ -75,7 +75,8 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
-        }
+			Assert.AreEqual(false, settings.EnablePerformanceCounters);
+		}
 
         [TestMethod]
         [Owner("Candice Daniel")]

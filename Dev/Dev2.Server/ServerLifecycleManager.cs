@@ -9,44 +9,46 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Threading;
+using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
+//using WarewolfCOMIPC.Client;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.WebServer;
-//using WarewolfCOMIPC.Client;
-using Dev2.Common.Interfaces.Wrappers;
-using System.Collections.Generic;
-using System.Management;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.Subscription;
+using Dev2.Runtime.WebServer;
+using Dev2.Services.Security.MoqInstallerActions;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Management;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Dev2.Activities;
-using Warewolf.Trigger.Queue;
-using Warewolf.OS;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
+using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
-using Dev2.Services.Security.MoqInstallerActions;
-using Newtonsoft.Json;
+using Warewolf.OS;
+using Warewolf.Trigger.Queue;
 using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
-using System.Diagnostics;
-using Dev2.Runtime.Subscription;
-using Warewolf.Execution;
-using Dev2.Runtime.Security;
 
 namespace Dev2
 {
@@ -97,7 +99,9 @@ namespace Dev2
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
-                SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
+                SecurityIdentityFactory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? new SecurityIdentityFactoryForWindows()
+                    : new SecurityIdentityFactoryForLinux(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
                 LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
@@ -120,8 +124,8 @@ namespace Dev2
 
         Timer _timer;
         IStartWebServer _startWebServer;
-        readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
-        readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
+        IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
+        IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         readonly IUsageLogger _usageLogger;
         //IIpcClient _ipcClient;
 
@@ -158,8 +162,6 @@ namespace Dev2
             _usageLogger = startupConfiguration.UsageLogger;
             _usageTrackerWrapper = startupConfiguration.UsageTracker;
 
-            _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
-            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
@@ -212,85 +214,80 @@ namespace Dev2
             //    _writer.WriteLine("Deprecated ...");
             //}
 
-            return Task.Run(LoadPerformanceCounters)
-                .ContinueWith(
-                    (t) =>
-                    {
-                        // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+			return Task.Run(() =>
+					{
+						if (Config.Server.EnablePerformanceCounters)
+						{
+							Task.Run(LoadPerformanceCounters);
+							_writer.WriteLine("Performance counter initialization started in background.");
+						}
+						else
+						{
+							_writer.WriteLine("Performance counters disabled. Skipping initialization.");
+						}
+
+						// ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-                        try
-                        {
-                            var miq = MoqInstallerActionFactory.CreateInstallerActions();
-                            miq.ExecuteMoqInstallerActions();
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-                        }
+						try
+						{
+							var miq = MoqInstallerActionFactory.CreateInstallerActions();
+							miq.ExecuteMoqInstallerActions();
+						}
+						catch (Exception e)
+						{
+							Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+						}
 #endif
 
-                        try
-                        {
-                            foreach (var worker in initWorkers)
-                            {
-                                worker.Execute();
-                            }
+						try
+						{
+							foreach (var worker in initWorkers)
+							{
+								worker.Execute();
+							}
 
-                            _loggingProcessMonitor.Start();
-                            var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+							_loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
+							LoadHostSecurityProvider();
+							_loadResources.CheckExampleResources();
+							_loadResources.MigrateOldTests();
+							LoadSubscriptionProvider();
+							var webServerConfig = _webServerConfiguration;
+							webServerConfig.Execute();
+							new LoadRuntimeConfigurations(_writer).Execute();
 
-                            _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
-                            LoadHostSecurityProvider();
-                            _loadResources.CheckExampleResources();
-                            _loadResources.MigrateOldTests();
-                            LoadSubscriptionProvider();
-                            var webServerConfig = _webServerConfiguration;
-                            webServerConfig.Execute();
-                            new LoadRuntimeConfigurations(_writer).Execute();
+							/* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
+							* Hence not opening stream for COM IPC
+							* 
+							*/
+							// OpenCOMStream(null);
 
-                            /* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
-                            * Hence not opening stream for COM IPC
-                            * 
-                            */
-                            // OpenCOMStream(null);
-
-                            _loadResources.LoadResourceCatalog();
+							_loadResources.LoadResourceCatalog();
 #if WINDOWS || NETFRAMEWORK
-                            _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+							_timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
 #endif
 							_loadResources.LoadServerWorkspace();
-                            _loadResources.LoadActivityCache(_assemblyLoader);
-                            LoadTestCatalog();
-                            LoadTriggersCatalog();
+							_loadResources.LoadActivityCache(_assemblyLoader);
+							LoadTestCatalog();
+							LoadTriggersCatalog();
 
-                            _startWebServer.Execute(webServerConfig, _pauseHelper);
-                            _queueProcessMonitor.Start();
+							_startWebServer.Execute(webServerConfig, _pauseHelper);
+							_queueProcessMonitor.Start();
 
-                            _hangfireServerMonitor.Start();
-#if WINDOWS || NETFRAMEWORK
-                            var checkLogServerConnectionTask = CheckLogServerConnection();
-                            var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
-                            var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
-                            var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
-                            if (!logServerConnectedOkayNoTimeout)
-                            {
-                                _writer.WriteLine("unable to connect to logging server");
-                                if (checkLogServerConnectionTask.IsFaulted)
-                                {
-                                    _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
-                                }
+							_hangfireServerMonitor.Start();
 
-                                Stop(false, 0, true);
-                            }
-#endif
-                            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-                            LogWarewolfVersion(logger);
+							_pulseLogger = new PulseLogger(60000, _loggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
+							_pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
+
+							StartLoggingServiceAsync();
+
+							var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+							LogWarewolfVersion(logger);
 							if (EnvironmentVariables.IsServerOnline)
-                            {
-                                SetAsStarted();
-                            }
+							{
+								SetAsStarted();
+							}
 #if RELEASE
-                            TrackUsage(UsageType.ServerStart, logger);
+							TrackUsage(UsageType.ServerStart, logger);
 #endif
                         }
                         catch (Exception e)
@@ -321,6 +318,41 @@ namespace Dev2
                 });
         }
 
+        private void StartLoggingServiceAsync()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    _loggingProcessMonitor.Start();
+#if WINDOWS || NETFRAMEWORK
+                    var checkLogServerConnectionTask = CheckLogServerConnection();
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+                    var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
+                    var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+                    var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+                    if (!logServerConnectedOkayNoTimeout)
+                    {
+                        _writer.WriteLine("unable to connect to logging server");
+                        if (checkLogServerConnectionTask.IsFaulted)
+                        {
+                            _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
+                        }
+                    }
+                    else
+                    {
+                        _writer.WriteLine("Logging service connected.");
+                    }
+#endif
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Error starting logging service", e, GlobalConstants.WarewolfError);
+                    _writer.WriteLine("Logging service startup failed: " + e.Message);
+                }
+            });
+        }
+
         private void LoadTriggersCatalog()
         {
             _writer.Write("Loading triggers catalog...  ");
@@ -328,64 +360,152 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        int GetNumberOfCores()
-        {
-            var coreCount = 0;
-            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
+		int GetNumberOfCores()
+		{
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			{
+				try
+				{
+					var cpuDir = "/sys/devices/system/cpu/";
+					if (Directory.Exists(cpuDir))
+					{
+						var uniq = new HashSet<string>();
+						foreach (var dir in Directory.EnumerateDirectories(cpuDir, "cpu[0-9]*"))
+						{
+							var topology = Path.Combine(dir, "topology");
+							var coreIdPath = Path.Combine(topology, "core_id");
+							var physIdPath = Path.Combine(topology, "physical_package_id");
 
-            return coreCount;
-        }
+							if (File.Exists(coreIdPath))
+							{
+								var coreId = File.ReadAllText(coreIdPath).Trim();
+								if (File.Exists(physIdPath))
+								{
+									var physId = File.ReadAllText(physIdPath).Trim();
+									uniq.Add($"{physId}:{coreId}");
+								}
+								else
+								{
+									uniq.Add(coreId);
+								}
+							}
+						}
+						if (uniq.Count > 0)
+							return uniq.Count;
+					}
 
-        public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
-        {
-            if (usageType == UsageType.ServerStart)
-            {
-                ServerStats.SessionId = Guid.NewGuid();
-            }
+					// Fallback: parse /proc/cpuinfo grouping by (physical id, core id)
+					var cpuinfo = "/proc/cpuinfo";
+					if (File.Exists(cpuinfo))
+					{
+						var blocks = File.ReadAllText(cpuinfo).Split(new[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+						var uniq = new HashSet<string>();
+						foreach (var block in blocks)
+						{
+							string phys = null, core = null;
+							foreach (var line in block.Split('\n'))
+							{
+								var parts = line.Split(':', 2);
+								if (parts.Length < 2) continue;
+								var key = parts[0].Trim();
+								var val = parts[1].Trim();
+								if (key.Equals("physical id", StringComparison.OrdinalIgnoreCase)) phys = val;
+								if (key.Equals("core id", StringComparison.OrdinalIgnoreCase)) core = val;
+							}
+							if (core != null && phys != null) uniq.Add($"{phys}:{core}");
+							else if (core != null) uniq.Add(core);
+						}
+						if (uniq.Count > 0)
+							return uniq.Count;
+					}
+				}
+				catch
+				{
+					// ignore and fallback
+				}
+			}
+			var coreCount = -1;
+#if NOTNANOSERVER
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				try
+				{
+					foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+					{
+						coreCount += int.Parse(item["NumberOfCores"].ToString());
+					}
+				}
+				catch (PlatformNotSupportedException)
+				{
+					// Fallback to Environment.ProcessorCount
+					coreCount = Environment.ProcessorCount - 1;
+				}
+			}
+			else
+			{
+				coreCount = Environment.ProcessorCount - 1;
+			}
+#else
+			coreCount = Environment.ProcessorCount - 1;
+#endif
+			return coreCount;
+		}
 
-            var myData = new
-            {
-                ServerStats.SessionId,
-                _subscriptionDataInstance.SubscriptionId,
-                _subscriptionDataInstance.PlanId,
-                _subscriptionDataInstance.Status,
-                VersionNo = _systemInformationHelper.GetWareWolfVersion(),
-                IPAddress = _systemInformationHelper.GetIPv4Adresses(),
-                Environment.ProcessorCount,
-                NumberOfCores = GetNumberOfCores(),
-                OSType = _systemInformationHelper.GetOperatingSystemInformation(),
-                MachineName = _systemInformationHelper.GetComputerName(),
-                Region = _systemInformationHelper.GetRegionInformation(),
-                Executions = ServerStats.TotalExecutions,
-                Uptime = DateTime.Now - Process.GetCurrentProcess().StartTime
-            };
-            //TODO: Add whether running in container
-            var jsonData = JsonConvert.SerializeObject(myData);
-            var customerId = _subscriptionDataInstance.CustomerId;
-            if (customerId == "")
-            {
-                customerId = "UnRegistered";
-            }
+		public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
+		{
+			try
+			{
+				if (usageType == UsageType.ServerStart)
+				{
+					ServerStats.SessionId = Guid.NewGuid();
+				}
 
-            var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
-            if (returnResult != UsageDataResult.ok)
-            {
-                _usageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
-                ServerStats.IncrementUsageServerRetry();
-                _writer.WriteLine("UsageTracker: Could not log usage.");
-                var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
-                logger.Warn(msg);
-                Dev2Logger.Warn(msg, "UsageTracker");
-            }
+				var myData = new
+				{
+					ServerStats.SessionId,
+					_subscriptionDataInstance.SubscriptionId,
+					_subscriptionDataInstance.PlanId,
+					_subscriptionDataInstance.Status,
+					VersionNo = _systemInformationHelper.GetWareWolfVersion(),
+					IPAddress = _systemInformationHelper.GetIPv4Adresses(),
+					ProcessorCount = Environment.ProcessorCount,
+					NumberOfCores = GetNumberOfCores(),
+					OSType = _systemInformationHelper.GetOperatingSystemInformation(),
+					MachineName = _systemInformationHelper.GetComputerName(),
+					Region = _systemInformationHelper.GetRegionInformation(),
+					Executions = ServerStats.TotalExecutions,
+					Uptime = DateTime.Now - Process.GetCurrentProcess().StartTime
+				};
+				//TODO: Add whether running in container
+				var jsonData = JsonConvert.SerializeObject(myData);
+				var customerId = _subscriptionDataInstance.CustomerId;
+				if (customerId == "")
+				{
+					customerId = "UnRegistered";
+				}
 
-            if (usageType == UsageType.ServerStart)
-            {
-                _usageLogger.Start();
-            }
-        }
+				var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
+				if (returnResult != UsageDataResult.ok)
+				{
+					_usageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
+					ServerStats.IncrementUsageServerRetry();
+					_writer.WriteLine("UsageTracker: Could not log usage.");
+					var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
+					logger.Warn(msg);
+					Dev2Logger.Warn(msg, "UsageTracker");
+				}
+
+				if (usageType == UsageType.ServerStart)
+				{
+					_usageLogger.Start();
+				}
+			}
+			catch (Exception ex)
+			{
+				Dev2Logger.Warn("TrackUsage failed: " + ex.Message, "UsageTracker");
+				_writer.WriteLine("Warning: Usage tracking failed - " + ex.Message);
+			}
+		}
 
         public void Stop(bool didBreak, int result, bool mute)
         {
@@ -488,6 +608,11 @@ namespace Dev2
         {
             try
             {
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Dev2Logger.Info("Performance counters are not supported on this platform. Skipping initialization.", GlobalConstants.WarewolfInfo);
+                    return;
+                }
                 var perf = new PerformanceCounterPersistence(new FileWrapper());
                 var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
                 var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);

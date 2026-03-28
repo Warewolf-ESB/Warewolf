@@ -73,7 +73,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                 return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
             }
         }

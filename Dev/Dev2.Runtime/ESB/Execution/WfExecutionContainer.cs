@@ -10,6 +10,8 @@
 
 using Dev2.Activities;
 using Dev2.Common;
+using System.IO;
+using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
@@ -38,6 +40,8 @@ using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Runtime.Serialization;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -350,7 +354,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception exception)
 			{
-				Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
+				Dev2Logger.Error(exception, dsfDataObject.ExecutionID?.ToString());
                 dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                 dsfDataObject.StateNotifier?.LogExecuteException(new SerializableException(exception), lastActivity);
             }
@@ -492,7 +496,398 @@ namespace Dev2.Runtime.ESB.Execution
     
         public void Dispose()
         {
-            
+
+        }
+    }
+
+    /// <summary>
+    /// Workflow execution container for Azure Functions environments.
+    ///
+    /// Differs from <see cref="WfExecutionContainer"/> in two ways:
+    /// <list type="bullet">
+    ///   <item><b>Authorization:</b> <see cref="CanExecute"/> always returns
+    ///         <see langword="true"/> — Azure Functions enforces auth at the
+    ///         HTTP-trigger level, so the Windows-identity check is not applicable.</item>
+    ///   <item><b>Resource loading:</b> when a <see cref="DynamicActivity"/> is supplied
+    ///         at construction time the normal <see cref="ResourceCatalog"/> /
+    ///         <see cref="WorkspaceRepository"/> initialization is bypassed entirely;
+    ///         the pre-parsed activity is used directly.</item>
+    /// </list>
+    /// </summary>
+    public class AzureFunctionExecutionContainer : WfExecutionContainer
+    {
+        private readonly DynamicActivity _preloadedActivity;
+
+        public AzureFunctionExecutionContainer(
+            ServiceAction sa,
+            IDSFDataObject dataObj,
+            IWorkspace theWorkspace,
+            IEsbChannel esbChannel,
+            ISubscriptionProvider subscriptionProvider,
+            DynamicActivity preloadedActivity = null)
+            : base(sa, dataObj, theWorkspace, esbChannel, subscriptionProvider)
+        {
+            _preloadedActivity = preloadedActivity;
+        }
+
+        /// <summary>
+        /// Always returns <see langword="true"/>: Azure Functions auth is enforced at
+        /// the trigger level, not inside the execution pipeline.
+        /// </summary>
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject,
+            AuthorizationContext authorizationContext) => true;
+
+        /// <summary>
+        /// Uses the pre-loaded <see cref="DynamicActivity"/> when available, bypassing
+        /// <see cref="ResourceCatalog"/>.  Falls back to a file-system scan by
+        /// <paramref name="resourceID"/> when none was supplied.
+        /// </summary>
+        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
+        {
+            if (_preloadedActivity != null)
+            {
+                base.Eval(_preloadedActivity, dataObject, dataObject.ForEachUpdateValue);
+                return;
+            }
+
+            // Fallback: scan EnvironmentVariables.ResourcePath for a .bite file
+            // whose XML ID attribute matches resourceID.
+            var bitePath = FindBiteFileById(resourceID);
+            if (bitePath == null)
+                throw new InvalidWorkflowException($"No .bite file found for resource ID {resourceID}.");
+
+            base.Eval(LoadDynamicActivity(bitePath, dataObject.ServiceName), dataObject, dataObject.ForEachUpdateValue);
+        }
+
+        private static string FindBiteFileById(Guid resourceID)
+        {
+            var root = AzureFunctionWorkflowRunner.ResourceBasePath ?? EnvironmentVariables.ResourcePath;
+            if (!Directory.Exists(root))
+                return null;
+
+            return Directory.EnumerateFiles(root, "*.bite", SearchOption.AllDirectories)
+                            .FirstOrDefault(f =>
+                            {
+                                try
+                                {
+                                    return string.Equals(
+                                        XElement.Load(f).Attribute("ID")?.Value,
+                                        resourceID.ToString(),
+                                        StringComparison.OrdinalIgnoreCase);
+                                }
+                                catch { return false; }
+                            });
+        }
+
+        /// <summary>
+        /// Loads and parses a <see cref="DynamicActivity"/> from a <c>.bite</c> file on disk.
+        /// </summary>
+        internal static DynamicActivity LoadDynamicActivity(string bitePath, string workflowName)
+        {
+            Console.WriteLine($"[AzureFunc] LoadDynamicActivity: '{workflowName}' from '{bitePath}'");
+
+            var xml = XElement.Load(bitePath);
+            var action = xml.Descendants("Action").FirstOrDefault()
+                ?? throw new InvalidWorkflowException($"No <Action> element in '{bitePath}'.");
+
+            // Use .Value to get the HTML-decoded inner XAML text (<Activity ...>...</Activity>).
+            // ElementSafeStringBuilder would return elm.ToString() which re-wraps the content
+            // in <XamlDefinition>...</XamlDefinition>, causing the parser to see the wrong root.
+            var xamlContent = action.Element("XamlDefinition")?.Value
+                ?? throw new InvalidWorkflowException($"No <XamlDefinition> content in '{bitePath}'.");
+
+            Console.WriteLine($"[AzureFunc] LoadDynamicActivity: XAML length={xamlContent.Length}, starts with: {xamlContent.Substring(0, Math.Min(120, xamlContent.Length))}");
+
+            try
+            {
+                var xamlDefinition = new StringBuilder(xamlContent);
+
+                // Strip WPF designer-only elements (VirtualizedContainerService.HintSize,
+                // sap:WorkflowViewStateService.ViewState, VisualBasic.Settings) that CoreWF
+                // on .NET 8 does not recognise and throws on.
+                Console.WriteLine($"[AzureFunc] LoadDynamicActivity: calling RemoveWindowsElements ...");
+                Dev2.DynamicServices.Objects.Dev2XamlLoader.RemoveWindowsElements(ref xamlDefinition);
+                Console.WriteLine($"[AzureFunc] LoadDynamicActivity: XAML length after strip={xamlDefinition.Length}");
+
+                // Load directly as a DynamicActivity — <Activity x:Class="..."> root is
+                // deserialised by ActivityXamlServices.Load to a DynamicActivity.
+                using var stream = xamlDefinition.EncodeForXmlDocument(tryUnicodeFirst: false);
+                Console.WriteLine($"[AzureFunc] LoadDynamicActivity: calling ActivityXamlServices.Load ...");
+                var activity = System.Activities.XamlIntegration.ActivityXamlServices.Load(stream);
+                Console.WriteLine($"[AzureFunc] LoadDynamicActivity: loaded type={activity?.GetType().FullName}");
+
+                return activity as DynamicActivity
+                    ?? throw new InvalidWorkflowException(
+                        $"Loaded activity is not a DynamicActivity for '{workflowName}'. Actual type: {activity?.GetType().FullName}");
+            }
+            catch (InvalidWorkflowException) { throw; }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AzureFunc] LoadDynamicActivity FAILED: {ex.GetType().FullName}: {ex.Message}");
+                Console.WriteLine($"[AzureFunc] Stack: {ex.StackTrace}");
+                for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                    Console.WriteLine($"[AzureFunc]   --> inner: {inner.GetType().FullName}: {inner.Message}");
+                throw new InvalidWorkflowException($"XAML parse failed for '{workflowName}': {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Entry point for executing a single Warewolf workflow from inside an Azure
+    /// Functions app.
+    ///
+    /// <para><b>Skipped</b> compared to a full server start-up:</para>
+    /// <list type="bullet">
+    ///   <item>HTTP routing / SSL — Azure Functions handles this.</item>
+    ///   <item><see cref="ResourceCatalog"/> / <see cref="WorkspaceRepository"/>
+    ///         initialization — the workflow <c>.bite</c> file is read directly from
+    ///         <see cref="EnvironmentVariables.ResourcePath"/>.</item>
+    ///   <item>Studio debug-UI dispatch — <see cref="IDSFDataObject.IsDebug"/> is
+    ///         always <see langword="false"/>, so
+    ///         <see cref="WfApplicationUtils.DispatchDebugState"/> is never called.</item>
+    ///   <item><see cref="ServerAuthorizationService"/> Windows-identity check — see
+    ///         <see cref="AzureFunctionExecutionContainer.CanExecute"/>.</item>
+    /// </list>
+    ///
+    /// <para><b>Retained:</b></para>
+    /// <list type="bullet">
+    ///   <item>XAML parsing and ActivityParser execution pipeline.</item>
+    ///   <item>Subscription / license check via <see cref="ISubscriptionProvider.IsLicensed"/>.</item>
+    ///   <item>Audit state notifications via <see cref="StateNotifier"/> /
+    ///         <see cref="StateAuditLogger"/> — silently no-ops when no audit
+    ///         WebSocket endpoint is configured.</item>
+    /// </list>
+    /// </summary>
+    public static class AzureFunctionWorkflowRunner
+    {
+        /// <summary>
+        /// Overrides the root directory used to locate <c>.bite</c> workflow files.
+        /// When <see langword="null"/> (the default), <see cref="EnvironmentVariables.ResourcePath"/>
+        /// is used.  Set this once in Azure Functions startup to
+        /// <c>Path.Combine(AppContext.BaseDirectory, "Resources")</c> so that workflow
+        /// files bundled alongside the deployment are found without any server-runtime
+        /// path configuration.
+        /// </summary>
+        public static string ResourceBasePath { get; set; }
+
+        /// <summary>
+        /// When <see langword="true"/>, workflow executions will produce debug states
+        /// (inputs/outputs per activity) and dispatch them via <see cref="Dev2.Diagnostics.Debug.DebugDispatcher"/>.
+        /// Set to <see langword="true"/> in Azure Functions startup after registering an
+        /// <see cref="Dev2.Common.Interfaces.Diagnostics.Debug.IDebugWriter"/> (e.g.
+        /// <c>AzureSignalRDebugWriter</c>) so that connected Studio clients receive live
+        /// debug output over the Azure SignalR Service "esb" hub.
+        /// </summary>
+        public static bool IsDebugEnabled { get; set; }
+
+        /// <summary>
+        /// Executes the named workflow and returns its result.
+        /// </summary>
+        /// <param name="workflowName">
+        ///   Name used to locate <c>{workflowName}.bite</c> under
+        ///   <see cref="EnvironmentVariables.ResourcePath"/>.
+        /// </param>
+        /// <param name="inputJson">
+        ///   Optional JSON / XML payload written into the execution environment before
+        ///   the workflow starts.  Pass <see langword="null"/> for no inputs.
+        /// </param>
+        /// <returns>
+        ///   <c>resultId</c> — DataListID of the completed execution.<br/>
+        ///   <c>errors</c>   — Any errors raised during execution (empty on success).
+        /// </returns>
+        /// <summary>
+        /// Executes the named workflow and returns its result, errors, and output variable values.
+        /// </summary>
+        public static (Guid resultId, ErrorResultTO errors, Dictionary<string, string> outputs) ExecuteWorkflow(
+            string workflowName, string inputXml = null)
+        {
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: '{workflowName}'");
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: ResourceBasePath='{ResourceBasePath}'");
+
+            var bitePath = FindBiteFile(workflowName);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: bite file='{bitePath ?? "(not found)"}'");
+
+            if (bitePath == null)
+            {
+                var notFound = new ErrorResultTO();
+                notFound.AddError($"No .bite file found for workflow '{workflowName}' under '{ResourceBasePath ?? EnvironmentVariables.ResourcePath}'.");
+                return (GlobalConstants.NullDataListID, notFound, new Dictionary<string, string>());
+            }
+
+            var (resourceId, resourceName) = ReadResourceMetadata(bitePath);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: resourceId={resourceId}, resourceName='{resourceName}'");
+
+            // Build the DataList payload: always include the full schema from the bite file so
+            // every variable (e.g. [[Name]], [[Message]]) is defined before execution starts.
+            // Without this, Warewolf raises "variable { X } not found" for any referenced var.
+            var dataListPayload = BuildDataListPayload(bitePath, inputXml);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: dataListPayload='{dataListPayload}'");
+
+            // Parse the XAML once here so the container can use it without any catalog access.
+            var dynamicActivity = AzureFunctionExecutionContainer.LoadDynamicActivity(bitePath, workflowName);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: DynamicActivity loaded OK");
+
+            var sa = new ServiceAction
+            {
+                ActionType = enActionType.Workflow,
+                ServiceName = resourceName,
+                ServiceID = resourceId,
+            };
+
+            var dataObject = new DsfDataObject(dataListPayload, Guid.NewGuid())
+            {
+                ResourceID = resourceId,
+                ServiceName = resourceName,
+                WorkspaceID = GlobalConstants.ServerWorkspaceID,
+                ExecutingUser = Thread.CurrentPrincipal,
+                ExecutionID = Guid.NewGuid(),
+                IsDebug = IsDebugEnabled,
+                ServerID = Guid.NewGuid(),
+                WebUrl = $"azurefunc://{workflowName}",
+            };
+
+            // Populate the execution environment with input values so that [[Variable]]
+            // references resolve correctly during workflow execution.
+            // DsfDataObject(rawPayload, ...) seeds only the legacy DataList; the
+            // Warewolf.Storage execution environment (dataObject.Environment) must be
+            // populated separately via Assign().
+            if (!string.IsNullOrWhiteSpace(inputXml))
+            {
+                try
+                {
+                    var inputEl = XElement.Parse(inputXml);
+                    foreach (var el in inputEl.Elements())
+                    {
+                        var varName = $"[[{el.Name.LocalName}]]";
+                        var varValue = el.Value;
+                        Console.WriteLine($"[AzureFunc] ExecuteWorkflow: assigning {varName}='{varValue}'");
+                        dataObject.Environment.Assign(varName, varValue, 0);
+                    }
+                }
+                catch (Exception assignEx)
+                {
+                    Console.WriteLine($"[AzureFunc] ExecuteWorkflow: failed assigning inputs to environment: {assignEx.Message}");
+                }
+            }
+
+            var stateNotifier = new StateNotifier();
+            using var auditLogger = new StateAuditLogger(new WebSocketPool());
+            stateNotifier.Subscribe(auditLogger.NewStateListener(dataObject));
+            dataObject.StateNotifier = stateNotifier;
+
+            var container = new AzureFunctionExecutionContainer(
+                sa,
+                dataObject,
+                new Workspace(GlobalConstants.ServerWorkspaceID),
+                new EsbServicesEndpoint(),
+                SubscriptionProvider.Instance,
+                dynamicActivity);
+
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: calling container.Execute ...");
+            var resultId = container.Execute(out var errors, 0);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: Execute returned resultId={resultId}, errors={errors?.FetchErrors()?.Count ?? 0}");
+
+            // Extract output variable values from the data object's environment after execution.
+            var outputs = ExtractOutputs(bitePath, dataObject);
+            Console.WriteLine($"[AzureFunc] ExecuteWorkflow: outputs={string.Join(", ", outputs.Select(kv => $"{kv.Key}={kv.Value}"))}");
+
+            return (resultId, errors, outputs);
+        }
+
+        /// <summary>
+        /// Reads the DataList schema from the bite file and merges any input values supplied
+        /// as a DataList XML string (e.g. &lt;DataList&gt;&lt;Name&gt;Ash&lt;/Name&gt;&lt;/DataList&gt;).
+        /// Returns a well-formed DataList XML with every variable from the schema pre-defined.
+        /// </summary>
+        private static string BuildDataListPayload(string bitePath, string inputXml)
+        {
+            var biteXml = XElement.Load(bitePath);
+            var schemaEl = biteXml.Element("DataList");
+            if (schemaEl == null)
+                return inputXml ?? string.Empty;
+
+            // Parse any supplied input values
+            var inputValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(inputXml))
+            {
+                try
+                {
+                    var inputEl = XElement.Parse(inputXml);
+                    foreach (var el in inputEl.Elements())
+                        inputValues[el.Name.LocalName] = el.Value;
+                }
+                catch { /* ignore malformed input; proceed with empty inputs */ }
+            }
+
+            // Build <DataList> with every schema variable defined, input values merged in
+            var sb = new StringBuilder("<DataList>");
+            foreach (var varEl in schemaEl.Elements())
+            {
+                var name = varEl.Name.LocalName;
+                inputValues.TryGetValue(name, out var value);
+                sb.Append($"<{name}>{System.Security.SecurityElement.Escape(value ?? string.Empty)}</{name}>");
+            }
+            sb.Append("</DataList>");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Reads output variable values from the data object's execution environment.
+        /// </summary>
+        private static Dictionary<string, string> ExtractOutputs(string bitePath, DsfDataObject dataObject)
+        {
+            var outputs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                var biteXml = XElement.Load(bitePath);
+                var schemaEl = biteXml.Element("DataList");
+                if (schemaEl == null || dataObject.Environment == null)
+                    return outputs;
+
+                foreach (var varEl in schemaEl.Elements())
+                {
+                    // Only include variables that are declared as Output or Both.
+                    // Variables with ColumnIODirection="Input" (or "None") are internal
+                    // inputs and should not appear in the HTTP response.
+                    var direction = varEl.Attribute("ColumnIODirection")?.Value ?? "Both";
+                    if (direction.Equals("Input", StringComparison.OrdinalIgnoreCase)
+                        || direction.Equals("None", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var name = varEl.Name.LocalName;
+                    try
+                    {
+                        var result = dataObject.Environment.EvalAsListOfStrings($"[[{name}]]", 0);
+                        if (result?.Count > 0)
+                            outputs[name] = string.Join(",", result);
+                    }
+                    catch { /* skip variables that can't be evaluated */ }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AzureFunc] ExtractOutputs failed: {ex.Message}");
+            }
+            return outputs;
+        }
+
+        private static string FindBiteFile(string workflowName)
+        {
+            var root = ResourceBasePath ?? EnvironmentVariables.ResourcePath;
+            if (!Directory.Exists(root))
+                return null;
+
+            return Directory.EnumerateFiles(root, $"{workflowName}.bite", SearchOption.AllDirectories)
+                            .FirstOrDefault();
+        }
+
+        private static (Guid resourceId, string resourceName) ReadResourceMetadata(string bitePath)
+        {
+            var xml = XElement.Load(bitePath);
+            Guid.TryParse(xml.Attribute("ID")?.Value, out var id);
+            var name = xml.Element("DisplayName")?.Value
+                       ?? Path.GetFileNameWithoutExtension(bitePath);
+            return (id, name);
         }
     }
 

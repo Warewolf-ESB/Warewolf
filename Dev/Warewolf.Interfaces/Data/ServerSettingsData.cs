@@ -22,7 +22,8 @@ namespace Warewolf.Configuration
         public string Sink { get; set; }
         public string ExecutionLogLevel{ get; set; }
         public int? LogFlushInterval { get; set; }
-        
+        public bool? EnablePerformanceCounters { get; set; }
+
         public bool IncludeEnvironmentVariable { get; set; }
 
         public bool Equals(ServerSettingsData other)
@@ -40,6 +41,7 @@ namespace Warewolf.Configuration
             equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
             equals &= IncludeEnvironmentVariable == other.IncludeEnvironmentVariable;
+            equals &= EnablePerformanceCounters == other.EnablePerformanceCounters;
             equals &= Sink == other.Sink;
             return equals;
         }

@@ -69,7 +69,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 catch (Exception exception)
                 {
-                    Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                     throw new Exception(exception.Message, exception);
                 }
             }

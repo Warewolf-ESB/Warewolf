@@ -44,6 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 WriteSecuritySettings(theWorkspace, settings, result);
                 WriteLoggingSettings(theWorkspace, settings, result);
                 WritePerfCounterSettings(theWorkspace, settings, result);
+                WritePersistenceSettings(theWorkspace, settings, result);
+                WriteChatbotSettings(theWorkspace, settings, result);
             }
             catch (Exception ex)
             {
@@ -76,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                if (settings.Logging != null)
+                if (settings.PerfCounters != null)
                 {
                     var executionResult = ExecuteService(theWorkspace, new SavePerformanceCounters(), "PerformanceCounterTo", settings.PerfCounters);
                     result.Message.AppendLine(executionResult);
@@ -87,6 +89,42 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex, GlobalConstants.WarewolfError);
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
+            }
+        }
+
+        static void WritePersistenceSettings(IWorkspace theWorkspace, Settings settings, ExecuteMessage result)
+        {
+            try
+            {
+                if (settings.Persistence != null)
+                {
+                    var executionResult = ExecuteService(theWorkspace, new SavePersistenceSettings(), "PersistenceSettings", settings.Persistence);
+                    result.Message.AppendLine(executionResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error writing persistence configuration", ex, GlobalConstants.WarewolfError);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing persistence configuration");
+            }
+        }
+
+        static void WriteChatbotSettings(IWorkspace theWorkspace, Settings settings, ExecuteMessage result)
+        {
+            try
+            {
+                if (settings.Chatbot != null)
+                {
+                    var executionResult = ExecuteService(theWorkspace, new SaveChatbotSettings(), "ChatbotSettings", settings.Chatbot);
+                    result.Message.AppendLine(executionResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error writing chatbot configuration", ex, GlobalConstants.WarewolfError);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing chatbot configuration");
             }
         }
 

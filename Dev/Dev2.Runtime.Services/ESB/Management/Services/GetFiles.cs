@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 return new List<IFileListing>();
             }
         }

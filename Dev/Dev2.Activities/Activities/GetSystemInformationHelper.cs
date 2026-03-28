@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
@@ -74,11 +75,41 @@ namespace Dev2.Activities
 
         string GetOperatingSystemProperty(string property)
         {
-            var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
-                        select x.GetPropertyValue(property)).First();
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("{0}", name);
-            return stringBuilder.ToString();
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Fallback for Linux/Unix
+                if (property == "Caption")
+                {
+                    return RuntimeInformation.OSDescription;
+                }
+                if (property == "Version")
+                {
+                    return Environment.OSVersion.Version.ToString();
+                }
+                return "Unknown";
+            }
+
+            try
+            {
+                var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
+                            select x.GetPropertyValue(property)).First();
+                var stringBuilder = new StringBuilder();
+                stringBuilder.AppendFormat("{0}", name);
+                return stringBuilder.ToString();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // Fallback if System.Management is not available
+                if (property == "Caption")
+                {
+                    return RuntimeInformation.OSDescription;
+                }
+                if (property == "Version")
+                {
+                    return Environment.OSVersion.Version.ToString();
+                }
+                return "Unknown";
+            }
         }
 
         public string GetServicePackInformation()
@@ -146,58 +177,135 @@ namespace Dev2.Activities
 
         public string GetPhysicalMemoryAvailableInformation()
         {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var item = (ManagementObject)o;
-                var availablePhysicalMemory = (uint.Parse(item["FreePhysicalMemory"].ToString()) / 1024).ToString();
-                stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
+                return GetLinuxMemoryInfo("MemAvailable");
             }
-            return stringBuilder.ToString();
+
+            try
+            {
+                var stringBuilder = new StringBuilder();
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var availablePhysicalMemory = (uint.Parse(item["FreePhysicalMemory"].ToString()) / 1024).ToString();
+                    stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
+                }
+                return stringBuilder.ToString();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return GetLinuxMemoryInfo("MemAvailable");
+            }
         }
 
         public string GetPhysicalMemoryTotalInformation()
         {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var item = (ManagementObject)o;
-                var totalPhysicalMemory = (uint.Parse(item["TotalVisibleMemorySize"].ToString()) / 1024).ToString();
-                stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
+                return GetLinuxMemoryInfo("MemTotal");
             }
-            return stringBuilder.ToString();
+
+            try
+            {
+                var stringBuilder = new StringBuilder();
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var totalPhysicalMemory = (uint.Parse(item["TotalVisibleMemorySize"].ToString()) / 1024).ToString();
+                    stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
+                }
+                return stringBuilder.ToString();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return GetLinuxMemoryInfo("MemTotal");
+            }
         }
 
         public string GetVirtualMemoryAvailableInformation()
         {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var item = (ManagementObject)o;
-                var totalVirtualMemory = (uint.Parse(item["FreeVirtualMemory"].ToString()) / 1024).ToString();
-                stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
+                return GetLinuxMemoryInfo("SwapFree");
             }
-            return stringBuilder.ToString();
+
+            try
+            {
+                var stringBuilder = new StringBuilder();
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var totalVirtualMemory = (uint.Parse(item["FreeVirtualMemory"].ToString()) / 1024).ToString();
+                    stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
+                }
+                return stringBuilder.ToString();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return GetLinuxMemoryInfo("SwapFree");
+            }
         }
 
         public string GetVirtualMemoryTotalInformation()
         {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var item = (ManagementObject)o;
-                var availableVirtualMemory = (uint.Parse(item["TotalVirtualMemorySize"].ToString()) / 1024).ToString();
-                stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
+                return GetLinuxMemoryInfo("SwapTotal");
             }
-            return stringBuilder.ToString();
+
+            try
+            {
+                var stringBuilder = new StringBuilder();
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var availableVirtualMemory = (uint.Parse(item["TotalVirtualMemorySize"].ToString()) / 1024).ToString();
+                    stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
+                }
+                return stringBuilder.ToString();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return GetLinuxMemoryInfo("SwapTotal");
+            }
+        }
+
+        private string GetLinuxMemoryInfo(string key)
+        {
+            try
+            {
+                const string memInfoPath = "/proc/meminfo";
+                if (!File.Exists(memInfoPath))
+                {
+                    return "0";
+                }
+
+                var lines = File.ReadAllLines(memInfoPath);
+                var line = lines.FirstOrDefault(l => l.StartsWith(key + ":", StringComparison.OrdinalIgnoreCase));
+                if (line != null)
+                {
+                    var parts = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length >= 2 && long.TryParse(parts[1], out long valueInKb))
+                    {
+                        // Convert KB to MB
+                        return (valueInKb / 1024).ToString(CultureInfo.InvariantCulture);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+            }
+            return "0";
         }
 
         ulong ConvertToMB(ulong valueToConvert)

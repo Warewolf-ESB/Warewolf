@@ -9,21 +9,88 @@
 */
 
 using Dev2.Common.Interfaces.Wrappers;
+using System.Runtime.InteropServices;
+using Dev2.Common;
 using System.Diagnostics.CodeAnalysis;
+#if NOTNANOSERVER
 using System.DirectoryServices;
+#endif
 
 namespace Dev2.Common.Wrappers
 {
     public class DirectoryEntryFactory : IDirectoryEntryFactory
-    {
-        public IDirectoryEntry Create(string path)
+	{
+		public IDirectoryEntry Create(string path)
         {
+#if NOTNANOSERVER
+            // Avoid using System.DirectoryServices on non-Windows or Nano Server where
+            // the native Active Directory COM libraries (eg activeds.dll) are not present.
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return new NullDirectoryEntry();
+            }
             return new Dev2DirectoryEntry(path);
+#else
+			return new NullDirectoryEntry();
+#endif
+
         }
         [ExcludeFromCodeCoverage]
         public IDirectoryEntry Create<T>(T member)
         {
+#if NOTNANOSERVER
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            {
+                return new NullDirectoryEntry();
+            }
+
             return new Dev2DirectoryEntry(new DirectoryEntry(member));
+#else
+            return new NullDirectoryEntry();
+#endif
         }
-    }
+
+        // Minimal null-object implementations to avoid touching DirectoryEntry on unsupported platforms
+#if NOTNANOSERVER
+        class NullDirectoryEntries : IDirectoryEntries
+        {
+            public SchemaNameCollection SchemaFilter => null;
+            public DirectoryEntries Instance => null;
+            public System.Collections.IEnumerator GetEnumerator()
+            {
+                yield break;
+            }
+        }
+
+        class NullDirectoryEntry : IDirectoryEntry
+        {
+            public IDirectoryEntries Children => new NullDirectoryEntries();
+            public string SchemaClassName => string.Empty;
+            public string Name => string.Empty;
+            public DirectoryEntry Instance => null;
+            public void Dispose() { }
+            public object Invoke(string methodName, params object[] args) => null;
+        }
+#else
+        class NullDirectoryEntries : IDirectoryEntries
+        {
+            public object SchemaFilter => null;
+            public object Instance => null;
+            public System.Collections.IEnumerator GetEnumerator()
+            {
+                yield break;
+            }
+        }
+
+        class NullDirectoryEntry : IDirectoryEntry
+        {
+            public IDirectoryEntries Children => new NullDirectoryEntries();
+            public string SchemaClassName => string.Empty;
+            public string Name => string.Empty;
+            public object Instance => null;
+            public void Dispose() { }
+            public object Invoke(string methodName, params object[] args) => null;
+        }
+#endif
+	}
 }

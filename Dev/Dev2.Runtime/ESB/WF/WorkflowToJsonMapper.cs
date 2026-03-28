@@ -1,6 +1,8 @@
 ﻿using Dev2.Activities.WF;
+using Dev2.Common;
 using Dev2.Communication;
 using Newtonsoft.Json;
+using System;
 using System.Text;
 
 namespace Dev2.Runtime.ESB.WF
@@ -30,7 +32,7 @@ namespace Dev2.Runtime.ESB.WF
                     {
                         var json = MapToJson(requestInfo);
 
-                        finalresult.Message = new StringBuilder(json);
+                        finalresult.Message = new StringBuilder(json ?? string.Empty);
                     }
                     var serializer = new Dev2JsonSerializer();
                     request.ExecuteResult = serializer.SerializeToBuilder(finalresult);
@@ -45,11 +47,24 @@ namespace Dev2.Runtime.ESB.WF
         /// <returns></returns>
         public static string MapToJson(Common.X6.X6RequestInfo requestInfo)
         {
-            var builder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
-            if (builder == null) { return string.Empty; }
+            try
+            {
+                var activityXamlLength = requestInfo?.ActivityXaml?.Length ?? 0;
+                var builder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
+                if (builder == null)
+                {
+                    return string.Empty;
+                }
 
-            var graph = new WorkflowToX6Converter().ConvertToX6Json(builder, requestInfo.WorkflowXML);
-            return graph;
+                var converter = new WorkflowToX6Converter();
+                var graph = converter.ConvertToX6Json(builder, requestInfo.WorkflowXML);
+                return graph;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"MapToJson failed: {ex.Message}", ex, GlobalConstants.WarewolfError);
+                return string.Empty;
+            }
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Dev2.Data
             }                
             catch (Exception err)
             {
-                Dev2Logger.Warn(err.Message, "Warewolf Warn");
+                Dev2Logger.Warn(err, "Warewolf Warn");
             }
         }
 
@@ -165,7 +165,7 @@ namespace Dev2.Data
                 CheckIfBackupDirectoryExist(backupDirectory);
                 AuditDBFileProperties();
 
-                long fileSizeInBytes = new FileInfo(auditFilePath).Length;
+				long fileSizeInBytes = File.Exists(auditFilePath) ? new FileInfo(auditFilePath).Length : 0;
                 long fileSizeInMB = fileSizeInBytes / (1024 * 1024); // Convert bytes to megabytes
 
                 if (fileSizeInMB >= maxLogFileSize)
@@ -188,7 +188,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
@@ -204,7 +204,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
@@ -232,7 +232,7 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                Dev2Logger.Warn(ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn(ex, "Warewolf Warn");
                 _logger.Warn(ex.Message);
             }
         }
@@ -297,7 +297,7 @@ namespace Dev2.Data
             }
             catch (Exception err)
             {
-                Dev2Logger.Warn(err.Message, "Warewolf Warn");
+                Dev2Logger.Warn(err, "Warewolf Warn");
             }
         }
 

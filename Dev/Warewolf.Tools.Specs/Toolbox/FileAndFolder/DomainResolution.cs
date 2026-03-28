@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if NOTNANOSERVER
 using System.DirectoryServices.ActiveDirectory;
+#endif
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
 {
@@ -22,8 +24,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
                 return username;
             }
             username = username.Substring(domainSeperator);
-            Domain getDomain = null;
             string domainName = "";
+#if NOTNANOSERVER
+			Domain getDomain = null;
             try
             {
                 getDomain = Domain.GetComputerDomain();
@@ -36,6 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder
             {
                 domainName = getDomain.Name;
             }
+#endif
             return username.Insert(0, domainName);
         }
     }

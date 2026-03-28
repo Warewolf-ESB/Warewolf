@@ -133,7 +133,11 @@ namespace Dev2.Workspaces
 
         public Guid GetWorkspaceID(System.Security.Principal.WindowsIdentity identity)
         {
-            Guid workspaceID;
+			if (identity == null)
+			{
+				return Guid.NewGuid();
+			}
+			Guid workspaceID;
             try
             {
                 var userID = identity.Name;
@@ -152,7 +156,7 @@ namespace Dev2.Workspaces
             catch (Exception ex)
             {
                 workspaceID = ServerWorkspaceID;
-                Dev2Logger.Error(ex.Message, workspaceID.ToString());
+                Dev2Logger.Error(ex, workspaceID.ToString());
             }
             return workspaceID;
         }

@@ -109,7 +109,9 @@ namespace Dev2.Runtime.Hosting
 
         public IWarewolfWorkflow GetWorkflow(Guid workflowId)
         {
+            Dev2Logger.Debug($"GetWorkflow called for workflowId: {workflowId}", GlobalConstants.WarewolfError);
             var workflowContents = GetResourceContents(GlobalConstants.ServerWorkspaceID, workflowId);
+            Dev2Logger.Debug($"GetWorkflow: workflow contents length: {(workflowContents == null ? 0 : workflowContents.Length)} for workflowId: {workflowId}", GlobalConstants.WarewolfError);
             var result = new Workflow(workflowContents.ToXElement());
             return result;
         }
@@ -215,6 +217,7 @@ namespace Dev2.Runtime.Hosting
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Dev2Logger.Info($"[ResourceCatalog] LoadWorkspaceImpl: workspacePath='{workspacePath}' exists={Directory.Exists(workspacePath)}", GlobalConstants.WarewolfInfo);
             IList<IResource> userServices = new List<IResource>();
             if (Directory.Exists(workspacePath))
             {
@@ -225,6 +228,8 @@ namespace Dev2.Runtime.Hosting
             }
             var result = userServices.Union(ManagementServices.Values);
             var resources = result.ToList();
+            Dev2Logger.Info($"[ResourceCatalog] Loaded {resources.Count} resources from workspace {workspaceID}", GlobalConstants.WarewolfInfo);
+
 
             return resources;
         }
@@ -394,9 +399,11 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IResource> LoadExamplesViaBuilder(string releasePath)
         {
+            Dev2Logger.Debug($"LoadExamplesViaBuilder called for releasePath={releasePath}", GlobalConstants.WarewolfError);
             Builder = new ResourceCatalogBuilder();
             Builder.BuildReleaseExamples(releasePath);
             var resources = Builder.ResourceList;
+            Dev2Logger.Debug($"LoadExamplesViaBuilder: builder returned resource count={resources?.Count}", GlobalConstants.WarewolfError);
 
             return resources;
         }

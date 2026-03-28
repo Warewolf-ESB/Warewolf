@@ -9,13 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -23,12 +16,21 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -465,6 +467,85 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Value = Result
                 }
             };
+        }
+
+
+        /// <summary>
+        /// Serializes the DotNet DateTime activity to X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell to populate with DateTime data</param>
+        public virtual void ToX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell.data == null) cell.data = new Dictionary<string, object>();
+
+            // Call base implementation for common properties (OnError handling, etc.)
+            // Note: Base class doesn't have ToX6Json, so we handle common properties here
+
+            cell.shape = Constants.DSFDOTNETDATETIMEACTIVITY;
+            // Set the activity type
+            cell.data[Constants.TYPE] = Constants.DSFDOTNETDATETIMEACTIVITY.ToLower();
+            cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DOTNETDATETIME;
+
+            // Serialize DotNet DateTime specific properties
+            cell.data[Constants.DOTNETDATETIME_DATETIME] = DateTime ?? string.Empty;
+            cell.data[Constants.DOTNETDATETIME_INPUTFORMAT] = InputFormat ?? string.Empty;
+            cell.data[Constants.DOTNETDATETIME_OUTPUTFORMAT] = OutputFormat ?? string.Empty;
+            cell.data[Constants.DOTNETDATETIME_TIMEMODIFIERTYPE] = TimeModifierType ?? string.Empty;
+            cell.data[Constants.DOTNETDATETIME_TIMEMODIFIERAMOUNTDISPLAY] = TimeModifierAmountDisplay ?? string.Empty;
+            cell.data[Constants.DOTNETDATETIME_TIMEMODIFIERAMOUNT] = TimeModifierAmount;
+            cell.data[Constants.DOTNETDATETIME_RESULT] = Result ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Deserializes the DotNet DateTime activity from X6 JSON format
+        /// </summary>
+        /// <param name="cell">The X6 cell containing DateTime data</param>
+        public virtual void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            // Note: Base class doesn't have FromX6Json, so we handle common properties here
+
+            try
+            {
+                if (cell.data.TryGetString(Constants.DISPLAYNAME, out string displayName))
+                    this.DisplayName = displayName;
+
+                // Deserialize DotNet DateTime specific properties
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_DATETIME, out string dateTime))
+                    this.DateTime = dateTime;
+
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_INPUTFORMAT, out string inputFormat))
+                    this.InputFormat = inputFormat;
+
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_OUTPUTFORMAT, out string outputFormat))
+                    this.OutputFormat = outputFormat;
+
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_TIMEMODIFIERTYPE, out string timeModifierType))
+                    this.TimeModifierType = timeModifierType;
+
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_TIMEMODIFIERAMOUNTDISPLAY, out string timeModifierAmountDisplay))
+                    this.TimeModifierAmountDisplay = timeModifierAmountDisplay;
+
+                if (cell.data.TryGetInt(Constants.DOTNETDATETIME_TIMEMODIFIERAMOUNT, out int timeModifierAmount))
+                    this.TimeModifierAmount = timeModifierAmount;
+
+                if (cell.data.TryGetString(Constants.DOTNETDATETIME_RESULT, out string result))
+                    this.Result = result;
+
+                // Defensive initialization
+                DateTime ??= string.Empty;
+                InputFormat ??= string.Empty;
+                OutputFormat ??= string.Empty;
+                TimeModifierType ??= string.Empty;
+                TimeModifierAmountDisplay ??= string.Empty;
+                Result ??= string.Empty;
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't throw - graceful degradation
+                Dev2Logger.Error($"Error deserializing DotNet DateTime data from X6 JSON: {ex.Message}", ex, GlobalConstants.WarewolfError);
+            }
         }
 
 #pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067

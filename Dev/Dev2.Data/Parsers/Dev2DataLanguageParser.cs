@@ -159,7 +159,7 @@ namespace Dev2.Data.Parsers
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                    Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
                 }
             }
 
@@ -204,7 +204,7 @@ namespace Dev2.Data.Parsers
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
+                        Dev2Logger.Warn(e, GlobalConstants.WarewolfWarn);
                     }
                 }
 

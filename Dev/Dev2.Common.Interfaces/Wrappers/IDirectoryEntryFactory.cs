@@ -8,11 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.DirectoryServices;
-
 namespace Dev2.Common.Interfaces.Wrappers
 {
-    public interface IDirectoryEntryFactory
+	public interface IDirectoryEntryFactory
     {
         IDirectoryEntry Create(string path);
         IDirectoryEntry Create<T>(T member);
