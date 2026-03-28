@@ -19,7 +19,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
+    [DataContract]
     public class JsonPath : BasePath
     {
         #region Class Members

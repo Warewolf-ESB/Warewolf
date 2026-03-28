@@ -18,7 +18,6 @@ using Warewolf.Data;
 
 namespace Warewolf.Core
 {
-    [Serializable]
     public class ServiceInput : ObservableObject, IServiceInput, IEquatable<ServiceInput>
     {
         string _value;

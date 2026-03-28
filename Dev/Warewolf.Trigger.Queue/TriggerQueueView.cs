@@ -36,7 +36,6 @@ using Warewolf.Data;
 
 namespace Warewolf.Trigger.Queue
 {
-    [Serializable]
     public class TriggerQueueView : BindableBase
     {
         private string _triggerQueueName;

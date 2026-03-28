@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.DataList.Contract;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    [Serializable]
     public class BinaryDataListEntryBuilder
     {
         #region Fields

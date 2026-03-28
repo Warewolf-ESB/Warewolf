@@ -20,7 +20,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
     /// <summary>
     ///     Stores the information necessary to describe the shape of a data source
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class DataSourceShape : IDataSourceShape
     {
         #region Constructors

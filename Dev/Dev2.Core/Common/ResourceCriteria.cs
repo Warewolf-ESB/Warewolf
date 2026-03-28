@@ -9,25 +9,38 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Interfaces;
 using Warewolf.Data;
 
 namespace Dev2.Common
 {
-    [Serializable]
+    [DataContract]
     public class ResourceCriteria : IResourceCriteria
     {
+        [DataMember]
         public Guid ResourceID { get; set; }
+        [DataMember]
         public Guid WorkspaceId { get; set; }
+        [DataMember]
         public IVersionInfo VersionInfo { get; set; }
+        [DataMember]
         public string ResourceName { get; set; }
+        [DataMember]
         public string ResourceType { get; set; }
+        [DataMember]
         public string ResourcePath { get; set; }
+        [DataMember]
         public string FilePath { get; set; }
+        [DataMember]
         public string AuthorRoles { get; set; }
+        [DataMember]
         public bool IsUpgraded { get; set; }
+        [DataMember]
         public bool IsNewResource { get; set; }
+        [DataMember]
         public bool FetchAll { get; set; }
+        [DataMember]
         public string GuidCsv { get; set; }
     }
 }

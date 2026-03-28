@@ -23,7 +23,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
     public class JsonNavigator : NavigatorBase, INavigator
     {
         public JsonNavigator(object data) => Data = JToken.Parse(data.ToString());

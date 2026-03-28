@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
     public class ComPluginSource : Resource, IResourceSource, IComPlugin
     {
         #region CTOR

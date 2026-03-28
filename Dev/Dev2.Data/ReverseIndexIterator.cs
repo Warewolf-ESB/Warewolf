@@ -13,7 +13,6 @@ using System.Collections.Generic;
 
 namespace Dev2.Data.Binary_Objects
 {
-    [Serializable]
     public class ReverseIndexIterator : IIndexIterator
     {
         int _curValue;

@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
-    [Serializable]
+    [DataContract]
     public class PocoPath : BasePath
     {
         #region Class Members

@@ -14,8 +14,7 @@ using Dev2.Data.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    [Serializable]
-    public class Dev2Column 
+    public class Dev2Column
     {
 
         #region Properties

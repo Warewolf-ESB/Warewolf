@@ -17,8 +17,6 @@ namespace Dev2.Data.Interfaces.Enums {
     /// Status : New
     /// Purpose : To abstract IO endpoint types
     /// </summary>
-    [Serializable]
-
     public enum enActivityIOPathType {
 
         FileSystem,

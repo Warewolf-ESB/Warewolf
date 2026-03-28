@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    [Serializable]
+    [DataContract]
     public abstract class BasePath : IPath
     {
         #region Constructor

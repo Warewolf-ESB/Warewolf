@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Unlimited.Framework.Converters.Graph.Poco
 
 {
-    [Serializable]
     public class PocoMapper : IMapper
     {
         #region Constructors

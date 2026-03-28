@@ -18,7 +18,6 @@ namespace Dev2.Data.Binary_Objects
     /// <summary>
     /// Used to drive recordset lanaguage use
     /// </summary>
-    [Serializable]
     public class IndexIterator : IIndexIterator
     {
         private int _curValue;

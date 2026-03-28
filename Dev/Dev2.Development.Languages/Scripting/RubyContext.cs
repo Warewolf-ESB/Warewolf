@@ -90,7 +90,6 @@ namespace Dev2.Development.Languages.Scripting
         public enScriptType HandlesType() => enScriptType.Ruby;
 
         [AttributeUsage(AttributeTargets.Method)]
-        [Serializable]
         public sealed class OptionsAttribute : Attribute
         {
             public bool PrivateBinding { get; set; }
