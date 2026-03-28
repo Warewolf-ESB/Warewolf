@@ -307,7 +307,6 @@ namespace Dev2.Workspaces
 				return result;
 			}
 		}
-        }
 
 		#endregion
 

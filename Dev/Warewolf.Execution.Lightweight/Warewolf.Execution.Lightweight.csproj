@@ -116,6 +116,14 @@
     </Compile>
   </ItemGroup>
   
+  <Target Name="_EnsureExtensionsJsonExists" BeforeTargets="_FunctionsExtensionUpdateMetadata">
+    <MakeDir Directories="$(IntermediateOutputPath)WorkerExtensions\buildout\bin" />
+    <WriteLinesToFile
+        File="$(IntermediateOutputPath)WorkerExtensions\buildout\bin\extensions.json"
+        Lines='{"extensions":[]}'
+        Overwrite="false" />
+  </Target>
+
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />

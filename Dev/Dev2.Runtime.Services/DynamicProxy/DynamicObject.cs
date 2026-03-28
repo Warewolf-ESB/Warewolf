@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 using System;
 using System.Reflection;
@@ -78,3 +79,4 @@ namespace Dev2.Runtime.DynamicProxy
         }
     }
 }
+#endif
