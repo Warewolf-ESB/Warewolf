@@ -27,26 +27,84 @@
     Only used when creating a new app.
 
 .EXAMPLE
+    .\Deploy-ToAzure.ps1
+    Runs interactively — prompts for app name, resource group, and region.
+
+.EXAMPLE
     .\Deploy-ToAzure.ps1 -AppName "my-warewolf-server"
+    Prompts only for resource group and region (defaults shown in brackets).
 
 .EXAMPLE
     .\Deploy-ToAzure.ps1 -AppName "my-warewolf-server" -ResourceGroup "my-rg" -Location "westeurope"
+    Fully non-interactive.
 #>
 param(
-    [Parameter(Mandatory)]
+    [Parameter()]
     [string]$AppName,
 
     [Parameter()]
-    [string]$ResourceGroup = "$AppName-rg",
+    [string]$ResourceGroup,
 
     [Parameter()]
-    [string]$Location = 'eastus',
+    [string]$Location,
 
     [Parameter()]
-    [string]$StorageAccountName = (($AppName -replace '[^a-z0-9]', '') + 'sa').Substring(0, [Math]::Min(24, ($AppName -replace '[^a-z0-9]', '').Length + 2))
+    [string]$StorageAccountName
 )
 
 $ErrorActionPreference = 'Stop'
+
+function Prompt-WithDefault {
+    param([string]$Message, [string]$Default)
+    if ($Default) {
+        $input = Read-Host "$Message [$Default]"
+        if ([string]::IsNullOrWhiteSpace($input)) { return $Default }
+        return $input.Trim()
+    }
+    else {
+        do {
+            $input = Read-Host $Message
+        } while ([string]::IsNullOrWhiteSpace($input))
+        return $input.Trim()
+    }
+}
+
+if (-not $AppName)      { $AppName       = Prompt-WithDefault "Azure Functions app name (must be globally unique)" }
+if (-not $ResourceGroup){ $ResourceGroup = Prompt-WithDefault "Resource group" -Default "$AppName-rg" }
+if (-not $Location) {
+    $LocationSuggestions = [ordered]@{
+        'westindia'        = 'Ahmedabad / West India'
+        'uksouth'          = 'London / UK South'
+        'northeurope'      = 'Dublin / North Europe'
+        'southafricanorth' = 'Durban / South Africa North'
+        'eastus'           = 'East US'
+        'westeurope'       = 'Amsterdam / West Europe'
+        'centralindia'     = 'Pune / Central India'
+    }
+    Write-Host ""
+    Write-Host "Common Azure regions:"
+    $i = 1
+    foreach ($key in $LocationSuggestions.Keys) {
+        Write-Host "  [$i] $key  ($($LocationSuggestions[$key]))"
+        $i++
+    }
+    $LocationKeys = @($LocationSuggestions.Keys)
+    Write-Host ""
+    $LocationInput = Read-Host "Azure region — enter a number from the list, or type any region [eastus]"
+    if ([string]::IsNullOrWhiteSpace($LocationInput)) {
+        $Location = 'eastus'
+    }
+    elseif ($LocationInput -match '^\d+$' -and [int]$LocationInput -ge 1 -and [int]$LocationInput -le $LocationKeys.Count) {
+        $Location = $LocationKeys[[int]$LocationInput - 1]
+    }
+    else {
+        $Location = $LocationInput.Trim()
+    }
+    Write-Host "Using region: $Location"
+}
+if (-not $StorageAccountName) {
+    $StorageAccountName = (($AppName -replace '[^a-z0-9]', '') + 'sa').Substring(0, [Math]::Min(24, ($AppName -replace '[^a-z0-9]', '').Length + 2))
+}
 
 $ScriptDir = $PSScriptRoot
 
