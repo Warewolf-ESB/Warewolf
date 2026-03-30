@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -86,6 +86,15 @@
     <Compile Include="Dev2Column.cs" />
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\BaseConversionFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\ComplexFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\DateTimeFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\FinancialFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\InformationFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\MathFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\StringFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\NCalcExpressionBuilder.cs" />
+    <Compile Include="MathOperations\NCalc\NCalcFunctionArgHelper.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Parsers\XPathParserNetCore.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
@@ -209,6 +218,15 @@
     <Compile Include="MathOperations\Interfaces\IFunction.cs" />
     <Compile Include="MathOperations\Interfaces\IFunctionEvaluator.cs" />
     <Compile Include="MathOperations\MathOpsFactory.cs" />
+    <Compile Include="MathOperations\NCalc\NCalcExpressionBuilder.cs" />
+    <Compile Include="MathOperations\NCalc\NCalcFunctionArgHelper.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\BaseConversionFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\ComplexFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\DateTimeFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\FinancialFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\InformationFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\MathFunctions.cs" />
+    <Compile Include="MathOperations\NCalc\Functions\StringFunctions.cs" />
     <Compile Include="Operations\Dev2IndexFinder.cs" />
     <Compile Include="Operations\Dev2MergeOperations.cs" />
     <Compile Include="Operations\Dev2NumberFormatter.cs" />
@@ -327,6 +345,7 @@
     <None Include="Dev2.Data.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="NCalcSync" Version="5.12.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="RabbitMQ.Client">
       <Version>5.1.2</Version>

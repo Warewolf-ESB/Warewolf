@@ -15,6 +15,8 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 #if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
+#else
+using Dev2.MathOperations.NCalc;
 #endif
 using Warewolf.Resource.Errors;
 
@@ -60,6 +62,20 @@ namespace Dev2.MathOperations
                         evaluation = value.IsDateTime ? PerformEvaluation(value) : value.GetResolvedValue().ToString();
                         evaluationState = true;
                     }
+#else
+                    var ncalcExpr = NCalcExpressionBuilder.Build(expression);
+                    if (ncalcExpr.HasErrors())
+                    {
+                        error = ncalcExpr.Error?.Message ?? string.Empty;
+                    }
+                    else
+                    {
+                        var result = ncalcExpr.Evaluate();
+                        evaluation = result is DateTime dt
+                            ? PerformEvaluation(dt)
+                            : result?.ToString() ?? string.Empty;
+                        evaluationState = true;
+                    }
 #endif
                 }
                 catch (Exception ex)
@@ -99,6 +115,23 @@ namespace Dev2.MathOperations
             }
 
             return evaluation;
+        }
+#else
+        string PerformEvaluation(DateTime dateTime)
+        {
+            if (_functionEvaluatorOption == FunctionEvaluatorOption.DotNetDateTimeFormat)
+            {
+                return dateTime.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            }
+
+            var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+            var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+            var finalPattern = shortPattern + " " + longPattern;
+            if (finalPattern.Contains("ss"))
+            {
+                finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+            }
+            return dateTime.ToString(finalPattern);
         }
 #endif
     }
