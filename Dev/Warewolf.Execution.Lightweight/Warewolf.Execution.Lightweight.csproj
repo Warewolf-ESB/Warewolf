@@ -119,6 +119,17 @@
     </Compile>
   </ItemGroup>
   
+  <!-- When building via ServerTests.sln, Compile.ps1 sets /property:OutDir=... globally.
+       OutDir takes precedence over OutputPath, which causes the WorkerExtensions sub-project
+       to write to the flat solution output dir instead of the expected buildout\bin\ path,
+       breaking the EnhanceExtensionsMetadata task. Adding OutDir to the remove-list at
+       runtime (inside a target) ensures it is stripped before _WorkerExtensionsBuild fires. -->
+  <Target Name="_RemoveOutDirFromWorkerExtensionsBuild" BeforeTargets="_WorkerExtensionsBuild">
+    <PropertyGroup>
+      <_FunctionsExtensionRemoveProps>$(_FunctionsExtensionRemoveProps);OutDir</_FunctionsExtensionRemoveProps>
+    </PropertyGroup>
+  </Target>
+
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
