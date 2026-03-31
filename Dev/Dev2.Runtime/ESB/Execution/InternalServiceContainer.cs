@@ -153,6 +153,7 @@ namespace Dev2.Runtime.ESB.Execution
                     msg.SetMessage(ErrorResource.NotAuthorizedToAdministratorException);
                     break;
                 default:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToExecuteException);
                     Request.ExecuteResult = serializer.SerializeToBuilder(msg);
                     errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
                     break;

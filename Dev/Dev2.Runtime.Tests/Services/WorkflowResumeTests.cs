@@ -27,6 +27,7 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Moq;
+using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -358,8 +359,12 @@ namespace Dev2.Tests.Runtime.Services
             newDs = null;
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
 
+            var mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(a => a.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>())).Returns(true);
+
             var workflowResume = new WorkflowResume();
             workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
+            workflowResume.AuthorizationService = mockAuthService.Object;
             //------------Execute Test---------------------------
             var jsonResult = workflowResume.Execute(values, null);
             //------------Assert Results-------------------------
@@ -394,10 +399,14 @@ namespace Dev2.Tests.Runtime.Services
             var nullresourceCatalog = new Mock<IResourceCatalog>();
             nullresourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
 
+            var mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(a => a.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>())).Returns(true);
+
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
             workflowResume.ResourceCatalogInstance = nullresourceCatalog.Object;
+            workflowResume.AuthorizationService = mockAuthService.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
