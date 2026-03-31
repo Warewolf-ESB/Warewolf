@@ -183,7 +183,7 @@ namespace Dev2.Integration.Tests.TestCoverage
             var expectedHtmlStarter = "<div class=\"nav-bar-row\" style=\"Padding:10px 10px 20px 10px; Margin:5px; Font-Family:Roboto sans-serif; Font-Size:28px; Font-Weight:500; Display:inline-block; \">" + Environment.NewLine + "\t";
             TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
             var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.coverage");
-            Assert.IsTrue(result.StartsWith(ExpectedHtmlStarter + "Coverage Summary"), "Invalid html returned from coverage:\n" + result);
+            Assert.IsTrue(result.StartsWith(expectedHtmlStarter + "Coverage Summary:"), "Invalid html returned from coverage:\n" + result);
         }
         
         [TestMethod]
