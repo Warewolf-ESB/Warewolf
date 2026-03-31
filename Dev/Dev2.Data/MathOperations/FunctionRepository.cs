@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
+using Dev2.MathOperations.NCalc;
 using Dev2.Net6.Compatibility;
 #if WINDOWS || NETFRAMEWORK
 using Infragistics.Calculations;
@@ -106,6 +107,11 @@ namespace Dev2.MathOperations
                 foreach (CalculationFunction calcFunction in calcFunctions)
                 {
                     _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
+                }
+#else
+                foreach (var name in NCalcExpressionBuilder.RegisteredFunctionNames)
+                {
+                    _functions.Add(MathOpsFactory.CreateFunction(name.ToLowerInvariant(), new System.Collections.Generic.List<string>(), new System.Collections.Generic.List<string>(), string.Empty));
                 }
 #endif
             });

@@ -206,8 +206,17 @@ namespace Dev2.MathOperations.NCalc.Functions
         private static void Round(FunctionArgs args)
         {
             args.Parameters.RequireArgs(2, "ROUND");
+            var x = args.Parameters.D(0);
             var digits = args.Parameters.I32(1);
-            args.Result = Math.Round(args.Parameters.D(0), Math.Max(0, digits), MidpointRounding.AwayFromZero);
+            if (digits >= 0)
+            {
+                args.Result = Math.Round(x, digits, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                var factor = Math.Pow(10, -digits);
+                args.Result = Math.Round(x / factor, MidpointRounding.AwayFromZero) * factor;
+            }
         }
 
         private static void RoundDown(FunctionArgs args)
