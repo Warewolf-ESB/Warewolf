@@ -82,9 +82,28 @@ Write-Host "Starting Azure Functions host..."
 Write-Host "  func    : $FuncExe"
 Write-Host "  root    : $FuncDir"
 
+# Start-Process requires a Win32 executable as FilePath.
+# func is often a .ps1 or .cmd wrapper installed by npm, so we delegate to the
+# appropriate host process based on file extension.
+$ext = [System.IO.Path]::GetExtension($FuncExe).ToLower()
+switch ($ext) {
+    '.ps1' {
+        $StartFilePath = (Get-Command powershell.exe).Source
+        $StartArgs     = "-NoProfile -NoLogo -File `"$FuncExe`" start"
+    }
+    '.cmd' {
+        $StartFilePath = "$env:ComSpec"
+        $StartArgs     = "/c `"$FuncExe`" start"
+    }
+    default {
+        $StartFilePath = $FuncExe
+        $StartArgs     = "start"
+    }
+}
+
 $FuncProcess = Start-Process `
-    -FilePath $FuncExe `
-    -ArgumentList "start" `
+    -FilePath $StartFilePath `
+    -ArgumentList $StartArgs `
     -WorkingDirectory $FuncDir `
     -RedirectStandardOutput "$PSScriptRoot\TestResults\AzureFunctionOutput.txt" `
     -RedirectStandardError  "$PSScriptRoot\TestResults\AzureFunctionError.txt" `
