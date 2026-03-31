@@ -141,6 +141,13 @@ if (!$Ready) {
 }
 
 Write-Host "Azure Functions host is ready on http://localhost:7071"
+Write-Host "  pid     : $($FuncProcess.Id)"
+Write-Host "  exited  : $($FuncProcess.HasExited)"
+Write-Host "--- AzureFunctionOutput.txt (last 20 lines) ---"
+Get-Content "$PSScriptRoot\TestResults\AzureFunctionOutput.txt" -ErrorAction SilentlyContinue | Select-Object -Last 20 | ForEach-Object { Write-Host $_ }
+Write-Host "--- AzureFunctionError.txt (last 20 lines) ---"
+Get-Content "$PSScriptRoot\TestResults\AzureFunctionError.txt" -ErrorAction SilentlyContinue | Select-Object -Last 20 | ForEach-Object { Write-Host $_ }
+Write-Host "-----------------------------------------------"
 
 if (!$DoExit.IsPresent) {
     Get-Content "$PSScriptRoot\TestResults\AzureFunctionOutput.txt" -Wait
