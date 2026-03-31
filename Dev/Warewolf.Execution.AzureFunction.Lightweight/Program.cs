@@ -16,4 +16,7 @@ var host = new HostBuilder()
     })
     .Build();
 
+// Pre-load the workflow index so the first HTTP request pays no file-system cost.
+WorkflowIndex.Instance.WarmUp(workflowsDirectory);
+
 host.Run();
