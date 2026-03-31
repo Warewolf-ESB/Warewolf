@@ -1,11 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.IO;
 using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Logging;
-using Warewolf.Execution.AzureFunction.Lightweight;
-using Warewolf.Execution.AzureFunction.Lightweight.Logging;
 
 var workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
     ?? Path.Combine(AppContext.BaseDirectory, "Resources");
