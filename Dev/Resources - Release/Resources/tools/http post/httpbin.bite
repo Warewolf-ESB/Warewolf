@@ -1,0 +1,9 @@
+
+<Source ID="170a5a03-07b6-425c-a52d-eebf5b11dd24" Name="httpbin" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://httpbin.org;DefaultQuery=/post;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>httpbin</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-03-31T17:14:14.2533683+05:30" Reason="" User="CYGNET\spshah" VersionNumber="3" ResourceId="170a5a03-07b6-425c-a52d-eebf5b11dd24" VersionId="170a5a03-07b6-425c-a52d-eebf5b11dd24" />
+</Source>

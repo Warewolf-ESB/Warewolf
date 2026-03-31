@@ -21,14 +21,15 @@ using System.Xml.Linq;
 namespace Warewolf.Execution.AzureFunction.Lightweight
 {
     /// <summary>
-    /// Scans a resource directory for <see cref="DbSource"/> bite files and provides
-    /// on-demand access to individual sources via <see cref="IOnDemandSourceLoader"/>.
+    /// Scans a resource directory for <see cref="DbSource"/> and <see cref="WebSource"/> bite
+    /// files and provides on-demand access to individual sources via
+    /// <see cref="IOnDemandSourceLoader"/>.
     ///
     /// Design (minimum memory)
     /// ───────────────────────
     /// • <see cref="EnsureIndexed"/> reads ONLY the root-element attributes (ResourceID + Type)
     ///   of each .bite file via <see cref="XmlReader"/> — no <see cref="XElement"/> is loaded
-    ///   and no <see cref="DbSource"/> is constructed during the scan.
+    ///   and no source object is constructed during the scan.
     /// • <see cref="IOnDemandSourceLoader.EnsureSourceLoaded"/> loads and registers exactly
     ///   ONE source when first requested, caching it for subsequent lookups in the same
     ///   function instance.
@@ -44,9 +45,10 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
         private LightweightSourceLoader() { }
 
-        // Key = normalised directory path; Value = Lazy index: ResourceID → absolute file path.
+        // Key = normalised directory path.
+        // Value = Lazy index: ResourceID → (absolute file path, source type string e.g. "DbSource" / "WebSource").
         // Built from XmlReader root-element peeks only — no XElement bodies loaded.
-        private readonly ConcurrentDictionary<string, Lazy<IReadOnlyDictionary<Guid, string>>> _directoryIndices =
+        private readonly ConcurrentDictionary<string, Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>> _directoryIndices =
             new(StringComparer.OrdinalIgnoreCase);
 
         // Key = ResourceID; Value = Lazy<bool> — true once the source has been loaded from disk
@@ -71,7 +73,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
             var key = Path.GetFullPath(baseDirectory);
             _directoryIndices.GetOrAdd(key,
-                k => new Lazy<IReadOnlyDictionary<Guid, string>>(
+                k => new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
                     () => BuildFileIndex(k),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
@@ -79,10 +81,11 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
         }
 
         /// <summary>
-        /// Loads the single <see cref="DbSource"/> for <paramref name="sourceId"/> from disk
-        /// (if not already registered) and adds it to <see cref="ResourceCatalog.Instance"/>.
-        /// The <see cref="DbSource"/> object itself is not retained here — only a registration
-        /// flag is cached, so <see cref="ResourceCatalog"/> holds the sole strong reference.
+        /// Loads the single source (<see cref="DbSource"/> or <see cref="WebSource"/>) for
+        /// <paramref name="sourceId"/> from disk (if not already registered) and adds it to
+        /// <see cref="ResourceCatalog.Instance"/>.
+        /// The source object itself is not retained here — only a registration flag is cached,
+        /// so <see cref="ResourceCatalog"/> holds the sole strong reference.
         /// Subsequent calls for the same ID are no-ops (flag already set).
         /// </summary>
         bool IOnDemandSourceLoader.EnsureSourceLoaded(Guid sourceId)
@@ -102,31 +105,32 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
         // ── Private helpers ───────────────────────────────────────────────────────────────────────
 
-        private DbSource? ResolveFromIndex(Guid sourceId)
+        private IResource? ResolveFromIndex(Guid sourceId)
         {
             foreach (var (_, indexLazy) in _directoryIndices)
             {
-                if (indexLazy.Value.TryGetValue(sourceId, out var filePath))
-                    return LoadSourceFile(filePath);
+                if (indexLazy.Value.TryGetValue(sourceId, out var entry))
+                    return LoadSourceFile(entry.Path, entry.Type);
             }
             return null;
         }
 
         /// <summary>
         /// Scans <paramref name="directory"/> with <see cref="XmlReader"/> to build a
-        /// ResourceID → filePath mapping without loading any XElement bodies.
+        /// ResourceID → (filePath, sourceType) mapping without loading any XElement bodies.
+        /// Accepts both <c>DbSource</c> and <c>WebSource</c> type attributes.
         /// </summary>
-        private static IReadOnlyDictionary<Guid, string> BuildFileIndex(string directory)
+        private static IReadOnlyDictionary<Guid, (string Path, string Type)> BuildFileIndex(string directory)
         {
-            var index = new Dictionary<Guid, string>();
+            var index = new Dictionary<Guid, (string Path, string Type)>();
 
             if (!Directory.Exists(directory))
                 return index;
 
             foreach (var file in Directory.EnumerateFiles(directory, "*.bite", SearchOption.AllDirectories))
             {
-                if (TryPeekDbSourceId(file, out var id))
-                    index[id] = file;
+                if (TryPeekSourceId(file, out var id, out var sourceType))
+                    index[id] = (file, sourceType);
             }
 
             return index;
@@ -134,12 +138,13 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
 
         /// <summary>
         /// Opens <paramref name="filePath"/> with <see cref="XmlReader"/>, reads only the root
-        /// element, and returns the ResourceID when <c>Type="DbSource"</c>.
-        /// The remainder of the XML is never read.
+        /// element, and returns the ResourceID when <c>Type</c> is <c>DbSource</c> or
+        /// <c>WebSource</c>.  The remainder of the XML is never read.
         /// </summary>
-        private static bool TryPeekDbSourceId(string filePath, out Guid id)
+        private static bool TryPeekSourceId(string filePath, out Guid id, out string sourceType)
         {
             id = Guid.Empty;
+            sourceType = string.Empty;
             try
             {
                 var settings = new XmlReaderSettings
@@ -157,12 +162,18 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
                     if (reader.NodeType != XmlNodeType.Element)
                         continue;
 
-                    if (!string.Equals(reader.GetAttribute("Type"), "DbSource",
-                            StringComparison.OrdinalIgnoreCase))
-                        return false; // root element is not a DbSource — stop reading
+                    var typeAttr = reader.GetAttribute("Type") ?? string.Empty;
+                    if (!string.Equals(typeAttr, "DbSource", StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(typeAttr, "WebSource", StringComparison.OrdinalIgnoreCase))
+                        return false; // root element is not a supported source type — stop reading
 
                     var idStr = reader.GetAttribute("ResourceID") ?? reader.GetAttribute("ID");
-                    return idStr != null && Guid.TryParse(idStr, out id) && id != Guid.Empty;
+                    if (idStr != null && Guid.TryParse(idStr, out id) && id != Guid.Empty)
+                    {
+                        sourceType = typeAttr;
+                        return true;
+                    }
+                    return false;
                 }
             }
             catch
@@ -173,12 +184,14 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             return false;
         }
 
-        private static DbSource? LoadSourceFile(string filePath)
+        private static IResource? LoadSourceFile(string filePath, string sourceType)
         {
             try
             {
                 var xe = XElement.Load(filePath);
-                var source = new DbSource(xe);
+                IResource source = string.Equals(sourceType, "WebSource", StringComparison.OrdinalIgnoreCase)
+                    ? new WebSource(xe)
+                    : new DbSource(xe);
                 return source.ResourceID != Guid.Empty ? source : null;
             }
             catch
@@ -187,7 +200,7 @@ namespace Warewolf.Execution.AzureFunction.Lightweight
             }
         }
 
-        private static void RegisterSingle(DbSource source)
+        private static void RegisterSingle(IResource source)
         {
             var resources = ResourceCatalog.Instance.WorkspaceResources
                 .GetOrAdd(GlobalConstants.ServerWorkspaceID, _ => new List<IResource>());
