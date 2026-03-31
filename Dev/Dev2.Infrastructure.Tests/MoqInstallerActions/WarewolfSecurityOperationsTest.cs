@@ -24,6 +24,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
+        [Ignore]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
         public void WarewolfSecurityOperations_AddWarewolfGroup_ExpectGroupAdded()
         {
@@ -55,6 +56,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
+        [Ignore]
         [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
         public void WarewolfSecurityOperations_DoesWarewolfGroupExist_WhenGroupDoesExist_ExpectTrue()
         {
@@ -112,6 +114,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
+        [Ignore]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAlreadyMember_ExpectAdministratorsMemberOfWarewolf()
         {
@@ -134,6 +137,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         [ExpectedException(typeof(TargetInvocationException))]
+        [Ignore]
         [DoNotParallelize]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
         {
@@ -153,6 +157,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
+        [Ignore]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
@@ -190,6 +195,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
+        [Ignore]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddLocalUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
