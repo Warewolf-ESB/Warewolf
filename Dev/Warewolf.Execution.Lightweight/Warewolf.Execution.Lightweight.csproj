@@ -1,0 +1,143 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- ========================================================= -->
+  <!-- CORE CONFIGURATION -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+
+    <RootNamespace>Warewolf.Execution.Lightweight</RootNamespace>
+    <AssemblyName>Warewolf.Execution.Lightweight</AssemblyName>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>true</EnableDefaultItems>
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- SIZE OPTIMIZATION (CRITICAL FOR AZURE) -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+
+    <!-- Prevent 200MB publish -->
+    <SelfContained>false</SelfContained>
+
+    <!-- Prevent native EXE host creation -->
+    <UseAppHost>false</UseAppHost>
+
+    <!-- NEVER embed runtime -->
+    <RuntimeIdentifier></RuntimeIdentifier>
+
+    <!-- Azure already provides runtime -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+
+    <!-- Reduce dependency duplication -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <!-- Reduce globalization payload -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+
+    <!-- Functions optimization -->
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- FASTEST STARTUP SETTINGS -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+
+    <!-- Faster CLR warmup -->
+    <TieredCompilation>true</TieredCompilation>
+    <TieredPGO>true</TieredPGO>
+
+    <!-- Reduce startup IO -->
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- AZURE FUNCTIONS PACKAGES -->
+  <!-- ========================================================= -->
+  <ItemGroup>
+
+    <PackageReference Include="Microsoft.Azure.Functions.Worker"
+                      Version="1.23.0" />
+
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http"
+                      Version="3.2.0" />
+
+    <!-- Analyzer only (IMPORTANT) -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk"
+                      Version="1.18.1"
+                      OutputItemType="Analyzer"
+                      PrivateAssets="all" />
+
+    <PackageReference Include="Newtonsoft.Json"
+                      Version="13.0.3" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- WAREWOLF / DEV2 REFERENCES -->
+  <!-- ========================================================= -->
+  <ItemGroup>
+
+    <!-- Activity + execution engine -->
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj" />
+
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- OPTIONAL CONTENT COPYING -->
+  <!-- ========================================================= -->
+  
+  <ItemGroup>
+    <Content Include="..\Resources - Release\Resources\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+    <Content Include="Deploy-ToAzure.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StartAsAzureFunction.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  
+  <!-- When building via ServerTests.sln, Compile.ps1 sets /property:OutDir=... globally.
+       OutDir takes precedence over OutputPath, which causes the WorkerExtensions sub-project
+       to write to the flat solution output dir instead of the expected buildout\bin\ path,
+       breaking the EnhanceExtensionsMetadata task. Adding OutDir to the remove-list at
+       runtime (inside a target) ensures it is stripped before _WorkerExtensionsBuild fires. -->
+  <Target Name="_RemoveOutDirFromWorkerExtensionsBuild" BeforeTargets="_WorkerExtensionsBuild">
+    <PropertyGroup>
+      <_FunctionsExtensionRemoveProps>$(_FunctionsExtensionRemoveProps);OutDir</_FunctionsExtensionRemoveProps>
+    </PropertyGroup>
+  </Target>
+
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+</Project>

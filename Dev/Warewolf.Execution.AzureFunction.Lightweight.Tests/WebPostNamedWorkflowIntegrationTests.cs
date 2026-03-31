@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Warewolf.Execution.AzureFunction.Lightweight.Tests
+namespace Warewolf.Execution.Lightweight.Tests
 {
     /// <summary>
     /// Integration tests for the named workflow bite files:

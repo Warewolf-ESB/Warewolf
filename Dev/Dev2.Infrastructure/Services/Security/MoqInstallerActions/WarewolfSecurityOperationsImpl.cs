@@ -33,10 +33,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         // http://ss64.com/nt/syntax-security_groups.html
 
+        /// <summary>
+        /// Adds the local "Warewolf Administrators" group to the machine.
+        /// </summary>
+        /// <remarks>
+        /// Uses the WinNT provider to create a group entry with a description.
+        /// </remarks>
         public void AddWarewolfGroup()
 		{
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             { 
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -46,24 +52,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 }
 			}
 #endif
-
-			/// <summary>
-			/// Adds the local "Warewolf Administrators" group to the machine.
-			/// </summary>
-			/// <remarks>
-			/// Uses the WinNT provider to create a group entry with a description.
-			/// </remarks>
 		}
 
 		/// <summary>
 		/// Determines whether the "Warewolf Administrators" group exists on the local machine.
 		/// </summary>
 		/// <returns><c>true</c> if the group exists; otherwise <c>false</c>.</returns>
-
 		public bool DoesWarewolfGroupExist()
 		{
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
 			{
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -73,44 +71,23 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         return true;
                     }
                 }
-
-				/// <summary>
-				/// Checks whether the specified user is a member of the "Warewolf Administrators" group.
-				/// </summary>
-				/// <param name="username">User name to check. May include domain (e.g. "DOMAIN\User").</param>
-				/// <returns><c>true</c> if the user is a member of the group; otherwise <c>false</c>.</returns>
-				/// <exception cref="ArgumentNullException">Thrown when <paramref name="username"/> is null or empty.</exception>
 			}
 #endif
-
-			/// <summary>
-			/// Adds the specified user to the "Warewolf Administrators" group.
-			/// </summary>
-			/// <param name="currentUser">A WinNT-style user path or name (e.g. "DOMAIN/User" or ".\\User").</param>
-			/// <exception cref="ArgumentNullException">Thrown when <paramref name="currentUser"/> is null or empty.</exception>
-
 			return false;
         }
 
         /// <summary>
-        /// Adds the local built-in "Administrators" group to the "Warewolf Administrators" group.
+        /// Checks whether the specified user is a member of the "Warewolf Administrators" group.
         /// </summary>
-        /// <remarks>
-        /// This effectively makes all local administrators members of the Warewolf Administrators group.
-        /// </remarks>
-
+        /// <param name="username">User name to check. May include domain (e.g. "DOMAIN\User").</param>
+        /// <returns><c>true</c> if the user is a member of the group; otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="username"/> is null or empty.</exception>
         public bool IsUserInGroup(string username)
         {
-
             if(string.IsNullOrEmpty(username))
             {
                 throw new ArgumentNullException(nameof(username));
             }
-
-        /// <summary>
-        /// Determines whether the local "Administrators" group is a member of the "Warewolf Administrators" group.
-        /// </summary>
-        /// <returns><c>true</c> if the Administrators group is a member; otherwise <c>false</c>.</returns>
 
             var theUser = username;
             var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
@@ -119,12 +96,8 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 theUser = username.Substring((domainChar + 1));
             }
 
-			/// <summary>
-			/// Deletes the "Warewolf Administrators" group from the local machine.
-			/// </summary>
-
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -168,7 +141,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             }
 
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -189,7 +162,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         public void AddAdministratorsGroupToWarewolf()
 		{
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -210,7 +183,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         public bool IsAdminMemberOfWarewolf()
         {
 #if NOTNANOSERVER
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -246,7 +219,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         public void DeleteWarewolfGroup()
 		{
 #if NOTNANOSERVER
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
             {
                 using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -263,6 +236,13 @@ namespace Dev2.Services.Security.MoqInstallerActions
 #endif
         }
 
+        /// <summary>
+        /// Formats a user name into a WinNT path suitable for adding to a group (for example: "WinNT://DOMAIN/User,user").
+        /// </summary>
+        /// <param name="currentUser">The input user name, which may include a domain ("DOMAIN\User").</param>
+        /// <param name="machineName">The local machine name to use when no domain is present.</param>
+        /// <returns>A WinNT formatted user path string that can be passed to DirectoryEntry group membership methods.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentUser"/> or <paramref name="machineName"/> is null or empty.</exception>
         public string FormatUserForInsert(string currentUser, string machineName)
         {
             if(string.IsNullOrEmpty(currentUser))
@@ -296,13 +276,5 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
             return userPath;
         }
-
-        /// <summary>
-        /// Formats a user name into a WinNT path suitable for adding to a group (for example: "WinNT://DOMAIN/User,user").
-        /// </summary>
-        /// <param name="currentUser">The input user name, which may include a domain ("DOMAIN\User").</param>
-        /// <param name="machineName">The local machine name to use when no domain is present.</param>
-        /// <returns>A WinNT formatted user path string that can be passed to DirectoryEntry group membership methods.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentUser"/> or <paramref name="machineName"/> is null or empty.</exception>
     }
 }

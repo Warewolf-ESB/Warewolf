@@ -76,47 +76,44 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
 
-            using (var catalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices()))
+            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+
+            if (dynamicService is null)
             {
-                var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-
-                if (dynamicService is null)
+                return new ExecuteMessage
                 {
-                    return new ExecuteMessage
-                    {
-                        HasError = true,
-                        Message = new StringBuilder(
-                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
-                    };
-                }
-
-                var sa = dynamicService.Actions.FirstOrDefault();
-                if (sa is null)
-                {
-                    return new ExecuteMessage
-                    {
-                        HasError = true,
-                        Message = new StringBuilder(
-                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
-                    };
-                }
-
-                var workspace = new Workspace(Guid.NewGuid());
-                var container =
-                    CustomContainer.Get<IResumableExecutionContainerFactory>()
-                        ?.New(startActivityId, sa, dataObject, workspace) ??
-                    CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
-                        workspace);
-
-                container.Execute(out ErrorResultTO errors, 0);
-                if (errors.HasErrors())
-                {
-                    return new ExecuteMessage
-                        { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
-                }
-
-                return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
+                    HasError = true,
+                    Message = new StringBuilder(
+                        $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                };
             }
+
+            var sa = dynamicService.Actions.FirstOrDefault();
+            if (sa is null)
+            {
+                return new ExecuteMessage
+                {
+                    HasError = true,
+                    Message = new StringBuilder(
+                        $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                };
+            }
+
+            var workspace = new Workspace(Guid.NewGuid());
+            var container =
+                CustomContainer.Get<IResumableExecutionContainerFactory>()
+                    ?.New(startActivityId, sa, dataObject, workspace) ??
+                CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
+                    workspace);
+
+            container.Execute(out ErrorResultTO errors, 0);
+            if (errors.HasErrors())
+            {
+                return new ExecuteMessage
+                    { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+            }
+
+            return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
 
         public IResourceCatalog ResourceCatalogInstance

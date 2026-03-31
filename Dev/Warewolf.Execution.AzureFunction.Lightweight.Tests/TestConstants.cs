@@ -1,4 +1,4 @@
-namespace Warewolf.Execution.AzureFunction.Lightweight.Tests
+namespace Warewolf.Execution.Lightweight.Tests
 {
     internal static class TestConstants
     {

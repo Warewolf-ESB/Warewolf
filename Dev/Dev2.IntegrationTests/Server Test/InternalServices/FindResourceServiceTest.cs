@@ -10,6 +10,7 @@
 
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -54,8 +55,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
-            Assert.IsNotNull(json);
+            var token = JsonConvert.DeserializeObject<JToken>(result);
+            var json = token as JArray ?? (JArray)((JObject)token)?["$values"];
+            Assert.IsNotNull(json, "Expected a JSON array but got: " + result);
         }
 
         [TestMethod]
@@ -87,8 +89,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
-            Assert.IsNotNull(json);
+            var token = JsonConvert.DeserializeObject<JToken>(result);
+            var json = token as JArray ?? (JArray)((JObject)token)?["$values"];
+            Assert.IsNotNull(json, "Expected a JSON array but got: " + result);
         }
 
         [TestMethod]
@@ -99,8 +102,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
-            Assert.IsNotNull(json);
+            var token = JsonConvert.DeserializeObject<JToken>(result);
+            var json = token as JArray ?? (JArray)((JObject)token)?["$values"];
+            Assert.IsNotNull(json, "Expected a JSON array but got: " + result);
         }
 
         [TestMethod]
@@ -111,8 +115,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             var result = TestHelper.PostDataToWebserver(path);
 
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JArray>(result);
-            Assert.IsNotNull(json);
+            var token = JsonConvert.DeserializeObject<JToken>(result);
+            var json = token as JArray ?? (JArray)((JObject)token)?["$values"];
+            Assert.IsNotNull(json, "Expected a JSON array but got: " + result);
         }
     }
 }

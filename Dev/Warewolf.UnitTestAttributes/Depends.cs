@@ -181,7 +181,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.Elasticsearch || _containerType == ContainerType.AnonymousElasticsearch)
             {
-                Container.IP = "4.221.39.39";
+                Container.IP = "localhost";
                 Container.Port = "9200";
             }
             else if (_containerType == ContainerType.PostGreSQL)
