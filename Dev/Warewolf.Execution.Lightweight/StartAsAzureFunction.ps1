@@ -1,4 +1,4 @@
-Param(
+﻿Param(
   [switch]$DoExit,
   [string]$ResourcesPath,
   [string]$FunctionPath,
@@ -8,9 +8,9 @@ Param(
   [int]$PollIntervalSec = 5
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Pipeline Logging Helpers
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 function Write-PipelineSection ([string]$Message) {
     Write-Host ""
@@ -43,14 +43,14 @@ function Fail-Pipeline ([string]$Message) {
     exit 1
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: 1. Kill any existing func host processes (-Cleanup switch)
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 if ($Cleanup.IsPresent) {
     Write-PipelineSection "Cleanup: stopping existing func processes..."
@@ -64,14 +64,14 @@ if ($Cleanup.IsPresent) {
     }
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: 2. Kill any stale process occupying the target port
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Checking port $Port availability..."
 
@@ -81,7 +81,7 @@ if ($IsLinux) {
     # Linux: use lsof to find and kill whatever owns the port
     $stalePids = & bash -c "lsof -ti tcp:$Port 2>/dev/null"
     if ($stalePids) {
-        Write-PipelineWarning "Port $Port is in use by PID(s): $stalePids — killing..."
+        Write-PipelineWarning "Port $Port is in use by PID(s): $stalePids - killing..."
         & bash -c "kill -9 $stalePids 2>/dev/null"
         Start-Sleep 2
         Write-Host "Port $Port cleared."
@@ -93,7 +93,7 @@ if ($IsLinux) {
     $netstatLine = netstat -ano | Select-String ":$Port\s+.*LISTENING"
     if ($netstatLine) {
         $stalePid = ($netstatLine -split '\s+')[-1]
-        Write-PipelineWarning "Port $Port is in use by PID $stalePid — killing..."
+        Write-PipelineWarning "Port $Port is in use by PID $stalePid - killing..."
         try {
             Stop-Process -Id $stalePid -Force -ErrorAction Stop
             Start-Sleep 2
@@ -106,14 +106,14 @@ if ($IsLinux) {
     }
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: 3. Install Azure Functions Core Tools v4 via npm if missing
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Checking Azure Functions Core Tools (func)..."
 
@@ -125,7 +125,7 @@ if ($FuncCommand) {
     $FuncVer = & func --version 2>&1
     Write-Host "func already installed: $FuncExe (v$FuncVer)"
 } else {
-    Write-Host "func not found — installing azure-functions-core-tools@4 via npm..."
+    Write-Host "func not found - installing azure-functions-core-tools@4 via npm..."
 
     $npmCommand = Get-Command "npm" -ErrorAction SilentlyContinue
     if (-not $npmCommand) {
@@ -141,7 +141,7 @@ if ($FuncCommand) {
     # Re-resolve after install
     $FuncCommand = Get-Command "func" -ErrorAction SilentlyContinue
     if (-not $FuncCommand) {
-        # npm global bin may not yet be in PATH — try to add it dynamically
+        # npm global bin may not yet be in PATH - try to add it dynamically
         $npmGlobalBin = & npm bin -g 2>/dev/null
         if ($npmGlobalBin -and (Test-Path "$npmGlobalBin/func")) {
             $env:PATH = "$npmGlobalBin$([System.IO.Path]::PathSeparator)$env:PATH"
@@ -158,14 +158,14 @@ if ($FuncCommand) {
     Write-Host "func installed successfully: $FuncExe (v$FuncVer)"
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Resolve host.json directory
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Resolving Function project directory..."
 
@@ -181,22 +181,22 @@ if ($FunctionPath -and (Test-Path "$FunctionPath\host.json")) {
 
 Write-Host "Function directory: $FuncDir"
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# region: Pre-flight — verify required assemblies are present
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
+# region: Pre-flight - verify required assemblies are present
+# -----------------------------------------------------------------------------
 #
 # The dotnet-isolated worker process is spawned by the func host and probes
 # for its dependencies in $FuncDir.  If any required assembly is absent the
 # worker crashes immediately with a FileNotFoundException and the host enters
-# an infinite restart loop — burning the entire timeout with no useful output.
+# an infinite restart loop - burning the entire timeout with no useful output.
 # Catching this here gives a fast, actionable failure instead.
 #
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Pre-flight: checking required assemblies in '$FuncDir'..."
 
@@ -221,14 +221,14 @@ if ($missingAssemblies.Count -gt 0) {
         "Ensure each is an explicit <PackageReference> in the project file so MSBuild copies it to the output directory.")
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Copy workflow resources if requested
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 if ($ResourcesPath) {
     Write-PipelineSection "Copying resources from '$ResourcesPath'..."
@@ -247,27 +247,27 @@ if ($ResourcesPath) {
     }
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Ensure TestResults directory exists
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 if (!(Test-Path "$PSScriptRoot\TestResults")) {
     New-Item -ItemType Directory "$PSScriptRoot\TestResults" | Out-Null
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Resolve how to invoke func (handles .ps1 / .cmd / .exe wrappers)
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Starting Azure Functions host..."
 
@@ -284,7 +284,7 @@ Write-Host "  timeout : ${TimeoutSeconds}s"
 
 # Start-Process requires a Win32 executable as FilePath.
 # func is often a .ps1 or .cmd wrapper installed by npm on Windows;
-# on Linux it is a plain binary — switch on extension accordingly.
+# on Linux it is a plain binary - switch on extension accordingly.
 $ext = [System.IO.Path]::GetExtension($FuncExe).ToLower()
 switch ($ext) {
     '.ps1' {
@@ -311,26 +311,26 @@ $FuncProcess = Start-Process `
     -PassThru
 
 if (-not $FuncProcess) {
-    Fail-Pipeline "Start-Process did not return a process object — func failed to launch."
+    Fail-Pipeline "Start-Process did not return a process object - func failed to launch."
 }
 
 Write-Host "func host launched. PID: $($FuncProcess.Id)"
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# region: 4. Wait for host to be ready — HTTP health probe with timeout
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
+# region: 4. Wait for host to be ready - HTTP health probe with timeout
+# -----------------------------------------------------------------------------
 #
 # We use /admin/host/ping (returns HTTP 200 only when the host is fully
 # initialised and ready to serve requests) rather than a raw TCP probe.
 # A TCP connect can succeed briefly while the host is still loading or
 # crashing, producing a false-positive that causes all tests to fail.
 #
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 Write-PipelineSection "Waiting for Azure Functions host to be ready on port $Port (timeout: ${TimeoutSeconds}s)..."
 
@@ -347,17 +347,17 @@ while ($elapsed -lt $TimeoutSeconds -and !$Ready) {
         Fail-Pipeline "Azure Functions host exited unexpectedly after ${elapsed}s (exit code $($FuncProcess.ExitCode))."
     }
 
-    # HTTP health probe — only 200 means the host is fully ready
+    # HTTP health probe - only 200 means the host is fully ready
     try {
         $response = Invoke-WebRequest -Uri $pingUrl -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop
         if ($response.StatusCode -eq 200) {
             $Ready = $true
-            Write-Host "  [${elapsed}s] $pingUrl → $($response.StatusCode) ✅"
+            Write-Host "  [${elapsed}s] $pingUrl -> $($response.StatusCode) [OK]"
         } else {
-            Write-Host "  [${elapsed}s] $pingUrl → $($response.StatusCode) (not ready yet)"
+            Write-Host "  [${elapsed}s] $pingUrl -> $($response.StatusCode) (not ready yet)"
         }
     } catch {
-        Write-Host "  [${elapsed}s] $pingUrl — not ready yet: $($_.Exception.Message)"
+        Write-Host "  [${elapsed}s] $pingUrl - not ready yet: $($_.Exception.Message)"
     }
 }
 
@@ -365,17 +365,17 @@ if (!$Ready) {
     Fail-Pipeline "Azure Functions host did not respond on $pingUrl within ${TimeoutSeconds}s."
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# region: Success — print summary
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
+# region: Success - print summary
+# -----------------------------------------------------------------------------
 
 Write-Host ""
-Write-Host "##[section]Azure Functions host is ready ✅"
+Write-Host "##[section]Azure Functions host is ready [OK]"
 Write-Host "  url     : http://localhost:$Port"
 Write-Host "  pid     : $($FuncProcess.Id)"
 Write-Host "  elapsed : ${elapsed}s"
@@ -388,19 +388,19 @@ Write-Host "--- AzureFunctionError.txt (last 20 lines) ---"
 Get-Content "$PSScriptRoot\TestResults\AzureFunctionError.txt"  -ErrorAction SilentlyContinue | Select-Object -Last 20 | ForEach-Object { Write-Host $_ }
 Write-Host "-----------------------------------------------"
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # region: Tail log (interactive / non-pipeline mode)
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 if (!$DoExit.IsPresent) {
     Get-Content "$PSScriptRoot\TestResults\AzureFunctionOutput.txt" -Wait
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # endregion
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
