@@ -83,6 +83,9 @@
                       OutputItemType="Analyzer"
                       PrivateAssets="all" />
 
+    <PackageReference Include="Google.Protobuf"
+                      Version="3.25.2" />
+
     <PackageReference Include="Newtonsoft.Json"
                       Version="13.0.3" />
 
