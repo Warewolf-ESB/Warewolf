@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Warewolf.Execution.AzureFunction.Lightweight
+namespace Warewolf.Execution.Lightweight
 {
     /// <summary>
     /// Build-time pre-computed index of workflow files.
