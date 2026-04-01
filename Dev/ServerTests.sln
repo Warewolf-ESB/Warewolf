@@ -249,7 +249,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AI.Harness", "Ware
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight", "Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj", "{31E13761-67F6-6ACF-BF5C-91041EE5E614}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight.Tests", "Warewolf.Execution.AzureFunction.Lightweight.Tests\Warewolf.Execution.Lightweight.Tests.csproj", "{60B91018-7E60-60C6-D6A6-9928B768CB10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight.Tests", "Warewolf.Execution.Lightweight.Tests\Warewolf.Execution.Lightweight.Tests.csproj", "{60B91018-7E60-60C6-D6A6-9928B768CB10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

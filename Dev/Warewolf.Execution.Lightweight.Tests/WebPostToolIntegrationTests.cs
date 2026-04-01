@@ -23,7 +23,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC005_PostJsonBody_MapsName_Returns_Alice.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Name", out var prop), $"Expected 'Name' in response: {json}");
             Assert.AreEqual("Alice", prop.GetString(), $"Expected Name == 'Alice'. Full response: {json}");
@@ -36,7 +36,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC012_PostJsonBody_MapsUrl_Returns_HttpbinPost.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Url", out var prop), $"Expected 'Url' in response: {json}");
             Assert.AreEqual(TestConstants.HttpbinPostUrl, prop.GetString(), $"Expected Url == '{TestConstants.HttpbinPostUrl}'. Full response: {json}");
@@ -49,7 +49,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC013_PostJsonBody_MapsHost_Returns_HttpbinOrg.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Host", out var prop), $"Expected 'Host' in response: {json}");
             Assert.AreEqual(TestConstants.HttpbinHost, prop.GetString(), $"Expected Host == '{TestConstants.HttpbinHost}'. Full response: {json}");
@@ -62,7 +62,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC014_PostJsonBody_MapsContentType_Returns_ApplicationJson.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("ContentType", out var prop), $"Expected 'ContentType' in response: {json}");
             Assert.AreEqual("application/json", prop.GetString(), $"Expected ContentType == 'application/json'. Full response: {json}");
@@ -75,7 +75,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC026_PostToAnything_MapsUrl_Returns_HttpbinAnything.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Url", out var prop), $"Expected 'Url' in response: {json}");
             Assert.AreEqual(TestConstants.HttpbinAnythingUrl, prop.GetString(), $"Expected Url == '{TestConstants.HttpbinAnythingUrl}'. Full response: {json}");
@@ -88,7 +88,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC031_PostJsonBody_MapsCity_Country_Method.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("City", out var city), $"Expected 'City' in response: {json}");
             Assert.AreEqual("Paris", city.GetString(), $"Expected City == 'Paris'. Full response: {json}");
@@ -103,7 +103,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC051_PostWithQueryParam_MapsSearch_Returns_Warewolf.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Search", out var prop), $"Expected 'Search' in response: {json}");
             Assert.AreEqual("warewolf", prop.GetString(), $"Expected Search == 'warewolf'. Full response: {json}");
@@ -116,7 +116,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC052_PostWithMultipleQueryParams_MapsArgX_And_ArgY.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("ArgX", out var argX), $"Expected 'ArgX' in response: {json}");
             Assert.AreEqual("10", argX.ToString(), $"Expected ArgX == '10'. Full response: {json}");
@@ -131,7 +131,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC053_PostWithCustomHeader_MapsRequestId_Returns_ReqAbc789.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("RequestId", out var prop), $"Expected 'RequestId' in response: {json}");
             Assert.AreEqual("req-abc-789", prop.GetString(), $"Expected RequestId == 'req-abc-789'. Full response: {json}");
@@ -144,7 +144,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC054_PostWithFourOutputs_MapsAll_Returns_CorrectValues.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("A", out var a), $"Expected 'A' in response: {json}");
             Assert.AreEqual("alpha", a.GetString(), $"Expected A == 'alpha'. Full response: {json}");
@@ -163,7 +163,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC055_PostWithQueryAndBody_MapsMode_And_Item.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Mode", out var mode), $"Expected 'Mode' in response: {json}");
             Assert.AreEqual("test", mode.GetString(), $"Expected Mode == 'test'. Full response: {json}");
@@ -178,7 +178,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC056_PostToAnythingWithQuery_MapsAction_Form_Method.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Action", out var action), $"Expected 'Action' in response: {json}");
             Assert.AreEqual("submit", action.GetString(), $"Expected Action == 'submit'. Full response: {json}");
@@ -195,7 +195,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC057_PostEmptyBody_MapsMethod_Returns_POST.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Method", out var prop), $"Expected 'Method' in response: {json}");
             Assert.AreEqual("POST", prop.GetString(), $"Expected Method == 'POST'. Full response: {json}");
@@ -208,7 +208,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC058_PostWithCustomHeaderAndBody_MapsTraceId_And_Level.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("TraceId", out var traceId), $"Expected 'TraceId' in response: {json}");
             Assert.AreEqual("trace-42", traceId.GetString(), $"Expected TraceId == 'trace-42'. Full response: {json}");
@@ -223,7 +223,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC059_PostFormData_MapsSingleTextField_Returns_Alice.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormName", out var prop), $"Expected 'FormName' in response: {json}");
             Assert.AreEqual("alice", prop.GetString(), $"Expected FormName == 'alice'. Full response: {json}");
@@ -236,7 +236,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC060_PostFormData_MapsMultipleTextFields_Returns_ParisFrance.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormCity", out var city), $"Expected 'FormCity' in response: {json}");
             Assert.AreEqual("Paris", city.GetString(), $"Expected FormCity == 'Paris'. Full response: {json}");
@@ -251,7 +251,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC061_PostFormData_MapsTextField_And_Url.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormTag", out var tag), $"Expected 'FormTag' in response: {json}");
             Assert.AreEqual("endpoint", tag.GetString(), $"Expected FormTag == 'endpoint'. Full response: {json}");
@@ -266,7 +266,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC062_PostUrlEncoded_MapsSingleField_Returns_Widget.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("UrlProduct", out var prop), $"Expected 'UrlProduct' in response: {json}");
             Assert.AreEqual("widget", prop.GetString(), $"Expected UrlProduct == 'widget'. Full response: {json}");
@@ -279,7 +279,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC063_PostUrlEncoded_MapsMultipleFields_Returns_10And20.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("UrlX", out var x), $"Expected 'UrlX' in response: {json}");
             Assert.AreEqual("10", x.ToString(), $"Expected UrlX == '10'. Full response: {json}");
@@ -294,7 +294,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC064_PostUrlEncoded_MapsField_And_Method.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("UrlStatus", out var status), $"Expected 'UrlStatus' in response: {json}");
             Assert.AreEqual("active", status.GetString(), $"Expected UrlStatus == 'active'. Full response: {json}");
@@ -309,7 +309,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC065_PostJsonBody_IsObject_Returns_FullResponse.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Response", out var responseProp), $"Expected 'Response' object in response: {json}");
             
@@ -317,7 +317,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             JsonElement responseObj;
             if (responseProp.ValueKind == JsonValueKind.String)
             {
-                responseObj = JsonDocument.Parse(responseProp.GetString()).RootElement;
+                responseObj = JsonDocument.Parse(responseProp.GetString()!).RootElement;
             }
             else
             {
@@ -336,7 +336,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC066_PostFormData_IsObject_Returns_FullResponse.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormResponse", out var responseProp), $"Expected 'FormResponse' object in response: {json}");
             
@@ -344,7 +344,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             JsonElement responseObj;
             if (responseProp.ValueKind == JsonValueKind.String)
             {
-                responseObj = JsonDocument.Parse(responseProp.GetString()).RootElement;
+                responseObj = JsonDocument.Parse(responseProp.GetString()!).RootElement;
             }
             else
             {
@@ -363,7 +363,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             var response = await _client.GetAsync($"{BaseUrl}/TC067_PostFormData_FileAttachment_MapsFilesData_Returns_HelloWorld.json");
             var json = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FileContent", out var prop), $"Expected 'FileContent' in response: {json}");
             Assert.AreEqual("hello world", prop.GetString(), $"Expected FileContent == 'hello world'. Full response: {json}");
