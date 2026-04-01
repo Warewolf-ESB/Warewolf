@@ -200,17 +200,33 @@ Write-Host "Function directory: $FuncDir"
 
 Write-PipelineSection "Pre-flight: checking required assemblies in '$FuncDir'..."
 
+# Each entry is @{ File = "name.dll"; MinVersion = [version]"x.y.z.w" }
+# MinVersion is the minimum acceptable assembly version (inclusive).
 $RequiredAssemblies = @(
-    "Google.Protobuf.dll"
+    @{ File = "Google.Protobuf.dll"; MinVersion = [version]"3.25.2.0" }
 )
 
-$missingAssemblies = @()
-foreach ($asm in $RequiredAssemblies) {
-    if (Test-Path "$FuncDir\$asm") {
-        Write-Host "  [OK] $asm"
+$missingAssemblies  = @()
+$wrongVersionAsms   = @()
+
+foreach ($req in $RequiredAssemblies) {
+    $path = "$FuncDir\$($req.File)"
+
+    if (-not (Test-Path $path)) {
+        Write-PipelineError "  [MISSING] $($req.File)"
+        $missingAssemblies += $req.File
+        continue
+    }
+
+    $asmName  = [System.Reflection.AssemblyName]::GetAssemblyName($path)
+    $actual   = $asmName.Version
+    $required = $req.MinVersion
+
+    if ($actual -lt $required) {
+        Write-PipelineError ("  [WRONG VERSION] $($req.File) — found $actual, need >= $required")
+        $wrongVersionAsms += "$($req.File) (found $actual, need >= $required)"
     } else {
-        Write-PipelineError "  [MISSING] $asm"
-        $missingAssemblies += $asm
+        Write-Host "  [OK] $($req.File) — $actual"
     }
 }
 
@@ -219,6 +235,13 @@ if ($missingAssemblies.Count -gt 0) {
         ($missingAssemblies -join ", ") +
         ".  The dotnet-isolated worker cannot start without them.  " +
         "Ensure each is an explicit <PackageReference> in the project file so MSBuild copies it to the output directory.")
+}
+
+if ($wrongVersionAsms.Count -gt 0) {
+    Fail-Pipeline ("One or more assemblies in '$FuncDir' are the wrong version: " +
+        ($wrongVersionAsms -join "; ") +
+        ".  Another project in the solution is likely overwriting the correct DLL with an older transitive copy.  " +
+        "Pin the required version in Directory.Build.props so every project resolves the same version.")
 }
 
 # -----------------------------------------------------------------------------
