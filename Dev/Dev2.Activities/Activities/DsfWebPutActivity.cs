@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -63,6 +64,14 @@ namespace Dev2.Activities
             var (head, query, putData) = ConfigureHttp(dataObject, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            if (url == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources
+                       .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    url = ws.OfType<WebSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
             var webRequestResult = PerformWebRequest(head, query, url, putData);
 
             var bytes = webRequestResult.Base64StringToByteArray();

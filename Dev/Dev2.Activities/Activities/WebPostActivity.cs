@@ -21,6 +21,7 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
@@ -153,6 +154,14 @@ namespace Dev2.Activities
                 var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
 
                 var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+                if (source == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        source = ws.OfType<WebSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+                }
 
                 if (IsFormDataChecked)
                 {
