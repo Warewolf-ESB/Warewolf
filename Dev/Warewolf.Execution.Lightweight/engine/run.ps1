@@ -95,7 +95,6 @@ Write-Host "docker run -d `
     -p ${DebuggerPort}:4024 `
     --name $ContainerName `
     -e FUNCTIONS_WORKER_RUNTIME=dotnet-isolated `
-    -e AzureWebJobsStorage=UseDevelopmentStorage=false `
     -e ASPNETCORE_ENVIRONMENT=Development `
     $FullImageName"
 	
