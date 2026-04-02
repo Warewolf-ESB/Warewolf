@@ -55,10 +55,14 @@ namespace Dev2.Activities
                     return;
                 }
 
+                //if (!IsObject && OutputDescription != null
+                //    && OutputDescription.DataSourceShapes.Count == 1 && (OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath)
+                //    || (input.Contains("\\\"") && OutputDescription.DataSourceShapes[0].Paths.All(a => a is JsonPath))))
+                //{
                 if (!IsObject && OutputDescription != null
                     && OutputDescription.DataSourceShapes.Count == 1 && (OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath)
-                    || (input.Contains("\\\"") && OutputDescription.DataSourceShapes[0].Paths.All(a => a is JsonPath))))
-                {
+                    || (input.Contains("\\\"") && !input.TrimStart().StartsWith("{") && !input.TrimStart().StartsWith("[") && OutputDescription.DataSourceShapes[0].Paths.All(a => a is JsonPath))))
+                { 
                     var serviceOutputMapping = Outputs.First();
                     if (serviceOutputMapping != null)
                     {
