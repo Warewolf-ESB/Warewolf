@@ -71,20 +71,14 @@
   <!-- ========================================================= -->
   <ItemGroup>
 
-    <PackageReference Include="Microsoft.Azure.Functions.Worker"
-                      Version="1.23.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.23.0" />
 
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http"
-                      Version="3.2.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
 
     <!-- Analyzer only (IMPORTANT) -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk"
-                      Version="1.18.1"
-                      OutputItemType="Analyzer"
-                      PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
 
-    <PackageReference Include="Newtonsoft.Json"
-                      Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
   </ItemGroup>
 
@@ -117,7 +111,50 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <!--<None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>-->
+    <None Include="Scripts\Generate-WorkflowIndex.ps1" />
   </ItemGroup>
+
+  <!-- ========================================================= -->
+  <!-- WORKFLOW INDEX GENERATION -->
+  <!-- Generate workflow-index.json from the Resources directory  -->
+  <!-- so ResolveFilePath can do an O(1) lookup with no disk I/O. -->
+  <!-- ========================================================= -->
+  <Target Name="GenerateWorkflowIndex" AfterTargets="Build">
+    <PropertyGroup>
+      <!-- Source Resources directory (relative to project) -->
+      <_ResourcesSourceDir>$(MSBuildProjectDirectory)\..\Resources - Release\Resources</_ResourcesSourceDir>
+      <!-- Index is generated into the source tree so the Content glob picks it up on -->
+      <!-- future builds and the normal CopyToOutputDirectory / Publish mechanisms     -->
+      <!-- carry it to the output and publish directories automatically.               -->
+      <_IndexSourcePath>$(_ResourcesSourceDir)\workflow-index.json</_IndexSourcePath>
+      <_ScriptPath>$(MSBuildProjectDirectory)\Scripts\Generate-WorkflowIndex.ps1</_ScriptPath>
+    </PropertyGroup>
+
+    <!-- Run the PowerShell script to enumerate resources and emit the index. -->
+    <!-- ContinueOnError: if PowerShell is unavailable the build still succeeds -->
+    <!-- and ResolveFilePath falls back to its existing disk-based resolution.  -->
+    <Exec
+      Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;"
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+      ContinueOnError="true" />
+
+    <!-- Copy the newly generated index to the output directory immediately so it  -->
+    <!-- is present on the very first build (before the Content glob can pick it  -->
+    <!-- up on a subsequent build).                                                 -->
+    <Copy
+      SourceFiles="$(_IndexSourcePath)"
+      DestinationFiles="$(OutDir)Resources\workflow-index.json"
+      SkipUnchangedFiles="true"
+      ContinueOnError="true"
+      Condition="Exists('$(_IndexSourcePath)')" />
+  </Target>
   
   <!-- When building via ServerTests.sln, Compile.ps1 sets /property:OutDir=... globally.
        OutDir takes precedence over OutputPath, which causes the WorkerExtensions sub-project

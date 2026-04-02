@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -44,6 +45,16 @@ namespace Warewolf.Execution.Lightweight
     public class WorkflowExecutor : IWorkflowExecutor
     {
         readonly IExecutionLogger _executionLogger;
+
+        // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
+        // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
+        // immutable within a single function deployment, so caching by normalised file path is
+        // safe.  DynamicActivity is the compiled definition (not an execution instance) — all
+        // runtime state flows through DsfDataObject — so sharing across concurrent requests is
+        // thread-safe.  ActivityParser.Parse() is called fresh each time to get a new IDev2Activity
+        // chain; only the expensive XAML compilation step is avoided on cache hits.
+        private static readonly ConcurrentDictionary<string, DynamicActivity> _dynamicActivityCache =
+            new(StringComparer.OrdinalIgnoreCase);
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
         {
@@ -123,8 +134,9 @@ namespace Warewolf.Execution.Lightweight
                     };
                 }
 
-                // Step 3: Load XAML into a DynamicActivity
-                var dynamicActivity = LoadDynamicActivity(xamlDefinition);
+                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path —
+                // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
+                var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
 
                 if (dynamicActivity == null)
                 {
@@ -244,23 +256,12 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Step 1: Read the workflow resource XML file from disk.
+        /// One allocation via <see cref="File.ReadAllText"/> instead of a per-line
+        /// <see cref="StringBuilder"/> growth loop; XML/XAML parsers are insensitive
+        /// to blank lines so the earlier filtering pass is not needed.
         /// </summary>
         internal static StringBuilder ReadWorkflowFile(string filePath)
-        {
-            var contents = new StringBuilder();
-            using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-            using var reader = new StreamReader(stream);
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                if (!string.IsNullOrEmpty(line))
-                {
-                    contents.Append(line);
-                    contents.Append(Environment.NewLine);
-                }
-            }
-            return contents;
-        }
+            => new StringBuilder(File.ReadAllText(filePath));
 
         /// <summary>
         /// Step 2: Parse the resource XML to extract the XAML definition and DataList.
@@ -322,6 +323,16 @@ namespace Warewolf.Execution.Lightweight
             var activity = ActivityXamlServices.Load(xamlStream);
             return activity as DynamicActivity;
         }
+
+        /// <summary>
+        /// Returns the <see cref="DynamicActivity"/> for <paramref name="filePath"/> from the
+        /// process-level cache, compiling it from <paramref name="xamlDefinition"/> on first access.
+        /// Subsequent calls for the same path skip <see cref="ActivityXamlServices.Load"/> entirely.
+        /// </summary>
+        internal static DynamicActivity GetOrLoadDynamicActivity(string filePath, StringBuilder xamlDefinition)
+            => _dynamicActivityCache.GetOrAdd(
+                Path.GetFullPath(filePath),
+                _ => LoadDynamicActivity(xamlDefinition));
 
         /// <summary>
         /// Step 5: Build DsfDataObject and map input parameters into the execution environment.

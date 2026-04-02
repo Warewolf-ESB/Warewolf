@@ -85,7 +85,9 @@ namespace Warewolf.Execution.Lightweight
                 var (xamlDefinition, _, _) = WorkflowExecutor.ExtractWorkflowParts(fileContents);
                 if (xamlDefinition != null)
                 {
-                    var activity = WorkflowExecutor.LoadDynamicActivity(xamlDefinition);
+                    // Use the process-level cache: sub-workflow XAML is compiled at most once
+                    // per unique file path regardless of how many parent workflows call it.
+                    var activity = WorkflowExecutor.GetOrLoadDynamicActivity(subWorkflowPath, xamlDefinition);
                     var startActivity = new ActivityParser().Parse(activity);
                     if (startActivity != null)
                     {

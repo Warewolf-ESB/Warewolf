@@ -30,6 +30,7 @@ using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
@@ -200,7 +201,17 @@ namespace Dev2.Activities
                 var parametersIteratorCollection = BuildParametersIteratorCollection(dataObject.Environment, out IWarewolfIterator batchItr, out IWarewolfIterator timeoutItr, update);
 
                 var currentOptions = BuildSqlBulkCopyOptions();
+
                 var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
+
+                if (runtimeDatabase == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(Database.ResourceID) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        runtimeDatabase = ws.OfType<DbSource>().FirstOrDefault(r => r.ResourceID == Database.ResourceID);
+                }
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
