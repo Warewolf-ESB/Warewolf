@@ -73,7 +73,7 @@ if (-not (Test-Path $DockerfilePath)) {
     Abort "Dockerfile not found: $DockerfilePath"
 }
 
-docker build -f $DockerfilePath -t $FullImageName $BuildContext
+docker build --platform linux/amd64 -f $DockerfilePath -t $FullImageName $BuildContext
 
 if ($LASTEXITCODE -ne 0) {
     Abort "docker build failed with exit code $LASTEXITCODE"
