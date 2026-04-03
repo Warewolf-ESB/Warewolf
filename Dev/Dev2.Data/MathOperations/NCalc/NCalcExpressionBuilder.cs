@@ -62,6 +62,11 @@ namespace Dev2.MathOperations.NCalc
         }
 
         /// <summary>
+        /// Returns the names of all registered custom function handlers.
+        /// </summary>
+        internal static IEnumerable<string> RegisteredFunctionNames => Handlers.Keys;
+
+        /// <summary>
         /// Builds a ready-to-evaluate <see cref="Expression"/> for the given formula string.
         /// </summary>
         /// <param name="expression">Raw formula (may contain Excel-style <c>&amp;</c> concatenation).</param>

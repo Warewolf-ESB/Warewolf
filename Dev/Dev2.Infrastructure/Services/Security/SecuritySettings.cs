@@ -70,7 +70,7 @@ namespace Dev2.Services.Security
 
         static SecuritySettingsTO ProcessSettingsFile(IResourceNameProvider resourceNameProvider, string encryptedData)
         {
-            var decryptData = SecurityEncryption.Decrypt(encryptedData);
+            var decryptData = SecurityEncryption.TryDecrypt(encryptedData);
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
 
             var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);

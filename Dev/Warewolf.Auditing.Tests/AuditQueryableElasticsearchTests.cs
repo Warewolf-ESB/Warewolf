@@ -83,7 +83,7 @@ namespace Warewolf.Auditing.Tests
             var match_all = new JObject
             {
                 ["$id"] = "1",
-                ["$type"] = "Elastic.Clients.Elasticsearch.SearchRequestDescriptor`1[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
+                ["$type"] = "Elastic.Clients.Elasticsearch.SearchRequestDescriptor`1[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"
 			};
 
             Assert.AreEqual(match_all.ToString(), auditQueryable.Query);

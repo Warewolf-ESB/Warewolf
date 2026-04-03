@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>Warewolf.Execution.AzureFunction.Lightweight.Tests</RootNamespace>
-    <AssemblyName>Warewolf.Execution.AzureFunction.Lightweight.Tests</AssemblyName>
+    <RootNamespace>Warewolf.Execution.Lightweight.Tests</RootNamespace>
+    <AssemblyName>Warewolf.Execution.Lightweight.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

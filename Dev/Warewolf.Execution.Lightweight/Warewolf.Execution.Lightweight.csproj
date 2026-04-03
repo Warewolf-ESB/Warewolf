@@ -78,7 +78,11 @@
     <!-- Analyzer only (IMPORTANT) -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
 
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Google.Protobuf"
+                      Version="3.25.2" />
+
+    <PackageReference Include="Newtonsoft.Json"
+                      Version="13.0.3" />
 
   </ItemGroup>
 
@@ -106,6 +110,9 @@
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
     <Content Include="Deploy-ToAzure.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StartAsAzureFunction.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -155,6 +162,7 @@
       ContinueOnError="true"
       Condition="Exists('$(_IndexSourcePath)')" />
   </Target>
+  
   
   <!-- When building via ServerTests.sln, Compile.ps1 sets /property:OutDir=... globally.
        OutDir takes precedence over OutputPath, which causes the WorkerExtensions sub-project

@@ -25,7 +25,8 @@ param(
   [switch] $STA,
   [switch] $StartSFTPServer,
   [string] $StartMSSQLServer,
-  [switch] $StartMySQLServer
+  [switch] $StartMySQLServer,
+  [switch] $StartElasticsearchServer
 )
 function Start-FTPServer {
 	if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
@@ -176,6 +177,9 @@ function Start-SFTPServer {
 function Start-MySQLServer {
 	docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing
 }
+function Start-ElasticsearchServer {
+	docker run -d -p 9200:9200 --name elasticsearch-connector-testing registry.gitlab.com/warewolf/anonymous-elasticsearch-connector-testing
+}
 if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
 	choco install sql-server-2022 -y
     [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
@@ -268,7 +272,7 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent -and !$StartMySQLServer.IsPresent) {
+if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent -and !$StartMySQLServer.IsPresent -and !$StartElasticsearchServer.IsPresent) {
 	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
 		if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
@@ -346,6 +350,9 @@ if ($Projects.Length -gt 0) {
 		}
 		if ($StartMySQLServer.IsPresent) {
 			Start-MySQLServer
+		}
+		if ($StartElasticsearchServer.IsPresent) {
+			Start-ElasticsearchServer
 		}
 		if ($RetryRebuild.IsPresent) {
 			if (Test-Path "$PWD\..\..\Compile.ps1") {
@@ -519,6 +526,10 @@ if ($Projects.Length -gt 0) {
 			docker logs mysql-connector-testing
 			docker rm -f mysql-connector-testing
 		}
+		if ($StartElasticsearchServer.IsPresent) {
+			docker logs elasticsearch-connector-testing
+			docker rm -f elasticsearch-connector-testing
+		}
 	}
 } else {
 	if ($StartFTPServer.IsPresent) {
@@ -532,6 +543,9 @@ if ($Projects.Length -gt 0) {
 	}
 	if ($StartMySQLServer.IsPresent) {
 		Start-MySQLServer
+	}
+	if ($StartElasticsearchServer.IsPresent) {
+		Start-ElasticsearchServer
 	}
 }
 if ($Coverage.IsPresent) {

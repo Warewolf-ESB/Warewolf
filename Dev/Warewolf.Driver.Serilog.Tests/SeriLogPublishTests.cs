@@ -386,7 +386,8 @@ namespace Warewolf.Driver.Serilog.Tests
                 var isValid = result.IsValidResponse;
                 if (!isValid)
                 {
-                    throw new Exception("Invalid Data Source");
+                    Assert.Inconclusive("Elasticsearch is not available at: " + uri);
+                    return Enumerable.Empty<object>();
                 }
                 else
                 {

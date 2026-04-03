@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Docker (Azure Functions)": {
+      "commandName": "Executable",
+      "executablePath": "powershell.exe",
+      "commandLineArgs": "-ExecutionPolicy Bypass -NoProfile -File engine\\run.ps1",
+      "workingDirectory": "."
+    }
+  }
+}
