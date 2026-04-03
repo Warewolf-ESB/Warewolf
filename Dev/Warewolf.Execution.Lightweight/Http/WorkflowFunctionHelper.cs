@@ -67,10 +67,10 @@ namespace Warewolf.Execution.Lightweight
         public static WorkflowExecutionRequest CreateRequest(
             string workflowFilePath,
             Dictionary<string, string> inputs = null) => new()
-        {
-            WorkflowFilePath = workflowFilePath,
-            InputParameters = inputs ?? new Dictionary<string, string>()
-        };
+            {
+                WorkflowFilePath = workflowFilePath,
+                InputParameters = inputs ?? new Dictionary<string, string>()
+            };
 
         /// <summary>
         /// Creates a request by resolving a workflow name to a file in the given directory.
@@ -218,7 +218,7 @@ namespace Warewolf.Execution.Lightweight
         {
             if (!string.IsNullOrWhiteSpace(request.WorkflowFilePath))
             {
-                request.WorkflowFilePath = request.WorkflowFilePath.Replace('/', Path.DirectorySeparatorChar);
+                request.WorkflowFilePath = NormalizeSeparators(request.WorkflowFilePath);
                 return;
             }
 
@@ -227,15 +227,98 @@ namespace Warewolf.Execution.Lightweight
                 return;
             }
 
-            var fileName = request.WorkflowName.Replace('/', Path.DirectorySeparatorChar);
+            var fileName = NormalizeSeparators(request.WorkflowName);
+
+            // Fast path: O(1) index lookup built at compile time — no disk I/O per request.
+            var indexPath = WorkflowIndex.Instance.Resolve(workflowsDirectory, StripKnownExtension(fileName));
+            if (indexPath != null)
+            {
+                request.WorkflowFilePath = indexPath;
+                return;
+            }
+
+            var fileDirectory = Path.GetDirectoryName(Path.Combine(workflowsDirectory, fileName))
+                                ?? workflowsDirectory;
+            var baseName = Path.GetFileName(fileName);
+
             if (!fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)
                 && !fileName.EndsWith(".bite", StringComparison.OrdinalIgnoreCase))
             {
-                var bitePath = Path.Combine(workflowsDirectory, fileName + ".bite");
-                fileName += File.Exists(bitePath) ? ".bite" : ".xml";
+                if (!Directory.Exists(fileDirectory))
+                {
+                    // Workflows directory absent — construct the default path without a disk hit.
+                    request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName + ".xml");
+                    return;
+                }
+
+                // On Linux the FS is case-sensitive: "hello World" must resolve to
+                // "Hello World.bite". Prefer .bite; fall back to .xml.
+                var resolved = FindFileCaseInsensitive(fileDirectory, baseName + ".bite")
+                            ?? FindFileCaseInsensitive(fileDirectory, baseName + ".xml");
+                if (resolved != null)
+                {
+                    request.WorkflowFilePath = resolved;
+                    return;
+                }
+
+                // File not found on disk — default to .xml (preserves original behaviour).
+                request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName + ".xml");
+                return;
             }
 
-            request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName);
+            // Extension already present — resolve the actual on-disk casing if possible.
+            request.WorkflowFilePath = FindFileCaseInsensitive(fileDirectory, baseName)
+                                    ?? Path.Combine(workflowsDirectory, fileName);
+        }
+
+        /// <summary>
+        /// Strips a trailing <c>.xml</c> or <c>.bite</c> extension so the result
+        /// can be used as an index key that matches regardless of which file format
+        /// is on disk.
+        /// </summary>
+        static string StripKnownExtension(string fileName) =>
+            fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)  ? fileName[..^4] :
+            fileName.EndsWith(".bite", StringComparison.OrdinalIgnoreCase) ? fileName[..^5] :
+            fileName;
+
+        // Reused per call — avoids allocating a new EnumerationOptions on every lookup.
+        static readonly EnumerationOptions _caseInsensitiveOptions = new()
+        {
+            MatchCasing = MatchCasing.CaseInsensitive,
+            RecurseSubdirectories = false,
+        };
+
+        /// <summary>
+        /// Normalises both Windows (<c>\</c>) and Unix (<c>/</c>) directory separators to
+        /// <see cref="Path.DirectorySeparatorChar"/>.
+        /// On Linux this converts any Windows-style backslashes sent by clients on other
+        /// platforms; on Windows it converts forward slashes to backslashes.
+        /// A bare <c>.Replace('/', sep)</c> is insufficient on Linux because a backslash
+        /// is a valid filename character there and would not be treated as a separator.
+        /// </summary>
+        static string NormalizeSeparators(string path) =>
+            path.Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar);
+
+        /// <summary>
+        /// Returns the full path of the first file in <paramref name="directory"/> whose name
+        /// matches <paramref name="fileName"/> using a case-insensitive comparison, or
+        /// <c>null</c> when no match is found or the directory does not exist.
+        /// <para>
+        /// Uses <see cref="EnumerationOptions.MatchCasing"/> so the exact filename is passed as
+        /// the search pattern — the runtime stops as soon as the first match is yielded rather
+        /// than enumerating every file in the directory.
+        /// Required on Linux where the file system is case-sensitive and the workflow name in
+        /// the request URL may differ in casing from the file on disk.
+        /// </para>
+        /// </summary>
+        static string FindFileCaseInsensitive(string directory, string fileName)
+        {
+            if (!Directory.Exists(directory))
+                return null;
+
+            return Directory.EnumerateFiles(directory, fileName, _caseInsensitiveOptions)
+                            .FirstOrDefault();
         }
     }
 }

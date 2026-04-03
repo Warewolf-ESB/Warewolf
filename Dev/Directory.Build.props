@@ -17,6 +17,17 @@
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
+  <!-- Pin Google.Protobuf to 3.25.2 solution-wide.
+       MySql.Data 8.4.0 brings in Google.Protobuf 3.25.1 as a transitive dependency.
+       When all projects share a flat OutDir the 3.25.1 DLL from MySql.Data consumers
+       overwrites the 3.25.2 DLL that Warewolf.Execution.Lightweight requires, causing the
+       dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on startup
+       (strong-named assembly version 3.25.2.0 is not found because only 3.25.1.0 is present).
+       Setting the minimum version here forces every project's NuGet resolution to 3.25.2. -->
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
+  </ItemGroup>
+
   <!-- Prevent parallel build of the temporary WPF projects to avoid file locks and isolate their output paths -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
     <BuildInParallel>false</BuildInParallel>

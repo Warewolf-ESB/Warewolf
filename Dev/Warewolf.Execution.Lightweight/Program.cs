@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.IO;
 using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Logging;
 
@@ -17,6 +15,9 @@ var host = new HostBuilder()
         services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
     })
     .Build();
+
+// Pre-load the workflow index so the first HTTP request pays no file-system cost.
+WorkflowIndex.Instance.WarmUp(workflowsDirectory);
 
 host.Run();
 
