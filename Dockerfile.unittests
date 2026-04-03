@@ -1,0 +1,30 @@
+# Test runner image for Warewolf unit tests.
+#
+# Base image is the exact Azure Functions .NET 8 isolated runtime used in production,
+# so tests execute in the same environment they will run in after release.
+# The base image ships only the runtime; the .NET 8 SDK is added here to supply
+# the dotnet-vstest test host that drives MSTest assemblies.
+#
+# Usage: see Invoke-UnitTestsInContainer.ps1
+
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice
+
+# Install the .NET 8 SDK using the official install script.
+# This is distribution-agnostic and installs the SDK alongside the existing runtime
+# under /usr/share/dotnet without disturbing any files the base image owns.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh \
+    && chmod +x /tmp/dotnet-install.sh \
+    && /tmp/dotnet-install.sh --channel 8.0 --install-dir /usr/share/dotnet \
+    && rm /tmp/dotnet-install.sh
+
+# Clear the ENTRYPOINT and CMD inherited from the Azure Functions base image.
+# Without this, the Functions host starts when the container runs and intercepts
+# the dotnet vstest arguments instead of letting them execute directly.
+ENTRYPOINT []
+CMD []
+
+# Test assemblies are mounted at runtime by Invoke-UnitTestsInContainer.ps1.
+WORKDIR /tests
