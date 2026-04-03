@@ -696,7 +696,6 @@ Global
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
