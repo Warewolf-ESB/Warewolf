@@ -4,15 +4,16 @@
 # ============================================================
 
 # ── Configuration ───────────────────────────────────────────
-$ProjectFile    = "$PSScriptRoot\..\Warewolf.Execution.Lightweight.csproj"
-$PublishDir     = "$PSScriptRoot\publish"
-$DockerfilePath = "$PSScriptRoot\docker\Dockerfile"
-$BuildContext   = $PSScriptRoot
-$ImageName      = "executionengine"
-$ImageTag       = "debug"
-$ContainerName  = "ExecutionEngine_debug"
-$HostPort       = 7071
-$DebuggerPort   = 4024
+$ProjectFile     = "$PSScriptRoot\..\Warewolf.Execution.Lightweight.csproj"
+$PublishDir      = "$PSScriptRoot\publish"
+$TestPublishDir  = "$PSScriptRoot\publish-tests"
+$DockerfilePath  = "$PSScriptRoot\docker\Dockerfile"
+$BuildContext    = $PSScriptRoot
+$ImageName       = "executionengine"
+$ImageTag        = "debug"
+$ContainerName   = "ExecutionEngine_debug"
+$HostPort        = 7071
+$DebuggerPort    = 4024
 # ────────────────────────────────────────────────────────────
 
 $FullImageName = "${ImageName}:${ImageTag}"
@@ -99,6 +100,10 @@ Write-Host "docker run -d `
     -e AzureWebJobsStorage="" `
     $FullImageName"
 	
+if (-not (Test-Path $TestPublishDir)) {
+    New-Item -ItemType Directory -Path $TestPublishDir | Out-Null
+}
+
 docker run -d `
     -p "${HostPort}:80" `
     -p "${DebuggerPort}:4024" `
@@ -106,6 +111,7 @@ docker run -d `
     -e FUNCTIONS_WORKER_RUNTIME=dotnet-isolated `
     -e AzureWebJobsStorage=UseDevelopmentStorage=false `
     -e ASPNETCORE_ENVIRONMENT=Development `
+    -v "${TestPublishDir}:/tests" `
     $FullImageName
 
 if ($LASTEXITCODE -ne 0) {

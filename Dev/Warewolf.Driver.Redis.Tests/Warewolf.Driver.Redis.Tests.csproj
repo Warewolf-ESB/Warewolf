@@ -5,6 +5,8 @@
     <Configurations>Debug</Configurations>
     <AssemblyName>Warewolf.Driver.Redis.Tests</AssemblyName>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />

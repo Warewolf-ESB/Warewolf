@@ -8,6 +8,12 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>Warewolf.Execution.Lightweight.Tests</RootNamespace>
     <AssemblyName>Warewolf.Execution.Lightweight.Tests</AssemblyName>
+    <!-- Enables Microsoft.Testing.Platform runner so the published output is a
+         self-contained native binary that can run inside the Docker container
+         without requiring the .NET SDK (only the runtime is present there).
+         dotnet test on the host still works via the vstest compatibility layer. -->
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -10,7 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+#if WINDOWS || NETFRAMEWORK
 using System.Windows;
+#endif
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
 using Dev2.Net6.Compatibility;

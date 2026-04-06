@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice
+
+# curl and procps are needed by the VS remote test/debug agent.
+# The appservice base image is minimal so we ensure they are present.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       curl \
+       procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install the Visual Studio remote debugger so tests can be stepped through
+# in Test Explorer just like local tests.
+RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg

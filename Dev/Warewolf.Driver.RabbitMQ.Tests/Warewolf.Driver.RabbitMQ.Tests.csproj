@@ -5,6 +5,8 @@
     <Configurations>Debug</Configurations>
     <TargetFramework>net8.0</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />

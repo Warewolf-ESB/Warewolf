@@ -3,6 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug</Configurations>
     <LangVersion>10.0</LangVersion>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
