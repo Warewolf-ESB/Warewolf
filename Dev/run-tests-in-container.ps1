@@ -6,12 +6,31 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ── Find the running test container ──────────────────────────────────────────
+# ── Find or start the test container ─────────────────────────────────────────
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
+
 if (-not $containerId) {
-    Write-Error "No running vsut_dockerfile container found. Start it via VS Test Explorer (Remote Testing) first."
-    exit 1
+    # Check the image exists — build it if not
+    $imageExists = docker images vsut_dockerfile --format "{{.ID}}" 2>$null
+    if (-not $imageExists) {
+        Write-Host "Image vsut_dockerfile not found. Building..." -ForegroundColor Yellow
+        $dockerfile = "C:\Users\ultra\warewolf\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test"
+        docker build -t vsut_dockerfile -f $dockerfile "C:\Users\ultra\warewolf\Dev\Warewolf.Execution.Lightweight\engine\docker"
+        if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
+    }
+
+    Write-Host "Starting container..." -ForegroundColor Yellow
+    $containerId = docker run -d `
+        -v "C:\Users\ultra\warewolf:/mnt/approot" `
+        -v "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\VsTest:/mnt/vstest" `
+        vsut_dockerfile
+    if ($LASTEXITCODE -ne 0) { Write-Error "Failed to start container."; exit 1 }
+
+    # Give the container a moment to initialise
+    Write-Host "Waiting for container to be ready..." -ForegroundColor Yellow
+    Start-Sleep -Seconds 5
 }
+
 Write-Host "Using container: $containerId" -ForegroundColor Cyan
 
 # ── Prompt ────────────────────────────────────────────────────────────────────
