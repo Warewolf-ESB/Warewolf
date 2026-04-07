@@ -19,6 +19,14 @@ namespace Warewolf.Security.Encryption
     {
         const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.LocalMachine;
 
+        /// <summary>
+        /// Optional hook for AES-256-GCM decryption in non-DPAPI environments
+        /// (e.g., Azure Function).  When set, any value prefixed with
+        /// <c>WFAES::</c> is routed through this delegate instead of DPAPI.
+        /// Set once at startup in <c>Program.cs</c>; never altered at runtime.
+        /// </summary>
+        public static Func<string, string>? AesDecryptHook { get; set; }
+
         public static string DecryptIfEncrypted(string input)
         {
             if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || !input.IsBase64())
@@ -91,6 +99,10 @@ namespace Warewolf.Security.Encryption
                 throw new ArgumentNullException(nameof(cipher));
             }
 
+            // AES hook: Azure Function / non-DPAPI environment.
+            if (AesDecryptHook is not null && cipher.StartsWith("WFAES::", StringComparison.Ordinal))
+                return AesDecryptHook(cipher);
+
             if (!cipher.IsBase64())
             {
                 throw new ArgumentException("cipher must be base64 encoded");
@@ -122,6 +134,10 @@ namespace Warewolf.Security.Encryption
             {
                 return false;
             }
+
+            // AES hook: Azure Function / non-DPAPI environment.
+            if (AesDecryptHook is not null && cipher.StartsWith("WFAES::", StringComparison.Ordinal))
+                return true;
 
             if (!cipher.IsBase64())
             {
