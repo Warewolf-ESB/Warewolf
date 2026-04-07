@@ -11,3 +11,6 @@ RUN apt-get update \
 # Install the Visual Studio remote debugger so tests can be stepped through
 # in Test Explorer just like local tests.
 RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+
+# Give the vstest.console handshake more time on slower container starts
+ENV VSTEST_CONNECTION_TIMEOUT=300
