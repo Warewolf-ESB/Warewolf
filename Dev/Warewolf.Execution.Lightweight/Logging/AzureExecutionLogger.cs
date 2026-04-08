@@ -24,6 +24,80 @@ namespace Warewolf.Execution.Lightweight.Logging
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        // ── Debug ─────────────────────────────────────────────────────────────
+
+        /// <inheritdoc/>
+        public void LogDebug(string message, Guid executionId)
+        {
+            _logger.LogDebug(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogDebug(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogDebug(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        // ── Info ──────────────────────────────────────────────────────────────
+
+        /// <inheritdoc/>
+        public void LogInfo(string message, Guid executionId)
+        {
+            _logger.LogInformation(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogInfo(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogInformation(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        // ── Warn ──────────────────────────────────────────────────────────────
+
+        /// <inheritdoc/>
+        public void LogWarning(string message, Guid executionId)
+        {
+            _logger.LogWarning(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogWarning(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogWarning(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        // ── Error ─────────────────────────────────────────────────────────────
+
+        /// <inheritdoc/>
+        public void LogError(string message, Guid executionId)
+        {
+            _logger.LogError(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
         /// <inheritdoc/>
         public void LogError(string activityName, Exception ex, Guid executionId)
         {
@@ -31,7 +105,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             {
                 ActivityName = activityName,
                 Message      = ex?.Message ?? string.Empty,
-                StackTrace   = ex?.ToString() ?? string.Empty,   // ToString() includes inner exceptions
+                StackTrace   = ex?.ToString() ?? string.Empty,
                 Timestamp    = DateTime.UtcNow,
                 ExecutionId  = executionId
             };
@@ -47,22 +121,26 @@ namespace Warewolf.Execution.Lightweight.Logging
             }
         }
 
+        // ── Fatal ─────────────────────────────────────────────────────────────
+
         /// <inheritdoc/>
-        public void LogInfo(string message, Guid executionId)
+        public void LogFatal(string message, Guid executionId)
         {
-            _logger.LogInformation(
+            _logger.LogCritical(
                 "[ExecutionId:{ExecutionId}] {Message}",
                 executionId,
                 message);
         }
 
         /// <inheritdoc/>
-        public void LogWarning(string message, Guid executionId)
+        public void LogFatal(string message, Exception exception, Guid executionId)
         {
-            _logger.LogWarning(
+            _logger.LogCritical(
+                exception,
                 "[ExecutionId:{ExecutionId}] {Message}",
                 executionId,
                 message);
         }
     }
 }
+

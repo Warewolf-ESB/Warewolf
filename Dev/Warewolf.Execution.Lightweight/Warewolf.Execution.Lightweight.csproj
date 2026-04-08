@@ -78,11 +78,12 @@
     <!-- Analyzer only (IMPORTANT) -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
 
-    <PackageReference Include="Google.Protobuf"
-                      Version="3.25.2" />
+    <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
+    <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
 
-    <PackageReference Include="Newtonsoft.Json"
-                      Version="13.0.3" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
   </ItemGroup>
 
@@ -127,6 +128,12 @@
     </None>-->
     <None Include="Scripts\Generate-WorkflowIndex.ps1" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Settings\ElasticsearchLoggingSource.bite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <!-- ========================================================= -->
   <!-- WORKFLOW INDEX GENERATION -->
@@ -147,20 +154,12 @@
     <!-- Run the PowerShell script to enumerate resources and emit the index. -->
     <!-- ContinueOnError: if PowerShell is unavailable the build still succeeds -->
     <!-- and ResolveFilePath falls back to its existing disk-based resolution.  -->
-    <Exec
-      Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;"
-      WorkingDirectory="$(MSBuildProjectDirectory)"
-      ContinueOnError="true" />
+    <Exec Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="true" />
 
     <!-- Copy the newly generated index to the output directory immediately so it  -->
     <!-- is present on the very first build (before the Content glob can pick it  -->
     <!-- up on a subsequent build).                                                 -->
-    <Copy
-      SourceFiles="$(_IndexSourcePath)"
-      DestinationFiles="$(OutDir)Resources\workflow-index.json"
-      SkipUnchangedFiles="true"
-      ContinueOnError="true"
-      Condition="Exists('$(_IndexSourcePath)')" />
+    <Copy SourceFiles="$(_IndexSourcePath)" DestinationFiles="$(OutDir)Resources\workflow-index.json" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('$(_IndexSourcePath)')" />
   </Target>
   
   
