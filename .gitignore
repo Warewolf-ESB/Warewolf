@@ -4,6 +4,8 @@
 # File Extensions
 ####################################################################################
 *.secureconfig
+# Warewolf lightweight engine — never commit an encrypted security config
+secure.config
 *.force
 *.usi
 *.uws

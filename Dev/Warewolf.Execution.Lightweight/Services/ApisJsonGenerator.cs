@@ -30,17 +30,17 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <inheritdoc/>
-        public string Generate(string pathFilter, Uri requestUri, bool isPublic = false)
+        public string Generate(string? pathFilter, Uri requestUri, bool isPublic = false, Func<string, bool>? workflowFilter = null)
         {
             var baseUrl    = BuildBaseUrl(requestUri);
-            var accessPath = isPublic ? "Public" : "Services";
-            var workflows  = EnumerateWorkflows(pathFilter);
+            var accessPath = isPublic ? "Public" : "Secure";
+            var workflows  = EnumerateWorkflows(pathFilter, workflowFilter);
             return BuildApisJson(baseUrl, pathFilter, accessPath, workflows);
         }
 
         // ── File scanning ─────────────────────────────────────────────────────
 
-        IEnumerable<(string name, string relativePath)> EnumerateWorkflows(string pathFilter)
+        IEnumerable<(string name, string relativePath)> EnumerateWorkflows(string? pathFilter, Func<string, bool>? workflowFilter)
         {
             if (!Directory.Exists(_workflowsDirectory))
                 yield break;
@@ -66,6 +66,10 @@ namespace Warewolf.Execution.Lightweight
                         continue;
 
                     if (!seen.Add(name))
+                        continue;
+
+                    // Apply the caller-supplied permission filter before emitting.
+                    if (workflowFilter is not null && !workflowFilter(name))
                         continue;
 
                     var relative   = Path.GetRelativePath(_workflowsDirectory, file);
@@ -115,9 +119,9 @@ namespace Warewolf.Execution.Lightweight
         // ── JSON assembly ─────────────────────────────────────────────────────
 
         static string BuildApisJson(
-            string baseUrl,
+            string  baseUrl,
             string? pathFilter,
-            string accessPath,
+            string  accessPath,
             IEnumerable<(string name, string relativePath)> workflows)
         {
             var urlSuffix = string.IsNullOrWhiteSpace(pathFilter)

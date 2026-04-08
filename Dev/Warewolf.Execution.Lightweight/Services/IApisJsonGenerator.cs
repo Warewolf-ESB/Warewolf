@@ -23,8 +23,13 @@ namespace Warewolf.Execution.Lightweight
         /// </param>
         /// <param name="isPublic">
         /// When <c>true</c>, workflow entries use the <c>/Public/</c> route prefix.
-        /// When <c>false</c>, the <c>/Services/</c> prefix is used.
+        /// When <c>false</c>, the <c>/Secure/</c> prefix is used.
         /// </param>
-        string Generate(string pathFilter, Uri requestUri, bool isPublic = false);
+        /// <param name="workflowFilter">
+        /// Optional predicate applied to each workflow's bare name before it is included
+        /// in the output.  Pass <c>null</c> to include every discovered workflow.
+        /// Used to enforce permission-based visibility: public vs. JWT-user access.
+        /// </param>
+        string Generate(string? pathFilter, Uri requestUri, bool isPublic = false, Func<string, bool>? workflowFilter = null);
     }
 }

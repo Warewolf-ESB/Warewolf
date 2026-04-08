@@ -3,9 +3,12 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight
 {
@@ -16,17 +19,49 @@ namespace Warewolf.Execution.Lightweight
     /// execution to <see cref="IWorkflowExecutor"/>, apis.json listing to
     /// <see cref="IApisJsonGenerator"/>, and response assembly to <see cref="ResponseBuilder"/>.
     ///
+    /// ## Authentication &amp; authorisation
+    ///
+    /// Security is driven by the presence of a <c>secure.config</c> file in the server
+    /// bin directory (resolved at startup by <see cref="SecureConfigLoader"/>):
+    ///
+    /// <list type="bullet">
+    ///   <item>
+    ///     <b>No secure.config</b> — open-access mode.  All workflows are reachable
+    ///     via the <c>/Public/</c> endpoint.  <c>/Secure/</c> routes return <c>401</c>
+    ///     because there is no secret key with which to validate a JWT.
+    ///   </item>
+    ///   <item>
+    ///     <b>secure.config present</b> — JWT mode.  Callers of <c>/Secure/</c> routes
+    ///     must supply a valid <c>Authorization: Bearer &lt;token&gt;</c> header.  The
+    ///     token is validated with HMAC-SHA256 using the secret key from the config file
+    ///     by <see cref="JwtValidator"/>.
+    ///   </item>
+    /// </list>
+    ///
+    /// ## apis.json visibility
+    ///
+    /// Both <c>/Public/apis.json</c> and <c>/Secure/apis.json</c> (and the root
+    /// <c>/apis.json</c>) are always reachable without a 401 — they only differ in what
+    /// they return:
+    ///
+    /// <list type="bullet">
+    ///   <item><c>/Public/…/apis.json</c> / root <c>/apis.json</c> — workflows where the
+    ///         built-in <em>Public</em> group has View permission (all when no config).</item>
+    ///   <item><c>/Secure/…/apis.json</c> — workflows the JWT user can view (empty list
+    ///         when the token is absent or invalid).</item>
+    /// </list>
+    ///
     /// Supported routes:
     ///   GET/POST  /Services/{name}           - Execute workflow (function-key auth)
     ///   GET/POST  /Services/{name}.debug      - Execute in debug mode
     ///   GET/POST  /Services/{name}.xml        - Execute and return XML output
     ///   GET/POST  /Services/{name}.api        - Return OpenAPI 3.0 spec for the workflow
     ///   GET/POST  /Services/{folder}/apis.json - List workflows under folder (authenticated)
-    ///   GET/POST  /Secure/{name}              - Execute workflow (function-key auth)
-    ///   GET/POST  /Secure/{folder}/apis.json  - List workflows under folder (authenticated)
+    ///   GET/POST  /Secure/{name}              - Execute workflow (JWT auth)
+    ///   GET/POST  /Secure/{folder}/apis.json  - List workflows the JWT user can access
     ///   GET/POST  /Public/{name}              - Execute workflow (anonymous)
-    ///   GET/POST  /Public/{folder}/apis.json  - List workflows under folder (anonymous)
-    ///   GET       /apis.json                  - List all workflows (anonymous, root discovery)
+    ///   GET/POST  /Public/{folder}/apis.json  - List publicly visible workflows
+    ///   GET       /apis.json                  - List all publicly visible workflows (root discovery)
     ///   GET/POST  /workflow/{workflowName}    - Execute by name; supports .debug/.xml/.api suffixes
     ///   GET/POST  /workflow                   - Execute via query string or body
     ///
@@ -60,10 +95,14 @@ namespace Warewolf.Execution.Lightweight
             string name)
             => await ExecuteNamedWorkflow(req, name, isPublic: false);
 
-        /// <summary>Mirrors Secure/{*name} — function-key authenticated execution.</summary>
+        /// <summary>
+        /// Mirrors Secure/{*name} — JWT-authenticated execution.
+        /// The Azure Function authorization level is Anonymous so the function host does
+        /// not reject the request before we can validate the JWT ourselves.
+        /// </summary>
         [Function("ExecuteSecureWorkflow")]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
             string name)
             => await ExecuteNamedWorkflow(req, name, isPublic: false);
 
@@ -79,14 +118,15 @@ namespace Warewolf.Execution.Lightweight
         // ── apis.json discovery routes ────────────────────────────────────────
 
         /// <summary>
-        /// Root-level apis.json — lists all available workflows.
+        /// Root-level apis.json — lists all publicly visible workflows.
         /// Mirrors <c>WebServerController.ExecuteGetRootLevelApisJson</c>.
-        /// Anonymous so that API discovery tools (Postman, etc.) can reach it without a key.
+        /// Always accessible; filtered by public-view permissions when a
+        /// <c>secure.config</c> is present.
         /// </summary>
         [Function("ExecuteRootApisJson")]
         public async Task<HttpResponseData> ExecuteRootApisJson(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "apis.json")] HttpRequestData req)
-            => await CreateApisJsonResponse(req, pathFilter: null, isPublic: true);
+            => await CreateApisJsonResponse(req, pathFilter: null, isPublic: true, GetPublicFilter());
 
         // ── Named-workflow routes ─────────────────────────────────────────────
 
@@ -141,15 +181,34 @@ namespace Warewolf.Execution.Lightweight
         // ── Shared private helpers ────────────────────────────────────────────
 
         /// <summary>
-        /// Handles any named route: short-circuits to apis.json listing when the
-        /// route ends with <c>apis.json</c>; otherwise parses suffix flags, builds
-        /// the execution request, runs the workflow, and returns the formatted response.
+        /// Core dispatch method shared by all named-workflow routes.
+        ///
+        /// <list type="bullet">
+        ///   <item>apis.json routes → permission-filtered discovery, never returns 401.</item>
+        ///   <item>Secure execution routes → JWT validation; returns 401 when the token is
+        ///         absent, invalid, or no <c>secure.config</c> exists.</item>
+        ///   <item>Public execution routes → no auth check; executes unconditionally.</item>
+        /// </list>
         /// </summary>
         async Task<HttpResponseData> ExecuteNamedWorkflow(HttpRequestData req, string name, bool isPublic)
         {
+            // ── apis.json: always accessible, filtered by permissions ─────────────
             if (NameSuffixParser.IsApisJsonRequest(name))
-                return await CreateApisJsonResponse(req, NameSuffixParser.ExtractApisJsonPath(name), isPublic);
+            {
+                var pathFilter   = NameSuffixParser.ExtractApisJsonPath(name);
+                var permFilter   = isPublic ? GetPublicFilter() : GetSecureFilter(req);
+                return await CreateApisJsonResponse(req, pathFilter, isPublic, permFilter);
+            }
 
+            // ── Secure (non-public) execution: validate JWT ───────────────────────
+            if (!isPublic)
+            {
+                var authResult = ValidateJwt(req);
+                if (!authResult.IsValid)
+                    return await BuildUnauthorizedResponse(req);
+            }
+
+            // ── Execute the workflow ──────────────────────────────────────────────
             var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
 
@@ -167,12 +226,88 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
-        /// Generates and returns an apis.json discovery document for the given path.
+        /// Generates and returns an apis.json discovery document for the given path,
+        /// with an optional per-workflow permission predicate applied.
         /// </summary>
-        async Task<HttpResponseData> CreateApisJsonResponse(HttpRequestData req, string? pathFilter, bool isPublic)
+        async Task<HttpResponseData> CreateApisJsonResponse(
+            HttpRequestData    req,
+            string?            pathFilter,
+            bool               isPublic,
+            Func<string, bool>? workflowFilter)
         {
-            var json = _apisJsonGenerator.Generate(pathFilter, req.Url, isPublic);
+            var json = _apisJsonGenerator.Generate(pathFilter, req.Url, isPublic, workflowFilter);
             return await ResponseBuilder.BuildStringAsync(req, json, ResponseBuilder.JsonContentType);
         }
+
+        // ── JWT helpers ───────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Validates the JWT in the <c>Authorization</c> header.
+        /// Returns <c>(false, null)</c> when no <c>secure.config</c> is loaded (no secret
+        /// key exists) or when the token is absent / invalid.
+        /// </summary>
+        (bool IsValid, IReadOnlyList<string>? Groups) ValidateJwt(HttpRequestData req)
+        {
+            var config = SecureConfigLoader.Config;
+            if (!config.IsLoaded)
+                return (false, null);   // No config → no secret key → cannot validate any JWT.
+
+            var authHeader = TryGetAuthHeader(req);
+            var groups     = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+            return (groups is not null, groups);
+        }
+
+        // ── Permission filter factories ───────────────────────────────────────────
+
+        /// <summary>
+        /// Returns a predicate that passes workflows visible on the public endpoint.
+        /// When no <c>secure.config</c> is loaded, <c>null</c> is returned so that
+        /// <see cref="IApisJsonGenerator.Generate"/> emits all workflows.
+        /// </summary>
+        Func<string, bool>? GetPublicFilter()
+        {
+            var config = SecureConfigLoader.Config;
+            if (!config.IsLoaded)
+                return null;    // Open-access mode — show everything.
+
+            return name => PermissionChecker.HasPublicViewPermission(name, config);
+        }
+
+        /// <summary>
+        /// Returns a predicate for the secure apis.json endpoint.
+        /// When the JWT is absent or invalid, returns a predicate that always returns
+        /// <c>false</c> so that no workflows are revealed.
+        /// </summary>
+        Func<string, bool>? GetSecureFilter(HttpRequestData req)
+        {
+            var config = SecureConfigLoader.Config;
+            if (!config.IsLoaded)
+                return _ => false;  // No config → nothing accessible via secure discovery.
+
+            var authHeader = TryGetAuthHeader(req);
+            var groups     = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+            if (groups is null)
+                return _ => false;  // Invalid / absent JWT → empty list.
+
+            return name => PermissionChecker.HasUserViewPermission(name, config, groups);
+        }
+
+        // ── Response helpers ──────────────────────────────────────────────────────
+
+        static async Task<HttpResponseData> BuildUnauthorizedResponse(HttpRequestData req)
+        {
+            var response = req.CreateResponse(HttpStatusCode.Unauthorized);
+            response.Headers.Add("WWW-Authenticate", "Bearer");
+            await response.WriteStringAsync(JsonConvert.SerializeObject(new
+            {
+                error = "Authentication required. Provide a valid JWT Bearer token in the Authorization header."
+            }));
+            return response;
+        }
+
+        static string? TryGetAuthHeader(HttpRequestData req) =>
+            req.Headers.TryGetValues("Authorization", out var vals)
+                ? vals.FirstOrDefault()
+                : null;
     }
 }

@@ -108,6 +108,18 @@ if (-not $StorageAccountName) {
 
 $ScriptDir = $PSScriptRoot
 
+# Inform about optional secure.config
+$SecureConfigPath = Join-Path $ScriptDir 'secure.config'
+if (Test-Path $SecureConfigPath) {
+    Write-Host "Found secure.config — it will be included in the deployment package."
+    Write-Host "  NOTE: SecureConfigLoader will read it from the function app bin directory at runtime."
+    Write-Host "  Alternatively, set the WAREWOLF_SECURE_CONFIG app setting to load it from a mounted path."
+} else {
+    Write-Host "No secure.config found — the function app will run in open-access mode (all workflows public)."
+    Write-Host "  To enable JWT auth: copy your secure.config next to this script and redeploy,"
+    Write-Host "  OR set the WAREWOLF_SECURE_CONFIG app setting to a mounted file path."
+}
+
 # Validate resources folder
 $ResourcesPath = Join-Path $ScriptDir 'Resources'
 if (-not (Test-Path $ResourcesPath)) {
