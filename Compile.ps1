@@ -325,60 +325,82 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             $OutputFolderName = $BaseOutputFolderName
+            $WinOutputFolderName = "$OutputFolderName-Windows"
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$WinOutputFolderName"
             }
 
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName" -Version "17.2.0"
             }
 
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName"
             }
             
             if (!($Disablemaxcpucount.IsPresent)) {
                 $DisablemaxcpucountProperty = "/maxcpucount"
             }
-			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r linux-x64 --self-contained true -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
-			Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$PSScriptRoot\Bin\$OutputFolderName\" -Force
+            if ($ProjectSpecificOutputs.IsPresent) {
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --nologo -v minimal -p:NoWarn=NETSDK1194
+            } else {
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -o "$PSScriptRoot\Bin\$WinOutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194
+            }
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Build failed for $SolutionFile. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace.
+                exit 1
+            }
+            if ($OutputFolderName -eq "ServerTests") {
+                $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
+                New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
+                Get-ChildItem "$PSScriptRoot\Dev" -Filter "*.Tests.csproj" -Recurse | ForEach-Object {
+                    $projName = $_.BaseName
+                    Write-Host "Publishing $projName for linux-x64..."
+                    dotnet publish $_.FullName -c $Config -r linux-x64 --self-contained true -o "$linuxOutputBase\$projName" --nologo -v minimal
+                    if ($LASTEXITCODE -ne 0) {
+                        Write-Host "Linux publish failed for $projName."
+                        exit 1
+                    }
+                }
+                Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
+            }
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {
-                        if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
-                            Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                        if (Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll") {
+                            Remove-Item -Path "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
                         }
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
 
-                        if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
-                            Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
+                        if (!(Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\_PublishedWebsites\Dev2.Web")) {
+                            Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$WinOutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
                         }
-                        Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
+                        Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$WinOutputFolderName\TestRun.ps1" -Force
                     }
-                    if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
-                        Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                    if (Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
+                        Copy-Item -Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll" -Force
                     }
-                    Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
-                    if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
+                    Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\sni.dll" -Force
+                    if (!(Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\testhost.dll.config")) {
                         @"
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -430,7 +452,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 	
 
 </configuration>
-"@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
+"@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$WinOutputFolderName\testhost.dll.config" -Encoding utf8 -Force
                     }
                 }
             }
