@@ -343,10 +343,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (!($Disablemaxcpucount.IsPresent)) {
                 $DisablemaxcpucountProperty = "/maxcpucount"
             }
+            dotnet restore "$PSScriptRoot\$SolutionFile" --nologo -v minimal --force
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Restore failed for $SolutionFile.
+                exit 1
+            }
             if ($ProjectSpecificOutputs.IsPresent) {
-                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --nologo -v minimal -p:NoWarn=NETSDK1194
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
             } else {
-                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -o "$PSScriptRoot\Bin\$WinOutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore -o "$PSScriptRoot\Bin\$WinOutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
             }
             if ($LASTEXITCODE -ne 0) {
                 Write-Host Build failed for $SolutionFile. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace.
@@ -355,10 +360,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "ServerTests") {
                 $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
                 New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
-                Get-ChildItem "$PSScriptRoot\Dev" -Filter "*.Tests.csproj" -Recurse | ForEach-Object {
-                    $projName = $_.BaseName
+                $slnProjects = Get-Content "$PSScriptRoot\Dev\ServerTests.sln" |
+                    Where-Object { $_ -match '\.Tests\.csproj"' } |
+                    ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
+                    ForEach-Object { Get-Item "$PSScriptRoot\Dev\$_" -ErrorAction SilentlyContinue } |
+                    Where-Object { $_ -ne $null }
+                foreach ($proj in $slnProjects) {
+                    $projName = $proj.BaseName
                     Write-Host "Publishing $projName for linux-x64..."
-                    dotnet publish $_.FullName -c $Config -r linux-x64 --self-contained true -o "$linuxOutputBase\$projName" --nologo -v minimal
+                    dotnet publish $proj.FullName -c $Config -r linux-x64 --self-contained true -o "$linuxOutputBase\$projName" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
                     if ($LASTEXITCODE -ne 0) {
                         Write-Host "Linux publish failed for $projName."
                         exit 1
