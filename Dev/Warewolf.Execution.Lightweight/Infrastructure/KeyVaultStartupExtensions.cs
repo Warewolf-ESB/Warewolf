@@ -1,0 +1,50 @@
+/*
+ *  Warewolf - Once bitten, there's no going back
+ *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
+ *  Licensed under GNU Affero General Public License 3.0 or later.
+ */
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Warewolf.Execution.Lightweight.Security;
+using Warewolf.Security.Encryption;
+
+namespace Warewolf.Execution.Lightweight.Infrastructure;
+
+/// <summary>
+/// Extension methods for <see cref="IHost"/> that handle the async Key Vault
+/// initialisation that must complete before the host accepts traffic.
+/// </summary>
+internal static class KeyVaultStartupExtensions
+{
+    /// <summary>
+    /// Fetches the AES key from Key Vault, wires the decryption hook into
+    /// <see cref="Warewolf.Security.Encryption.DpapiWrapper"/>, and writes an audit
+    /// entry.  Throws on failure so the host refuses to start without the key.
+    /// </summary>
+    /// <param name="host">The built <see cref="IHost"/> instance.</param>
+    /// <param name="instanceId">
+    /// Stable per-instance identifier (e.g. <c>WEBSITE_INSTANCE_ID</c>).
+    /// Used only in audit log entries — never in cryptographic operations.
+    /// </param>
+    internal static async Task InitializeKeyVaultAsync(this IHost host, string instanceId)
+    {
+        var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
+        var audit         = host.Services.GetRequiredService<AuditLogger>();
+
+        try
+        {
+            await secretManager.InitializeAsync().ConfigureAwait(false);
+
+            var decryptionHelper = host.Services.GetRequiredService<FileDecryptionHelper>();
+            DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
+
+            audit.LogColdStart(instanceId, secretManager.KeyId);
+        }
+        catch (Exception ex)
+        {
+            audit.LogKeyVaultError(instanceId, ex);
+            throw; // Fail fast: cannot serve requests without the AES key.
+        }
+    }
+}

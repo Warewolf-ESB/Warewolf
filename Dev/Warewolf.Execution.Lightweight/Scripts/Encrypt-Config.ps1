@@ -7,19 +7,20 @@
 .DESCRIPTION
     Designed for developer machines running Windows + PowerShell 7+.
 
-    FIRST RUN
-      Generates a 256-bit AES key, stores it in Key Vault as secret
-      "dp-keyring-v1" (or the value of -SecretName), then encrypts all
-      matching .bite files.
+    ENCRYPTION  (default behaviour)
+      Retrieves the AES key from Key Vault using -SecretName and encrypts all
+      matching .bite files.  If the secret is not found the script exits with
+      an error — use -GenerateKeys to create a new key first.
+      Already WFAES-encrypted files are skipped; if any are found a warning
+      with the count is shown at the end (use -GenerateKeys to rotate them).
+      Prompts for an optional backup of all .bite files before modifying them.
 
-    SUBSEQUENT RUNS
-      Retrieves the existing key from Key Vault and re-encrypts. No new
-      key is generated (idempotent for the same set of files).
-
-    KEY ROTATION  (pass -KeyRotate)
-      Generates a NEW key, stores it in Key Vault as a new secret version,
-      then encrypts all provided files. Files must be supplied in their
-      original (DPAPI or plain-text) form — see docs/KeyRotationRunbook.md.
+    GENERATE KEYS  (pass -GenerateKeys)
+      Generates a NEW 256-bit AES key, stores it in Key Vault as a new secret
+      version under -SecretName, then encrypts all provided files.
+      Files that are already WFAES-encrypted are first decrypted with the
+      existing key from Key Vault, then re-encrypted with the new key.
+      Plain-text or DPAPI-encrypted files are encrypted directly.
 
     ENCRYPTION FORMAT  (applied to the ConnectionString XML attribute value)
       WFAES::{Base64( [12-byte nonce][ciphertext][16-byte GCM tag] )}
@@ -29,10 +30,11 @@
       • Authenticated encryption: any tampering is detected at decrypt time.
 
     BACKUP
-      Original files are backed up as <filename>.bite.bak before modification.
-      Delete backups after verifying deployment. They may still contain
-      DPAPI-encrypted values which are machine-bound and lower-risk, but
-      treat them as sensitive nonetheless.
+      Before encrypting, the script prompts whether to back up all .bite files.
+      If confirmed, files are copied to a timestamped directory (default: source
+      path with datetime stamp appended, e.g. resources_2024-01-15-14-30-45-12)
+      preserving subdirectory structure.  A custom path may be entered at the
+      prompt.  Files keep their .bite extension in the backup.
 
 .PARAMETER FilePath
     Path to a single .bite file, or a folder that is searched recursively
@@ -43,57 +45,48 @@
     Name of the Azure Key Vault (e.g. "kv-warewolf-prod").
 
 .PARAMETER SecretName
-    Name of the secret in Key Vault.  Default: "dp-keyring-v1".
+    Name of the secret in Key Vault (e.g. "dp-keyring-v1").  Required — no default.
 
-.PARAMETER FunctionApp
-    Azure Function App name.  Required when -UploadToAzure is set.
-
-.PARAMETER ResourceGroup
-    Resource group containing the Function App.  Required when -UploadToAzure is set.
-
-.PARAMETER UploadToAzure
-    When specified, deploys the encrypted resource folder to the Function App
-    via a zip-deploy using the az CLI.
-
-.PARAMETER KeyRotate
-    Generates a NEW key and re-encrypts all files.
-    ⚠ Provide files in original (DPAPI or plain) form — see KeyRotationRunbook.md.
+.PARAMETER GenerateKeys
+    Generates a NEW AES-256 key, stores it in Key Vault under -SecretName, and
+    (re-)encrypts all files.  Already WFAES-encrypted files are decrypted with
+    the existing Key Vault key before being re-encrypted with the new key.
 
 .PARAMETER Decrypt
     Decrypts WFAES:: (and DPAPI) ConnectionString attributes back to plain text.
-    Writes output as <filename>.decrypted.bite alongside the original (which is
-    not modified).  Cannot be combined with -KeyRotate or -UploadToAzure.
+    Prompts for an output directory (default: source path with "_decrypted_" and
+    a datetime stamp appended, e.g. resources_decrypted_2024-01-15-14-30-45-12).
+    Original files are not modified.  Cannot be combined with -GenerateKeys.
 
 .EXAMPLE
-    # First-time setup: encrypt all .bite files and upload
+    # First-time setup: generate key and encrypt all .bite files
     .\Encrypt-Config.ps1 `
-        -FilePath      "C:\Warewolf\Resources" `
-        -VaultName     "kv-warewolf-prod" `
-        -FunctionApp   "func-warewolf-prod" `
-        -ResourceGroup "rg-warewolf-prod" `
-        -UploadToAzure
+        -FilePath     "C:\Warewolf\Resources" `
+        -VaultName    "kv-warewolf-prod" `
+        -SecretName   "dp-keyring-v1" `
+        -GenerateKeys
 
 .EXAMPLE
-    # Encrypt a single file (no upload)
+    # Encrypt files using the existing key from Key Vault
     .\Encrypt-Config.ps1 `
-        -FilePath  "C:\Warewolf\Resources\Sources\MyDb.bite" `
-        -VaultName "kv-warewolf-prod"
+        -FilePath   "C:\Warewolf\Resources\Sources\MyDb.bite" `
+        -VaultName  "kv-warewolf-prod" `
+        -SecretName "dp-keyring-v1"
 
 .EXAMPLE
-    # Key rotation
+    # Rotate key: generate a new key and re-encrypt all files
     .\Encrypt-Config.ps1 `
-        -FilePath      "C:\Warewolf\OriginalResources" `
-        -VaultName     "kv-warewolf-prod" `
-        -KeyRotate `
-        -UploadToAzure `
-        -FunctionApp   "func-warewolf-prod" `
-        -ResourceGroup "rg-warewolf-prod"
+        -FilePath     "C:\Warewolf\Resources" `
+        -VaultName    "kv-warewolf-prod" `
+        -SecretName   "dp-keyring-v1" `
+        -GenerateKeys
 
 .EXAMPLE
     # Decrypt .bite files for inspection or recovery
     .\Encrypt-Config.ps1 `
-        -FilePath  "C:\Warewolf\Resources" `
-        -VaultName "kv-warewolf-prod" `
+        -FilePath   "C:\Warewolf\Resources" `
+        -VaultName  "kv-warewolf-prod" `
+        -SecretName "dp-keyring-v1" `
         -Decrypt
 
 .NOTES
@@ -110,15 +103,10 @@ param(
     [Parameter(Mandatory)]
     [string] $VaultName,
 
-    [string] $SecretName = 'dp-keyring-v1',
+    [Parameter(Mandatory)]
+    [string] $SecretName,
 
-    [string] $FunctionApp,
-
-    [string] $ResourceGroup,
-
-    [switch] $UploadToAzure,
-
-    [switch] $KeyRotate,
+    [switch] $GenerateKeys,
 
     [switch] $Decrypt
 )
@@ -126,8 +114,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-if ($Decrypt -and $KeyRotate)     { Write-Host '[!] -Decrypt and -KeyRotate cannot be used together.'     -ForegroundColor Red; exit 1 }
-if ($Decrypt -and $UploadToAzure) { Write-Host '[!] -Decrypt and -UploadToAzure cannot be used together.' -ForegroundColor Red; exit 1 }
+if ($Decrypt -and $GenerateKeys) { Write-Host '[!] -Decrypt and -GenerateKeys cannot be used together.' -ForegroundColor Red; exit 1 }
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 $WFAES_PREFIX    = 'WFAES::'
@@ -292,24 +279,16 @@ Write-Step "Resolving key material from Key Vault '$VaultName' / secret '$Secret
 $keyMaterialJson = $null
 $oldKeyBytes     = $null
 
-if (-not $KeyRotate) {
-    # Normal run: try to fetch existing key.
-    $existingJson = az keyvault secret show `
-        --vault-name $VaultName `
-        --name $SecretName `
-        --query value -o tsv 2>$null
+if ($GenerateKeys) {
+    Write-Host ''
+    Write-Host '[!] WARNING: -GenerateKeys will generate a NEW AES-256 key in Key Vault and' -ForegroundColor Yellow
+    Write-Host '    re-encrypt ALL matching .bite files. Existing WFAES-encrypted files will' -ForegroundColor Yellow
+    Write-Host '    be decrypted with the current key, then re-encrypted with the new one.'   -ForegroundColor Yellow
+    Write-Host '    This cannot be undone without the previous key. Ensure a backup exists.'  -ForegroundColor Yellow
+    Write-Host ''
 
-    if ($existingJson) {
-        $keyMaterialJson = $existingJson
-        $km = ConvertFrom-KeyMaterial $keyMaterialJson
-        Write-OK "Retrieved existing key (KeyId=$($km.keyId), Created=$($km.created))"
-    } else {
-        if ($Decrypt) { Write-Fail "Secret '$SecretName' not found in '$VaultName' — cannot decrypt."; exit 1 }
-        Write-Skip "Secret '$SecretName' not found — will create new key on first run."
-    }
-} else {
-    # Key rotation: fetch the current key so we can decrypt existing WFAES:: values.
-    Write-Step 'Key rotation requested — fetching current key to decrypt existing values...'
+    # GenerateKeys: fetch the current key first so we can re-encrypt existing WFAES:: values.
+    Write-Step '-GenerateKeys requested — fetching current key to decrypt existing values...'
     $currentJson = az keyvault secret show `
         --vault-name $VaultName `
         --name $SecretName `
@@ -318,18 +297,13 @@ if (-not $KeyRotate) {
     if ($currentJson) {
         $oldKm       = ConvertFrom-KeyMaterial $currentJson
         $oldKeyBytes = [Convert]::FromBase64String($oldKm.key)
-        Write-OK "Current (old) key fetched for rotation (KeyId=$($oldKm.keyId))"
+        Write-OK "Current (old) key fetched (KeyId=$($oldKm.keyId))"
     } else {
-        Write-Skip 'No existing secret — generating first key (no old values to migrate).'
+        Write-Skip 'No existing secret found — new key will be generated with no old values to migrate.'
     }
-    $keyMaterialJson = $null   # Force new key generation below.
-}
 
-# Generate new key if needed.
-if (-not $keyMaterialJson) {
-    if ($Decrypt) { Write-Fail 'Cannot decrypt: no key material found in Key Vault.'; exit 1 }
     Write-Step 'Generating new 256-bit AES key material...'
-    $rawKey    = [byte[]]::new($AES_KEY_BYTES)
+    $rawKey = [byte[]]::new($AES_KEY_BYTES)
     [System.Security.Cryptography.RandomNumberGenerator]::Fill($rawKey)
 
     $newKm = [ordered]@{
@@ -340,17 +314,32 @@ if (-not $keyMaterialJson) {
     }
     $keyMaterialJson = $newKm | ConvertTo-Json -Compress
 
-    Write-Step "Storing key in Key Vault '$VaultName'..."
+    Write-Step "Storing new key in Key Vault '$VaultName'..."
     az keyvault secret set `
         --vault-name $VaultName `
         --name $SecretName `
         --value $keyMaterialJson `
         --output none
 
-    Write-OK "Key stored as secret '$SecretName' in '$VaultName'"
+    Write-OK "New key stored as secret '$SecretName' in '$VaultName'"
 
     # Wipe raw key bytes from memory immediately after storage.
     [Array]::Clear($rawKey, 0, $rawKey.Length)
+} else {
+    # Normal run: fetch existing key from Key Vault. Key generation requires -GenerateKeys.
+    $existingJson = az keyvault secret show `
+        --vault-name $VaultName `
+        --name $SecretName `
+        --query value -o tsv 2>$null
+
+    if ($existingJson) {
+        $keyMaterialJson = $existingJson
+        $km = ConvertFrom-KeyMaterial $keyMaterialJson
+        Write-OK "Retrieved existing key (KeyId=$($km.keyId), Created=$($km.created))"
+    } else {
+        Write-Fail "Secret '$SecretName' not found in '$VaultName'. Use -GenerateKeys to create a new key."
+        exit 1
+    }
 }
 
 # Decode the active key bytes.
@@ -358,7 +347,7 @@ $km       = ConvertFrom-KeyMaterial $keyMaterialJson
 $keyBytes = [Convert]::FromBase64String($km.key)
 
 if ($keyBytes.Length -ne $AES_KEY_BYTES) {
-    Write-Fail "Invalid key length: expected $AES_KEY_BYTES bytes, got $($keyBytes.Length). Re-run without -KeyRotate to regenerate."
+    Write-Fail "Invalid key length: expected $AES_KEY_BYTES bytes, got $($keyBytes.Length). Use -GenerateKeys to create a new key."
     exit 1
 }
 
@@ -384,13 +373,66 @@ if (Test-Path -LiteralPath $FilePath -PathType Leaf) {
 Write-OK "Found $($files.Count) .bite file(s)"
 
 # ── Step 3: Process each file ──────────────────────────────────────────────────
-$processedCount  = 0
-$skippedCount    = 0
-$errorCount      = 0
-$processedFiles  = [System.Collections.Generic.List[string]]::new()
+# Shared
+$skippedCount          = 0
+$wfaesSkippedCount     = 0
+# Encryption-mode counters
+$dpapiFileCount        = 0
+$dpapiDecryptOkCount   = 0
+$dpapiDecryptFailCount = 0
+$dpapiDecryptFailFiles = [System.Collections.Generic.List[string]]::new()
+$plainTextFileCount    = 0
+$encryptOkCount        = 0
+$encryptFailCount      = 0
+$encryptFailFiles      = [System.Collections.Generic.List[string]]::new()
+# Decryption-mode counters
+$filesToDecryptCount   = 0
+$decryptOkCount        = 0
+$decryptFailCount      = 0
+$decryptFailFiles      = [System.Collections.Generic.List[string]]::new()
+$decryptOutputRoot     = $null
+
+$stamp      = Get-Date -Format 'yyyy-MM-dd-HH-mm-ss-ff'
+$sourceBase = if (Test-Path -LiteralPath $FilePath -PathType Container) { $FilePath } else { Split-Path $FilePath -Parent }
+
+# ── Backup prompt (encrypt mode only) ─────────────────────────────────────────
+if (-not $Decrypt -and $files.Count -gt 0) {
+    $yn = Read-Host 'Create a backup of .bite files before encrypting? [Y/n]'
+    if ([string]::IsNullOrWhiteSpace($yn) -or $yn -imatch '^y') {
+        $defaultBackupRoot = "$($FilePath.TrimEnd('\', '/'))_$stamp"
+        $inputPath         = Read-Host "  Backup directory [$defaultBackupRoot]"
+        $backupRoot        = if ([string]::IsNullOrWhiteSpace($inputPath)) { $defaultBackupRoot } else { $inputPath.Trim() }
+
+        Write-Step "Backing up .bite files to '$backupRoot'..."
+        foreach ($bf in $files) {
+            $rel     = [System.IO.Path]::GetRelativePath($sourceBase, $bf)
+            $dest    = Join-Path $backupRoot $rel
+            $destDir = Split-Path $dest -Parent
+            if (-not (Test-Path -LiteralPath $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+            Copy-Item -LiteralPath $bf -Destination $dest -Force
+        }
+        Write-OK "Backup complete — $($files.Count) file(s) copied to '$backupRoot'"
+    } else {
+        Write-Skip 'Backup skipped.'
+    }
+}
+
+# ── Decrypt output directory ───────────────────────────────────────────────────
+if ($Decrypt) {
+    $defaultDecryptRoot = "$($FilePath.TrimEnd('\', '/'))_decrypted_$stamp"
+    $inputPath          = Read-Host "Output directory for decrypted files [$defaultDecryptRoot]"
+    $decryptOutputRoot  = if ([string]::IsNullOrWhiteSpace($inputPath)) { $defaultDecryptRoot } else { $inputPath.Trim() }
+    Write-Step "Decrypted files will be written to '$decryptOutputRoot'"
+}
 
 foreach ($file in $files) {
-    $leafName = Split-Path $file -Leaf
+    $leafName             = Split-Path $file -Leaf
+    $fileHasWfaesSkip     = $false
+    $fileDpapiAttempted   = $false
+    $fileDpapiDecryptFail = $false
+    $filePlainAttempted   = $false
+    $fileDecryptFail      = $false
+    $fileHasEncryptedSrc  = $false
     try {
         $content = Get-Content -LiteralPath $file -Raw -Encoding UTF8
 
@@ -420,11 +462,30 @@ foreach ($file in $files) {
             if ($Decrypt) {
                 # ── Decrypt mode: WFAES or DPAPI → plain text ─────────────
                 if (Test-IsWfAesEncrypted $rawValue) {
+                    $fileHasEncryptedSrc = $true
                     Write-Host "    [WFAES] Decrypting: $leafName" -ForegroundColor DarkCyan
-                    $plainValue = Invoke-WfAesDecrypt $keyBytes $rawValue
+                    try {
+                        $plainValue = Invoke-WfAesDecrypt $keyBytes $rawValue
+                    } catch {
+                        Write-Fail "    [WFAES] Decryption failed for '$leafName': $_"
+                        $fileDecryptFail = $true
+                        continue
+                    }
                 } elseif (Test-IsDpapiEncrypted $rawValue) {
+                    $fileHasEncryptedSrc = $true
                     Write-Host "    [DPAPI] Decrypting: $leafName" -ForegroundColor DarkCyan
-                    $plainValue = Invoke-DpapiDecrypt $rawValue
+                    try {
+                        $plainValue = Invoke-DpapiDecrypt $rawValue
+                    } catch {
+                        Write-Fail "    [DPAPI] Decryption failed for '$leafName': $_"
+                        $fileDecryptFail = $true
+                        continue
+                    }
+                    if ($plainValue -eq $rawValue) {
+                        Write-Fail "    [DPAPI] Decryption returned same value for '$leafName' — possibly encrypted on another machine."
+                        $fileDecryptFail = $true
+                        continue
+                    }
                 } else {
                     Write-Skip "    [SKIP] Already plain-text (not encrypted): $leafName"
                     continue
@@ -435,25 +496,40 @@ foreach ($file in $files) {
                 # ── Encrypt mode ───────────────────────────────────────────
                 if (Test-IsDpapiEncrypted $rawValue) {
                     # ── DPAPI → plain-text ─────────────────────────────────────
+                    $fileDpapiAttempted = $true
                     Write-Host "    [DPAPI] Decrypting: $leafName" -ForegroundColor DarkCyan
-                    $plainValue = Invoke-DpapiDecrypt $rawValue
+                    try {
+                        $plainValue = Invoke-DpapiDecrypt $rawValue
+                    } catch {
+                        Write-Fail "    [DPAPI] Decryption failed for '$leafName' (possibly encrypted on another machine): $_"
+                        $fileDpapiDecryptFail = $true
+                        continue
+                    }
+                    if ($plainValue -eq $rawValue) {
+                        Write-Fail "    [DPAPI] Decryption returned same value for '$leafName' — possibly encrypted on another machine."
+                        $fileDpapiDecryptFail = $true
+                        continue
+                    }
 
                 } elseif (Test-IsWfAesEncrypted $rawValue) {
                     # ── Existing WFAES:: value ─────────────────────────────────
-                    if (-not $KeyRotate) {
-                        Write-Skip "    [SKIP] Already WFAES-encrypted (use -KeyRotate to rotate): $leafName"
+                    if (-not $GenerateKeys) {
+                        Write-Skip "    [SKIP] Already WFAES-encrypted (use -GenerateKeys to rotate): $leafName"
+                        $fileHasWfaesSkip = $true
                         continue
                     }
                     if ($oldKeyBytes) {
-                        # Key rotation: decrypt with old key, then re-encrypt with new key.
+                        # GenerateKeys: decrypt with old key, then re-encrypt with new key.
                         Write-Host "    [ROTATE] Re-encrypting: $leafName" -ForegroundColor DarkMagenta
                         $plainValue = Invoke-WfAesDecrypt $oldKeyBytes $rawValue
                     } else {
                         Write-Skip "    [SKIP] WFAES-encrypted but no old key available for rotation: $leafName"
                         continue
                     }
+                } else {
+                    # plain-text connection string — encrypt directly.
+                    $filePlainAttempted = $true
                 }
-                # else: plain-text connection string — encrypt directly.
 
                 $encryptedValue = Invoke-WfAesEncrypt -keyBytes $keyBytes -plainText $plainValue
                 $src.SetAttribute('ConnectionString', $encryptedValue)
@@ -461,8 +537,31 @@ foreach ($file in $files) {
             }
         }
 
+        # ── Classify file and handle per-file failures ────────────────────────
+        if ($Decrypt) {
+            if ($fileHasEncryptedSrc) {
+                $filesToDecryptCount++
+                if ($fileDecryptFail) {
+                    $decryptFailCount++
+                    $decryptFailFiles.Add($leafName)
+                    continue
+                }
+            }
+        } else {
+            if ($fileDpapiAttempted -and $fileDpapiDecryptFail) {
+                $dpapiFileCount++
+                $dpapiDecryptFailCount++
+                $dpapiDecryptFailFiles.Add($leafName)
+                $encryptFailCount++
+                $encryptFailFiles.Add($leafName)
+                continue
+            }
+            if ($fileDpapiAttempted)     { $dpapiFileCount++ }
+            elseif ($filePlainAttempted) { $plainTextFileCount++ }
+        }
+
         if (-not $modified) {
-            $skippedCount++
+            if ($fileHasWfaesSkip) { $wfaesSkippedCount++ } else { $skippedCount++ }
             continue
         }
 
@@ -471,32 +570,42 @@ foreach ($file in $files) {
         $settings.Indent             = $true
         $settings.IndentChars        = '  '
         $settings.Encoding           = [System.Text.Encoding]::UTF8
-        $settings.OmitXmlDeclaration = $false
+        $settings.OmitXmlDeclaration = $true
         $settings.NewLineHandling    = [System.Xml.NewLineHandling]::Replace
 
         if ($Decrypt) {
-            # Write decrypted content to a new .decrypted.bite file (original unchanged).
-            $baseName   = [System.IO.Path]::GetFileNameWithoutExtension($file)
-            $outputPath = Join-Path (Split-Path $file -Parent) "$baseName.decrypted.bite"
+            # Write decrypted content to the output directory, preserving relative structure.
+            $rel        = [System.IO.Path]::GetRelativePath($sourceBase, $file)
+            $outputPath = Join-Path $decryptOutputRoot $rel
+            $outputDir  = Split-Path $outputPath -Parent
+            if (-not (Test-Path -LiteralPath $outputDir)) { New-Item -ItemType Directory -Path $outputDir -Force | Out-Null }
             $writer = [System.Xml.XmlWriter]::Create($outputPath, $settings)
             try   { $xml.Save($writer) }
             finally { $writer.Dispose() }
-            Write-OK "  Decrypted: $leafName  →  $([System.IO.Path]::GetFileName($outputPath))"
+            Write-OK "  Decrypted: $leafName  →  $outputPath"
         } else {
-            # Backup original, then overwrite with encrypted content.
-            $backupPath = "$file.bak"
-            Copy-Item -LiteralPath $file -Destination $backupPath -Force
+            # Overwrite in-place (backup was taken above if the user confirmed).
             $writer = [System.Xml.XmlWriter]::Create($file, $settings)
             try   { $xml.Save($writer) }
             finally { $writer.Dispose() }
-            Write-OK "  Encrypted: $leafName  (backup: $($backupPath | Split-Path -Leaf))"
+            Write-OK "  Encrypted: $leafName"
         }
-        $processedCount++
-        $processedFiles.Add($file)
+        if ($Decrypt) {
+            $decryptOkCount++
+        } else {
+            if ($fileDpapiAttempted) { $dpapiDecryptOkCount++ }
+            $encryptOkCount++
+        }
 
     } catch {
         Write-Fail "  ERROR processing '$leafName': $_"
-        $errorCount++
+        if ($Decrypt) {
+            $decryptFailCount++
+            $decryptFailFiles.Add($leafName)
+        } else {
+            $encryptFailCount++
+            $encryptFailFiles.Add($leafName)
+        }
     }
 }
 
@@ -507,49 +616,58 @@ if ($oldKeyBytes) { [Array]::Clear($oldKeyBytes, 0, $oldKeyBytes.Length) }
 # ── Step 4: Summary ────────────────────────────────────────────────────────────
 Write-Host ''
 Write-Host ('─' * 55) -ForegroundColor DarkGray
-Write-OK   ($Decrypt ? 'Decryption complete' : 'Encryption complete')
-Write-Host "  Processed : $processedCount" -ForegroundColor Green
-Write-Host "  Skipped   : $skippedCount"   -ForegroundColor Yellow
-if ($errorCount -gt 0) {
-    Write-Host "  Errors    : $errorCount" -ForegroundColor Red
+
+if ($Decrypt) {
+    Write-Host '  Decryption Summary' -ForegroundColor Cyan
+    Write-Host ('─' * 55) -ForegroundColor DarkGray
+    Write-Host "  Total Files             : $($files.Count)"
+    Write-Host "  Total Files to decrypt  : $filesToDecryptCount"
+    Write-Host ''
+    Write-Host "  Decryption succeeded    : $decryptOkCount" -ForegroundColor ($decryptOkCount -gt 0 ? 'Green' : 'DarkGray')
+    if ($decryptFailCount -gt 0) {
+        Write-Host "  Decryption failed       : $decryptFailCount" -ForegroundColor Red
+        foreach ($f in $decryptFailFiles) { Write-Host "      - $f" -ForegroundColor Red }
+    } else {
+        Write-Host "  Decryption failed       : 0" -ForegroundColor DarkGray
+    }
 } else {
-    Write-Host "  Errors    : 0" -ForegroundColor DarkGray
+    Write-Host '  Encryption Summary' -ForegroundColor Cyan
+    Write-Host ('─' * 55) -ForegroundColor DarkGray
+    $totalFilesToEncrypt = $encryptOkCount + $encryptFailCount
+    Write-Host "  Total Files             : $($files.Count)"
+    Write-Host "  Total Files to encrypt  : $totalFilesToEncrypt"
+    Write-Host ''
+    Write-Host "  DPAPI Encrypted Files   : $dpapiFileCount"
+    Write-Host "    Decryption succeeded  : $dpapiDecryptOkCount" -ForegroundColor ($dpapiDecryptOkCount -gt 0 ? 'Green' : 'DarkGray')
+    if ($dpapiDecryptFailCount -gt 0) {
+        Write-Host "    Decryption failed     : $dpapiDecryptFailCount" -ForegroundColor Red
+        foreach ($f in $dpapiDecryptFailFiles) { Write-Host "        - $f" -ForegroundColor Red }
+    } else {
+        Write-Host "    Decryption failed     : 0" -ForegroundColor DarkGray
+    }
+    Write-Host "  Plain Text Files        : $plainTextFileCount"
+    Write-Host ''
+    Write-Host "  Total Encryption succeeded : $encryptOkCount" -ForegroundColor ($encryptOkCount -gt 0 ? 'Green' : 'DarkGray')
+    if ($encryptFailCount -gt 0) {
+        Write-Host "  Total Encryption failed    : $encryptFailCount" -ForegroundColor Red
+        foreach ($f in $encryptFailFiles) { Write-Host "      - $f" -ForegroundColor Red }
+    } else {
+        Write-Host "  Total Encryption failed    : 0" -ForegroundColor DarkGray
+    }
+    if ($wfaesSkippedCount -gt 0) {
+        Write-Host ''
+        Write-Host "  WFAES-skipped (already encrypted, use -GenerateKeys to rotate): $wfaesSkippedCount" -ForegroundColor Yellow
+    }
 }
+
 Write-Host ('─' * 55) -ForegroundColor DarkGray
 
-if ($errorCount -gt 0) {
+$hasFailed = ($Decrypt ? $decryptFailCount : $encryptFailCount) -gt 0
+if ($hasFailed) {
     Write-Fail 'One or more files failed. Review errors above before deploying.'
     exit 1
 }
 
-# ── Step 5: Upload to Azure Function App ───────────────────────────────────────
-if (-not $Decrypt -and $UploadToAzure -and $processedFiles.Count -gt 0) {
-    if (-not $FunctionApp -or -not $ResourceGroup) {
-        Write-Fail '-FunctionApp and -ResourceGroup are required when using -UploadToAzure'
-        exit 1
-    }
-
-    Write-Step "Packaging and uploading resources to Function App '$FunctionApp'..."
-
-    # Create a temp zip of the parent resources folder so directory structure is preserved.
-    $resourcesRoot = Split-Path ($processedFiles[0]) -Parent
-    $zipPath       = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "wf-resources-$(Get-Date -Format 'yyyyMMddHHmmss').zip")
-
-    Compress-Archive -Path "$resourcesRoot\*" -DestinationPath $zipPath -Force
-
-    az functionapp deploy `
-        --resource-group $ResourceGroup `
-        --name           $FunctionApp `
-        --src-path       $zipPath `
-        --type           static `
-        --target-path    "site/wwwroot/Resources" `
-        --output none
-
-    Remove-Item -LiteralPath $zipPath -Force
-    Write-OK "Resources uploaded to '$FunctionApp'"
-}
-
 Write-Host ''
-Write-OK ($Decrypt
-    ? 'Done. Review .decrypted.bite files and delete them after use — they contain plain-text credentials.'
-    : 'Done. Remember to delete .bite.bak backups after verifying the deployment.')
+Write-OK ($Decrypt ? "Done. Review decrypted files in '$decryptOutputRoot' and delete that directory after use — it contains plain-text credentials."
+    : 'Done.')

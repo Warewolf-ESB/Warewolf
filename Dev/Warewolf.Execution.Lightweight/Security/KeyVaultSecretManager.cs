@@ -7,11 +7,9 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Warewolf.Execution.Lightweight.Security
 {
@@ -64,14 +62,26 @@ namespace Warewolf.Execution.Lightweight.Security
                 _secretName, _vaultUri);
 
             var credential = new DefaultAzureCredential();
-            var client     = new SecretClient(new Uri(_vaultUri), credential);
+            var client = new SecretClient(new Uri(_vaultUri), credential);
 
             KeyVaultSecret secret =
                 await client.GetSecretAsync(_secretName, version: null, cancellationToken)
                             .ConfigureAwait(false);
+            var rawJson = secret.Value;
 
-            _material = JsonSerializer.Deserialize<KeyRingMaterial>(
-                            secret.Value, _jsonOptions)
+            // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
+            // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
+            if (!rawJson.TrimStart().StartsWith("{\""))
+            {
+                rawJson = Regex.Replace(rawJson, @"([\{,])\s*([a-zA-Z_]\w*)\s*:", "$1\"$2\":");
+                rawJson = Regex.Replace(rawJson, @":\s*(?!"")([^,\}]+)", ":\"$1\"");
+                _logger.LogWarning(
+                    "KeyVault | Secret '{SecretName}' contained unquoted JSON — auto-repaired. " +
+                    "Re-run Encrypt-Config.ps1 -GenerateKeys to store a canonical version.",
+                    _secretName);
+            }
+
+            _material = JsonSerializer.Deserialize<KeyRingMaterial>(rawJson, _jsonOptions)
                         ?? throw new InvalidOperationException(
                             $"Failed to deserialise key material from secret '{_secretName}'.");
 
