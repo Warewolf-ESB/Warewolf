@@ -1,41 +1,23 @@
 using Microsoft.Extensions.Hosting;
-using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Infrastructure;
 
-// ── Environment configuration ─────────────────────────────────────────────────
-var workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
-    ?? Path.Combine(AppContext.BaseDirectory, "Resources");
-
-// Set AZURE_KEYVAULT_NAME to enable AES-256-GCM decryption of .bite source files.
-// Leave unset for local development (plain or DPAPI-encrypted connection strings).
-var vaultName         = Environment.GetEnvironmentVariable("AZURE_KEYVAULT_NAME");
-var secretName        = Environment.GetEnvironmentVariable("KEYVAULT_SECRET_NAME") ?? "dp-keyring-v1";
-var encryptionEnabled = !string.IsNullOrWhiteSpace(vaultName);
-
-// ── Host construction ─────────────────────────────────────────────────────────
-var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
-    .ConfigureServices(services =>
-    {
-        services.AddCoreServices(workflowsDirectory);
-
-        if (encryptionEnabled)
-            services.AddKeyVaultEncryption($"https://{vaultName}.vault.azure.net/", secretName);
-    })
-    .Build();
-
-// ── Security: Key Vault initialisation (one Key Vault op per cold start) ───────
-if (encryptionEnabled)
+try
 {
-    var instanceId = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID")
-                     ?? Environment.MachineName;
+    var config = HostEnvironmentConfig.Load();
 
-    await host.InitializeKeyVaultAsync(instanceId);
+    var host = new HostBuilder()
+        .ConfigureWarewolf(config)
+        .Build();
+
+    await StartupOrchestrator.RunStartupAsync(host, config);
+
+    await host.RunAsync();
 }
-
-// ── Pre-load workflow index so the first HTTP request has no file-system cost ──
-WorkflowIndex.Instance.WarmUp(workflowsDirectory);
-
-await host.RunAsync();
-
-
+catch (Exception ex)
+{
+    // Fatal cold-start failure — write to stderr so the Azure Functions runtime
+    // captures it regardless of whether the logging pipeline is available.
+    await Console.Error.WriteLineAsync(
+        $"[FATAL] Host terminated unexpectedly at {DateTimeOffset.UtcNow:O}: {ex}");
+    throw;
+}

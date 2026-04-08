@@ -23,11 +23,11 @@ internal static class KeyVaultStartupExtensions
     /// entry.  Throws on failure so the host refuses to start without the key.
     /// </summary>
     /// <param name="host">The built <see cref="IHost"/> instance.</param>
-    /// <param name="instanceId">
-    /// Stable per-instance identifier (e.g. <c>WEBSITE_INSTANCE_ID</c>).
-    /// Used only in audit log entries — never in cryptographic operations.
+    /// <param name="config">
+    /// Environment configuration snapshot — supplies <see cref="HostEnvironmentConfig.InstanceId"/>
+    /// for audit entries without requiring the caller to resolve it.
     /// </param>
-    internal static async Task InitializeKeyVaultAsync(this IHost host, string instanceId)
+    internal static async Task InitializeKeyVaultAsync(this IHost host, HostEnvironmentConfig config)
     {
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
@@ -39,11 +39,11 @@ internal static class KeyVaultStartupExtensions
             var decryptionHelper = host.Services.GetRequiredService<FileDecryptionHelper>();
             DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
 
-            audit.LogColdStart(instanceId, secretManager.KeyId);
+            audit.LogColdStart(config.InstanceId, secretManager.KeyId);
         }
         catch (Exception ex)
         {
-            audit.LogKeyVaultError(instanceId, ex);
+            audit.LogKeyVaultError(config.InstanceId, ex);
             throw; // Fail fast: cannot serve requests without the AES key.
         }
     }

@@ -34,17 +34,17 @@ internal static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers Key Vault–backed AES-256-GCM encryption services.
-    /// Only called when <c>AZURE_KEYVAULT_NAME</c> is set.
+    /// Registers Key Vault–backed AES-256-GCM encryption services using the
+    /// vault coordinates provided by <paramref name="config"/>.
+    /// Only called when <see cref="HostEnvironmentConfig.EncryptionEnabled"/> is <c>true</c>.
     /// </summary>
     internal static IServiceCollection AddKeyVaultEncryption(
         this IServiceCollection services,
-        string vaultUri,
-        string secretName)
+        HostEnvironmentConfig   config)
     {
         services.AddSingleton(sp => new KeyVaultSecretManager(
-            vaultUri,
-            secretName,
+            config.VaultUri,
+            config.SecretName,
             sp.GetRequiredService<ILogger<KeyVaultSecretManager>>()));
 
         // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
