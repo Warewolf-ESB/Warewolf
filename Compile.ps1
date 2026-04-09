@@ -366,14 +366,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                     ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
                     ForEach-Object { Get-Item "$PSScriptRoot\Dev\$_" -ErrorAction SilentlyContinue } |
                     Where-Object { $_ -ne $null }
-                foreach ($proj in $slnProjects) {
+                $slnProjects | ForEach-Object -Parallel {
+                    $proj = $_
                     $projName = $proj.BaseName
                     Write-Host "Publishing $projName for linux-x64..."
-                    dotnet publish $proj.FullName -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase\$projName" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
+                    dotnet publish $proj.FullName -c $using:Config -r linux-x64 --self-contained true --no-restore -o "$using:linuxOutputBase\$projName" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
                     if ($LASTEXITCODE -ne 0) {
                         Write-Host "Skipping $projName (not compatible with linux-x64)."
                     }
-                }
+                } -ThrottleLimit 4
                 Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
             }
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
