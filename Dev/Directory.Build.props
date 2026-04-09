@@ -28,6 +28,15 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
   </ItemGroup>
 
+  <!-- Add TRX report support for projects using Microsoft.Testing.Platform (EnableMSTestRunner=true).
+       MSTest 3.x with EnableMSTestRunner generates a standalone MTP executable whose --report-trx
+       flag requires the Microsoft.Testing.Extensions.TrxReport package; it is not pulled in
+       automatically by MSTest.TestAdapter. Without it the runner exits with "Unknown option
+       '--report-trx'" and the test job fails. -->
+  <ItemGroup Condition="'$(EnableMSTestRunner)' == 'true'">
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.5.3" />
+  </ItemGroup>
+
   <!-- Prevent parallel build of the temporary WPF projects to avoid file locks and isolate their output paths -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
     <BuildInParallel>false</BuildInParallel>
