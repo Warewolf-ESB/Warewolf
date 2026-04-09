@@ -1,11 +1,30 @@
-﻿Param(
+Param(
   [switch]$DoExit,
   [string]$ResourcesPath,
   [string]$FunctionPath,
   [switch]$Cleanup,
   [int]$Port            = 7071,
   [int]$TimeoutSeconds  = 120,
-  [int]$PollIntervalSec = 5
+  [int]$PollIntervalSec = 5,
+
+  # Path to the secure.config file to deploy with the function host.
+  # When supplied the file is copied to the function directory and
+  # WAREWOLF_SECURE_CONFIG is set so both the host and the test ClassInit
+  # read the same secret key.
+  # When omitted and no secure.config is already in the function directory
+  # Public is granted Administrator permissions.
+  [string]$SecureConfigPath,
+
+  # Azure Key Vault name from which to retrieve (or create) the JWT HMAC
+  # secret key used to sign test tokens.  When supplied the script calls
+  # 'az keyvault secret show/set' to persist the key across runs so every
+  # CI agent signs tokens with the same secret -- matching what the func
+  # host loaded from the generated secure.config.
+  # Requires the az CLI to be installed and logged in, with Get/Set
+  # permissions on the vault for the calling identity.
+  # When empty the script falls back to local key generation.
+  [string]$VaultName,
+  [string]$SecretName = 'WWExecutionEngineTestSecret'
 )
 
 # -----------------------------------------------------------------------------
@@ -43,6 +62,172 @@ function Fail-Pipeline ([string]$Message) {
     exit 1
 }
 
+# -----------------------------------------------------------------------------
+# endregion
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# region: Secure-config helpers
+# -----------------------------------------------------------------------------
+#
+# Implements the same AES-CBC algorithm as SecurityEncryption.cs so that a
+# portable test secure.config can be generated in pure PowerShell without
+# requiring a running Warewolf server.
+#
+# Fixed key material mirrors SecurityEncryption constants exactly so that
+# SecureConfigLoader.ReadConfig can decrypt the file on any machine.
+# -----------------------------------------------------------------------------
+
+function Invoke-SecurityEncrypt {
+    <#
+    .SYNOPSIS
+        Encrypts $PlainText using the same AES-CBC algorithm as SecurityEncryption.cs.
+    #>
+    param([string]$PlainText)
+
+    $initVectorBytes = [System.Text.Encoding]::ASCII.GetBytes("@1B2c3D4e5F6g7H8")
+    $saltValueBytes  = [System.Text.Encoding]::ASCII.GetBytes("s@1tValue")
+    $plainTextBytes  = [System.Text.Encoding]::UTF8.GetBytes($PlainText)
+
+    # PasswordDeriveBytes with SHA1 / 2 iterations — matches SecurityEncryption.cs
+    $password = New-Object System.Security.Cryptography.PasswordDeriveBytes(
+        "Pas5pr@se", $saltValueBytes, "SHA1", 2)
+    $keyBytes = $password.GetBytes(32)   # 256-bit key
+
+    # Aes.Create() is the .NET 8 replacement for the deprecated RijndaelManaged;
+    # with a 128-bit block (default), CBC mode, and zero padding it is identical.
+    $aes         = [System.Security.Cryptography.Aes]::Create()
+    $aes.Mode    = [System.Security.Cryptography.CipherMode]::CBC
+    $aes.Padding = [System.Security.Cryptography.PaddingMode]::Zeros
+
+    $encryptor  = $aes.CreateEncryptor($keyBytes, $initVectorBytes)
+    $memStream  = [System.IO.MemoryStream]::new()
+    $cryptoStream = [System.Security.Cryptography.CryptoStream]::new(
+        $memStream, $encryptor, [System.Security.Cryptography.CryptoStreamMode]::Write)
+
+    $cryptoStream.Write($plainTextBytes, 0, $plainTextBytes.Length)
+    $cryptoStream.FlushFinalBlock()
+    $cipherBytes = $memStream.ToArray()   # capture before Dispose
+
+    $cryptoStream.Dispose()
+    $memStream.Dispose()
+    $aes.Dispose()
+
+    return [Convert]::ToBase64String($cipherBytes)
+}
+
+function New-TestSecureConfig {
+    <#
+    .SYNOPSIS
+        Generates a minimal encrypted secure.config for integration tests and
+        writes it to $OutputPath.  Returns the path.
+
+    .DESCRIPTION
+        Permissions mirror the SecurityHttpTests config:
+          Warewolf Administrators  — global full access (default admin group)
+          Azure Functions Users    — global full access
+          Public                   — no global View; resource-specific View on
+                                     "Hello World" only
+    #>
+    param(
+        [string]$OutputPath,
+        # When supplied this key is used directly (e.g. retrieved from Key Vault).
+        # When omitted a random HMAC-SHA256 key is generated.
+        [string]$SecretKey
+    )
+
+    if (-not $SecretKey) {
+        $hmac      = [System.Security.Cryptography.HMACSHA256]::new()
+        $SecretKey = [Convert]::ToBase64String($hmac.Key)
+        $hmac.Dispose()
+    }
+    $secretKey = $SecretKey
+
+    # Minimal SecuritySettingsTO JSON — SecureConfigLoader only reads
+    # SecretKey and WindowsGroupPermissions, so no $type annotations needed.
+    $settings = [ordered]@{
+        SecretKey                     = $secretKey
+        WindowsGroupPermissions       = @(
+            [ordered]@{ WindowsGroup = "Warewolf Administrators"; IsServer = $true;  ResourceID = "00000000-0000-0000-0000-000000000000"; ResourceName = "";            View = $true;  Execute = $true;  Contribute = $true;  DeployTo = $true;  DeployFrom = $true;  Administrator = $true  }
+            [ordered]@{ WindowsGroup = "Azure Functions Users";   IsServer = $true;  ResourceID = "00000000-0000-0000-0000-000000000000"; ResourceName = "";            View = $true;  Execute = $true;  Contribute = $false; DeployTo = $false; DeployFrom = $false; Administrator = $false }
+            [ordered]@{ WindowsGroup = "Public";                  IsServer = $true;  ResourceID = "00000000-0000-0000-0000-000000000000"; ResourceName = "";            View = $false; Execute = $false; Contribute = $false; DeployTo = $false; DeployFrom = $false; Administrator = $false }
+            [ordered]@{ WindowsGroup = "Public";                  IsServer = $false; ResourceID = [System.Guid]::NewGuid().ToString();    ResourceName = "Hello World"; View = $true;  Execute = $true;  Contribute = $false; DeployTo = $false; DeployFrom = $false; Administrator = $false }
+        )
+        CacheTimeout                  = "00:00:00"
+    }
+
+    $json      = ConvertTo-Json $settings -Depth 5 -Compress
+    $encrypted = Invoke-SecurityEncrypt -PlainText $json
+    [System.IO.File]::WriteAllText($OutputPath, $encrypted)
+
+    Write-Host "  secretKey : $secretKey"
+    Write-Host "  path      : $OutputPath"
+
+    return $OutputPath
+}
+
+function Get-OrSet-VaultSecretKey {
+    <#
+    .SYNOPSIS
+        Retrieves the JWT HMAC secret key from Key Vault.
+        Creates and stores a new random key on first call (idempotent).
+
+    .DESCRIPTION
+        Secret value format matches the experiment script:
+          { "version": 1, "keyId": "<guid>", "key": "<base64>", "created": "<ISO-8601>" }
+
+        A raw base64 value (no JSON wrapper) is also accepted for
+        hand-created secrets.
+
+    .OUTPUTS
+        Base64-encoded HMAC-SHA256 key string.
+    #>
+    param(
+        [Parameter(Mandatory)][string]$VaultName,
+        [Parameter(Mandatory)][string]$SecretName
+    )
+
+    # Try to retrieve an existing secret.
+    $existing = az keyvault secret show `
+        --vault-name $VaultName `
+        --name       $SecretName `
+        --query value -o tsv 2>$null
+
+    if ($existing) {
+        try {
+            $km = $existing | ConvertFrom-Json -ErrorAction Stop
+            Write-Host "  vault key : retrieved (keyId=$($km.keyId), created=$($km.created))"
+            return $km.key
+        } catch {
+            # Stored as raw base64 (no JSON wrapper).
+            Write-Host "  vault key : retrieved (raw secret)"
+            return $existing
+        }
+    }
+
+    # No secret found -- generate and store a new key.
+    Write-Host "  vault key : not found -- generating new key..."
+    $hmac = [System.Security.Cryptography.HMACSHA256]::new()
+    $key  = [Convert]::ToBase64String($hmac.Key)
+    $hmac.Dispose()
+
+    $km = [ordered]@{
+        version = 1
+        keyId   = [System.Guid]::NewGuid().ToString()
+        key     = $key
+        created = (Get-Date -Format 'o')
+    }
+
+    az keyvault secret set `
+        --vault-name $VaultName `
+        --name       $SecretName `
+        --value      ($km | ConvertTo-Json -Compress) `
+        --output none
+
+    Write-Host "  vault key : stored in '$VaultName' / '$SecretName'"
+    return $key
+}
 # -----------------------------------------------------------------------------
 # endregion
 # -----------------------------------------------------------------------------
@@ -269,6 +454,45 @@ if ($ResourcesPath) {
         Write-PipelineWarning "Resources path not found for '$ResourcesPath'"
     }
 }
+
+# -----------------------------------------------------------------------------
+# endregion
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# region: Setup secure.config
+# -----------------------------------------------------------------------------
+
+Write-PipelineSection "Setting up secure.config..."
+
+if ($SecureConfigPath) {
+    if (-not (Test-Path $SecureConfigPath)) {
+        Fail-Pipeline "SecureConfigPath '$SecureConfigPath' not found."
+    }
+    Copy-Item $SecureConfigPath -Destination "$FuncDir\secure.config" -Force
+    $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
+    Write-Host "  source  : $SecureConfigPath (supplied)"
+} elseif ($VaultName) {
+    Write-Host "  Resolving JWT secret key from Key Vault '$VaultName' / secret '$SecretName'..."
+    $vaultKey = Get-OrSet-VaultSecretKey -VaultName $VaultName -SecretName $SecretName
+    New-TestSecureConfig -OutputPath "$FuncDir\secure.config" -SecretKey $vaultKey | Out-Null
+    $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
+    Write-Host "  source  : Key Vault '$VaultName' / secret '$SecretName'"
+} elseif (-not (Test-Path "$FuncDir\secure.config")) {
+    Write-Host "  No secure.config found — generating test config..."
+    New-TestSecureConfig -OutputPath "$FuncDir\secure.config" | Out-Null
+    $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
+    Write-Host "  source  : generated"
+} else {
+    $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
+    Write-Host "  source  : $FuncDir\secure.config (pre-existing)"
+}
+
+Write-Host "  WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
+
+# Propagate to the Azure DevOps pipeline so subsequent steps (test runner) inherit it.
+Write-Host "##vso[task.setvariable variable=WAREWOLF_SECURE_CONFIG]$env:WAREWOLF_SECURE_CONFIG"
 
 # -----------------------------------------------------------------------------
 # endregion

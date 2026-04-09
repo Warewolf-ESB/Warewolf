@@ -241,6 +241,154 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         }
 
         // ══════════════════════════════════════════════════════════════════════════
+        // Group permission tests
+        //
+        // Config assumed here (set up in Warewolf Studio before running):
+        //   • "Warewolf Administrators" — global full permissions (default)
+        //   • "Azure Functions Users"   — global full permissions; member: InfoBoet
+        //   • "Public"                  — no global View; resource-specific View on
+        //                                 "Hello World" only
+        // ══════════════════════════════════════════════════════════════════════════
+
+        [TestMethod, TestCategory("Security_HTTP")]
+        public async Task Secure_AzureFunctionsUsers_ValidToken_Returns200OrNotFound()
+        {
+            SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
+
+            // "Azure Functions Users" has global View — must not be rejected.
+            var token = JwtTestHelper.ValidToken(_secretKey, "Azure Functions Users");
+            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/Hello%20World.json");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var resp = await _http.SendAsync(req);
+
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+                "'Azure Functions Users' JWT must not return 401");
+        }
+
+        [TestMethod, TestCategory("Security_HTTP")]
+        public async Task SecureApisJson_AzureFunctionsUsers_ShowsWorkflows()
+        {
+            SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
+
+            // Global View on "Azure Functions Users" → at least one workflow visible.
+            var token = JwtTestHelper.ValidToken(_secretKey, "Azure Functions Users");
+            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var resp = await _http.SendAsync(req);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
+                $"Expected 200 for /Secure/apis.json. Body: {body}");
+
+            var json = JObject.Parse(body);
+            var apis = json["Apis"] as JArray;
+            Assert.IsNotNull(apis);
+
+            if (apis.Count == 0)
+                Assert.Inconclusive("No .bite files deployed to Resources\\ — deploy workflows first.");
+
+            foreach (var api in apis)
+            {
+                var baseUrl = api["baseUrl"]?.ToString() ?? "";
+                Assert.IsTrue(baseUrl.Contains("/Secure/", StringComparison.OrdinalIgnoreCase),
+                    $"Expected /Secure/ in baseUrl, got: {baseUrl}");
+            }
+        }
+
+        [TestMethod, TestCategory("Security_HTTP")]
+        public async Task Secure_UnknownGroup_ValidToken_PassesAuthGate()
+        {
+            SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
+
+            // The /Secure/ execution gate checks signature + expiry only, not group
+            // membership.  A valid token with an unknown group must pass auth (even
+            // though the group has no permissions and discovery returns nothing).
+            var token = JwtTestHelper.ValidToken(_secretKey, "UnknownGroup");
+            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/Hello%20World.json");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var resp = await _http.SendAsync(req);
+
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+                "A valid JWT must pass the auth gate regardless of group membership");
+        }
+
+        [TestMethod, TestCategory("Security_HTTP")]
+        public async Task SecureApisJson_UnknownGroup_ReturnsEmptyApis()
+        {
+            SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
+
+            // Group not in secure.config → no View permission → empty discovery list.
+            var token = JwtTestHelper.ValidToken(_secretKey, "UnknownGroup");
+            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var resp = await _http.SendAsync(req);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
+                $"Discovery endpoint must not return 401. Body: {body}");
+
+            var json = JObject.Parse(body);
+            Assert.AreEqual(0, (json["Apis"] as JArray)?.Count,
+                "A group with no configured permissions must see an empty Apis array");
+        }
+
+        [TestMethod, TestCategory("Security_HTTP")]
+        public async Task SecureApisJson_PublicGroupJwt_ShowsOnlyResourcePermittedWorkflows()
+        {
+            SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
+
+            // "Public" has no global View but has resource-specific View on "Hello World".
+            // A JWT claiming "Public" must see exactly those permitted workflows via
+            // /Secure/apis.json — not a global dump.
+            var token = JwtTestHelper.ValidToken(_secretKey, "Public");
+            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var resp = await _http.SendAsync(req);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode, $"Expected 200. Body: {body}");
+
+            var json = JObject.Parse(body);
+            var apis = json["Apis"] as JArray;
+            Assert.IsNotNull(apis);
+
+            if (apis.Count == 0)
+            {
+                Assert.Inconclusive(
+                    "Expected 'Hello World' in /Secure/apis.json for the 'Public' JWT. " +
+                    "Ensure the workflow is deployed and the resource-specific permission is saved in secure.config.");
+                return;
+            }
+
+            // Every entry the Public group sees must use the /Secure/ prefix.
+            foreach (var api in apis)
+            {
+                var apiBaseUrl = api["baseUrl"]?.ToString() ?? "";
+                Assert.IsTrue(apiBaseUrl.Contains("/Secure/", StringComparison.OrdinalIgnoreCase),
+                    $"Expected /Secure/ in baseUrl, got: {apiBaseUrl}");
+            }
+
+            // Every entry must be a workflow the Public group actually has permission for.
+            // With the test config, that is "Hello World" only.
+            foreach (var api in apis)
+            {
+                var name = api["Name"]?.ToString() ?? "";
+                Assert.AreEqual("Hello World", name,
+                    $"'Public' group should only see 'Hello World' (resource-specific permission), got: '{name}'");
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════════════════════
         // /Public/* — anonymous execution routes (no auth required)
         // ══════════════════════════════════════════════════════════════════════════
 
