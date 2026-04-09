@@ -29,10 +29,10 @@
   </ItemGroup>
 
   <!-- Add TRX report support for projects using Microsoft.Testing.Platform (EnableMSTestRunner=true).
-       MSTest 3.x with EnableMSTestRunner generates a standalone MTP executable whose --report-trx
+       MSTest 3.x with EnableMSTestRunner generates a standalone MTP executable whose report-trx
        flag requires the Microsoft.Testing.Extensions.TrxReport package; it is not pulled in
-       automatically by MSTest.TestAdapter. Without it the runner exits with "Unknown option
-       '--report-trx'" and the test job fails. -->
+       automatically by MSTest.TestAdapter. Without it the runner rejects the report-trx flag
+       and the test job fails. -->
   <ItemGroup Condition="'$(EnableMSTestRunner)' == 'true'">
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.5.3" />
   </ItemGroup>
