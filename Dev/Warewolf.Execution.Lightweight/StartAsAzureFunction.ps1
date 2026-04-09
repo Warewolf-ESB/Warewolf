@@ -195,15 +195,26 @@ function Get-OrSet-VaultSecretKey {
         --query value -o tsv 2>$null
 
     if ($existing) {
+        # 1. Try well-formed JSON.
         try {
             $km = $existing | ConvertFrom-Json -ErrorAction Stop
             Write-Host "  vault key : retrieved (keyId=$($km.keyId), created=$($km.created))"
             return $km.key
-        } catch {
-            # Stored as raw base64 (no JSON wrapper).
-            Write-Host "  vault key : retrieved (raw secret)"
-            return $existing
-        }
+        } catch { }
+
+        # 2. Repair malformed JSON (unquoted keys/values produced by some tools).
+        #    Matches the ConvertFrom-KeyMaterial repair in the experiment script.
+        try {
+            $repaired = $existing -replace '([\{,])\s*([a-zA-Z_]\w*)\s*:', '$1"$2":'
+            $repaired = $repaired  -replace ':\s*(?!")([^,\}]+)',           ':"$1"'
+            $km = $repaired | ConvertFrom-Json -ErrorAction Stop
+            Write-Host "  vault key : retrieved (repaired JSON, keyId=$($km.keyId))"
+            return $km.key
+        } catch { }
+
+        # 3. Raw base64 secret (no JSON wrapper).
+        Write-Host "  vault key : retrieved (raw secret)"
+        return $existing
     }
 
     # No secret found -- generate and store a new key.
