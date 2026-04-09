@@ -225,7 +225,20 @@ namespace Warewolf.Auditing.Drivers
                     sqlConn.Open();
                     sqlConn.EnableExtensions(true);
                     //sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
-                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_fts5_init");
+                    try
+                    {
+                        // On Windows, FTS5 is provided by SQLite.Interop.dll bundled by
+                        // System.Data.SQLite.Core.  On Linux, System.Data.SQLite uses the
+                        // system libsqlite3 which already has FTS5 compiled in, so the
+                        // explicit LoadExtension call is unnecessary and would fail because
+                        // there is no libSQLite.Interop.so counterpart in the publish output.
+                        sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_fts5_init");
+                    }
+                    catch (SQLiteException)
+                    {
+                        // FTS5 is already built into the SQLite library in use on this
+                        // platform; the extension load is a no-op here.
+                    }
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
