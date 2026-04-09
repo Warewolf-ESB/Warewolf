@@ -360,6 +360,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "ServerTests") {
                 $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
                 $slnDir = "$PSScriptRoot\Dev"
+                if (Test-Path $linuxOutputBase) { Remove-Item $linuxOutputBase -Recurse -Force }
                 New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
                 dotnet restore "$slnDir\ServerTests.sln" -r linux-x64 --nologo -v minimal --force
                 # Detect which projects the restore actually produced a linux-x64 target for
@@ -385,7 +386,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                     }
                 } | ConvertTo-Json | Set-Content $tempSlnf
                 Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
-                dotnet publish "$tempSlnf" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
+                dotnet publish "$tempSlnf" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
                 Remove-Item $tempSlnf -Force
                 if ($LASTEXITCODE -ne 0) {
                     Write-Host "Linux publish failed for ServerTests."
