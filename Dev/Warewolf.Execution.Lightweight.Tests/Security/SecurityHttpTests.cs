@@ -52,22 +52,51 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         // Secret key loaded/derived from the real config (or a synthetic one).
         static string _secretKey = null!;
 
+        // True when _secretKey came from the same config the server was started with,
+        // meaning tokens minted here will actually pass validation on the server.
+        static bool _secretKeyMatchesServer;
+
         // ── Setup ─────────────────────────────────────────────────────────────────
 
         [ClassInitialize]
         public static void ClassInit(TestContext _)
         {
             // Load the secret key we'll use to mint test tokens.
-            // Prefer the real config so tokens are compatible with a live server.
+            // MUST use the same key as the running server so tokens are accepted.
+            //
+            // Resolution order:
+            //   1. WAREWOLF_SECURE_CONFIG env var — this is exactly what the server
+            //      was started with (e.g. "func start" after setting the env var).
+            //   2. Well-known real-server install path (RealConfigPath).
+            //   3. Generate a fresh key — tokens won't be accepted by a server that
+            //      has no config, but non-JWT tests can still run.
+            var envPath = Environment.GetEnvironmentVariable(SecureConfigLoader.ConfigPathEnvVar);
+            if (!string.IsNullOrWhiteSpace(envPath) && File.Exists(envPath))
+            {
+                var cfg = SecureConfigLoader.LoadFrom(envPath);
+                if (cfg.IsLoaded)
+                {
+                    _secretKey = cfg.SecretKey;
+                    _secretKeyMatchesServer = true;
+                    return;
+                }
+            }
+
             if (File.Exists(RealConfigPath))
             {
                 var realCfg = SecureConfigLoader.LoadFrom(RealConfigPath);
-                _secretKey = realCfg.IsLoaded ? realCfg.SecretKey : SecureConfigBuilder.NewSecretKey();
+                if (realCfg.IsLoaded)
+                {
+                    _secretKey = realCfg.SecretKey;
+                    _secretKeyMatchesServer = true;
+                    return;
+                }
             }
-            else
-            {
-                _secretKey = SecureConfigBuilder.NewSecretKey();
-            }
+
+            // No matching config found — generate a key for structural token tests,
+            // but JWT-acceptance tests will be Inconclusive (server can't validate).
+            _secretKey = SecureConfigBuilder.NewSecretKey();
+            _secretKeyMatchesServer = false;
         }
 
         // ── Host availability helper ──────────────────────────────────────────────
@@ -91,6 +120,24 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
                 Assert.Inconclusive(
                     $"Skipped: Azure Functions host not reachable at {BaseUrl}. " +
                     "Start the host with: func start --port 7071");
+        }
+
+        /// <summary>
+        /// Marks the test Inconclusive when no config matching the server's key was
+        /// found.  Without a matching key the server returns 401 for every token —
+        /// the test cannot distinguish a real auth failure from a misconfigured host.
+        ///
+        /// To fix: set <c>WAREWOLF_SECURE_CONFIG</c> to the path of the
+        /// <c>secure.config</c> used by the running host, then re-run.
+        /// </summary>
+        static void SkipIfServerLacksMatchingConfig()
+        {
+            if (!_secretKeyMatchesServer)
+                Assert.Inconclusive(
+                    $"Skipped: no usable secure.config found via " +
+                    $"{SecureConfigLoader.ConfigPathEnvVar} env var or {RealConfigPath}. " +
+                    "The server has no secret key, so it rejects every JWT with 401. " +
+                    $"Start the host after setting {SecureConfigLoader.ConfigPathEnvVar}=<path to secure.config>.");
         }
 
         // ══════════════════════════════════════════════════════════════════════════
@@ -159,6 +206,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         public async Task Secure_ValidToken_Returns200OrNotFound()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
 
             // A valid token should pass authentication.
             // The response is 200 when the workflow exists, 404/500 when it does not —
@@ -177,6 +225,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         public async Task Secure_ValidToken_Post_Returns200OrNotFound()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
 
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
             var req   = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "/Secure/HelloWorld.json")
@@ -281,6 +330,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         public async Task SecureApisJson_ValidToken_Returns200()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
 
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
             var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
@@ -321,6 +371,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         public async Task SecureApisJson_Entries_UseSecureRoutePrefix()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
+            SkipIfServerLacksMatchingConfig();
 
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
             var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
