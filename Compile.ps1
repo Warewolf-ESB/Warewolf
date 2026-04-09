@@ -359,22 +359,38 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             }
             if ($OutputFolderName -eq "ServerTests") {
                 $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
+                $slnDir = "$PSScriptRoot\Dev"
                 New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
-                dotnet restore "$PSScriptRoot\Dev\ServerTests.sln" -r linux-x64 --nologo -v minimal --force
-                $slnProjects = Get-Content "$PSScriptRoot\Dev\ServerTests.sln" |
+                dotnet restore "$slnDir\ServerTests.sln" -r linux-x64 --nologo -v minimal --force
+                # Detect which projects the restore actually produced a linux-x64 target for
+                $slnProjects = Get-Content "$slnDir\ServerTests.sln" |
                     Where-Object { $_ -match '\.Tests\.csproj"' } |
                     ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
-                    ForEach-Object { Get-Item "$PSScriptRoot\Dev\$_" -ErrorAction SilentlyContinue } |
+                    ForEach-Object { Get-Item "$slnDir\$_" -ErrorAction SilentlyContinue } |
                     Where-Object { $_ -ne $null }
-                $slnProjects | ForEach-Object -Parallel {
-                    $proj = $_
-                    $projName = $proj.BaseName
-                    Write-Host "Publishing $projName for linux-x64..."
-                    dotnet publish $proj.FullName -c $using:Config -r linux-x64 --self-contained true --no-restore -o "$using:linuxOutputBase\$projName" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
-                    if ($LASTEXITCODE -ne 0) {
-                        Write-Host "Skipping $projName (not compatible with linux-x64)."
+                $compatibleProjects = $slnProjects | Where-Object {
+                    $assetsFile = Join-Path $_.DirectoryName "obj\project.assets.json"
+                    if (!(Test-Path $assetsFile)) { return $false }
+                    $targets = (Get-Content $assetsFile -Raw | ConvertFrom-Json).targets.PSObject.Properties.Name
+                    $targets -contains "net8.0/linux-x64"
+                }
+                $slnProjects | Where-Object { $_ -notin $compatibleProjects } |
+                    ForEach-Object { Write-Host "Skipping $($_.BaseName) (not compatible with linux-x64)." }
+                # Build a temporary solution filter containing only the compatible projects
+                $tempSlnf = "$slnDir\ServerTests-linux.slnf"
+                [ordered]@{
+                    solution = [ordered]@{
+                        path     = "ServerTests.sln"
+                        projects = @($compatibleProjects | ForEach-Object { $_.FullName.Substring($slnDir.Length + 1) })
                     }
-                } -ThrottleLimit 4
+                } | ConvertTo-Json | Set-Content $tempSlnf
+                Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
+                dotnet publish "$tempSlnf" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
+                Remove-Item $tempSlnf -Force
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Host "Linux publish failed for ServerTests."
+                    exit 1
+                }
                 Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
             }
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
