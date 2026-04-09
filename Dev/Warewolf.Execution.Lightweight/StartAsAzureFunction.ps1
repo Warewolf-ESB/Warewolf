@@ -300,6 +300,14 @@ if (!$env:AzureWebJobsStorage) {
     $env:AzureWebJobsStorage = ""
 }
 
+# func v4.9+ prompts interactively to select the worker runtime when
+# FUNCTIONS_WORKER_RUNTIME is not set and local.settings.json is absent
+# (local.settings.json is intentionally excluded from CI artifacts).
+# Set the default here so the host starts non-interactively.
+if (!$env:FUNCTIONS_WORKER_RUNTIME) {
+    $env:FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
+}
+
 Write-Host "  func    : $FuncExe"
 Write-Host "  root    : $FuncDir"
 Write-Host "  port    : $Port"
