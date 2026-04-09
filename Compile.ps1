@@ -360,19 +360,11 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "ServerTests") {
                 $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
                 New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
-                $slnProjects = Get-Content "$PSScriptRoot\Dev\ServerTests.sln" |
-                    Where-Object { $_ -match '\.Tests\.csproj"' } |
-                    ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
-                    ForEach-Object { Get-Item "$PSScriptRoot\Dev\$_" -ErrorAction SilentlyContinue } |
-                    Where-Object { $_ -ne $null }
-                foreach ($proj in $slnProjects) {
-                    $projName = $proj.BaseName
-                    Write-Host "Publishing $projName for linux-x64..."
-                    dotnet publish $proj.FullName -c $Config -r linux-x64 --self-contained true -o "$linuxOutputBase\$projName" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
-                    if ($LASTEXITCODE -ne 0) {
-                        Write-Host "Linux publish failed for $projName."
-                        exit 1
-                    }
+                Write-Host "Publishing ServerTests.sln for linux-x64..."
+                dotnet publish "$PSScriptRoot\Dev\ServerTests.sln" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:ErrorOnDuplicatePublishOutputFiles=false
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Host "Linux publish failed for ServerTests.sln."
+                    exit 1
                 }
                 Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
             }
