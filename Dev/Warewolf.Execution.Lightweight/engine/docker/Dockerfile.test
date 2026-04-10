@@ -8,10 +8,10 @@ RUN apt-get update \
        procps \
     && rm -rf /var/lib/apt/lists/*
 
-# vstest.console.dll (mounted from VS) targets .NET 9. Install the runtime so
-# the script can invoke it directly without needing the full SDK.
+# Install the .NET 8 SDK so vstest is available inside the container without
+# needing anything mounted from the host.
 RUN curl -sSL https://dot.net/v1/dotnet-install.sh \
-    | bash -s -- --runtime dotnet --channel 9.0 --install-dir /usr/share/dotnet --no-path
+    | bash -s -- --channel 8.0 --install-dir /usr/share/dotnet --no-path
 
 # Install the Visual Studio remote debugger so tests can be stepped through
 # in Test Explorer just like local tests.

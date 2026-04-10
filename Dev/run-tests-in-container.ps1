@@ -1,7 +1,6 @@
 # run-tests-in-container.ps1
-# Runs tests directly inside the vsut_dockerfile container via vstest.console.dll.
+# Runs tests directly inside the vsut_dockerfile container via dotnet vstest.
 # The repo root (parent of Dev) maps to /mnt/approot inside the container.
-# VS vstest tools are mounted at /mnt/vstest inside the container.
 
 [CmdletBinding()]
 param(
@@ -14,27 +13,15 @@ param(
     # vstest filter expression, e.g. "TestCategory=Unit" or "FullyQualifiedName~Foo"
     # Leave blank to run all tests in the selected assemblies.
     [string]$Filter,
-
-    # Flat binary directory (CI / pipeline mode).  When set, DLLs are taken from this
-    # directory directly instead of being discovered under the Dev source tree.
-    # The directory is mounted at /mnt/approot inside the container.
-    # Interactive prompts are suppressed when this parameter is provided.
-    [string]$BinDir,
-
-    # Directory on the host where TRX test-result files should be written.
-    # When set, vstest is told to write TRX output there (mounted as /mnt/testresults).
-    # When omitted, only the console logger is used (suitable for local dev runs).
-    [string]$TestResultsDir,
-
-    # Optional override: directory containing vstest.console.dll.
-    # When omitted the script auto-discovers from Visual Studio (Windows) or the .NET SDK (Linux).
-    [string]$VsTestDllDir
+    # Force a rebuild of the vsut_dockerfile image before starting the container.
+    # Use this if the container is stale (e.g. after Dockerfile changes).
+    [switch]$RebuildImage
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ── Derive paths from the script location ────────────────────────────────────
+# -- Derive paths from the script location ------------------------------------
 # Script lives at <RepoRoot>\Dev\run-tests-in-container.ps1
 $DevRoot  = $PSScriptRoot                        # …\Dev
 $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mnt/approot)
@@ -42,31 +29,19 @@ $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mn
 $Dockerfile   = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test"
 $DockerContext = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker"
 
-# ── Locate vstest.console.dll ─────────────────────────────────────────────────
-if ($VsTestDllDir) {
-    $vsTestHostPath = $VsTestDllDir
-} elseif ($IsWindows -or ($env:OS -eq 'Windows_NT')) {
-    $vsTestHostPath = Get-ChildItem `
-        -Path "C:\Program Files\Microsoft Visual Studio" `
-        -Recurse -Filter "vstest.console.dll" -ErrorAction SilentlyContinue |
-        Select-Object -First 1 -ExpandProperty DirectoryName
-} else {
-    # Linux: vstest.console.dll ships inside the .NET SDK installation.
-    $vsTestHostPath = Get-ChildItem `
-        -Path "/usr/share/dotnet/sdk" `
-        -Recurse -Filter "vstest.console.dll" -ErrorAction SilentlyContinue |
-        Where-Object { $_.FullName -notmatch "/testhost/" } |
-        Select-Object -First 1 -ExpandProperty DirectoryName
-}
-
-if (-not $vsTestHostPath) {
-    Write-Error "Could not find vstest.console.dll. On Windows install Visual Studio; on Linux install the .NET SDK or pass -VsTestDllDir."
-    exit 1
-}
-Write-Host "Found vstest at: $vsTestHostPath" -ForegroundColor Cyan
-
-# ── Find or start the test container ─────────────────────────────────────────
+# -- Find or start the test container -----------------------------------------
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
+
+if ($RebuildImage) {
+    if ($containerId) {
+        Write-Host "Stopping existing container for rebuild..." -ForegroundColor Yellow
+        docker stop $containerId | Out-Null
+        $containerId = $null
+    }
+    Write-Host "Rebuilding image vsut_dockerfile..." -ForegroundColor Yellow
+    docker build --no-cache -t vsut_dockerfile -f $Dockerfile $DockerContext
+    if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
+}
 
 if (-not $containerId) {
     $imageExists = docker images vsut_dockerfile --format "{{.ID}}" 2>$null
@@ -77,16 +52,9 @@ if (-not $containerId) {
     }
 
     Write-Host "Starting container..." -ForegroundColor Yellow
-    $mountSource = if ($BinDir) { $BinDir } else { $RepoRoot }
-    $runArgs = @("-d",
-        "-v", "${mountSource}:/mnt/approot",
-        "-v", "${vsTestHostPath}:/mnt/vstest")
-    if ($TestResultsDir) {
-        New-Item -ItemType Directory -Force -Path $TestResultsDir | Out-Null
-        $runArgs += @("-v", "${TestResultsDir}:/mnt/testresults")
-    }
-    $runArgs += "vsut_dockerfile"
-    $containerId = docker run @runArgs
+    $containerId = docker run -d `
+        -v "${RepoRoot}:/mnt/approot" `
+        vsut_dockerfile
     if ($LASTEXITCODE -ne 0) { Write-Error "Failed to start container."; exit 1 }
 
     Write-Host "Waiting for container to be ready..." -ForegroundColor Yellow
@@ -95,7 +63,7 @@ if (-not $containerId) {
 
 Write-Host "Using container: $containerId" -ForegroundColor Cyan
 
-# ── Discover all test assemblies in the repo ─────────────────────────────────
+# -- Discover all test assemblies in the repo ---------------------------------
 function Get-AllTestAssemblies {
     Get-ChildItem -Path $DevRoot -Recurse -Filter "*.dll" |
         Where-Object {
@@ -109,34 +77,20 @@ function Get-AllTestAssemblies {
         Sort-Object -Unique
 }
 
-# ── Discover test assemblies from a flat binary directory (CI mode) ───────────
-function Get-AllTestAssembliesFromBinDir {
-    Get-ChildItem -Path $BinDir -Filter "*.dll" |
-        Where-Object { $_.BaseName -match "^(Warewolf|Dev2)\." -and $_.BaseName -match "\.(Tests|Specs)$" } |
-        Select-Object -ExpandProperty BaseName |
-        Sort-Object -Unique
-}
-
-# ── Prompt for missing parameters (skipped in CI / BinDir mode) ──────────────
+# -- Prompt for missing parameters --------------------------------------------
 if (-not $Assemblies) {
-    if ($BinDir) {
-        Write-Host "Discovering all test assemblies in '$BinDir'..." -ForegroundColor Yellow
-        $Assemblies = Get-AllTestAssembliesFromBinDir
-        Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
+    $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
+    if ($assemblyInput.Trim()) {
+        $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
     } else {
-        $assemblyInput = Read-Host "Assembly name(s) — comma-separated (blank = all Warewolf & Dev2 test assemblies)"
-        if ($assemblyInput.Trim()) {
-            $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
-        } else {
-            Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
-            $Assemblies = Get-AllTestAssemblies
-            Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
-        }
+        Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
+        $Assemblies = Get-AllTestAssemblies
+        Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
     }
 }
 
-if (-not $BinDir -and -not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
-    $excludeInput = Read-Host "Assemblies to exclude — comma-separated (blank = none)"
+if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
+    $excludeInput = Read-Host "Assemblies to exclude - comma-separated (blank = none)"
     if ($excludeInput.Trim()) {
         $ExcludeAssemblies = $excludeInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
     }
@@ -148,7 +102,7 @@ if (-not $BinDir -and -not $PSBoundParameters.ContainsKey("Filter") -and -not $F
     $Filter = $filterInput.Trim()
 }
 
-# ── Apply exclusions ──────────────────────────────────────────────────────────
+# -- Apply exclusions ----------------------------------------------------------
 if ($ExcludeAssemblies) {
     $Assemblies = $Assemblies | Where-Object { $_ -notin $ExcludeAssemblies }
     if (-not $Assemblies) {
@@ -157,7 +111,7 @@ if ($ExcludeAssemblies) {
     }
 }
 
-# ── Locate DLLs on the Windows filesystem ────────────────────────────────────
+# -- Locate DLLs on the Windows filesystem ------------------------------------
 $containerPaths = @()
 
 foreach ($assembly in $Assemblies) {
@@ -199,10 +153,8 @@ foreach ($assembly in $Assemblies) {
     $containerPaths += $containerPath
 }
 
-# ── Build vstest.console command ──────────────────────────────────────────────
-$dotnet = "/usr/share/dotnet/dotnet"
-$vstest = "/mnt/vstest/vstest.console.dll"
-$cmd = @($dotnet, $vstest) + $containerPaths + @("/logger:console;verbosity=normal")
+# -- Build vstest command ------------------------------------------------------
+$cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @("--logger:console;verbosity=normal")
 
 if ($TestResultsDir) {
     $cmd += "/logger:trx"
@@ -211,13 +163,13 @@ if ($TestResultsDir) {
 
 if ($Filter) {
     $resolvedFilter = if ($Filter -match "[=~!<>]") { $Filter } else { "FullyQualifiedName~$Filter" }
-    $cmd += "/TestCaseFilter:`"$resolvedFilter`""
+    $cmd += "--TestCaseFilter:`"$resolvedFilter`""
 }
 
 Write-Host ""
 Write-Host "Running: docker exec $containerId $($cmd -join ' ')" -ForegroundColor Yellow
 Write-Host ""
 
-# ── Execute ───────────────────────────────────────────────────────────────────
+# -- Execute -------------------------------------------------------------------
 docker exec $containerId @cmd
 exit $LASTEXITCODE
