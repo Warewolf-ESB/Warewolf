@@ -1,7 +1,6 @@
 # run-tests-in-container.ps1
-# Runs tests directly inside the vsut_dockerfile container via vstest.console.dll.
+# Runs tests directly inside the vsut_dockerfile container via dotnet vstest.
 # The repo root (parent of Dev) maps to /mnt/approot inside the container.
-# VS vstest tools are mounted at /mnt/vstest inside the container.
 
 [CmdletBinding()]
 param(
@@ -30,18 +29,6 @@ $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mn
 $Dockerfile   = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test"
 $DockerContext = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker"
 
-# -- Locate vstest.console.dll in any VS installation -------------------------
-$vsTestHostPath = Get-ChildItem `
-    -Path "C:\Program Files\Microsoft Visual Studio" `
-    -Recurse -Filter "vstest.console.dll" -ErrorAction SilentlyContinue |
-    Select-Object -First 1 -ExpandProperty DirectoryName
-
-if (-not $vsTestHostPath) {
-    Write-Error "Could not find vstest.console.dll under 'C:\Program Files\Microsoft Visual Studio'. Is Visual Studio installed?"
-    exit 1
-}
-Write-Host "Found vstest at: $vsTestHostPath" -ForegroundColor Cyan
-
 # -- Find or start the test container -----------------------------------------
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
 
@@ -67,7 +54,6 @@ if (-not $containerId) {
     Write-Host "Starting container..." -ForegroundColor Yellow
     $containerId = docker run -d `
         -v "${RepoRoot}:/mnt/approot" `
-        -v "${vsTestHostPath}:/mnt/vstest" `
         vsut_dockerfile
     if ($LASTEXITCODE -ne 0) { Write-Error "Failed to start container."; exit 1 }
 
@@ -156,14 +142,12 @@ foreach ($assembly in $Assemblies) {
     $containerPaths += $containerPath
 }
 
-# -- Build vstest.console command ----------------------------------------------
-$dotnet = "/usr/share/dotnet/dotnet"
-$vstest = "/mnt/vstest/vstest.console.dll"
-$cmd = @($dotnet, $vstest) + $containerPaths + @("/logger:console;verbosity=normal")
+# -- Build vstest command ------------------------------------------------------
+$cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @("--logger:console;verbosity=normal")
 
 if ($Filter) {
     $resolvedFilter = if ($Filter -match "[=~!<>]") { $Filter } else { "FullyQualifiedName~$Filter" }
-    $cmd += "/TestCaseFilter:`"$resolvedFilter`""
+    $cmd += "--TestCaseFilter:`"$resolvedFilter`""
 }
 
 Write-Host ""
