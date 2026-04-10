@@ -419,10 +419,10 @@ foreach ($req in $RequiredAssemblies) {
     $required = $req.MinVersion
 
     if ($actual -lt $required) {
-        Write-PipelineError ("  [WRONG VERSION] $($req.File) — found $actual, need >= $required")
+        Write-PipelineError ("  [WRONG VERSION] $($req.File) - found $actual, need >= $required")
         $wrongVersionAsms += "$($req.File) (found $actual, need >= $required)"
     } else {
-        Write-Host "  [OK] $($req.File) — $actual"
+        Write-Host "  [OK] $($req.File) - $actual"
     }
 }
 
@@ -491,7 +491,7 @@ if ($SecureConfigPath) {
     $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
     Write-Host "  source  : Key Vault '$VaultName' / secret '$SecretName'"
 } elseif (-not (Test-Path "$FuncDir\secure.config")) {
-    Write-Host "  No secure.config found — generating test config..."
+    Write-Host "  No secure.config found - generating test config..."
     New-TestSecureConfig -OutputPath "$FuncDir\secure.config" | Out-Null
     $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
     Write-Host "  source  : generated"
