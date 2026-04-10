@@ -13,7 +13,10 @@ param(
 
     # vstest filter expression, e.g. "TestCategory=Unit" or "FullyQualifiedName~Foo"
     # Leave blank to run all tests in the selected assemblies.
-    [string]$Filter
+    [string]$Filter,
+    # Force a rebuild of the vsut_dockerfile image before starting the container.
+    # Use this if the container is stale (e.g. after Dockerfile changes).
+    [switch]$RebuildImage
 )
 
 Set-StrictMode -Version Latest
@@ -41,6 +44,17 @@ Write-Host "Found vstest at: $vsTestHostPath" -ForegroundColor Cyan
 
 # ── Find or start the test container ─────────────────────────────────────────
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
+
+if ($RebuildImage) {
+    if ($containerId) {
+        Write-Host "Stopping existing container for rebuild..." -ForegroundColor Yellow
+        docker stop $containerId | Out-Null
+        $containerId = $null
+    }
+    Write-Host "Rebuilding image vsut_dockerfile..." -ForegroundColor Yellow
+    docker build --no-cache -t vsut_dockerfile -f $Dockerfile $DockerContext
+    if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
+}
 
 if (-not $containerId) {
     $imageExists = docker images vsut_dockerfile --format "{{.ID}}" 2>$null
