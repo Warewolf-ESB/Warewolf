@@ -22,7 +22,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ── Derive paths from the script location ────────────────────────────────────
+# -- Derive paths from the script location ------------------------------------
 # Script lives at <RepoRoot>\Dev\run-tests-in-container.ps1
 $DevRoot  = $PSScriptRoot                        # …\Dev
 $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mnt/approot)
@@ -30,7 +30,7 @@ $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mn
 $Dockerfile   = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test"
 $DockerContext = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker"
 
-# ── Locate vstest.console.dll in any VS installation ─────────────────────────
+# -- Locate vstest.console.dll in any VS installation -------------------------
 $vsTestHostPath = Get-ChildItem `
     -Path "C:\Program Files\Microsoft Visual Studio" `
     -Recurse -Filter "vstest.console.dll" -ErrorAction SilentlyContinue |
@@ -42,7 +42,7 @@ if (-not $vsTestHostPath) {
 }
 Write-Host "Found vstest at: $vsTestHostPath" -ForegroundColor Cyan
 
-# ── Find or start the test container ─────────────────────────────────────────
+# -- Find or start the test container -----------------------------------------
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
 
 if ($RebuildImage) {
@@ -77,7 +77,7 @@ if (-not $containerId) {
 
 Write-Host "Using container: $containerId" -ForegroundColor Cyan
 
-# ── Discover all test assemblies in the repo ─────────────────────────────────
+# -- Discover all test assemblies in the repo ---------------------------------
 function Get-AllTestAssemblies {
     Get-ChildItem -Path $DevRoot -Recurse -Filter "*.dll" |
         Where-Object {
@@ -91,9 +91,9 @@ function Get-AllTestAssemblies {
         Sort-Object -Unique
 }
 
-# ── Prompt for missing parameters ────────────────────────────────────────────
+# -- Prompt for missing parameters --------------------------------------------
 if (-not $Assemblies) {
-    $assemblyInput = Read-Host "Assembly name(s) — comma-separated (blank = all Warewolf & Dev2 test assemblies)"
+    $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
     if ($assemblyInput.Trim()) {
         $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
     } else {
@@ -104,7 +104,7 @@ if (-not $Assemblies) {
 }
 
 if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
-    $excludeInput = Read-Host "Assemblies to exclude — comma-separated (blank = none)"
+    $excludeInput = Read-Host "Assemblies to exclude - comma-separated (blank = none)"
     if ($excludeInput.Trim()) {
         $ExcludeAssemblies = $excludeInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
     }
@@ -116,7 +116,7 @@ if (-not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter) {
     $Filter = $filterInput.Trim()
 }
 
-# ── Apply exclusions ──────────────────────────────────────────────────────────
+# -- Apply exclusions ----------------------------------------------------------
 if ($ExcludeAssemblies) {
     $Assemblies = $Assemblies | Where-Object { $_ -notin $ExcludeAssemblies }
     if (-not $Assemblies) {
@@ -125,7 +125,7 @@ if ($ExcludeAssemblies) {
     }
 }
 
-# ── Locate DLLs on the Windows filesystem ────────────────────────────────────
+# -- Locate DLLs on the Windows filesystem ------------------------------------
 $containerPaths = @()
 
 foreach ($assembly in $Assemblies) {
@@ -156,7 +156,7 @@ foreach ($assembly in $Assemblies) {
     $containerPaths += $containerPath
 }
 
-# ── Build vstest.console command ──────────────────────────────────────────────
+# -- Build vstest.console command ----------------------------------------------
 $dotnet = "/usr/share/dotnet/dotnet"
 $vstest = "/mnt/vstest/vstest.console.dll"
 $cmd = @($dotnet, $vstest) + $containerPaths + @("/logger:console;verbosity=normal")
@@ -170,6 +170,6 @@ Write-Host ""
 Write-Host "Running: docker exec $containerId $($cmd -join ' ')" -ForegroundColor Yellow
 Write-Host ""
 
-# ── Execute ───────────────────────────────────────────────────────────────────
+# -- Execute -------------------------------------------------------------------
 docker exec $containerId @cmd
 exit $LASTEXITCODE
