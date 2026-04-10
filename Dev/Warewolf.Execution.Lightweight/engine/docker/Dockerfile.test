@@ -1,3 +1,8 @@
+# Stage 1: pull the .NET 8 SDK from its official image.
+# Using a multi-stage copy avoids running dotnet-install.sh, which curl-fetches
+# from dot.net and fails on networks with corporate SSL inspection proxies.
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS sdk
+
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice
 
 # curl and procps are needed by the VS remote test/debug agent.
@@ -8,10 +13,9 @@ RUN apt-get update \
        procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Install the .NET 8 SDK so vstest is available inside the container without
-# needing anything mounted from the host.
-RUN curl -sSL https://dot.net/v1/dotnet-install.sh \
-    | bash -s -- --channel 8.0 --install-dir /usr/share/dotnet --no-path
+# Overlay the SDK tools onto the runtime that ships in the base image.
+# This gives us dotnet-vstest without any network calls during the build.
+COPY --from=sdk /usr/share/dotnet /usr/share/dotnet
 
 # Install the Visual Studio remote debugger so tests can be stepped through
 # in Test Explorer just like local tests.
