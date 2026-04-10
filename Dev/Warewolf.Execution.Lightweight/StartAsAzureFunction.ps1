@@ -1,4 +1,4 @@
-Param(
+﻿Param(
   [switch]$DoExit,
   [string]$ResourcesPath,
   [string]$FunctionPath,
@@ -505,6 +505,21 @@ Write-Host "  WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
 # Propagate to the Azure DevOps pipeline so subsequent steps (test runner) inherit it.
 Write-Host "##vso[task.setvariable variable=WAREWOLF_SECURE_CONFIG]$env:WAREWOLF_SECURE_CONFIG"
 
+# Write local.settings.json with WAREWOLF_SECURE_CONFIG so the dotnet-isolated worker
+# reliably receives it.  The func CLI (Node.js) reads local.settings.json and passes
+# its Values entries to the worker process; plain env-var inheritance through the
+# Node.js → dotnet worker process boundary is not guaranteed on all CI agents.
+$localSettings = [ordered]@{
+    IsEncrypted = $false
+    Values      = [ordered]@{
+        AzureWebJobsStorage      = if ($env:AzureWebJobsStorage) { $env:AzureWebJobsStorage } else { "" }
+        FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
+        WAREWOLF_SECURE_CONFIG   = $env:WAREWOLF_SECURE_CONFIG
+    }
+}
+$localSettings | ConvertTo-Json -Depth 3 | Set-Content (Join-Path $FuncDir "local.settings.json") -Encoding UTF8
+Write-Host "  local.settings.json written with WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
+
 # -----------------------------------------------------------------------------
 # endregion
 # -----------------------------------------------------------------------------
@@ -535,10 +550,8 @@ if (!$env:AzureWebJobsStorage) {
     $env:AzureWebJobsStorage = ""
 }
 
-# func v4.9+ prompts interactively to select the worker runtime when
-# FUNCTIONS_WORKER_RUNTIME is not set and local.settings.json is absent
-# (local.settings.json is intentionally excluded from CI artifacts).
-# Set the default here so the host starts non-interactively.
+# Also set FUNCTIONS_WORKER_RUNTIME as a process env var so the host starts
+# non-interactively in environments where local.settings.json may not be present.
 if (!$env:FUNCTIONS_WORKER_RUNTIME) {
     $env:FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
 }

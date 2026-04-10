@@ -1,4 +1,4 @@
-/*
+﻿/*
  * HTTP integration tests for JWT-based request validation in the lightweight engine.
  *
  * PRE-REQUISITE: the Azure Functions host must be running at http://localhost:7071
@@ -88,7 +88,11 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
                 if (realCfg.IsLoaded)
                 {
                     _secretKey = realCfg.SecretKey;
-                    _secretKeyMatchesServer = true;
+                    // Do NOT set _secretKeyMatchesServer = true here: in CI the func host
+                    // is started with a freshly-generated secure.config (different key from
+                    // the real server install), so tokens signed with this key are rejected.
+                    // Only the WAREWOLF_SECURE_CONFIG env-var path guarantees a key match.
+                    _secretKeyMatchesServer = false;
                     return;
                 }
             }
