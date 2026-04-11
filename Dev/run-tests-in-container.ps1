@@ -13,6 +13,14 @@ param(
     # vstest filter expression, e.g. "TestCategory=Unit" or "FullyQualifiedName~Foo"
     # Leave blank to run all tests in the selected assemblies.
     [string]$Filter,
+
+    # Path to a flat directory containing pre-built self-contained linux-x64 binaries.
+    # When set (CI mode), DLLs are resolved from this directory instead of local build output.
+    [string]$BinDir,
+
+    # Directory where .trx result files are written inside the container and copied out.
+    [string]$TestResultsDir,
+
     # Force a rebuild of the vsut_dockerfile image before starting the container.
     # Use this if the container is stale (e.g. after Dockerfile changes).
     [switch]$RebuildImage
