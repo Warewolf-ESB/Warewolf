@@ -34,8 +34,8 @@ $ErrorActionPreference = "Stop"
 $DevRoot  = $PSScriptRoot                        # …\Dev
 $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mnt/approot)
 
-$Dockerfile   = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test"
-$DockerContext = "$DevRoot\Warewolf.Execution.Lightweight\engine\docker"
+$Dockerfile   = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker" "Dockerfile.test"
+$DockerContext = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker"
 
 # -- Find or start the test container -----------------------------------------
 $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
@@ -60,9 +60,16 @@ if (-not $containerId) {
     }
 
     Write-Host "Starting container..." -ForegroundColor Yellow
-    $containerId = docker run -d `
-        -v "${RepoRoot}:/mnt/approot" `
-        vsut_dockerfile
+    # In CI mode ($BinDir set) mount the artifact directory as /mnt/approot so the
+    # pre-built DLLs are accessible at the paths vstest will be given.
+    # In local dev mode mount the whole repo root instead.
+    $mountSource = if ($BinDir) { $BinDir } else { $RepoRoot }
+    $dockerRunArgs = @("-d", "-v", "${mountSource}:/mnt/approot")
+    if ($TestResultsDir) {
+        New-Item -ItemType Directory -Force -Path $TestResultsDir | Out-Null
+        $dockerRunArgs += @("-v", "${TestResultsDir}:/mnt/testresults")
+    }
+    $containerId = docker run @dockerRunArgs vsut_dockerfile
     if ($LASTEXITCODE -ne 0) { Write-Error "Failed to start container."; exit 1 }
 
     Write-Host "Waiting for container to be ready..." -ForegroundColor Yellow
@@ -85,15 +92,26 @@ function Get-AllTestAssemblies {
         Sort-Object -Unique
 }
 
-# -- Prompt for missing parameters --------------------------------------------
+# -- Prompt for missing parameters (local dev only) / auto-discover in CI -----
 if (-not $Assemblies) {
-    $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
-    if ($assemblyInput.Trim()) {
-        $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
-    } else {
-        Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
-        $Assemblies = Get-AllTestAssemblies
+    if ($BinDir) {
+        # CI mode: discover all test DLLs from the flat artifact directory.
+        Write-Host "Discovering test assemblies from BinDir '$BinDir'..." -ForegroundColor Yellow
+        $Assemblies = Get-ChildItem -Path $BinDir -Filter "*.dll" |
+            Where-Object { $_.BaseName -match "^(Warewolf|Dev2)\." -and $_.BaseName -match "\.(Tests|Specs)$" } |
+            Select-Object -ExpandProperty BaseName |
+            Sort-Object -Unique
+        if (-not $Assemblies) { Write-Error "No test assemblies found in '$BinDir'."; exit 1 }
         Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
+    } else {
+        $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
+        if ($assemblyInput.Trim()) {
+            $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
+        } else {
+            Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
+            $Assemblies = Get-AllTestAssemblies
+            Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
+        }
     }
 }
 
