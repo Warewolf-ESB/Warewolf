@@ -188,11 +188,35 @@ function Get-OrSet-VaultSecretKey {
         [Parameter(Mandatory)][string]$SecretName
     )
 
+    # Verify az CLI is available and logged in before hitting Key Vault.
+    $azAccount = az account show --query name -o tsv 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-PipelineWarning "az CLI not logged in or not available (exit $LASTEXITCODE): $azAccount"
+        Write-PipelineWarning "Key Vault '$VaultName' unreachable — falling back to a fresh random key (single-run only; key will NOT be persisted)."
+        $hmac = [System.Security.Cryptography.HMACSHA256]::new()
+        $key  = [Convert]::ToBase64String($hmac.Key)
+        $hmac.Dispose()
+        Write-Host "  vault key : fallback (az CLI unavailable)"
+        return $key
+    }
+    Write-Host "  vault key : az account = $azAccount"
+
     # Try to retrieve an existing secret.
     $existing = az keyvault secret show `
         --vault-name $VaultName `
         --name       $SecretName `
-        --query value -o tsv 2>$null
+        --query value -o tsv 2>&1
+    $vaultExitCode = $LASTEXITCODE
+
+    if ($vaultExitCode -ne 0) {
+        Write-PipelineWarning "Key Vault secret show failed (exit $vaultExitCode): $existing"
+        Write-PipelineWarning "Vault '$VaultName' / secret '$SecretName' could not be read — generating a fresh key (single-run only)."
+        $hmac = [System.Security.Cryptography.HMACSHA256]::new()
+        $key  = [Convert]::ToBase64String($hmac.Key)
+        $hmac.Dispose()
+        Write-Host "  vault key : fallback (vault read error)"
+        return $key
+    }
 
     if ($existing) {
         # 1. Try well-formed JSON.
@@ -230,13 +254,17 @@ function Get-OrSet-VaultSecretKey {
         created = (Get-Date -Format 'o')
     }
 
-    az keyvault secret set `
+    $setResult = az keyvault secret set `
         --vault-name $VaultName `
         --name       $SecretName `
         --value      ($km | ConvertTo-Json -Compress) `
-        --output none
-
-    Write-Host "  vault key : stored in '$VaultName' / '$SecretName'"
+        --output none 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-PipelineWarning "Key Vault secret set failed (exit $LASTEXITCODE): $setResult"
+        Write-PipelineWarning "Key generated but NOT persisted in '$VaultName' — this run will work but the key won't survive to the next run."
+    } else {
+        Write-Host "  vault key : stored in '$VaultName' / '$SecretName'"
+    }
     return $key
 }
 # -----------------------------------------------------------------------------
@@ -490,14 +518,20 @@ if ($SecureConfigPath) {
     New-TestSecureConfig -OutputPath "$FuncDir\secure.config" -SecretKey $vaultKey | Out-Null
     $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
     Write-Host "  source  : Key Vault '$VaultName' / secret '$SecretName'"
-} elseif (-not (Test-Path "$FuncDir\secure.config")) {
-    Write-Host "  No secure.config found - generating test config..."
+} else {
+    # No external config supplied: generate (or regenerate) a test config.
+    # Always regenerate so the SecretKey is fresh and non-empty — a pre-existing
+    # file may have SecretKey="" (e.g. a real Warewolf server install), which
+    # causes both the func worker and the test runner to each auto-generate
+    # their own random key, making every valid-JWT test fail with 401.
+    if (Test-Path "$FuncDir\secure.config") {
+        Write-Host "  Pre-existing secure.config found — regenerating to ensure non-empty SecretKey."
+    } else {
+        Write-Host "  No secure.config found - generating test config..."
+    }
     New-TestSecureConfig -OutputPath "$FuncDir\secure.config" | Out-Null
     $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
     Write-Host "  source  : generated"
-} else {
-    $env:WAREWOLF_SECURE_CONFIG = "$FuncDir\secure.config"
-    Write-Host "  source  : $FuncDir\secure.config (pre-existing)"
 }
 
 Write-Host "  WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
@@ -556,6 +590,24 @@ if (!$env:FUNCTIONS_WORKER_RUNTIME) {
     $env:FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
 }
 
+# IMPORTANT: Clear WAREWOLF_SECURE_CONFIG from the process environment before
+# starting func so the Azure Functions Core Tools CLI does NOT log "Skipping
+# '...' from local settings as it's already defined in current environment
+# variables" and instead delivers it to the dotnet-isolated worker via the
+# official local.settings.json mechanism.
+#
+# When WAREWOLF_SECURE_CONFIG is already in the process env the func CLI skips
+# injecting it from local.settings.json.  Whether the worker then inherits the
+# env-var through normal process inheritance is not guaranteed — on some CI
+# agents the Node.js→dotnet worker process boundary does not reliably carry
+# custom env vars.  Removing it here forces the func CLI to read the value from
+# local.settings.json and pass it to the worker via the reliable path.
+#
+# We restore it after Start-Process so the test runner (vstest.console.exe,
+# which is spawned later in the same PowerShell session) still inherits it.
+$_savedSecureConfig = $env:WAREWOLF_SECURE_CONFIG
+[System.Environment]::SetEnvironmentVariable("WAREWOLF_SECURE_CONFIG", $null, "Process")
+
 Write-Host "  func    : $FuncExe"
 Write-Host "  root    : $FuncDir"
 Write-Host "  port    : $Port"
@@ -592,6 +644,12 @@ $FuncProcess = Start-Process `
 if (-not $FuncProcess) {
     Fail-Pipeline "Start-Process did not return a process object - func failed to launch."
 }
+
+# Restore WAREWOLF_SECURE_CONFIG now that func has been started.
+# The test runner (vstest.console.exe) spawned later in this PowerShell session
+# inherits this value so SecurityHttpTests.ClassInit can load the same secret
+# key the func worker loaded from local.settings.json.
+$env:WAREWOLF_SECURE_CONFIG = $_savedSecureConfig
 
 Write-Host "func host launched. PID: $($FuncProcess.Id)"
 
