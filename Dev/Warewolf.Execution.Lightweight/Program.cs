@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Logging;
+using Warewolf.Interfaces.Licensing;
+using Warewolf.Licensing;
 
 var workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
     ?? Path.Combine(AppContext.BaseDirectory, "Resources");
@@ -16,6 +18,7 @@ var host = new HostBuilder()
         services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
         services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
         services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+        services.AddSingleton<IWarewolfLicense, WarewolfLicense>();
     })
     .Build();
 
