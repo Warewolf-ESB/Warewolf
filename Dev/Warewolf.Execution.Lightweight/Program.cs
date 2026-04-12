@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Logging;
-using Warewolf.Interfaces.Licensing;
 using Warewolf.Licensing;
 
 var workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
