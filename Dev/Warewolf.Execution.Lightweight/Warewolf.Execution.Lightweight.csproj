@@ -97,6 +97,9 @@
 
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
 
+    <!-- Interfaces (required for Warewolf.Interfaces.Licensing namespace) -->
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+
     <!-- Licensing / Chargebee integration -->
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
 
