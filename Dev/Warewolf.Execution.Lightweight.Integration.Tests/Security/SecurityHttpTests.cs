@@ -1,4 +1,4 @@
-﻿/*
+/*
  * HTTP integration tests for JWT-based request validation in the lightweight engine.
  *
  * PRE-REQUISITE: the Azure Functions host must be running at http://localhost:7071
@@ -38,8 +38,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Warewolf.Execution.Lightweight.Security;
+using Warewolf.Execution.Lightweight.Tests.Security;
 
-namespace Warewolf.Execution.Lightweight.Tests.Security
+namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
 {
     [TestClass]
     public class SecurityHttpTests

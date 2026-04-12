@@ -26,7 +26,7 @@ using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight.Tests.Security
 {
-    internal static class JwtTestHelper
+    public static class JwtTestHelper
     {
         static readonly string _headerEncoded =
             Base64UrlEncode(Encoding.UTF8.GetBytes("""{"alg":"HS256","typ":"JWT"}"""));
@@ -37,21 +37,21 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Generates a valid JWT for the given user groups, signed with
         /// <paramref name="base64SecretKey"/>.
         /// </summary>
-        internal static string ValidToken(string base64SecretKey, params string[] userGroups) =>
+        public static string ValidToken(string base64SecretKey, params string[] userGroups) =>
             BuildToken(base64SecretKey, userGroups, expireMinutes: 20);
 
         /// <summary>
         /// Generates an already-expired token (exp = 10 minutes in the past).
         /// <see cref="JwtValidator.GetUserGroups"/> must return <c>null</c> for this.
         /// </summary>
-        internal static string ExpiredToken(string base64SecretKey, params string[] userGroups) =>
+        public static string ExpiredToken(string base64SecretKey, params string[] userGroups) =>
             BuildToken(base64SecretKey, userGroups, expireMinutes: -10);
 
         /// <summary>
         /// Generates a token with a tampered payload: the signature still covers the
         /// original payload, so the signature verification must fail.
         /// </summary>
-        internal static string TamperedPayloadToken(string base64SecretKey, params string[] userGroups)
+        public static string TamperedPayloadToken(string base64SecretKey, params string[] userGroups)
         {
             var token  = ValidToken(base64SecretKey, userGroups);
             var parts  = token.Split('.');
@@ -65,7 +65,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Generates a token whose signature has been replaced with random bytes.
         /// The payload is intact but the signature check must fail.
         /// </summary>
-        internal static string BadSignatureToken(string base64SecretKey, params string[] userGroups)
+        public static string BadSignatureToken(string base64SecretKey, params string[] userGroups)
         {
             var token = ValidToken(base64SecretKey, userGroups);
             var parts = token.Split('.');
@@ -79,7 +79,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Generates a token signed with a <em>different</em> key than the one
         /// the validator will use.
         /// </summary>
-        internal static string WrongKeyToken(string validatorKey, params string[] userGroups)
+        public static string WrongKeyToken(string validatorKey, params string[] userGroups)
         {
             using var hmac       = new HMACSHA256();
             var differentKey     = Convert.ToBase64String(hmac.Key);
@@ -119,7 +119,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
 
         // ── Encoding ──────────────────────────────────────────────────────────────
 
-        internal static string Base64UrlEncode(byte[] bytes) =>
+        public static string Base64UrlEncode(byte[] bytes) =>
             Convert.ToBase64String(bytes)
                 .TrimEnd('=')
                 .Replace('+', '-')
