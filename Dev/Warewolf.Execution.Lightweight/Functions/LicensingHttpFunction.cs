@@ -1,10 +1,14 @@
+using Dev2.Communication;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Subscription;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Licensing;
 
@@ -14,47 +18,53 @@ namespace Warewolf.Execution.Lightweight
     /// Azure Function endpoints for Chargebee subscription registration and status.
     ///
     /// These endpoints allow the Angular web studio to register an Azure Functions
-    /// instance by passing the target server address as a parameter.  They call the
-    /// Chargebee API directly (Option B) — no ESB management-service routing required.
+    /// instance by passing the target server address as a parameter.  Business logic
+    /// is delegated to the existing <see cref="GetSubscriptionData"/> and
+    /// <see cref="SaveSubscriptionData"/> internal service classes — no ESB routing
+    /// is required because the classes are instantiated directly with their dependencies.
+    ///
+    /// Chargebee site (test vs live) is determined at compile time by the existing
+    /// <c>#if DEBUG</c> branch in <see cref="SubscriptionConfig"/>.
     ///
     /// Routes:
-    ///   GET  /IsLicensed      — anonymous; returns local license status from secure.config
-    ///   GET  /Subscriptions   — function-key; refreshes subscription data from Chargebee
-    ///   POST /Subscriptions   — function-key; creates a new subscription or links an
-    ///                           existing one by subscription ID, then persists locally
+    ///   GET  /IsLicensed    — anonymous; returns local license status without a Chargebee call
+    ///   GET  /Subscriptions — function-key; refreshes subscription data from Chargebee
+    ///   POST /Subscriptions — function-key; creates a new subscription or links an existing one
     /// </summary>
     public sealed class LicensingHttpFunction
     {
         readonly IWarewolfLicense _warewolfLicense;
+        readonly Dev2JsonSerializer _serializer;
 
         public LicensingHttpFunction(IWarewolfLicense warewolfLicense)
         {
             _warewolfLicense = warewolfLicense;
+            _serializer = new Dev2JsonSerializer();
         }
 
         /// <summary>
         /// Returns whether this instance considers itself licensed, based on the locally
-        /// persisted subscription data.  No Chargebee API call is made.
+        /// persisted subscription data.  No Chargebee API call is made — this is a fast
+        /// local check intended for the Angular page's initial load.
         /// </summary>
         [Function("IsLicensed")]
         public async Task<HttpResponseData> IsLicensed(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "IsLicensed")] HttpRequestData req)
         {
-            var provider = SubscriptionProvider.Instance;
-            var data = provider.GetSubscriptionData();
+            var data = SubscriptionProvider.Instance.GetSubscriptionData();
             return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(new
             {
-                isLicensed    = data.IsLicensed,
-                status        = data.Status?.ToString(),
-                planId        = data.PlanId,
+                isLicensed     = data.IsLicensed,
+                status         = data.Status?.ToString(),
+                planId         = data.PlanId,
                 stopExecutions = data.StopExecutions
             }));
         }
 
         /// <summary>
-        /// Retrieves the current subscription from Chargebee using the locally stored
-        /// subscription ID and credentials, and returns the full subscription data.
-        /// Updates the local cache if the plan or status has changed.
+        /// Retrieves the current subscription from Chargebee and returns the full
+        /// subscription data.  Delegates to <see cref="GetSubscriptionData.Execute"/> which
+        /// also updates the local cache if the plan or status has changed.
         /// </summary>
         [Function("GetSubscriptionData")]
         public async Task<HttpResponseData> GetSubscription(
@@ -62,50 +72,35 @@ namespace Warewolf.Execution.Lightweight
         {
             try
             {
-                var provider = SubscriptionProvider.Instance;
+                var svc = new GetSubscriptionData(_warewolfLicense, SubscriptionProvider.Instance);
+                var resultSb = svc.Execute(new Dictionary<string, StringBuilder>(), theWorkspace: null);
+                var execMsg = _serializer.Deserialize<ExecuteMessage>(resultSb);
 
-                if (string.IsNullOrEmpty(provider.SubscriptionId))
-                {
-                    var defaultData = provider.DefaultSubscription();
-                    return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(defaultData));
-                }
+                if (execMsg.HasError)
+                    return await ErrorResponse(req, execMsg.Message.ToString(), HttpStatusCode.InternalServerError);
 
-                var subscriptionData = _warewolfLicense.RetrievePlan(
-                    provider.SubscriptionId,
-                    provider.SubscriptionKey,
-                    provider.SubscriptionSiteName);
-
-                if (subscriptionData.PlanId != provider.PlanId ||
-                    subscriptionData.Status != provider.Status)
-                {
-                    provider.SaveSubscriptionData(subscriptionData);
-                }
-
+                var subscriptionData = _serializer.Deserialize<SubscriptionData>(execMsg.Message);
                 return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(subscriptionData));
             }
             catch (Exception ex)
             {
-                return await ResponseBuilder.BuildStringAsync(req,
-                    JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { ex.Message } }),
-                    statusCode: HttpStatusCode.InternalServerError);
+                return await ErrorResponse(req, ex.Message, HttpStatusCode.InternalServerError);
             }
         }
 
         /// <summary>
-        /// Creates a new Chargebee subscription or links an existing one.
+        /// Creates a new Chargebee subscription or links an existing one, then persists
+        /// the result locally.  Delegates to <see cref="SaveSubscriptionData.Execute"/> for
+        /// all business logic: duplicate detection, email validation, and persistence.
         ///
         /// Request body (JSON):
         /// <code>
-        /// {
-        ///   "CustomerFirstName": "Jane",
-        ///   "CustomerLastName":  "Smith",
-        ///   "CustomerEmail":     "jane@example.com",
-        ///   "PlanId":            "warewolf-developer",
-        ///   "NoOfCores":         4,
+        /// // New subscription:
+        /// { "CustomerFirstName": "Jane", "CustomerLastName": "Smith",
+        ///   "CustomerEmail": "jane@example.com", "PlanId": "warewolf-developer" }
         ///
-        ///   // Supply SubscriptionId to link an existing subscription instead of creating one:
-        ///   "SubscriptionId": ""
-        /// }
+        /// // Link existing subscription:
+        /// { "CustomerEmail": "jane@example.com", "SubscriptionId": "sub_abc123" }
         /// </code>
         ///
         /// The Chargebee API key and site name are always sourced from the locally
@@ -122,66 +117,38 @@ namespace Warewolf.Execution.Lightweight
                 var subscriptionData = JsonConvert.DeserializeObject<SubscriptionData>(body);
 
                 if (subscriptionData is null)
-                {
-                    return await ResponseBuilder.BuildStringAsync(req,
-                        JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { "Request body is missing or invalid." } }),
-                        statusCode: HttpStatusCode.BadRequest);
-                }
+                    return await ErrorResponse(req, "Request body is missing or invalid.", HttpStatusCode.BadRequest);
 
-                // Always use the locally stored Chargebee credentials — never trust the caller's.
-                var provider = SubscriptionProvider.Instance;
-                subscriptionData.SubscriptionKey      = provider.SubscriptionKey;
-                subscriptionData.SubscriptionSiteName = provider.SubscriptionSiteName;
-
-                // Guard against duplicate subscriptions for the same customer.
-                if (string.IsNullOrEmpty(subscriptionData.SubscriptionId) &&
-                    _warewolfLicense.SubscriptionExists(subscriptionData))
+                var dict = new Dictionary<string, StringBuilder>
                 {
-                    return await ResponseBuilder.BuildStringAsync(req,
-                        JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { "A subscription already exists for this customer." } }),
-                        statusCode: HttpStatusCode.Conflict);
-                }
+                    // Key matches Warewolf.Service.SaveSubscriptionData.SubscriptionData constant.
+                    ["SubscriptionData"] = _serializer.SerializeToBuilder(subscriptionData)
+                };
 
-                ISubscriptionData result;
-                if (string.IsNullOrEmpty(subscriptionData.SubscriptionId))
-                {
-                    result = _warewolfLicense.CreatePlan(subscriptionData);
-                }
-                else
-                {
-                    result = _warewolfLicense.RetrievePlan(
-                        subscriptionData.SubscriptionId,
-                        subscriptionData.SubscriptionKey,
-                        subscriptionData.SubscriptionSiteName);
-                }
+                var svc = new SaveSubscriptionData(_serializer, _warewolfLicense, SubscriptionProvider.Instance);
+                var resultSb = svc.Execute(dict, theWorkspace: null);
+                var execMsg = _serializer.Deserialize<ExecuteMessage>(resultSb);
 
-                if (result is null)
+                if (execMsg.HasError)
                 {
-                    return await ResponseBuilder.BuildStringAsync(req,
-                        JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { "An error occurred creating the subscription." } }),
-                        statusCode: HttpStatusCode.InternalServerError);
+                    var message = execMsg.Message.ToString();
+                    var statusCode = message.Contains("already exists") ? HttpStatusCode.Conflict : HttpStatusCode.BadRequest;
+                    return await ErrorResponse(req, message, statusCode);
                 }
-
-                if (!string.IsNullOrEmpty(subscriptionData.CustomerEmail) &&
-                    result.CustomerEmail != subscriptionData.CustomerEmail)
-                {
-                    return await ResponseBuilder.BuildStringAsync(req,
-                        JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { "Email address does not match the subscription." } }),
-                        statusCode: HttpStatusCode.BadRequest);
-                }
-
-                provider.SaveSubscriptionData(result);
 
                 return await ResponseBuilder.BuildStringAsync(req,
-                    JsonConvert.SerializeObject(result),
+                    JsonConvert.SerializeObject(new { success = true }),
                     statusCode: HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
-                return await ResponseBuilder.BuildStringAsync(req,
-                    JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { ex.Message } }),
-                    statusCode: HttpStatusCode.InternalServerError);
+                return await ErrorResponse(req, ex.Message, HttpStatusCode.InternalServerError);
             }
         }
+
+        static Task<HttpResponseData> ErrorResponse(HttpRequestData req, string message, HttpStatusCode statusCode) =>
+            ResponseBuilder.BuildStringAsync(req,
+                JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { message } }),
+                statusCode: statusCode);
     }
 }

@@ -104,7 +104,7 @@ if (-not $Assemblies) {
         if (-not $Assemblies) { Write-Error "No test assemblies found in '$BinDir'."; exit 1 }
         Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
     } else {
-        $assemblyInput = if ([Environment]::UserInteractive) { Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)" } else { "" }
+        $assemblyInput = try { Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)" } catch { "" }
         if ($assemblyInput.Trim()) {
             $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
         } else {
@@ -115,16 +115,16 @@ if (-not $Assemblies) {
     }
 }
 
-if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies -and [Environment]::UserInteractive) {
-    $excludeInput = Read-Host "Assemblies to exclude - comma-separated (blank = none)"
+if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
+    $excludeInput = try { Read-Host "Assemblies to exclude - comma-separated (blank = none)" } catch { "" }
     if ($excludeInput.Trim()) {
         $ExcludeAssemblies = $excludeInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
     }
 }
 
-if (-not $BinDir -and -not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter -and [Environment]::UserInteractive) {
+if (-not $BinDir -and -not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter) {
     Write-Host "Filter examples: MyTestMethod / TestCategory=MyCategory / FullyQualifiedName~ClassName / (blank = all)" -ForegroundColor Gray
-    $filterInput = Read-Host "Filter"
+    $filterInput = try { Read-Host "Filter" } catch { "" }
     $Filter = $filterInput.Trim()
 }
 
