@@ -37,6 +37,11 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+function Invoke-Logged {
+    Write-Host "+ $args" -ForegroundColor DarkGray
+    & $args[0] $args[1..($args.Count - 1)]
+}
+
 # Detect CI mode: either explicitly via -BinDir or by the Azure DevOps agent env var.
 $CIMode = $PSBoundParameters.ContainsKey("BinDir") -or [bool]$env:TF_BUILD
 
@@ -69,11 +74,19 @@ if ($CIMode) {
     }
 }
 
+# -- Prompt for assemblies early (before container startup) -------------------
+if (-not $Assemblies -and -not $CIMode) {
+    $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
+    if ($assemblyInput.Trim()) {
+        $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
+    }
+}
+
 # -- Find or start the test container -----------------------------------------
 if ($CIMode) {
     # In CI always build a fresh image and run a one-shot container per test suite.
     Write-Host "Building test image from $Dockerfile ..." -ForegroundColor Yellow
-    docker build -t warewolf-test-env -f $Dockerfile $DockerContext
+    Invoke-Logged docker build -t warewolf-test-env -f $Dockerfile $DockerContext
     if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
     $containerId = $null   # we will use docker run --rm below
 } else {
@@ -82,11 +95,11 @@ if ($CIMode) {
     if ($RebuildImage) {
         if ($containerId) {
             Write-Host "Stopping existing container for rebuild..." -ForegroundColor Yellow
-            docker stop $containerId | Out-Null
+            Invoke-Logged docker stop $containerId | Out-Null
             $containerId = $null
         }
         Write-Host "Rebuilding image vsut_dockerfile..." -ForegroundColor Yellow
-        docker build --no-cache -t vsut_dockerfile -f $Dockerfile $DockerContext
+        Invoke-Logged docker build --no-cache -t vsut_dockerfile -f $Dockerfile $DockerContext
         if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
     }
 
@@ -94,14 +107,12 @@ if ($CIMode) {
         $imageExists = docker images vsut_dockerfile --format "{{.ID}}" 2>$null
         if (-not $imageExists) {
             Write-Host "Image vsut_dockerfile not found. Building..." -ForegroundColor Yellow
-            docker build -t vsut_dockerfile -f $Dockerfile $DockerContext
+            Invoke-Logged docker build -t vsut_dockerfile -f $Dockerfile $DockerContext
             if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
         }
 
         Write-Host "Starting container..." -ForegroundColor Yellow
-        $containerId = docker run -d `
-            -v "${RepoRoot}:/mnt/approot" `
-            vsut_dockerfile
+        $containerId = Invoke-Logged docker run -d -v "${RepoRoot}:/mnt/approot" vsut_dockerfile
         if ($LASTEXITCODE -ne 0) { Write-Error "Failed to start container."; exit 1 }
 
         Write-Host "Waiting for container to be ready..." -ForegroundColor Yellow
@@ -143,14 +154,9 @@ if (-not $Assemblies) {
         $Assemblies = Get-CITestAssemblies
         Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
     } else {
-        $assemblyInput = Read-Host "Assembly name(s) - comma-separated (blank = all Warewolf & Dev2 test assemblies)"
-        if ($assemblyInput.Trim()) {
-            $Assemblies = $assemblyInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
-        } else {
-            Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
-            $Assemblies = Get-AllTestAssemblies
-            Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
-        }
+        Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
+        $Assemblies = Get-AllTestAssemblies
+        Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
     }
 }
 
@@ -190,7 +196,7 @@ if ($CIMode) {
 
         $filterArgs = if ($Filter) { @("--TestCaseFilter:$Filter") } else { @() }
 
-        docker run --rm `
+        Invoke-Logged docker run --rm `
             -v "${BinDir}:/tests:ro" `
             -v "${TestResultsDir}:/results" `
             warewolf-test-env `
@@ -233,13 +239,6 @@ foreach ($assembly in $Assemblies) {
     $containerPath = $containerPath -replace "\\", "/"
     Write-Host "  $assembly -> $containerPath" -ForegroundColor Cyan
 
-    # Verify the DLL exists in the container
-    docker exec $containerId test -f $containerPath 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "DLL not found inside container at: $containerPath`nEnsure the project is built and the workspace is mounted."
-        exit 1
-    }
-
     $containerPaths += $containerPath
 }
 
@@ -251,10 +250,7 @@ if ($Filter) {
     $cmd += "--TestCaseFilter:`"$resolvedFilter`""
 }
 
-Write-Host ""
-Write-Host "Running: docker exec $containerId $($cmd -join ' ')" -ForegroundColor Yellow
-Write-Host ""
-
 # -- Execute -------------------------------------------------------------------
-docker exec $containerId @cmd
+Write-Host ""
+Invoke-Logged docker exec $containerId @cmd
 exit $LASTEXITCODE
