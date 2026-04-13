@@ -173,6 +173,13 @@ if (-not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter -and -not $C
     $Filter = $filterInput.Trim()
 }
 
+# -- Split filter on commas (each value becomes a separate vstest run) --------
+$FilterValues = if ($Filter) {
+    $Filter -split "\s*,\s*" | Where-Object { $_ -ne "" }
+} else {
+    @($null)   # one run with no filter
+}
+
 # -- Apply exclusions ----------------------------------------------------------
 if ($ExcludeAssemblies) {
     $Assemblies = $Assemblies | Where-Object { $_ -notin $ExcludeAssemblies }
@@ -185,34 +192,38 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
-    foreach ($assembly in $Assemblies) {
-        $dllPath = Join-Path $BinDir "$assembly.dll"
-        if (-not (Test-Path $dllPath)) {
-            Write-Warning "Assembly not found, skipping: $dllPath"
-            continue
-        }
+    foreach ($filterValue in $FilterValues) {
+        $filterArgs = if ($filterValue) { @("--TestCaseFilter:$filterValue") } else { @() }
+        # Sanitise the filter value for use in filenames (replaces non-word chars with _)
+        $filterSuffix = if ($filterValue) { ".$($filterValue -replace '[^a-zA-Z0-9_-]', '_')" } else { "" }
 
-        Write-Host "=== Running $assembly ===" -ForegroundColor Yellow
+        foreach ($assembly in $Assemblies) {
+            $dllPath = Join-Path $BinDir "$assembly.dll"
+            if (-not (Test-Path $dllPath)) {
+                Write-Warning "Assembly not found, skipping: $dllPath"
+                continue
+            }
 
-        $filterArgs = if ($Filter) { @("--TestCaseFilter:$Filter") } else { @() }
+            Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
-        Invoke-Logged docker run --rm `
-            -v "${BinDir}:/tests:ro" `
-            -v "${TestResultsDir}:/results" `
-            warewolf-test-env `
-            /usr/share/dotnet/dotnet vstest "/tests/$assembly.dll" `
-                --logger:"trx;LogFileName=$assembly.trx" `
-                --ResultsDirectory:/results `
-                @filterArgs
+            Invoke-Logged docker run --rm `
+                -v "${BinDir}:/tests:ro" `
+                -v "${TestResultsDir}:/results" `
+                warewolf-test-env `
+                /usr/share/dotnet/dotnet vstest "/tests/$assembly.dll" `
+                    --logger:"trx;LogFileName=$assembly$filterSuffix.trx" `
+                    --ResultsDirectory:/results `
+                    @filterArgs
 
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning "$assembly reported failures (exit $LASTEXITCODE)."
-            $failed++
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "$assembly$filterSuffix reported failures (exit $LASTEXITCODE)."
+                $failed++
+            }
         }
     }
 
     if ($failed -gt 0) {
-        Write-Error "$failed assembly(s) reported test failures."
+        Write-Error "$failed assembly/filter run(s) reported test failures."
         exit 1
     }
     exit 0
@@ -242,15 +253,19 @@ foreach ($assembly in $Assemblies) {
     $containerPaths += $containerPath
 }
 
-# -- Build vstest command ------------------------------------------------------
-$cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @('--logger:"console;verbosity=normal"')
+# -- Build base vstest command (shared across all filter runs) ----------------
+$baseCmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @('--logger:"console;verbosity=normal"')
 
-if ($Filter) {
-    $resolvedFilter = if ($Filter -match "[=~!<>]") { $Filter } else { "FullyQualifiedName~$Filter" }
-    $cmd += "--TestCaseFilter:`"$resolvedFilter`""
-}
-
-# -- Execute -------------------------------------------------------------------
+# -- Execute one run per filter value -----------------------------------------
 Write-Host ""
-Invoke-Logged docker exec $containerId @cmd
-exit $LASTEXITCODE
+$overallExit = 0
+foreach ($filterValue in $FilterValues) {
+    $cmd = $baseCmd
+    if ($filterValue) {
+        $resolvedFilter = if ($filterValue -match "[=~!<>]") { $filterValue } else { "FullyQualifiedName~$filterValue" }
+        $cmd += "--TestCaseFilter:`"$resolvedFilter`""
+    }
+    Invoke-Logged docker exec $containerId @cmd
+    if ($LASTEXITCODE -ne 0) { $overallExit = $LASTEXITCODE }
+}
+exit $overallExit
