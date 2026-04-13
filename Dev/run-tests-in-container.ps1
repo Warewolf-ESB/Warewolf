@@ -247,7 +247,7 @@ $cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @("--logger:c
 
 if ($Filter) {
     $resolvedFilter = if ($Filter -match "[=~!<>]") { $Filter } else { "FullyQualifiedName~$Filter" }
-    $cmd += "--TestCaseFilter:`"$resolvedFilter`""
+    $cmd += "--TestCaseFilter:$resolvedFilter"
 }
 
 # -- Execute -------------------------------------------------------------------
