@@ -38,18 +38,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 function Invoke-Logged {
-    $displayParts = foreach ($arg in $args) {
-        if ($arg -match '[;\s~]') {
-            if ($arg -match '^(--[\w-]+:)(.+)$') {
-                "$($Matches[1])`"$($Matches[2])`""
-            } else {
-                "`"$arg`""
-            }
-        } else {
-            $arg
-        }
-    }
-    Write-Host "+ $($displayParts -join ' ')" -ForegroundColor DarkGray
+    Write-Host "+ $($args -join ' ')" -ForegroundColor DarkGray
     & $args[0] $args[1..($args.Count - 1)]
 }
 
@@ -254,11 +243,11 @@ foreach ($assembly in $Assemblies) {
 }
 
 # -- Build vstest command ------------------------------------------------------
-$cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @("--logger:console;verbosity=normal")
+$cmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @('--logger:"console;verbosity=normal"')
 
 if ($Filter) {
     $resolvedFilter = if ($Filter -match "[=~!<>]") { $Filter } else { "FullyQualifiedName~$Filter" }
-    $cmd += "--TestCaseFilter:$resolvedFilter"
+    $cmd += "--TestCaseFilter:`"$resolvedFilter`""
 }
 
 # -- Execute -------------------------------------------------------------------
