@@ -6,6 +6,12 @@
     }
   },
   "logging": {
+    "logLevel": {
+      "default": "Warning",
+      "Program": "Information",
+      "Function": "Information",
+      "Warewolf.Execution.Lightweight": "Information"
+    },
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,

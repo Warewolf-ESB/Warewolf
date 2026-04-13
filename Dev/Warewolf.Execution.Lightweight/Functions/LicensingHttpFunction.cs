@@ -3,6 +3,7 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Subscription;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,10 +36,12 @@ namespace Warewolf.Execution.Lightweight
     {
         readonly IWarewolfLicense _warewolfLicense;
         readonly Dev2JsonSerializer _serializer;
+        readonly ILogger<LicensingHttpFunction> _logger;
 
-        public LicensingHttpFunction(IWarewolfLicense warewolfLicense)
+        public LicensingHttpFunction(IWarewolfLicense warewolfLicense, ILogger<LicensingHttpFunction> logger)
         {
             _warewolfLicense = warewolfLicense;
+            _logger = logger;
             _serializer = new Dev2JsonSerializer();
         }
 
@@ -52,6 +55,8 @@ namespace Warewolf.Execution.Lightweight
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "IsLicensed")] HttpRequestData req)
         {
             var data = SubscriptionProvider.Instance.GetSubscriptionData();
+            _logger.LogInformation("IsLicensed: isLicensed={IsLicensed}, status={Status}, planId={PlanId}, stopExecutions={StopExecutions}",
+                data.IsLicensed, data.Status?.ToString(), data.PlanId, data.StopExecutions);
             return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(new
             {
                 isLicensed     = data.IsLicensed,
