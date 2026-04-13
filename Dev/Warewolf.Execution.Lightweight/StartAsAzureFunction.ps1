@@ -24,7 +24,12 @@
   # permissions on the vault for the calling identity.
   # When empty the script falls back to local key generation.
   [string]$VaultName,
-  [string]$SecretName = 'WWExecutionEngineTestSecret'
+  [string]$SecretName = 'WWExecutionEngineTestSecret',
+
+  # Path to a pre-built 'Warewolf License.secureconfig' to copy into the
+  # function directory.  When omitted a test license (Status=Active) is
+  # auto-generated so /IsLicensed returns { isLicensed: true }.
+  [string]$LicenseConfigPath
 )
 
 # -----------------------------------------------------------------------------
@@ -115,6 +120,104 @@ function Invoke-SecurityEncrypt {
     $aes.Dispose()
 
     return [Convert]::ToBase64String($cipherBytes)
+}
+
+function Invoke-SecurityDecrypt {
+    <#
+    .SYNOPSIS
+        Decrypts a Base64 AES-CBC ciphertext produced by SecurityEncryption.cs.
+        Returns the original plain-text string.  If the input is not valid Base64
+        it is returned unchanged (i.e. it was never encrypted).
+    #>
+    param([string]$CipherText)
+
+    if ([string]::IsNullOrEmpty($CipherText)) { return $CipherText }
+
+    try   { $cipherBytes = [Convert]::FromBase64String($CipherText) }
+    catch { return $CipherText }   # not Base64 → already plain text
+
+    $initVectorBytes = [System.Text.Encoding]::ASCII.GetBytes('@1B2c3D4e5F6g7H8')
+    $saltValueBytes  = [System.Text.Encoding]::ASCII.GetBytes('s@1tValue')
+
+    $password = New-Object System.Security.Cryptography.PasswordDeriveBytes(
+        'Pas5pr@se', $saltValueBytes, 'SHA1', 2)
+    $keyBytes = $password.GetBytes(32)
+
+    $aes         = [System.Security.Cryptography.Aes]::Create()
+    $aes.Mode    = [System.Security.Cryptography.CipherMode]::CBC
+    $aes.Padding = [System.Security.Cryptography.PaddingMode]::Zeros
+
+    # Mirrors SecurityEncryption.Decrypt: MemoryStream wraps cipher bytes
+    # (writable, position 0); CryptoStream overwrites them with plain bytes.
+    $decryptor  = $aes.CreateDecryptor($keyBytes, $initVectorBytes)
+    $memStream  = [System.IO.MemoryStream]::new($cipherBytes)
+    $cryptoStream = [System.Security.Cryptography.CryptoStream]::new(
+        $memStream, $decryptor, [System.Security.Cryptography.CryptoStreamMode]::Write)
+
+    $cryptoStream.Write($cipherBytes, 0, $cipherBytes.Length)
+    $cryptoStream.FlushFinalBlock()
+    $plainBytes = $memStream.ToArray()
+
+    $cryptoStream.Dispose()
+    $memStream.Dispose()
+    $aes.Dispose()
+
+    return [System.Text.Encoding]::UTF8.GetString($plainBytes).TrimEnd([char]0)
+}
+
+function New-LicenseConfig {
+    <#
+    .SYNOPSIS
+        Writes an encrypted 'Warewolf License.secureconfig' with Status=Active
+        to $OutputPath.  All values are pre-encrypted with SecurityEncryption so
+        SubscriptionConfig loads them directly without needing to auto-re-encrypt.
+    #>
+    param(
+        [Parameter(Mandatory)][string]$OutputPath,
+        [string]$CustomerId      = '',
+        [string]$SubscriptionId  = '',
+        [string]$Status          = 'Active',
+        [string]$PlanId          = 'developer',
+        [string]$SubscriptionKey = 'Dev2-test-account',
+        [string]$SiteName        = 'warewolf-test',
+        [string]$StopExecutions  = 'False'
+    )
+
+    function Enc([string]$v) { if ([string]::IsNullOrEmpty($v)) { $v } else { Invoke-SecurityEncrypt -PlainText $v } }
+
+    $xml = [System.Xml.XmlDocument]::new()
+    $dec = $xml.CreateXmlDeclaration('1.0', 'utf-8', $null)
+    $xml.AppendChild($dec) | Out-Null
+    $root = $xml.CreateElement('subscriptionSettings')
+    $xml.AppendChild($root) | Out-Null
+
+    $entries = [ordered]@{
+        CustomerId          = Enc $CustomerId
+        SubscriptionId      = Enc $SubscriptionId
+        Status              = Enc $Status
+        PlanId              = Enc $PlanId
+        SubscriptionKey     = Enc $SubscriptionKey
+        SubscriptionSiteName = Enc $SiteName
+        StopExecutions      = Enc $StopExecutions
+    }
+
+    foreach ($kv in $entries.GetEnumerator()) {
+        $node = $xml.CreateElement('add')
+        $node.SetAttribute('key',   $kv.Key)
+        $node.SetAttribute('value', $kv.Value)
+        $root.AppendChild($node) | Out-Null
+    }
+
+    $xws             = [System.Xml.XmlWriterSettings]::new()
+    $xws.Indent      = $true
+    $xws.IndentChars = '  '
+    $xws.Encoding    = [System.Text.UTF8Encoding]::new($false)
+    $writer = [System.Xml.XmlWriter]::Create($OutputPath, $xws)
+    $xml.Save($writer)
+    $writer.Flush(); $writer.Dispose()
+
+    Write-Host "  status  : $Status"
+    Write-Host "  path    : $OutputPath"
 }
 
 function New-TestSecureConfig {
@@ -538,6 +641,35 @@ Write-Host "  WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
 
 # Propagate to the Azure DevOps pipeline so subsequent steps (test runner) inherit it.
 Write-Host "##vso[task.setvariable variable=WAREWOLF_SECURE_CONFIG]$env:WAREWOLF_SECURE_CONFIG"
+
+# -----------------------------------------------------------------------------
+# endregion
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# region: Setup Warewolf License.secureconfig
+# -----------------------------------------------------------------------------
+
+Write-PipelineSection "Setting up Warewolf License.secureconfig..."
+
+$LicenseFile = Join-Path $FuncDir "Warewolf License.secureconfig"
+
+if ($LicenseConfigPath) {
+    if (-not (Test-Path -LiteralPath $LicenseConfigPath)) {
+        Fail-Pipeline "LicenseConfigPath '$LicenseConfigPath' not found."
+    }
+    Copy-Item -LiteralPath $LicenseConfigPath -Destination $LicenseFile -Force
+    Write-Host "  source  : $LicenseConfigPath (supplied)"
+} else {
+    New-LicenseConfig -OutputPath $LicenseFile
+    Write-Host "  source  : generated"
+}
+
+# -----------------------------------------------------------------------------
+# endregion
+# -----------------------------------------------------------------------------
+
 
 # Write local.settings.json with WAREWOLF_SECURE_CONFIG so the dotnet-isolated worker
 # reliably receives it.  The func CLI (Node.js) reads local.settings.json and passes

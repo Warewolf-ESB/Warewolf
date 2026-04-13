@@ -8,9 +8,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Security;
 using Warewolf.Licensing;
 
 namespace Warewolf.Execution.Lightweight
@@ -28,9 +30,9 @@ namespace Warewolf.Execution.Lightweight
     /// <c>#if DEBUG</c> branch in <see cref="SubscriptionConfig"/>.
     ///
     /// Routes:
-    ///   GET  /IsLicensed    — anonymous; returns local license status without a Chargebee call
-    ///   GET  /Subscriptions — function-key; refreshes subscription data from Chargebee
-    ///   POST /Subscriptions — function-key; creates a new subscription or links an existing one
+    ///   GET  /IsLicensed         — anonymous; returns local license status without a Chargebee call
+    ///   GET  /Subscriptions      — function-key; refreshes subscription data from Chargebee
+    ///   POST /secure/Subscriptions — JWT Bearer; creates a new subscription or links an existing one (Administrator only)
     /// </summary>
     public sealed class LicensingHttpFunction
     {
@@ -98,6 +100,10 @@ namespace Warewolf.Execution.Lightweight
         /// the result locally.  Delegates to <see cref="SaveSubscriptionData.Execute"/> for
         /// all business logic: duplicate detection, email validation, and persistence.
         ///
+        /// Requires a valid <c>Authorization: Bearer &lt;token&gt;</c> JWT header.  The caller
+        /// must belong to the <em>Administrator</em> group; requests without a valid token
+        /// are rejected with <c>401 Unauthorized</c>.
+        ///
         /// Request body (JSON):
         /// <code>
         /// // New subscription:
@@ -113,8 +119,15 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         [Function("SaveSubscriptionData")]
         public async Task<HttpResponseData> SaveSubscription(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Subscriptions")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "secure/Subscriptions")] HttpRequestData req)
         {
+            var authHeader = req.Headers.TryGetValues("Authorization", out var vals)
+                ? vals.FirstOrDefault()
+                : null;
+            var config = SecureConfigLoader.Config;
+            if (!config.IsLoaded || JwtValidator.GetUserGroups(authHeader, config.SecretKey) is null)
+                return await BuildUnauthorizedResponse(req);
+
             try
             {
                 using var reader = new StreamReader(req.Body);
@@ -155,5 +168,16 @@ namespace Warewolf.Execution.Lightweight
             ResponseBuilder.BuildStringAsync(req,
                 JsonConvert.SerializeObject(new { hasErrors = true, errors = new[] { message } }),
                 statusCode: statusCode);
+
+        static async Task<HttpResponseData> BuildUnauthorizedResponse(HttpRequestData req)
+        {
+            var response = req.CreateResponse(HttpStatusCode.Unauthorized);
+            response.Headers.Add("WWW-Authenticate", "Bearer");
+            await response.WriteStringAsync(JsonConvert.SerializeObject(new
+            {
+                error = "Authentication required. Provide a valid JWT Bearer token in the Authorization header."
+            }));
+            return response;
+        }
     }
 }
