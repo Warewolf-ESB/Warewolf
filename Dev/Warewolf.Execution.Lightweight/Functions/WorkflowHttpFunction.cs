@@ -243,8 +243,10 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Validates the JWT in the <c>Authorization</c> header.
+        /// Tries the Warewolf HMAC-SHA256 token first; falls back to a Microsoft Entra
+        /// Bearer token when the Warewolf validation fails.
         /// Returns <c>(false, null)</c> when no <c>secure.config</c> is loaded (no secret
-        /// key exists) or when the token is absent / invalid.
+        /// key exists) or when neither token variant is valid.
         /// </summary>
         (bool IsValid, IReadOnlyList<string>? Groups) ValidateJwt(HttpRequestData req)
         {
@@ -253,8 +255,17 @@ namespace Warewolf.Execution.Lightweight
                 return (false, null);   // No config → no secret key → cannot validate any JWT.
 
             var authHeader = TryGetAuthHeader(req);
-            var groups     = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
-            return (groups is not null, groups);
+
+            // ── 1. Warewolf HMAC-SHA256 JWT ───────────────────────────────────────
+            var groups = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+            if (groups is not null)
+                return (true, groups);
+
+            // ── 2. Microsoft Entra OAuth token ────────────────────────────────────
+            var easyAuthHeader = TryGetEasyAuthPrincipalHeader(req);
+            var entraRoles = EntraTokenValidator.GetRoles(
+                authHeader, easyAuthHeader, config.EntraTenantId, config.EntraAudience);
+            return (entraRoles is not null, entraRoles);
         }
 
         // ── Permission filter factories ───────────────────────────────────────────
@@ -275,7 +286,8 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Returns a predicate for the secure apis.json endpoint.
-        /// When the JWT is absent or invalid, returns a predicate that always returns
+        /// Tries the Warewolf HMAC-SHA256 JWT first; falls back to a Microsoft Entra
+        /// token.  When neither is valid, returns a predicate that always returns
         /// <c>false</c> so that no workflows are revealed.
         /// </summary>
         Func<string, bool>? GetSecureFilter(HttpRequestData req)
@@ -285,9 +297,20 @@ namespace Warewolf.Execution.Lightweight
                 return _ => false;  // No config → nothing accessible via secure discovery.
 
             var authHeader = TryGetAuthHeader(req);
-            var groups     = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+
+            // ── 1. Warewolf HMAC-SHA256 JWT ───────────────────────────────────────
+            var groups = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+
+            // ── 2. Microsoft Entra OAuth token (fallback) ─────────────────────────
             if (groups is null)
-                return _ => false;  // Invalid / absent JWT → empty list.
+            {
+                var easyAuthHeader = TryGetEasyAuthPrincipalHeader(req);
+                groups = EntraTokenValidator.GetRoles(
+                    authHeader, easyAuthHeader, config.EntraTenantId, config.EntraAudience);
+            }
+
+            if (groups is null)
+                return _ => false;  // Invalid / absent token → empty list.
 
             return name => PermissionChecker.HasUserViewPermission(name, config, groups);
         }
@@ -307,6 +330,11 @@ namespace Warewolf.Execution.Lightweight
 
         static string? TryGetAuthHeader(HttpRequestData req) =>
             req.Headers.TryGetValues("Authorization", out var vals)
+                ? vals.FirstOrDefault()
+                : null;
+
+        static string? TryGetEasyAuthPrincipalHeader(HttpRequestData req) =>
+            req.Headers.TryGetValues(EntraTokenValidator.EasyAuthPrincipalHeader, out var vals)
                 ? vals.FirstOrDefault()
                 : null;
     }

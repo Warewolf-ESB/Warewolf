@@ -54,7 +54,19 @@ namespace Warewolf.Execution.Lightweight.Security
         ///   WAREWOLF_SECURE_CONFIG = /mnt/warewolf-config/secure.config
         /// </code>
         /// </summary>
-        internal const string ConfigPathEnvVar = "WAREWOLF_SECURE_CONFIG";
+        internal const string ConfigPathEnvVar    = "WAREWOLF_SECURE_CONFIG";
+
+        /// <summary>
+        /// Optional Microsoft Entra tenant ID.  When set, Entra tokens from other
+        /// tenants are rejected.  Maps to the <c>tid</c> claim in the token payload.
+        /// </summary>
+        internal const string EntraTenantIdEnvVar = "WAREWOLF_ENTRA_TENANT_ID";
+
+        /// <summary>
+        /// Optional Entra application audience (client ID or <c>api://…</c> URI).
+        /// When set, the token's <c>aud</c> claim must match exactly.
+        /// </summary>
+        internal const string EntraAudienceEnvVar  = "WAREWOLF_ENTRA_AUDIENCE";
 
         static SecureConfigData Load()
         {
@@ -71,6 +83,9 @@ namespace Warewolf.Execution.Lightweight.Security
 
         static SecureConfigData ReadConfig(string configPath)
         {
+            var entraTenantId = Environment.GetEnvironmentVariable(EntraTenantIdEnvVar) ?? string.Empty;
+            var entraAudience = Environment.GetEnvironmentVariable(EntraAudienceEnvVar)  ?? string.Empty;
+
             if (!File.Exists(configPath))
                 return SecureConfigData.AllowAll;
 
@@ -97,7 +112,12 @@ namespace Warewolf.Execution.Lightweight.Security
                 }
 
                 var permissions = BuildPermissions(settings);
-                return new SecureConfigData(isLoaded: true, secretKey, permissions);
+                return new SecureConfigData(
+                    isLoaded:      true,
+                    secretKey:     secretKey,
+                    permissions:   permissions,
+                    entraTenantId: entraTenantId,
+                    entraAudience: entraAudience);
             }
             catch
             {

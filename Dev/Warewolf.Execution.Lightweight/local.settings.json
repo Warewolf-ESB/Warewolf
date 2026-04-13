@@ -2,6 +2,8 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "WAREWOLF_ENTRA_TENANT_ID": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
+    "WAREWOLF_ENTRA_AUDIENCE": "05794411-b275-4801-97ac-8b078ed7196c"
   }
 }
