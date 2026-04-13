@@ -38,7 +38,18 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 function Invoke-Logged {
-    Write-Host "+ $args" -ForegroundColor DarkGray
+    $displayParts = foreach ($arg in $args) {
+        if ($arg -match '[;\s~]') {
+            if ($arg -match '^(--[\w-]+:)(.+)$') {
+                "$($Matches[1])`"$($Matches[2])`""
+            } else {
+                "`"$arg`""
+            }
+        } else {
+            $arg
+        }
+    }
+    Write-Host "+ $($displayParts -join ' ')" -ForegroundColor DarkGray
     & $args[0] $args[1..($args.Count - 1)]
 }
 
