@@ -1,4 +1,4 @@
-<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=http://localhost;Port=9200;SearchIndex=warewolftestlogs;AuthenticationType=Password;Username=test;Password=test123" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=http://host.docker.internal;Port=9200;SearchIndex=warewolftestlogs;AuthenticationType=Password;Username=test;Password=test123" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
 	<DisplayName>ElasticsearchLoggingSource</DisplayName>
 	<AuthorRoles>   </AuthorRoles>
 	<ErrorMessages />

@@ -24,7 +24,6 @@ namespace Warewolf.Execution.Lightweight.Logging
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        // ── Debug ─────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
         public void LogDebug(string message, Guid executionId)
@@ -45,7 +44,6 @@ namespace Warewolf.Execution.Lightweight.Logging
                 message);
         }
 
-        // ── Info ──────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
         public void LogInfo(string message, Guid executionId)
@@ -66,7 +64,6 @@ namespace Warewolf.Execution.Lightweight.Logging
                 message);
         }
 
-        // ── Warn ──────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
         public void LogWarning(string message, Guid executionId)
@@ -87,7 +84,6 @@ namespace Warewolf.Execution.Lightweight.Logging
                 message);
         }
 
-        // ── Error ─────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
         public void LogError(string message, Guid executionId)
@@ -121,7 +117,6 @@ namespace Warewolf.Execution.Lightweight.Logging
             }
         }
 
-        // ── Fatal ─────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
         public void LogFatal(string message, Guid executionId)

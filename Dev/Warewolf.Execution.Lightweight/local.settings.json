@@ -1,9 +1,9 @@
 {
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "EnableElasticSearchLogging": true,
-    "EnableConsoleLogging": true
-  }
-}   
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+        "ENABLEELASTICSEARCHLOGGING": "true",
+        "ENABLECONSOLELOGGING": "true"
+    }
+}

@@ -5,7 +5,10 @@ COPY ./publish .
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
-    ASPNETCORE_ENVIRONMENT=Development
+    ASPNETCORE_ENVIRONMENT=Development \
+    ENABLECONSOLELOGGING=true \
+    ENABLEELASTICSEARCHLOGGING=true
 
 EXPOSE 80
 EXPOSE 7071
+

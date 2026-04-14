@@ -91,7 +91,8 @@ if ($existing) {
 }
 
 Write-Host "docker run -d `
-    -p ${HostPort}:80 `
+    -p ${HostPort}:80 ` 
+    --network=host `
     -p ${DebuggerPort}:4024 `
     --name $ContainerName `
     -e FUNCTIONS_WORKER_RUNTIME=dotnet-isolated `
@@ -102,10 +103,12 @@ Write-Host "docker run -d `
 docker run -d `
     -p "${HostPort}:80" `
     -p "${DebuggerPort}:4024" `
+    --add-host=host.docker.internal:host-gateway `
     --name $ContainerName `
     -e FUNCTIONS_WORKER_RUNTIME=dotnet-isolated `
     -e AzureWebJobsStorage=UseDevelopmentStorage=false `
     -e ASPNETCORE_ENVIRONMENT=Development `
+    -e ElasticSearch__Uri=http://host.docker.internal:9200 `
     $FullImageName
 
 if ($LASTEXITCODE -ne 0) {
