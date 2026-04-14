@@ -120,6 +120,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="log4net" Version="3.3.0" />
     <Page Include="InputsDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
