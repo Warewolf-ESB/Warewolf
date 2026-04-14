@@ -259,13 +259,17 @@ $baseCmd = @("/usr/share/dotnet/dotnet", "vstest") + $containerPaths + @('--logg
 # -- Execute one run per filter value -----------------------------------------
 Write-Host ""
 $overallExit = 0
-foreach ($filterValue in $FilterValues) {
-    $cmd = $baseCmd
-    if ($filterValue) {
-        $resolvedFilter = if ($filterValue -match "[=~!<>]") { $filterValue } else { "FullyQualifiedName~$filterValue" }
-        $cmd += "--TestCaseFilter:`"$resolvedFilter`""
+if ($FilterValues) {
+    foreach ($filterValue in $FilterValues) {
+        $cmd = $baseCmd
+        if ($filterValue) {
+            $resolvedFilter = if ($filterValue -match "[=~!<>]") { $filterValue } else { "FullyQualifiedName~$filterValue" }
+            $cmd += "--TestCaseFilter:`"$resolvedFilter`""
+        }
+        Invoke-Logged docker exec $containerId @cmd
+        if ($LASTEXITCODE -ne 0) { $overallExit = $LASTEXITCODE }
     }
-    Invoke-Logged docker exec $containerId @cmd
-    if ($LASTEXITCODE -ne 0) { $overallExit = $LASTEXITCODE }
+    exit $overallExit
+} else {
+    Invoke-Logged docker exec $containerId "$baseCmd"
 }
-exit $overallExit
