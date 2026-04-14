@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice AS final
-WORKDIR /home/site/wwwroot
 
+WORKDIR /home/site/wwwroot
 COPY ./publish .
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \

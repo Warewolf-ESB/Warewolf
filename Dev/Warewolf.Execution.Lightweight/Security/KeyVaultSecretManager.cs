@@ -4,7 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using Azure.Identity;
+using Azure.Core;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -21,29 +21,46 @@ namespace Warewolf.Execution.Lightweight.Security
     ///
     /// Key Vault ops per Function instance lifetime: 1 GET (cold start only).
     ///
-    /// Authentication uses <see cref="DefaultAzureCredential"/>:
-    ///   • Azure cloud   → System-Assigned Managed Identity (zero credential config)
-    ///   • Local dev     → Azure CLI / Visual Studio / VS Code login
+    /// In development, when <c>DEBUG_AZURE_KEYVAULT_SECRET</c> is set, the Key Vault
+    /// call is bypassed entirely and the secret value is taken directly from that
+    /// environment variable — no Azure authentication required.
+    ///
+    /// Authentication strategy is resolved externally and injected as a
+    /// <see cref="Azure.Core.TokenCredential"/>:
+    ///   • Azure cloud   → <see cref="Azure.Identity.ManagedIdentityCredential"/> (system-assigned or user-assigned)
+    ///   • Local dev     → <see cref="Azure.Identity.ChainedTokenCredential"/> (EnvironmentCredential → AzureCli → VisualStudio)
     /// </summary>
     public sealed class KeyVaultSecretManager
     {
         static readonly JsonSerializerOptions _jsonOptions =
             new(JsonSerializerDefaults.Web);
 
-        readonly string                        _vaultUri;
-        readonly string                        _secretName;
-        readonly ILogger<KeyVaultSecretManager> _logger;
+        readonly string                         _vaultUri;
+        readonly string                         _secretName;
+        readonly TokenCredential?                _credential;
+        readonly SecretClient?                   _client;
+        readonly ILogger<KeyVaultSecretManager>  _logger;
+        readonly string?                         _debugSecret;
 
         KeyRingMaterial? _material;
 
         public KeyVaultSecretManager(
             string                         vaultUri,
             string                         secretName,
-            ILogger<KeyVaultSecretManager> logger)
+            TokenCredential?               credential,
+            ILogger<KeyVaultSecretManager> logger,
+            string?                        debugSecret = null)
         {
-            _vaultUri   = vaultUri   ?? throw new ArgumentNullException(nameof(vaultUri));
-            _secretName = secretName ?? throw new ArgumentNullException(nameof(secretName));
-            _logger     = logger     ?? throw new ArgumentNullException(nameof(logger));
+            _vaultUri    = vaultUri   ?? throw new ArgumentNullException(nameof(vaultUri));
+            _secretName  = secretName ?? throw new ArgumentNullException(nameof(secretName));
+            _logger      = logger     ?? throw new ArgumentNullException(nameof(logger));
+            _debugSecret = debugSecret;
+
+            if (debugSecret is null)
+            {
+                _credential = credential ?? throw new ArgumentNullException(nameof(credential));
+                _client     = new SecretClient(new Uri(_vaultUri), _credential);
+            }
         }
 
         /// <summary>
@@ -53,22 +70,35 @@ namespace Warewolf.Execution.Lightweight.Security
 
         /// <summary>
         /// Fetches the secret from Key Vault and deserialises the key ring material.
+        /// In development, when a debug secret value is configured, the Key Vault call
+        /// is skipped and the value is parsed directly.
         /// Must be called once at startup before any call to <see cref="GetKeyBytes"/>.
         /// </summary>
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation(
-                "KeyVault | Fetching secret '{SecretName}' from '{VaultUri}'",
-                _secretName, _vaultUri);
+            if (_debugSecret is not null)
+            {
+                _logger.LogInformation(
+                    "KeyVault | Development mode — using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped).");
+                ParseAndSetMaterial(_debugSecret);
+                return;
+            }
 
-            var credential = new DefaultAzureCredential();
-            var client = new SecretClient(new Uri(_vaultUri), credential);
+            _logger.LogInformation(
+                "KeyVault | Credential={CredentialType} | Fetching secret '{SecretName}' from '{VaultUri}'",
+                _credential!.GetType().Name, _secretName, _vaultUri);
 
             KeyVaultSecret secret =
-                await client.GetSecretAsync(_secretName, version: null, cancellationToken)
-                            .ConfigureAwait(false);
-            var rawJson = secret.Value;
+                await _client!.GetSecretAsync(_secretName, version: null, cancellationToken)
+                             .ConfigureAwait(false);
 
+            ParseAndSetMaterial(secret.Value);
+        }
+
+        // ── Private helpers ───────────────────────────────────────────────────────
+
+        void ParseAndSetMaterial(string rawJson)
+        {
             // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
             // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
             if (!rawJson.TrimStart().StartsWith("{\""))

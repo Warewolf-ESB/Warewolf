@@ -42,10 +42,15 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         HostEnvironmentConfig   config)
     {
+        var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
         services.AddSingleton(sp => new KeyVaultSecretManager(
             config.VaultUri,
             config.SecretName,
-            sp.GetRequiredService<ILogger<KeyVaultSecretManager>>()));
+            useDebugBypass
+                ? null
+                : KeyVaultCredentialFactory.Create(config.CredentialOptions),
+            sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
+            useDebugBypass ? config.DebugKeyVaultSecret : null));
 
         // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
         // so GetKeyBytes() is always safe at construction time.
