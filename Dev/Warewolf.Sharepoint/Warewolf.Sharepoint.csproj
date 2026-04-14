@@ -77,6 +77,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="log4net" Version="3.3.0" />
     <PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.3912.1204</Version>
     </PackageReference>

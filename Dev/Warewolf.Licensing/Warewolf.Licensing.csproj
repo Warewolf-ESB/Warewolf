@@ -17,6 +17,7 @@
       </PackageReference>
     </ItemGroup>   
     <ItemGroup>
+      <PackageReference Include="log4net" Version="3.3.0" />
       <Compile Include="..\AssemblyCommonInfo.cs">
         <Link>Properties\AssemblyCommonInfo.cs</Link>
       </Compile>

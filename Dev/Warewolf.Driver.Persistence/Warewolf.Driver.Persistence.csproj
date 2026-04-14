@@ -32,6 +32,7 @@
 	  <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 	</ItemGroup>
 	<ItemGroup>
+  	<PackageReference Include="log4net" Version="3.3.0" />
 	  <Reference Include="System.Transactions" />
 	</ItemGroup>
 </Project>
