@@ -271,5 +271,5 @@ if ($FilterValues) {
     }
     exit $overallExit
 } else {
-    Invoke-Logged docker exec $containerId "$baseCmd"
+    Invoke-Logged docker exec $containerId /usr/share/dotnet/dotnet vstest $containerPaths --logger:"console;verbosity=normal"
 }
