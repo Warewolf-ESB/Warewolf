@@ -5,7 +5,9 @@ COPY ./publish .
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
-    ASPNETCORE_ENVIRONMENT=Development
+    ASPNETCORE_ENVIRONMENT=Development \
+    AZURE_TENANT_ID= \
+    DEBUG_AZURE_KEYVAULT_SECRET= \
 
 EXPOSE 80
 EXPOSE 7071
