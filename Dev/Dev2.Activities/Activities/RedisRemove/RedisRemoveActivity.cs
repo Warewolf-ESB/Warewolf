@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -130,6 +131,16 @@ namespace Dev2.Activities.RedisRemove
             try
             {
                 var redisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+
+                if (redisSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        redisSource = ws.OfType<RedisSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+                }
+
                 if (redisSource == null || redisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
