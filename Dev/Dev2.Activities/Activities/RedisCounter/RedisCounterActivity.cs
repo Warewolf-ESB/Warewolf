@@ -124,6 +124,17 @@ namespace Dev2.Activities.RedisCounter
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+
+                if (RedisSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        RedisSource = ws.OfType<RedisSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+                }
+
+
                 if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
