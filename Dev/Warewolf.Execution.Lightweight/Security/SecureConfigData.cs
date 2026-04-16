@@ -29,13 +29,15 @@ namespace Warewolf.Execution.Lightweight.Security
             string secretKey,
             IReadOnlyList<PermissionEntry> permissions,
             string entraTenantId = "",
-            string entraAudience = "")
+            string entraAudience = "",
+            string loginWorkflowName = "")
         {
-            IsLoaded      = isLoaded;
-            SecretKey     = secretKey;
-            Permissions   = permissions;
-            EntraTenantId = entraTenantId ?? string.Empty;
-            EntraAudience = entraAudience ?? string.Empty;
+            IsLoaded          = isLoaded;
+            SecretKey         = secretKey;
+            Permissions       = permissions;
+            EntraTenantId     = entraTenantId     ?? string.Empty;
+            EntraAudience     = entraAudience     ?? string.Empty;
+            LoginWorkflowName = loginWorkflowName ?? string.Empty;
         }
 
         /// <summary><c>true</c> when a <c>secure.config</c> was successfully decrypted and loaded.</summary>
@@ -64,5 +66,13 @@ namespace Warewolf.Execution.Lightweight.Security
         /// not validate the audience claim".
         /// </summary>
         internal string EntraAudience { get; }
+
+        /// <summary>
+        /// Name of the Warewolf workflow to execute when a caller POSTs to <c>/login</c>.
+        /// Sourced from <c>AuthenticationOverrideWorkflow.Name</c> in <c>secure.config</c>.
+        /// Empty string means no login workflow is configured and the <c>/login</c> endpoint
+        /// will return <c>501 Not Implemented</c>.
+        /// </summary>
+        internal string LoginWorkflowName { get; }
     }
 }

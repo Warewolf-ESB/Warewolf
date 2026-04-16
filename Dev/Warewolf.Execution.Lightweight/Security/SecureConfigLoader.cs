@@ -112,12 +112,14 @@ namespace Warewolf.Execution.Lightweight.Security
                 }
 
                 var permissions = BuildPermissions(settings);
+                var loginWorkflowName = settings.AuthenticationOverrideWorkflow?.Name ?? string.Empty;
                 return new SecureConfigData(
-                    isLoaded:      true,
-                    secretKey:     secretKey,
-                    permissions:   permissions,
-                    entraTenantId: entraTenantId,
-                    entraAudience: entraAudience);
+                    isLoaded:          true,
+                    secretKey:         secretKey,
+                    permissions:       permissions,
+                    entraTenantId:     entraTenantId,
+                    entraAudience:     entraAudience,
+                    loginWorkflowName: loginWorkflowName);
             }
             catch
             {
