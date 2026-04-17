@@ -19,8 +19,10 @@ using RabbitMQ.Client.Exceptions;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -162,6 +164,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 RabbitMQSource =
                     ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID,
                         RabbitMQSourceResourceId);
+
+                if (RabbitMQSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(RabbitMQSourceResourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        RabbitMQSource = ws.OfType<RabbitMQSource>().FirstOrDefault(r => r.ResourceID == RabbitMQSourceResourceId);
+                }
+
                 if (RabbitMQSource == null)
                 {
                     return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
