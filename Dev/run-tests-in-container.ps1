@@ -206,14 +206,18 @@ if ($CIMode) {
 
             Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
-            Invoke-Logged docker run --rm `
-                -v "${BinDir}:/tests:ro" `
-                -v "${TestResultsDir}:/results" `
-                warewolf-test-env `
-                /usr/share/dotnet/dotnet vstest "/tests/$assembly.dll" `
-                    --logger:"trx;LogFileName=$assembly$filterSuffix.trx" `
-                    --ResultsDirectory:/results `
-                    @filterArgs
+            $dockerRunArgs = @(
+                'run', '--rm',
+                '-v', "${BinDir}:/tests:ro",
+                '-v', "${TestResultsDir}:/results",
+                'warewolf-test-env',
+                '/usr/share/dotnet/dotnet', 'vstest', "/tests/$assembly.dll",
+                "--logger:trx;LogFileName=$assembly$filterSuffix.trx",
+                '--ResultsDirectory:/results'
+            )
+            if ($filterValue) { $dockerRunArgs += "--TestCaseFilter:$filterValue" }
+            Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
+            & docker @dockerRunArgs
 
             if ($LASTEXITCODE -ne 0) {
                 Write-Warning "$assembly$filterSuffix reported failures (exit $LASTEXITCODE)."
