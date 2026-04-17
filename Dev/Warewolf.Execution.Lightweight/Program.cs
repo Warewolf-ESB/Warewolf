@@ -1,4 +1,7 @@
+using Dev2.Runtime.Subscription;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Infrastructure;
 
 try
@@ -10,7 +13,11 @@ try
         .Build();
 
     await StartupOrchestrator.RunStartupAsync(host, config);
-    
+
+    var startupLogger = host.Services
+        .GetRequiredService<ILoggerFactory>()
+        .CreateLogger("Startup");
+
     startupLogger.LogInformation("Loading \"Warewolf License.secureconfig\"...");
     var licenseProvider = SubscriptionProvider.Instance;
     if (licenseProvider.IsLicensed)
