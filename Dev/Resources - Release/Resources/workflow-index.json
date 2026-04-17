@@ -1,4 +1,5 @@
 ﻿{
+    "elasticsearchloggingsource":  "ElasticsearchLoggingSource.bite",
     "examples/advanced recordset - delete":  "Examples/Advanced Recordset - Delete.bite",
     "examples/advanced recordset - insert":  "Examples/Advanced Recordset - Insert.bite",
     "examples/advanced recordset - select":  "Examples/Advanced Recordset - Select.bite",
