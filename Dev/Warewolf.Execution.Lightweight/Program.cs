@@ -19,31 +19,25 @@ var enableConsole = IsEnabled("ENABLECONSOLELOGGING");
 var enableElastic = IsEnabled("ENABLEELASTICSEARCHLOGGING");
 var elasticsearchSettingsPath = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
 
-//var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
-//    ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
-//    : null;
-var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath);
+var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
+    ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
+    : null;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services =>
     {
-        // IExecutionLogger registration driven by the two flags:
-        //   ENABLECONSOLELOGGING=true        ? AzureExecutionLogger  (App Insights / console)
-        //   ENABLEELASTICSEARCHLOGGING=true  ? ElasticsearchExecutionLogger (.bite file)
-        //   Both true                        ? CompositeExecutionLogger (both sinks)
-        //   Neither                          ? AzureExecutionLogger  (safe default)
         services.AddSingleton<IExecutionLogger>(sp =>
         {
             var loggers = new List<IExecutionLogger>();
 
-            //if (enableConsole || loggers.Count == 0)
-            loggers.Add(new AzureExecutionLogger(
-                sp.GetRequiredService<ILogger<AzureExecutionLogger>>()));
+            if (enableConsole || loggers.Count == 0)
+                loggers.Add(new AzureExecutionLogger(
+                    sp.GetRequiredService<ILogger<AzureExecutionLogger>>()));
 
-            //if (elasticOptions is not null)
-            loggers.Add(new ElasticsearchExecutionLogger(elasticOptions));
-            //Console.WriteLine($"After IExecutionLogger registration. loggers.Count: {loggers.Count}");
+            if (elasticOptions is not null)
+                loggers.Add(new ElasticsearchExecutionLogger(elasticOptions));
+            
             return new CompositeExecutionLogger(loggers);
         });
 
