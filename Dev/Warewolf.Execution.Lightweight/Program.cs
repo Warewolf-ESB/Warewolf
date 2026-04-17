@@ -31,7 +31,7 @@ var host = new HostBuilder()
         {
             var loggers = new List<IExecutionLogger>();
 
-            if (enableConsole || loggers.Count == 0)
+            if (enableConsole)
                 loggers.Add(new AzureExecutionLogger(
                     sp.GetRequiredService<ILogger<AzureExecutionLogger>>()));
 
