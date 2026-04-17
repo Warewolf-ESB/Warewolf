@@ -251,6 +251,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightwei
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight.Tests", "Warewolf.Execution.Lightweight.Tests\Warewolf.Execution.Lightweight.Tests.csproj", "{60B91018-7E60-60C6-D6A6-9928B768CB10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Execution.Lightweight.Integration.Tests", "Warewolf.Execution.Lightweight.Integration.Tests\Warewolf.Execution.Lightweight.Integration.Tests.csproj", "{A5C7E9F1-B3D5-4A6C-8E0F-2D4B6A8C0E2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -696,6 +698,11 @@ Global
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B91018-7E60-60C6-D6A6-9928B768CB10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5C7E9F1-B3D5-4A6C-8E0F-2D4B6A8C0E2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5C7E9F1-B3D5-4A6C-8E0F-2D4B6A8C0E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5C7E9F1-B3D5-4A6C-8E0F-2D4B6A8C0E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5C7E9F1-B3D5-4A6C-8E0F-2D4B6A8C0E2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

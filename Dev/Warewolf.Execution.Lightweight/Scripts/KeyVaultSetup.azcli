@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+# =============================================================================
+# KeyVaultSetup.azcli
+# One-time Azure infrastructure setup for Warewolf Execution Lightweight.
+#
+# Run in: Azure Cloud Shell, WSL, or any bash shell with az CLI installed.
+# Prerequisites: az login, Owner or Contributor + User Access Administrator
+#               on the target subscription.
+#
+# What this script does:
+#   1. Creates the Azure Key Vault (Standard SKU, soft-delete + purge-protection)
+#   2. Enables System-Assigned Managed Identity on the Function App
+#   3. Grants "Key Vault Secrets User"    → Function's Managed Identity (read-only)
+#   4. Grants "Key Vault Secrets Officer" → Developer's Entra ID account (read+write)
+#   5. Sets AZURE_KEYVAULT_NAME and KEYVAULT_SECRET_NAME app settings on the Function
+#   6. (Optional) Links Application Insights
+# =============================================================================
+
+set -euo pipefail
+
+# ── Variables — edit before running ──────────────────────────────────────────
+RESOURCE_GROUP="rg-warewolf-prod"
+LOCATION="southafricanorth"                          # az account list-locations -o table
+VAULT_NAME="WarewolfServer"              # Must be globally unique (3-24 chars)
+FUNCTION_APP_NAME="WarewolfServer"
+SECRET_NAME="WW-Execution-Engine-Test"
+
+# Get with: az ad signed-in-user show --query id -o tsv
+DEVELOPER_OBJECT_ID="aa870f32-59da-47c4-9e7b-635ccd2f9c05" #ashley.lewis
+
+# Optional — set if Application Insights already exists
+APPINSIGHTS_NAME=""                        # e.g. "appi-warewolf-prod" or leave empty
+
+# ── Step 1: Create Key Vault ──────────────────────────────────────────────────
+echo "[1/6] Creating Key Vault '$VAULT_NAME' in '$RESOURCE_GROUP'..."
+az keyvault create \
+  --name               "$VAULT_NAME" \
+  --resource-group     "$RESOURCE_GROUP" \
+  --location           "$LOCATION" \
+  --sku                standard \
+  --enable-soft-delete true \
+  --enable-purge-protection true \
+  --retention-days     90
+echo "      Done."
+
+# ── Step 2: Enable System-Assigned Managed Identity on the Function App ───────
+echo "[2/6] Enabling Managed Identity on Function App '$FUNCTION_APP_NAME'..."
+az functionapp identity assign \
+  --name           "$FUNCTION_APP_NAME" \
+  --resource-group "$RESOURCE_GROUP"
+echo "      Done."
+
+# ── Step 3: Retrieve IDs needed for role assignments ──────────────────────────
+echo "[3/6] Retrieving principal and resource IDs..."
+FUNCTION_PRINCIPAL_ID=$(az functionapp identity show \
+  --name           "$FUNCTION_APP_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --query principalId -o tsv)
+
+VAULT_RESOURCE_ID=$(az keyvault show \
+  --name           "$VAULT_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --query id -o tsv)
+
+echo "      Function Principal ID : $FUNCTION_PRINCIPAL_ID"
+echo "      Key Vault Resource ID : $VAULT_RESOURCE_ID"
+
+# ── Step 4: Assign roles ──────────────────────────────────────────────────────
+echo "[4/6] Assigning RBAC roles..."
+
+# Function App → "Key Vault Secrets User" (read secrets only)
+az role assignment create \
+  --role     "Key Vault Secrets User" \
+  --assignee "$FUNCTION_PRINCIPAL_ID" \
+  --scope    "$VAULT_RESOURCE_ID"
+echo "      'Key Vault Secrets User' → Function Managed Identity"
+
+# Developer → "Key Vault Secrets Officer" (read + write secrets)
+az role assignment create \
+  --role     "Key Vault Secrets Officer" \
+  --assignee "$DEVELOPER_OBJECT_ID" \
+  --scope    "$VAULT_RESOURCE_ID"
+echo "      'Key Vault Secrets Officer' → Developer ($DEVELOPER_OBJECT_ID)"
+
+# ── Step 5: Configure Function App settings ────────────────────────────────────
+echo "[5/6] Setting Function App configuration..."
+az functionapp config appsettings set \
+  --name           "$FUNCTION_APP_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --settings \
+    "AZURE_KEYVAULT_NAME=$VAULT_NAME" \
+    "KEYVAULT_SECRET_NAME=$SECRET_NAME"
+echo "      App settings written."
+
+# ── Step 6: (Optional) Link Application Insights ──────────────────────────────
+if [ -n "$APPINSIGHTS_NAME" ]; then
+  echo "[6/6] Linking Application Insights '$APPINSIGHTS_NAME'..."
+  APPINSIGHTS_CONNSTR=$(az monitor app-insights component show \
+    --app            "$APPINSIGHTS_NAME" \
+    --resource-group "$RESOURCE_GROUP" \
+    --query connectionString -o tsv)
+
+  az functionapp config appsettings set \
+    --name           "$FUNCTION_APP_NAME" \
+    --resource-group "$RESOURCE_GROUP" \
+    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$APPINSIGHTS_CONNSTR"
+  echo "      Application Insights linked."
+else
+  echo "[6/6] Skipping Application Insights (APPINSIGHTS_NAME not set)."
+fi
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+echo ""
+echo "═══════════════════════════════════════════════════════"
+echo " Infrastructure setup complete."
+echo " Key Vault URI   : https://$VAULT_NAME.vault.azure.net/"
+echo " Secret name     : $SECRET_NAME"
+echo " Function MI PID : $FUNCTION_PRINCIPAL_ID"
+echo ""
+echo " NEXT STEPS:"
+echo "   1. On developer machine, run Encrypt-Config.ps1 to"
+echo "      generate the key and encrypt .bite source files."
+echo "   2. Deploy the Function App with the encrypted files."
+echo "   3. Verify cold-start log shows: Event=ColdStart"
+echo "═══════════════════════════════════════════════════════"

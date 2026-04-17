@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Warewolf.Execution.Lightweight.Tests
+namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
     /// Integration tests for the HTTP POST Web Method tool executed via the Azure Function.
@@ -312,7 +312,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Response", out var responseProp), $"Expected 'Response' object in response: {json}");
-            
+
             // Parse the Response object (it's stored as a JSON string or nested object)
             JsonElement responseObj;
             if (responseProp.ValueKind == JsonValueKind.String)
@@ -323,7 +323,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             {
                 responseObj = responseProp;
             }
-            
+
             Assert.IsTrue(responseObj.TryGetProperty("json", out var jsonProp), $"Expected 'json' in Response object: {responseProp}");
             Assert.IsTrue(jsonProp.TryGetProperty("tag", out var tag), $"Expected 'tag' in Response.json: {jsonProp}");
             Assert.AreEqual("obj", tag.GetString(), $"Expected Response.json.tag == 'obj'. Full Response: {responseProp}");
@@ -339,7 +339,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormResponse", out var responseProp), $"Expected 'FormResponse' object in response: {json}");
-            
+
             // Parse the FormResponse object (it's stored as a JSON string or nested object)
             JsonElement responseObj;
             if (responseProp.ValueKind == JsonValueKind.String)
@@ -350,7 +350,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             {
                 responseObj = responseProp;
             }
-            
+
             Assert.IsTrue(responseObj.TryGetProperty("form", out var formProp), $"Expected 'form' in FormResponse object: {responseProp}");
             Assert.IsTrue(formProp.TryGetProperty("test", out var test), $"Expected 'test' in FormResponse.form: {formProp}");
             Assert.AreEqual("value", test.GetString(), $"Expected FormResponse.form.test == 'value'. Full FormResponse: {responseProp}");

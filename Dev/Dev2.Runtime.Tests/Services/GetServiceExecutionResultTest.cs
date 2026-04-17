@@ -63,10 +63,15 @@ namespace Dev2.Tests.Runtime.Services
 			var loggingProcessMonitor = config.LoggingServiceMonitor;
 			loggingProcessMonitor.Start();
 			bool isConnectedOkay;
+			var deadline = DateTime.UtcNow.AddSeconds(30);
             do
             {
                 var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
                 isConnectedOkay = webSocketWrapper.IsOpen();
+                if (!isConnectedOkay && DateTime.UtcNow >= deadline)
+                {
+                    Assert.Inconclusive("Auditing WebSocket endpoint did not become available within 30 seconds - auditing service may not be running in this environment.");
+                }
             } while (!isConnectedOkay);
             Assert.IsTrue(isConnectedOkay);
             

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Warewolf.Execution.Lightweight.Tests
+namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
     /// Integration tests for the HTTP GET Web Method tool executed via the Azure Function.

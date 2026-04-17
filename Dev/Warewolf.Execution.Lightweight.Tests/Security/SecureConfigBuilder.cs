@@ -26,7 +26,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
     /// <summary>
     /// Describes one permission entry for use with <see cref="SecureConfigBuilder"/>.
     /// </summary>
-    internal sealed record PermSpec(
+    public sealed record PermSpec(
         string GroupName,
         bool   IsServer,
         bool   View,
@@ -37,12 +37,12 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
     /// <summary>
     /// Factory helpers for building and encrypting test <c>secure.config</c> files.
     /// </summary>
-    internal static class SecureConfigBuilder
+    public static class SecureConfigBuilder
     {
         // ── Well-known group names ────────────────────────────────────────────────
 
-        internal const string PublicGroup = "Public";
-        internal const string AdminGroup  = "Warewolf Administrators";
+        public const string PublicGroup = "Public";
+        public const string AdminGroup  = "Warewolf Administrators";
 
         // ── Config variant factories ──────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Every workflow is visible on <c>/Public/</c> and a JWT user in any group
         /// that has View can also see everything.
         /// </summary>
-        internal static SecuritySettingsTO AllPublicGlobal(string secretKey) =>
+        public static SecuritySettingsTO AllPublicGlobal(string secretKey) =>
             Build(secretKey,
                 Admin(View: true),
                 ServerPerm(PublicGroup, View: true));   // global = IsServer + Guid.Empty
@@ -61,7 +61,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Nothing is accessible without a JWT token.
         /// Mirrors the Warewolf server's out-of-the-box default after a fresh install.
         /// </summary>
-        internal static SecuritySettingsTO NoPublicAccess(string secretKey) =>
+        public static SecuritySettingsTO NoPublicAccess(string secretKey) =>
             Build(secretKey,
                 Admin(View: true),
                 ServerPerm(PublicGroup, View: false));
@@ -70,7 +70,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Config where the Public group has View only on the named resources
         /// <paramref name="publicWorkflowNames"/>.  All other workflows are private.
         /// </summary>
-        internal static SecuritySettingsTO PartiallyPublic(string secretKey, params string[] publicWorkflowNames)
+        public static SecuritySettingsTO PartiallyPublic(string secretKey, params string[] publicWorkflowNames)
         {
             var perms = new List<PermSpec> { Admin(View: true), ServerPerm(PublicGroup, View: false) };
             foreach (var name in publicWorkflowNames)
@@ -83,7 +83,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// in <paramref name="groupWorkflows"/> maps a group name to the resource names
         /// visible to members of that group.
         /// </summary>
-        internal static SecuritySettingsTO GroupBasedAccess(
+        public static SecuritySettingsTO GroupBasedAccess(
             string secretKey,
             IEnumerable<(string group, string[] workflows)> groupWorkflows)
         {
@@ -101,7 +101,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// (matching <c>Dev2JsonSerializer</c>) then encrypts with
         /// <see cref="SecurityEncryption.Encrypt"/>.
         /// </summary>
-        internal static string Encrypt(SecuritySettingsTO settings)
+        public static string Encrypt(SecuritySettingsTO settings)
         {
             var json = JsonConvert.SerializeObject(settings, new JsonSerializerSettings
             {
@@ -115,7 +115,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Writes an encrypted config to a temp file and returns the file path.
         /// The caller is responsible for deleting the file when finished.
         /// </summary>
-        internal static string WriteTempConfig(SecuritySettingsTO settings)
+        public static string WriteTempConfig(SecuritySettingsTO settings)
         {
             var path      = Path.GetTempFileName();
             var encrypted = Encrypt(settings);
@@ -127,7 +127,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         /// Generates a fresh, random Base64-encoded HMAC-SHA256 key suitable for use
         /// as the <c>SecretKey</c> field of a <see cref="SecuritySettingsTO"/>.
         /// </summary>
-        internal static string NewSecretKey()
+        public static string NewSecretKey()
         {
             using var hmac = new HMACSHA256();
             return Convert.ToBase64String(hmac.Key);
@@ -136,26 +136,26 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         // ── Permission helpers ────────────────────────────────────────────────────
 
         /// <summary>Server-wide permission (no specific resource).</summary>
-        internal static PermSpec ServerPerm(string group, bool View,
+        public static PermSpec ServerPerm(string group, bool View,
             bool Execute     = false,
             bool Contribute  = false,
             bool Administrator = false) =>
             new(group, IsServer: true, View, ResourceId: Guid.Empty);
 
         /// <summary>Resource-specific permission.</summary>
-        internal static PermSpec ResourcePerm(string group, string resourceName, bool View,
+        public static PermSpec ResourcePerm(string group, string resourceName, bool View,
             bool Execute = false) =>
             new(group, IsServer: false, View,
                 ResourceId:   Guid.NewGuid(),
                 ResourceName: resourceName);
 
         /// <summary>Default administrator entry (global, all permissions).</summary>
-        internal static PermSpec Admin(bool View = true) =>
+        public static PermSpec Admin(bool View = true) =>
             ServerPerm(AdminGroup, View, Execute: true, Contribute: true, Administrator: true);
 
         // ── Low-level builder ─────────────────────────────────────────────────────
 
-        internal static SecuritySettingsTO Build(string secretKey, params PermSpec[] specs)
+        public static SecuritySettingsTO Build(string secretKey, params PermSpec[] specs)
         {
             var settings = new SecuritySettingsTO
             {

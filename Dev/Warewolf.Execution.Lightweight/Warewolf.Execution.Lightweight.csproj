@@ -78,11 +78,11 @@
     <!-- Analyzer only (IMPORTANT) -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
 
-    <PackageReference Include="Google.Protobuf"
-                      Version="3.25.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
-    <PackageReference Include="Newtonsoft.Json"
-                      Version="13.0.3" />
+    <!-- Azure Key Vault + Managed Identity (encryption support) -->
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
 
   </ItemGroup>
 
@@ -96,6 +96,9 @@
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj" />
 
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+
+    <!-- Licensing / Chargebee integration -->
+    <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
 
   </ItemGroup>
 
@@ -140,6 +143,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Protect-LicenseConfig.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
@@ -151,6 +158,18 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>-->
     <None Include="Scripts\Generate-WorkflowIndex.ps1" />
+    <None Include="Scripts\Encrypt-Config.ps1" />
+    <None Include="Scripts\KeyVaultSetup.azcli" />
+    <None Include="docs\README-Encryption.md" />
+    <None Include="docs\KeyRotationRunbook.md" />
+    <None Include="docs\SecurityChecklist.md" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
   <!-- ========================================================= -->
@@ -172,20 +191,12 @@
     <!-- Run the PowerShell script to enumerate resources and emit the index. -->
     <!-- ContinueOnError: if PowerShell is unavailable the build still succeeds -->
     <!-- and ResolveFilePath falls back to its existing disk-based resolution.  -->
-    <Exec
-      Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;"
-      WorkingDirectory="$(MSBuildProjectDirectory)"
-      ContinueOnError="true" />
+    <Exec Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="true" />
 
     <!-- Copy the newly generated index to the output directory immediately so it  -->
     <!-- is present on the very first build (before the Content glob can pick it  -->
     <!-- up on a subsequent build).                                                 -->
-    <Copy
-      SourceFiles="$(_IndexSourcePath)"
-      DestinationFiles="$(OutDir)Resources\workflow-index.json"
-      SkipUnchangedFiles="true"
-      ContinueOnError="true"
-      Condition="Exists('$(_IndexSourcePath)')" />
+    <Copy SourceFiles="$(_IndexSourcePath)" DestinationFiles="$(OutDir)Resources\workflow-index.json" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('$(_IndexSourcePath)')" />
   </Target>
   
   
