@@ -5,16 +5,18 @@ namespace Warewolf.Execution.Lightweight.Logging
 {
     /// <summary>
     /// Generic structured logger for the Warewolf Azure Execution Engine.
-    /// Implementations emit log entries to the configured sink (e.g., Azure Monitor /
-    /// Application Insights via <c>Microsoft.Extensions.Logging.ILogger</c>).
+    /// Mirrors the method set of <c>Dev2Logger</c> so call-sites can switch
+    /// between the server logger and the lightweight Azure logger transparently.
     /// </summary>
     public interface IExecutionLogger
     {
-        /// <summary>
-        /// Logs a full exception with activity context and execution correlation ID.
-        /// The full stack trace is captured inside <see cref="ExecutionErrorDetail"/>.
-        /// </summary>
-        void LogError(string activityName, Exception ex, Guid executionId);
+
+        /// <summary>Logs a debug message correlated to an execution run.</summary>
+        void LogDebug(string message, Guid executionId);
+
+        /// <summary>Logs a debug message with an associated exception.</summary>
+        void LogDebug(string message, Exception exception, Guid executionId);
+
 
         /// <summary>
         /// Logs an error with the specified exception and an associated message.
@@ -28,6 +30,10 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// </summary>
         void LogInfo(string message, Guid executionId);
 
+        /// <summary>Logs an informational message with an associated exception.</summary>
+        void LogInfo(string message, Exception exception, Guid executionId);
+
+
         /// <summary>
         /// Logs a structured informational message correlated to an execution run.
         /// </summary>
@@ -37,5 +43,25 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// Logs a structured warning message correlated to an execution run.
         /// </summary>
         void LogWarning(string message, Guid executionId);
+
+        /// <summary>Logs a warning message with an associated exception.</summary>
+        void LogWarning(string message, Exception exception, Guid executionId);
+
+        /// <summary>Logs an error message correlated to an execution run.</summary>
+        void LogError(string message, Guid executionId);
+
+        /// <summary>
+        /// Logs a full exception with activity context and execution correlation ID.
+        /// The full stack trace is captured inside <see cref="ExecutionErrorDetail"/>.
+        /// </summary>
+        void LogError(string activityName, Exception ex, Guid executionId);
+
+
+        /// <summary>Logs a fatal/critical message correlated to an execution run.</summary>
+        void LogFatal(string message, Guid executionId);
+
+        /// <summary>Logs a fatal/critical message with an associated exception.</summary>
+        void LogFatal(string message, Exception exception, Guid executionId);
     }
 }
+

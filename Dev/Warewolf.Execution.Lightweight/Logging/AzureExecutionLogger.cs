@@ -24,16 +24,86 @@ namespace Warewolf.Execution.Lightweight.Logging
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+
+        /// <inheritdoc/>
+        public void LogDebug(string message, Guid executionId)
+        {
+            _logger.LogDebug(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogDebug(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogDebug(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+
+        /// <inheritdoc/>
+        public void LogInfo(string message, Guid executionId)
+        {
+            _logger.LogInformation(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogInfo(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogInformation(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+
+        /// <inheritdoc/>
+        public void LogWarning(string message, Guid executionId)
+        {
+            _logger.LogWarning(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+        /// <inheritdoc/>
+        public void LogWarning(string message, Exception exception, Guid executionId)
+        {
+            _logger.LogWarning(
+                exception,
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
+
+        /// <inheritdoc/>
+        public void LogError(string message, Guid executionId)
+        {
+            _logger.LogError(
+                "[ExecutionId:{ExecutionId}] {Message}",
+                executionId,
+                message);
+        }
+
         /// <inheritdoc/>
         public void LogError(string activityName, Exception ex, Guid executionId)
         {
             var detail = new ExecutionErrorDetail
             {
                 ActivityName = activityName,
-                Message = ex?.Message ?? string.Empty,
-                StackTrace = ex?.ToString() ?? string.Empty,   // ToString() includes inner exceptions
-                Timestamp = DateTime.UtcNow,
-                ExecutionId = executionId
+                Message      = ex?.Message ?? string.Empty,
+                StackTrace   = ex?.ToString() ?? string.Empty,
+                Timestamp    = DateTime.UtcNow,
+                ExecutionId  = executionId
             };
 
             using (_logger.BeginScope(detail.ToLogScope()))
@@ -47,20 +117,11 @@ namespace Warewolf.Execution.Lightweight.Logging
             }
         }
 
-        /// <summary>
-        /// Logs an error with the specified exception and an associated message.
-        /// </summary>
-        /// <param name="ex">The exception to log. Cannot be null.</param>
-        /// <param name="log">The message that provides additional context for the error.</param>
-        public void LogError(Exception ex, string log)
-        {
-            _logger.LogError(ex, log);
-        }
 
         /// <inheritdoc/>
-        public void LogInfo(string message, Guid executionId)
+        public void LogFatal(string message, Guid executionId)
         {
-            _logger.LogInformation(
+            _logger.LogCritical(
                 "[ExecutionId:{ExecutionId}] {Message}",
                 executionId,
                 message);
@@ -72,12 +133,20 @@ namespace Warewolf.Execution.Lightweight.Logging
         }
 
         /// <inheritdoc/>
-        public void LogWarning(string message, Guid executionId)
+        public void LogFatal(string message, Exception exception, Guid executionId)
         {
-            _logger.LogWarning(
+            _logger.LogCritical(
+                exception,
                 "[ExecutionId:{ExecutionId}] {Message}",
                 executionId,
                 message);
         }
+
+        public void LogError(Exception ex, string log)
+        {
+            var exception = new Exception(log, ex);
+            this.LogError("", exception, new Guid());
+        }
     }
 }
+
