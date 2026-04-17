@@ -1,0 +1,6 @@
+{
+    "version": "1",
+    "EnvironmentType": "docker",
+    "DockerFile": "Warewolf.Execution.Lightweight/engine/docker/Dockerfile.test",
+    "ImageName": "vsut_dockerfile"
+}

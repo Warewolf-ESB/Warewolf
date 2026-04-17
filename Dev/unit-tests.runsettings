@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  unit-tests.runsettings
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Use this runsettings file when running tests in the remote Linux container
+  via VS Test Explorer (Remote Testing > "Azure Functions Runtime (Linux)").
+
+  It filters OUT integration test categories so that tests which call
+  http://localhost:7071 are not run inside the container where that port
+  does not exist. Only pure unit tests are executed remotely.
+
+  To activate in VS: Test > Configure Run Settings > Select Solution-Wide runsettings File
+  Then pick this file. Switch it back to "(auto-detect)" when you want to
+  run integration tests locally against the running Docker container.
+-->
+<RunSettings>
+  <RunConfiguration>
+    <!-- Exclude all integration test categories. Add new categories here as needed. -->
+    <TestCaseFilter>TestCategory!=WebPostTool_Integration&amp;TestCategory!=WebGetTool_Integration</TestCaseFilter>
+  </RunConfiguration>
+</RunSettings>

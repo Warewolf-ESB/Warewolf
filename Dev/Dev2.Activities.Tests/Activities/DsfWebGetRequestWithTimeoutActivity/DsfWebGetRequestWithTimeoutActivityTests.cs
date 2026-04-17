@@ -463,7 +463,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             dsfWebGetActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Value hhh for TimeoutSecondsText could not be interpreted as a numeric value.\r\nExecution aborted - see error messages.", environment.FetchErrors().ToString());
+            Assert.AreEqual("Value hhh for TimeoutSecondsText could not be interpreted as a numeric value." + NewLine + "Execution aborted - see error messages.", environment.FetchErrors().ToString());
         }
 
         [TestMethod]

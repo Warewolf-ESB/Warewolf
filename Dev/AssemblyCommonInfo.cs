@@ -56,3 +56,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Driver.Persistance.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.HangfireServer.Tests")]
 [assembly: InternalsVisibleTo("Infragistics.Calculations.Engine")]
+[assembly: InternalsVisibleTo("Warewolf.Execution.Lightweight.Integration.Tests")]

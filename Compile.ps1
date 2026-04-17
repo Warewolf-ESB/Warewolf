@@ -17,7 +17,6 @@ Param(
   [switch]$NewServerNet6,
   [switch]$ServerTests,
   [switch]$RegenerateSpecFlowFeatureFiles,
-  [switch]$InContainer,
   [string]$GitCredential,
   [switch]$Disablemaxcpucount
 )
@@ -40,77 +39,74 @@ if ($Target -ne "") {
 if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
+#Find Local NuGet
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+	$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+	if ($NuGetCommand) {
+		$NuGet = $NuGetCommand.Path
+	}
+}
+if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+	wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+	$NuGet = "$env:windir\nuget.exe"
+}
+if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
+	sleep 10
+	exit 1
+}
 
-if (!($InContainer.IsPresent)) {
-	#Find Local NuGet
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-		if ($NuGetCommand) {
-			$NuGet = $NuGetCommand.Path
+#Find Local Compiler
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	$GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
+	if ($GetMSBuildCommand) {
+		$MSBuildPath = $GetMSBuildCommand.Path
+	}
+}
+if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	$GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
+	if ($GetvswhereCommand) {
+		$VswherePath = $GetvswhereCommand.Path
+	} else {
+		if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+			$VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+		} else {
+			&"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
+			$VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
 		}
 	}
-	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-		$NuGet = "$env:windir\nuget.exe"
+	[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
+	if ($GetMSBuildPath -ne $null) {
+		$MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
 	}
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
+		$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
+	}
+	if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
+		$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+	}
+	if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
+		$MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
+	}
+	if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+		$MSBuildPath = $env:MSBuildPath
+	}
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	$GetMSBuildCommand = reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath
+	$GetMSBuildCommand = $GetMSBuildCommand[2].Substring(34, $GetMSBuildCommand[2].Length-34) + "msbuild.exe"
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
+	if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+		$MSBuildPath = $env:MSBuildPath
+		[System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
+	} else {
+		Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
 		sleep 10
 		exit 1
-	}
-	
-	#Find Local Compiler
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
-		if ($GetMSBuildCommand) {
-			$MSBuildPath = $GetMSBuildCommand.Path
-		}
-	}
-	if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
-		if ($GetvswhereCommand) {
-			$VswherePath = $GetvswhereCommand.Path
-		} else {
-			if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
-				$VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-			} else {
-				&"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
-				$VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
-			}
-		}
-		[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
-		if ($GetMSBuildPath -ne $null) {
-			$MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
-		}
-	}
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
-		}
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
-		}
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
-		}
-		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-			$MSBuildPath = $env:MSBuildPath
-		}
-	}
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$GetMSBuildCommand = reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath
-		$GetMSBuildCommand = $GetMSBuildCommand[2].Substring(34, $GetMSBuildCommand[2].Length-34) + "msbuild.exe"
-	}
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
-		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-			$MSBuildPath = $env:MSBuildPath
-			[System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
-		} else {
-			Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
-			sleep 10
-			exit 1
-		}
 	}
 }
 
@@ -329,67 +325,110 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             $OutputFolderName = $BaseOutputFolderName
+            $WinOutputFolderName = "$OutputFolderName-Windows"
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
             } else {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$WinOutputFolderName"
             }
 
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName" -Version "17.2.0"
             }
 
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName"
             }
             
             if (!($Disablemaxcpucount.IsPresent)) {
                 $DisablemaxcpucountProperty = "/maxcpucount"
             }
-            if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/nodeReuse:false" "/restore" $OutputProperty $Target $DisablemaxcpucountProperty
+            dotnet restore "$PSScriptRoot\$SolutionFile" --nologo -v minimal --force
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host Restore failed for $SolutionFile.
+                exit 1
+            }
+            if ($ProjectSpecificOutputs.IsPresent) {
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
             } else {
-                docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$FrameworkArg" "/nodeReuse:false" "/restore" $OutputProperty $Target $NodeReuseProperty
+                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore -o "$PSScriptRoot\Bin\$WinOutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
             }
             if ($LASTEXITCODE -ne 0) {
-                Write-Host Build failed for $CurrentFramework. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
+                Write-Host Build failed for $SolutionFile. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace.
                 exit 1
+            }
+            if ($OutputFolderName -eq "ServerTests") {
+                $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
+                $slnDir = "$PSScriptRoot\Dev"
+                if (Test-Path $linuxOutputBase) { Remove-Item $linuxOutputBase -Recurse -Force }
+                New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
+                dotnet restore "$slnDir\ServerTests.sln" -r linux-x64 --nologo -v minimal --force
+                # Detect which projects the restore actually produced a linux-x64 target for
+                $slnProjects = Get-Content "$slnDir\ServerTests.sln" |
+                    Where-Object { $_ -match '\.Tests\.csproj"' } |
+                    ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
+                    ForEach-Object { Get-Item "$slnDir\$_" -ErrorAction SilentlyContinue } |
+                    Where-Object { $_ -ne $null }
+                $compatibleProjects = $slnProjects | Where-Object {
+                    $assetsFile = Join-Path $_.DirectoryName "obj\project.assets.json"
+                    if (!(Test-Path $assetsFile)) { return $false }
+                    $targets = (Get-Content $assetsFile -Raw | ConvertFrom-Json).targets.PSObject.Properties.Name
+                    $targets -contains "net8.0/linux-x64"
+                }
+                $slnProjects | Where-Object { $_ -notin $compatibleProjects } |
+                    ForEach-Object { Write-Host "Skipping $($_.BaseName) (not compatible with linux-x64)." }
+                # Build a temporary solution filter containing only the compatible projects
+                $tempSlnf = "$slnDir\ServerTests-linux.slnf"
+                [ordered]@{
+                    solution = [ordered]@{
+                        path     = "ServerTests.sln"
+                        projects = @($compatibleProjects | ForEach-Object { $_.FullName.Substring($slnDir.Length + 1) })
+                    }
+                } | ConvertTo-Json | Set-Content $tempSlnf
+                Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
+                dotnet publish "$tempSlnf" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
+                Remove-Item $tempSlnf -Force
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Host "Linux publish failed for ServerTests."
+                    exit 1
+                }
+                Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
             }
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {
-                        if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
-                            Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                        if (Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll") {
+                            Remove-Item -Path "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
                         }
                         if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
-                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
+                            Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
                         }
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Resources" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release\Tests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
+                        Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName" -Force -Recurse
 
-                        if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
-                            Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
+                        if (!(Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\_PublishedWebsites\Dev2.Web")) {
+                            Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$WinOutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
                         }
-                        Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
+                        Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$WinOutputFolderName\TestRun.ps1" -Force
                     }
-                    if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
-                        Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+                    if (Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
+                        Copy-Item -Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll" -Force
                     }
-                    Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
-                    if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
+                    Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\sni.dll" -Force
+                    if (!(Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\testhost.dll.config")) {
                         @"
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -441,7 +480,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 	
 
 </configuration>
-"@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
+"@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$WinOutputFolderName\testhost.dll.config" -Encoding utf8 -Force
                     }
                 }
             }

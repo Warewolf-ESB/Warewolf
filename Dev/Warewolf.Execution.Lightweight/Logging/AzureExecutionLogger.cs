@@ -127,6 +127,11 @@ namespace Warewolf.Execution.Lightweight.Logging
                 message);
         }
 
+        public void LogInfo(string message)
+        {
+            _logger.LogInformation(message);
+        }
+
         /// <inheritdoc/>
         public void LogFatal(string message, Exception exception, Guid executionId)
         {

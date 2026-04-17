@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -183,6 +184,16 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 RabbitSource =
                     ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID,
                         RabbitMQSourceResourceId);
+
+                if (RabbitSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(RabbitMQSourceResourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        RabbitSource = ws.OfType<RabbitMQSource>().FirstOrDefault(r => r.ResourceID == RabbitMQSourceResourceId);
+                }
+
                 if (RabbitSource == null || RabbitSource.ResourceType != enSourceType.RabbitMQSource.ToString())
                 {
                     _messages.Add(ErrorResource.RabbitSourceHasBeenDeleted);

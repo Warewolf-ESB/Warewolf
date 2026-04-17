@@ -83,6 +83,9 @@
 
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
 
+    <!-- Azure Key Vault + Managed Identity (encryption support) -->
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
   </ItemGroup>
@@ -98,6 +101,9 @@
 
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
 
+    <!-- Licensing / Chargebee integration -->
+    <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
+
   </ItemGroup>
 
 
@@ -110,11 +116,40 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
+
+    <!--
+      Local Resources folder: place workflow .bite / .xml files here for
+      project-specific resources (e.g. the login override workflow).
+      Files are merged with the Resources - Release content in the output and
+      publish directories, so they are included in every build and publish path
+      including 'dotnet publish -o …' and the Docker (Azure Functions) profile.
+      DO NOT commit sensitive workflow resources to source control.
+    -->
+    <Content Include="Resources\**\*" Condition="Exists('Resources')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+    <!--
+      Optional: if a secure.config is present next to the project file it will be
+      copied into the output directory and picked up by SecureConfigLoader at
+      runtime (both locally and after zip-deploy to Azure Functions).
+      DO NOT commit a real secure.config to source control — add it to .gitignore.
+    -->
+    <Content Include="secure.config" Condition="Exists('secure.config')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Deploy-ToAzure.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="StartAsAzureFunction.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Protect-LicenseConfig.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -127,6 +162,18 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>-->
     <None Include="Scripts\Generate-WorkflowIndex.ps1" />
+    <None Include="Scripts\Encrypt-Config.ps1" />
+    <None Include="Scripts\KeyVaultSetup.azcli" />
+    <None Include="docs\README-Encryption.md" />
+    <None Include="docs\KeyRotationRunbook.md" />
+    <None Include="docs\SecurityChecklist.md" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
   
   <ItemGroup>

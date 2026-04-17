@@ -60,8 +60,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 			var asm = Assembly.GetExecutingAssembly();
 			var fileName = asm.Location;
 			var versionResource = FileVersionInfo.GetVersionInfo(fileName);
-			var v = new Version(versionResource.FileVersion);
-			return v.ToString();
+			if (Version.TryParse(versionResource.FileVersion, out var v))
+			{
+				return v.ToString();
+			}
+			return versionResource.ProductVersion ?? "0.0.0.0";
 		}
 
 		static string GetVersion()
