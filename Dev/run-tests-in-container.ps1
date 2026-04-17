@@ -210,10 +210,11 @@ if ($CIMode) {
                 'run', '--rm',
                 '-v', "${BinDir}:/tests:ro",
                 '-v', "${TestResultsDir}:/results",
+                '-w', '/results',
                 'warewolf-test-env',
                 '/usr/share/dotnet/dotnet', 'vstest', "/tests/$assembly.dll",
                 "--logger:trx;LogFileName=$assembly$filterSuffix.trx",
-                '--ResultsDirectory:/results'
+                '--ResultsDirectory', '/results'
             )
             if ($filterValue) { $dockerRunArgs += "--TestCaseFilter:$filterValue" }
             Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
@@ -223,6 +224,18 @@ if ($CIMode) {
                 Write-Warning "$assembly$filterSuffix reported failures (exit $LASTEXITCODE)."
                 $failed++
             }
+        }
+    }
+
+    Write-Host "--- TRX files written to $TestResultsDir ---" -ForegroundColor Cyan
+    $trxFiles = Get-ChildItem -Path $TestResultsDir -Recurse -Filter "*.trx" -ErrorAction SilentlyContinue
+    if ($trxFiles) {
+        $trxFiles | ForEach-Object { Write-Host "  $($_.FullName)" -ForegroundColor Green }
+    } else {
+        Write-Warning "No .trx files found in $TestResultsDir"
+        # Show top-level contents for diagnosis
+        Get-ChildItem -Path $TestResultsDir -ErrorAction SilentlyContinue | ForEach-Object {
+            Write-Host "  $($_.FullName)" -ForegroundColor Gray
         }
     }
 
