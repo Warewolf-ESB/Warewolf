@@ -3,13 +3,43 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Infrastructure;
+using Warewolf.Execution.Lightweight.Logging;
 
 try
 {
     var config = HostEnvironmentConfig.Load();
+    
+    static bool IsEnabled(string key) =>
+        string.Equals(Environment.GetEnvironmentVariable(key), "true", StringComparison.OrdinalIgnoreCase);
+
+    var enableConsole = IsEnabled("ENABLECONSOLELOGGING");
+    var enableElastic = IsEnabled("ENABLEELASTICSEARCHLOGGING");
+    var elasticsearchSettingsPath = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
+
+    var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
+        ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
+        : null;
+
 
     var host = new HostBuilder()
         .ConfigureWarewolf(config)
+        .ConfigureServices(services =>
+         {
+             services.AddSingleton<IExecutionLogger>(sp =>
+             {
+                 var loggers = new List<IExecutionLogger>();
+
+                 if (enableConsole)
+                     loggers.Add(new AzureExecutionLogger(
+                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>()));
+
+                 if (elasticOptions is not null)
+                     loggers.Add(new ElasticsearchExecutionLogger(elasticOptions));
+
+                 return new CompositeExecutionLogger(loggers);
+             });
+
+         })
         .Build();
 
     await StartupOrchestrator.RunStartupAsync(host, config);

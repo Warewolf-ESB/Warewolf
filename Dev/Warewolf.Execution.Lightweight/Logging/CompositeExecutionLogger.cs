@@ -94,6 +94,18 @@ namespace Warewolf.Execution.Lightweight.Logging
             foreach (var logger in _loggers)
                 logger.LogFatal(message, exception, executionId);
         }
+
+        public void LogError(Exception ex, string log)
+        {
+            var exception = new Exception(log, ex);
+            this.LogError("", exception, new Guid());
+        }
+
+        public void LogInfo(string message)
+        {
+            foreach (var logger in _loggers)
+            logger.LogInfo(message);
+        }
     }
 }
 

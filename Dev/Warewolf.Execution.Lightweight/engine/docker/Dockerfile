@@ -9,7 +9,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
     ASPNETCORE_ENVIRONMENT=Development \
     AZURE_TENANT_ID= \
-    DEBUG_AZURE_KEYVAULT_SECRET="" 
+    DEBUG_AZURE_KEYVAULT_SECRET="" \
     ENABLEELASTICSEARCHLOGGING=true \
     ENABLECONSOLELOGGING=true
 EXPOSE 80

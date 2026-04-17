@@ -188,6 +188,17 @@ namespace Warewolf.Execution.Lightweight.Logging
                 }
             });
         }
+
+        public void LogError(Exception ex, string log)
+        {
+            var exception = new Exception(log, ex);
+            this.LogError("", exception, new Guid());
+        }
+
+        public void LogInfo(string message)
+        {
+            this.LogInfo(message, new Guid());
+        }
     }
 }
 
