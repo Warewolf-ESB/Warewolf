@@ -21,6 +21,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -188,11 +189,21 @@ namespace Dev2.Activities.RedisCache
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-              
+
             _errorsTo = new ErrorResultTO();
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+
+                if (RedisSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        RedisSource = ws.OfType<RedisSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+                }
+
                 if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);

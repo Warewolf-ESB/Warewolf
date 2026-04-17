@@ -4,16 +4,15 @@
 # ============================================================
 
 # ── Configuration ───────────────────────────────────────────
-$ProjectFile     = "$PSScriptRoot\..\Warewolf.Execution.Lightweight.csproj"
-$PublishDir      = "$PSScriptRoot\publish"
-$TestPublishDir  = "$PSScriptRoot\publish-tests"
-$DockerfilePath  = "$PSScriptRoot\docker\Dockerfile"
-$BuildContext    = $PSScriptRoot
-$ImageName       = "executionengine"
-$ImageTag        = "debug"
-$ContainerName   = "ExecutionEngine_debug"
-$HostPort        = 7071
-$DebuggerPort    = 4024
+$ProjectFile    = "$PSScriptRoot\..\Warewolf.Execution.Lightweight.csproj"
+$PublishDir     = "$PSScriptRoot\publish"
+$DockerfilePath = "$PSScriptRoot\docker\Dockerfile"
+$BuildContext   = $PSScriptRoot
+$ImageName      = "executionengine"
+$ImageTag       = "debug"
+$ContainerName  = "ExecutionEngine_debug"
+$HostPort       = 7071
+$DebuggerPort   = 4024
 # ────────────────────────────────────────────────────────────
 
 $FullImageName = "${ImageName}:${ImageTag}"
