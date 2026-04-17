@@ -110,6 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data[Constants.WORKFLOW_INPUTS] = Inputs;
             cell.data[Constants.WORKFLOW_OUTPUTS] = Outputs;
             cell.data[Constants.WORKFLOW_CATEGORY] = Category;
+            cell.data[Constants.WORKFLOW_TYPE] = Type;
         }
 
         public override void FromX6Json(Cell cell)
@@ -131,6 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (cell.data.TryGetString(Constants.WORKFLOW_OUTPUTMAPPING, out var outputMapping)) OutputMapping = outputMapping;
             if (cell.data.TryGetBool(Constants.WORKFLOW_ISWORKFLOW, out var isWorkflow)) IsWorkflow = isWorkflow;
             if (cell.data.TryGetString(Constants.WORKFLOW_CATEGORY, out var category)) Category = category;
+            if (cell.data.TryGetString(Constants.WORKFLOW_TYPE, out var type)) Type = type;
 
             if (CommonHelper.TryGetList<ServiceInput, Dev2.Common.Interfaces.DB.IServiceInput>(cell.data, out var inputs, Constants.WORKFLOW_INPUTS))
             {
