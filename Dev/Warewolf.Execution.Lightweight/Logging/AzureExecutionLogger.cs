@@ -30,10 +30,10 @@ namespace Warewolf.Execution.Lightweight.Logging
             var detail = new ExecutionErrorDetail
             {
                 ActivityName = activityName,
-                Message      = ex?.Message ?? string.Empty,
-                StackTrace   = ex?.ToString() ?? string.Empty,   // ToString() includes inner exceptions
-                Timestamp    = DateTime.UtcNow,
-                ExecutionId  = executionId
+                Message = ex?.Message ?? string.Empty,
+                StackTrace = ex?.ToString() ?? string.Empty,   // ToString() includes inner exceptions
+                Timestamp = DateTime.UtcNow,
+                ExecutionId = executionId
             };
 
             using (_logger.BeginScope(detail.ToLogScope()))
@@ -47,6 +47,16 @@ namespace Warewolf.Execution.Lightweight.Logging
             }
         }
 
+        /// <summary>
+        /// Logs an error with the specified exception and an associated message.
+        /// </summary>
+        /// <param name="ex">The exception to log. Cannot be null.</param>
+        /// <param name="log">The message that provides additional context for the error.</param>
+        public void LogError(Exception ex, string log)
+        {
+            _logger.LogError(ex, log);
+        }
+
         /// <inheritdoc/>
         public void LogInfo(string message, Guid executionId)
         {
@@ -54,6 +64,11 @@ namespace Warewolf.Execution.Lightweight.Logging
                 "[ExecutionId:{ExecutionId}] {Message}",
                 executionId,
                 message);
+        }
+
+        public void LogInfo(string message)
+        {
+            _logger.LogInformation(message);
         }
 
         /// <inheritdoc/>

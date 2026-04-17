@@ -1,42 +1,34 @@
-using Dev2;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.Subscription;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Warewolf.Execution.Lightweight;
-using Warewolf.Execution.Lightweight.Logging;
-using Warewolf.Licensing;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
-var workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
-    ?? Path.Combine(AppContext.BaseDirectory, "Resources");
+try
+{
+    var config = HostEnvironmentConfig.Load();
 
-var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
-    .ConfigureServices(services =>
+    var host = new HostBuilder()
+        .ConfigureWarewolf(config)
+        .Build();
+
+    await StartupOrchestrator.RunStartupAsync(host, config);
+    
+    startupLogger.LogInformation("Loading \"Warewolf License.secureconfig\"...");
+    var licenseProvider = SubscriptionProvider.Instance;
+    if (licenseProvider.IsLicensed)
     {
-        services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
-        services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-        services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
-        services.AddSingleton<IWarewolfLicense, WarewolfLicense>();
-    })
-    .Build();
+        startupLogger.LogInformation("\"Warewolf License.secureconfig\" loaded successfully. Server is licensed (Status: {Status}).", licenseProvider.Status);
+    }
+    else
+    {
+        startupLogger.LogWarning("\"Warewolf License.secureconfig\" loaded. Server is not licensed (Status: {Status}, StopExecutions: {StopExecutions}).", licenseProvider.Status, licenseProvider.StopExecutions);
+    }
 
-// Pre-load the workflow index so the first HTTP request pays no file-system cost.
-WorkflowIndex.Instance.WarmUp(workflowsDirectory);
-
-var startupLogger = host.Services.GetRequiredService<ILogger<Program>>();
-startupLogger.LogInformation("Loading \"Warewolf License.secureconfig\"...");
-var licenseProvider = SubscriptionProvider.Instance;
-if (licenseProvider.IsLicensed)
-{
-    startupLogger.LogInformation("\"Warewolf License.secureconfig\" loaded successfully. Server is licensed (Status: {Status}).", licenseProvider.Status);
+    await host.RunAsync();
 }
-else
+catch (Exception ex)
 {
-    startupLogger.LogWarning("\"Warewolf License.secureconfig\" loaded. Server is not licensed (Status: {Status}, StopExecutions: {StopExecutions}).", licenseProvider.Status, licenseProvider.StopExecutions);
+    // Fatal cold-start failure — write to stderr so the Azure Functions runtime
+    // captures it regardless of whether the logging pipeline is available.
+    await Console.Error.WriteLineAsync(
+        $"[FATAL] Host terminated unexpectedly at {DateTimeOffset.UtcNow:O}: {ex}");
+    throw;
 }
-
-host.Run();
-

@@ -1,24 +1,37 @@
 {
   "version": "2.0",
+
+  "functionTimeout": "00:10:00",
+
   "extensions": {
     "http": {
       "routePrefix": ""
     }
   },
+
   "logging": {
     "logLevel": {
-      "default": "Warning",
-      "Program": "Information",
-      "Function": "Information",
-      "Warewolf.Execution.Lightweight": "Information"
+      "Default": "Warning",
+      "Warewolf.Execution.Lightweight.Security.AuditLogger": "Debug",
+      "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Information"
     },
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,
         "maxTelemetryItemsPerSecond": 20,
         "evaluationInterval": "01:00:00",
-        "initialSamplingPercentage": 100.0
+        "initialSamplingPercentage": 50.0
       }
     }
+  },
+
+  "concurrency": {
+    "dynamicConcurrencyEnabled": true,
+    "snapshotPersistenceEnabled": true
+  },
+
+  "aggregator": {
+    "batchSize": 500,
+    "flushTimeout": "00:00:30"
   }
 }

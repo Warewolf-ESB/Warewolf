@@ -17,9 +17,21 @@ namespace Warewolf.Execution.Lightweight.Logging
         void LogError(string activityName, Exception ex, Guid executionId);
 
         /// <summary>
+        /// Logs an error with the specified exception and an associated message.
+        /// </summary>
+        /// <param name="ex">The exception to log. Cannot be null.</param>
+        /// <param name="log">The message that provides additional context for the error.</param>
+        void LogError(Exception ex, string log);
+
+        /// <summary>
         /// Logs a structured informational message correlated to an execution run.
         /// </summary>
         void LogInfo(string message, Guid executionId);
+
+        /// <summary>
+        /// Logs a structured informational message correlated to an execution run.
+        /// </summary>
+        void LogInfo(string message);
 
         /// <summary>
         /// Logs a structured warning message correlated to an execution run.
