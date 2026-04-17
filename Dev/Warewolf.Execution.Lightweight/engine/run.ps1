@@ -173,7 +173,6 @@ $RunArgs = @(
     "run", "-d",
     "-p", "${HostPort}:80",
     "-p", "${DebuggerPort}:4024",
-    "--add-host=host.docker.internal:host-gateway",
     "--name", $ContainerName,
     "-e", "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated",
     "-e", "AzureWebJobsStorage=UseDevelopmentStorage=false",
