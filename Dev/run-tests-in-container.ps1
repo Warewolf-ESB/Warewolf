@@ -195,7 +195,7 @@ if ($CIMode) {
     foreach ($filterValue in $FilterValues) {
         $filterArgs = if ($filterValue) { @("--TestCaseFilter:$filterValue") } else { @() }
         # Sanitise the filter value for use in filenames (replaces non-word chars with _)
-        $filterSuffix = if ($filterValue) { ".$($filterValue -replace '[^a-zA-Z0-9_-]', '_')" } else { "" }
+        $rawSuffix = if ($filterValue) { ".$($filterValue -replace '[^a-zA-Z0-9_-]', '_')" } else { "" }
 
         foreach ($assembly in $Assemblies) {
             $dllPath = Join-Path $BinDir "$assembly.dll"
@@ -203,6 +203,10 @@ if ($CIMode) {
                 Write-Warning "Assembly not found, skipping: $dllPath"
                 continue
             }
+
+            # Cap TRX filename at 200 chars to stay within the Linux ext4 255-byte limit
+            $maxSuffix = [Math]::Max(8, 200 - $assembly.Length - 4)
+            $filterSuffix = if ($rawSuffix.Length -gt $maxSuffix) { $rawSuffix.Substring(0, $maxSuffix) } else { $rawSuffix }
 
             Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
