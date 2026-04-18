@@ -206,17 +206,17 @@ if ($CIMode) {
 
             Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
+            $trxName = "$assembly$filterSuffix.trx"
             $dockerRunArgs = @(
                 'run', '--rm',
                 '-v', "${BinDir}:/tests:ro",
                 '-v', "${TestResultsDir}:/results",
-                '-w', '/results',
                 'warewolf-test-env',
-                '/usr/share/dotnet/dotnet', 'vstest', "/tests/$assembly.dll",
-                "--logger:trx;LogFileName=$assembly$filterSuffix.trx",
-                '--ResultsDirectory', '/results'
+                '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
+                '--logger', "trx;LogFileName=$trxName",
+                '--results-directory', '/results'
             )
-            if ($filterValue) { $dockerRunArgs += "--TestCaseFilter:$filterValue" }
+            if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
             & docker @dockerRunArgs
 
