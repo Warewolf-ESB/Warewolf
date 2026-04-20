@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,15 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return id;
         }
 
+        private static T? GetFromCatalog<T>(Guid id) where T : class
+        {
+            if (!ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                return null;
+            lock (ws)
+                return ws.OfType<T>().FirstOrDefault(r => r.ResourceID == id);
+        }
+
         /// <summary>
         /// Verifies that Server, UserName, and AuthenticationType survive the full
         /// .bite write → LightweightSourceLoader index → EnsureSourceLoaded → ResourceCatalog
@@ -90,7 +100,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = loader;
             Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "SharepointSource should load from .bite");
 
-            var source = ResourceCatalog.Instance.GetResource<SharepointSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<SharepointSource>(id);
             Assert.IsNotNull(source, "SharepointSource must be in ResourceCatalog");
             Assert.AreEqual(spUrl, source.Server, "Server must round-trip correctly");
             Assert.AreEqual("spuser", source.UserName, "UserName must round-trip correctly");
@@ -146,7 +156,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = LightweightSourceLoader.Instance;
             iLoader.EnsureSourceLoaded(id);
 
-            var source = ResourceCatalog.Instance.GetResource<SharepointSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<SharepointSource>(id);
             Assert.IsNotNull(source, "SharepointSource must be in catalog");
             Assert.AreEqual(spUrl, source.Server);
 
@@ -181,9 +191,9 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = LightweightSourceLoader.Instance;
             iLoader.EnsureSourceLoaded(id);
 
-            var source = ResourceCatalog.Instance.GetResource<SharepointSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<SharepointSource>(id);
             Assert.IsNotNull(source);
-            Assert.AreEqual(spUrl, source.Server, "Server URL must be preserved exactly (no trailing slash or scheme normalisation)");
+            Assert.AreEqual(spUrl, source.Server, "Server URL must be preserved exactly(no trailing slash or scheme normalisation)");
             Assert.AreEqual("domain\\admin", source.UserName, "UserName with domain prefix must round-trip");
         }
     }

@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -68,6 +69,15 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return id;
         }
 
+        private static T? GetFromCatalog<T>(Guid id) where T : class
+        {
+            if (!ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                return null;
+            lock (ws)
+                return ws.OfType<T>().FirstOrDefault(r => r.ResourceID == id);
+        }
+
         /// <summary>
         /// Verifies that AutoDiscoverUrl, UserName, and Timeout survive the full
         /// .bite write → LightweightSourceLoader index → EnsureSourceLoaded → ResourceCatalog
@@ -86,7 +96,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = loader;
             Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "ExchangeSource should load from .bite");
 
-            var source = ResourceCatalog.Instance.GetResource<ExchangeSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<ExchangeSource>(id);
             Assert.IsNotNull(source, "ExchangeSource must be in ResourceCatalog");
             Assert.AreEqual(ewsUrl, source.AutoDiscoverUrl, "AutoDiscoverUrl must round-trip correctly");
             Assert.AreEqual("ewsuser", source.UserName, "UserName must round-trip correctly");
@@ -140,7 +150,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = LightweightSourceLoader.Instance;
             iLoader.EnsureSourceLoaded(id);
 
-            var source = ResourceCatalog.Instance.GetResource<ExchangeSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<ExchangeSource>(id);
             Assert.IsNotNull(source);
 
             // The stored AutoDiscoverUrl must point to WireMock's address exactly.

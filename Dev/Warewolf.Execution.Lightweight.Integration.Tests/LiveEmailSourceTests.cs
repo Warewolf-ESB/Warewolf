@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Mail;
 using System.Net;
 using System.Net.Sockets;
@@ -186,6 +187,15 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return path;
         }
 
+        private static T? GetFromCatalog<T>(Guid id) where T : class
+        {
+            if (!Dev2.Runtime.Hosting.ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(Dev2.Common.GlobalConstants.ServerWorkspaceID, out var ws))
+                return null;
+            lock (ws)
+                return ws.OfType<T>().FirstOrDefault(r => r.ResourceID == id);
+        }
+
         /// <summary>
         /// End-to-end: LightweightSourceLoader loads the .bite file → source registered in
         /// ResourceCatalog → EmailSource.Send() delivers a test message to FakeSmtpServer →
@@ -209,9 +219,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = loader;
             Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "Source should load from .bite");
 
-            var source = Dev2.Runtime.Hosting.ResourceCatalog.Instance
-                .GetResource<Dev2.Runtime.ServiceModel.Data.EmailSource>(
-                    Dev2.Common.GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<Dev2.Runtime.ServiceModel.Data.EmailSource>(id);
             Assert.IsNotNull(source, "EmailSource must be in ResourceCatalog after load");
             Assert.AreEqual("127.0.0.1", source.Host, "Host should be 127.0.0.1");
             Assert.AreEqual(smtp.Port, source.Port, "Port should match FakeSmtpServer port");
@@ -247,9 +255,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             LightweightSourceLoader.Instance.EnsureIndexed(dir);
             loader.EnsureSourceLoaded(id);
 
-            var source = Dev2.Runtime.Hosting.ResourceCatalog.Instance
-                .GetResource<Dev2.Runtime.ServiceModel.Data.EmailSource>(
-                    Dev2.Common.GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<Dev2.Runtime.ServiceModel.Data.EmailSource>(id);
 
             Assert.IsNotNull(source);
             Assert.AreEqual("127.0.0.1", source.Host);

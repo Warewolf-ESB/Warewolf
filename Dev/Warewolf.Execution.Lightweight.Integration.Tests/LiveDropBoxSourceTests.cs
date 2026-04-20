@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -72,6 +73,15 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return id;
         }
 
+        private static T? GetFromCatalog<T>(Guid id) where T : class
+        {
+            if (!ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                return null;
+            lock (ws)
+                return ws.OfType<T>().FirstOrDefault(r => r.ResourceID == id);
+        }
+
         /// <summary>
         /// Verifies that AccessToken and AppKey survive the full .bite → load round-trip.
         /// </summary>
@@ -87,7 +97,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             IOnDemandSourceLoader iLoader = loader;
             Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "DropBoxSource should load from .bite");
 
-            var source = ResourceCatalog.Instance.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, id);
+            var source = GetFromCatalog<DropBoxSource>(id);
             Assert.IsNotNull(source, "DropBoxSource must be in ResourceCatalog");
             Assert.AreEqual("my-dropbox-token-123", source.AccessToken, "AccessToken must round-trip correctly");
             Assert.AreEqual("my-app-key-456", source.AppKey, "AppKey must round-trip correctly");
