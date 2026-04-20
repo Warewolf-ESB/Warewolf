@@ -20,6 +20,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Runtime.Interfaces;
 using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
@@ -162,6 +163,13 @@ namespace Dev2.Activities.Sharepoint
             if (sharepointReadListTos.Any())
             {
                 var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                if (sharepointSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SharepointServerResourceId) == true
+                    && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        sharepointSource = ws.OfType<SharepointSource>().FirstOrDefault(r => r.ResourceID == SharepointServerResourceId);
+                }
                 if (sharepointSource == null)
                 {
                     var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);

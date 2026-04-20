@@ -23,8 +23,10 @@ namespace Warewolf.Execution.Lightweight
 {
     /// <summary>
     /// Scans a resource directory for <see cref="DbSource"/>, <see cref="WebSource"/>,
-    /// <see cref="RedisSource"/>, and <see cref="RabbitMQSource"/> bite files and provides
-    /// on-demand access to individual sources via <see cref="IOnDemandSourceLoader"/>.
+    /// <see cref="RedisSource"/>, <see cref="RabbitMQSource"/>, <see cref="EmailSource"/>,
+    /// <see cref="ExchangeSource"/>, <see cref="DropBoxSource"/>, <see cref="SharepointSource"/>,
+    /// and <see cref="ElasticsearchSource"/> bite files and provides on-demand access to
+    /// individual sources via <see cref="IOnDemandSourceLoader"/>.
     ///
     /// Design (minimum memory)
     /// ───────────────────────
@@ -83,9 +85,10 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Loads the single source (<see cref="DbSource"/>, <see cref="WebSource"/>,
-        /// <see cref="RedisSource"/>, or <see cref="RabbitMQSource"/>) for
-        /// <paramref name="sourceId"/> from disk (if not already registered) and adds it to
-        /// <see cref="ResourceCatalog.Instance"/>.
+        /// <see cref="RedisSource"/>, <see cref="RabbitMQSource"/>, <see cref="EmailSource"/>,
+        /// <see cref="ExchangeSource"/>, <see cref="DropBoxSource"/>, <see cref="SharepointSource"/>,
+        /// or <see cref="ElasticsearchSource"/>) for <paramref name="sourceId"/> from disk
+        /// (if not already registered) and adds it to <see cref="ResourceCatalog.Instance"/>.
         /// The source object itself is not retained here — only a registration flag is cached,
         /// so <see cref="ResourceCatalog"/> holds the sole strong reference.
         /// Subsequent calls for the same ID are no-ops (flag already set).
@@ -120,7 +123,9 @@ namespace Warewolf.Execution.Lightweight
         /// <summary>
         /// Scans <paramref name="directory"/> with <see cref="XmlReader"/> to build a
         /// ResourceID → (filePath, sourceType) mapping without loading any XElement bodies.
-        /// Accepts <c>DbSource</c>, <c>WebSource</c>, <c>RedisSource</c>, and <c>RabbitMQSource</c> type attributes.
+        /// Accepts <c>DbSource</c>, <c>WebSource</c>, <c>RedisSource</c>, <c>RabbitMQSource</c>,
+        /// <c>EmailSource</c>, <c>ExchangeSource</c>, <c>DropBoxSource</c>,
+        /// <c>SharepointSource</c>, and <c>ElasticsearchSource</c> type attributes.
         /// </summary>
         private static IReadOnlyDictionary<Guid, (string Path, string Type)> BuildFileIndex(string directory)
         {
@@ -141,7 +146,9 @@ namespace Warewolf.Execution.Lightweight
         /// <summary>
         /// Opens <paramref name="filePath"/> with <see cref="XmlReader"/>, reads only the root
         /// element, and returns the ResourceID when <c>Type</c> is <c>DbSource</c>,
-        /// <c>WebSource</c>, <c>RedisSource</c>, or <c>RabbitMQSource</c>. The remainder of the XML is never read.
+        /// <c>WebSource</c>, <c>RedisSource</c>, <c>RabbitMQSource</c>, <c>EmailSource</c>,
+        /// <c>ExchangeSource</c>, <c>DropBoxSource</c>, <c>SharepointSource</c>, or
+        /// <c>ElasticsearchSource</c>. The remainder of the XML is never read.
         /// </summary>
         private static bool TryPeekSourceId(string filePath, out Guid id, out string sourceType)
         {
@@ -165,7 +172,9 @@ namespace Warewolf.Execution.Lightweight
                         continue;
 
                     var typeAttr = reader.GetAttribute("Type") ?? string.Empty;
-                    if (typeAttr.ToLowerInvariant() is not ("dbsource" or "websource" or "redissource" or "rabbitmqsource"))
+                    if (typeAttr.ToLowerInvariant() is not ("dbsource" or "websource" or "redissource" or "rabbitmqsource"
+                            or "emailsource" or "exchangesource" or "dropboxsource"
+                            or "sharepointsource" or "elasticsearchsource"))
                         return false; // root element is not a supported source type — stop reading
 
                     var idStr = reader.GetAttribute("ResourceID") ?? reader.GetAttribute("ID");
@@ -192,10 +201,15 @@ namespace Warewolf.Execution.Lightweight
                 var xe = XElement.Load(filePath);
                 IResource source = sourceType.ToLowerInvariant() switch
                 {
-                    "websource" => new WebSource(xe),
-                    "dbsource" => new DbSource(xe),
-                    "redissource" => new RedisSource(xe),
-                    "rabbitmqsource" => new RabbitMQSource(xe),
+                    "websource"           => new WebSource(xe),
+                    "dbsource"            => new DbSource(xe),
+                    "redissource"         => new RedisSource(xe),
+                    "rabbitmqsource"      => new RabbitMQSource(xe),
+                    "emailsource"         => new EmailSource(xe),
+                    "exchangesource"      => new ExchangeSource(xe),
+                    "dropboxsource"       => new DropBoxSource(xe),
+                    "sharepointsource"    => new SharepointSource(xe),
+                    "elasticsearchsource" => new ElasticsearchSource(xe),
                     _ => null
                 };
                 return source?.ResourceID != Guid.Empty ? source : null;

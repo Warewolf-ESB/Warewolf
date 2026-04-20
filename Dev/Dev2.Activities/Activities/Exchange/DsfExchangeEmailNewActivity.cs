@@ -27,6 +27,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -186,6 +187,14 @@ namespace Dev2.Activities.Exchange
             try
             {
                 IExchange runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SavedSource.ResourceID);
+
+                if (runtimeSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SavedSource.ResourceID) == true
+                    && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        runtimeSource = ws.OfType<ExchangeSource>().FirstOrDefault(r => r.ResourceID == SavedSource.ResourceID);
+                }
 
                 if (runtimeSource == null)
                 {

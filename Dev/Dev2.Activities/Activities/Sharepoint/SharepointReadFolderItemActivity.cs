@@ -8,7 +8,9 @@ using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common;
 using Dev2.Data;
+using Dev2.Runtime.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
@@ -156,6 +158,13 @@ namespace Dev2.Activities.Sharepoint
             var colItr = new WarewolfListIterator();
            
             var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(context.WorkspaceID, SharepointServerResourceId); 
+            if (sharepointSource == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SharepointServerResourceId) == true
+                && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    sharepointSource = ws.OfType<SharepointSource>().FirstOrDefault(r => r.ResourceID == SharepointServerResourceId);
+            }
             if (sharepointSource == null)
             {
                 sharepointSource = SharepointSource;
