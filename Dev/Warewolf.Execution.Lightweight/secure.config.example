@@ -1,0 +1,38 @@
+{
+  "WindowsGroupPermissions": [
+    {
+      "Comment": "Server permissions apply to the whole server.",
+      "WindowsGroup": "your-email@example.com",
+      "IsServer": true,
+      "View": true,
+      "Execute": true,
+      "Contribute": false,
+      "DeployTo": false,
+      "DeployFrom": false,
+      "Administrator": false
+    },
+    {
+      "Comment": "Resource permissions apply to a specific workflow only. Set IsServer to false and provide the ResourceName.",
+      "WindowsGroup": "Public",
+      "IsServer": false,
+      "ResourceName": "Hello World",
+      "View": true,
+      "Execute": true,
+      "Contribute": false
+    },
+    {
+      "Comment": "Another resource permission example — grant a specific user access to one workflow.",
+      "WindowsGroup": "another-user@example.com",
+      "IsServer": false,
+      "ResourceName": "Hello World",
+      "View": true,
+      "Execute": true,
+      "Contribute": false
+    }
+  ],
+  "AuthenticationOverrideWorkflow": {
+    "Comment": "Optional. When Name is non-empty, POST /login executes this Warewolf workflow instead of returning 501 Not Implemented. The workflow receives the request body and must return a JSON object containing a 'token' field. Leave Name empty (or omit this section entirely) to disable custom login.",
+    "Name": "Login",
+    "Value": "00000000-0000-0000-0000-000000000000"
+  }
+}
