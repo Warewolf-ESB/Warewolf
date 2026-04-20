@@ -15,7 +15,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="WireMock.Net" Version="1.6.5" />
+    <PackageReference Include="WireMock.Net" Version="1.5.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj" />
