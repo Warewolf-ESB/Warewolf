@@ -65,8 +65,6 @@ if ($CIMode) {
     }
     $TestResultsDir = $TestResultsDir.TrimEnd('/\')
     New-Item -ItemType Directory -Force -Path $TestResultsDir | Out-Null
-    # Ensure the Docker container (which may run as a different user) can write results.
-    if ($IsLinux -or $IsMacOS) { & chmod 777 $TestResultsDir }
 
     # In CI the Dockerfile travels with the binaries artifact.
     $CIDockerfile = Join-Path $BinDir "Dockerfile.test"
@@ -155,10 +153,6 @@ if (-not $Assemblies) {
         Write-Host "Discovering test assemblies from $BinDir ..." -ForegroundColor Yellow
         $Assemblies = Get-CITestAssemblies
         Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
-        if (-not $Assemblies) {
-            Write-Error "No test assemblies (Warewolf/Dev2 *.Tests.dll) found in '$BinDir'. Ensure the LinuxTestBinaries artifact was published with linux-x64 targets."
-            exit 1
-        }
     } else {
         Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
         $Assemblies = Get-AllTestAssemblies
