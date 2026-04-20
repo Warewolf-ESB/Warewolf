@@ -187,7 +187,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return path;
         }
 
-        private static T? GetFromCatalog<T>(Guid id) where T : class
+        private static T? GetFromCatalog<T>(Guid id) where T : class, Dev2.Common.Interfaces.Data.IResource
         {
             if (!Dev2.Runtime.Hosting.ResourceCatalog.Instance.WorkspaceResources
                     .TryGetValue(Dev2.Common.GlobalConstants.ServerWorkspaceID, out var ws))
