@@ -338,6 +338,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
+			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {
