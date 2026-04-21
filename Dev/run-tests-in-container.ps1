@@ -254,9 +254,15 @@ if ($CIMode) {
             # --network=host is Linux-only; silently omit it on other platforms.
             $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
 
+            # DOTNET_ROOT tells the apphost where to find the installed .NET runtime.
+            # Without it, the apphost finds .NET native libs (libcoreclr.so etc.) that
+            # ship alongside the test binaries and mistakes /tests/ for the .NET root,
+            # causing "No frameworks were found."
+            $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
+
             if ($binaryPath) {
                 # MTP native invocation — produces TRX via the TrxReport extension.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
@@ -269,7 +275,7 @@ if ($CIMode) {
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             } else {
                 # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
