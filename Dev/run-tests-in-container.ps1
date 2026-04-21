@@ -37,6 +37,11 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+# PS 6+ automatic variables — define fallbacks for Windows PowerShell 5.1
+if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
+if (-not (Test-Path Variable:\IsMacOS))   { $IsMacOS   = $false }
+if (-not (Test-Path Variable:\IsWindows)) { $IsWindows  = $true  }
+
 function Invoke-Logged {
     Write-Host "+ $($args -join ' ')" -ForegroundColor DarkGray
     & $args[0] $args[1..($args.Count - 1)]
@@ -50,8 +55,8 @@ $CIMode = $PSBoundParameters.ContainsKey("BinDir") -or [bool]$env:TF_BUILD
 $DevRoot  = $PSScriptRoot                        # …\Dev
 $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mnt/approot)
 
-$Dockerfile   = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker" "Dockerfile.test"
-$DockerContext = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker"
+$Dockerfile   = [System.IO.Path]::Combine($DevRoot, "Warewolf.Execution.Lightweight", "engine", "docker", "Dockerfile.test")
+$DockerContext = [System.IO.Path]::Combine($DevRoot, "Warewolf.Execution.Lightweight", "engine", "docker")
 
 if ($CIMode) {
     # Normalise paths supplied from the pipeline (may use forward slashes on Linux agents)
@@ -268,6 +273,11 @@ if ($CIMode) {
             }
 
             Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
+
+            # Remove any existing TRX so MTP doesn't throw "file already exists"
+            $trxFullPath = Join-Path $TestResultsDir $trxName
+            if (Test-Path $trxFullPath) { Remove-Item $trxFullPath -Force }
+
             & docker @dockerRunArgs
 
             if ($LASTEXITCODE -ne 0) {
