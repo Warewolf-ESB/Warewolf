@@ -51,7 +51,7 @@ namespace Dev2.Common
                         CultureInfo.CurrentCulture.ClearCachedData();
                     };
                 }
-                catch (ExternalException)
+                catch (Exception e) when (e is ExternalException or PlatformNotSupportedException)
                 {
                     // Windows Nano Server and other headless environments do not support
                     // the Win32 system events window thread. Culture cache clearing on
