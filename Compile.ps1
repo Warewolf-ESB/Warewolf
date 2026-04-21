@@ -339,6 +339,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				exit 1
 			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"
+			Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+			                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+							                Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+											                Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {
