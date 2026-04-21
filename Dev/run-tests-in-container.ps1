@@ -32,7 +32,13 @@ param(
 
     # CI MODE: directory where .trx result files are written.
     # Defaults to BinDir/../TestResults when -BinDir is used.
-    [string]$TestResultsDir
+    [string]$TestResultsDir,
+
+    # When set, the test container shares the host network stack (--network=host).
+    # Required when the server under test is a host-mapped Docker container
+    # (e.g. the Azure Functions engine listening on host port 7071).
+    # Effective on Linux only; ignored silently on Windows/macOS.
+    [switch]$UseHostNetwork
 )
 
 Set-StrictMode -Version Latest
@@ -245,10 +251,12 @@ if ($CIMode) {
                 & chmod +x $binaryPath
             }
 
+            # --network=host is Linux-only; silently omit it on other platforms.
+            $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
+
             if ($binaryPath) {
                 # MTP native invocation — produces TRX via the TrxReport extension.
-                $dockerRunArgs = @(
-                    'run', '--rm',
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
@@ -261,8 +269,7 @@ if ($CIMode) {
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             } else {
                 # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
-                $dockerRunArgs = @(
-                    'run', '--rm',
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
