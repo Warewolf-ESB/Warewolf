@@ -166,7 +166,7 @@ if (-not $Assemblies) {
     }
 }
 
-if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
+if (-not $CIMode -and -not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
     $excludeInput = try { Read-Host "Assemblies to exclude - comma-separated (blank = none)" } catch { "" }
     if ($excludeInput.Trim()) {
         $ExcludeAssemblies = $excludeInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
@@ -198,8 +198,11 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
+
+    Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
+    Write-Host "CI: filter values    : $($FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } })" -ForegroundColor Cyan
+
     foreach ($filterValue in $FilterValues) {
-        $filterArgs = if ($filterValue) { @("--TestCaseFilter:$filterValue") } else { @() }
         # Sanitise the filter value for use in filenames (replaces non-word chars with _)
         $rawSuffix = if ($filterValue) { ".$($filterValue -replace '[^a-zA-Z0-9_-]', '_')" } else { "" }
 
@@ -217,16 +220,51 @@ if ($CIMode) {
             Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
             $trxName = "$assembly$filterSuffix.trx"
-            $dockerRunArgs = @(
-                'run', '--rm',
-                '-v', "${BinDir}:/tests:ro",
-                '-v', "${TestResultsDir}:/results",
-                'warewolf-test-env',
-                '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
-                '--logger', "trx;LogFileName=$trxName",
-                '--results-directory', '/results'
-            )
-            if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+
+            # These test projects use EnableMSTestRunner=true (Microsoft Testing Platform).
+            # Run the self-contained binary directly rather than via `dotnet test assembly.dll`,
+            # because the vstest host path requires the ELF binary to be executable and may
+            # fail silently.  The MTP binary accepts --report-trx natively.
+            $binaryPath = Join-Path $BinDir $assembly
+            if (-not (Test-Path $binaryPath)) {
+                Write-Warning "MTP binary not found at '$binaryPath'; falling back to dotnet test on DLL."
+                $binaryPath = $null
+            }
+
+            # Ensure the Linux self-contained binary has the execute bit set.
+            # DownloadPipelineArtifact does not preserve file permissions.
+            if ($binaryPath -and ($IsLinux -or $IsMacOS)) {
+                & chmod +x $binaryPath
+            }
+
+            if ($binaryPath) {
+                # MTP native invocation — produces TRX via the TrxReport extension.
+                $dockerRunArgs = @(
+                    'run', '--rm',
+                    '-v', "${BinDir}:/tests:ro",
+                    '-v', "${TestResultsDir}:/results",
+                    'warewolf-test-env',
+                    "/tests/$assembly",
+                    '--report-trx',
+                    '--report-trx-filename', $trxName,
+                    '--results-directory', '/results',
+                    '--no-progress'
+                )
+                if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+            } else {
+                # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
+                $dockerRunArgs = @(
+                    'run', '--rm',
+                    '-v', "${BinDir}:/tests:ro",
+                    '-v', "${TestResultsDir}:/results",
+                    'warewolf-test-env',
+                    '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
+                    '--logger', "trx;LogFileName=$trxName",
+                    '--results-directory', '/results'
+                )
+                if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+            }
+
             Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
             & docker @dockerRunArgs
 
