@@ -1,5 +1,6 @@
 # run-tests-in-container.ps1
-# Runs tests directly inside the vsut_dockerfile container via dotnet vstest.
+# Runs Warewolf unit/integration tests inside a Docker container.
+# Supports Microsoft Testing Platform (MTP) self-contained binaries and vstest DLLs.
 #
 # LOCAL DEV MODE  (no -BinDir): mounts the repo root into a long-lived container
 #   and resolves DLLs from the source build output tree.
