@@ -180,10 +180,12 @@ if (-not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter -and -not $C
 }
 
 # -- Split filter on commas (each value becomes a separate vstest run) --------
-$FilterValues = if ($Filter) {
-    $Filter -split "\s*,\s*" | Where-Object { $_ -ne "" }
+# Use explicit branches so the @($null) is a direct assignment, not a pipeline
+# output — otherwise PowerShell unwraps @($null) to $null and foreach skips it.
+if ($Filter) {
+    $FilterValues = $Filter -split "\s*,\s*" | Where-Object { $_ -ne "" }
 } else {
-    @($null)   # one run with no filter
+    $FilterValues = @($null)   # one run with no filter
 }
 
 # -- Apply exclusions ----------------------------------------------------------
