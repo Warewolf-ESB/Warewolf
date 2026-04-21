@@ -324,76 +324,20 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($BaseOutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            $OutputFolderName = $BaseOutputFolderName
-            $WinOutputFolderName = "$OutputFolderName-Windows"
-            if ($ProjectSpecificOutputs.IsPresent) {
-                $OutputProperty = ""
-            } else {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$WinOutputFolderName"
+            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
 
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName" -Version "17.2.0"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
-
-            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$WinOutputFolderName"
-            }
-            
-            if (!($Disablemaxcpucount.IsPresent)) {
-                $DisablemaxcpucountProperty = "/maxcpucount"
-            }
-            dotnet restore "$PSScriptRoot\$SolutionFile" --nologo -v minimal --force
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host Restore failed for $SolutionFile.
-                exit 1
-            }
-            if ($ProjectSpecificOutputs.IsPresent) {
-                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
-            } else {
-                dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config --no-restore -o "$PSScriptRoot\Bin\$WinOutputFolderName" --nologo -v minimal -p:NoWarn=NETSDK1194 -p:ErrorOnDuplicatePublishOutputFiles=false
-            }
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host Build failed for $SolutionFile. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace.
-                exit 1
-            }
-            if ($OutputFolderName -eq "ServerTests") {
-                $linuxOutputBase = "$PSScriptRoot\Bin\$OutputFolderName-Linux"
-                $slnDir = "$PSScriptRoot\Dev"
-                if (Test-Path $linuxOutputBase) { Remove-Item $linuxOutputBase -Recurse -Force }
-                New-Item -ItemType Directory -Force -Path $linuxOutputBase | Out-Null
-                dotnet restore "$slnDir\ServerTests.sln" -r linux-x64 --nologo -v minimal --force
-                # Detect which projects the restore actually produced a linux-x64 target for
-                $slnProjects = Get-Content "$slnDir\ServerTests.sln" |
-                    Where-Object { $_ -match '\.Tests\.csproj"' } |
-                    ForEach-Object { if ($_ -match '"([^"]+\.Tests\.csproj)"') { $Matches[1] } } |
-                    ForEach-Object { Get-Item "$slnDir\$_" -ErrorAction SilentlyContinue } |
-                    Where-Object { $_ -ne $null }
-                $compatibleProjects = $slnProjects | Where-Object {
-                    $assetsFile = Join-Path $_.DirectoryName "obj\project.assets.json"
-                    if (!(Test-Path $assetsFile)) { return $false }
-                    $targets = (Get-Content $assetsFile -Raw | ConvertFrom-Json).targets.PSObject.Properties.Name
-                    $targets -contains "net8.0/linux-x64"
-                }
-                $slnProjects | Where-Object { $_ -notin $compatibleProjects } |
-                    ForEach-Object { Write-Host "Skipping $($_.BaseName) (not compatible with linux-x64)." }
-                # Build a temporary solution filter containing only the compatible projects
-                $tempSlnf = "$slnDir\ServerTests-linux.slnf"
-                [ordered]@{
-                    solution = [ordered]@{
-                        path     = "ServerTests.sln"
-                        projects = @($compatibleProjects | ForEach-Object { $_.FullName.Substring($slnDir.Length + 1) })
-                    }
-                } | ConvertTo-Json | Set-Content $tempSlnf
-                Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
-                dotnet publish "$tempSlnf" -c $Config -r linux-x64 --self-contained true --no-restore -o "$linuxOutputBase" --nologo -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
-                Remove-Item $tempSlnf -Force
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Host "Linux publish failed for ServerTests."
-                    exit 1
-                }
-                Copy-Item "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test" "$linuxOutputBase\" -Force
-            }
+			dotnet restore "$PSScriptRoot\$SolutionFile" -r linux-x64 --nologo -v minimal --force
+			Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
+			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r linux-x64 --self-contained true --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
+			if ($LASTEXITCODE -ne 0) {
+				Write-Host "dotnet publish failed for $SolutionFile."
+				exit 1
+			}
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {
