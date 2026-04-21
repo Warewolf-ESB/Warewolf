@@ -309,19 +309,19 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $GetSolutionFileInfo = Get-Item "$PSScriptRoot\$SolutionFile"
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
-        $BaseOutputFolderName = $SolutionFileName.TrimEnd($SolutionFileExtension).TrimStart("Dev2.").TrimEnd("2")
-        if ($BaseOutputFolderName -eq "Studi") {
-            $BaseOutputFolderName = "StudioProject"
+        $OutputFolderName = $SolutionFileName.TrimEnd($SolutionFileExtension).TrimStart("Dev2.").TrimEnd("2")
+        if ($OutputFolderName -eq "Studi") {
+            $OutputFolderName = "StudioProject"
         }
-        if ($BaseOutputFolderName -eq "ServerTest") {
-            $BaseOutputFolderName = "ServerTests"
+        if ($OutputFolderName -eq "ServerTest") {
+            $OutputFolderName = "ServerTests"
         }
-        if ($BaseOutputFolderName -eq "Warewolf.COMIPC") {
-            $BaseOutputFolderName = "COMIPCProject"
+        if ($OutputFolderName -eq "Warewolf.COMIPC") {
+            $OutputFolderName = "COMIPCProject"
         }
-        $SolutionParameterIsPresent = @(Get-Variable "$BaseOutputFolderName*")[0].Value.IsPresent
+        $SolutionParameterIsPresent = @(Get-Variable "$OutputFolderName*")[0].Value.IsPresent
         if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
-            if ($BaseOutputFolderName -eq "Webs") {
+            if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
@@ -331,8 +331,8 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
+			Write-Host "Publishing to $OutputFolderName"
 			dotnet restore "$PSScriptRoot\$SolutionFile" -r linux-x64 --nologo -v minimal --force
-			Write-Host "Publishing $($compatibleProjects.Count) linux-x64-compatible projects..."
 			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r linux-x64 --self-contained true --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
 			if ($LASTEXITCODE -ne 0) {
 				Write-Host "dotnet publish failed for $SolutionFile."
