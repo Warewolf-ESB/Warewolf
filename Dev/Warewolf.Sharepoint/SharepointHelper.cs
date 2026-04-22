@@ -504,8 +504,9 @@ namespace Warewolf.Sharepoint
 #endif
                 }
             }
-            catch (Exception)
+            catch (Exception onPremEx)
             {
+                var onPremInner = (onPremEx as System.AggregateException)?.InnerException ?? onPremEx;
                 try
                 {
                     using (var ctx = GetContextWithOnlineCredentials())
@@ -522,7 +523,7 @@ namespace Warewolf.Sharepoint
                 }
                 catch (Exception ex)
                 {
-                    result = "Test Failed: " + ex.Message;
+                    result = $"Test Failed: {ex.Message} | On-premises error: [{onPremInner.GetType().Name}] {onPremInner.Message}";
                 }
             }
             return result;
