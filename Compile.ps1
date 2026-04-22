@@ -338,6 +338,26 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
+			# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on the
+			# build host (Windows). The publish targets linux-x64 --self-contained which
+			# generates 'includedFrameworks'; the Windows AppHost needs 'framework'
+			# (framework-dependent) to load via the system dotnet install instead.
+			$wwRuntimeConfig = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf Server.runtimeconfig.json"
+			if (Test-Path $wwRuntimeConfig) {
+				$rc = Get-Content $wwRuntimeConfig -Raw | ConvertFrom-Json
+				if ($rc.runtimeOptions.PSObject.Properties['includedFrameworks']) {
+					$aspNetFramework = $rc.runtimeOptions.includedFrameworks |
+						Where-Object { $_.name -eq 'Microsoft.AspNetCore.App' } |
+						Select-Object -First 1
+					if (-not $aspNetFramework) {
+						$aspNetFramework = $rc.runtimeOptions.includedFrameworks | Select-Object -First 1
+					}
+					$rc.runtimeOptions.PSObject.Properties.Remove('includedFrameworks')
+					$rc.runtimeOptions | Add-Member -NotePropertyName 'framework' -NotePropertyValue $aspNetFramework -Force
+					$rc | ConvertTo-Json -Depth 10 | Set-Content $wwRuntimeConfig -Encoding UTF8
+					Write-Host "Patched '$wwRuntimeConfig' to framework-dependent mode."
+				}
+			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"
 			Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 			                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse

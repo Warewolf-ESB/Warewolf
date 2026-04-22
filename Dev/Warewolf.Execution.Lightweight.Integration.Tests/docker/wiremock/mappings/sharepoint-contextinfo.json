@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/_api/contextinfo"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/xml; charset=utf-8" },
+    "body": "<d:GetContextWebInformation xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\"><d:FormDigestTimeoutSeconds>1800</d:FormDigestTimeoutSeconds><d:FormDigestValue>0x1FAKE,01 Jan 2024 00:00:00 -0000</d:FormDigestValue><d:WebFullUrl>http://localhost:8080</d:WebFullUrl></d:GetContextWebInformation>"
+  }
+}
