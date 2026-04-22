@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Sharepoint;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -195,6 +196,126 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.IsNotNull(source);
             Assert.AreEqual(spUrl, source.Server, "Server URL must be preserved exactly(no trailing slash or scheme normalisation)");
             Assert.AreEqual("domain\\admin", source.UserName, "UserName with domain prefix must round-trip");
+        }
+
+        /// <summary>
+        /// Verifies that <see cref="SharepointHelper.LoadLists"/> uses the SharePoint REST
+        /// API (<c>GET /_api/web/lists</c>) so that WireMock can intercept the request and
+        /// return a stubbed list of lists.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("LiveIntegration_SharePoint")]
+        public void TC_SharepointHelper_LoadLists_UsesRestApi_ReturnsStubbed()
+        {
+            _wireMock!.Given(
+                Request.Create()
+                    .WithPath("/_api/web/lists")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody("""{"d":{"results":[{"Title":"TestList"},{"Title":"AnotherList"}]}}"""));
+
+            var spUrl = $"http://localhost:{_wireMock.Port}";
+            var helper = new SharepointHelper(spUrl, "", "", false);
+
+            var lists = helper.LoadLists();
+
+            Assert.AreEqual(2, lists.Count, "LoadLists should return the two lists stubbed by WireMock");
+            Assert.IsTrue(lists.Any(l => l.FullName == "TestList"), "TestList must be present");
+            Assert.IsTrue(lists.Any(l => l.FullName == "AnotherList"), "AnotherList must be present");
+
+            var entry = _wireMock.LogEntries.FirstOrDefault(e => e.RequestMessage.Path.Contains("_api/web/lists"));
+            Assert.IsNotNull(entry, "WireMock must have received the GET /_api/web/lists request");
+        }
+
+        /// <summary>
+        /// Verifies that <see cref="SharepointHelper.LoadFieldsForList"/> uses the
+        /// SharePoint REST API so that WireMock can intercept the request and return
+        /// stubbed field definitions, which in turn populates the output-mapping box in
+        /// the Sharepoint Read List Item designer.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("LiveIntegration_SharePoint")]
+        public void TC_SharepointHelper_LoadFieldsForList_UsesRestApi_ReturnsStubbed()
+        {
+            _wireMock!.Given(
+                Request.Create()
+                    .WithPath("/_api/web/lists/getbytitle('TestList')/fields")
+                    .UsingGet())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody("""
+                            {"d":{"results":[
+                              {"Title":"Title","InternalName":"Title","FieldTypeKind":2,"Required":false,"ReadOnlyField":false},
+                              {"Title":"ID","InternalName":"ID","FieldTypeKind":1,"Required":false,"ReadOnlyField":true}
+                            ]}}
+                            """));
+
+            var spUrl = $"http://localhost:{_wireMock.Port}";
+            var helper = new SharepointHelper(spUrl, "", "", false);
+
+            var fields = helper.LoadFieldsForList("TestList", editableFieldsOnly: false);
+
+            Assert.AreEqual(2, fields.Count, "LoadFieldsForList should return 2 fields from WireMock stub");
+            Assert.AreEqual("Title", fields[0].Name);
+            Assert.AreEqual("Title", fields[0].InternalName);
+            Assert.AreEqual("ID", fields[1].Name);
+
+            var entry = _wireMock.LogEntries.FirstOrDefault(
+                e => e.RequestMessage.Path.Contains("_api/web/lists/getbytitle"));
+            Assert.IsNotNull(entry, "WireMock must have received the GET fields request");
+        }
+
+        /// <summary>
+        /// Verifies that <see cref="SharepointHelper.ReadListItems"/> uses the SharePoint
+        /// REST API (<c>POST /_api/web/lists/getbytitle('…')/getitems</c>) so that WireMock
+        /// can intercept the execution and return stubbed list item data.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("LiveIntegration_SharePoint")]
+        public void TC_SharepointHelper_ReadListItems_UsesRestApi_ReturnsStubbed()
+        {
+            _wireMock!.Given(
+                Request.Create()
+                    .WithPath("/_api/contextinfo")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody("""{"d":{"GetContextWebInformation":{"FormDigestValue":"fake-digest"}}}"""));
+
+            _wireMock.Given(
+                Request.Create()
+                    .WithPath("/_api/web/lists/getbytitle('TestList')/getitems")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "application/json")
+                        .WithBody("""
+                            {"d":{"results":[
+                              {"Title":"Row One","ID":1},
+                              {"Title":"Row Two","ID":2}
+                            ]}}
+                            """));
+
+            var spUrl = $"http://localhost:{_wireMock.Port}";
+            var helper = new SharepointHelper(spUrl, "", "", false);
+
+            var items = helper.ReadListItems("TestList", camlXml: null);
+
+            Assert.AreEqual(2, items.Count, "ReadListItems should return the 2 rows stubbed by WireMock");
+            Assert.AreEqual("Row One", items[0]["Title"].ToString());
+            Assert.AreEqual("Row Two", items[1]["Title"].ToString());
+
+            var entry = _wireMock.LogEntries.FirstOrDefault(
+                e => e.RequestMessage.Path.Contains("getitems"));
+            Assert.IsNotNull(entry, "WireMock must have received the POST getitems request");
         }
     }
 }
