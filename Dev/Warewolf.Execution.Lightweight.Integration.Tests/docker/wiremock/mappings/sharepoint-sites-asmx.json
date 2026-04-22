@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/_vti_bin/sites.asmx",
+    "headers": {
+      "SOAPAction": {
+        "contains": "GetUpdatedFormDigestInformation"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "text/xml; charset=utf-8" },
+    "body": "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><soap:Body><GetUpdatedFormDigestInformationResponse xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\"><GetUpdatedFormDigestInformationResult><DigestValue>0x1FAKE,22 Apr 2026 00:00:00 -0000</DigestValue><DigestTimeoutSeconds>1800</DigestTimeoutSeconds><WebFullUrl>http://sharepoint.warewolf.online</WebFullUrl></GetUpdatedFormDigestInformationResult></GetUpdatedFormDigestInformationResponse></soap:Body></soap:Envelope>"
+  }
+}
