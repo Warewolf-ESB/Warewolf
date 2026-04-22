@@ -1,7 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/_api/web/lists/getbytitle\\('Documents'\\)/items.*"
+    "urlPathPattern": "/_api/web/lists/getbytitle\\('Documents'\\)/items.*",
+    "basicAuthCredentials": {
+      "username": "testuser",
+      "password": "testpass"
+    }
   },
   "response": {
     "status": 200,

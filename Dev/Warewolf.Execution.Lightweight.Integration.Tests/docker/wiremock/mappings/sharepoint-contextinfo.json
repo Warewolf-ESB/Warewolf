@@ -1,7 +1,11 @@
 {
   "request": {
     "method": "POST",
-    "urlPath": "/_api/contextinfo"
+    "urlPath": "/_api/contextinfo",
+    "basicAuthCredentials": {
+      "username": "testuser",
+      "password": "testpass"
+    }
   },
   "response": {
     "status": 200,
