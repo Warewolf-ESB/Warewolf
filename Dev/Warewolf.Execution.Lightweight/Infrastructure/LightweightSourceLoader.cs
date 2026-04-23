@@ -61,7 +61,41 @@ namespace Warewolf.Execution.Lightweight
         // even under concurrent requests targeting the same source.
         private readonly ConcurrentDictionary<Guid, Lazy<bool>> _registeredIds = new();
 
+        // Accumulates load-error messages from LoadSourceFile for inclusion in diagnostics.
+        private readonly System.Collections.Concurrent.ConcurrentBag<string> _loadErrors = new();
+
         // ── Public API ────────────────────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Returns a one-line diagnostic snapshot: indexed directories, their sizes, and any
+        /// source-load errors captured since this instance was created.  Designed to be embedded
+        /// directly in exception messages so the information surfaces in structured log sinks
+        /// that capture exception text (e.g., Azure Functions ILogger).
+        /// </summary>
+        public string GetDiagnostics()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"AmbientSourceLoader.Current={(AmbientSourceLoader.Current == null ? "null" : "registered")}; ");
+            sb.Append($"IndexedDirs=[");
+            foreach (var (dir, indexLazy) in _directoryIndices)
+            {
+                try
+                {
+                    if (indexLazy.IsValueCreated)
+                        sb.Append($"{dir}({indexLazy.Value.Count} entries), ");
+                    else
+                        sb.Append($"{dir}(index not yet built), ");
+                }
+                catch (Exception ex)
+                {
+                    sb.Append($"{dir}(INDEX BUILD ERROR: {ex.GetType().Name}: {ex.Message}), ");
+                }
+            }
+            sb.Append("]; ");
+            if (_loadErrors.Count > 0)
+                sb.Append($"LoadErrors=[{string.Join("; ", _loadErrors)}]");
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Registers <paramref name="baseDirectory"/> for on-demand source resolution and
@@ -116,15 +150,18 @@ namespace Warewolf.Execution.Lightweight
                             try
                             {
                                 var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
-                                Dev2Logger.Warn(
-                                    $"[LightweightSourceLoader] Directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]", GlobalConstants.WarewolfInfo);
+                                var notFoundMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]";
+                                _loadErrors.Add(notFoundMsg);
+                                Dev2Logger.Warn($"[LightweightSourceLoader] {notFoundMsg}", GlobalConstants.WarewolfInfo);
                             }
                             catch (Exception ex)
                             {
-                                Dev2Logger.Warn(
-                                    $"[LightweightSourceLoader] Directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}", GlobalConstants.WarewolfInfo);
+                                var buildFailMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}";
+                                _loadErrors.Add(buildFailMsg);
+                                Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
                             }
                         }
+                        _loadErrors.Add($"EnsureSourceLoaded({id}): source NOT found in any indexed directory.");
                         Dev2Logger.Warn(
                             $"[LightweightSourceLoader] EnsureSourceLoaded({id}): source NOT found in any index.", GlobalConstants.WarewolfInfo);
                         return false;
@@ -224,7 +261,7 @@ namespace Warewolf.Execution.Lightweight
             return false;
         }
 
-        private static IResource? LoadSourceFile(string filePath, string sourceType)
+        private IResource? LoadSourceFile(string filePath, string sourceType)
         {
             try
             {
@@ -244,23 +281,26 @@ namespace Warewolf.Execution.Lightweight
                 };
                 if (source?.ResourceID == Guid.Empty)
                 {
-                    Dev2Logger.Warn(
-                        $"[LightweightSourceLoader] LoadSourceFile: source loaded from '{filePath}' but ResourceID is Guid.Empty — skipping.", GlobalConstants.WarewolfInfo);
+                    var msg = $"LoadSourceFile: '{Path.GetFileName(filePath)}' loaded but ResourceID is Guid.Empty — skipping.";
+                    _loadErrors.Add(msg);
+                    Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
                     return null;
                 }
                 return source;
             }
             catch (Exception ex)
             {
-                var sb = new System.Text.StringBuilder();
-                sb.Append($"[LightweightSourceLoader] LoadSourceFile: exception loading '{filePath}' (Type={sourceType}): {ex.GetType().Name}: {ex.Message}");
+                var chain = new System.Text.StringBuilder();
+                chain.Append($"{ex.GetType().Name}: {ex.Message}");
                 var inner = ex.InnerException;
                 while (inner != null)
                 {
-                    sb.Append($" ---> {inner.GetType().Name}: {inner.Message}");
+                    chain.Append($" ---> {inner.GetType().Name}: {inner.Message}");
                     inner = inner.InnerException;
                 }
-                Dev2Logger.Warn(sb.ToString(), GlobalConstants.WarewolfInfo);
+                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {chain}";
+                _loadErrors.Add(msg);
+                Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
                 return null;
             }
         }

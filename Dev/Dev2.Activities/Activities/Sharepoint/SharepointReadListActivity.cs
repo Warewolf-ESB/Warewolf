@@ -137,7 +137,7 @@ namespace Dev2.Activities.Sharepoint
             catch (Exception e)
             {
                 Dev2Logger.Error("SharepointReadListActivity", e, GlobalConstants.WarewolfError);
-                allErrors.AddError(e.Message);
+                allErrors.AddError(FlattenException(e));
             }
             finally
             {
@@ -156,11 +156,30 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
+        static string FlattenException(Exception ex)
+        {
+            var sb = new System.Text.StringBuilder();
+            var current = ex;
+            var depth = 0;
+            while (current != null)
+            {
+                sb.Append(depth == 0 ? string.Empty : " ---> ");
+                sb.Append($"[{current.GetType().Name}] {current.Message}");
+                current = current.InnerException;
+                depth++;
+            }
+            sb.AppendLine();
+            sb.Append("StackTrace: ");
+            sb.AppendLine(ex.StackTrace);
+            return sb.ToString();
+        }
+
         private void ExecuteConcreteAction(IDSFDataObject dataObject, int update)
         {
             var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             if (sharepointReadListTos.Any())
             {
+                Dev2Logger.Info($"SharepointReadListActivity: resolving source {SharepointServerResourceId}", GlobalConstants.WarewolfInfo);
                 var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
                 if (sharepointSource == null
                     && AmbientSourceLoader.Current?.EnsureSourceLoaded(SharepointServerResourceId) == true
@@ -171,18 +190,31 @@ namespace Dev2.Activities.Sharepoint
                 }
                 if (sharepointSource == null)
                 {
+                    Dev2Logger.Warn($"SharepointReadListActivity: source {SharepointServerResourceId} not in catalog, loading from resource contents", GlobalConstants.WarewolfInfo);
                     var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                    if (contents == null || contents.Length == 0)
+                    {
+                        var loaderDiag = AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null (EnsureIndexed was never called)";
+                        throw new InvalidOperationException(
+                            $"SharepointSource {SharepointServerResourceId} could not be loaded: resource contents are empty. " +
+                            $"Loader state: {loaderDiag} " +
+                            $"Ensure the .bite file is present in the Resources directory and the WFAES AES key is configured in Key Vault.");
+                    }
                     sharepointSource = new SharepointSource(contents.ToXElement());
                 }
+                Dev2Logger.Info($"SharepointReadListActivity: source resolved — Server={sharepointSource.Server}, IsOnline={sharepointSource.IsSharepointOnline}, Auth={sharepointSource.AuthenticationType}", GlobalConstants.WarewolfInfo);
                 var env = dataObject.Environment;
                 if (dataObject.IsDebugMode())
                 {
                     AddInputDebug(env, update);
                 }
                 var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                Dev2Logger.Info($"SharepointReadListActivity: loading fields for list '{SharepointList}'", GlobalConstants.WarewolfInfo);
                 var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
+                Dev2Logger.Info($"SharepointReadListActivity: {fields.Count} fields loaded. Reading list items.", GlobalConstants.WarewolfInfo);
                 var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
                 var listItems = sharepointHelper.ReadListItems(SharepointList, camlQuery.ViewXml);
+                Dev2Logger.Info($"SharepointReadListActivity: {listItems.Count} item(s) returned from '{SharepointList}'", GlobalConstants.WarewolfInfo);
                 AddItemList(update, sharepointReadListTos, env, fields, listItems);
                 env.CommitAssign();
                 AddOutputDebug(dataObject, env, update);
