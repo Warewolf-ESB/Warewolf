@@ -32,6 +32,7 @@ using Dev2.TO;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
@@ -203,6 +204,18 @@ namespace Dev2.Activities.Sharepoint
                     sharepointSource = new SharepointSource(contents.ToXElement());
                 }
                 Dev2Logger.Info($"SharepointReadListActivity: source resolved — Server={sharepointSource.Server}, IsOnline={sharepointSource.IsSharepointOnline}, Auth={sharepointSource.AuthenticationType}", GlobalConstants.WarewolfInfo);
+                if (string.IsNullOrWhiteSpace(sharepointSource.Server))
+                {
+                    var hookStatus = DpapiWrapper.AesDecryptHook != null
+                        ? "registered (Key Vault key was loaded)"
+                        : "NOT registered — Key Vault init may have failed, or AZURE_KEYVAULT_NAME is not set";
+                    throw new InvalidOperationException(
+                        $"SharepointSource {SharepointServerResourceId} was loaded but its Server URL is empty. " +
+                        $"DpapiWrapper.AesDecryptHook is {hookStatus}. " +
+                        "The ConnectionString decrypted to a value that contains no 'Server=' key. " +
+                        "If the .bite file in the container was not rebuilt after running Encrypt-Config.ps1, " +
+                        "the Docker image still contains the old DPAPI-encrypted file — rebuild the image with run.ps1 (Y to re-publish).");
+                }
                 var env = dataObject.Environment;
                 if (dataObject.IsDebugMode())
                 {
