@@ -30,7 +30,6 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.TO;
 using Dev2.Utilities;
-using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
@@ -182,21 +181,15 @@ namespace Dev2.Activities.Sharepoint
                 }
                 var sharepointHelper = sharepointSource.CreateSharepointHelper();
                 var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
-                using (var ctx = sharepointHelper.GetContext())
-                {
-                    var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
-                    var list = ctx.Web.Lists.GetByTitle(SharepointList);
-                    var listItems = list.GetItems(camlQuery);
-                    ctx.Load(listItems);
-                    ctx.ExecuteQueryAsync().Wait();
-                    AddItemList(update, sharepointReadListTos, env, fields, listItems);
-                }
+                var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
+                var listItems = sharepointHelper.ReadListItems(SharepointList, camlQuery.ViewXml);
+                AddItemList(update, sharepointReadListTos, env, fields, listItems);
                 env.CommitAssign();
                 AddOutputDebug(dataObject, env, update);
             }
         }
 
-        private void AddItemList(int update, List<SharepointReadListTo> sharepointReadListTos, IExecutionEnvironment env, List<Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo> fields, ListItemCollection listItems)
+        private void AddItemList(int update, List<SharepointReadListTo> sharepointReadListTos, IExecutionEnvironment env, List<Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo> fields, IList<IDictionary<string, object>> listItems)
         {
             var index = 1;
             foreach (var listItem in listItems)
@@ -215,23 +208,19 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        private void TryAddField(int update, IExecutionEnvironment env, int index, ListItem listItem, string variableName, Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo fieldName)
+        private void TryAddField(int update, IExecutionEnvironment env, int index, IDictionary<string, object> listItem, string variableName, Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo fieldName)
         {
-            var listItemValue = "";
+            var listItemValue = string.Empty;
             try
             {
-                var sharepointValue = listItem[fieldName.InternalName];
-
-                if (sharepointValue != null)
+                if (listItem.TryGetValue(fieldName.InternalName, out var sharepointValue) && sharepointValue != null)
                 {
-                    var sharepointVal = GetSharepointValue(sharepointValue);
-                    listItemValue = sharepointVal.ToString();
+                    listItemValue = sharepointValue.ToString();
                 }
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                //Ignore sharepoint exception on retrieval not all fields can be retrieved.
             }
             var correctedVariable = variableName;
             if (DataListUtil.IsValueRecordset(variableName) && DataListUtil.IsStarIndex(variableName))
@@ -239,60 +228,6 @@ namespace Dev2.Activities.Sharepoint
                 correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variableName, index);
             }
             env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue), update);
-        }
-
-#pragma warning disable S1541 // Methods and properties should not be too complex
-        object GetSharepointValue(object sharepointValue)
-#pragma warning restore S1541 // Methods and properties should not be too complex
-        {
-            var type = sharepointValue.GetType();
-            var val = sharepointValue;
-            if (type == typeof(FieldUserValue))
-            {
-                if (sharepointValue is FieldUserValue fieldValue)
-                {
-                    return fieldValue.LookupValue;
-                }
-            }
-            else if (type == typeof(FieldLookupValue))
-            {
-                if (sharepointValue is FieldLookupValue fieldValue)
-                {
-                    return fieldValue.LookupValue;
-                }
-            }
-            else if (type == typeof(FieldUrlValue))
-            {
-                if (sharepointValue is FieldUrlValue fieldValue)
-                {
-                    return fieldValue.Url;
-                }
-            }
-            else if (type == typeof(FieldGeolocationValue))
-            {
-                if (sharepointValue is FieldGeolocationValue fieldValue)
-                {
-                    return string.Join(",", fieldValue.Longitude, fieldValue.Latitude, fieldValue.Altitude, fieldValue.Measure);
-                }
-            }
-            else if (type == typeof(FieldLookupValue[]))
-            {
-                if (sharepointValue is FieldLookupValue[] fieldValue)
-                {
-                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
-                    return returnString;
-                }
-            }
-            else
-            {
-                if (type == typeof(FieldUserValue[]) && sharepointValue is FieldLookupValue[] fieldValue)
-                {
-                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
-                    return returnString;
-                }
-
-            }
-            return val;
         }
 
         void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env, int update)

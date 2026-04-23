@@ -72,9 +72,13 @@ namespace Warewolf.Execution.Lightweight
         internal void EnsureIndexed(string baseDirectory)
         {
             if (string.IsNullOrEmpty(baseDirectory))
+            {
+                Dev2Logger.Warn("[LightweightSourceLoader] EnsureIndexed called with null/empty directory — source indexing skipped.", GlobalConstants.WarewolfInfo);
                 return;
+            }
 
             var key = Path.GetFullPath(baseDirectory);
+            Dev2Logger.Warn($"[LightweightSourceLoader] EnsureIndexed: registering directory '{key}' (exists={Directory.Exists(key)}).", GlobalConstants.WarewolfInfo);
             _directoryIndices.GetOrAdd(key,
                 k => new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
                     () => BuildFileIndex(k),
@@ -98,10 +102,36 @@ namespace Warewolf.Execution.Lightweight
             var lazy = _registeredIds.GetOrAdd(sourceId, id =>
                 new Lazy<bool>(() =>
                 {
+                    // Log which directories are indexed so we can diagnose path issues.
+                    var indexedDirs = string.Join(", ", _directoryIndices.Keys);
+                    Dev2Logger.Warn(
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{indexedDirs}]", GlobalConstants.WarewolfInfo);
+
                     var source = ResolveFromIndex(id);
                     if (source == null)
+                    {
+                        // Log the IDs in each directory index so we can see if the source was indexed.
+                        foreach (var (dir, indexLazy) in _directoryIndices)
+                        {
+                            try
+                            {
+                                var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
+                                Dev2Logger.Warn(
+                                    $"[LightweightSourceLoader] Directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]", GlobalConstants.WarewolfInfo);
+                            }
+                            catch (Exception ex)
+                            {
+                                Dev2Logger.Warn(
+                                    $"[LightweightSourceLoader] Directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}", GlobalConstants.WarewolfInfo);
+                            }
+                        }
+                        Dev2Logger.Warn(
+                            $"[LightweightSourceLoader] EnsureSourceLoaded({id}): source NOT found in any index.", GlobalConstants.WarewolfInfo);
                         return false;
+                    }
                     RegisterSingle(source);
+                    Dev2Logger.Warn(
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): source registered OK (Type={source.GetType().Name}, ResourceID={source.ResourceID}).", GlobalConstants.WarewolfInfo);
                     return true;
                 }, LazyThreadSafetyMode.ExecutionAndPublication));
 
@@ -212,11 +242,26 @@ namespace Warewolf.Execution.Lightweight
                     "elasticsearchsource" => new ElasticsearchSource(xe),
                     _ => null
                 };
-                return source?.ResourceID != Guid.Empty ? source : null;
+                if (source?.ResourceID == Guid.Empty)
+                {
+                    Dev2Logger.Warn(
+                        $"[LightweightSourceLoader] LoadSourceFile: source loaded from '{filePath}' but ResourceID is Guid.Empty — skipping.", GlobalConstants.WarewolfInfo);
+                    return null;
+                }
+                return source;
             }
-            catch
+            catch (Exception ex)
             {
-                return null; // malformed file — skip silently
+                var sb = new System.Text.StringBuilder();
+                sb.Append($"[LightweightSourceLoader] LoadSourceFile: exception loading '{filePath}' (Type={sourceType}): {ex.GetType().Name}: {ex.Message}");
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    sb.Append($" ---> {inner.GetType().Name}: {inner.Message}");
+                    inner = inner.InnerException;
+                }
+                Dev2Logger.Warn(sb.ToString(), GlobalConstants.WarewolfInfo);
+                return null;
             }
         }
 
