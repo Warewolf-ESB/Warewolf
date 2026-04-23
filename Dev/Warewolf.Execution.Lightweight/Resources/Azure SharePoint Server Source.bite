@@ -1,0 +1,9 @@
+
+<Source ID="1ff2fb34-a874-4c55-b025-e6872df45a13" Name="Azure SharePoint Server Source" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmadYgmUt3EGycpqrSCoqDgQAAAACAAAAAAAQZgAAAAEAACAAAABFmUG/fB07d+4HR+f41z6gwBOo4OKudEWw7koREvE1/gAAAAAOgAAAAAIAACAAAAC4S1ANFEIytfpubT7adrUGjO0fqBzeVfcDq7viXQgMb9AAAAByUyIrv7zBINcjsmpCOFz0zluryS3BhemuKy3cJ2dxpoaxL7Kv8ROlP4/ILHEq5k+OqBPMc6aSs/Ij3XODkqi4eDAd0V5k1FRgU0NvcAyH5BVAbOEkLMFWP6wLpP22/pFCl+wxd/MUspcQItoZQO4j5I/vAP1LVL+mMmJAF9AIIdzLxGyVMzS2e4zxcsQ/eON3KRpt7HnUuCkBc59H5taa8zqoQnEfBmcPrXkYJQdiPN5lU1DsR2saknxM66mv15i9YLFw6J6gGy6Kg1a3yghXQAAAALX3gkmDSGDpiAt5CPh51cfEAn3z+jgmgrbkOePfVBHvkGDzG5hBea5U7XAwUtz4Hw7eTznrJwap6A6JopP+hQw=" IsSharepointOnline="false" Type="SharepointSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Azure SharePoint Server Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>SharepointServerSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-22T14:43:14.3075494+01:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1ff2fb34-a874-4c55-b025-e6872df45a13" VersionId="4d0a3f4c-fd86-42f6-9afa-85053bc8a13d" />
+</Source>
