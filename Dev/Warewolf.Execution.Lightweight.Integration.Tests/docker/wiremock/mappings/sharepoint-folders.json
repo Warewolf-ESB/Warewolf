@@ -1,11 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/_api/web/GetFolderByServerRelativeUrl.*",
-    "basicAuthCredentials": {
-      "username": "testuser",
-      "password": "testpass"
-    }
+    "urlPathPattern": "/_api/web/GetFolderByServerRelativeUrl.*"
   },
   "response": {
     "status": 200,

@@ -1,11 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/_api/web/lists",
-    "basicAuthCredentials": {
-      "username": "testuser",
-      "password": "testpass"
-    }
+    "urlPath": "/_api/web/lists"
   },
   "response": {
     "status": 200,

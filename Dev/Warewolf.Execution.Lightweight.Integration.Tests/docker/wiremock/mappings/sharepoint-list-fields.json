@@ -8,10 +8,6 @@
           "$filter": {
             "matches": "Hidden eq false.*"
           }
-        },
-        "basicAuthCredentials": {
-          "username": "testuser",
-          "password": "testpass"
         }
       },
       "response": {
