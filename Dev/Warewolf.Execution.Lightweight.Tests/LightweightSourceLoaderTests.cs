@@ -200,6 +200,34 @@ namespace Warewolf.Execution.Lightweight.Tests
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public void TC_LoadFailure_DiagnosticsContainFoundButFailedMessage()
+        {
+            // Write a .bite file whose root element is valid XML (so TryPeekSourceId indexes it)
+            // but whose content will throw during source construction (malformed inner XML).
+            var dir = Path.Combine(Path.GetTempPath(), $"lwsl-tests-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(dir);
+            _tempDirs.Add(dir);
+
+            var id = Guid.NewGuid();
+            // Valid root attrs so indexing succeeds, but broken child XML so XElement.Load fails.
+            var brokenXml = $"<Source Type=\"SharepointSource\" ResourceID=\"{id}\" ID=\"{id}\" Name=\"Broken\"><<<<NOTXML";
+            File.WriteAllText(Path.Combine(dir, $"{id:N}.bite"), brokenXml);
+
+            var loader = LightweightSourceLoader.Instance;
+            loader.EnsureIndexed(dir);
+
+            var result = ((IOnDemandSourceLoader)loader).EnsureSourceLoaded(id);
+
+            Assert.IsFalse(result, "EnsureSourceLoaded should return false when the file cannot be loaded");
+
+            var diag = ((IOnDemandSourceLoader)loader).GetDiagnostics();
+            StringAssert.Contains(diag, "found in index but failed to load",
+                "Diagnostics should say 'found in index but failed to load', not the misleading 'NOT found' message, " +
+                "when the source IS indexed but LoadSourceFile throws.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public void TC_ConcurrentLoads_SameId_OnlyOneRegistered()
         {
             var (dir, id) = CreateBiteDir("EmailSource", "Host=localhost;Port=25;EnableSsl=false;Timeout=100000;UserName=;Password=");

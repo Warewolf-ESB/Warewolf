@@ -141,29 +141,39 @@ namespace Warewolf.Execution.Lightweight
                     Dev2Logger.Warn(
                         $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{indexedDirs}]", GlobalConstants.WarewolfInfo);
 
+                    // Check whether the ID exists in any index before attempting to load.
+                    // This lets us give a precise "found but failed" vs "not found" diagnostic.
+                    bool foundInIndex = false;
+                    foreach (var (dir, indexLazy) in _directoryIndices)
+                    {
+                        try
+                        {
+                            var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
+                            var indexMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]";
+                            _loadErrors.Add(indexMsg);
+                            Dev2Logger.Warn($"[LightweightSourceLoader] {indexMsg}", GlobalConstants.WarewolfInfo);
+
+                            if (indexLazy.Value.ContainsKey(id))
+                                foundInIndex = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            var buildFailMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}";
+                            _loadErrors.Add(buildFailMsg);
+                            Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
+                        }
+                    }
+
                     var source = ResolveFromIndex(id);
                     if (source == null)
                     {
-                        // Log the IDs in each directory index so we can see if the source was indexed.
-                        foreach (var (dir, indexLazy) in _directoryIndices)
-                        {
-                            try
-                            {
-                                var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
-                                var notFoundMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]";
-                                _loadErrors.Add(notFoundMsg);
-                                Dev2Logger.Warn($"[LightweightSourceLoader] {notFoundMsg}", GlobalConstants.WarewolfInfo);
-                            }
-                            catch (Exception ex)
-                            {
-                                var buildFailMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}";
-                                _loadErrors.Add(buildFailMsg);
-                                Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
-                            }
-                        }
-                        _loadErrors.Add($"EnsureSourceLoaded({id}): source NOT found in any indexed directory.");
-                        Dev2Logger.Warn(
-                            $"[LightweightSourceLoader] EnsureSourceLoaded({id}): source NOT found in any index.", GlobalConstants.WarewolfInfo);
+                        // Distinguish "found in index but failed to load" (e.g. AES key mismatch)
+                        // from "genuinely not present in any index" so the diagnostic is actionable.
+                        var summaryMsg = foundInIndex
+                            ? $"EnsureSourceLoaded({id}): source found in index but failed to load — check LoadSourceFile error above (e.g. AES key mismatch or corrupt .bite file)."
+                            : $"EnsureSourceLoaded({id}): source NOT found in any indexed directory.";
+                        _loadErrors.Add(summaryMsg);
+                        Dev2Logger.Warn($"[LightweightSourceLoader] {summaryMsg}", GlobalConstants.WarewolfInfo);
                         return false;
                     }
                     RegisterSingle(source);
