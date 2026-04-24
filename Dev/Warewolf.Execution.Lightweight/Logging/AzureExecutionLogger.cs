@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using Warewolf.Execution.Lightweight.Models;
+using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
 
 namespace Warewolf.Execution.Lightweight.Logging
 {
@@ -18,85 +19,78 @@ namespace Warewolf.Execution.Lightweight.Logging
     public sealed class AzureExecutionLogger : IExecutionLogger
     {
         readonly ILogger<AzureExecutionLogger> _logger;
+        readonly Dev2LogLevel _minimumLevel;
 
-        public AzureExecutionLogger(ILogger<AzureExecutionLogger> logger)
+        public AzureExecutionLogger(ILogger<AzureExecutionLogger> logger,
+                                    Dev2LogLevel minimumLevel = ExecutionLogLevel.Default)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger       = logger ?? throw new ArgumentNullException(nameof(logger));
+            _minimumLevel = minimumLevel;
         }
+
+        bool ShouldLog(Dev2LogLevel level) => ExecutionLogLevel.ShouldLog(level, _minimumLevel);
 
 
         /// <inheritdoc/>
         public void LogDebug(string message, Guid executionId)
         {
-            _logger.LogDebug(
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
+            _logger.LogDebug("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
         /// <inheritdoc/>
         public void LogDebug(string message, Exception exception, Guid executionId)
         {
-            _logger.LogDebug(
-                exception,
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
+            _logger.LogDebug(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
-
 
         /// <inheritdoc/>
         public void LogInfo(string message, Guid executionId)
         {
-            _logger.LogInformation(
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.INFO)) return;
+            _logger.LogInformation("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
         /// <inheritdoc/>
         public void LogInfo(string message, Exception exception, Guid executionId)
         {
-            _logger.LogInformation(
-                exception,
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.INFO)) return;
+            _logger.LogInformation(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
+        /// <inheritdoc/>
+        public void LogInfo(string message)
+        {
+            if (!ShouldLog(Dev2LogLevel.INFO)) return;
+            _logger.LogInformation("{Message}", message);
+        }
 
         /// <inheritdoc/>
         public void LogWarning(string message, Guid executionId)
         {
-            _logger.LogWarning(
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.WARN)) return;
+            _logger.LogWarning("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
         /// <inheritdoc/>
         public void LogWarning(string message, Exception exception, Guid executionId)
         {
-            _logger.LogWarning(
-                exception,
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.WARN)) return;
+            _logger.LogWarning(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
-
 
         /// <inheritdoc/>
         public void LogError(string message, Guid executionId)
         {
-            _logger.LogError(
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
+            if (!ShouldLog(Dev2LogLevel.ERROR)) return;
+            _logger.LogError("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
         /// <inheritdoc/>
         public void LogError(string activityName, Exception ex, Guid executionId)
         {
+            if (!ShouldLog(Dev2LogLevel.ERROR)) return;
             var detail = new ExecutionErrorDetail
             {
                 ActivityName = activityName,
@@ -105,47 +99,33 @@ namespace Warewolf.Execution.Lightweight.Logging
                 Timestamp    = DateTime.UtcNow,
                 ExecutionId  = executionId
             };
-
             using (_logger.BeginScope(detail.ToLogScope()))
             {
-                _logger.LogError(
-                    ex,
+                _logger.LogError(ex,
                     "[ExecutionId:{ExecutionId}] [{ActivityName}] {Message}",
-                    executionId,
-                    activityName,
-                    detail.Message);
+                    executionId, activityName, detail.Message);
             }
         }
 
+        /// <inheritdoc/>
+        public void LogError(Exception ex, string log)
+        {
+            if (!ShouldLog(Dev2LogLevel.ERROR)) return;
+            _logger.LogError(ex, "{Log}", log);
+        }
 
         /// <inheritdoc/>
         public void LogFatal(string message, Guid executionId)
         {
-            _logger.LogCritical(
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
-        }
-
-        public void LogInfo(string message)
-        {
-            _logger.LogInformation(message);
+            if (!ShouldLog(Dev2LogLevel.FATAL)) return;
+            _logger.LogCritical("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
 
         /// <inheritdoc/>
         public void LogFatal(string message, Exception exception, Guid executionId)
         {
-            _logger.LogCritical(
-                exception,
-                "[ExecutionId:{ExecutionId}] {Message}",
-                executionId,
-                message);
-        }
-
-        public void LogError(Exception ex, string log)
-        {
-            var exception = new Exception(log, ex);
-            this.LogError("", exception, new Guid());
+            if (!ShouldLog(Dev2LogLevel.FATAL)) return;
+            _logger.LogCritical(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
         }
     }
 }

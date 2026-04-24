@@ -29,12 +29,24 @@ namespace Dev2.Common
     {
         static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Optional external sink. When set (e.g. from the Azure Functions host),
+        /// every log call is forwarded to this sink <em>in addition to</em> the
+        /// configured log4net appenders. The sink is responsible for its own
+        /// minimum-level filtering — this class does not apply
+        /// <c>Config.Server.ExecutionLogLevel</c> to external-sink calls.
+        /// </summary>
+        public static ILogger? ExternalSink { get; set; }
+
+
+
         public static void Debug(object message, string executionId)
         {
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage);
+                ExternalSink?.Debug(message, executionId);
             }
         }
 
@@ -44,6 +56,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage, exception);
+                ExternalSink?.Debug(message, exception, executionId);
             }
         }
 
@@ -53,6 +66,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage);
+                ExternalSink?.Error(message, executionId);
             }
         }
 
@@ -62,6 +76,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage, exception);
+                ExternalSink?.Error(message, exception, executionId);
             }
         }
 
@@ -71,6 +86,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage);
+                ExternalSink?.Warn(message, executionId);
             }
         }
 
@@ -80,6 +96,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage, exception);
+                ExternalSink?.Warn(message, exception, executionId);
             }
         }
 
@@ -89,6 +106,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage);
+                ExternalSink?.Fatal(message, executionId);
             }
         }
 
@@ -98,6 +116,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage, exception);
+                ExternalSink?.Fatal(message, exception, executionId);
             }
         }
 
@@ -107,6 +126,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage);
+                ExternalSink?.Info(message, executionId);
             }
         }
 
@@ -116,6 +136,7 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage, exception);
+                ExternalSink?.Info(message, exception, executionId);
             }
         }
 

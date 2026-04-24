@@ -12,9 +12,14 @@ try
     static bool IsEnabled(string key) =>
         string.Equals(Environment.GetEnvironmentVariable(key), "true", StringComparison.OrdinalIgnoreCase);
 
-    var enableConsole = IsEnabled("ENABLECONSOLELOGGING");
-    var enableElastic = IsEnabled("ENABLEELASTICSEARCHLOGGING");
+    var enableConsole   = IsEnabled("ENABLECONSOLELOGGING");
+    var enableElastic   = IsEnabled("ENABLEELASTICSEARCHLOGGING");
     var elasticsearchSettingsPath = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
+
+    // Single log-level gate shared by all sinks.
+    // Set ExecutionLogLevel=Warning  → only Warning / Error / Critical reach any sink.
+    // Set ExecutionLogLevel=Debug    → everything flows through.
+    var minimumLevel = Warewolf.Execution.Lightweight.Logging.ExecutionLogLevel.Read();
 
     var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
         ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
@@ -29,20 +34,36 @@ try
              {
                  var loggers = new List<IExecutionLogger>();
 
+                 // AzureExecutionLogger — MEL sink (App Insights / console)
                  if (enableConsole)
                      loggers.Add(new AzureExecutionLogger(
-                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>()));
+                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
+                         minimumLevel));
 
+                 // ElasticsearchExecutionLogger — Elasticsearch sink
                  if (elasticOptions is not null)
-                     loggers.Add(new ElasticsearchExecutionLogger(elasticOptions));
+                     loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
 
-                 return new CompositeExecutionLogger(loggers);
+                 // Safe default: always include Azure logger if nothing else is active.
+                 if (loggers.Count == 0)
+                     loggers.Add(new AzureExecutionLogger(
+                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
+                         minimumLevel));
+
+                 return loggers.Count == 1
+                     ? loggers[0]
+                     : new CompositeExecutionLogger(loggers);
              });
 
          })
         .Build();
 
     await StartupOrchestrator.RunStartupAsync(host, config);
+
+    // Route every Dev2Logger.X() call to the IExecutionLogger sinks (Azure / Elasticsearch).
+    // Must be set after RunStartupAsync so Config.Server is initialised before any Dev2Logger call.
+    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(
+        host.Services.GetRequiredService<IExecutionLogger>());
 
     var startupLogger = host.Services
         .GetRequiredService<ILoggerFactory>()
