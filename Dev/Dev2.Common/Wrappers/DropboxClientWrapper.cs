@@ -73,7 +73,7 @@ namespace Dev2.Common.Wrappers
             _client = new DropboxClient(
                 oauth2AccessToken: accessToken,
                 oauth2RefreshToken: refreshToken,
-                oauth2AccessTokenExpiresAt: null,
+                //oauth2AccessTokenExpiresAt: null,
                 appKey: appKey,
                 appSecret: null,
                 config: config);
