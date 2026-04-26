@@ -52,7 +52,8 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
-            SetupDropboxClient(SelectedSource.AccessToken);
+            var liveSource = ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource;
+            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
             {

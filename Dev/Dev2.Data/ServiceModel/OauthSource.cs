@@ -60,6 +60,7 @@ namespace Dev2.Data.ServiceModel
    
         public abstract string AppKey { get; set; }
         public abstract string AccessToken { get; set; }
+        public virtual string RefreshToken { get; set; }
         public string ResourcePath { get; set; }
         public abstract bool Equals(IOAuthSource other);
     }
@@ -79,7 +80,8 @@ namespace Dev2.Data.ServiceModel
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "AccessToken", string.Empty },
-                { "AppKey", string.Empty }
+                { "AppKey", string.Empty },
+                { "RefreshToken", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
@@ -87,12 +89,14 @@ namespace Dev2.Data.ServiceModel
             ParseProperties(connectionString, properties);
             AccessToken = properties["AccessToken"];
             AppKey = properties["AppKey"];
+            RefreshToken = properties["RefreshToken"];
             ResourcePath = GetSavePath();
         }
 
         public sealed override string AccessToken { get; set; }
         public sealed override string AppKey { get; set; }
-        
+        public override string RefreshToken { get; set; }
+
         public override bool Equals(IOAuthSource other)
         {
             if (other != null)
@@ -106,7 +110,8 @@ namespace Dev2.Data.ServiceModel
         {
             var connectionString = string.Join(";",
                 $"AccessToken={AccessToken}",
-                $"AppKey={AppKey}"
+                $"AppKey={AppKey}",
+                $"RefreshToken={RefreshToken}"
                 );
             return connectionString;
         }

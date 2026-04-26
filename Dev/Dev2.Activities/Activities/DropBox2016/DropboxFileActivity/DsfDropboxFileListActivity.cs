@@ -93,7 +93,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
-            SetupDropboxClient(SelectedSource.AccessToken);
+            var liveSource = ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource;
+            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey);
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {

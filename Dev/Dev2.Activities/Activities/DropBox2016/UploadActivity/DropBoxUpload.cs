@@ -83,12 +83,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
-            {
-                var root = chain.ChainElements[chain.ChainElements.Count - 1];
-                var publicKey = root.Certificate.GetPublicKeyString();
-
-                return DropboxCertHelper.IsKnownRootCertPublicKey(publicKey);
-            };
+                sslPolicyErrors == System.Net.Security.SslPolicyErrors.None;
         }
     }
 }

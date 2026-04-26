@@ -10,6 +10,7 @@ using Prism.Commands;
 #endif
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -40,6 +41,8 @@ namespace Warewolf.Studio.ViewModels
         readonly string _redirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
         string _path;
         string _accessToken;
+        string _refreshToken;
+        string _codeVerifier;
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
@@ -57,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
             SetupCommands();
         }
 
-        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource,IAsyncWorker asyncWorker)
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource, IAsyncWorker asyncWorker)
             : base("OAuth")
         {
             if (oAuthSource == null)
@@ -74,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _oAuthSource = source;
                 _oAuthSource.ResourcePath = oAuthSource.ResourcePath;
-                
+
                 FromModel(_oAuthSource);
                 SetupHeaderTextFromExisting();
                 SetupCommands();
@@ -88,8 +91,7 @@ namespace Warewolf.Studio.ViewModels
             TestCommand = new DelegateCommand(() =>
             {
                 SetupAuthorizeUri();
-                if (WebBrowser != null &&
-                    AuthUri != null)
+                if (WebBrowser != null && AuthUri != null)
                 {
                     Testing = true;
                     TestPassed = false;
@@ -108,70 +110,107 @@ namespace Warewolf.Studio.ViewModels
             _oauth2State = Guid.NewGuid().ToString("N");
             if (!string.IsNullOrEmpty(AppKey))
             {
-                var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(_redirectUri), _oauth2State);
+                _codeVerifier = DropboxOAuth2Helper.GeneratePKCECodeVerifier();
+                var codeChallenge = DropboxOAuth2Helper.GeneratePKCECodeChallenge(_codeVerifier);
+                var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(
+                    oauthResponseType: OAuthResponseType.Code,
+                    clientId: AppKey,
+                    redirectUri: new Uri(_redirectUri),
+                    state: _oauth2State,
+                    codeChallenge: codeChallenge,
+                    tokenAccessType: TokenAccessType.Offline,
+                    scopeList: new[] { "account_info.read", "files.metadata.read", "files.content.read", "files.content.write" });
+                Dev2Logger.Debug("[OAuthSource] AuthorizeUri = " + authorizeUri, "Warewolf Debug");
                 AuthUri = authorizeUri;
             }
         }
 
         public void GetAuthTokens(Uri uri)
         {
-            if (uri != null)
+            if (uri == null)
             {
-                if (!uri.ToString().StartsWith(_redirectUri, StringComparison.OrdinalIgnoreCase))
-                {
-                    // we need to ignore all navigation that isn't to the redirect uri.
-                    TestMessage = "Waiting for user details...";
-                    return;
-                }
-                Testing = false;
-                if (!uri.ToString().Equals(_redirectUri, StringComparison.OrdinalIgnoreCase))
-                {
-                    OAuth2Response result = null;
-                    try
-                    {
-                        result = DropboxOAuth2Helper.ParseTokenFragment(uri);
-                    }
-                    catch (ArgumentException e)
-                    {
-                        Dev2Logger.Warn(e, "Warewolf Warn");
-                    }
-                    AuthenticationFailed(uri, result);
-                }
+                return;
             }
-        }
 
-        void AuthenticationFailed(Uri uri, OAuth2Response result)
-        {
-            if (result != null)
+            var uriString = uri.ToString();
+            if (!uriString.StartsWith(_redirectUri, StringComparison.OrdinalIgnoreCase))
             {
-                if (result.State != _oauth2State)
+                // Ignore all navigation that isn't to the redirect URI.
+                TestMessage = "Waiting for user details...";
+                return;
+            }
+
+            Testing = false;
+
+            if (uriString.Equals(_redirectUri, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            // PKCE Authorization Code flow — Dropbox appends ?code=...&state=... to the redirect URI.
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            var code = query.Get("code");
+            var returnedState = query.Get("state");
+
+            if (!string.IsNullOrEmpty(code))
+            {
+                if (returnedState != _oauth2State)
                 {
                     TestPassed = false;
                     TestFailed = true;
-                    TestMessage = "Authentication failed";
+                    TestMessage = "Authentication failed: state mismatch";
                     AccessToken = string.Empty;
+                    RefreshToken = string.Empty;
                     HasAuthenticated = false;
+                    return;
                 }
-                else
-                {
-                    TestPassed = true;
-                    TestFailed = false;
-                    TestMessage = "";
-                    AccessToken = result.AccessToken;
-                    HasAuthenticated = true;
-                }
+                ExchangeCodeForToken(code);
             }
             else
             {
+                var errorDescription = query.Get("error_description") ?? query.Get("error") ?? "Authentication failed";
                 TestPassed = false;
                 TestFailed = true;
-                TestMessage = "Authentication failed";
+                TestMessage = errorDescription;
                 AccessToken = string.Empty;
+                RefreshToken = string.Empty;
                 HasAuthenticated = false;
+            }
+        }
 
-                var errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
+        async void ExchangeCodeForToken(string code)
+        {
+            Dev2Logger.Debug("[OAuthSource] ExchangeCodeForToken called, code length = " + code?.Length, "Warewolf Debug");
+            try
+            {
+                var result = await DropboxOAuth2Helper.ProcessCodeFlowAsync(
+                    code: code,
+                    appKey: AppKey,
+                    appSecret: null,
+                    redirectUri: _redirectUri,
+                    client: new HttpClient(),
+                    codeVerifier: _codeVerifier);
 
-                TestMessage = errorDescription ?? "Authentication failed";
+                var tokenPreview = result.AccessToken?.Length > 8 ? result.AccessToken.Substring(0, 8) + "..." : "(empty)";
+                Dev2Logger.Debug($"[OAuthSource] Token exchange OK. AccessToken prefix={tokenPreview} len={result.AccessToken?.Length} RefreshToken={(result.RefreshToken != null ? "present" : "null")} ExpiresAt={result.ExpiresAt}", "Warewolf Debug");
+
+                TestPassed = true;
+                TestFailed = false;
+                TestMessage = $"Authorised (token prefix: {tokenPreview}, refresh: {(result.RefreshToken != null ? "yes" : "no")})";
+                AccessToken = result.AccessToken;
+                RefreshToken = result.RefreshToken;
+                HasAuthenticated = true;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Warn("Dropbox PKCE token exchange failed: " + ex.Message, "Warewolf Warn");
+                Dev2Logger.Warn("Dropbox PKCE token exchange failed (inner): " + ex.InnerException?.Message, "Warewolf Warn");
+                TestPassed = false;
+                TestFailed = true;
+                TestMessage = "Authentication failed: " + (ex.InnerException?.Message ?? ex.Message);
+                AccessToken = string.Empty;
+                RefreshToken = string.Empty;
+                HasAuthenticated = false;
             }
         }
 
@@ -190,6 +229,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _accessToken = value;
                 OnPropertyChanged(() => AccessToken);
+            }
+        }
+
+        public string RefreshToken
+        {
+            get => _refreshToken;
+            set
+            {
+                _refreshToken = value;
+                OnPropertyChanged(() => RefreshToken);
             }
         }
 
@@ -241,7 +290,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testing = value;
-
                 OnPropertyChanged(() => Testing);
                 ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
             }
@@ -271,7 +319,8 @@ namespace Warewolf.Studio.ViewModels
                 return new DropBoxSource
                 {
                     AppKey = AppKey,
-                    AccessToken = AccessToken
+                    AccessToken = AccessToken,
+                    RefreshToken = RefreshToken
                 };
             }
             return null;
@@ -300,17 +349,10 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of SourceBaseImpl<IOAuthSource>
 
-
         public override string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
+            get => _name;
+            set => _name = value;
         }
 
         public override void FromModel(IOAuthSource source)
@@ -319,6 +361,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedOAuthProvider = Types[0];
             AppKey = source.AppKey;
             AccessToken = source.AccessToken;
+            RefreshToken = source.RefreshToken;
             Path = source.ResourcePath;
         }
 
@@ -337,19 +380,11 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion Overrides of SourceBaseImpl<IOAuthSource>
 
-        public ICommand TestCommand
-        {
-            get;
-            set;
-        }
+        public ICommand TestCommand { get; set; }
 
         public ICommand OkCommand { get; set; }
 
-        public ICommand Navigated
-        {
-            get;
-            set;
-        }
+        public ICommand Navigated { get; set; }
 
         public IWebBrowser WebBrowser
         {
@@ -442,14 +477,15 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AppKey = AppKey,
                     AccessToken = AccessToken,
-                    ResourceID = _oAuthSource?.ResourceID ?? Guid.NewGuid()
-                }
-            ;
+                    RefreshToken = RefreshToken,
+                    ResourceID = Guid.NewGuid()
+                };
             }
             else
             {
                 _oAuthSource.AppKey = AppKey;
                 _oAuthSource.AccessToken = AccessToken;
+                _oAuthSource.RefreshToken = RefreshToken;
                 return _oAuthSource;
             }
         }

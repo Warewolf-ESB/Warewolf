@@ -99,7 +99,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropBoxUpload(OverWriteMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
-            SetupDropboxClient(SelectedSource.AccessToken);
+            var liveSource = ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource;
+            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {

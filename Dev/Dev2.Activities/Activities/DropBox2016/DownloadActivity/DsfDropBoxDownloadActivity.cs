@@ -103,7 +103,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             evaluatedValues.TryGetValue("FromPath", out var localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
-            SetupDropboxClient(SelectedSource?.AccessToken);
+            var liveSource = SelectedSource != null
+                ? (ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource)
+                : null;
+            SetupDropboxClient(liveSource?.AccessToken, liveSource?.RefreshToken, liveSource?.AppKey);
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDownloadSuccessResult dropboxSuccessResult)
             {

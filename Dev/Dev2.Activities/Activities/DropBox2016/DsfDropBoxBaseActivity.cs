@@ -32,7 +32,7 @@ namespace Dev2.Activities.DropBox2016
             _dropboxClient.Dispose();
         }
 
-        protected void SetupDropboxClient(string accessToken)
+        protected void SetupDropboxClient(string accessToken, string refreshToken = null, string appKey = null)
         {
             if (_dropboxClient != null)
             {
@@ -43,7 +43,14 @@ namespace Dev2.Activities.DropBox2016
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
-            _dropboxClient = _dropboxClientFactory.New(accessToken, httpClient);
+            if (!string.IsNullOrEmpty(refreshToken) && !string.IsNullOrEmpty(appKey))
+            {
+                _dropboxClient = _dropboxClientFactory.New(accessToken, refreshToken, appKey, httpClient);
+            }
+            else
+            {
+                _dropboxClient = _dropboxClientFactory.New(accessToken, httpClient);
+            }
         }
     }
 }
