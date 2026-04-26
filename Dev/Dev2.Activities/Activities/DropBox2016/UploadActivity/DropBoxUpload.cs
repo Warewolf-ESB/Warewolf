@@ -2,11 +2,11 @@
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Security;
 using Dev2.Common.Interfaces.Wrappers;
 
 
