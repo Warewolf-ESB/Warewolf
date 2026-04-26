@@ -10,6 +10,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -49,8 +50,8 @@ namespace Warewolf.Execution.Lightweight
         // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
         // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
         // immutable within a single function deployment, so caching by normalised file path is
-        // safe.  DynamicActivity is the compiled definition (not an execution instance) — all
-        // runtime state flows through DsfDataObject — so sharing across concurrent requests is
+        // safe.  DynamicActivity is the compiled definition (not an execution instance) ï¿½ all
+        // runtime state flows through DsfDataObject ï¿½ so sharing across concurrent requests is
         // thread-safe.  ActivityParser.Parse() is called fresh each time to get a new IDev2Activity
         // chain; only the expensive XAML compilation step is avoided on cache hits.
         private static readonly ConcurrentDictionary<string, DynamicActivity> _dynamicActivityCache =
@@ -114,7 +115,7 @@ namespace Warewolf.Execution.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
-                // OPENAPI — generate the spec from the DataList only; no XAML load or execution needed.
+                // OPENAPI ï¿½ generate the spec from the DataList only; no XAML load or execution needed.
                 if (request.ReturnType == EmitionTypes.OPENAPI)
                 {
                     var spec = WorkflowOpenApiGenerator.Generate(
@@ -134,7 +135,7 @@ namespace Warewolf.Execution.Lightweight
                     };
                 }
 
-                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path —
+                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path ï¿½
                 // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
                 var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
 
@@ -157,8 +158,9 @@ namespace Warewolf.Execution.Lightweight
 
                 // Index DbSource bite files in the resources directory so they can be loaded
                 // on demand by ServiceExecutionAbstract.GetSource(Guid) without pre-loading them all.
-                LightweightSourceLoader.Instance.EnsureIndexed(
-                    request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty);
+                var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
+                LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
+                _executionLogger.LogWarning($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
@@ -168,14 +170,15 @@ namespace Warewolf.Execution.Lightweight
 
                 using (debugCapturer != null ? DebugDispatcher.UseContextDispatcher(debugCapturer) : null)
                 {
-                    // Emit workflow Start state before activities run — mirrors the Start marker
+                    // Emit workflow Start state before activities run ï¿½ mirrors the Start marker
                     // the full Warewolf server emits from WfExecutionContainer.
                     if (debugCapturer != null)
                         EmitWorkflowStartState(resolvedName, request, startTime);
 
                     ExecuteActivityChain(dataObject, startActivity);
+                    _executionLogger.LogWarning($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
-                    // Emit workflow End state after activities finish — mirrors the End marker
+                    // Emit workflow End state after activities finish ï¿½ mirrors the End marker
                     // the full Warewolf server emits, including the final output variable values.
                     if (debugCapturer != null)
                         EmitWorkflowEndState(dataObject, resolvedName, dataList, startTime);
@@ -205,7 +208,7 @@ namespace Warewolf.Execution.Lightweight
                     var tree = DebugStateTreeBuilder.BuildTree(rawStates);
                     result.DebugStates = tree.Select(MapDebugState).ToList();
 
-                    // Debug mode: the response IS the debug tree, NOT the normal workflow output —
+                    // Debug mode: the response IS the debug tree, NOT the normal workflow output ï¿½
                     // mirrors Executor.DebugFromWebExecutionResponse on the full Warewolf server.
                     result.ContentType = "application/json";
                     result.PayloadWriter = (stream, ct) =>
@@ -390,7 +393,7 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Step 6: Walk the IDev2Activity linked list, calling Execute() on each node.
-        /// This is the stripped-down version of WfExecutionContainer.ExecuteNode —
+        /// This is the stripped-down version of WfExecutionContainer.ExecuteNode ï¿½
         /// no ExecutionManager, no SubscriptionProvider, no StateNotifier overhead.
         /// </summary>
         internal static void ExecuteActivityChain(IDSFDataObject dataObject, IDev2Activity startActivity)
@@ -508,7 +511,7 @@ namespace Warewolf.Execution.Lightweight
                         }
                     }
                 }
-                catch { /* best-effort — payload extraction must not fail the debug response */ }
+                catch { /* best-effort ï¿½ payload extraction must not fail the debug response */ }
             }
 
             DebugDispatcher.Instance.Write(new WriteArgs { debugState = state, isDebugFromWeb = true });
@@ -557,7 +560,7 @@ namespace Warewolf.Execution.Lightweight
         ///
         /// Instead of storing the output as a string on the result, a <see cref="WorkflowExecutionResult.PayloadWriter"/>
         /// delegate is set. The delegate computes the string on demand when the HTTP response is being
-        /// written and streams it via <see cref="WriteStringToStreamAsync"/> — a <see cref="StreamWriter"/>
+        /// written and streams it via <see cref="WriteStringToStreamAsync"/> ï¿½ a <see cref="StreamWriter"/>
         /// encodes chars in 4 KB chunks directly to the response body, avoiding the full
         /// <c>byte[]</c> allocation that <c>HttpResponseData.WriteStringAsync</c> would create.
         /// </summary>
@@ -703,7 +706,7 @@ namespace Warewolf.Execution.Lightweight
                 .ToList())
                 .ToList() ?? new List<List<DebugLineItem>>();
 
-        // UTF-8 without BOM — matches Azure Functions WriteStringAsync encoding behaviour.
+        // UTF-8 without BOM ï¿½ matches Azure Functions WriteStringAsync encoding behaviour.
         static readonly Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
         /// <summary>
@@ -722,7 +725,7 @@ namespace Warewolf.Execution.Lightweight
         }
 
     /// <summary>
-    /// Minimal IExecutionToken implementation — no server-side dependencies.
+    /// Minimal IExecutionToken implementation ï¿½ no server-side dependencies.
     /// </summary>
     internal class LightweightExecutionToken : IExecutionToken
     {

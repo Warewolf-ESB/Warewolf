@@ -296,6 +296,18 @@ namespace Warewolf.Execution.Lightweight
                     Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
                     return null;
                 }
+                if (source is DropBoxSource dropboxSource)
+                {
+                    var tokenPreview = dropboxSource.AccessToken?.Length > 8
+                        ? dropboxSource.AccessToken.Substring(0, 8) + "..."
+                        : "(empty/null)";
+                    var dropboxMsg = $"LoadSourceFile: DropBoxSource '{dropboxSource.ResourceName}' (ID={dropboxSource.ResourceID}) loaded from '{Path.GetFileName(filePath)}'. " +
+                        $"AccessToken={tokenPreview}(len={dropboxSource.AccessToken?.Length}) " +
+                        $"RefreshToken={(string.IsNullOrEmpty(dropboxSource.RefreshToken) ? "MISSING" : "present")} " +
+                        $"AppKey={(string.IsNullOrEmpty(dropboxSource.AppKey) ? "MISSING" : "present")}";
+                    _loadErrors.Add(dropboxMsg);
+                    Dev2Logger.Warn($"[LightweightSourceLoader] {dropboxMsg}", GlobalConstants.WarewolfInfo);
+                }
                 return source;
             }
             catch (Exception ex)
