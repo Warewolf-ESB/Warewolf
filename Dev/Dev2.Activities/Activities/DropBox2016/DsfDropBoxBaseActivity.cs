@@ -22,6 +22,11 @@ namespace Dev2.Activities.DropBox2016
         protected readonly IDropboxClientFactory _dropboxClientFactory;
         protected IDropboxClient _dropboxClient;
 
+        // Track the access token the current client was built with so we can
+        // detect when the OAuth flow has issued new tokens and force a rebuild.
+        private string _clientAccessToken;
+        private DateTime? _clientAccessTokenExpiresAt;
+
         protected DsfDropBoxBaseActivity(IDropboxClientFactory dropboxClientFactory)
         {
             _dropboxClientFactory = dropboxClientFactory;
@@ -29,15 +34,25 @@ namespace Dev2.Activities.DropBox2016
 
         public void Dispose()
         {
-            _dropboxClient.Dispose();
+            _dropboxClient?.Dispose();
         }
 
-        protected void SetupDropboxClient(string accessToken, string refreshToken = null, string appKey = null)
+        protected void SetupDropboxClient(string accessToken, string refreshToken, string appKey, DateTime expiresAt)
         {
-            if (_dropboxClient != null)
+            // Re-use the existing client only when the access token and expiration hasn't changed.
+            // WF4 reuses activity instances across workflow executions, so without
+            // this check the client built with old (expired) tokens would be reused
+            // forever even after a successful OAuth refresh wrote new tokens to disk.
+            if (_dropboxClient != null && _clientAccessToken == accessToken && _clientAccessTokenExpiresAt == expiresAt)
             {
                 return;
             }
+
+            // Dispose the stale client before creating a new one.
+            _dropboxClient?.Dispose();
+            _clientAccessToken = accessToken;
+            _clientAccessTokenExpiresAt = expiresAt;
+
             //var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
             var httpClient = new HttpClient(new System.Net.Http.HttpClientHandler())
             {
@@ -45,7 +60,7 @@ namespace Dev2.Activities.DropBox2016
             };
             if (!string.IsNullOrEmpty(refreshToken) && !string.IsNullOrEmpty(appKey))
             {
-                _dropboxClient = _dropboxClientFactory.New(accessToken, refreshToken, appKey, httpClient);
+                _dropboxClient = _dropboxClientFactory.New(accessToken, refreshToken, appKey, expiresAt, httpClient);
             }
             else
             {

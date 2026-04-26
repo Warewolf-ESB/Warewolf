@@ -61,6 +61,7 @@ namespace Dev2.Data.ServiceModel
         public abstract string AppKey { get; set; }
         public abstract string AccessToken { get; set; }
         public virtual string RefreshToken { get; set; }
+        public DateTime AccessTokenExpiresAt { get; set; }
         public string ResourcePath { get; set; }
         public abstract bool Equals(IOAuthSource other);
     }
@@ -81,7 +82,8 @@ namespace Dev2.Data.ServiceModel
             {
                 { "AccessToken", string.Empty },
                 { "AppKey", string.Empty },
-                { "RefreshToken", string.Empty }
+                { "RefreshToken", string.Empty },
+                { "ExpiresAt", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
@@ -90,6 +92,10 @@ namespace Dev2.Data.ServiceModel
             AccessToken = properties["AccessToken"];
             AppKey = properties["AppKey"];
             RefreshToken = properties["RefreshToken"];
+            if (DateTime.TryParse(properties["ExpiresAt"], out var expiresAt))
+            {
+                AccessTokenExpiresAt = expiresAt;
+            }
             ResourcePath = GetSavePath();
         }
 
@@ -111,7 +117,8 @@ namespace Dev2.Data.ServiceModel
             var connectionString = string.Join(";",
                 $"AccessToken={AccessToken}",
                 $"AppKey={AppKey}",
-                $"RefreshToken={RefreshToken}"
+                $"RefreshToken={RefreshToken}",
+                $"ExpiresAt={AccessTokenExpiresAt:O}"
                 );
             return connectionString;
         }

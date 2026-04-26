@@ -1484,7 +1484,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
             public void TestSetupDropboxClient(string accessToken)
             {
-                SetupDropboxClient(accessToken);
+                SetupDropboxClient(accessToken, null, null, new System.DateTime());
             }
 
             public override IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)

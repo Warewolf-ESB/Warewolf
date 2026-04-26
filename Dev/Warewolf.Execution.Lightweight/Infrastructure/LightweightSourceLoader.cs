@@ -67,6 +67,62 @@ namespace Warewolf.Execution.Lightweight
         // ── Public API ────────────────────────────────────────────────────────────────────────────
 
         /// <summary>
+        /// Removes the cached registration flag for <paramref name="sourceId"/> and
+        /// discards the corresponding object from <see cref="ResourceCatalog"/> so
+        /// that the next call to <see cref="IOnDemandSourceLoader.EnsureSourceLoaded"/>
+        /// re-reads the source from disk.
+        ///
+        /// Called by <c>DropboxOAuthFunction</c> after it writes new OAuth tokens
+        /// back to a <c>.bite</c> file so the next workflow execution picks up the
+        /// refreshed tokens without requiring a server restart.
+        /// </summary>
+        /// <summary>
+        /// Returns the absolute file path recorded in the directory index for
+        /// <paramref name="sourceId"/>, or <c>null</c> when the source has not yet
+        /// been indexed (index not yet built, or ID not present in any indexed directory).
+        ///
+        /// Called by <c>DropboxOAuthFunction</c> so it can write new OAuth tokens to the
+        /// exact file the source loader will re-read from after cache invalidation,
+        /// regardless of what <c>WorkflowsDirectory</c> is set to.
+        /// </summary>
+        internal string? GetIndexedFilePath(Guid sourceId)
+        {
+            foreach (var (_, indexLazy) in _directoryIndices)
+            {
+                try
+                {
+                    if (indexLazy.IsValueCreated &&
+                        indexLazy.Value.TryGetValue(sourceId, out var entry))
+                        return entry.Path;
+                }
+                catch { /* index build error — skip */ }
+            }
+            return null;
+        }
+
+        internal void Invalidate(Guid sourceId)
+        {
+            // Remove the "already loaded" flag so EnsureSourceLoaded will re-run.
+            _registeredIds.TryRemove(sourceId, out _);
+
+            // Remove the stale source object from ResourceCatalog so the loader
+            // can register a fresh copy on the next EnsureSourceLoaded call.
+            if (ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var resources))
+            {
+                lock (resources)
+                {
+                    resources.RemoveAll(r => r.ResourceID == sourceId);
+                }
+            }
+
+            Dev2Logger.Warn(
+                $"[LightweightSourceLoader] Invalidate({sourceId}): cache entry removed. " +
+                "Source will be reloaded from disk on next access.",
+                GlobalConstants.WarewolfInfo);
+        }
+
+        /// <summary>
         /// Returns a one-line diagnostic snapshot: indexed directories, their sizes, and any
         /// source-load errors captured since this instance was created.  Designed to be embedded
         /// directly in exception messages so the information surfaces in structured log sinks
@@ -289,6 +345,10 @@ namespace Warewolf.Execution.Lightweight
                     "elasticsearchsource" => new ElasticsearchSource(xe),
                     _ => null
                 };
+                if (source != null)
+                {
+                    source.FilePath = filePath;
+                }
                 if (source?.ResourceID == Guid.Empty)
                 {
                     var msg = $"LoadSourceFile: '{Path.GetFileName(filePath)}' loaded but ResourceID is Guid.Empty — skipping.";

@@ -57,7 +57,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             var liveSource = ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource;
             var tokenPreview = liveSource.AccessToken?.Length > 8 ? liveSource.AccessToken.Substring(0, 8) + "..." : "(empty/null)";
             Dev2Logger.Warn($"[DropboxDelete] EnsureSourceLoaded={ensured} CatalogHit={liveSource != SelectedSource} AccessToken={tokenPreview}(len={liveSource.AccessToken?.Length}) RefreshToken={(string.IsNullOrEmpty(liveSource.RefreshToken) ? "MISSING" : "present")}", GlobalConstants.WarewolfInfo);
-            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey);
+            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey, liveSource.AccessTokenExpiresAt);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
             {

@@ -707,7 +707,17 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             {
                 return _dropboxClient;
             }
-        }
+
+			public IDropboxClient New(string accessToken, string refreshToken, string appKey, HttpClient httpClient)
+			{
+				throw new NotImplementedException();
+			}
+
+			public IDropboxClient New(string accessToken, string refreshToken, string appKey, System.DateTime accessTokenExpiresAt, HttpClient httpClient)
+			{
+				throw new NotImplementedException();
+			}
+		}
 
         public class DsfDropBoxDeleteActivityMock : DsfDropBoxDeleteActivity
         {
@@ -736,7 +746,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
             public new void SetupDropboxClient(string accessToken)
             {
-                base.SetupDropboxClient(accessToken);
+                base.SetupDropboxClient(accessToken, null, null, new System.DateTime());
             }
 
             public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)

@@ -27,6 +27,7 @@ namespace Dev2.Common.Wrappers
     {
         IDropboxClient New(string accessToken, HttpClient httpClient);
         IDropboxClient New(string accessToken, string refreshToken, string appKey, HttpClient httpClient);
+        IDropboxClient New(string accessToken, string refreshToken, string appKey, DateTime accessTokenExpiresAt, HttpClient httpClient);
         IDropboxClient CreateWithSecret(string accessToken);
     }
 
@@ -39,7 +40,12 @@ namespace Dev2.Common.Wrappers
 
         public IDropboxClient New(string accessToken, string refreshToken, string appKey, HttpClient httpClient)
         {
-            return new DropboxClientWrapper(accessToken, refreshToken, appKey, httpClient);
+            return new DropboxClientWrapper(accessToken, refreshToken, appKey, new DateTime(), httpClient);
+        }
+
+        public IDropboxClient New(string accessToken, string refreshToken, string appKey, DateTime accessTokenExpiresAt, HttpClient httpClient)
+        {
+            return new DropboxClientWrapper(accessToken, refreshToken, appKey, accessTokenExpiresAt, httpClient);
         }
 
         IDropboxClient IDropboxClientFactory.CreateWithSecret(string accessToken)
@@ -67,13 +73,13 @@ namespace Dev2.Common.Wrappers
         /// Creates a client that auto-refreshes using the supplied refresh token + app key.
         /// The SDK will transparently obtain a new access token whenever the current one expires.
         /// </summary>
-        public DropboxClientWrapper(string accessToken, string refreshToken, string appKey, HttpClient httpClient)
+        public DropboxClientWrapper(string accessToken, string refreshToken, string appKey, DateTime accessTokenExpiresAt, HttpClient httpClient)
         {
             var config = new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient };
             _client = new DropboxClient(
                 oauth2AccessToken: accessToken,
                 oauth2RefreshToken: refreshToken,
-                //oauth2AccessTokenExpiresAt: null,
+                oauth2AccessTokenExpiresAt: accessTokenExpiresAt,
                 appKey: appKey,
                 appSecret: null,
                 config: config);

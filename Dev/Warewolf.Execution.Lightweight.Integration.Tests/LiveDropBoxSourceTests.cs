@@ -64,10 +64,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             return dir;
         }
 
-        private Guid WriteBite(string dir, string accessToken = "test-access-token", string appKey = "test-app-key")
+        private Guid WriteBite(string dir, string accessToken = "test-access-token", string appKey = "test-app-key", string expiresAt = "")
         {
             var id = Guid.NewGuid();
-            var connStr = $"AccessToken={accessToken};AppKey={appKey}";
+            var connStr = $"AccessToken={accessToken};AppKey={appKey};ExpiresAt={expiresAt}";
             var xml = $"""<Source Type="DropBoxSource" ResourceID="{id}" ID="{id}" Name="FakeDropBox" ResourceType="DropBoxSource" IsValid="false" ConnectionString="{connStr}" />""";
             File.WriteAllText(Path.Combine(dir, $"{id:N}.bite"), xml);
             return id;
@@ -90,7 +90,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         public void TC_DropBoxSource_PropertiesRoundTrip()
         {
             var dir = TempDir();
-            var id = WriteBite(dir, accessToken: "my-dropbox-token-123", appKey: "my-app-key-456");
+            var expiresAt = DateTime.UtcNow.AddHours(4);
+            var id = WriteBite(dir, accessToken: "my-dropbox-token-123", appKey: "my-app-key-456", expiresAt: expiresAt.ToString("O"));
 
             var loader = LightweightSourceLoader.Instance;
             loader.EnsureIndexed(dir);
@@ -101,6 +102,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.IsNotNull(source, "DropBoxSource must be in ResourceCatalog");
             Assert.AreEqual("my-dropbox-token-123", source.AccessToken, "AccessToken must round-trip correctly");
             Assert.AreEqual("my-app-key-456", source.AppKey, "AppKey must round-trip correctly");
+            Assert.IsNotNull(source.AccessTokenExpiresAt, "ExpiresAt must be populated");
+            Assert.AreEqual(expiresAt.ToString("O"), source.AccessTokenExpiresAt.ToString("O"), "ExpiresAt must round-trip correctly");
         }
 
         /// <summary>
