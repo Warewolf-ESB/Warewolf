@@ -172,7 +172,7 @@ namespace Warewolf.Execution.Lightweight.Functions
 
             // ── Session storage ───────────────────────────────────────────────────
             var state       = Guid.NewGuid().ToString("N");
-            var callbackUri = BuildUri(req.Url, "/oauth/dropbox/callback");
+            var callbackUri = BuildUri(req, "/oauth/dropbox/callback");
 
             PurgeExpiredSessions();
             _sessions[state] = new PkceSession(
@@ -700,11 +700,38 @@ namespace Warewolf.Execution.Lightweight.Functions
         /// segment after the last <c>/</c>-delimited route part with
         /// <paramref name="newPath"/> (which must start with <c>/</c>).
         /// </summary>
-        private static string BuildUri(Uri requestUrl, string newPath)
+        private static string BuildUri(HttpRequestData req, string newPath)
         {
-            var builder = new UriBuilder(requestUrl.Scheme, requestUrl.Host);
-            if (!requestUrl.IsDefaultPort)
-                builder.Port = requestUrl.Port;
+            var requestUrl = req.Url;
+            var scheme = requestUrl.Scheme;
+            if (req.Headers.TryGetValues("X-Forwarded-Proto", out var protoHeaders))
+            {
+                var proto = protoHeaders.FirstOrDefault();
+                if (!string.IsNullOrEmpty(proto))
+                    scheme = proto;
+            }
+
+            var host = requestUrl.Host;
+            if (req.Headers.TryGetValues("X-Forwarded-Host", out var hostHeaders))
+            {
+                var fwHost = hostHeaders.FirstOrDefault();
+                if (!string.IsNullOrEmpty(fwHost))
+                    host = fwHost;
+            }
+
+            var builder = new UriBuilder(scheme, host);
+            
+            // Retain original port only if not overridden by reverse proxy
+            if (!req.Headers.Contains("X-Forwarded-Proto") && !req.Headers.Contains("X-Forwarded-Host"))
+            {
+                if (!requestUrl.IsDefaultPort)
+                    builder.Port = requestUrl.Port;
+            }
+            else
+            {
+                builder.Port = -1; // Use default port for the scheme
+            }
+
             builder.Path  = newPath;
             builder.Query = string.Empty;
             return builder.Uri.ToString().TrimEnd('/');
