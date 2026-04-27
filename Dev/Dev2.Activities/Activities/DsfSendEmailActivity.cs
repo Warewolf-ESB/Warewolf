@@ -414,13 +414,8 @@ namespace Dev2.Activities
             AddToAddresses(toValue, mailMessage);
             try
             {
-                // Always use source account unless specifically overridden by From Account
-                if(!string.IsNullOrEmpty(fromAccountValue))
-                {
-                    runtimeSource.UserName = fromAccountValue;
-                    runtimeSource.Password = passwordValue;
-                }
-                mailMessage.From = new MailAddress(runtimeSource.UserName);
+                var fromAddress = !string.IsNullOrEmpty(fromAccountValue) ? fromAccountValue : runtimeSource.UserName;
+                mailMessage.From = new MailAddress(fromAddress);
             }
             catch(Exception)
             {
@@ -440,6 +435,7 @@ namespace Dev2.Activities
             {
                 AddAttachmentsValue(attachmentsValue, mailMessage);
             }
+            Dev2Logger.Debug($"Sending email via {runtimeSource.Host}:{runtimeSource.Port} SSL={runtimeSource.EnableSsl} From={mailMessage.From.Address} To={toValue}", GlobalConstants.WarewolfInfo);
             string result;
             try
             {
@@ -448,8 +444,11 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                var innerMessage = e.InnerException?.Message;
+                var detail = innerMessage != null ? $"{e.Message} - {innerMessage}" : e.Message;
+                Dev2Logger.Error($"Email send failed Host={runtimeSource.Host} Port={runtimeSource.Port} SSL={runtimeSource.EnableSsl} User={runtimeSource.UserName}", e, GlobalConstants.WarewolfError);
                 result = "Failure";
-                errors.AddError(e.Message);
+                errors.AddError(detail);
             }
 
             return result;

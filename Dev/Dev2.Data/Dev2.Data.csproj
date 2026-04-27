@@ -364,6 +364,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>
+	  <PackageReference Include="MailKit" Version="4.16.0" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
