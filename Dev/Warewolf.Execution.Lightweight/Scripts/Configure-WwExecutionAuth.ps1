@@ -48,7 +48,7 @@ Set-StrictMode -Version Latest
 # CONFIGURATION  -- edit these before running
 # ──────────────────────────────────────────────────────────────────────────────
 
-$SubscriptionId       = '<your-subscription-id>'
+$SubscriptionId       = 'dd0bc517-5cc7-4b56-bd6a-68e6140db7b3'
 $TenantId             = 'ca0cc53b-9af4-4067-bcdf-be9c648450d1'
 $ResourceGroupName    = 'DEV2'
 $FunctionAppName      = 'wwexecution2'                         # configurable name
@@ -480,23 +480,62 @@ if ($RotateSecret -or -not $activeCreds) {
 
 Write-Host "==> Configuring Easy Auth" -ForegroundColor Cyan
 
-$authJson = Get-Content $AuthSettingsTemplatePath -Raw
-$authJson = $authJson `
-    -replace '<TENANT_ID>', $TenantId `
-    -replace '<CLIENT_ID>', $ClientId
+# Pre-flight: every value must be non-empty.  The previous template-substitute
+# approach silently stored "" / "api://" when a variable was unset; using the
+# dedicated `az webapp auth ...` commands with explicit args removes that
+# foot-gun entirely.
+foreach ($pair in @(
+    @{ Name = 'FunctionAppName';    Value = $FunctionAppName    },
+    @{ Name = 'ResourceGroupName';  Value = $ResourceGroupName  },
+    @{ Name = 'TenantId';           Value = $TenantId           },
+    @{ Name = 'ClientId';           Value = $ClientId           })) {
+    if ([string]::IsNullOrWhiteSpace($pair.Value)) {
+        throw "Easy Auth precondition failed: `$$($pair.Name) is empty."
+    }
+}
 
-$tempAuth = [System.IO.Path]::GetTempFileName()
-Set-Content -Path $tempAuth -Value $authJson -Encoding UTF8
-
-$authUrl = "https://management.azure.com/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.Web/sites/$FunctionAppName/config/authsettingsV2?api-version=2022-03-01"
-
+# 7a. Configure the Microsoft (Entra) identity provider.  This writes the
+#     identityProviders.azureActiveDirectory subtree atomically.
 Invoke-AzCli @(
-    'rest','--method','PUT',
-    '--url',$authUrl,
-    '--headers','Content-Type=application/json',
-    '--body',"@$tempAuth"
+    'webapp','auth','microsoft','update',
+    '--name',                       $FunctionAppName,
+    '--resource-group',             $ResourceGroupName,
+    '--client-id',                  $ClientId,
+    '--client-secret-setting-name', 'MICROSOFT_PROVIDER_AUTHENTICATION_SECRET',
+    '--issuer',                     "https://login.microsoftonline.com/$TenantId/v2.0",
+    '--allowed-token-audiences',    "api://$ClientId",
+    '--yes'
 ) | Out-Null
-Remove-Item $tempAuth -Force
+
+# 7b. Enable the Easy Auth platform itself and set the global behaviour
+#     (AllowAnonymous keeps /Public/* accessible; our middleware enforces 401
+#     on /Secure/* so we don't want the platform to redirect on us).
+Invoke-AzCli @(
+    'webapp','auth','update',
+    '--name',           $FunctionAppName,
+    '--resource-group', $ResourceGroupName,
+    '--enabled',        'true',
+    '--action',         'AllowAnonymous',
+    '--token-store',    'true'
+) | Out-Null
+
+# 7c. Read back and verify - fail loudly if Microsoft Graph stored anything
+#     other than the exact clientId we just sent.
+$verify = Invoke-AzCli @(
+    'webapp','auth','show',
+    '--name',           $FunctionAppName,
+    '--resource-group', $ResourceGroupName
+) | ConvertFrom-AzJson
+
+$storedClientId = $verify.identityProviders.azureActiveDirectory.registration.clientId
+$storedEnabled  = $verify.platform.enabled
+
+if ($storedEnabled -ne $true -or $storedClientId -ne $ClientId) {
+    throw ("Easy Auth verification failed. enabled='{0}' storedClientId='{1}' expected='{2}'. " +
+           "Inspect: az webapp auth show -n {3} -g {4}") `
+        -f $storedEnabled, $storedClientId, $ClientId, $FunctionAppName, $ResourceGroupName
+}
+Write-Host "    Easy Auth verified: enabled=$storedEnabled clientId=$storedClientId" -ForegroundColor Green
 
 # ──────────────────────────────────────────────────────────────────────────────
 # 8. Function App settings
