@@ -5,6 +5,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Exchange;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -101,6 +102,62 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.AreEqual(ewsUrl, source.AutoDiscoverUrl, "AutoDiscoverUrl must round-trip correctly");
             Assert.AreEqual("ewsuser", source.UserName, "UserName must round-trip correctly");
             Assert.AreEqual(5000, source.Timeout, "Timeout must round-trip correctly");
+        }
+
+        /// <summary>
+        /// End-to-end: loads ExchangeSource from .bite → Send() issues a SOAP CreateItem
+        /// request to the WireMock-stubbed EWS endpoint → WireMock confirms receipt.
+        ///
+        /// AutoDiscoverUrl is set directly to /EWS/Exchange.asmx so ExchangeEmailSender
+        /// skips autodiscover and POSTs SOAP straight to WireMock (see ExchangeEmailSender.Initialize).
+        /// </summary>
+        [TestMethod]
+        [TestCategory("LiveIntegration_Exchange")]
+        public void TC_ExchangeSource_SendEmail_ViaMockedEWS()
+        {
+            const string createItemResponse =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                  "<s:Body>" +
+                    "<m:CreateItemResponse xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\"" +
+                                        " xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">" +
+                      "<m:ResponseMessages>" +
+                        "<m:CreateItemResponseMessage ResponseClass=\"Success\">" +
+                          "<m:ResponseCode>NoError</m:ResponseCode>" +
+                          "<m:Items/>" +
+                        "</m:CreateItemResponseMessage>" +
+                      "</m:ResponseMessages>" +
+                    "</m:CreateItemResponse>" +
+                  "</s:Body>" +
+                "</s:Envelope>";
+
+            _wireMock!.Given(
+                Request.Create()
+                    .WithPath("/EWS/Exchange.asmx")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(200)
+                        .WithHeader("Content-Type", "text/xml; charset=utf-8")
+                        .WithBody(createItemResponse));
+
+            var ewsUrl = $"http://localhost:{_wireMock.Port}/EWS/Exchange.asmx";
+            var dir = TempDir();
+            var id = WriteBite(dir, ewsUrl);
+
+            LightweightSourceLoader.Instance.EnsureIndexed(dir);
+            IOnDemandSourceLoader iLoader = LightweightSourceLoader.Instance;
+            Assert.IsTrue(iLoader.EnsureSourceLoaded(id));
+
+            var source = GetFromCatalog<ExchangeSource>(id)!;
+            var sender = new ExchangeEmailSender(source);
+            var message = new ExchangeTestMessage { Subject = "Test Subject", Body = "Test Body" };
+            message.Tos.Add("to@test.local");
+
+            source.Send(sender, message);
+
+            var received = _wireMock.LogEntries.Any(e => e.RequestMessage.Path == "/EWS/Exchange.asmx");
+            Assert.IsTrue(received, "WireMock should have received a SOAP POST to /EWS/Exchange.asmx");
         }
 
         /// <summary>
