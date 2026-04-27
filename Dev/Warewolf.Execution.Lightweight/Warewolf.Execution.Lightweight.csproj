@@ -112,11 +112,6 @@
   <!-- ========================================================= -->
   
   <ItemGroup>
-    <Content Include="..\Resources - Release\Resources\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-
     <!--
       Local Resources folder: place workflow .bite / .xml files here for
       project-specific resources (e.g. the login override workflow).
