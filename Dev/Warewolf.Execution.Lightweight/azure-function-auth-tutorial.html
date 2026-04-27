@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Function Auth Tutorial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --azure: #0078d4;
+    --azure-light: #2196f3;
+    --cyan: #00d4ff;
+    --green: #00e5a0;
+    --orange: #ff8c42;
+    --red: #ff4757;
+    --text: #e8edf5;
+    --text-muted: #7a8fa8;
+    --text-dim: #4a5a72;
+    --accent: #00d4ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-logo .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--azure), var(--cyan));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 6px 12px;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 8px 8px 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+
+  .nav-item.active {
+    background: rgba(0,212,255,0.08);
+    color: var(--cyan);
+    border-color: rgba(0,212,255,0.2);
+  }
+
+  .nav-item .step-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .step-num {
+    background: var(--cyan);
+    color: var(--bg);
+  }
+
+  .nav-item.done .step-num {
+    background: var(--green);
+    color: var(--bg);
+  }
+
+  /* Main content */
+  .main {
+    margin-left: 260px;
+    padding: 40px 48px;
+    max-width: 960px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Page header */
+  .page-header {
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cyan);
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.25);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .page-header h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .page-header .desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 700px;
+  }
+
+  /* Architecture diagram */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: 600px;
+    flex-wrap: nowrap;
+  }
+
+  .arch-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .arch-box {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .arch-box.browser { background: rgba(255,140,66,0.1); border-color: rgba(255,140,66,0.4); color: var(--orange); }
+  .arch-box.easyauth { background: rgba(0,120,212,0.1); border-color: rgba(0,120,212,0.4); color: var(--azure-light); }
+  .arch-box.entra { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); color: var(--cyan); }
+  .arch-box.func { background: rgba(0,229,160,0.1); border-color: rgba(0,229,160,0.3); color: var(--green); }
+  .arch-box.public { background: rgba(255,71,87,0.08); border-color: rgba(255,71,87,0.3); color: var(--red); }
+  .arch-box.secure { background: rgba(0,229,160,0.08); border-color: rgba(0,229,160,0.3); color: var(--green); }
+
+  .arch-label { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
+  .arch-arrow {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+  }
+
+  .arch-arrow-line {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-dim);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .arch-arrow-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  /* Section cards */
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 3px;
+    height: 20px;
+    background: var(--cyan);
+    border-radius: 2px;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .step-header:hover { background: var(--surface2); }
+
+  .step-num-lg {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(0,212,255,0.15);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--cyan);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .step-chevron {
+    color: var(--text-dim);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .step.open .step-chevron { transform: rotate(180deg); }
+
+  .step-body {
+    display: none;
+    padding: 0 20px 20px 62px;
+    border-top: 1px solid var(--border);
+  }
+
+  .step.open .step-body { display: block; }
+
+  .step-body p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 14px 0 10px;
+  }
+
+  /* Code blocks */
+  .code-block {
+    background: #070c16;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .code-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .code-copy:hover { color: var(--cyan); border-color: var(--cyan); }
+
+  .code-content {
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #c9d8f0;
+    tab-size: 2;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #7c9fff; }
+  .str { color: #98c379; }
+  .num { color: #d19a66; }
+  .cm { color: #5c7293; font-style: italic; }
+  .fn { color: #61dafb; }
+  .var { color: #e5c07b; }
+  .op { color: #56b6c2; }
+  .type { color: #e06c75; }
+  .attr { color: #d19a66; }
+  .val { color: #98c379; }
+  .flag { color: var(--cyan); }
+  .az { color: var(--azure-light); }
+
+  /* Info/warning boxes */
+  .callout {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { flex-shrink: 0; font-size: 15px; }
+  .callout.info { background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.2); color: #a8d8f0; }
+  .callout.warn { background: rgba(255,140,66,0.07); border: 1px solid rgba(255,140,66,0.25); color: #f0c8a0; }
+  .callout.success { background: rgba(0,229,160,0.07); border: 1px solid rgba(0,229,160,0.2); color: #a0f0d4; }
+  .callout.danger { background: rgba(255,71,87,0.07); border: 1px solid rgba(255,71,87,0.2); color: #f0a0a8; }
+
+  /* Role table */
+  .role-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+
+  .role-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .role-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .role-table tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge.admin { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid rgba(255,71,87,0.3); }
+  .badge.user { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.25); }
+  .badge.viewer { background: rgba(0,229,160,0.1); color: var(--green); border: 1px solid rgba(0,229,160,0.25); }
+  .badge.public { background: rgba(255,140,66,0.1); color: var(--orange); border: 1px solid rgba(255,140,66,0.25); }
+
+  /* Navigation buttons */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--azure), var(--cyan));
+    color: #000;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+  /* Overview cards */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .ov-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    transition: border-color 0.15s;
+    cursor: pointer;
+  }
+
+  .ov-card:hover { border-color: rgba(0,212,255,0.3); }
+
+  .ov-card-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .ov-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .ov-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .ov-card .ov-tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  /* URL examples */
+  .url-example {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #070c16;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .url-method {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .url-method.get { background: rgba(0,229,160,0.15); color: var(--green); }
+  .url-method.pub { background: rgba(255,140,66,0.15); color: var(--orange); }
+  .url-method.sec { background: rgba(0,120,212,0.2); color: var(--azure-light); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 200;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--azure), var(--cyan));
+    transition: width 0.3s ease;
+  }
+
+  /* Inline code */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: rgba(0,212,255,0.08);
+    color: var(--cyan);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,212,255,0.15);
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { width: 200px; }
+    .main { margin-left: 200px; padding: 24px; }
+    .overview-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">⚡</div>
+    <h1>Azure Function Auth</h1>
+    <p>wwengine.azurewebsites.net</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Tutorial Steps</div>
+
+    <div class="nav-item active" onclick="showPage(0)" id="nav-0">
+      <div class="step-num">0</div>
+      Overview & Architecture
+    </div>
+    <div class="nav-item" onclick="showPage(1)" id="nav-1">
+      <div class="step-num">1</div>
+      Easy Auth + Entra Setup
+    </div>
+    <div class="nav-item" onclick="showPage(2)" id="nav-2">
+      <div class="step-num">2</div>
+      Roles & Permissions
+    </div>
+    <div class="nav-item" onclick="showPage(3)" id="nav-3">
+      <div class="step-num">3</div>
+      PowerShell / AZ CLI
+    </div>
+    <div class="nav-item" onclick="showPage(4)" id="nav-4">
+      <div class="step-num">4</div>
+      C# Function Code
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- PAGE 0: Overview -->
+  <div class="page active" id="page-0">
+    <div class="page-header">
+      <div class="step-badge">📋 Overview</div>
+      <h2>Workflow Engine Auth Tutorial</h2>
+      <p class="desc">
+        A complete walkthrough for securing your Azure Function workflow engine using Easy Auth and Azure Entra ID.
+        Covers authentication, role-based authorization, infrastructure setup, and C# implementation.
+      </p>
+    </div>
+
+    <div class="arch-diagram">
+      <div style="font-size:12px; color:var(--text-dim); margin-bottom:16px; font-family:'JetBrains Mono',monospace;">
+        ARCHITECTURE FLOW
+      </div>
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="arch-box browser">🌐 Browser</div>
+          <div class="arch-label">Client</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-line">——▶</div>
+          <div class="arch-arrow-label">HTTP Request</div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-box easyauth">🔐 Easy Auth</div>
+          <div class="arch-label">Azure Function</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-line">⇄</div>
+          <div class="arch-arrow-label">Validate Token</div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-box entra">🏢 Entra ID</div>
+          <div class="arch-label">Identity Provider</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-line">——▶</div>
+          <div class="arch-arrow-label">JWT + Roles</div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-box func">⚡ Function</div>
+          <div class="arch-label">Business Logic</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-line">——▶</div>
+          <div class="arch-arrow-label">Route</div>
+        </div>
+        <div class="arch-node" style="gap:6px">
+          <div class="arch-box public">📂 /public</div>
+          <div class="arch-box secure">🔒 /secure</div>
+          <div class="arch-label">Endpoints</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div class="section-title">Endpoint Examples</div>
+      <div class="url-example">
+        <span class="url-method pub">PUBLIC</span>
+        <span style="color:var(--text-muted);">http://wwengine.azurewebsites.net</span><span style="color:var(--orange);">/public/orders.json</span><span style="color:var(--text-dim);">?id=100</span>
+      </div>
+      <div class="url-example">
+        <span class="url-method sec">SECURE</span>
+        <span style="color:var(--text-muted);">http://wwengine.azurewebsites.net</span><span style="color:var(--cyan);">/secure/orders.json</span><span style="color:var(--text-dim);">?id=100</span>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card" onclick="showPage(1)">
+        <div class="ov-card-icon">🔐</div>
+        <h3>Step 1 — Easy Auth + Entra</h3>
+        <p>Configure Azure App Service Authentication (Easy Auth) with Microsoft Entra ID as the identity provider.</p>
+        <span class="ov-tag">Portal + CLI</span>
+      </div>
+      <div class="ov-card" onclick="showPage(2)">
+        <div class="ov-card-icon">🎭</div>
+        <h3>Step 2 — Roles & Authorization</h3>
+        <p>Define app roles in Entra, assign users, and enforce role checks inside your Azure Function code.</p>
+        <span class="ov-tag">RBAC</span>
+      </div>
+      <div class="ov-card" onclick="showPage(3)">
+        <div class="ov-card-icon">⚙️</div>
+        <h3>Step 3 — PowerShell / AZ CLI</h3>
+        <p>Automated infrastructure setup script: resource group, function app, app registration, role assignments.</p>
+        <span class="ov-tag">PowerShell</span>
+      </div>
+      <div class="ov-card" onclick="showPage(4)">
+        <div class="ov-card-icon">💻</div>
+        <h3>Step 4 — C# Function Code</h3>
+        <p>Complete C# implementation with route handling, token validation, role checking, and middleware.</p>
+        <span class="ov-tag">C# / .NET 8</span>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">ℹ️</span>
+      <span>This tutorial targets <strong>Azure Functions Consumption Plan (Free Tier)</strong>. Easy Auth is included at no extra cost.</span>
+    </div>
+
+    <div class="nav-buttons">
+      <div></div>
+      <button class="btn btn-primary" onclick="showPage(1)">Start Tutorial →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 1: Easy Auth + Entra -->
+  <div class="page" id="page-1">
+    <div class="page-header">
+      <div class="step-badge">STEP 01</div>
+      <h2>Easy Auth + Entra ID Setup</h2>
+      <p class="desc">Configure Azure App Service Authentication (Easy Auth) to protect your Function App using Microsoft Entra ID (formerly Azure AD) as the identity provider.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">1.1 — Register App in Entra ID</div>
+      <div class="steps">
+
+        <div class="step open">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">1</div>
+            <div class="step-title">Navigate to Microsoft Entra ID → App Registrations</div>
+            <span class="step-chevron">▲</span>
+          </div>
+          <div class="step-body">
+            <p>Go to <strong>portal.azure.com</strong> → Microsoft Entra ID → App Registrations → New Registration.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Portal Fields</span></div>
+              <div class="code-content"><span class="cm"># Fill in these fields:</span>
+Name:               <span class="str">wwengine-auth</span>
+Supported account: <span class="str">Single tenant</span>
+Redirect URI:      <span class="str">Web</span> → <span class="val">https://wwengine.azurewebsites.net/.auth/login/aad/callback</span></div>
+            </div>
+            <div class="callout info">
+              <span class="callout-icon">ℹ️</span>
+              <span>Save the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong> — you'll need them in the next steps.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">2</div>
+            <div class="step-title">Create a Client Secret</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Under your app registration → <strong>Certificates & secrets</strong> → <strong>New client secret</strong>.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Settings</span></div>
+              <div class="code-content">Description: <span class="str">wwengine-secret</span>
+Expires:     <span class="str">24 months</span>  <span class="cm"># or as per your policy</span></div>
+            </div>
+            <div class="callout warn">
+              <span class="callout-icon">⚠️</span>
+              <span>Copy the secret <strong>Value</strong> immediately — it's only shown once. Store it in Azure Key Vault.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">3</div>
+            <div class="step-title">Expose an API — Add Application ID URI</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Go to <strong>Expose an API</strong> → Set Application ID URI → Add a Scope for your app.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Scope Configuration</span></div>
+              <div class="code-content">Application ID URI: <span class="str">api://&lt;your-client-id&gt;</span>
+Scope name:        <span class="str">user_impersonation</span>
+Who can consent:   <span class="str">Admins and users</span>
+Admin display:     <span class="str">Access wwengine</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">1.2 — Enable Easy Auth on Function App</div>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">4</div>
+            <div class="step-title">Enable Authentication in Azure Portal</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Navigate to your <strong>Function App</strong> → <strong>Authentication</strong> (in the left menu) → <strong>Add identity provider</strong>.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Easy Auth Configuration</span></div>
+              <div class="code-content">Identity Provider:      <span class="str">Microsoft</span>
+App registration type:  <span class="str">Pick an existing app</span>
+App (client) ID:        <span class="str">&lt;your-client-id&gt;</span>
+Client secret:          <span class="str">&lt;your-client-secret&gt;</span>
+Issuer URL:             <span class="str">https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0</span>
+
+<span class="cm"># Unauthenticated requests</span>
+Action:                 <span class="str">Return HTTP 401 (recommended for APIs)</span>
+Token store:            <span class="str">ON</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">5</div>
+            <div class="step-title">Configure authsettingsV2 — Allow Public Routes</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Easy Auth applies globally by default. We need to bypass it for <code>/public/*</code> routes. Deploy an <code>authsettings.json</code> in your function app's wwwroot, or use the REST API to configure exclusions.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">authsettingsV2.json</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+              <div class="code-content">{
+  <span class="attr">"platform"</span>: {
+    <span class="attr">"enabled"</span>: <span class="kw">true</span>
+  },
+  <span class="attr">"globalValidation"</span>: {
+    <span class="attr">"requireAuthentication"</span>: <span class="kw">false</span>,
+    <span class="attr">"unauthenticatedClientAction"</span>: <span class="str">"AllowAnonymous"</span>
+  },
+  <span class="attr">"identityProviders"</span>: {
+    <span class="attr">"azureActiveDirectory"</span>: {
+      <span class="attr">"enabled"</span>: <span class="kw">true</span>,
+      <span class="attr">"registration"</span>: {
+        <span class="attr">"openIdIssuer"</span>: <span class="str">"https://login.microsoftonline.com/&lt;TENANT_ID&gt;/v2.0"</span>,
+        <span class="attr">"clientId"</span>: <span class="str">"&lt;CLIENT_ID&gt;"</span>,
+        <span class="attr">"clientSecretSettingName"</span>: <span class="str">"MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"</span>
+      },
+      <span class="attr">"validation"</span>: {
+        <span class="attr">"allowedAudiences"</span>: [<span class="str">"api://&lt;CLIENT_ID&gt;"</span>]
+      }
+    }
+  },
+  <span class="attr">"login"</span>: {
+    <span class="attr">"routes"</span>: {
+      <span class="attr">"logoutEndpoint"</span>: <span class="str">"/.auth/logout"</span>
+    },
+    <span class="attr">"tokenStore"</span>: {
+      <span class="attr">"enabled"</span>: <span class="kw">true</span>
+    }
+  }
+}</div>
+            </div>
+            <div class="callout success">
+              <span class="callout-icon">✅</span>
+              <span>With <code>AllowAnonymous</code>, Easy Auth validates tokens when present but doesn't block unauthenticated requests. Your C# code handles enforcement per route (see Step 4).</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">6</div>
+            <div class="step-title">Verify Easy Auth is Working</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Test that the login flow works by visiting the Easy Auth login endpoint in your browser.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Test URLs</span></div>
+              <div class="code-content"><span class="cm"># Login endpoint — redirects to Microsoft login</span>
+https://wwengine.azurewebsites.net/.auth/login/aad
+
+<span class="cm"># Check authenticated user info (after login)</span>
+https://wwengine.azurewebsites.net/.auth/me
+
+<span class="cm"># Logout</span>
+https://wwengine.azurewebsites.net/.auth/logout</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="showPage(0)">← Overview</button>
+      <button class="btn btn-primary" onclick="showPage(2)">Roles & Permissions →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Roles & Permissions -->
+  <div class="page" id="page-2">
+    <div class="page-header">
+      <div class="step-badge">STEP 02</div>
+      <h2>Roles & Permissions</h2>
+      <p class="desc">Define App Roles in Entra ID and enforce them in your Azure Function. Each <code>/secure</code> endpoint can require a specific role in the JWT token.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">2.1 — Define App Roles in Entra</div>
+
+      <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px; line-height:1.7;">
+        App Roles are defined in your App Registration's manifest and are included as <code>roles</code> claims in the JWT access token.
+      </p>
+
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>Role Name</th>
+            <th>Value (claim)</th>
+            <th>Access Level</th>
+            <th>Allowed On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Admin</td>
+            <td>wwengine.admin</td>
+            <td><span class="badge admin">ADMIN</span></td>
+            <td>/public + /secure</td>
+          </tr>
+          <tr>
+            <td>WorkflowUser</td>
+            <td>wwengine.user</td>
+            <td><span class="badge user">USER</span></td>
+            <td>/public + /secure</td>
+          </tr>
+          <tr>
+            <td>Viewer</td>
+            <td>wwengine.viewer</td>
+            <td><span class="badge viewer">VIEWER</span></td>
+            <td>/public only</td>
+          </tr>
+          <tr>
+            <td>(none)</td>
+            <td>—</td>
+            <td><span class="badge public">ANON</span></td>
+            <td>/public only</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="steps" style="margin-top:16px;">
+
+        <div class="step open">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">1</div>
+            <div class="step-title">Add App Roles to Manifest</div>
+            <span class="step-chevron">▲</span>
+          </div>
+          <div class="step-body">
+            <p>Go to <strong>App Registration → Manifest</strong> and add the <code>appRoles</code> array:</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">manifest.json (appRoles section)</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+              <div class="code-content"><span class="str">"appRoles"</span>: [
+  {
+    <span class="attr">"allowedMemberTypes"</span>: [<span class="str">"User"</span>, <span class="str">"Application"</span>],
+    <span class="attr">"description"</span>: <span class="str">"Full admin access to workflow engine"</span>,
+    <span class="attr">"displayName"</span>: <span class="str">"Admin"</span>,
+    <span class="attr">"id"</span>: <span class="str">"11111111-1111-1111-1111-111111111111"</span>,
+    <span class="attr">"isEnabled"</span>: <span class="kw">true</span>,
+    <span class="attr">"value"</span>: <span class="str">"wwengine.admin"</span>
+  },
+  {
+    <span class="attr">"allowedMemberTypes"</span>: [<span class="str">"User"</span>],
+    <span class="attr">"description"</span>: <span class="str">"Can execute and manage workflows"</span>,
+    <span class="attr">"displayName"</span>: <span class="str">"WorkflowUser"</span>,
+    <span class="attr">"id"</span>: <span class="str">"22222222-2222-2222-2222-222222222222"</span>,
+    <span class="attr">"isEnabled"</span>: <span class="kw">true</span>,
+    <span class="attr">"value"</span>: <span class="str">"wwengine.user"</span>
+  },
+  {
+    <span class="attr">"allowedMemberTypes"</span>: [<span class="str">"User"</span>],
+    <span class="attr">"description"</span>: <span class="str">"Read-only access to public endpoints"</span>,
+    <span class="attr">"displayName"</span>: <span class="str">"Viewer"</span>,
+    <span class="attr">"id"</span>: <span class="str">"33333333-3333-3333-3333-333333333333"</span>,
+    <span class="attr">"isEnabled"</span>: <span class="kw">true</span>,
+    <span class="attr">"value"</span>: <span class="str">"wwengine.viewer"</span>
+  }
+]</div>
+            </div>
+            <div class="callout warn">
+              <span class="callout-icon">⚠️</span>
+              <span>Generate real GUIDs for the <code>id</code> fields. Use PowerShell: <code>[System.Guid]::NewGuid().ToString()</code></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">2</div>
+            <div class="step-title">Assign Users to Roles</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Go to <strong>Entra ID → Enterprise Applications → wwengine-auth → Users and groups → Add user/group</strong>.</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">Assignment Steps</span></div>
+              <div class="code-content"><span class="num">1.</span> Select: Users and groups → <span class="str">john@company.com</span>
+<span class="num">2.</span> Select a role →  <span class="str">WorkflowUser</span>
+<span class="num">3.</span> Click Assign
+
+<span class="cm"># Repeat for other users and roles as needed</span>
+<span class="cm"># Or assign a whole security group to a role</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-num-lg">3</div>
+            <div class="step-title">Enable "Assignment Required" (Optional but Recommended)</div>
+            <span class="step-chevron">▼</span>
+          </div>
+          <div class="step-body">
+            <p>Under <strong>Enterprise Applications → Properties</strong>, set <strong>Assignment required</strong> to <code>Yes</code>. This blocks users not assigned to any role from authenticating at all.</p>
+            <div class="callout success">
+              <span class="callout-icon">✅</span>
+              <span>With this enabled, only explicitly assigned users can get a token for your app — adding a layer of defence before your code even runs.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">2.2 — How Roles Appear in JWT</div>
+      <p style="font-size:14px; color:var(--text-muted); margin-bottom:12px; line-height:1.7;">
+        When a user authenticates, their access token contains a <code>roles</code> claim. Easy Auth parses this and injects it as HTTP headers into your function.
+      </p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">Decoded JWT Payload</span></div>
+        <div class="code-content">{
+  <span class="attr">"aud"</span>: <span class="str">"api://&lt;client-id&gt;"</span>,
+  <span class="attr">"iss"</span>: <span class="str">"https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0"</span>,
+  <span class="attr">"oid"</span>: <span class="str">"user-object-id"</span>,
+  <span class="attr">"name"</span>: <span class="str">"John Smith"</span>,
+  <span class="attr">"preferred_username"</span>: <span class="str">"john@company.com"</span>,
+  <span class="attr">"roles"</span>: [
+    <span class="str">"wwengine.user"</span>     <span class="cm">// ← roles assigned in Entra</span>
+  ],
+  <span class="attr">"scp"</span>: <span class="str">"user_impersonation"</span>
+}</div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">Easy Auth Injected Headers (available in C#)</span></div>
+        <div class="code-content">X-MS-CLIENT-PRINCIPAL-NAME:    <span class="str">john@company.com</span>
+X-MS-CLIENT-PRINCIPAL-ID:      <span class="str">&lt;user-object-id&gt;</span>
+X-MS-CLIENT-PRINCIPAL-IDP:     <span class="str">aad</span>
+X-MS-CLIENT-PRINCIPAL:         <span class="str">&lt;base64 encoded claims JSON&gt;</span>
+X-MS-TOKEN-AAD-ACCESS-TOKEN:   <span class="str">&lt;raw JWT token&gt;</span></div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="showPage(1)">← Easy Auth Setup</button>
+      <button class="btn btn-primary" onclick="showPage(3)">PowerShell Script →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: PowerShell Script -->
+  <div class="page" id="page-3">
+    <div class="page-header">
+      <div class="step-badge">STEP 03</div>
+      <h2>PowerShell / AZ CLI Setup Script</h2>
+      <p class="desc">Automate the entire Azure infrastructure provisioning: resource group, storage, function app, app registration, role definitions, and Easy Auth configuration.</p>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <span>Run <code>az login</code> and set your subscription before executing. Requires <strong>az cli 2.40+</strong> and <strong>PowerShell 7+</strong>.</span>
+    </div>
+
+    <div class="section" style="margin-top:20px;">
+      <div class="section-title">setup-wwengine.ps1 — Full Script</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="cm">##########################################################
+# wwengine Azure Function Auth Setup Script
+# Prereqs: az cli 2.40+, PowerShell 7+, az login done
+##########################################################</span>
+
+<span class="cm"># ── Configuration ────────────────────────────────────</span>
+<span class="var">$RESOURCE_GROUP</span>  = <span class="str">"rg-wwengine"</span>
+<span class="var">$LOCATION</span>        = <span class="str">"australiaeast"</span>
+<span class="var">$STORAGE_ACCOUNT</span> = <span class="str">"stwwengine"</span>          <span class="cm"># must be globally unique</span>
+<span class="var">$FUNCTION_APP</span>    = <span class="str">"wwengine"</span>
+<span class="var">$APP_REG_NAME</span>    = <span class="str">"wwengine-auth"</span>
+<span class="var">$SUBSCRIPTION_ID</span> = <span class="fn">az account show</span> <span class="flag">--query</span> <span class="str">"id"</span> <span class="flag">-o</span> tsv
+
+<span class="kw">Write-Host</span> <span class="str">"🚀 Starting wwengine provisioning..."</span> <span class="flag">-ForegroundColor</span> Cyan
+
+<span class="cm"># ── 1. Resource Group ────────────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"`n[1/8] Creating resource group..."</span>
+<span class="az">az group create</span> `
+  <span class="flag">--name</span> <span class="var">$RESOURCE_GROUP</span> `
+  <span class="flag">--location</span> <span class="var">$LOCATION</span>
+
+<span class="cm"># ── 2. Storage Account ───────────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[2/8] Creating storage account..."</span>
+<span class="az">az storage account create</span> `
+  <span class="flag">--name</span> <span class="var">$STORAGE_ACCOUNT</span> `
+  <span class="flag">--resource-group</span> <span class="var">$RESOURCE_GROUP</span> `
+  <span class="flag">--location</span> <span class="var">$LOCATION</span> `
+  <span class="flag">--sku</span> Standard_LRS `
+  <span class="flag">--allow-blob-public-access</span> <span class="kw">false</span>
+
+<span class="cm"># ── 3. Function App (Consumption Plan) ───────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[3/8] Creating function app (consumption/free tier)..."</span>
+<span class="az">az functionapp create</span> `
+  <span class="flag">--resource-group</span> <span class="var">$RESOURCE_GROUP</span> `
+  <span class="flag">--consumption-plan-location</span> <span class="var">$LOCATION</span> `
+  <span class="flag">--runtime</span> dotnet-isolated `
+  <span class="flag">--runtime-version</span> <span class="num">8</span> `
+  <span class="flag">--functions-version</span> <span class="num">4</span> `
+  <span class="flag">--name</span> <span class="var">$FUNCTION_APP</span> `
+  <span class="flag">--storage-account</span> <span class="var">$STORAGE_ACCOUNT</span> `
+  <span class="flag">--os-type</span> Windows
+
+<span class="cm"># ── 4. App Registration in Entra ID ──────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[4/8] Registering app in Entra ID..."</span>
+<span class="var">$redirectUri</span> = <span class="str">"https://$</span><span class="var">FUNCTION_APP</span><span class="str">.azurewebsites.net/.auth/login/aad/callback"</span>
+
+<span class="var">$appId</span> = <span class="fn">az ad app create</span> `
+  <span class="flag">--display-name</span> <span class="var">$APP_REG_NAME</span> `
+  <span class="flag">--sign-in-audience</span> AzureADMyOrg `
+  <span class="flag">--web-redirect-uris</span> <span class="var">$redirectUri</span> `
+  <span class="flag">--query</span> <span class="str">"appId"</span> <span class="flag">-o</span> tsv
+
+<span class="kw">Write-Host</span> <span class="str">"   App ID: $</span><span class="var">appId</span><span class="str">"</span> <span class="flag">-ForegroundColor</span> Green
+
+<span class="cm"># Get tenant ID</span>
+<span class="var">$tenantId</span> = <span class="fn">az account show</span> <span class="flag">--query</span> <span class="str">"tenantId"</span> <span class="flag">-o</span> tsv
+
+<span class="cm"># ── 5. Client Secret ─────────────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[5/8] Creating client secret..."</span>
+<span class="var">$secretValue</span> = <span class="fn">az ad app credential reset</span> `
+  <span class="flag">--id</span> <span class="var">$appId</span> `
+  <span class="flag">--display-name</span> <span class="str">"wwengine-secret"</span> `
+  <span class="flag">--years</span> <span class="num">2</span> `
+  <span class="flag">--query</span> <span class="str">"password"</span> <span class="flag">-o</span> tsv
+
+<span class="cm"># ── 6. Add App Roles to Manifest ─────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[6/8] Adding app roles to manifest..."</span>
+<span class="var">$appRoles</span> = <span class="str">@"
+[
+  {
+    "allowedMemberTypes": ["User","Application"],
+    "description": "Admin access",
+    "displayName": "Admin",
+    "id": "$(</span><span class="fn">[System.Guid]::NewGuid()</span><span class="str">)",
+    "isEnabled": true,
+    "value": "wwengine.admin"
+  },
+  {
+    "allowedMemberTypes": ["User"],
+    "description": "Workflow user",
+    "displayName": "WorkflowUser",
+    "id": "$(</span><span class="fn">[System.Guid]::NewGuid()</span><span class="str">)",
+    "isEnabled": true,
+    "value": "wwengine.user"
+  },
+  {
+    "allowedMemberTypes": ["User"],
+    "description": "Viewer - read only",
+    "displayName": "Viewer",
+    "id": "$(</span><span class="fn">[System.Guid]::NewGuid()</span><span class="str">)",
+    "isEnabled": true,
+    "value": "wwengine.viewer"
+  }
+]
+"@</span>
+
+<span class="var">$appRoles</span> | <span class="fn">Out-File</span> <span class="flag">-FilePath</span> <span class="str">"./approles.json"</span> <span class="flag">-Encoding</span> utf8
+
+<span class="az">az ad app update</span> `
+  <span class="flag">--id</span> <span class="var">$appId</span> `
+  <span class="flag">--app-roles</span> <span class="str">"@approles.json"</span>
+
+<span class="fn">Remove-Item</span> <span class="str">"./approles.json"</span>
+
+<span class="cm"># ── 7. Set API Identifier URI ─────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[7/8] Setting API identifier URI..."</span>
+<span class="az">az ad app update</span> `
+  <span class="flag">--id</span> <span class="var">$appId</span> `
+  <span class="flag">--identifier-uris</span> <span class="str">"api://$</span><span class="var">appId</span><span class="str">"</span>
+
+<span class="cm"># ── 8. Configure Easy Auth ────────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"[8/8] Configuring Easy Auth on Function App..."</span>
+
+<span class="cm"># Store client secret in app settings first</span>
+<span class="az">az functionapp config appsettings set</span> `
+  <span class="flag">--name</span> <span class="var">$FUNCTION_APP</span> `
+  <span class="flag">--resource-group</span> <span class="var">$RESOURCE_GROUP</span> `
+  <span class="flag">--settings</span> <span class="str">"MICROSOFT_PROVIDER_AUTHENTICATION_SECRET=</span><span class="var">$secretValue</span><span class="str">"</span>
+
+<span class="cm"># Enable Easy Auth using authsettingsV2</span>
+<span class="var">$authConfig</span> = <span class="str">@"
+{
+  "platform": { "enabled": true },
+  "globalValidation": {
+    "requireAuthentication": false,
+    "unauthenticatedClientAction": "AllowAnonymous"
+  },
+  "identityProviders": {
+    "azureActiveDirectory": {
+      "enabled": true,
+      "registration": {
+        "openIdIssuer": "https://login.microsoftonline.com/</span><span class="var">$tenantId</span><span class="str">/v2.0",
+        "clientId": "</span><span class="var">$appId</span><span class="str">",
+        "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+      },
+      "validation": {
+        "allowedAudiences": ["api://</span><span class="var">$appId</span><span class="str">"]
+      }
+    }
+  },
+  "login": {
+    "tokenStore": { "enabled": true }
+  }
+}
+"@</span>
+
+<span class="var">$authConfig</span> | <span class="fn">Out-File</span> <span class="flag">-FilePath</span> <span class="str">"./authconfig.json"</span> <span class="flag">-Encoding</span> utf8
+
+<span class="az">az rest</span> `
+  <span class="flag">--method</span> PUT `
+  <span class="flag">--url</span> <span class="str">"https://management.azure.com/subscriptions/$</span><span class="var">SUBSCRIPTION_ID</span><span class="str">/resourceGroups/$</span><span class="var">RESOURCE_GROUP</span><span class="str">/providers/Microsoft.Web/sites/$</span><span class="var">FUNCTION_APP</span><span class="str">/config/authsettingsV2?api-version=2022-03-01"</span> `
+  <span class="flag">--body</span> <span class="str">"@authconfig.json"</span>
+
+<span class="fn">Remove-Item</span> <span class="str">"./authconfig.json"</span>
+
+<span class="cm"># ── Output Summary ────────────────────────────────────</span>
+<span class="kw">Write-Host</span> <span class="str">"`n✅ Setup complete!"</span> <span class="flag">-ForegroundColor</span> Green
+<span class="kw">Write-Host</span> <span class="str">@"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Function App URL:  https://$</span><span class="var">FUNCTION_APP</span><span class="str">.azurewebsites.net
+  Tenant ID:         $</span><span class="var">tenantId</span><span class="str">
+  Client (App) ID:   $</span><span class="var">appId</span><span class="str">
+  Client Secret:     [stored in App Settings]
+  Login URL:         https://$</span><span class="var">FUNCTION_APP</span><span class="str">.azurewebsites.net/.auth/login/aad
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Next: Assign users to roles in:
+  Entra ID → Enterprise Apps → $</span><span class="var">APP_REG_NAME</span><span class="str"> → Users and groups
+"@</span></div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-icon">✅</span>
+      <span>Save the output <strong>Tenant ID</strong> and <strong>Client ID</strong> — they are needed in your <code>local.settings.json</code> for local development.</span>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="showPage(2)">← Roles & Permissions</button>
+      <button class="btn btn-primary" onclick="showPage(4)">C# Code →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: C# Code -->
+  <div class="page" id="page-4">
+    <div class="page-header">
+      <div class="step-badge">STEP 04</div>
+      <h2>C# Azure Function Implementation</h2>
+      <p class="desc">Complete .NET 8 isolated worker implementation with route-based auth enforcement, role checking via Easy Auth headers, and the <code>/public</code> vs <code>/secure</code> endpoint pattern.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.1 — Project Structure</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">Project Layout</span></div>
+        <div class="code-content">wwengine/
+├── <span class="fn">Program.cs</span>                   <span class="cm"># Host builder + DI setup</span>
+├── <span class="fn">Middleware/</span>
+│   └── <span class="fn">AuthMiddleware.cs</span>        <span class="cm"># Easy Auth header parsing</span>
+├── <span class="fn">Functions/</span>
+│   ├── <span class="fn">PublicOrdersFunction.cs</span>   <span class="cm"># /public/orders.json</span>
+│   └── <span class="fn">SecureOrdersFunction.cs</span>   <span class="cm"># /secure/orders.json</span>
+├── <span class="fn">Models/</span>
+│   └── <span class="fn">ClaimsPrincipalModel.cs</span>   <span class="cm"># Parsed Easy Auth user</span>
+└── <span class="fn">wwengine.csproj</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.2 — Program.cs (Host Setup)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C# — Program.cs</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="kw">using</span> Microsoft.Azure.Functions.Worker;
+<span class="kw">using</span> Microsoft.Extensions.DependencyInjection;
+<span class="kw">using</span> Microsoft.Extensions.Hosting;
+
+<span class="kw">var</span> host = <span class="kw">new</span> <span class="type">HostBuilder</span>()
+    .<span class="fn">ConfigureFunctionsWebApplication</span>(worker =>
+    {
+        <span class="cm">// Register our custom auth middleware</span>
+        worker.<span class="fn">UseMiddleware</span>&lt;<span class="type">EasyAuthMiddleware</span>&gt;();
+    })
+    .<span class="fn">ConfigureServices</span>(services =>
+    {
+        services.<span class="fn">AddApplicationInsightsTelemetryWorkerService</span>();
+        services.<span class="fn">ConfigureFunctionsApplicationInsights</span>();
+        services.<span class="fn">AddSingleton</span>&lt;<span class="type">IAuthorizationService</span>, <span class="type">AuthorizationService</span>&gt;();
+    })
+    .<span class="fn">Build</span>();
+
+<span class="kw">await</span> host.<span class="fn">RunAsync</span>();</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.3 — EasyAuth Middleware</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C# — Middleware/AuthMiddleware.cs</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="kw">using</span> System.Text;
+<span class="kw">using</span> System.Text.Json;
+<span class="kw">using</span> Microsoft.Azure.Functions.Worker;
+<span class="kw">using</span> Microsoft.Azure.Functions.Worker.Middleware;
+
+<span class="cm">/// &lt;summary&gt;
+/// Parses Easy Auth headers injected by Azure App Service
+/// and attaches the parsed user context to the function context.
+/// &lt;/summary&gt;</span>
+<span class="kw">public class</span> <span class="type">EasyAuthMiddleware</span> : <span class="type">IFunctionsWorkerMiddleware</span>
+{
+    <span class="kw">public async</span> <span class="type">Task</span> <span class="fn">Invoke</span>(<span class="type">FunctionContext</span> context, <span class="type">FunctionExecutionDelegate</span> next)
+    {
+        <span class="kw">var</span> httpContext = context.<span class="fn">GetHttpContext</span>();
+
+        <span class="kw">if</span> (httpContext != <span class="kw">null</span>)
+        {
+            <span class="kw">var</span> principal = <span class="fn">ParseEasyAuthPrincipal</span>(httpContext);
+            <span class="kw">if</span> (principal != <span class="kw">null</span>)
+            {
+                <span class="cm">// Store parsed user in Items for downstream access</span>
+                httpContext.Items[<span class="str">"EasyAuthUser"</span>] = principal;
+            }
+        }
+
+        <span class="kw">await</span> <span class="fn">next</span>(context);
+    }
+
+    <span class="kw">private static</span> <span class="type">EasyAuthUser</span>? <span class="fn">ParseEasyAuthPrincipal</span>(<span class="type">HttpContext</span> httpContext)
+    {
+        <span class="kw">try</span>
+        {
+            <span class="cm">// Easy Auth injects X-MS-CLIENT-PRINCIPAL as base64 JSON</span>
+            <span class="kw">var</span> header = httpContext.Request.Headers[<span class="str">"X-MS-CLIENT-PRINCIPAL"</span>]
+                                      .<span class="fn">FirstOrDefault</span>();
+
+            <span class="kw">if</span> (<span class="type">string</span>.<span class="fn">IsNullOrEmpty</span>(header)) <span class="kw">return null</span>;
+
+            <span class="kw">var</span> decoded = <span class="type">Encoding</span>.UTF8.<span class="fn">GetString</span>(<span class="type">Convert</span>.<span class="fn">FromBase64String</span>(header));
+            <span class="kw">var</span> principal = <span class="type">JsonSerializer</span>.<span class="fn">Deserialize</span>&lt;<span class="type">EasyAuthPrincipal</span>&gt;(decoded);
+
+            <span class="kw">if</span> (principal == <span class="kw">null</span>) <span class="kw">return null</span>;
+
+            <span class="cm">// Extract roles from the claims array</span>
+            <span class="kw">var</span> roles = principal.Claims
+                ?.<span class="fn">Where</span>(c => c.Type == <span class="str">"roles"</span>)
+                ?.<span class="fn">Select</span>(c => c.Value)
+                ?.<span class="fn">ToArray</span>() ?? <span class="type">Array</span>.<span class="fn">Empty</span>&lt;<span class="type">string</span>&gt;();
+
+            <span class="kw">var</span> name = principal.Claims
+                ?.<span class="fn">FirstOrDefault</span>(c => c.Type == <span class="str">"preferred_username"</span>
+                                    || c.Type == <span class="str">"name"</span>)
+                ?.Value ?? <span class="str">"unknown"</span>;
+
+            <span class="kw">return new</span> <span class="type">EasyAuthUser</span> { Name = name, Roles = roles };
+        }
+        <span class="kw">catch</span>
+        {
+            <span class="kw">return null</span>; <span class="cm">// Malformed header — treat as unauthenticated</span>
+        }
+    }
+}
+
+<span class="cm">// ── Models ───────────────────────────────────────────</span>
+
+<span class="kw">public record</span> <span class="type">EasyAuthUser</span>
+{
+    <span class="kw">public required string</span> Name { <span class="kw">get</span>; <span class="kw">init</span>; }
+    <span class="kw">public required string</span>[] Roles { <span class="kw">get</span>; <span class="kw">init</span>; }
+
+    <span class="kw">public bool</span> <span class="fn">IsAuthenticated</span>() => !<span class="type">string</span>.<span class="fn">IsNullOrEmpty</span>(Name) && Name != <span class="str">"unknown"</span>;
+    <span class="kw">public bool</span> <span class="fn">HasRole</span>(<span class="kw">string</span> role) => Roles.<span class="fn">Contains</span>(role, <span class="type">StringComparer</span>.OrdinalIgnoreCase);
+    <span class="kw">public bool</span> <span class="fn">HasAnyRole</span>(<span class="kw">params string</span>[] roles) => roles.<span class="fn">Any</span>(<span class="fn">HasRole</span>);
+}
+
+<span class="kw">public class</span> <span class="type">EasyAuthPrincipal</span>
+{
+    [<span class="type">JsonPropertyName</span>(<span class="str">"claims"</span>)]
+    <span class="kw">public</span> <span class="type">List</span>&lt;<span class="type">EasyAuthClaim</span>&gt;? Claims { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="kw">public class</span> <span class="type">EasyAuthClaim</span>
+{
+    [<span class="type">JsonPropertyName</span>(<span class="str">"typ"</span>)]
+    <span class="kw">public string</span> Type { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">""</span>;
+
+    [<span class="type">JsonPropertyName</span>(<span class="str">"val"</span>)]
+    <span class="kw">public string</span> Value { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="str">""</span>;
+}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.4 — Public Endpoint</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C# — Functions/PublicOrdersFunction.cs</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="kw">using</span> Microsoft.Azure.Functions.Worker;
+<span class="kw">using</span> Microsoft.Azure.Functions.Worker.Http;
+<span class="kw">using</span> Microsoft.Extensions.Logging;
+
+<span class="kw">public class</span> <span class="type">PublicOrdersFunction</span>(<span class="type">ILogger</span>&lt;<span class="type">PublicOrdersFunction</span>&gt; logger)
+{
+    <span class="cm">/// GET /public/orders.json?id={id}
+    /// No authentication required — open to all.</span>
+    [<span class="type">Function</span>(<span class="str">"PublicOrders"</span>)]
+    <span class="kw">public async</span> <span class="type">Task</span>&lt;<span class="type">HttpResponseData</span>&gt; <span class="fn">Run</span>(
+        [<span class="type">HttpTrigger</span>(<span class="type">AuthorizationLevel</span>.Anonymous,
+                     <span class="str">"get"</span>,
+                     Route = <span class="str">"public/orders.json"</span>)] <span class="type">HttpRequestData</span> req)
+    {
+        <span class="kw">var</span> id = req.Url.Query.<span class="fn">TrimStart</span>(<span class="str">'?'</span>)
+                    .<span class="fn">Split</span>(<span class="str">'&'</span>)
+                    .<span class="fn">FirstOrDefault</span>(x => x.<span class="fn">StartsWith</span>(<span class="str">"id="</span>))
+                    ?.<span class="fn">Split</span>(<span class="str">'='</span>)[<span class="num">1</span>] ?? <span class="str">"0"</span>;
+
+        logger.<span class="fn">LogInformation</span>(<span class="str">"Public orders request for id={Id}"</span>, id);
+
+        <span class="cm">// Optional: log if caller is authenticated (but don't require it)</span>
+        <span class="kw">var</span> user = req.FunctionContext.<span class="fn">GetHttpContext</span>()
+                      ?.Items[<span class="str">"EasyAuthUser"</span>] <span class="kw">as</span> <span class="type">EasyAuthUser</span>;
+
+        <span class="kw">if</span> (user?.<span class="fn">IsAuthenticated</span>() == <span class="kw">true</span>)
+            logger.<span class="fn">LogInformation</span>(<span class="str">"Caller: {User}"</span>, user.Name);
+
+        <span class="kw">var</span> order = <span class="kw">new</span> {
+            id,
+            status = <span class="str">"public"</span>,
+            description = <span class="str">"Publicly accessible order summary"</span>,
+            timestamp = <span class="type">DateTimeOffset</span>.UtcNow
+        };
+
+        <span class="kw">var</span> response = req.<span class="fn">CreateResponse</span>(<span class="type">System.Net.HttpStatusCode</span>.OK);
+        response.Headers.<span class="fn">Add</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>);
+        <span class="kw">await</span> response.<span class="fn">WriteAsJsonAsync</span>(order);
+        <span class="kw">return</span> response;
+    }
+}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.5 — Secure Endpoint</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C# — Functions/SecureOrdersFunction.cs</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="kw">using</span> Microsoft.Azure.Functions.Worker;
+<span class="kw">using</span> Microsoft.Azure.Functions.Worker.Http;
+<span class="kw">using</span> Microsoft.Extensions.Logging;
+<span class="kw">using</span> System.Net;
+
+<span class="kw">public class</span> <span class="type">SecureOrdersFunction</span>(<span class="type">ILogger</span>&lt;<span class="type">SecureOrdersFunction</span>&gt; logger)
+{
+    <span class="cm">/// GET /secure/orders.json?id={id}
+    /// Requires authentication + role: wwengine.user OR wwengine.admin</span>
+    [<span class="type">Function</span>(<span class="str">"SecureOrders"</span>)]
+    <span class="kw">public async</span> <span class="type">Task</span>&lt;<span class="type">HttpResponseData</span>&gt; <span class="fn">Run</span>(
+        [<span class="type">HttpTrigger</span>(<span class="type">AuthorizationLevel</span>.Anonymous,
+                     <span class="str">"get"</span>,
+                     Route = <span class="str">"secure/orders.json"</span>)] <span class="type">HttpRequestData</span> req)
+    {
+        <span class="kw">var</span> httpContext = req.FunctionContext.<span class="fn">GetHttpContext</span>();
+        <span class="kw">var</span> user = httpContext?.Items[<span class="str">"EasyAuthUser"</span>] <span class="kw">as</span> <span class="type">EasyAuthUser</span>;
+
+        <span class="cm">// ── Auth Check 1: Must be authenticated ──────────</span>
+        <span class="kw">if</span> (user == <span class="kw">null</span> || !user.<span class="fn">IsAuthenticated</span>())
+        {
+            logger.<span class="fn">LogWarning</span>(<span class="str">"Unauthenticated request to /secure/orders.json"</span>);
+            <span class="kw">return</span> <span class="fn">Unauthorized</span>(req, <span class="str">"Authentication required"</span>);
+        }
+
+        <span class="cm">// ── Auth Check 2: Must have required role ─────────</span>
+        <span class="kw">var</span> allowedRoles = <span class="kw">new</span>[] { <span class="str">"wwengine.user"</span>, <span class="str">"wwengine.admin"</span> };
+        <span class="kw">if</span> (!user.<span class="fn">HasAnyRole</span>(allowedRoles))
+        {
+            logger.<span class="fn">LogWarning</span>(<span class="str">"Forbidden: {User} roles={Roles}"</span>,
+                user.Name, <span class="type">string</span>.<span class="fn">Join</span>(<span class="str">","</span>, user.Roles));
+            <span class="kw">return</span> <span class="fn">Forbidden</span>(req, <span class="str">"Insufficient role. Required: wwengine.user or wwengine.admin"</span>);
+        }
+
+        <span class="cm">// ── Business Logic ────────────────────────────────</span>
+        <span class="kw">var</span> id = req.Url.Query.<span class="fn">TrimStart</span>(<span class="str">'?'</span>)
+                    .<span class="fn">Split</span>(<span class="str">'&'</span>)
+                    .<span class="fn">FirstOrDefault</span>(x => x.<span class="fn">StartsWith</span>(<span class="str">"id="</span>))
+                    ?.<span class="fn">Split</span>(<span class="str">'='</span>)[<span class="num">1</span>] ?? <span class="str">"0"</span>;
+
+        logger.<span class="fn">LogInformation</span>(<span class="str">"Secure order {Id} requested by {User} [{Roles}]"</span>,
+            id, user.Name, <span class="type">string</span>.<span class="fn">Join</span>(<span class="str">","</span>, user.Roles));
+
+        <span class="cm">// Admins see extra fields</span>
+        <span class="kw">object</span> order = user.<span class="fn">HasRole</span>(<span class="str">"wwengine.admin"</span>)
+            ? <span class="kw">new</span> {
+                id, status = <span class="str">"secure"</span>,
+                description = <span class="str">"Full order detail (admin view)"</span>,
+                internalCost = <span class="num">99.99</span>,
+                auditLog = <span class="str">"visible to admins only"</span>,
+                requestedBy = user.Name,
+                timestamp = <span class="type">DateTimeOffset</span>.UtcNow
+              }
+            : <span class="kw">new</span> {
+                id, status = <span class="str">"secure"</span>,
+                description = <span class="str">"Order detail (user view)"</span>,
+                requestedBy = user.Name,
+                timestamp = <span class="type">DateTimeOffset</span>.UtcNow
+              };
+
+        <span class="kw">var</span> response = req.<span class="fn">CreateResponse</span>(<span class="type">HttpStatusCode</span>.OK);
+        response.Headers.<span class="fn">Add</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>);
+        <span class="kw">await</span> response.<span class="fn">WriteAsJsonAsync</span>(order);
+        <span class="kw">return</span> response;
+    }
+
+    <span class="cm">// ── Helpers ───────────────────────────────────────</span>
+    <span class="kw">private static</span> <span class="type">HttpResponseData</span> <span class="fn">Unauthorized</span>(<span class="type">HttpRequestData</span> req, <span class="kw">string</span> msg)
+    {
+        <span class="kw">var</span> r = req.<span class="fn">CreateResponse</span>(<span class="type">HttpStatusCode</span>.Unauthorized);
+        r.Headers.<span class="fn">Add</span>(<span class="str">"WWW-Authenticate"</span>, <span class="str">"Bearer"</span>);
+        r.<span class="fn">WriteString</span>(<span class="type">System.Text.Json.JsonSerializer</span>.<span class="fn">Serialize</span>(<span class="kw">new</span> { error = msg }));
+        <span class="kw">return</span> r;
+    }
+
+    <span class="kw">private static</span> <span class="type">HttpResponseData</span> <span class="fn">Forbidden</span>(<span class="type">HttpRequestData</span> req, <span class="kw">string</span> msg)
+    {
+        <span class="kw">var</span> r = req.<span class="fn">CreateResponse</span>(<span class="type">HttpStatusCode</span>.Forbidden);
+        r.<span class="fn">WriteString</span>(<span class="type">System.Text.Json.JsonSerializer</span>.<span class="fn">Serialize</span>(<span class="kw">new</span> { error = msg }));
+        <span class="kw">return</span> r;
+    }
+}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.6 — local.settings.json (for local dev)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">JSON — local.settings.json</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content">{
+  <span class="attr">"IsEncrypted"</span>: <span class="kw">false</span>,
+  <span class="attr">"Values"</span>: {
+    <span class="attr">"AzureWebJobsStorage"</span>: <span class="str">"UseDevelopmentStorage=true"</span>,
+    <span class="attr">"FUNCTIONS_WORKER_RUNTIME"</span>: <span class="str">"dotnet-isolated"</span>,
+    <span class="attr">"MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"</span>: <span class="str">"&lt;your-client-secret&gt;"</span>
+  },
+  <span class="attr">"Host"</span>: {
+    <span class="attr">"LocalHttpPort"</span>: <span class="num">7071</span>,
+    <span class="attr">"CORS"</span>: <span class="str">"*"</span>
+  }
+}</div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <span><strong>Never commit</strong> local.settings.json to source control. Easy Auth headers are only injected in Azure — for local testing, you can mock the <code>X-MS-CLIENT-PRINCIPAL</code> header manually.</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4.7 — Deploy to Azure</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PowerShell / CLI</span><button class="code-copy" onclick="copyCode(this)">copy</button></div>
+        <div class="code-content"><span class="cm"># Build and publish</span>
+<span class="az">dotnet publish</span> <span class="flag">-c</span> Release <span class="flag">-o</span> ./publish
+
+<span class="cm"># Zip and deploy</span>
+<span class="fn">Compress-Archive</span> <span class="flag">-Path</span> ./publish/* <span class="flag">-DestinationPath</span> ./wwengine.zip <span class="flag">-Force</span>
+
+<span class="az">az functionapp deployment source config-zip</span> `
+  <span class="flag">--resource-group</span> rg-wwengine `
+  <span class="flag">--name</span> wwengine `
+  <span class="flag">--src</span> ./wwengine.zip
+
+<span class="cm"># Verify deployment</span>
+<span class="az">az functionapp show</span> `
+  <span class="flag">--name</span> wwengine `
+  <span class="flag">--resource-group</span> rg-wwengine `
+  <span class="flag">--query</span> <span class="str">"defaultHostName"</span> <span class="flag">-o</span> tsv</div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-icon">🎉</span>
+      <span>
+        <strong>You're done!</strong> Your workflow engine now has:
+        <strong>/public/*</strong> routes open to everyone,
+        <strong>/secure/*</strong> routes requiring Entra login + role,
+        automated provisioning via PowerShell, and clean C# middleware architecture.
+      </span>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="showPage(3)">← PowerShell Script</button>
+      <button class="btn btn-primary" onclick="showPage(0)">↩ Back to Overview</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  let currentPage = 0;
+  const totalPages = 5;
+
+  function showPage(index) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('[id^="nav-"]').forEach(n => n.classList.remove('active'));
+
+    document.getElementById('page-' + index).classList.add('active');
+    document.getElementById('nav-' + index).classList.add('active');
+
+    // Mark previous as done
+    for (let i = 0; i < index; i++) {
+      const nav = document.getElementById('nav-' + i);
+      nav.classList.add('done');
+      const num = nav.querySelector('.step-num');
+      if (num) num.textContent = '✓';
+    }
+
+    currentPage = index;
+    const pct = (index / (totalPages - 1)) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleStep(header) {
+    const step = header.parentElement;
+    const isOpen = step.classList.contains('open');
+    // Close all in same container
+    const siblings = step.parentElement.querySelectorAll('.step');
+    siblings.forEach(s => {
+      s.classList.remove('open');
+      s.querySelector('.step-chevron').textContent = '▼';
+    });
+    if (!isOpen) {
+      step.classList.add('open');
+      header.querySelector('.step-chevron').textContent = '▲';
+    }
+  }
+
+  function copyCode(btn) {
+    const codeBlock = btn.closest('.code-block');
+    const codeContent = codeBlock.querySelector('.code-content');
+    const text = codeContent.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'copied!';
+      btn.style.color = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'copy';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    });
+  }
+
+  // Allow nav cards on overview page to navigate
+  document.querySelectorAll('.ov-card').forEach((card, i) => {
+    card.style.cursor = 'pointer';
+  });
+</script>
+</body>
+</html>

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Auth;
+using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
 using Warewolf.Licensing;
 
@@ -104,29 +106,31 @@ namespace Warewolf.Execution.Lightweight
         /// must belong to the <em>Administrator</em> group; requests without a valid token
         /// are rejected with <c>401 Unauthorized</c>.
         ///
-        /// Request body (JSON):
-        /// <code>
-        /// // New subscription:
-        /// { "CustomerFirstName": "Jane", "CustomerLastName": "Smith",
-        ///   "CustomerEmail": "jane@example.com", "PlanId": "warewolf-developer" }
-        ///
-        /// // Link existing subscription:
-        /// { "CustomerEmail": "jane@example.com", "SubscriptionId": "sub_abc123" }
-        /// </code>
-        ///
-        /// The Chargebee API key and site name are always sourced from the locally
-        /// persisted secure config — callers cannot override them.
+        /// Authentication is handled by the middleware pipeline for this <c>/secure/*</c>
+        /// route; FunctionContext is used to retrieve the pre-built principal.
         /// </summary>
         [Function("SaveSubscriptionData")]
         public async Task<HttpResponseData> SaveSubscription(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "secure/Subscriptions")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "secure/Subscriptions")] HttpRequestData req,
+            FunctionContext context)
         {
-            var authHeader = req.Headers.TryGetValues("Authorization", out var vals)
-                ? vals.FirstOrDefault()
+            // Prefer the principal built by the middleware pipeline.
+            // Fall back to direct JWT validation for compatibility when middleware is not active.
+            var principal = context.Items.TryGetValue(AuthConstants.PrincipalContextKey, out var p)
+                ? p as WorkflowClaimsPrincipal
                 : null;
-            var config = SecureConfigLoader.Config;
-            if (!config.IsLoaded || JwtValidator.GetUserGroups(authHeader, config.SecretKey) is null)
-                return await BuildUnauthorizedResponse(req);
+
+            var isAuthenticated = principal?.Identity?.IsAuthenticated == true;
+
+            if (!isAuthenticated)
+            {
+                var authHeader = req.Headers.TryGetValues("Authorization", out var hvals)
+                    ? hvals.FirstOrDefault()
+                    : null;
+                var config = SecureConfigLoader.Config;
+                if (!config.IsLoaded || JwtValidator.GetUserGroups(authHeader, config.SecretKey) is null)
+                    return await BuildUnauthorizedResponse(req);
+            }
 
             try
             {

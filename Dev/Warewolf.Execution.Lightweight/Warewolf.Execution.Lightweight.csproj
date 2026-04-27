@@ -164,6 +164,8 @@
     <None Include="Scripts\Generate-WorkflowIndex.ps1" />
     <None Include="Scripts\Encrypt-Config.ps1" />
     <None Include="Scripts\KeyVaultSetup.azcli" />
+    <None Include="Scripts\authsettingsV2.json" />
+    <None Include="Scripts\Setup-EntraAuth.ps1" />
     <None Include="docs\README-Encryption.md" />
     <None Include="docs\KeyRotationRunbook.md" />
     <None Include="docs\SecurityChecklist.md" />

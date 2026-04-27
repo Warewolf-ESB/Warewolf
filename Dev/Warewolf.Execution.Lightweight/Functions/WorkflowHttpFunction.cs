@@ -99,12 +99,15 @@ namespace Warewolf.Execution.Lightweight
         /// Mirrors Secure/{*name} — JWT-authenticated execution.
         /// The Azure Function authorization level is Anonymous so the function host does
         /// not reject the request before we can validate the JWT ourselves.
+        /// Auth is handled by the EasyAuth + WorkflowAuthorization middleware pipeline;
+        /// FunctionContext is passed so the principal built by middleware can be reused.
         /// </summary>
         [Function("ExecuteSecureWorkflow")]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
-            string name)
-            => await ExecuteNamedWorkflow(req, name, isPublic: false);
+            string name,
+            FunctionContext context)
+            => await ExecuteNamedWorkflow(req, name, isPublic: false, context);
 
         // ── Anonymous / public route ──────────────────────────────────────────
 
@@ -190,22 +193,37 @@ namespace Warewolf.Execution.Lightweight
         ///   <item>Public execution routes → no auth check; executes unconditionally.</item>
         /// </list>
         /// </summary>
-        async Task<HttpResponseData> ExecuteNamedWorkflow(HttpRequestData req, string name, bool isPublic)
+        async Task<HttpResponseData> ExecuteNamedWorkflow(
+            HttpRequestData req,
+            string name,
+            bool isPublic,
+            FunctionContext? context = null)
         {
             // ── apis.json: always accessible, filtered by permissions ─────────────
             if (NameSuffixParser.IsApisJsonRequest(name))
             {
                 var pathFilter   = NameSuffixParser.ExtractApisJsonPath(name);
-                var permFilter   = isPublic ? GetPublicFilter() : GetSecureFilter(req);
+                var permFilter   = isPublic ? GetPublicFilter() : GetSecureFilter(req, context);
                 return await CreateApisJsonResponse(req, pathFilter, isPublic, permFilter);
             }
 
-            // ── Secure (non-public) execution: validate JWT ───────────────────────
+            // ── Secure (non-public) execution ─────────────────────────────────────
             if (!isPublic)
             {
-                var authResult = ValidateJwt(req);
-                if (!authResult.IsValid)
-                    return await BuildUnauthorizedResponse(req);
+                // Prefer the principal already built by the middleware pipeline (Secure/* routes).
+                // Fall back to direct JWT validation for Services/* routes that bypass middleware.
+                var principalAuthenticated =
+                    context is not null &&
+                    context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                    p is Auth.WorkflowClaimsPrincipal wcp &&
+                    wcp.Identity?.IsAuthenticated == true;
+
+                if (!principalAuthenticated)
+                {
+                    var authResult = ValidateJwt(req);
+                    if (!authResult.IsValid)
+                        return await BuildUnauthorizedResponse(req);
+                }
             }
 
             // ── Execute the workflow ──────────────────────────────────────────────
@@ -290,18 +308,27 @@ namespace Warewolf.Execution.Lightweight
         /// token.  When neither is valid, returns a predicate that always returns
         /// <c>false</c> so that no workflows are revealed.
         /// </summary>
-        Func<string, bool>? GetSecureFilter(HttpRequestData req)
+        Func<string, bool>? GetSecureFilter(HttpRequestData req, FunctionContext? context = null)
         {
             var config = SecureConfigLoader.Config;
             if (!config.IsLoaded)
                 return _ => false;  // No config → nothing accessible via secure discovery.
 
-            var authHeader = TryGetAuthHeader(req);
+            // ── 1. Use principal from middleware context when available ────────────
+            if (context is not null &&
+                context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                p is Auth.WorkflowClaimsPrincipal wcp &&
+                wcp.Identity?.IsAuthenticated == true)
+            {
+                var middlewareGroups = (IReadOnlyList<string>)wcp.Groups;
+                return name => PermissionChecker.HasUserViewPermission(name, config, middlewareGroups);
+            }
 
-            // ── 1. Warewolf HMAC-SHA256 JWT ───────────────────────────────────────
+            // ── 2. Warewolf HMAC-SHA256 JWT (fallback for non-middleware routes) ───
+            var authHeader = TryGetAuthHeader(req);
             var groups = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
 
-            // ── 2. Microsoft Entra OAuth token (fallback) ─────────────────────────
+            // ── 3. Microsoft Entra OAuth token (fallback) ─────────────────────────
             if (groups is null)
             {
                 var easyAuthHeader = TryGetEasyAuthPrincipalHeader(req);

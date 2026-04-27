@@ -1,0 +1,110 @@
+{
+  "_comment": [
+    "Plain-text shape of the wwexecution secure.config role / permission map.",
+    "Encrypt this JSON with the Warewolf encryption tool before deploying:",
+    "  D:\\home\\site\\wwwroot\\secure.config (production)",
+    "  bin\\secure.config (local dev)",
+    "",
+    "Each WindowsGroupPermission row maps a group (or UPN) to a workflow.",
+    "  IsServer == true  + ResourceID empty   --> server-wide permission",
+    "  IsServer == false + ResourceName set   --> per-workflow permission",
+    "",
+    "WorkflowAuthorizationMiddleware uses these rules at runtime:",
+    "  1. Group OR check  - caller must match at least one WindowsGroup entry.",
+    "  2. Permission AND check - matched entry must hold ALL required flags.",
+    "      Default required = View | Execute (set in WorkflowAuthPolicyLoader)."
+  ],
+
+  "SecretKey": "<base64-hmac-secret-generated-by-warewolf-studio>",
+
+  "AuthenticationOverrideWorkflow": {
+    "ResourceID": "00000000-0000-0000-0000-000000000000",
+    "Name": ""
+  },
+
+  "WindowsGroupPermissions": [
+    {
+      "_comment": "Administrators - full server-wide access",
+      "WindowsGroup":  "WarewolfAdministrators",
+      "ResourceID":    "00000000-0000-0000-0000-000000000000",
+      "ResourceName":  "",
+      "IsServer":      true,
+      "View":          true,
+      "Execute":       true,
+      "Contribute":    true,
+      "DeployTo":      true,
+      "DeployFrom":    true,
+      "Administrator": true
+    },
+
+    {
+      "_comment": "Public - server-wide View only (controls /Public/apis.json visibility)",
+      "WindowsGroup":  "Public",
+      "ResourceID":    "00000000-0000-0000-0000-000000000000",
+      "ResourceName":  "",
+      "IsServer":      true,
+      "View":          true,
+      "Execute":       false,
+      "Contribute":    false,
+      "DeployTo":      false,
+      "DeployFrom":    false,
+      "Administrator": false
+    },
+
+    {
+      "_comment": "Admins must also have a per-workflow entry to execute it. WorkflowAuthPolicyLoader excludes IsServer=true rows from per-workflow policies (those govern apis.json visibility only).",
+      "WindowsGroup":  "WarewolfAdministrators",
+      "ResourceID":    "11111111-1111-1111-1111-111111111111",
+      "ResourceName":  "order",
+      "IsServer":      false,
+      "View":          true,
+      "Execute":       true,
+      "Contribute":    true,
+      "DeployTo":      true,
+      "DeployFrom":    true,
+      "Administrator": true
+    },
+
+    {
+      "_comment": "PUBLIC group - View only on the order workflow",
+      "WindowsGroup":  "PUBLIC",
+      "ResourceID":    "11111111-1111-1111-1111-111111111111",
+      "ResourceName":  "order",
+      "IsServer":      false,
+      "View":          true,
+      "Execute":       false,
+      "Contribute":    false,
+      "DeployTo":      false,
+      "DeployFrom":    false,
+      "Administrator": false
+    },
+
+    {
+      "_comment": "Direct UPN entry - ashley.lewis can View+Execute the order workflow",
+      "WindowsGroup":  "ashley.lewis@theunlimited.co.za",
+      "ResourceID":    "11111111-1111-1111-1111-111111111111",
+      "ResourceName":  "order",
+      "IsServer":      false,
+      "View":          true,
+      "Execute":       true,
+      "Contribute":    false,
+      "DeployTo":      false,
+      "DeployFrom":    false,
+      "Administrator": false
+    },
+
+    {
+      "_comment": "Direct UPN entry - aakash.gaikwad can only View the order workflow",
+      "WindowsGroup":  "aakash.gaikwad@theunlimited.co.za",
+      "ResourceID":    "11111111-1111-1111-1111-111111111111",
+      "ResourceName":  "order",
+      "IsServer":      false,
+      "View":          true,
+      "Execute":       false,
+      "Contribute":    false,
+      "DeployTo":      false,
+      "DeployFrom":    false,
+      "Administrator": false
+    }
+  ]
+}

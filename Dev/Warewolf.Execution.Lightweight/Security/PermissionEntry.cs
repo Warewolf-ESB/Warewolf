@@ -32,7 +32,22 @@ namespace Warewolf.Execution.Lightweight.Security
         string ResourceName,
 
         /// <summary>Whether the group has View access to this resource.</summary>
-        bool View)
+        bool View,
+
+        /// <summary>Whether the group can trigger workflow execution.</summary>
+        bool Execute = false,
+
+        /// <summary>Whether the group can create and modify workflow definitions.</summary>
+        bool Contribute = false,
+
+        /// <summary>Whether the group can deploy workflows to a target environment.</summary>
+        bool DeployTo = false,
+
+        /// <summary>Whether the group can pull workflow deployments from a source environment.</summary>
+        bool DeployFrom = false,
+
+        /// <summary>Whether the group has full administrative permission over all workflow operations.</summary>
+        bool Administrator = false)
     {
         /// <summary>
         /// <c>true</c> when this entry represents the built-in public/anonymous group.
