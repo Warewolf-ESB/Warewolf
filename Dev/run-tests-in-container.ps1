@@ -82,6 +82,9 @@ if (-not $Assemblies -and -not $CIMode) {
     }
 }
 
+#Ensure entrypoint is blank or the run will hang at the end because the function host is running.
+(Get-Content $Dockerfile).Replace('ENTRYPOINT ["/bin/bash"]', 'ENTRYPOINT []') | Set-Content $Dockerfile
+
 # -- Find or start the test container -----------------------------------------
 if ($CIMode) {
     # In CI always build a fresh image and run a one-shot container per test suite.
