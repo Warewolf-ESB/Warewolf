@@ -103,7 +103,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.IsFalse(IsSuccessStatusCode(result));
             var responseMessage = GetResponse(result);
 
+#if WINDOWS
             Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 401,\r\n    \"Title\": \"user_unauthorized\",\r\n    \"Message\": \"Authorization has been denied for this user.\"\r\n  }\r\n}", responseMessage);
+#else
+			Assert.AreEqual("{\n  \"Error\": {\n    \"Status\": 401,\n    \"Title\": \"user_unauthorized\",\n    \"Message\": \"Authorization has been denied for this user.\"\n  }\n}", responseMessage);
+#endif
         }
 
         [TestMethod]
