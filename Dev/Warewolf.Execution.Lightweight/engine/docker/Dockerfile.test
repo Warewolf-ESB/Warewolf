@@ -26,4 +26,4 @@ ENV VSTEST_CONNECTION_TIMEOUT=300
 
 # The appservice base image has a startup entrypoint that launches sshd and the
 # Azure Functions host. Override it so docker run <cmd> executes <cmd> directly.
-CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/bash"]
