@@ -75,6 +75,7 @@ namespace Dev2.Activities
             get => _password;
             set
             {
+#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -87,6 +88,7 @@ namespace Dev2.Activities
                     }
                 }
                 else
+#endif
                 {
                     _password = value;
                 }

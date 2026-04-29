@@ -102,7 +102,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputResultList.Count);
             Assert.AreEqual("", outputResultList[0].Value);
         }
-        
+
+#if WINDOWS
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(DsfAbstractMultipleFilesActivity))]
@@ -144,6 +145,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(password, decryptedPassword);
             Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
-
+#endif
     }
 }

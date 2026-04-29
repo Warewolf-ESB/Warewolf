@@ -290,9 +290,13 @@ namespace Dev2.Runtime.Hosting
             }
 
             var serializedData = _serializer.Serialize(triggerQueue);
+#if WINDOWS
             var saveData = DpapiWrapper.Encrypt(serializedData);
+#else
+			var saveData = serializedData;
+#endif
 
-            var queueFilePath = GetQueueFilePath(triggerQueue);
+			var queueFilePath = GetQueueFilePath(triggerQueue);
             _fileWrapper.WriteAllText(queueFilePath, saveData);
         }
 
@@ -307,9 +311,13 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 var serializedData = _serializer.Serialize(triggerQueue);
+#if WINDOWS
                 var saveData = DpapiWrapper.Encrypt(serializedData);
+#else
+				var saveData = serializedData;
+#endif
 
-                var queueFilePath = GetQueueFilePath(triggerQueue);
+				var queueFilePath = GetQueueFilePath(triggerQueue);
                 _fileWrapper.WriteAllText(queueFilePath, saveData);
             }
             catch (Exception)

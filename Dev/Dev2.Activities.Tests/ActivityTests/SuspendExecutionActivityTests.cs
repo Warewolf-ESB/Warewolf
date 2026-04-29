@@ -645,7 +645,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(dataObject.ResourceID.ToString())},
+#if WINDOWS
                 {"environment", new StringBuilder(DpapiWrapper.Encrypt(currentEnvironment))},
+#else
+                {"environment", new StringBuilder(currentEnvironment)},
+#endif
                 {"startActivityId", new StringBuilder(nextNodeId.ToString())},
                 {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())},
                 {"currentuserprincipal", new StringBuilder(System.Security.Principal.WindowsIdentity.GetCurrent().Name)}

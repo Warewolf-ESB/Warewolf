@@ -139,7 +139,11 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(CommonEqualityOps))]
         public void CommonEqualityOps_PassWordsCompare_ReturnTrue()
         {
+#if WINDOWS
             var areConditionsEqual = CommonEqualityOps.PassWordsCompare(DpapiWrapper.Encrypt("123"), DpapiWrapper.Encrypt("123"));
+#else
+			var areConditionsEqual = CommonEqualityOps.PassWordsCompare("123", "123");
+#endif
             Assert.IsTrue(areConditionsEqual);
         }
 
