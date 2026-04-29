@@ -160,7 +160,7 @@ namespace Warewolf.Execution.Lightweight
                 // on demand by ServiceExecutionAbstract.GetSource(Guid) without pre-loading them all.
                 var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
                 LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
-                _executionLogger.LogWarning($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                _executionLogger.LogInfo($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
@@ -176,7 +176,7 @@ namespace Warewolf.Execution.Lightweight
                         EmitWorkflowStartState(resolvedName, request, startTime);
 
                     ExecuteActivityChain(dataObject, startActivity);
-                    _executionLogger.LogWarning($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                    _executionLogger.LogInfo($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
                     // Emit workflow End state after activities finish � mirrors the End marker
                     // the full Warewolf server emits, including the final output variable values.
