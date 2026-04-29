@@ -289,9 +289,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
             result.Add(new XAttribute("Type", GetType().Name));
+#if WINDOWS
             result.Add(new XAttribute("ConnectionString", DpapiWrapper.Encrypt(ConnectionString) ?? string.Empty));
+#else
+            result.Add(new XAttribute("ConnectionString", ConnectionString));
+#endif
 
-            result.Add(new XElement("AuthorRoles", string.Empty));
+			result.Add(new XElement("AuthorRoles", string.Empty));
             result.Add(new XElement("Comment", string.Empty));
             result.Add(new XElement("HelpLink", string.Empty));
             result.Add(new XElement("Tags", string.Empty));
@@ -309,6 +313,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override bool IsServer => false;
         public override bool IsResourceVersion => false;
 
-        #endregion
+#endregion
     }
 }
