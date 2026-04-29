@@ -286,9 +286,15 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
+#if WINDOWS
             StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
             StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 0,\r\n    \"CoveredNodes\": 0,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 0.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
+#else
+			StringAssert.Contains(executePayload, "\n  \"TestResults\": []\n");
+			StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 0,\n    \"CoveredNodes\": 0,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 0.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
+#endif
         }
 
         [TestMethod]
