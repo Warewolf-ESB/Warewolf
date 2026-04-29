@@ -34,11 +34,11 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 /// </summary>
 public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 {
-    private const string BypassHeader      = "X-WW-Bypass-Auth";
+    private const string BypassHeader = "X-WW-Bypass-Auth";
     private const string BypassHeaderValue = "local-dev-bypass";
 
-    private readonly IWorkflowAuthPolicyLoader                    _policyLoader;
-    private readonly IHostEnvironment                             _hostEnvironment;
+    private readonly IWorkflowAuthPolicyLoader _policyLoader;
+    private readonly IHostEnvironment _hostEnvironment;
     private readonly ILogger<WorkflowAuthorizationMiddleware> _logger;
 
     private static readonly JsonSerializerOptions JsonOptions =
@@ -50,9 +50,9 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         IHostEnvironment hostEnvironment,
         ILogger<WorkflowAuthorizationMiddleware> logger)
     {
-        _policyLoader    = policyLoader;
+        _policyLoader = policyLoader;
         _hostEnvironment = hostEnvironment;
-        _logger          = logger;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -102,6 +102,26 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             || principal.Identity?.IsAuthenticated != true)
         {
             _logger.LogWarning("No authenticated principal for secure route {Path}", path);
+
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    var hasPrincipalKey = context.Items.ContainsKey(AuthConstants.PrincipalContextKey);
+                    var principalType = principalObj?.GetType().Name ?? "(null)";
+                    var isAuth = (principalObj as WorkflowClaimsPrincipal)?.Identity?.IsAuthenticated;
+                    _logger.LogInformation(
+                        "[AuthDiag] 401 on {Path}: PrincipalKeyExists={KeyExists} PrincipalType={Type} IsAuthenticated={IsAuth}",
+                        path, hasPrincipalKey, principalType, isAuth);
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                        Console.WriteLine($"[AuthDiag] 401 on {path}: PrincipalKeyExists={hasPrincipalKey} PrincipalType={principalType} IsAuthenticated={isAuth}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
+
             await WriteErrorAsync(request, context, HttpStatusCode.Unauthorized,
                 "unauthorized", "Authentication required.", path);
             return;
@@ -118,11 +138,47 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         // Open-access mode: no policies loaded → allow all authenticated callers
         if (_policyLoader.PolicyCount == 0)
         {
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    _logger.LogInformation(
+                        "[AuthDiag] PolicyCount=0 (open-access mode). Caller={Caller} Workflow={Workflow}",
+                        principal.CallerIdentity, workflowName);
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                        Console.WriteLine($"[AuthDiag] PolicyCount=0 (open-access mode). Caller={principal.CallerIdentity} Workflow={workflowName}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
+
             _logger.LogDebug(
                 "No policies configured — open-access mode. Allowing '{Caller}' on '{Workflow}'",
                 principal.CallerIdentity, workflowName);
             await next(context);
             return;
+        }
+
+        if (AuthConstants.VerboseAuthLogging)
+        {
+            try
+            {
+                var groups = string.Join(", ", principal.Groups);
+                var perms = string.Join(", ", principal.Permissions);
+                _logger.LogInformation(
+                    "[AuthDiag] PolicyCount={PolicyCount} Workflow={Workflow} Caller={Caller} " +
+                    "CallerGroups=[{Groups}] CallerPermissions=[{Perms}]",
+                    _policyLoader.PolicyCount, workflowName, principal.CallerIdentity,
+                    groups, perms);
+                if (AuthConstants.VerboseConsoleAuthLogging)
+                    Console.WriteLine($"[AuthDiag] PolicyCount={_policyLoader.PolicyCount} Workflow={workflowName} Caller={principal.CallerIdentity} CallerGroups=[{groups}] CallerPermissions=[{perms}]");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+            }
         }
 
         var policy = _policyLoader.GetPolicy(workflowName);
@@ -131,9 +187,51 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             _logger.LogWarning(
                 "No policy found for workflow '{Workflow}' — denying '{Caller}'",
                 workflowName, principal.CallerIdentity);
-            await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
-                "forbidden", $"No policy configured for workflow '{workflowName}'.", path);
+
+            //TODO: consider allowing access when no policy is found, to avoid accidental lockout if config is missing or malformed.  If we do allow, log a warning with details of the missing workflow and current policies.
+            // log warning with workflowName and principal.CallerIdentity, and list all loaded policies for debugging
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    _logger.LogInformation(
+                    "No policy found for workflow '{Workflow}'. Caller='{Caller}'. Principal: {Policies}",
+                    workflowName, principal.CallerIdentity,
+                    principal.ToString());
+
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                    {
+                        Console.WriteLine($"No policy found for workflow '{workflowName}'. Caller='{principal.CallerIdentity}'. Principal: {principal.ToString()}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
+
+            await next(context);
+            //await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
+            //    "forbidden", $"No policy configured for workflow '{workflowName}'.", path);
             return;
+        }
+
+        if (AuthConstants.VerboseAuthLogging)
+        {
+            try
+            {
+                var allowedGroups = string.Join(", ", policy.AllowedGroups);
+                _logger.LogInformation(
+                    "[AuthDiag] Policy matched for '{Workflow}': AllowedGroups=[{AllowedGroups}] " +
+                    "RequiredPermissions={ReqPerms} GroupEntryCount={EntryCount}",
+                    workflowName, allowedGroups, policy.RequiredPermissions, policy.GroupEntries.Count);
+                if (AuthConstants.VerboseConsoleAuthLogging)
+                    Console.WriteLine($"[AuthDiag] Policy matched for '{workflowName}': AllowedGroups=[{allowedGroups}] RequiredPermissions={policy.RequiredPermissions} GroupEntryCount={policy.GroupEntries.Count}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+            }
         }
 
         // Group check (OR logic): caller must be in at least one allowed group
@@ -145,6 +243,25 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 principal.CallerIdentity, workflowName,
                 string.Join(", ", principal.Groups),
                 string.Join(", ", policy.AllowedGroups));
+
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    var callerGroups = string.Join(", ", principal.Groups);
+                    var policyGroups = string.Join(", ", policy.AllowedGroups);
+                    _logger.LogInformation(
+                        "[AuthDiag] 403 group denial: Workflow={Workflow} Caller={Caller} " +
+                        "CallerGroups=[{CallerGroups}] PolicyAllowedGroups=[{PolicyGroups}]",
+                        workflowName, principal.CallerIdentity, callerGroups, policyGroups);
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                        Console.WriteLine($"[AuthDiag] 403 group denial: Workflow={workflowName} Caller={principal.CallerIdentity} CallerGroups=[{callerGroups}] PolicyAllowedGroups=[{policyGroups}]");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
 
             await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
                 "forbidden", "Insufficient group membership.", path,
@@ -165,6 +282,24 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 "Has={Has} Required={Required}",
                 principal.CallerIdentity, workflowName,
                 matchedEntry.Permissions, policy.RequiredPermissions);
+
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    _logger.LogInformation(
+                        "[AuthDiag] 403 permission denial: Workflow={Workflow} Caller={Caller} " +
+                        "MatchedGroup={Group} HasPerms={HasPerms} RequiredPerms={ReqPerms}",
+                        workflowName, principal.CallerIdentity,
+                        matchedEntry.GroupName, matchedEntry.Permissions, policy.RequiredPermissions);
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                        Console.WriteLine($"[AuthDiag] 403 permission denial: Workflow={workflowName} Caller={principal.CallerIdentity} MatchedGroup={matchedEntry.GroupName} HasPerms={matchedEntry.Permissions} RequiredPerms={policy.RequiredPermissions}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
 
             await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
                 "forbidden", "Insufficient permissions.", path,
@@ -195,17 +330,17 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     private static async Task WriteErrorAsync(
         HttpRequestData request,
         FunctionContext context,
-        HttpStatusCode  statusCode,
-        string          error,
-        string          message,
-        string          path,
-        object?         extra = null)
+        HttpStatusCode statusCode,
+        string error,
+        string message,
+        string path,
+        object? extra = null)
     {
         var body = new Dictionary<string, object>
         {
-            ["error"]   = error,
+            ["error"] = error,
             ["message"] = message,
-            ["path"]    = path,
+            ["path"] = path,
         };
 
         if (extra is not null)

@@ -58,4 +58,21 @@ public static class AuthConstants
 
     /// <summary>Identity provider injected by Easy Auth.</summary>
     public const string ClientPrincipalIdpHeader  = "X-MS-CLIENT-PRINCIPAL-IDP";
+
+    // ── Diagnostic logging toggle ─────────────────────────────────────────────
+
+    /// <summary>
+    /// Enables verbose diagnostic logging across all auth middleware.
+    /// Set to <c>true</c> during testing/debugging, <c>false</c> for production.
+    /// Because this is a <c>const</c>, the compiler eliminates guarded code blocks
+    /// entirely when set to <c>false</c> — zero runtime overhead in production.
+    /// </summary>
+    public const bool VerboseAuthLogging = true;
+
+    /// <summary>
+    /// Enables verbose Console.WriteLine logging for all auth middleware.
+    /// Output goes to stdout, which can be streamed live via <c>az webapp log tail</c>.
+    /// Set to <c>true</c> during testing/debugging, <c>false</c> for production.
+    /// </summary>
+    public const bool VerboseConsoleAuthLogging = true;
 }

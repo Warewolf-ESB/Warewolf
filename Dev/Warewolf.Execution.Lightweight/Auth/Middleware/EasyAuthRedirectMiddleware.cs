@@ -71,10 +71,71 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             .TryGetValues("Authorization", out var authValues)
             && authValues.Any(v => v.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase));
 
+        var isBrowser = LooksLikeBrowserNavigation(request);
+
+        if (AuthConstants.VerboseAuthLogging)
+        {
+            try
+            {
+                _logger.LogInformation(
+                    "[AuthDiag] EasyAuth check: Path={Path} HasPrincipalHeader={HasPrincipal} " +
+                    "HasAuthHeader={HasAuth} IsBrowserNavigation={IsBrowser}",
+                    path, hasPrincipalHeader, hasAuthHeader, isBrowser);
+                if (AuthConstants.VerboseConsoleAuthLogging)
+                    Console.WriteLine($"[AuthDiag] EasyAuth check: Path={path} HasPrincipalHeader={hasPrincipalHeader} HasAuthHeader={hasAuthHeader} IsBrowserNavigation={isBrowser}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+            }
+        }
+
         if (!hasPrincipalHeader && !hasAuthHeader)
         {
+            if (isBrowser)
+            {
+                var redirect = $"/.auth/login/aad?post_login_redirect_uri={Uri.EscapeDataString(path + request.Url.Query)}";
+
+                if (AuthConstants.VerboseAuthLogging)
+                {
+                    try
+                    {
+                        _logger.LogInformation("[AuthDiag] Browser navigation detected — 302 redirect to {Redirect}", redirect);
+                        if (AuthConstants.VerboseConsoleAuthLogging)
+                            Console.WriteLine($"[AuthDiag] Browser navigation detected — 302 redirect to {redirect}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                    }
+                }
+
+                var resp302 = request.CreateResponse(HttpStatusCode.Redirect);
+                resp302.Headers.Add("Location", redirect);
+                context.GetInvocationResult().Value = resp302;
+                return;
+            }
+
             _logger.LogWarning(
                 "Unauthenticated request to protected route {Path} — returning 401", path);
+
+            if (AuthConstants.VerboseAuthLogging)
+            {
+                try
+                {
+                    var accept = request.Headers.TryGetValues("Accept", out var av) ? av.FirstOrDefault() : "(none)";
+                    var userAgent = request.Headers.TryGetValues("User-Agent", out var ua) ? ua.FirstOrDefault() : "(none)";
+                    _logger.LogInformation(
+                        "[AuthDiag] 401 details: Path={Path} Accept={Accept} UserAgent={UserAgent}",
+                        path, accept, userAgent);
+                    if (AuthConstants.VerboseConsoleAuthLogging)
+                        Console.WriteLine($"[AuthDiag] 401 details: Path={path} Accept={accept} UserAgent={userAgent}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+                }
+            }
 
             var response = request.CreateResponse(HttpStatusCode.Unauthorized);
             response.Headers.Add("Content-Type", "application/json");
@@ -88,5 +149,13 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
         _logger.LogDebug("Authenticated request to {Path} — passing to next middleware", path);
         await next(context);
+    }
+
+    static bool LooksLikeBrowserNavigation(HttpRequestData req)
+    {
+        var accept = req.Headers.TryGetValues("Accept", out var a) ? a.FirstOrDefault() : null;
+        var fetchMode = req.Headers.TryGetValues("Sec-Fetch-Mode", out var f) ? f.FirstOrDefault() : null;
+        return (accept?.Contains("text/html", StringComparison.OrdinalIgnoreCase) ?? false)
+            && !string.Equals(fetchMode, "cors", StringComparison.OrdinalIgnoreCase);
     }
 }
