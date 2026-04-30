@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/_api/web/GetFolderByServerRelativeUrl.*"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "body": "{\"d\":{\"results\":[{\"Name\":\"TestDocument.docx\",\"ServerRelativeUrl\":\"/Documents/TestDocument.docx\"}]}}"
+  }
+}

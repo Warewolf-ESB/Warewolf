@@ -14,6 +14,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,11 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
-            SetupDropboxClient(SelectedSource.AccessToken);
+            var ensured = AmbientSourceLoader.Current?.EnsureSourceLoaded(SelectedSource.ResourceID) == true;
+            var liveSource = ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource;
+            var tokenPreview = liveSource.AccessToken?.Length > 8 ? liveSource.AccessToken.Substring(0, 8) + "..." : "(empty/null)";
+            Dev2Logger.Warn($"[DropboxDelete] EnsureSourceLoaded={ensured} CatalogHit={liveSource != SelectedSource} AccessToken={tokenPreview}(len={liveSource.AccessToken?.Length}) RefreshToken={(string.IsNullOrEmpty(liveSource.RefreshToken) ? "MISSING" : "present")}", GlobalConstants.WarewolfInfo);
+            SetupDropboxClient(liveSource.AccessToken, liveSource.RefreshToken, liveSource.AppKey, liveSource.AccessTokenExpiresAt);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDeleteSuccessResult dropboxSuccessResult)
             {

@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/_api/web/lists"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "body": "{\"d\":{\"results\":[{\"Title\":\"Documents\",\"Id\":\"00000000-0000-0000-0000-000000000001\"}]}}"
+  }
+}

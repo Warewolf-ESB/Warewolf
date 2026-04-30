@@ -112,11 +112,6 @@
   <!-- ========================================================= -->
   
   <ItemGroup>
-    <Content Include="..\Resources - Release\Resources\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-
     <!--
       Local Resources folder: place workflow .bite / .xml files here for
       project-specific resources (e.g. the login override workflow).
@@ -163,6 +158,7 @@
     </None>-->
     <None Include="Scripts\Generate-WorkflowIndex.ps1" />
     <None Include="Scripts\Encrypt-Config.ps1" />
+    <None Include="Scripts\Get-DropboxTokens.ps1" />
     <None Include="Scripts\KeyVaultSetup.azcli" />
     <None Include="docs\README-Encryption.md" />
     <None Include="docs\KeyRotationRunbook.md" />

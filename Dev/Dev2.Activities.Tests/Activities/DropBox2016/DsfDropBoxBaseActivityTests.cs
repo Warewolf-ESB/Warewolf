@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.Activities.DropBox2016
 
             public void TestSetupDropboxClient(string accessToken)
             {
-                SetupDropboxClient(accessToken);
+                SetupDropboxClient(accessToken, null, null, new System.DateTime());
             }
 
             public override IEnumerable<StateVariable> GetState()

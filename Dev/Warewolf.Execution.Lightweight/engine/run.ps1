@@ -32,6 +32,7 @@ if (Test-Path $LocalSettingsFile) {
         "DEBUG_AZURE_KEYVAULT_SECRET",
         "AZURE_TENANT_ID",
         "AZURE_CLIENT_ID",
+        "AZURE_CLIENT_SECRET",
         "SkipFailureToRetrieveSecret",
         "WorkflowsDirectory"
     )

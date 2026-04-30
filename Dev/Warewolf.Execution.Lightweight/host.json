@@ -13,7 +13,8 @@
     "logLevel": {
       "Default": "Warning",
       "Warewolf.Execution.Lightweight.Security.AuditLogger": "Debug",
-      "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Information"
+      "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Information",
+      "Warewolf.Execution.Lightweight.Functions.DropboxOAuthFunction": "Information"
     },
     "applicationInsights": {
       "samplingSettings": {

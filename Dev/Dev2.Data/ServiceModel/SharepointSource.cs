@@ -70,7 +70,55 @@ namespace Dev2.Data.ServiceModel
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+
+            // Detect WFAES:: values that cannot be decrypted because the AES hook was
+            // never registered (Key Vault init failed or AZURE_KEYVAULT_NAME not set).
+            // Throw early so the caller gets a clear error instead of a silent empty Server.
+            if (!string.IsNullOrEmpty(conString)
+                && conString.StartsWith("WFAES::", StringComparison.Ordinal)
+                && DpapiWrapper.AesDecryptHook == null)
+            {
+                throw new InvalidOperationException(
+                    "SharepointSource ConnectionString has a WFAES:: prefix (AES-256-GCM encryption) " +
+                    "but DpapiWrapper.AesDecryptHook is not registered — the AES key was not loaded from Key Vault. " +
+                    "Ensure AZURE_KEYVAULT_NAME is set and Key Vault is reachable at startup. " +
+                    "If SkipFailureToRetrieveSecret=true, the host started in degraded mode without the decryption key.");
+            }
+
+            // If CanBeDecrypted returns false and the value looks like a base64 blob (DPAPI),
+            // the file was encrypted by the full Warewolf server using Windows DPAPI and cannot
+            // be decrypted on Linux. Throw immediately with a clear message instead of silently
+            // using the raw ciphertext as the connection string (which produces an empty Server).
+            if (!string.IsNullOrEmpty(conString)
+                && !conString.StartsWith("WFAES::", StringComparison.Ordinal)
+                && !conString.CanBeDecrypted()
+                && conString.IsBase64())
+            {
+                var hookStatus = DpapiWrapper.AesDecryptHook != null
+                    ? "registered (Key Vault key was loaded)"
+                    : "NOT registered";
+                throw new InvalidOperationException(
+                    "SharepointSource ConnectionString is DPAPI-encrypted (Windows-only) and cannot be decrypted " +
+                    $"in the current environment. DpapiWrapper.AesDecryptHook is {hookStatus}. " +
+                    "Re-encrypt the .bite file using Encrypt-Config.ps1 so the ConnectionString carries the WFAES:: prefix, " +
+                    "then rebuild the Docker image (run run.ps1 choosing Y to re-publish).");
+            }
+
+            string connectionString;
+            try
+            {
+                connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            }
+            catch (Exception ex)
+            {
+                var prefix = conString.StartsWith("WFAES::", StringComparison.Ordinal) ? "WFAES::" : "(non-WFAES)";
+                throw new InvalidOperationException(
+                    $"Failed to decrypt SharepointSource ConnectionString (prefix={prefix}): " +
+                    $"{ex.GetType().Name}: {ex.Message}. " +
+                    "Ensure the Key Vault AES key used by Encrypt-Config.ps1 matches the one configured in the container " +
+                    "(AZURE_KEYVAULT_NAME / KEYVAULT_SECRET_NAME env vars).", ex);
+            }
+
             ParseProperties(connectionString, properties);
             Server = properties["Server"];
             UserName = properties["UserName"];

@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -112,6 +113,13 @@ namespace Dev2.Activities.Sharepoint
             var colItr = new WarewolfListIterator();
 
             var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(context.WorkspaceID, SharepointServerResourceId);
+            if (sharepointSource == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SharepointServerResourceId) == true
+                && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    sharepointSource = ws.OfType<SharepointSource>().FirstOrDefault(r => r.ResourceID == SharepointServerResourceId);
+            }
             if (sharepointSource == null)
             {
                 sharepointSource = SharepointSource;

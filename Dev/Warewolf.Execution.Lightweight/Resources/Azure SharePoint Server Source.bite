@@ -1,0 +1,7 @@
+﻿<Source ID="1ff2fb34-a874-4c55-b025-e6872df45a13" Name="Azure SharePoint Server Source" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="WFAES::dO0lxob3Y6xsxZxKY87BumIHdZ8IuVnzyJ6S2ngAcLs9i838rL3xW8Oeyu43zLrhHRMqUASGt2ZlILBoA2RdPFwfJ/2DDw+Da53MLl4hLYmmvqrgzh5qp7Hu6iR3mehV7OuExzykf59/L7h8Ht1+/Ik57mzsw+mftgi/XgOWQlc=" IsSharepointOnline="false" Type="SharepointSource" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Azure SharePoint Server Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>SharepointServerSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-22T14:43:14.3075494+01:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1ff2fb34-a874-4c55-b025-e6872df45a13" VersionId="4d0a3f4c-fd86-42f6-9afa-85053bc8a13d" />
+</Source>

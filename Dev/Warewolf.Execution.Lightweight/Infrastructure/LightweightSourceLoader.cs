@@ -23,8 +23,10 @@ namespace Warewolf.Execution.Lightweight
 {
     /// <summary>
     /// Scans a resource directory for <see cref="DbSource"/>, <see cref="WebSource"/>,
-    /// <see cref="RedisSource"/>, and <see cref="RabbitMQSource"/> bite files and provides
-    /// on-demand access to individual sources via <see cref="IOnDemandSourceLoader"/>.
+    /// <see cref="RedisSource"/>, <see cref="RabbitMQSource"/>, <see cref="EmailSource"/>,
+    /// <see cref="ExchangeSource"/>, <see cref="DropBoxSource"/>, <see cref="SharepointSource"/>,
+    /// and <see cref="ElasticsearchSource"/> bite files and provides on-demand access to
+    /// individual sources via <see cref="IOnDemandSourceLoader"/>.
     ///
     /// Design (minimum memory)
     /// ───────────────────────
@@ -59,7 +61,97 @@ namespace Warewolf.Execution.Lightweight
         // even under concurrent requests targeting the same source.
         private readonly ConcurrentDictionary<Guid, Lazy<bool>> _registeredIds = new();
 
+        // Accumulates load-error messages from LoadSourceFile for inclusion in diagnostics.
+        private readonly System.Collections.Concurrent.ConcurrentBag<string> _loadErrors = new();
+
         // ── Public API ────────────────────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Removes the cached registration flag for <paramref name="sourceId"/> and
+        /// discards the corresponding object from <see cref="ResourceCatalog"/> so
+        /// that the next call to <see cref="IOnDemandSourceLoader.EnsureSourceLoaded"/>
+        /// re-reads the source from disk.
+        ///
+        /// Called by <c>DropboxOAuthFunction</c> after it writes new OAuth tokens
+        /// back to a <c>.bite</c> file so the next workflow execution picks up the
+        /// refreshed tokens without requiring a server restart.
+        /// </summary>
+        /// <summary>
+        /// Returns the absolute file path recorded in the directory index for
+        /// <paramref name="sourceId"/>, or <c>null</c> when the source has not yet
+        /// been indexed (index not yet built, or ID not present in any indexed directory).
+        ///
+        /// Called by <c>DropboxOAuthFunction</c> so it can write new OAuth tokens to the
+        /// exact file the source loader will re-read from after cache invalidation,
+        /// regardless of what <c>WorkflowsDirectory</c> is set to.
+        /// </summary>
+        internal string? GetIndexedFilePath(Guid sourceId)
+        {
+            foreach (var (_, indexLazy) in _directoryIndices)
+            {
+                try
+                {
+                    if (indexLazy.IsValueCreated &&
+                        indexLazy.Value.TryGetValue(sourceId, out var entry))
+                        return entry.Path;
+                }
+                catch { /* index build error — skip */ }
+            }
+            return null;
+        }
+
+        internal void Invalidate(Guid sourceId)
+        {
+            // Remove the "already loaded" flag so EnsureSourceLoaded will re-run.
+            _registeredIds.TryRemove(sourceId, out _);
+
+            // Remove the stale source object from ResourceCatalog so the loader
+            // can register a fresh copy on the next EnsureSourceLoaded call.
+            if (ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var resources))
+            {
+                lock (resources)
+                {
+                    resources.RemoveAll(r => r.ResourceID == sourceId);
+                }
+            }
+
+            Dev2Logger.Warn(
+                $"[LightweightSourceLoader] Invalidate({sourceId}): cache entry removed. " +
+                "Source will be reloaded from disk on next access.",
+                GlobalConstants.WarewolfInfo);
+        }
+
+        /// <summary>
+        /// Returns a one-line diagnostic snapshot: indexed directories, their sizes, and any
+        /// source-load errors captured since this instance was created.  Designed to be embedded
+        /// directly in exception messages so the information surfaces in structured log sinks
+        /// that capture exception text (e.g., Azure Functions ILogger).
+        /// </summary>
+        public string GetDiagnostics()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"AmbientSourceLoader.Current={(AmbientSourceLoader.Current == null ? "null" : "registered")}; ");
+            sb.Append($"IndexedDirs=[");
+            foreach (var (dir, indexLazy) in _directoryIndices)
+            {
+                try
+                {
+                    if (indexLazy.IsValueCreated)
+                        sb.Append($"{dir}({indexLazy.Value.Count} entries), ");
+                    else
+                        sb.Append($"{dir}(index not yet built), ");
+                }
+                catch (Exception ex)
+                {
+                    sb.Append($"{dir}(INDEX BUILD ERROR: {ex.GetType().Name}: {ex.Message}), ");
+                }
+            }
+            sb.Append("]; ");
+            if (_loadErrors.Count > 0)
+                sb.Append($"LoadErrors=[{string.Join("; ", _loadErrors)}]");
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Registers <paramref name="baseDirectory"/> for on-demand source resolution and
@@ -70,9 +162,13 @@ namespace Warewolf.Execution.Lightweight
         internal void EnsureIndexed(string baseDirectory)
         {
             if (string.IsNullOrEmpty(baseDirectory))
+            {
+                Dev2Logger.Warn("[LightweightSourceLoader] EnsureIndexed called with null/empty directory — source indexing skipped.", GlobalConstants.WarewolfInfo);
                 return;
+            }
 
             var key = Path.GetFullPath(baseDirectory);
+            Dev2Logger.Warn($"[LightweightSourceLoader] EnsureIndexed: registering directory '{key}' (exists={Directory.Exists(key)}).", GlobalConstants.WarewolfInfo);
             _directoryIndices.GetOrAdd(key,
                 k => new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
                     () => BuildFileIndex(k),
@@ -83,9 +179,10 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>
         /// Loads the single source (<see cref="DbSource"/>, <see cref="WebSource"/>,
-        /// <see cref="RedisSource"/>, or <see cref="RabbitMQSource"/>) for
-        /// <paramref name="sourceId"/> from disk (if not already registered) and adds it to
-        /// <see cref="ResourceCatalog.Instance"/>.
+        /// <see cref="RedisSource"/>, <see cref="RabbitMQSource"/>, <see cref="EmailSource"/>,
+        /// <see cref="ExchangeSource"/>, <see cref="DropBoxSource"/>, <see cref="SharepointSource"/>,
+        /// or <see cref="ElasticsearchSource"/>) for <paramref name="sourceId"/> from disk
+        /// (if not already registered) and adds it to <see cref="ResourceCatalog.Instance"/>.
         /// The source object itself is not retained here — only a registration flag is cached,
         /// so <see cref="ResourceCatalog"/> holds the sole strong reference.
         /// Subsequent calls for the same ID are no-ops (flag already set).
@@ -95,10 +192,49 @@ namespace Warewolf.Execution.Lightweight
             var lazy = _registeredIds.GetOrAdd(sourceId, id =>
                 new Lazy<bool>(() =>
                 {
+                    // Log which directories are indexed so we can diagnose path issues.
+                    var indexedDirs = string.Join(", ", _directoryIndices.Keys);
+                    Dev2Logger.Warn(
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{indexedDirs}]", GlobalConstants.WarewolfInfo);
+
+                    // Check whether the ID exists in any index before attempting to load.
+                    // This lets us give a precise "found but failed" vs "not found" diagnostic.
+                    bool foundInIndex = false;
+                    foreach (var (dir, indexLazy) in _directoryIndices)
+                    {
+                        try
+                        {
+                            var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
+                            var indexMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]";
+                            _loadErrors.Add(indexMsg);
+                            Dev2Logger.Warn($"[LightweightSourceLoader] {indexMsg}", GlobalConstants.WarewolfInfo);
+
+                            if (indexLazy.Value.ContainsKey(id))
+                                foundInIndex = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            var buildFailMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}";
+                            _loadErrors.Add(buildFailMsg);
+                            Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
+                        }
+                    }
+
                     var source = ResolveFromIndex(id);
                     if (source == null)
+                    {
+                        // Distinguish "found in index but failed to load" (e.g. AES key mismatch)
+                        // from "genuinely not present in any index" so the diagnostic is actionable.
+                        var summaryMsg = foundInIndex
+                            ? $"EnsureSourceLoaded({id}): source found in index but failed to load — check LoadSourceFile error above (e.g. AES key mismatch or corrupt .bite file)."
+                            : $"EnsureSourceLoaded({id}): source NOT found in any indexed directory.";
+                        _loadErrors.Add(summaryMsg);
+                        Dev2Logger.Warn($"[LightweightSourceLoader] {summaryMsg}", GlobalConstants.WarewolfInfo);
                         return false;
+                    }
                     RegisterSingle(source);
+                    Dev2Logger.Warn(
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): source registered OK (Type={source.GetType().Name}, ResourceID={source.ResourceID}).", GlobalConstants.WarewolfInfo);
                     return true;
                 }, LazyThreadSafetyMode.ExecutionAndPublication));
 
@@ -120,7 +256,9 @@ namespace Warewolf.Execution.Lightweight
         /// <summary>
         /// Scans <paramref name="directory"/> with <see cref="XmlReader"/> to build a
         /// ResourceID → (filePath, sourceType) mapping without loading any XElement bodies.
-        /// Accepts <c>DbSource</c>, <c>WebSource</c>, <c>RedisSource</c>, and <c>RabbitMQSource</c> type attributes.
+        /// Accepts <c>DbSource</c>, <c>WebSource</c>, <c>RedisSource</c>, <c>RabbitMQSource</c>,
+        /// <c>EmailSource</c>, <c>ExchangeSource</c>, <c>DropBoxSource</c>,
+        /// <c>SharepointSource</c>, and <c>ElasticsearchSource</c> type attributes.
         /// </summary>
         private static IReadOnlyDictionary<Guid, (string Path, string Type)> BuildFileIndex(string directory)
         {
@@ -141,7 +279,9 @@ namespace Warewolf.Execution.Lightweight
         /// <summary>
         /// Opens <paramref name="filePath"/> with <see cref="XmlReader"/>, reads only the root
         /// element, and returns the ResourceID when <c>Type</c> is <c>DbSource</c>,
-        /// <c>WebSource</c>, <c>RedisSource</c>, or <c>RabbitMQSource</c>. The remainder of the XML is never read.
+        /// <c>WebSource</c>, <c>RedisSource</c>, <c>RabbitMQSource</c>, <c>EmailSource</c>,
+        /// <c>ExchangeSource</c>, <c>DropBoxSource</c>, <c>SharepointSource</c>, or
+        /// <c>ElasticsearchSource</c>. The remainder of the XML is never read.
         /// </summary>
         private static bool TryPeekSourceId(string filePath, out Guid id, out string sourceType)
         {
@@ -165,7 +305,9 @@ namespace Warewolf.Execution.Lightweight
                         continue;
 
                     var typeAttr = reader.GetAttribute("Type") ?? string.Empty;
-                    if (typeAttr.ToLowerInvariant() is not ("dbsource" or "websource" or "redissource" or "rabbitmqsource"))
+                    if (typeAttr.ToLowerInvariant() is not ("dbsource" or "websource" or "redissource" or "rabbitmqsource"
+                            or "emailsource" or "exchangesource" or "dropboxsource"
+                            or "sharepointsource" or "elasticsearchsource"))
                         return false; // root element is not a supported source type — stop reading
 
                     var idStr = reader.GetAttribute("ResourceID") ?? reader.GetAttribute("ID");
@@ -185,24 +327,63 @@ namespace Warewolf.Execution.Lightweight
             return false;
         }
 
-        private static IResource? LoadSourceFile(string filePath, string sourceType)
+        private IResource? LoadSourceFile(string filePath, string sourceType)
         {
             try
             {
                 var xe = XElement.Load(filePath);
                 IResource source = sourceType.ToLowerInvariant() switch
                 {
-                    "websource" => new WebSource(xe),
-                    "dbsource" => new DbSource(xe),
-                    "redissource" => new RedisSource(xe),
-                    "rabbitmqsource" => new RabbitMQSource(xe),
+                    "websource"           => new WebSource(xe),
+                    "dbsource"            => new DbSource(xe),
+                    "redissource"         => new RedisSource(xe),
+                    "rabbitmqsource"      => new RabbitMQSource(xe),
+                    "emailsource"         => new EmailSource(xe),
+                    "exchangesource"      => new ExchangeSource(xe),
+                    "dropboxsource"       => new DropBoxSource(xe),
+                    "sharepointsource"    => new SharepointSource(xe),
+                    "elasticsearchsource" => new ElasticsearchSource(xe),
                     _ => null
                 };
-                return source?.ResourceID != Guid.Empty ? source : null;
+                if (source != null)
+                {
+                    source.FilePath = filePath;
+                }
+                if (source?.ResourceID == Guid.Empty)
+                {
+                    var msg = $"LoadSourceFile: '{Path.GetFileName(filePath)}' loaded but ResourceID is Guid.Empty — skipping.";
+                    _loadErrors.Add(msg);
+                    Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
+                    return null;
+                }
+                if (source is DropBoxSource dropboxSource)
+                {
+                    var tokenPreview = dropboxSource.AccessToken?.Length > 8
+                        ? dropboxSource.AccessToken.Substring(0, 8) + "..."
+                        : "(empty/null)";
+                    var dropboxMsg = $"LoadSourceFile: DropBoxSource '{dropboxSource.ResourceName}' (ID={dropboxSource.ResourceID}) loaded from '{Path.GetFileName(filePath)}'. " +
+                        $"AccessToken={tokenPreview}(len={dropboxSource.AccessToken?.Length}) " +
+                        $"RefreshToken={(string.IsNullOrEmpty(dropboxSource.RefreshToken) ? "MISSING" : "present")} " +
+                        $"AppKey={(string.IsNullOrEmpty(dropboxSource.AppKey) ? "MISSING" : "present")}";
+                    _loadErrors.Add(dropboxMsg);
+                    Dev2Logger.Warn($"[LightweightSourceLoader] {dropboxMsg}", GlobalConstants.WarewolfInfo);
+                }
+                return source;
             }
-            catch
+            catch (Exception ex)
             {
-                return null; // malformed file — skip silently
+                var chain = new System.Text.StringBuilder();
+                chain.Append($"{ex.GetType().Name}: {ex.Message}");
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    chain.Append($" ---> {inner.GetType().Name}: {inner.Message}");
+                    inner = inner.InnerException;
+                }
+                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {chain}";
+                _loadErrors.Add(msg);
+                Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
+                return null;
             }
         }
 

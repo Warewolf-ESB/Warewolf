@@ -24,6 +24,13 @@ namespace Dev2.Runtime.Interfaces
         /// Returns <c>true</c> when the source is now available in the catalog.
         /// </summary>
         bool EnsureSourceLoaded(Guid sourceId);
+
+        /// <summary>
+        /// Returns a concise diagnostic string describing the current loader state
+        /// (indexed directories, index sizes, load errors).  Intended to be embedded
+        /// in exception messages so the information surfaces in structured log sinks.
+        /// </summary>
+        string GetDiagnostics();
     }
 
     /// <summary>
