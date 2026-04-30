@@ -6,6 +6,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Security;
 
@@ -30,6 +31,11 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
         services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
         services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+
+        // Auth policy loader — builds WorkflowAuthPolicy from secure.config
+        // WindowsGroupPermissions entries at startup.
+        services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+
         return services;
     }
 

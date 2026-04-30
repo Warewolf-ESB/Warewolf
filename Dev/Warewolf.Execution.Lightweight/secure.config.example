@@ -1,0 +1,44 @@
+{
+  "WindowsGroupPermissions": [
+    {
+      "Comment": "Server permissions apply to the whole server.",
+      "WindowsGroup": "Warewolf Adminstrators",
+      "IsServer": true,
+      "View": true,
+      "Execute": true,
+      "Contribute": true,
+      "DeployTo": true,
+      "DeployFrom": true,
+      "Administrator": true
+    },
+    {
+      "Comment": "Server permissions apply to the whole server.",
+      "WindowsGroup": "Public",
+      "IsServer": true,
+      "View": false,
+      "Execute": false,
+      "Contribute": false,
+      "DeployTo": false,
+      "DeployFrom": false,
+      "Administrator": false
+    },
+    {
+      "Comment": "Resource permissions apply to a specific workflow only. Set IsServer to false and provide the ResourceName.",
+      "WindowsGroup": "Public",
+      "IsServer": false,
+      "ResourceName": "Hello World",
+      "View": true,
+      "Execute": true,
+      "Contribute": false
+    },
+    {
+      "Comment": "Another resource permission example — grant a specific user access to one workflow.",
+      "WindowsGroup": "another-user@example.com",
+      "IsServer": false,
+      "ResourceName": "Hello World",
+      "View": true,
+      "Execute": true,
+      "Contribute": false
+    }
+  ]
+}
