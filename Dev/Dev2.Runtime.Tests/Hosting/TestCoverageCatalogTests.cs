@@ -34,9 +34,9 @@ namespace Dev2.Tests.Runtime.Hosting
         private static readonly ITestCoverageCatalog _testCoverageCatalog = TestCoverageCatalog.Instance;
 
         private static readonly string _testCoveragePath = EnvironmentVariables.TestCoveragePath;
-        private static readonly string _reportPath = _testCoveragePath + "\\" + _workflowId.ToString();
-        private static readonly string _oldReportPath = _reportPath + "\\old_report_name.coverage";
-        private static readonly string _newReportPath = _reportPath + "\\False branch test.coverage";
+        private static readonly string _reportPath = Path.Combine(_testCoveragePath, _workflowId.ToString());
+        private static readonly string _oldReportPath = Path.Combine(_reportPath, "old_report_name.coverage");
+        private static readonly string _newReportPath = Path.Combine(_reportPath, "False branch test.coverage");
 
 
         private readonly ServiceTestCoverageModelTo _testCoverageModelTo = new ServiceTestCoverageModelTo

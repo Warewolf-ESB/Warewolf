@@ -129,7 +129,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
             var responseMessage = GetResponse(result);
 
+#if WINDOWS
             Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>user_forbidden</Title>\r\n  <Message>Authorization has been denied for this request.</Message>\r\n</Error>", responseMessage);
+#else
+			Assert.AreEqual("<Error>\n  <Status>403</Status>\n  <Title>user_forbidden</Title>\n  <Message>Authorization has been denied for this request.</Message>\n</Error>", responseMessage);
+#endif
         }
 
         [TestMethod]

@@ -241,10 +241,10 @@ namespace Dev2.Data.Tests.PathOperations
 
             var driver = new ActivityIOBrokerBaseDriver();
 
-            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\folder1\folder2\a.txt");
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"//Home/folder1/folder2/a.txt");
 
             mockDst.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
-            mockDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockDst.Setup(o => o.PathSeperator()).Returns("/");
             //--------------------------Act-----------------------------
             var endPoint = driver.CreateEndPoint(mockDst.Object, mockArgs.Object, true);
             //--------------------------Assert--------------------------
@@ -266,10 +266,10 @@ namespace Dev2.Data.Tests.PathOperations
 
             var driver = new ActivityIOBrokerBaseDriver();
 
-            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\folder1\folder2\a.txt");
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"//Home/folder1/folder2/a.txt");
 
             mockDst.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
-            mockDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockDst.Setup(o => o.PathSeperator()).Returns("/");
             mockDst.Setup(o => o.CreateDirectory(mockDst.Object.IOPath, It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
             //--------------------------Act-----------------------------
             var endPoint = driver.CreateEndPoint(mockDst.Object, mockArgs.Object, true);
@@ -292,10 +292,10 @@ namespace Dev2.Data.Tests.PathOperations
 
             var driver = new ActivityIOBrokerBaseDriver();
 
-            mockActivityIOPath.Setup(o => o.Path).Returns(@"\\Home\folder1\folder2\a.txt");
+            mockActivityIOPath.Setup(o => o.Path).Returns(@"//Home/folder1/folder2/a.txt");
 
             mockActivityIOOperationsEndPoint.Setup(o => o.IOPath).Returns(mockActivityIOPath.Object);
-            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPoint.Setup(o => o.PathSeperator()).Returns("/");
             mockActivityIOOperationsEndPoint.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
             mockActivityIOOperationsEndPoint.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
             //--------------------------Act-----------------------------

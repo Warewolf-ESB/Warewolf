@@ -107,7 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.IsTrue(result.ErrorMessage.StartsWith("Unsuccessful () low level call on HEAD: /\r\n Exception: No such host is known. (ddd:9300)\r\n\r\n# Audit trail of this API call:\r\n - [1] BadRequest: Node: http://ddd:9300/ Took: "));
+            Assert.IsTrue(result.ErrorMessage.Replace("\r\n", "\n").StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: No such host is known. (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: "));
         }
     }
 }

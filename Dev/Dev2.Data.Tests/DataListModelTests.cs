@@ -498,7 +498,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(0, dataListModel.ShapeScalars.Count);
 
 
-            const string expectedValue = "{\r\n  \"Description\": \"\",\r\n  \"IsEditable\": \"True\",\r\n  \"IsJson\": \"True\",\r\n  \"IsArray\": \"False\",\r\n  \"ColumnIODirection\": \"Output\",\r\n  \"FoodName\": {\r\n    \"Description\": \"\",\r\n    \"IsEditable\": \"True\",\r\n    \"IsJson\": \"True\",\r\n    \"IsArray\": \"False\",\r\n    \"ColumnIODirection\": \"None\"\r\n  }\r\n}";
+            var expectedValue = ("{" + Environment.NewLine + "  \"Description\": \"\"," + Environment.NewLine + "  \"IsEditable\": \"True\"," + Environment.NewLine + "  \"IsJson\": \"True\"," + Environment.NewLine + "  \"IsArray\": \"False\"," + Environment.NewLine + "  \"ColumnIODirection\": \"Output\"," + Environment.NewLine + "  \"FoodName\": {" + Environment.NewLine + "    \"Description\": \"\"," + Environment.NewLine + "    \"IsEditable\": \"True\"," + Environment.NewLine + "    \"IsJson\": \"True\"," + Environment.NewLine + "    \"IsArray\": \"False\"," + Environment.NewLine + "    \"ColumnIODirection\": \"None\"" + Environment.NewLine + "  }" + Environment.NewLine + "}");
 
             Assert.AreEqual(1, dataListModel.ComplexObjects.Count);
             Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
@@ -558,7 +558,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(0, dataListModel.ShapeScalars.Count);
 
 
-            const string expectedValue = "{\r\n  \"EmailAddress\": \"Yogesh.rajpurohit@gmail.com\",\r\n  \"FirstName\": \"Sune\",\r\n  \"DisplayNumber\": \"TU00000\",\r\n  \"MobilePhone\": \"27832640\"\r\n}";
+            var expectedValue = ("{" + Environment.NewLine + "  \"EmailAddress\": \"Yogesh.rajpurohit@gmail.com\"," + Environment.NewLine + "  \"FirstName\": \"Sune\"," + Environment.NewLine + "  \"DisplayNumber\": \"TU00000\"," + Environment.NewLine + "  \"MobilePhone\": \"27832640\"" + Environment.NewLine + "}");
 
             Assert.AreEqual(1, dataListModel.ComplexObjects.Count);
             Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);

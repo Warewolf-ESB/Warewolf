@@ -188,12 +188,12 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
 
             var srcPath = Path.GetTempPath();
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
 
@@ -229,12 +229,12 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
 
             var srcPath = Path.GetTempPath();
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
 
@@ -276,12 +276,12 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
 
             var srcPath = Path.GetTempPath() + "*";
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), It.IsAny<IDev2CRUDOperationTO>())).Returns(true);
 
@@ -321,12 +321,12 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
 
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
 
             mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
 
@@ -362,13 +362,13 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
 
             var srcPath = Path.GetTempPath();
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(@"\");
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
 
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
@@ -413,14 +413,14 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
 
             var srcPath = Path.GetTempPath() + "*";
-            const string dstPath = "C:\\Test_TempPath\\";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath") + Path.DirectorySeparatorChar;
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
             mockActivityIOOperationsEndPointSrc.Setup(o => o.ListFilesInDirectory(mockActivityIOPathSrc.Object)).Returns(new List<IActivityIOPath>());
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
 
             mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
             mockActivityIOPathSrc.Setup(o => o.Path).Returns(srcPath);
@@ -463,11 +463,11 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
 
-            const string dstPath = "C:\\Test_TempPath\\Temp_File.txt";
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath", "Temp_File.txt");
 
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
 
             mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
 
@@ -497,14 +497,14 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
 
-            var srcPath = Path.GetTempPath() + @"\Temp_SrcFile.txt";
-            const string dstPath = "C:\\Test_TempPath\\Temp_File.txt";
+            var srcPath = Path.Combine(Path.GetTempPath(), "Temp_SrcFile.txt");
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath", "Temp_File.txt");
 
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
-            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointDst.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
 
             mockActivityIOPathDst.Setup(o => o.Path).Returns(dstPath);
@@ -536,14 +536,14 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
 
-            var srcPath = Path.GetTempPath() + @"\Temp_SrcFile.txt";
-            const string dstPath = "C:\\Test_TempPath\\Temp_File.txt";
+            var srcPath = Path.Combine(Path.GetTempPath(), "Temp_SrcFile.txt");
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath", "Temp_File.txt");
 
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
-            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointSrc.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
             mockActivityIOOperationsEndPointDst.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
 
@@ -576,14 +576,14 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
 
-            var srcPath = Path.GetTempPath() + @"\Temp_SrcFile.txt";
-            const string dstPath = "C:\\Test_TempPath\\Temp_File.txt";
+            var srcPath = Path.Combine(Path.GetTempPath(), "Temp_SrcFile.txt");
+            var dstPath = Path.Combine(Path.GetTempPath(), "Test_TempPath", "Temp_File.txt");
 
             mockActivityIOOperationsEndPointDst.Setup(o => o.IOPath).Returns(mockActivityIOPathDst.Object);
             mockActivityIOOperationsEndPointSrc.Setup(o => o.IOPath).Returns(mockActivityIOPathSrc.Object);
 
-            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(@"\");
-            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockActivityIOOperationsEndPointDst.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
+            mockActivityIOOperationsEndPointSrc.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             mockActivityIOOperationsEndPointSrc.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
             mockActivityIOOperationsEndPointDst.Setup(o => o.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
 

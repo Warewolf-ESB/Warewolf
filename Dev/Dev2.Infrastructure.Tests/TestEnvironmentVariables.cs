@@ -30,7 +30,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetServerSettingsFolder_ShouldReturnProgramDataFolder()
         {
             //------------Setup for test--------------------------
-            const string serverSettingsFolderPart = "ProgramData\\Warewolf\\Server Settings";
+            var serverSettingsFolderPart = Path.Combine("Warewolf", "Server Settings");
             //------------Execute Test---------------------------
             var serverSettingsFolder = EnvironmentVariables.ServerSettingsFolder;
             //------------Assert Results-------------------------
@@ -43,7 +43,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetServerSecurityFile_ShouldReturnSecuritySettingsFileInProgramData()
         {
             //------------Setup for test--------------------------
-            const string filePart = "ProgramData\\Warewolf\\Server Settings\\Settings.config";
+            var filePart = Path.Combine("Warewolf", "Server Settings", "Settings.config");
             //------------Execute Test---------------------------
             var filePath = EnvironmentVariables.ServerLogSettingsFile;
             //------------Assert Results-------------------------
@@ -56,7 +56,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetServerLogSettingsFile_ShouldReturnLogSettingsFileInProgramData()
         {
             //------------Setup for test--------------------------
-            const string serverSecurityFilePart = "ProgramData\\Warewolf\\Server Settings\\secure.config";
+            var serverSecurityFilePart = Path.Combine("Warewolf", "Server Settings", "secure.config");
             //------------Execute Test---------------------------
             var serverSecurityFilePath = EnvironmentVariables.ServerSecuritySettingsFile;
             //------------Assert Results-------------------------
@@ -69,7 +69,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetServerLogFile_ShouldReturnLogFileInProgramData()
         {
             //------------Setup for test--------------------------
-            const string filePart = "ProgramData\\Warewolf\\Server Log\\warewolf-Server.log";
+            var filePart = Path.Combine("Warewolf", "Server Log", "warewolf-Server.log");
             //------------Execute Test---------------------------
             var filePath = EnvironmentVariables.ServerLogFile;
             //------------Assert Results-------------------------
@@ -82,7 +82,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetResourcePath_ShouldReturnResourceFolderInProgramData()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Resources";
+            var folderPart = Path.Combine("Warewolf", "Resources");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.ResourcePath;
             //------------Assert Results-------------------------
@@ -95,7 +95,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetTestPath_ShouldReturnTestFolderInProgramData()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Tests";
+            var folderPart = Path.Combine("Warewolf", "Tests");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.TestPath;
             //------------Assert Results-------------------------
@@ -108,7 +108,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_WorkspacePath_ShouldReturnWorkspaceFolderInProgramData()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Workspaces";
+            var folderPart = Path.Combine("Warewolf", "Workspaces");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.WorkspacePath;
             //------------Assert Results-------------------------
@@ -120,7 +120,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_GetWorkspacePath_GuidEmpty()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Resources";
+            var folderPart = Path.Combine("Warewolf", "Resources");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.GetWorkspacePath(Guid.Empty);
             //------------Assert Results-------------------------
@@ -134,7 +134,7 @@ namespace Dev2.Infrastructure.Tests
         {
             var guid = new Guid("c550ca0d-d324-45de-92bb-0c91879eb8b3");
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Workspaces\\c550ca0d-d324-45de-92bb-0c91879eb8b3\\Resources";
+            var folderPart = Path.Combine("Warewolf", "Workspaces", "c550ca0d-d324-45de-92bb-0c91879eb8b3", "Resources");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.GetWorkspacePath(guid);
             //------------Assert Results-------------------------
@@ -146,7 +146,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_ServerPerfmonSettingsFile()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Server Settings\\Perfmon.config";
+            var folderPart = Path.Combine("Warewolf", "Server Settings", "Perfmon.config");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.ServerPerfmonSettingsFile;
             //------------Assert Results-------------------------
@@ -159,7 +159,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_ServerResourcePerfmonSettingsFile()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\Server Settings\\ResourcesPerfmon.config";
+            var folderPart = Path.Combine("Warewolf", "Server Settings", "ResourcesPerfmon.config");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.ServerResourcePerfmonSettingsFile;
             //------------Assert Results-------------------------
@@ -172,7 +172,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_WorkflowDetailLogArchivePath()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\DetailedLogs\\Archives\\c550ca0d-d324-45de-92bb-0c91879eb8b3_.zip";
+            var folderPart = Path.Combine("Warewolf", "DetailedLogs", "Archives", "c550ca0d-d324-45de-92bb-0c91879eb8b3_.zip");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.WorkflowDetailLogArchivePath(new Guid("c550ca0d-d324-45de-92bb-0c91879eb8b3"), null);
             //------------Assert Results-------------------------
@@ -184,7 +184,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_WorkflowDetailLogArchivePath_Name()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\DetailedLogs\\Archives\\c550ca0d-d324-45de-92bb-0c91879eb8b3_testing.zip";
+            var folderPart = Path.Combine("Warewolf", "DetailedLogs", "Archives", "c550ca0d-d324-45de-92bb-0c91879eb8b3_testing.zip");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.WorkflowDetailLogArchivePath(new Guid("c550ca0d-d324-45de-92bb-0c91879eb8b3"), "testing");
             //------------Assert Results-------------------------
@@ -197,7 +197,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_AppDataPath()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf";
+            var folderPart = Path.Combine("Warewolf");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.AppDataPath;
             //------------Assert Results-------------------------
@@ -210,7 +210,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_VersionsPath()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\VersionControl";
+            var folderPart = Path.Combine("Warewolf", "VersionControl");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.VersionsPath;
             //------------Assert Results-------------------------
@@ -223,7 +223,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_DetailedLogsArchives()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\DetailedLogs\\Archives";
+            var folderPart = Path.Combine("Warewolf", "DetailedLogs", "Archives");
             //------------Execute Test---------------------------
             var path = EnvironmentVariables.DetailedLogsArchives;
             //------------Assert Results-------------------------
@@ -236,7 +236,7 @@ namespace Dev2.Infrastructure.Tests
         public void EnvironmentVariables_WorkflowDetailLogPath_ShouldReturnDetailedLogsInProgramData()
         {
             //------------Setup for test--------------------------
-            const string folderPart = "ProgramData\\Warewolf\\DetailedLogs";
+            var folderPart = Path.Combine("Warewolf", "DetailedLogs");
             //------------Execute Test---------------------------
             var folderPath = EnvironmentVariables.WorkflowDetailLogPath(It.IsAny<Guid>(), It.IsAny<string>());
             //------------Assert Results-------------------------
