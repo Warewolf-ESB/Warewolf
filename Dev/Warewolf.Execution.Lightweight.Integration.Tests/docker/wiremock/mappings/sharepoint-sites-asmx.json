@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/_vti_bin/sites.asmx",
+    "headers": {
+      "SOAPAction": {
+        "contains": "GetUpdatedFormDigestInformation"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "text/xml; charset=utf-8" },
+    "transformers": ["response-template"],
+    "body": "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><soap:Body><GetUpdatedFormDigestInformationResponse xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\"><GetUpdatedFormDigestInformationResult><DigestValue>0xABCDEF0123456789ABCDEF0123456789ABCDEF01,{{now format='dd MMM yyyy HH:mm:ss'}} -0000</DigestValue><TimeoutSeconds>1800</TimeoutSeconds><WebFullUrl>http://{{request.headers.Host}}</WebFullUrl><LibraryVersion>16.0.9000.0</LibraryVersion><SupportedSchemaVersions>14.0.0.0,15.0.0.0</SupportedSchemaVersions></GetUpdatedFormDigestInformationResult></GetUpdatedFormDigestInformationResponse></soap:Body></soap:Envelope>"
+  }
+}

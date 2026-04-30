@@ -1349,7 +1349,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Select the provider you want to use</value>
   </data>
   <data name="ManageOAuthKeyTooltip" xml:space="preserve">
-    <value>The application key provided by the app</value>
+    <value>The short App key (Client ID) from your Dropbox developer app settings — not an access token. Find it at dropbox.com/developers/apps under your app's Settings tab.</value>
   </data>
   <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
     <value>Validate the key with the provider</value>

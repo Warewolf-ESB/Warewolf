@@ -13,7 +13,8 @@
              xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              xmlns:customControls="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             mc:Ignorable="d" 
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:ManageOAuthSourceViewModel,
                                               IsDesignTimeCreatable=False}">
@@ -65,7 +66,7 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
-                       Text="OAuth key:"/>
+                       Text="App key (Client ID):"/>
             <customControls1:PasswordBoxUserControl x:Name="OAuthKeyTextBox" 
                          VerticalAlignment="Top"
                          Grid.Row="1"
@@ -116,19 +117,10 @@
                 </i:Interaction.Behaviors>
             </Button>
         </StackPanel>
-        <ScrollViewer Grid.Row="3">
-            <WebBrowser Name="WebBrowserHost"                         
-                        Margin="3"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        LoadCompleted="WebBrowserHost_OnLoadCompleted"
-                        Visibility="Visible" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Navigated">
-                        <i:InvokeCommandAction Command="{Binding Path=Navigated}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </WebBrowser>
-        </ScrollViewer>
+        <wv2:WebView2 x:Name="WebBrowserHost"
+                      Grid.Row="3"
+                      Margin="3"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" />
     </Grid>
 </UserControl>

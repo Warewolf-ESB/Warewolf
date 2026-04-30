@@ -1,0 +1,7 @@
+﻿<Source ID="e8a8f864-8ce8-47a1-8fca-5aef24bd63b3" Name="Azure Exchange Source" ResourceType="ExchangeSource" IsValid="false" ConnectionString="WFAES::BzeDensAlFxa8elUZtoRVcDddRiL2syItt1sptOiwOv6BCpG1ISKyQfvwbZlv0qUSKI/FmePYGtwkyCJpKsREGjRTAv4UhtyPFA369BMHB4j2JbwIT4A3YATNB1dgAUs6CiAanyw1YLfNVQmhmOsTQyixcJQVWMYRrkfgSeBoXzo/qgWkjW46ujVIdp5cQ==" Type="ExchangeSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Azure Exchange Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ExchangeSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-27T14:47:34.664019+01:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e8a8f864-8ce8-47a1-8fca-5aef24bd63b3" VersionId="101e4f50-01fe-4565-847c-c9099adbda96" />
+</Source>

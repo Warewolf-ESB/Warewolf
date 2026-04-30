@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/_api/web/lists/getbytitle\\('TestList'\\)/GetItems"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json;odata=verbose" },
+    "body": "{\"d\":{\"results\":[{\"ID\":1,\"Title\":\"Test Item 1\",\"Created\":\"2024-01-01T00:00:00Z\",\"Modified\":\"2024-01-01T00:00:00Z\"},{\"ID\":2,\"Title\":\"Test Item 2\",\"Created\":\"2024-01-02T00:00:00Z\",\"Modified\":\"2024-01-02T00:00:00Z\"}]}}"
+  }
+}

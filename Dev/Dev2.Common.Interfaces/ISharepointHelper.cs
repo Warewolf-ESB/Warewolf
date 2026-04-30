@@ -32,6 +32,7 @@ namespace Dev2.Common.Interfaces
         List<string> LoadFolders(string folderUrl);
         List<ISharepointListTo> LoadLists();
         string MoveFile(string serverPathFrom, string serverPathTo, bool overWrite);
+        List<IDictionary<string, object>> ReadListItems(string listName, string camlXml);
         string TestConnection(out bool isSharepointOnline);
         string UploadFile(string serverPath, string localPath);
     }

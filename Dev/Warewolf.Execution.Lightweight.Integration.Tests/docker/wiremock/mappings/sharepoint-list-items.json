@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/_api/web/lists/getbytitle\\('Documents'\\)/items.*"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "body": "{\"d\":{\"results\":[{\"ID\":1,\"Title\":\"TestDocument\",\"FileLeafRef\":\"TestDocument.docx\"}]}}"
+  }
+}

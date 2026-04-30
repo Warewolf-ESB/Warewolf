@@ -28,6 +28,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -247,6 +248,14 @@ namespace Dev2.Activities
             {
                 var runtimeSource = ResourceCatalog.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
 
+                if (runtimeSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SelectedEmailSource.ResourceID) == true
+                    && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        runtimeSource = ws.OfType<EmailSource>().FirstOrDefault(r => r.ResourceID == SelectedEmailSource.ResourceID);
+                }
+
                 if (runtimeSource == null)
                 {
                     dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
@@ -407,13 +416,8 @@ namespace Dev2.Activities
             AddToAddresses(toValue, mailMessage);
             try
             {
-                // Always use source account unless specifically overridden by From Account
-                if(!string.IsNullOrEmpty(fromAccountValue))
-                {
-                    runtimeSource.UserName = fromAccountValue;
-                    runtimeSource.Password = passwordValue;
-                }
-                mailMessage.From = new MailAddress(runtimeSource.UserName);
+                var fromAddress = !string.IsNullOrEmpty(fromAccountValue) ? fromAccountValue : runtimeSource.UserName;
+                mailMessage.From = new MailAddress(fromAddress);
             }
             catch(Exception)
             {
@@ -433,6 +437,7 @@ namespace Dev2.Activities
             {
                 AddAttachmentsValue(attachmentsValue, mailMessage);
             }
+            Dev2Logger.Debug($"Sending email via {runtimeSource.Host}:{runtimeSource.Port} SSL={runtimeSource.EnableSsl} From={mailMessage.From.Address} To={toValue}", GlobalConstants.WarewolfInfo);
             string result;
             try
             {
@@ -441,8 +446,11 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                var innerMessage = e.InnerException?.Message;
+                var detail = innerMessage != null ? $"{e.Message} - {innerMessage}" : e.Message;
+                Dev2Logger.Error($"Email send failed Host={runtimeSource.Host} Port={runtimeSource.Port} SSL={runtimeSource.EnableSsl} User={runtimeSource.UserName}", e, GlobalConstants.WarewolfError);
                 result = "Failure";
-                errors.AddError(e.Message);
+                errors.AddError(detail);
             }
 
             return result;

@@ -1,0 +1,20 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/_api/web/lists/getbytitle\\('TestList'\\)/fields",
+        "queryParameters": {
+          "$filter": {
+            "matches": "Hidden eq false.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json;odata=verbose" },
+        "body": "{\"d\":{\"results\":[{\"Title\":\"ID\",\"InternalName\":\"ID\",\"Required\":false,\"ReadOnlyField\":true,\"Hidden\":false,\"FieldTypeKind\":5,\"MaxLength\":0},{\"Title\":\"Title\",\"InternalName\":\"Title\",\"Required\":true,\"ReadOnlyField\":false,\"Hidden\":false,\"FieldTypeKind\":2,\"MaxLength\":255},{\"Title\":\"Created\",\"InternalName\":\"Created\",\"Required\":false,\"ReadOnlyField\":true,\"Hidden\":false,\"FieldTypeKind\":4,\"MaxLength\":0},{\"Title\":\"Modified\",\"InternalName\":\"Modified\",\"Required\":false,\"ReadOnlyField\":true,\"Hidden\":false,\"FieldTypeKind\":4,\"MaxLength\":0}]}}"
+      }
+    }
+  ]
+}

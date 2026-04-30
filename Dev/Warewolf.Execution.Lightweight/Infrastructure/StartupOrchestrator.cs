@@ -9,6 +9,8 @@ using Azure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Linq;
 
 namespace Warewolf.Execution.Lightweight.Infrastructure;
 
@@ -37,8 +39,28 @@ internal static class StartupOrchestrator
             .GetRequiredService<ILoggerFactory>()
             .CreateLogger(nameof(StartupOrchestrator));
 
+        LogEnvironmentDiagnostics(config, logger);
         await InitializeEncryptionAsync(host, config, logger);
         WarmUpWorkflowIndex(config, logger);
+    }
+
+    static void LogEnvironmentDiagnostics(HostEnvironmentConfig config, ILogger logger)
+    {
+        logger.LogWarning(
+            "Startup | Phase=Diagnostics | EncryptionEnabled={EncryptionEnabled} | " +
+            "VaultName={VaultName} | SecretName={SecretName} | " +
+            "WorkflowsDirectory={WorkflowsDirectory} | DirectoryExists={DirectoryExists}",
+            config.EncryptionEnabled, config.VaultName ?? "(not set)", config.SecretName,
+            config.WorkflowsDirectory, Directory.Exists(config.WorkflowsDirectory));
+
+        if (Directory.Exists(config.WorkflowsDirectory))
+        {
+            var biteFiles = Directory.GetFiles(config.WorkflowsDirectory, "*.bite", SearchOption.AllDirectories);
+            logger.LogWarning(
+                "Startup | Phase=Diagnostics | ResourceDirectory={Dir} | BiteFileCount={Count} | Files=[{Files}]",
+                config.WorkflowsDirectory, biteFiles.Length,
+                string.Join(", ", biteFiles.Select(Path.GetFileName)));
+        }
     }
 
     // ── Private helpers ──────────────────────────────────────────────────────────

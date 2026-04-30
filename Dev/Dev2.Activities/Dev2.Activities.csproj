@@ -627,7 +627,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.26" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>

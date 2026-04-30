@@ -345,7 +345,7 @@
     <None Include="Dev2.Data.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NCalcSync" Version="5.12.0" />
+    <PackageReference Include="NCalcSync" Version="5.2.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="RabbitMQ.Client">
       <Version>5.1.2</Version>
@@ -353,6 +353,7 @@
     <PackageReference Include="SSH.NET">
       <Version>2024.2.0</Version>
     </PackageReference>
+    <PackageReference Include="MailKit" Version="4.16.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
   </ItemGroup>

@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/_vti_bin/client.svc/ProcessQuery"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json;odata=verbose" },
+    "transformers": ["response-template"],
+    "body": "[{\"SchemaVersion\":\"15.0.0.0\",\"LibraryVersion\":\"16.0.9000.0\",\"ErrorInfo\":null,\"TraceCorrelationId\":\"00000000-0000-0000-0000-000000000000\"},{{xPath request.body '//*[local-name()=\"ObjectPath\"][1]/@Id'}},{\"IsNull\":false},{{xPath request.body '//*[local-name()=\"ObjectPath\"][2]/@Id'}},{\"IsNull\":false},{{xPath request.body '//*[local-name()=\"Query\"]/@Id'}},{\"_ObjectType_\":\"SP.Web\",\"_ObjectIdentity_\":\"740c6a0b-85e2-48a0-a494-e0f1759d4aa8|740c6a0b-85e2-48a0-a494-e0f1759d4aa8:site:00000000-0000-0000-0000-000000000001:web:00000000-0000-0000-0000-000000000002\",\"Title\":\"Mock SharePoint\",\"Url\":\"http://sharepoint.warewolf.online\",\"ServerRelativeUrl\":\"/\",\"Language\":1033,\"WebTemplate\":\"STS\",\"Description\":\"\",\"RecycleBinEnabled\":true,\"AllowRssFeeds\":true,\"QuickLaunchEnabled\":true,\"TreeViewEnabled\":false}]"
+  }
+}

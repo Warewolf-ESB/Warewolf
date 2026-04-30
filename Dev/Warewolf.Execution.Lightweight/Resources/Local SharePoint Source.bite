@@ -1,0 +1,7 @@
+﻿<Source ID="b2e40b89-922e-4cc1-8bde-727c59127e0a" Name="Local SharePoint Source" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="WFAES::/IQZCKXy+bWIEjOOioIj3r6Qjtbb91TUuZqu2MGmXHhBn9n2fruWu+wpgUiJWfM3b3ZsY/MazGW9QNifUCMqzkCMuUNmx+z98GgXgijo+KdJ+cXRnewU69S4kSvB0SGBXcKjAxbNXStjxRLC6rAaLZFVCA==" IsSharepointOnline="false" Type="SharepointSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Local SharePoint Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>SharepointServerSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-28T09:06:47.5210281+01:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b2e40b89-922e-4cc1-8bde-727c59127e0a" VersionId="1a88238c-0615-454d-abb7-5049a5c30b20" />
+</Source>

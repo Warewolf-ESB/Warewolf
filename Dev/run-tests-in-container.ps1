@@ -1,5 +1,6 @@
 # run-tests-in-container.ps1
-# Runs tests directly inside the vsut_dockerfile container via dotnet vstest.
+# Runs Warewolf unit/integration tests inside a Docker container.
+# Supports Microsoft Testing Platform (MTP) self-contained binaries and vstest DLLs.
 #
 # LOCAL DEV MODE  (no -BinDir): mounts the repo root into a long-lived container
 #   and resolves DLLs from the source build output tree.
@@ -31,11 +32,22 @@ param(
 
     # CI MODE: directory where .trx result files are written.
     # Defaults to BinDir/../TestResults when -BinDir is used.
-    [string]$TestResultsDir
+    [string]$TestResultsDir,
+
+    # When set, the test container shares the host network stack (--network=host).
+    # Required when the server under test is a host-mapped Docker container
+    # (e.g. the Azure Functions engine listening on host port 7071).
+    # Effective on Linux only; ignored silently on Windows/macOS.
+    [switch]$UseHostNetwork
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+
+# PS 6+ automatic variables — define fallbacks for Windows PowerShell 5.1
+if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
+if (-not (Test-Path Variable:\IsMacOS))   { $IsMacOS   = $false }
+if (-not (Test-Path Variable:\IsWindows)) { $IsWindows  = $true  }
 
 function Invoke-Logged {
     Write-Host "+ $($args -join ' ')" -ForegroundColor DarkGray
@@ -50,8 +62,8 @@ $CIMode = $PSBoundParameters.ContainsKey("BinDir") -or [bool]$env:TF_BUILD
 $DevRoot  = $PSScriptRoot                        # …\Dev
 $RepoRoot = Split-Path $DevRoot -Parent          # …\warewolf  (mounted as /mnt/approot)
 
-$Dockerfile   = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker" "Dockerfile.test"
-$DockerContext = Join-Path $DevRoot "Warewolf.Execution.Lightweight" "engine" "docker"
+$Dockerfile   = [System.IO.Path]::Combine($DevRoot, "Warewolf.Execution.Lightweight", "engine", "docker", "Dockerfile.test")
+$DockerContext = [System.IO.Path]::Combine($DevRoot, "Warewolf.Execution.Lightweight", "engine", "docker")
 
 if ($CIMode) {
     # Normalise paths supplied from the pipeline (may use forward slashes on Linux agents)
@@ -65,6 +77,8 @@ if ($CIMode) {
     }
     $TestResultsDir = $TestResultsDir.TrimEnd('/\')
     New-Item -ItemType Directory -Force -Path $TestResultsDir | Out-Null
+    # Ensure the Docker container (which may run as a different user) can write results.
+    if ($IsLinux -or $IsMacOS) { & chmod 777 $TestResultsDir }
 
     # In CI the Dockerfile travels with the binaries artifact.
     $CIDockerfile = Join-Path $BinDir "Dockerfile.test"
@@ -156,6 +170,10 @@ if (-not $Assemblies) {
         Write-Host "Discovering test assemblies from $BinDir ..." -ForegroundColor Yellow
         $Assemblies = Get-CITestAssemblies
         Write-Host "Found $($Assemblies.Count) assemblies." -ForegroundColor Cyan
+        if (-not $Assemblies) {
+            Write-Error "No test assemblies (Warewolf/Dev2 *.Tests.dll) found in '$BinDir'. Ensure the LinuxTestBinaries artifact was published with linux-x64 targets."
+            exit 1
+        }
     } else {
         Write-Host "Discovering all test assemblies..." -ForegroundColor Yellow
         $Assemblies = Get-AllTestAssemblies
@@ -163,7 +181,7 @@ if (-not $Assemblies) {
     }
 }
 
-if (-not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
+if (-not $CIMode -and -not $PSBoundParameters.ContainsKey("ExcludeAssemblies") -and -not $ExcludeAssemblies) {
     $excludeInput = try { Read-Host "Assemblies to exclude - comma-separated (blank = none)" } catch { "" }
     if ($excludeInput.Trim()) {
         $ExcludeAssemblies = $excludeInput -split "\s*,\s*" | Where-Object { $_ -ne "" }
@@ -177,10 +195,12 @@ if (-not $PSBoundParameters.ContainsKey("Filter") -and -not $Filter -and -not $C
 }
 
 # -- Split filter on commas (each value becomes a separate vstest run) --------
-$FilterValues = if ($Filter) {
-    $Filter -split "\s*,\s*" | Where-Object { $_ -ne "" }
+# Use explicit branches so the @($null) is a direct assignment, not a pipeline
+# output — otherwise PowerShell unwraps @($null) to $null and foreach skips it.
+if ($Filter) {
+    $FilterValues = $Filter -split "\s*,\s*" | Where-Object { $_ -ne "" }
 } else {
-    @($null)   # one run with no filter
+    $FilterValues = @($null)   # one run with no filter
 }
 
 # -- Apply exclusions ----------------------------------------------------------
@@ -195,8 +215,11 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
+
+    Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
+    Write-Host "CI: filter values    : $($FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } })" -ForegroundColor Cyan
+
     foreach ($filterValue in $FilterValues) {
-        $filterArgs = if ($filterValue) { @("--TestCaseFilter:$filterValue") } else { @() }
         # Sanitise the filter value for use in filenames (replaces non-word chars with _)
         $rawSuffix = if ($filterValue) { ".$($filterValue -replace '[^a-zA-Z0-9_-]', '_')" } else { "" }
 
@@ -214,17 +237,64 @@ if ($CIMode) {
             Write-Host "=== Running $assembly$filterSuffix ===" -ForegroundColor Yellow
 
             $trxName = "$assembly$filterSuffix.trx"
-            $dockerRunArgs = @(
-                'run', '--rm',
-                '-v', "${BinDir}:/tests:ro",
-                '-v', "${TestResultsDir}:/results",
-                'warewolf-test-env',
-                '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
-                '--logger', "trx;LogFileName=$trxName",
-                '--results-directory', '/results'
-            )
-            if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+
+            # These test projects use EnableMSTestRunner=true (Microsoft Testing Platform).
+            # Run the self-contained binary directly rather than via `dotnet test assembly.dll`,
+            # because the vstest host path requires the ELF binary to be executable and may
+            # fail silently.  The MTP binary accepts --report-trx natively.
+            $binaryPath = Join-Path $BinDir $assembly
+            if (-not (Test-Path $binaryPath)) {
+                Write-Warning "MTP binary not found at '$binaryPath'; falling back to dotnet test on DLL."
+                $binaryPath = $null
+            }
+
+            # Ensure the Linux self-contained binary has the execute bit set.
+            # DownloadPipelineArtifact does not preserve file permissions.
+            if ($binaryPath -and ($IsLinux -or $IsMacOS)) {
+                & chmod +x $binaryPath
+            }
+
+            # --network=host is Linux-only; silently omit it on other platforms.
+            $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
+
+            # DOTNET_ROOT tells the apphost where to find the installed .NET runtime.
+            # Without it, the apphost finds .NET native libs (libcoreclr.so etc.) that
+            # ship alongside the test binaries and mistakes /tests/ for the .NET root,
+            # causing "No frameworks were found."
+            $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
+
+            if ($binaryPath) {
+                # MTP native invocation — produces TRX via the TrxReport extension.
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
+                    '-v', "${BinDir}:/tests:ro",
+                    '-v', "${TestResultsDir}:/results",
+                    'warewolf-test-env',
+                    "/tests/$assembly",
+                    '--report-trx',
+                    '--report-trx-filename', $trxName,
+                    '--results-directory', '/results',
+                    '--no-progress'
+                )
+                if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+            } else {
+                # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
+                    '-v', "${BinDir}:/tests:ro",
+                    '-v', "${TestResultsDir}:/results",
+                    'warewolf-test-env',
+                    '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
+                    '--logger', "trx;LogFileName=$trxName",
+                    '--results-directory', '/results'
+                )
+                if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
+            }
+
             Write-Host "+ docker $($dockerRunArgs -join ' ')" -ForegroundColor DarkGray
+
+            # Remove any existing TRX so MTP doesn't throw "file already exists"
+            $trxFullPath = Join-Path $TestResultsDir $trxName
+            if (Test-Path $trxFullPath) { Remove-Item $trxFullPath -Force }
+
             & docker @dockerRunArgs
 
             if ($LASTEXITCODE -ne 0) {

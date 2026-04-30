@@ -1,0 +1,7 @@
+﻿<Source ID="155aff7a-48f9-4dde-83e8-564d0d5aa9f7" Name="Local Exchange Source" ResourceType="ExchangeSource" IsValid="false" ConnectionString="WFAES::yWmM6ZtKpSYBW/pqTMuSqjPIeVo6ZPbkeLNs3OfVohT1hMDc8RbWezxD0Dk6IfIZckSJKYRqXVLAVJTyjyJm3Fw6DQ33RpGoLzg0+NqTVCZIKnAeTQC7X4xer5GC2Ecwzz8Hs4iPyU2hC+EYQvPmloWwqc9rAn61p/zL3osriseAOtLd" Type="ExchangeSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Local Exchange Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ExchangeSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-28T10:55:47.2159674+01:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="155aff7a-48f9-4dde-83e8-564d0d5aa9f7" VersionId="49d4f986-5045-4733-8e5c-a14e3aa86ea5" />
+</Source>

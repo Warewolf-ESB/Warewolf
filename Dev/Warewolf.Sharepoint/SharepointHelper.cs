@@ -15,13 +15,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security;
+using System.Text;
 using Microsoft.SharePoint.Client;
 using System.Security.Policy;
 using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.Exchange.WebServices.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Newtonsoft.Json.Linq;
 #if NETFRAMEWORK
 using File = Microsoft.SharePoint.Client.File;
 #endif
@@ -84,15 +87,15 @@ namespace Warewolf.Sharepoint
             }
             else
             {
+#if NETFRAMEWORK
                 var secureString = new SecureString();
                 foreach (var c in Password)
                 {
                     secureString.AppendChar(c);
                 }
-#if NETFRAMEWORK
                 ctx.Credentials = new SharePointOnlineCredentials(UserName, secureString);
 #else
-                ctx.Credentials = new SharePointOnlineCredentials(UserName, secureString.ToString());
+                ctx.Credentials = new SharePointOnlineCredentials(UserName, Password);
 #endif
             }
             return ctx;
@@ -100,37 +103,132 @@ namespace Warewolf.Sharepoint
 
         public List<ISharepointListTo> LoadLists()
         {
-            var lists = new List<ISharepointListTo>();
-            using (var context = GetContext())
-            {
-                var listCollection = context.Web.Lists;
-                context.Load(listCollection);
-#if NETFRAMEWORK
-                context.ExecuteQuery();
-#else
-                context.ExecuteQueryAsync().Wait();
-#endif
-                lists.AddRange(listCollection.Select(list => new SharepointListTo { FullName = list.Title }));
-            }
-            return lists;
+            using var client = CreateHttpClient();
+            var url = $"{Server}/_api/web/lists";
+            var response = client.GetAsync(url).GetAwaiter().GetResult();
+            EnsureSharepointSuccess(response, "LoadLists", url);
+            var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var result = JObject.Parse(json);
+            return result["d"]?["results"]?
+                .Select(item => (ISharepointListTo)new SharepointListTo { FullName = item["Title"]?.ToString() ?? string.Empty })
+                .ToList() ?? new List<ISharepointListTo>();
         }
 
         public List<ISharepointFieldTo> LoadFieldsForList(string listName, bool editableFieldsOnly)
         {
-            var fields = new List<ISharepointFieldTo>();
-            using (var ctx = GetContext())
+            using var client = CreateHttpClient();
+            var filter = editableFieldsOnly
+                ? "$filter=Hidden eq false and ReadOnlyField eq false"
+                : "$filter=Hidden eq false";
+            var encodedList = Uri.EscapeDataString(listName);
+            var url = $"{Server}/_api/web/lists/getbytitle('{encodedList}')/fields?{filter}";
+            var response = client.GetAsync(url).GetAwaiter().GetResult();
+            EnsureSharepointSuccess(response, "LoadFieldsForList", url);
+            var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var result = JObject.Parse(json);
+            return result["d"]?["results"]?
+                .Select(item => CreateSharepointFieldToFromJson(item))
+                .ToList() ?? new List<ISharepointFieldTo>();
+        }
+
+        public List<IDictionary<string, object>> ReadListItems(string listName, string camlXml)
+        {
+            using var client = CreateHttpClient();
+
+            var digestUrl = $"{Server}/_api/contextinfo";
+            var digestResponse = client.PostAsync(
+                digestUrl,
+                new StringContent(string.Empty, Encoding.UTF8, "application/json"))
+                .GetAwaiter().GetResult();
+            var formDigest = string.Empty;
+            if (digestResponse.IsSuccessStatusCode)
             {
-                var list = LoadFieldsForList(listName, ctx, editableFieldsOnly);
-#if NETFRAMEWORK
-                ctx.ExecuteQuery();
-#else
-                ctx.ExecuteQueryAsync().Wait();
-#endif
-                var fieldCollection = list.Fields;
-                fields.AddRange(fieldCollection.Select(field => CreateSharepointFieldToFromSharepointField(field)));
+                var digestJson = JObject.Parse(digestResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                formDigest = digestJson["d"]?["GetContextWebInformation"]?["FormDigestValue"]?.ToString() ?? string.Empty;
+            }
+            else
+            {
+                var digestBody = digestResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                throw new HttpRequestException(
+                    $"SharePoint contextinfo request failed. Server={Server}, URL={digestUrl}, " +
+                    $"Status={(int)digestResponse.StatusCode} {digestResponse.StatusCode}, " +
+                    $"Response (first 500 chars): {Truncate(digestBody, 500)}");
             }
 
-            return fields;
+            var viewXml = string.IsNullOrEmpty(camlXml) ? "<View/>" : camlXml;
+            var body = $"{{\"query\":{{\"__metadata\":{{\"type\":\"SP.CamlQuery\"}},\"ViewXml\":{Newtonsoft.Json.JsonConvert.SerializeObject(viewXml)}}}}}";
+
+            var itemsUrl = $"{Server}/_api/web/lists/getbytitle('{Uri.EscapeDataString(listName)}')/GetItems";
+            var request = new HttpRequestMessage(HttpMethod.Post, itemsUrl);
+            if (!string.IsNullOrEmpty(formDigest))
+                request.Headers.TryAddWithoutValidation("X-RequestDigest", formDigest);
+            request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            var response = client.SendAsync(request).GetAwaiter().GetResult();
+            EnsureSharepointSuccess(response, $"ReadListItems('{listName}')", itemsUrl);
+            var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var result = JObject.Parse(json);
+            return result["d"]?["results"]?
+                .Select(item => (IDictionary<string, object>)item.ToObject<Dictionary<string, object>>())
+                .Where(d => d != null)
+                .ToList() ?? new List<IDictionary<string, object>>();
+        }
+
+        static void EnsureSharepointSuccess(HttpResponseMessage response, string operation, string url)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                throw new HttpRequestException(
+                    $"SharePoint REST API error in {operation}. URL={url}, " +
+                    $"Status={(int)response.StatusCode} {response.StatusCode}, " +
+                    $"Response (first 500 chars): {Truncate(body, 500)}");
+            }
+        }
+
+        static string Truncate(string s, int maxLength)
+            => s != null && s.Length > maxLength ? s.Substring(0, maxLength) + "..." : s ?? "(empty)";
+
+        HttpClient CreateHttpClient()
+        {
+            var handler = new HttpClientHandler();
+            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                handler.Credentials = new NetworkCredential(UserName, Password);
+            else
+                handler.UseDefaultCredentials = true;
+
+            var client = new HttpClient(handler);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "application/json;odata=verbose");
+            return client;
+        }
+
+        static ISharepointFieldTo CreateSharepointFieldToFromJson(JToken item)
+        {
+            var fieldTypeKind = item["FieldTypeKind"]?.ToObject<int>() ?? 0;
+            var sharepointFieldTo = new SharepointFieldTo
+            {
+                Name         = item["Title"]?.ToString()        ?? string.Empty,
+                InternalName = item["InternalName"]?.ToString() ?? string.Empty,
+                IsRequired   = item["Required"]?.ToObject<bool>()      ?? false,
+                IsEditable   = !(item["ReadOnlyField"]?.ToObject<bool>() ?? false),
+                MaxLength    = item["MaxLength"]?.ToObject<int>() ?? 0,
+                MaxValue     = item["MaximumValue"]?.ToObject<double>() ?? double.MaxValue,
+                MinValue     = item["MinimumValue"]?.ToObject<double>() ?? double.MinValue,
+                Type         = fieldTypeKind switch
+                {
+                    1  => SharepointFieldType.Integer,  // Integer
+                    5  => SharepointFieldType.Integer,  // Counter
+                    10 => SharepointFieldType.Currency,
+                    2  => SharepointFieldType.Text,     // Text
+                    6  => SharepointFieldType.Text,     // Choice
+                    3  => SharepointFieldType.Note,
+                    4  => SharepointFieldType.DateTime,
+                    8  => SharepointFieldType.Boolean,
+                    9  => SharepointFieldType.Number,
+                    _  => SharepointFieldType.Text
+                }
+            };
+            return sharepointFieldTo;
         }
 
         public List<string> LoadFiles(string folderUrl)
@@ -504,8 +602,9 @@ namespace Warewolf.Sharepoint
 #endif
                 }
             }
-            catch (Exception)
+            catch (Exception onPremEx)
             {
+                var onPremInner = (onPremEx as System.AggregateException)?.InnerException ?? onPremEx;
                 try
                 {
                     using (var ctx = GetContextWithOnlineCredentials())
@@ -522,7 +621,7 @@ namespace Warewolf.Sharepoint
                 }
                 catch (Exception ex)
                 {
-                    result = "Test Failed: " + ex.Message;
+                    result = $"Test Failed: {ex.Message} | On-premises error: [{onPremInner.GetType().Name}] {onPremInner.Message}";
                 }
             }
             return result;

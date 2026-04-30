@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,13 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             evaluatedValues.TryGetValue("FromPath", out var localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
-            SetupDropboxClient(SelectedSource?.AccessToken);
+            var ensured = SelectedSource != null && AmbientSourceLoader.Current?.EnsureSourceLoaded(SelectedSource.ResourceID) == true;
+            var liveSource = SelectedSource != null
+                ? (ResourceCatalog.GetResource<DropBoxSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID) ?? SelectedSource)
+                : null;
+            var tokenPreview = liveSource?.AccessToken?.Length > 8 ? liveSource.AccessToken.Substring(0, 8) + "..." : "(empty/null)";
+            Dev2Logger.Warn($"[DropboxDownload] EnsureSourceLoaded={ensured} CatalogHit={liveSource != null && liveSource != SelectedSource} AccessToken={tokenPreview}(len={liveSource?.AccessToken?.Length}) RefreshToken={(string.IsNullOrEmpty(liveSource?.RefreshToken) ? "MISSING" : "present")}", GlobalConstants.WarewolfInfo);
+            SetupDropboxClient(liveSource?.AccessToken, liveSource?.RefreshToken, liveSource?.AppKey, liveSource.AccessTokenExpiresAt);
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDownloadSuccessResult dropboxSuccessResult)
             {

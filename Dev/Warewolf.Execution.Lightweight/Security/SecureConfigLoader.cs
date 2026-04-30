@@ -137,7 +137,12 @@ namespace Warewolf.Execution.Lightweight.Security
                     GroupName:    p.WindowsGroup  ?? string.Empty,
                     IsGlobal:     p.IsServer && p.ResourceID == Guid.Empty,
                     ResourceName: p.ResourceName  ?? string.Empty,
-                    View:         p.View))
+                    View:         p.View,
+                    Execute:      p.Execute,
+                    Contribute:   p.Contribute,
+                    DeployTo:     p.DeployTo,
+                    DeployFrom:   p.DeployFrom,
+                    Administrator: p.Administrator))
                 .ToArray();
         }
     }

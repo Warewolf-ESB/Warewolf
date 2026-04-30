@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
@@ -99,15 +98,18 @@ namespace Dev2.Runtime.ServiceModel.Data
         //TODO: Add SmtpClientFactory so that we can test it without failing
         public void Send(MailMessage mailMessage)
         {
-            using (var smtp = new SmtpClient(Host, Port)
+            var message = MimeKit.MimeMessage.CreateFromMailMessage(mailMessage);
+            var secureOptions = EnableSsl
+                ? MailKit.Security.SecureSocketOptions.Auto
+                : MailKit.Security.SecureSocketOptions.None;
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
-                Credentials = new NetworkCredential(UserName, Password),
-                EnableSsl = EnableSsl,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Timeout = Timeout
-            })
-            {
-                smtp.Send(mailMessage);
+                client.Timeout = Timeout;
+                client.Connect(Host, Port, secureOptions);
+                if (!string.IsNullOrEmpty(UserName))
+                    client.Authenticate(UserName, Password);
+                client.Send(message);
+                client.Disconnect(true);
             }
         }
 
