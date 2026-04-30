@@ -1,20 +1,27 @@
 {
   "IsEncrypted": false,
-    "Values": {
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
 
-        "AZURE_KEYVAULT_NAME": "WWExecutionEngine",
-        "KEYVAULT_SECRET_NAME": "WWExecutionEngineTestSecret",
+    "AZURE_KEYVAULT_NAME": "WWExecutionEngine",
+    "KEYVAULT_SECRET_NAME": "WWExecutionEngineTestSecret",
+    "DEBUG_AZURE_KEYVAULT_SECRET": "",
+    "SkipFailureToRetrieveSecret": "false",
 
-        "AZURE_TENANT_ID": "",
-        "AZURE_CLIENT_ID": "",
+    "AZURE_TENANT_ID": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
+    "AZURE_CLIENT_ID": "<managed-identity-client-id>",
 
-        "SkipFailureToRetrieveSecret": "false",
+    "ENABLEELASTICSEARCHLOGGING": "true",
+    "ENABLECONSOLELOGGING": "true",
+    "EXECUTIONLOGLEVEL": "4",
 
-        "DEBUG_AZURE_KEYVAULT_SECRET": "",
+    "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET": "<your-entra-app-client-secret>",
 
-        "ENABLEELASTICSEARCHLOGGING": "true",
-        "ENABLECONSOLELOGGING": "true"
-    }
+    "WAREWOLF_ENTRA_TENANT_ID": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
+    "WAREWOLF_ENTRA_AUDIENCE": "api://<your-entra-app-client-id>"
+
+
+
+  }
 }

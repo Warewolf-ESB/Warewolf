@@ -1,0 +1,45 @@
+{
+  "_comment": [
+    "Deploy this configuration to your Azure Function App's Easy Auth settings via:",
+    "  az rest --method PUT",
+    "    --url 'https://management.azure.com/subscriptions/<SUB>/resourceGroups/<RG>/providers/Microsoft.Web/sites/<APP>/config/authsettingsV2?api-version=2022-03-01'",
+    "    --body @authsettingsV2.json",
+    "",
+    "Replace <TENANT_ID> and <CLIENT_ID> with values from Setup-EntraAuth.ps1 output.",
+    "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET must be set in Function App → Configuration → App Settings."
+  ],
+
+  "platform": {
+    "enabled": true
+  },
+
+  "globalValidation": {
+    "requireAuthentication": false,
+    "unauthenticatedClientAction": "AllowAnonymous"
+  },
+
+  "identityProviders": {
+    "azureActiveDirectory": {
+      "enabled": true,
+      "registration": {
+        "openIdIssuer": "https://login.microsoftonline.com/<TENANT_ID>/v2.0",
+        "clientId": "<CLIENT_ID>",
+        "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+      },
+      "validation": {
+        "allowedAudiences": [
+          "api://<CLIENT_ID>"
+        ]
+      }
+    }
+  },
+
+  "login": {
+    "routes": {
+      "logoutEndpoint": "/.auth/logout"
+    },
+    "tokenStore": {
+      "enabled": true
+    }
+  }
+}

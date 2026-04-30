@@ -131,10 +131,6 @@
       runtime (both locally and after zip-deploy to Azure Functions).
       DO NOT commit a real secure.config to source control — add it to .gitignore.
     -->
-    <Content Include="secure.config" Condition="Exists('secure.config')">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="Deploy-ToAzure.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -160,6 +156,8 @@
     <None Include="Scripts\Encrypt-Config.ps1" />
     <None Include="Scripts\Get-DropboxTokens.ps1" />
     <None Include="Scripts\KeyVaultSetup.azcli" />
+    <None Include="Scripts\authsettingsV2.json" />
+    <None Include="Scripts\Setup-EntraAuth.ps1" />
     <None Include="docs\README-Encryption.md" />
     <None Include="docs\KeyRotationRunbook.md" />
     <None Include="docs\SecurityChecklist.md" />
@@ -178,6 +176,10 @@
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="secure.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
     <None Update="Settings\ElasticsearchLoggingSource.bite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

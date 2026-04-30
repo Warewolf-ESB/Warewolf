@@ -2,10 +2,21 @@
   "WindowsGroupPermissions": [
     {
       "Comment": "Server permissions apply to the whole server.",
-      "WindowsGroup": "your-email@example.com",
+      "WindowsGroup": "Warewolf Adminstrators",
       "IsServer": true,
       "View": true,
       "Execute": true,
+      "Contribute": true,
+      "DeployTo": true,
+      "DeployFrom": true,
+      "Administrator": true
+    },
+    {
+      "Comment": "Server permissions apply to the whole server.",
+      "WindowsGroup": "Public",
+      "IsServer": true,
+      "View": false,
+      "Execute": false,
       "Contribute": false,
       "DeployTo": false,
       "DeployFrom": false,
