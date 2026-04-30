@@ -12,7 +12,7 @@
 
         "SkipFailureToRetrieveSecret": "false",
 
-        "DEBUG_AZURE_KEYVAULT_SECRET": "{version:1,keyId:79fc2c4d-cb0a-4d15-985b-5be60cc5d235,key:QLdcnqh/MPtmbxYbuOMUSJ/U3HEFdDdl+gX/1ghjCIQ=,created:2026-04-08T23:36:56.6266156+05:30}",
+        "DEBUG_AZURE_KEYVAULT_SECRET": "",
 
         "ENABLEELASTICSEARCHLOGGING": "true",
         "ENABLECONSOLELOGGING": "true",
