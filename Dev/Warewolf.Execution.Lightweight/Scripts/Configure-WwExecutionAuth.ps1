@@ -155,17 +155,78 @@ function Invoke-AzCli {
         Invokes the az CLI, echoing the (secret-redacted) command before
         execution so any failure can be traced to the exact line that produced
         it.  Throws on non-zero exit; embeds the failing command in the throw.
+
+        Retry-on-transient: when az fails with a known-transient signature
+        (TCP reset 10054, timeout, throttling 429, ARM 5xx, DNS hiccup), waits
+        and retries up to MaxAttempts.  Real errors (BadRequest, Forbidden,
+        NotFound, Conflict, validation) still throw immediately - the regex
+        below is conservative.
+
+        Total wait if every attempt triggers backoff: 3+7+15+30 = 55s before
+        the operation aborts permanently.
     #>
-    param([Parameter(Mandatory)][string[]] $Arguments)
+    param(
+        [Parameter(Mandatory)][string[]] $Arguments,
+        [int] $MaxAttempts = 5
+    )
 
     $printable = Format-AzArgsForLog -Arguments $Arguments
     Write-Host "    > az $printable" -ForegroundColor DarkGray
 
-    $output = & az @Arguments 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        throw "az CLI failed ($LASTEXITCODE) running ``az $printable``:`n$output"
+    # Patterns that mean "the request never reached its handler or the handler
+    # was overloaded".  Each is safe to retry because either the operation
+    # didn't happen at all, or the operation is idempotent (config sets,
+    # show/list, ARM PUT/PATCH on configs we already control).
+    $transientPattern = (@(
+        'Connection aborted',
+        'ConnectionResetError',
+        '10054',                         # WSAECONNRESET
+        '10053',                         # WSAECONNABORTED
+        '10060',                         # WSAETIMEDOUT
+        'Read timed out',
+        'ReadTimeoutError',
+        'ConnectTimeoutError',
+        'SSLEOFError',
+        'SSL.*EOF occurred in violation',
+        'Max retries exceeded',
+        'temporary failure in name resolution',
+        'Could not resolve host',
+        'getaddrinfo failed',
+        'TooManyRequests',
+        '"code":\s*"429"',
+        ' 429 ',
+        ' 500 Internal',
+        ' 502 Bad Gateway',
+        ' 503 ',
+        'ServiceUnavailable',
+        ' 504 Gateway',
+        'GatewayTimeout',
+        'BadGateway'
+    ) -join '|')
+
+    $delays = @(3, 7, 15, 30)
+    $lastOutput = $null
+
+    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+        $lastOutput = & az @Arguments 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            return $lastOutput
+        }
+
+        $asString = ($lastOutput | Out-String)
+        $isTransient = $asString -match $transientPattern
+
+        if ($isTransient -and $attempt -lt $MaxAttempts) {
+            $wait = $delays[[Math]::Min($attempt - 1, $delays.Length - 1)]
+            Write-Host ("    transient error (attempt {0}/{1}) - retrying in {2}s" -f
+                $attempt, $MaxAttempts, $wait) -ForegroundColor DarkYellow
+            Start-Sleep -Seconds $wait
+            continue
+        }
+
+        # Non-transient OR ran out of retries — throw with full context.
+        throw "az CLI failed ($LASTEXITCODE) running ``az $printable``:`n$asString"
     }
-    return $output
 }
 
 function ConvertFrom-AzJson {
