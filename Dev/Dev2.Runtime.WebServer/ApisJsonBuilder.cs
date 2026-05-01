@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.WebServer
             else
             {
                 var webPath = path.Replace("\\", "/");
-                var searchPath = path.Replace("/", "\\");
+                var searchPath = path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
                 apiJson.Url = EnvironmentVariables.PublicWebServerUri + webPath + "/apis.json";
                 resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).Contains(searchPath) && resource.ResourceType == "WorkflowService").ToList();
             }

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -103,6 +104,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ClearLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("File locking behavior preventing deletion is Windows-specific");
             var serializer = new Dev2JsonSerializer();
             lock (SyncRoot)
             {

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -81,6 +82,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void Services_ScheduledResourceHistory_GetValid()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(true);
 
 
@@ -96,6 +99,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void Services_ScheduledResource_GetIncorrectResources()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(false);
             Assert.AreEqual(0, output.Count);
         }

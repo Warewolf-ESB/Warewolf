@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -79,6 +80,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_Save_Valid()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(true, true, false);
             Assert.AreEqual(false, output.HasError);
 
@@ -88,6 +91,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_Save_InValid()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(false, true, false);
             Assert.AreEqual(true, output.HasError);
             Assert.AreEqual("No Resource Selected", output.Message.ToString());
@@ -97,6 +102,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_Save_InValidUserCred()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(true, false, false);
             Assert.AreEqual(true, output.HasError);
 
@@ -106,6 +113,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_Save_InValidDeleteExisting()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(true, true, true);
             Assert.AreEqual(false, output.HasError);
         }

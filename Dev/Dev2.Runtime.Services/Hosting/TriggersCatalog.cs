@@ -266,7 +266,11 @@ namespace Dev2.Runtime.Hosting
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
             var fileData = _fileWrapper.ReadAllText(filename);
+#if WINDOWS
             var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
+#else
+            var decryptedTrigger = fileData;
+#endif
             var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             return triggerQueue;
         }
