@@ -36,6 +36,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
         {
             loadedAssembly = null;
+            assemblyLocation = assemblyLocation?.Replace('\\', Path.DirectorySeparatorChar);
 
             var gacPrefix = GlobalConstants.GACPrefix;
             if (assemblyLocation != null && assemblyLocation.StartsWith(gacPrefix))
