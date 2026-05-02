@@ -677,7 +677,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "\"TestResults\": [\n    {\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\n  ");
             StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 1,\n    \"CoveredNodes\": 1,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 100.0\n  },");
             StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 1,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 0\n  }");
-            StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 1,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 0\r\n              }\r\n            ]\r\n          }");
+            StringAssert.Contains(executePayload, "\"NodesSummary\": {\n            \"TotalNodesCount\": 0,\n            \"NotCoveredNodes\": 0,\n            \"CoveredNodes\": 1,\n            \"CoveredNodesDetails\": [\n              {\n                \"Assert\": 1,\n                \"Mocked\": 0\n              }\n            ]\n          }");
         }
 
         [TestMethod]
