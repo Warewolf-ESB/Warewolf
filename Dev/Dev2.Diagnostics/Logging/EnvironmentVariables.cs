@@ -136,7 +136,11 @@ namespace Dev2.Common
             {
                 if (!Directory.Exists(DataPath))
                 {
-                    Directory.CreateDirectory(DataPath);
+                    try
+                    {
+                        Directory.CreateDirectory(DataPath);
+                    }
+                    catch (IOException) { }
                 }
                 return DataPath;
             }
