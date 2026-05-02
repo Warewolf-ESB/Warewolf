@@ -243,7 +243,8 @@ namespace Dev2.Runtime.Hosting
                     try
                     {
                         var triggerQueue = LoadQueueTriggerFromFile(triggerQueueFileName);
-                        newQueues.Add(triggerQueue);
+                        if (triggerQueue != null)
+                            newQueues.Add(triggerQueue);
                     }
                     catch (Exception ex)
                     {
