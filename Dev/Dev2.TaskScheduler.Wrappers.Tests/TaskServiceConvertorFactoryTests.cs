@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -256,6 +257,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskSettings_GivenTaskSettings_ShouldReturnDev2TaskSettings()
         {
             //---------------Set up test pack-------------------
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
@@ -340,6 +343,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskService_GivenValidArgs_ShouldReturnCorrectly()
         {
             //---------------Set up test pack-------------------
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
@@ -437,6 +442,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskService_ShouldReturnCorrectly()
         {
             //---------------Set up test pack-------------------
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);

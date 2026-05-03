@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Dev2.Common;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
@@ -28,6 +29,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestInitialize]
         public void Init()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             _factory = new Mock<ITaskServiceConvertorFactory>();
             _service = new TaskService();
         }
