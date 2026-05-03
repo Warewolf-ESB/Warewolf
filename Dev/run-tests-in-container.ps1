@@ -264,12 +264,16 @@ if ($CIMode) {
             $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
 
             if ($binaryPath) {
-                # MTP native invocation — produces TRX via the TrxReport extension.
+                # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF apphost
+                # probing /tests/ for libhostfxr.so (which lands there from other
+                # self-contained test projects) before honoring DOTNET_ROOT, which caused
+                # "No frameworks were found." when running the apphost directly.
+                # EnableMSTestRunner=true DLLs accept all --report-trx args when run this way.
                 $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
-                    "/tests/$assembly",
+                    '/usr/share/dotnet/dotnet', "/tests/$assembly.dll",
                     '--report-trx',
                     '--report-trx-filename', $trxName,
                     '--results-directory', '/results',
