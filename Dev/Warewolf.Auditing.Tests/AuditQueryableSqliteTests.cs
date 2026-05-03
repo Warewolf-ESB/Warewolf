@@ -26,13 +26,13 @@ namespace Warewolf.Auditing.Tests
     [TestClass]
     public class AuditQueryableSqliteTests
     {
-        string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+        string connstring = Path.Combine(Path.GetTempPath(), "AuditTestDB.db");
         string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.Url') <> '' ";
         [ClassInitialize]
         //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public static void TestFixtureSetup(TestContext context)
         {
-            var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+            var testDBPath = Path.Combine(Path.GetTempPath(), "AuditTestDB.db");
             if (File.Exists(testDBPath))
                 File.Delete(testDBPath);
 
