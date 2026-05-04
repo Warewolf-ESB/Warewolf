@@ -204,7 +204,7 @@ namespace Dev2.Common.DateAndTime
 
         static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
 
-        static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("tt");
+        static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("tt", CultureInfo.InvariantCulture);
 
         static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTimeResultTO.TimeZone.ShortName;
 

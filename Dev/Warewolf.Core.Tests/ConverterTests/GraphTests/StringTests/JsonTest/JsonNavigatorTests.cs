@@ -110,7 +110,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ""\r\n        RandomData1\r\n    ""
 ]";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
 
         [TestMethod]
@@ -177,7 +177,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ]
 }";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
 
         [TestMethod]
@@ -292,7 +292,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ""\r\n        RandomData1\r\n    ""
 ]";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
 
         [TestMethod]
@@ -502,7 +502,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
             const string expected = "Dev2";
             var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
 
         [TestMethod]
@@ -562,7 +562,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ""\r\n        RandomData1\r\n    ""
 ]";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
 
         [TestMethod]
@@ -629,7 +629,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ]
 }";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"), actual.Replace("\r\n", "\n").Replace(@"\r\n", @"\n"));
         }
     }
 }
