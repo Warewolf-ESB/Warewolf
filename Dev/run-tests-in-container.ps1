@@ -302,7 +302,14 @@ if ($CIMode) {
 
             & docker @dockerRunArgs
 
-            if ($LASTEXITCODE -ne 0) {
+            if ($LASTEXITCODE -eq 8) {
+                # Exit code 8 = Microsoft Testing Platform "ZeroTestsRan":
+                # all tests were filtered out by category or all were skipped/inconclusive.
+                # This is expected (e.g. CannotParallelize-only assemblies, or
+                # integration assemblies whose external services aren't available).
+                # Treat as a warning, not a failure.
+                Write-Warning "WARN: $assembly$filterSuffix — zero tests ran (all filtered or skipped). Exit 8."
+            } elseif ($LASTEXITCODE -ne 0) {
                 Write-Warning "FAILED: $assembly$filterSuffix (exit $LASTEXITCODE)."
                 $failedAssemblies.Add("$assembly$filterSuffix")
                 $failed++
