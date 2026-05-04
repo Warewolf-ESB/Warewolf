@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Tests.PathOperations
@@ -27,6 +28,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("LocalSchedulerAdmin")]
         public void LogonProvider_Construct()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows logon provider requires Windows");
             var provider = new LogonProvider();
 
             var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @".\LocalSchedulerAdmin", "987Sched#@!", false, null);

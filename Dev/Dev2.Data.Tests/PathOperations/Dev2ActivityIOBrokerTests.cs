@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
@@ -769,6 +770,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage_SrcHasRoot()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Test uses Windows-specific path root detection");
             string expectedOutcome = ActivityIOBrokerBaseDriver.ResultOk;
             var putReturnCode = 0;
             IDirectoryInfo srcDirectory = null;
@@ -781,6 +784,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage_PutFails()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Test uses Windows-specific path root detection");
             string expectedOutcome = ActivityIOBrokerBaseDriver.ResultBad;
             var putReturnCode = -1;
             IDirectoryInfo srcDirectory = null;

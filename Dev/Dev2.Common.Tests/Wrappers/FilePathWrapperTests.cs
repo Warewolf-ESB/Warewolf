@@ -10,12 +10,19 @@
 
 using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Common.Tests.Wrappers
 {
     [TestClass]
     public class FilePathWrapperTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("FilePathWrapper tests use Windows-specific path conventions");
+        }
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(FilePathWrapper))]

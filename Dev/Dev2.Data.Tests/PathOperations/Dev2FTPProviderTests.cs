@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using static Dev2.Data.PathOperations.Dev2FTPProvider;
 
 namespace Dev2.Data.Tests.PathOperations
@@ -522,6 +523,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(Dev2FTPProvider))]
         public void Dev2FTPProvider_ListFilesInDirectory()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Test uses Windows-specific absolute path validation");
             const string path = "path";
             const string userName = "userName";
             const string password = "password";

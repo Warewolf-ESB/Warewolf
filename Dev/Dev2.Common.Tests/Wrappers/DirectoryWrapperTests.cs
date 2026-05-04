@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,6 +22,13 @@ namespace Dev2.Tests
         private static IDirectory NewIDirectoryInstance()
         {
             return new DirectoryWrapper();
+        }
+
+        [TestInitialize]
+        public void Init()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows-specific directory protection is not testable on this platform");
         }
 
         [TestMethod]

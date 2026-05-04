@@ -15,6 +15,7 @@ using Dev2.Data.PathOperations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 
 namespace Dev2.Data.Tests.PathOperations
@@ -132,6 +133,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoPathExistOperation))]
         public void DoPathExistOperation_ExecuteOperationWithAuth_IsNotNull_FileWrapperPathExists_IsTrue_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             //--------------------------Arrange-------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
@@ -159,6 +162,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoPathExistOperation))]
         public void DoPathExistOperation_ExecuteOperationWithAuth_IsNotNull_FileWrapperPathExists_IsFalse_ExpectFalse()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             //--------------------------Arrange-------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
@@ -186,6 +191,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoPathExistOperation))]
         public void DoPathExistOperation_ExecuteOperationWithAuth_IsNull_FileWrapperPathExists_IsFalse_ExpectFalse()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             //--------------------------Arrange-------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();

@@ -11,12 +11,20 @@
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Common.Tests
 {
     [TestClass]
     public class GetComputerNamesTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Computer name / domain lookup requires Windows");
+        }
+
         [ClassInitialize]
         public static void InitializeTests(TestContext testContext)
         {

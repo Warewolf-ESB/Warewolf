@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces;
@@ -44,6 +45,8 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(RabbitMQSource))]
         public void RabbitMQSource_Validate_ToXml_DefaultValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Rabbit MQ Source"" ResourceType=""RabbitMQSource"" IsValid=""false"" 
                                                ConnectionString=""HostName=localhost;Port=;UserName=warewolf;Password=test123;VirtualHost=hostyhost/"" Type=""RabbitMQSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Rabbit MQ Source</DisplayName>

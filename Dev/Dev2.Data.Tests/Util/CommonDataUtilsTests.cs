@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Search;
@@ -614,6 +615,8 @@ namespace Dev2.Data.Tests.Util
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectoryOfSource_SourcePathIsDirectory()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Test uses Windows-specific path conventions");
             const string file = @"C:\Parent\";
             const string dstfile = @"C:\Parent\Child1\Child2\";
             var srcPath = new Mock<IActivityIOPath>();

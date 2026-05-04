@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -96,6 +97,8 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(SharepointSource))]
         public void SharePointSource_ShouldHaveConstructorAndSetDefaultValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("DPAPI encryption requires Windows");
             var sharepointSource = new SharepointSource();
             Assert.IsNotNull(sharepointSource);
             Assert.AreEqual("SharepointServerSource", sharepointSource.ResourceType);
