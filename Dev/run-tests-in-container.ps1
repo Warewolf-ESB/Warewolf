@@ -215,6 +215,7 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
+    $failedAssemblies = [System.Collections.Generic.List[string]]::new()
 
     Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
     Write-Host "CI: filter values    : $($FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } })" -ForegroundColor Cyan
@@ -302,7 +303,8 @@ if ($CIMode) {
             & docker @dockerRunArgs
 
             if ($LASTEXITCODE -ne 0) {
-                Write-Warning "$assembly$filterSuffix reported failures (exit $LASTEXITCODE)."
+                Write-Warning "FAILED: $assembly$filterSuffix (exit $LASTEXITCODE)."
+                $failedAssemblies.Add("$assembly$filterSuffix")
                 $failed++
             }
         }
@@ -321,7 +323,13 @@ if ($CIMode) {
     }
 
     if ($failed -gt 0) {
-        Write-Error "$failed assembly/filter run(s) reported test failures."
+        Write-Host ""
+        Write-Host "==================== FAILED ASSEMBLIES ====================" -ForegroundColor Red
+        foreach ($name in $failedAssemblies) {
+            Write-Host "  FAILED: $name" -ForegroundColor Red
+        }
+        Write-Host "===========================================================" -ForegroundColor Red
+        Write-Error "$failed assembly/filter run(s) reported test failures: $($failedAssemblies -join ', ')"
         exit 1
     }
     exit 0
