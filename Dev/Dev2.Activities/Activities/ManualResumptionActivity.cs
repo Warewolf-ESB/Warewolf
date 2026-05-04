@@ -177,7 +177,7 @@ namespace Dev2.Activities
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
             }
-            catch (System.Data.SqlClient.SqlException)
+            catch (Microsoft.Data.SqlClient.SqlException)
             {
                 LogException(new Exception(ErrorResource.BackgroundJobClientResumeFailed), allErrors);
             }

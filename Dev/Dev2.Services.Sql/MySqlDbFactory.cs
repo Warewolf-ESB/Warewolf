@@ -1,7 +1,7 @@
 #pragma warning disable
 using System;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using MySql.Data.MySqlClient;
