@@ -314,7 +314,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.AreEqual("Row Two", items[1]["Title"].ToString());
 
             var entry = _wireMock.LogEntries.FirstOrDefault(
-                e => e.RequestMessage.Path.Contains("getitems"));
+                e => e.RequestMessage.Path.Contains("GetItems", StringComparison.OrdinalIgnoreCase));
             Assert.IsNotNull(entry, "WireMock must have received the POST getitems request");
         }
     }

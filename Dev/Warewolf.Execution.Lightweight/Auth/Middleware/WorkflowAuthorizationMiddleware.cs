@@ -81,6 +81,15 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
+        // ── apis.json discovery — always accessible, no auth required ─────────
+        // The function handles permission-filtering: valid JWT → filtered list,
+        // absent or expired JWT → empty list.  Never returns 401 for this endpoint.
+        if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return;
+        }
+
         // ── Development-only bypass ───────────────────────────────────────────
         // NEVER active in Production — environment guard is mandatory.
         if (_hostEnvironment.IsDevelopment() &&
