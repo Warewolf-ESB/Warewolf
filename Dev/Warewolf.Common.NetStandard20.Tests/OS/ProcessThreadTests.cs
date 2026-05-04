@@ -104,6 +104,7 @@ namespace Warewolf.OS.Tests
             var mockProcessFactory = new Mock<IProcessFactory>();
             var mockProcess = new Mock<IProcess>();
             mockProcess.Setup(o => o.WaitForExit(It.IsAny<int>())).Returns(true);
+            mockProcess.Setup(o => o.HasExited).Returns(true);
             var process = mockProcess.Object;
             mockProcessFactory.Setup(o => o.Start(_startInfo)).Returns(process);
             var expectedConfig = mockConfig.Object;
