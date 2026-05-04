@@ -359,7 +359,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
   ]
 }";
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
