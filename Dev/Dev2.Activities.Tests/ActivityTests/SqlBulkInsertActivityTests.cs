@@ -12,12 +12,13 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Activities.SqlBulkInsert;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -2028,6 +2029,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IgnoreBlankRows = ignoreBlankRows,
                 KeepIdentity = keepIdentity
             };
+            var mockCatalog = new Mock<IResourceCatalog>();
+            mockCatalog.Setup(c => c.GetResource<DbSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dbSource);
+            x.ResourceCatalog = mockCatalog.Object;
             var p = new Warewolf.Testing.PrivateObject(x);
             p.SetProperty("SqlBulkInserter", sqlBulkInserter);
 
