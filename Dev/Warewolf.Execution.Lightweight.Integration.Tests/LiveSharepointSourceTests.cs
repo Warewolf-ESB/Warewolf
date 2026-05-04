@@ -291,7 +291,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
 
             _wireMock.Given(
                 Request.Create()
-                    .WithPath("/_api/web/lists/getbytitle('TestList')/getitems")
+                    .WithPath("/_api/web/lists/getbytitle('TestList')/GetItems")
                     .UsingPost())
                 .RespondWith(
                     Response.Create()

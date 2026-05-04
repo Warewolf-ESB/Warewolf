@@ -126,6 +126,21 @@
     </Content>
 
     <!--
+      Shared workflow resources from Resources - Release\Resources.
+      The Link metadata maps each file to Resources\... in the publish output so
+      that the path matches what workflow-index.json and WorkflowFunctionHelper
+      expect at runtime (WorkflowsDirectory defaults to /home/site/wwwroot/Resources).
+      Without this, 'dotnet publish' does not include the bite files and the engine
+      returns "Workflow file not found" for every web-tool workflow.
+    -->
+    <Content Include="..\Resources - Release\Resources\**\*"
+             Condition="Exists('..\Resources - Release\Resources')">
+      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+    <!--
       Optional: if a secure.config is present next to the project file it will be
       copied into the output directory and picked up by SecureConfigLoader at
       runtime (both locally and after zip-deploy to Azure Functions).

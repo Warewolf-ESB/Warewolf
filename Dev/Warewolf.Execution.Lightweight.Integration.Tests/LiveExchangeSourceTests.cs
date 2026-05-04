@@ -1,8 +1,8 @@
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
-*/
+﻿/*
+ *  Warewolf - Once bitten, there's no going back
+ *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
+ *  Licensed under GNU Affero General Public License 3.0 or later.
+ */
 
 using Dev2.Common;
 using Dev2.Common.Exchange;
@@ -12,8 +12,10 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -24,20 +26,71 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
     /// Live integration tests for <see cref="ExchangeSource"/> loaded via
     /// <see cref="LightweightSourceLoader"/>.
     ///
-    /// Uses <see href="https://github.com/WireMock-Net/WireMock.Net">WireMock.Net</see> as
-    /// an in-process HTTP mock server that simulates the Exchange Web Services (EWS) SOAP
-    /// endpoint. No Docker or external services are required.
+    /// <see cref="TC_ExchangeSource_SendEmail_ViaMockedEWS"/> requires the
+    /// <c>warewolfserver/exchange-connector-testing</c> Docker container to be reachable
+    /// on <c>http://localhost:8889/EWS/Exchange.asmx</c>.  <see cref="ClassSetup"/>
+    /// attempts to start it automatically; in CI the pipeline starts it before test
+    /// execution so the attempt is a no-op if the container is already running.
     ///
     /// What is tested:
-    ///  1. Source configuration round-trip — AutoDiscoverUrl / UserName survive .bite → load.
-    ///  2. WireMock connectivity — after loading, the stored URL points to a live endpoint
-    ///     (WireMock) confirming that the URL was preserved exactly as written.
+    ///  1. Properties round-trip — AutoDiscoverUrl / UserName survive .bite → load.
+    ///  2. WireMock confirms URL preservation for the autodiscover endpoint.
+    ///  3. Send() successfully POSTs SOAP to the exchange-connector-testing container.
     /// </summary>
     [TestClass]
     public class LiveExchangeSourceTests
     {
+        private const string ExchangeContainerName = "exchange-connector-testing";
+        private const string ExchangeEwsUrl = "http://localhost:8889/EWS/Exchange.asmx";
+        private const string ExchangeUser = "testuser";
+        private const string ExchangePassword = "test123";
+
         private readonly List<string> _tempDirs = new();
         private WireMockServer? _wireMock;
+
+        /// <summary>
+        /// Starts the exchange connector testing container so that
+        /// <see cref="TC_ExchangeSource_SendEmail_ViaMockedEWS"/> can POST SOAP to it.
+        /// Handles the case where the container is already running (CI pipeline starts it
+        /// before the test run) by ignoring docker startup errors.
+        /// </summary>
+        [ClassInitialize]
+        public static void ClassSetup(TestContext _)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo("docker",
+                    $"run -d -p 8889:8080 --name {ExchangeContainerName} warewolfserver/exchange-connector-testing")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                };
+                using var p = Process.Start(psi);
+                p?.WaitForExit(30_000);
+                // Brief wait for the container's HTTP listener to become ready.
+                Thread.Sleep(3_000);
+            }
+            catch
+            {
+                // Docker not available in this environment (e.g. test container without
+                // Docker socket).  The CI pipeline is responsible for starting the
+                // exchange-connector-testing container before running the tests.
+            }
+        }
+
+        [ClassCleanup]
+        public static void ClassTeardown()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("docker", $"rm -f {ExchangeContainerName}")
+                {
+                    UseShellExecute = false,
+                })?.WaitForExit(10_000);
+            }
+            catch { }
+        }
 
         [TestInitialize]
         public void Setup() =>
@@ -106,58 +159,30 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
 
         /// <summary>
         /// End-to-end: loads ExchangeSource from .bite → Send() issues a SOAP CreateItem
-        /// request to the WireMock-stubbed EWS endpoint → WireMock confirms receipt.
+        /// request to the <c>warewolfserver/exchange-connector-testing</c> container
+        /// (started by <see cref="ClassSetup"/> or the CI pipeline) → asserts no exception.
         ///
-        /// AutoDiscoverUrl is set directly to /EWS/Exchange.asmx so ExchangeEmailSender
-        /// skips autodiscover and POSTs SOAP straight to WireMock (see ExchangeEmailSender.Initialize).
+        /// Source credentials and URL match those embedded in <c>local exchange.bite</c>
+        /// so that local development and CI use the same exchange stub.
         /// </summary>
         [TestMethod]
         [TestCategory("LiveIntegration_Exchange")]
         public void TC_ExchangeSource_SendEmail_ViaMockedEWS()
         {
-            const string createItemResponse =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                  "<s:Body>" +
-                    "<m:CreateItemResponse xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\"" +
-                                        " xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">" +
-                      "<m:ResponseMessages>" +
-                        "<m:CreateItemResponseMessage ResponseClass=\"Success\">" +
-                          "<m:ResponseCode>NoError</m:ResponseCode>" +
-                          "<m:Items/>" +
-                        "</m:CreateItemResponseMessage>" +
-                      "</m:ResponseMessages>" +
-                    "</m:CreateItemResponse>" +
-                  "</s:Body>" +
-                "</s:Envelope>";
-
-            _wireMock!.Given(
-                Request.Create()
-                    .WithPath("/EWS/Exchange.asmx")
-                    .UsingPost())
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(200)
-                        .WithHeader("Content-Type", "text/xml; charset=utf-8")
-                        .WithBody(createItemResponse));
-
-            var ewsUrl = $"http://localhost:{_wireMock.Port}/EWS/Exchange.asmx";
             var dir = TempDir();
-            var id = WriteBite(dir, ewsUrl);
+            var id = WriteBite(dir, ExchangeEwsUrl, ExchangeUser, ExchangePassword);
 
             LightweightSourceLoader.Instance.EnsureIndexed(dir);
             IOnDemandSourceLoader iLoader = LightweightSourceLoader.Instance;
-            Assert.IsTrue(iLoader.EnsureSourceLoaded(id));
+            Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "ExchangeSource should load from .bite");
 
             var source = GetFromCatalog<ExchangeSource>(id)!;
             var sender = new ExchangeEmailSender(source);
-            var message = new ExchangeTestMessage { Subject = "Test Subject", Body = "Test Body" };
-            message.Tos.Add("to@test.local");
+            var message = new ExchangeTestMessage { Subject = "Test Message", Body = "body test" };
+            message.Tos.Add("ashley.lewis@dev2.co.za");
 
+            // Should not throw; the exchange-connector-testing container accepts the SOAP call.
             source.Send(sender, message);
-
-            var received = _wireMock.LogEntries.Any(e => e.RequestMessage.Path == "/EWS/Exchange.asmx");
-            Assert.IsTrue(received, "WireMock should have received a SOAP POST to /EWS/Exchange.asmx");
         }
 
         /// <summary>
