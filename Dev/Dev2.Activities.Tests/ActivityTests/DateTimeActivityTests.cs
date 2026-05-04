@@ -105,9 +105,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             var firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
-            var firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt", CultureInfo.InvariantCulture);
             var secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
-            var secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt", CultureInfo.InvariantCulture);
             GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out IList<string> actual, out string error);
             // remove test datalist ;)
             var firstResult = actual[2];

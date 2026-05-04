@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
@@ -123,6 +124,8 @@ namespace ActivityUnitTests.ActivityTests
         [TestCategory("Zip_Execute")]
         public void Zip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Password encryption via DPAPI is Windows-only; DecryptedPassword throws on Linux.");
             var fileNames = new List<string>();
             var randomFileName = Guid.NewGuid();
             fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName + "Dev2.txt"));

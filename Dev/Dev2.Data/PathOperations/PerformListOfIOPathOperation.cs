@@ -49,9 +49,11 @@ namespace Dev2.Data.PathOperations
         public static string AppendBackSlashes(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {
             var newPath = path.Path;
-            if (!path.Path.EndsWith("\\", StringComparison.Ordinal) && PathIs(path, fileWrapper, dirWrapper) == enPathType.Directory)
+            if (!path.Path.EndsWith("\\", StringComparison.Ordinal)
+                && !path.Path.EndsWith("/", StringComparison.Ordinal)
+                && PathIs(path, fileWrapper, dirWrapper) == enPathType.Directory)
             {
-                newPath = path.Path + "\\";
+                newPath = path.Path + Path.DirectorySeparatorChar;
             }
             return newPath;
         }
