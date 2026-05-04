@@ -61,6 +61,14 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
+        // apis.json discovery — always accessible without a token.
+        // WorkflowAuthorizationMiddleware handles permission-filtering (empty list when no JWT).
+        if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return;
+        }
+
         // Check for Easy Auth principal header (set by Azure after token validation)
         var hasPrincipalHeader = request.Headers
             .TryGetValues(AuthConstants.ClientPrincipalHeader, out var principalValues)
