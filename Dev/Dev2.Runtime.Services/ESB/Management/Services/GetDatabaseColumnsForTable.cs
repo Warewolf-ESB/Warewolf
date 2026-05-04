@@ -79,112 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<DbSource>(database);
                 var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
-                DataTable columnInfo;
-                switch (dbSource.ServerType)
-                {
-                    case enSourceType.MySqlDatabase:
-                        {
-                            using (var connection = new MySqlConnection(runtTimedbSource.ConnectionString))
-                            {
-                                // Connect to the database then retrieve the schema information.
-                                connection.Open();
-                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
-
-                                using (var sqlcmd = new MySqlCommand(sql, connection))
-                                {
-                                    // force it closed so we just get the proper schema ;)
-                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
-                                    {
-                                        columnInfo = sdr.GetSchemaTable();
-                                    }
-                                }
-                            }
-                            break;
-                        }
-					case enSourceType.SQLiteDatabase:
-						{
-							using (var connection = new SQLiteConnection(runtTimedbSource.ConnectionString))
-							{
-								// Connect to the database then retrieve the schema information.
-								connection.Open();
-								var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
-
-								using (var sqlcmd = new SQLiteCommand(sql, connection))
-								{
-									// force it closed so we just get the proper schema ;)
-									using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
-									{
-										columnInfo = sdr.GetSchemaTable();
-									}
-								}
-							}
-							break;
-						}
-					case enSourceType.Oracle:
-                        {
-                            using (var connection = new OracleConnection(runtTimedbSource.ConnectionString))
-                            {
-                                // Connect to the database then retrieve the schema information.
-                                connection.Open();
-                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
-
-                                using (var sqlcmd = new OracleCommand(sql, connection))
-                                {
-                                    // force it closed so we just get the proper schema ;)
-                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
-                                    {
-                                        columnInfo = sdr.GetSchemaTable();
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                    case enSourceType.ODBC:
-                        {
-                            using (var connection = new OdbcConnection(runtTimedbSource.ConnectionString))
-                            {
-                                // Connect to the database then retrieve the schema information.
-                                connection.Open();
-                                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
-
-                                using (var sqlcmd = new OdbcCommand(sql, connection))
-                                {
-                                    // force it closed so we just get the proper schema ;)
-                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
-                                    {
-                                        columnInfo = sdr.GetSchemaTable();
-                                    }
-                                }
-                            }
-                            break;
-                        }
-
-                    default:
-                        {
-                            using (var connection = new SqlConnection(runtTimedbSource.ConnectionString))
-                            {
-                                // Connect to the database then retrieve the schema information.
-                                connection.Open();
-
-                                // GUTTED TO RETURN ALL REQUIRED DATA ;)
-                                if (schema == null)
-                                {
-                                    schema = string.Empty;
-                                }
-                                var sql = @"select top 1 * from " + schema.Trim('"') + "." + tableName.Trim('"');
-
-                                using (var sqlcmd = new SqlCommand(sql, connection))
-                                {
-                                    // force it closed so we just get the proper schema ;)
-                                    using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
-                                    {
-                                        columnInfo = sdr.GetSchemaTable();
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                }
+                DataTable columnInfo = GetColumnInfo(dbSource, runtTimedbSource, tableName, schema);
 
                 var dbColumns = new DbColumnList();
 
@@ -202,6 +97,87 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
+            }
+        }
+
+        DataTable GetColumnInfo(DbSource dbSource, DbSource runtimeDbSource, string tableName, string schema)
+        {
+            switch (dbSource.ServerType)
+            {
+                case enSourceType.MySqlDatabase:
+                    return GetMySqlColumns(runtimeDbSource, tableName);
+                case enSourceType.SQLiteDatabase:
+                    return GetSQLiteColumns(runtimeDbSource, tableName);
+                case enSourceType.Oracle:
+                    return GetOracleColumns(runtimeDbSource, tableName);
+                case enSourceType.ODBC:
+                    return GetOdbcColumns(runtimeDbSource, tableName);
+                default:
+                    return GetSqlServerColumns(runtimeDbSource, tableName, schema);
+            }
+        }
+
+        DataTable GetMySqlColumns(DbSource runtimeDbSource, string tableName)
+        {
+            using (var connection = new MySqlConnection(runtimeDbSource.ConnectionString))
+            {
+                connection.Open();
+                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+                using (var sqlcmd = new MySqlCommand(sql, connection))
+                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    return sdr.GetSchemaTable();
+            }
+        }
+
+        DataTable GetSQLiteColumns(DbSource runtimeDbSource, string tableName)
+        {
+            using (var connection = new SQLiteConnection(runtimeDbSource.ConnectionString))
+            {
+                connection.Open();
+                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+                using (var sqlcmd = new SQLiteCommand(sql, connection))
+                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    return sdr.GetSchemaTable();
+            }
+        }
+
+        DataTable GetOracleColumns(DbSource runtimeDbSource, string tableName)
+        {
+            using (var connection = new OracleConnection(runtimeDbSource.ConnectionString))
+            {
+                connection.Open();
+                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+                using (var sqlcmd = new OracleCommand(sql, connection))
+                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    return sdr.GetSchemaTable();
+            }
+        }
+
+        DataTable GetOdbcColumns(DbSource runtimeDbSource, string tableName)
+        {
+            using (var connection = new OdbcConnection(runtimeDbSource.ConnectionString))
+            {
+                connection.Open();
+                var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+                using (var sqlcmd = new OdbcCommand(sql, connection))
+                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    return sdr.GetSchemaTable();
+            }
+        }
+
+        DataTable GetSqlServerColumns(DbSource runtimeDbSource, string tableName, string schema)
+        {
+            using (var connection = new SqlConnection(runtimeDbSource.ConnectionString))
+            {
+                connection.Open();
+                if (schema == null)
+                {
+                    schema = string.Empty;
+                }
+                var sql = @"select top 1 * from " + schema.Trim('"') + "." + tableName.Trim('"');
+                using (var sqlcmd = new SqlCommand(sql, connection))
+                using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    return sdr.GetSchemaTable();
             }
         }
 
