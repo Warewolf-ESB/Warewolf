@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Common.State;
 using Dev2.Data.Interfaces;
@@ -179,6 +180,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfPathCopy_Execute")]
         public void Copy_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Password encryption via DPAPI is Windows-only; DecryptedPassword throws on Linux.");
             var fileNames = new List<string>();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
 

@@ -80,17 +80,17 @@ namespace Dev2.Tests
         public void DeleteHelper_Delete_WhenPathContainsJustFolder_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            var tmpPath = Path.GetTempPath() + Guid.NewGuid();
+            var tmpPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             Directory.CreateDirectory(tmpPath);
-            File.Create(tmpPath + "\\a.txt").Close();
-            Directory.CreateDirectory(tmpPath + "\\b");
+            File.Create(Path.Combine(tmpPath, "a.txt")).Close();
+            Directory.CreateDirectory(Path.Combine(tmpPath, "b"));
 
             //------------Execute Test---------------------------
-            var result = new DeleteHelper().Delete(tmpPath + "\\b");
+            var result = new DeleteHelper().Delete(Path.Combine(tmpPath, "b"));
 
             var dirStillExit = Directory.Exists(tmpPath);
             var contents = Directory.GetFiles(tmpPath);
-            var bDirStillExit = Directory.Exists(tmpPath + "\\b");
+            var bDirStillExit = Directory.Exists(Path.Combine(tmpPath, "b"));
 
             Cleanup(tmpPath);
 
