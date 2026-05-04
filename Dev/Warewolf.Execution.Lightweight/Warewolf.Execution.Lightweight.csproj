@@ -113,29 +113,14 @@
   
   <ItemGroup>
     <!--
-      Local Resources folder: place workflow .bite / .xml files here for
-      project-specific resources (e.g. the login override workflow).
-      Files are merged with the Resources - Release content in the output and
-      publish directories, so they are included in every build and publish path
-      including 'dotnet publish -o …' and the Docker (Azure Functions) profile.
-      DO NOT commit sensitive workflow resources to source control.
+      Local Resources folder: workflow .bite files for development and testing.
+      Only included in Debug builds so that the bin/publish output is clean in
+      Release — users are expected to supply their own resources before publishing
+      to Azure Functions.
+      Files from Resources - Release\Resources that are needed for integration
+      tests have been copied here and are tracked in source control.
     -->
-    <Content Include="Resources\**\*" Condition="Exists('Resources')">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-
-    <!--
-      Shared workflow resources from Resources - Release\Resources.
-      The Link metadata maps each file to Resources\... in the publish output so
-      that the path matches what workflow-index.json and WorkflowFunctionHelper
-      expect at runtime (WorkflowsDirectory defaults to /home/site/wwwroot/Resources).
-      Without this, 'dotnet publish' does not include the bite files and the engine
-      returns "Workflow file not found" for every web-tool workflow.
-    -->
-    <Content Include="..\Resources - Release\Resources\**\*"
-             Condition="Exists('..\Resources - Release\Resources')">
-      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
