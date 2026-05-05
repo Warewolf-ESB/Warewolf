@@ -72,7 +72,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error($"[DsfBaseActivity.ExecuteTool] Exception in {GetType().Name} ({DisplayName}): Type={ex.GetType().FullName}, Message={ex.Message}, InnerType={ex.InnerException?.GetType().FullName}, InnerMessage={ex.InnerException?.Message}", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(string.Format("{0} Exception", DisplayName), ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -126,9 +126,7 @@ namespace Dev2.Activities
             if (colItr.FieldCount <= 0)
             {
                 var evaluatedValues = new Dictionary<string, string>();
-                Dev2Logger.Debug($"[DsfBaseActivity.TryExecute] Calling PerformExecution on {GetType().Name}.", GlobalConstants.WarewolfDebug);
                 _executionResult = PerformExecution(evaluatedValues);
-                Dev2Logger.Debug($"[DsfBaseActivity.TryExecute] PerformExecution completed on {GetType().Name}.", GlobalConstants.WarewolfDebug);
                 AssignResult(dataObject, update);
             }
             else
@@ -141,9 +139,7 @@ namespace Dev2.Activities
                         var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
-                    Dev2Logger.Debug($"[DsfBaseActivity.TryExecute] Calling PerformExecution (iterator loop) on {GetType().Name}.", GlobalConstants.WarewolfDebug);
                     _executionResult = PerformExecution(evaluatedValues);
-                    Dev2Logger.Debug($"[DsfBaseActivity.TryExecute] PerformExecution (iterator loop) completed on {GetType().Name}.", GlobalConstants.WarewolfDebug);
                     AssignResult(dataObject, update);
                 }
             }
