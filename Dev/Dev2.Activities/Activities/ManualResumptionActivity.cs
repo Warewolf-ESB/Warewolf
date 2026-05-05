@@ -115,18 +115,23 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            Dev2Logger.Debug($"[ManualResumptionActivity.ExecuteTool] Entered. SuspensionId={SuspensionId}, OverrideInputVariables={OverrideInputVariables}, Response={Response}", GlobalConstants.WarewolfDebug);
             _dataObject = dataObject;
             _update = update;
             base.ExecuteTool(_dataObject, update);
+            Dev2Logger.Debug($"[ManualResumptionActivity.ExecuteTool] Completed. Response={Response}, AllErrors.Count={dataObject?.Environment?.AllErrors?.Count}", GlobalConstants.WarewolfDebug);
         }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+            Dev2Logger.Debug("[ManualResumptionActivity.PerformExecution] Entered.", GlobalConstants.WarewolfDebug);
             var allErrors = new ErrorResultTO();
             Response = string.Empty;
+            Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] Response cleared. _dataObject is {(_dataObject is null ? "null" : "set")}.", GlobalConstants.WarewolfDebug);
             try
             {
                 var suspensionId = EvalSuspensionId();
+                Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] EvalSuspensionId returned '{suspensionId}'. OverrideInputVariables={OverrideInputVariables}, _persistenceEnabled={_persistenceEnabled}.", GlobalConstants.WarewolfDebug);
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
@@ -138,11 +143,13 @@ namespace Dev2.Activities
                 }
 
                 _logger.Info("Performing Resume of job {" + suspensionId + "}, connection established.", suspensionId);
-                
+
                 const string OverrideVariables = "";
                 if (OverrideInputVariables)
                 {
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] OverrideInputVariables=true, calling GetPersistedValues({suspensionId}).", GlobalConstants.WarewolfDebug);
                     var persistedValues = _scheduler.GetPersistedValues(suspensionId);
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] GetPersistedValues returned. SuspendedEnvironment is {(persistedValues?.SuspendedEnvironment is null ? "null" : $"'{persistedValues.SuspendedEnvironment.Substring(0, Math.Min(80, persistedValues.SuspendedEnvironment.Length))}...'")}.", GlobalConstants.WarewolfDebug);
                     if (string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
@@ -159,11 +166,15 @@ namespace Dev2.Activities
                     resumeObject.Environment.FromJson(envArray);
                     resumeObject.ExecutingUser = persistedValues.ExecutingUser;
                     InnerActivity(resumeObject, _update);
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] Calling ManualResumeWithOverrideJob({suspensionId}).", GlobalConstants.WarewolfDebug);
                     Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] ManualResumeWithOverrideJob returned '{Response}'.", GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] OverrideInputVariables=false, calling ResumeJob({suspensionId}).", GlobalConstants.WarewolfDebug);
                     Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, OverrideVariables);
+                    Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] ResumeJob returned '{Response}'.", GlobalConstants.WarewolfDebug);
                 }
 
                 _stateNotifier?.LogActivityExecuteState(this);
@@ -177,16 +188,19 @@ namespace Dev2.Activities
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
             }
-            catch (Microsoft.Data.SqlClient.SqlException)
+            catch (Microsoft.Data.SqlClient.SqlException sqlEx)
             {
+                Dev2Logger.Error($"[ManualResumptionActivity.PerformExecution] Caught SqlException: {sqlEx.Message}", sqlEx, GlobalConstants.WarewolfError);
                 LogException(new Exception(ErrorResource.BackgroundJobClientResumeFailed), allErrors);
             }
             catch (Exception ex)
             {
+                Dev2Logger.Error($"[ManualResumptionActivity.PerformExecution] Caught exception: Type={ex.GetType().FullName}, Message={ex.Message}, InnerType={ex.InnerException?.GetType().FullName}, InnerMessage={ex.InnerException?.Message}", ex, GlobalConstants.WarewolfError);
                 LogException(ex, allErrors);
             }
             finally
             {
+                Dev2Logger.Debug($"[ManualResumptionActivity.PerformExecution] Finally block. allErrors.HasErrors={allErrors.HasErrors()}, Response={Response}.", GlobalConstants.WarewolfDebug);
                 HandleErrors(_dataObject, allErrors);
             }
 
