@@ -35,6 +35,7 @@ using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
@@ -64,6 +65,43 @@ namespace ActivityUnitTests
             };
            DataObject = new DsfDataObject("",Guid.NewGuid());
       
+        }
+
+        private static readonly byte[] _aesKey = Encoding.UTF8.GetBytes("WarewolfTestHardcodedAESKey12345");
+
+        static BaseActivityUnitTest() => InstallAesHooks();
+
+        [TestInitialize]
+        public void SetupAesEncryption() => InstallAesHooks();
+
+        private static void InstallAesHooks()
+        {
+            DpapiWrapper.AesEncryptHook = plainText =>
+            {
+                using var aes = System.Security.Cryptography.Aes.Create();
+                aes.Key = _aesKey;
+                aes.GenerateIV();
+                using var encryptor = aes.CreateEncryptor();
+                var data = Encoding.Unicode.GetBytes(plainText);
+                var cipher = encryptor.TransformFinalBlock(data, 0, data.Length);
+                var result = new byte[aes.IV.Length + cipher.Length];
+                aes.IV.CopyTo(result, 0);
+                cipher.CopyTo(result, aes.IV.Length);
+                return "WFAES::" + Convert.ToBase64String(result);
+            };
+
+            DpapiWrapper.AesDecryptHook = cipher =>
+            {
+                var payload = Convert.FromBase64String(cipher.Substring("WFAES::".Length));
+                var iv = payload[..16];
+                var cipherBytes = payload[16..];
+                using var aes = System.Security.Cryptography.Aes.Create();
+                aes.Key = _aesKey;
+                aes.IV = iv;
+                using var decryptor = aes.CreateDecryptor();
+                var data = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
+                return Encoding.Unicode.GetString(data);
+            };
         }
 
         protected Guid ExecutionId { get; set; }

@@ -27,7 +27,7 @@ using System.Text;
 namespace Dev2.Scheduler.Test
 {
     [TestClass]
-    public class ScheduledResourceModelTest
+    public class ScheduledResourceModelTest : DpapiTestBase
     {
         Mock<IDev2TaskService> _mockService;
         string _folderId;

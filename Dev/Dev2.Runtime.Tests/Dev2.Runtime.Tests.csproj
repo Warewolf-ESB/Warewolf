@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppUsageStatsTests.cs" />
+    <Compile Include="DpapiTestBase.cs" />
     <Compile Include="AssemblyLoaderTests.cs" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />

@@ -15,12 +15,13 @@ using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Dev2.Tests.Runtime;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    public class DropBoxSourceTests
+    public class DropBoxSourceTests : DpapiTestBase
     {
         const string conStr = @"<Source ID=""2aa3fdba-e0c3-47dd-8dd5-e6f24aaf5c7a"" Name=""test server"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://178.63.172.163:3142/dsf;WebServerPort=3142;AuthenticationType=Public;UserName=;Password="" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
                                       <TypeOf>Dev2Server</TypeOf>

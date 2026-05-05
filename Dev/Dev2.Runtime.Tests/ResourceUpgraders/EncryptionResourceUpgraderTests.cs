@@ -14,11 +14,12 @@ using Dev2.Runtime.ResourceUpgrades;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
+using Dev2.Tests.Runtime;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {
     [TestClass]
-    public class EncryptionResourceUpgraderTests
+    public class EncryptionResourceUpgraderTests : DpapiTestBase
     {
         readonly string _connectionString;
         readonly string _beforeContainingSource;

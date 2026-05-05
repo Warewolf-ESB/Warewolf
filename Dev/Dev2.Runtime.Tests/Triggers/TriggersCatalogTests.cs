@@ -21,11 +21,12 @@ using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
+using Dev2.Tests.Runtime;
 
 namespace Dev2.Tests.Runtime.Triggers
 {
     [TestClass]
-    public class TriggersCatalogTests
+    public class TriggersCatalogTests : DpapiTestBase
     {
         public static string QueueTriggersPath
         {

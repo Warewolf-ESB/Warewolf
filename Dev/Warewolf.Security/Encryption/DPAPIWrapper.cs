@@ -27,9 +27,27 @@ namespace Warewolf.Security.Encryption
         /// </summary>
         public static Func<string, string>? AesDecryptHook { get; set; }
 
+        /// <summary>
+        /// Optional hook for AES-256-CBC encryption in non-DPAPI environments.
+        /// When set, <see cref="Encrypt"/> routes through this delegate instead of DPAPI.
+        /// The produced value must be prefixed with <c>WFAES::</c> so that
+        /// <see cref="AesDecryptHook"/> can recognise and decrypt it.
+        /// </summary>
+        public static Func<string, string>? AesEncryptHook { get; set; }
+
         public static string DecryptIfEncrypted(string input)
         {
-            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || !input.IsBase64())
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            {
+                return input;
+            }
+
+            if (AesDecryptHook is not null && input.StartsWith("WFAES::", StringComparison.Ordinal))
+            {
+                return Decrypt(input);
+            }
+
+            if (!input.IsBase64())
             {
                 return input;
             }
@@ -40,6 +58,11 @@ namespace Warewolf.Security.Encryption
         public static string EncryptIfDecrypted(string input)
         {
             if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            {
+                return input;
+            }
+
+            if (AesDecryptHook is not null && input.StartsWith("WFAES::", StringComparison.Ordinal))
             {
                 return input;
             }
@@ -70,6 +93,11 @@ namespace Warewolf.Security.Encryption
             if (plainText == null)
             {
                 throw new ArgumentNullException(nameof(plainText));
+            }
+
+            if (AesEncryptHook is not null)
+            {
+                return AesEncryptHook(plainText);
             }
 
             //encrypt data

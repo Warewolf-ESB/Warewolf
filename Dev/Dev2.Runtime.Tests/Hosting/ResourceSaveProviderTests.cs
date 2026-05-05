@@ -20,12 +20,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Dev2.Tests.Runtime;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory(nameof(ResourceSaveProvider))]
-    public class ResourceSaveProviderTests
+    public class ResourceSaveProviderTests : DpapiTestBase
     {
         [TestMethod]
         [Timeout(60000)]

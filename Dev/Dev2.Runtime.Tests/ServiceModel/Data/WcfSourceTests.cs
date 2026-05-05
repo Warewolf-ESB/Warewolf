@@ -9,12 +9,13 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Ouput;
+using Dev2.Tests.Runtime;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    public class WcfSourceTests
+    public class WcfSourceTests : DpapiTestBase
     {
         public WcfSource GetSource()
         {

@@ -491,7 +491,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("BccValue", activity.Bcc);
             Assert.AreEqual("AttachmentsValue", activity.Attachments);
             Assert.AreEqual("ToValue", activity.To);
-            Assert.IsTrue(activity.Password.IsBase64());
+            Assert.IsTrue(activity.Password.IsBase64() || activity.Password.StartsWith("WFAES::"), $"Password should be encrypted but was: {activity.Password}");
         }
 
         [TestMethod]

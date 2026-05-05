@@ -25,7 +25,7 @@ using Warewolf.UnitTestAttributes;
 namespace Warewolf.Logger.Tests
 {
     [TestClass]
-    public class WarewolfLoggerTests
+    public class WarewolfLoggerTests : DpapiTestBase
     {
         // [TestMethod]
         // [Owner("Candice Daniel")]
