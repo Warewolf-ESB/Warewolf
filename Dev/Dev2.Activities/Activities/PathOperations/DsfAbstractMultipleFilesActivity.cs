@@ -217,7 +217,6 @@ namespace Dev2.Activities.PathOperations
             get => _destPassword;
             set
 			{
-#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -230,7 +229,6 @@ namespace Dev2.Activities.PathOperations
                     }
                 }
                 else
-#endif
                 {
                     _destPassword = value;
                 }

@@ -394,9 +394,7 @@ namespace Dev2.Runtime
                 _fileWrapper.Delete(oldFilePath);
             }
             var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
-#if WINDOWS
             serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
-#endif
             var sw = new StreamWriter(filePath, false);
             _serializer.Serialize(sw, serviceTestModelTo);
         }
@@ -414,9 +412,7 @@ namespace Dev2.Runtime
                     _fileWrapper.Delete(oldFilePath);
                 }
                 var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
-#if WINDOWS
                 serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
-#endif
                 var sw = new StreamWriter(filePath, false);
                 _serializer.Serialize(sw, serviceTestModelTo);
             }

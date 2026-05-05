@@ -97,8 +97,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(SharepointSource))]
         public void SharePointSource_ShouldHaveConstructorAndSetDefaultValues()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             var sharepointSource = new SharepointSource();
             Assert.IsNotNull(sharepointSource);
             Assert.AreEqual("SharepointServerSource", sharepointSource.ResourceType);

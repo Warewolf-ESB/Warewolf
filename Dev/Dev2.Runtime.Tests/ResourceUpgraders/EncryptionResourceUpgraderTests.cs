@@ -54,8 +54,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
         void _matchAndReplaceWhereAppropriate(string matchingString, string nonMatchingString, string pieceToReplace)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
 
@@ -80,8 +78,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         
         public void EncryptionResourceUpgrader_Upgrade_CanDecrypt()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
             var cs = new Regex(@"ConnectionString=""([^""]+)""");
@@ -106,8 +102,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         
         public void EncryptionResourceUpgrader_TwiceUpgrade_DoesNotEncrypt()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
             var cs = new Regex(@"ConnectionString=""([^""]+)""");

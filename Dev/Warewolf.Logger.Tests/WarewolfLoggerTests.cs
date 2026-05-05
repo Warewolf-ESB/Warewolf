@@ -77,11 +77,7 @@ namespace Warewolf.Logger.Tests
 
             var serializer = new Dev2JsonSerializer();
             var payload = serializer.Serialize(elasticsearchSource );
-#if WINDOWS
             var encryptedPayload = DpapiWrapper.Encrypt(payload);
-#else
-			var encryptedPayload = payload;
-#endif
             var data = new AuditingSettingsData
             {
                 EncryptDataSource = true,

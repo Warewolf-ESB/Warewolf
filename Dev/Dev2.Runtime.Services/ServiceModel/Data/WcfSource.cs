@@ -116,11 +116,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
-#if WINDOWS
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-#else
-				new XAttribute("ConnectionString", connectionString),
-#endif
 				new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

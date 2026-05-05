@@ -50,8 +50,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(ElasticsearchSource))]
         public void ElasticsearchSource_Validate_ToXml_AuthenticationType_Anonymous()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Elasticsearch Source"" ResourceType=""ElasticsearchSource"" IsValid=""false"" 
                                                ConnectionString=""HostName=localhost;Port=9200;UserName=;Password=;AuthenticationType=Anonymous"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Elasticsearch Source</DisplayName>
@@ -79,8 +77,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(ElasticsearchSource))]
         public void ElasticsearchSource_Validate_ToXml_AuthenticationType_Password()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Elasticsearch Source"" ResourceType=""ElasticsearchSource"" IsValid=""false"" 
                                                ConnectionString=""HostName=localhost;Port=9200;UserName=test;Password=test;AuthenticationType=Password"" Type=""ElasticsearchSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Elasticsearch Source</DisplayName>

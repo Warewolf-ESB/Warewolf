@@ -103,7 +103,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("someString error", env.FetchErrors());
         }
 
-#if WINDOWS
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DsfAbstractFileActivity))]
@@ -136,6 +135,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(password, decryptedPassword);
         }
-#endif
     }
 }

@@ -80,11 +80,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-#if WINDOWS
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
-#else
-				new XAttribute("ConnectionString", connectionString.EscapeString()),
-#endif
 				new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
