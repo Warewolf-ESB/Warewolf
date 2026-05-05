@@ -215,7 +215,7 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
-    $failedAssemblies = [System.Collections.Generic.List[string]]::new()
+    $failedAssemblies = New-Object 'System.Collections.Generic.List[string]'
 
     Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
     $filterDisplay = $FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } }
@@ -309,7 +309,7 @@ if ($CIMode) {
                 # This is expected (e.g. CannotParallelize-only assemblies, or
                 # integration assemblies whose external services aren't available).
                 # Treat as a warning, not a failure.
-                Write-Warning "WARN: $assembly$filterSuffix — zero tests ran (all filtered or skipped). Exit 8."
+                Write-Warning "WARN: $assembly$filterSuffix - zero tests ran (all filtered or skipped). Exit 8."
             } elseif ($LASTEXITCODE -ne 0) {
                 Write-Warning "FAILED: $assembly$filterSuffix (exit $LASTEXITCODE)."
                 $failedAssemblies.Add("$assembly$filterSuffix")

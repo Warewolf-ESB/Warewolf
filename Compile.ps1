@@ -358,6 +358,23 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 					Write-Host "Patched '$wwRuntimeConfig' to framework-dependent mode."
 				}
 			}
+			# Ensure the linux-compatible SqlClient implementation DLL wins in the output.
+			# With many projects publishing to one flat directory, last-writer-wins and the
+			# lib/net8.0 reference stub can overwrite the runtimes/unix implementation.
+			# Copy to both the flat root (self-contained publish RID probing) and to the
+			# relative runtimeTargets path (framework-dependent non-RID deps.json probing).
+			$_sqlPkg = Get-ChildItem "$env:USERPROFILE\.nuget\packages\microsoft.data.sqlclient" -Directory -ErrorAction SilentlyContinue |
+				Sort-Object Name -Descending | Select-Object -First 1
+			if ($_sqlPkg) {
+				$_unixDll = Join-Path $_sqlPkg.FullName "runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll"
+				if (Test-Path $_unixDll) {
+					Copy-Item -Path $_unixDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.Data.SqlClient.dll" -Force
+					$_rtSubDir = "$PSScriptRoot\Bin\$OutputFolderName\runtimes\unix\lib\net8.0"
+					$null = New-Item -Path $_rtSubDir -ItemType Directory -Force
+					Copy-Item -Path $_unixDll -Destination "$_rtSubDir\Microsoft.Data.SqlClient.dll" -Force
+					Write-Host "Pinned runtimes/unix Microsoft.Data.SqlClient.dll ($($_sqlPkg.Name)) in $OutputFolderName."
+				}
+			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"
 			Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 			                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse

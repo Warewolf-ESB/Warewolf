@@ -563,4 +563,18 @@
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
     </ItemGroup>
   </Target>
+  <!-- Ensure the runtimes/unix implementation DLL wins over the lib/net8.0 reference stub.
+       Required when running tests in Linux/Docker where the NuGet cache is absent.
+       Copies to the flat root (self-contained RID probing) and to the full runtimeTargets
+       relative path (framework-dependent non-RID deps.json probing). -->
+  <Target Name="EnsureUnixSqlClientRuntime" AfterTargets="Build">
+    <PropertyGroup>
+      <_UnixSqlClientDll>$(NuGetPackageRoot)microsoft.data.sqlclient\5.2.2\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll</_UnixSqlClientDll>
+    </PropertyGroup>
+    <MakeDir Directories="$(OutDir)runtimes\unix\lib\net8.0" Condition="Exists('$(_UnixSqlClientDll)')" />
+    <Copy SourceFiles="$(_UnixSqlClientDll)" DestinationFiles="$(OutDir)Microsoft.Data.SqlClient.dll"
+          Condition="Exists('$(_UnixSqlClientDll)')" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="$(_UnixSqlClientDll)" DestinationFiles="$(OutDir)runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll"
+          Condition="Exists('$(_UnixSqlClientDll)')" OverwriteReadOnlyFiles="true" />
+  </Target>
 </Project>
