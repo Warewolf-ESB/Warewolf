@@ -218,7 +218,8 @@ if ($CIMode) {
     $failedAssemblies = [System.Collections.Generic.List[string]]::new()
 
     Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
-    Write-Host "CI: filter values    : $($FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } })" -ForegroundColor Cyan
+    $filterDisplay = $FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } }
+    Write-Host "CI: filter values    : $($filterDisplay -join ', ')" -ForegroundColor Cyan
 
     foreach ($filterValue in $FilterValues) {
         # Sanitise the filter value for use in filenames (replaces non-word chars with _)
