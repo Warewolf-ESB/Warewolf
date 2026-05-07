@@ -8,13 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if NOTNANOSERVER
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Security.Cryptography;
-using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
@@ -22,6 +15,13 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using Warewolf.Data;
 using Warewolf.Security;
 using Warewolf.Services;
@@ -37,12 +37,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("AuthorizationServiceBase_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AuthorizationServiceBase_Constructor_SecurityServiceIsNull_ThrowsArgumentNullException()
-        {
-            //------------Setup for test--------------------------
+		{
+			//------------Setup for test--------------------------
 
-            //------------Execute Test---------------------------
+			//------------Execute Test---------------------------
 
-            new TestAuthorizationServiceBase(null);
+			new TestAuthorizationServiceBase(null);
 
 
             //------------Assert Results-------------------------
@@ -52,9 +52,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_Constructor")]
         public void AuthorizationServiceBase_Constructor_PermissionsChangedEvent_WiredUp()
-        {
-            //------------Setup for test--------------------------
-            var securityService = new Mock<ISecurityService>();
+		{
+			//------------Setup for test--------------------------
+			var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
@@ -70,9 +70,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AuthorizationServiceBase_Constructor")]
         public void AuthorizationServiceBase_Constructor_PermissionsModifiedEventSubscribedTwice_OnlyOneEventIsWiredUp()
-        {
-            //------------Setup for test--------------------------
-            var securityService = new Mock<ISecurityService>();
+		{
+			//------------Setup for test--------------------------
+			var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
@@ -88,9 +88,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndResourceToBeVerifiedIsNull_False()
-        {
-            //------------Setup for test--------------------------
-            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "Category\\Test1", ResourceID = Guid.NewGuid() };
+		{
+			//------------Setup for test--------------------------
+			var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "Category\\Test1", ResourceID = Guid.NewGuid() };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
@@ -111,9 +111,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsNotInRole_False()
-        {
-            //------------Setup for test--------------------------
-            var securityPermissions = new List<WindowsGroupPermission>();
+		{
+			//------------Setup for test--------------------------
+			var securityPermissions = new List<WindowsGroupPermission>();
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(securityPermissions);
@@ -137,9 +137,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInServerRoleAndHasPermissions_True()
-        {
-            //------------Setup for test--------------------------
-            var securityPermission = new WindowsGroupPermission { IsServer = true };
+		{
+			//------------Setup for test--------------------------
+			var securityPermission = new WindowsGroupPermission { IsServer = true };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
@@ -165,9 +165,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInServerRoleAndDoesNotHavePermissions_False()
-        {
-            //------------Setup for test--------------------------
-            var securityPermission = new WindowsGroupPermission { IsServer = true };
+		{
+			//------------Setup for test--------------------------
+			var securityPermission = new WindowsGroupPermission { IsServer = true };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
@@ -193,9 +193,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndHasPermissions_True()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource };
 
             var securityService = new Mock<ISecurityService>();
@@ -222,9 +222,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndDoesNotHavePermissions_False()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource };
 
             var securityService = new Mock<ISecurityService>();
@@ -251,9 +251,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_False()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = WindowsGroupPermission.CreateGuests();
 
             var securityService = new Mock<ISecurityService>();
@@ -280,9 +280,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithGivenPermission_True()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = WindowsGroupPermission.CreateGuests();
 
             var securityService = new Mock<ISecurityService>();
@@ -701,9 +701,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect_WhenNotDirectlyInWarewolfGroup")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithBuiltInAdminstratorsOnlyWarewolfAdministratorsGroupMember_UserIsAuthorized()
         {
-            //------------Setup for test--------------------------
-            // Setup rest of test ;)
-            var resource = Guid.NewGuid();
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Warewolf Administrators group is not used on non-windows platforms");
+			//------------Setup for test--------------------------
+			// Setup rest of test ;)
+			var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             var securityService = new Mock<ISecurityService>();
@@ -945,7 +947,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             public DirectoryEntry Instance => throw new NotImplementedException();
 
-            public void Dispose()
+			object IWrappedObject<object>.Instance => Instance;
+
+			public void Dispose()
             {
 
             }
@@ -966,7 +970,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             public DirectoryEntries Instance => throw new NotImplementedException();
 
-            public IEnumerator GetEnumerator()
+			object IDirectoryEntries.SchemaFilter => SchemaFilter;
+
+			object IWrappedObject<object>.Instance => Instance;
+
+			public IEnumerator GetEnumerator()
             {
                 yield return new TestDirectoryEntry("Test Group");
                 yield return new TestDirectoryEntry("Warewolf Administrators");
@@ -975,4 +983,3 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
     }
 }
-#endif

@@ -25,7 +25,9 @@
     <TargetFrameworkProfile />
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <LangVersion>10.0</LangVersion>
-	<DefineConstants>$(DefineConstants);NANOSERVER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$(RuntimeIdentifier.StartsWith('linux'))">
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

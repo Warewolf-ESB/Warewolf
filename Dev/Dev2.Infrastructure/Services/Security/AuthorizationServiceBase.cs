@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,7 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if NOTNANOSERVER
+#if WINDOWS
 using System.DirectoryServices;
 #endif
 using System.Linq;
@@ -79,11 +79,7 @@ namespace Dev2.Services.Security
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
 			{
-#if NOTNANOSERVER
-				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    return true;
-                }
+#if WINDOWS
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
                 using (var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -109,8 +105,9 @@ namespace Dev2.Services.Security
                         }
                     }
                 }
+#else
+                return false;
 #endif
-				return false;
             };
         }
 
@@ -132,7 +129,7 @@ namespace Dev2.Services.Security
             {
                 return string.Empty;
 			}
-#if NOTNANOSERVER
+#if WINDOWS
 			using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -316,22 +313,24 @@ namespace Dev2.Services.Security
                 {
                     return true;
                 }
-                if (p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
-                {
-                    isInRole = principal.Identity?.IsAuthenticated == true;
-                }
-                if (!isInRole && principal is System.Security.Claims.ClaimsPrincipal claimsPrincipalLinux)
+                if (principal is System.Security.Claims.ClaimsPrincipal claimsPrincipalLinux)
                 {
                     try
                     {
-                        isInRole = claimsPrincipalLinux.GetUserGroups().Any(groupName => groupName == p.WindowsGroup);
+                        var userGroups = claimsPrincipalLinux.GetUserGroups();
+                        if (userGroups.Length > 0)
+                        {
+                            return userGroups.Any(groupName => groupName == p.WindowsGroup) || p.IsBuiltInGuestsForExecution;
+                        }
                     }
                     catch (Exception e)
                     {
                         Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", GlobalConstants.WarewolfWarn);
                     }
                 }
-                if (!isInRole)
+                // No explicit group claims: if the identity name is empty the user is
+                // anonymous - grant Public permissions only, not any named group.
+                if (!isInRole && !string.IsNullOrEmpty(GetIdentityName(principal.Identity)))
                 {
                     try
                     {
@@ -485,7 +484,7 @@ namespace Dev2.Services.Security
             {
                 return false;
 			}
-#if NOTNANOSERVER
+#if WINDOWS
 			var identity = principal?.Identity;
             var username = GetIdentityName(identity);
             if (string.IsNullOrEmpty(username))
@@ -526,8 +525,9 @@ namespace Dev2.Services.Security
                     }
                 }
             }
-#endif
+#else
             return false;
+#endif
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

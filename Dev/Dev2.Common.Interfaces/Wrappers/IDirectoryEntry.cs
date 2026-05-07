@@ -8,20 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
-using Microsoft.Win32;
 using System;
 using System.Collections;
-using System.Runtime.InteropServices;
-
-#if NOTNANOSERVER
+#if WINDOWS
 using System.DirectoryServices;
+using System.Runtime.InteropServices;
+using Dev2.Common;
+using Microsoft.Win32;
 #endif
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
 
-#if NOTNANOSERVER
+#if WINDOWS
     public interface IDirectoryEntry : IWrappedObject<DirectoryEntry>, IDisposable
     {
         IDirectoryEntries Children { get; }

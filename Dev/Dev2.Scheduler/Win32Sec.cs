@@ -12,8 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if NOTNANOSERVER
+#if WINDOWS
 using System.DirectoryServices.AccountManagement;
+#else
+//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
 using System.Globalization;
 using System.Linq;
@@ -212,33 +214,32 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-#if NOTNANOSERVER
-		if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || GlobalConstants.IsNanoServer())
+#if WINDOWS
+        using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
-            using (var pcLocal = new PrincipalContext(ContextType.Machine))
+            foreach (var account in AccountsToCheck)
             {
-                foreach (var account in AccountsToCheck)
+                try
                 {
-                    try
+                    var members = GetGroupMembers(pcLocal, account);
+                    if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
                     {
-                        var members = GetGroupMembers(pcLocal, account);
-                        if (members.Any(member => member.SamAccountName.ToLower(CultureInfo.InvariantCulture) == userName.ToLower(CultureInfo.InvariantCulture)))
-                        {
-                            groups.Add(account);
-                        }
+                        groups.Add(account);
                     }
-                    catch (Exception err)
-                    {
-                        Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
-                    }
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, account), err, GlobalConstants.WarewolfError);
                 }
             }
         }
+#else
+		//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
-        return groups;
+		return groups;
     }
 
-#if NOTNANOSERVER
+#if WINDOWS
 	private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
 	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);
@@ -248,6 +249,8 @@ public class SecurityWrapper : ISecurityWrapper
         }
         return new Principal[] { };
 	}
+#else
+	//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
 
 	static string GetUnqualifiedName(string userName)

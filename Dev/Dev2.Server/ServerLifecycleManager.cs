@@ -425,24 +425,17 @@ namespace Dev2
 				}
 			}
 			var coreCount = -1;
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#if WINDOWS
+			try
 			{
-				try
+				foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
 				{
-					foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-					{
-						coreCount += int.Parse(item["NumberOfCores"].ToString());
-					}
-				}
-				catch (PlatformNotSupportedException)
-				{
-					// Fallback to Environment.ProcessorCount
-					coreCount = Environment.ProcessorCount - 1;
+					coreCount += int.Parse(item["NumberOfCores"].ToString());
 				}
 			}
-			else
+			catch (PlatformNotSupportedException)
 			{
+				// Fallback to Environment.ProcessorCount
 				coreCount = Environment.ProcessorCount - 1;
 			}
 #else

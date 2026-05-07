@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NOTNANOSERVER
+#if WINDOWS
 using System.DirectoryServices;
 #endif
 using System.Runtime.InteropServices;
@@ -82,40 +82,30 @@ namespace Dev2.Common.Common
 
         public List<string> GetHosts()
         {
-#if NOTNANOSERVER
-            // DirectoryServices relies on native Active Directory COM DLLs (eg. activeds.dll)
-            // which are not available on Nano Server / some minimal Windows installs. Avoid
-            // calling into DirectoryEntry on non-windows platforms or when it will fail.
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return new List<string> { Environment.MachineName };
-            }
+#if WINDOWS
+			var serverUserName = _wi.Name;
+
+			var domainOrWorkgroupName = GetWindowsDomainOrWorkgroupName(serverUserName);
+			var queryStr = $"WinNT://{domainOrWorkgroupName}";
+
+			try
+			{
+				return GetHosts(queryStr);
+			}
+			catch
+			{
+				// If DirectoryServices is not available or fails (eg DllNotFoundException for activeds.dll)
+				// fall back to returning the local machine name to avoid flooding logs with warnings.
+				return new List<string> { Environment.MachineName };
+			}
 #else
 			return new List<string> { Environment.MachineName };
 #endif
+		}
 
-			var serverUserName = _wi.Name;
-
-            var domainOrWorkgroupName = GetWindowsDomainOrWorkgroupName(serverUserName);
-            var queryStr = $"WinNT://{domainOrWorkgroupName}";
-
-            try
-            {
-                return GetHosts(queryStr);
-            }
-            catch
-            {
-                // If DirectoryServices is not available or fails (eg DllNotFoundException for activeds.dll)
-                // fall back to returning the local machine name to avoid flooding logs with warnings.
-                return new List<string> { Environment.MachineName };
-            }
-        }
-
-        private static List<string> GetHosts(string queryStr)
+		private static List<string> GetHosts(string queryStr)
 		{
-#if NOTNANOSERVER
-			// Protect against any DirectoryServices native load issues by catching and
-			// rethrowing to the caller which will handle the fallback.
+#if WINDOWS
 			var root = new DirectoryEntry(queryStr);
 
             var kids = root.Children;

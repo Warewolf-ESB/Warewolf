@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if NOTNANOSERVER
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Common.Tests
 {
@@ -23,9 +23,11 @@ namespace Dev2.Common.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DirectoryEntryFactory))]
         public void DirectoryEntryFactory_EntryNameAndMachineName_AreEqual()
-        {
-            //-----------------Arrage------------------
-            var path = "WinNT://" + Environment.MachineName + ",computer";
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Test uses Windows-specific directory entries");
+			//-----------------Arrage------------------
+			var path = "WinNT://" + Environment.MachineName + ",computer";
             IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
             //-----------------Act------------------
             var entry = _directoryEntryFactory.Create(path);
@@ -45,9 +47,11 @@ namespace Dev2.Common.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DirectoryEntryFactory))]
         public void DirectoryEntryFactory_DirectoryEntry_IsDisposed()
-        {
-            //-----------------Arrage------------------
-            var path = "WinNT://" + Environment.MachineName + ",computer";
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Test uses Windows-specific directory entries");
+			//-----------------Arrage------------------
+			var path = "WinNT://" + Environment.MachineName + ",computer";
             IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
             //-----------------Act------------------
             var entry = _directoryEntryFactory.Create(path);
@@ -65,15 +69,18 @@ namespace Dev2.Common.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DirectoryEntryFactory))]
         public void DirectoryEntryFactory_DirectoryEntryPath_IsTrue()
-        {
-            //-----------------Arrage------------------
-            IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Test uses Windows-specific directory entries");
+			//-----------------Arrage------------------
+			IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
             //-----------------Act------------------
             var entry = _directoryEntryFactory.Create("Administrator");
             //-----------------Assert------------------
             Assert.IsNotNull(entry);
+#if WINDOWS
             Assert.IsTrue(entry.Instance.Path == "Administrator");
+#endif
         }
     }
 }
-#endif

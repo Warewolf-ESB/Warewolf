@@ -9,14 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
 using System;
-using System.Collections;
-#if NOTNANOSERVER
+#if WINDOWS
 using System.DirectoryServices;
+#else
+using System.Security.Claims;
 #endif
-using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
@@ -41,16 +39,15 @@ namespace Dev2.Services.Security.MoqInstallerActions
         /// </remarks>
         public void AddWarewolfGroup()
 		{
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
-            { 
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-                {
-                    var newGroup = ad.Children.Add(WarewolfGroup, "Group");
-                    newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
-                    newGroup.CommitChanges();
-                }
-			}
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                var newGroup = ad.Children.Add(WarewolfGroup, "Group");
+                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
+                newGroup.CommitChanges();
+            }
+#else
+			// Warewolf Administraotrs group is not used on non-windows platforms
 #endif
 		}
 
@@ -60,18 +57,15 @@ namespace Dev2.Services.Security.MoqInstallerActions
 		/// <returns><c>true</c> if the group exists; otherwise <c>false</c>.</returns>
 		public bool DoesWarewolfGroupExist()
 		{
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
-			{
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
                 {
-                    ad.Children.SchemaFilter.Add("group");
-                    if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-			}
+            }
 #endif
 			return false;
         }
@@ -96,29 +90,26 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 theUser = username.Substring((domainChar + 1));
             }
 
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        if (dChildEntry.Name == WarewolfGroup)
-                        {
-                            // Now check group membership ;)
-                            var members = dChildEntry.Invoke("Members");
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
 
-                            if (members != null)
+                        if (members != null)
+                        {
+                            foreach (var member in (IEnumerable)members)
                             {
-                                foreach (var member in (IEnumerable)members)
+                                using (var memberEntry = new DirectoryEntry(member))
                                 {
-                                    using (var memberEntry = new DirectoryEntry(member))
+                                    if (memberEntry.Name == theUser)
                                     {
-                                        if (memberEntry.Name == theUser)
-                                        {
-                                            return true;
-                                        }
+                                        return true;
                                     }
                                 }
                             }
@@ -126,10 +117,11 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     }
                 }
             }
+#else
+            //On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
+			return false;
 #endif
-
-            return false;
-        }
+		}
 
         public void AddUserToWarewolf(string currentUser)
         {
@@ -140,71 +132,66 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 // ReSharper restore NotResolvedInText
             }
 
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-                {
 
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
+                {
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        if (dChildEntry.Name == WarewolfGroup)
-                        {
-                            dChildEntry.Invoke("Add", new object[] { currentUser });
-                        }
+                        dChildEntry.Invoke("Add", new object[] { currentUser });
                     }
                 }
             }
+#else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
-        }
+		}
 
-        public void AddAdministratorsGroupToWarewolf()
+		public void AddAdministratorsGroupToWarewolf()
 		{
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        if (dChildEntry.Name == WarewolfGroup)
-                        {
-                            const string Entry = "WinNT://./" + AdministratorsGroup;
-                            dChildEntry.Invoke("Add", new object[] { Entry });
-                        }
+                        const string Entry = "WinNT://./" + AdministratorsGroup;
+                        dChildEntry.Invoke("Add", new object[] { Entry });
                     }
                 }
             }
+#else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
-        }
+		}
 
-        public bool IsAdminMemberOfWarewolf()
+		public bool IsAdminMemberOfWarewolf()
         {
-#if NOTNANOSERVER
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        if (dChildEntry.Name == WarewolfGroup)
-                        {
-                            // Now check group membership ;)
-                            var members = dChildEntry.Invoke("Members");
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
 
-                            if (members != null)
+                        if (members != null)
+                        {
+                            foreach (var member in (IEnumerable)members)
                             {
-                                foreach (var member in (IEnumerable)members)
+                                using (var memberEntry = new DirectoryEntry(member))
                                 {
-                                    using (var memberEntry = new DirectoryEntry(member))
+                                    if (memberEntry.Name == AdministratorsGroup)
                                     {
-                                        if (memberEntry.Name == AdministratorsGroup)
-                                        {
-                                            return true;
-                                        }
+                                        return true;
                                     }
                                 }
                             }
@@ -212,38 +199,39 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     }
                 }
             }
+#else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
+			return false;
 #endif
-            return false;
-        }
+		}
 
         public void DeleteWarewolfGroup()
 		{
-#if NOTNANOSERVER
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !GlobalConstants.IsNanoServer())
+#if WINDOWS
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        if (dChildEntry.Name == WarewolfGroup)
-                        {
-                            ad.Children.Remove(dChildEntry);
-                        }
+                        ad.Children.Remove(dChildEntry);
                     }
                 }
             }
+#else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
-        }
+		}
 
-        /// <summary>
-        /// Formats a user name into a WinNT path suitable for adding to a group (for example: "WinNT://DOMAIN/User,user").
-        /// </summary>
-        /// <param name="currentUser">The input user name, which may include a domain ("DOMAIN\User").</param>
-        /// <param name="machineName">The local machine name to use when no domain is present.</param>
-        /// <returns>A WinNT formatted user path string that can be passed to DirectoryEntry group membership methods.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentUser"/> or <paramref name="machineName"/> is null or empty.</exception>
-        public string FormatUserForInsert(string currentUser, string machineName)
+		/// <summary>
+		/// Formats a user name into a WinNT path suitable for adding to a group (for example: "WinNT://DOMAIN/User,user").
+		/// </summary>
+		/// <param name="currentUser">The input user name, which may include a domain ("DOMAIN\User").</param>
+		/// <param name="machineName">The local machine name to use when no domain is present.</param>
+		/// <returns>A WinNT formatted user path string that can be passed to DirectoryEntry group membership methods.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="currentUser"/> or <paramref name="machineName"/> is null or empty.</exception>
+		public string FormatUserForInsert(string currentUser, string machineName)
         {
             if(string.IsNullOrEmpty(currentUser))
             {
