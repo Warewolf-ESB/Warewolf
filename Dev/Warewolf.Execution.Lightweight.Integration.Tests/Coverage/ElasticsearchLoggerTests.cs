@@ -2,14 +2,8 @@
  * Integration tests for ElasticsearchExecutionLogger.
  *
  * PRE-REQUISITE: Elasticsearch running on localhost:9200.
- *   Local:  testuser / test123  (default credentials in this file)
- *   CI:     started by the pipeline via Docker with security disabled;
- *           credentials are accepted but not validated.
- *
- * Override credentials with environment variables:
- *   ELASTICSEARCH_URL       (default: http://localhost:9200)
- *   ELASTICSEARCH_USERNAME  (default: testuser)
- *   ELASTICSEARCH_PASSWORD  (default: test123)
+ *   Connection details are read from the bite file shipped with the engine:
+ *     Settings/ElasticsearchLoggingSource.bite  (relative to the test binary directory)
  *
  * Tests verify that each Log* overload:
  *   1. Does not throw during the fire-and-forget indexing call.
@@ -18,6 +12,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 using System.Threading;
 using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
 using Warewolf.Execution.Lightweight.Logging;
@@ -29,31 +24,31 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     public class ElasticsearchLoggerTests
     {
         static ElasticsearchExecutionLogger _logger = null!;
+        static ElasticsearchLoggingOptions  _opts   = null!;
         static bool _elasticsearchAvailable;
 
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            var url      = Environment.GetEnvironmentVariable("ELASTICSEARCH_URL")      ?? "http://localhost:9200";
-            var username = Environment.GetEnvironmentVariable("ELASTICSEARCH_USERNAME") ?? "testuser";
-            var password = Environment.GetEnvironmentVariable("ELASTICSEARCH_PASSWORD") ?? "test123";
+            var biteFile = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
+            _opts = File.Exists(biteFile)
+                ? ElasticsearchLoggingOptions.FromBiteFile(biteFile)
+                : new ElasticsearchLoggingOptions { Uri = "http://localhost:9200", IndexName = "warewolftestlogs" };
 
-            var opts = new ElasticsearchLoggingOptions
-            {
-                Uri       = url,
-                IndexName = "warewolf-integration-test-logs",
-                Username  = username,
-                Password  = password,
-            };
+            // Override the index so CI tests don't pollute the production index
+            _opts.IndexName = "warewolf-integration-test-logs";
 
             // Probe whether Elasticsearch is reachable before running tests.
             try
             {
                 using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-                var creds = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{username}:{password}"));
-                http.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", creds);
-                var resp = http.GetAsync(url).GetAwaiter().GetResult();
+                if (!string.IsNullOrEmpty(_opts.Username) && !string.IsNullOrEmpty(_opts.Password))
+                {
+                    var creds = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{_opts.Username}:{_opts.Password}"));
+                    http.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", creds);
+                }
+                var resp = http.GetAsync(_opts.Uri).GetAwaiter().GetResult();
                 _elasticsearchAvailable = resp.IsSuccessStatusCode || (int)resp.StatusCode == 401;
             }
             catch
@@ -61,7 +56,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 _elasticsearchAvailable = false;
             }
 
-            _logger = new ElasticsearchExecutionLogger(opts, Dev2LogLevel.DEBUG);
+            _logger = new ElasticsearchExecutionLogger(_opts, Dev2LogLevel.DEBUG);
         }
 
         void SkipIfUnavailable()
@@ -188,15 +183,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         public void Logger_AtWarnLevel_SuppressesDebugAndInfo()
         {
             SkipIfUnavailable();
-            var opts = new ElasticsearchLoggingOptions
-            {
-                Uri       = Environment.GetEnvironmentVariable("ELASTICSEARCH_URL") ?? "http://localhost:9200",
-                IndexName = "warewolf-integration-test-logs",
-                Username  = Environment.GetEnvironmentVariable("ELASTICSEARCH_USERNAME") ?? "testuser",
-                Password  = Environment.GetEnvironmentVariable("ELASTICSEARCH_PASSWORD") ?? "test123",
-            };
             // Create logger at WARN level — Debug/Info calls should be silent (no throw).
-            var warnLogger = new ElasticsearchExecutionLogger(opts, Dev2LogLevel.WARN);
+            var warnLogger = new ElasticsearchExecutionLogger(_opts, Dev2LogLevel.WARN);
             warnLogger.LogDebug("suppressed debug", Guid.NewGuid());
             warnLogger.LogInfo("suppressed info",   Guid.NewGuid());
             warnLogger.LogWarning("should log",     Guid.NewGuid());
