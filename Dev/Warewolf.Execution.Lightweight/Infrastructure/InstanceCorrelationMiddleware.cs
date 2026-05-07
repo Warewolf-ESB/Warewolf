@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
@@ -71,7 +72,7 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
             });
 
             logger.LogInformation("InstanceCorrelationMiddleware invoked for function '{FunctionName}' (InvocationId: {InvocationId})", context.FunctionDefinition.Name,
-    context.InvocationId);
+            context.InvocationId);
 
             try
             {

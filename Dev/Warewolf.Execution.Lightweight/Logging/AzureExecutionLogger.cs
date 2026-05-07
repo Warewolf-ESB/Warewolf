@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using System;
+using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Models;
 using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
 
@@ -30,103 +31,104 @@ namespace Warewolf.Execution.Lightweight.Logging
 
         bool ShouldLog(Dev2LogLevel level) => ExecutionLogLevel.ShouldLog(level, _minimumLevel);
 
+        static string Instance     => InstanceCorrelationContext.Current?.InstanceId ?? InstanceCorrelationMiddleware.InstanceId;
+        static string InvocationId => InstanceCorrelationContext.Current?.InvocationId ?? string.Empty;
+        static string FunctionName => InstanceCorrelationContext.Current?.FunctionName ?? string.Empty;
+        static string TraceId      => InstanceCorrelationContext.Current?.TraceId ?? "none";
+
+        /// <summary>
+        /// Builds a single correlation prefix string to keep structured parameter count low.
+        /// Azure Functions worker gRPC can silently drop logs with too many parameters (6+).
+        /// </summary>
+        static string Correlation => $"[Instance:{Instance}] [Invocation:{InvocationId}] [Function:{FunctionName}] [Trace:{TraceId}]";
+
 
         /// <inheritdoc/>
         public void LogDebug(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
-            _logger.LogDebug("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogDebug("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogDebug(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
-            _logger.LogDebug(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogDebug(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogInfo(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogInformation("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogInfo(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogInformation(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogInfo(string message)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation("{Message}", message);
+            _logger.LogInformation("{Message}", $"{Correlation} {message}");
         }
 
         /// <inheritdoc/>
         public void LogWarning(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
-            _logger.LogWarning("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogWarning("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogWarning(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
-            _logger.LogWarning(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogWarning(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogError(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            _logger.LogError("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogError("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogError(string activityName, Exception ex, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            var detail = new ExecutionErrorDetail
-            {
-                ActivityName = activityName,
-                Message      = ex?.Message ?? string.Empty,
-                StackTrace   = ex?.ToString() ?? string.Empty,
-                Timestamp    = DateTime.UtcNow,
-                ExecutionId  = executionId
-            };
-            using (_logger.BeginScope(detail.ToLogScope()))
-            {
-                _logger.LogError(ex,
-                    "[ExecutionId:{ExecutionId}] [{ActivityName}] {Message}",
-                    executionId, activityName, detail.Message);
-            }
+            _logger.LogError(ex, "{Message}", $"{Correlation} [ExecutionId:{executionId}] [{activityName}] {ex?.Message}");
         }
 
         /// <inheritdoc/>
         public void LogError(Exception ex, string log)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            _logger.LogError(ex, "{Log}", log);
+            _logger.LogError(ex, "{Message}", $"{Correlation} {log}");
         }
 
         /// <inheritdoc/>
         public void LogFatal(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
-            _logger.LogCritical("[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogCritical("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
 
         /// <inheritdoc/>
         public void LogFatal(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
-            _logger.LogCritical(exception, "[ExecutionId:{ExecutionId}] {Message}", executionId, message);
+            _logger.LogCritical(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
         }
     }
 }
+
+
+
 
