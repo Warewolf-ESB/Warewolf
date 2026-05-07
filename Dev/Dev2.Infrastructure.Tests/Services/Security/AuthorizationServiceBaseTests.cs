@@ -651,9 +651,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToRemoteServer_WithOnlyBuiltInAdminGroup_UserNotAuthorized()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Warewolf Administrators group is not used on non-windows platforms");
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             var securityService = new Mock<ISecurityService>();
@@ -668,7 +670,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            Assert.IsFalse(authorized, "Expected remote server connection to be denied when only WarewolfGroup permission exists and user has no identity name, but it was authorized.");
         }
 
         [TestMethod]
@@ -737,9 +739,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [Owner("Travis Frisinger")]
         [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServerWithNullIdentityName_WithOnlyBuiltInAdminGroup_UserIsNotAuthorized()
-        {
-            //------------Setup for test--------------------------
-            var resource = Guid.NewGuid();
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+				Assert.Inconclusive("Warewolf Administrators group is not used on non-windows platforms");
+			//------------Setup for test--------------------------
+			var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             var securityService = new Mock<ISecurityService>();
@@ -754,7 +758,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            Assert.IsFalse(authorized, "Expected local server connection to be denied when user identity name is null and only WarewolfGroup permission exists, but it was authorized.");
         }
 
         [TestMethod]
