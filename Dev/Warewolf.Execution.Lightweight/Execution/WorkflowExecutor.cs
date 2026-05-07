@@ -140,8 +140,8 @@ namespace Warewolf.Execution.Lightweight
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
                 // (OPENAPI is handled before execution starts — see short-circuit above.)
-                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path �
-                // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
+                // Step 3: Load XAML into a DynamicActivity. Cached per normalised file path;
+                // ActivityXamlServices.Load compiles XAML only once per unique workflow file.
                 var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
 
                 if (dynamicActivity == null)

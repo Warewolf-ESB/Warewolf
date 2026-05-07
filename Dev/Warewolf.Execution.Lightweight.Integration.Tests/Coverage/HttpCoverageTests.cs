@@ -46,12 +46,28 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [ClassInitialize]
         public static async Task Init(TestContext _)
         {
-            try
+            // Poll /IsLicensed directly instead of /admin/host/ping so that we
+            // wait for the isolated worker process to finish initialising, not
+            // just the host.  The host can report ready before the worker is warm,
+            // causing the first real function invocation to return an empty body.
+            const int maxAttempts = 30;
+            const int delayMs     = 2_000;
+            for (int i = 0; i < maxAttempts; i++)
             {
-                var r = await _http.GetAsync(BaseUrl + "/admin/host/ping");
-                _hostAvailable = (int)r.StatusCode < 500;
+                try
+                {
+                    var r    = await _http.GetAsync(BaseUrl + "/IsLicensed");
+                    var body = await r.Content.ReadAsStringAsync();
+                    if ((int)r.StatusCode < 500 && !string.IsNullOrWhiteSpace(body))
+                    {
+                        _hostAvailable = true;
+                        return;
+                    }
+                }
+                catch { }
+                await Task.Delay(delayMs);
             }
-            catch { _hostAvailable = false; }
+            _hostAvailable = false;
         }
 
         void SkipIfUnavailable()
