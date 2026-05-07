@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Runtime.InteropServices;
 using Dev2.Common;
 using System.Diagnostics.CodeAnalysis;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices;
 #endif
 
@@ -22,7 +22,7 @@ namespace Dev2.Common.Wrappers
 	{
 		public IDirectoryEntry Create(string path)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             return new Dev2DirectoryEntry(path);
 #else
 			return new NullDirectoryEntry();
@@ -32,7 +32,7 @@ namespace Dev2.Common.Wrappers
         [ExcludeFromCodeCoverage]
         public IDirectoryEntry Create<T>(T member)
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             return new Dev2DirectoryEntry(new DirectoryEntry(member));
 #else
 			return new NullDirectoryEntry();

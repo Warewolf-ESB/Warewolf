@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
         {
             try
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.Security
             return ProcessHost.Invoke(null, "netsh.exe", args);
         }
 #else
-        const string BaseCertificatePath = @"SSL Generation";
+		const string BaseCertificatePath = @"SSL Generation";
         const string TrustCertBatFile = @"TrustCertificate.bat";
 
         public bool CreateCertificateForServerAuthentication(string certificateName, string certificatePFXName)

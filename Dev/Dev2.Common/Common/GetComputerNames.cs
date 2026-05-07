@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices;
 #endif
 using System.Runtime.InteropServices;
@@ -82,7 +82,7 @@ namespace Dev2.Common.Common
 
         public List<string> GetHosts()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			var serverUserName = _wi.Name;
 
 			var domainOrWorkgroupName = GetWindowsDomainOrWorkgroupName(serverUserName);
@@ -105,7 +105,7 @@ namespace Dev2.Common.Common
 
 		private static List<string> GetHosts(string queryStr)
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			var root = new DirectoryEntry(queryStr);
 
             var kids = root.Children;
@@ -113,7 +113,7 @@ namespace Dev2.Common.Common
             var result = (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
             return result;
 #else
-            return new List<string>();
+			return new List<string>();
 #endif
 		}
 

@@ -40,15 +40,15 @@ namespace Dev2.Runtime.Security
         /// <returns>The signed XML.</returns>
         StringBuilder SignXml(StringBuilder xml);
 
-        /// <summary>
-        /// Ensures SSL support with self-signed cert.
-        /// </summary>
-        /// <param name="endPoint"></param>
-        /// <returns></returns>
-#if WINDOWS
+		/// <summary>
+		/// Ensures SSL support with self-signed cert.
+		/// </summary>
+		/// <param name="endPoint"></param>
+		/// <returns></returns>
+#if WINDOWS || NETFRAMEWORK
         bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);
 #else
-        bool EnsureSsl(IFile fileWrapper,  IPEndPoint endPoint);
+		bool EnsureSsl(IFile fileWrapper,  IPEndPoint endPoint);
 #endif
     }
 }

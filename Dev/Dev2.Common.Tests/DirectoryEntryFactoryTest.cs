@@ -78,9 +78,9 @@ namespace Dev2.Common.Tests
             var entry = _directoryEntryFactory.Create("Administrator");
             //-----------------Assert------------------
             Assert.IsNotNull(entry);
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             Assert.IsTrue(entry.Instance.Path == "Administrator");
 #endif
-        }
-    }
+		}
+	}
 }

@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices;
 using System.Runtime.InteropServices;
 using Dev2.Common;
@@ -20,7 +20,7 @@ using Microsoft.Win32;
 namespace Dev2.Common.Interfaces.Wrappers
 {
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
     public interface IDirectoryEntry : IWrappedObject<DirectoryEntry>, IDisposable
     {
         IDirectoryEntries Children { get; }
@@ -137,8 +137,8 @@ namespace Dev2.Common.Interfaces.Wrappers
         }
     }
 #else
-    // Fallback definitions for Nano Server / non-Windows builds that avoid referencing System.DirectoryServices types
-    public interface IDirectoryEntry : IWrappedObject<object>, IDisposable
+	// Fallback definitions for Nano Server / non-Windows builds that avoid referencing System.DirectoryServices types
+	public interface IDirectoryEntry : IWrappedObject<object>, IDisposable
     {
         IDirectoryEntries Children { get; }
         string SchemaClassName { get; }

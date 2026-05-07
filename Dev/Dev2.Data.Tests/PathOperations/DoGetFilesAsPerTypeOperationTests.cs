@@ -99,7 +99,7 @@ namespace Dev2.Data.Tests.PathOperations
             Assert.AreEqual(0, list.Count);
         }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DoGetFilesAsPerTypeOperation))]
@@ -163,7 +163,7 @@ namespace Dev2.Data.Tests.PathOperations
         }
 #endif
 
-        [TestMethod]
+		[TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DoGetFilesAsPerTypeOperation))]
         public void DoGetFilesAsPerTypeOperation_ExecuteOperation_DirectoryExists_True_AreEqual_ExpectTrue()

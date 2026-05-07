@@ -174,11 +174,11 @@ namespace Dev2.Runtime.Security
             doc.DocumentElement?.SetAttribute("ServerID", ServerID.ToString());
         }
 
-        #endregion
+		#endregion
 
-        #region EnsureSSL
+		#region EnsureSSL
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
         {
             var pfxPath = ConfigurationManager.AppSettings["sslPFXCertificateName"];
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.Security
                 : fileWrapper.Exists(pfxPath);
         }
 #else
-        public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
+		public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
         {
             var result = false;
             string sslCertificateName = ConfigurationManager.AppSettings["sslCertificateName"];

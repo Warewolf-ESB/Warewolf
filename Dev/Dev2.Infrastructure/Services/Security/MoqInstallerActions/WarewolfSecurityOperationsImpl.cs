@@ -10,7 +10,7 @@
 */
 
 using System;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices;
 #else
 using System.Security.Claims;
@@ -39,7 +39,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         /// </remarks>
         public void AddWarewolfGroup()
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 var newGroup = ad.Children.Add(WarewolfGroup, "Group");
@@ -57,7 +57,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 		/// <returns><c>true</c> if the group exists; otherwise <c>false</c>.</returns>
 		public bool DoesWarewolfGroupExist()
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -90,7 +90,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 theUser = username.Substring((domainChar + 1));
             }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -118,7 +118,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 }
             }
 #else
-            //On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 			return false;
 #endif
 		}
@@ -132,7 +132,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 // ReSharper restore NotResolvedInText
             }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
 
@@ -152,7 +152,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
 		public void AddAdministratorsGroupToWarewolf()
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -172,7 +172,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
 		public bool IsAdminMemberOfWarewolf()
         {
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -207,7 +207,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void DeleteWarewolfGroup()
 		{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");

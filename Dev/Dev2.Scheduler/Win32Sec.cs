@@ -12,7 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices.AccountManagement;
 #else
 //On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
@@ -214,7 +214,7 @@ public class SecurityWrapper : ISecurityWrapper
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
             foreach (var account in AccountsToCheck)
@@ -239,7 +239,7 @@ public class SecurityWrapper : ISecurityWrapper
 		return groups;
     }
 
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 	private static Principal[] GetGroupMembers(PrincipalContext pcLocal, string account)
 	{
         var group = GroupPrincipal.FindByIdentity(pcLocal, account);

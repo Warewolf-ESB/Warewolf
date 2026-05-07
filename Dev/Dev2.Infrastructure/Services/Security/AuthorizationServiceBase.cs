@@ -12,7 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 using System.DirectoryServices;
 #endif
 using System.Linq;
@@ -79,7 +79,7 @@ namespace Dev2.Services.Security
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
 			{
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
                 using (var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
                 {
@@ -106,7 +106,7 @@ namespace Dev2.Services.Security
                     }
                 }
 #else
-                return false;
+				return false;
 #endif
             };
         }
@@ -129,7 +129,7 @@ namespace Dev2.Services.Security
             {
                 return string.Empty;
 			}
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -146,7 +146,7 @@ namespace Dev2.Services.Security
             }
             throw new Exception(ErrorResource.CannotFindGroup);
 #else
-            return string.Empty;
+			return string.Empty;
 #endif
 		}
 		public event EventHandler PermissionsChanged;
@@ -484,7 +484,7 @@ namespace Dev2.Services.Security
             {
                 return false;
 			}
-#if WINDOWS
+#if WINDOWS || NETFRAMEWORK
 			var identity = principal?.Identity;
             var username = GetIdentityName(identity);
             if (string.IsNullOrEmpty(username))
@@ -526,7 +526,7 @@ namespace Dev2.Services.Security
                 }
             }
 #else
-            return false;
+			return false;
 #endif
         }
 
