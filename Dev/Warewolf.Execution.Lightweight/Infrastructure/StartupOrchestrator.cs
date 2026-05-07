@@ -6,6 +6,7 @@
 
 using Azure;
 using Azure.Identity;
+using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -35,17 +36,35 @@ internal static class StartupOrchestrator
     /// <param name="config">Immutable environment configuration snapshot.</param>
     internal static async Task RunStartupAsync(IHost host, HostEnvironmentConfig config)
     {
+        const string executionId = "StartupOrchestrator";
+
+        Dev2Logger.Info("StartupOrchestrator RunStartupAsync starting", executionId);
+
         var logger = host.Services
             .GetRequiredService<ILoggerFactory>()
             .CreateLogger(nameof(StartupOrchestrator));
 
-        LogEnvironmentDiagnostics(config, logger);
-        await InitializeEncryptionAsync(host, config, logger);
-        WarmUpWorkflowIndex(config, logger);
+        try
+        {
+            LogEnvironmentDiagnostics(config, logger);
+            await InitializeEncryptionAsync(host, config, logger);
+            WarmUpWorkflowIndex(config, logger);
+
+            Dev2Logger.Info("StartupOrchestrator RunStartupAsync completed successfully", executionId);
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Error("StartupOrchestrator RunStartupAsync failed", ex, executionId);
+            throw;
+        }
     }
 
     static void LogEnvironmentDiagnostics(HostEnvironmentConfig config, ILogger logger)
     {
+        const string executionId = "StartupOrchestrator-Diagnostics";
+
+        Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
+
         logger.LogWarning(
             "Startup | Phase=Diagnostics | EncryptionEnabled={EncryptionEnabled} | " +
             "VaultName={VaultName} | SecretName={SecretName} | " +
@@ -56,10 +75,16 @@ internal static class StartupOrchestrator
         if (Directory.Exists(config.WorkflowsDirectory))
         {
             var biteFiles = Directory.GetFiles(config.WorkflowsDirectory, "*.bite", SearchOption.AllDirectories);
+            Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files in {config.WorkflowsDirectory}", executionId);
+
             logger.LogWarning(
                 "Startup | Phase=Diagnostics | ResourceDirectory={Dir} | BiteFileCount={Count} | Files=[{Files}]",
                 config.WorkflowsDirectory, biteFiles.Length,
                 string.Join(", ", biteFiles.Select(Path.GetFileName)));
+        }
+        else
+        {
+            Dev2Logger.Warn($"StartupOrchestrator WorkflowsDirectory does not exist: {config.WorkflowsDirectory}", executionId);
         }
     }
 
@@ -70,16 +95,26 @@ internal static class StartupOrchestrator
         HostEnvironmentConfig config,
         ILogger               logger)
     {
+        const string executionId = "StartupOrchestrator-Encryption";
+
         if (!config.EncryptionEnabled)
+        {
+            Dev2Logger.Info("StartupOrchestrator encryption not enabled, skipping KeyVault initialization", executionId);
             return;
+        }
+
+        Dev2Logger.Info($"StartupOrchestrator InitializeEncryptionAsync starting for vault: {config.VaultName}, secret: {config.SecretName}", executionId);
 
         try
         {
             await host.InitializeKeyVaultAsync(config).ConfigureAwait(false);
+            Dev2Logger.Info($"StartupOrchestrator KeyVault initialization successful for vault: {config.VaultName}", executionId);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
             var (category, guidance) = ClassifyKeyVaultException(ex, config);
+
+            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}, VaultName: {config.VaultName}, SecretName: {config.SecretName}", ex, executionId);
 
             if (!config.SkipFailureToRetrieveSecret)
             {
@@ -95,7 +130,8 @@ internal static class StartupOrchestrator
             }
 
             // SkipFailureToRetrieveSecret=true: allow host to start in degraded mode.
-            // Every encrypted .bite source will throw at execution time instead of startup.
+            Dev2Logger.Warn($"StartupOrchestrator KeyVault initialization failed but SkipFailureToRetrieveSecret=true, starting in degraded mode. Category: {category}", executionId);
+
             logger.LogWarning(ex,
                 "Startup | Phase=KeyVaultInit | Status=Degraded | Category={Category} | " +
                 "VaultName={VaultName} | SecretName={SecretName} | InstanceId={InstanceId} | " +
@@ -164,15 +200,23 @@ internal static class StartupOrchestrator
 
     static void WarmUpWorkflowIndex(HostEnvironmentConfig config, ILogger logger)
     {
+        const string executionId = "StartupOrchestrator-WarmUp";
+
+        Dev2Logger.Info($"StartupOrchestrator WarmUpWorkflowIndex starting for directory: {config.WorkflowsDirectory}", executionId);
+
         try
         {
             WorkflowIndex.Instance.WarmUp(config.WorkflowsDirectory);
             logger.LogInformation(
                 "Startup | Phase=WorkflowIndexWarmUp | Status=Completed | " +
                 "Directory={WorkflowsDirectory}", config.WorkflowsDirectory);
+
+            Dev2Logger.Info($"StartupOrchestrator WarmUpWorkflowIndex completed successfully", executionId);
         }
         catch (Exception ex)
         {
+            Dev2Logger.Warn($"StartupOrchestrator WarmUpWorkflowIndex failed, falling back to on-demand resolution. Directory: {config.WorkflowsDirectory}", ex, executionId);
+
             // Warm-up failure is non-fatal: WorkflowIndex falls back to
             // disk-based resolution on the first HTTP request.
             logger.LogWarning(ex,
