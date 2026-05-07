@@ -328,9 +328,8 @@ namespace Dev2.Services.Security
                         Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", GlobalConstants.WarewolfWarn);
                     }
                 }
-                // No explicit group claims: if the identity name is empty the user is
-                // anonymous - grant Public permissions only, not any named group.
-                if (!isInRole && !string.IsNullOrEmpty(GetIdentityName(principal.Identity)))
+                // No explicit group claims: fall back to principal.IsInRole for all authenticated users.
+                if (!isInRole)
                 {
                     try
                     {
