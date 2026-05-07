@@ -2,6 +2,7 @@ using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 using System;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Infrastructure;
 using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
 
 namespace Warewolf.Execution.Lightweight.Logging
@@ -173,6 +174,27 @@ namespace Warewolf.Execution.Lightweight.Logging
             {
                 Console.WriteLine("[ElasticsearchLogger] Client is null — skipping index.");
                 return;
+            }
+
+            // Enrich with instance correlation from the middleware's AsyncLocal context.
+            var ctx = InstanceCorrelationContext.Current;
+            if (ctx is not null)
+            {
+                doc = doc with
+                {
+                    InstanceId   = ctx.InstanceId,
+                    InvocationId = ctx.InvocationId,
+                    FunctionName = ctx.FunctionName,
+                    TraceId      = ctx.TraceId,
+                };
+            }
+            else
+            {
+                // Outside an invocation (e.g. startup) — still tag the instance.
+                doc = doc with
+                {
+                    InstanceId = InstanceCorrelationMiddleware.InstanceId,
+                };
             }
 
             _ = Task.Run(async () =>

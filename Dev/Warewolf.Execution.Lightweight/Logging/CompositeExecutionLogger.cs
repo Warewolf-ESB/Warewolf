@@ -47,7 +47,10 @@ namespace Warewolf.Execution.Lightweight.Logging
         public void LogInfo(string message, Exception exception, Guid executionId)
         {
             foreach (var logger in _loggers)
+            {
+                Console.WriteLine($"Logging info: {message} with logger: {logger.ToString}");
                 logger.LogInfo(message, exception, executionId);
+            }
         }
 
 

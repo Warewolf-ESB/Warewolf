@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Logging
 {
@@ -8,7 +9,7 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// Field names follow Elastic Common Schema (ECS) conventions so the index
     /// works in Kibana / Discover out-of-the-box without extra mappings.
     /// </summary>
-    public sealed class ElasticsearchLogDocument
+    public sealed record ElasticsearchLogDocument
     {
         /// <summary>
         /// UTC timestamp of the entry — ECS <c>@timestamp</c>.
@@ -44,5 +45,27 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// </summary>
         [JsonPropertyName("error.stack_trace")]
         public string? StackTrace { get; init; }
+
+        // ?? Instance correlation fields ???????????????????????????????????????
+
+        /// <summary>
+        /// First 8 chars of <c>WEBSITE_INSTANCE_ID</c>. Identifies which scaled-out
+        /// instance handled this request. Populated from
+        /// <see cref="InstanceCorrelationContext.Current"/>.
+        /// </summary>
+        [JsonPropertyName("instance.id")]
+        public string? InstanceId { get; init; }
+
+        /// <summary>Azure Functions invocation ID — unique per trigger execution.</summary>
+        [JsonPropertyName("invocation.id")]
+        public string? InvocationId { get; init; }
+
+        /// <summary>Name of the Azure Function that was triggered.</summary>
+        [JsonPropertyName("function.name")]
+        public string? FunctionName { get; init; }
+
+        /// <summary>W3C distributed trace ID for end-to-end correlation.</summary>
+        [JsonPropertyName("trace.id")]
+        public string? TraceId { get; init; }
     }
 }
