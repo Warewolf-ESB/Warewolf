@@ -348,12 +348,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
                 $"GET with ?isDebug=true should return 200. Got {(int)resp.StatusCode}: {body}");
 
-            // When debug is enabled the response is a JSON object with a "debugSteps" array.
+            // When debug is enabled the response is a JSON object with a "debugStates" array.
             var json = JObject.Parse(body);
-            Assert.IsTrue(json.ContainsKey("debugSteps"),
-                $"Debug response should contain 'debugSteps'. Got: {body}");
-            var steps = json["debugSteps"] as JArray;
-            Assert.IsNotNull(steps, $"'debugSteps' should be an array. Got: {body}");
+            Assert.IsTrue(json.ContainsKey("debugStates"),
+                $"Debug response should contain 'debugStates'. Got: {body}");
+            var steps = json["debugStates"] as JArray;
+            Assert.IsNotNull(steps, $"'debugStates' should be an array. Got: {body}");
         }
     }
 }

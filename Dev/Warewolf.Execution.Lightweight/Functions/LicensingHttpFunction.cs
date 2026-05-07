@@ -58,16 +58,30 @@ namespace Warewolf.Execution.Lightweight
         public async Task<HttpResponseData> IsLicensed(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "IsLicensed")] HttpRequestData req)
         {
-            var data = SubscriptionProvider.Instance.GetSubscriptionData();
-            _logger.LogInformation("IsLicensed: isLicensed={IsLicensed}, status={Status}, planId={PlanId}, stopExecutions={StopExecutions}",
-                data.IsLicensed, data.Status?.ToString(), data.PlanId, data.StopExecutions);
-            return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(new
+            try
             {
-                isLicensed     = data.IsLicensed,
-                status         = data.Status?.ToString(),
-                planId         = data.PlanId,
-                stopExecutions = data.StopExecutions
-            }));
+                var data = SubscriptionProvider.Instance.GetSubscriptionData();
+                _logger.LogInformation("IsLicensed: isLicensed={IsLicensed}, status={Status}, planId={PlanId}, stopExecutions={StopExecutions}",
+                    data.IsLicensed, data.Status?.ToString(), data.PlanId, data.StopExecutions);
+                return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(new
+                {
+                    isLicensed     = data.IsLicensed,
+                    status         = data.Status?.ToString(),
+                    planId         = data.PlanId,
+                    stopExecutions = data.StopExecutions
+                }));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "IsLicensed: failed to retrieve subscription data");
+                return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(new
+                {
+                    isLicensed     = false,
+                    status         = (string)null,
+                    planId         = (string)null,
+                    stopExecutions = false
+                }));
+            }
         }
 
         /// <summary>
