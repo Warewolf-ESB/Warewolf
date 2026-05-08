@@ -45,8 +45,15 @@ public static class AuthConstants
     /// <summary>Prefix for anonymous public routes.</summary>
     public const string PublicRoutePrefix = "/public/";
 
-    /// <summary>Prefix for authenticated secure routes.</summary>
+    /// <summary>Prefix for authenticated secure routes (JWT / Easy Auth).</summary>
     public const string SecureRoutePrefix = "/secure/";
+
+    /// <summary>
+    /// Prefix for function-key authenticated service routes (<c>/services/{*name}</c>).
+    /// Policy matching is enforced on these routes in the same way as
+    /// <see cref="SecureRoutePrefix"/> when a <c>secure.config</c> is loaded.
+    /// </summary>
+    public const string ServicesRoutePrefix = "/services/";
 
     // ── Easy Auth HTTP headers ────────────────────────────────────────────────
 
@@ -63,16 +70,25 @@ public static class AuthConstants
 
     /// <summary>
     /// Enables verbose diagnostic logging across all auth middleware.
-    /// Set to <c>true</c> during testing/debugging, <c>false</c> for production.
-    /// Because this is a <c>const</c>, the compiler eliminates guarded code blocks
-    /// entirely when set to <c>false</c> — zero runtime overhead in production.
+    /// Compile-time constant: <c>true</c> for DEBUG (testing/troubleshooting),
+    /// <c>false</c> for RELEASE so the JIT eliminates guarded blocks entirely
+    /// — zero runtime overhead in production.
+    /// (AUTH-11)
     /// </summary>
+#if DEBUG
     public const bool VerboseAuthLogging = true;
+#else
+    public const bool VerboseAuthLogging = false;
+#endif
 
     /// <summary>
-    /// Enables verbose Console.WriteLine logging for all auth middleware.
+    /// Enables verbose <c>Console.WriteLine</c> logging for all auth middleware.
     /// Output goes to stdout, which can be streamed live via <c>az webapp log tail</c>.
-    /// Set to <c>true</c> during testing/debugging, <c>false</c> for production.
+    /// Compile-time constant: <c>true</c> for DEBUG, <c>false</c> for RELEASE.
     /// </summary>
+#if DEBUG
     public const bool VerboseConsoleAuthLogging = true;
+#else
+    public const bool VerboseConsoleAuthLogging = false;
+#endif
 }

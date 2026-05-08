@@ -5,8 +5,11 @@
  */
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth;
+using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Security;
 
@@ -32,9 +35,38 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
         services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
 
+        // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
+        // EntraAuthOptions is read from environment ONCE and shared as an
+        // immutable DI singleton.  Required by BearerTokenPrincipalParser and
+        // can be injected into health checks, audit, and tests.
+        services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
+
+        // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
+        // AuditLogger is registered unconditionally so authorization middleware
+        // can emit structured 401/403 audit events even when encryption is off.
+        services.AddSingleton<AuditLogger>();
+
         // Auth policy loader — builds WorkflowAuthPolicy from secure.config
         // WindowsGroupPermissions entries at startup.
         services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+
+        // Policy matcher — extracted matching strategy; swap implementation here to change behaviour.
+        services.AddSingleton<IWorkflowPolicyMatcher, WorkflowPolicyMatcher>();
+
+        // Route authorization registry — built once from [RequireWorkflowPermission] attributes.
+        services.AddSingleton<IRouteAuthorizationRegistry>(
+            _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
+
+        // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
+        services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
+        services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
+
+        // (POL-08) Hot-reload secure.config + policy loader at runtime.
+        services.AddHostedService<SecureConfigWatcher>();
+
+        // (OBS-06) Startup health check — emits a single warning at startup
+        // when bearer-token validation is not configured.  Zero per-request cost.
+        services.AddHostedService<EntraAuthHealthCheck>();
 
         return services;
     }
@@ -63,8 +95,8 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton(sp =>
             new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
 
-        services.AddSingleton(sp =>
-            new AuditLogger(sp.GetRequiredService<ILogger<AuditLogger>>()));
+        // AuditLogger is registered globally in AddCoreServices (DI-07);
+        // no per-encryption registration needed here.
 
         return services;
     }

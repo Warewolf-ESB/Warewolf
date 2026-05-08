@@ -25,7 +25,8 @@ namespace Warewolf.Execution.Lightweight.Auth;
 /// </summary>
 internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 {
-    private readonly IReadOnlyDictionary<string, WorkflowAuthPolicy> _policies;
+    private volatile IReadOnlyDictionary<string, WorkflowAuthPolicy> _policies;
+    private volatile IReadOnlyList<WorkflowGroupEntry> _globalEntries;
     private readonly ILogger<WorkflowAuthPolicyLoader> _logger;
 
     /// <inheritdoc/>
@@ -33,15 +34,69 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 
     public WorkflowAuthPolicyLoader(ILogger<WorkflowAuthPolicyLoader> logger)
     {
-        _logger   = logger;
-        _policies = BuildPolicies(SecureConfigLoader.Config);
+        _logger        = logger;
+        _policies      = BuildPolicies(SecureConfigLoader.Config);
+        _globalEntries = BuildGlobalEntries(SecureConfigLoader.Config);
         _logger.LogInformation(
-            "WorkflowAuthPolicyLoader initialised with {Count} workflow policies.", _policies.Count);
+            "WorkflowAuthPolicyLoader initialised with {Count} workflow policies and {Globals} global entries.",
+            _policies.Count, _globalEntries.Count);
+        ValidateForLockout(_policies);
     }
 
     /// <inheritdoc/>
-    public WorkflowAuthPolicy? GetPolicy(string workflowName) =>
-        _policies.TryGetValue(workflowName.ToLowerInvariant(), out var policy) ? policy : null;
+    public WorkflowAuthPolicy? GetPolicy(string workflowName)
+    {
+        var key = workflowName.ToLowerInvariant();
+        if (_policies.TryGetValue(key, out var policy))
+            return policy;
+
+        // (POL-10) Fall back to global/server-wide entries when no per-workflow
+        // policy exists.  Returning a synthetic per-workflow policy lets the
+        // matcher apply the standard group OR / permission AND logic uniformly.
+        if (_globalEntries.Count == 0)
+            return null;
+
+        var executable = _globalEntries
+            .Where(e => e.Permissions.HasFlag(WorkflowPermission.Execute))
+            .ToList();
+        if (executable.Count == 0)
+            return null;
+
+        return WorkflowAuthPolicy.Create(
+            key, executable, WorkflowPermission.View | WorkflowPermission.Execute);
+    }
+
+    /// <inheritdoc/>
+    public void Reload()
+    {
+        var rebuilt = BuildPolicies(SecureConfigLoader.Config);
+        var globals = BuildGlobalEntries(SecureConfigLoader.Config);
+        _policies      = rebuilt;
+        _globalEntries = globals;
+        _logger.LogInformation(
+            "WorkflowAuthPolicyLoader reloaded — {Count} workflow policies, {Globals} global entries.",
+            rebuilt.Count, globals.Count);
+        ValidateForLockout(rebuilt);
+    }
+
+    /// <summary>
+    /// (CFG-06) Warn when no entry has Execute=true — that configuration locks
+    /// out every caller from /secure/* and /services/* routes.
+    /// </summary>
+    private void ValidateForLockout(IReadOnlyDictionary<string, WorkflowAuthPolicy> policies)
+    {
+        if (policies.Count == 0) return;
+        var anyExecutable = policies.Values
+            .SelectMany(p => p.GroupEntries)
+            .Any(e => e.Permissions.HasFlag(WorkflowPermission.Execute));
+        if (!anyExecutable)
+        {
+            _logger.LogWarning(
+                "secure.config contains policies but NO group entry has Execute=true — " +
+                "all /secure/* and /services/* requests will be denied. " +
+                "Add Execute permission to at least one group to avoid lockout.");
+        }
+    }
 
     // ── Private ───────────────────────────────────────────────────────────────
 
@@ -103,5 +158,16 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
         if (p.DeployFrom)    flags |= WorkflowPermission.DeployFrom;
         if (p.Administrator) flags |= WorkflowPermission.Administrator;
         return flags;
+    }
+
+    /// <summary>(POL-10) Returns server-wide group entries that act as a fallback.</summary>
+    private static IReadOnlyList<WorkflowGroupEntry> BuildGlobalEntries(SecureConfigData config)
+    {
+        if (!config.IsLoaded) return Array.Empty<WorkflowGroupEntry>();
+
+        return config.Permissions
+            .Where(p => p.IsGlobal && !string.IsNullOrWhiteSpace(p.GroupName))
+            .Select(p => new WorkflowGroupEntry(p.GroupName, ToFlags(p)))
+            .ToList();
     }
 }

@@ -22,4 +22,12 @@ public interface IWorkflowAuthPolicyLoader
 
     /// <summary>Total number of distinct workflow policies available.</summary>
     int PolicyCount { get; }
+
+    /// <summary>
+    /// (POL-09) Reloads policies from the underlying secure.config source.
+    /// Implementations MUST swap the policy map atomically so concurrent reads
+    /// remain consistent.  Used by <see cref="SecureConfigWatcher"/> for
+    /// hot-reload, and is also safe to call programmatically.
+    /// </summary>
+    void Reload();
 }
