@@ -51,11 +51,11 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
             context.Items[AuthConstants.PrincipalContextKey] = principal;
 
             _logger.LogDebug(
-                "Principal built: User={User} Authenticated={Auth} Groups=[{Groups}] Permissions={PermCount}",
+                "Principal built: User={User} Authenticated={Auth} Groups=[{Groups}] Permissions={Perms}",
                 principal.UserName,
                 principal.Identity?.IsAuthenticated,
                 string.Join(", ", principal.Groups),
-                principal.Permissions.Count);
+                principal.Permissions);
 
             LogVerboseDiagnostics(principal);
         }

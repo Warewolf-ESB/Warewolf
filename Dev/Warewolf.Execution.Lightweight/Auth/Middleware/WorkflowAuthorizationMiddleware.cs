@@ -191,13 +191,38 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 return;
 
             case PolicyMatchOutcome.NoPolicyFound:
-                // No policy configured for this workflow — allow (open-workflow mode).
-                // Log a warning so operators know the workflow is uncovered.
+                // BYPASS_SECURE_CONFIG=true and config not effective — open-access mode.
+                // Operator has explicitly opted in; log a prominent warning.
                 _logger.LogWarning(
-                    "No policy found for workflow '{Workflow}' — allowing '{Caller}' " +
-                    "(add a WindowsGroupPermissions entry to secure.config to enforce access control).",
-                    workflowName, principal.CallerIdentity);
+                    "OPEN-ACCESS MODE: secure.config not effective and BYPASS_SECURE_CONFIG=true. " +
+                    "Allowing '{Caller}' for workflow '{Workflow}' without policy enforcement. " +
+                    "This setting must NOT be used in production.",
+                    principal.CallerIdentity, workflowName);
                 await next(context);
+                return;
+
+            case PolicyMatchOutcome.ConfigMissingDeny:
+                // secure.config absent or blank, bypass not set — deployment error.
+                _logger.LogError(
+                    "DEPLOYMENT ERROR: secure.config is absent or contains no permission entries. " +
+                    "Returning 503 for workflow '{Workflow}' requested by '{Caller}'. " +
+                    "Deploy a valid secure.config or set BYPASS_SECURE_CONFIG=true to enable open-access mode.",
+                    workflowName, principal.CallerIdentity);
+
+                _auditLogger.LogAuthOutcome(
+                    outcome: "503",
+                    caller:  principal.CallerIdentity,
+                    workflow: workflowName,
+                    path: path,
+                    reason: "config_missing",
+                    correlationId: correlationId);
+
+                await WriteErrorAsync(request, context, HttpStatusCode.ServiceUnavailable,
+                    "config_missing",
+                    "Server configuration error: secure.config is absent or empty. " +
+                    "Contact your administrator.",
+                    path, correlationId,
+                    new { workflow = workflowName });
                 return;
 
             case PolicyMatchOutcome.Forbidden:

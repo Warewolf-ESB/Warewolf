@@ -50,8 +50,9 @@ public class WorkflowClaimsPrincipalTests
     [TestMethod]
     public void TST09_HasPermissionFlag_AndLogic()
     {
-        var p = Build(isUserToken: true, "alice@x.com",
-            "Permission.View", "Permission.Execute");
+        // Permissions are resolved from secure.config at request time via SetResolvedPermissions.
+        var p = Build(isUserToken: true, "alice@x.com");
+        p.SetResolvedPermissions(WorkflowPermission.View | WorkflowPermission.Execute);
 
         Assert.IsTrue(p.HasPermissionFlag(WorkflowPermission.View));
         Assert.IsTrue(p.HasPermissionFlag(WorkflowPermission.View | WorkflowPermission.Execute));
@@ -61,8 +62,9 @@ public class WorkflowClaimsPrincipalTests
     [TestMethod]
     public void TST09_PermissionFlags_ProjectsClaimsToFlagsCorrectly()
     {
-        var p = Build(isUserToken: true, "alice@x.com",
-            "Permission.View", "Permission.Execute", "Permission.Contribute");
+        var p = Build(isUserToken: true, "alice@x.com");
+        p.SetResolvedPermissions(
+            WorkflowPermission.View | WorkflowPermission.Execute | WorkflowPermission.Contribute);
 
         var flags = p.PermissionFlags;
         Assert.IsTrue(flags.HasFlag(WorkflowPermission.View));
@@ -84,6 +86,6 @@ public class WorkflowClaimsPrincipalTests
         var anon = WorkflowClaimsPrincipal.Anonymous();
         Assert.IsFalse(anon.Identity?.IsAuthenticated ?? false);
         Assert.AreEqual(0, anon.Groups.Count);
-        Assert.AreEqual(0, anon.Permissions.Count);
+        Assert.AreEqual(WorkflowPermission.None, anon.Permissions);
     }
 }

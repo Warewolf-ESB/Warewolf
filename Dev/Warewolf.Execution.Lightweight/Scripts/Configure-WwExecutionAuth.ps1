@@ -341,13 +341,20 @@ function ConvertFrom-AzJson {
 
 function New-AppRoleObject {
     param([string] $Value, [string] $DisplayName, [string] $Description)
+    # Entra ID requires appRoles[].value (the JWT ClaimValue) to match
+    # ^[\w.:-]+$  — spaces and most punctuation are rejected with
+    # "Entitlement ClaimValue contains invalid characters."
+    # Sanitize by replacing every run of disallowed characters with '_',
+    # then trimming leading/trailing underscores so "Warewolf Developers"
+    # becomes "Warewolf_Developers" while the displayName stays readable.
+    $sanitizedValue = ($Value -replace '[^\w.:-]+', '_').Trim('_')
     [pscustomobject]@{
         allowedMemberTypes = @('User','Application')
         description        = $Description
         displayName        = $DisplayName
         id                 = [guid]::NewGuid().ToString()
         isEnabled          = $true
-        value              = $Value
+        value              = $sanitizedValue
     }
 }
 
@@ -724,7 +731,7 @@ function Invoke-AppRolePatch {
     function Write-RolePatch {
         param([array] $Roles)
         $tmp = [System.IO.Path]::GetTempFileName()
-        @{ appRoles = $Roles } | ConvertTo-Json -Depth 6 | Set-Content -Path $tmp -Encoding UTF8
+        Write-TempJson -Path $tmp -Json (@{ appRoles = $Roles } | ConvertTo-Json -Depth 6)
         try {
             Invoke-AzCli @(
                 'rest','--method','PATCH',
@@ -845,6 +852,22 @@ function Remove-AllUserAppRoleAssignments {
             Write-Warning "    could not remove assignment $($a.id) for $Upn : $($_.Exception.Message)"
         }
     }
+}
+
+function Write-TempJson {
+    <#
+        Writes $Json to $Path as UTF-8 WITHOUT BOM.
+        PowerShell 5.x's Set-Content -Encoding UTF8 always prepends a 3-byte
+        BOM (EF BB BF), which causes `az rest --body @file` to fail with
+        "Unable to read JSON request payload" because the Graph API sees the
+        BOM as invalid leading bytes before the first '{' or '['.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string] $Json
+    )
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($Path, $Json, $utf8NoBom)
 }
 
 function Get-EasyAuthConfig {
@@ -1062,8 +1085,7 @@ try {
     # Older az CLI versions may not have the flag.  Fall back to a Graph PATCH.
     Write-Host "    --enable-id-token-issuance not supported by az CLI; using Graph PATCH" -ForegroundColor DarkYellow
     $tempPatch = [System.IO.Path]::GetTempFileName()
-    @{ web = @{ implicitGrantSettings = @{ enableIdTokenIssuance = $true; enableAccessTokenIssuance = $false } } } |
-        ConvertTo-Json -Depth 6 | Set-Content -Path $tempPatch -Encoding UTF8
+    Write-TempJson -Path $tempPatch -Json (@{ web = @{ implicitGrantSettings = @{ enableIdTokenIssuance = $true; enableAccessTokenIssuance = $false } } } | ConvertTo-Json -Depth 6)
     try {
         Invoke-AzCli @(
             'rest','--method','PATCH',
@@ -1188,7 +1210,7 @@ if ($hasUserImpersonation) {
 
     $scopePatch = [System.IO.Path]::GetTempFileName()
     try {
-        $body | ConvertTo-Json -Depth 6 | Set-Content -Path $scopePatch -Encoding UTF8
+        Write-TempJson -Path $scopePatch -Json ($body | ConvertTo-Json -Depth 6)
         Invoke-AzCli @(
             'rest','--method','PATCH',
             '--url',"https://graph.microsoft.com/v1.0/applications/$AppObjectId",
@@ -1371,7 +1393,7 @@ if (-not $SkipUserAssignment) {
                 appRoleId   = $appRole.id
             }
             $tempBody = [System.IO.Path]::GetTempFileName()
-            $bodyObj | ConvertTo-Json -Depth 4 | Set-Content -Path $tempBody -Encoding UTF8
+            Write-TempJson -Path $tempBody -Json ($bodyObj | ConvertTo-Json -Depth 4)
 
             try {
                 Invoke-AzCli @(
@@ -1669,7 +1691,7 @@ if (-not $hasProperties) {
     # id/name/type metadata that GET returned.
     $putBody = [pscustomobject]@{ properties = $liveAuth.properties }
     $tokenStorePut = [System.IO.Path]::GetTempFileName()
-    $putBody | ConvertTo-Json -Depth 50 | Set-Content -Path $tokenStorePut -Encoding UTF8
+    Write-TempJson -Path $tokenStorePut -Json ($putBody | ConvertTo-Json -Depth 50)
     try {
         Invoke-AzCli @(
             'rest','--method','PUT',

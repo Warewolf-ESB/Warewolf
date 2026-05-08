@@ -11,12 +11,39 @@ namespace Warewolf.Execution.Lightweight.Auth;
 /// <summary>
 /// Default implementation of <see cref="IWorkflowPolicyMatcher"/>.
 ///
-/// Applies the group-OR / permission-AND rules described in
-/// <c>secure.config</c> against the loaded <see cref="IWorkflowAuthPolicyLoader"/>
-/// policies.
-///
-/// Replace or decorate this class to change matching behaviour without touching
-/// middleware or HTTP function code.
+/// <para>
+/// Evaluation flow:
+/// <list type="number">
+///   <item>
+///     Call <see cref="IWorkflowAuthPolicyLoader.GetPolicy"/> to obtain a
+///     <see cref="PolicyLookupResult"/>.
+///   </item>
+///   <item>
+///     <b>Bypass</b> (<c>BYPASS_SECURE_CONFIG=true</c>, config not effective) →
+///     <see cref="PolicyMatchResult.NoPolicy()"/>; middleware allows open-access.
+///   </item>
+///   <item>
+///     <b>ConfigMissing</b> (config absent/blank, bypass not set) →
+///     <see cref="PolicyMatchResult.DenyConfigMissing"/>; middleware returns 503.
+///   </item>
+///   <item>
+///     <b>Policy(null)</b> (workflow unconfigured) →
+///     <see cref="PolicyMatchResult.DenyGroup"/>; middleware returns 403.
+///   </item>
+///   <item>
+///     <b>Policy(non-null)</b> → call
+///     <see cref="IWorkflowAuthPolicyLoader.GetEffectivePermissions"/> to union
+///     all permissions from matched roles (and Public if present).
+///   </item>
+///   <item>
+///     Stamp resolved permissions onto the principal via
+///     <see cref="WorkflowClaimsPrincipal.SetResolvedPermissions"/>.
+///   </item>
+///   <item>
+///     Check <c>effectivePermissions.HasFlag(requiredPermissions)</c> → Allow or DenyPermission.
+///   </item>
+/// </list>
+/// </para>
 /// </summary>
 public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
 {
@@ -32,39 +59,61 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
         WorkflowClaimsPrincipal principal,
         WorkflowPermission      requiredPermissions = WorkflowPermission.View | WorkflowPermission.Execute)
     {
-        // No policies loaded → open-access mode; caller decides whether to allow.
-        var policy = _policyLoader.GetPolicy(workflowName);
-        if (policy is null)
+        var lookup = _policyLoader.GetPolicy(workflowName);
+
+        // ── BYPASS_SECURE_CONFIG=true — open-access mode ──────────────────────
+        if (lookup.IsBypass)
             return PolicyMatchResult.NoPolicy();
 
-        // ── Group check (OR logic) ────────────────────────────────────────────
-        // A caller matches a group entry when:
-        //   (a) the group name appears in the caller's role/group claims, OR
-        //   (b) the group name equals the caller's UPN (direct UPN entries).
-        if (!principal.IsInAnyGroup(policy.AllowedGroups))
-        {
+        // ── Config absent or blank — deployment error ─────────────────────────
+        if (lookup.IsConfigMissing)
+            return PolicyMatchResult.DenyConfigMissing(
+                "secure.config is absent or contains no permission entries. " +
+                "Set BYPASS_SECURE_CONFIG=true to enable open-access mode explicitly, " +
+                "or provide a valid secure.config.");
+
+        // ── Workflow unconfigured — deny 403 ──────────────────────────────────
+        if (lookup.Value is null)
             return PolicyMatchResult.DenyGroup(
-                $"Caller '{principal.CallerIdentity}' is not in any allowed group " +
-                $"[{string.Join(", ", policy.AllowedGroups)}] for workflow '{workflowName}'.");
-        }
+                $"Workflow '{workflowName}' has no entries in secure.config. " +
+                "Add a WindowsGroupPermissions entry to grant access.");
 
-        // ── Permission check (AND logic) ──────────────────────────────────────
-        // Find the first group entry whose name matches the caller (UPN or group
-        // claim), then verify it holds all required permission flags.
-        var matchedEntry = policy.GroupEntries.FirstOrDefault(e =>
-            string.Equals(e.GroupName, principal.UserName, StringComparison.OrdinalIgnoreCase) ||
-            principal.IsInGroup(e.GroupName));
+        // ── Resolve effective permissions for this caller ─────────────────────
+        // Collect all role identifiers: group claims + UPN for direct-UPN entries.
+        var callerRoles = principal.Groups
+            .Append(principal.UserName)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Distinct(StringComparer.OrdinalIgnoreCase);
 
-        if (matchedEntry is not null &&
-            !matchedEntry.Permissions.HasFlag(requiredPermissions))
+        var effectivePermissions = _policyLoader.GetEffectivePermissions(workflowName, callerRoles);
+
+        // ── No matching role and no Public entry in active scope ──────────────
+        if (effectivePermissions == WorkflowPermission.None)
+            return PolicyMatchResult.DenyGroup(
+                $"Caller '{principal.CallerIdentity}' has no matching role or Public entry " +
+                $"in the active scope for workflow '{workflowName}'. " +
+                $"Caller roles: [{string.Join(", ", principal.Groups)}].");
+
+        // ── Stamp resolved permissions onto the principal ─────────────────────
+        principal.SetResolvedPermissions(effectivePermissions);
+
+        // ── Permission sufficiency check (AND logic) ──────────────────────────
+        if (!effectivePermissions.HasFlag(requiredPermissions))
         {
+            // Find the first matched role entry to surface in the denial reason.
+            var firstMatched = lookup.Value.RolePolicies
+                .FirstOrDefault(e =>
+                    e.IsPublic ||
+                    principal.IsInGroup(e.GroupName) ||
+                    string.Equals(e.GroupName, principal.UserName, StringComparison.OrdinalIgnoreCase));
+
             return PolicyMatchResult.DenyPermission(
-                $"Caller '{principal.CallerIdentity}' is in group '{matchedEntry.GroupName}' " +
-                $"but holds permissions [{matchedEntry.Permissions}]; " +
-                $"required [{requiredPermissions}] for workflow '{workflowName}'.",
-                matchedEntry);
+                $"Caller '{principal.CallerIdentity}' resolved permissions [{effectivePermissions}] " +
+                $"do not satisfy required [{requiredPermissions}] for workflow '{workflowName}'.",
+                firstMatched!);
         }
 
         return PolicyMatchResult.Allow();
     }
 }
+

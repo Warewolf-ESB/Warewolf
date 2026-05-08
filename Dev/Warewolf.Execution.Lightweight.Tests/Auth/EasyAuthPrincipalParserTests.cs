@@ -49,7 +49,10 @@ public class EasyAuthPrincipalParserTests
         Assert.IsNotNull(principal);
         Assert.AreEqual("alice@x.com", principal!.UserName);
         Assert.IsTrue(principal.IsInGroup("TeamA"));
-        Assert.IsTrue(principal.HasPermissionFlag(WorkflowPermission.View | WorkflowPermission.Execute));
+        // Permissions are resolved at request time from secure.config, not from token claims.
+        // Permission.View / Permission.Execute roles are surfaced as groups only.
+        Assert.IsTrue(principal.IsInGroup("Permission.View"));
+        Assert.IsTrue(principal.IsInGroup("Permission.Execute"));
         Assert.AreEqual("aad", principal.FindFirst(AuthConstants.IdentityProvider)?.Value);
     }
 
