@@ -88,6 +88,10 @@
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
+    <!-- OIDC / JWT validation for Entra Bearer-token authentication -->
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+
   </ItemGroup>
 
 
@@ -158,9 +162,17 @@
     <None Include="Scripts\KeyVaultSetup.azcli" />
     <None Include="Scripts\authsettingsV2.json" />
     <None Include="Scripts\Setup-EntraAuth.ps1" />
+    <None Include="Scripts\Configure-WwExecutionAuth.ps1" />
+    <None Include="Scripts\Configure-WwExecutionAuth-Clients.ps1" />
+    <None Include="Scripts\Get-WwExecutionToken.ps1" />
+    <None Include="Scripts\Example-ClientApps-OrdersSales.ps1" />
     <None Include="docs\README-Encryption.md" />
     <None Include="docs\KeyRotationRunbook.md" />
     <None Include="docs\SecurityChecklist.md" />
+    <None Include="docs\README-Authentication.md" />
+    <None Include="docs\AzureProvisioning-FunctionApp.md" />
+    <None Include="docs\AzureProvisioning-ClientApps.md" />
+    <None Include="docs\ClientsExamples.md" />
   </ItemGroup>
   
   <ItemGroup>
