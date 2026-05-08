@@ -17,6 +17,10 @@ RUN apt-get update \
 # This gives us dotnet-vstest without any network calls during the build.
 COPY --from=sdk /usr/share/dotnet /usr/share/dotnet
 
+# Install dotnet-coverage so tests run under coverage collection in one pass.
+RUN /usr/share/dotnet/dotnet tool install --global dotnet-coverage
+ENV PATH="/root/.dotnet/tools:${PATH}"
+
 # Install the Visual Studio remote debugger so tests can be stepped through
 # in Test Explorer just like local tests.
 RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg

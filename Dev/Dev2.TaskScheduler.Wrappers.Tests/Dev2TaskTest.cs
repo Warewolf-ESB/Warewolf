@@ -82,7 +82,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("LocalSchedulerAdmin")]
         public void Dev2Task_IsValidDev2Task()
         {
-            var task = _taskService.GetTask("UnitTestTask");
+			var task = _taskService.GetTask("UnitTestTask");
             var wrapper = new Dev2Task(_factory.Object, task);
             var t = new Mock<IDev2TaskDefinition>();
 

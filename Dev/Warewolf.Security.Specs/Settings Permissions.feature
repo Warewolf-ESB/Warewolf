@@ -40,7 +40,7 @@ Scenario Outline: Setting Selected Resource Permissions for Users
 		And resources should not have "<Rights>" 
 Examples:
         | No | Resource Rights           | User Group | Resources | Rights | Resource                         | Permissions               |
-        | 1  | View                      | Users      | All       | None   | Examples\Control Flow - Decision | View                      |
+        | 1  | View                      | EntraRole      | All       | None   | Examples\Control Flow - Decision | View                      |
         | 2  | Execute                   | Users      | All       | None   | Examples\Control Flow - Decision | Execute                   |
         | 3  | Contribute, View, Execute | Users      | All       | None   | Examples\Control Flow - Decision | Contribute, View, Execute |
         | 4  | View, Execute             | Users      | All       | None   | Examples\Control Flow - Decision | View, Execute             |

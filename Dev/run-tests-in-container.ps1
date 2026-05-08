@@ -34,6 +34,15 @@ param(
     # Defaults to BinDir/../TestResults when -BinDir is used.
     [string]$TestResultsDir,
 
+    # When set, each test assembly is run under dotnet-coverage inside the container.
+    # Coverage XML files are written to this directory, one per assembly, named
+    # <Assembly>.cobertura.xml.  The directory is mounted as /coverage in the container.
+    [string]$CoverageDir,
+
+    # Optional list of DLL filenames (relative to BinDir) to pass as --include-files
+    # to dotnet-coverage.  Narrows coverage to specific assemblies-under-test.
+    [string[]]$CoverageIncludeFiles,
+
     # When set, the test container shares the host network stack (--network=host).
     # Required when the server under test is a host-mapped Docker container
     # (e.g. the Azure Functions engine listening on host port 7071).
@@ -217,6 +226,11 @@ if ($CIMode) {
     $failed = 0
     $failedAssemblies = New-Object 'System.Collections.Generic.List[string]'
 
+    if ($CoverageDir) {
+        New-Item -ItemType Directory -Force -Path $CoverageDir | Out-Null
+        if ($IsLinux -or $IsMacOS) { & chmod 777 $CoverageDir }
+    }
+
     Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
     $filterDisplay = $FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } }
     Write-Host "CI: filter values    : $($filterDisplay -join ', ')" -ForegroundColor Cyan
@@ -265,16 +279,37 @@ if ($CIMode) {
             # causing "No frameworks were found."
             $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
 
+            # Build coverage wrapper args (per-assembly since output path includes the name).
+            $coverageVolumeArgs = @()
+            $coveragePrefix = @()
+            if ($CoverageDir) {
+                $coverageVolumeArgs = @('-v', "${CoverageDir}:/coverage")
+                $coveragePrefix = @(
+                    'dotnet-coverage', 'collect',
+                    '--output', "/coverage/$assembly.cobertura.xml",
+                    '--output-format', 'cobertura',
+                    '--nologo'
+                )
+                if ($CoverageIncludeFiles) {
+                    foreach ($f in $CoverageIncludeFiles) {
+                        $coveragePrefix += '--include-files'
+                        $coveragePrefix += "/tests/$f"
+                    }
+                }
+                $coveragePrefix += '--'
+            }
+
             if ($binaryPath) {
                 # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF apphost
                 # probing /tests/ for libhostfxr.so (which lands there from other
                 # self-contained test projects) before honoring DOTNET_ROOT, which caused
                 # "No frameworks were found." when running the apphost directly.
                 # EnableMSTestRunner=true DLLs accept all --report-trx args when run this way.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
-                    'warewolf-test-env',
+                    'warewolf-test-env'
+                ) + $coveragePrefix + @(
                     '/usr/share/dotnet/dotnet', "/tests/$assembly.dll",
                     '--report-trx',
                     '--report-trx-filename', $trxName,
@@ -284,10 +319,11 @@ if ($CIMode) {
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             } else {
                 # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
-                    'warewolf-test-env',
+                    'warewolf-test-env'
+                ) + $coveragePrefix + @(
                     '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
                     '--logger', "trx;LogFileName=$trxName",
                     '--results-directory', '/results'
