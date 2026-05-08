@@ -9,5 +9,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         internal const string HttpbinAnythingUrl = HttpbinBaseUrl + "/anything";
         internal const string HttpbinGetBaseUrl = "http://localhost:7071/public/tools/http%20get";
         internal const string HttpbinGetUrl = HttpbinBaseUrl + "/get";
+        internal const string SystemInfoBaseUrl = "http://localhost:7071/public/tools/system%20info";
     }
 }
