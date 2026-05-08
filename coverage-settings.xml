@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <CodeCoverage>
+    <ModulePaths>
+      <Include>
+        <ModulePath>.*[/\\]Warewolf\..*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Dev2\..*\.dll$</ModulePath>
+      </Include>
+      <Exclude>
+        <ModulePath>.*\.Tests\.dll$</ModulePath>
+        <ModulePath>.*\.Specs\.dll$</ModulePath>
+        <ModulePath>.*\.Integration\.Tests\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Kerberos\.NET.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Warewolf\.Weave\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Elastic\.Clients\.Elasticsearch.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Microsoft\.Azure\.WebJobs\.Host.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]StackExchange\.Redis.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Microsoft\.Azure\.WebJobs\.Extensions.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Microsoft\.Azure\.WebJobs\.Script.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]ServiceStack.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Microsoft\.Azure\.AppService\.Proxy.*\.dll$</ModulePath>
+        <ModulePath>.*[/\\]FSharp\.Core\.dll$</ModulePath>
+        <ModulePath>.*[/\\]Microsoft\.Azure\.Functions\.Worker\.Grpc.*\.dll$</ModulePath>
+      </Exclude>
+    </ModulePaths>
+    <Attributes>
+      <Exclude>
+        <Attribute>^System\.Diagnostics\.DebuggerHiddenAttribute$</Attribute>
+        <Attribute>^System\.Diagnostics\.DebuggerNonUserCodeAttribute$</Attribute>
+        <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+        <Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+      </Exclude>
+    </Attributes>
+    <Sources>
+      <Exclude>
+        <Source>.*[/\\]obj[/\\].*</Source>
+        <Source>.*[/\\]AssemblyCommonInfo\.cs$</Source>
+      </Exclude>
+    </Sources>
+  </CodeCoverage>
+</Configuration>
