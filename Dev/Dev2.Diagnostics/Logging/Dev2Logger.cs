@@ -42,101 +42,141 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Debug(message, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
-                _log.Debug(customMessage);
-                ExternalSink?.Debug(message, executionId);
+                _log.Debug(customMessage);                
             }
         }
 
         public static void Debug(object message, Exception exception, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Debug(message, exception, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage, exception);
-                ExternalSink?.Debug(message, exception, executionId);
             }
         }
 
         public static void Error(object message, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Error(message, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage);
-                ExternalSink?.Error(message, executionId);
             }
         }
 
         public static void Error(object message, Exception exception, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Error(message, exception, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage, exception);
-                ExternalSink?.Error(message, exception, executionId);
             }
         }
 
         public static void Warn(object message, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Warn(message, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage);
-                ExternalSink?.Warn(message, executionId);
             }
         }
 
         public static void Warn(object message, Exception exception, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Warn(message, exception, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage, exception);
-                ExternalSink?.Warn(message, exception, executionId);
             }
         }
 
         public static void Fatal(object message, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Fatal(message, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage);
-                ExternalSink?.Fatal(message, executionId);
             }
         }
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Fatal(message, exception, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage, exception);
-                ExternalSink?.Fatal(message, exception, executionId);
             }
         }
 
         public static void Info(object message, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Info(message, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage);
-                ExternalSink?.Info(message, executionId);
             }
         }
 
         public static void Info(object message, Exception exception, string executionId)
         {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Info(message, exception, executionId);
+                return;
+            }
             if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage, exception);
-                ExternalSink?.Info(message, exception, executionId);
             }
         }
 
@@ -232,9 +272,9 @@ namespace Dev2.Common
             oldAppenderName.SetValue("rollingFile");
             var oldAppenderType = oldAppender.Attribute("type");
             oldAppenderType.SetValue("log4net.Appender.RollingFileAppender");
-            var newAppenderElement = 
-               new XElement("appender", new XAttribute("name", "LogFileAppender"), new XAttribute("type", "Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"), 
-                new XElement("appender-ref", new XAttribute("ref", "rollingFile")), 
+            var newAppenderElement =
+               new XElement("appender", new XAttribute("name", "LogFileAppender"), new XAttribute("type", "Log4Net.Async.ParallelForwardingAppender,Log4Net.Async"),
+                new XElement("appender-ref", new XAttribute("ref", "rollingFile")),
                 new XElement("bufferSize", new XAttribute("value", "200"))
                );
             log4netElement.Add(newAppenderElement);

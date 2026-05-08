@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth;
@@ -27,16 +28,29 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         string workflowsDirectory)
     {
-        services.AddLogging();
-        services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
-        services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-        services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+        const string executionId = "ServiceCollectionExtensions-CoreServices";
 
-        // Auth policy loader — builds WorkflowAuthPolicy from secure.config
-        // WindowsGroupPermissions entries at startup.
-        services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {workflowsDirectory}", executionId);
 
-        return services;
+        try
+        {
+            services.AddLogging();
+            services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
+            services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
+            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+
+            // Auth policy loader — builds WorkflowAuthPolicy from secure.config
+            // WindowsGroupPermissions entries at startup.
+            services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+
+            Dev2Logger.Info("ServiceCollectionExtensions AddCoreServices completed successfully", executionId);
+            return services;
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Error("ServiceCollectionExtensions AddCoreServices failed", ex, executionId);
+            throw;
+        }
     }
 
     /// <summary>
@@ -48,24 +62,43 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         HostEnvironmentConfig   config)
     {
-        var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
-        services.AddSingleton(sp => new KeyVaultSecretManager(
-            config.VaultUri,
-            config.SecretName,
-            useDebugBypass
-                ? null
-                : KeyVaultCredentialFactory.Create(config.CredentialOptions),
-            sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
-            useDebugBypass ? config.DebugKeyVaultSecret : null));
+        const string executionId = "ServiceCollectionExtensions-Encryption";
 
-        // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
-        // so GetKeyBytes() is always safe at construction time.
-        services.AddSingleton(sp =>
-            new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+        Dev2Logger.Info($"ServiceCollectionExtensions AddKeyVaultEncryption starting. VaultName: {config.VaultName}, SecretName: {config.SecretName}, IsDevelopment: {config.IsDevelopment}", executionId);
 
-        services.AddSingleton(sp =>
-            new AuditLogger(sp.GetRequiredService<ILogger<AuditLogger>>()));
+        try
+        {
+            var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
 
-        return services;
+            if (useDebugBypass)
+            {
+                Dev2Logger.Warn("ServiceCollectionExtensions using DEBUG KeyVault bypass (DebugKeyVaultSecret is set)", executionId);
+            }
+
+            services.AddSingleton(sp => new KeyVaultSecretManager(
+                config.VaultUri,
+                config.SecretName,
+                useDebugBypass
+                    ? null
+                    : KeyVaultCredentialFactory.Create(config.CredentialOptions),
+                sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
+                useDebugBypass ? config.DebugKeyVaultSecret : null));
+
+            // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
+            // so GetKeyBytes() is always safe at construction time.
+            services.AddSingleton(sp =>
+                new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+
+            services.AddSingleton(sp =>
+                new AuditLogger(sp.GetRequiredService<ILogger<AuditLogger>>()));
+
+            Dev2Logger.Info("ServiceCollectionExtensions AddKeyVaultEncryption completed successfully", executionId);
+            return services;
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Error("ServiceCollectionExtensions AddKeyVaultEncryption failed", ex, executionId);
+            throw;
+        }
     }
 }
