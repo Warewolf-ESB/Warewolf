@@ -45,6 +45,12 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="EasyAuthMiddleware.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyAuthMiddleware.feature</DependentUpon>
+    </Compile>
+    <Compile Include="EasyAuthMiddlewareSteps.cs" />
     <Compile Include="Settings Permissions.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -97,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="EasyAuthMiddleware.feature">
+      <LastGenOutput>EasyAuthMiddleware.feature.cs</LastGenOutput>
+    </None>
     <None Include="Settings Permissions.feature">
       <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
     </None>

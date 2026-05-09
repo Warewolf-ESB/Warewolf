@@ -16,8 +16,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Auth;
 
 internal sealed class TestFunctionContext : FunctionContext
 {
-    private readonly Dictionary<object, object?> _items = new();
-    private readonly IServiceProvider _services = new ServiceCollection().BuildServiceProvider();
+    private readonly Dictionary<object, object?> _items    = new();
+    private readonly IServiceProvider             _services = new ServiceCollection().BuildServiceProvider();
+    private readonly FakeInvocationFeatures       _features = new();
 
     public override string                       InvocationId       => "test-invocation";
     public override string                       FunctionId         => "test-function";
@@ -27,5 +28,5 @@ internal sealed class TestFunctionContext : FunctionContext
     public override IServiceProvider             InstanceServices   { get => _services; set { } }
     public override FunctionDefinition           FunctionDefinition => null!;
     public override IDictionary<object, object?> Items              { get => _items; set { } }
-    public override IInvocationFeatures          Features           => null!;
+    public override IInvocationFeatures          Features           => _features;
 }

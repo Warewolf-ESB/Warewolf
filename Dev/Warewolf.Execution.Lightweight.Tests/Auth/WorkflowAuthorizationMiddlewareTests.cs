@@ -4,17 +4,25 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
  *  TST-10 + MWA-06 — Workflow-name extraction edge cases.
+ *  Also covers the non-HTTP invocation pass-through path of Invoke().
  *
  *  Behavioural unit tests for <see cref="WorkflowAuthorizationMiddleware"/>.
- *  Full middleware Invoke() coverage requires HttpRequestData hooks that aren't
- *  publicly invokable (FunctionContext.GetHttpRequestDataAsync requires the
- *  Functions worker host); those scenarios are exercised end-to-end by the
+ *  Full middleware Invoke() coverage for HTTP paths requires IFunctionBindingsFeature
+ *  (internal to the SDK); those scenarios are exercised end-to-end by the
  *  integration test project.  This class focuses on the deterministically
- *  testable workflow-name extraction logic.
+ *  testable workflow-name extraction logic and the non-HTTP pass-through.
  */
 
+using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Middleware;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
+using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight.Tests.Auth;
 
@@ -81,5 +89,53 @@ public class WorkflowAuthorizationMiddlewareTests
     {
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/", isSecure: true);
         Assert.IsNull(name);
+    }
+
+    // ── Invoke — null request (non-HTTP trigger) ──────────────────────────
+
+    private static WorkflowAuthorizationMiddleware BuildMiddleware() =>
+        new(
+            policyMatcher:   new StubPolicyMatcher(),
+            routeRegistry:   new StubRouteRegistry(),
+            hostEnvironment: new StubHostEnvironment("Production"),
+            auditLogger:     new AuditLogger(NullLogger<AuditLogger>.Instance),
+            logger:          NullLogger<WorkflowAuthorizationMiddleware>.Instance);
+
+    [TestMethod]
+    public async Task Invoke_NonHttpTrigger_NullRequest_CallsNext()
+    {
+        // FakeInvocationFeatures → GetHttpRequestDataAsync() returns null
+        // → middleware should pass straight through to next().
+        var middleware     = BuildMiddleware();
+        var context        = new TestFunctionContext();
+        var called         = new bool[1];
+        FunctionExecutionDelegate next = ctx => { called[0] = true; return Task.CompletedTask; };
+
+        await middleware.Invoke(context, next);
+
+        Assert.IsTrue(called[0], "next() must be called for non-HTTP invocations");
+    }
+
+    // ── Stubs ─────────────────────────────────────────────────────────────
+
+    private sealed class StubPolicyMatcher : IWorkflowPolicyMatcher
+    {
+        public PolicyMatchResult Evaluate(string workflowName, WorkflowClaimsPrincipal principal,
+            WorkflowPermission requiredPermissions = WorkflowPermission.View | WorkflowPermission.Execute) =>
+            new(PolicyMatchOutcome.Allowed, null);
+    }
+
+    private sealed class StubRouteRegistry : IRouteAuthorizationRegistry
+    {
+        public WorkflowPermission? GetRequiredPermissions(string functionName) => null;
+    }
+
+    private sealed class StubHostEnvironment : IHostEnvironment
+    {
+        public StubHostEnvironment(string envName) => EnvironmentName = envName;
+        public string EnvironmentName   { get; set; }
+        public string ApplicationName   { get; set; } = "test";
+        public string ContentRootPath   { get; set; } = ".";
+        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; } = null!;
     }
 }

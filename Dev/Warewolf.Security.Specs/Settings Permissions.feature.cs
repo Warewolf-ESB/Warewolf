@@ -488,7 +488,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource Rights", "View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "EntraRole")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "None")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "Examples\\Control Flow - Decision")]
@@ -496,7 +496,7 @@ this.ScenarioInitialize(scenarioInfo);
         public void SettingSelectedResourcePermissionsForUsers_1()
         {
 #line 35
-this.SettingSelectedResourcePermissionsForUsers("1", "View", "Users", "All", "None", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
+this.SettingSelectedResourcePermissionsForUsers("1", "View", "EntraRole", "All", "None", "Examples\\Control Flow - Decision", "View", ((string[])(null)));
 #line hidden
         }
         
