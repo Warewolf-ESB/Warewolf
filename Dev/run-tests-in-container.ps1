@@ -123,6 +123,24 @@ if ($CIMode) {
     Invoke-Logged docker build -t warewolf-test-env -f $Dockerfile $DockerContext
     if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
     $containerId = $null   # we will use docker run --rm below
+
+    # Verify dotnet-coverage was actually installed into the image.
+    # A stale Docker layer cache or a transient NuGet failure can leave the
+    # tool directory empty even though the build exits 0.
+    Write-Host "--- Verifying dotnet-coverage in image ---" -ForegroundColor Cyan
+    $toolCheck = & docker run --rm warewolf-test-env sh -c "ls -la /root/.dotnet/tools/ 2>&1; echo EXIT:$?"
+    Write-Host $toolCheck
+    $coveragePresent = & docker run --rm warewolf-test-env sh -c "test -x /root/.dotnet/tools/dotnet-coverage && echo FOUND || echo MISSING"
+    if ($coveragePresent -notmatch "FOUND") {
+        Write-Host "##[error] dotnet-coverage is MISSING from the image." -ForegroundColor Red
+        Write-Host "Installed global tools:" -ForegroundColor Yellow
+        & docker run --rm warewolf-test-env sh -c "/usr/share/dotnet/dotnet tool list --global 2>&1 || true"
+        Write-Host "DOTNET_ROOT / dotnet location:" -ForegroundColor Yellow
+        & docker run --rm warewolf-test-env sh -c "which dotnet 2>&1 || true; ls /usr/share/dotnet/ 2>&1 || true"
+        Write-Error "dotnet-coverage not found in image — aborting. Rebuild with --no-cache to re-run the tool install step."
+        exit 1
+    }
+    Write-Host "dotnet-coverage: OK" -ForegroundColor Green
 } else {
     $containerId = docker ps --filter "ancestor=vsut_dockerfile" --format "{{.ID}}" 2>$null | Select-Object -First 1
 

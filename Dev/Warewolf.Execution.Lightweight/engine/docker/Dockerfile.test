@@ -23,7 +23,8 @@ COPY --from=sdk /usr/share/dotnet /usr/share/dotnet
 # (Docker's OCI runtime resolves the first process against the image ENV PATH,
 # which may not include /root/.dotnet/tools on all base-image variants).
 RUN /usr/share/dotnet/dotnet tool install --global dotnet-coverage \
-    && ln -sf /root/.dotnet/tools/dotnet-coverage /usr/local/bin/dotnet-coverage
+    && ln -sf /root/.dotnet/tools/dotnet-coverage /usr/local/bin/dotnet-coverage \
+    && /root/.dotnet/tools/dotnet-coverage --version
 ENV PATH="/root/.dotnet/tools:${PATH}"
 
 # Install the Visual Studio remote debugger so tests can be stepped through
