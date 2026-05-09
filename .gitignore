@@ -153,3 +153,5 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Dev2.Studio.Core/Models
 
 *.trx
+/coverage
+/Dev/Resources - Release/Resources/workflow-index.json
