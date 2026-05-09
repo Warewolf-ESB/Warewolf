@@ -280,14 +280,29 @@ if ($CIMode) {
 
             $trxName = "$assembly$filterSuffix.trx"
 
-            # These test projects use EnableMSTestRunner=true (Microsoft Testing Platform).
-            # Run the self-contained binary directly rather than via `dotnet test assembly.dll`,
-            # because the vstest host path requires the ELF binary to be executable and may
-            # fail silently.  The MTP binary accepts --report-trx natively.
+            # Detect whether this is a Microsoft Testing Platform (EnableMSTestRunner=true)
+            # project by checking its .deps.json for a reference to Microsoft.Testing.Platform.
+            # We cannot rely on the presence of a no-extension ELF binary alone: publishing the
+            # whole solution with --self-contained true -p:UseAppHost=true creates an app-host
+            # binary for EVERY project (including OutputType=Library ones like Security.Specs)
+            # even though they are plain vstest assemblies, not MTP projects.
             $binaryPath = Join-Path $BinDir $assembly
             if (-not (Test-Path $binaryPath)) {
-                Write-Warning "MTP binary not found at '$binaryPath'; falling back to dotnet test on DLL."
+                Write-Host "  [MTP] No app-host binary found for $assembly; using dotnet test." -ForegroundColor DarkGray
                 $binaryPath = $null
+            } else {
+                $depsJson = Join-Path $BinDir "$assembly.deps.json"
+                $isMtp = $false
+                if (Test-Path $depsJson) {
+                    $depsContent = Get-Content $depsJson -Raw -ErrorAction SilentlyContinue
+                    $isMtp = $depsContent -match '"Microsoft\.Testing\.Platform"'
+                }
+                if ($isMtp) {
+                    Write-Host "  [MTP] $assembly detected as Microsoft Testing Platform project." -ForegroundColor DarkGray
+                } else {
+                    Write-Host "  [MTP] $assembly has app-host binary but no Microsoft.Testing.Platform dep — using dotnet test." -ForegroundColor DarkGray
+                    $binaryPath = $null
+                }
             }
 
             # Ensure the Linux self-contained binary has the execute bit set.
