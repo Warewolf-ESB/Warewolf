@@ -391,17 +391,33 @@ if ($CIMode) {
             $trxFullPath = Join-Path $TestResultsDir $trxName
             if (Test-Path $trxFullPath) { Remove-Item $trxFullPath -Force }
 
-            & docker @dockerRunArgs
+            Write-Host "  Expected TRX: $trxFullPath" -ForegroundColor DarkGray
 
-            if ($LASTEXITCODE -eq 8) {
+            & docker @dockerRunArgs
+            $dockerExit = $LASTEXITCODE
+
+            Write-Host "  Container exit code: $dockerExit" -ForegroundColor Cyan
+
+            # Check whether the expected TRX was actually written by this run.
+            if (Test-Path $trxFullPath) {
+                $trxSize = (Get-Item $trxFullPath).Length
+                Write-Host "  ✓ TRX written: $trxName ($trxSize bytes)" -ForegroundColor Green
+            } else {
+                Write-Host "  ✗ TRX NOT found: $trxFullPath" -ForegroundColor Yellow
+                Write-Host "  Contents of ${TestResultsDir} after this run:" -ForegroundColor Yellow
+                Get-ChildItem -Path $TestResultsDir -Recurse -ErrorAction SilentlyContinue |
+                    ForEach-Object { Write-Host "    $($_.FullName) ($($_.Length) bytes)" -ForegroundColor Gray }
+            }
+
+            if ($dockerExit -eq 8) {
                 # Exit code 8 = Microsoft Testing Platform "ZeroTestsRan":
                 # all tests were filtered out by category or all were skipped/inconclusive.
                 # This is expected (e.g. CannotParallelize-only assemblies, or
                 # integration assemblies whose external services aren't available).
                 # Treat as a warning, not a failure.
                 Write-Warning "WARN: $assembly$filterSuffix - zero tests ran (all filtered or skipped). Exit 8."
-            } elseif ($LASTEXITCODE -ne 0) {
-                Write-Warning "FAILED: $assembly$filterSuffix (exit $LASTEXITCODE)."
+            } elseif ($dockerExit -ne 0) {
+                Write-Warning "FAILED: $assembly$filterSuffix (exit $dockerExit)."
                 $failedAssemblies.Add("$assembly$filterSuffix")
                 $failed++
             }
@@ -411,12 +427,15 @@ if ($CIMode) {
     Write-Host "--- TRX files written to $TestResultsDir ---" -ForegroundColor Cyan
     $trxFiles = Get-ChildItem -Path $TestResultsDir -Recurse -Filter "*.trx" -ErrorAction SilentlyContinue
     if ($trxFiles) {
-        $trxFiles | ForEach-Object { Write-Host "  $($_.FullName)" -ForegroundColor Green }
+        $trxFiles | ForEach-Object { Write-Host "  $($_.FullName) ($($_.Length) bytes)" -ForegroundColor Green }
     } else {
         Write-Warning "No .trx files found in $TestResultsDir"
-        # Show top-level contents for diagnosis
-        Get-ChildItem -Path $TestResultsDir -ErrorAction SilentlyContinue | ForEach-Object {
-            Write-Host "  $($_.FullName)" -ForegroundColor Gray
+        Write-Host "  Full recursive listing of $TestResultsDir:" -ForegroundColor Yellow
+        $allFiles = Get-ChildItem -Path $TestResultsDir -Recurse -ErrorAction SilentlyContinue
+        if ($allFiles) {
+            $allFiles | ForEach-Object { Write-Host "  $($_.FullName) ($($_.Length) bytes)" -ForegroundColor Gray }
+        } else {
+            Write-Host "  (directory is empty)" -ForegroundColor Gray
         }
     }
 

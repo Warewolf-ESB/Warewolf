@@ -55,6 +55,7 @@ bin
 /Dev/Warewolf.Specs/**
 /Dev/Warewolf.UIBindingTests/**
 UIMapEditorBackups
+/Dev/Resources - Release/Resources/workflow-index.json
 
 ####################################################################################
 # SonarQube
@@ -154,4 +155,3 @@ Dev/SonarQube/SolutionBinding.sqconfig
 
 *.trx
 /coverage
-/Dev/Resources - Release/Resources/workflow-index.json
