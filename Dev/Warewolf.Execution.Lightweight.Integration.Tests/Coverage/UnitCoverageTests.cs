@@ -80,9 +80,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         public void WorkflowAuthPolicy_RecordEquality_SameReference_IsEqual()
         {
             var e = new WorkflowGroupEntry("G", WorkflowPermission.View);
-            var groups = new List<string> { "G" }.AsReadOnly();
-            var entries = new List<WorkflowGroupEntry> { e }.AsReadOnly();
-            var a = new WorkflowAuthPolicy("WF", groups, WorkflowPermission.View, entries);
+            var a = WorkflowAuthPolicy.Create("WF", new[] { e }, WorkflowPermission.View);
             // Records use structural equality — same lists (same references) → equal
             Assert.AreEqual(a, a);
             Assert.AreEqual("WF", a.WorkflowName);

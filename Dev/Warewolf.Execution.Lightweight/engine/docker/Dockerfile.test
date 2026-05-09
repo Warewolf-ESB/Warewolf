@@ -34,4 +34,5 @@ ENV VSTEST_CONNECTION_TIMEOUT=300
 #     (avoids "no command specified" / CTC1015 error in Azure Functions Runtime environment)
 #   - run-tests-in-container.ps1 strips this back to ENTRYPOINT [] before
 #     building the CI image so docker run <cmd> executes <cmd> directly.
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT []
+
