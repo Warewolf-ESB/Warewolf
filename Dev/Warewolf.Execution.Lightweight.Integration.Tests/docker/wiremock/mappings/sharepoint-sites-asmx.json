@@ -1,17 +1,15 @@
 {
   "request": {
     "method": "POST",
-    "urlPath": "/_vti_bin/sites.asmx",
-    "headers": {
-      "SOAPAction": {
-        "contains": "GetUpdatedFormDigestInformation"
-      }
-    }
+    "url": "/_vti_bin/sites.asmx"
   },
   "response": {
     "status": 200,
-    "headers": { "Content-Type": "text/xml; charset=utf-8" },
-    "transformers": ["response-template"],
-    "body": "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><soap:Body><GetUpdatedFormDigestInformationResponse xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\"><GetUpdatedFormDigestInformationResult><DigestValue>0xABCDEF0123456789ABCDEF0123456789ABCDEF01,{{now format='dd MMM yyyy HH:mm:ss'}} -0000</DigestValue><TimeoutSeconds>1800</TimeoutSeconds><WebFullUrl>http://{{request.headers.Host}}</WebFullUrl><LibraryVersion>16.0.9000.0</LibraryVersion><SupportedSchemaVersions>14.0.0.0,15.0.0.0</SupportedSchemaVersions></GetUpdatedFormDigestInformationResult></GetUpdatedFormDigestInformationResponse></soap:Body></soap:Envelope>"
+    "headers": {
+      "Content-Type": "text/xml; charset=utf-8",
+      "X-SharePointHealthScore": "0",
+      "MicrosoftSharePointTeamServices": "16.0.0.8029"
+    },
+    "body": "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><soap:Body><GetSiteTemplatesResponse xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\"><GetSiteTemplatesResult>1</GetSiteTemplatesResult></GetSiteTemplatesResponse></soap:Body></soap:Envelope>"
   }
 }

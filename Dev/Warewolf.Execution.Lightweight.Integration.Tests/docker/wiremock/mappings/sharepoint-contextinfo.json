@@ -1,11 +1,13 @@
 {
   "request": {
     "method": "POST",
-    "urlPath": "/_api/contextinfo"
+    "url": "/_api/contextinfo"
   },
   "response": {
     "status": 200,
-    "headers": { "Content-Type": "application/json;odata=verbose" },
-    "body": "{\"d\":{\"GetContextWebInformation\":{\"FormDigestValue\":\"0x1FAKE,01 Jan 2024 00:00:00 -0000\",\"FormDigestTimeoutSeconds\":1800,\"WebFullUrl\":\"http://sharepoint.warewolf.online\"}}}"
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"d\":{\"GetContextWebInformation\":{\"FormDigestValue\":\"fake-digest\"}}}"
   }
 }

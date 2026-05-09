@@ -456,7 +456,7 @@ if ($CIMode) {
         $trxFiles | ForEach-Object { Write-Host "  $($_.FullName) ($($_.Length) bytes)" -ForegroundColor Green }
     } else {
         Write-Warning "No .trx files found in $TestResultsDir"
-        Write-Host "  Full recursive listing of $TestResultsDir:" -ForegroundColor Yellow
+        Write-Host "  Full recursive listing of ${TestResultsDir}:" -ForegroundColor Yellow
         $allFiles = Get-ChildItem -Path $TestResultsDir -Recurse -ErrorAction SilentlyContinue
         if ($allFiles) {
             $allFiles | ForEach-Object { Write-Host "  $($_.FullName) ($($_.Length) bytes)" -ForegroundColor Gray }
