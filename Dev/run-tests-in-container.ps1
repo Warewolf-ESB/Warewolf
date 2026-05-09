@@ -281,7 +281,9 @@ if ($CIMode) {
             $trxName = "$assembly$filterSuffix.trx"
 
             # Detect whether this is a Microsoft Testing Platform (EnableMSTestRunner=true)
-            # project by checking its .deps.json for a reference to Microsoft.Testing.Platform.
+            # project by parsing its .deps.json and confirming that Microsoft.Testing.Platform
+            # is a DIRECT dependency of the project's own entry — not just a transitive dep
+            # pulled in by MSTest.TestAdapter 3.x (which fools a simple string-search).
             # We cannot rely on the presence of a no-extension ELF binary alone: publishing the
             # whole solution with --self-contained true -p:UseAppHost=true creates an app-host
             # binary for EVERY project (including OutputType=Library ones like Security.Specs)
@@ -294,13 +296,37 @@ if ($CIMode) {
                 $depsJson = Join-Path $BinDir "$assembly.deps.json"
                 $isMtp = $false
                 if (Test-Path $depsJson) {
-                    $depsContent = Get-Content $depsJson -Raw -ErrorAction SilentlyContinue
-                    $isMtp = $depsContent -match '"Microsoft\.Testing\.Platform"'
+                    # True MTP projects (EnableMSTestRunner=true) list Microsoft.Testing.Platform as
+                    # a DIRECT dependency of the project entry in the deps.json. Plain vstest
+                    # assemblies that reference MSTest.TestAdapter 3.x also contain the string
+                    # "Microsoft.Testing.Platform" in their deps.json (as a transitive dep of the
+                    # adapter), which causes a false positive if we just grep the whole file.
+                    # Parse the JSON and check only the project's own dependency list.
+                    try {
+                        $depsObj = Get-Content $depsJson -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
+                        if ($depsObj) {
+                            $firstTarget = $depsObj.targets.PSObject.Properties | Select-Object -First 1
+                            if ($firstTarget) {
+                                $mainEntry = $firstTarget.Value.PSObject.Properties |
+                                    Where-Object { $_.Name -like "$assembly/*" } |
+                                    Select-Object -First 1
+                                if ($mainEntry) {
+                                    $directDeps = $mainEntry.Value.dependencies.PSObject.Properties.Name
+                                    $isMtp = $directDeps -contains 'Microsoft.Testing.Platform'
+                                    Write-Host "  [MTP] $assembly direct deps include MTP: $isMtp" -ForegroundColor DarkGray
+                                } else {
+                                    Write-Host "  [MTP] No main entry found in deps.json for $assembly — falling back to dotnet test." -ForegroundColor DarkGray
+                                }
+                            }
+                        }
+                    } catch {
+                        Write-Host "  [MTP] Failed to parse deps.json for ${assembly}: $_" -ForegroundColor Yellow
+                    }
                 }
                 if ($isMtp) {
                     Write-Host "  [MTP] $assembly detected as Microsoft Testing Platform project." -ForegroundColor DarkGray
                 } else {
-                    Write-Host "  [MTP] $assembly has app-host binary but no Microsoft.Testing.Platform dep — using dotnet test." -ForegroundColor DarkGray
+                    Write-Host "  [MTP] $assembly has app-host binary but MTP is not its direct runner — using dotnet test." -ForegroundColor DarkGray
                     $binaryPath = $null
                 }
             }
