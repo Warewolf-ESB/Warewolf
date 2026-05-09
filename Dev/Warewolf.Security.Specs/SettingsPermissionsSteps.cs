@@ -90,7 +90,17 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)
         {
-            // No-op: the lightweight server is always at LightweightBaseUrl.
+            using var probe = new HttpClient();
+            try
+            {
+                var response = probe.GetAsync($"{LightweightBaseUrl}/Public/apis.json").Result;
+                if (!response.IsSuccessStatusCode && response.StatusCode != System.Net.HttpStatusCode.Unauthorized)
+                    Assert.Fail($"Lightweight server at {LightweightBaseUrl} is not ready (server: '{serverName}'). Status: {response.StatusCode}");
+            }
+            catch (Exception ex) when (!(ex is AssertFailedException))
+            {
+                Assert.Fail($"Lightweight server at {LightweightBaseUrl} is not reachable (server: '{serverName}'). {ex.Message}");
+            }
         }
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]

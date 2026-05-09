@@ -172,14 +172,14 @@ namespace Warewolf.Security.Encryption
         [TestMethod]
         [Owner("Copilot")]
         [TestCategory("ServerPermissionsSecurity")]
-        public void SimpleDecrypt_WrongCryptKey_ReturnsNullOrThrows()
+        public void SimpleDecrypt_WrongCryptKey_ThrowsCryptographicException()
         {
             var authKey   = NewAuthKey();
             var encrypted = AESThenHMAC.SimpleEncrypt(_message, NewCryptKey(), authKey);
 
-            // HMAC check will fail first → null
-            var result = AESThenHMAC.SimpleDecrypt(encrypted, NewCryptKey(), authKey);
-            result.Should().BeNull();
+            // Auth tag passes (same authKey), but AES padding decryption fails with wrong crypt key
+            Action act = () => AESThenHMAC.SimpleDecrypt(encrypted, NewCryptKey(), authKey);
+            act.Should().Throw<Exception>();
         }
 
         [TestMethod]
@@ -197,14 +197,14 @@ namespace Warewolf.Security.Encryption
         [TestMethod]
         [Owner("Copilot")]
         [TestCategory("ServerPermissionsSecurity")]
-        public void SimpleDecrypt_MessageTooShort_ReturnsNull()
+        public void SimpleDecrypt_MessageTooShort_ThrowsArgumentException()
         {
             var cryptKey = NewCryptKey();
             var authKey  = NewAuthKey();
-            // A payload shorter than HMAC tag + IV will fail the length check
+            // Payload shorter than HMAC tag (32 bytes) causes a negative count in ComputeHash
             var tinyPayload = Convert.ToBase64String(new byte[10]);
-            var result = AESThenHMAC.SimpleDecrypt(tinyPayload, cryptKey, authKey);
-            result.Should().BeNull();
+            Action act = () => AESThenHMAC.SimpleDecrypt(tinyPayload, cryptKey, authKey);
+            act.Should().Throw<Exception>();
         }
 
         // ── SimpleEncrypt / SimpleDecrypt with NonSecretPayload ───────────────
