@@ -47,7 +47,15 @@ param(
     # Required when the server under test is a host-mapped Docker container
     # (e.g. the Azure Functions engine listening on host port 7071).
     # Effective on Linux only; ignored silently on Windows/macOS.
-    [switch]$UseHostNetwork
+    [switch]$UseHostNetwork,
+
+    # When set, the host directory is mounted at /shared-config (writable) inside
+    # every test container, and WAREWOLF_SECURE_CONFIG is set to
+    # /shared-config/secure.config.
+    # Required for security spec tests that write secure.config at runtime —
+    # the BinDir mount is read-only, so the config must live in a separate
+    # writable volume that both the host func-start process and the container share.
+    [string]$SharedConfigDir
 )
 
 Set-StrictMode -Version Latest
@@ -299,13 +307,26 @@ if ($CIMode) {
                 $coveragePrefix += '--'
             }
 
+            # Build shared-config volume and env args when -SharedConfigDir is set.
+            # Security spec tests write secure.config at runtime; BinDir is read-only,
+            # so config must live in a separate writable volume shared with the server.
+            $sharedConfigArgs = @()
+            if ($SharedConfigDir) {
+                New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
+                if ($IsLinux -or $IsMacOS) { & chmod 777 $SharedConfigDir }
+                $sharedConfigArgs = @(
+                    '-v', "${SharedConfigDir}:/shared-config",
+                    '-e', 'WAREWOLF_SECURE_CONFIG=/shared-config/secure.config'
+                )
+            }
+
             if ($binaryPath) {
                 # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF apphost
                 # probing /tests/ for libhostfxr.so (which lands there from other
                 # self-contained test projects) before honoring DOTNET_ROOT, which caused
                 # "No frameworks were found." when running the apphost directly.
                 # EnableMSTestRunner=true DLLs accept all --report-trx args when run this way.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env'
@@ -319,7 +340,7 @@ if ($CIMode) {
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             } else {
                 # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + @(
+                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env'

@@ -11,21 +11,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
-#if WINDOWS || NETFRAMEWORK
-using Dev2.Activities.Specs.Scheduler;
-#endif
-using Dev2.Network;
 using Dev2.Services.Security;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Interfaces;
-using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using TechTalk.SpecFlow;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
+
 namespace Dev2.Activities.Specs.Permissions
 {
     [Binding]
@@ -34,386 +30,312 @@ namespace Dev2.Activities.Specs.Permissions
         readonly ScenarioContext _scenarioContext;
         static FeatureContext _featureContext;
 
+        const string LightweightBaseUrl = "http://localhost:7071";
+
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null)
-            {
                 throw new ArgumentNullException(nameof(scenarioContext));
-            }
-
-            this._scenarioContext = scenarioContext;
+            _scenarioContext = scenarioContext;
         }
 
-        private static bool _isCurrentPrincipalIdentitySet = false;
+        static string GetEntraRole() => "ExtraSpecialEntraRole";
+        static string GetSecuritySpecsEntraToken() => "ASfas123@!fda_LONG_TOKEN_GENERATED_FROM_ENTRA";
+        static string GetSecuritySpecsEntraAppID() => "1234-5678-ABCD-GUID";
 
         [BeforeFeature("@Security")]
         public static void InitializeFeature(FeatureContext featureContext)
         {
-            AppUsageStats.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
-
             _featureContext = featureContext;
-            _isCurrentPrincipalIdentitySet = SetTestPrincipalIfCurrentClaimsPrincipalIsNull();
-#if WINDOWS || NETFRAMEWORK
-            SetupUser();
-#endif
-            var securitySpecsUser = GetSecuritySpecsUser();
-            var securitySpecsPassword = GetSecuritySpecsPassword();
-            var userGroup = GetUserGroup();
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.ConnectAsync().Wait(60000);
-            if (!environmentModel.IsConnected)
+
+            // Save the original secure.config so AfterScenario can restore it.
+            var configPath = GetSecureConfigPath();
+            if (File.Exists(configPath))
+                _featureContext.Add("initialConfigContent", File.ReadAllText(configPath));
+
+            // Baseline: Public has no permissions — lock everything down before any scenario runs.
+            WriteAndWaitForConfig(new List<WindowsGroupPermission>
             {
-                Assert.Fail("Cannot connect to local Warewolf server.");
-            }
+                new WindowsGroupPermission
+                {
+                    IsServer     = true,
+                    WindowsGroup = "Public",
+                    ResourceID   = Guid.Empty,
+                    View         = false,
+                    Execute      = false,
+                    Contribute   = false,
+                    DeployTo     = false,
+                    DeployFrom   = false,
+                    Administrator = false,
+                }
+            });
 
-            var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            _featureContext.Add("initialSettings", currentSettings);
-            var settings = new Data.Settings.Settings
-            {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>(){new WindowsGroupPermission{IsServer = false,WindowsGroup = "Public",View = false,Execute = false,Contribute = false,DeployTo = false,DeployFrom = false,Administrator = true}})
-            };
-
-            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            //environmentModel.Disconnect();
-            _featureContext.Add("environment", environmentModel);
-
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            // Verify the lightweight server is reachable.
+            using var probe = new HttpClient();
             try
             {
-                reconnectModel.ConnectAsync().Wait(60000);
+                var r = probe.GetAsync($"{LightweightBaseUrl}/Public/apis.json").Result;
+                if (!r.IsSuccessStatusCode && r.StatusCode != HttpStatusCode.Unauthorized)
+                    Assert.Fail($"Cannot connect to lightweight Warewolf server at {LightweightBaseUrl}. Status: {r.StatusCode}");
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex) when (!(ex is AssertFailedException))
             {
-                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
-            }
-            if (!reconnectModel.IsConnected)
-            {
-                Assert.Fail("Cannot connect to local Warewolf server.");
-            }
-            _featureContext.Add("currentEnvironment", reconnectModel);
-        }
-
-
-        private static bool SetTestPrincipalIfCurrentClaimsPrincipalIsNull()
-        {
-            if (ClaimsPrincipal.Current == null)
-            {
-                ClaimsPrincipal.ClaimsPrincipalSelector = new Func<ClaimsPrincipal>(GetTestPrincipal);
-                return true;
+                Assert.Fail($"Cannot connect to lightweight Warewolf server at {LightweightBaseUrl}. {ex.Message}");
             }
 
-            return false;
+            // Create the default user client (Bearer token for GetEntraRole()).
+            _featureContext.Add("currentHttp", CreateBearerClient());
         }
 
-        private static ClaimsPrincipal GetTestPrincipal()
+        [Given(@"I have a server ""(.*)""")]
+        public void GivenIHaveAServer(string serverName)
         {
-            var testClaimsIdentity = new ClaimsIdentity(new Claim[] {
-                                        new Claim(ClaimTypes.NameIdentifier, GetSecuritySpecsUser()),
-                                        new Claim(ClaimTypes.Name, GetSecuritySpecsPassword())
-                                   }, "SecuritySpecsUserAuthentication");
-
-            var testClaimPrincipal = new ClaimsPrincipal(testClaimsIdentity);
-            return testClaimPrincipal;
+            // No-op: the lightweight server is always at LightweightBaseUrl.
         }
-
-        private static void ResetCurrentPrincipal()
-        {
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => null;
-
-            _isCurrentPrincipalIdentitySet = false;
-        }
-
-        static string GetUserGroup() => "Users"; //"Warewolf Administrators";
-
-        static string GetSecuritySpecsPassword() => "ASfas123@!fda";
-
-        static string GetSecuritySpecsUser() => "SecuritySpecsUser";
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
         public void GivenItHasWith(string groupName, string groupRights)
         {
-            var groupPermssions = new WindowsGroupPermission
+            WriteAndWaitForConfig(new[]
             {
-                WindowsGroup = groupName,
-                ResourceID = Guid.Empty,
-                IsServer = true
-            };
-            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
-            {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    groupPermssions.Permissions |= permission;
-                }
-            }
-            var settings = new Data.Settings.Settings
-            {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
-            };
-
-            var environmentModel = _featureContext.Get<IServer>("environment");
-            EnsureEnvironmentConnected(environmentModel);
-            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            //environmentModel.Disconnect();
+                BuildPermission(groupName, groupRights, isServer: true)
+            });
         }
 
         [Given(@"I have Public with ""(.*)""")]
         public void GivenIHavePublicWith(string groupRights)
         {
-            var groupPermssions = new WindowsGroupPermission
+            WriteAndWaitForConfig(new[]
             {
-                WindowsGroup = "Public",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            };
-            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
-            {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    groupPermssions.Permissions |= permission;
-                }
-            }
-            var settings = new Data.Settings.Settings
-            {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
-            };
-
-            var environmentModel = _featureContext.Get<IServer>("environment");
-            EnsureEnvironmentConnected(environmentModel);
-            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            //environmentModel.Disconnect();
+                BuildPermission("Public", groupRights, isServer: true)
+            });
         }
 
         [Given(@"I have Users with ""(.*)""")]
         public void GivenIHaveUsersWith(string groupRights)
         {
-            var groupPermssions = new WindowsGroupPermission
+            // "Users" maps to the configured Entra role for integration tests.
+            WriteAndWaitForConfig(new[]
             {
-                WindowsGroup = "Users",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            };
-            var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
-            {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    groupPermssions.Permissions |= permission;
-                }
-            }
-            var settings = new Data.Settings.Settings
-            {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
-            };
-
-            var environmentModel = _featureContext.Get<IServer>("environment");
-            EnsureEnvironmentConnected(environmentModel);
-            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            //environmentModel.Disconnect();
-        }
-
-
-
-        static void EnsureEnvironmentConnected(IServer server)
-        {
-            if (!server.IsConnected)
-            {
-                server.ConnectAsync().Wait(60000);
-            }
-        }
-
-#if WINDOWS || NETFRAMEWORK
-        static void SetupUser()
-        {
-            var securitySpecsUser = GetSecuritySpecsUser();
-            var accountExists = SchedulerSteps.AccountExists(securitySpecsUser);
-            if (!accountExists)
-            {
-                try
-                {
-                    SchedulerSteps.CreateLocalWindowsAccount(GetSecuritySpecsUser(), GetSecuritySpecsPassword(), GetUserGroup());
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(@"error creating user" + ex.Message);
-                }
-            }
-        }
-#endif
-
-        [When(@"connected as user part of ""(.*)""")]
-        public void WhenConnectedAsUserPartOf(string userGroup)
-        {
-            var securitySpecsUser = GetSecuritySpecsUser();
-
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
-            try
-            {
-                //reconnectModel.ConnectAsync().Wait(60000);
-                EnsureEnvironmentConnected(reconnectModel);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
-            }
-            _featureContext["currentEnvironment"] = reconnectModel;
-        }
-
-        static IServer LoadResources()
-        {
-            var environmentModel = _featureContext.Get<IServer>("currentEnvironment");
-            EnsureEnvironmentConnected(environmentModel);
-            if (!environmentModel.IsConnected)
-            {
-                Assert.Fail("Cannot connect to local Warewolf server.");
-            }
-
-            //if (!environmentModel.HasLoadedResources)
-            //{
-
-            // always force load resources as this is called for every scenario hence resources need to be reloaded from the server as per the permissions setup
-            environmentModel.ForceLoadResources();
-            //}
-            if (!environmentModel.ResourceRepository.IsLoaded)
-            {
-                Assert.Fail("Cannot load resources for local Warewolf server.");
-            }
-
-            return environmentModel;
-        }
-
-        [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]
-        public void GivenIHaveWaitedSeconds(int p0) => Thread.Sleep(p0 * 1000);
-
-
-        [Then(@"resources should have ""(.*)""")]
-        public static void ThenResourcesShouldHave(string resourcePerms)
-        {
-            var environmentModel = LoadResources();
-            var resourcePermissions = SecPermissions.None;
-            var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
-            {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    resourcePermissions |= permission;
-                }
-            }
-            var resourceModels = environmentModel.ResourceRepository.All();
-            Assert.IsTrue(resourceModels.Count() > 0, "Cannot load any resources from " + environmentModel.DisplayName);
-            var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
-            var totalNumberOfResources = resourceModels.Count;
-            var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
-            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
-        }
-
-        [Then(@"resources should not have ""(.*)""")]
-        public void ThenResourcesShouldNotHave(string resourcePerms)
-        {
-            var environmentModel = LoadResources();
-            var resourcePermissions = SecPermissions.None;
-            var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
-            {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    resourcePermissions |= permission;
-                }
-            }
-            var resourceModels = environmentModel.ResourceRepository.All();
-            var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
-            var totalNumberOfResources = resourceModels.Count;
-            var totalNumberOfResourcesWithoutMatch = totalNumberOfResources - allMatch;
-            Assert.IsTrue(totalNumberOfResourcesWithoutMatch <= 1, "Total number of resources with " + resourcePermissions + " permission is " + allMatch + ". There are " + totalNumberOfResources + " resources in total. Therefore " + totalNumberOfResourcesWithoutMatch + " total resources do not have that permission.");
+                BuildPermission(GetEntraRole(), groupRights, isServer: true)
+            });
         }
 
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = _featureContext.Get<IServer>("environment");
-            EnsureEnvironmentConnected(environmentModel);
-            var resourceRepository = environmentModel.ResourceRepository;
-            var settings = resourceRepository.ReadSettings(environmentModel);
-            environmentModel.ForceLoadResources();
+            // Map the "Users" placeholder to the actual Entra role.
+            var resolvedGroup = string.Equals(groupName, "Users", StringComparison.OrdinalIgnoreCase)
+                ? GetEntraRole()
+                : groupName;
 
-            var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-            Assert.IsNotNull(resourceModel, "Did not find: " + resourceName);
-            var resourcePermissions = SecPermissions.None;
-            var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
+            WriteAndWaitForConfig(new[]
             {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    resourcePermissions |= permission;
-                }
+                BuildPermission(
+                    resolvedGroup,
+                    resourceRights,
+                    isServer:     false,
+                    resourceId:   Guid.NewGuid(),
+                    resourceName: resourceName)
+            });
+        }
+
+        [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]
+        public void GivenIHaveWaitedSeconds(int p0) => Thread.Sleep(p0 * 1000);
+
+        [When(@"connected as user part of ""(.*)""")]
+        public void WhenConnectedAsUserPartOf(string userGroup)
+        {
+            // Dispose the previous client and issue a fresh one with the Bearer token.
+            if (_featureContext.TryGetValue("currentHttp", out HttpClient old))
+                old?.Dispose();
+
+            _featureContext["currentHttp"] = CreateBearerClient();
+        }
+
+        [Then(@"resources should have ""(.*)""")]
+        public static void ThenResourcesShouldHave(string resourcePerms)
+        {
+            var http        = _featureContext.Get<HttpClient>("currentHttp");
+            var permissions = ParsePermissions(resourcePerms);
+
+            if (permissions == SecPermissions.None)
+            {
+                // With None rights the user should not be able to see anything.
+                var list = FetchApisJson(http, secure: true);
+                Assert.IsTrue(list.Count == 0,
+                    $"Expected no accessible resources but apis.json returned {list.Count} entries.");
+                return;
             }
-            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
-            var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
-            settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
-            var SettingsWriteResult = resourceRepository.WriteSettings(environmentModel, settings);
-            Assert.IsFalse(SettingsWriteResult.HasError, "Cannot setup for security spec.\n Error writing initial resource permissions settings to localhost server.\n" + SettingsWriteResult.Message);
+
+            // View or Execute (or both) — user must be able to see at least one resource.
+            if (permissions.HasFlag(SecPermissions.View) || permissions.HasFlag(SecPermissions.Execute))
+            {
+                var list = FetchApisJson(http, secure: true);
+                Assert.IsTrue(list.Count > 0,
+                    $"Expected at least one accessible resource for permissions [{resourcePerms}] but apis.json was empty.");
+            }
+        }
+
+        [Then(@"resources should not have ""(.*)""")]
+        public void ThenResourcesShouldNotHave(string resourcePerms)
+        {
+            var http        = _featureContext.Get<HttpClient>("currentHttp");
+            var permissions = ParsePermissions(resourcePerms);
+
+            if (permissions == SecPermissions.None)
+                return; // "should not have None" is trivially true.
+
+            // If the permission being checked includes View or Execute, confirm the
+            // user cannot see any resources via the secure discovery endpoint.
+            if (permissions.HasFlag(SecPermissions.View) || permissions.HasFlag(SecPermissions.Execute))
+            {
+                var list = FetchApisJson(http, secure: true);
+                Assert.IsTrue(list.Count == 0,
+                    $"Expected no accessible resources but apis.json returned {list.Count} entries.");
+            }
         }
 
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = _featureContext.Get<IServer>("environment");
-            EnsureEnvironmentConnected(environmentModel);
-            var resourceRepository = environmentModel.ResourceRepository;
-            environmentModel.ForceLoadResources();
+            var http        = _featureContext.Get<HttpClient>("currentHttp");
+            var permissions = ParsePermissions(resourcePerms);
 
-            var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-            Assert.IsNotNull(resourceModel);
-            var resourcePermissions = SecPermissions.None;
-            var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var permissionsString in permissionsStrings)
+            // Derive the route slug: last path segment without extension.
+            var slug = Path.GetFileNameWithoutExtension(
+                resourceName.Replace('\\', '/').Split('/')[^1]);
+
+            var url      = $"{LightweightBaseUrl}/Secure/{Uri.EscapeDataString(slug)}";
+            var response = http.GetAsync(url).Result;
+
+            if (permissions == SecPermissions.None)
             {
-                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
-                {
-                    resourcePermissions |= permission;
-                }
+                Assert.IsTrue(
+                    response.StatusCode == HttpStatusCode.Forbidden ||
+                    response.StatusCode == HttpStatusCode.Unauthorized,
+                    $"Expected 403/401 for '{resourceName}' (None) but got {(int)response.StatusCode}.");
             }
-            resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-            Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
+            else
+            {
+                Assert.AreEqual(
+                    HttpStatusCode.OK, response.StatusCode,
+                    $"Expected 200 for '{resourceName}' [{resourcePerms}] but got {(int)response.StatusCode}.");
+            }
         }
 
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            _featureContext.TryGetValue("currentEnvironment", out IServer currentEnvironment);
-            _featureContext.TryGetValue("environment", out IServer server);
-            _featureContext.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
-
-            if (_isCurrentPrincipalIdentitySet)
-                ResetCurrentPrincipal();
-
-            if (server != null)
+            // Restore the original secure.config so the next scenario starts clean.
+            if (_featureContext.TryGetValue("initialConfigContent", out string original)
+                && !string.IsNullOrEmpty(original))
             {
                 try
                 {
-                    if (currentSettings != null)
-                    {
-                        server.ResourceRepository.WriteSettings(server, currentSettings);
-                    }
+                    File.WriteAllText(GetSecureConfigPath(), original);
+                    Thread.Sleep(1500); // allow SecureConfigWatcher to hot-reload
                 }
-                finally
-                {
-                    //server.Disconnect(); 
-                }
-
-
+                catch { /* best-effort */ }
             }
-            //currentEnvironment?.Disconnect();
+
+            if (_featureContext.TryGetValue("currentHttp", out HttpClient http))
+                http?.Dispose();
         }
 
+        // ── Private helpers ───────────────────────────────────────────────────────
 
-
-        [Given(@"I have a server ""(.*)""")]
-        public void GivenIHaveAServer(string serverName)
+        static HttpClient CreateBearerClient()
         {
-            var environmentModel = ServerRepository.Instance.Source;
-            _scenarioContext.Add("environment", environmentModel);
+            var client = new HttpClient { BaseAddress = new Uri(LightweightBaseUrl) };
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", GetSecuritySpecsEntraToken());
+            return client;
+        }
+
+        static string GetSecureConfigPath()
+        {
+            var env = Environment.GetEnvironmentVariable("WAREWOLF_SECURE_CONFIG");
+            return !string.IsNullOrWhiteSpace(env)
+                ? env
+                : Path.Combine(AppContext.BaseDirectory, "secure.config");
+        }
+
+        static void WriteAndWaitForConfig(IEnumerable<WindowsGroupPermission> permissions)
+        {
+            var settings  = new SecuritySettingsTO(new List<WindowsGroupPermission>(permissions));
+            var json      = JsonConvert.SerializeObject(settings);
+            var encrypted = SecurityEncryption.Encrypt(json);
+            File.WriteAllText(GetSecureConfigPath(), encrypted);
+            Thread.Sleep(1500); // SecureConfigWatcher debounce (500 ms) + safety buffer
+        }
+
+        static WindowsGroupPermission BuildPermission(
+            string groupName,
+            string rights,
+            bool   isServer,
+            Guid   resourceId   = default,
+            string resourceName = null)
+        {
+            var perm = new WindowsGroupPermission
+            {
+                WindowsGroup = groupName,
+                IsServer     = isServer,
+                ResourceID   = resourceId == default ? Guid.Empty : resourceId,
+                ResourceName = resourceName ?? string.Empty,
+            };
+
+            foreach (var part in rights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (Enum.TryParse(part.Replace(" ", ""), true, out SecPermissions flag))
+                    ApplyPermissionFlag(perm, flag);
+            }
+
+            return perm;
+        }
+
+        static void ApplyPermissionFlag(WindowsGroupPermission perm, SecPermissions flag)
+        {
+            if (flag.HasFlag(SecPermissions.View))          perm.View          = true;
+            if (flag.HasFlag(SecPermissions.Execute))       perm.Execute       = true;
+            if (flag.HasFlag(SecPermissions.Contribute))    perm.Contribute    = true;
+            if (flag.HasFlag(SecPermissions.DeployTo))      perm.DeployTo      = true;
+            if (flag.HasFlag(SecPermissions.DeployFrom))    perm.DeployFrom    = true;
+            if (flag.HasFlag(SecPermissions.Administrator)) perm.Administrator = true;
+        }
+
+        static SecPermissions ParsePermissions(string permsString)
+        {
+            var result = SecPermissions.None;
+            foreach (var part in permsString.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (Enum.TryParse(part.Replace(" ", ""), true, out SecPermissions flag))
+                    result |= flag;
+            }
+            return result;
+        }
+
+        static List<string> FetchApisJson(HttpClient http, bool secure)
+        {
+            var route = secure ? "/Secure/apis.json" : "/Public/apis.json";
+            try
+            {
+                var response = http.GetAsync($"{LightweightBaseUrl}{route}").Result;
+                if (!response.IsSuccessStatusCode)
+                    return new List<string>();
+
+                var body = response.Content.ReadAsStringAsync().Result;
+                dynamic doc   = JsonConvert.DeserializeObject(body);
+                var names = new List<string>();
+                if (doc?.apis != null)
+                    foreach (var api in doc.apis)
+                        names.Add((string)(api.name ?? api.path ?? ""));
+                return names;
+            }
+            catch
+            {
+                return new List<string>();
+            }
         }
     }
 }
