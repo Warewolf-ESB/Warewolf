@@ -54,6 +54,7 @@
     <None Include="Warewolf.Security.Specs.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Encryption\AESThenHMACTests.cs" />
     <Compile Include="Encryption\DPAPIWrapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
