@@ -293,7 +293,7 @@ if ($CIMode) {
             if ($CoverageDir) {
                 $coverageVolumeArgs = @('-v', "${CoverageDir}:/coverage")
                 $coveragePrefix = @(
-                    'dotnet-coverage', 'collect',
+                    '/root/.dotnet/tools/dotnet-coverage', 'collect',
                     '--output', "/coverage/$assembly.cobertura.xml",
                     '--output-format', 'cobertura',
                     '--nologo'
