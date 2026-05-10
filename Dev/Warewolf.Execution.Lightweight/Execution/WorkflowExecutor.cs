@@ -115,7 +115,7 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-                return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
+                return WorkflowExecutionResult.NotFound($"Workflow file not found: {request.WorkflowFilePath}");
             }
 
             var stopwatch = Stopwatch.StartNew();

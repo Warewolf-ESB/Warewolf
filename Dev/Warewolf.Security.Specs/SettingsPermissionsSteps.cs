@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -139,7 +140,10 @@ namespace Dev2.Activities.Specs.Permissions
                 ? GetEntraRole()
                 : groupName;
 
-            WriteAndWaitForConfig(new[]
+            // Append the resource-specific entry to any existing global permissions so
+            // they are not lost (e.g. a prior GivenIHaveUsersWith call).
+            var existing = ReadCurrentPermissions();
+            WriteAndWaitForConfig(existing.Concat(new[]
             {
                 BuildPermission(
                     resolvedGroup,
@@ -147,7 +151,7 @@ namespace Dev2.Activities.Specs.Permissions
                     isServer:     false,
                     resourceId:   Guid.NewGuid(),
                     resourceName: resourceName)
-            });
+            }));
         }
 
         [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]
@@ -278,6 +282,26 @@ namespace Dev2.Activities.Specs.Permissions
             var encrypted = SecurityEncryption.Encrypt(json);
             File.WriteAllText(GetSecureConfigPath(), encrypted);
             Thread.Sleep(1500); // SecureConfigWatcher debounce (500 ms) + safety buffer
+        }
+
+        static IEnumerable<WindowsGroupPermission> ReadCurrentPermissions()
+        {
+            var path = GetSecureConfigPath();
+            if (!File.Exists(path))
+                return Enumerable.Empty<WindowsGroupPermission>();
+
+            try
+            {
+                var encrypted = File.ReadAllText(path);
+                var json      = SecurityEncryption.TryDecrypt(encrypted);
+                var settings  = JsonConvert.DeserializeObject<SecuritySettingsTO>(json);
+                return settings?.WindowsGroupPermissions
+                    ?? Enumerable.Empty<WindowsGroupPermission>();
+            }
+            catch
+            {
+                return Enumerable.Empty<WindowsGroupPermission>();
+            }
         }
 
         static WindowsGroupPermission BuildPermission(

@@ -35,7 +35,9 @@ namespace Warewolf.Execution.Lightweight
             WorkflowExecutionResult result,
             string requestedContentType = JsonContentType)
         {
-            var statusCode  = result.IsSuccess ? HttpStatusCode.OK : HttpStatusCode.InternalServerError;
+            var statusCode  = result.IsSuccess   ? HttpStatusCode.OK
+                            : result.IsNotFound  ? HttpStatusCode.NotFound
+                            :                      HttpStatusCode.InternalServerError;
             var response    = req.CreateResponse(statusCode);
             var contentType = result.ContentType ?? requestedContentType;
             response.Headers.Add("Content-Type", contentType);
