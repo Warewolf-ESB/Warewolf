@@ -102,6 +102,45 @@ namespace Warewolf.Execution.Lightweight.Security
             return false;
         }
 
+        /// <summary>
+        /// Returns <c>true</c> when any group in <paramref name="userGroups"/> grants
+        /// discovery access (View <b>or</b> Execute) to <paramref name="workflowName"/>.
+        ///
+        /// Discovery differs from View: a workflow an authenticated user can <em>execute</em>
+        /// should also be visible to them in listings, even if the Public group has no
+        /// View permission for it.
+        /// </summary>
+        internal static bool HasUserDiscoveryPermission(
+            string                  workflowName,
+            SecureConfigData        config,
+            IReadOnlyList<string>   userGroups)
+        {
+            if (!config.IsLoaded)
+                return true;
+
+            // If Public has global View, any authenticated user may discover any workflow.
+            if (HasPublicViewPermission(workflowName, config))
+                return true;
+
+            foreach (var perm in config.Permissions)
+            {
+                // Discovery requires at least View or Execute.
+                if (!perm.View && !perm.Execute)
+                    continue;
+
+                if (!ContainsGroup(userGroups, perm.GroupName))
+                    continue;
+
+                if (perm.IsGlobal)
+                    return true;
+
+                if (NamesMatch(perm.ResourceName, workflowName))
+                    return true;
+            }
+
+            return false;
+        }
+
         // ── Helpers ───────────────────────────────────────────────────────────────
 
         /// <summary>
