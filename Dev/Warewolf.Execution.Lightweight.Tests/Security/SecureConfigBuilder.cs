@@ -30,6 +30,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         string GroupName,
         bool   IsServer,
         bool   View,
+        bool   Execute      = false,
         Guid   ResourceId   = default,
         string ResourceName = "",
         string ResourcePath = "");
@@ -55,6 +56,16 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             Build(secretKey,
                 Admin(View: true),
                 ServerPerm(PublicGroup, View: true));   // global = IsServer + Guid.Empty
+
+        /// <summary>
+        /// Config where the built-in Public group has <b>global Execute</b> (but no View).
+        /// Workflows are not visible on <c>/Public/apis.json</c> but an authenticated
+        /// user should still discover them via <c>/Secure/apis.json</c>.
+        /// </summary>
+        public static SecuritySettingsTO PublicExecuteGlobal(string secretKey) =>
+            Build(secretKey,
+                Admin(View: true),
+                ServerPerm(PublicGroup, View: false, Execute: true));
 
         /// <summary>
         /// Config where the Public group has <b>no</b> View permission at all.
@@ -140,12 +151,12 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             bool Execute     = false,
             bool Contribute  = false,
             bool Administrator = false) =>
-            new(group, IsServer: true, View, ResourceId: Guid.Empty);
+            new(group, IsServer: true, View, Execute, ResourceId: Guid.Empty);
 
         /// <summary>Resource-specific permission.</summary>
         public static PermSpec ResourcePerm(string group, string resourceName, bool View,
             bool Execute = false) =>
-            new(group, IsServer: false, View,
+            new(group, IsServer: false, View, Execute,
                 ResourceId:   Guid.NewGuid(),
                 ResourceName: resourceName);
 
@@ -172,6 +183,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
                     ResourceName = s.ResourceName,
                     ResourcePath = s.ResourcePath,
                     View         = s.View,
+                    Execute      = s.Execute,
                 });
             }
 

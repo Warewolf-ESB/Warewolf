@@ -398,6 +398,85 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         }
 
         // ══════════════════════════════════════════════════════════════════════════
+        // HasUserDiscoveryPermission — Execute (without View) grants discoverability
+        // ══════════════════════════════════════════════════════════════════════════
+
+        static SecureConfigData BuildExecuteOnlyPublicConfig()
+        {
+            var key  = SecureConfigBuilder.NewSecretKey();
+            var path = SecureConfigBuilder.WriteTempConfig(
+                SecureConfigBuilder.PublicExecuteGlobal(key));
+            var cfg = SecureConfigLoader.LoadFrom(path);
+            File.Delete(path);
+            return cfg;
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_NoConfig_AllWorkflowsDiscoverable()
+        {
+            var groups = new List<string> { "SomeGroup" };
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("AnyWorkflow", _cfgAllowAll, groups));
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_PublicGlobalView_AllWorkflowsDiscoverable()
+        {
+            var groups = new List<string> { "SomeGroup" };
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("AnyWorkflow",   _cfgAllPublic, groups));
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("Tools/Ping",    _cfgAllPublic, groups));
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("Restricted/HR", _cfgAllPublic, groups));
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_PublicGlobalExecute_AllWorkflowsDiscoverable()
+        {
+            // Public has Execute (no View) — authenticated users should still discover all workflows.
+            var cfg    = BuildExecuteOnlyPublicConfig();
+            var groups = new List<string> { "SomeGroup" };
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("AnyWorkflow", cfg, groups));
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission("Tools/Ping",  cfg, groups));
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_PublicGlobalExecute_NotVisibleOnPublicEndpoint()
+        {
+            // Execute without View must NOT make workflows appear on /Public/apis.json.
+            var cfg = BuildExecuteOnlyPublicConfig();
+            Assert.IsFalse(PermissionChecker.HasPublicViewPermission("AnyWorkflow", cfg));
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_NoPublicAccess_NoDiscoveryWithoutMatchingGroup()
+        {
+            var groups = new List<string> { "UnknownGroup" };
+            Assert.IsFalse(PermissionChecker.HasUserDiscoveryPermission("HelloWorld", _cfgNoPublic, groups));
+        }
+
+        [TestMethod, TestCategory("Security_Config")]
+        public void Discovery_GroupWithExecuteOnly_CanDiscoverOwnWorkflows()
+        {
+            var key  = SecureConfigBuilder.NewSecretKey();
+            var path = SecureConfigBuilder.WriteTempConfig(
+                SecureConfigBuilder.Build(key,
+                    SecureConfigBuilder.Admin(),
+                    SecureConfigBuilder.ServerPerm(SecureConfigBuilder.PublicGroup, View: false),
+                    SecureConfigBuilder.ResourcePerm("Runners", "PingWorkflow", View: false, Execute: true)));
+            try
+            {
+                var cfg    = SecureConfigLoader.LoadFrom(path);
+                var groups = new List<string> { "Runners" };
+
+                Assert.IsTrue( PermissionChecker.HasUserDiscoveryPermission("PingWorkflow",  cfg, groups));
+                Assert.IsFalse(PermissionChecker.HasUserDiscoveryPermission("OtherWorkflow", cfg, groups));
+                Assert.IsFalse(PermissionChecker.HasPublicViewPermission("PingWorkflow", cfg));
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════════════════════
         // CONFIG_F — Real secure.config (skipped if file not present)
         // ══════════════════════════════════════════════════════════════════════════
 

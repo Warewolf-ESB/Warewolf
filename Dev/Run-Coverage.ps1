@@ -10,7 +10,7 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Unit', 'Activities', 'Lightweight', 'Integration')]
+    [ValidateSet('Unit', 'Activities', 'Lightweight', 'Integration', 'Security')]
     [string[]]$Jobs = @('Unit', 'Activities', 'Lightweight', 'Integration'),
 
     # Where to write coverage artifacts and the final HTML report
@@ -107,7 +107,7 @@ if (-not $SkipBuild) {
 }
 
 # --- Output directories -------------------------------------------------------
-foreach ($sub in 'unit', 'activities', 'lightweight', 'integration', 'merged') {
+foreach ($sub in 'unit', 'activities', 'lightweight', 'integration', 'security', 'merged') {
     New-Item -ItemType Directory -Force -Path "$CoverageDir\$sub" | Out-Null
 }
 
@@ -135,6 +135,41 @@ if (-not [string]::IsNullOrWhiteSpace($SecureConfigContent)) {
 } else {
     Write-Warn 'WAREWOLF_SECURE_CONFIG_CONTENT not set — generating minimal CI config inside container'
     $LwSecureConfigEnv = 'WAREWOLF_GENERATE_CI_CONFIG=1'
+}
+
+# --- local.settings.json for Security specs ------------------------------------
+# The engine uses AZURE_KEYVAULT_NAME to fetch the AES-256-GCM key that decrypts
+# encrypted .bite workflow sources.  For the security specs this is not required
+# (specs write their own secure.config and test plain-text workflows), but a real
+# local.settings.json is needed if workflows are stored as encrypted .bite files.
+#
+# Priority:
+#   1. WAREWOLF_LOCAL_SETTINGS_JSON env var — JSON content (CI pipeline secret)
+#   2. $HOME\Downloads\local.settings.json  — developer workstation fallback
+#
+# The resolved file is mounted read-only at /server/local.settings.json inside
+# the Security job container so `func start` picks it up automatically.
+# Never commit this file to source control.
+
+$LocalSettingsContent = $env:WAREWOLF_LOCAL_SETTINGS_JSON
+$LocalSettingsFile    = $null   # host temp path; $null = not injected
+$LocalSettingsMount   = $null   # docker -v mount string
+
+$DownloadsSettings = Join-Path $env:USERPROFILE 'Downloads\local.settings.json'
+
+if (-not [string]::IsNullOrWhiteSpace($LocalSettingsContent)) {
+    Write-Step 'Writing local.settings.json from pipeline secret (WAREWOLF_LOCAL_SETTINGS_JSON)...'
+    $LocalSettingsFile  = [System.IO.Path]::GetTempFileName()
+    Set-Content -Path $LocalSettingsFile -Value $LocalSettingsContent -Encoding UTF8 -NoNewline
+    $LocalSettingsMount = "$(dp $LocalSettingsFile):/server/local.settings.json:ro"
+    Write-Done "local.settings.json -> $LocalSettingsFile (mounted at /server/local.settings.json)"
+} elseif (Test-Path $DownloadsSettings) {
+    Write-Step "Found local.settings.json at $DownloadsSettings — mounting into Security container..."
+    $LocalSettingsMount = "$(dp $DownloadsSettings):/server/local.settings.json:ro"
+    Write-Done 'local.settings.json mounted from Downloads'
+} else {
+    Write-Warn ('WAREWOLF_LOCAL_SETTINGS_JSON not set and no Downloads\local.settings.json found. ' +
+                'Security specs will run without Key Vault (encrypted .bite sources will not decrypt).')
 }
 
 # --- Docker images ------------------------------------------------------------
@@ -171,7 +206,7 @@ Test-Exit 'Build warewolf-coverage-env'
 Write-Done 'warewolf-coverage-env ready'
 
 # --- Filter constants (mirror pipeline exactly) -------------------------------
-$UnitExclude = 'Warewolf\.Execution\.Lightweight\.(Tests|Integration\.Tests)|Dev2\.(Integration|Activities)\.Tests'
+$UnitExclude = 'Warewolf\.Execution\.Lightweight\.(Tests|Integration\.Tests)|Dev2\.(Integration|Activities)\.Tests|Warewolf\.Security\.Specs'
 
 $UnitFilter = @(
     'TestCategory!=CannotParallelize'
@@ -333,6 +368,80 @@ wait `$COV_PID 2>/dev/null || true
   echo '[integration] WARNING: engine coverage file not produced'
 "@
 
+# Security: engine + Warewolf.Security.Specs run in one container.
+# The engine and the spec tests share WAREWOLF_SECURE_CONFIG so that
+# WriteAndWaitForConfig() in BeforeFeature writes the file the engine watches.
+# Key Vault is disabled (AZURE_KEYVAULT_NAME='') because the security specs
+# test permission enforcement only and do not require encrypted .bite files.
+$SecurityBash = @"
+#!/bin/bash
+set -e
+
+export AZURE_KEYVAULT_NAME=''
+export SkipFailureToRetrieveSecret='true'
+export ENABLECONSOLELOGGING='false'
+export ENABLEELASTICSEARCHLOGGING='false'
+export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
+
+# Both the engine (SecureConfigWatcher) and the SpecFlow tests (GetSecureConfigPath)
+# resolve WAREWOLF_SECURE_CONFIG to find the active secure.config.
+export WAREWOLF_SECURE_CONFIG=/tmp/security-specs.secure.config
+
+# Pre-create the file so SecureConfigWatcher starts monitoring it on engine
+# startup.  BeforeFeature will overwrite it with a real permission baseline
+# before any scenario runs; the watcher will reload automatically.
+touch /tmp/security-specs.secure.config
+
+echo "[security] Starting engine under dotnet-coverage (session: security-engine-session)..."
+cd /server
+dotnet-coverage collect \
+  --output /coverage/security-engine.cobertura.xml \
+  --output-format cobertura \
+  --include-files /server/Warewolf.Execution.Lightweight.dll \
+  --session-id security-engine-session \
+  --nologo \
+  -- func start --port 7071 &
+COV_PID=`$!
+
+echo "[security] Waiting for engine on :7071..."
+for i in `$(seq 1 60); do
+  STATUS=`$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:7071/ 2>/dev/null || echo 0)
+  if [ "`$STATUS" -ge 100 ] 2>/dev/null && [ "`$STATUS" != '503' ]; then
+    echo "[security] Engine ready (HTTP `$STATUS)"
+    break
+  fi
+  echo "[security]   [`$i/60] HTTP `${STATUS:-none}..."
+  sleep 2
+  if [ "`$i" -eq 60 ]; then
+    echo '[security] ERROR: engine did not start within 120s'
+    kill `$COV_PID 2>/dev/null || true
+    exit 1
+  fi
+done
+
+echo "[security] Running Warewolf.Security.Specs..."
+/usr/share/dotnet/dotnet \
+  /tests/Warewolf.Security.Specs.dll \
+  --results-directory /tmp/testresults \
+  --no-progress || true
+
+echo "[security] Flushing coverage (shutdown session)..."
+dotnet-coverage shutdown security-engine-session 2>/dev/null || true
+
+echo "[security] Waiting for /coverage/security-engine.cobertura.xml..."
+for i in `$(seq 1 30); do
+  [ -f /coverage/security-engine.cobertura.xml ] && break
+  sleep 1
+done
+
+kill `$COV_PID 2>/dev/null || true
+wait `$COV_PID 2>/dev/null || true
+
+[ -f /coverage/security-engine.cobertura.xml ] && \
+  echo "[security] done: `$(du -k /coverage/security-engine.cobertura.xml | cut -f1)KB" || \
+  echo '[security] WARNING: engine coverage file not produced'
+"@
+
 # --- Docker run arg arrays (Unit / Activities / Lightweight) ------------------
 $SettingsMount = "$(dp $SettingsFile):/settings/coverage-settings.xml:ro"
 
@@ -421,6 +530,30 @@ function Invoke-IntegrationJob {
     }
 }
 
+# --- Security job -------------------------------------------------------------
+function Invoke-SecurityJob {
+    Write-Step '[Security] Running engine + security specs container...'
+
+    $secArgs = @(
+        'run', '--rm',
+        '--name', "ww-cov-sec-$RunId",
+        '-e', 'DOTNET_ROOT=/usr/share/dotnet'
+    )
+    if ($LocalSettingsMount) { $secArgs += '-v', $LocalSettingsMount }
+    $secArgs += @(
+        '-v', "$(dp $NewServerBin):/server:ro",
+        '-v', "$(dp $ServerTestsBin):/tests:ro",
+        '-v', "$(dp "$CoverageDir\security"):/coverage",
+        '-v', $SettingsMount,
+        'warewolf-coverage-env', 'bash', '-c', $SecurityBash
+    )
+
+    docker run @secArgs
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warn '[Security] Container exited with non-zero code — coverage may be partial'
+    }
+}
+
 # --- Cleanup (always runs via finally) ----------------------------------------
 function Invoke-Cleanup {
     if ($null -ne $ToCleanup -and $ToCleanup.Count -gt 0) {
@@ -435,6 +568,9 @@ function Invoke-Cleanup {
     if ($LwSecureConfigFile -and (Test-Path $LwSecureConfigFile)) {
         Remove-Item $LwSecureConfigFile -Force -ErrorAction SilentlyContinue
     }
+    if ($LocalSettingsFile -and (Test-Path $LocalSettingsFile)) {
+        Remove-Item $LocalSettingsFile -Force -ErrorAction SilentlyContinue
+    }
 }
 
 # --- Run jobs -----------------------------------------------------------------
@@ -445,6 +581,7 @@ try {
         if ('Activities'  -in $Jobs) { Write-Step '[Activities] Running...';  & docker @ActArgs;  if ($LASTEXITCODE -ne 0) { Write-Warn 'Activities container non-zero exit' } }
         if ('Lightweight' -in $Jobs) { Write-Step '[Lightweight] Running...'; & docker @LwArgs;   if ($LASTEXITCODE -ne 0) { Write-Warn 'Lightweight container non-zero exit' } }
         if ('Integration' -in $Jobs) { Invoke-IntegrationJob }
+        if ('Security'    -in $Jobs) { Invoke-SecurityJob }
     } else {
         # Parallel mode: Unit / Activities / Lightweight launch as PS background jobs
         # (each is an independent docker run). Integration runs in the current thread
@@ -468,6 +605,10 @@ try {
             Invoke-IntegrationJob
         }
 
+        if ('Security' -in $Jobs) {
+            Invoke-SecurityJob
+        }
+
         if ($bgJobs.Count -gt 0) {
             Write-Step 'Waiting for parallel jobs to finish...'
             $bgJobs | Wait-Job | Out-Null
@@ -487,6 +628,7 @@ try {
         "$CoverageDir\activities\activities.cobertura.xml"
         "$CoverageDir\lightweight\lightweight.cobertura.xml"
         "$CoverageDir\integration\engine.cobertura.xml"
+        "$CoverageDir\security\security-engine.cobertura.xml"
     ) | Where-Object { (Test-Path $_) -and (Get-Item $_).Length -gt 200 }
 
     if ($xmlsToMerge.Count -eq 0) {
