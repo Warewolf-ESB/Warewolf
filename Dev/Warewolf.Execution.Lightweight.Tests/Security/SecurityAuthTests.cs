@@ -34,9 +34,18 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
     public class SecurityAuthTests
     {
         // ── Real secure.config path ───────────────────────────────────────────────
+        // In CI set WAREWOLF_TEST_SECURE_CONFIG to the path of an encrypted config
+        // file so these tests can run in Docker.  CiTestSetup (AssemblyInitialize)
+        // auto-generates a minimal config and sets that variable when
+        // WAREWOLF_GENERATE_CI_CONFIG=1.  Locally falls back to the standard
+        // Warewolf server settings directory.
+        //
+        // This must be a property (not a readonly field) so that the env-var value
+        // set by CiTestSetup during AssemblyInitialize is visible to the tests.
 
-        const string RealConfigPath =
-            @"C:\ProgramData\Warewolf\Server Settings\secure.config";
+        static string RealConfigPath =>
+            Environment.GetEnvironmentVariable("WAREWOLF_TEST_SECURE_CONFIG")
+            ?? @"C:\ProgramData\Warewolf\Server Settings\secure.config";
 
         // ── Shared secret keys (generated once per test run) ─────────────────────
 

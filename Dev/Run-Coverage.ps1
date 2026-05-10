@@ -111,6 +111,32 @@ foreach ($sub in 'unit', 'activities', 'lightweight', 'integration', 'merged') {
     New-Item -ItemType Directory -Force -Path "$CoverageDir\$sub" | Out-Null
 }
 
+# --- Secure config for F_RealConfig tests -------------------------------------
+# If WAREWOLF_SECURE_CONFIG_CONTENT is set (a pipeline secret containing the
+# encrypted secure.config text), write it to a temp file and mount it into the
+# Lightweight container so the F_RealConfig_* tests are not skipped.
+# Set this variable in your pipeline as a secret; never commit the value.
+#
+#   Azure DevOps:  add a secret variable WAREWOLF_SECURE_CONFIG_CONTENT
+#   GitHub Actions: add a repository secret WAREWOLF_SECURE_CONFIG_CONTENT
+#
+$SecureConfigContent = $env:WAREWOLF_SECURE_CONFIG_CONTENT
+$LwSecureConfigFile  = $null   # path on the host; $null means not injected
+$LwSecureConfigMount = $null   # docker -v mount string
+$LwSecureConfigEnv   = $null   # docker -e env string
+
+if (-not [string]::IsNullOrWhiteSpace($SecureConfigContent)) {
+    Write-Step 'Writing secure.config from pipeline secret...'
+    $LwSecureConfigFile = [System.IO.Path]::GetTempFileName()
+    Set-Content -Path $LwSecureConfigFile -Value $SecureConfigContent -Encoding UTF8 -NoNewline
+    $LwSecureConfigMount = "$(dp $LwSecureConfigFile):/tmp/secure.config:ro"
+    $LwSecureConfigEnv   = 'WAREWOLF_TEST_SECURE_CONFIG=/tmp/secure.config'
+    Write-Done "Secure config -> $LwSecureConfigFile (mounted at /tmp/secure.config)"
+} else {
+    Write-Warn 'WAREWOLF_SECURE_CONFIG_CONTENT not set — generating minimal CI config inside container'
+    $LwSecureConfigEnv = 'WAREWOLF_GENERATE_CI_CONFIG=1'
+}
+
 # --- Docker images ------------------------------------------------------------
 Write-Step 'Building warewolf-test-env (Azure Functions + .NET 8 SDK)...'
 
@@ -333,7 +359,11 @@ $ActArgs = @(
 $LwArgs = @(
     'run', '--rm',
     '--name', "ww-cov-lw-$RunId",
-    '-e', 'DOTNET_ROOT=/usr/share/dotnet',
+    '-e', 'DOTNET_ROOT=/usr/share/dotnet'
+)
+if ($LwSecureConfigEnv)   { $LwArgs += '-e', $LwSecureConfigEnv }
+if ($LwSecureConfigMount) { $LwArgs += '-v', $LwSecureConfigMount }
+$LwArgs += @(
     '-v', "$(dp $ServerTestsBin):/tests:ro",
     '-v', "$(dp "$CoverageDir\lightweight"):/coverage",
     '-v', $SettingsMount,
@@ -401,6 +431,10 @@ function Invoke-Cleanup {
     }
     $exists = docker network ls --filter "name=^${NetName}$" --format '{{.Name}}' 2>$null
     if ($exists) { docker network rm $NetName 2>$null | Out-Null }
+
+    if ($LwSecureConfigFile -and (Test-Path $LwSecureConfigFile)) {
+        Remove-Item $LwSecureConfigFile -Force -ErrorAction SilentlyContinue
+    }
 }
 
 # --- Run jobs -----------------------------------------------------------------
