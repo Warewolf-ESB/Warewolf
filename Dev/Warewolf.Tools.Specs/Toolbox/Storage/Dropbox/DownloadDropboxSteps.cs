@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.DropBox2016.DownloadActivity;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if WINDOWS
 using Dev2.Activities.Designers2.DropBox2016.Download;
+#endif
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -20,6 +26,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
+#if WINDOWS
     [Binding]
     public class DownloadDropboxSteps
     {
@@ -191,4 +198,5 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             GetViewModel().ToPath = dropboxPath;
         }
     }
+#endif
 }

@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+#if WINDOWS
 using Dev2.Activities.Designers2.Web_Service_Delete;
+#endif
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -14,7 +16,9 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,6 +26,7 @@ using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
+#if WINDOWS
     [Binding]
     public sealed class DeleteWebConnectorToolSteps
     {
@@ -411,4 +416,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
     }
+#endif
 }

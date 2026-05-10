@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
+#if WINDOWS
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
+#endif
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
 {
+#if WINDOWS
     [Binding]
     public class PublishRabbitMqSteps : BaseActivityUnitTest
     {
@@ -219,4 +224,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
 
 
     }
+#endif
 }

@@ -61,7 +61,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != '' and ($(TargetFramework.EndsWith('-windows')) or '$(TargetFramework)' == 'net48')">
+  <ItemGroup>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
     </None>

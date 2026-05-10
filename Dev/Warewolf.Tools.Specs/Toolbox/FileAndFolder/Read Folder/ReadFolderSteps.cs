@@ -11,15 +11,20 @@
 using System;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
+#if WINDOWS
 using Dev2.Activities.Designers2.ReadFolder;
+#endif
 using Dev2.Interfaces;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
 {
+#if WINDOWS
     [Binding]
     public class ReadFolderSteps : FileToolsBase
     {
@@ -91,4 +96,5 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
             }
         }
     }
+#endif
 }

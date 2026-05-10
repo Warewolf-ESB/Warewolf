@@ -1,10 +1,14 @@
-﻿using Dev2.Activities.Designers2.RabbitMQ.Consume;
+﻿#if WINDOWS
+using Dev2.Activities.Designers2.RabbitMQ.Consume;
+#endif
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Data.ServiceModel;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -15,6 +19,7 @@ using TechTalk.SpecFlow;
 
 namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
 {
+#if WINDOWS
     [Binding]
     public sealed class ConsumeRabbitMQSteps
     {
@@ -233,4 +238,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             Assert.IsTrue(Equals(string.Format("Nothing in the Queue : {0}", consumeRabbitMQActivity.QueueName), executeResults));
         }
     }
+#endif
 }

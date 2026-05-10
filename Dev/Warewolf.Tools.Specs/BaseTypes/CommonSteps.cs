@@ -19,7 +19,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ActivityUnitTests;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
 using Dev2.Activities.PathOperations;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
@@ -37,9 +39,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
+#if WINDOWS
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
+#endif
 using System.Reflection;
+#if WINDOWS
 using Dev2.Activities.Designers2.AdvancedRecordset;
+#endif
 using System.Threading;
 using Warewolf.UnitTestAttributes;
 
@@ -1162,8 +1168,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
+#if WINDOWS
             var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
+#endif
         }
 
         [When(@"validating the delete tool from view model")]
@@ -1175,6 +1183,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public List<IActionableErrorInfo> ValidateFromModelView()
         {
+#if WINDOWS
             if (_scenarioContext.ContainsKey("viewModel"))
             {
                 var viewModel = _scenarioContext.Get<FileActivityDesignerViewModel>("viewModel");
@@ -1182,11 +1191,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 currentViewModel.Validate();
                 return currentViewModel.Errors;
             }
+#endif
             return null;
         }
 
         public List<IActionableErrorInfo> ValidateFromAdvancedRecordsetDesignerViewModel()
         {
+#if WINDOWS
             if (_scenarioContext.ContainsKey("viewModel"))
             {
                 var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
@@ -1194,6 +1205,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 currentViewModel.Validate();
                 return currentViewModel.Errors;
             }
+#endif
             return null;
         }
 

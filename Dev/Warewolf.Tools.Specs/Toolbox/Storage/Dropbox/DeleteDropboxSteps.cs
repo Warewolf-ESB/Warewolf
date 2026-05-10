@@ -1,23 +1,30 @@
 ﻿using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Data.ServiceModel;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Moq;
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+#if WINDOWS
 using Dev2.Activities.Designers2.DropBox2016.Delete;
+#endif
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
 using Dev2.Runtime.Interfaces;
 using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
+#if WINDOWS
     [Binding]
     public class DeleteDropboxSteps
     {
@@ -157,4 +164,5 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             Assert.IsTrue(string.IsNullOrEmpty(deletePath));
         }
     }
+#endif
 }

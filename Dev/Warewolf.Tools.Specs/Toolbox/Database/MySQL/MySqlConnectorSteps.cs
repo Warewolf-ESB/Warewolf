@@ -1,17 +1,23 @@
 ﻿using Dev2.Activities;
+#if WINDOWS
 using Dev2.Activities.Designers2.MySqlDatabase;
+#endif
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -29,6 +35,7 @@ using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 {
+#if WINDOWS
     [Binding]
     public sealed class MySqlConnectorSteps : DatabaseToolsSteps
     {
@@ -584,4 +591,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             _containerOps?.Dispose();
         }
     }
+#endif
 }

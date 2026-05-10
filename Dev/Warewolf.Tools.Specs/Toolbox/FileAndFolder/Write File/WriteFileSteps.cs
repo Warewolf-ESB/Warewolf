@@ -10,22 +10,29 @@
 
 using System;
 using System.Activities.Statements;
+#if WINDOWS
 using Dev2.Activities.Designers2.PathOperations.WriteFile;
+#endif
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+#if WINDOWS
 using Dev2.Activities.Designers2.WriteFile;
+#endif
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Interfaces;
 using Dev2.Interfaces;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 
 
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
 {
+#if WINDOWS
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
@@ -143,4 +150,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             }
         }
     }
+#endif
 }

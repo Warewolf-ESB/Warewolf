@@ -22,21 +22,28 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Activities;
 using TechTalk.SpecFlow;
+#if WINDOWS
 using Dev2.Activities.Designers2.Web_Service_Get;
+#endif
 using System.Threading.Tasks;
 using Dev2;
+#if WINDOWS
 using Dev2.Activities.Designers2.WebGet;
+#endif
 using Dev2.Common;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 {
+#if WINDOWS
     [Binding]
     public class WebGetSteps
     {
@@ -342,4 +349,5 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
         }
 
     }
+#endif
 }

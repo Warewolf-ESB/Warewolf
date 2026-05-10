@@ -1,10 +1,14 @@
 ﻿using Dev2.Activities;
+#if WINDOWS
 using Dev2.Activities.Designers2.AdvancedRecordset;
+#endif
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -18,6 +22,7 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
 {
+#if WINDOWS
     [Binding]
     public sealed class AdvancedRecordsetSteps : RecordSetBases
     {
@@ -251,4 +256,5 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
 
         }
     }
+#endif
 }

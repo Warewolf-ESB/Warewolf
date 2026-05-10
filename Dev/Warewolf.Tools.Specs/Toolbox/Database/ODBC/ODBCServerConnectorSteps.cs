@@ -1,9 +1,13 @@
-﻿using Dev2.Activities.Designers2.ODBC;
+﻿#if WINDOWS
+using Dev2.Activities.Designers2.ODBC;
+#endif
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -19,6 +23,7 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
+#if WINDOWS
     [Binding]
     public class ODBCServerConnectorSteps
     {
@@ -389,4 +394,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(viewModel);
         }
     }
+#endif
 }

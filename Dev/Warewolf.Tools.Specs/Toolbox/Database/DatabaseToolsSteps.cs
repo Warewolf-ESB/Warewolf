@@ -124,6 +124,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
 
         public void CreateDBServiceModel(IServer environmentModel)
         {
+#if WINDOWS
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -134,6 +135,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                                                                                     , environmentModel);
             _scenarioContext.Add("dbServiceModel", dbServiceModel);
             _scenarioContext.Add("proxyLayer", _proxyLayer);
+#endif
         }
 
         public static void AssertAgainstServiceInputs(Table table, ICollection<IServiceInput> inputs)

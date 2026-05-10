@@ -4,14 +4,18 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using ActivityUnitTests;
+#if WINDOWS
 using Dev2.Activities.Designers2.WCFEndPoint;
+#endif
 using Dev2.Activities.WcfEndPoint;
 using Dev2.Collections;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -23,6 +27,7 @@ using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Toolbox.WcfService
 {
+#if WINDOWS
     [Binding]
     public class WcfServiceConnectorSteps : BaseActivityUnitTest
     {
@@ -251,4 +256,5 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
         }
 
     }
+#endif
 }

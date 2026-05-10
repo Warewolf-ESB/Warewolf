@@ -8,9 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using Dev2.Activities.Designers2.Delete;
+#endif
 using Dev2.Activities.Specs.BaseTypes;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using System;
 using System.Activities.Statements;
 using Dev2.Interfaces;
@@ -20,6 +24,7 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
 {
+#if WINDOWS
     [Binding]
     public class DeleteSteps : FileToolsBase
     {
@@ -77,4 +82,5 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             viewModel.Validate();
         }
     }
+#endif
 }

@@ -1,10 +1,14 @@
-﻿using Dev2.Activities.Designers2.Oracle;
+﻿#if WINDOWS
+using Dev2.Activities.Designers2.Oracle;
+#endif
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -13,7 +17,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -29,6 +35,7 @@ using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
+#if WINDOWS
     [Binding]
     public class OracleServerConnectorSteps : DatabaseToolsSteps
     {
@@ -543,4 +550,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         #endregion
     }
+#endif
 }

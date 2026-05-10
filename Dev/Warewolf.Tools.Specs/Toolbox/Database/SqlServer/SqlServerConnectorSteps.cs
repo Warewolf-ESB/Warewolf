@@ -7,8 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
+#if WINDOWS
 using Dev2.Activities.Designers2.SqlServerDatabase;
+#endif
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -17,7 +21,9 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,6 +37,7 @@ using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
+#if WINDOWS
     [Binding]
     public class SQLServerConnectorSteps : DatabaseToolsSteps
     {
@@ -659,4 +666,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         #endregion
     }
+#endif
 }

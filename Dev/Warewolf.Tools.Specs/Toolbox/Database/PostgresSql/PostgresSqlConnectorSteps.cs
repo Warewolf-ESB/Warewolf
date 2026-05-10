@@ -4,8 +4,12 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
+#if WINDOWS
 using Dev2.Activities.Designers2.PostgreSql;
+#endif
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -13,7 +17,9 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +32,7 @@ using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
+#if WINDOWS
     [Binding]
     public class PostgresSqlConnectorSteps : DatabaseToolsSteps
     {
@@ -435,4 +442,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _containerOps?.Dispose();
         }
     }
+#endif
 }

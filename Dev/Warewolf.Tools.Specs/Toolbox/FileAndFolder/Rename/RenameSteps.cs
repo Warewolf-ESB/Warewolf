@@ -8,14 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#if WINDOWS
 using Dev2.Activities.Designers2.Rename;
+#endif
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Execution;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Dev2.Workspaces;
 using Moq;
 using System;
@@ -33,6 +37,7 @@ using Dev2.Runtime.Subscription;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
 {
+#if WINDOWS
     [Binding]
     public class RenameSteps : FileToolsBase
     {
@@ -197,4 +202,5 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             }
         }
     }
+#endif
 }

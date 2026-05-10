@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+#if WINDOWS
 using Dev2.Activities.Designers2.Core;
+#endif
+#if WINDOWS
 using Dev2.Activities.Designers2.DropBox2016.Upload;
+#endif
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
+#if WINDOWS
 using Dev2.Studio.Core.Activities.Utils;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -22,6 +28,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
+#if WINDOWS
     [Binding]
     public class UploadDropboxSteps : RecordSetBases
     {
@@ -192,4 +199,5 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             throw new NotImplementedException();
         }
     }
+#endif
 }
