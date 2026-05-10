@@ -239,8 +239,13 @@ if ($Filter) {
 }
 
 # -- Apply exclusions ----------------------------------------------------------
+# Entries in $ExcludeAssemblies may contain wildcards (e.g. "*.Specs").
+# Use -like for each entry so wildcard patterns are honoured.
 if ($ExcludeAssemblies) {
-    $Assemblies = $Assemblies | Where-Object { $_ -notin $ExcludeAssemblies }
+    $Assemblies = $Assemblies | Where-Object {
+        $name = $_
+        -not ($ExcludeAssemblies | Where-Object { $name -like $_ })
+    }
     if (-not $Assemblies) {
         Write-Error "All assemblies were excluded. Nothing to run."
         exit 1

@@ -103,6 +103,30 @@ namespace Warewolf.Execution.Lightweight.Security
         }
 
         /// <summary>
+        /// Returns <c>true</c> when the workflow identified by <paramref name="workflowName"/>
+        /// is executable by the public (anonymous) group, meaning any authenticated user
+        /// should also be able to discover it.
+        ///
+        /// Mirrors <see cref="HasPublicViewPermission"/> but checks the Execute flag.
+        /// </summary>
+        static bool HasPublicExecutePermission(string workflowName, SecureConfigData config)
+        {
+            foreach (var perm in config.Permissions)
+            {
+                if (!perm.IsPublicGroup || !perm.Execute)
+                    continue;
+
+                if (perm.IsGlobal)
+                    return true;
+
+                if (NamesMatch(perm.ResourceName, workflowName))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Returns <c>true</c> when any group in <paramref name="userGroups"/> grants
         /// discovery access (View <b>or</b> Execute) to <paramref name="workflowName"/>.
         ///
@@ -118,8 +142,11 @@ namespace Warewolf.Execution.Lightweight.Security
             if (!config.IsLoaded)
                 return true;
 
-            // If Public has global View, any authenticated user may discover any workflow.
+            // If Public has global View or Execute, any authenticated user may discover any workflow.
             if (HasPublicViewPermission(workflowName, config))
+                return true;
+
+            if (HasPublicExecutePermission(workflowName, config))
                 return true;
 
             foreach (var perm in config.Permissions)
