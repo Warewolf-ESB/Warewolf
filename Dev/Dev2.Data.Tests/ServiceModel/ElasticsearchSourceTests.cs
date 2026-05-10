@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.ServiceModel
 {
     [TestClass]
-    public class ElasticsearchSourceTests
+    public class ElasticsearchSourceTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Candice Daniel")]

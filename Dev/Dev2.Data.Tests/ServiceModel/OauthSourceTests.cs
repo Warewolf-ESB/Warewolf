@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.ServiceModel
 {
     [TestClass]
-    public class OauthSourceTests
+    public class OauthSourceTests : DpapiTestBase
     {
         [TestMethod]
         public void OauthSource_ShouldContructorAndDefaultValuiesSet()

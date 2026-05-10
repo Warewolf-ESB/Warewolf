@@ -39,7 +39,10 @@ namespace Dev2.Net6.Compatibility
                     tcs.TrySetException(ex);
                 }
             }));
-            runThread.SetApartmentState(System.Threading.ApartmentState.STA);
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                runThread.SetApartmentState(System.Threading.ApartmentState.STA);
+            }
             runThread.Start();
             return tcs.Task;
         }
@@ -95,7 +98,10 @@ namespace Dev2.Net6.Compatibility
 
 
             // Just make sure to set the apartment state BEFORE starting the thread:
-            thread.SetApartmentState(ApartmentState.STA);
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                thread.SetApartmentState(ApartmentState.STA);
+            }
             thread.Start();
             await ss.WaitAsync();
 

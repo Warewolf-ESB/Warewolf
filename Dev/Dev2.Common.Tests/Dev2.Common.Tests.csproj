@@ -93,6 +93,7 @@
     <Compile Include="Dev2EnumConverterTests.cs" />
     <Compile Include="IntellisenseStringResultTests.cs" />
     <Compile Include="CommonEqualityOpsTests.cs" />
+    <Compile Include="DpapiTestBase.cs" />
     <Compile Include="EqualityFactoryTests.cs" />
     <Compile Include="PluginActionTests.cs" />
     <Compile Include="FileListingTests.cs" />

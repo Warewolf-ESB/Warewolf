@@ -21,7 +21,7 @@ namespace Dev2.Common.Tests.Wrappers
         [TestMethod]
         public void FileInfoWrapper_CreateDelete()
         {
-            var fileName = "c:\\FileInfoWrapper_Construct.txt";
+            var fileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "FileInfoWrapper_Construct.txt");
             var fileWrapper = new FileWrapper();
             fileWrapper.WriteAllText(fileName, "FileInfoWrapper_Construct test test");
 

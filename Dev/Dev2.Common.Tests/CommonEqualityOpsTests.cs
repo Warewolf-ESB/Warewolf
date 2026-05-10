@@ -19,7 +19,7 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Common.Tests
 {
     [TestClass]
-    public class CommonEqualityOpsTests
+    public class CommonEqualityOpsTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Candice Daniel")]

@@ -116,6 +116,7 @@
     <Compile Include="PathOperations\DoPutActionTests.cs" />
     <Compile Include="PathOperations\PerformListOfIOPathOperationTests.cs" />
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
+    <Compile Include="DpapiTestBase.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
@@ -241,6 +242,10 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
+      <Name>Warewolf.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

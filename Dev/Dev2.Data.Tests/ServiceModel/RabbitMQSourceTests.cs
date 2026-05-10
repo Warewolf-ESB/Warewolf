@@ -24,7 +24,7 @@ using Warewolf.UnitTestAttributes;
 namespace Dev2.Data.Tests.ServiceModel
 {
     [TestClass]
-    public class RabbitMQSourceTests
+    public class RabbitMQSourceTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]

@@ -20,7 +20,7 @@ using Moq;
 namespace Dev2.Data.Tests.ServiceModel
 {
     [TestClass]
-    public class SharePointSourceTests
+    public class SharePointSourceTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
