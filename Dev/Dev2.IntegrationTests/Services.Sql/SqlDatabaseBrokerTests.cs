@@ -260,6 +260,11 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         public static bool RunAs(string userName, string domain, string password, Action action)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows impersonation (advapi32.dll) is not supported on non-Windows platforms.");
+                return false;
+            }
             var result = false;
             using (var impersonator = new Impersonator())
             {

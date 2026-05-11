@@ -17,6 +17,7 @@ using Warewolf.UnitTestAttributes;
 namespace Dev2.Integration.Tests.Network
 {
     [TestClass]
+    [TestCategory("RequiresWarewolfServer")]
     public class ServerProxyWithoutChunkingTests
     {
         [TestMethod]

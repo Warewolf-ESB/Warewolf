@@ -23,6 +23,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     /// Summary description for FindResourceServiceTest
     /// </summary>
     [TestClass]
+    [TestCategory("RequiresWarewolfServer")]
     public class FindResourceServiceTest
     {
         #region Additional test attributes

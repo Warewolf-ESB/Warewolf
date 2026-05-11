@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Server_Refresh
 {
     [TestClass]
+    [TestCategory("Server Startup")]
     public class FreshlyInstalledServerStartupTest
     {
         const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
@@ -28,6 +30,11 @@ namespace Dev2.Integration.Tests.Server_Refresh
         [TestInitialize]
         public void Startup()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Assert.Inconclusive("This test requires Windows (uses Windows paths and the Warewolf Server process).");
+                return;
+            }
             _directoryWrapper = new DirectoryWrapper();
             if (_directoryWrapper.Exists(ResourcesBackup))
             {

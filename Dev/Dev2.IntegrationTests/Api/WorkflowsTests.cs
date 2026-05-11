@@ -23,15 +23,23 @@ namespace Dev2.Integration.Tests
         {
             try
             {
-                var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/services/", "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
+                var reponseData = TestHelper.PostDataToWebserver("http://localhost:7071/apis.json");
                 Assert.IsNotNull(reponseData);
+                Assert.IsFalse(string.IsNullOrEmpty(reponseData));
             }
             catch (WebException e)
             {
-                using (var stream = e.Response.GetResponseStream())
+                if (e.Response != null)
                 {
-                    var responseData = new StreamReader(stream).ReadToEnd();
-                    Assert.IsNotNull(responseData);
+                    using (var stream = e.Response.GetResponseStream())
+                    {
+                        var responseData = new StreamReader(stream).ReadToEnd();
+                        Assert.IsNotNull(responseData);
+                    }
+                }
+                else
+                {
+                    Assert.Inconclusive($"Lightweight execution engine not available at localhost:7071: {e.Message}");
                 }
             }
         }

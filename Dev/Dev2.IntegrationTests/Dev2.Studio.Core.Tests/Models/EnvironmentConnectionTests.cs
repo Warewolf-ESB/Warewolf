@@ -25,6 +25,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
     ///to contain all EnvironmentModelTest Unit Tests
     ///</summary>
     [TestClass]
+    [TestCategory("RequiresWarewolfServer")]
     public class EnvironmentModelTest
     {
         /// <summary>

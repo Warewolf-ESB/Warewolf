@@ -2427,12 +2427,11 @@ namespace Dev2.Tests.Runtime.Hosting
                     {
                         res.ResourceName = resourceName;
                     }
-                    var resourceDirectory = resourcesPath + "\\";
-                    res.FilePath = resourceDirectory + res.ResourceName + ".bite";
+                    res.FilePath = Path.Combine(resourcesPath, res.ResourceName + ".bite");
                     var f = new FileInfo(res.FilePath);
                     if (f.Directory != null && !f.Directory.Exists)
                     {
-                        Directory.CreateDirectory(resourceDirectory);
+                        Directory.CreateDirectory(resourcesPath);
                     }
                     // Just in case sign the xml
 

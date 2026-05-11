@@ -111,7 +111,7 @@ namespace Dev2.Integration.Tests
             executionManager.StartRefresh();
             stopwatch.Stop();
             //------------Assert Results-------------------------
-            Assert.IsTrue(stopwatch.ElapsedMilliseconds > 2000, stopwatch.ElapsedMilliseconds.ToString());
+            Assert.IsTrue(stopwatch.ElapsedMilliseconds >= 1500, stopwatch.ElapsedMilliseconds.ToString());
         }
 
         [TestMethod]

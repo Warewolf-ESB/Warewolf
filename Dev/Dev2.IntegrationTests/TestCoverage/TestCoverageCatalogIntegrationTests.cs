@@ -23,6 +23,8 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using Dev2.Common;
 using Newtonsoft.Json.Linq;
 using TestBase;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -151,15 +153,28 @@ namespace Dev2.Integration.Tests.TestCoverage
             Assert.AreEqual(0, sut.TestCoverageReports.Count);
 
             _ = sut.GenerateSingleTestCoverage(_workflowId, _falseBranchTest);
-            //Act
-            sut.ReloadAllReports();
 
-            //Assert
-            Assert.IsTrue(sut.TestCoverageReports.Count > 0);
+            // Create a stub .test file so coverage survives reload (Load() deletes coverage with no matching .test)
+            var testDir = Path.Combine(EnvironmentVariables.TestPath, _workflowId.ToString());
+            Directory.CreateDirectory(testDir);
+            var testFile = Path.Combine(testDir, _falseBranchTest.TestName + ".test");
+            File.WriteAllText(testFile, "{}");
+            try
+            {
+                //Act
+                sut.ReloadAllReports();
+                //Assert
+                Assert.IsTrue(sut.TestCoverageReports.Count > 0);
+            }
+            finally
+            {
+                File.Delete(testFile);
+            }
         }
         
         [TestMethod]
         [TestCategory(nameof(TestCoverageCatalog))]
+        [TestCategory("RequiresWarewolfServer")]
         public void ExecutionWithTest_ExpectedValidJson()
         {
             var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
@@ -169,6 +184,7 @@ namespace Dev2.Integration.Tests.TestCoverage
         
         [TestMethod]
         [TestCategory(nameof(TestCoverageCatalog))]
+        [TestCategory("RequiresWarewolfServer")]
         public void ExecutionWithTest_ExpectedValidXml()
         {
             const string ExpectedXmlStarter = "<?xml version=\"1.0\" encoding=\"utf-8\"?><TestRun";
@@ -178,6 +194,7 @@ namespace Dev2.Integration.Tests.TestCoverage
         
         [TestMethod]
         [TestCategory(nameof(TestCoverageCatalog))]
+        [TestCategory("RequiresWarewolfServer")]
         public void ExecutionWithCoverage_ExpectedValidHtml()
         {
             var expectedHtmlStarter = "<div class=\"nav-bar-row\" style=\"Padding:10px 10px 20px 10px; Margin:5px; Font-Family:Roboto sans-serif; Font-Size:28px; Font-Weight:500; Display:inline-block; \">" + Environment.NewLine + "\t";
@@ -188,6 +205,7 @@ namespace Dev2.Integration.Tests.TestCoverage
         
         [TestMethod]
         [TestCategory(nameof(TestCoverageCatalog))]
+        [TestCategory("RequiresWarewolfServer")]
         public void ExecutionWithCoverage_ExpectedValidJson()
         {
             TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
