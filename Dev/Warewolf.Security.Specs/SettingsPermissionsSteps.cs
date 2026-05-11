@@ -16,6 +16,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,8 +43,43 @@ namespace Dev2.Activities.Specs.Permissions
         }
 
         static string GetEntraRole() => "ExtraSpecialEntraRole";
-        static string GetSecuritySpecsEntraToken() => "ASfas123@!fda_LONG_TOKEN_GENERATED_FROM_ENTRA";
-        static string GetSecuritySpecsEntraAppID() => "1234-5678-ABCD-GUID";
+
+        // Unique HMAC-SHA256 signing key for this test run.  Written into every
+        // secure.config so the running server uses the same key to validate JWTs.
+        static readonly string _testSecretKey = GenerateTestSecretKey();
+
+        static string GenerateTestSecretKey()
+        {
+            using var hmac = new HMACSHA256();
+            return Convert.ToBase64String(hmac.Key);
+        }
+
+        // JWT payload claim used by Warewolf's JwtValidator (mirrors JwtValidator.AuthClaimKey).
+        const string WwAuthClaimKey =
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/authentication";
+
+        static string GenerateWarewolfJwt(string[] userGroups, string base64SecretKey)
+        {
+            const string HeaderJson = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
+            var now = DateTimeOffset.UtcNow;
+            var authClaimValue = JsonConvert.SerializeObject(new { UserGroups = userGroups });
+            var payload = new Dictionary<string, object>
+            {
+                [WwAuthClaimKey] = authClaimValue,
+                ["nbf"] = now.ToUnixTimeSeconds(),
+                ["exp"] = now.AddMinutes(60).ToUnixTimeSeconds(),
+                ["iat"] = now.ToUnixTimeSeconds(),
+            };
+            var headerEnc  = JwtBase64UrlEncode(Encoding.UTF8.GetBytes(HeaderJson));
+            var payloadEnc = JwtBase64UrlEncode(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));
+            var sigInput   = headerEnc + "." + payloadEnc;
+            using var hmac = new HMACSHA256(Convert.FromBase64String(base64SecretKey));
+            var sig = JwtBase64UrlEncode(hmac.ComputeHash(Encoding.ASCII.GetBytes(sigInput)));
+            return sigInput + "." + sig;
+        }
+
+        static string JwtBase64UrlEncode(byte[] bytes) =>
+            Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
 
         [BeforeFeature("@Security")]
         public static void InitializeFeature(FeatureContext featureContext)
@@ -263,7 +300,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             var client = new HttpClient { BaseAddress = new Uri(LightweightBaseUrl) };
             client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", GetSecuritySpecsEntraToken());
+                new AuthenticationHeaderValue("Bearer", GenerateWarewolfJwt(new[] { GetEntraRole() }, _testSecretKey));
             return client;
         }
 
@@ -278,6 +315,7 @@ namespace Dev2.Activities.Specs.Permissions
         static void WriteAndWaitForConfig(IEnumerable<WindowsGroupPermission> permissions)
         {
             var settings  = new SecuritySettingsTO(new List<WindowsGroupPermission>(permissions));
+            settings.SecretKey = _testSecretKey; // pre-shared key so JwtValidator can validate test JWTs
             var json      = JsonConvert.SerializeObject(settings);
             var encrypted = SecurityEncryption.Encrypt(json);
             File.WriteAllText(GetSecureConfigPath(), encrypted);
