@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 using Moq;
 using RabbitMQ.Client.Exceptions;
 using Warewolf.Studio.ViewModels;

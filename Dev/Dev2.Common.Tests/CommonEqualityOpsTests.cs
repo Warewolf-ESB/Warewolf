@@ -12,6 +12,7 @@ using Dev2.Common.Search;
 using Dev2.Data;
 using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 using System;
 using System.Collections.Generic;
 using Warewolf.Security.Encryption;

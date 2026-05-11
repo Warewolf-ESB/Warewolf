@@ -94,7 +94,6 @@
     <Compile Include="Dev2EnumConverterTests.cs" />
     <Compile Include="IntellisenseStringResultTests.cs" />
     <Compile Include="CommonEqualityOpsTests.cs" />
-    <Compile Include="DpapiTestBase.cs" />
     <Compile Include="EqualityFactoryTests.cs" />
     <Compile Include="PluginActionTests.cs" />
     <Compile Include="FileListingTests.cs" />
@@ -176,6 +175,10 @@
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj">
+      <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
+      <Name>Dev2.UnitTestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

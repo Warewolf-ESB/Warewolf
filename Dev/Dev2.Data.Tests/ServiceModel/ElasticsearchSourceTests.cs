@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Data.Tests.ServiceModel
 {
