@@ -29,6 +29,7 @@ namespace Dev2.MathOperations.NCalc.Functions
             handlers["FALSE"]      = FalseFn;
 
             // ── Conditional ──────────────────────────────────────────────────────────────
+            handlers["IF"]         = IfFn;
             handlers["IFERROR"]    = IfError;
             handlers["CHOOSE"]     = Choose;
 
@@ -79,6 +80,24 @@ namespace Dev2.MathOperations.NCalc.Functions
         private static void FalseFn(FunctionArgs args) => args.Result = false;
 
         // ── Conditional ──────────────────────────────────────────────────────────────────
+
+        private static void IfFn(FunctionArgs args)
+        {
+            // IF(condition[, value_if_true[, value_if_false]])
+            args.Parameters.RequireArgs(1, "IF");
+            bool condition;
+            try { condition = Convert.ToBoolean(args.Parameters[0].Evaluate()); }
+            catch { condition = false; }
+
+            if (condition)
+            {
+                args.Result = args.Parameters.Length >= 2 ? args.Parameters[1].Evaluate() : true;
+            }
+            else
+            {
+                args.Result = args.Parameters.Length >= 3 ? args.Parameters[2].Evaluate() : false;
+            }
+        }
 
         private static void IfError(FunctionArgs args)
         {

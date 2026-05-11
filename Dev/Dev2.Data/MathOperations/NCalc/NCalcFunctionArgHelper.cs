@@ -54,8 +54,25 @@ namespace Dev2.MathOperations.NCalc
             {
                 DateTime dt => dt,
                 double d    => DateTime.FromOADate(d),
+                int i       => FromExcelOADate(i),
+                long l      => FromExcelOADate(l),
+                float f     => DateTime.FromOADate(f),
+                decimal dec => DateTime.FromOADate((double)dec),
                 _           => DateTime.Parse(value?.ToString() ?? string.Empty, CultureInfo.InvariantCulture)
             };
+        }
+
+        /// <summary>
+        /// Converts an Excel OADate serial number to DateTime, accounting for Excel's
+        /// incorrect leap-year bug (fake Feb 29, 1900 = serial 60). For serials 1–59 Excel
+        /// is one day ahead of .NET's DateTime.FromOADate; for serials ≥ 61 they agree.
+        /// </summary>
+        private static DateTime FromExcelOADate(double n)
+        {
+            if (n >= 61) return DateTime.FromOADate(n);
+            if (n == 60) return new DateTime(1900, 3, 1); // Excel's non-existent Feb 29 → Mar 1
+            if (n >= 1)  return DateTime.FromOADate(n + 1); // Excel 1–59 is 1 day ahead of .NET
+            return DateTime.FromOADate(n);
         }
 
         /// <summary>

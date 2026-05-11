@@ -322,7 +322,9 @@ namespace Dev2.MathOperations.NCalc.Functions
             var settle      = FunctionArgHelper.ToDate(args.Parameters[0].Evaluate());
             var maturity    = FunctionArgHelper.ToDate(args.Parameters[1].Evaluate());
             var days        = (maturity - settle).TotalDays;
-            args.Result     = (redemption - investment) / investment / (days / 360.0);
+            var raw         = (redemption - investment) / investment / (days / 360.0);
+            // Use G15 to match Infragistics precision and eliminate floating-point noise
+            args.Result     = raw.ToString("G15", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         // ── Dollar fraction helpers ──────────────────────────────────────────────────────
@@ -364,12 +366,24 @@ namespace Dev2.MathOperations.NCalc.Functions
         {
             if (per < 1 || per > nper)
                 throw new InvalidOperationException($"IPMT: period {per} is out of range.");
-            var pmtVal = CalcPmt(rate, nper, pv, fv, type);
             if (type == 1 && per == 1) return 0.0;
-            var balance = pv;
-            for (var i = 1; i < per; i++)
-                balance = balance * (1 + rate) + pmtVal;
-            return balance * rate;
+
+            // Direct algebraic formula avoids iterative exponential overflow for large rates.
+            // Outstanding balance at the end of period (per-1) using the equivalent type-0 PMT:
+            //   balance = PV * (1+r)^(per-1) + PMT_type0 * ((1+r)^(per-1) - 1) / r
+            // IPMT_type0 = -(balance * r)
+            // IPMT_type1 = IPMT_type0 / (1+r)  [for per > 1, since type-1 payments shift by one period]
+            var pmtVal  = CalcPmt(rate, nper, pv, fv, type);
+            var pmtType0 = type == 1 ? pmtVal * (1 + rate) : pmtVal;
+            var pow     = Math.Pow(1 + rate, per - 1);
+            double balance;
+            if (rate == 0)
+                balance = pv + pmtType0 * (per - 1);
+            else
+                balance = pv * pow + pmtType0 * (pow - 1) / rate;
+            var ipmt = -(balance * rate);
+            if (type == 1) ipmt /= (1 + rate);
+            return ipmt;
         }
 
         private static bool IsLikelyGuess(double lastValue, double[] allValues)

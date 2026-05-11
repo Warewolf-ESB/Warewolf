@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using TechTalk.SpecFlow;
+#if WINDOWS
 using Microsoft.Win32;
-using System;
+#endif
 
 namespace Warewolf.Tools.Specs
 {
@@ -11,6 +14,7 @@ namespace Warewolf.Tools.Specs
         [Given(@"The system short date format is ""(.*)"" and the long time format is ""(.*)""")]
         public void GivenTheSystemShortDateFormatIs(string p0, string p1)
         {
+#if WINDOWS
             var alreadySet = true;
             if (GetRegistryEntry(Registry.Users, @".DEFAULT\Control Panel\International", "sShortDate") != p0)
             {
@@ -35,8 +39,10 @@ namespace Warewolf.Tools.Specs
                 ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_USERS\.DEFAULT\Control Panel\International", "sTimeFormat", p1);
                 ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International", "sTimeFormat", p1);
             }
+#endif
         }
 
+#if WINDOWS
         public static string GetRegistryEntry(RegistryKey root, string path, string name)
         {
             using (RegistryKey key = root.OpenSubKey(path))
@@ -69,5 +75,6 @@ namespace Warewolf.Tools.Specs
             process.Start();
             process.WaitForExit();
         }
+#endif
     }
 }

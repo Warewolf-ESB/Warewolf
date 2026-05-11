@@ -41,25 +41,34 @@ namespace Dev2.MathOperations.NCalc.Functions
             var n = (long)args.Parameters.D(0);
             // Excel supports 10-bit signed: -512 to 511
             if (n < -512 || n > 511) throw new InvalidOperationException("DEC2BIN: number out of range (-512 to 511).");
-            args.Result = n < 0 ? Convert.ToString(n & 0x3FF, 2) : Convert.ToString(n, 2);
+            var result = n < 0 ? Convert.ToString(n & 0x3FF, 2) : Convert.ToString(n, 2);
+            if (args.Parameters.Length >= 2)
+                result = result.PadLeft(args.Parameters.I32(1), '0');
+            args.Result = result;
         }
 
         private static void Dec2Hex(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "DEC2HEX");
             var n = (long)args.Parameters.D(0);
-            args.Result = n < 0
+            var result = n < 0
                 ? Convert.ToString(n & 0xFFFFFFFFFL, 16).ToUpperInvariant()
                 : Convert.ToString(n, 16).ToUpperInvariant();
+            if (args.Parameters.Length >= 2)
+                result = result.PadLeft(args.Parameters.I32(1), '0');
+            args.Result = result;
         }
 
         private static void Dec2Oct(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "DEC2OCT");
             var n = (long)args.Parameters.D(0);
-            args.Result = n < 0
+            var result = n < 0
                 ? Convert.ToString(n & 0x3FFFFFFFL, 8)
                 : Convert.ToString(n, 8);
+            if (args.Parameters.Length >= 2)
+                result = result.PadLeft(args.Parameters.I32(1), '0');
+            args.Result = result;
         }
 
         // ── Binary → other bases ─────────────────────────────────────────────────────────
@@ -125,9 +134,12 @@ namespace Dev2.MathOperations.NCalc.Functions
         {
             args.Parameters.RequireArgs(1, "OCT2BIN");
             var n = OctToSignedLong(args.Parameters.S(0));
-            args.Result = n < 0
+            var result = n < 0
                 ? Convert.ToString(n & 0x3FF, 2)
                 : Convert.ToString(n, 2);
+            if (args.Parameters.Length >= 2)
+                result = result.PadLeft(args.Parameters.I32(1), '0');
+            args.Result = result;
         }
 
         private static void Oct2Dec(FunctionArgs args)
@@ -140,9 +152,12 @@ namespace Dev2.MathOperations.NCalc.Functions
         {
             args.Parameters.RequireArgs(1, "OCT2HEX");
             var n = OctToSignedLong(args.Parameters.S(0));
-            args.Result = n < 0
+            var result = n < 0
                 ? Convert.ToString(n & 0xFFFFFFFFFL, 16).ToUpperInvariant()
                 : Convert.ToString(n, 16).ToUpperInvariant();
+            if (args.Parameters.Length >= 2)
+                result = result.PadLeft(args.Parameters.I32(1), '0');
+            args.Result = result;
         }
 
         // ── Private helpers ─────────────────────────────────────────────────────────────

@@ -70,7 +70,9 @@ namespace Dev2.Data.PathOperations.Operations
             var destination = _destination;
             if (!_pathWrapper.IsPathRooted(_destination.Path) && _whereToPut != null)
             {
-                destination = ActivityIOFactory.CreatePathFromString(_whereToPut + "\\" + _destination.Path,
+                // Use Path.Combine so the platform-appropriate separator is used.
+                // On Linux, "\\" concatenation would produce an invalid path.
+                destination = ActivityIOFactory.CreatePathFromString(Path.Combine(_whereToPut, _destination.Path),
                     _destination.Username, _destination.Password, _destination.PrivateKeyFile);
             }
 

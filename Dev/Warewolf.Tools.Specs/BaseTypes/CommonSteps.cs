@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using ActivityUnitTests;
 #if WINDOWS
@@ -1212,11 +1213,12 @@ namespace Dev2.Activities.Specs.BaseTypes
         [BeforeTestRun]
         public static void CopyEncryptionKey()
         {
-            if (!Directory.Exists(@"C:\Temp"))
+            var tempDir = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\Temp" : "/tmp";
+            if (!Directory.Exists(tempDir))
             {
-                Directory.CreateDirectory(@"C:\Temp");
+                Directory.CreateDirectory(tempDir);
             }
-            var keyPath = @"C:\Temp\key.opk";
+            var keyPath = Path.Combine(tempDir, "key.opk");
             if (!File.Exists(keyPath))
             {
                 var ToolsSpecsAssembly = Assembly.GetExecutingAssembly();
@@ -1228,6 +1230,40 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                 }
             }
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Set CWD to /tmp so relative Windows-style paths like "c:\file.txt"
+                // resolve to writable /tmp/c:\file.txt rather than /tests/c:\file.txt (read-only).
+                // On Linux, backslash is a valid filename character, so "c:\file.txt" is treated
+                // as a single path component (filename) in the current directory.
+                Directory.SetCurrentDirectory("/tmp");
+
+                // Create dummy local test files used by Zip/FileAndFolder specs on Linux.
+                // Use string concatenation (not Path.Combine) to keep the backslash literal in
+                // the filename, matching what the zip activity opens: File.Open("c:\filetozip0.txt").
+                foreach (var name in new[] { @"c:\filetozip0.txt", @"c:\filetozip1.txt", @"c:\filetozip2.txt", @"c:\filetozip3.txt", @"c:\filetozip4.txt", @"c:\copyfile5.txt" })
+                {
+                    if (!File.Exists(name))
+                        File.WriteAllText(name, "warewolf test file");
+                }
+            }
+        }
+
+        /// <summary>
+        /// On Linux, translates a Windows-style local path (e.g. "c:\foo.txt") to a
+        /// writable /tmp path. Paths that are not local Windows drive paths are returned unchanged.
+        /// </summary>
+        private static string TranslateLocalWindowsPath(string location)
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                && location != null
+                && location.Length >= 3
+                && char.IsLetter(location[0]) && location[1] == ':' && (location[2] == '\\' || location[2] == '/'))
+            {
+                var relativePart = location.Substring(3).TrimStart('\\', '/').Replace('\\', '/');
+                return "/tmp/" + relativePart;
+            }
+            return location;
         }
     }
 }

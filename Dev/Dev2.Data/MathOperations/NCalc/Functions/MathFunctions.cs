@@ -96,6 +96,9 @@ namespace Dev2.MathOperations.NCalc.Functions
             handlers["RAND"]        = Rand;
             handlers["RANDBETWEEN"] = RandBetween;
 
+            // ── Unit conversion ─────────────────────────────────────────────────────────
+            handlers["CONVERT"]     = ConvertUnits;
+
             // ── Series ──────────────────────────────────────────────────────────────────
             handlers["SERIESSUM"]   = SeriesSum;
             handlers["ROMAN"]       = Roman;
@@ -224,8 +227,9 @@ namespace Dev2.MathOperations.NCalc.Functions
             args.Parameters.RequireArgs(2, "ROUNDDOWN");
             var x = args.Parameters.D(0);
             var d = args.Parameters.I32(1);
-            var factor = Math.Pow(10, d);
-            args.Result = Math.Truncate(x * factor) / factor;
+            var factor = (decimal)Math.Pow(10, d);
+            // Use decimal arithmetic to avoid IEEE-754 FP noise (e.g. 0.14 * 100 = 14.0000...0555...)
+            args.Result = (double)(Math.Truncate((decimal)x * factor) / factor);
         }
 
         private static void RoundUp(FunctionArgs args)
@@ -233,10 +237,12 @@ namespace Dev2.MathOperations.NCalc.Functions
             args.Parameters.RequireArgs(2, "ROUNDUP");
             var x = args.Parameters.D(0);
             var d = args.Parameters.I32(1);
-            var factor = Math.Pow(10, d);
+            var factor = (decimal)Math.Pow(10, d);
+            // Use decimal arithmetic to avoid IEEE-754 FP noise (e.g. ceiling(0.14*100) = ceiling(14.0000...0555) = 15)
+            var product = (decimal)x * factor;
             args.Result = x >= 0
-                ? Math.Ceiling(x * factor) / factor
-                : Math.Floor(x * factor) / factor;
+                ? (double)(Math.Ceiling(product) / factor)
+                : (double)(Math.Floor(product) / factor);
         }
 
         private static void MRound(FunctionArgs args)
@@ -397,7 +403,7 @@ namespace Dev2.MathOperations.NCalc.Functions
             args.Result = Math.Log10(args.Parameters.D(0));
         }
 
-        private static void Pi(FunctionArgs args) => args.Result = Math.PI;
+        private static void Pi(FunctionArgs args) => args.Result = Math.PI.ToString("G15", System.Globalization.CultureInfo.InvariantCulture);
 
         // ── Trigonometry ────────────────────────────────────────────────────────────────
 
@@ -553,6 +559,108 @@ namespace Dev2.MathOperations.NCalc.Functions
             }
             args.Result = sb.ToString();
         }
+
+        // ── Unit conversion ─────────────────────────────────────────────────────────────
+
+        private static void ConvertUnits(FunctionArgs args)
+        {
+            // CONVERT(number, from_unit, to_unit)
+            args.Parameters.RequireArgs(3, "CONVERT");
+            var value    = args.Parameters.D(0);
+            var fromUnit = args.Parameters.S(1).ToLowerInvariant();
+            var toUnit   = args.Parameters.S(2).ToLowerInvariant();
+
+            // Convert to SI base unit, then to target
+            var inSi = ToSi(value, fromUnit);
+            // Use G15 to match Infragistics precision for unit conversion results
+            args.Result = FromSi(inSi, toUnit).ToString("G15", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private static double ToSi(double value, string unit) => unit switch
+        {
+            // Length → metres
+            "m"   or "meter"      or "meters"       => value,
+            "km"  or "kilometer"  or "kilometers"   => value * 1000,
+            "mi"  or "mile"       or "miles"        => value * 1609.344,
+            "ft"  or "foot"       or "feet"         => value * 0.3048,
+            "in"  or "inch"       or "inches"       => value * 0.0254,
+            "yd"  or "yard"       or "yards"        => value * 0.9144,
+            "cm"  or "centimeter" or "centimeters"  => value * 0.01,
+            "mm"  or "millimeter" or "millimeters"  => value * 0.001,
+            "nmi" or "nauticalmile"                 => value * 1852,
+            // Mass → kilograms
+            "kg"  or "kilogram"   or "kilograms"   => value,
+            "g"   or "gram"       or "grams"        => value * 0.001,
+            "lbm" or "lb"         or "pound"  or "pounds" => value * 0.45359237,
+            "oz"  or "ounce"      or "ounces"       => value * 0.028349523125,
+            "ton" or "shortton"                     => value * 907.18474,
+            // Temperature → Kelvin
+            "c"   or "cel"  or "celsius"    => value + 273.15,
+            "k"   or "kel"  or "kelvin"     => value,
+            "f"   or "fahr" or "fahrenheit" => (value + 459.67) * 5.0 / 9.0,
+            // Time → seconds
+            "s"   or "sec"  or "second"  or "seconds" => value,
+            "mn"  or "min"  or "minute"  or "minutes"  => value * 60,
+            "h"   or "hr"   or "hour"    or "hours"    => value * 3600,
+            "day" or "days"                            => value * 86400,
+            // Pressure → pascals
+            "pa"  or "pascal"   => value,
+            "atm"               => value * 101325,
+            "mmhg"              => value * 133.322387415,
+            // Speed → m/s
+            "m/s" or "mps"      => value,
+            "km/h" or "kph"     => value / 3.6,
+            "mph"               => value * 0.44704,
+            // Energy → joules
+            "j"   or "joule"    => value,
+            "cal"               => value * 4.184,
+            "kcal"              => value * 4184,
+            "kwh"               => value * 3600000,
+            _ => throw new InvalidOperationException($"CONVERT: unknown unit '{unit}'.")
+        };
+
+        private static double FromSi(double si, string unit) => unit switch
+        {
+            // Length ← metres
+            "m"   or "meter"      or "meters"       => si,
+            "km"  or "kilometer"  or "kilometers"   => si / 1000,
+            "mi"  or "mile"       or "miles"        => si / 1609.344,
+            "ft"  or "foot"       or "feet"         => si / 0.3048,
+            "in"  or "inch"       or "inches"       => si / 0.0254,
+            "yd"  or "yard"       or "yards"        => si / 0.9144,
+            "cm"  or "centimeter" or "centimeters"  => si / 0.01,
+            "mm"  or "millimeter" or "millimeters"  => si / 0.001,
+            "nmi" or "nauticalmile"                 => si / 1852,
+            // Mass ← kilograms
+            "kg"  or "kilogram"   or "kilograms"   => si,
+            "g"   or "gram"       or "grams"        => si / 0.001,
+            "lbm" or "lb"         or "pound"  or "pounds" => si / 0.45359237,
+            "oz"  or "ounce"      or "ounces"       => si / 0.028349523125,
+            "ton" or "shortton"                     => si / 907.18474,
+            // Temperature ← Kelvin
+            "c"   or "cel"  or "celsius"    => si - 273.15,
+            "k"   or "kel"  or "kelvin"     => si,
+            "f"   or "fahr" or "fahrenheit" => si * 9.0 / 5.0 - 459.67,
+            // Time ← seconds
+            "s"   or "sec"  or "second"  or "seconds" => si,
+            "mn"  or "min"  or "minute"  or "minutes"  => si / 60,
+            "h"   or "hr"   or "hour"    or "hours"    => si / 3600,
+            "day" or "days"                            => si / 86400,
+            // Pressure ← pascals
+            "pa"  or "pascal"   => si,
+            "atm"               => si / 101325,
+            "mmhg"              => si / 133.322387415,
+            // Speed ← m/s
+            "m/s" or "mps"      => si,
+            "km/h" or "kph"     => si * 3.6,
+            "mph"               => si / 0.44704,
+            // Energy ← joules
+            "j"   or "joule"    => si,
+            "cal"               => si / 4.184,
+            "kcal"              => si / 4184,
+            "kwh"               => si / 3600000,
+            _ => throw new InvalidOperationException($"CONVERT: unknown unit '{unit}'.")
+        };
 
         // ── Private helpers ─────────────────────────────────────────────────────────────
 

@@ -145,19 +145,40 @@ namespace Dev2.MathOperations.NCalc.Functions
         private static void ImLn(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "IMLN");
-            args.Result = Format(Complex.Log(Parse(args.Parameters.S(0))));
+            var z = Parse(args.Parameters.S(0));
+            // Use Math.Log for pure real inputs to avoid precision loss in complex division
+            if (z.Imaginary == 0)
+            {
+                args.Result = Math.Log(z.Real).ToString("G15", CultureInfo.InvariantCulture);
+                return;
+            }
+            args.Result = Format(Complex.Log(z));
         }
 
         private static void ImLog10(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "IMLOG10");
-            args.Result = Format(Complex.Log10(Parse(args.Parameters.S(0))));
+            var z = Parse(args.Parameters.S(0));
+            // Use Math.Log10 for pure real inputs to avoid precision loss in complex division
+            if (z.Imaginary == 0)
+            {
+                args.Result = Math.Log10(z.Real).ToString("G15", CultureInfo.InvariantCulture);
+                return;
+            }
+            args.Result = Format(Complex.Log10(z));
         }
 
         private static void ImLog2(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "IMLOG2");
-            args.Result = Format(Complex.Log(Parse(args.Parameters.S(0)), 2));
+            var z = Parse(args.Parameters.S(0));
+            // Use Math.Log for pure real inputs to avoid precision loss in complex division
+            if (z.Imaginary == 0)
+            {
+                args.Result = Math.Log2(z.Real).ToString("G15", CultureInfo.InvariantCulture);
+                return;
+            }
+            args.Result = Format(Complex.Log(z, 2));
         }
 
         private static void ImSqrt(FunctionArgs args)

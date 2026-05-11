@@ -63,8 +63,16 @@ namespace Dev2.MathOperations.NCalc.Functions
         private static void TimeValue(FunctionArgs args)
         {
             args.Parameters.RequireArgs(1, "TIMEVALUE");
-            var ts = TimeSpan.Parse(args.Parameters.S(0), CultureInfo.InvariantCulture);
-            args.Result = DateTime.Today.Add(ts);
+            var s = args.Parameters.S(0);
+            // TimeSpan.Parse doesn't support AM/PM notation; use DateTime.Parse for those cases
+            if (DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+            {
+                args.Result = dt.TimeOfDay.TotalDays;
+            }
+            else
+            {
+                args.Result = TimeSpan.Parse(s, CultureInfo.InvariantCulture).TotalDays;
+            }
         }
 
         private static void Now(FunctionArgs args)  => args.Result = DateTime.Now;
@@ -113,11 +121,12 @@ namespace Dev2.MathOperations.NCalc.Functions
         private static void Time(FunctionArgs args)
         {
             args.Parameters.RequireArgs(3, "TIME");
-            var dt = new DateTime(1899, 12, 30,
-                args.Parameters.I32(0),
-                args.Parameters.I32(1),
-                args.Parameters.I32(2));
-            args.Result = dt;
+            var h = args.Parameters.I32(0);
+            var m = args.Parameters.I32(1);
+            var s = args.Parameters.I32(2);
+            // Return fractional day (modulo 86400 to wrap hours ≥ 24)
+            var totalSeconds = (h * 3600 + m * 60 + s) % 86400;
+            args.Result = totalSeconds / 86400.0;
         }
 
         // ── Date arithmetic ──────────────────────────────────────────────────────────────
@@ -192,14 +201,24 @@ namespace Dev2.MathOperations.NCalc.Functions
             args.Parameters.RequireArgs(2, "WORKDAY");
             var start = FunctionArgHelper.ToDate(args.Parameters[0].Evaluate());
             var days  = args.Parameters.I32(1);
-            var sign  = days >= 0 ? 1 : -1;
+
+            // Collect optional holiday dates (parameters 3+)
+            var holidays = new System.Collections.Generic.HashSet<DateTime>();
+            for (var h = 2; h < args.Parameters.Length; h++)
+            {
+                try { holidays.Add(FunctionArgHelper.ToDate(args.Parameters[h].Evaluate()).Date); }
+                catch { /* ignore non-date values */ }
+            }
+
+            var sign = days >= 0 ? 1 : -1;
             var remaining = Math.Abs(days);
             var current = start;
             while (remaining > 0)
             {
                 current = current.AddDays(sign);
                 if (current.DayOfWeek != DayOfWeek.Saturday &&
-                    current.DayOfWeek != DayOfWeek.Sunday)
+                    current.DayOfWeek != DayOfWeek.Sunday &&
+                    !holidays.Contains(current.Date))
                     remaining--;
             }
             args.Result = current;

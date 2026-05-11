@@ -131,7 +131,9 @@ namespace Dev2.MathOperations
             {
                 finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
             }
-            return dateTime.ToString(finalPattern);
+            // .NET 6+ ICU uses U+202F (narrow no-break space) before AM/PM on Linux;
+            // normalise to regular ASCII space so test assertions match expected strings.
+            return dateTime.ToString(finalPattern).Replace('\u202F', ' ');
         }
 #endif
     }
