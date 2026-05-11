@@ -1,32 +1,34 @@
 # Run-Coverage.ps1
-# Runs all pipeline coverage jobs locally in Linux Docker containers,
-# merges the coverage snapshots, and generates an HTML report.
+# Mirrors every test job in .azure/pipeline.yml locally in Linux Docker containers,
+# collects per-job coverage, merges, filters, and produces an HTML report.
+#
+# Job catalog (assembly, filter, sidecars, output XML) is parsed from pipeline.yml
+# at startup, so any new job added in CI is picked up automatically.
 #
 # Usage:
 #   .\Run-Coverage.ps1
-#   .\Run-Coverage.ps1 -Jobs Unit,Activities -SkipBuild
-#   .\Run-Coverage.ps1 -NoParallel -SkipReport
-#   .\Run-Coverage.ps1 -Jobs Integration -SkipBuild -ReportFormat Cobertura
+#   .\Run-Coverage.ps1 -Jobs Unit_Tests,Activities_Tests -SkipBuild
+#   .\Run-Coverage.ps1 -List
+#   .\Run-Coverage.ps1 -Jobs Zip_Tool_Specs,Copy_Tool_Specs_From_FTP -SkipBuild
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Unit', 'Activities', 'Lightweight', 'Integration', 'Security')]
-    [string[]]$Jobs = @('Unit', 'Activities', 'Lightweight', 'Integration'),
+    # Job names from pipeline.yml. Use 'All' (default) for everything.
+    [string[]]$Jobs = @('All'),
 
-    # Where to write coverage artifacts and the final HTML report
     [string]$OutputDir = 'coverage',
 
-    # Skip dotnet publish (Compile.ps1 -ServerTests)
     [switch]$SkipBuild,
-
-    # Skip reportgenerator HTML generation
     [switch]$SkipReport,
 
     [ValidateSet('Html','Badges','Cobertura','TextSummary','HtmlSummary','MarkdownSummary')]
     [string]$ReportFormat = 'Html',
 
-    # Disable parallel job execution (Unit / Activities / Lightweight run sequentially)
-    [switch]$NoParallel
+    [switch]$NoParallel,
+    [int]$MaxParallel = 4,
+
+    # Print the parsed pipeline.yml job catalog and exit.
+    [switch]$List
 )
 
 Set-StrictMode -Version Latest
@@ -34,22 +36,17 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference    = 'SilentlyContinue'
 
 # --- Paths --------------------------------------------------------------------
-# Script lives in Dev\; repo root is one level up
 $Root           = Split-Path $PSScriptRoot -Parent
 $BinRoot        = Join-Path $Root 'Bin'
 $ServerTestsBin = Join-Path $BinRoot 'ServerTests'
-$NewServerBin   = $ServerTestsBin   # server app and tests now publish to the same dir
+$PipelineYml    = Join-Path $PSScriptRoot '.azure' 'pipeline.yml'
 $CoverageDir    = [System.IO.Path]::GetFullPath((Join-Path $Root $OutputDir))
 $SettingsFile   = Join-Path $Root 'coverage-settings.xml'
-$FilterScript   = Join-Path $Root 'Dev' '.azure' 'filter_coverage.py'
-$DockerfileTest = Join-Path $Root 'Dev' 'Warewolf.Execution.Lightweight' 'engine' 'docker' 'Dockerfile.test'
+$FilterScript   = Join-Path $PSScriptRoot '.azure' 'filter_coverage.py'
+$DockerfileTest = Join-Path $PSScriptRoot 'Warewolf.Execution.Lightweight' 'engine' 'docker' 'Dockerfile.test'
 $DockerContext  = Split-Path $DockerfileTest -Parent
 
 $RunId   = Get-Date -Format 'yyyyMMddHHmmss'
-$NetName = "ww-cov-$RunId"
-
-# Reference-type list so Invoke-IntegrationJob can mutate it from its own scope
-$ToCleanup = [System.Collections.Generic.List[string]]::new()
 
 # --- Logging ------------------------------------------------------------------
 function Write-Step($m) { Write-Host "`n==> $m" -ForegroundColor Cyan }
@@ -63,13 +60,232 @@ function Test-Exit([string]$label) {
     }
 }
 
-# --- Docker path helper -------------------------------------------------------
 # Docker Desktop on Windows accepts C:/foo/bar in -v mounts
 function dp([string]$path) {
     [System.IO.Path]::GetFullPath($path) -replace '\\', '/'
 }
 
-# --- Prerequisite checks / auto-install ---------------------------------------
+# --- Slug helper: pipeline job name -> filesystem-friendly slug ---------------
+function Get-Slug([string]$JobName) {
+    return ($JobName -replace '_', '-').ToLower()
+}
+
+# --- Pipeline.yml parser ------------------------------------------------------
+# Extracts a job catalog by regex-walking pipeline.yml. Returns an array of
+# PSCustomObjects with: Name, Type (Unit|EngineSpec), Assembly, Filter, Output,
+# SessionId, Sidecars[], Artifact.
+function ConvertFrom-PipelineYaml {
+    param([Parameter(Mandatory)][string]$YamlPath)
+
+    $text = [System.IO.File]::ReadAllText($YamlPath)
+    $skip = @('build', 'Install_Func_CLI', 'MergeCoverage', 'build_release')
+
+    # Walk job blocks: "  - job: NAME\n ... up to next '  - job: ' or EOF"
+    $jobRegex = [regex]'(?ms)^  - job: (?<name>\S+)\s*$.*?(?=^  - job: |\Z)'
+    $catalog  = New-Object System.Collections.Generic.List[object]
+
+    foreach ($m in $jobRegex.Matches($text)) {
+        $name = $m.Groups['name'].Value
+        if ($skip -contains $name) { continue }
+        $body = $m.Value
+
+        $entry = [PSCustomObject]@{
+            Name              = $name
+            Slug              = Get-Slug $name
+            # An engine-spec job is recognised by EITHER:
+            #   - new style: `bash …/start-engine-coverage.sh <sid> "<cov>" …`
+            #   - old style: `dotnet-coverage collect ... --session-id <sid> -- func start`
+            # so this parser keeps working whether the pipeline.yml refactor is
+            # checked in or not.
+            Type              = if ($body -match 'start-engine-coverage\.sh' -or
+                                    $body -match '--session-id\s+\S+')
+                                { 'EngineSpec' } else { 'Unit' }
+            Assembly          = $null    # first assembly (back-compat)
+            Assemblies        = @()      # full list when -Assemblies "A","B","C"
+            ExcludeAssemblies = @()
+            Filter            = $null
+            Output            = $null      # engine cobertura filename
+            SessionId         = $null
+            Sidecars          = @()
+            Artifact          = $null
+        }
+
+        # SessionId
+        #   new style: first positional arg to start-engine-coverage.sh
+        #   old style: --session-id <name>
+        if ($body -match '(?ms)start-engine-coverage\.sh\s*\\\s*\r?\n\s*(\S+)\s*\\') {
+            $entry.SessionId = $matches[1]
+        } elseif ($body -match '--session-id\s+(\S+)') {
+            $entry.SessionId = $matches[1]
+        }
+        # Output filename
+        #   new style: 2nd positional arg "$(Agent.BuildDirectory)/coverage/<X>.cobertura.xml"
+        #   old style: --output "$(Agent.BuildDirectory)/coverage/<X>.cobertura.xml"
+        if ($body -match '"\$\(Agent\.BuildDirectory\)/coverage/([^"]+\.cobertura\.xml)"') {
+            $entry.Output = $matches[1]
+        }
+        # -Assemblies may carry a comma-separated list:
+        #   -Assemblies "A.dll","B.dll","C.dll"
+        # Capture the whole list, then split on every quoted segment so jobs
+        # that bundle multiple test assemblies (e.g. Other_Specs) run each one.
+        if ($body -match '-Assemblies\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            $listText = $matches[1]
+            # Force array context with @(...) — otherwise a single-match list
+            # collapses to a scalar string and $assemblies[0] indexes the first CHAR.
+            $assemblies = @([regex]::Matches($listText, '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+            $entry.Assembly   = $assemblies[0]   # first (legacy single-DLL consumers)
+            $entry.Assemblies = $assemblies      # full list (new multi-DLL consumer path)
+        }
+        if ($body -match '-ExcludeAssemblies\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            # Capture group is the entire list eg: "A","B", "C"
+            $listText = $matches[1]
+            $entry.ExcludeAssemblies = [regex]::Matches($listText, '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+        }
+
+        # -Filter accepts either quote style; the value may CONTAIN the other quote style:
+        #   -Filter 'TestCategory=Foo'
+        #   -Filter 'TestCategory="Server Startup"'   <-- inner double-quote
+        #   -Filter "TestCategory!=A&TestCategory!=B"
+        # Capture the value verbatim (including any TestCategory= prefix) and let the
+        # consumer pass it through unchanged.
+        if ($body -match "-Filter\s+'([^']+)'") {
+            $entry.Filter = $matches[1]
+        } elseif ($body -match '-Filter\s+"([^"]+)"') {
+            $entry.Filter = $matches[1]
+        }
+
+        if ($body -match "artifactName:\s+'([^']+)'") {
+            $entry.Artifact = $matches[1]
+        }
+
+        # Sidecar detection by docker image name
+        $sidecars = @()
+        if ($body -match 'stilliard/pure-ftpd')                        { $sidecars += 'ftp' }
+        if ($body -match 'atmoz/sftp')                                  { $sidecars += 'sftp' }
+        if ($body -match 'dperson/samba')                               { $sidecars += 'samba' }
+        if ($body -match 'mssql/server:2019-latest')                    { $sidecars += 'sqlserver' }
+        if ($body -match 'rabbitmq:3-management')                       { $sidecars += 'rabbitmq' }
+        if ($body -match 'redis:7-alpine')                              { $sidecars += 'redis' }
+        if ($body -match 'docker\.elastic\.co/elasticsearch')           { $sidecars += 'elasticsearch' }
+        if ($body -match 'warewolfserver/exchange-connector-testing')   { $sidecars += 'exchange' }
+        $entry.Sidecars = $sidecars
+
+        $catalog.Add($entry) | Out-Null
+    }
+    return ,$catalog.ToArray()
+}
+
+# --- Sidecar dispatcher -------------------------------------------------------
+# All sidecars share the test container's network namespace via --network=container:X,
+# so tests inside the test container can reach them at localhost:<port>.
+function Get-SidecarName($Type, $Slug, $RunId) {
+    return "ww-cov-$Type-$Slug-$RunId"
+}
+
+function Start-Sidecar {
+    param(
+        [Parameter(Mandatory)][string]$Type,
+        [Parameter(Mandatory)][string]$Slug,
+        [Parameter(Mandatory)][string]$RunId,
+        [Parameter(Mandatory)][string]$TestContainer
+    )
+    $name = Get-SidecarName $Type $Slug $RunId
+
+    switch ($Type) {
+        'ftp' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e FTP_USER_NAME=ftpuser -e FTP_USER_PASS=ftppass `
+                -e FTP_USER_HOME=/home/ftpusers/ftpuser `
+                stilliard/pure-ftpd | Out-Null
+        }
+        'sftp' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                atmoz/sftp ftpuser:ftppass:1001 | Out-Null
+        }
+        'samba' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e USER='smbuser%smbpass' `
+                -e SHARE='share;/share;yes;no;no;smbuser' `
+                dperson/samba -u 'smbuser;smbpass' -s 'share;/share;yes;no;no;smbuser' | Out-Null
+        }
+        'sqlserver' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e ACCEPT_EULA=Y -e SA_PASSWORD='Test123456!' -e MSSQL_PID=Developer `
+                mcr.microsoft.com/mssql/server:2019-latest | Out-Null
+        }
+        'rabbitmq' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                rabbitmq:3-management | Out-Null
+        }
+        'redis' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                redis:7-alpine | Out-Null
+        }
+        'elasticsearch' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e 'discovery.type=single-node' `
+                -e 'xpack.security.enabled=false' `
+                -e 'ES_JAVA_OPTS=-Xms512m -Xmx512m' `
+                docker.elastic.co/elasticsearch/elasticsearch:8.17.4 | Out-Null
+        }
+        'exchange' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                warewolfserver/exchange-connector-testing 2>$null | Out-Null
+        }
+        default {
+            Write-Warn "Unknown sidecar type '$Type' (skipping)"
+            return
+        }
+    }
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warn "Failed to start sidecar $Type ($name) -- continuing"
+    }
+}
+
+# --- Banner -------------------------------------------------------------------
+Write-Host ''
+Write-Host '  Warewolf Coverage Build  (local)' -ForegroundColor White
+Write-Host "  Pipeline : $PipelineYml" -ForegroundColor Gray
+Write-Host "  Jobs     : $($Jobs -join ', ')" -ForegroundColor Gray
+Write-Host "  Output   : $CoverageDir" -ForegroundColor Gray
+Write-Host "  Parallel : $(-not $NoParallel.IsPresent) (max $MaxParallel)" -ForegroundColor Gray
+Write-Host ''
+
+# --- Build catalog ------------------------------------------------------------
+if (-not (Test-Path $PipelineYml)) {
+    Write-Error "pipeline.yml not found: $PipelineYml"
+    exit 1
+}
+$JobCatalog = ConvertFrom-PipelineYaml -YamlPath $PipelineYml
+Write-Host "Parsed $($JobCatalog.Count) jobs from pipeline.yml" -ForegroundColor Gray
+
+if ($List) {
+    $JobCatalog | Sort-Object Name | Format-Table -AutoSize Name, Type, Assembly, Filter, @{n='Sidecars';e={$_.Sidecars -join ','}}
+    exit 0
+}
+
+# --- Resolve which jobs to run ------------------------------------------------
+$jobNames = $JobCatalog | ForEach-Object { $_.Name }
+$selected = @()
+if ($Jobs -contains 'All' -or $Jobs.Count -eq 0) {
+    $selected = $JobCatalog
+} else {
+    foreach ($req in $Jobs) {
+        $match = $JobCatalog | Where-Object { $_.Name -eq $req }
+        if (-not $match) {
+            Write-Warn "Unknown job '$req' - skipping. Use -List to see available jobs."
+            continue
+        }
+        $selected += $match
+    }
+}
+if ($selected.Count -eq 0) {
+    Write-Error "No jobs selected. Use -List to see available jobs."
+    exit 1
+}
+Write-Host "Will run $($selected.Count) job(s): $(( $selected | ForEach-Object {$_.Name} ) -join ', ')" -ForegroundColor Gray
+
+# --- Prerequisites ------------------------------------------------------------
 function Ensure-GlobalTool([string]$packageId) {
     if (-not ((dotnet tool list --global 2>$null) -match [regex]::Escape($packageId))) {
         Write-Step "Auto-installing $packageId..."
@@ -77,14 +293,6 @@ function Ensure-GlobalTool([string]$packageId) {
         Test-Exit "dotnet tool install $packageId"
     }
 }
-
-# --- Banner -------------------------------------------------------------------
-Write-Host ''
-Write-Host '  Warewolf Coverage Build  (local)' -ForegroundColor White
-Write-Host "  Jobs     : $($Jobs -join ', ')" -ForegroundColor Gray
-Write-Host "  Output   : $CoverageDir" -ForegroundColor Gray
-Write-Host "  Parallel : $(-not $NoParallel.IsPresent)" -ForegroundColor Gray
-Write-Host ''
 
 Write-Step 'Checking prerequisites...'
 Ensure-GlobalTool 'dotnet-coverage'
@@ -97,7 +305,7 @@ if (-not $SkipBuild) {
     Write-Step 'Building ServerTests (linux-x64)...'
     & "$Root\Compile.ps1" -ServerTests -ProjectSpecificOutputs
     Test-Exit 'Compile.ps1'
-    Write-Done "Build outputs -> Bin\ServerTests"
+    Write-Done 'Build outputs -> Bin\ServerTests'
 } else {
     Write-Step 'Skipping build (-SkipBuild)'
     if (-not (Test-Path $ServerTestsBin)) {
@@ -106,24 +314,21 @@ if (-not $SkipBuild) {
     }
 }
 
-# --- Output directories -------------------------------------------------------
-foreach ($sub in 'unit', 'activities', 'lightweight', 'integration', 'security', 'merged') {
-    New-Item -ItemType Directory -Force -Path "$CoverageDir\$sub" | Out-Null
+# --- Output directories (one per job + merged) --------------------------------
+New-Item -ItemType Directory -Force -Path $CoverageDir | Out-Null
+New-Item -ItemType Directory -Force -Path "$CoverageDir\merged" | Out-Null
+foreach ($j in $selected) {
+    New-Item -ItemType Directory -Force -Path "$CoverageDir\$($j.Slug)" | Out-Null
 }
 
-# --- Secure config for F_RealConfig tests -------------------------------------
-# If WAREWOLF_SECURE_CONFIG_CONTENT is set (a pipeline secret containing the
-# encrypted secure.config text), write it to a temp file and mount it into the
-# Lightweight container so the F_RealConfig_* tests are not skipped.
-# Set this variable in your pipeline as a secret; never commit the value.
-#
-#   Azure DevOps:  add a secret variable WAREWOLF_SECURE_CONFIG_CONTENT
-#   GitHub Actions: add a repository secret WAREWOLF_SECURE_CONFIG_CONTENT
-#
+# --- Optional secure config + local.settings.json injection -------------------
+# Lightweight tests use WAREWOLF_SECURE_CONFIG for F_RealConfig tests; if a
+# pipeline secret is provided, mount it. Otherwise the engine container falls
+# back to WAREWOLF_GENERATE_CI_CONFIG=1.
 $SecureConfigContent = $env:WAREWOLF_SECURE_CONFIG_CONTENT
-$LwSecureConfigFile  = $null   # path on the host; $null means not injected
-$LwSecureConfigMount = $null   # docker -v mount string
-$LwSecureConfigEnv   = $null   # docker -e env string
+$LwSecureConfigFile  = $null
+$LwSecureConfigMount = $null
+$LwSecureConfigEnv   = $null
 
 if (-not [string]::IsNullOrWhiteSpace($SecureConfigContent)) {
     Write-Step 'Writing secure.config from pipeline secret...'
@@ -131,65 +336,37 @@ if (-not [string]::IsNullOrWhiteSpace($SecureConfigContent)) {
     Set-Content -Path $LwSecureConfigFile -Value $SecureConfigContent -Encoding UTF8 -NoNewline
     $LwSecureConfigMount = "$(dp $LwSecureConfigFile):/tmp/secure.config:ro"
     $LwSecureConfigEnv   = 'WAREWOLF_TEST_SECURE_CONFIG=/tmp/secure.config'
-    Write-Done "Secure config -> $LwSecureConfigFile (mounted at /tmp/secure.config)"
+    Write-Done 'Secure config mounted at /tmp/secure.config'
 } else {
-    Write-Warn 'WAREWOLF_SECURE_CONFIG_CONTENT not set — generating minimal CI config inside container'
     $LwSecureConfigEnv = 'WAREWOLF_GENERATE_CI_CONFIG=1'
 }
 
-# --- local.settings.json for Security specs ------------------------------------
-# The engine uses AZURE_KEYVAULT_NAME to fetch the AES-256-GCM key that decrypts
-# encrypted .bite workflow sources.  For the security specs this is not required
-# (specs write their own secure.config and test plain-text workflows), but a real
-# local.settings.json is needed if workflows are stored as encrypted .bite files.
-#
-# Priority:
-#   1. WAREWOLF_LOCAL_SETTINGS_JSON env var — JSON content (CI pipeline secret)
-#   2. $HOME\Downloads\local.settings.json  — developer workstation fallback
-#
-# The resolved file is mounted read-only at /server/local.settings.json inside
-# the Security job container so `func start` picks it up automatically.
-# Never commit this file to source control.
-
+# Key Vault config for security specs that decrypt .bite files.
 $LocalSettingsContent = $env:WAREWOLF_LOCAL_SETTINGS_JSON
-$LocalSettingsFile    = $null   # host temp path; $null = not injected
-$LocalSettingsMount   = $null   # docker -v mount string
-
+$LocalSettingsFile    = $null
+$LocalSettingsMount   = $null
 $DownloadsSettings = Join-Path $env:USERPROFILE 'Downloads\local.settings.json'
-
 if (-not [string]::IsNullOrWhiteSpace($LocalSettingsContent)) {
-    Write-Step 'Writing local.settings.json from pipeline secret (WAREWOLF_LOCAL_SETTINGS_JSON)...'
+    Write-Step 'Writing local.settings.json from pipeline secret...'
     $LocalSettingsFile  = [System.IO.Path]::GetTempFileName()
     Set-Content -Path $LocalSettingsFile -Value $LocalSettingsContent -Encoding UTF8 -NoNewline
     $LocalSettingsMount = "$(dp $LocalSettingsFile):/server/local.settings.json:ro"
-    Write-Done "local.settings.json -> $LocalSettingsFile (mounted at /server/local.settings.json)"
 } elseif (Test-Path $DownloadsSettings) {
-    Write-Step "Found local.settings.json at $DownloadsSettings — mounting into Security container..."
     $LocalSettingsMount = "$(dp $DownloadsSettings):/server/local.settings.json:ro"
-    Write-Done 'local.settings.json mounted from Downloads'
-} else {
-    Write-Warn ('WAREWOLF_LOCAL_SETTINGS_JSON not set and no Downloads\local.settings.json found. ' +
-                'Security specs will run without Key Vault (encrypted .bite sources will not decrypt).')
 }
 
 # --- Docker images ------------------------------------------------------------
-Write-Step 'Building warewolf-test-env (Azure Functions + .NET 8 SDK)...'
-
-# Neutralise the ENTRYPOINT so `docker run <cmd>` executes <cmd> directly.
-# run-tests-in-container.ps1 normally does this; we mirror it here so we don't
-# depend on that script being invoked first.
+Write-Step 'Building warewolf-test-env...'
 $dtfContent = Get-Content $DockerfileTest -Raw
 if ($dtfContent -match 'ENTRYPOINT \["/bin/bash"\]') {
     ($dtfContent -replace 'ENTRYPOINT \["/bin/bash"\]', 'ENTRYPOINT []') |
         Set-Content $DockerfileTest -Encoding UTF8
 }
-
 docker build -q -t warewolf-test-env -f $DockerfileTest $DockerContext
 Test-Exit 'Build warewolf-test-env'
 Write-Done 'warewolf-test-env ready'
 
 Write-Step 'Building warewolf-coverage-env (adds dotnet-coverage + Azure Functions CLI)...'
-# Note: `$PATH below is backtick-escaped so PowerShell emits literal $PATH for Dockerfile
 @"
 FROM warewolf-test-env
 RUN apt-get update \
@@ -205,447 +382,421 @@ ENV PATH="/opt/dotnet-tools:/root/.dotnet/tools:`$PATH"
 Test-Exit 'Build warewolf-coverage-env'
 Write-Done 'warewolf-coverage-env ready'
 
-# --- Filter constants (mirror pipeline exactly) -------------------------------
-$UnitExclude = 'Warewolf\.Execution\.Lightweight\.(Tests|Integration\.Tests)|Dev2\.(Integration|Activities)\.Tests|Warewolf\.Security\.Specs'
+# --- Convert pipeline.yml -ExcludeAssemblies globs to a bash ERE -------------
+# eg @('Dev2.Integration.Tests','*.Specs') -> '^(Dev2\.Integration\.Tests|.*\.Specs)$'
+function ConvertTo-ExcludeRegex([string[]]$Excludes) {
+    if (-not $Excludes -or $Excludes.Count -eq 0) { return '' }
+    $parts = foreach ($e in $Excludes) {
+        ([regex]::Escape($e)) -replace '\\\*', '.*'
+    }
+    return '^(' + ($parts -join '|') + ')$'
+}
 
-$UnitFilter = @(
-    'TestCategory!=CannotParallelize'
-    'TestCategory!=ResourceCatalog_LoadTests'
-    'TestCategory!=PluginRuntimeHandler'
-    'TestCategory!=GatherSystemInformation'
-    'TestCategory!=LocalSchedulerAdmin'
-    'TestCategory!=Multithread'
-    'TestCategory!=AnonymousRedis'
-    'TestCategory!=COMIPCSaxonCSandStudioTests'
-    'TestCategory!=WFWithRabbitMqConsumeTimeout5'
-    'TestCategory!=WarewolfCOMIPCClient_Deprecated'
-    'TestCategory!=WebPostTool_Integration'
-    'TestCategory!=WebGetTool_Integration'
-) -join '&'
+# --- Unit-style job runner ----------------------------------------------------
+# For jobs that don't start an engine. Two shapes:
+#   1. Single DLL: $Job.Assembly is set       -> run that DLL under dotnet-coverage
+#   2. Multi DLL : $Job.ExcludeAssemblies set -> loop /tests/*.dll, skip excluded
+function Invoke-UnitJob {
+    param([Parameter(Mandatory)]$Job)
 
-$ActivitiesFilter = @(
-    'TestCategory!=COMIPCSaxonCSandStudioTests'
-    'TestCategory!=WarewolfCOMIPCClient_Deprecated'
-    'TestCategory!=WebPostTool_Integration'
-    'TestCategory!=WebGetTool_Integration'
-) -join '&'
+    $slug = $Job.Slug
+    $covDir = "$CoverageDir\$slug"
 
-# --- Bash job scripts ---------------------------------------------------------
-# In PS @"..."@ here-strings, bash variables are escaped with backtick: `$var, `$(cmd)
-# PS variables ($UnitExclude, $UnitFilter, etc.) are interpolated by PowerShell.
+    if (-not $Job.Assembly -and $Job.ExcludeAssemblies.Count -eq 0) {
+        Write-Warn "[$($Job.Name)] no Assembly or ExcludeAssemblies parsed - skipping"
+        return
+    }
 
-$UnitBash = @"
+    if ($Job.Assembly) {
+        # ---- Single DLL ------------------------------------------------------
+        $filterArg = ''
+        if (-not [string]::IsNullOrWhiteSpace($Job.Filter)) {
+            if ($Job.Filter -match '^[A-Za-z0-9_]+$') {
+                $filterArg = "--filter `"TestCategory=$($Job.Filter)`""
+            } else {
+                $filterArg = "--filter `"$($Job.Filter)`""
+            }
+        }
+        $dll = "$($Job.Assembly).dll"
+        $bash = @"
 #!/bin/bash
 set -e
-exclude='$UnitExclude'
-filter='$UnitFilter'
+echo "[$slug] $($Job.Assembly)"
+dotnet-coverage collect \
+  --output /coverage/$slug.unit.cobertura.xml \
+  --output-format cobertura \
+  --settings /settings/coverage-settings.xml \
+  --nologo \
+  -- /usr/share/dotnet/dotnet /tests/$dll \
+     $filterArg \
+     --results-directory /tmp/testresults \
+     --no-progress 2>/dev/null || true
+[ -f /coverage/$slug.unit.cobertura.xml ] && \
+  echo "[$slug] done: `$(du -k /coverage/$slug.unit.cobertura.xml | cut -f1)KB" || \
+  echo '[$slug] WARNING: no coverage file produced'
+"@
+    } else {
+        # ---- Multi DLL loop --------------------------------------------------
+        $excludeRegex = ConvertTo-ExcludeRegex $Job.ExcludeAssemblies
+        $unitFilter = $Job.Filter
+        if (-not $unitFilter) { $unitFilter = '' }
+        $bash = @"
+#!/bin/bash
+set -e
+exclude='$excludeRegex'
+filter='$unitFilter'
 i=0
 for dll in /tests/*.dll; do
   [ -f "`$dll" ] || continue
   name=`$(basename "`$dll" .dll)
   echo "`$name" | grep -qE '^(Warewolf|Dev2)\..*(Tests|Specs)$' || continue
-  echo "`$name" | grep -qE "`$exclude" && continue
-  echo "[unit] `$name"
+  if [ -n "`$exclude" ]; then echo "`$name" | grep -qE "`$exclude" && continue; fi
+  echo "[$slug] `$name"
   timeout 300 dotnet-coverage collect \
-    --output "/coverage/units_`${i}.cobertura.xml" \
+    --output "/coverage/parts_`${i}.cobertura.xml" \
     --output-format cobertura \
     --settings /settings/coverage-settings.xml \
     --nologo \
     -- /usr/share/dotnet/dotnet "/tests/`${name}.dll" \
-       --filter "`$filter" \
+       `$([ -n "`$filter" ] && echo "--filter `\"`$filter`\"") \
        --results-directory /tmp/testresults \
        --no-progress 2>/dev/null || true
   i=`$((i+1))
 done
-xmls=`$(ls /coverage/units_*.cobertura.xml 2>/dev/null | tr '\n' ' ')
+xmls=`$(ls /coverage/parts_*.cobertura.xml 2>/dev/null | tr '\n' ' ')
 if [ -n "`$xmls" ]; then
-  dotnet-coverage merge `$xmls \
-    --output /coverage/unit_tests.cobertura.xml \
+  dotnet-coverage merge `$xmls --output /coverage/$slug.unit.cobertura.xml \
     --output-format cobertura --nologo
-  echo "[unit] done: `$(du -k /coverage/unit_tests.cobertura.xml | cut -f1)KB"
+  echo "[$slug] done: `$(du -k /coverage/$slug.unit.cobertura.xml | cut -f1)KB"
 else
-  echo "[unit] WARNING: no coverage files produced"
+  echo "[$slug] WARNING: no coverage files produced"
 fi
 "@
-
-$ActivitiesBash = @"
-#!/bin/bash
-set -e
-filter='$ActivitiesFilter'
-echo "[activities] Dev2.Activities.Tests"
-dotnet-coverage collect \
-  --output /coverage/activities.cobertura.xml \
-  --output-format cobertura \
-  --settings /settings/coverage-settings.xml \
-  --nologo \
-  -- /usr/share/dotnet/dotnet /tests/Dev2.Activities.Tests.dll \
-     --filter "`$filter" \
-     --results-directory /tmp/testresults \
-     --no-progress 2>/dev/null || true
-[ -f /coverage/activities.cobertura.xml ] && \
-  echo "[activities] done: `$(du -k /coverage/activities.cobertura.xml | cut -f1)KB" || \
-  echo "[activities] WARNING: no coverage file produced"
-"@
-
-$LightweightBash = @"
-#!/bin/bash
-set -e
-echo "[lightweight] Warewolf.Execution.Lightweight.Tests"
-dotnet-coverage collect \
-  --output /coverage/lightweight.cobertura.xml \
-  --output-format cobertura \
-  --settings /settings/coverage-settings.xml \
-  --nologo \
-  -- /usr/share/dotnet/dotnet /tests/Warewolf.Execution.Lightweight.Tests.dll \
-     --results-directory /tmp/testresults \
-     --no-progress 2>/dev/null || true
-[ -f /coverage/lightweight.cobertura.xml ] && \
-  echo "[lightweight] done: `$(du -k /coverage/lightweight.cobertura.xml | cut -f1)KB" || \
-  echo "[lightweight] WARNING: no coverage file produced"
-"@
-
-# Integration: engine + tests run in the SAME container so localhost:7071 resolves
-# correctly without --network=host (which Docker Desktop for Windows doesn't support).
-# Elasticsearch and exchange-connector run as sidecars on the same Docker network;
-# they are accessible inside this container via their --network-alias names.
-$IntegrationBash = @"
-#!/bin/bash
-set -e
-
-export AZURE_KEYVAULT_NAME=''
-export SkipFailureToRetrieveSecret='true'
-export ENABLECONSOLELOGGING='false'
-export ENABLEELASTICSEARCHLOGGING='false'
-export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
-
-echo "[integration] Starting engine under dotnet-coverage (session: engine-coverage-session)..."
-cd /server
-dotnet-coverage collect \
-  --output /coverage/engine.cobertura.xml \
-  --output-format cobertura \
-  --include-files /server/Warewolf.Execution.Lightweight.dll \
-  --session-id engine-coverage-session \
-  --nologo \
-  -- func start --port 7071 &
-COV_PID=`$!
-
-echo "[integration] Waiting for engine on :7071..."
-for i in `$(seq 1 60); do
-  STATUS=`$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:7071/ 2>/dev/null || echo 0)
-  if [ "`$STATUS" -ge 100 ] 2>/dev/null && [ "`$STATUS" != '503' ]; then
-    echo "[integration] Engine ready (HTTP `$STATUS)"
-    break
-  fi
-  echo "[integration]   [`$i/60] HTTP `${STATUS:-none}..."
-  sleep 2
-  if [ "`$i" -eq 60 ]; then
-    echo '[integration] ERROR: engine did not start within 120s'
-    kill `$COV_PID 2>/dev/null || true
-    exit 1
-  fi
-done
-
-echo "[integration] Running Warewolf.Execution.Lightweight.Integration.Tests..."
-/usr/share/dotnet/dotnet \
-  /tests/Warewolf.Execution.Lightweight.Integration.Tests.dll \
-  --results-directory /tmp/testresults \
-  --no-progress || true
-
-echo "[integration] Flushing coverage (shutdown session)..."
-dotnet-coverage shutdown engine-coverage-session 2>/dev/null || true
-
-echo "[integration] Waiting for /coverage/engine.cobertura.xml..."
-for i in `$(seq 1 30); do
-  [ -f /coverage/engine.cobertura.xml ] && break
-  sleep 1
-done
-
-kill `$COV_PID 2>/dev/null || true
-wait `$COV_PID 2>/dev/null || true
-
-[ -f /coverage/engine.cobertura.xml ] && \
-  echo "[integration] done: `$(du -k /coverage/engine.cobertura.xml | cut -f1)KB" || \
-  echo '[integration] WARNING: engine coverage file not produced'
-"@
-
-# Security: engine + Warewolf.Security.Specs run in one container.
-# The engine and the spec tests share WAREWOLF_SECURE_CONFIG so that
-# WriteAndWaitForConfig() in BeforeFeature writes the file the engine watches.
-# Key Vault is disabled (AZURE_KEYVAULT_NAME='') because the security specs
-# test permission enforcement only and do not require encrypted .bite files.
-$SecurityBash = @"
-#!/bin/bash
-set -e
-
-export AZURE_KEYVAULT_NAME=''
-export SkipFailureToRetrieveSecret='true'
-export ENABLECONSOLELOGGING='false'
-export ENABLEELASTICSEARCHLOGGING='false'
-export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
-
-# Both the engine (SecureConfigWatcher) and the SpecFlow tests (GetSecureConfigPath)
-# resolve WAREWOLF_SECURE_CONFIG to find the active secure.config.
-export WAREWOLF_SECURE_CONFIG=/tmp/security-specs.secure.config
-
-# Pre-create the file so SecureConfigWatcher starts monitoring it on engine
-# startup.  BeforeFeature will overwrite it with a real permission baseline
-# before any scenario runs; the watcher will reload automatically.
-touch /tmp/security-specs.secure.config
-
-echo "[security] Starting engine under dotnet-coverage (session: security-engine-session)..."
-cd /server
-dotnet-coverage collect \
-  --output /coverage/security-engine.cobertura.xml \
-  --output-format cobertura \
-  --include-files /server/Warewolf.Execution.Lightweight.dll \
-  --session-id security-engine-session \
-  --nologo \
-  -- func start --port 7071 &
-COV_PID=`$!
-
-echo "[security] Waiting for engine on :7071..."
-for i in `$(seq 1 60); do
-  STATUS=`$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:7071/ 2>/dev/null || echo 0)
-  if [ "`$STATUS" -ge 100 ] 2>/dev/null && [ "`$STATUS" != '503' ]; then
-    echo "[security] Engine ready (HTTP `$STATUS)"
-    break
-  fi
-  echo "[security]   [`$i/60] HTTP `${STATUS:-none}..."
-  sleep 2
-  if [ "`$i" -eq 60 ]; then
-    echo '[security] ERROR: engine did not start within 120s'
-    kill `$COV_PID 2>/dev/null || true
-    exit 1
-  fi
-done
-
-echo "[security] Running Warewolf.Security.Specs..."
-/usr/share/dotnet/dotnet \
-  /tests/Warewolf.Security.Specs.dll \
-  --results-directory /tmp/testresults \
-  --no-progress || true
-
-echo "[security] Flushing coverage (shutdown session)..."
-dotnet-coverage shutdown security-engine-session 2>/dev/null || true
-
-echo "[security] Waiting for /coverage/security-engine.cobertura.xml..."
-for i in `$(seq 1 30); do
-  [ -f /coverage/security-engine.cobertura.xml ] && break
-  sleep 1
-done
-
-kill `$COV_PID 2>/dev/null || true
-wait `$COV_PID 2>/dev/null || true
-
-[ -f /coverage/security-engine.cobertura.xml ] && \
-  echo "[security] done: `$(du -k /coverage/security-engine.cobertura.xml | cut -f1)KB" || \
-  echo '[security] WARNING: engine coverage file not produced'
-"@
-
-# --- Docker run arg arrays (Unit / Activities / Lightweight) ------------------
-$SettingsMount = "$(dp $SettingsFile):/settings/coverage-settings.xml:ro"
-
-$UnitArgs = @(
-    'run', '--rm',
-    '--name', "ww-cov-unit-$RunId",
-    '-e', 'DOTNET_ROOT=/usr/share/dotnet',
-    '-v', "$(dp $ServerTestsBin):/tests:ro",
-    '-v', "$(dp "$CoverageDir\unit"):/coverage",
-    '-v', $SettingsMount,
-    'warewolf-coverage-env', 'bash', '-c', $UnitBash
-)
-
-$ActArgs = @(
-    'run', '--rm',
-    '--name', "ww-cov-act-$RunId",
-    '-e', 'DOTNET_ROOT=/usr/share/dotnet',
-    '-v', "$(dp $ServerTestsBin):/tests:ro",
-    '-v', "$(dp "$CoverageDir\activities"):/coverage",
-    '-v', $SettingsMount,
-    'warewolf-coverage-env', 'bash', '-c', $ActivitiesBash
-)
-
-$LwArgs = @(
-    'run', '--rm',
-    '--name', "ww-cov-lw-$RunId",
-    '-e', 'DOTNET_ROOT=/usr/share/dotnet'
-)
-if ($LwSecureConfigEnv)   { $LwArgs += '-e', $LwSecureConfigEnv }
-if ($LwSecureConfigMount) { $LwArgs += '-v', $LwSecureConfigMount }
-$LwArgs += @(
-    '-v', "$(dp $ServerTestsBin):/tests:ro",
-    '-v', "$(dp "$CoverageDir\lightweight"):/coverage",
-    '-v', $SettingsMount,
-    'warewolf-coverage-env', 'bash', '-c', $LightweightBash
-)
-
-# --- Integration job ----------------------------------------------------------
-function Invoke-IntegrationJob {
-    Write-Step "[Integration] Creating docker network: $NetName"
-    docker network create $NetName | Out-Null
-
-    $esName = "ww-cov-es-$RunId"
-    Write-Step "[Integration] Starting Elasticsearch 8.17.4..."
-    docker run -d `
-        --name $esName `
-        --network $NetName `
-        --network-alias elasticsearch `
-        -p 9200:9200 `
-        -e 'discovery.type=single-node' `
-        -e 'xpack.security.enabled=false' `
-        -e 'ES_JAVA_OPTS=-Xms512m -Xmx512m' `
-        docker.elastic.co/elasticsearch/elasticsearch:8.17.4 | Out-Null
-    $ToCleanup.Add($esName)
-
-    $exName = "ww-cov-exchange-$RunId"
-    Write-Step "[Integration] Starting exchange-connector-testing..."
-    docker run -d `
-        --name $exName `
-        --network $NetName `
-        --network-alias exchange `
-        -p 8889:8080 `
-        warewolfserver/exchange-connector-testing 2>$null | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        $ToCleanup.Add($exName)
-    } else {
-        Write-Warn 'exchange-connector-testing unavailable - continuing without it'
     }
 
-    Write-Step "[Integration] Running engine + tests container..."
-    # Engine and integration tests share the same container so localhost:7071 resolves
-    # correctly. Elasticsearch is reachable at http://elasticsearch:9200 via Docker
-    # network alias (the engine may also need this if ENABLEELASTICSEARCHLOGGING is true).
-    docker run --rm `
-        --name "ww-cov-int-$RunId" `
-        --network $NetName `
-        -v "$(dp $NewServerBin):/server:ro" `
-        -v "$(dp $ServerTestsBin):/tests:ro" `
-        -v "$(dp "$CoverageDir\integration"):/coverage" `
-        -v $SettingsMount `
-        warewolf-coverage-env `
-        bash -c $IntegrationBash
-
-    if ($LASTEXITCODE -ne 0) {
-        Write-Warn "[Integration] Container exited with code $LASTEXITCODE — coverage may be partial"
-    }
-}
-
-# --- Security job -------------------------------------------------------------
-function Invoke-SecurityJob {
-    Write-Step '[Security] Running engine + security specs container...'
-
-    $secArgs = @(
+    $args = @(
         'run', '--rm',
-        '--name', "ww-cov-sec-$RunId",
+        '--name', "ww-cov-unit-$slug-$RunId",
         '-e', 'DOTNET_ROOT=/usr/share/dotnet'
     )
-    if ($LocalSettingsMount) { $secArgs += '-v', $LocalSettingsMount }
-    $secArgs += @(
-        '-v', "$(dp $NewServerBin):/server:ro",
+    if ($Job.Name -eq 'LightweightExecutionUnitTests' -and $LwSecureConfigEnv)   { $args += '-e', $LwSecureConfigEnv }
+    if ($Job.Name -eq 'LightweightExecutionUnitTests' -and $LwSecureConfigMount) { $args += '-v', $LwSecureConfigMount }
+    $args += @(
         '-v', "$(dp $ServerTestsBin):/tests:ro",
-        '-v', "$(dp "$CoverageDir\security"):/coverage",
-        '-v', $SettingsMount,
-        'warewolf-coverage-env', 'bash', '-c', $SecurityBash
+        '-v', "$(dp $covDir):/coverage",
+        '-v', "$(dp $SettingsFile):/settings/coverage-settings.xml:ro",
+        'warewolf-coverage-env', 'bash', '-c', $bash
     )
 
-    docker run @secArgs
-    if ($LASTEXITCODE -ne 0) {
-        Write-Warn '[Security] Container exited with non-zero code — coverage may be partial'
-    }
+    & docker @args
+    if ($LASTEXITCODE -ne 0) { Write-Warn "[$($Job.Name)] non-zero exit ($LASTEXITCODE)" }
 }
 
-# --- Cleanup (always runs via finally) ----------------------------------------
-function Invoke-Cleanup {
-    if ($null -ne $ToCleanup -and $ToCleanup.Count -gt 0) {
-        Write-Step 'Cleaning up integration sidecar containers...'
-        foreach ($c in $ToCleanup) {
-            docker rm -f $c 2>$null | Out-Null
+# --- Engine-spec job runner ---------------------------------------------------
+# Pattern: per-job docker network + a long-lived test container; sidecars share
+# the test container's network namespace (--network=container:X). Engine and
+# tests both run inside the test container so localhost:7071 resolves correctly.
+function Invoke-EngineSpecJob {
+    param([Parameter(Mandatory)]$Job)
+
+    $slug          = $Job.Slug
+    $netName       = "ww-cov-$slug-$RunId"
+    $testContainer = "ww-cov-test-$slug-$RunId"
+    $covDir        = "$CoverageDir\$slug"
+
+    if (-not $Job.Output) {
+        Write-Warn "[$($Job.Name)] no Output filename parsed - skipping"
+        return
+    }
+    if (-not $Job.SessionId) {
+        Write-Warn "[$($Job.Name)] no SessionId parsed - skipping"
+        return
+    }
+    if (-not $Job.Assembly -and $Job.ExcludeAssemblies.Count -eq 0) {
+        Write-Warn "[$($Job.Name)] no Assembly or ExcludeAssemblies parsed - skipping"
+        return
+    }
+
+    Write-Step "[$($Job.Name)] Creating docker network: $netName"
+    docker network create $netName 2>$null | Out-Null
+
+    try {
+        # Mounts shared by engine and tests
+        $envArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
+        $mountArgs = @(
+            '-v', "$(dp $ServerTestsBin):/server:ro",
+            '-v', "$(dp $ServerTestsBin):/tests:ro",
+            '-v', "$(dp $covDir):/coverage",
+            '-v', "$(dp $SettingsFile):/settings/coverage-settings.xml:ro"
+        )
+        if ($Job.Name -match 'Security') {
+            # Security specs: shared writable config dir between engine and tests
+            New-Item -ItemType Directory -Force -Path "$covDir\security-config" | Out-Null
+            $mountArgs += '-v', "$(dp "$covDir\security-config"):/security-config"
         }
-    }
-    $exists = docker network ls --filter "name=^${NetName}$" --format '{{.Name}}' 2>$null
-    if ($exists) { docker network rm $NetName 2>$null | Out-Null }
+        if ($LocalSettingsMount) { $mountArgs += '-v', $LocalSettingsMount }
 
-    if ($LwSecureConfigFile -and (Test-Path $LwSecureConfigFile)) {
-        Remove-Item $LwSecureConfigFile -Force -ErrorAction SilentlyContinue
-    }
-    if ($LocalSettingsFile -and (Test-Path $LocalSettingsFile)) {
-        Remove-Item $LocalSettingsFile -Force -ErrorAction SilentlyContinue
+        Write-Step "[$($Job.Name)] Starting test container..."
+        & docker run -d --name $testContainer --network $netName @envArgs @mountArgs `
+            warewolf-coverage-env sleep 3600 | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Failed to start test container' }
+
+        # Start sidecars (each shares testContainer's net namespace)
+        foreach ($s in $Job.Sidecars) {
+            Write-Step "[$($Job.Name)] Starting sidecar: $s"
+            Start-Sidecar -Type $s -Slug $slug -RunId $RunId -TestContainer $testContainer
+        }
+        if ($Job.Sidecars.Count -gt 0) {
+            Write-Step "[$($Job.Name)] Waiting 8s for sidecars to settle..."
+            Start-Sleep 8
+        }
+
+        # Build the bash run inside the test container.
+        # Filter is passed verbatim (parser captures the full value, including any
+        # `TestCategory=` prefix). Bash single-quotes preserve inner double quotes
+        # like `TestCategory="Server Startup"`.
+        $filterStr = if ($Job.Filter) { "--filter '$($Job.Filter)'" } else { '' }
+        $securitySetup = ''
+        if ($Job.Name -match 'Security') {
+            $securitySetup = @"
+export WAREWOLF_SECURE_CONFIG=/security-config/secure.config
+touch /security-config/secure.config
+chmod 666 /security-config/secure.config
+"@
+        }
+
+        # Shared bash helper: pick the right test invocation for a given assembly.
+        # MTP (Microsoft Testing Platform — EnableMSTestRunner=true) projects expose
+        # vstest-equivalent flags directly on the DLL when launched via `dotnet <dll>`.
+        # vstest-only projects need `dotnet test <dll>`.
+        # Both paths use `dotnet <dll>` (NOT the self-contained apphost), matching
+        # run-tests-in-container.ps1 — the apphost probes /tests/ for libhostfxr.so
+        # before honouring DOTNET_ROOT and trips over sibling self-contained binaries.
+        $runOneTest = @"
+run_test_dll() {
+  local name="`$1"
+  local deps="/tests/`${name}.deps.json"
+  if [ -f "`$deps" ] && grep -q '"Microsoft.Testing.Platform"' "`$deps"; then
+    echo "[$slug]   MTP: `$name"
+    /usr/share/dotnet/dotnet "/tests/`${name}.dll" $filterStr --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+  else
+    echo "[$slug]   vstest: `$name"
+    /usr/share/dotnet/dotnet test "/tests/`${name}.dll" $filterStr --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+  fi
+}
+"@
+
+        # Test invocation: single DLL, multi-DLL list (from -Assemblies "A","B","C"), or
+        # discover-and-loop (from -ExcludeAssemblies).
+        $assemblyList = if ($Job.Assemblies -and $Job.Assemblies.Count -gt 1) { $Job.Assemblies } elseif ($Job.Assembly) { @($Job.Assembly) } else { @() }
+        if ($assemblyList.Count -gt 0) {
+            $loopBody = ($assemblyList | ForEach-Object { "run_test_dll '$_'" }) -join "`n"
+            $testInvocation = @"
+$runOneTest
+echo "[$slug] Running $($assemblyList.Count) assembly(ies): $($assemblyList -join ', ')"
+$loopBody
+"@
+        } else {
+            $excludeRegex = ConvertTo-ExcludeRegex $Job.ExcludeAssemblies
+            $testInvocation = @"
+$runOneTest
+echo "[$slug] Multi-DLL discover-and-loop (excluding: $excludeRegex)"
+exclude='$excludeRegex'
+for dll in /tests/*.dll; do
+  [ -f "`$dll" ] || continue
+  name=`$(basename "`$dll" .dll)
+  echo "`$name" | grep -qE '^(Warewolf|Dev2)\..*(Tests|Specs)$' || continue
+  if [ -n "`$exclude" ]; then echo "`$name" | grep -qE "`$exclude" && continue; fi
+  run_test_dll "`$name"
+done
+"@
+        }
+
+        # Static instrumentation + server-mode collector: the previous
+        # `dotnet-coverage collect -- func start` pattern only profiled the
+        # parent func host. The engine runs in a separate dotnet-isolated
+        # worker process whose CORECLR_* env vars are not inherited, so the
+        # engine assembly was never instrumented (every spec-job XML showed
+        # line-rate=0 for Warewolf.Execution.Lightweight.*). Pre-instrumenting
+        # the DLL embeds the trace points directly so any process loading it
+        # reports to the named collector session.
+        $bash = @"
+#!/bin/bash
+set -e
+export AZURE_KEYVAULT_NAME=''
+export SkipFailureToRetrieveSecret='true'
+export ENABLECONSOLELOGGING='false'
+export ENABLEELASTICSEARCHLOGGING='false'
+export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
+$securitySetup
+
+echo "[$slug] Preparing writable engine copy at /server-rw..."
+mkdir -p /server-rw
+cp -a /server/. /server-rw/
+
+echo "[$slug] Instrumenting engine DLL (session: $($Job.SessionId))..."
+dotnet-coverage instrument /server-rw/Warewolf.Execution.Lightweight.dll \
+  --session-id $($Job.SessionId) \
+  --nologo
+
+echo "[$slug] Starting collector in server-mode (background)..."
+dotnet-coverage collect \
+  --session-id $($Job.SessionId) \
+  --server-mode \
+  --background \
+  --output /coverage/$($Job.Output) \
+  --output-format cobertura \
+  --nologo
+
+cd /server-rw
+echo "[$slug] Starting engine..."
+nohup func start --port 7071 > /tmp/func-engine.log 2>&1 &
+ENGINE_PID=`$!
+
+for i in `$(seq 1 60); do
+  STATUS=`$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:7071/ 2>/dev/null || echo 0)
+  if [ "`$STATUS" -ge 100 ] 2>/dev/null && [ "`$STATUS" != '503' ]; then
+    echo "[$slug] Engine ready (HTTP `$STATUS)"; break
+  fi
+  echo "[$slug]   [`$i/60] HTTP `${STATUS:-none}..."
+  sleep 2
+  if [ "`$i" -eq 60 ]; then
+    echo '[$slug] ERROR: engine did not start within 120s'
+    tail -n 40 /tmp/func-engine.log 2>/dev/null || true
+    kill `$ENGINE_PID 2>/dev/null || true
+    dotnet-coverage shutdown $($Job.SessionId) 2>/dev/null || true
+    exit 1
+  fi
+done
+
+$testInvocation
+
+echo "[$slug] Shutting down coverage session..."
+dotnet-coverage shutdown $($Job.SessionId) 2>/dev/null || true
+
+kill `$ENGINE_PID 2>/dev/null || true
+pkill -TERM -f 'func start' 2>/dev/null || true
+pkill -TERM -f 'Warewolf.Execution.Lightweight' 2>/dev/null || true
+
+for i in `$(seq 1 30); do
+  [ -f /coverage/$($Job.Output) ] && break
+  sleep 1
+done
+
+[ -f /coverage/$($Job.Output) ] && \
+  echo "[$slug] done: `$(du -k /coverage/$($Job.Output) | cut -f1)KB" || \
+  echo '[$slug] WARNING: engine coverage file not produced'
+"@
+
+        Write-Step "[$($Job.Name)] Running engine + tests..."
+        & docker exec $testContainer bash -c $bash
+        if ($LASTEXITCODE -ne 0) { Write-Warn "[$($Job.Name)] non-zero exit ($LASTEXITCODE)" }
+    } finally {
+        # Stop sidecars first, then test container, then network
+        foreach ($s in $Job.Sidecars) {
+            $sn = Get-SidecarName $s $slug $RunId
+            docker rm -f $sn 2>$null | Out-Null
+        }
+        docker rm -f $testContainer 2>$null | Out-Null
+        docker network rm $netName 2>$null | Out-Null
     }
 }
 
-# --- Run jobs -----------------------------------------------------------------
-try {
-    if ($NoParallel -or $Jobs.Count -le 1) {
-        # Sequential mode
-        if ('Unit'        -in $Jobs) { Write-Step '[Unit] Running...';        & docker @UnitArgs; if ($LASTEXITCODE -ne 0) { Write-Warn 'Unit container non-zero exit' } }
-        if ('Activities'  -in $Jobs) { Write-Step '[Activities] Running...';  & docker @ActArgs;  if ($LASTEXITCODE -ne 0) { Write-Warn 'Activities container non-zero exit' } }
-        if ('Lightweight' -in $Jobs) { Write-Step '[Lightweight] Running...'; & docker @LwArgs;   if ($LASTEXITCODE -ne 0) { Write-Warn 'Lightweight container non-zero exit' } }
-        if ('Integration' -in $Jobs) { Invoke-IntegrationJob }
-        if ('Security'    -in $Jobs) { Invoke-SecurityJob }
+# --- Job dispatch -------------------------------------------------------------
+function Invoke-Job {
+    param([Parameter(Mandatory)]$Job)
+    if ($Job.Type -eq 'EngineSpec') {
+        Invoke-EngineSpecJob $Job
     } else {
-        # Parallel mode: Unit / Activities / Lightweight launch as PS background jobs
-        # (each is an independent docker run). Integration runs in the current thread
-        # because it manages its own docker network and sidecar containers.
-        $bgJobs = [System.Collections.Generic.List[System.Management.Automation.Job]]::new()
+        Invoke-UnitJob $Job
+    }
+}
 
-        if ('Unit' -in $Jobs) {
-            Write-Step '[Unit] Starting (parallel)...'
-            $bgJobs.Add((Start-Job -Name 'cov-unit' -ScriptBlock { param($a) & docker @a } -ArgumentList (, $UnitArgs)))
+# --- Run jobs (sequential or parallel) ----------------------------------------
+try {
+    if ($NoParallel -or $selected.Count -le 1) {
+        foreach ($j in $selected) {
+            Write-Step "[$($j.Name)] running ($($j.Type))..."
+            Invoke-Job $j
         }
-        if ('Activities' -in $Jobs) {
-            Write-Step '[Activities] Starting (parallel)...'
-            $bgJobs.Add((Start-Job -Name 'cov-activities' -ScriptBlock { param($a) & docker @a } -ArgumentList (, $ActArgs)))
-        }
-        if ('Lightweight' -in $Jobs) {
-            Write-Step '[Lightweight] Starting (parallel)...'
-            $bgJobs.Add((Start-Job -Name 'cov-lightweight' -ScriptBlock { param($a) & docker @a } -ArgumentList (, $LwArgs)))
-        }
+    } else {
+        # Parallel via PowerShell jobs. Concurrency capped by $MaxParallel.
+        # Jobs with EngineSpec + sidecars each get isolated docker network, so
+        # safe to run concurrently; only docker daemon load is a concern.
+        $bgJobs  = New-Object System.Collections.Generic.List[System.Management.Automation.Job]
+        $queue   = [System.Collections.Queue]::new()
+        foreach ($j in $selected) { $queue.Enqueue($j) | Out-Null }
 
-        if ('Integration' -in $Jobs) {
-            Invoke-IntegrationJob
+        # Function definitions need to be exported into each background job
+        $exportFns = @(
+            'Write-Step','Write-Done','Write-Warn','Test-Exit','dp','Get-Slug',
+            'Get-SidecarName','Start-Sidecar','ConvertTo-ExcludeRegex',
+            'Invoke-UnitJob','Invoke-EngineSpecJob','Invoke-Job'
+        ) | ForEach-Object { Get-Command $_ -CommandType Function } | ForEach-Object {
+            "function $($_.Name) { $($_.ScriptBlock) }"
         }
+        $exportScript = $exportFns -join "`n"
 
-        if ('Security' -in $Jobs) {
-            Invoke-SecurityJob
-        }
-
-        if ($bgJobs.Count -gt 0) {
-            Write-Step 'Waiting for parallel jobs to finish...'
-            $bgJobs | Wait-Job | Out-Null
-            foreach ($j in $bgJobs) {
-                Write-Host "`n--- $($j.Name) output ---" -ForegroundColor DarkGray
-                Receive-Job $j
-                if ($j.State -eq 'Failed') { Write-Warn "Job $($j.Name) reported failure" }
+        while ($queue.Count -gt 0 -or $bgJobs.Count -gt 0) {
+            while ($bgJobs.Count -lt $MaxParallel -and $queue.Count -gt 0) {
+                $j = $queue.Dequeue()
+                Write-Step "[$($j.Name)] starting (parallel slot $($bgJobs.Count + 1)/$MaxParallel)"
+                $bg = Start-Job -Name "cov-$($j.Slug)" -ScriptBlock {
+                    param($exportScript, $job, $ServerTestsBin, $CoverageDir, $SettingsFile, $RunId,
+                          $LwSecureConfigEnv, $LwSecureConfigMount, $LocalSettingsMount)
+                    Invoke-Expression $exportScript
+                    # rehydrate script-scope state used by Invoke-* runners
+                    Set-Variable -Name ServerTestsBin      -Value $ServerTestsBin      -Scope Script
+                    Set-Variable -Name CoverageDir         -Value $CoverageDir         -Scope Script
+                    Set-Variable -Name SettingsFile        -Value $SettingsFile        -Scope Script
+                    Set-Variable -Name RunId               -Value $RunId               -Scope Script
+                    Set-Variable -Name LwSecureConfigEnv   -Value $LwSecureConfigEnv   -Scope Script
+                    Set-Variable -Name LwSecureConfigMount -Value $LwSecureConfigMount -Scope Script
+                    Set-Variable -Name LocalSettingsMount  -Value $LocalSettingsMount  -Scope Script
+                    Invoke-Job $job
+                } -ArgumentList $exportScript, $j, $ServerTestsBin, $CoverageDir, $SettingsFile, $RunId,
+                                $LwSecureConfigEnv, $LwSecureConfigMount, $LocalSettingsMount
+                $bgJobs.Add($bg) | Out-Null
             }
-            $bgJobs | Remove-Job
+
+            $done = Wait-Job -Job $bgJobs -Any -Timeout 5
+            if ($done) {
+                foreach ($d in @($done)) {
+                    Write-Host "`n--- $($d.Name) output ---" -ForegroundColor DarkGray
+                    Receive-Job $d
+                    if ($d.State -eq 'Failed') { Write-Warn "Job $($d.Name) failed" }
+                    Remove-Job $d
+                    $bgJobs.Remove($d) | Out-Null
+                }
+            }
         }
     }
 
     # --- Merge ----------------------------------------------------------------
     Write-Step 'Merging coverage files...'
-    $xmlsToMerge = @(
-        "$CoverageDir\unit\unit_tests.cobertura.xml"
-        "$CoverageDir\activities\activities.cobertura.xml"
-        "$CoverageDir\lightweight\lightweight.cobertura.xml"
-        "$CoverageDir\integration\engine.cobertura.xml"
-        "$CoverageDir\security\security-engine.cobertura.xml"
-    ) | Where-Object { (Test-Path $_) -and (Get-Item $_).Length -gt 200 }
+    # Glob all per-job XMLs but skip intermediate parts_*.cobertura.xml fragments
+    # (those are already merged into their job's final output)
+    $xmlsToMerge = @(Get-ChildItem -Path "$CoverageDir" -Recurse -Filter '*.cobertura.xml' -File |
+        Where-Object {
+            $_.FullName -notmatch '\\merged\\' -and
+            $_.Name -notlike 'parts_*.cobertura.xml' -and
+            $_.Length -gt 200
+        } |
+        ForEach-Object { $_.FullName })
 
     if ($xmlsToMerge.Count -eq 0) {
-        Write-Warn 'No coverage files found — skipping merge and report'
+        Write-Warn 'No coverage files found - skipping merge and report'
     } else {
-        $fileNames = ($xmlsToMerge | ForEach-Object { [IO.Path]::GetFileName($_) }) -join ', '
-        Write-Done "Merging $($xmlsToMerge.Count) file(s): $fileNames"
-
+        Write-Done "Merging $($xmlsToMerge.Count) file(s)"
         $mergedXml = "$CoverageDir\merged\all_merged.cobertura.xml"
         dotnet-coverage merge @xmlsToMerge `
             --output $mergedXml `
             --output-format cobertura `
             --nologo
         Test-Exit 'dotnet-coverage merge'
-        Write-Done "Merged: $([Math]::Round((Get-Item $mergedXml).Length / 1KB))KB -> $mergedXml"
+        Write-Done "Merged: $([Math]::Round((Get-Item $mergedXml).Length / 1KB))KB"
 
-        # --- Filter -----------------------------------------------------------
+        # Filter third-party packages
         Write-Step 'Filtering third-party packages from coverage XML...'
         $py = Get-Command python3 -ErrorAction SilentlyContinue
         if (-not $py) { $py = Get-Command python -ErrorAction SilentlyContinue }
@@ -654,10 +805,9 @@ try {
             Test-Exit 'filter_coverage.py'
             Write-Done 'Coverage filtered'
         } else {
-            Write-Warn 'Python not found — coverage filter skipped'
+            Write-Warn 'Python not found - coverage filter skipped'
         }
 
-        # --- Report -----------------------------------------------------------
         if (-not $SkipReport) {
             Write-Step "Generating $ReportFormat report..."
             $reportDir = "$CoverageDir\report"
@@ -677,5 +827,25 @@ try {
     Write-Host "`n[DONE] Coverage build complete.`n" -ForegroundColor Green
 
 } finally {
-    Invoke-Cleanup
+    # Defensive: kill any leftover ww-cov-*-$RunId containers/networks
+    $leftover = docker ps -a --filter "name=ww-cov-.*-$RunId" --format '{{.Names}}' 2>$null
+    if ($leftover) {
+        Write-Step 'Cleaning leftover containers...'
+        $leftover -split "`n" | Where-Object { $_ } | ForEach-Object {
+            docker rm -f $_ 2>$null | Out-Null
+        }
+    }
+    $netLeft = docker network ls --filter "name=ww-cov-.*-$RunId" --format '{{.Name}}' 2>$null
+    if ($netLeft) {
+        $netLeft -split "`n" | Where-Object { $_ } | ForEach-Object {
+            docker network rm $_ 2>$null | Out-Null
+        }
+    }
+
+    if ($LwSecureConfigFile -and (Test-Path $LwSecureConfigFile)) {
+        Remove-Item $LwSecureConfigFile -Force -ErrorAction SilentlyContinue
+    }
+    if ($LocalSettingsFile -and (Test-Path $LocalSettingsFile)) {
+        Remove-Item $LocalSettingsFile -Force -ErrorAction SilentlyContinue
+    }
 }

@@ -27,11 +27,26 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 /// </summary>
 public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<EasyAuthRedirectMiddleware> _logger;
+    private readonly ILogger<EasyAuthRedirectMiddleware>      _logger;
+    private readonly Action<FunctionContext, HttpResponseData> _responseWriter;
 
     /// <summary>Initialises the middleware with a logger.</summary>
-    public EasyAuthRedirectMiddleware(ILogger<EasyAuthRedirectMiddleware> logger)
-        => _logger = logger;
+    /// <param name="responseWriter">
+    /// Test seam — replaces the production
+    /// <c>context.GetInvocationResult().Value = response</c> wiring with a hook
+    /// the test can capture. Defaults to the production behaviour.
+    /// <c>GetInvocationResult</c> requires the SDK-internal
+    /// <c>IFunctionBindingsFeature</c>, so the 302 redirect and 401 branches
+    /// could not be unit-tested without this seam.
+    /// </param>
+    public EasyAuthRedirectMiddleware(
+        ILogger<EasyAuthRedirectMiddleware>        logger,
+        Action<FunctionContext, HttpResponseData>? responseWriter = null)
+    {
+        _logger         = logger;
+        _responseWriter = responseWriter
+            ?? ((ctx, response) => ctx.GetInvocationResult().Value = response);
+    }
 
     /// <inheritdoc/>
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
@@ -124,7 +139,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
                 var resp302 = request.CreateResponse(HttpStatusCode.Redirect);
                 resp302.Headers.Add("Location", redirect);
-                context.GetInvocationResult().Value = resp302;
+                _responseWriter(context, resp302);
                 return;
             }
 
@@ -155,7 +170,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             await response.WriteStringAsync(
                 $"{{\"error\":\"unauthorized\",\"message\":\"A valid Bearer token is required.\",\"path\":\"{path}\"}}");
 
-            context.GetInvocationResult().Value = response;
+            _responseWriter(context, response);
             return;
         }
 

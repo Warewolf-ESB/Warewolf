@@ -54,6 +54,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     private readonly IHostEnvironment                            _hostEnvironment;
     private readonly AuditLogger                                 _auditLogger;
     private readonly ILogger<WorkflowAuthorizationMiddleware>    _logger;
+    private readonly Action<FunctionContext, HttpResponseData>   _responseWriter;
 
     private static readonly JsonSerializerOptions JsonOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
@@ -62,18 +63,30 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     /// Initialises the middleware with policy matcher, route registry,
     /// host environment, audit logger and logger.
     /// </summary>
+    /// <param name="responseWriter">
+    /// Test seam — replaces the production
+    /// <c>context.GetInvocationResult().Value = response</c> wiring with a hook
+    /// the test can capture. Defaults to the production behaviour.
+    /// <see cref="FunctionContextExtensions.GetInvocationResult(FunctionContext)"/>
+    /// requires <c>IFunctionBindingsFeature</c> which is SDK-internal and cannot
+    /// be implemented by external tests, so the error-response branches were
+    /// dormant under coverage until this seam was introduced.
+    /// </param>
     public WorkflowAuthorizationMiddleware(
         IWorkflowPolicyMatcher                      policyMatcher,
         IRouteAuthorizationRegistry                 routeRegistry,
         IHostEnvironment                            hostEnvironment,
         AuditLogger                                 auditLogger,
-        ILogger<WorkflowAuthorizationMiddleware>    logger)
+        ILogger<WorkflowAuthorizationMiddleware>    logger,
+        Action<FunctionContext, HttpResponseData>?  responseWriter = null)
     {
         _policyMatcher   = policyMatcher;
         _routeRegistry   = routeRegistry;
         _hostEnvironment = hostEnvironment;
         _auditLogger     = auditLogger;
         _logger          = logger;
+        _responseWriter  = responseWriter
+            ?? ((ctx, response) => ctx.GetInvocationResult().Value = response);
     }
 
     /// <inheritdoc/>
@@ -327,9 +340,28 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         }
     }
 
-    private static async Task WriteErrorAsync(
+    private async Task WriteErrorAsync(
         HttpRequestData request,
         FunctionContext context,
+        HttpStatusCode statusCode,
+        string error,
+        string message,
+        string path,
+        string correlationId,
+        object? extra = null)
+    {
+        var response = await BuildErrorResponseAsync(
+            request, statusCode, error, message, path, correlationId, extra);
+        _responseWriter(context, response);
+    }
+
+    /// <summary>
+    /// Test seam — builds the error <see cref="HttpResponseData"/> independent of
+    /// the <c>IFunctionBindingsFeature</c>-backed <c>InvocationResult</c> wiring
+    /// that <see cref="WriteErrorAsync"/> uses for the production path.
+    /// </summary>
+    internal static async Task<HttpResponseData> BuildErrorResponseAsync(
+        HttpRequestData request,
         HttpStatusCode statusCode,
         string error,
         string message,
@@ -355,6 +387,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         response.Headers.Add("Content-Type", "application/json");
         response.Headers.Add(CorrelationIdHeader, correlationId);
         await response.WriteStringAsync(JsonSerializer.Serialize(body, JsonOptions));
-        context.GetInvocationResult().Value = response;
+        return response;
     }
 }

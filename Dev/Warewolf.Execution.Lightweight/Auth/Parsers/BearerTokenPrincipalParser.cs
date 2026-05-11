@@ -33,7 +33,7 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
 
     private readonly EntraAuthOptions _options;
     private readonly ILogger<BearerTokenPrincipalParser> _logger;
-    private readonly Lazy<ConfigurationManager<OpenIdConnectConfiguration>?> _configManager;
+    private readonly Lazy<IConfigurationManager<OpenIdConnectConfiguration>?> _configManager;
     private readonly JwtSecurityTokenHandler _handler = new() { MapInboundClaims = false };
 
     /// <inheritdoc/>
@@ -47,7 +47,7 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
         _options = options;
         _logger  = logger;
 
-        _configManager = new Lazy<ConfigurationManager<OpenIdConnectConfiguration>?>(() =>
+        _configManager = new Lazy<IConfigurationManager<OpenIdConnectConfiguration>?>(() =>
         {
             if (!_options.IsEnabled)
                 return null;
@@ -61,6 +61,22 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
                 RefreshInterval          = TimeSpan.FromMinutes(5),
             };
         });
+    }
+
+    /// <summary>
+    /// Test-only seam: bypasses OIDC metadata fetching by accepting a pre-built
+    /// <see cref="IConfigurationManager{T}"/>. Production code uses the
+    /// public constructor which builds a real <see cref="ConfigurationManager{T}"/>
+    /// against <c>options.MetadataAddress</c>.
+    /// </summary>
+    internal BearerTokenPrincipalParser(
+        EntraAuthOptions options,
+        ILogger<BearerTokenPrincipalParser> logger,
+        IConfigurationManager<OpenIdConnectConfiguration> configManager)
+    {
+        _options       = options;
+        _logger        = logger;
+        _configManager = new Lazy<IConfigurationManager<OpenIdConnectConfiguration>?>(() => configManager);
     }
 
     /// <inheritdoc/>
