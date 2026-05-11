@@ -52,15 +52,22 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var path = ResolveConfigPath();
-        if (path is null || !File.Exists(path))
+        if (path is null)
         {
             _logger.LogInformation(
-                "SecureConfigWatcher: no secure.config to watch — skipping hot-reload.");
+                "SecureConfigWatcher: could not resolve config path — skipping hot-reload.");
             return Task.CompletedTask;
         }
 
         var dir  = Path.GetDirectoryName(path)!;
         var file = Path.GetFileName(path);
+
+        if (!Directory.Exists(dir))
+        {
+            _logger.LogInformation(
+                "SecureConfigWatcher: directory {Dir} does not exist — skipping hot-reload.", dir);
+            return Task.CompletedTask;
+        }
 
         _debounce = new Timer(_ => SafeReload(), null, Timeout.Infinite, Timeout.Infinite);
 
@@ -108,8 +115,9 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         if (!string.IsNullOrWhiteSpace(env))
             return env;
 
-        var bin = Path.Combine(AppContext.BaseDirectory, "secure.config");
-        return File.Exists(bin) ? bin : null;
+        // Return the default path even when the file doesn't exist yet — the
+        // watcher monitors the directory so it detects when the file is first created.
+        return Path.Combine(AppContext.BaseDirectory, "secure.config");
     }
 
     public void Dispose()
