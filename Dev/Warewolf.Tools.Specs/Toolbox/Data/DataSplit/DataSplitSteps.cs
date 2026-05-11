@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"A string to split with new line value")]
         public void GivenAStringToSplitWithNewLineValue()
         {
-            var stringToSplit = "a" + Environment.NewLine + "2ff";
+            var stringToSplit = "a\r\n2ff";
 
             scenarioContext.Add("stringToSplit", stringToSplit);
         }
