@@ -67,6 +67,11 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override int ExecuteOperation()
         {
+            if (string.IsNullOrEmpty(_destination.Path))
+            {
+                throw new IOException("Destination path cannot be null or empty.");
+            }
+
             var destination = _destination;
             if (!_pathWrapper.IsPathRooted(_destination.Path) && _whereToPut != null)
             {
