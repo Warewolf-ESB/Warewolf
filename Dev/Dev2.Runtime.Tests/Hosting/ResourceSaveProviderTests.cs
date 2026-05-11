@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.Hosting
 {

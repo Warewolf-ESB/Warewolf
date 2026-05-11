@@ -14,7 +14,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Common.NetStandard20;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {

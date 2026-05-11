@@ -2,7 +2,7 @@
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 
 
 namespace Dev2.Tests.Runtime.ServiceModel
