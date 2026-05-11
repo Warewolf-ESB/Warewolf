@@ -124,7 +124,7 @@
       Files from Resources - Release\Resources that are needed for integration
       tests have been copied here and are tracked in source control.
     -->
-    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'">
+    <Content Include="Resources\**\*" Condition="Exists('Resources')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

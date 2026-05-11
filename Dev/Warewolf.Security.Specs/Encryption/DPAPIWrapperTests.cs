@@ -12,6 +12,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 
@@ -31,6 +32,9 @@ namespace Warewolf.Security.Encryption
         [TestCategory("ServerPermissionsSecurity")]
         public void EncryptDecryptTest()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("DPAPI (ProtectedData) is Windows-only and cannot run on this platform.");
+
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
@@ -47,6 +51,9 @@ namespace Warewolf.Security.Encryption
         [TestCategory("ServerPermissionsSecurity")]
         public void EncryptDecryptFailsIfAlreadyPerformedTest()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("DPAPI (ProtectedData) is Windows-only and cannot run on this platform.");
+
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
