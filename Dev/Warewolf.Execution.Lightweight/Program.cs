@@ -44,15 +44,7 @@ try
                  if (elasticOptions is not null)
                      loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
 
-                 // Safe default: always include Azure logger if nothing else is active.
-                 if (loggers.Count == 0)
-                     loggers.Add(new AzureExecutionLogger(
-                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
-                         minimumLevel));
-
-                 return loggers.Count == 1
-                     ? loggers[0]
-                     : new CompositeExecutionLogger(loggers);
+                 return new CompositeExecutionLogger(loggers);
              });
 
          })
@@ -64,6 +56,11 @@ try
     // Must be set after RunStartupAsync so Config.Server is initialised before any Dev2Logger call.
     Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(
         host.Services.GetRequiredService<IExecutionLogger>());
+
+    // Also set the correlation prefix provider so that Dev2Logger's own log4net path
+    // (when ExternalSink is bypassed) includes instance/invocation correlation.
+    Dev2.Common.Dev2Logger.CorrelationPrefixProvider =
+        Warewolf.Execution.Lightweight.Logging.ExecutionLoggerBase.GetCorrelationPrefixStatic;
 
     var startupLogger = host.Services
         .GetRequiredService<ILoggerFactory>()

@@ -38,6 +38,13 @@ namespace Dev2.Common
         /// </summary>
         public static ILogger? ExternalSink { get; set; }
 
+        /// <summary>
+        /// Optional delegate that returns a correlation prefix string (e.g. instance/invocation IDs).
+        /// Set from the Azure Functions host so that log4net entries also carry correlation context.
+        /// When <c>null</c> or returns <c>null</c>, no prefix is prepended.
+        /// </summary>
+        public static Func<string?> CorrelationPrefixProvider { get; set; }
+
 
 
         public static void Debug(object message, string executionId)
@@ -180,7 +187,13 @@ namespace Dev2.Common
             }
         }
 
-        static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
+        static string UpdateCustomMessage(object message, string executionId)
+        {
+            var correlation = CorrelationPrefixProvider?.Invoke();
+            return string.IsNullOrEmpty(correlation)
+                ? $"[{executionId}] - {message}"
+                : $"{correlation} [{executionId}] - {message}";
+        }
 
         public static void UpdateLoggingConfig(string level)
         {
