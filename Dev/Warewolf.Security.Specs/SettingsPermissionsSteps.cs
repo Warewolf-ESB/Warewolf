@@ -292,6 +292,13 @@ namespace Dev2.Activities.Specs.Permissions
 
             if (_featureContext.TryGetValue("currentHttp", out HttpClient http))
                 http?.Dispose();
+
+            // Replace the disposed client so the next scenario always starts with a
+            // usable bearer client.  Without this, scenarios that never call
+            // WhenConnectedAsUserPartOf (e.g. ServerPermissions rows > 1) would pick
+            // up the disposed instance and FetchApisJson would catch the exception and
+            // silently return an empty list.
+            _featureContext["currentHttp"] = CreateBearerClient();
         }
 
         // ── Private helpers ───────────────────────────────────────────────────────
