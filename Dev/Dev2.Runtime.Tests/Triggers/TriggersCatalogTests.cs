@@ -21,7 +21,7 @@ using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.Triggers
 {

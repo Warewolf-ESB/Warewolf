@@ -52,7 +52,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ClientSchedulerFactory.cs" />
-    <Compile Include="DpapiTestBase.cs" />
     <Compile Include="EventInfoTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ResourceHistoryTest.cs" />
@@ -97,6 +96,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj">
+      <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
+      <Name>Dev2.UnitTestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

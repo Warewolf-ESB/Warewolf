@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Xml.Linq;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]

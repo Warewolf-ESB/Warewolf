@@ -14,7 +14,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
 
-namespace Warewolf.Logger.Tests
+namespace Dev2.UnitTestUtils
 {
     /// <summary>
     /// Base class that configures <see cref="DpapiWrapper"/> to use AES-256-CBC
