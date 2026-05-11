@@ -422,9 +422,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             try
             {
-                Dev2Logger.Debug(string.Format("Source File: {0}", _scenarioContext.Get<string>(ActualSourceHolder)), "Warewolf Debug");
+                var actualSourcePath = _scenarioContext.Get<string>(ActualSourceHolder);
+                // On Linux, skip scenarios that require Windows-style local drive paths (e.g. c:\temp\file.txt).
+                // TranslateLocalWindowsPath returns a different value only when on Linux AND path is a Windows drive path.
+                if (TranslateLocalWindowsPath(actualSourcePath) != actualSourcePath)
+                {
+                    Assert.Inconclusive("Test requires Windows local file system path which is not supported on Linux.");
+                    return;
+                }
+                Dev2Logger.Debug(string.Format("Source File: {0}", actualSourcePath), "Warewolf Debug");
                 var broker = ActivityIOFactory.CreateOperationsBroker();
-                var source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(ActualSourceHolder),
+                var source = ActivityIOFactory.CreatePathFromString(actualSourcePath,
                     _scenarioContext.Get<string>(SourceUsernameHolder),
                     _scenarioContext.Get<string>(SourcePasswordHolder),
                     true, "");
