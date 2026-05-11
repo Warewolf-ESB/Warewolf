@@ -43,8 +43,9 @@ namespace Warewolf.Execution.Lightweight.Models
         public bool IsSuccess { get; set; }
 
         /// <summary>
-        /// True when the execution failed because the workflow file was not found on disk.
-        /// <see cref="ResponseBuilder"/> maps this to HTTP 404 rather than the generic 500.
+        /// True when the execution failed because the workflow was not found.
+        /// Treated as HTTP 500 (same as other failures) to avoid leaking information
+        /// about which workflow names or file paths exist on the server.
         /// </summary>
         public bool IsNotFound { get; set; }
 
@@ -114,8 +115,8 @@ namespace Warewolf.Execution.Lightweight.Models
         };
 
         /// <summary>
-        /// Creates a not-found failure result (workflow file does not exist on disk).
-        /// <see cref="ResponseBuilder"/> maps this to HTTP 404.
+        /// Creates a not-found failure result (workflow does not exist).
+        /// Returns HTTP 500 (not 404) to avoid leaking which workflow names exist.
         /// </summary>
         public static WorkflowExecutionResult NotFound(string errorMessage) => new()
         {
