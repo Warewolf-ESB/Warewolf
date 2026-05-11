@@ -353,6 +353,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.Add("variableList", variableList);
             }
 			location = InjectFTPDependency(location);
+            location = TranslateLocalWindowsPath(location);
             variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
@@ -423,13 +424,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             try
             {
                 var actualSourcePath = _scenarioContext.Get<string>(ActualSourceHolder);
-                // On Linux, skip scenarios that require Windows-style local drive paths (e.g. c:\temp\file.txt).
-                // TranslateLocalWindowsPath returns a different value only when on Linux AND path is a Windows drive path.
-                if (TranslateLocalWindowsPath(actualSourcePath) != actualSourcePath)
-                {
-                    Assert.Inconclusive("Test requires Windows local file system path which is not supported on Linux.");
-                    return;
-                }
                 Dev2Logger.Debug(string.Format("Source File: {0}", actualSourcePath), "Warewolf Debug");
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 var source = ActivityIOFactory.CreatePathFromString(actualSourcePath,
@@ -495,6 +489,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.Add("variableList", variableList);
             }
 			location = InjectFTPDependency(location, false);
+            location = TranslateLocalWindowsPath(location);
             pathVariable = InjectFTPDependency(pathVariable, false);
 
             variableList.Add(new Tuple<string, string>(pathVariable, location));
@@ -938,9 +933,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     return;
                 }
 
-                if (columnHeader == "Source Path" || columnHeader == "Destination Path")
+                if (columnHeader == "Source Path" || columnHeader == "Destination Path" || columnHeader == "Input Path")
                 {
                     rowValue = InjectFTPDependency(rowValue);
+                    rowValue = TranslateLocalWindowsPathInDebugValue(rowValue);
                 }
 
                 if (rowValue.Contains(" ="))
@@ -1272,6 +1268,24 @@ namespace Dev2.Activities.Specs.BaseTypes
                 return "/tmp/" + relativePart;
             }
             return location;
+        }
+
+        /// <summary>
+        /// Translates any Windows-style local path embedded in a debug expected value string of the
+        /// form "[[var]] = c:\path\file.txt" so the path portion matches what Linux would produce.
+        /// </summary>
+        private static string TranslateLocalWindowsPathInDebugValue(string debugValue)
+        {
+            if (debugValue == null) return debugValue;
+            var eqIdx = debugValue.IndexOf(" = ", StringComparison.Ordinal);
+            if (eqIdx >= 0)
+            {
+                var pathPart = debugValue.Substring(eqIdx + 3);
+                var translated = TranslateLocalWindowsPath(pathPart);
+                if (!string.Equals(translated, pathPart, StringComparison.Ordinal))
+                    return debugValue.Substring(0, eqIdx + 3) + translated;
+            }
+            return debugValue;
         }
     }
 }
