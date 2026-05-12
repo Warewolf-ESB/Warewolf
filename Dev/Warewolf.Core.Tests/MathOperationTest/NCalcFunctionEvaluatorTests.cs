@@ -406,6 +406,8 @@ namespace Dev2.Tests.MathOperationTest
 
         [TestMethod] public void And_TrueTrue()    => AssertEval("AND(1=1,2=2)", "True");
         [TestMethod] public void And_TrueFalse()   => AssertEval("AND(1=1,1=2)", "False");
+        [TestMethod] public void And_ChainedComparisonOutOfRange() => AssertEval("AND(-1<10<5)", "False");
+        [TestMethod] public void And_ChainedComparisonInRange()    => AssertEval("AND(1<3<5)", "True");
         [TestMethod] public void Or_FalseTrue()    => AssertEval("OR(1=2,2=2)", "True");
         [TestMethod] public void Or_FalseFalse()   => AssertEval("OR(1=2,1=3)", "False");
         [TestMethod] public void Not_False()       => AssertEval("NOT(1=2)", "True");

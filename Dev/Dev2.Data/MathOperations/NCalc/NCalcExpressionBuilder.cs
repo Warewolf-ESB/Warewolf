@@ -40,6 +40,17 @@ namespace Dev2.MathOperations.NCalc
             new(@"\bFALSE\(\)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
+        /// Rewrites chained comparisons such as <c>a&lt;b&lt;c</c> into Infragistics-compatible
+        /// conjunction form <c>(a&lt;b) and (b&lt;c)</c>. NCalc otherwise parses chained
+        /// comparisons left-associatively (<c>(a&lt;b)&lt;c</c>) which yields the wrong result
+        /// for expressions such as <c>AND(-1&lt;10&lt;5)</c>. Only atomic numeric / identifier
+        /// terms are matched — sub-expressions with operators must use explicit parentheses.
+        /// </summary>
+        private static readonly Regex ChainedComparisonRegex =
+            new(@"(-?\d+(?:\.\d+)?|\w+)\s*(<=|>=|<|>)\s*(-?\d+(?:\.\d+)?|\w+)\s*(<=|>=|<|>)\s*(-?\d+(?:\.\d+)?|\w+)",
+                RegexOptions.Compiled);
+
+        /// <summary>
         /// Static registry of all custom function handlers, keyed case-insensitively.
         /// Built once per AppDomain lifetime — zero allocation on every subsequent invocation.
         /// </summary>
@@ -79,6 +90,7 @@ namespace Dev2.MathOperations.NCalc
             var processed = ConcatRegex.Replace(expression, "+");
             processed = TrueRegex.Replace(processed, "true");
             processed = FalseRegex.Replace(processed, "false");
+            processed = ChainedComparisonRegex.Replace(processed, "($1 $2 $3) and ($3 $4 $5)");
             var expr = new Expression(processed, ExpressionOptions.IgnoreCaseAtBuiltInFunctions);
             expr.EvaluateFunction += HandleFunction;
             return expr;

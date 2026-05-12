@@ -19,6 +19,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using ActivityUnitTests;
 #if WINDOWS
 using Dev2.Activities.Designers2.Core;
@@ -354,6 +355,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
 			location = InjectFTPDependency(location);
             location = TranslateLocalWindowsPath(location);
+            EnsureLinuxTranslatedParentExists(location);
             variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
@@ -490,6 +492,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
 			location = InjectFTPDependency(location, false);
             location = TranslateLocalWindowsPath(location);
+            EnsureLinuxTranslatedParentExists(location);
             pathVariable = InjectFTPDependency(pathVariable, false);
 
             variableList.Add(new Tuple<string, string>(pathVariable, location));
@@ -556,6 +559,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     Assert.IsNotNull(validationErrors);
                     var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
                     FixBreaks(ref validationMessage, ref completeMessage);
+                    validationMessage = TranslateLocalWindowsPathsInText(validationMessage);
                     Assert.AreEqual(validationMessage, completeMessage);
                 }
             }
@@ -1268,6 +1272,44 @@ namespace Dev2.Activities.Specs.BaseTypes
                 return "/tmp/" + relativePart;
             }
             return location;
+        }
+
+        /// <summary>
+        /// On Linux, translates any Windows-style drive paths embedded in arbitrary text (e.g.
+        /// error messages of the form "... for resource [ C:\Temp\file.txt ]") to their /tmp/
+        /// equivalents, so expected text from feature files matches actual error text produced
+        /// on Linux after the path is translated by GivenIHaveASourcePathWithValue.
+        /// </summary>
+        private static readonly Regex s_windowsDrivePathRegex = new Regex(@"[A-Za-z]:[\\/][^\s\]\)\>\""\'\<,;]+", RegexOptions.Compiled);
+
+        private static string TranslateLocalWindowsPathsInText(string text)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return text;
+            if (string.IsNullOrEmpty(text)) return text;
+            return s_windowsDrivePathRegex.Replace(text, m => TranslateLocalWindowsPath(m.Value));
+        }
+
+        /// <summary>
+        /// On Linux, ensures the parent directory of a translated /tmp path exists so the test
+        /// setup (which writes a test fixture file to the source/destination location) can succeed.
+        /// No-op on Windows or for paths that weren't translated to /tmp.
+        /// </summary>
+        private static void EnsureLinuxTranslatedParentExists(string location)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+            if (string.IsNullOrEmpty(location)) return;
+            if (!location.StartsWith("/tmp/", StringComparison.Ordinal)) return;
+            try
+            {
+                var parentDir = Path.GetDirectoryName(location);
+                if (!string.IsNullOrEmpty(parentDir))
+                {
+                    Directory.CreateDirectory(parentDir);
+                }
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>
