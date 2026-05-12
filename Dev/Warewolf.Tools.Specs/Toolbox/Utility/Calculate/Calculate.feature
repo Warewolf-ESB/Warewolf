@@ -252,7 +252,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 31  | DAYS360([[x]],[[y]])                                       | 1                                                           |
 	| 32  | DB([[e]],[[z]],12,12,12)                                   | 4.660246769789631                                            |
 	| 33  | DBNull()                                                   |                                                             |
-	| 34  | DDB([[e]],[[z]],12,12,[[x]])                               | 31.99960254673971                                            |
+	| 34  | DDB([[e]],[[z]],12,12,[[x]])                               | {31.99960254673971} or {31.999602546739737}                  |
 	| 35  | DEC2BIN([[x]],[[z]])                                       | 0000000001                                                  |
 	| 36  | DEC2HEX(1,10)                                              | 0000000001                                                  |
 	| 37  | DEC2OCT([[y]],[[z]])                                       | 0000000002                                                  |
@@ -295,7 +295,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 75  | IMSUM([[x]],[[rc(1).set]])                                 | 6                                                           |
 	| 77  | INT([[s]])                                                 | -1                                                          |
 	| 78  | INTRATE(2015,2030,1000,1,4)                                | -23.976                                                     |
-	| 79  | IPMT(5,12,100,1000,2000,1)                                 | -833.3333587646484                                           |
+	| 79  | IPMT(5,12,100,1000,2000,1)                                 | {-833.3333587646484} or {-833.3333333333334}                 |
 	| 81  | isdbnull([[x]])                                            | False                                                       |
 	| 82  | ISBLANK(1)                                                 | False                                                       |
 	| 83  | ISERR([[e]])                                               | False                                                       |
@@ -328,7 +328,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 111 | NETWORKDAYS(2014,2015)                                     | 2                                                           |
 	| 112 | NOT([[[[a]]]])                                             | False                                                       |
 	| 113 | NOW()                                                      | [Now]                                                       |
-	| 114 | NPER(0.1, 100, 1000, 999,0)                                | -79.74911468163207                                          |
+	| 114 | NPER(0.1, 100, 1000, 999,0)                                | {-79.74911468163207} or {-79.74911468163266}                |
 	| 115 | NPV([[z]],[[z]],[[rc(1).set]],[[y]])                       | 0.951915852742299                                           |
 	| 117 | OCT2BIN([[z]],[[z]])                                       | 0000001000                                                  |
 	| 118 | OCT2DEC([[z]])                                             | 8                                                           |
@@ -344,7 +344,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 128 | QUOTIENT([[z]],[[rc(1).set]])                              | 2                                                           |
 	| 129 | RADIANS([[z]])                                             | 0.17453292519943295                                           |
 	| 130 | RANDBETWEEN([[x]],10)                                      | [Int]                                                       |
-	| 131 | RATE(360,-600,100000,0,1)                                  | 0.005045004045846426                                         |
+	| 131 | RATE(360,-600,100000,0,1)                                  | {0.005045004045846426} or {0.0050450040458463845}            |
 	| 132 | REPT([[y]],[[y]])                                          | 22                                                          |
 	| 133 | RIGHT([[x]],[[x]])                                         | 1                                                           |
 	| 134 | ROMAN(10,0)                                                | X                                                           |

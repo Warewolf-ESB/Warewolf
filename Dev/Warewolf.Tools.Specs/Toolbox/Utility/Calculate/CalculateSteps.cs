@@ -161,6 +161,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 Assert.IsTrue(int.TryParse(actualValue, out int outval));
                 return;
             }
+            actualValue = actualValue ?? "";
             if (string.IsNullOrEmpty(expectedResult))
             {
                 actualValue.Should().BeNullOrEmpty("the expected value is null or empty");

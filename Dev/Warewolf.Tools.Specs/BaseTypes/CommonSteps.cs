@@ -346,6 +346,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveASourcePathWithValue(string pathVariable, string location)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && location.StartsWith("\\\\"))
+            {
+                Assert.Inconclusive("UNC path sources are not supported on this platform.");
+                return;
+            }
             _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
@@ -482,6 +487,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             if (location.StartsWith(@"\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP") && !Directory.Exists(location))
             {
                 Directory.CreateDirectory(location);
+            }
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && location.StartsWith("\\\\"))
+            {
+                Assert.Inconclusive("UNC path destinations are not supported on this platform.");
+                return;
             }
             _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
@@ -1067,11 +1077,19 @@ namespace Dev2.Activities.Specs.BaseTypes
                 else
                 {
                     var actualValue = inputDebugItems[i].Value ?? "";
-                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && actualValue.Contains('\\'))
+                    var expectedVal = expectedDebugItems[i].Value ?? "";
+                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
-                        actualValue = TranslateLocalWindowsPathsInText(actualValue.Replace('\\', '/'));
+                        if (actualValue.Contains('\\') || s_windowsDrivePathRegex.IsMatch(actualValue))
+                        {
+                            actualValue = TranslateLocalWindowsPathsInText(actualValue.Replace('\\', '/'));
+                        }
+                        if (expectedVal.Contains('\\') || s_windowsDrivePathRegex.IsMatch(expectedVal))
+                        {
+                            expectedVal = TranslateLocalWindowsPathsInText(expectedVal.Replace('\\', '/'));
+                        }
                     }
-                    Verify(expectedDebugItems[i].Value ?? "", actualValue, "Values", i, inputDebugItems[i].Variable);
+                    Verify(expectedVal, actualValue, "Values", i, inputDebugItems[i].Variable);
                 }
             }
         }
