@@ -1066,7 +1066,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else
                 {
-                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i, inputDebugItems[i].Variable);
+                    var actualValue = inputDebugItems[i].Value ?? "";
+                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && actualValue.Contains('\\'))
+                    {
+                        actualValue = TranslateLocalWindowsPathsInText(actualValue.Replace('\\', '/'));
+                    }
+                    Verify(expectedDebugItems[i].Value ?? "", actualValue, "Values", i, inputDebugItems[i].Variable);
                 }
             }
         }
@@ -1272,6 +1277,25 @@ namespace Dev2.Activities.Specs.BaseTypes
                 return "/tmp/" + relativePart;
             }
             return location;
+        }
+
+        /// <summary>
+        /// On Linux, translates a Windows-style path fragment stored in a test variable to its
+        /// Linux equivalent. Handles full drive paths ("C:\Temp\x" → "/tmp/Temp/x"), drive roots
+        /// ("C:" → "/tmp"), leading-backslash fragments ("\Temp\x" → "/Temp/x"), and other
+        /// strings with backslashes (replaces '\' with '/'). No-op on Windows.
+        /// </summary>
+        internal static string TranslateWindowsPathFragment(string value)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return value;
+            if (string.IsNullOrEmpty(value)) return value;
+            if (value.Length >= 3 && char.IsLetter(value[0]) && value[1] == ':' && (value[2] == '\\' || value[2] == '/'))
+                return TranslateLocalWindowsPath(value);
+            if (value.Length == 2 && char.IsLetter(value[0]) && value[1] == ':')
+                return "/tmp";
+            if (value[0] == '\\')
+                return "/" + value.Substring(1).Replace('\\', '/');
+            return value.Replace('\\', '/');
         }
 
         /// <summary>

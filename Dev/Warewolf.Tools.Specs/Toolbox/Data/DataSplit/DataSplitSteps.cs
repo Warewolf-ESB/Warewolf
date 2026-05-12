@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
@@ -164,7 +165,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, InjectFTPDependency(value.ToString(CultureInfo.InvariantCulture))));
+            variableList.Add(new Tuple<string, string>(variable, TranslateWindowsPathFragment(InjectFTPDependency(value.ToString(CultureInfo.InvariantCulture)))));
+        }
+
+        private static string TranslateWindowsPathFragment(string value)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return value;
+            if (string.IsNullOrEmpty(value)) return value;
+            if (value.Length >= 3 && char.IsLetter(value[0]) && value[1] == ':' && (value[2] == '\\' || value[2] == '/'))
+            {
+                var relativePart = value.Substring(3).TrimStart('\\', '/').Replace('\\', '/');
+                return "/tmp/" + relativePart;
+            }
+            if (value.Length == 2 && char.IsLetter(value[0]) && value[1] == ':')
+                return "/tmp";
+            if (value[0] == '\\')
+                return "/" + value.Substring(1).Replace('\\', '/');
+            return value.Replace('\\', '/');
         }
         
          [Then(@"the split recordset ""(.*)"" will be")]

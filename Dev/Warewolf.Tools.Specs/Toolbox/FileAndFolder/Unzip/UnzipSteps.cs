@@ -18,6 +18,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Data.Interfaces;
@@ -86,6 +88,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var sourceExpr = scenarioContext.Get<string>(CommonSteps.SourceHolder);
+                if (HasLiteralWindowsPathChars(sourceExpr))
+                {
+                    Assert.Inconclusive($"Skipped on Linux: source expression '{sourceExpr}' contains literal Windows path characters (backslash or colon) that cannot be mapped to a valid Linux path.");
+                }
+            }
             CopyZipFileToSourceLocation();
             var inputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder);
             var username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder);
@@ -221,6 +231,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Returns true when the expression template contains literal Windows path characters
+        /// (backslash or colon) outside of Warewolf variable references like [[...]].
+        /// Such expressions cannot be mapped to valid Linux paths purely by translating variable
+        /// values, so tests using them are skipped on Linux.
+        /// </summary>
+        private static bool HasLiteralWindowsPathChars(string expression)
+        {
+            var stripped = Regex.Replace(expression ?? "", @"\[\[.*?\]\]", "");
+            return stripped.Contains('\\') || stripped.Contains(':');
         }
     }
 }
