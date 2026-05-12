@@ -76,12 +76,15 @@ public class WorkflowAuthorizationMiddlewareTests
     }
 
     [TestMethod]
-    public void MWA06_ExtractWorkflowName_UrlEncodedSpace_PreservesEncoding()
+    public void MWA06_ExtractWorkflowName_UrlEncodedSpace_DecodesToCanonicalForm()
     {
-        // The middleware does NOT URL-decode — secure.config entries are matched
-        // against the raw, lower-cased path segment.  Documenting current behaviour.
+        // The middleware URL-decodes the path segment so the lookup key matches
+        // ResourceName entries in secure.config (which are stored decoded).
+        // Without this, the Windows Functions host (whose Url.AbsolutePath
+        // returns the escaped form) would never resolve names that contain a
+        // space — see the 403/500 spectrum on the Security Specs feature file.
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/Hello%20World", isSecure: true);
-        Assert.AreEqual("hello%20world", name);
+        Assert.AreEqual("hello world", name);
     }
 
     [TestMethod]

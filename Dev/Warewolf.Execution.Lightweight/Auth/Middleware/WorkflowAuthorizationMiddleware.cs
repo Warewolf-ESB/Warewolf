@@ -319,7 +319,17 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             .Split('/')[0]
             .Split('?')[0];
 
+        // HttpRequestData.Url.AbsolutePath returns percent-encoded chars on the
+        // Windows Functions host, so a request for `/Secure/Control Flow - Decision`
+        // arrives as `/Secure/Control%20Flow%20-%20Decision`.  Decode here so the
+        // workflow segment matches the ResourceName stored in secure.config.
+        var rawSegment = segment;
+        segment = Uri.UnescapeDataString(segment);
+
         var name = Path.GetFileNameWithoutExtension(segment).ToLowerInvariant();
+        Console.WriteLine(
+            $"[SecuritySpecsDiag] ExtractWorkflowName path='{path}' raw='{rawSegment}' " +
+            $"decoded='{segment}' name='{name}'");
         return string.IsNullOrEmpty(name) ? null : name;
     }
 

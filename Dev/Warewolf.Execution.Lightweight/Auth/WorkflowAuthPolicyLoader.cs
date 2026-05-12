@@ -167,11 +167,24 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
         // ── Determine active scope ─────────────────────────────────────────────
         var key = NormalizeWorkflowKey(workflowName);
         IReadOnlyDictionary<string, WorkflowPermission> activeScope;
+        string scopeLabel;
 
         if (_resourceRoleMap.TryGetValue(key, out var resourceMap))
+        {
             activeScope = resourceMap;
+            scopeLabel  = "resource";
+        }
         else
+        {
             activeScope = _globalRoleMap;
+            scopeLabel  = "global";
+        }
+
+        Console.WriteLine(
+            $"[SecuritySpecsDiag] GetEffectivePermissions workflow='{workflowName}' key='{key}' " +
+            $"scope={scopeLabel} scopeKeys=[{string.Join(", ", activeScope.Keys)}] " +
+            $"resourceMapKeys=[{string.Join(", ", _resourceRoleMap.Keys)}] " +
+            $"callerRoles=[{string.Join(", ", roles)}]");
 
         // ── Collect permissions ───────────────────────────────────────────────
         var combined = WorkflowPermission.None;
