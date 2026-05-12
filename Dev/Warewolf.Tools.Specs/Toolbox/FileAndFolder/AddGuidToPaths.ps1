@@ -49,14 +49,20 @@
 
 "$PSScriptRoot\Rename\Rename.feature.cs" |
     Foreach-Object {
-        (Get-Content $_) | 
+        $SawMarker = $false
+        (Get-Content $_) |
             Foreach-Object {
+                if ($SawMarker) {
+                    $SawMarker = $false
+                    if ($_ -ne "            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();") {
+						"            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();"
+						"            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);"
+						"            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);"
+                    }
+                }
                 $_
-                if ($_ -eq "                    `"FileRenameFromUNCWithoutOverwrite`"};") 
-                {
-					"            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();"
-					"            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);"
-					"            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);"
+                if ($_ -eq "                    `"FileRenameFromUNCWithoutOverwrite`"};") {
+                    $SawMarker = $true
                 }
     } | Set-Content $_
 }
