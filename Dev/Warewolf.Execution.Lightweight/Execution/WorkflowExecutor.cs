@@ -114,10 +114,12 @@ namespace Warewolf.Execution.Lightweight
                 // Step 1: Read the workflow XML file
                 Dev2Logger.Debug($"WorkflowExecutor Step 1: Reading workflow file: {request.WorkflowFilePath}", executionId.ToString());
                 var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
+                Dev2Logger.Debug($"WorkflowExecutor Step 1 completed: Successfully read workflow file: {request.WorkflowFilePath}", executionId.ToString());
 
                 // Step 2: Extract XamlDefinition and DataList from the XML
                 Dev2Logger.Debug("WorkflowExecutor Step 2: Extracting workflow parts (XAML, DataList)", executionId.ToString());
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
+                Dev2Logger.Debug("WorkflowExecutor Step 2 completed: Successfully extracted workflow parts", executionId.ToString());
 
                 if (xamlDefinition == null || xamlDefinition.Length == 0)
                 {
@@ -157,6 +159,7 @@ namespace Warewolf.Execution.Lightweight
                 // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
                 Dev2Logger.Debug("WorkflowExecutor Step 3: Loading DynamicActivity from XAML", executionId.ToString());
                 var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
+                Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Successfully loaded DynamicActivity from XAML", executionId.ToString());
 
                 if (dynamicActivity == null)
                 {
@@ -168,6 +171,7 @@ namespace Warewolf.Execution.Lightweight
                 Dev2Logger.Debug("WorkflowExecutor Step 4: Parsing DynamicActivity into IDev2Activity chain", executionId.ToString());
                 var activityParser = new ActivityParser();
                 var startActivity = activityParser.Parse(dynamicActivity);
+                Dev2Logger.Debug("WorkflowExecutor Step 4 completed: Successfully parsed IDev2Activity chain", executionId.ToString());
 
                 if (startActivity == null)
                 {
@@ -178,6 +182,7 @@ namespace Warewolf.Execution.Lightweight
                 // Step 5: Build DsfDataObject with inputs
                 Dev2Logger.Debug("WorkflowExecutor Step 5: Building DsfDataObject with inputs", executionId.ToString());
                 var dataObject = BuildDataObject(request, executionId, resolvedName, dataList);
+                Dev2Logger.Debug("WorkflowExecutor Step 5 completed: Successfully built DsfDataObject with inputs", executionId.ToString());
 
                 // Index DbSource bite files in the resources directory so they can be loaded
                 // on demand by ServiceExecutionAbstract.GetSource(Guid) without pre-loading them all.
@@ -185,6 +190,7 @@ namespace Warewolf.Execution.Lightweight
                 Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed for resources directory: {resourcesDir}", executionId.ToString());
                 LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
                 _executionLogger.LogInfo($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed completed for resources directory: {resourcesDir}", executionId.ToString());
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
@@ -211,6 +217,7 @@ namespace Warewolf.Execution.Lightweight
                     if (debugCapturer != null)
                         EmitWorkflowEndState(dataObject, resolvedName, dataList, startTime);
                 }
+                Dev2Logger.Debug("WorkflowExecutor Step 6 completed: Successfully executed activity chain", executionId.ToString());
 
                 // Step 7: Extract outputs
                 Dev2Logger.Debug("WorkflowExecutor Step 7: Extracting outputs and building result", executionId.ToString());
@@ -225,6 +232,7 @@ namespace Warewolf.Execution.Lightweight
 
                 CollectErrors(dataObject, result, executionId);
                 ExtractPayload(dataObject, dataList, request, result);
+                Dev2Logger.Debug("WorkflowExecutor Step 7 completed: Successfully extracted outputs and built result", executionId.ToString());
                 if (debugCapturer != null)
                 {
                     // Mirror Executor.DebugFromWebExecutionResponse: build a parent?child tree

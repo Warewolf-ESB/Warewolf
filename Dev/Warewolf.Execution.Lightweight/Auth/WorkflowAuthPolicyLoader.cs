@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Common;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
@@ -26,17 +27,14 @@ namespace Warewolf.Execution.Lightweight.Auth;
 internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 {
     private readonly IReadOnlyDictionary<string, WorkflowAuthPolicy> _policies;
-    private readonly ILogger<WorkflowAuthPolicyLoader> _logger;
 
     /// <inheritdoc/>
     public int PolicyCount => _policies.Count;
 
     public WorkflowAuthPolicyLoader(ILogger<WorkflowAuthPolicyLoader> logger)
     {
-        _logger   = logger;
         _policies = BuildPolicies(SecureConfigLoader.Config);
-        _logger.LogInformation(
-            "WorkflowAuthPolicyLoader initialised with {Count} workflow policies.", _policies.Count);
+        Dev2Logger.Info($"WorkflowAuthPolicyLoader initialised with {_policies.Count} workflow policies.", "WorkflowAuthPolicyLoader");
     }
 
     /// <inheritdoc/>
@@ -49,9 +47,9 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
     {
         if (!config.IsLoaded)
         {
-            _logger.LogWarning(
+            Dev2Logger.Warn(
                 "secure.config not loaded — WorkflowAuthPolicyLoader has no policies. " +
-                "All /secure/* routes will be evaluated without group-level enforcement.");
+                "All /secure/* routes will be evaluated without group-level enforcement.", "WorkflowAuthPolicyLoader");
             return new Dictionary<string, WorkflowAuthPolicy>();
         }
 
@@ -83,11 +81,9 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 
             dict[group.Key] = policy;
 
-            _logger.LogDebug(
-                "Policy built: workflow={Workflow} groups=[{Groups}] required={Perms}",
-                group.Key,
-                string.Join(", ", policy.AllowedGroups),
-                policy.RequiredPermissions);
+            Dev2Logger.Debug(
+                $"Policy built: workflow={group.Key} groups=[{string.Join(", ", policy.AllowedGroups)}] required={policy.RequiredPermissions}",
+                "WorkflowAuthPolicyLoader");
         }
 
         return dict;
