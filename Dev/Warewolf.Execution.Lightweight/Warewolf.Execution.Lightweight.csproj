@@ -133,6 +133,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Compile Remove="docs\ClientExamples\**" />
+    <EmbeddedResource Remove="docs\ClientExamples\**" />
+    <None Remove="docs\ClientExamples\**" />
 
     <!--
       Optional: if a secure.config is present next to the project file it will be
@@ -154,6 +157,17 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="docs\ClientExamples\Angular17\src\app\auth\auth.config.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\auth\auth.service.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\client-credentials\client-credentials.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\nav\navbar.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\shared\error-panel\error-panel.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\shared\token-display\token-display.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.model.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.service.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\environments\environment.prod.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\environments\environment.ts" />
     <!--<None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

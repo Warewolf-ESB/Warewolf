@@ -70,7 +70,9 @@ Every `az` CLI command is printed to the console **before** it executes so you c
     -ResourceAppId "<resource-app-id>" `
     -TenantId "<tenant-id>" `
     -ClientType SPA `
-    -SpaRedirectUris @('http://localhost:4200', 'http://localhost:3000')
+    -SpaRedirectUris @('http://localhost:4200', 'http://localhost:3000') `
+    -FunctionAppName "<function-app-name>" `
+    -FunctionAppResourceGroup "<resource-group>"
 ```
 
 **What it configures:**
@@ -78,6 +80,40 @@ Every `az` CLI command is printed to the console **before** it executes so you c
 - Sets SPA platform redirect URIs via Graph PATCH (enables PKCE)
 - Grants delegated `user_impersonation` scope
 - Grants admin consent
+- **Enables CORS on the Function App** and adds each SPA origin (scheme + host derived from `-SpaRedirectUris`) to the Function App Allowed Origins
+
+#### Function App Allowed Origins (CORS)
+
+Browser-based SPA clients are subject to the browser's same-origin policy.  Without a matching Allowed Origin entry on the Function App, the browser will block the `Authorization: Bearer` header on cross-origin requests.
+
+The script automatically derives the origin (scheme + host, e.g. `http://localhost:4200`) from each entry in `-SpaRedirectUris` and adds it with:
+
+```bash
+az functionapp cors add \
+  --name <function-app-name> \
+  --resource-group <resource-group> \
+  --allowed-origins http://localhost:4200
+```
+
+The operation is idempotent — origins already present are skipped.
+
+**To skip CORS configuration** (e.g. it is managed elsewhere):
+
+```powershell
+./Scripts/Configure-WwExecutionAuth-Clients.ps1 `
+    -ResourceAppId "<resource-app-id>" `
+    -TenantId "<tenant-id>" `
+    -ClientType SPA `
+    -SkipCorsConfiguration
+```
+
+**Why CORS is NOT configured for Confidential or Daemon clients:**
+
+| Client Type | Runs in browser? | Needs CORS? |
+|---|---|---|
+| SPA | Yes — MSAL.js / fetch from browser | **Yes** — browser enforces same-origin policy |
+| Confidential Web | No — server-side HTTP calls | No — server-to-server, no browser origin restriction |
+| Daemon / Service | No — background service / MI | No — server-to-server, no browser origin restriction |
 
 **Token acquisition:** Device Code Flow or MSAL.js `acquireTokenSilent` / `loginRedirect`.
 
@@ -146,6 +182,9 @@ Every `az` CLI command is printed to the console **before** it executes so you c
 | `-DaemonUseManagedIdentity` | Skip secret, use MI | `$false` |
 | `-SecretLifetimeYears` | Secret validity (1–2) | `1` |
 | `-AppRolesToAssign` | Roles for daemon SP (sanitized, underscores) | `Permission.Execute`, `Permission.View` |
+| `-FunctionAppName` | Azure Function App name — used to add Allowed Origins (SPA only) | (empty — prompts or skips) |
+| `-FunctionAppResourceGroup` | Resource group of the Function App (SPA CORS only) | (empty — prompts or skips) |
+| `-SkipCorsConfiguration` | Skip Function App CORS / Allowed Origins setup for SPA | `$false` |
 | `-DryRun` | Print plan only, no changes | `$false` |
 | `-NonInteractive` | Skip all prompts; fail on missing values | `$false` |
 
@@ -164,8 +203,10 @@ The script writes `Scripts/Configure-WwExecutionAuth-Clients.output.json` (BOM-f
   "Scope": "api://11111111-.../.default",
   "Authority": "https://login.microsoftonline.com/22222222-...",
   "ClientDisplayNamePrefix": "wwexecution",
+  "FunctionAppName": "myfuncapp",
+  "FunctionAppResourceGroup": "myRG",
   "Clients": {
-    "SPA":          { "DisplayName": "wwexecution-spa",    "ClientId": "...", "RedirectUris": [...], "GrantType": "Authorization Code + PKCE (public client)" },
+    "SPA":          { "DisplayName": "wwexecution-spa",    "ClientId": "...", "RedirectUris": [...], "CorsOriginsAdded": ["http://localhost:4200","http://localhost:3000"], "GrantType": "Authorization Code + PKCE (public client)" },
     "Confidential": { "DisplayName": "wwexecution-web",    "ClientId": "...", "ClientSecret": "...", "SecretExpiry": "2026-01-15", "GrantType": "Authorization Code (confidential) + OBO" },
     "Daemon":       { "DisplayName": "wwexecution-daemon", "ClientId": "...", "ClientSecret": "...", "SpObjectId": "...", "RolesAssigned": [...], "GrantType": "Client Credentials" }
   }

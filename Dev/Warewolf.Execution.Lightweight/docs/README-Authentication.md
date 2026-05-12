@@ -8,17 +8,17 @@ End-to-end guide for setting up Azure Entra ID authentication on the **wwexecuti
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         Azure Function App (wwexecution)                      │
-│                                                                              │
-│  ┌──────────────────┐   ┌───────────────────────┐   ┌───────────────────┐  │
-│  │ EasyAuth Redirect │──▶│ ClaimsPrincipal Builder│──▶│ Workflow Authz     │  │
-│  │ Middleware        │   │ Middleware             │   │ Middleware         │  │
-│  └──────────────────┘   └───────────────────────┘   └───────────────────┘  │
-│         │                        │                           │               │
-│    /public/* → pass         Parses:                   Enforces:              │
+│                         Azure Function App (wwexecution)                    │
+│                                                                             │
+│  ┌──────────────────┐   ┌───────────────────────┐   ┌───────────────────┐   │
+│  │ EasyAuthRedirect │─▶ │ ClaimsPrincipalBuilder│─▶ │ Workflow Authz    │   │
+│  │ Middleware       │   │ Middleware            │   │ Middleware        │   │
+│  └──────────────────┘   └───────────────────────┘   └───────────────────┘   │
+│         │                        │                           │              │
+│    /public/* → pass         Parses:                   Enforces:             │
 │    /secure/* → 401/redirect  • X-MS-CLIENT-PRINCIPAL   • secure.config      │
-│    /services/* → 401/redirect • Authorization: Bearer   • Group membership   │
-│                                                         • Permission flags   │
+│    /services/* → 401/redirect • Authorization: Bearer   • Group membership  │
+│                                                         • Permission flags  │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌────────────────┐    ┌─────────────────┐    ┌────────────────┐
@@ -35,22 +35,48 @@ End-to-end guide for setting up Azure Entra ID authentication on the **wwexecuti
 
 ## Step-by-Step Setup
 
-### Step 1: Create the Azure Function App
+### Set Variables
 
-Create the function app in Azure (if not already done):
+Variables — must match those at the top of Configure-WwExecutionAuth.ps1
 
 ```bash
-az functionapp create \
-  --name wwexecution \
-  --resource-group rg-warewolf \
-  --storage-account stwarewolf \
-  --consumption-plan-location westus2 \
-  --runtime dotnet-isolated \
-  --runtime-version 8 \
-  --functions-version 4
+$tenantid=az account show --query tenantId -o tsv
+$subscriptionid=az account show --query id -o tsv
+$Loc      = 'southafricanorth'
+$Rg       = 'DEV2'
+$Stg      = 'stwwexecutiondev'                 # 3-24 lowercase
+$AppName  = 'wwexecutiondev'
 ```
 
-### Step 2: Provision Entra ID for the Function App
+### Create Resource Group, Storage Account and Azure Function App if not already done (Optional)
+
+### 1.1 Resource group
+
+```bash
+az group create --name $Rg --location $Loc
+```
+
+### 1.2 Storage account (required by Functions)
+
+```bash
+az storage account create `
+    --name $Stg --resource-group $Rg --location $Loc `
+    --sku Standard_LRS --kind StorageV2 --min-tls-version TLS1_2
+```
+
+### 1.3 Function App on Consumption (Y1) - Free tier, .NET 8 isolated
+
+```bash
+az functionapp create `
+    --name $AppName --resource-group $Rg --consumption-plan-location $Loc `
+    --storage-account $Stg `
+    --runtime dotnet-isolated --runtime-version 8 --functions-version 4 `
+    --https-only true 
+    --os-type Windows 
+```
+
+
+### Step 2: Provision Entra ID for the Function App (API)
 
 Run the server-side provisioning script to configure the Entra app registration, Easy Auth, app roles, and app settings:
 
@@ -58,22 +84,29 @@ Run the server-side provisioning script to configure the Entra app registration,
 az login
 
 ./Scripts/Configure-WwExecutionAuth.ps1 `
-    -SubscriptionId "<subscription-guid>" `
-    -TenantId "<tenant-guid>" `
-    -ResourceGroupName "rg-warewolf" `
-    -FunctionAppName "wwexecution" `
+    -SubscriptionId $subscriptionid `
+    -TenantId $tenantid `
+    -ResourceGroupName $Rg `
+    -FunctionAppName $AppName `
     -GroupPermissions @{
-        'Developers' = @('Permission.View','Permission.Execute','Permission.Contribute')
-        'Operators'  = @('Permission.View','Permission.Execute')
+        'Warewolf_Developers' = @()
+        'Warewolf_Operators'  = @()
+        'Warewolf_Adminstrators'     = @()
     } `
+    -UserAssignments @(
+        @{ Upn = 'ashley.lewis@theunlimited.co.za'; Group = 'Warewolf_Adminstrators' }
+	@{ Upn = 'sehul.shah@theunlimited.co.za'; Group = 'Warewolf_Developers' }
+        @{ Upn = 'yogesh.rajpurohit@theunlimited.co.za';   Group = 'Warewolf_Operators' }
+    ) `
     -NonInteractive -SkipSmokeTest
+
 ```
 
 **Output**: `Scripts/Configure-WwExecutionAuth.output.json` with the `ClientId` (Resource App ID).
 
 📖 Full details: [AzureProvisioning-FunctionApp.md](AzureProvisioning-FunctionApp.md)
 
-### Step 3: Deploy the Function App Code
+### Step 3: Deploy the Function App Code (Optional, can be done seperately)
 
 ```powershell
 cd Warewolf.Execution.Lightweight
@@ -82,27 +115,72 @@ cd publish
 func azure functionapp publish wwexecution
 ```
 
-### Step 4: Configure secure.config
+### Step 4: Configure secure.config (Optional, should be deployed with Azure Function App)
 
 Upload a `secure.config` that defines workflow-level access policies:
 
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
-<SecureConfig>
-  <WindowsGroupPermissions>
-    <WindowsGroup Name="Developers">
-      <Permissions>
-        <Permission Resource="Hello World" View="true" Execute="true" Contribute="true" />
-        <Permission Resource="ProcessOrder" View="true" Execute="true" />
-      </Permissions>
-    </WindowsGroup>
-    <WindowsGroup Name="Operators">
-      <Permissions>
-        <Permission Resource="Hello World" View="true" Execute="true" />
-      </Permissions>
-    </WindowsGroup>
-  </WindowsGroupPermissions>
-</SecureConfig>
+{
+"WindowsGroupPermissions": [
+{
+"Comment": "Server permissions apply to the whole server.",
+"WindowsGroup": "Warewolf_Adminstrators",
+"IsServer": true,
+"View": true,
+"Execute": true,
+"Contribute": true,
+"DeployTo": true,
+"DeployFrom": true,
+"Administrator": true
+},
+{
+"Comment": "Server permissions apply to the whole server.",
+"WindowsGroup": "Public",
+"IsServer": true,
+"View": false,
+"Execute": false,
+"Contribute": false,
+"DeployTo": false,
+"DeployFrom": false,
+"Administrator": false
+},
+{
+"Comment": "Resource permissions apply to a specific workflow only. Set IsServer to false and provide the ResourceName.",
+"WindowsGroup": "Public",
+"IsServer": false,
+"ResourceName": "Hello World",
+"View": true,
+"Execute": true,
+"Contribute": false
+},
+{
+"Comment": "Warewolf Developers group.",
+"WindowsGroup": "Warewolf_Developers",
+"IsServer": true,
+"ResourceName": "",
+"View": true,
+"Execute": true,
+"Contribute": true,
+"Administrator": false,
+"DeployTo": false,
+"DeployFrom": false
+},
+
+{
+"Comment": "Warewolf Operators group.",
+"WindowsGroup": "Warewolf_Operators",
+"IsServer": true,
+"ResourceName": "",
+"View": true,
+"Execute": true,
+"Contribute": false,
+"Administrator": false,
+"DeployTo": false,
+"DeployFrom": false
+}
+]
+}
+
 ```
 
 ### Step 5: Provision Client App Registrations
@@ -117,7 +195,7 @@ $ResourceAppId = $output.ClientId
 # Provision all client types
 ./Scripts/Configure-WwExecutionAuth-Clients.ps1 `
     -ResourceAppId $ResourceAppId `
-    -TenantId "<tenant-guid>"
+    -TenantId $tenantid
 ```
 
 **Output**: `Scripts/Configure-WwExecutionAuth-Clients.output.json` with client IDs and secrets.
@@ -178,25 +256,14 @@ Invoke-RestMethod `
     -Headers @{ Authorization = "Bearer $TOKEN" }
 ```
 
-**bash / Git-Bash / WSL**
+Expected Output:
+
 ```bash
-# Load from output files (requires jq)
-TENANT_ID=$(jq -r       '.TenantId'                         ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-RESOURCE_APP_ID=$(jq -r '.ResourceAppId'                    ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-DAEMON_CLIENT_ID=$(jq -r '.Clients.Daemon.ClientId'         ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-DAEMON_SECRET=$(jq -r    '.Clients.Daemon.ClientSecret'     ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-FUNCTION_APP_NAME=$(jq -r '.FunctionAppName'                ./Scripts/Configure-WwExecutionAuth.output.json)
-
-TOKEN=$(curl -s -X POST "https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token" \
-  --data-urlencode "grant_type=client_credentials" \
-  --data-urlencode "client_id=${DAEMON_CLIENT_ID}" \
-  --data-urlencode "client_secret=${DAEMON_SECRET}" \
-  --data-urlencode "scope=api://${RESOURCE_APP_ID}/.default" \
-  | jq -r '.access_token')
-
-curl -H "Authorization: Bearer ${TOKEN}" \
-  "https://${FUNCTION_APP_NAME}.azurewebsites.net/secure/Hello%20World.json?Name=Service"
+Message
+-------
+Hello Service.
 ```
+
 
 #### Option B: Device Code — for interactive CLI usage
 
@@ -258,6 +325,11 @@ do {
     }
 } until ($TOKEN)
 
+# Step 3
+# login in the browser: To sign in, use a web browser to open the page https://login.microsoft.com/device and enter the code {code} to authenticate. here code will be displayed in powershell after step 1 execution
+# after successful authentication step 2 will come out of loop and $TOKEN should display the token received
+
+
 if ($TOKEN) {
     Invoke-RestMethod `
         -Uri "$FunctionAppUrl/secure/Hello%20World.json?Name=User" `
@@ -267,57 +339,15 @@ if ($TOKEN) {
 }
 ```
 
-**bash / Git-Bash / WSL**
+Expected Output:
+
 ```bash
-# Load from output files (requires jq)
-TENANT_ID=$(jq -r       '.TenantId'                     ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-RESOURCE_APP_ID=$(jq -r '.ResourceAppId'                ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-SPA_CLIENT_ID=$(jq -r   '.Clients.SPA.ClientId'         ./Scripts/Configure-WwExecutionAuth-Clients.output.json)
-FUNCTION_APP_NAME=$(jq -r '.FunctionAppName'            ./Scripts/Configure-WwExecutionAuth.output.json)
-
-# Step 1 — request device code
-DEVICE=$(curl -s -X POST "https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/devicecode" \
-  --data-urlencode "client_id=${SPA_CLIENT_ID}" \
-  --data-urlencode "scope=api://${RESOURCE_APP_ID}/.default")
-
-echo "$DEVICE" | jq -r '.message'   # shows the URL and user code
-DEVICE_CODE=$(echo "$DEVICE" | jq -r '.device_code')
-INTERVAL=$(echo "$DEVICE" | jq -r '.interval')
-
-# Step 2 — poll for token; break on fatal errors, continue only on authorization_pending / slow_down
-TOKEN=""
-while true; do
-  sleep "$INTERVAL"
-  RESPONSE=$(curl -s -X POST "https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token" \
-    --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:device_code" \
-    --data-urlencode "client_id=${SPA_CLIENT_ID}" \
-    --data-urlencode "device_code=${DEVICE_CODE}")
-
-  ERR=$(echo "$RESPONSE" | jq -r '.error // empty')
-
-  if [ -z "$ERR" ]; then
-    # Success
-    TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
-    break
-  elif [ "$ERR" = "authorization_pending" ]; then
-    continue   # User hasn't authenticated yet — keep polling
-  elif [ "$ERR" = "slow_down" ]; then
-    INTERVAL=$((INTERVAL + 5))
-    continue
-  else
-    # Fatal: consent_required, access_denied, expired_token, etc.
-    echo "Token request failed: $ERR — $(echo "$RESPONSE" | jq -r '.error_description')" >&2
-    break
-  fi
-done
-
-if [ -n "$TOKEN" ]; then
-  curl -H "Authorization: Bearer ${TOKEN}" \
-    "https://${FUNCTION_APP_NAME}.azurewebsites.net/secure/Hello%20World.json?Name=User"
-else
-  echo "No token acquired — check error above and review admin consent." >&2
-fi
+Message
+-------
+Hello User.
 ```
+
+
 
 #### Option C: Browser — automatic redirect
 
