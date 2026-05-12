@@ -397,24 +397,77 @@ namespace Dev2.Activities.Specs.Permissions
         static List<string> FetchApisJson(HttpClient http, bool secure)
         {
             var route = secure ? "/Secure/apis.json" : "/Public/apis.json";
+            string body = "(no response)";
+            HttpStatusCode status = 0;
             try
             {
                 var response = http.GetAsync($"{LightweightBaseUrl}{route}").Result;
-                if (!response.IsSuccessStatusCode)
-                    return new List<string>();
+                status = response.StatusCode;
+                body   = response.Content.ReadAsStringAsync().Result;
 
-                var body = response.Content.ReadAsStringAsync().Result;
-                dynamic doc   = JsonConvert.DeserializeObject(body);
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogApisJsonDiag(route, status, body, reason: $"non-success status {(int)status}");
+                    return new List<string>();
+                }
+
+                // ApisJsonGenerator emits PascalCase keys (Apis/Name/baseUrl), matching
+                // the official Warewolf ApisJson model. JObject's dynamic accessor is
+                // case-sensitive, so we use the JObject indexer explicitly.
+                var doc  = Newtonsoft.Json.Linq.JObject.Parse(body);
+                var apis = doc["Apis"] as Newtonsoft.Json.Linq.JArray;
+
                 var names = new List<string>();
-                if (doc?.apis != null)
-                    foreach (var api in doc.apis)
-                        names.Add((string)(api.name ?? api.path ?? ""));
+                if (apis != null)
+                    foreach (var api in apis)
+                    {
+                        var name = api["Name"]?.ToString()
+                                ?? api["baseUrl"]?.ToString()
+                                ?? string.Empty;
+                        names.Add(name);
+                    }
+
+                if (names.Count == 0)
+                    LogApisJsonDiag(route, status, body, reason: "Apis array missing or empty");
+
                 return names;
             }
-            catch
+            catch (Exception ex)
             {
+                LogApisJsonDiag(route, status, body, reason: $"exception: {ex.GetType().Name}: {ex.Message}");
                 return new List<string>();
             }
+        }
+
+        static void LogApisJsonDiag(string route, HttpStatusCode status, string body, string reason)
+        {
+            // Surfaced on CI via stdout — gives us a clear post-mortem when an assertion
+            // fails: what the server returned, who we authenticated as, and what the
+            // currently-deployed secure.config believes its permission set to be.
+            string bodySnippet = body is null
+                ? "(null body)"
+                : (body.Length > 800 ? body.Substring(0, 800) + "…(truncated)" : body);
+
+            int  permCount    = -1;
+            int  configSize   = -1;
+            string configPath = GetSecureConfigPath();
+            try
+            {
+                permCount  = ReadCurrentPermissions().Count();
+                configSize = File.Exists(configPath) ? (int)new FileInfo(configPath).Length : 0;
+            }
+            catch { /* best-effort diagnostics only */ }
+
+            Console.WriteLine(
+                "[SettingsPermissionsSteps] FetchApisJson diag:\n" +
+                $"  route          = {route}\n" +
+                $"  status         = {(int)status} {status}\n" +
+                $"  reason         = {reason}\n" +
+                $"  authRole       = {GetEntraRole()}\n" +
+                $"  configPath     = {configPath}\n" +
+                $"  configBytes    = {configSize}\n" +
+                $"  permEntries    = {permCount}\n" +
+                $"  body[:800]     = {bodySnippet}");
         }
     }
 }
