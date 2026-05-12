@@ -57,8 +57,14 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IRouteAuthorizationRegistry>(
             _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
 
-        // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
+        // Principal parsers — ordered chain.
+        //   1. EasyAuth        — X-MS-CLIENT-PRINCIPAL header (Azure App Service auth)
+        //   2. WarewolfHmacJwt — Authorization: Bearer with HMAC-SHA256 signature
+        //                        using SecretKey from secure.config (Warewolf server)
+        //   3. BearerToken     — Authorization: Bearer with RS256 signature against
+        //                        Entra OIDC metadata
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
+        services.AddSingleton<IPrincipalParser, WarewolfHmacJwtPrincipalParser>();
         services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.

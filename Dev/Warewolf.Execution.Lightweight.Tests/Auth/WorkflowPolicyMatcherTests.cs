@@ -127,8 +127,9 @@ public class WorkflowPolicyMatcherTests
     [TestMethod]
     public void TST03_DenyPermission_When_GroupMatches_ButMissingFlag()
     {
-        // TeamA has only View — Execute is missing
-        var policy  = MakePolicy("hello", ("TeamA", WorkflowPermission.View));
+        // TeamA has only DeployTo — no overlap with the default required
+        // View|Execute set (OR semantics).  DenyPermission is expected.
+        var policy  = MakePolicy("hello", ("TeamA", WorkflowPermission.DeployTo));
         var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
         var matcher = new WorkflowPolicyMatcher(loader);
 
@@ -227,8 +228,9 @@ public class WorkflowPolicyMatcherTests
     [TestMethod]
     public void TST10_DenyPermission_WhenResolvedFlagsInsufficientForRequired()
     {
-        // Public gives only View — Execute is still missing for required View|Execute
-        var policy  = MakePolicy("hello", ("Public", WorkflowPermission.View));
+        // Public gives only Contribute — no overlap with required View|Execute
+        // under OR semantics, so the matcher must DenyPermission.
+        var policy  = MakePolicy("hello", ("Public", WorkflowPermission.Contribute));
         var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
         var matcher = new WorkflowPolicyMatcher(loader);
 

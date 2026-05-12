@@ -33,8 +33,11 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 ///
 /// <list type="bullet">
 ///   <item>Group check: OR logic — caller must match at least ONE <c>AllowedGroups</c> entry.</item>
-///   <item>Permission check: AND logic — the matching group entry must hold ALL
-///         required permission flags.</item>
+///   <item>Permission check: OR logic — the matching group entry must hold AT LEAST ONE
+///         of the required permission flags.  A multi-flag attribute such as
+///         <c>[RequireWorkflowPermission(View | Execute)]</c> therefore means
+///         "View OR Execute is enough", aligning with the Warewolf Security Specs
+///         contract that View permission alone grants access to <c>/Secure/{name}</c>.</item>
 /// </list>
 ///
 /// When <c>secure.config</c> is not loaded, all authenticated routes pass through
