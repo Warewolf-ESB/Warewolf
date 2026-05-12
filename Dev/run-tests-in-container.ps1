@@ -124,19 +124,54 @@ if ($CIMode) {
     if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
     $containerId = $null   # we will use docker run --rm below
 
+    # Container-internal paths and commands differ between Linux and Windows nanoserver containers.
+    # On Windows hosts the Dockerfile.test produces a Windows nanoserver image; on Linux it
+    # produces a Linux image.  Use process isolation on Windows so containers share the host
+    # network stack and localhost:7071 reaches the engine running on the agent host.
+    $sep = [System.IO.Path]::DirectorySeparatorChar
+    if ($IsWindows) {
+        $cTests          = 'C:\tests'
+        $cResults        = 'C:\results'
+        $cCoverage       = 'C:\coverage'
+        $cSharedConfig   = 'C:\shared-config'
+        $cDotnet         = 'dotnet'
+        $cDotnetCoverage = 'C:\Users\ContainerAdministrator\.dotnet\tools\dotnet-coverage'
+        $isolationArgs   = @('--isolation=process')
+    } else {
+        $cTests          = '/tests'
+        $cResults        = '/results'
+        $cCoverage       = '/coverage'
+        $cSharedConfig   = '/shared-config'
+        $cDotnet         = '/usr/share/dotnet/dotnet'
+        $cDotnetCoverage = '/root/.dotnet/tools/dotnet-coverage'
+        $isolationArgs   = @()
+    }
+
     # Verify dotnet-coverage was actually installed into the image.
     # A stale Docker layer cache or a transient NuGet failure can leave the
     # tool directory empty even though the build exits 0.
     Write-Host "--- Verifying dotnet-coverage in image ---" -ForegroundColor Cyan
-    $toolCheck = & docker run --rm warewolf-test-env sh -c "ls -la /root/.dotnet/tools/ 2>&1; echo EXIT:$?"
-    Write-Host $toolCheck
-    $coveragePresent = & docker run --rm warewolf-test-env sh -c "test -x /root/.dotnet/tools/dotnet-coverage && echo FOUND || echo MISSING"
+    if ($IsWindows) {
+        $baseRunArgs = @('run', '--rm', '--isolation=process', 'warewolf-test-env')
+        $toolCheck = & docker @baseRunArgs cmd /c "dir C:\Users\ContainerAdministrator\.dotnet\tools 2>&1"
+        Write-Host $toolCheck
+        $coveragePresent = & docker @baseRunArgs cmd /c "if exist C:\Users\ContainerAdministrator\.dotnet\tools\dotnet-coverage.exe (echo FOUND) else (echo MISSING)"
+    } else {
+        $baseRunArgs = @('run', '--rm', 'warewolf-test-env')
+        $toolCheck = & docker @baseRunArgs sh -c "ls -la /root/.dotnet/tools/ 2>&1; echo EXIT:$?"
+        Write-Host $toolCheck
+        $coveragePresent = & docker @baseRunArgs sh -c "test -x /root/.dotnet/tools/dotnet-coverage && echo FOUND || echo MISSING"
+    }
     if ($coveragePresent -notmatch "FOUND") {
         Write-Host "##[error] dotnet-coverage is MISSING from the image." -ForegroundColor Red
-        Write-Host "Installed global tools:" -ForegroundColor Yellow
-        & docker run --rm warewolf-test-env sh -c "/usr/share/dotnet/dotnet tool list --global 2>&1 || true"
-        Write-Host "DOTNET_ROOT / dotnet location:" -ForegroundColor Yellow
-        & docker run --rm warewolf-test-env sh -c "which dotnet 2>&1 || true; ls /usr/share/dotnet/ 2>&1 || true"
+        if ($IsWindows) {
+            & docker run --rm --isolation=process warewolf-test-env cmd /c "dotnet tool list --global 2>&1"
+        } else {
+            Write-Host "Installed global tools:" -ForegroundColor Yellow
+            & docker run --rm warewolf-test-env sh -c "/usr/share/dotnet/dotnet tool list --global 2>&1 || true"
+            Write-Host "DOTNET_ROOT / dotnet location:" -ForegroundColor Yellow
+            & docker run --rm warewolf-test-env sh -c "which dotnet 2>&1 || true; ls /usr/share/dotnet/ 2>&1 || true"
+        }
         Write-Error "dotnet-coverage not found in image — aborting. Rebuild with --no-cache to re-run the tool install step."
         exit 1
     }
@@ -293,7 +328,8 @@ if ($CIMode) {
             # whole solution with --self-contained true -p:UseAppHost=true creates an app-host
             # binary for EVERY project (including OutputType=Library ones like Security.Specs)
             # even though they are plain vstest assemblies, not MTP projects.
-            $binaryPath = Join-Path $BinDir $assembly
+            # On Windows look for the .exe app-host; on Linux look for the no-extension ELF binary.
+            $binaryPath = if ($IsWindows) { Join-Path $BinDir "$assembly.exe" } else { Join-Path $BinDir $assembly }
             if (-not (Test-Path $binaryPath)) {
                 Write-Host "  [MTP] No app-host binary found for $assembly; using dotnet test." -ForegroundColor DarkGray
                 $binaryPath = $null
@@ -342,37 +378,30 @@ if ($CIMode) {
                 & chmod +x $binaryPath
             }
 
-            # --network=host is Linux-only.  On Windows (Linux containers running on a
-            # Windows Docker host), we instead add localhost as a host-gateway alias so
-            # that test code connecting to http://localhost:7071 inside the container
-            # reaches the Windows host's engine process.
-            $networkArgs = if ($UseHostNetwork) {
-                if ($IsLinux)   { @('--network=host') }
-                elseif ($IsWindows) { @('--add-host=localhost:host-gateway') }
-                else { @() }
-            } else { @() }
+            # --network=host is Linux-only.  On Windows, process isolation (set in $isolationArgs)
+            # shares the host network stack so localhost:7071 in the container reaches the engine
+            # on the agent host directly — no extra network args needed.
+            $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
 
-            # DOTNET_ROOT tells the apphost where to find the installed .NET runtime.
-            # Without it, the apphost finds .NET native libs (libcoreclr.so etc.) that
-            # ship alongside the test binaries and mistakes /tests/ for the .NET root,
-            # causing "No frameworks were found."
-            $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
+            # DOTNET_ROOT tells the Linux apphost where to find the installed .NET runtime.
+            # Not needed on Windows — dotnet is already in PATH in the nanoserver image.
+            $dotnetRootArgs = if ($IsLinux) { @('-e', 'DOTNET_ROOT=/usr/share/dotnet') } else { @() }
 
             # Build coverage wrapper args (per-assembly since output path includes the name).
             $coverageVolumeArgs = @()
             $coveragePrefix = @()
             if ($CoverageDir) {
-                $coverageVolumeArgs = @('-v', "${CoverageDir}:/coverage")
+                $coverageVolumeArgs = @('-v', "${CoverageDir}:${cCoverage}")
                 $coveragePrefix = @(
-                    '/root/.dotnet/tools/dotnet-coverage', 'collect',
-                    '--output', "/coverage/$assembly.cobertura.xml",
+                    $cDotnetCoverage, 'collect',
+                    '--output', "${cCoverage}${sep}$assembly.cobertura.xml",
                     '--output-format', 'cobertura',
                     '--nologo'
                 )
                 if ($CoverageIncludeFiles) {
                     foreach ($f in $CoverageIncludeFiles) {
                         $coveragePrefix += '--include-files'
-                        $coveragePrefix += "/tests/$f"
+                        $coveragePrefix += "${cTests}${sep}$f"
                     }
                 }
                 $coveragePrefix += '--'
@@ -386,39 +415,37 @@ if ($CIMode) {
                 New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
                 if ($IsLinux -or $IsMacOS) { & chmod 777 $SharedConfigDir }
                 $sharedConfigArgs = @(
-                    '-v', "${SharedConfigDir}:/shared-config",
-                    '-e', 'WAREWOLF_SECURE_CONFIG=/shared-config/secure.config'
+                    '-v', "${SharedConfigDir}:${cSharedConfig}",
+                    '-e', "WAREWOLF_SECURE_CONFIG=${cSharedConfig}${sep}secure.config"
                 )
             }
 
             if ($binaryPath) {
-                # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF apphost
-                # probing /tests/ for libhostfxr.so (which lands there from other
-                # self-contained test projects) before honoring DOTNET_ROOT, which caused
-                # "No frameworks were found." when running the apphost directly.
+                # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF/PE apphost
+                # probing the test dir for .NET host files before honouring DOTNET_ROOT.
                 # EnableMSTestRunner=true DLLs accept all --report-trx args when run this way.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
-                    '-v', "${BinDir}:/tests:ro",
-                    '-v', "${TestResultsDir}:/results",
+                $dockerRunArgs = @('run', '--rm') + $isolationArgs + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
+                    '-v', "${BinDir}:${cTests}:ro",
+                    '-v', "${TestResultsDir}:${cResults}",
                     'warewolf-test-env'
                 ) + $coveragePrefix + @(
-                    '/usr/share/dotnet/dotnet', "/tests/$assembly.dll",
+                    $cDotnet, "${cTests}${sep}$assembly.dll",
                     '--report-trx',
                     '--report-trx-filename', $trxName,
-                    '--results-directory', '/results',
+                    '--results-directory', $cResults,
                     '--no-progress'
                 )
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             } else {
                 # Fallback: vstest path for assemblies that are not MTP self-contained binaries.
-                $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
-                    '-v', "${BinDir}:/tests:ro",
-                    '-v', "${TestResultsDir}:/results",
+                $dockerRunArgs = @('run', '--rm') + $isolationArgs + $networkArgs + $dotnetRootArgs + $coverageVolumeArgs + $sharedConfigArgs + @(
+                    '-v', "${BinDir}:${cTests}:ro",
+                    '-v', "${TestResultsDir}:${cResults}",
                     'warewolf-test-env'
                 ) + $coveragePrefix + @(
-                    '/usr/share/dotnet/dotnet', 'test', "/tests/$assembly.dll",
+                    $cDotnet, 'test', "${cTests}${sep}$assembly.dll",
                     '--logger', "trx;LogFileName=$trxName",
-                    '--results-directory', '/results'
+                    '--results-directory', $cResults
                 )
                 if ($filterValue) { $dockerRunArgs += '--filter'; $dockerRunArgs += $filterValue }
             }
