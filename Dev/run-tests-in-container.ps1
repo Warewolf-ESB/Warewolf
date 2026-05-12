@@ -124,54 +124,31 @@ if ($CIMode) {
     if ($LASTEXITCODE -ne 0) { Write-Error "Image build failed."; exit 1 }
     $containerId = $null   # we will use docker run --rm below
 
-    # Container-internal paths and commands differ between Linux and Windows nanoserver containers.
-    # On Windows hosts the Dockerfile.test produces a Windows nanoserver image; on Linux it
-    # produces a Linux image.  Use process isolation on Windows so containers share the host
-    # network stack and localhost:7071 reaches the engine running on the agent host.
-    $sep = [System.IO.Path]::DirectorySeparatorChar
-    if ($IsWindows) {
-        $cTests          = 'C:\tests'
-        $cResults        = 'C:\results'
-        $cCoverage       = 'C:\coverage'
-        $cSharedConfig   = 'C:\shared-config'
-        $cDotnet         = 'dotnet'
-        $cDotnetCoverage = 'C:\Users\ContainerAdministrator\.dotnet\tools\dotnet-coverage'
-        $isolationArgs   = @('--isolation=process')
-    } else {
-        $cTests          = '/tests'
-        $cResults        = '/results'
-        $cCoverage       = '/coverage'
-        $cSharedConfig   = '/shared-config'
-        $cDotnet         = '/usr/share/dotnet/dotnet'
-        $cDotnetCoverage = '/root/.dotnet/tools/dotnet-coverage'
-        $isolationArgs   = @()
-    }
+    # The test container always uses the Linux Azure Functions image.
+    # Container-internal paths are always Linux regardless of the host OS.
+    $sep             = '/'
+    $cTests          = '/tests'
+    $cResults        = '/results'
+    $cCoverage       = '/coverage'
+    $cSharedConfig   = '/shared-config'
+    $cDotnet         = '/usr/share/dotnet/dotnet'
+    $cDotnetCoverage = '/root/.dotnet/tools/dotnet-coverage'
+    $isolationArgs   = @()
 
     # Verify dotnet-coverage was actually installed into the image.
     # A stale Docker layer cache or a transient NuGet failure can leave the
     # tool directory empty even though the build exits 0.
     Write-Host "--- Verifying dotnet-coverage in image ---" -ForegroundColor Cyan
-    if ($IsWindows) {
-        $baseRunArgs = @('run', '--rm', '--isolation=process', 'warewolf-test-env')
-        $toolCheck = & docker @baseRunArgs cmd /c "dir C:\Users\ContainerAdministrator\.dotnet\tools 2>&1"
-        Write-Host $toolCheck
-        $coveragePresent = & docker @baseRunArgs cmd /c "if exist C:\Users\ContainerAdministrator\.dotnet\tools\dotnet-coverage.exe (echo FOUND) else (echo MISSING)"
-    } else {
-        $baseRunArgs = @('run', '--rm', 'warewolf-test-env')
-        $toolCheck = & docker @baseRunArgs sh -c "ls -la /root/.dotnet/tools/ 2>&1; echo EXIT:$?"
-        Write-Host $toolCheck
-        $coveragePresent = & docker @baseRunArgs sh -c "test -x /root/.dotnet/tools/dotnet-coverage && echo FOUND || echo MISSING"
-    }
+    $baseRunArgs = @('run', '--rm', 'warewolf-test-env')
+    $toolCheck = & docker @baseRunArgs sh -c "ls -la /root/.dotnet/tools/ 2>&1; echo EXIT:$?"
+    Write-Host $toolCheck
+    $coveragePresent = & docker @baseRunArgs sh -c "test -x /root/.dotnet/tools/dotnet-coverage && echo FOUND || echo MISSING"
     if ($coveragePresent -notmatch "FOUND") {
         Write-Host "##[error] dotnet-coverage is MISSING from the image." -ForegroundColor Red
-        if ($IsWindows) {
-            & docker run --rm --isolation=process warewolf-test-env cmd /c "dotnet tool list --global 2>&1"
-        } else {
-            Write-Host "Installed global tools:" -ForegroundColor Yellow
-            & docker run --rm warewolf-test-env sh -c "/usr/share/dotnet/dotnet tool list --global 2>&1 || true"
-            Write-Host "DOTNET_ROOT / dotnet location:" -ForegroundColor Yellow
-            & docker run --rm warewolf-test-env sh -c "which dotnet 2>&1 || true; ls /usr/share/dotnet/ 2>&1 || true"
-        }
+        Write-Host "Installed global tools:" -ForegroundColor Yellow
+        & docker run --rm warewolf-test-env sh -c "/usr/share/dotnet/dotnet tool list --global 2>&1 || true"
+        Write-Host "DOTNET_ROOT / dotnet location:" -ForegroundColor Yellow
+        & docker run --rm warewolf-test-env sh -c "which dotnet 2>&1 || true; ls /usr/share/dotnet/ 2>&1 || true"
         Write-Error "dotnet-coverage not found in image — aborting. Rebuild with --no-cache to re-run the tool install step."
         exit 1
     }
@@ -378,14 +355,15 @@ if ($CIMode) {
                 & chmod +x $binaryPath
             }
 
-            # --network=host is Linux-only.  On Windows, process isolation (set in $isolationArgs)
-            # shares the host network stack so localhost:7071 in the container reaches the engine
-            # on the agent host directly — no extra network args needed.
-            $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
+            # --network=host is Linux-only.  On Windows hosts, use --add-host=localhost:host-gateway
+            # so that Linux containers can reach services listening on the Windows host (e.g. the
+            # Azure Functions engine on port 7071).  On Linux hosts, --network=host is sufficient.
+            $networkArgs = if ($UseHostNetwork) {
+                if ($IsLinux) { @('--network=host') } else { @('--add-host=localhost:host-gateway') }
+            } else { @() }
 
             # DOTNET_ROOT tells the Linux apphost where to find the installed .NET runtime.
-            # Not needed on Windows — dotnet is already in PATH in the nanoserver image.
-            $dotnetRootArgs = if ($IsLinux) { @('-e', 'DOTNET_ROOT=/usr/share/dotnet') } else { @() }
+            $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
 
             # Build coverage wrapper args (per-assembly since output path includes the name).
             $coverageVolumeArgs = @()
