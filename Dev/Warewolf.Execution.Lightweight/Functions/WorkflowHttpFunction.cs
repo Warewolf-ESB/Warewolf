@@ -321,6 +321,14 @@ namespace Warewolf.Execution.Lightweight
         /// Tries the Warewolf HMAC-SHA256 JWT first; falls back to a Microsoft Entra
         /// token.  When neither is valid, returns a predicate that always returns
         /// <c>false</c> so that no workflows are revealed.
+        /// <para>
+        /// Uses <see cref="PermissionChecker.HasUserDiscoveryPermission"/> rather than the
+        /// View-only check: a workflow the authenticated user (or Public) can <em>execute</em>
+        /// is a workflow they need to discover in the listing — matching the documented
+        /// Warewolf semantics enforced by the Security Specs feature file
+        /// (e.g. <c>Public</c> with <c>Execute</c> grants apis.json visibility to any
+        /// authenticated user).
+        /// </para>
         /// </summary>
         Func<string, bool>? GetSecureFilter(HttpRequestData req, FunctionContext? context = null)
         {
@@ -335,7 +343,7 @@ namespace Warewolf.Execution.Lightweight
                 wcp.Identity?.IsAuthenticated == true)
             {
                 var middlewareGroups = (IReadOnlyList<string>)wcp.Groups;
-                return name => PermissionChecker.HasUserViewPermission(name, config, middlewareGroups);
+                return name => PermissionChecker.HasUserDiscoveryPermission(name, config, middlewareGroups);
             }
 
             // ── 2. Warewolf HMAC-SHA256 JWT (fallback for non-middleware routes) ───
@@ -353,7 +361,7 @@ namespace Warewolf.Execution.Lightweight
             if (groups is null)
                 return _ => false;  // Invalid / absent token → empty list.
 
-            return name => PermissionChecker.HasUserViewPermission(name, config, groups);
+            return name => PermissionChecker.HasUserDiscoveryPermission(name, config, groups);
         }
 
         // ── Response helpers ──────────────────────────────────────────────────────
