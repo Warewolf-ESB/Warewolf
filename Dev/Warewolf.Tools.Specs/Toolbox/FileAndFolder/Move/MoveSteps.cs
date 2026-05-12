@@ -51,7 +51,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
                 Overwrite = scenarioContext.Get<bool>(CommonSteps.OverwriteHolder),
                 Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
                 PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                DestinationPrivateKeyFile = scenarioContext.Get<string>(CommonSteps.DestinationPrivateKeyFile),
+                IsNotCertVerifiable = true
             };
 
             TestStartNode = new FlowStep

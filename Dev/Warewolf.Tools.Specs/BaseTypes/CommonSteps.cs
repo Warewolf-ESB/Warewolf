@@ -374,6 +374,16 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public static string AddGuidToPath(string location, string GetGuid)
         {
+            // Remote server paths (FTP/FTPS/SFTP/HTTP) rely on pre-existing files with known names on test servers.
+            // Adding a random GUID makes those files unfindable, so skip GUID for any URL-scheme path.
+            if (location.StartsWith("ftp://", StringComparison.OrdinalIgnoreCase)
+                || location.StartsWith("ftps://", StringComparison.OrdinalIgnoreCase)
+                || location.StartsWith("sftp://", StringComparison.OrdinalIgnoreCase)
+                || location.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                || location.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                return location;
+            }
             string getExtention;
             try
             {
