@@ -172,10 +172,14 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            // Map the "Users" placeholder to the actual Entra role.
-            var resolvedGroup = string.Equals(groupName, "Users", StringComparison.OrdinalIgnoreCase)
-                ? GetEntraRole()
-                : groupName;
+            // Map the "Users" / "EntraRole" placeholders to the actual Entra role the
+            // bearer JWT carries.  Both appear in the feature file as the User Group
+            // column and both refer to the same authenticated role.
+            var resolvedGroup =
+                string.Equals(groupName, "Users",     StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(groupName, "EntraRole", StringComparison.OrdinalIgnoreCase)
+                    ? GetEntraRole()
+                    : groupName;
 
             // Append the resource-specific entry to any existing global permissions so
             // they are not lost (e.g. a prior GivenIHaveUsersWith call).

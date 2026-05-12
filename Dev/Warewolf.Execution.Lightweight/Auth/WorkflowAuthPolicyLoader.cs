@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using System.IO;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
@@ -110,7 +111,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 : PolicyLookupResult.ConfigMissing();
         }
 
-        var key = workflowName.ToLowerInvariant();
+        var key = NormalizeWorkflowKey(workflowName);
 
         // ── Resource scope takes priority ─────────────────────────────────────
         if (_policies.TryGetValue(key, out var resourcePolicy))
@@ -164,7 +165,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
         }
 
         // ── Determine active scope ─────────────────────────────────────────────
-        var key = workflowName.ToLowerInvariant();
+        var key = NormalizeWorkflowKey(workflowName);
         IReadOnlyDictionary<string, WorkflowPermission> activeScope;
 
         if (_resourceRoleMap.TryGetValue(key, out var resourceMap))
@@ -283,7 +284,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 string.IsNullOrWhiteSpace(p.GroupName))
                 continue;
 
-            var wfKey = p.ResourceName.ToLowerInvariant();
+            var wfKey = NormalizeWorkflowKey(p.ResourceName);
 
             if (!outer.TryGetValue(wfKey, out var inner))
             {
@@ -378,6 +379,32 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                     workflow);
             }
         }
+    }
+
+    // ── Workflow-key normaliser ───────────────────────────────────────────────
+
+    /// <summary>
+    /// Produces a stable lookup key for both <c>secure.config</c> ResourceName
+    /// entries and the workflow segment extracted from HTTP routes.
+    ///
+    /// <para>
+    /// Strips any folder prefix (handles both <c>'/'</c> and <c>'\\'</c>) and any
+    /// file extension, then lowercases.  Real Warewolf stores ResourceName as a
+    /// full path like <c>"Examples\Control Flow - Decision"</c>, while the
+    /// lightweight engine receives only the display name from
+    /// <c>/Secure/&lt;name&gt;</c> URLs.  Normalising both sides through this
+    /// helper keeps the policy lookup matching when the two representations
+    /// disagree on path-or-no-path.
+    /// </para>
+    /// </summary>
+    internal static string NormalizeWorkflowKey(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return string.Empty;
+
+        var slashed = name.Replace('\\', '/');
+        var bare    = Path.GetFileNameWithoutExtension(slashed);
+        return bare.ToLowerInvariant();
     }
 
     // ── ToFlags helper ────────────────────────────────────────────────────────

@@ -174,22 +174,29 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Compares <paramref name="permissionResourceName"/> against
         /// <paramref name="workflowName"/> using case-insensitive ordinal comparison.
         ///
-        /// The workflow name may be a relative path with extension (e.g.
-        /// <c>tools/Hello World</c>); the permission ResourceName is typically just the
-        /// bare display name (e.g. <c>Hello World</c>).  Both forms are tried.
+        /// Either side may be stored as a full relative path (e.g.
+        /// <c>"Examples\Control Flow - Decision"</c> from <c>secure.config</c>) or as
+        /// the bare display name (e.g. <c>"Decision"</c> emitted by the apis.json
+        /// generator).  All four combinations (path/path, path/bare, bare/path,
+        /// bare/bare) are accepted.  <c>'\\'</c> is normalised to <c>'/'</c> so
+        /// <see cref="Path.GetFileNameWithoutExtension"/> works on Linux too.
         /// </summary>
         static bool NamesMatch(string permissionResourceName, string workflowName)
         {
             if (string.IsNullOrEmpty(permissionResourceName))
                 return false;
 
-            // Exact match on whatever was stored (may already be a path).
+            // Exact match on whatever was stored.
             if (string.Equals(permissionResourceName, workflowName, StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            // Strip directory and extension from the workflow name for a bare-name comparison.
-            var bareName = Path.GetFileNameWithoutExtension(workflowName);
-            return string.Equals(permissionResourceName, bareName, StringComparison.OrdinalIgnoreCase);
+            var bareWorkflow = Path.GetFileNameWithoutExtension(workflowName?.Replace('\\', '/'));
+            var barePerm     = Path.GetFileNameWithoutExtension(permissionResourceName.Replace('\\', '/'));
+
+            // path / bare or bare / path or bare / bare — any of these match.
+            return string.Equals(permissionResourceName, bareWorkflow, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(barePerm, workflowName,     StringComparison.OrdinalIgnoreCase)
+                || string.Equals(barePerm, bareWorkflow,     StringComparison.OrdinalIgnoreCase);
         }
 
         static bool ContainsGroup(IReadOnlyList<string> groups, string groupName)
