@@ -18,7 +18,11 @@ Param(
   [switch]$ServerTests,
   [switch]$RegenerateSpecFlowFeatureFiles,
   [string]$GitCredential,
-  [switch]$Disablemaxcpucount
+  [switch]$Disablemaxcpucount,
+  # Target RID for dotnet publish of test solutions.
+  # Accepted values: linux-x64, win-x64.
+  # Defaults to win-x64 on Windows hosts and linux-x64 on Linux/macOS hosts.
+  [string]$Runtime=""
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
 					  "Dev\UITesting.sln",
@@ -304,6 +308,17 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 }
 
 #Compile Solutions
+
+# Resolve the publish runtime identifier once, before the solution loop.
+# linux-x64 is self-contained (embeds the runtime); win-x64 is framework-dependent.
+if (-not (Test-Path Variable:\IsLinux))  { $IsLinux  = $false }
+if (-not (Test-Path Variable:\IsMacOS))  { $IsMacOS  = $false }
+if ([string]::IsNullOrEmpty($Runtime)) {
+    $Runtime = if ($IsLinux -or $IsMacOS) { "linux-x64" } else { "win-x64" }
+}
+$RuntimeIsSelfContained = $Runtime -like "linux*"
+Write-Host "Publish runtime: $Runtime  self-contained: $RuntimeIsSelfContained"
+
 foreach ($SolutionFile in $KnownSolutionFiles) {
     if (Test-Path "$PSScriptRoot\$SolutionFile") {
         $GetSolutionFileInfo = Get-Item "$PSScriptRoot\$SolutionFile"
@@ -331,48 +346,63 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
-			Write-Host "Publishing to $OutputFolderName"
-			dotnet restore "$PSScriptRoot\$SolutionFile" -r linux-x64 --nologo -v minimal --force
-			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r linux-x64 --self-contained true --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
+			Write-Host "Publishing to $OutputFolderName ($Runtime, self-contained: $RuntimeIsSelfContained)"
+			$_scFlag = if ($RuntimeIsSelfContained) { "--self-contained true" } else { "--self-contained false" }
+			dotnet restore "$PSScriptRoot\$SolutionFile" -r $Runtime --nologo -v minimal --force
+			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r $Runtime $_scFlag --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
 			if ($LASTEXITCODE -ne 0) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
-			# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on the
-			# build host (Windows). The publish targets linux-x64 --self-contained which
-			# generates 'includedFrameworks'; the Windows AppHost needs 'framework'
-			# (framework-dependent) to load via the system dotnet install instead.
-			$wwRuntimeConfig = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf Server.runtimeconfig.json"
-			if (Test-Path $wwRuntimeConfig) {
-				$rc = Get-Content $wwRuntimeConfig -Raw | ConvertFrom-Json
-				if ($rc.runtimeOptions.PSObject.Properties['includedFrameworks']) {
-					$aspNetFramework = $rc.runtimeOptions.includedFrameworks |
-						Where-Object { $_.name -eq 'Microsoft.AspNetCore.App' } |
-						Select-Object -First 1
-					if (-not $aspNetFramework) {
-						$aspNetFramework = $rc.runtimeOptions.includedFrameworks | Select-Object -First 1
+			if ($RuntimeIsSelfContained) {
+				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
+				# host when the publish targeted linux-x64 --self-contained.  A self-contained
+				# publish generates 'includedFrameworks'; the Windows AppHost needs 'framework'
+				# (framework-dependent style) to load via the installed system dotnet instead.
+				$wwRuntimeConfig = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf Server.runtimeconfig.json"
+				if (Test-Path $wwRuntimeConfig) {
+					$rc = Get-Content $wwRuntimeConfig -Raw | ConvertFrom-Json
+					if ($rc.runtimeOptions.PSObject.Properties['includedFrameworks']) {
+						$aspNetFramework = $rc.runtimeOptions.includedFrameworks |
+							Where-Object { $_.name -eq 'Microsoft.AspNetCore.App' } |
+							Select-Object -First 1
+						if (-not $aspNetFramework) {
+							$aspNetFramework = $rc.runtimeOptions.includedFrameworks | Select-Object -First 1
+						}
+						$rc.runtimeOptions.PSObject.Properties.Remove('includedFrameworks')
+						$rc.runtimeOptions | Add-Member -NotePropertyName 'framework' -NotePropertyValue $aspNetFramework -Force
+						$rc | ConvertTo-Json -Depth 10 | Set-Content $wwRuntimeConfig -Encoding UTF8
+						Write-Host "Patched '$wwRuntimeConfig' to framework-dependent mode."
 					}
-					$rc.runtimeOptions.PSObject.Properties.Remove('includedFrameworks')
-					$rc.runtimeOptions | Add-Member -NotePropertyName 'framework' -NotePropertyValue $aspNetFramework -Force
-					$rc | ConvertTo-Json -Depth 10 | Set-Content $wwRuntimeConfig -Encoding UTF8
-					Write-Host "Patched '$wwRuntimeConfig' to framework-dependent mode."
 				}
 			}
-			# Ensure the linux-compatible SqlClient implementation DLL wins in the output.
-			# With many projects publishing to one flat directory, last-writer-wins and the
-			# lib/net8.0 reference stub can overwrite the runtimes/unix implementation.
-			# Copy to both the flat root (self-contained publish RID probing) and to the
-			# relative runtimeTargets path (framework-dependent non-RID deps.json probing).
-			$_sqlPkg = Get-ChildItem "$env:USERPROFILE\.nuget\packages\microsoft.data.sqlclient" -Directory -ErrorAction SilentlyContinue |
-				Sort-Object Name -Descending | Select-Object -First 1
-			if ($_sqlPkg) {
-				$_unixDll = Join-Path $_sqlPkg.FullName "runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll"
-				if (Test-Path $_unixDll) {
-					Copy-Item -Path $_unixDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.Data.SqlClient.dll" -Force
-					$_rtSubDir = "$PSScriptRoot\Bin\$OutputFolderName\runtimes\unix\lib\net8.0"
-					$null = New-Item -Path $_rtSubDir -ItemType Directory -Force
-					Copy-Item -Path $_unixDll -Destination "$_rtSubDir\Microsoft.Data.SqlClient.dll" -Force
-					Write-Host "Pinned runtimes/unix Microsoft.Data.SqlClient.dll ($($_sqlPkg.Name)) in $OutputFolderName."
+			if ($Runtime -like "linux*") {
+				# Ensure the linux-compatible SqlClient implementation DLL wins in the output.
+				# With many projects publishing to one flat directory, last-writer-wins and the
+				# lib/net8.0 reference stub can overwrite the runtimes/unix implementation.
+				# Copy to both the flat root (self-contained publish RID probing) and to the
+				# relative runtimeTargets path (framework-dependent non-RID deps.json probing).
+				$_sqlPkg = Get-ChildItem "$env:USERPROFILE\.nuget\packages\microsoft.data.sqlclient" -Directory -ErrorAction SilentlyContinue |
+					Sort-Object Name -Descending | Select-Object -First 1
+				if ($_sqlPkg) {
+					$_unixDll = Join-Path $_sqlPkg.FullName "runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll"
+					if (Test-Path $_unixDll) {
+						Copy-Item -Path $_unixDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.Data.SqlClient.dll" -Force
+						$_rtSubDir = "$PSScriptRoot\Bin\$OutputFolderName\runtimes\unix\lib\net8.0"
+						$null = New-Item -Path $_rtSubDir -ItemType Directory -Force
+						Copy-Item -Path $_unixDll -Destination "$_rtSubDir\Microsoft.Data.SqlClient.dll" -Force
+						Write-Host "Pinned runtimes/unix Microsoft.Data.SqlClient.dll ($($_sqlPkg.Name)) in $OutputFolderName."
+					}
+				}
+			}
+			if ($Runtime -like "win*") {
+				# For a win-x64 publish the SQLite native interop DLL lands under
+				# runtimes\win-x64\native; copy it to the flat output root so it is
+				# found at runtime regardless of how the test host probes for it.
+				$_sqliteInterop = "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll"
+				if (Test-Path $_sqliteInterop) {
+					Copy-Item $_sqliteInterop "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+					Write-Host "Copied win-x64 SQLite.Interop.dll to flat output root in $OutputFolderName."
 				}
 			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"

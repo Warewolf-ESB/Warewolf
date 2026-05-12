@@ -26,8 +26,122 @@ param(
   [switch] $StartSFTPServer,
   [string] $StartMSSQLServer,
   [switch] $StartMySQLServer,
-  [switch] $StartElasticsearchServer
+  [switch] $StartElasticsearchServer,
+  # ── Server-under-test lifecycle ──────────────────────────────────────────
+  # LightweightExecution: start func.exe before tests, stop after.
+  # FullServer:           start 'Warewolf Server.exe' before tests, stop after.
+  # (empty):              no server management (default / existing behaviour).
+  [string] $ServerType = "",
+  [string] $FuncExePath = "",             # explicit path to func.exe; auto-discovered if empty
+  [string] $LightweightExecutionDir = "", # working dir for func (defaults to $PWD)
+  [string] $SharedConfigDir = "",         # writable dir exposed to the engine as WAREWOLF_SECURE_CONFIG
+  # ── vstest filter ────────────────────────────────────────────────────────
+  [string] $Filter = "",                  # raw vstest /TestCaseFilter expression (ANDed with -Category/-ExcludeCategories)
+  # ── Test results output ──────────────────────────────────────────────────
+  [string] $TestResultsDir = "",          # override for the .\TestResults output directory
+  # ── Engine coverage (dotnet-coverage) ────────────────────────────────────
+  [string] $CoverageDir = "",             # dir where engine coverage files are written
+  [string[]] $CoverageIncludeFiles = @(), # file glob patterns passed as --include to dotnet-coverage
+  [string] $EngineSessionId = "",         # dotnet-coverage session id (auto-generated if empty)
+  [string] $EngineCoverageFile = ""       # output .cobertura.xml for the engine (defaults to $CoverageDir\engine.cobertura.xml)
 )
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Server-under-test lifecycle helpers
+# ─────────────────────────────────────────────────────────────────────────────
+$script:_serverProcess   = $null
+$script:_coverageProcess = $null
+$script:_sessionId       = ""
+
+function Resolve-FuncExe {
+    if ($FuncExePath -and (Test-Path $FuncExePath)) { return $FuncExePath }
+    foreach ($c in @("func.exe", "$env:APPDATA\npm\func.cmd", "func")) {
+        $cmd = Get-Command $c -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+    throw "func.exe not found. Provide -FuncExePath or install azure-functions-core-tools@4."
+}
+
+function Start-LightweightExecution {
+    $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
+    $func   = Resolve-FuncExe
+    Write-Host "Starting Lightweight Execution from $runDir using $func"
+    if ($SharedConfigDir) { $env:WAREWOLF_SECURE_CONFIG = $SharedConfigDir }
+    if ($CoverageDir) {
+        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
+        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
+        $script:_sessionId = $sid
+        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
+        $includeArgs = $CoverageIncludeFiles | ForEach-Object { @("--include", $_) }
+        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071")
+        Push-Location $runDir
+        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
+        Pop-Location
+    } else {
+        Push-Location $runDir
+        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden
+        Pop-Location
+    }
+    Wait-ForEngine -Port 7071
+}
+
+function Start-WarewolfServer {
+    $runDir    = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
+    $serverExe = Join-Path $runDir "Warewolf Server.exe"
+    if (!(Test-Path $serverExe)) { throw "Warewolf Server.exe not found in $runDir" }
+    Write-Host "Starting Warewolf Server from $runDir"
+    if ($CoverageDir) {
+        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
+        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
+        $script:_sessionId = $sid
+        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
+        $includeArgs = $CoverageIncludeFiles | ForEach-Object { @("--include", $_) }
+        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", "`"$serverExe`"")
+        Push-Location $runDir
+        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
+        Pop-Location
+    } else {
+        Push-Location $runDir
+        $script:_serverProcess = Start-Process $serverExe -PassThru -WindowStyle Hidden
+        Pop-Location
+    }
+    Wait-ForEngine -Port 3142
+}
+
+function Wait-ForEngine {
+    param([int]$Port = 7071, [int]$MaxSeconds = 120)
+    Write-Host "Waiting for engine on port $Port (up to ${MaxSeconds}s)..."
+    $deadline = (Get-Date).AddSeconds($MaxSeconds)
+    while ((Get-Date) -lt $deadline) {
+        try {
+            $resp = Invoke-WebRequest -Uri "http://localhost:$Port/" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+            if ($resp.StatusCode -ge 100 -and $resp.StatusCode -ne 503) {
+                Write-Host "Engine ready (HTTP $($resp.StatusCode))."
+                return
+            }
+        } catch { }
+        Start-Sleep -Seconds 2
+    }
+    Write-Warning "Engine did not become ready within $MaxSeconds seconds."
+}
+
+function Stop-Engine {
+    if ($script:_sessionId) {
+        Write-Host "Shutting down dotnet-coverage session $($script:_sessionId)..."
+        dotnet-coverage shutdown $script:_sessionId 2>&1 | Out-Null
+        Start-Sleep -Seconds 5
+    }
+    if ($script:_coverageProcess -and -not $script:_coverageProcess.HasExited) {
+        $script:_coverageProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+    }
+    if ($script:_serverProcess -and -not $script:_serverProcess.HasExited) {
+        $script:_serverProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+    }
+    Get-Process -Name "func"                       -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "Warewolf Server"            -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "Warewolf.Execution.Lightweight" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+}
+
 function Start-FTPServer {
 	if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
 		mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
@@ -242,7 +356,7 @@ if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains
 if ($PostTestRunScript -and $Coverage.IsPresent -and !($PostTestRunScript.Contains("-Coverage"))) {
 	$PostTestRunScript += " -Coverage"
 }
-$TestResultsPath = ".\TestResults"
+$TestResultsPath = if ($TestResultsDir) { $TestResultsDir } else { ".\TestResults" }
 if (Test-Path "$TestResultsPath") {
 	Remove-Item -Force -Recurse "$TestResultsPath"
 }
@@ -336,6 +450,11 @@ if ($STA.IsPresent) {
   </RunConfiguration>
 </RunSettings>
 "@ | Out-File -LiteralPath "$TestResultsPath\STA.runsettings" -Encoding utf8 -Force
+}
+if ($ServerType -eq 'LightweightExecution') {
+    Start-LightweightExecution
+} elseif ($ServerType -eq 'FullServer') {
+    Start-WarewolfServer
 }
 if ($Projects.Length -gt 0) {
 	for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
@@ -438,6 +557,15 @@ if ($Projects.Length -gt 0) {
 						$CategoryArg += $Categories -join ")|(TestCategory="
 						$CategoryArg += ")`""
 					}
+				}
+			}
+			# Apply -Filter (ANDed with any category expression already built above).
+			if ($Filter) {
+				if ($CategoryArg -ne "") {
+					$existingExpr = $CategoryArg -replace '^/TestCaseFilter:"(.+)"$', '$1'
+					$CategoryArg = "/TestCaseFilter:`"($existingExpr)&($Filter)`""
+				} else {
+					$CategoryArg = "/TestCaseFilter:`"$Filter`""
 				}
 			}
 			if ($PreTestRunScript) {
@@ -547,6 +675,9 @@ if ($Projects.Length -gt 0) {
 	if ($StartElasticsearchServer.IsPresent) {
 		Start-ElasticsearchServer
 	}
+}
+if ($ServerType) {
+    Stop-Engine
 }
 if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
