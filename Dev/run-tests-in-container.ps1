@@ -342,8 +342,15 @@ if ($CIMode) {
                 & chmod +x $binaryPath
             }
 
-            # --network=host is Linux-only; silently omit it on other platforms.
-            $networkArgs = if ($UseHostNetwork -and $IsLinux) { @('--network=host') } else { @() }
+            # --network=host is Linux-only.  On Windows (Linux containers running on a
+            # Windows Docker host), we instead add localhost as a host-gateway alias so
+            # that test code connecting to http://localhost:7071 inside the container
+            # reaches the Windows host's engine process.
+            $networkArgs = if ($UseHostNetwork) {
+                if ($IsLinux)   { @('--network=host') }
+                elseif ($IsWindows) { @('--add-host=localhost:host-gateway') }
+                else { @() }
+            } else { @() }
 
             # DOTNET_ROOT tells the apphost where to find the installed .NET runtime.
             # Without it, the apphost finds .NET native libs (libcoreclr.so etc.) that

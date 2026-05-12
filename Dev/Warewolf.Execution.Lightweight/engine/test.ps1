@@ -60,7 +60,7 @@ if (-not $running) {
 Write-Host "Container is running: $ContainerName" -ForegroundColor Green
 
 # ── Step 2: Publish test project for linux-x64 ──────────────
-Write-Step "Step 2/3 - Publishing test project (linux-x64, self-contained)"
+Write-Step "Step 2/3 - Publishing test project (win-x64, self-contained)"
 
 if (Test-Path $TestPublishDir) {
     Remove-Item -Recurse -Force $TestPublishDir
@@ -69,7 +69,7 @@ if (Test-Path $TestPublishDir) {
 
 dotnet publish $TestProjectFile `
     -c Debug `
-    -r linux-x64 `
+    -r win-x64 `
     --self-contained true `
     -o $TestPublishDir
 
@@ -84,7 +84,7 @@ Write-Step "Step 3/3 - Running unit tests inside container (docker exec)"
 Write-Host "Filter: $UnitTestFilter" -ForegroundColor Gray
 
 docker exec $ContainerName `
-    /tests/$TestBinary `
+    C:\tests\$TestBinary.exe `
     --filter "$UnitTestFilter"
 
 $unitExitCode = $LASTEXITCODE

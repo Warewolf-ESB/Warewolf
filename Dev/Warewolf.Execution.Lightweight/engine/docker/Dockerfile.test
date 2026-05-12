@@ -1,44 +1,42 @@
-# Stage 1: pull the .NET 8 SDK from its official image.
-# Using a multi-stage copy avoids running dotnet-install.sh, which curl-fetches
-# from dot.net and fails on networks with corporate SSL inspection proxies.
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS sdk
+# escape=`
+# Stage 1: pull the .NET 8 SDK from its official Windows image.
+# Using a multi-stage copy avoids running dotnet-install scripts, which fetch
+# from dot.net and fail on networks with corporate SSL inspection proxies.
+FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-ltsc2022 AS sdk
 
-FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice
+# Stage 2: pull PowerShell 7 so we can run the vsdbg installer script.
+# Nano Server does not ship with PowerShell; we borrow it from the official image.
+FROM mcr.microsoft.com/powershell:lts-nanoserver-ltsc2022 AS pwsh
 
-# curl and procps are needed by the VS remote test/debug agent.
-# The appservice base image is minimal so we ensure they are present.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       curl \
-       procps \
-    && rm -rf /var/lib/apt/lists/*
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-nanoserver-ltsc2022
+
+# curl.exe and process management are built in to nanoserver-ltsc2022.
+# No additional package installation is required.
 
 # Overlay the SDK tools onto the runtime that ships in the base image.
 # This gives us dotnet-vstest without any network calls during the build.
-COPY --from=sdk /usr/share/dotnet /usr/share/dotnet
+COPY --from=sdk C:\Program Files\dotnet C:\Program Files\dotnet
+
+# Copy PowerShell 7 so we can run the vsdbg installer script.
+COPY --from=pwsh C:\Program Files\PowerShell C:\Program Files\PowerShell
 
 # Install dotnet-coverage so tests run under coverage collection in one pass.
-# The global tool lands in $HOME/.dotnet/tools. The Azure Functions base image
-# sets HOME=/home, so we override it to /root for the install so the tool
-# always lands at the well-known path /root/.dotnet/tools used by the test runner.
-RUN HOME=/root /usr/share/dotnet/dotnet tool install --global dotnet-coverage \
-    && ln -sf /root/.dotnet/tools/dotnet-coverage /usr/local/bin/dotnet-coverage \
-    && /root/.dotnet/tools/dotnet-coverage --version
-ENV HOME=/root
-ENV PATH="/root/.dotnet/tools:${PATH}"
+SHELL ["C:\\Program Files\\PowerShell\\pwsh.exe", "-NonInteractive", "-Command", "$ErrorActionPreference = 'Stop';"]
+RUN dotnet tool install --global dotnet-coverage; `
+    $env:PATH = "C:\Users\ContainerAdministrator\.dotnet\tools;" + $env:PATH; `
+    dotnet-coverage --version
 
 # Install the Visual Studio remote debugger so tests can be stepped through
 # in Test Explorer just like local tests.
-RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+RUN Invoke-WebRequest -Uri 'https://aka.ms/getvsdbgps1' -OutFile "$env:TEMP\getvsdbg.ps1"; `
+    & "$env:TEMP\getvsdbg.ps1" -Version latest -RuntimeID win-x64 -InstallPath C:\vsdbg; `
+    Remove-Item "$env:TEMP\getvsdbg.ps1" -ErrorAction SilentlyContinue
 
 # Give the vstest.console handshake more time on slower container starts
 ENV VSTEST_CONNECTION_TIMEOUT=300
 
-# The appservice base image has a startup entrypoint that launches sshd and the
-# Azure Functions host. Override it with /bin/bash so that:
+# The nanoserver base image has a startup entrypoint that launches the
+# Azure Functions host.  Override it with [] so that:
 #   - VS container tools can create the container without specifying a command
-#     (avoids "no command specified" / CTC1015 error in Azure Functions Runtime environment)
-#   - run-tests-in-container.ps1 strips this back to ENTRYPOINT [] before
-#     building the CI image so docker run <cmd> executes <cmd> directly.
+#   - run-tests-in-container.ps1 can use docker run <cmd> directly
 ENTRYPOINT []
-
