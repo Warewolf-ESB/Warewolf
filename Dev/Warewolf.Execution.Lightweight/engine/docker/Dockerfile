@@ -1,18 +1,15 @@
-# escape=`
-FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-nanoserver-ltsc2022 AS final
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice AS final
 
-WORKDIR C:\home\site\wwwroot
+WORKDIR /home/site/wwwroot
 COPY ./publish .
 
-
-
-ENV AzureWebJobsScriptRoot=C:\home\site\wwwroot
-ENV AzureFunctionsJobHost__Logging__Console__IsEnabled=true
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV AZURE_TENANT_ID=
-ENV DEBUG_AZURE_KEYVAULT_SECRET=
-ENV ENABLEELASTICSEARCHLOGGING=true
-ENV ENABLECONSOLELOGGING=true
-ENV EXECUTIONLOGLEVEL=4
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
+    ASPNETCORE_ENVIRONMENT=Development \
+    AZURE_TENANT_ID= \
+    DEBUG_AZURE_KEYVAULT_SECRET="" \
+    ENABLEELASTICSEARCHLOGGING=true \
+    ENABLECONSOLELOGGING=true \
+    EXECUTIONLOGLEVEL=4
 EXPOSE 80
 EXPOSE 7071
