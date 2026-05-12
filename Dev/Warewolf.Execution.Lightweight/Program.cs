@@ -21,10 +21,6 @@ try
     // Set ExecutionLogLevel=Debug    → everything flows through.
     var minimumLevel = Warewolf.Execution.Lightweight.Logging.ExecutionLogLevel.Read();
 
-    var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
-        ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
-        : null;
-
 
     var host = new HostBuilder()
         .ConfigureWarewolf(config)
@@ -41,8 +37,14 @@ try
                          minimumLevel));
 
                  // ElasticsearchExecutionLogger — Elasticsearch sink
-                 if (elasticOptions is not null)
+                 // Resolved here (inside the factory) so the AES decrypt hook
+                 // from KeyVaultStartupExtensions is already wired by the time
+                 // we read the potentially-encrypted .bite file.
+                 if (enableElastic && File.Exists(elasticsearchSettingsPath))
+                 {
+                     var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath);
                      loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
+                 }
 
                  return new CompositeExecutionLogger(loggers);
              });

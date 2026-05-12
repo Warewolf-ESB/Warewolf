@@ -32,7 +32,6 @@ internal static class KeyVaultStartupExtensions
     {
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
-        var logger = host.Services.GetRequiredService<IExecutionLogger>();
 
         try
         {
@@ -40,14 +39,20 @@ internal static class KeyVaultStartupExtensions
 
             var decryptionHelper = host.Services.GetRequiredService<FileDecryptionHelper>();
             DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
-            var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
-            logger.LogInfo(log);
+
+            // Resolve IExecutionLogger AFTER the AES hook is wired, because
+            // the singleton factory reads encrypted .bite files that require
+            // DpapiWrapper.AesDecryptHook to be set.
+            //var logger = host.Services.GetRequiredService<IExecutionLogger>();
+            //var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
+            //logger.LogInfo(log);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
         }
         catch (Exception ex)
         {
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
-            logger.LogError(ex, log);
+            // Use AuditLogger only here — IExecutionLogger may not be safe to
+            // resolve if the AES hook failed to initialise.
             audit.LogKeyVaultErrorAndMessage(log, ex);
             throw; // Fail fast: cannot serve requests without the AES key.
         }
