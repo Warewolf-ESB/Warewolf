@@ -49,6 +49,7 @@ using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Infrastructure;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -113,6 +114,9 @@ namespace Dev2.Tests.Runtime.Hosting
                 throw new Exception("TEST: ResourceCatalogTests failed to Calculate Test Wolrkflows: " + ex.Message);
             }
 
+            DpapiWrapper.AesEncryptHook = plainText => "WFAES::" + Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
+            DpapiWrapper.AesDecryptHook = cipher => Encoding.UTF8.GetString(Convert.FromBase64String(cipher.Substring(7)));
+
             (List<string> testWFs, List<Guid> ResourceIds) CalculateTestWFs(string resourceName, int numOfTestWFs)
             {
                 var resourceIds = new List<Guid>();
@@ -127,7 +131,12 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-
+        [TestCleanup]
+        public void Cleanup()
+        {
+            DpapiWrapper.AesEncryptHook = null;
+            DpapiWrapper.AesDecryptHook = null;
+        }
 
         #region Instance
 
@@ -2484,7 +2493,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
+            var dependants = rc.GetDependants(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
             Assert.AreEqual(Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8"), dependants[0]);
@@ -2625,7 +2634,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(0, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, Guid.Empty);
+            var dependants = rc.GetDependants(workspaceID, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
@@ -2649,7 +2658,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
+            var dependants = rc.GetDependants(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
@@ -2677,7 +2686,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
+            var dependants = rc.GetDependentsAsResourceForTrees(workspaceID, Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555"));
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
             Assert.AreEqual("Bug6619", dependants[0].ResourceName);
@@ -2696,7 +2705,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(0, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, Guid.NewGuid());
+            var dependants = rc.GetDependentsAsResourceForTrees(workspaceID, Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
@@ -2720,7 +2729,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
-            var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, Guid.Parse("7b8c9b6e-16f4-4771-8605-655bbfab7543"));
+            var dependants = rc.GetDependentsAsResourceForTrees(workspaceID, Guid.Parse("7b8c9b6e-16f4-4771-8605-655bbfab7543"));
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
         }
@@ -3902,12 +3911,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var privateObject = new Warewolf.Testing.PrivateObject(rcBuilder);
             var fileHelperObject = new Mock<IFile>();
             var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
-                                               EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
-            fileHelperObject.Setup(o => o.DirectoryName(EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite")).Returns(EnvironmentVariables.ResourcePath + "\\asdf").Verifiable();
+            fileHelperObject.Setup(o => o.Copy(Path.Combine(serverReleaseResources, "asdf", "asdf2.xml"),
+                                               Path.Combine(EnvironmentVariables.ResourcePath, "asdf", "asdf2.bite"), false)).Verifiable();
+            fileHelperObject.Setup(o => o.DirectoryName(Path.Combine(EnvironmentVariables.ResourcePath, "asdf", "asdf2.bite"))).Returns(Path.Combine(EnvironmentVariables.ResourcePath, "asdf")).Verifiable();
             var fileHelper = fileHelperObject.Object;
             var mockDirectory = new Mock<IDirectory>();
-            mockDirectory.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
+            mockDirectory.Setup(o => o.CreateIfNotExists(Path.Combine(EnvironmentVariables.ResourcePath, "asdf"))).Verifiable();
             var existingId = Guid.NewGuid().ToString();
             var programDataIds = new[] {
                 existingId
@@ -3917,14 +3926,14 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 return new ResourceBuilderTO
                 {
-                    _filePath = serverReleaseResources + "\\" + filename,
+                    _filePath = Path.Combine(serverReleaseResources, filename),
                     _fileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
                 };
             }
 
             var programFilesBuilders = new List<ResourceBuilderTO>
             {
-                newResourceBuilderTO("asdf\\asdf.xml", existingId)
+                newResourceBuilderTO(Path.Combine("asdf", "asdf.xml"), existingId)
             };
 
             //------------Execute Test--------------------------
@@ -3937,8 +3946,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Execute Test--------------------------
             programFilesBuilders = new List<ResourceBuilderTO> {
-                newResourceBuilderTO("asdf\\asdf.xml", existingId),
-                newResourceBuilderTO("asdf\\asdf2.xml", Guid.NewGuid().ToString())
+                newResourceBuilderTO(Path.Combine("asdf", "asdf.xml"), existingId),
+                newResourceBuilderTO(Path.Combine("asdf", "asdf2.xml"), Guid.NewGuid().ToString())
             };
 
             result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, mockDirectory.Object, fileHelper);
@@ -4083,9 +4092,9 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test--------------------------
             rc.BuildReleaseExamples("release");
             //------------Assert Results------------------------
-            mockDirectory.Verify(o => o.Exists(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
-            mockDirectory.Verify(o => o.CreateDirectory(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
-            mockDirectory.Verify(o => o.EnumerateDirectories(@"C:\ProgramData\Warewolf\Resources", "*", SearchOption.AllDirectories), Times.Once);
+            mockDirectory.Verify(o => o.Exists(EnvironmentVariables.ResourcePath), Times.Once);
+            mockDirectory.Verify(o => o.CreateDirectory(EnvironmentVariables.ResourcePath), Times.Once);
+            mockDirectory.Verify(o => o.EnumerateDirectories(EnvironmentVariables.ResourcePath, "*", SearchOption.AllDirectories), Times.Once);
             mockDirectory.Verify(o => o.EnumerateDirectories("release", "*", SearchOption.AllDirectories), Times.Once);
            
         }

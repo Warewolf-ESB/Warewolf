@@ -65,6 +65,18 @@ namespace Dev2
                 string webServerSslPort;
                 string webServerPort;
                 GlobalConstants.CollectUsageStats = ConfigurationManager.AppSettings["CollectUsageStats"];
+                webServerPort = ConfigurationManager.AppSettings["webServerPort"];
+                if (!string.IsNullOrEmpty(webServerPort))
+                {
+                    GlobalConstants.WebServerPort = webServerPort;
+                }
+
+                webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
+                if (!string.IsNullOrEmpty(webServerSslPort))
+                {
+                    GlobalConstants.WebServerSslPort = webServerSslPort;
+                }
+
                 bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 

@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.SaveTests(resourceID, null);
             //------------Assert Results-------------------------
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath + "\\" + resourceID));
+            Assert.IsFalse(Directory.Exists(Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString())));
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.SaveTests(resourceID, new List<IServiceTestModelTO>());
             //------------Assert Results-------------------------
-            Assert.IsFalse(Directory.Exists(EnvironmentVariables.TestPath + "\\" + resourceID));
+            Assert.IsFalse(Directory.Exists(Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString())));
         }
 
         [TestMethod]
@@ -119,12 +119,12 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.SaveTests(resourceID, serviceTestModelTos);
             //------------Assert Results-------------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path + "\\" + "Test 1.test";
+            var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
-            var test2FilePath = path + "\\" + "Test 2.test";
+            var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test2FilePath, testFiles[1]);
 
             var test1String = File.ReadAllText(test1FilePath);
@@ -158,10 +158,10 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.SaveTest(resourceID, testToSave);
             //------------Assert Results-------------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path + "\\" + "Test 1.test";
+            var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
           
             var test1String = File.ReadAllText(test1FilePath);
@@ -198,10 +198,10 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             testCatalog.SaveTest(resourceID, testToSave2);
             //------------Assert Results-------------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test2FilePath = path + "\\" + "Test 2.test";
+            var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test2FilePath, testFiles[1]);
           
             var test2String = File.ReadAllText(test2FilePath);
@@ -242,11 +242,11 @@ namespace Dev2.Tests.Runtime.Hosting
             testCatalog.SaveTest(resourceID, testToSave2);
 
             //------------Assert Preconditions-------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path + "\\" + "Test 1.test";
-            var test2FilePath = path + "\\" + "Test 2.test";
+            var test1FilePath = Path.Combine(path, "Test 1.test");
+            var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
             Assert.AreEqual(test2FilePath, testFiles[1]);
 
@@ -303,12 +303,12 @@ namespace Dev2.Tests.Runtime.Hosting
             };
             testCatalog.SaveTests(resourceID, serviceTestModelTos);
             //------------Assert Preconditions-------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path + "\\" + "Test 1.test";
+            var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
-            var test2FilePath = path + "\\" + "Test 2.test";
+            var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test2FilePath, testFiles[1]);
             var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
             Assert.IsNotNull(modelTO);
@@ -354,12 +354,12 @@ namespace Dev2.Tests.Runtime.Hosting
             };
             testCatalog.SaveTests(resourceID, serviceTestModelTos);
             //------------Assert Preconditions-------------------
-            var path = EnvironmentVariables.TestPath + "\\" + resourceID;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
             var testFiles = Directory.EnumerateFiles(path).ToList();
-            var test1FilePath = path + "\\" + "Test 1.test";
+            var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
-            var test2FilePath = path + "\\" + "Test 2.test";
+            var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test2FilePath, testFiles[1]);
             var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
             Assert.IsNotNull(modelTO);

@@ -38,18 +38,30 @@ namespace Dev2.Tests.Runtime.Plugins
                 var data = new byte[len];
                 stream.Read(data, 0, len);
 
+                var baseDir = Path.GetDirectoryName(assembly.Location);
                 var location = name + ".dll";
 
-                if(!string.IsNullOrEmpty(dirToPlaceIn) && !Directory.Exists(dirToPlaceIn))
+                if(!string.IsNullOrEmpty(dirToPlaceIn))
                 {
-                    Directory.CreateDirectory(dirToPlaceIn);
-                    location = Path.Combine(dirToPlaceIn, location);
+                    var fullDirPath = Path.IsPathFullyQualified(dirToPlaceIn)
+                        ? dirToPlaceIn
+                        : Path.Combine(baseDir, dirToPlaceIn);
 
-                    // its already there ;)
-                    if(File.Exists(location))
+                    if(!Directory.Exists(fullDirPath))
                     {
-                        return location;
+                        Directory.CreateDirectory(fullDirPath);
                     }
+
+                    location = Path.Combine(fullDirPath, location);
+                }
+                else
+                {
+                    location = Path.Combine(baseDir, location);
+                }
+
+                if(File.Exists(location))
+                {
+                    return location;
                 }
 
                 using(FileStream fs = new FileStream(location, FileMode.OpenOrCreate, FileAccess.Write))

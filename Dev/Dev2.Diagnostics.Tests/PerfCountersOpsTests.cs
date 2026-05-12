@@ -66,8 +66,9 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         public void TestLocater()
         {
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
-            var counter2 = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Concurrent requests currently executing").FromSafe();
+            var locater = CustomContainer.Get<IWarewolfPerformanceCounterLocater>();
+            var counter = locater.GetCounter(WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
+            var counter2 = locater.GetCounter("Concurrent requests currently executing").FromSafe();
             Assert.AreEqual(counter, counter2);
         }
 

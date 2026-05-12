@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -57,6 +57,12 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_Returns_Execution_Completed()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
@@ -86,10 +92,13 @@ namespace Dev2.Tests.Runtime.Services
             mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+            var mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(a => a.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>())).Returns(true);
             //------------Execute Test---------------------------
         
             var workflowResume = new WorkflowResume();
             workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
+            workflowResume.AuthorizationService = mockAuthService.Object;
             var jsonResult = workflowResume.Execute(values, null);
         
             //------------Assert Results-------------------------
@@ -110,7 +119,13 @@ namespace Dev2.Tests.Runtime.Services
          [TestCategory("CannotParallelize")]
          public void WorkflowResume_Execute_WithEncryptedValues_Returns_Execution_Completed()
          {
-             //------------Setup for test--------------------------
+              if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+              {
+                  Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                  return;
+              }
+
+              //------------Setup for test--------------------------
              var newexecutionEnvironment = CreateExecutionEnvironment();
              newexecutionEnvironment.Assign("[[UUID]]", "public", 0);
              newexecutionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
@@ -146,8 +161,12 @@ namespace Dev2.Tests.Runtime.Services
              CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
              //------------Execute Test---------------------------
         
+             var mockAuthService = new Mock<IAuthorizationService>();
+             mockAuthService.Setup(a => a.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>())).Returns(true);
+
              var workflowResume = new WorkflowResume();
              workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
+             workflowResume.AuthorizationService = mockAuthService.Object;
              var jsonResult = workflowResume.Execute(values, null);
         
              //------------Assert Results-------------------------
@@ -340,6 +359,12 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_DynamicServiceIsNull_Fails()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
@@ -381,6 +406,12 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_ServiceActionNullForResource_Fails()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
@@ -423,6 +454,12 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_HasErrors_Returns_ErrorMessage()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
@@ -453,10 +490,13 @@ namespace Dev2.Tests.Runtime.Services
             mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+            var mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(a => a.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>())).Returns(true);
             //------------Execute Test---------------------------
         
             var workflowResume = new WorkflowResume();
             workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
+            workflowResume.AuthorizationService = mockAuthService.Object;
             var jsonResult = workflowResume.Execute(values, null);
         
             //------------Assert Results-------------------------

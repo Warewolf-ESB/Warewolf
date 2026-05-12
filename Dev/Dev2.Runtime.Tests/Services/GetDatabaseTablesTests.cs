@@ -26,6 +26,7 @@ using Moq;
 using Newtonsoft.Json;
 using System.Linq;
 using Warewolf.UnitTestAttributes;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -33,6 +34,13 @@ namespace Dev2.Tests.Runtime.Services
     [TestCategory("MSSql Get Database Tables")]
     public class GetDatabaseTablesTests
     {
+        [TestInitialize]
+        public void TestSetup()
+        {
+            DpapiWrapper.AesEncryptHook = plainText => "WFAES::" + Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
+            DpapiWrapper.AesDecryptHook = cipher => Encoding.UTF8.GetString(Convert.FromBase64String(cipher.Substring(7)));
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -211,7 +219,12 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestCleanup]
-        public void CleanupContainer() => GetDatabaseColumnsForTableTests._containerOps?.Dispose();
+        public void CleanupContainer()
+        {
+            DpapiWrapper.AesEncryptHook = null;
+            DpapiWrapper.AesDecryptHook = null;
+            GetDatabaseColumnsForTableTests._containerOps?.Dispose();
+        }
 
         #endregion
 

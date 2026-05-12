@@ -56,7 +56,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            _settingsFilePath = @"C:\ProgramData\Warewolf\Server Settings\persistencesettings.json";
+            _settingsFilePath = PersistenceSettings.SettingsPath;
             if (File.Exists(_settingsFilePath)) return;
             try
             {

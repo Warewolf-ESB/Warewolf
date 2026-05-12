@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Enums;
 using System.Linq;
 using Dev2.Runtime.Hosting;
 using System.Activities;
+using Warewolf.Security.Encryption;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
@@ -23,6 +24,19 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchResourceDefinitionTests
     {
+        [TestInitialize]
+        public void TestSetup()
+        {
+            DpapiWrapper.AesEncryptHook = plainText => "WFAES::" + Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
+            DpapiWrapper.AesDecryptHook = cipher => Encoding.UTF8.GetString(Convert.FromBase64String(cipher.Substring(7)));
+        }
+
+        [TestCleanup]
+        public void TestTeardown()
+        {
+            DpapiWrapper.AesEncryptHook = null;
+            DpapiWrapper.AesDecryptHook = null;
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

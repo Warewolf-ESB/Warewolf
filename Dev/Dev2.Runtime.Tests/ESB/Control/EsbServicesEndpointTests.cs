@@ -59,6 +59,12 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             var esbServicesEndpoint = new EsbServicesEndpoint();
 
             var mockPrincipal = new Mock<IPrincipal>();
@@ -88,6 +94,12 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing_And_DataObject_StateNotifier_IsSet()
         {
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                Assert.Inconclusive("Windows Principal is not supported on this platform.");
+                return;
+            }
+
             var mockLogManager = new Mock<IStateNotifierFactory>();
             var mockStateNotifier = new Mock<IStateNotifier>();
             var esbServicesEndpoint = new EsbServicesEndpoint();

@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
-            File.Delete("secure.config");
+            if (File.Exists(serverSecuritySettingsFile)) { File.Delete(serverSecuritySettingsFile); }
             var readSecuritySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.AreEqual(4, readSecuritySettings.WindowsGroupPermissions.Count);
