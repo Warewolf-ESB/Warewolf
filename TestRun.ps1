@@ -419,7 +419,11 @@ if __name__ == '__main__':
 
 function Stop-HostFTPServer {
     if ($LegacyWindowsDeps) {
-        taskkill /im pythonw.exe /f 2>$null | Out-Null
+        # cmd /c swallows taskkill's stderr + non-zero exit when pythonw is
+        # already gone (e.g. a sibling Stop-HostFTPSServer already killed it).
+        # Stop's ErrorActionPreference would otherwise abort the whole script.
+        cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
+        $global:LASTEXITCODE = 0
         return
     }
     docker rm -f ftpserver 2>$null | Out-Null
@@ -511,7 +515,11 @@ if __name__ == '__main__':
 }
 
 function Stop-HostFTPSServer {
-    if ($LegacyWindowsDeps) { taskkill /im pythonw.exe /f 2>$null | Out-Null; return }
+    if ($LegacyWindowsDeps) {
+        cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
+        $global:LASTEXITCODE = 0
+        return
+    }
     docker rm -f ftpsserver 2>$null | Out-Null
 }
 
