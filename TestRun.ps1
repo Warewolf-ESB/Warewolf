@@ -530,10 +530,25 @@ function Start-HostSFTPServer {
         if ($cap -and $cap.State -ne 'Installed') {
             Add-WindowsCapability -Online -Name $cap.Name | Out-Null
         }
-        # Provision the test user if missing.
+        # Provision the test user if missing. Hosted windows-2022 agents
+        # enforce password complexity that rejects 'ftppass'; try the legacy
+        # password first to keep atmoz/sftp-equivalent creds for tests, then
+        # fall back to a policy-compliant value if rejected.
         if (-not (Get-LocalUser -Name 'ftpuser' -ErrorAction SilentlyContinue)) {
-            $pw = ConvertTo-SecureString 'ftppass' -AsPlainText -Force
-            New-LocalUser -Name 'ftpuser' -Password $pw -PasswordNeverExpires -AccountNeverExpires -UserMayNotChangePassword | Out-Null
+            $created = $false
+            foreach ($candidate in 'ftppass','Ftppass!2026') {
+                try {
+                    $pw = ConvertTo-SecureString $candidate -AsPlainText -Force
+                    New-LocalUser -Name 'ftpuser' -Password $pw `
+                        -PasswordNeverExpires -AccountNeverExpires `
+                        -UserMayNotChangePassword -ErrorAction Stop | Out-Null
+                    $created = $true
+                    break
+                } catch [Microsoft.PowerShell.Commands.InvalidPasswordException] {
+                    Write-Warn "Password policy rejected '$candidate' for ftpuser; trying next"
+                }
+            }
+            if (-not $created) { Write-Warn "Could not create ftpuser; SFTP auth will fail" }
         }
         $cfg = "$env:ProgramData\ssh\sshd_config"
         if (Test-Path $cfg) {
