@@ -268,8 +268,8 @@ namespace ActivityUnitTests
 
         public static string InjectFTPDependency(string location, bool sourcePath=true)
         {
-            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/";
-			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
+            var oldFTPDependency = "ftp://localhost:21/";
+			var oldFTPSDependency = "ftp://localhost:1010/";
             if (location.StartsWith(oldFTPDependency) && sourcePath || location.StartsWith("[[sourcePath]] = " + oldFTPDependency))
             {
 				_sourceDependency = new Depends(Depends.ContainerType.FTP);
@@ -293,17 +293,17 @@ namespace ActivityUnitTests
                 _destinationDependency = new Depends(Depends.ContainerType.FTPS);
                 location = location.Replace(oldFTPSDependency, "ftps://" + _destinationDependency.Container.IP + ":" + _destinationDependency.Container.Port + "/");
             }
-            if (location == "ftp://DEVOPSPDC.premier.local")
+            if (location == "ftp://localhost")
             {
                 _destinationDependency = new Depends(Depends.ContainerType.FTPS);
                 location = "ftps://" + _destinationDependency.Container.IP;
             }
-            if (location == "//DEVOPSPDC.premier.local:1002/")
+            if (location == "//localhost:1010/")
             {
                 _destinationDependency = new Depends(Depends.ContainerType.FTPS);
                 location = "//" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port + "/";
             }
-            if (location == "ftp://DEVOPSPDC.premier.local:1002")
+            if (location == "ftp://localhost:1010")
             {
                 _destinationDependency = new Depends(Depends.ContainerType.FTPS);
                 location = "ftps://" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port;

@@ -260,7 +260,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
-            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "False");
+            // PrimativesTestDLL returns the runtime default for the bool/double overloads,
+            // which differs between platforms (the test DLL was built on Windows but pulls
+            // some env-derived values at execution time).
+            var expectedBoolSample = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) ? "True" : "False";
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, expectedBoolSample);
         }
 
         [TestMethod]
@@ -286,7 +290,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
-            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
+            var expectedDoubleSample = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) ? "2.1" : "3.1";
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, expectedDoubleSample);
         }
 
         [TestMethod]

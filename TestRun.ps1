@@ -1671,7 +1671,7 @@ try {
 
             $asmArg = ".\" + ($asmList -join " .\")
             if ($UNCPassword) {
-                "net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+                "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
             $staArg = if ($STA.IsPresent) { "--settings:`"$TestResultsPath\STA.runsettings`"" } else { "" }
             # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
@@ -1706,7 +1706,7 @@ try {
             }
             if ($PostTestRunScript) { "&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
             if ($UNCPassword) {
-                "net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+                "net use \\localhost\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
 
             Get-Content "$TestResultsPath\RunTests.ps1"

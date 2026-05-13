@@ -23,8 +23,8 @@ Scenario Outline: Read File at location
 	| NO | Name       | source   | sourceLocation                                                                    | username      | password     | resultVar   | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                 | ""            | ""           | [[result]]  | Guid   | NO           |                      |
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]]  | Guid   | NO           |                      |
-	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt              | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
-	| 4  | FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt                      | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
+	| 3  | FTP        | [[path]] | ftp://localhost:21/FORREADFILETESTING/filetoread.txt              | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
+	| 4  | FTPS       | [[path]] | ftp://localhost:1010/FORTESTING/filetodele.txt                      | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
 	| 5  | SFTP       | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread.txt             | dev2          | Q/ulw&] | [[result]] | Guid   | NO           |                      |
 	| 6  | SFTP PK    | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread1.txt            | dev2          | Q/ulw&] | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
@@ -39,8 +39,8 @@ Scenario Outline: Read File at locationNull
 	| NO | Name       | source   | sourceLocation                                                                                  | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | NULL                                                                                            | ""            | ""           | [[result]] | Error  | AN           |                      |
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 4  | FTPS       | [[path]] | ftps://DEVOPSPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 3  | FTP        | [[path]] | ftp://localhost:21/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 4  | FTPS       | [[path]] | ftps://localhost:1010/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 5  | SFTP       | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 6  | SFTP PK    | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 

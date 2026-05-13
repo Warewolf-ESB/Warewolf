@@ -213,7 +213,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -223,7 +223,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocation_FTP()
         {
 #line 7
- this.DeleteFileAtLocation("FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocation("FTP", "[[path]]", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -234,7 +234,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -244,7 +244,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocation_FTPS()
         {
 #line 7
- this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -409,7 +409,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -419,7 +419,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocationNull_Variant3()
         {
 #line 30
- this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -430,7 +430,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -440,7 +440,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public void DeleteFileAtLocationNull_Variant4()
         {
 #line 30
- this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
