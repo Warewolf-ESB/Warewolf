@@ -946,6 +946,23 @@ function Start-LightweightExecution {
     # the process opens it, so we can't share that file with the header).
     # Both the task log (via Write-Host) and the artifact get a copy.
     $diagFile = Join-Path $logBase 'warewolf-engine-init.log'
+    # List runDir top-level + any "Resources*" subfolders' immediate
+    # children so we can see why the WorkflowsDirectory probe missed.
+    # (Avoid PS7 ternary — Azure DevOps runs Windows PowerShell 5.1.)
+    function Format-DirEntry($item) {
+        if ($item.PSIsContainer) { return "[D] $($item.Name)" }
+        return "[F] $($item.Name)"
+    }
+    $runDirTop = @(Get-ChildItem -LiteralPath $runDir -ErrorAction SilentlyContinue |
+        Select-Object -First 60 |
+        ForEach-Object { Format-DirEntry $_ })
+    $resourcesProbe = @()
+    foreach ($d in @(Get-ChildItem -LiteralPath $runDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'Resources*' })) {
+        $resourcesProbe += "  $($d.Name)/"
+        $resourcesProbe += @(Get-ChildItem -LiteralPath $d.FullName -ErrorAction SilentlyContinue |
+            Select-Object -First 20 |
+            ForEach-Object { "    " + (Format-DirEntry $_) })
+    }
     $diagLines = @(
         "=== TestRun.ps1 engine diagnostic snapshot ==="
         "Time          : $(Get-Date -Format o)"
@@ -954,6 +971,12 @@ function Start-LightweightExecution {
         "WAREWOLF_SECURE_CONFIG : $($env:WAREWOLF_SECURE_CONFIG)"
         "WorkflowsDirectory     : $($env:WorkflowsDirectory)"
         "AzureFunctionsJobHost__Logging__LogLevel__Default : $($env:AzureFunctionsJobHost__Logging__LogLevel__Default)"
+        ""
+        "RunDir top-level (first 60):"
+    ) + $runDirTop + @(
+        ""
+        "Resources* subfolder contents (first 20 each):"
+    ) + $resourcesProbe + @(
         "==============================================="
     )
     $diagLines | ForEach-Object { Write-Host $_ }
