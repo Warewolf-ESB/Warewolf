@@ -347,7 +347,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
 			Write-Host "Publishing to $OutputFolderName ($Runtime, self-contained: $RuntimeIsSelfContained)"
-			$_scFlag = if ($RuntimeIsSelfContained) { "--self-contained true" } else { "--self-contained false" }
+			$_scFlag = if ($RuntimeIsSelfContained) { "-p:SelfContained=true" } else { "-p:SelfContained=false" }
 			dotnet restore "$PSScriptRoot\$SolutionFile" -r $Runtime --nologo -v minimal --force
 			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r $Runtime $_scFlag --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
 			if ($LASTEXITCODE -ne 0) {
