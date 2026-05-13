@@ -891,6 +891,13 @@ function Start-LightweightExecution {
         New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
         $env:WAREWOLF_SECURE_CONFIG = Join-Path $SharedConfigDir 'secure.config'
     }
+    # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
+    # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
+    # $TestResultsPath\warewolf-server.log when the test step finishes.
+    $logBase = if ($TestResultsDir) { $TestResultsDir } else { Join-Path $PWD 'TestResults' }
+    if (-not (Test-Path $logBase)) { New-Item -ItemType Directory -Force -Path $logBase | Out-Null }
+    $stdoutLog = Join-Path $logBase 'warewolf-server.log'
+    $stderrLog = Join-Path $logBase 'warewolf-server.err.log'
     if ($CoverageDir) {
         $null = New-Item -Path $CoverageDir -ItemType Directory -Force
         $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
@@ -899,11 +906,11 @@ function Start-LightweightExecution {
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071")
         Push-Location $runDir
-        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
+        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
     } else {
         Push-Location $runDir
-        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden
+        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
     }
     Wait-ForEngine -Port 7071 -MaxSeconds 180
