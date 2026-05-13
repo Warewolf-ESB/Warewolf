@@ -1661,9 +1661,11 @@ try {
             if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
                 Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
             }
-            # Roll prior RunTests / log / coverage artifacts
+            # Roll prior RunTests / coverage artifacts. warewolf-server.log is
+            # held open by the engine for the full TestRun.ps1 invocation, so
+            # rotating it here would fail with a file-in-use error; let it
+            # accumulate across retries instead.
             if (Test-Path "$TestResultsPath\RunTests.ps1")          { Move-Item "$TestResultsPath\RunTests.ps1"          "$TestResultsPath\RunTests($loop).ps1" }
-            if (Test-Path "$TestResultsPath\warewolf-server.log")   { Move-Item "$TestResultsPath\warewolf-server.log"   "$TestResultsPath\warewolf-server($loop).log" }
             if (Test-Path "$TestResultsPath\Snapshot.coverage")     { Move-Item "$TestResultsPath\Snapshot.coverage"     "$TestResultsPath\Snapshot($loop).coverage" }
             if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") { Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($loop).coverage" }
 
