@@ -54,10 +54,14 @@ try
 
     await StartupOrchestrator.RunStartupAsync(host, config);
 
+    // Explicitly resolve IExecutionLogger here — AFTER RunStartupAsync — so
+    // the AES decrypt hook is guaranteed to be wired before the singleton
+    // factory runs (which reads the encrypted ElasticsearchLoggingSource.bite).
+    var executionLogger = host.Services.GetRequiredService<IExecutionLogger>();
+
     // Route every Dev2Logger.X() call to the IExecutionLogger sinks (Azure / Elasticsearch).
     // Must be set after RunStartupAsync so Config.Server is initialised before any Dev2Logger call.
-    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(
-        host.Services.GetRequiredService<IExecutionLogger>());
+    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
 
     // Also set the correlation prefix provider so that Dev2Logger's own log4net path
     // (when ExternalSink is bypassed) includes instance/invocation correlation.
