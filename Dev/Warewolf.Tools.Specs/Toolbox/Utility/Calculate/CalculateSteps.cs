@@ -11,6 +11,7 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -174,6 +175,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                         .Substring(1, expectedResult.Length - 2)
                         .Split(new[] { "} or {" }, StringSplitOptions.None);
                     actualValue.Should().BeOneOf(expectedResults);
+                }
+                else if (double.TryParse(expectedResult, NumberStyles.Float, CultureInfo.InvariantCulture, out var expectedNum) &&
+                         double.TryParse(actualValue,    NumberStyles.Float, CultureInfo.InvariantCulture, out var actualNum))
+                {
+                    // .NET's shortest-round-trip double.ToString() can pick a
+                    // different number of trailing digits across CPUs / runtime
+                    // versions (e.g. Math.Asinh on .NET 8 emits 16 digits where
+                    // the feature file captured 17). Both representations round-
+                    // trip to the same double, so compare numerically with a
+                    // tight relative tolerance instead of a literal string match.
+                    var tolerance = Math.Max(Math.Abs(expectedNum), Math.Abs(actualNum)) * 1e-12;
+                    if (tolerance < double.Epsilon) { tolerance = double.Epsilon; }
+                    Math.Abs(actualNum - expectedNum).Should().BeLessThanOrEqualTo(
+                        tolerance,
+                        $"calculated '{actualValue}' should match expected '{expectedResult}' within relative tolerance 1e-12");
                 }
                 else
                 {
