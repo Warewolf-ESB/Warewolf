@@ -904,13 +904,13 @@ function Start-LightweightExecution {
         $script:_sessionId = $sid
         $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
-        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071")
+        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071", "--verbose")
         Push-Location $runDir
         $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
     } else {
         Push-Location $runDir
-        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
+        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071", "--verbose") -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
     }
     Wait-ForEngine -Port 7071 -MaxSeconds 180
