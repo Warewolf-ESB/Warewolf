@@ -103,11 +103,12 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.IsFalse(IsSuccessStatusCode(result));
             var responseMessage = GetResponse(result);
 
-#if WINDOWS || NETFRAMEWORK
-            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 401,\r\n    \"Title\": \"user_unauthorized\",\r\n    \"Message\": \"Authorization has been denied for this user.\"\r\n  }\r\n}", responseMessage);
-#else
-			Assert.AreEqual("{\n  \"Error\": {\n    \"Status\": 401,\n    \"Title\": \"user_unauthorized\",\n    \"Message\": \"Authorization has been denied for this user.\"\n  }\n}", responseMessage);
-#endif
+            // Normalize CRLF→LF so the assertion is OS-agnostic. The WINDOWS symbol is
+            // only defined on net*.0-windows targets, not generic net*.0 — so the #else
+            // branch was running on Windows agents and failing against \r\n output.
+            Assert.AreEqual(
+                "{\n  \"Error\": {\n    \"Status\": 401,\n    \"Title\": \"user_unauthorized\",\n    \"Message\": \"Authorization has been denied for this user.\"\n  }\n}",
+                responseMessage?.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
@@ -129,11 +130,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
             var responseMessage = GetResponse(result);
 
-#if WINDOWS || NETFRAMEWORK
-            Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>user_forbidden</Title>\r\n  <Message>Authorization has been denied for this request.</Message>\r\n</Error>", responseMessage);
-#else
-			Assert.AreEqual("<Error>\n  <Status>403</Status>\n  <Title>user_forbidden</Title>\n  <Message>Authorization has been denied for this request.</Message>\n</Error>", responseMessage);
-#endif
+            Assert.AreEqual(
+                "<Error>\n  <Status>403</Status>\n  <Title>user_forbidden</Title>\n  <Message>Authorization has been denied for this request.</Message>\n</Error>",
+                responseMessage?.Replace("\r\n", "\n"));
         }
 
         [TestMethod]

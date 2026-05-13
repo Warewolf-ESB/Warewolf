@@ -287,15 +287,14 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-#if WINDOWS || NETFRAMEWORK
-            StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 0,\r\n    \"CoveredNodes\": 0,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 0.0\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
-#else
-			StringAssert.Contains(executePayload, "\n  \"TestResults\": []\n");
-			StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 0,\n    \"CoveredNodes\": 0,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 0.0\n  },");
-            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
-#endif
+            // JsonConvert uses Environment.NewLine, which is \r\n on Windows and \n on Linux.
+            // The WINDOWS preprocessor symbol is only defined when targeting net*.0-windows;
+            // generic net*.0 falls through to the \n branch even when running on Windows.
+            // Normalize the payload to LF so the assertion is OS-agnostic.
+            var normalisedPayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(normalisedPayload, "\n  \"TestResults\": []\n");
+            StringAssert.Contains(normalisedPayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 0,\n    \"CoveredNodes\": 0,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 0.0\n  },");
+            StringAssert.Contains(normalisedPayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
         }
 
         [TestMethod]
