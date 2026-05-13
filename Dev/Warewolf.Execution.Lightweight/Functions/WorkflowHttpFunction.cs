@@ -241,20 +241,39 @@ namespace Warewolf.Execution.Lightweight
             }
 
             // ── Execute the workflow ──────────────────────────────────────────────
-            var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
-            var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
+            // Wrapped in try/catch so the failing /Secure/<slug> requests in the
+            // Security Specs CI job leave the exception text in the engine log
+            // (otherwise Azure Functions converts an unhandled exception to 500
+            // and the trace never surfaces, even at Debug log level).
+            try
+            {
+                var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
+                var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
 
-            // Suffix flags are authoritative — override any format inferred from the URL path.
-            executionRequest.WebServerUri = req.Url;
-            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
-                                          : isApi ? EmitionTypes.OPENAPI
-                                                  : EmitionTypes.JSON;
-            if (isDebug)
-                executionRequest.IsDebug = true;
+                // Suffix flags are authoritative — override any format inferred from the URL path.
+                executionRequest.WebServerUri = req.Url;
+                executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+                                              : isApi ? EmitionTypes.OPENAPI
+                                                      : EmitionTypes.JSON;
+                if (isDebug)
+                    executionRequest.IsDebug = true;
 
-            var result = _workflowExecutor.Execute(executionRequest);
-            return await ResponseBuilder.BuildAsync(req, result,
-                isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
+                var result = _workflowExecutor.Execute(executionRequest);
+                return await ResponseBuilder.BuildAsync(req, result,
+                    isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"[SecuritySpecsDiag] ExecuteNamedWorkflow threw for name='{name}' isPublic={isPublic} workflowsDir='{_workflowsDirectory}': " +
+                    $"{ex.GetType().FullName}: {ex.Message}\n{ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(
+                        $"[SecuritySpecsDiag]   inner: {ex.InnerException.GetType().FullName}: {ex.InnerException.Message}\n{ex.InnerException.StackTrace}");
+                }
+                throw;
+            }
         }
 
         /// <summary>
