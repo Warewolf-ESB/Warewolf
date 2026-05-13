@@ -47,11 +47,7 @@ namespace ActivityUnitTests
     [TestClass]
     public class BaseActivityUnitTest
     {
-#if WINDOWS || NETFRAMEWORK
-        protected const string NewLine = "\r\n";
-#else
-        protected const string NewLine = "\n";
-#endif
+        protected static readonly string NewLine = Environment.NewLine;
 
         static Depends _sourceDependency;
         static Depends _destinationDependency;
