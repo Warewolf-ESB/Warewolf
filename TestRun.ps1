@@ -1,111 +1,508 @@
+# TestRun.ps1 - Warewolf consolidated test runner.
+#
+# Two operating modes selected by parameter shape:
+#
+#   Direct mode  - explicit -Projects/-Assemblies. Runs vstest locally (Windows
+#                  bare-metal) or inside a Linux container when -InContainer is
+#                  set. Manages the SUT lifecycle (LightweightExecution or
+#                  FullServer) with optional dotnet-coverage instrumentation.
+#                  This is the entry point every Dev\.azure\pipeline.yml step
+#                  already invokes; argument surface is preserved.
+#
+#   Catalog mode - no -Projects/-Assemblies (or -Jobs ...). Parses
+#                  Dev\.azure\pipeline.yml into a job catalog and dispatches
+#                  every matched test job; default Pattern A (bare-metal
+#                  Windows SUT + Linux dependency containers); -SUTRuntime Linux
+#                  switches to Pattern B (Linux container SUT, the long-form
+#                  Run-Coverage.ps1 path). Merges coverage and produces a
+#                  report at the end.
+#
+# Replaces Dev\Run-Coverage.ps1 and Dev\run-tests-in-container.ps1.
+
+[CmdletBinding()]
 param(
-  [String[]] $Projects, 
-  [String] $Category,
-  [String[]] $Categories,
-  [String[]] $ExcludeProjects = @(), 
-  [String[]] $ExcludeCategories,
-  [String] $TestsToRun="${bamboo.TestsToRun}",
-  [String] $VSTestPath="${bamboo.capability.system.builder.devenv.Visual Studio 2019}",
-  [String] $NuGet="${bamboo.capability.system.builder.command.NuGet}",
-  [String] $MSBuildPath="${bamboo.capability.system.builder.msbuild.MSBuild v16.0}",
-  [int] $RetryCount=${bamboo.RetryCount},
-  [String] $PreTestRunScript,
-  [String] $PostTestRunScript,
-  [switch] $InContainer,
-  [String] $InContainerVersion="latest",
-  [String] $InContainerCommitID="latest",
-  [switch] $Coverage,
-  [switch] $RetryRebuild,
-  [String] $UNCPassword,
-  [switch] $StartFTPServer,
-  [switch] $StartFTPSServer,
-  [switch] $CreateUNCPath,
-  [switch] $UseRegionalSettings,
-  [switch] $CreateLocalSchedulerAdmin,
-  [switch] $STA,
-  [switch] $StartSFTPServer,
-  [string] $StartMSSQLServer,
-  [switch] $StartMySQLServer,
-  [switch] $StartElasticsearchServer,
-  # ── Server-under-test lifecycle ──────────────────────────────────────────
-  # LightweightExecution: start func.exe before tests, stop after.
-  # FullServer:           start 'Warewolf Server.exe' before tests, stop after.
-  # (empty):              no server management (default / existing behaviour).
-  [string] $ServerType = "",
-  [string] $FuncExePath = "",             # explicit path to func.exe; auto-discovered if empty
-  [string] $LightweightExecutionDir = "", # working dir for func (defaults to $PWD)
-  [string] $SharedConfigDir = "",         # writable dir exposed to the engine as WAREWOLF_SECURE_CONFIG
-  # ── vstest filter ────────────────────────────────────────────────────────
-  [string] $Filter = "",                  # raw vstest /TestCaseFilter expression (ANDed with -Category/-ExcludeCategories)
-  # ── Test results output ──────────────────────────────────────────────────
-  [string] $TestResultsDir = "",          # override for the .\TestResults output directory
-  # ── Engine coverage (dotnet-coverage) ────────────────────────────────────
-  [string] $CoverageDir = "",             # dir where engine coverage files are written
-  [string[]] $CoverageIncludeFiles = @(), # file glob patterns passed as --include to dotnet-coverage
-  [string] $EngineSessionId = "",         # dotnet-coverage session id (auto-generated if empty)
-  [string] $EngineCoverageFile = ""       # output .cobertura.xml for the engine (defaults to $CoverageDir\engine.cobertura.xml)
+    # ---- Direct-mode test selection (existing) ----
+    [String[]] $Projects,
+    [String[]] $Assemblies,
+    [String[]] $ExcludeProjects = @(),
+    [String[]] $ExcludeAssemblies = @(),
+    [String]   $Category,
+    [String[]] $Categories,
+    [String[]] $ExcludeCategories,
+    [String]   $Filter = "",
+    [String]   $TestsToRun = "",
+    [Int]      $RetryCount = 0,
+    [Switch]   $RetryRebuild,
+
+    # ---- Catalog-mode (new) ----
+    [String[]] $Jobs = @(),
+    [String]   $PipelineYml = "",
+    [Switch]   $List,
+    [Switch]   $SkipBuild,
+    [Switch]   $SkipReport,
+    [ValidateSet('Html','Badges','Cobertura','TextSummary','HtmlSummary','MarkdownSummary')]
+    [String]   $ReportFormat = 'Html',
+    [Switch]   $NoParallel,
+    [Int]      $MaxParallel = 4,
+
+    # ---- SUT lifecycle ----
+    [ValidateSet('','LightweightExecution','FullServer')]
+    [String]   $ServerType = "",
+    [ValidateSet('Windows','Linux')]
+    [String]   $SUTRuntime = "Windows",
+    [String]   $FuncExePath = "",
+    [String]   $LightweightExecutionDir = "",
+    [String]   $SharedConfigDir = "",
+
+    # ---- Output / coverage ----
+    [String]   $TestResultsDir = "",
+    [String]   $CoverageDir = "",
+    [String[]] $CoverageIncludeFiles = @(),
+    [String]   $EngineSessionId = "",
+    [String]   $EngineCoverageFile = "",
+    [Switch]   $Coverage,
+    [Switch]   $STA,
+    [String]   $PreTestRunScript,
+    [String]   $PostTestRunScript,
+    [String]   $VSTestPath = "",
+    [String]   $NuGet = "",
+    [String]   $MSBuildPath = "",
+
+    # ---- Linux container execution ----
+    [Switch]   $InContainer,
+    [String]   $InContainerImage = "warewolf-coverage-env",
+    [Switch]   $RebuildImage,
+    [Switch]   $UseHostNetwork,
+    [String]   $BinDir = "",
+    [String]   $InContainerVersion = "latest",
+    [String]   $InContainerCommitID = "latest",
+
+    # ---- Dep startup (Linux-image by default) ----
+    [Switch]   $StartFTPServer,
+    [Switch]   $StartFTPSServer,
+    [Switch]   $StartSFTPServer,
+    [Switch]   $StartMySQLServer,
+    [Switch]   $StartElasticsearchServer,
+    [String]   $StartMSSQLServer = "",
+
+    # ---- Legacy Windows-native deps ----
+    [Switch]   $LegacyWindowsDeps,
+    [String]   $UNCPassword,
+    [Switch]   $CreateUNCPath,
+    [Switch]   $UseRegionalSettings,
+    [Switch]   $CreateLocalSchedulerAdmin
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Server-under-test lifecycle helpers
-# ─────────────────────────────────────────────────────────────────────────────
+$ErrorActionPreference = 'Stop'
+$ProgressPreference    = 'SilentlyContinue'
+
+# PS 6+ automatic vars - fallbacks for Windows PowerShell 5.1
+if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
+if (-not (Test-Path Variable:\IsMacOS))   { $IsMacOS   = $false }
+if (-not (Test-Path Variable:\IsWindows)) { $IsWindows = $true  }
+
+# ============================================================================
+# Helpers
+# ============================================================================
+
+function Write-Step($m) { Write-Host "`n==> $m" -ForegroundColor Cyan }
+function Write-Done($m) { Write-Host "    OK  $m" -ForegroundColor Green }
+function Write-Warn($m) { Write-Host "    !!  $m" -ForegroundColor Yellow }
+
+function Test-Exit([string]$label) {
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "$label failed (exit $LASTEXITCODE)"
+        exit $LASTEXITCODE
+    }
+}
+
+# Docker Desktop on Windows accepts C:/foo/bar in -v mounts
+function dp([string]$path) {
+    [System.IO.Path]::GetFullPath($path) -replace '\\', '/'
+}
+
+function Get-Slug([string]$JobName) {
+    return ($JobName -replace '_', '-').ToLower()
+}
+
+function Invoke-Logged {
+    Write-Host "+ $($args -join ' ')" -ForegroundColor DarkGray
+    & $args[0] $args[1..($args.Count - 1)]
+}
+
+# Split comma-bundled single-string params back into arrays. The Azure DevOps
+# task arg builder sometimes passes "A,B,C" as one element of a string[].
+# The unary comma on every return path prevents PowerShell from unwrapping an
+# empty/single-element array result into $null/scalar in the caller's scope.
+function Split-CommaArray([string[]]$arr) {
+    if ($null -eq $arr -or $arr.Count -eq 0) { return ,@() }
+    if ($arr.Count -eq 1 -and $arr[0].Contains(",")) {
+        $parts = @($arr[0].Split(",") | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+        return ,$parts
+    }
+    return ,$arr
+}
+
+# ============================================================================
+# Path resolution
+# ============================================================================
+
+$ScriptDir = $PSScriptRoot
+# The script may live either at the repo root (Dev\.azure\pipeline.yml visible)
+# or in Bin\ServerTests (CI artifact layout, no Dev dir). Walk up if needed.
+$RepoRoot = $ScriptDir
+if (-not (Test-Path (Join-Path $RepoRoot "Dev\.azure\pipeline.yml"))) {
+    $candidate = Split-Path $RepoRoot -Parent
+    if ($candidate -and (Test-Path (Join-Path $candidate "Dev\.azure\pipeline.yml"))) {
+        $RepoRoot = $candidate
+    } else {
+        $candidate = Split-Path $candidate -Parent
+        if ($candidate -and (Test-Path (Join-Path $candidate "Dev\.azure\pipeline.yml"))) {
+            $RepoRoot = $candidate
+        }
+    }
+}
+
+if (-not $PipelineYml) {
+    $PipelineYml = Join-Path $RepoRoot "Dev\.azure\pipeline.yml"
+}
+$BinRoot        = Join-Path $RepoRoot "Bin"
+$ServerTestsBin = Join-Path $BinRoot 'ServerTests'
+$SettingsFile   = Join-Path $RepoRoot 'coverage-settings.xml'
+$FilterScript   = Join-Path $RepoRoot 'Dev\.azure\filter_coverage.py'
+$DockerfileTest = Join-Path $RepoRoot 'Dev\Warewolf.Execution.Lightweight\engine\docker\Dockerfile.test'
+$DockerContext  = Split-Path $DockerfileTest -Parent
+$CompileScript  = Join-Path $RepoRoot 'Compile.ps1'
+
+$RunId = Get-Date -Format 'yyyyMMddHHmmss'
+
+# ============================================================================
+# Pipeline.yml parser (ported from Run-Coverage.ps1)
+# ============================================================================
+
+function ConvertFrom-PipelineYaml {
+    param([Parameter(Mandatory)][string]$YamlPath)
+
+    $text = [System.IO.File]::ReadAllText($YamlPath)
+    $skip = @('build', 'Install_Func_CLI', 'MergeCoverage', 'build_release')
+
+    $jobRegex = [regex]'(?ms)^  - job: (?<name>\S+)\s*$.*?(?=^  - job: |\Z)'
+    $catalog  = New-Object System.Collections.Generic.List[object]
+
+    foreach ($m in $jobRegex.Matches($text)) {
+        $name = $m.Groups['name'].Value
+        if ($skip -contains $name) { continue }
+        $body = $m.Value
+
+        # The job body contains many shell snippets that also use `-Filter`,
+        # `-Path`, etc. Narrow argument extraction to the TestRun.ps1
+        # invocation's `arguments: >-` block (YAML block scalar) only.
+        $argsBlock = $body
+        if ($body -match '(?ms)filePath:[^\n]*TestRun\.ps1[^\n]*\n(?<rest>.*?)\n\s*(?:workingDirectory|env|displayName):') {
+            $argsBlock = $matches['rest']
+        }
+
+        $entry = [PSCustomObject]@{
+            Name              = $name
+            Slug              = Get-Slug $name
+            Type              = if ($body -match 'start-engine-coverage\.sh' -or $body -match '--session-id\s+\S+' -or $body -match '-ServerType\s+LightweightExecution' -or $body -match '-ServerType\s+FullServer') { 'EngineSpec' } else { 'Unit' }
+            Assembly          = $null
+            Assemblies        = @()
+            ExcludeAssemblies = @()
+            Filter            = $null
+            Output            = $null
+            SessionId         = $null
+            Sidecars          = @()
+            Artifact          = $null
+        }
+
+        if ($argsBlock -match '-EngineSessionId\s+"([^"]+)"') {
+            $entry.SessionId = $matches[1]
+        } elseif ($body -match '(?ms)start-engine-coverage\.sh\s*\\\s*\r?\n\s*(\S+)\s*\\') {
+            $entry.SessionId = $matches[1]
+        } elseif ($body -match '--session-id\s+(\S+)') {
+            $entry.SessionId = $matches[1]
+        }
+
+        if ($argsBlock -match '-EngineCoverageFile\s+"\$\(Agent\.BuildDirectory\)\\coverage\\([^"]+\.cobertura\.xml)"') {
+            $entry.Output = $matches[1]
+        } elseif ($body -match '"\$\(Agent\.BuildDirectory\)/coverage/([^"]+\.cobertura\.xml)"') {
+            $entry.Output = $matches[1]
+        }
+
+        # -Projects "A","B","C" or -Assemblies "A","B","C"
+        $assemblyMatch = $null
+        if ($argsBlock -match '-Projects\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            $assemblyMatch = $matches[1]
+        } elseif ($argsBlock -match '-Assemblies\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            $assemblyMatch = $matches[1]
+        }
+        if ($assemblyMatch) {
+            $assemblies = @([regex]::Matches($assemblyMatch, '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+            $entry.Assembly   = $assemblies[0]
+            $entry.Assemblies = $assemblies
+        }
+
+        if ($argsBlock -match '-ExcludeProjects\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            $entry.ExcludeAssemblies = @([regex]::Matches($matches[1], '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+        } elseif ($argsBlock -match '-ExcludeAssemblies\s+((?:"[^"]+"(?:\s*,\s*)?)+)') {
+            $entry.ExcludeAssemblies = @([regex]::Matches($matches[1], '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+        }
+
+        if ($argsBlock -match "-Filter\s+'([^']+)'") {
+            $entry.Filter = $matches[1]
+        } elseif ($argsBlock -match '-Filter\s+"([^"]+)"') {
+            $entry.Filter = $matches[1]
+        }
+
+        if ($body -match "artifactName:\s+'([^']+)'") {
+            $entry.Artifact = $matches[1]
+        }
+
+        $sidecars = @()
+        if ($body -match 'stilliard/pure-ftpd')                       { $sidecars += 'ftp' }
+        if ($body -match 'atmoz/sftp')                                { $sidecars += 'sftp' }
+        if ($body -match 'dperson/samba')                             { $sidecars += 'samba' }
+        if ($body -match 'mssql/server')                              { $sidecars += 'sqlserver' }
+        if ($body -match 'rabbitmq:3-management')                     { $sidecars += 'rabbitmq' }
+        if ($body -match 'redis:7-alpine')                            { $sidecars += 'redis' }
+        if ($body -match 'docker\.elastic\.co/elasticsearch')         { $sidecars += 'elasticsearch' }
+        if ($body -match 'warewolfserver/exchange-connector-testing') { $sidecars += 'exchange' }
+        $entry.Sidecars = $sidecars
+
+        $catalog.Add($entry) | Out-Null
+    }
+    return ,$catalog.ToArray()
+}
+
+# ============================================================================
+# Linux-mode sidecar dispatcher (Pattern B; --network=container:X)
+# ============================================================================
+
+function Get-SidecarName($Type, $Slug, $RunId) {
+    return "ww-cov-$Type-$Slug-$RunId"
+}
+
+function Start-LinuxSidecar {
+    param(
+        [Parameter(Mandatory)][string]$Type,
+        [Parameter(Mandatory)][string]$Slug,
+        [Parameter(Mandatory)][string]$RunId,
+        [Parameter(Mandatory)][string]$TestContainer
+    )
+    $name = Get-SidecarName $Type $Slug $RunId
+    switch ($Type) {
+        'ftp' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e FTP_USER_NAME=ftpuser -e FTP_USER_PASS=ftppass `
+                -e FTP_USER_HOME=/home/ftpusers/ftpuser `
+                stilliard/pure-ftpd | Out-Null
+        }
+        'sftp' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                atmoz/sftp ftpuser:ftppass:1001 | Out-Null
+        }
+        'samba' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e USER='smbuser%smbpass' -e SHARE='share;/share;yes;no;no;smbuser' `
+                dperson/samba -u 'smbuser;smbpass' -s 'share;/share;yes;no;no;smbuser' | Out-Null
+        }
+        'sqlserver' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e ACCEPT_EULA=Y -e SA_PASSWORD='Test123456!' -e MSSQL_PID=Developer `
+                mcr.microsoft.com/mssql/server:2019-latest | Out-Null
+        }
+        'rabbitmq' {
+            docker run -d --name $name --network="container:$TestContainer" rabbitmq:3-management | Out-Null
+        }
+        'redis' {
+            docker run -d --name $name --network="container:$TestContainer" redis:7-alpine | Out-Null
+        }
+        'elasticsearch' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                -e 'discovery.type=single-node' -e 'xpack.security.enabled=false' `
+                -e 'ES_JAVA_OPTS=-Xms512m -Xmx512m' `
+                docker.elastic.co/elasticsearch/elasticsearch:8.17.4 | Out-Null
+        }
+        'exchange' {
+            docker run -d --name $name --network="container:$TestContainer" `
+                warewolfserver/exchange-connector-testing 2>$null | Out-Null
+        }
+        default {
+            Write-Warn "Unknown sidecar type '$Type'"
+        }
+    }
+}
+
+# ============================================================================
+# Host-port dep startup (Pattern A; sidecars publish to host ports)
+# ============================================================================
+
+function Start-HostFTPServer {
+    if ($LegacyWindowsDeps) {
+        # Native pyftpdlib path (legacy, Windows-only)
+        if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) { mkdir "C:\ftp_home\dev2\FORUNZIPTESTING" | Out-Null }
+        pip install pyftpdlib
+        if (!(Test-Path "C:\ftp_entrypoint.py")) {
+@"
+import os
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import FTPHandler
+from pyftpdlib.servers import FTPServer
+
+PASSIVE_PORTS = '17000-17007'
+
+def main():
+    authorizer = DummyAuthorizer()
+    user_dir = "C:/ftp_home/dev2"
+    if not os.path.isdir(user_dir): os.mkdir(user_dir)
+    authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
+
+    handler = FTPHandler
+    handler.authorizer = authorizer
+    handler.permit_foreign_addresses = True
+    passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
+    handler.passive_ports = range(passive_ports[0], passive_ports[1])
+
+    server = FTPServer(('0.0.0.0', 21), handler)
+    server.serve_forever()
+
+if __name__ == '__main__':
+    main()
+"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
+        }
+        pythonw -u "C:\ftp_entrypoint.py"
+        return
+    }
+    docker run -d --name ftpserver `
+        -p 21:21 -p 30000-30009:30000-30009 `
+        -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
+        -e FTP_USER_HOME=/home/ftpusers/dev2 `
+        -e PASV_MIN_PORT=30000 -e PASV_MAX_PORT=30009 `
+        stilliard/pure-ftpd | Out-Null
+    Start-Sleep -Seconds 3
+}
+
+function Stop-HostFTPServer {
+    if ($LegacyWindowsDeps) {
+        taskkill /im pythonw.exe /f 2>$null | Out-Null
+        return
+    }
+    docker rm -f ftpserver 2>$null | Out-Null
+}
+
+function Start-HostFTPSServer {
+    if ($LegacyWindowsDeps) {
+        # Inlined the legacy pyftpdlib+TLS cert path. Kept verbatim to preserve
+        # the test cert and PASV port range; only invoked when -LegacyWindowsDeps.
+        if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) { mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING" | Out-Null }
+        if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING"))      { mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"      | Out-Null }
+        pip install pyftpdlib 'cryptography==38.0.4' 'pyOpenSSL==22.0.0'
+        Write-Warn "Legacy FTPS startup: existing cert/key/entrypoint files at C:\cert.crt, C:\cert.key, C:\ftps_entrypoint.py must already exist."
+        if (Test-Path "C:\ftps_entrypoint.py") { pythonw -u "C:\ftps_entrypoint.py" }
+        return
+    }
+    # Linux-container FTPS (same image, TLS enabled via env)
+    docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
+        -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
+        -e FTP_USER_HOME=/home/ftpusers/dev2 `
+        -e ADDED_FLAGS='--tls=2' `
+        stilliard/pure-ftpd | Out-Null
+    Start-Sleep -Seconds 3
+}
+
+function Stop-HostFTPSServer {
+    if ($LegacyWindowsDeps) { taskkill /im pythonw.exe /f 2>$null | Out-Null; return }
+    docker rm -f ftpsserver 2>$null | Out-Null
+}
+
+function Start-HostSFTPServer {
+    docker run -d --name sftpserver -p 2222:22 atmoz/sftp ftpuser:ftppass:1001 | Out-Null
+    Start-Sleep -Seconds 3
+}
+function Stop-HostSFTPServer { docker rm -f sftpserver 2>$null | Out-Null }
+
+function Start-HostMySQLServer {
+    docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing | Out-Null
+}
+function Stop-HostMySQLServer { docker rm -f mysql-connector-testing 2>$null | Out-Null }
+
+function Start-HostElasticsearchServer {
+    docker run -d --name elasticsearch-coverage -p 9200:9200 `
+        -e "discovery.type=single-node" -e "xpack.security.enabled=false" `
+        -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" `
+        docker.elastic.co/elasticsearch/elasticsearch:8.17.4 | Out-Null
+    Write-Host "Waiting for Elasticsearch on port 9200..."
+    for ($i = 1; $i -le 30; $i++) {
+        try {
+            $status = (Invoke-WebRequest -Uri 'http://localhost:9200/_cluster/health' -TimeoutSec 5 -UseBasicParsing -ErrorAction Stop).StatusCode
+        } catch { $status = 0 }
+        if ($status -eq 200) { Write-Host "Elasticsearch ready"; return }
+        Start-Sleep -Seconds 2
+    }
+    Write-Warn "Elasticsearch did not become ready within 60s"
+}
+function Stop-HostElasticsearchServer { docker rm -f elasticsearch-coverage 2>$null | Out-Null }
+
+function Start-HostMSSQLServer([string]$BakFile) {
+    if ($LegacyWindowsDeps) {
+        choco install sql-server-2022 -y
+        [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
+        $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
+        $comp = $env:ComputerName
+        $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
+        $Tcp.IsEnabled = $true; $Tcp.Alter()
+        $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
+        $Np.IsEnabled = $true; $Np.Alter()
+        $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
+        $sql.Settings.LoginMode = 'Mixed'; $sql.Alter()
+        sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
+        sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
+        if (!(Test-Path "C:\Builds")) { New-Item -ItemType Directory "C:\Builds" | Out-Null }
+        sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$BakFile' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
+        sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+        Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+        return
+    }
+    docker run -d --name sqlserver `
+        -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Test123456!" -p 1433:1433 `
+        mcr.microsoft.com/mssql/server:2019-latest | Out-Null
+    Write-Host "Waiting for SQL Server..."
+    for ($i = 1; $i -le 30; $i++) {
+        docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Test123456!" -Q "SELECT 1" *> $null
+        if ($LASTEXITCODE -eq 0) { Write-Host "SQL Server ready"; return }
+        Start-Sleep -Seconds 3
+    }
+    Write-Warn "SQL Server did not become ready within 90s"
+}
+function Stop-HostMSSQLServer { docker rm -f sqlserver 2>$null | Out-Null }
+
+# ============================================================================
+# SUT lifecycle (Pattern A; bare-metal Windows process)
+# ============================================================================
+
 $script:_serverProcess   = $null
 $script:_coverageProcess = $null
 $script:_sessionId       = ""
 
 function Resolve-FuncExe {
     if ($FuncExePath -and (Test-Path $FuncExePath)) { return $FuncExePath }
-    foreach ($c in @("func.exe", "$env:APPDATA\npm\func.cmd", "func")) {
+    # Prefer the real func.exe under the npm install dir. The npm-prefix
+    # `func.cmd` shim doesn't survive dotnet-coverage instrumentation
+    # (dotnet-coverage can only attach to .NET processes, not batch shims).
+    $candidates = @(
+        "$env:APPDATA\npm\node_modules\azure-functions-core-tools\bin\func.exe",
+        "$env:ProgramFiles\Microsoft\Azure Functions Core Tools\func.exe",
+        "func.exe",
+        "$env:APPDATA\npm\func.cmd",
+        "func"
+    )
+    foreach ($c in $candidates) {
+        if (Test-Path $c) { return $c }
         $cmd = Get-Command $c -ErrorAction SilentlyContinue
         if ($cmd) { return $cmd.Source }
     }
     throw "func.exe not found. Provide -FuncExePath or install azure-functions-core-tools@4."
-}
-
-function Start-LightweightExecution {
-    $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
-    $func   = Resolve-FuncExe
-    Write-Host "Starting Lightweight Execution from $runDir using $func"
-    if ($SharedConfigDir) { $env:WAREWOLF_SECURE_CONFIG = $SharedConfigDir }
-    if ($CoverageDir) {
-        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
-        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
-        $script:_sessionId = $sid
-        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
-        $includeArgs = $CoverageIncludeFiles | ForEach-Object { @("--include", $_) }
-        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071")
-        Push-Location $runDir
-        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
-        Pop-Location
-    } else {
-        Push-Location $runDir
-        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden
-        Pop-Location
-    }
-    Wait-ForEngine -Port 7071
-}
-
-function Start-WarewolfServer {
-    $runDir    = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
-    $serverExe = Join-Path $runDir "Warewolf Server.exe"
-    if (!(Test-Path $serverExe)) { throw "Warewolf Server.exe not found in $runDir" }
-    Write-Host "Starting Warewolf Server from $runDir"
-    if ($CoverageDir) {
-        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
-        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
-        $script:_sessionId = $sid
-        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
-        $includeArgs = $CoverageIncludeFiles | ForEach-Object { @("--include", $_) }
-        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", "`"$serverExe`"")
-        Push-Location $runDir
-        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
-        Pop-Location
-    } else {
-        Push-Location $runDir
-        $script:_serverProcess = Start-Process $serverExe -PassThru -WindowStyle Hidden
-        Pop-Location
-    }
-    Wait-ForEngine -Port 3142
 }
 
 function Wait-ForEngine {
@@ -122,7 +519,63 @@ function Wait-ForEngine {
         } catch { }
         Start-Sleep -Seconds 2
     }
-    Write-Warning "Engine did not become ready within $MaxSeconds seconds."
+    Write-Warn "Engine did not become ready within $MaxSeconds seconds."
+}
+
+function Start-LightweightExecution {
+    $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
+    $func   = Resolve-FuncExe
+    Write-Host "Starting Lightweight Execution from $runDir using $func"
+    # Match pipeline.yml engine env: avoid Azure Key Vault lookups, force the
+    # dotnet-isolated worker model.
+    if (-not $env:AZURE_KEYVAULT_NAME)        { $env:AZURE_KEYVAULT_NAME = '' }
+    if (-not $env:SkipFailureToRetrieveSecret) { $env:SkipFailureToRetrieveSecret = 'true' }
+    if (-not $env:FUNCTIONS_WORKER_RUNTIME)    { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
+    if ($SharedConfigDir) {
+        # WAREWOLF_SECURE_CONFIG must point to a file path, not the dir.
+        # Match the pipeline.yml convention: <SharedConfigDir>\secure.config.
+        New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
+        $env:WAREWOLF_SECURE_CONFIG = Join-Path $SharedConfigDir 'secure.config'
+    }
+    if ($CoverageDir) {
+        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
+        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
+        $script:_sessionId = $sid
+        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
+        $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
+        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071")
+        Push-Location $runDir
+        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
+        Pop-Location
+    } else {
+        Push-Location $runDir
+        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071") -PassThru -WindowStyle Hidden
+        Pop-Location
+    }
+    Wait-ForEngine -Port 7071 -MaxSeconds 180
+}
+
+function Start-WarewolfServer {
+    $runDir    = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
+    $serverExe = Join-Path $runDir "Warewolf Server.exe"
+    if (!(Test-Path $serverExe)) { throw "Warewolf Server.exe not found in $runDir" }
+    Write-Host "Starting Warewolf Server from $runDir"
+    if ($CoverageDir) {
+        $null = New-Item -Path $CoverageDir -ItemType Directory -Force
+        $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
+        $script:_sessionId = $sid
+        $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
+        $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
+        $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", "`"$serverExe`"")
+        Push-Location $runDir
+        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
+        Pop-Location
+    } else {
+        Push-Location $runDir
+        $script:_serverProcess = Start-Process $serverExe -PassThru -WindowStyle Hidden
+        Pop-Location
+    }
+    Wait-ForEngine -Port 3142
 }
 
 function Stop-Engine {
@@ -137,311 +590,657 @@ function Stop-Engine {
     if ($script:_serverProcess -and -not $script:_serverProcess.HasExited) {
         $script:_serverProcess | Stop-Process -Force -ErrorAction SilentlyContinue
     }
-    Get-Process -Name "func"                       -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-    Get-Process -Name "Warewolf Server"            -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "func"                           -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "Warewolf Server"                -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf.Execution.Lightweight" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
-function Start-FTPServer {
-	if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
-		mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
-	}
-	pip install pyftpdlib
-	if (!(Test-Path "C:\ftp_entrypoint.py")) {
-@"
-import os, random, string
+# ============================================================================
+# Linux container helpers (Pattern B + -InContainer per-assembly mode)
+# ============================================================================
 
-from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import FTPHandler
-from pyftpdlib.servers import FTPServer
-
-PASSIVE_PORTS = '17000-17007'
-
-def main():
-	authorizer = DummyAuthorizer()
-	user_dir = "C:/ftp_home/dev2"
-	if not os.path.isdir(user_dir):
-		os.mkdir(user_dir)
-	authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
-
-	handler = FTPHandler
-	handler.authorizer = authorizer
-	handler.permit_foreign_addresses = True
-
-	passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
-	handler.passive_ports = range(passive_ports[0], passive_ports[1])
-
-	server = FTPServer(('0.0.0.0', 21), handler)
-	server.serve_forever()
-	
-if __name__ == '__main__':
-	main()
-"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
-	}
-	pythonw -u "C:\ftp_entrypoint.py"
-}
-function Start-FTPSServer {
-	if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
-		mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-	}
-	if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
-		mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
-	}
-	if (!(Test-Path "C:\cert.crt")) {
-@"
------BEGIN CERTIFICATE-----
-MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
-BQAwgYsxCzAJBgNVBAYTAlpBMQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxj
-cmVzdDERMA8GA1UECgwIV2FyZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UE
-AwwLb3Bzd29sZi5jb20xIDAeBgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29t
-MB4XDTIxMDQxODA2MzYzMVoXDTIyMDQxODA2MzYzMVowgYsxCzAJBgNVBAYTAlpB
-MQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxjcmVzdDERMA8GA1UECgwIV2Fy
-ZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UEAwwLb3Bzd29sZi5jb20xIDAe
-BgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29tMIIBIjANBgkqhkiG9w0BAQEF
-AAOCAQ8AMIIBCgKCAQEA2eWOl6OjY/V6xPKYKC8NwrtOYfmr04KYR+5xuzZhNPXV
-ICDZrHg3UfidSU9yiB8hRrZYlQ1YZw6kdfxYFiBqQV+450CHS2R9RbvPQTGxL0/I
-lO4LQVodiTW7Khiemye0OId04Ak6yVz6wF+UScPb2HLRM7dW2OMbDpUcb/6QSCBK
-1zdr6Co8O+okDdlXFSmqVuK5gIfT6lOKiny2XLaO6zPni4o6E5HzsX47YJiaTLCZ
-J9X5oCWhB0wIVgX7vkdBxiwXACaHWlN32//wya1h1dQQpGUvttzEHl+wc0Fk6R9f
-HKmP9owzuw40PPjdoOXhzqr7hCqszp/aTCqVFJU9xQIDAQABo1MwUTAdBgNVHQ4E
-FgQUk+fn8dM59dkM0u6ZWnRp70TDupwwHwYDVR0jBBgwFoAUk+fn8dM59dkM0u6Z
-WnRp70TDupwwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAR05k
-Ab9atURsGOHKZbKPFnwj6oKak3CcDSeB0wGAu75hKeGFBqisDg+s5pTcAlGgq8Md
-fv6AzFtmskYeHqzt3TtZ091kLXGPrEf4Gv0zYdJ5kEi5RKIxNz57BnntlG/YA1FC
-DAFen4U8zhavo4tQk04LkgnV4sHPutUMKqNNX64GAIfmeltr7yBaWs34nZ3+4OiF
-c5/UqCGPmHgd2paDzQ3qc5tpCy86mY0zy7FreP/Z8VrnoOKIoH8ULjQAxiopl6zg
-6bCLcDayKmfwBKrCgJobb76B7HJ5SKWpQCmgJeI/pFiQv67SsF63xtsPwtdmaY+T
-SfOUJf/1oE9T9vp1yQ==
------END CERTIFICATE-----
-"@ | Out-File -LiteralPath "C:\cert.crt" -Encoding ascii -Force
-	}
-	if (!(Test-Path "C:\cert.key")) {
-@"
------BEGIN PRIVATE KEY-----
-MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDZ5Y6Xo6Nj9XrE
-8pgoLw3Cu05h+avTgphH7nG7NmE09dUgINmseDdR+J1JT3KIHyFGtliVDVhnDqR1
-/FgWIGpBX7jnQIdLZH1Fu89BMbEvT8iU7gtBWh2JNbsqGJ6bJ7Q4h3TgCTrJXPrA
-X5RJw9vYctEzt1bY4xsOlRxv/pBIIErXN2voKjw76iQN2VcVKapW4rmAh9PqU4qK
-fLZcto7rM+eLijoTkfOxfjtgmJpMsJkn1fmgJaEHTAhWBfu+R0HGLBcAJodaU3fb
-//DJrWHV1BCkZS+23MQeX7BzQWTpH18cqY/2jDO7DjQ8+N2g5eHOqvuEKqzOn9pM
-KpUUlT3FAgMBAAECggEAVzFN8w4vRsOnggIVsxbJKeBsCDaxdGzw5O/coO6szVWG
-GFos4KAmeu3CeuCI00GpvjMflV2Gv46TbwcwdII6IrjcM+WVfizTGEGEOPFalrUV
-bcsnw9n8sbhHkhvR9AJaUriZo0DuPj+vs6VLoIz4f0/KuSgnX5jZbedrPsGeGM3e
-HYGY/eCB1D6JzbDrW8jHe63SOPOizVA9m/c2CoH/YbL4rVN6+8aSAJaWnVzSUvPD
-mRdY15EtF9VURU3C549Pw4C1RC0op2xvP8vlOFGsWDd2HHzxuo13UXd8NIes5zAE
-VKIhLsEFkFIRwp7rTVaf9n6KCvvVuuG6N1Kxyv2roQKBgQD1Md/8BJIieFfd/fbq
-zL+uAttBGuM88IUgx8c9usldWGYXvDOkmMQvkH7lnxFpOyZDynZyIw4ILrnh1T2+
-f5g/qHxEabU59//aAbYoBAXxUUI7ZdBwzmn0yL6KU9hILDhRsEbVLOROC1tmUbUk
-GIqTNMFBUimfy7LJJGTdxciouQKBgQDjf7kMijEbqP8bLUATdtlVoiOfuqOlMHYm
-FzKsp75+rxSAjUyGvzBNe+HzSlfwPlD6bSYIm3Do80FVG+AawPN7uBApsTb32Lmj
-nB1b1GUuN7VGQYJNxmrYe1m8VdLHN5kNM8hwOCpyYMdkFf6aYXAEtEO+iL9ghn1N
-+tmW9e8fbQKBgQDIaFGIrTu8TNyUp4Vv+JYa5l7K4e0l2/kUB/YDsG3xi9U2RS94
-sxx3PAVcLR2QAzaNZihVte08JuTrft2OnL+WGGIpkLT9goRubcOzBUbOLPqTje5G
-pY/Y8VM7wLgglXQa4JekmaKpX4L/KH2D2UM6en4So9M9tsKUwNhoo8YUkQKBgQDQ
-KQfrP28bvhBej5L3vGG0hz1NY/tkpOkWhVdqv7oANLbvwVpqWPobi+T9NeMtAfga
-jFCmw4QWwq3e8DiogjDH3W18mJiRQ47o82mxorBKD9MgS8Ss4YbWOlerimPowSib
-+evHMr00FvWa0L08CTf0NfVem8Vwzt5MweDiznlUKQKBgQCb/2zy03hepOHmr8oZ
-2gUv8764Y865wFryfXoOlb+664sgMkNKJGzX/v97NQIeM4vFUb6FMVQO9z4pcXVq
-w+jDPTUUugs8MOyE1bUNJutBgEjkeKN8bQt3mQlIhC6HSuwS+NHcku5sKobvjohj
-SxVGgsgXs58fKq0k6khAOa4asQ==
------END PRIVATE KEY-----
-"@ | Out-File -LiteralPath "C:\cert.key" -Encoding ascii -Force
-	}
-	pip install pyftpdlib
-	pip install 'cryptography==38.0.4'
-	pip install 'pyOpenSSL==22.0.0'
-	if (!(Test-Path "C:\ftps_entrypoint.py")) {
-@"
-import os, random, string
-
-from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import TLS_FTPHandler
-from pyftpdlib.servers import FTPServer
-
-PASSIVE_PORTS = '56001-56008'
-
-def main():
-	user_dir = "C:/ftps_home/dev2"
-	if not os.path.isdir(user_dir):
-		os.mkdir(user_dir)
-	authorizer = DummyAuthorizer()
-	authorizer.add_user('dev2', 'Q/ulw&]', user_dir, perm="elradfmw")
-
-	handler = TLS_FTPHandler
-	handler.authorizer = authorizer
-	handler.permit_foreign_addresses = True
-	handler.certfile = 'C:/cert.crt'
-	handler.keyfile = 'C:/cert.key'
-
-	passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
-	handler.passive_ports = range(passive_ports[0], passive_ports[1])
-
-	server = FTPServer(('0.0.0.0', 1010), handler)
-	server.serve_forever()
-	
-if __name__ == '__main__':
-	main()
-"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
-	}
-	pythonw -u "C:\ftps_entrypoint.py"
-}
-function Start-SFTPServer {
-	docker run -d -p 22:22 --name sftp-connector-testing registry.gitlab.com/warewolf/sftp-connector-testing
-}
-function Start-MySQLServer {
-	docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing
-}
-function Start-ElasticsearchServer {
-	docker run -d -p 9200:9200 --name elasticsearch-connector-testing registry.gitlab.com/warewolf/anonymous-elasticsearch-connector-testing
-}
-if ($StartMSSQLServer.IsPresent -and $StartMSSQLServer -ne "") {
-	choco install sql-server-2022 -y
-    [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement")
-    $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
-    $comp = $env:ComputerName
-    $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-    $Tcp.IsEnabled = $true
-    $Tcp.Alter()
-    $Tcp
-    $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
-    $Np.IsEnabled = $true
-    $Np.Alter()
-    $Np
-    $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
-    $sql.Settings.LoginMode = 'Mixed'
-    $sql.Alter()
-    sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
-    sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
-	if (!(Test-Path "C:\Builds")) {New-Item -ItemType Directory "C:\Builds"}
-    sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$StartMSSQLServer' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
-    sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
-    Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+function ConvertTo-ExcludeRegex([string[]]$Excludes) {
+    if (-not $Excludes -or $Excludes.Count -eq 0) { return '' }
+    $parts = foreach ($e in $Excludes) { ([regex]::Escape($e)) -replace '\\\*', '.*' }
+    return '^(' + ($parts -join '|') + ')$'
 }
 
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
-	exit 1
+function Ensure-CoverageImages {
+    Write-Step "Building $InContainerImage Docker images..."
+    if (-not (Test-Path $DockerfileTest)) { throw "Dockerfile.test not found at $DockerfileTest" }
+    $dtfContent = Get-Content $DockerfileTest -Raw
+    if ($dtfContent -match 'ENTRYPOINT \["/bin/bash"\]') {
+        ($dtfContent -replace 'ENTRYPOINT \["/bin/bash"\]', 'ENTRYPOINT []') | Set-Content $DockerfileTest -Encoding UTF8
+    }
+    docker build -q -t warewolf-test-env -f $DockerfileTest $DockerContext | Out-Null
+    Test-Exit 'Build warewolf-test-env'
+    @"
+FROM warewolf-test-env
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libxml2 curl gnupg \
+ && curl -sS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
+ && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" > /etc/apt/sources.list.d/dotnetdev.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends azure-functions-core-tools-4 \
+ && rm -rf /var/lib/apt/lists/*
+RUN dotnet tool install --tool-path /opt/dotnet-tools dotnet-coverage
+ENV PATH="/opt/dotnet-tools:/root/.dotnet/tools:`$PATH"
+"@ | docker build -q -t warewolf-coverage-env - | Out-Null
+    Test-Exit 'Build warewolf-coverage-env'
+    Write-Done 'Docker images ready'
 }
-if ($ExcludeProjects.Length -eq 1 -and $ExcludeProjects[0].Contains(",")) {
-    $SplitExcludeProjects = $ExcludeProjects[0]
-    $ExcludeProjects = New-Object string[] $SplitExcludeProjects.Split(",").Count
-    for ($j=0; $j -le $SplitExcludeProjects.Split(",").Count-1; $j++) {
-        $ExcludeProjects[$j] = $SplitExcludeProjects.Split(",")[$j]
+
+# Linux unit-job runner (no engine; dotnet-coverage wrapping dotnet test).
+function Invoke-LinuxUnitJob {
+    param([Parameter(Mandatory)]$Job, [Parameter(Mandatory)][string]$CoverageOutDir)
+    $slug = $Job.Slug
+    $covDir = Join-Path $CoverageOutDir $slug
+    New-Item -ItemType Directory -Force -Path $covDir | Out-Null
+
+    if (-not $Job.Assembly -and $Job.ExcludeAssemblies.Count -eq 0) {
+        Write-Warn "[$($Job.Name)] no Assembly or ExcludeAssemblies parsed - skipping"
+        return
+    }
+
+    if ($Job.Assembly) {
+        $filterArg = ''
+        if (-not [string]::IsNullOrWhiteSpace($Job.Filter)) {
+            $filterArg = if ($Job.Filter -match '^[A-Za-z0-9_]+$') { "--filter `"TestCategory=$($Job.Filter)`"" } else { "--filter `"$($Job.Filter)`"" }
+        }
+        $dll = "$($Job.Assembly).dll"
+        $bash = @"
+#!/bin/bash
+set -e
+echo "[$slug] $($Job.Assembly)"
+dotnet-coverage collect --output /coverage/$slug.unit.cobertura.xml --output-format cobertura --settings /settings/coverage-settings.xml --nologo \
+  -- /usr/share/dotnet/dotnet /tests/$dll $filterArg --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+[ -f /coverage/$slug.unit.cobertura.xml ] && echo "[$slug] done: `$(du -k /coverage/$slug.unit.cobertura.xml | cut -f1)KB" || echo '[$slug] WARNING: no coverage'
+"@
+    } else {
+        $excludeRegex = ConvertTo-ExcludeRegex $Job.ExcludeAssemblies
+        $unitFilter = $Job.Filter; if (-not $unitFilter) { $unitFilter = '' }
+        $bash = @"
+#!/bin/bash
+set -e
+exclude='$excludeRegex'; filter='$unitFilter'; i=0
+for dll in /tests/*.dll; do
+  [ -f "`$dll" ] || continue
+  name=`$(basename "`$dll" .dll)
+  echo "`$name" | grep -qE '^(Warewolf|Dev2)\..*(Tests|Specs)$' || continue
+  if [ -n "`$exclude" ]; then echo "`$name" | grep -qE "`$exclude" && continue; fi
+  echo "[$slug] `$name"
+  timeout 300 dotnet-coverage collect --output "/coverage/parts_`${i}.cobertura.xml" --output-format cobertura --settings /settings/coverage-settings.xml --nologo \
+    -- /usr/share/dotnet/dotnet "/tests/`${name}.dll" `$([ -n "`$filter" ] && echo "--filter `\"`$filter`\"") --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+  i=`$((i+1))
+done
+xmls=`$(ls /coverage/parts_*.cobertura.xml 2>/dev/null | tr '\n' ' ')
+if [ -n "`$xmls" ]; then
+  dotnet-coverage merge `$xmls --output /coverage/$slug.unit.cobertura.xml --output-format cobertura --nologo
+  echo "[$slug] merged: `$(du -k /coverage/$slug.unit.cobertura.xml | cut -f1)KB"
+else echo '[$slug] WARNING: no parts produced'
+fi
+"@
+    }
+
+    $args = @('run', '--rm', '--name', "ww-cov-unit-$slug-$RunId", '-e', 'DOTNET_ROOT=/usr/share/dotnet')
+    $args += @('-v', "$(dp $ServerTestsBin):/tests:ro",
+               '-v', "$(dp $covDir):/coverage",
+               '-v', "$(dp $SettingsFile):/settings/coverage-settings.xml:ro",
+               'warewolf-coverage-env', 'bash', '-c', $bash)
+    & docker @args
+    if ($LASTEXITCODE -ne 0) { Write-Warn "[$($Job.Name)] non-zero exit ($LASTEXITCODE)" }
+}
+
+# Linux engine-spec runner (per-job docker network + sidecars share net).
+function Invoke-LinuxEngineSpecJob {
+    param([Parameter(Mandatory)]$Job, [Parameter(Mandatory)][string]$CoverageOutDir)
+    $slug          = $Job.Slug
+    $netName       = "ww-cov-$slug-$RunId"
+    $testContainer = "ww-cov-test-$slug-$RunId"
+    $covDir        = Join-Path $CoverageOutDir $slug
+    New-Item -ItemType Directory -Force -Path $covDir | Out-Null
+
+    if (-not $Job.Output)    { Write-Warn "[$($Job.Name)] no Output filename - skipping"; return }
+    if (-not $Job.SessionId) { Write-Warn "[$($Job.Name)] no SessionId - skipping"; return }
+    if (-not $Job.Assembly -and $Job.ExcludeAssemblies.Count -eq 0) {
+        Write-Warn "[$($Job.Name)] no Assembly or ExcludeAssemblies - skipping"; return
+    }
+
+    docker network create $netName 2>$null | Out-Null
+    try {
+        $envArgs   = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
+        $mountArgs = @('-v', "$(dp $ServerTestsBin):/server:ro",
+                       '-v', "$(dp $ServerTestsBin):/tests:ro",
+                       '-v', "$(dp $covDir):/coverage",
+                       '-v', "$(dp $SettingsFile):/settings/coverage-settings.xml:ro")
+        if ($Job.Name -match 'Security') {
+            New-Item -ItemType Directory -Force -Path (Join-Path $covDir 'security-config') | Out-Null
+            $mountArgs += '-v', "$(dp (Join-Path $covDir 'security-config')):/security-config"
+        }
+
+        & docker run -d --name $testContainer --network $netName @envArgs @mountArgs warewolf-coverage-env sleep 3600 | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Failed to start test container' }
+
+        foreach ($s in $Job.Sidecars) { Start-LinuxSidecar -Type $s -Slug $slug -RunId $RunId -TestContainer $testContainer }
+        if ($Job.Sidecars.Count -gt 0) { Start-Sleep 8 }
+
+        $filterStr = if ($Job.Filter) { "--filter '$($Job.Filter)'" } else { '' }
+        $securitySetup = ''
+        if ($Job.Name -match 'Security') {
+            $securitySetup = @"
+export WAREWOLF_SECURE_CONFIG=/security-config/secure.config
+touch /security-config/secure.config
+chmod 666 /security-config/secure.config
+"@
+        }
+        $runOneTest = @"
+run_test_dll() {
+  local name="`$1"
+  local deps="/tests/`${name}.deps.json"
+  if [ -f "`$deps" ] && grep -q '"Microsoft.Testing.Platform"' "`$deps"; then
+    echo "[$slug]   MTP: `$name"
+    /usr/share/dotnet/dotnet "/tests/`${name}.dll" $filterStr --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+  else
+    echo "[$slug]   vstest: `$name"
+    /usr/share/dotnet/dotnet test "/tests/`${name}.dll" $filterStr --results-directory /tmp/testresults --no-progress 2>/dev/null || true
+  fi
+}
+"@
+
+        $assemblyList = if ($Job.Assemblies -and $Job.Assemblies.Count -gt 1) { $Job.Assemblies } elseif ($Job.Assembly) { @($Job.Assembly) } else { @() }
+        if ($assemblyList.Count -gt 0) {
+            $loopBody = ($assemblyList | ForEach-Object { "run_test_dll '$_'" }) -join "`n"
+            $testInvocation = "$runOneTest`necho '[$slug] Running $($assemblyList.Count) assembly(ies)'`n$loopBody"
+        } else {
+            $excludeRegex = ConvertTo-ExcludeRegex $Job.ExcludeAssemblies
+            $testInvocation = @"
+$runOneTest
+echo "[$slug] discover-and-loop (excluding: $excludeRegex)"
+exclude='$excludeRegex'
+for dll in /tests/*.dll; do
+  [ -f "`$dll" ] || continue
+  name=`$(basename "`$dll" .dll)
+  echo "`$name" | grep -qE '^(Warewolf|Dev2)\..*(Tests|Specs)$' || continue
+  if [ -n "`$exclude" ]; then echo "`$name" | grep -qE "`$exclude" && continue; fi
+  run_test_dll "`$name"
+done
+"@
+        }
+
+        $bash = @"
+#!/bin/bash
+set -e
+export AZURE_KEYVAULT_NAME=''
+export SkipFailureToRetrieveSecret='true'
+export ENABLECONSOLELOGGING='false'
+export ENABLEELASTICSEARCHLOGGING='false'
+export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
+$securitySetup
+mkdir -p /server-rw && cp -a /server/. /server-rw/
+dotnet-coverage instrument /server-rw/Warewolf.Execution.Lightweight.dll --session-id $($Job.SessionId) --nologo
+dotnet-coverage collect --session-id $($Job.SessionId) --server-mode --background --output /coverage/$($Job.Output) --output-format cobertura --nologo
+cd /server-rw
+nohup func start --port 7071 > /tmp/func-engine.log 2>&1 &
+ENGINE_PID=`$!
+for i in `$(seq 1 60); do
+  STATUS=`$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost:7071/ 2>/dev/null || echo 0)
+  if [ "`$STATUS" -ge 100 ] 2>/dev/null && [ "`$STATUS" != '503' ]; then break; fi
+  sleep 2
+  if [ "`$i" -eq 60 ]; then
+    tail -n 40 /tmp/func-engine.log 2>/dev/null || true
+    kill `$ENGINE_PID 2>/dev/null || true
+    dotnet-coverage shutdown $($Job.SessionId) 2>/dev/null || true
+    exit 1
+  fi
+done
+$testInvocation
+dotnet-coverage shutdown $($Job.SessionId) 2>/dev/null || true
+kill `$ENGINE_PID 2>/dev/null || true
+pkill -TERM -f 'func start' 2>/dev/null || true
+pkill -TERM -f 'Warewolf.Execution.Lightweight' 2>/dev/null || true
+for i in `$(seq 1 30); do [ -f /coverage/$($Job.Output) ] && break; sleep 1; done
+[ -f /coverage/$($Job.Output) ] && echo "[$slug] done: `$(du -k /coverage/$($Job.Output) | cut -f1)KB" || echo '[$slug] WARNING: no engine coverage'
+"@
+        & docker exec $testContainer bash -c $bash
+        if ($LASTEXITCODE -ne 0) { Write-Warn "[$($Job.Name)] non-zero exit ($LASTEXITCODE)" }
+    } finally {
+        foreach ($s in $Job.Sidecars) { docker rm -f (Get-SidecarName $s $slug $RunId) 2>$null | Out-Null }
+        docker rm -f $testContainer 2>$null | Out-Null
+        docker network rm $netName 2>$null | Out-Null
     }
 }
-if ($Projects.Length -eq 1 -and $Projects[0].Contains(",")) {
-    $SplitProjects = $Projects[0]
-    $Projects = New-Object string[] $SplitProjects.Split(",").Count
-    for ($j=0; $j -le $SplitProjects.Split(",").Count-1; $j++) {
-        $Projects[$j] = $SplitProjects.Split(",")[$j]
+
+# Pattern A: bare-metal Windows job runner. Starts host-port sidecars, then
+# self-invokes TestRun.ps1 in direct mode with the job's parameters.
+function Invoke-WindowsBareMetalJob {
+    param([Parameter(Mandatory)]$Job, [Parameter(Mandatory)][string]$CoverageOutDir)
+
+    $slug = $Job.Slug
+    $sidecarStarted = @()
+    try {
+        foreach ($s in $Job.Sidecars) {
+            switch ($s) {
+                'ftp'           { Start-HostFTPServer;          $sidecarStarted += 'ftp' }
+                'sftp'          { Start-HostSFTPServer;         $sidecarStarted += 'sftp' }
+                'sqlserver'     { Start-HostMSSQLServer "";     $sidecarStarted += 'sqlserver' }
+                'elasticsearch' { Start-HostElasticsearchServer; $sidecarStarted += 'elasticsearch' }
+                'rabbitmq'      { docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null; Start-Sleep 5; $sidecarStarted += 'rabbitmq' }
+                'redis'         { docker run -d --name redis -p 6379:6379 redis:7-alpine | Out-Null; Start-Sleep 2; $sidecarStarted += 'redis' }
+                'samba'         { docker run -d --name sambaserver -p 445:445 -e USER="smbuser%smbpass" -e SHARE="share;/share;yes;no;no;smbuser" dperson/samba -u "smbuser;smbpass" -s "share;/share;yes;no;no;smbuser" | Out-Null; Start-Sleep 3; $sidecarStarted += 'samba' }
+                'exchange'      { docker run -d -p 8889:8080 --name exchange-connector-testing warewolfserver/exchange-connector-testing 2>$null | Out-Null; Start-Sleep 5; $sidecarStarted += 'exchange' }
+                default         { Write-Warn "[$($Job.Name)] unknown sidecar '$s'" }
+            }
+        }
+
+        # $args is an automatic variable in function scope; use a different name
+        # so the splat at the call site below resolves to our hashtable.
+        $splat = @{
+            Projects        = $Job.Assemblies
+            TestResultsDir  = Join-Path $CoverageOutDir "$slug\TestResults"
+        }
+        if ($Job.Filter) { $splat.Filter = $Job.Filter }
+        if ($Job.Type -eq 'EngineSpec') {
+            $splat.ServerType              = 'LightweightExecution'
+            $splat.LightweightExecutionDir = $ServerTestsBin
+            $splat.CoverageDir             = Join-Path $CoverageOutDir $slug
+            if ($Job.Output)    { $splat.EngineCoverageFile = Join-Path $splat.CoverageDir $Job.Output }
+            if ($Job.SessionId) { $splat.EngineSessionId    = $Job.SessionId }
+            $splat.CoverageIncludeFiles    = @((Join-Path $ServerTestsBin 'Warewolf.Execution.Lightweight.dll'))
+        }
+        if ($Job.Name -match 'Security') {
+            $splat.SharedConfigDir = Join-Path $CoverageOutDir "$slug\security-config"
+            New-Item -ItemType Directory -Force -Path $splat.SharedConfigDir | Out-Null
+        }
+        if ($Job.ExcludeAssemblies.Count -gt 0) { $splat.ExcludeProjects = $Job.ExcludeAssemblies }
+
+        Push-Location $ServerTestsBin
+        try {
+            & "$PSScriptRoot\TestRun.ps1" @splat
+        } finally {
+            Pop-Location
+        }
+    } finally {
+        foreach ($s in $sidecarStarted) {
+            switch ($s) {
+                'ftp'           { Stop-HostFTPServer }
+                'sftp'          { Stop-HostSFTPServer }
+                'sqlserver'     { Stop-HostMSSQLServer }
+                'elasticsearch' { Stop-HostElasticsearchServer }
+                'rabbitmq'      { docker rm -f rabbitmq 2>$null | Out-Null }
+                'redis'         { docker rm -f redis 2>$null | Out-Null }
+                'samba'         { docker rm -f sambaserver 2>$null | Out-Null }
+                'exchange'      { docker rm -f exchange-connector-testing 2>$null | Out-Null }
+            }
+        }
     }
 }
-if ($ExcludeCategories.Length -eq 1 -and $ExcludeCategories[0].Contains(",")) {
-    $SplitExcludeCategories = $ExcludeCategories[0]
-    $ExcludeCategories = New-Object string[] $SplitExcludeCategories.Split(",").Count
-    for ($j=0; $j -le $SplitExcludeCategories.Split(",").Count-1; $j++) {
-        $ExcludeCategories[$j] = $SplitExcludeCategories.Split(",")[$j]
+
+# ============================================================================
+# Catalog mode entry point
+# ============================================================================
+
+function Invoke-CatalogMode {
+    if (-not (Test-Path $PipelineYml)) {
+        Write-Error "pipeline.yml not found: $PipelineYml"
+        exit 1
+    }
+    $catalog = ConvertFrom-PipelineYaml -YamlPath $PipelineYml
+    Write-Host "Parsed $($catalog.Count) jobs from pipeline.yml"
+
+    if ($List) {
+        $catalog | Sort-Object Name | Format-Table -AutoSize Name, Type, Assembly, Filter, @{n='Sidecars';e={$_.Sidecars -join ','}}
+        exit 0
+    }
+
+    # Resolve selection
+    $selected = @()
+    if (-not $Jobs -or $Jobs.Count -eq 0 -or $Jobs -contains 'All') {
+        $selected = $catalog
+    } else {
+        foreach ($req in $Jobs) {
+            $m = $catalog | Where-Object { $_.Name -eq $req }
+            if ($m) { $selected += $m } else { Write-Warn "Unknown job '$req' (use -List to see available)" }
+        }
+    }
+    if ($selected.Count -eq 0) { Write-Error "No jobs selected."; exit 1 }
+    Write-Host "Selected $($selected.Count) job(s): $(($selected | ForEach-Object {$_.Name}) -join ', ')"
+
+    # Auto-build if Bin\ServerTests is empty
+    $haveBinaries = (Test-Path $ServerTestsBin) -and ((Get-ChildItem $ServerTestsBin -Filter "*.dll" -ErrorAction SilentlyContinue).Count -gt 0)
+    if (-not $haveBinaries) {
+        if ($SkipBuild) {
+            Write-Error "Bin\ServerTests is empty and -SkipBuild was specified. Run Compile.ps1 first."
+            exit 1
+        }
+        Write-Step 'Compiling solution-wide ServerTests output...'
+        $runtime = if ($SUTRuntime -eq 'Linux') { 'linux-x64' } else { 'win-x64' }
+        & $CompileScript -ServerTests -Runtime $runtime
+        Test-Exit 'Compile.ps1'
+    } else {
+        Write-Done "Reusing existing Bin\ServerTests"
+    }
+
+    # Prereqs
+    if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
+        Write-Step 'Installing dotnet-coverage...'
+        dotnet tool install --global dotnet-coverage
+    }
+    if ($SUTRuntime -eq 'Linux' -or $InContainer) {
+        if (-not (docker info 2>$null)) { Write-Error 'Docker is not running.'; exit 1 }
+        Ensure-CoverageImages
+    }
+
+    $CoverageOutDir = if ($CoverageDir) { [System.IO.Path]::GetFullPath($CoverageDir) } else { Join-Path $RepoRoot 'coverage' }
+    New-Item -ItemType Directory -Force -Path $CoverageOutDir | Out-Null
+    New-Item -ItemType Directory -Force -Path (Join-Path $CoverageOutDir 'merged') | Out-Null
+
+    # Pattern-A parallel risk: sidecars publish on host ports; two FTP jobs would
+    # collide on port 21. Force sequential for bare-metal jobs that use sidecars.
+    $effectiveMaxParallel = $MaxParallel
+    if ($NoParallel) { $effectiveMaxParallel = 1 }
+    elseif ($SUTRuntime -eq 'Windows') {
+        $sidecarJobs = $selected | Where-Object { $_.Sidecars.Count -gt 0 }
+        if ($sidecarJobs.Count -gt 0 -and $effectiveMaxParallel -gt 1) {
+            Write-Warn "Bare-metal Windows with sidecar jobs: forcing sequential (port collision risk). Use -SUTRuntime Linux for parallel."
+            $effectiveMaxParallel = 1
+        }
+    }
+
+    try {
+        if ($effectiveMaxParallel -le 1) {
+            foreach ($j in $selected) {
+                Write-Step "[$($j.Name)] running ($($j.Type), $SUTRuntime)..."
+                Invoke-JobByRuntime -Job $j -CoverageOutDir $CoverageOutDir
+            }
+        } else {
+            # Parallel via Start-Job; only safe path is Linux-container jobs (each
+            # gets its own docker network).
+            $bgJobs = New-Object System.Collections.Generic.List[System.Management.Automation.Job]
+            $queue  = [System.Collections.Queue]::new()
+            foreach ($j in $selected) { $queue.Enqueue($j) | Out-Null }
+            $scriptPath = $PSCommandPath
+            while ($queue.Count -gt 0 -or $bgJobs.Count -gt 0) {
+                while ($bgJobs.Count -lt $effectiveMaxParallel -and $queue.Count -gt 0) {
+                    $j = $queue.Dequeue()
+                    Write-Step "[$($j.Name)] queued (slot $($bgJobs.Count + 1)/$effectiveMaxParallel)"
+                    $bg = Start-Job -Name "ww-$($j.Slug)" -ScriptBlock {
+                        param($scriptPath, $jobName, $runtime, $covOut)
+                        & $scriptPath -Jobs $jobName -SUTRuntime $runtime -CoverageDir $covOut -SkipBuild -SkipReport -NoParallel
+                    } -ArgumentList $scriptPath, $j.Name, $SUTRuntime, $CoverageOutDir
+                    $bgJobs.Add($bg) | Out-Null
+                }
+                $done = Wait-Job -Job $bgJobs -Any -Timeout 5
+                if ($done) {
+                    foreach ($d in @($done)) {
+                        Write-Host "`n--- $($d.Name) ---" -ForegroundColor DarkGray
+                        Receive-Job $d
+                        if ($d.State -eq 'Failed') { Write-Warn "Job $($d.Name) failed" }
+                        Remove-Job $d
+                        $bgJobs.Remove($d) | Out-Null
+                    }
+                }
+            }
+        }
+
+        # Merge
+        Write-Step 'Merging coverage files...'
+        $xmls = @(Get-ChildItem -Path $CoverageOutDir -Recurse -Filter '*.cobertura.xml' -File |
+            Where-Object { $_.FullName -notmatch '\\merged\\' -and $_.Name -notlike 'parts_*.cobertura.xml' -and $_.Length -gt 200 } |
+            ForEach-Object { $_.FullName })
+        if ($xmls.Count -eq 0) {
+            Write-Warn 'No coverage files - skipping merge and report'
+        } else {
+            $mergedXml = Join-Path $CoverageOutDir 'merged\all_merged.cobertura.xml'
+            dotnet-coverage merge @xmls --output $mergedXml --output-format cobertura --nologo
+            Test-Exit 'dotnet-coverage merge'
+            Write-Done "Merged $($xmls.Count) file(s) -> $mergedXml"
+
+            if (Test-Path $FilterScript) {
+                $py = Get-Command python3 -ErrorAction SilentlyContinue
+                if (-not $py) { $py = Get-Command python -ErrorAction SilentlyContinue }
+                if ($py) { & $py.Source $FilterScript (Join-Path $CoverageOutDir 'merged') | Out-Null }
+            }
+
+            if (-not $SkipReport) {
+                Write-Step "Generating $ReportFormat report..."
+                if (-not (Get-Command reportgenerator -ErrorAction SilentlyContinue)) {
+                    dotnet tool install --global dotnet-reportgenerator-globaltool
+                }
+                $reportDir = Join-Path $CoverageOutDir 'report'
+                reportgenerator "-reports:$mergedXml" "-targetdir:$reportDir" "-reporttypes:$ReportFormat" '-title:Warewolf Coverage' '-verbosity:Warning'
+                Test-Exit 'reportgenerator'
+                $index = Join-Path $reportDir 'index.html'
+                if (Test-Path $index -and -not $env:TF_BUILD) { Start-Process $index }
+                Write-Done "Report: $index"
+            }
+        }
+
+        Write-Host "`n[DONE] $($selected.Count) job(s) complete.`n" -ForegroundColor Green
+    } finally {
+        $leftover = docker ps -a --filter "name=ww-cov-.*-$RunId" --format '{{.Names}}' 2>$null
+        if ($leftover) { $leftover -split "`n" | Where-Object { $_ } | ForEach-Object { docker rm -f $_ 2>$null | Out-Null } }
+        $netLeft = docker network ls --filter "name=ww-cov-.*-$RunId" --format '{{.Name}}' 2>$null
+        if ($netLeft) { $netLeft -split "`n" | Where-Object { $_ } | ForEach-Object { docker network rm $_ 2>$null | Out-Null } }
     }
 }
-if ($Categories.Length -eq 1 -and $Categories[0].Contains(",")) {
-    $SplitCategories = $Categories[0]
-    $Categories = New-Object string[] $SplitCategories.Split(",").Count
-    for ($j=0; $j -le $SplitCategories.Split(",").Count-1; $j++) {
-        $Categories[$j] = $SplitCategories.Split(",")[$j]
+
+function Invoke-JobByRuntime {
+    param($Job, $CoverageOutDir)
+    if ($SUTRuntime -eq 'Linux') {
+        if ($Job.Type -eq 'EngineSpec') { Invoke-LinuxEngineSpecJob -Job $Job -CoverageOutDir $CoverageOutDir }
+        else                            { Invoke-LinuxUnitJob       -Job $Job -CoverageOutDir $CoverageOutDir }
+    } else {
+        Invoke-WindowsBareMetalJob -Job $Job -CoverageOutDir $CoverageOutDir
     }
 }
-if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
-	$PreTestRunScript += " -Coverage"
+
+# ============================================================================
+# Direct-mode helpers (TRX merge, retry resolution, container per-assembly run)
+# ============================================================================
+
+function Merge-RetryTrx {
+    param([string]$TestResultsPath)
+    [System.Collections.ArrayList]$xmlFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
+    if ($xmlFiles.Count -gt 1) {
+        $maxCount = 0; $maxIdx = 0; $idx = 0
+        foreach ($f in $xmlFiles) {
+            $xml = [xml](Get-Content $f.FullName)
+            if ([int]$xml.TestRun.ResultSummary.Counters.total -gt $maxCount) { $maxCount = $xml.TestRun.ResultSummary.Counters.total; $maxIdx = $idx }
+            $idx++
+        }
+        $base = $xmlFiles[$maxIdx]
+        $baseXml = [xml](Get-Content $base.FullName)
+        $xmlFiles.RemoveAt($maxIdx)
+        foreach ($f in $xmlFiles) {
+            $xml = [xml](Get-Content $f.FullName)
+            foreach ($retry in $xml.TestRun.Results.UnitTestResult) {
+                foreach ($orig in $baseXml.TestRun.Results.UnitTestResult) {
+                    if ($retry.testName -eq $orig.testName -and $retry.outcome -eq 'Passed' -and $orig.outcome -eq 'Failed') {
+                        [void]$orig.ParentNode.AppendChild($baseXml.ImportNode($retry, $true))
+                        $orig.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]$orig.ParentNode.ParentNode.ResultSummary.Counters.passed + 1)
+                        $orig.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]$orig.ParentNode.ParentNode.ResultSummary.Counters.failed - 1)
+                        [void]$orig.ParentNode.RemoveChild($orig)
+                    }
+                }
+            }
+            Remove-Item $f.FullName
+        }
+        $baseXml.Save($base.FullName)
+        return ($baseXml.TestRun.ResultSummary.Counters.passed -eq $baseXml.TestRun.ResultSummary.Counters.executed)
+    } else {
+        $baseXml = [xml](Get-Content $xmlFiles[0].FullName)
+        return ($baseXml.TestRun.ResultSummary.Counters.passed -eq $baseXml.TestRun.ResultSummary.Counters.executed)
+    }
 }
-if ($PostTestRunScript -and $Coverage.IsPresent -and !($PostTestRunScript.Contains("-Coverage"))) {
-	$PostTestRunScript += " -Coverage"
+
+function Get-FailedTestNames {
+    param([string]$TestResultsPath)
+    $files = @(Get-ChildItem "$TestResultsPath\*.trx")
+    if ($files.Count -eq 0) { return @() }
+    $xml = [xml](Get-Content $files[0].FullName)
+    return ($xml.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName
 }
+
+function Invoke-LinuxContainerRun {
+    param([string[]]$Assemblies, [string]$Filter, [string[]]$Categories, [string[]]$ExcludeCategories)
+    $effectiveBinDir = if ($BinDir) { $BinDir } else { $PWD }
+    $resultsDir = (Resolve-Path $TestResultsPath).Path
+    Ensure-CoverageImages
+
+    foreach ($asm in $Assemblies) {
+        $name = $asm.TrimEnd('.dll')
+        $dllPath = Join-Path $effectiveBinDir "$name.dll"
+        if (-not (Test-Path $dllPath)) { Write-Warn "Missing $dllPath"; continue }
+
+        # MTP detection via deps.json
+        $isMtp = $false
+        $depsJson = Join-Path $effectiveBinDir "$name.deps.json"
+        if (Test-Path $depsJson) {
+            try {
+                $deps = Get-Content $depsJson -Raw | ConvertFrom-Json
+                if ($deps) {
+                    $firstTarget = $deps.targets.PSObject.Properties | Select-Object -First 1
+                    if ($firstTarget) {
+                        $main = $firstTarget.Value.PSObject.Properties | Where-Object { $_.Name -like "$name/*" } | Select-Object -First 1
+                        if ($main) { $isMtp = ($main.Value.dependencies.PSObject.Properties.Name -contains 'Microsoft.Testing.Platform') }
+                    }
+                }
+            } catch { }
+        }
+
+        $networkArgs = if ($UseHostNetwork) { if ($IsLinux) { @('--network=host') } else { @('--add-host=localhost:host-gateway') } } else { @() }
+        $covMount = @(); $covPrefix = @()
+        if ($CoverageDir) {
+            New-Item -ItemType Directory -Force -Path $CoverageDir | Out-Null
+            $covMount = @('-v', "$(dp $CoverageDir):/coverage")
+            $covPrefix = @('/root/.dotnet/tools/dotnet-coverage', 'collect', '--output', "/coverage/$name.cobertura.xml", '--output-format', 'cobertura', '--nologo')
+            foreach ($f in $CoverageIncludeFiles) { $covPrefix += '--include-files', "/tests/$f" }
+            $covPrefix += '--'
+        }
+        $shared = @()
+        if ($SharedConfigDir) {
+            New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
+            $shared = @('-v', "$(dp $SharedConfigDir):/shared-config", '-e', 'WAREWOLF_SECURE_CONFIG=/shared-config/secure.config')
+        }
+        $trxName = "$name.trx"
+        if (Test-Path (Join-Path $resultsDir $trxName)) { Remove-Item (Join-Path $resultsDir $trxName) -Force }
+
+        $args = @('run', '--rm') + $networkArgs + @('-e', 'DOTNET_ROOT=/usr/share/dotnet') + $covMount + $shared + @(
+            '-v', "$(dp $effectiveBinDir):/tests:ro",
+            '-v', "$(dp $resultsDir):/results",
+            $InContainerImage
+        ) + $covPrefix
+        if ($isMtp) {
+            $args += @('/usr/share/dotnet/dotnet', "/tests/$name.dll", '--report-trx', '--report-trx-filename', $trxName, '--results-directory', '/results', '--no-progress')
+        } else {
+            $args += @('/usr/share/dotnet/dotnet', 'test', "/tests/$name.dll", '--logger', "trx;LogFileName=$trxName", '--results-directory', '/results')
+        }
+        if ($Filter) { $args += '--filter', $Filter }
+
+        Write-Host "+ docker $($args -join ' ')" -ForegroundColor DarkGray
+        & docker @args
+        $exit = $LASTEXITCODE
+        if ($exit -eq 8) {
+            Write-Warn "$name - zero tests ran (exit 8); treating as warning"
+        } elseif ($exit -ne 0) {
+            Write-Warn "$name failed (exit $exit)"
+        }
+    }
+}
+
+# ============================================================================
+# Mode router
+# ============================================================================
+
+$Projects          = Split-CommaArray $Projects
+$Assemblies        = Split-CommaArray $Assemblies
+$ExcludeProjects   = Split-CommaArray $ExcludeProjects
+$ExcludeAssemblies = Split-CommaArray $ExcludeAssemblies
+$ExcludeCategories = Split-CommaArray $ExcludeCategories
+$Categories        = Split-CommaArray $Categories
+
+# Unify Projects/Assemblies into Projects (everything below uses $Projects).
+if ($Assemblies.Count -gt 0 -and $Projects.Count -eq 0) { $Projects = $Assemblies }
+if ($ExcludeAssemblies.Count -gt 0 -and $ExcludeProjects.Count -eq 0) { $ExcludeProjects = $ExcludeAssemblies }
+
+$hasAnyDepFlag = $StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent -or `
+                 $StartSFTPServer.IsPresent -or $StartMySQLServer.IsPresent -or `
+                 $StartElasticsearchServer.IsPresent -or ($StartMSSQLServer -ne "")
+
+# Any signal that the caller meant "run this specific selection in direct mode"
+# routes around catalog scanning. -ExcludeProjects alone (e.g. Unit_Tests job)
+# counts even when -Projects is absent.
+$hasDirectModeSelection = ($Projects.Count -gt 0) -or `
+                          ($ExcludeProjects.Count -gt 0) -or `
+                          ($TestsToRun -ne "") -or `
+                          $hasAnyDepFlag -or $InContainer.IsPresent
+
+$catalogMode = $List.IsPresent -or `
+               ($Jobs.Count -gt 0) -or `
+               (-not $hasDirectModeSelection)
+
+if ($catalogMode) {
+    Invoke-CatalogMode
+    exit 0
+}
+
+# ============================================================================
+# Direct mode (ported from previous TestRun.ps1, with small refinements)
+# ============================================================================
+
+if ($PreTestRunScript -and $Coverage.IsPresent -and -not $PreTestRunScript.Contains("-Coverage"))   { $PreTestRunScript += " -Coverage" }
+if ($PostTestRunScript -and $Coverage.IsPresent -and -not $PostTestRunScript.Contains("-Coverage")) { $PostTestRunScript += " -Coverage" }
+
 $TestResultsPath = if ($TestResultsDir) { $TestResultsDir } else { ".\TestResults" }
-if (Test-Path "$TestResultsPath") {
-	Remove-Item -Force -Recurse "$TestResultsPath"
+if (Test-Path $TestResultsPath) { Remove-Item -Force -Recurse $TestResultsPath }
+New-Item -ItemType Directory $TestResultsPath -ErrorAction SilentlyContinue | Out-Null
+
+# vstest resolution
+if (-not $VSTestPath -or -not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+    $VSTestPath = ".\Microsoft.TestPlatform\tools\net462\common7\ide"
 }
-if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-	$VSTestPath = ".\Microsoft.TestPlatform\tools\net462\common7\ide"
-} else {
-	if ($InContainer.IsPresent -or $InContainerCommitID -ne "latest" -or $InContainerVersion -ne "latest") {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
-		$VSTestPath = ".\Microsoft.TestPlatform\tools\net462\Common7\IDE"
-	}
+if (-not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+    if (-not $NuGet -or -not (Test-Path $NuGet)) {
+        $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+        if ($NuGetCommand) { $NuGet = $NuGetCommand.Path }
+    }
+    if ((-not $NuGet -or -not (Test-Path $NuGet)) -and (Test-Path $env:windir)) {
+        Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+        $NuGet = "$env:windir\nuget.exe"
+    }
+    if ($Projects.Count -gt 0 -and -not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+        & $NuGet install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory .
+    }
 }
-if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-	#Find NuGet
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-		if ($NuGetCommand) {
-			$NuGet = $NuGetCommand.Path
-		}
-	}
-	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-		$NuGet = "$env:windir\nuget.exe"
-	}
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to a directory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
-		sleep 10
-		exit 1
-	}
-}
-if ($Projects.Length -le 0 -and !$StartFTPServer.IsPresent -and !$StartFTPSServer.IsPresent -and !$StartSFTPServer.IsPresent -and !$StartMySQLServer.IsPresent -and !$StartElasticsearchServer.IsPresent) {
-	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-		&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-		if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-			Write-Error "Cannot install test runner using nuget."
-			exit 1
-		}
-	}
-}
+
 if ($Coverage.IsPresent) {
-	Write-Host Removing existing Coverage Reports
-	if (Test-Path "$TestResultsPath\Merged.coveragexml") {
-		Remove-Item "$TestResultsPath\Merged.coveragexml"
-	}
-	if (Test-Path "$TestResultsPath\Cobertura.xml") {
-		Remove-Item "$TestResultsPath\Cobertura.xml"
-	}
-	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
-	(Get-Content $CoverageConfigPath).replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>', '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
+    if (Test-Path "$TestResultsPath\Merged.coveragexml") { Remove-Item "$TestResultsPath\Merged.coveragexml" }
+    if (Test-Path "$TestResultsPath\Cobertura.xml")      { Remove-Item "$TestResultsPath\Cobertura.xml" }
+    $CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
+    if (Test-Path $CoverageConfigPath) {
+        (Get-Content $CoverageConfigPath).Replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>',
+                                                  '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
+    }
 }
-if ($CreateLocalSchedulerAdmin.IsPresent) {
-	cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
-	Add-LocalGroupMember -Group 'Administrators' -Member ('LocalSchedulerAdmin') -Verbose
-	Add-LocalGroupMember -Group 'Warewolf Administrators' -Member ('LocalSchedulerAdmin') -Verbose
+
+# Legacy Windows-only host setup (gated behind -LegacyWindowsDeps)
+if ($LegacyWindowsDeps) {
+    if ($CreateLocalSchedulerAdmin) {
+        cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
+        Add-LocalGroupMember -Group 'Administrators'          -Member 'LocalSchedulerAdmin' -ErrorAction SilentlyContinue
+        Add-LocalGroupMember -Group 'Warewolf Administrators' -Member 'LocalSchedulerAdmin' -ErrorAction SilentlyContinue
+    }
+    if ($CreateUNCPath) {
+        mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite -Force | Out-Null
+        "file contents to read" | Out-File -LiteralPath "C:\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
+        New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue
+    }
+    if ($UseRegionalSettings) {
+        Set-Culture en-ZA
+    }
 }
-if ($UseRegionalSettings.IsPresent) {
-	$culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")      
-    $assembly = [System.Reflection.Assembly]::Load("System.Management.Automation")
-    $type = $assembly.GetType("Microsoft.PowerShell.NativeCultureResolver")
-    $field = $type.GetField("m_uiCulture", [Reflection.BindingFlags]::NonPublic -bor [Reflection.BindingFlags]::Static)
-    $field.SetValue($null, $culture)      
-    Set-Culture en-ZA
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortDate -Value 'yyyy/MM/dd'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sDecimal -Value '.'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s1159 -Value 'AM'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s2359 -Value 'PM'
-}
-if ($CreateUNCPath.IsPresent) {	
-    mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite
-    "file contents to read" | Out-File -LiteralPath "C:\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
-    New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite
-}
+
 if ($STA.IsPresent) {
-	if (!(Test-Path "$TestResultsPath")) {
-		mkdir "$TestResultsPath"
-	}
 @"
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
@@ -451,260 +1250,141 @@ if ($STA.IsPresent) {
 </RunSettings>
 "@ | Out-File -LiteralPath "$TestResultsPath\STA.runsettings" -Encoding utf8 -Force
 }
-if ($ServerType -eq 'LightweightExecution') {
-    Start-LightweightExecution
-} elseif ($ServerType -eq 'FullServer') {
-    Start-WarewolfServer
-}
-if ($Projects.Length -gt 0) {
-	for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
-		if ($StartFTPServer.IsPresent) {
-			Start-FTPServer
-		}
-		if ($StartFTPSServer.IsPresent) {
-			Start-FTPSServer
-		}
-		if ($StartSFTPServer.IsPresent) {
-			Start-SFTPServer
-		}
-		if ($StartMySQLServer.IsPresent) {
-			Start-MySQLServer
-		}
-		if ($StartElasticsearchServer.IsPresent) {
-			Start-ElasticsearchServer
-		}
-		if ($RetryRebuild.IsPresent) {
-			if (Test-Path "$PWD\..\..\Compile.ps1") {
-				&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
-			} else {
-				if (Test-Path "$PWD\Compile.ps1") {
-					&"$PWD\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
-					Set-Location "$PWD\bin\AcceptanceTesting"
-				}
-			}
-		} else {
-			if (!(Test-Path "$PWD\*tests.dll") -and $InContainerCommitID -eq "latest") {
-				Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
-				exit 1
-			}
-		}
-		$AllAssemblies = @()
-		foreach ($project in $Projects) {
-			$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
-		}
-		if ($AllAssemblies.Count -le 0) {
-			$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
-			Write-Error $ShowError
-		}
-		$AssembliesList = @()
-		for ($i = 0; $i -lt $AllAssemblies.Count; $i++) 
-		{
-			if ([array]::indexof($ExcludeProjects, $AllAssemblies[$i].Name.TrimEnd(".dll")) -eq -1) {
-				$AssembliesList += @($AllAssemblies[$i].Name)
-			}
-		}
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
-		}
-		New-Item -ItemType Directory "$TestResultsPath" -ErrorAction SilentlyContinue
-		if (Test-Path "$TestResultsPath\RunTests.ps1") {
-			Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
-		}
-		if (Test-Path "$TestResultsPath\warewolf-server.log") {
-			Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
-		}
-		if (Test-Path "$TestResultsPath\Snapshot.coverage") {
-			Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
-		}
-		if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
-			Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
-		}
-		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
-		if ($UNCPassword) {
-			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		}
-		if ($STA.IsPresent) {
-			$STAArg = "--settings:`"$TestResultsPath\STA.runsettings`""
-		} else {
-			$STAArg = ""
-		}
-		if ($TestsToRun) {
-			if ($PreTestRunScript) {
-				"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				} else {
-					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				}
-			}
-		} else {
-			$CategoryArg = ""
-			if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
-				if ($ExcludeCategories.Count -eq 1 -and $ExcludeCategories[0].Contains(",")) {
-					$ExcludeCategories = $ExcludeCategories[0] -split ","
-				}
-				$CategoryArg = "/TestCaseFilter:`"(TestCategory!="
-				$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
-				$CategoryArg += ")`""
-			} else {
-				if ($Category -ne $null -and $Category -ne "") {
-					$CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
-				} else {
-					if ($Categories -ne $null -and $Categories.Count -ne 0) {
-						$CategoryArg = "/TestCaseFilter:`"(TestCategory="
-						$CategoryArg += $Categories -join ")|(TestCategory="
-						$CategoryArg += ")`""
-					}
-				}
-			}
-			# Apply -Filter (ANDed with any category expression already built above).
-			if ($Filter) {
-				if ($CategoryArg -ne "") {
-					$existingExpr = $CategoryArg -replace '^/TestCaseFilter:"(.+)"$', '$1'
-					$CategoryArg = "/TestCaseFilter:`"($existingExpr)&($Filter)`""
-				} else {
-					$CategoryArg = "/TestCaseFilter:`"$Filter`""
-				}
-			}
-			if ($PreTestRunScript) {
-				"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				} else {
-					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-				}
-			}
-		}
-		if ($PostTestRunScript) {
-			"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		}
-		if ($UNCPassword) {
-			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		}
-		Get-Content "$TestResultsPath\RunTests.ps1"
-		if (!($InContainer.IsPresent) -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
-			&"$TestResultsPath\RunTests.ps1"
-		} else {
-			if ($InContainerCommitID -eq "latest") {
-				docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:$InContainerVersion powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
-			} else {
-				docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$InContainerCommitID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
-			}
-		}
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
-		}
-		if (Test-Path "$TestResultsPath\*.trx") {
-			[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
-			if ($getXMLFiles.Count -gt 1) {
-				$MaxCount = 0
-				$MaxCountIndex = 0
-				$CountIndex = 0
-				$getXMLFiles | % {
-					$getXML = [xml](Get-Content $_.FullName)
-					if ([int]$getXML.TestRun.ResultSummary.Counters.total -gt $MaxCount) {
-						$MaxCount = $getXML.TestRun.ResultSummary.Counters.total
-						$MaxCountIndex = $CountIndex
-					}
-					$CountIndex++
-				}
-				$BaseXMLFile = $getXMLFiles[$MaxCountIndex]
-				$getBaseXML = [xml](Get-Content $BaseXMLFile.FullName)
-				$getXMLFiles.RemoveAt($MaxCountIndex)
-				$getXMLFiles | % {
-					$getXML = [xml](Get-Content $_.FullName)
-					$getXMl.TestRun.Results.UnitTestResult | % {
-						$RetryUnitTestResult = $_
-						$getBaseXMl.TestRun.Results.UnitTestResult | % {
-							if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq 'Passed' -and $_.outcome -eq 'Failed') {
-								[void]$_.ParentNode.AppendChild($getBaseXMl.ImportNode($RetryUnitTestResult, $true))
-								$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.passed) + 1)
-								$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.failed) - 1)
-								[void]$_.ParentNode.RemoveChild($_)
-							}
-						}
-					}
-					Remove-Item $_.FullName
-				}
-				$getBaseXML.Save($BaseXMLFile.FullName)
-			} else {
-				$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
-			}
-			if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
-				$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
-			} else {
-				break
-			}
-		} else {
-			Write-Error "No test results found."
-			exit 1
-		}
-		if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
-			taskkill /im pythonw.exe /f
-		}
-		if ($StartSFTPServer.IsPresent) {
-			docker logs sftp-connector-testing
-			docker rm -f sftp-connector-testing
-		}
-		if ($StartMySQLServer.IsPresent) {
-			docker logs mysql-connector-testing
-			docker rm -f mysql-connector-testing
-		}
-		if ($StartElasticsearchServer.IsPresent) {
-			docker logs elasticsearch-connector-testing
-			docker rm -f elasticsearch-connector-testing
-		}
-	}
-} else {
-	if ($StartFTPServer.IsPresent) {
-		Start-FTPServer
-	}
-	if ($StartFTPSServer.IsPresent) {
-		Start-FTPSServer
-	}
-	if ($StartSFTPServer.IsPresent) {
-		Start-SFTPServer
-	}
-	if ($StartMySQLServer.IsPresent) {
-		Start-MySQLServer
-	}
-	if ($StartElasticsearchServer.IsPresent) {
-		Start-ElasticsearchServer
-	}
-}
-if ($ServerType) {
-    Stop-Engine
-}
-if ($Coverage.IsPresent) {
-	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
-	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
-	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
-	if ($GetSnapshots.count -le 0) {
-		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
-	}
-	if ($GetSnapshots.count -le 0) {
-		Write-Host Cannot find snapshots in $TestResultsPath
-		exit 1
-	}
-	Write-Host `&`"$CoverageToolPath`" merge @GetSnapshots --output `"$MergedSnapshotPath`"
-	&"$CoverageToolPath" merge @GetSnapshots --output-format xml --output "$MergedSnapshotPath"
-	$reportGeneratorExecutable = ".\reportgenerator.exe"
 
-    if (!(Test-Path "$reportGeneratorExecutable")) {
-        dotnet tool install dotnet-reportgenerator-globaltool --tool-path "."
+# SUT start
+if ($ServerType -eq 'LightweightExecution') { Start-LightweightExecution }
+elseif ($ServerType -eq 'FullServer')       { Start-WarewolfServer }
+
+try {
+    if ($Projects.Count -gt 0) {
+        for ($loop = 0; $loop -le $RetryCount; $loop++) {
+            if ($StartFTPServer.IsPresent)           { Start-HostFTPServer }
+            if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
+            if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
+            if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
+            if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
+            if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
+
+            if ($RetryRebuild.IsPresent) {
+                if (Test-Path "$PWD\..\..\Compile.ps1") {
+                    & "$PWD\..\..\Compile.ps1" -AcceptanceTesting -NuGet $NuGet -MSBuildPath $MSBuildPath
+                } elseif (Test-Path "$PWD\Compile.ps1") {
+                    & "$PWD\Compile.ps1" -AcceptanceTesting -NuGet $NuGet -MSBuildPath $MSBuildPath
+                    Set-Location "$PWD\bin\AcceptanceTesting"
+                }
+            }
+
+            # Resolve assemblies in $PWD
+            $allAsm = @()
+            foreach ($p in $Projects) { $allAsm += @(Get-ChildItem ".\$p.dll" -Recurse -ErrorAction SilentlyContinue) }
+            if ($allAsm.Count -eq 0) {
+                Write-Error "Could not find any assemblies matching: $($Projects -join ',')"
+                exit 1
+            }
+            $asmList = @()
+            foreach ($a in $allAsm) {
+                if ([array]::indexof($ExcludeProjects, $a.Name.TrimEnd(".dll")) -eq -1) { $asmList += $a.Name }
+            }
+            if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+                Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
+            }
+            # Roll prior RunTests / log / coverage artifacts
+            if (Test-Path "$TestResultsPath\RunTests.ps1")          { Move-Item "$TestResultsPath\RunTests.ps1"          "$TestResultsPath\RunTests($loop).ps1" }
+            if (Test-Path "$TestResultsPath\warewolf-server.log")   { Move-Item "$TestResultsPath\warewolf-server.log"   "$TestResultsPath\warewolf-server($loop).log" }
+            if (Test-Path "$TestResultsPath\Snapshot.coverage")     { Move-Item "$TestResultsPath\Snapshot.coverage"     "$TestResultsPath\Snapshot($loop).coverage" }
+            if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") { Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($loop).coverage" }
+
+            $asmArg = ".\" + ($asmList -join " .\")
+            if ($UNCPassword) {
+                "net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+            }
+            $staArg = if ($STA.IsPresent) { "--settings:`"$TestResultsPath\STA.runsettings`"" } else { "" }
+            # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
+            $resultsDirArg = "/ResultsDirectory:`"$TestResultsPath`""
+
+            # Build vstest invocation
+            $vstestExe = "$VSTestPath\Extensions\TestPlatform\vstest.console.exe"
+            if ($TestsToRun) {
+                if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
+                $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
+                "&`"$vstestExe`" /logger:trx $asmArg /Tests:`"$TestsToRun`" $staArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+            } else {
+                $categoryArg = ""
+                if ($ExcludeCategories -and $ExcludeCategories.Count -gt 0) {
+                    $categoryArg = "/TestCaseFilter:`"(TestCategory!=" + ($ExcludeCategories -join ")&(TestCategory!=") + ")`""
+                } elseif ($Category) {
+                    $categoryArg = "/TestCaseFilter:`"(TestCategory=$Category)`""
+                } elseif ($Categories -and $Categories.Count -gt 0) {
+                    $categoryArg = "/TestCaseFilter:`"(TestCategory=" + ($Categories -join ")|(TestCategory=") + ")`""
+                }
+                if ($Filter) {
+                    if ($categoryArg) {
+                        $existing = $categoryArg -replace '^/TestCaseFilter:"(.+)"$', '$1'
+                        $categoryArg = "/TestCaseFilter:`"($existing)&($Filter)`""
+                    } else {
+                        $categoryArg = "/TestCaseFilter:`"$Filter`""
+                    }
+                }
+                if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
+                $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
+                "&`"$vstestExe`" /logger:trx $asmArg $categoryArg $staArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+            }
+            if ($PostTestRunScript) { "&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
+            if ($UNCPassword) {
+                "net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+            }
+
+            Get-Content "$TestResultsPath\RunTests.ps1"
+            if (-not $InContainer.IsPresent -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
+                & "$TestResultsPath\RunTests.ps1"
+            } else {
+                # Linux container per-assembly run (ported from run-tests-in-container.ps1)
+                Invoke-LinuxContainerRun -Assemblies $asmList -Filter $Filter -Categories $Categories -ExcludeCategories $ExcludeCategories
+            }
+            if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+                Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
+            }
+
+            # Merge TRX retry results, decide whether to loop
+            if (-not (Test-Path "$TestResultsPath\*.trx")) {
+                Write-Error "No test results found."
+                exit 1
+            }
+            $break = Merge-RetryTrx -TestResultsPath $TestResultsPath
+            if ($break) { break }
+            $TestsToRun = (Get-FailedTestNames -TestResultsPath $TestResultsPath) -join ","
+
+            if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) { Stop-HostFTPServer; Stop-HostFTPSServer }
+            if ($StartSFTPServer.IsPresent)          { Stop-HostSFTPServer }
+            if ($StartMySQLServer.IsPresent)         { Stop-HostMySQLServer }
+            if ($StartElasticsearchServer.IsPresent) { Stop-HostElasticsearchServer }
+        }
+    } else {
+        # No projects: only dependency startup was requested.
+        if ($StartFTPServer.IsPresent)           { Start-HostFTPServer }
+        if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
+        if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
+        if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
+        if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
+        if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
     }
-    
-    $reportGeneratorCoberturaParams = @(
-        "-reports:$MergedSnapshotPath",
-        "-targetdir:$TestResultsPath",
-        "-reporttypes:Cobertura"
-    )
-    
-    Write-Output "Executing Report Generator with following parameters: $reportGeneratorCoberturaParams."
-    &"$reportGeneratorExecutable" @reportGeneratorCoberturaParams
+} finally {
+    if ($ServerType) { Stop-Engine }
 }
+
+# Legacy CodeCoverage.exe merge path
+if ($Coverage.IsPresent) {
+    $MergedSnapshot = "$TestResultsPath\Merged.coveragexml"
+    $CoverageTool = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+    $snaps = Get-ChildItem "$TestResultsPath\**\*.coverage" -ErrorAction SilentlyContinue
+    if ($snaps.Count -eq 0) { $snaps = Get-ChildItem "$TestResultsPath\*.coverage" -ErrorAction SilentlyContinue }
+    if ($snaps.Count -gt 0 -and (Test-Path $CoverageTool)) {
+        & $CoverageTool merge @snaps --output-format xml --output $MergedSnapshot
+        if (-not (Test-Path .\reportgenerator.exe)) {
+            dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
+        }
+        & .\reportgenerator.exe "-reports:$MergedSnapshot" "-targetdir:$TestResultsPath" "-reporttypes:Cobertura"
+    }
+}
+
 exit 0

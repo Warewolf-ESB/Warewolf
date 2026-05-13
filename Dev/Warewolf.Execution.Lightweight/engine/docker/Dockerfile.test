@@ -37,5 +37,5 @@ ENV VSTEST_CONNECTION_TIMEOUT=300
 # The appservice base image has a startup entrypoint that launches sshd and the
 # Azure Functions host. Override it with [] so that:
 #   - VS container tools can create the container without specifying a command
-#   - run-tests-in-container.ps1 can use docker run <cmd> directly
+#   - TestRun.ps1 -InContainer can use docker run <cmd> directly
 ENTRYPOINT []

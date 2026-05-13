@@ -2,7 +2,7 @@
  * Assembly-level test initialiser.
  *
  * When the environment variable WAREWOLF_GENERATE_CI_CONFIG=1 is set (as it is
- * by Run-Coverage.ps1 when no WAREWOLF_SECURE_CONFIG_CONTENT secret is provided),
+ * by TestRun.ps1 when no WAREWOLF_SECURE_CONFIG_CONTENT secret is provided),
  * this class generates a minimal synthetic secure.config file and writes its path
  * into WAREWOLF_TEST_SECURE_CONFIG so that the F_RealConfig_* tests in
  * SecurityAuthTests can run instead of being skipped.
@@ -32,7 +32,7 @@ namespace Warewolf.Execution.Lightweight.Tests
                 return;
 
             // Only generate if WAREWOLF_TEST_SECURE_CONFIG isn't already pointing at
-            // an existing file (e.g. a pipeline secret written by Run-Coverage.ps1).
+            // an existing file (e.g. a pipeline secret written by TestRun.ps1).
             var existing = Environment.GetEnvironmentVariable("WAREWOLF_TEST_SECURE_CONFIG");
             if (!string.IsNullOrWhiteSpace(existing) && File.Exists(existing))
                 return;
