@@ -45,11 +45,18 @@ param(
     [Switch]   $NoParallel,
     [Int]      $MaxParallel = 4,
 
+    # ---- Runtime selection ----
+    # -Runtime is the canonical knob: Windows = bare-metal SUT + Windows-native
+    # deps (pyftpdlib, OpenSSH, choco, etc.); Linux = container SUT + Linux
+    # docker deps. -SUTRuntime is kept as a deprecated alias.
+    [ValidateSet('Windows','Linux')]
+    [String]   $Runtime = "Windows",
+    [ValidateSet('Windows','Linux')]
+    [String]   $SUTRuntime = "",
+
     # ---- SUT lifecycle ----
     [ValidateSet('','LightweightExecution','FullServer')]
     [String]   $ServerType = "",
-    [ValidateSet('Windows','Linux')]
-    [String]   $SUTRuntime = "Windows",
     [String]   $FuncExePath = "",
     [String]   $LightweightExecutionDir = "",
     [String]   $SharedConfigDir = "",
@@ -77,15 +84,19 @@ param(
     [String]   $InContainerVersion = "latest",
     [String]   $InContainerCommitID = "latest",
 
-    # ---- Dep startup (Linux-image by default) ----
+    # ---- Dep startup (runtime-aware: -Runtime Windows = native, Linux = docker) ----
     [Switch]   $StartFTPServer,
     [Switch]   $StartFTPSServer,
     [Switch]   $StartSFTPServer,
+    [Switch]   $StartSambaShare,
     [Switch]   $StartMySQLServer,
     [Switch]   $StartElasticsearchServer,
+    [Switch]   $StartRabbitMQServer,
+    [Switch]   $StartRedisServer,
+    [Switch]   $StartExchangeConnector,
     [String]   $StartMSSQLServer = "",
 
-    # ---- Legacy Windows-native deps ----
+    # ---- Legacy Windows-native deps (deprecated: implied by -Runtime Windows) ----
     [Switch]   $LegacyWindowsDeps,
     [String]   $UNCPassword,
     [Switch]   $CreateUNCPath,
@@ -95,6 +106,24 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference    = 'SilentlyContinue'
+
+# ----------------------------------------------------------------------------
+# Runtime normalisation
+# ----------------------------------------------------------------------------
+# -SUTRuntime is deprecated; map it to -Runtime when callers still pass it.
+# Tracked separately so the catalog-mode sites at lines ~916, ~928, ~941, ~952,
+# ~968, ~1029 keep reading $SUTRuntime as a synonym for $Runtime.
+if ($PSBoundParameters.ContainsKey('SUTRuntime') -and -not $PSBoundParameters.ContainsKey('Runtime')) {
+    Write-Warning "-SUTRuntime is deprecated; use -Runtime $SUTRuntime instead."
+    $Runtime = $SUTRuntime
+}
+$SUTRuntime = $Runtime
+
+# -Runtime Windows implies the existing -LegacyWindowsDeps switch (every
+# Start-Host* function already gates its native branch on $LegacyWindowsDeps).
+if ($Runtime -eq 'Windows' -and -not $LegacyWindowsDeps.IsPresent) {
+    $LegacyWindowsDeps = [switch]::Present
+}
 
 # PS 6+ automatic vars - fallbacks for Windows PowerShell 5.1
 if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
@@ -340,8 +369,11 @@ function Start-LinuxSidecar {
 
 function Start-HostFTPServer {
     if ($LegacyWindowsDeps) {
-        # Native pyftpdlib path (legacy, Windows-only)
-        if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) { mkdir "C:\ftp_home\dev2\FORUNZIPTESTING" | Out-Null }
+        # Native pyftpdlib path (Windows runtime).
+        foreach ($sub in 'FORUNZIPTESTING','FORCOPYFILETESTING') {
+            $d = "C:\ftp_home\dev2\$sub"
+            if (!(Test-Path $d)) { mkdir $d | Out-Null }
+        }
         pip install pyftpdlib
         if (!(Test-Path "C:\ftp_entrypoint.py")) {
 @"
@@ -381,6 +413,8 @@ if __name__ == '__main__':
         -e PASV_MIN_PORT=30000 -e PASV_MAX_PORT=30009 `
         stilliard/pure-ftpd | Out-Null
     Start-Sleep -Seconds 3
+    docker exec ftpserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
+    docker exec ftpserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
 }
 
 function Stop-HostFTPServer {
@@ -393,22 +427,87 @@ function Stop-HostFTPServer {
 
 function Start-HostFTPSServer {
     if ($LegacyWindowsDeps) {
-        # Inlined the legacy pyftpdlib+TLS cert path. Kept verbatim to preserve
-        # the test cert and PASV port range; only invoked when -LegacyWindowsDeps.
-        if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) { mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING" | Out-Null }
-        if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING"))      { mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"      | Out-Null }
+        # Native pyftpdlib+TLS (Windows runtime). Generates a self-signed cert
+        # inline via pyOpenSSL so the legacy branch is self-contained.
+        foreach ($sub in 'FORFILERENAMETESTING','FORUNZIPTESTING','FORCOPYFILETESTING') {
+            $d = "C:\ftps_home\dev2\$sub"
+            if (!(Test-Path $d)) { mkdir $d | Out-Null }
+        }
+        # Seed FTPS copy-file fixtures (mirrors the docker `docker exec ... echo` seeding).
+        foreach ($i in 0..4) {
+            $seed = "C:\ftps_home\dev2\FORCOPYFILETESTING\copyfile$i.txt"
+            if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
+        }
         pip install pyftpdlib 'cryptography==38.0.4' 'pyOpenSSL==22.0.0'
-        Write-Warn "Legacy FTPS startup: existing cert/key/entrypoint files at C:\cert.crt, C:\cert.key, C:\ftps_entrypoint.py must already exist."
-        if (Test-Path "C:\ftps_entrypoint.py") { pythonw -u "C:\ftps_entrypoint.py" }
+        if (!(Test-Path "C:\cert.crt") -or !(Test-Path "C:\cert.key")) {
+@"
+from OpenSSL import crypto
+key = crypto.PKey(); key.generate_key(crypto.TYPE_RSA, 2048)
+cert = crypto.X509()
+cert.get_subject().CN = 'localhost'
+cert.get_subject().O  = 'Warewolf'
+cert.get_subject().C  = 'ZA'
+cert.set_serial_number(1000)
+cert.gmtime_adj_notBefore(0)
+cert.gmtime_adj_notAfter(5*365*24*60*60)
+cert.set_issuer(cert.get_subject())
+cert.set_pubkey(key)
+cert.sign(key, 'sha256')
+open('C:/cert.crt','wt').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode())
+open('C:/cert.key','wt').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode())
+"@ | Out-File -LiteralPath "C:\ftps_gencert.py" -Encoding utf8 -Force
+            python "C:\ftps_gencert.py"
+        }
+        if (!(Test-Path "C:\ftps_entrypoint.py")) {
+@"
+import os
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import TLS_FTPHandler
+from pyftpdlib.servers import FTPServer
+
+PASSIVE_PORTS = '56001-56008'
+
+def main():
+    authorizer = DummyAuthorizer()
+    user_dir = "C:/ftps_home/dev2"
+    if not os.path.isdir(user_dir): os.mkdir(user_dir)
+    authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
+
+    handler = TLS_FTPHandler
+    handler.certfile = "C:/cert.crt"
+    handler.keyfile  = "C:/cert.key"
+    handler.tls_control_required = True
+    handler.tls_data_required    = True
+    handler.authorizer = authorizer
+    handler.permit_foreign_addresses = True
+    passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
+    handler.passive_ports = range(passive_ports[0], passive_ports[1])
+    handler.masquerade_address = '127.0.0.1'
+
+    server = FTPServer(('0.0.0.0', 1010), handler)
+    server.serve_forever()
+
+if __name__ == '__main__':
+    main()
+"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
+        }
+        pythonw -u "C:\ftps_entrypoint.py"
         return
     }
     # Linux-container FTPS (same image, TLS enabled via env)
     docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
         -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
         -e FTP_USER_HOME=/home/ftpusers/dev2 `
+        -e PASV_ADDRESS=127.0.0.1 `
+        -e TLS_CN=localhost -e TLS_ORG=Warewolf -e TLS_C=ZA `
         -e ADDED_FLAGS='--tls=2' `
         stilliard/pure-ftpd | Out-Null
-    Start-Sleep -Seconds 3
+    Start-Sleep -Seconds 5
+    docker exec ftpsserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
+    foreach ($i in 0..4) {
+        docker exec ftpsserver sh -c "echo 'testcontent' > /home/ftpusers/dev2/FORCOPYFILETESTING/copyfile$i.txt" 2>$null | Out-Null
+    }
+    docker exec ftpsserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
 }
 
 function Stop-HostFTPSServer {
@@ -417,17 +516,121 @@ function Stop-HostFTPSServer {
 }
 
 function Start-HostSFTPServer {
+    if ($LegacyWindowsDeps) {
+        # Windows OpenSSH server on port 2222 (matching atmoz/sftp's published port).
+        $cap = Get-WindowsCapability -Online -Name 'OpenSSH.Server*' -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($cap -and $cap.State -ne 'Installed') {
+            Add-WindowsCapability -Online -Name $cap.Name | Out-Null
+        }
+        # Provision the test user if missing.
+        if (-not (Get-LocalUser -Name 'ftpuser' -ErrorAction SilentlyContinue)) {
+            $pw = ConvertTo-SecureString 'ftppass' -AsPlainText -Force
+            New-LocalUser -Name 'ftpuser' -Password $pw -PasswordNeverExpires -AccountNeverExpires -UserMayNotChangePassword | Out-Null
+        }
+        $cfg = "$env:ProgramData\ssh\sshd_config"
+        if (Test-Path $cfg) {
+            $body = Get-Content $cfg -Raw
+            $body = $body -replace '(?m)^\s*#?\s*Port\s+\d+\s*$',          'Port 2222'
+            $body = $body -replace '(?m)^\s*#?\s*PasswordAuthentication.*$', 'PasswordAuthentication yes'
+            Set-Content -LiteralPath $cfg -Value $body -Encoding ascii
+        } else {
+            "Port 2222`nPasswordAuthentication yes`nSubsystem sftp sftp-server.exe" | Out-File -LiteralPath $cfg -Encoding ascii -Force
+        }
+        New-NetFirewallRule -DisplayName 'OpenSSH-Server-2222' -Direction Inbound -Action Allow -Protocol TCP -LocalPort 2222 -ErrorAction SilentlyContinue | Out-Null
+        Set-Service -Name sshd       -StartupType Automatic
+        Set-Service -Name 'ssh-agent' -StartupType Automatic -ErrorAction SilentlyContinue
+        Restart-Service sshd
+        Start-Sleep -Seconds 2
+        return
+    }
     docker run -d --name sftpserver -p 2222:22 atmoz/sftp ftpuser:ftppass:1001 | Out-Null
     Start-Sleep -Seconds 3
 }
-function Stop-HostSFTPServer { docker rm -f sftpserver 2>$null | Out-Null }
+function Stop-HostSFTPServer {
+    if ($LegacyWindowsDeps) {
+        Stop-Service sshd -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f sftpserver 2>$null | Out-Null
+}
 
 function Start-HostMySQLServer {
+    if ($LegacyWindowsDeps) {
+        # Bare-metal MySQL via chocolatey. Bootstrap schema is taken from
+        # C:\Users\ultra\mysql-connector-testing\mysqldump.sql (the source repo
+        # of the docker image used in Linux mode); both must stay in sync.
+        if (-not (Get-Service -Name 'MySQL*' -ErrorAction SilentlyContinue)) {
+            choco install mysql -y --no-progress
+        }
+        $svc = Get-Service -Name 'MySQL*' -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($svc -and $svc.Status -ne 'Running') { Start-Service $svc.Name }
+        # Wait until tcp/3306 answers.
+        for ($i = 1; $i -le 20; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 3306)).Close(); break } catch { Start-Sleep 2 }
+        }
+        # Idempotent password set + schema load. Tests connect with root/admin
+        # to match the docker image's MYSQL_ROOT_PASSWORD=admin baseline.
+        $mysqladmin = Get-Command mysqladmin -ErrorAction SilentlyContinue
+        $mysql      = Get-Command mysql      -ErrorAction SilentlyContinue
+        if (-not $mysql) { Write-Warn "mysql CLI not on PATH after choco install; skipping schema load"; return }
+        & $mysqladmin.Path -uroot password 'admin' 2>$null | Out-Null
+        $dump = "$PSScriptRoot\mysql-bootstrap.sql"
+        if (-not (Test-Path $dump)) { $dump = "C:\mysql-bootstrap.sql" }
+        if (Test-Path $dump) {
+            cmd /c "`"$($mysql.Path)`" -uroot -padmin < `"$dump`""
+        } else {
+            Write-Warn "No mysql-bootstrap.sql found at $PSScriptRoot or C:\; tests that depend on schema may fail"
+        }
+        return
+    }
     docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing | Out-Null
 }
-function Stop-HostMySQLServer { docker rm -f mysql-connector-testing 2>$null | Out-Null }
+function Stop-HostMySQLServer {
+    if ($LegacyWindowsDeps) {
+        Get-Service -Name 'MySQL*' -ErrorAction SilentlyContinue | Stop-Service -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f mysql-connector-testing 2>$null | Out-Null
+}
 
 function Start-HostElasticsearchServer {
+    if ($LegacyWindowsDeps) {
+        # Bare-metal Elasticsearch from the Windows zip. Bundles its own JDK so
+        # no JRE install is needed.
+        $esVer = '8.17.4'
+        $esDir = "C:\elasticsearch-$esVer"
+        $esZip = "$env:TEMP\elasticsearch-$esVer.zip"
+        if (-not (Test-Path "$esDir\bin\elasticsearch.bat")) {
+            if (-not (Test-Path $esZip)) {
+                Invoke-WebRequest -UseBasicParsing `
+                    -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$esVer-windows-x86_64.zip" `
+                    -OutFile $esZip
+            }
+            Expand-Archive -LiteralPath $esZip -DestinationPath 'C:\' -Force
+        }
+        $yml = "$esDir\config\elasticsearch.yml"
+        @"
+discovery.type: single-node
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
+xpack.security.http.ssl.enabled: false
+xpack.security.transport.ssl.enabled: false
+network.host: 0.0.0.0
+http.port: 9200
+"@ | Out-File -LiteralPath $yml -Encoding ascii -Force
+        $env:ES_JAVA_OPTS = '-Xms512m -Xmx512m'
+        $script:_elasticsearchProcess = Start-Process -FilePath "$esDir\bin\elasticsearch.bat" -PassThru -WindowStyle Hidden
+        Write-Host "Waiting for Elasticsearch on port 9200..."
+        for ($i = 1; $i -le 60; $i++) {
+            try {
+                $status = (Invoke-WebRequest -Uri 'http://localhost:9200/_cluster/health' -TimeoutSec 5 -UseBasicParsing -ErrorAction Stop).StatusCode
+            } catch { $status = 0 }
+            if ($status -eq 200) { Write-Host "Elasticsearch ready"; return }
+            Start-Sleep -Seconds 2
+        }
+        Write-Warn "Elasticsearch did not become ready within 120s"
+        return
+    }
     docker run -d --name elasticsearch-coverage -p 9200:9200 `
         -e "discovery.type=single-node" -e "xpack.security.enabled=false" `
         -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" `
@@ -442,7 +645,135 @@ function Start-HostElasticsearchServer {
     }
     Write-Warn "Elasticsearch did not become ready within 60s"
 }
-function Stop-HostElasticsearchServer { docker rm -f elasticsearch-coverage 2>$null | Out-Null }
+function Stop-HostElasticsearchServer {
+    if ($LegacyWindowsDeps) {
+        if ($script:_elasticsearchProcess -and -not $script:_elasticsearchProcess.HasExited) {
+            $script:_elasticsearchProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+        Get-Process -Name 'java' -ErrorAction SilentlyContinue |
+            Where-Object { $_.Path -and $_.Path -like '*elasticsearch*' } |
+            Stop-Process -Force -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f elasticsearch-coverage 2>$null | Out-Null
+}
+
+function Start-HostRabbitMQServer {
+    if ($LegacyWindowsDeps) {
+        if (-not (Get-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue)) {
+            choco install rabbitmq -y --no-progress
+        }
+        Start-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 5672)).Close(); return } catch { Start-Sleep 2 }
+        }
+        Write-Warn "RabbitMQ did not bind 5672 within 60s"
+        return
+    }
+    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null
+    Start-Sleep -Seconds 5
+}
+function Stop-HostRabbitMQServer {
+    if ($LegacyWindowsDeps) {
+        Stop-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f rabbitmq 2>$null | Out-Null
+}
+
+function Start-HostRedisServer {
+    if ($LegacyWindowsDeps) {
+        if (-not (Get-Service -Name 'Redis' -ErrorAction SilentlyContinue)) {
+            choco install redis-64 -y --no-progress
+        }
+        Start-Service -Name 'Redis' -ErrorAction SilentlyContinue
+        for ($i = 1; $i -le 15; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 6379)).Close(); return } catch { Start-Sleep 1 }
+        }
+        Write-Warn "Redis did not bind 6379 within 15s"
+        return
+    }
+    docker run -d --name redis -p 6379:6379 redis:7-alpine | Out-Null
+    Start-Sleep -Seconds 2
+}
+function Stop-HostRedisServer {
+    if ($LegacyWindowsDeps) {
+        Stop-Service -Name 'Redis' -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f redis 2>$null | Out-Null
+}
+
+function Start-HostSambaShare {
+    if ($LegacyWindowsDeps) {
+        $share = 'C:\smb_share'
+        if (-not (Test-Path $share)) { New-Item -ItemType Directory -Force -Path $share | Out-Null }
+        if (-not (Get-LocalUser -Name 'smbuser' -ErrorAction SilentlyContinue)) {
+            $pw = ConvertTo-SecureString 'smbpass' -AsPlainText -Force
+            New-LocalUser -Name 'smbuser' -Password $pw -PasswordNeverExpires -AccountNeverExpires -UserMayNotChangePassword | Out-Null
+        }
+        if (-not (Get-SmbShare -Name 'share' -ErrorAction SilentlyContinue)) {
+            New-SmbShare -Name 'share' -Path $share -FullAccess 'Everyone' -CachingMode 'None' | Out-Null
+        }
+        # Make sure smbuser can write to the share filesystem.
+        icacls $share /grant 'smbuser:(OI)(CI)F' /T | Out-Null
+        return
+    }
+    docker run -d --name sambaserver -p 445:445 `
+        -e USER='smbuser%smbpass' `
+        -e SHARE='share;/share;yes;no;no;smbuser' `
+        dperson/samba `
+        -u 'smbuser;smbpass' `
+        -s 'share;/share;yes;no;no;smbuser' | Out-Null
+    Start-Sleep -Seconds 3
+}
+function Stop-HostSambaShare {
+    if ($LegacyWindowsDeps) {
+        Remove-SmbShare -Name 'share' -Force -ErrorAction SilentlyContinue
+        return
+    }
+    docker rm -f sambaserver 2>$null | Out-Null
+}
+
+function Start-HostExchangeConnector {
+    if ($LegacyWindowsDeps) {
+        # WireMock standalone on :8889 (replaces warewolfserver/exchange-connector-testing,
+        # which is a WireMock-based stub). Requires Java; the ES install path drops a
+        # bundled JDK under C:\elasticsearch-*\jdk\bin\java.exe if -StartElasticsearchServer
+        # ran. Falls back to system `java` on PATH.
+        $wmVer = '3.9.1'
+        $wmJar = "C:\wiremock-standalone-$wmVer.jar"
+        if (-not (Test-Path $wmJar)) {
+            Invoke-WebRequest -UseBasicParsing `
+                -Uri "https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/$wmVer/wiremock-standalone-$wmVer.jar" `
+                -OutFile $wmJar
+        }
+        $java = Get-Command java -ErrorAction SilentlyContinue
+        if (-not $java) {
+            $bundled = Get-ChildItem 'C:\elasticsearch-*\jdk\bin\java.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($bundled) { $java = $bundled }
+        }
+        if (-not $java) { Write-Warn "java not found; cannot start WireMock"; return }
+        $exchangeRoot = 'C:\exchange-connector-stub'
+        if (-not (Test-Path $exchangeRoot)) { New-Item -ItemType Directory -Force -Path $exchangeRoot | Out-Null }
+        $script:_exchangeProcess = Start-Process -FilePath $java.Path `
+            -ArgumentList @('-jar', $wmJar, '--port', '8889', '--root-dir', $exchangeRoot, '--disable-banner') `
+            -PassThru -WindowStyle Hidden
+        Start-Sleep -Seconds 5
+        return
+    }
+    docker run -d -p 8889:8080 --name exchange-connector-testing warewolfserver/exchange-connector-testing | Out-Null
+    Start-Sleep -Seconds 5
+}
+function Stop-HostExchangeConnector {
+    if ($LegacyWindowsDeps) {
+        if ($script:_exchangeProcess -and -not $script:_exchangeProcess.HasExited) {
+            $script:_exchangeProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+        return
+    }
+    docker rm -f exchange-connector-testing 2>$null | Out-Null
+}
 
 function Start-HostMSSQLServer([string]$BakFile) {
     if ($LegacyWindowsDeps) {
@@ -1164,8 +1495,10 @@ if ($Assemblies.Count -gt 0 -and $Projects.Count -eq 0) { $Projects = $Assemblie
 if ($ExcludeAssemblies.Count -gt 0 -and $ExcludeProjects.Count -eq 0) { $ExcludeProjects = $ExcludeAssemblies }
 
 $hasAnyDepFlag = $StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent -or `
-                 $StartSFTPServer.IsPresent -or $StartMySQLServer.IsPresent -or `
-                 $StartElasticsearchServer.IsPresent -or ($StartMSSQLServer -ne "")
+                 $StartSFTPServer.IsPresent -or $StartSambaShare.IsPresent -or `
+                 $StartMySQLServer.IsPresent -or $StartElasticsearchServer.IsPresent -or `
+                 $StartRabbitMQServer.IsPresent -or $StartRedisServer.IsPresent -or `
+                 $StartExchangeConnector.IsPresent -or ($StartMSSQLServer -ne "")
 
 # Any signal that the caller meant "run this specific selection in direct mode"
 # routes around catalog scanning. -ExcludeProjects alone (e.g. Unit_Tests job)
@@ -1178,6 +1511,12 @@ $hasDirectModeSelection = ($Projects.Count -gt 0) -or `
 $catalogMode = $List.IsPresent -or `
                ($Jobs.Count -gt 0) -or `
                (-not $hasDirectModeSelection)
+
+# -Runtime Linux in direct mode means "run tests in a Linux container" — set
+# -InContainer unless the caller explicitly opted out.
+if (-not $catalogMode -and $Runtime -eq 'Linux' -and -not $PSBoundParameters.ContainsKey('InContainer')) {
+    $InContainer = [switch]::Present
+}
 
 if ($catalogMode) {
     Invoke-CatalogMode
@@ -1261,8 +1600,12 @@ try {
             if ($StartFTPServer.IsPresent)           { Start-HostFTPServer }
             if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
+            if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
             if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
             if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
+            if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
+            if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
+            if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
             if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
 
             if ($RetryRebuild.IsPresent) {
@@ -1356,16 +1699,24 @@ try {
 
             if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) { Stop-HostFTPServer; Stop-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Stop-HostSFTPServer }
+            if ($StartSambaShare.IsPresent)          { Stop-HostSambaShare }
             if ($StartMySQLServer.IsPresent)         { Stop-HostMySQLServer }
             if ($StartElasticsearchServer.IsPresent) { Stop-HostElasticsearchServer }
+            if ($StartRabbitMQServer.IsPresent)      { Stop-HostRabbitMQServer }
+            if ($StartRedisServer.IsPresent)         { Stop-HostRedisServer }
+            if ($StartExchangeConnector.IsPresent)   { Stop-HostExchangeConnector }
         }
     } else {
         # No projects: only dependency startup was requested.
         if ($StartFTPServer.IsPresent)           { Start-HostFTPServer }
         if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
         if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
+        if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
         if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
         if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
+        if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
+        if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
+        if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
         if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
     }
 } finally {
