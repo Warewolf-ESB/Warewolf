@@ -717,8 +717,23 @@ function Start-HostSambaShare {
         $share = 'C:\smb_share'
         if (-not (Test-Path $share)) { New-Item -ItemType Directory -Force -Path $share | Out-Null }
         if (-not (Get-LocalUser -Name 'smbuser' -ErrorAction SilentlyContinue)) {
-            $pw = ConvertTo-SecureString 'smbpass' -AsPlainText -Force
-            New-LocalUser -Name 'smbuser' -Password $pw -PasswordNeverExpires -AccountNeverExpires -UserMayNotChangePassword | Out-Null
+            # Hosted Windows agents enforce password complexity that rejects 'smbpass'.
+            # Try the legacy value first (matches dperson/samba creds) and fall back
+            # to a policy-compliant password if rejected.
+            $created = $false
+            foreach ($candidate in 'smbpass','Smbpass!2026') {
+                try {
+                    $pw = ConvertTo-SecureString $candidate -AsPlainText -Force
+                    New-LocalUser -Name 'smbuser' -Password $pw `
+                        -PasswordNeverExpires -AccountNeverExpires `
+                        -UserMayNotChangePassword -ErrorAction Stop | Out-Null
+                    $created = $true
+                    break
+                } catch [Microsoft.PowerShell.Commands.InvalidPasswordException] {
+                    Write-Warn "Password policy rejected '$candidate' for smbuser; trying next"
+                }
+            }
+            if (-not $created) { Write-Warn "Could not create smbuser; share will rely on Everyone access" }
         }
         if (-not (Get-SmbShare -Name 'share' -ErrorAction SilentlyContinue)) {
             New-SmbShare -Name 'share' -Path $share -FullAccess 'Everyone' -CachingMode 'None' | Out-Null
