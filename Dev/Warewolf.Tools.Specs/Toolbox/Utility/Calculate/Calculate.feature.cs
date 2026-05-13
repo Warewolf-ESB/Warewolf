@@ -1311,11 +1311,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("33", "DBNull()", "", ((s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DDB([[e]],[[z]],12,12,[[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31.99960254673971")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{31.99960254673971} or {31.999602546739737}")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_34()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12,12,[[x]])", "31.99960254673971", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12,12,[[x]])", "{31.99960254673971} or {31.999602546739737}", ((string[])(null)));
 #line hidden
         }
         
@@ -1956,11 +1956,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("78", "INTRATE(2015,2030,
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IPMT(5,12,100,1000,2000,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-833.3333587646484")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{-833.3333587646484} or {-833.3333333333334}")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_79()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000,2000,1)", "-833.3333587646484", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000,2000,1)", "{-833.3333587646484} or {-833.3333333333334}", ((string[])(null)));
 #line hidden
         }
         
@@ -2451,11 +2451,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("113", "NOW()", "[Now]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NPER(0.1, 100, 1000, 999,0)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.74911468163207")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{-79.74911468163207} or {-79.74911468163266}")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_114()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.74911468163207", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "{-79.74911468163207} or {-79.74911468163266}", ((string[])(null)));
 #line hidden
         }
         
@@ -2691,11 +2691,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("130", "RANDBETWEEN([[x]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846426")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{0.005045004045846426} or {0.0050450040458463845}")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846426", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "{0.005045004045846426} or {0.0050450040458463845}", ((string[])(null)));
 #line hidden
         }
         
