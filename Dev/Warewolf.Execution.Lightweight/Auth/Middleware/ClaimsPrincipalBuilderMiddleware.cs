@@ -7,6 +7,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
@@ -24,15 +25,16 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 /// </summary>
 public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ClaimsPrincipalBuilderMiddleware> _logger;
-
-    /// <summary>Initialises the middleware with a logger.</summary>
-    public ClaimsPrincipalBuilderMiddleware(ILogger<ClaimsPrincipalBuilderMiddleware> logger)
-        => _logger = logger;
+    /// <summary>Initialises the middleware.</summary>
+    public ClaimsPrincipalBuilderMiddleware()
+    {
+    }
 
     /// <inheritdoc/>
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
+        const string executionId = "ClaimsPrincipalBuilderMiddleware";
+
         var request = await context.GetHttpRequestDataAsync();
 
         if (request is not null)
@@ -40,58 +42,9 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
             var principal = BuildPrincipal(request);
             context.Items[AuthConstants.PrincipalContextKey] = principal;
 
-            _logger.LogDebug(
-                "Principal built: User={User} Authenticated={Auth} Groups=[{Groups}] Permissions={PermCount}",
-                principal.UserName,
-                principal.Identity?.IsAuthenticated,
-                string.Join(", ", principal.Groups),
-                principal.Permissions.Count);
-
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                    {
-                        Console.WriteLine($"WorkflowClaimsPrincipal=>: {principal.ToString()}");
-                    }
-
-                    _logger.LogInformation("WorkflowClaimsPrincipal=>" + principal.ToString());
-
-                    var identity = principal.Identity as ClaimsIdentity;
-                    var roles = string.Join(", ", principal.Identities
-                        .SelectMany(i => i.Claims)
-                        .Where(c => c.Type == ClaimTypes.Role)
-                        .Select(c => c.Value));
-                    var groups = string.Join(", ", principal.Groups);
-                    var perms = string.Join(", ", principal.Permissions);
-                    var claimCount = identity?.Claims.Count() ?? 0;
-
-                    _logger.LogInformation(
-                        "[AuthDiag] ClaimsPrincipal: User={User} AuthType={AuthType} IsAuthenticated={IsAuth} " +
-                        "Roles=[{Roles}] Groups=[{Groups}] Permissions=[{Perms}] ClaimCount={ClaimCount}",
-                        principal.UserName,
-                        identity?.AuthenticationType ?? "(none)",
-                        identity?.IsAuthenticated ?? false,
-                        roles, groups, perms, claimCount);
-
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                    {
-                        Console.WriteLine($"[AuthDiag] ClaimsPrincipal: User={principal.UserName} AuthType={identity?.AuthenticationType ?? "(none)"} IsAuthenticated={identity?.IsAuthenticated ?? false} Roles=[{roles}] Groups=[{groups}] Permissions=[{perms}] ClaimCount={claimCount}");
-                    }
-
-                    foreach (var claim in identity?.Claims ?? Enumerable.Empty<Claim>())
-                    {
-                        _logger.LogDebug("[AuthDiag] Claim: Type={Type} Value={Value}", claim.Type, claim.Value);
-                        if (AuthConstants.VerboseConsoleAuthLogging)
-                            Console.WriteLine($"[AuthDiag] Claim: Type={claim.Type} Value={claim.Value}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Failed to log principal details — diagnostic logging error (non-fatal)");
-                }
-            }
+            Dev2Logger.Debug(
+                $"Principal built: User={principal.UserName} Authenticated={principal.Identity?.IsAuthenticated} Groups=[{string.Join(", ", principal.Groups)}] Permissions={principal.Permissions.Count}",
+                executionId);
         }
 
         await next(context);
@@ -103,38 +56,12 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
     {
         if (!request.Headers.TryGetValues(AuthConstants.ClientPrincipalHeader, out var headerValues))
         {
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    _logger.LogInformation("[AuthDiag] {Header} header not present — returning Anonymous principal", AuthConstants.ClientPrincipalHeader);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] {AuthConstants.ClientPrincipalHeader} header not present — returning Anonymous principal");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
             return WorkflowClaimsPrincipal.Anonymous();
         }
 
         var encoded = headerValues.FirstOrDefault();
         if (string.IsNullOrWhiteSpace(encoded))
         {
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    _logger.LogInformation("[AuthDiag] {Header} header present but empty — returning Anonymous principal", AuthConstants.ClientPrincipalHeader);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] {AuthConstants.ClientPrincipalHeader} header present but empty — returning Anonymous principal");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
             return WorkflowClaimsPrincipal.Anonymous();
         }
 
@@ -170,9 +97,10 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex,
-                "Failed to decode {Header} header — using anonymous principal",
-                AuthConstants.ClientPrincipalHeader);
+            Dev2Logger.Warn(
+                $"Failed to decode {AuthConstants.ClientPrincipalHeader} header — using anonymous principal",
+                ex,
+                "ClaimsPrincipalBuilderMiddleware");
             return WorkflowClaimsPrincipal.Anonymous();
         }
     }
