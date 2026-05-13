@@ -925,6 +925,14 @@ function Start-LightweightExecution {
                 break
             }
         }
+        if (-not $env:WorkflowsDirectory) {
+            Write-Warn "WorkflowsDirectory probe found no Examples\Control Flow - Decision.bite under any of: $($candidates -join ', ')"
+        }
+    }
+    # Bump Azure Functions worker log level so /Secure/<slug> 500s leave their
+    # exception text in warewolf-server.log instead of being swallowed.
+    if (-not $env:AzureFunctionsJobHost__Logging__LogLevel__Default) {
+        $env:AzureFunctionsJobHost__Logging__LogLevel__Default = 'Debug'
     }
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
@@ -933,6 +941,23 @@ function Start-LightweightExecution {
     if (-not (Test-Path $logBase)) { New-Item -ItemType Directory -Force -Path $logBase | Out-Null }
     $stdoutLog = Join-Path $logBase 'warewolf-server.log'
     $stderrLog = Join-Path $logBase 'warewolf-server.err.log'
+    # Diagnostic snapshot: record the resolved engine inputs to a separate
+    # file (Start-Process -RedirectStandardOutput truncates $stdoutLog when
+    # the process opens it, so we can't share that file with the header).
+    # Both the task log (via Write-Host) and the artifact get a copy.
+    $diagFile = Join-Path $logBase 'warewolf-engine-init.log'
+    $diagLines = @(
+        "=== TestRun.ps1 engine diagnostic snapshot ==="
+        "Time          : $(Get-Date -Format o)"
+        "RunDir        : $runDir"
+        "Func          : $func"
+        "WAREWOLF_SECURE_CONFIG : $($env:WAREWOLF_SECURE_CONFIG)"
+        "WorkflowsDirectory     : $($env:WorkflowsDirectory)"
+        "AzureFunctionsJobHost__Logging__LogLevel__Default : $($env:AzureFunctionsJobHost__Logging__LogLevel__Default)"
+        "==============================================="
+    )
+    $diagLines | ForEach-Object { Write-Host $_ }
+    $diagLines | Out-File -FilePath $diagFile -Encoding utf8 -Force
     if ($CoverageDir) {
         $null = New-Item -Path $CoverageDir -ItemType Directory -Force
         $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
