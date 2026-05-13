@@ -35,18 +35,29 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 Assert.Inconclusive("This test requires Windows (uses Windows paths and the Warewolf Server process).");
                 return;
             }
+            // The test drives the full Warewolf Windows service on port 3142.
+            // CI jobs that run with -ServerType LightweightExecution start
+            // func.exe on 7071 instead, so the service-restart flow doesn't
+            // apply. Skip on any host where the Warewolf Server process isn't
+            // already running.
+            var serverProcesses = Process.GetProcessesByName("Warewolf Server");
+            if (serverProcesses.Length == 0)
+            {
+                Assert.Inconclusive("Warewolf Server process not running; this test requires a full-server install (port 3142), not LightweightExecution.");
+                return;
+            }
             _directoryWrapper = new DirectoryWrapper();
             if (_directoryWrapper.Exists(ResourcesBackup))
             {
                 _directoryWrapper.Delete(ResourcesBackup, true);
             }
-            if (_directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
+            if (_directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
             {
                 _directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
             }
-            var serverUnderTest = Process.GetProcessesByName("Warewolf Server")[0];
+            var serverUnderTest = serverProcesses[0];
             string exePath;
-            try 
+            try
             {
                 exePath = Path.GetDirectoryName(serverUnderTest.MainModule?.FileName);
             }
@@ -59,11 +70,14 @@ namespace Dev2.Integration.Tests.Server_Refresh
         [TestCleanup]
         public void Cleanup()
         {
+            // Startup() bails before constructing _directoryWrapper when the
+            // full server isn't present; nothing to clean up in that case.
+            if (_directoryWrapper == null) { return; }
             if (_directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
             {
                 _directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
             }
-            if (_directoryWrapper.Exists(ResourcesBackup)) 
+            if (_directoryWrapper.Exists(ResourcesBackup))
             {
                 _directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
             }
@@ -180,7 +194,9 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
             catch (AggregateException e)
             {
-                return new StreamReader((e.InnerExceptions[0] as WebException)?.Response?.GetResponseStream())?.ReadToEnd();
+                var stream = (e.InnerExceptions[0] as WebException)?.Response?.GetResponseStream();
+                if (stream == null) { return null; }
+                using (var reader = new StreamReader(stream)) { return reader.ReadToEnd(); }
             }
 
             return failRequestResult;
