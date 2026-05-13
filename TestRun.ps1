@@ -1755,18 +1755,22 @@ try {
     if ($ServerType) { Stop-Engine }
 }
 
-# Legacy CodeCoverage.exe merge path
+# Convert vstest's per-run .coverage snapshots into Cobertura.xml. CodeCoverage.exe
+# in VS 17.x prints a deprecation banner and refuses to merge, so we use
+# dotnet-coverage which emits cobertura directly (replacing the old
+# CodeCoverage.exe merge + reportgenerator pipeline).
 if ($Coverage.IsPresent) {
-    $MergedSnapshot = "$TestResultsPath\Merged.coveragexml"
-    $CoverageTool = ".\Microsoft.TestPlatform\tools\net462\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
-    $snaps = Get-ChildItem "$TestResultsPath\**\*.coverage" -ErrorAction SilentlyContinue
-    if ($snaps.Count -eq 0) { $snaps = Get-ChildItem "$TestResultsPath\*.coverage" -ErrorAction SilentlyContinue }
-    if ($snaps.Count -gt 0 -and (Test-Path $CoverageTool)) {
-        & $CoverageTool merge @snaps --output-format xml --output $MergedSnapshot
-        if (-not (Test-Path .\reportgenerator.exe)) {
-            dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
+    $snaps = @(Get-ChildItem $TestResultsPath -Recurse -Filter '*.coverage' -File -ErrorAction SilentlyContinue)
+    if ($snaps.Count -gt 0) {
+        if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
+            dotnet tool install --global dotnet-coverage --ignore-failed-sources 2>&1 | Write-Host
         }
-        & .\reportgenerator.exe "-reports:$MergedSnapshot" "-targetdir:$TestResultsPath" "-reporttypes:Cobertura"
+        $cobertura = "$TestResultsPath\Cobertura.xml"
+        $mergeArgs = @('merge') + ($snaps | ForEach-Object { $_.FullName }) + @('--output', $cobertura, '--output-format', 'cobertura', '--nologo')
+        & dotnet-coverage @mergeArgs
+        if ($LASTEXITCODE -ne 0) { Write-Warn "dotnet-coverage merge exited $LASTEXITCODE" }
+    } else {
+        Write-Warn "No .coverage snapshots found under $TestResultsPath; skipping Cobertura conversion"
     }
 }
 
