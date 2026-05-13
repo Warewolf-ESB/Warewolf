@@ -906,6 +906,26 @@ function Start-LightweightExecution {
         New-Item -ItemType Directory -Force -Path $SharedConfigDir | Out-Null
         $env:WAREWOLF_SECURE_CONFIG = Join-Path $SharedConfigDir 'secure.config'
     }
+    # Workflow resolution: WorkflowHttpFunction reads from
+    # <AppContext.BaseDirectory>\Resources\ by default, but the published
+    # TestBinaries layout only has Examples\ workflows nested under siblings
+    # like "Resources - ServerTests\Resources\Examples\". Probe for the one
+    # that holds 'Examples\Control Flow - Decision.bite' (a known
+    # security-spec target) and point the engine at it via $env:WorkflowsDirectory.
+    if (-not $env:WorkflowsDirectory) {
+        $candidates = @(
+            (Join-Path $runDir 'Resources - ServerTests\Resources'),
+            (Join-Path $runDir 'Resources - Release\Resources'),
+            (Join-Path $runDir 'Resources')
+        )
+        foreach ($c in $candidates) {
+            if (Test-Path (Join-Path $c 'Examples\Control Flow - Decision.bite')) {
+                $env:WorkflowsDirectory = $c
+                Write-Host "WorkflowsDirectory resolved to: $c"
+                break
+            }
+        }
+    }
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
     # $TestResultsPath\warewolf-server.log when the test step finishes.
