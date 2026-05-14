@@ -4,10 +4,12 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth;
+using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Security;
 
@@ -28,29 +30,45 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         string workflowsDirectory)
     {
-        const string executionId = "ServiceCollectionExtensions-CoreServices";
+        services.AddLogging();
+        services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
+        services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
+        services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
 
-        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {workflowsDirectory}", executionId);
+        // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
+        // EntraAuthOptions is read from environment ONCE and shared as an
+        // immutable DI singleton.  Required by BearerTokenPrincipalParser and
+        // can be injected into health checks, audit, and tests.
+        services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
-        try
-        {
-            services.AddLogging();
-            services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
-            services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+        // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
+        // AuditLogger is registered unconditionally so authorization middleware
+        // can emit structured 401/403 audit events even when encryption is off.
+        services.AddSingleton<AuditLogger>();
 
-            // Auth policy loader — builds WorkflowAuthPolicy from secure.config
-            // WindowsGroupPermissions entries at startup.
-            services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+        // Auth policy loader — builds WorkflowAuthPolicy from secure.config
+        // WindowsGroupPermissions entries at startup.
+        services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
 
-            Dev2Logger.Info("ServiceCollectionExtensions AddCoreServices completed successfully", executionId);
-            return services;
-        }
-        catch (Exception ex)
-        {
-            Dev2Logger.Error("ServiceCollectionExtensions AddCoreServices failed", ex, executionId);
-            throw;
-        }
+        // Policy matcher — extracted matching strategy; swap implementation here to change behaviour.
+        services.AddSingleton<IWorkflowPolicyMatcher, WorkflowPolicyMatcher>();
+
+        // Route authorization registry — built once from [RequireWorkflowPermission] attributes.
+        services.AddSingleton<IRouteAuthorizationRegistry>(
+            _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
+
+        // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
+        services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
+        services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
+
+        // (POL-08) Hot-reload secure.config + policy loader at runtime.
+        services.AddHostedService<SecureConfigWatcher>();
+
+        // (OBS-06) Startup health check — emits a single warning at startup
+        // when bearer-token validation is not configured.  Zero per-request cost.
+        services.AddHostedService<EntraAuthHealthCheck>();
+
+        return services;
     }
 
     /// <summary>
@@ -62,43 +80,24 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         HostEnvironmentConfig   config)
     {
-        const string executionId = "ServiceCollectionExtensions-Encryption";
+        var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
+        services.AddSingleton(sp => new KeyVaultSecretManager(
+            config.VaultUri,
+            config.SecretName,
+            useDebugBypass
+                ? null
+                : KeyVaultCredentialFactory.Create(config.CredentialOptions),
+            sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
+            useDebugBypass ? config.DebugKeyVaultSecret : null));
 
-        Dev2Logger.Info($"ServiceCollectionExtensions AddKeyVaultEncryption starting. VaultName: {config.VaultName}, SecretName: {config.SecretName}, IsDevelopment: {config.IsDevelopment}", executionId);
+        // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
+        // so GetKeyBytes() is always safe at construction time.
+        services.AddSingleton(sp =>
+            new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
 
-        try
-        {
-            var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
+        // AuditLogger is registered globally in AddCoreServices (DI-07);
+        // no per-encryption registration needed here.
 
-            if (useDebugBypass)
-            {
-                Dev2Logger.Warn("ServiceCollectionExtensions using DEBUG KeyVault bypass (DebugKeyVaultSecret is set)", executionId);
-            }
-
-            services.AddSingleton(sp => new KeyVaultSecretManager(
-                config.VaultUri,
-                config.SecretName,
-                useDebugBypass
-                    ? null
-                    : KeyVaultCredentialFactory.Create(config.CredentialOptions),
-                sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
-                useDebugBypass ? config.DebugKeyVaultSecret : null));
-
-            // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
-            // so GetKeyBytes() is always safe at construction time.
-            services.AddSingleton(sp =>
-                new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
-
-            services.AddSingleton(sp =>
-                new AuditLogger(sp.GetRequiredService<ILogger<AuditLogger>>()));
-
-            Dev2Logger.Info("ServiceCollectionExtensions AddKeyVaultEncryption completed successfully", executionId);
-            return services;
-        }
-        catch (Exception ex)
-        {
-            Dev2Logger.Error("ServiceCollectionExtensions AddKeyVaultEncryption failed", ex, executionId);
-            throw;
-        }
+        return services;
     }
 }

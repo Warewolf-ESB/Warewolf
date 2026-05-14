@@ -29,11 +29,15 @@ namespace Warewolf.Execution.Lightweight.Security
     /// </summary>
     internal static class SecureConfigLoader
     {
-        static readonly Lazy<SecureConfigData> _config =
+        static readonly Lazy<SecureConfigData> _initial =
             new(Load, LazyThreadSafetyMode.ExecutionAndPublication);
 
+        // Optional override that supersedes the lazy-initialised value once Reload() runs.
+        // volatile guarantees concurrent readers always see the latest reference.
+        static volatile SecureConfigData? _override;
+
         /// <summary>Returns the security config loaded at first access (thread-safe).</summary>
-        internal static SecureConfigData Config => _config.Value;
+        internal static SecureConfigData Config => _override ?? _initial.Value;
 
         // ── Internal for unit tests ───────────────────────────────────────────
 
@@ -42,6 +46,16 @@ namespace Warewolf.Execution.Lightweight.Security
         /// specific config without touching the real <c>AppContext.BaseDirectory</c>.
         /// </summary>
         internal static SecureConfigData LoadFrom(string configPath) => ReadConfig(configPath);
+
+        /// <summary>
+        /// (POL-08) Re-reads the configured secure.config file and atomically
+        /// replaces the cached instance so subsequent accesses to
+        /// <see cref="Config"/> reflect the new state.
+        /// </summary>
+        internal static void Reload()
+        {
+            _override = Load();
+        }
 
         // ── Implementation ────────────────────────────────────────────────────
 

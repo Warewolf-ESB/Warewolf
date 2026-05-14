@@ -57,8 +57,12 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
-        // Only enforce on /secure/* routes
-        if (!path.StartsWith(AuthConstants.SecureRoutePrefix, StringComparison.OrdinalIgnoreCase))
+        // Only enforce on protected routes (/secure/* and /services/*).
+        // (AUTH-10) /services/* receives the same 401-or-redirect treatment as
+        // /secure/* so API callers and browsers get a consistent experience.
+        var isSecure   = path.StartsWith(AuthConstants.SecureRoutePrefix,   StringComparison.OrdinalIgnoreCase);
+        var isServices = path.StartsWith(AuthConstants.ServicesRoutePrefix, StringComparison.OrdinalIgnoreCase);
+        if (!isSecure && !isServices)
         {
             Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Non-secure route: {path}, passing through", executionId);
             await next(context);
@@ -117,7 +121,12 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
         await next(context);
     }
 
-    static bool LooksLikeBrowserNavigation(HttpRequestData req)
+    /// <summary>
+    /// Heuristic: is this request a top-level browser navigation that should be
+    /// redirected to the Easy Auth login page?  Marked <c>internal</c> for unit
+    /// testing — pure function of request headers, no side effects.
+    /// </summary>
+    internal static bool LooksLikeBrowserNavigation(HttpRequestData req)
     {
         var accept = req.Headers.TryGetValues("Accept", out var a) ? a.FirstOrDefault() : null;
         var fetchMode = req.Headers.TryGetValues("Sec-Fetch-Mode", out var f) ? f.FirstOrDefault() : null;

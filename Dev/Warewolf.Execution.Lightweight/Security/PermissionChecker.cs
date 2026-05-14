@@ -69,6 +69,8 @@ namespace Warewolf.Execution.Lightweight.Security
         /// View access to <paramref name="workflowName"/>.
         ///
         /// Administrators (groups with a global View permission) always see everything.
+        /// When the Public group has global View, any authenticated user is considered
+        /// to have view access (open-access mode with a valid token).
         /// </summary>
         internal static bool HasUserViewPermission(
             string                  workflowName,
@@ -76,6 +78,10 @@ namespace Warewolf.Execution.Lightweight.Security
             IReadOnlyList<string>   userGroups)
         {
             if (!config.IsLoaded)
+                return true;
+
+            // If Public has global View, any authenticated user may view any workflow.
+            if (HasPublicViewPermission(workflowName, config))
                 return true;
 
             foreach (var perm in config.Permissions)
