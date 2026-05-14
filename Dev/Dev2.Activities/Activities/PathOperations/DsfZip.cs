@@ -71,7 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get => _archivePassword;
             set
 			{
-#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -84,7 +83,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
                 else
-#endif
                 {
                     _archivePassword = value;
                 }

@@ -15,10 +15,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Xml.Linq;
+using Dev2.UnitTestUtils;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
-    public class ConnectionTests
+    public class ConnectionTests : DpapiTestBase
     {
 
         [TestMethod]

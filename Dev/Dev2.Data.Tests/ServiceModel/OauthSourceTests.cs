@@ -24,8 +24,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestMethod]
         public void OauthSource_ToXml_ShouldContructorAndDefaultValuiesSet()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             OauthSource oauthSource = new DropBoxSource();
             Assert.IsNotNull(oauthSource);
             var xElement = oauthSource.ToXml();
@@ -34,8 +32,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestMethod]
         public void GivenXelement_DropBox_ShouldHaveContructorAndDefaultValuiesSet()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string conStr = @"<Source ID=""2aa3fdba-e0c3-47dd-8dd5-e6f24aaf5c7a"" Name=""test server"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://178.63.172.163:3142/dsf;WebServerPort=3142;AuthenticationType=Public;UserName=;Password="" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
   <TypeOf>Dev2Server</TypeOf>
   <DisplayName>test server</DisplayName>

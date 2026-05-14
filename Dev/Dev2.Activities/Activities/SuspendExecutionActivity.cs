@@ -152,13 +152,11 @@ namespace Dev2.Activities
                 var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name;
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 var resourceId = _dataObject.ResourceID;
-#if WINDOWS
                 if (EncryptData)
                 {
                     currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
                     currentuserprincipal = DpapiWrapper.Encrypt(currentuserprincipal);
                 }
-#endif
 
 				var firstActivity = NextNodes.First();
                 var activityId = Guid.Parse(firstActivity?.UniqueID ??

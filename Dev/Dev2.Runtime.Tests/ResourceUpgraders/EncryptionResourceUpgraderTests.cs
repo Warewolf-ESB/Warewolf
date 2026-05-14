@@ -14,11 +14,12 @@ using Dev2.Runtime.ResourceUpgrades;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {
     [TestClass]
-    public class EncryptionResourceUpgraderTests
+    public class EncryptionResourceUpgraderTests : DpapiTestBase
     {
         readonly string _connectionString;
         readonly string _beforeContainingSource;
@@ -54,8 +55,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
         void _matchAndReplaceWhereAppropriate(string matchingString, string nonMatchingString, string pieceToReplace)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
 
@@ -80,8 +79,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         
         public void EncryptionResourceUpgrader_Upgrade_CanDecrypt()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
             var cs = new Regex(@"ConnectionString=""([^""]+)""");
@@ -106,8 +103,6 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         
         public void EncryptionResourceUpgrader_TwiceUpgrade_DoesNotEncrypt()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
             var cs = new Regex(@"ConnectionString=""([^""]+)""");

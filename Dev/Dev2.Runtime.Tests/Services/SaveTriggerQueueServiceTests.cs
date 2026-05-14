@@ -24,11 +24,12 @@ using Moq;
 using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Triggers;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class SaveTriggerQueueServiceTests
+    public class SaveTriggerQueueServiceTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]

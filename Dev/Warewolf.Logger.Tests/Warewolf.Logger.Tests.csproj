@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj" />
     <ProjectReference Include="..\Warewolf.Logger\Warewolf.Logger.csproj" />
+    <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj" />
   </ItemGroup>
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>

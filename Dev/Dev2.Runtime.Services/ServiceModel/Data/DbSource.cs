@@ -289,11 +289,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
             result.Add(new XAttribute("Type", GetType().Name));
-#if WINDOWS
             result.Add(new XAttribute("ConnectionString", DpapiWrapper.Encrypt(ConnectionString) ?? string.Empty));
-#else
-            result.Add(new XAttribute("ConnectionString", ConnectionString));
-#endif
 
 			result.Add(new XElement("AuthorRoles", string.Empty));
             result.Add(new XElement("Comment", string.Empty));

@@ -157,13 +157,8 @@ namespace Dev2.Scheduler
             }
         }
 
-#if WINDOWS
         IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
                 $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\" \"Data:{DpapiWrapper.Encrypt(resource.UserName + ":" + resource.Password)}\"");
-#else
-		IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
-				$"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\" \"Data:{resource.UserName + ":" + resource.Password}\"");
-#endif
 
         IScheduledResource TryCreateScheduledResource(IDev2Task arg)
         {

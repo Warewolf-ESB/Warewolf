@@ -32,8 +32,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("AbstractMultipleFiles_Execute")]
         public void AbstractMultipleFiles_Execute_WhenInputPathNotIsRooted_ExceptionCaughtErrorAdded()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("Password encryption via DPAPI is Windows-only; DecryptedPassword throws on Linux.");
             //---------------Setup----------------------------------------------
             var fileNames = new List<string>();
             var guid = Guid.NewGuid();
@@ -73,8 +71,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("AbstractMultipleFiles_Execute")]
         public void AbstractMultipleFiles_Execute_WhenOutputPathNotIsRooted_ExceptionCaughtErrorAdded()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("Password encryption via DPAPI is Windows-only; DecryptedPassword throws on Linux.");
             //---------------Setup----------------------------------------------
             var fileNames = new List<string>();
             var guid = Guid.NewGuid();
@@ -108,7 +104,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("", outputResultList[0].Value);
         }
 
-#if WINDOWS
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(DsfAbstractMultipleFilesActivity))]
@@ -150,6 +145,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(password, decryptedPassword);
             Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
-#endif
     }
 }

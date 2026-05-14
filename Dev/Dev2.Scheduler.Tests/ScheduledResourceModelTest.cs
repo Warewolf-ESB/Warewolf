@@ -16,6 +16,7 @@ using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 using System;
@@ -27,7 +28,7 @@ using System.Text;
 namespace Dev2.Scheduler.Test
 {
     [TestClass]
-    public class ScheduledResourceModelTest
+    public class ScheduledResourceModelTest : DpapiTestBase
     {
         Mock<IDev2TaskService> _mockService;
         string _folderId;

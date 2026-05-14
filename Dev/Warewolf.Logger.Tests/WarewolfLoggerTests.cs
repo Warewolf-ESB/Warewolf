@@ -14,6 +14,7 @@ using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 using Moq;
 using Warewolf.Common;
 using Warewolf.Configuration;
@@ -25,7 +26,7 @@ using Warewolf.UnitTestAttributes;
 namespace Warewolf.Logger.Tests
 {
     [TestClass]
-    public class WarewolfLoggerTests
+    public class WarewolfLoggerTests : DpapiTestBase
     {
         // [TestMethod]
         // [Owner("Candice Daniel")]
@@ -77,11 +78,7 @@ namespace Warewolf.Logger.Tests
 
             var serializer = new Dev2JsonSerializer();
             var payload = serializer.Serialize(elasticsearchSource );
-#if WINDOWS
             var encryptedPayload = DpapiWrapper.Encrypt(payload);
-#else
-			var encryptedPayload = payload;
-#endif
             var data = new AuditingSettingsData
             {
                 EncryptDataSource = true,

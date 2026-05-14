@@ -50,8 +50,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(RedisSource))]
         public void RedisSource_Validate_ToXml_AuthenticationType_Anonymous()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Redis Source"" ResourceType=""RedisSource"" IsValid=""false"" 
                                                ConnectionString=""HostName=localhost;Port=6379;UserName=warewolf;Password=;AuthenticationType=Anonymous"" Type=""RedisSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Redis Source</DisplayName>
@@ -78,8 +76,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestCategory(nameof(RedisSource))]
         public void RedisSource_Validate_ToXml_AuthenticationType_Password()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("DPAPI encryption requires Windows");
             const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Redis Source"" ResourceType=""RedisSource"" IsValid=""false"" 
                                                ConnectionString=""HostName=localhost;Port=6379;UserName=warewolf;Password=test123;AuthenticationType=Password"" Type=""RedisSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
                                           <DisplayName>Example Redis Source</DisplayName>

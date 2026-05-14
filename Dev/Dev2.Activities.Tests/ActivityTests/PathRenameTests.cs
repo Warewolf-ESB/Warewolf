@@ -197,8 +197,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfPathRename_Execute")]
         public void Rename_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Assert.Inconclusive("Password encryption via DPAPI is Windows-only; DecryptedPassword throws on Linux.");
             var fileNames = new List<string>
                 {
                     Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"),

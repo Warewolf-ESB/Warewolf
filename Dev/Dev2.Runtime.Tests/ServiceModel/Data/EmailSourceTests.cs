@@ -14,13 +14,14 @@ using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    public class EmailSourceTests
+    public class EmailSourceTests : DpapiTestBase
     {
         #region CTOR
 
