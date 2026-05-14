@@ -122,6 +122,16 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 			return;
 		}
 
+		// apis.json discovery routes — let the function's own per-workflow
+		// permission filter (GetSecureFilter) decide what to list. The
+		// middleware's server-level policy check would incorrectly block callers
+		// who have Deploy/Execute rights but no View flag on the "apis" workflow.
+		if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+		{
+			await next(context);
+			return;
+		}
+
 		// ── Development-only bypass ───────────────────────────────────────────
 		// NEVER active in Production — environment guard is mandatory.
 		if (_hostEnvironment.IsDevelopment() &&
@@ -269,11 +279,10 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 	internal static string? ExtractWorkflowName(string path, bool isSecure)
 	{
 		var prefix = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
-		var segment = path
-			.Substring(prefix.Length)
-			.Split('/')[0]
-			.Split('?')[0];
-
+		var remainder = path.Substring(prefix.Length).Split('?')[0];
+		var segments  = remainder.Split('/', StringSplitOptions.RemoveEmptyEntries);
+		if (segments.Length == 0) return null;
+		var segment = Uri.UnescapeDataString(segments[^1]);
 		var name = Path.GetFileNameWithoutExtension(segment).ToLowerInvariant();
 		return string.IsNullOrEmpty(name) ? null : name;
 	}
