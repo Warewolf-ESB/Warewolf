@@ -31,16 +31,10 @@ internal static class ServiceCollectionExtensions
         this IServiceCollection services,
         string workflowsDirectory)
     {
-        const string executionId = "ServiceCollectionExtensions-CoreServices";
-
-        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {workflowsDirectory}", executionId);
-
-        try
-        {
-            services.AddLogging();
-            services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
-            services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+        services.AddLogging();
+        services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
+        services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
+        services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
 
         // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
         // EntraAuthOptions is read from environment ONCE and shared as an

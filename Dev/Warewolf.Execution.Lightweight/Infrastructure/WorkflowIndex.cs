@@ -132,16 +132,6 @@ namespace Warewolf.Execution.Lightweight
             return null;
         }
 
-                Dev2Logger.Warn($"WorkflowIndex Resolve failed. No match found for key: '{key}' in directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error($"WorkflowIndex Resolve error for name: '{nameWithoutExtension}' in directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
-                return null;
-            }
-        }
-
         // ── Internal helpers ──────────────────────────────────────────────────
 
         FrozenDictionary<string, string> GetIndex(string workflowsDirectory)

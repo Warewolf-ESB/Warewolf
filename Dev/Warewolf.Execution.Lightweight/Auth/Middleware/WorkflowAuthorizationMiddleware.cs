@@ -145,8 +145,8 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             request.Headers.TryGetValues(BypassHeader, out var bypassValues) &&
             bypassValues.Any(v => string.Equals(v, BypassHeaderValue, StringComparison.Ordinal)))
         {
-            Dev2Logger.Warn(
-                $"⚠ DEV BYPASS: {BypassHeader} header detected on {path} — skipping all policy checks. " +
+            _logger.LogWarning(
+                "⚠ DEV BYPASS: {Header} header detected on {Path} — skipping all policy checks. " +
                 "This must NEVER happen in Production.",
                 BypassHeader, path);
             context.Items[AuthConstants.DevBypassContextKey] = true;

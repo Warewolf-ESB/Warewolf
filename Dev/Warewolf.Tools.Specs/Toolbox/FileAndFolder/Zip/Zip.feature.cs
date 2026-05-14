@@ -2623,14 +2623,14 @@ this.ZipFileAtLocationNull("3", "FTP to Local", "[[sourcePath]]", "ftp://localho
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:compression", "BestCompression")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public void ZipFileAtLocationNull_4()
         {
 #line 246
-this.ZipFileAtLocationNull("4", "FTPS to Local", "[[sourcePath]]", "ftp://localhost:1010/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New3.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Error", "An", "", "", ((string[])(null)));
+this.ZipFileAtLocationNull("4", "FTPS to Local", "[[sourcePath]]", "ftp://localhost:1010/FORZIPTESTING/filetozip0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "c:\\My New3.zip", "\"\"", "\"\"", "True", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
