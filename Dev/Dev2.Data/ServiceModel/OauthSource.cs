@@ -37,8 +37,12 @@ namespace Dev2.Data.ServiceModel
             var connectionString = GetConnectionString();
 
             result.Add(
+#if WINDOWS
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("Type", GetType().Name),
+#else
+				new XAttribute("ConnectionString", connectionString),
+#endif
+				new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 
@@ -92,7 +96,7 @@ namespace Dev2.Data.ServiceModel
             AccessToken = properties["AccessToken"];
             AppKey = properties["AppKey"];
             RefreshToken = properties["RefreshToken"];
-            if (DateTime.TryParse(properties["ExpiresAt"], out var expiresAt))
+            if (DateTime.TryParse(properties["ExpiresAt"], null, System.Globalization.DateTimeStyles.RoundtripKind, out var expiresAt))
             {
                 AccessTokenExpiresAt = expiresAt;
             }

@@ -186,7 +186,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
+#if WINDOWS
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+#else
+				new XAttribute("ConnectionString", connectionString),
+#endif
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
@@ -194,7 +198,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        #endregion ToXml
+#endregion ToXml
 
         public bool Equals(IExchangeSource other) => true;
     }

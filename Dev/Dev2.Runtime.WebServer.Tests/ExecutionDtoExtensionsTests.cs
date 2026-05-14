@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Text;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -65,7 +66,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             //-------------------------------Assert-----------------------------------
             var expectedPayload = "{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"resourceName\",\r\n    \"description\": \"resourceName\",\r\n    \"version\": \"1.0\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://servername\"\r\n    }\r\n  ],\r\n  \"paths\": {\r\n    \"/public/resourceName\": {\r\n      \"get\": {\r\n        \"tags\": [\r\n          \"\"\r\n        ],\r\n        \"description\": \"\",\r\n        \"parameters\": [],\r\n        \"responses\": {\r\n          \"200\": {\r\n            \"description\": \"Success\",\r\n            \"content\": {\r\n              \"application/json\": {\r\n                \"schema\": {\r\n                  \"type\": \"object\",\r\n                  \"properties\": {}\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}";
-            Assert.AreEqual(expected: expectedPayload, actual: executionDto.PayLoad);
+            Assert.AreEqual(expected: expectedPayload.Replace("\r\n", Environment.NewLine), actual: executionDto.PayLoad.Replace("\r\n", Environment.NewLine));
         }
 
         [TestMethod]

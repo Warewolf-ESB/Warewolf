@@ -14,6 +14,7 @@ using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -1205,7 +1206,7 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual("", result[0].Option.RecordsetIndex);
 
             Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
-            Assert.AreEqual("\r\n", result[1].Message);
+            Assert.AreEqual(Environment.NewLine, result[1].Message);
             Assert.IsNotNull(result[1].Option);
             Assert.AreEqual(" / Select this record set field", result[1].Option.Description);
             Assert.AreEqual("[[field2().childField2]]", result[1].Option.DisplayValue);

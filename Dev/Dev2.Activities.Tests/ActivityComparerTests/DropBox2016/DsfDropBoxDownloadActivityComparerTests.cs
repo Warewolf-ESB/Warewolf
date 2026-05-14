@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -791,7 +792,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                     var dictionary = new Dictionary<string, string>
                     {
                         { "ToPath", "TestToPath" },
-                        { "FromPath", @"C:\Users\temp" }
+                        { "FromPath", Path.Combine(Path.GetTempPath(), "testfile.txt") }
                     };
                     //-----------------------Act--------------------------------
                     var list = dsfDropBoxDownloadActivity.TestPerformExecution(dictionary);

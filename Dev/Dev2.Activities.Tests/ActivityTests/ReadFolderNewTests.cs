@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             dirHelper = new DirectoryWrapper();
             var id = Guid.NewGuid().ToString();
-            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
+            _inputPath = Path.Combine(EnvironmentVariables.ResourcePath, id.Substring(0, 8));
             dirHelper.CreateIfNotExists(_inputPath);
             var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
             //------------Execute Test---------------------------
@@ -57,10 +58,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             dirHelper = new DirectoryWrapper();
             var id = Guid.NewGuid().ToString();
-            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
+            _inputPath = Path.Combine(EnvironmentVariables.ResourcePath, id.Substring(0, 8));
             dirHelper.CreateIfNotExists(_inputPath);
-            dirHelper.CreateIfNotExists(_inputPath + "\\1");
-            dirHelper.CreateIfNotExists(_inputPath + "\\2");
+            dirHelper.CreateIfNotExists(Path.Combine(_inputPath, "1"));
+            dirHelper.CreateIfNotExists(Path.Combine(_inputPath, "2"));
             var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet(*).File]]" };
             //------------Execute Test---------------------------
             var results = act.Execute(DataObject, 0);
@@ -76,10 +77,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             dirHelper = new DirectoryWrapper();
             var id = Guid.NewGuid().ToString();
-            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
+            _inputPath = Path.Combine(EnvironmentVariables.ResourcePath, id.Substring(0, 8));
             dirHelper.CreateIfNotExists(_inputPath);
-            dirHelper.CreateIfNotExists(_inputPath + "\\1");
-            dirHelper.CreateIfNotExists(_inputPath + "\\2");
+            dirHelper.CreateIfNotExists(Path.Combine(_inputPath, "1"));
+            dirHelper.CreateIfNotExists(Path.Combine(_inputPath, "2"));
             var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
             //------------Execute Test---------------------------
             var results = act.Execute(DataObject, 0);

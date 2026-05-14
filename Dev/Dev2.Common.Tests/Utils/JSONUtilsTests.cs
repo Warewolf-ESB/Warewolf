@@ -10,6 +10,7 @@
 
 using Dev2.Common.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dev2.Common.Tests.Utils
 {
@@ -49,7 +50,7 @@ namespace Dev2.Common.Tests.Utils
         [TestCategory(nameof(JsonUtils))]
         public void JSONUtils_Format_GivenMultibyteCharacter()
         {
-            Assert.AreEqual("{\r\n\t\"field\":\"euro€value\"\r\n}", JsonUtils.Format(@"{""field"":""euro€value""}"));
+            Assert.AreEqual("{" + Environment.NewLine + "\t\"field\":\"euro\u20acvalue\"" + Environment.NewLine + "}", JsonUtils.Format(@"{""field"":""euro€value""}"));
         }
 
         [TestMethod]
@@ -59,7 +60,7 @@ namespace Dev2.Common.Tests.Utils
         {
             var fetch = JsonResource.Fetch("Test");
             var formatted = JsonUtils.Format(fetch);
-            var result = "[\r\n\t{\r\n\t\t\"ID\": \"00000000-0000-0000-0000-000000000000\",\r\n\t\t\"ParentID\": null,\r\n\t\t\"SourceResourceID\": \"037b7b8c-be29-4f2a-b648-6569051ca127\",\r\n\t\t\r\n\t}\r\n]";
+            var result = "[" + Environment.NewLine + "\t{" + Environment.NewLine + "\t\t\"ID\": \"00000000-0000-0000-0000-000000000000\"," + Environment.NewLine + "\t\t\"ParentID\": null," + Environment.NewLine + "\t\t\"SourceResourceID\": \"037b7b8c-be29-4f2a-b648-6569051ca127\"," + Environment.NewLine + "\t\t" + Environment.NewLine + "\t}" + Environment.NewLine + "]";
             Assert.AreEqual(result, formatted);
         }
     }

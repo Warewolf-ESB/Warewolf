@@ -318,9 +318,9 @@ namespace Dev2.Services.Security
                 }
                 if (p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
-                    return principal.Identity?.IsAuthenticated == true;
+                    isInRole = principal.Identity?.IsAuthenticated == true;
                 }
-                if (principal is System.Security.Claims.ClaimsPrincipal claimsPrincipalLinux)
+                if (!isInRole && principal is System.Security.Claims.ClaimsPrincipal claimsPrincipalLinux)
                 {
                     try
                     {
@@ -329,6 +329,17 @@ namespace Dev2.Services.Security
                     catch (Exception e)
                     {
                         Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", GlobalConstants.WarewolfWarn);
+                    }
+                }
+                if (!isInRole)
+                {
+                    try
+                    {
+                        isInRole = principal.IsInRole(p.WindowsGroup);
+                    }
+                    catch
+                    {
+                        // Ignore
                     }
                 }
                 return isInRole || p.IsBuiltInGuestsForExecution;

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
@@ -41,6 +42,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoGetAction))]
         public void DoGetAction_ExecuteOperation__ImpersonatedUser_IsNotNull_IsTrue_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             //------------------------Arrange--------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();

@@ -12,6 +12,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
@@ -362,6 +363,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_FromAccount_EmailSourceIsCorrect()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Password encryption via DPAPI (#if WINDOWS) causes DecryptedPassword to fail on Linux.");
             Verify_Execute_FromAccount_EmailSourceIsCorrect(true);
             Verify_Execute_FromAccount_EmailSourceIsCorrect(false);
         }
@@ -446,6 +449,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("SendEmail_UpdateForEachInputs")]
         public void SendEmail_UpdateForEachInputs_ScalarValuesShouldSetValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Password encryption via DPAPI (#if WINDOWS) is not available on Linux; Password.IsBase64() will be false.");
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
             CreateMockEsbChannel();

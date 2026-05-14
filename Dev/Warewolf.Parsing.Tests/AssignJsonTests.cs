@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -41,7 +41,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
             if (data.JsonObjects["Person"] is JObject obj)
             {
-                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\"\r\n}");
+                Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Name\": \"John\"" + Environment.NewLine + "}");
             }
             else
             {
@@ -314,7 +314,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
             if (data.JsonObjects["Person"] is JObject obj)
             {
-                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    }\r\n  ]\r\n}");
+                Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Name\": \"John\"," + Environment.NewLine + "  \"Children\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Mary\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
             }
             else
             {
@@ -340,7 +340,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
             if (data.JsonObjects["Person"] is JObject obj)
             {
-                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    },\r\n    {\r\n      \"Name\": \"Joe\"\r\n    }\r\n  ]\r\n}");
+                Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Name\": \"John\"," + Environment.NewLine + "  \"Children\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Mary\"" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Joe\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
             }
             else
             {
@@ -365,7 +365,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
             if (data.JsonObjects["Person"] is JObject obj)
             {
-                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Mary\"\r\n    },\r\n    {\r\n      \"Name\": \"Moe\"\r\n    }\r\n  ]\r\n}");
+                Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Name\": \"John\"," + Environment.NewLine + "  \"Children\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Mary\"" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Moe\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
             }
             else
             {
@@ -391,7 +391,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(data.JsonObjects.ContainsKey("Person"));
             if (data.JsonObjects["Person"] is JObject obj)
             {
-                Assert.AreEqual(obj.ToString(), "{\r\n  \"Name\": \"John\",\r\n  \"Children\": [\r\n    {\r\n      \"Name\": \"Moe\"\r\n    },\r\n    {\r\n      \"Name\": \"Moe\"\r\n    }\r\n  ]\r\n}");
+                Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Name\": \"John\"," + Environment.NewLine + "  \"Children\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Moe\"" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Moe\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
             }
             else
             {
@@ -417,9 +417,9 @@ namespace WarewolfParsingTest
             var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"{
+            Assert.AreEqual((@"{
   ""Name"": ""a""
-}", result);
+}").Replace("\r\n", "\n"), result.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
@@ -436,9 +436,9 @@ namespace WarewolfParsingTest
             obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("x"));
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"{
+            Assert.AreEqual((@"{
   ""Name"": ""x""
-}", result);
+}").Replace("\r\n", "\n"), result.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
@@ -454,9 +454,9 @@ namespace WarewolfParsingTest
             var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.Nothing);
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"{
+            Assert.AreEqual((@"{
   ""Name"": null
-}", result);
+}").Replace("\r\n", "\n"), result.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
@@ -471,7 +471,7 @@ namespace WarewolfParsingTest
             var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"Name\": [\r\n    \"a\",\r\n    \"b\"\r\n  ]\r\n}", result);
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": [" + Environment.NewLine + "    \"a\"," + Environment.NewLine + "    \"b\"" + Environment.NewLine + "  ]" + Environment.NewLine + "}", result);
         }
 
         [TestMethod]
@@ -488,7 +488,7 @@ namespace WarewolfParsingTest
             obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("x"), DataStorage.WarewolfAtom.NewDataString("y") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"Name\": [\r\n    \"x\",\r\n    \"y\"\r\n  ]\r\n}", result);
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": [" + Environment.NewLine + "    \"x\"," + Environment.NewLine + "    \"y\"" + Environment.NewLine + "  ]" + Environment.NewLine + "}", result);
         }
 
         [TestMethod]
@@ -503,7 +503,7 @@ namespace WarewolfParsingTest
             var obj = WarewolfDataEvaluationCommon.addArrayPropertyToJson(j, "Name", new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.NewDataString("b") });
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"Name\": [\r\n    null,\r\n    \"b\"\r\n  ]\r\n}", result);
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Name\": [" + Environment.NewLine + "    null," + Environment.NewLine + "    \"b\"" + Environment.NewLine + "  ]" + Environment.NewLine + "}", result);
         }
 
         [TestMethod]
@@ -531,7 +531,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Age")))));
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual("{\r\n  \"Age\": 5\r\n}", env2.JsonObjects["Bob"].ToString());
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Age\": 5" + Environment.NewLine + "}", env2.JsonObjects["Bob"].ToString());
         }
 
         [TestMethod]
@@ -571,7 +571,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual("[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]", env2.JsonObjects["Person"].ToString());
+            Assert.AreEqual("[" + Environment.NewLine + "  {" + Environment.NewLine + "    \"Name\": \"a\"" + Environment.NewLine + "  }" + Environment.NewLine + "]", env2.JsonObjects["Person"].ToString());
             var nameValue = PublicFunctions.EvalEnvExpression("[[@Person().Name]]", 0, false, env2);
             Assert.IsNotNull(nameValue);
             var warewolfAtomResult = nameValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
@@ -623,7 +623,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person().Name]]", "a"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[" + Environment.NewLine + "  {" + Environment.NewLine + "    \"Name\": \"a\"" + Environment.NewLine + "  }" + Environment.NewLine + "]");
         }
 
         [TestMethod]
@@ -636,7 +636,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env, ShouldTypeCast.Yes);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[" + Environment.NewLine + "  {" + Environment.NewLine + "    \"Name\": \"a\"" + Environment.NewLine + "  }" + Environment.NewLine + "]");
         }
 
         [TestMethod]
@@ -650,7 +650,7 @@ namespace WarewolfParsingTest
             env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(2).Name]]", "a"), 0, env2, ShouldTypeCast.Yes);
             env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(*).Name]]", "x"), 0, env2, ShouldTypeCast.Yes);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"x\"\r\n  },\r\n  {\r\n    \"Name\": \"x\"\r\n  }\r\n]");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[" + Environment.NewLine + "  {" + Environment.NewLine + "    \"Name\": \"x\"" + Environment.NewLine + "  }," + Environment.NewLine + "  {" + Environment.NewLine + "    \"Name\": \"x\"" + Environment.NewLine + "  }" + Environment.NewLine + "]");
         }
 
         [TestMethod]
@@ -692,7 +692,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": {\r\n    \"Name\": 2\r\n  }\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{" + Environment.NewLine + "  \"Child\": {" + Environment.NewLine + "    \"Name\": 2" + Environment.NewLine + "  }" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -813,7 +813,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 2" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -830,7 +830,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 2" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -850,7 +850,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    },\r\n    {\r\n      \"Name\": 4\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 2" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 4" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -871,7 +871,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual("{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2,\r\n      \"Age\": 4\r\n    }\r\n  ]\r\n}", env2.JsonObjects["Person"].ToString());
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 2," + Environment.NewLine + "      \"Age\": 4" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}", env2.JsonObjects["Person"].ToString());
         }
 
         [TestMethod]
@@ -894,7 +894,7 @@ namespace WarewolfParsingTest
             env2 = AssignEvaluation.assignGivenAValueForJson(env2, secondResult, val.Item);
             env2 = AssignEvaluation.assignGivenAValueForJson(env2, thirdResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Bob\"\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Bob\"" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Bob\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -921,7 +921,7 @@ namespace WarewolfParsingTest
             env2 = AssignEvaluation.assignGivenAValueForJson(env2, result, val3.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             var obj = env2.JsonObjects["Person"];
-            Assert.AreEqual(obj.ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"Bob\"\r\n    },\r\n    {\r\n      \"Name\": \"Bob\"\r\n    }\r\n  ],\r\n  \"Age\": 2\r\n}");
+            Assert.AreEqual(obj.ToString(), "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Bob\"" + Environment.NewLine + "    }," + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": \"Bob\"" + Environment.NewLine + "    }" + Environment.NewLine + "  ]," + Environment.NewLine + "  \"Age\": 2" + Environment.NewLine + "}");
         }
 
         [TestMethod]
@@ -938,7 +938,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValueForJson(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            var expected = "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": 2\r\n    }\r\n  ]\r\n}";
+            var expected = "{" + Environment.NewLine + "  \"Child\": [" + Environment.NewLine + "    {" + Environment.NewLine + "      \"Name\": 2" + Environment.NewLine + "    }" + Environment.NewLine + "  ]" + Environment.NewLine + "}";
             var actual = env2.JsonObjects["Person"].ToString();
             Assert.AreEqual(expected, actual);
         }
@@ -1041,7 +1041,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2.ToString());
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Number2\": 10," + Environment.NewLine + "  \"Alpha2\": \"Jack\"" + Environment.NewLine + "}", token2.ToString());
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -1064,7 +1064,7 @@ namespace WarewolfParsingTest
 
             var value2 = jContainer.First;
             var token2 = ((JProperty)value2).Value;
-            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2.ToString());
+            Assert.AreEqual("{" + Environment.NewLine + "  \"Number2\": 10," + Environment.NewLine + "  \"Alpha2\": {" + Environment.NewLine + "    \"Number2\": 10," + Environment.NewLine + "    \"Alpha2\": \"Jack\"" + Environment.NewLine + "  }" + Environment.NewLine + "}", token2.ToString());
 
         }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()

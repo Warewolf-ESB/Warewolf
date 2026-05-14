@@ -161,7 +161,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new RedisSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
+#if WINDOWS
             Assert.AreEqual("Exceeded timeout of 00:00:10\r\nNo such host is known.", result.ErrorMessage);
+#else
+            Assert.AreEqual("Exceeded timeout of 00:00:10\nName or service not known", result.ErrorMessage);
+#endif
+
         }
     }
 }

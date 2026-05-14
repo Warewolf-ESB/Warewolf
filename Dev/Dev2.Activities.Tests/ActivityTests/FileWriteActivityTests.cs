@@ -51,9 +51,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "test.txt");
             var act = new TestFileWriteActivity { FileContents = "testing", OutputPath = outputPath, Result = "", PrivateKeyFile = ""};
             act.Username = "[[val1]]";
+#if WINDOWS
             act.Password = DpapiWrapper.Encrypt("[[val2]]");
+#else
+			act.Password = "[[val2]]";
+#endif
 
-            var mockDataObject = new Mock<IDSFDataObject>();
+			var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.Environment).Returns(env);
             mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
 

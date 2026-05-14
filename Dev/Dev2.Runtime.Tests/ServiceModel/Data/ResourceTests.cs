@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\{resource.ResourceName}.bite";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", $"{resource.ResourceName}.bite");
 
             var path = resource.Path;
             Assert.AreEqual("Bug6619", path);
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\{resource.ResourceName}.xml";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", $"{resource.ResourceName}.xml");
 
             var path = resource.Path;
             Assert.AreEqual("Bug6619", path);
@@ -77,10 +77,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\{resource.ResourceName}.bite";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", "LevelTwo", $"{resource.ResourceName}.bite");
 
             var path = resource.Path;
-            Assert.AreEqual(@"LevelTwo\Bug6619", path);
+            Assert.AreEqual(Path.Combine("LevelTwo", "Bug6619"), path);
         }
 
         [TestMethod]
@@ -95,10 +95,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\{resource.ResourceName}.xml";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", "LevelTwo", $"{resource.ResourceName}.xml");
 
             var path = resource.Path;
-            Assert.AreEqual(@"LevelTwo\Bug6619", path);
+            Assert.AreEqual(Path.Combine("LevelTwo", "Bug6619"), path);
         }
 
         [TestMethod]
@@ -113,10 +113,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\LevelThree\{resource.ResourceName}.bite";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", "LevelTwo", "LevelThree", $"{resource.ResourceName}.bite");
 
             var path = resource.Path;
-            Assert.AreEqual(@"LevelTwo\LevelThree\Bug6619", path);
+            Assert.AreEqual(Path.Combine("LevelTwo", "LevelThree", "Bug6619"), path);
         }
 
         [TestMethod]
@@ -131,10 +131,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             resource.FilePath =
-                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\LevelThree\{resource.ResourceName}.xml";
+                Path.Combine(Dev2.Common.EnvironmentVariables.WorkspacePath, "55583fe9-7fec-4efa-a2d4-cbb69ff167dc", "Resources", "LevelTwo", "LevelThree", $"{resource.ResourceName}.xml");
 
             var path = resource.Path;
-            Assert.AreEqual(@"LevelTwo\LevelThree\Bug6619", path);
+            Assert.AreEqual(Path.Combine("LevelTwo", "LevelThree", "Bug6619"), path);
         }
 
         #region Equals

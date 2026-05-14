@@ -207,10 +207,17 @@ namespace Dev2.Runtime.Hosting
                 _fileWrapper.Delete(queueFilePath);
             }
 
-            //Queues.Remove(triggerQueue);
-            var existingQueue = Queues.SingleOrDefault(q => q.TriggerId == triggerQueue.TriggerId);
-            if (existingQueue != null)
-                Queues.Remove(existingQueue);
+            var index = -1;
+            for (var i = 0; i < Queues.Count; i++)
+            {
+                if (Queues[i].TriggerId == triggerQueue.TriggerId)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0)
+                Queues.RemoveAt(index);
         }
 
 #if !NETFRAMEWORK
@@ -236,7 +243,8 @@ namespace Dev2.Runtime.Hosting
                     try
                     {
                         var triggerQueue = LoadQueueTriggerFromFile(triggerQueueFileName);
-                        newQueues.Add(triggerQueue);
+                        if (triggerQueue != null)
+                            newQueues.Add(triggerQueue);
                     }
                     catch (Exception ex)
                     {
@@ -266,7 +274,11 @@ namespace Dev2.Runtime.Hosting
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
             var fileData = _fileWrapper.ReadAllText(filename);
+#if WINDOWS
             var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
+#else
+            var decryptedTrigger = fileData;
+#endif
             var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             return triggerQueue;
         }
@@ -290,9 +302,13 @@ namespace Dev2.Runtime.Hosting
             }
 
             var serializedData = _serializer.Serialize(triggerQueue);
+#if WINDOWS
             var saveData = DpapiWrapper.Encrypt(serializedData);
+#else
+			var saveData = serializedData;
+#endif
 
-            var queueFilePath = GetQueueFilePath(triggerQueue);
+			var queueFilePath = GetQueueFilePath(triggerQueue);
             _fileWrapper.WriteAllText(queueFilePath, saveData);
         }
 
@@ -307,9 +323,13 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 var serializedData = _serializer.Serialize(triggerQueue);
+#if WINDOWS
                 var saveData = DpapiWrapper.Encrypt(serializedData);
+#else
+				var saveData = serializedData;
+#endif
 
-                var queueFilePath = GetQueueFilePath(triggerQueue);
+				var queueFilePath = GetQueueFilePath(triggerQueue);
                 _fileWrapper.WriteAllText(queueFilePath, saveData);
             }
             catch (Exception)

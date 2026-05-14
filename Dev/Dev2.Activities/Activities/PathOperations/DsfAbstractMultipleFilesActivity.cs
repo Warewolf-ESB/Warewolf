@@ -216,7 +216,8 @@ namespace Dev2.Activities.PathOperations
         public string DestinationPassword {
             get => _destPassword;
             set
-            {
+			{
+#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -229,6 +230,7 @@ namespace Dev2.Activities.PathOperations
                     }
                 }
                 else
+#endif
                 {
                     _destPassword = value;
                 }
@@ -238,7 +240,7 @@ namespace Dev2.Activities.PathOperations
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
 
-        #endregion Properties
+#endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {

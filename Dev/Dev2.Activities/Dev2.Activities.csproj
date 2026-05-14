@@ -647,6 +647,7 @@
     <!--<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>-->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>

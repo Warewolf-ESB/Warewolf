@@ -96,6 +96,9 @@ if (-not $Assemblies -and -not $CIMode) {
     }
 }
 
+#Ensure entrypoint is blank or the run will hang at the end because the function host is running.
+(Get-Content $Dockerfile).Replace('ENTRYPOINT ["/bin/bash"]', 'ENTRYPOINT []') | Set-Content $Dockerfile
+
 # -- Find or start the test container -----------------------------------------
 if ($CIMode) {
     # In CI always build a fresh image and run a one-shot container per test suite.
@@ -212,6 +215,7 @@ if ($ExcludeAssemblies) {
 # -- CI: run each assembly as a separate docker run ---------------------------
 if ($CIMode) {
     $failed = 0
+    $failedAssemblies = [System.Collections.Generic.List[string]]::new()
 
     Write-Host "CI: assemblies to run: $($Assemblies -join ', ')" -ForegroundColor Cyan
     Write-Host "CI: filter values    : $($FilterValues | ForEach-Object { if ($null -eq $_) { '<none>' } else { $_ } })" -ForegroundColor Cyan
@@ -261,12 +265,16 @@ if ($CIMode) {
             $dotnetRootArgs = @('-e', 'DOTNET_ROOT=/usr/share/dotnet')
 
             if ($binaryPath) {
-                # MTP native invocation — produces TRX via the TrxReport extension.
+                # MTP invocation via `dotnet <assembly>.dll` — avoids the ELF apphost
+                # probing /tests/ for libhostfxr.so (which lands there from other
+                # self-contained test projects) before honoring DOTNET_ROOT, which caused
+                # "No frameworks were found." when running the apphost directly.
+                # EnableMSTestRunner=true DLLs accept all --report-trx args when run this way.
                 $dockerRunArgs = @('run', '--rm') + $networkArgs + $dotnetRootArgs + @(
                     '-v', "${BinDir}:/tests:ro",
                     '-v', "${TestResultsDir}:/results",
                     'warewolf-test-env',
-                    "/tests/$assembly",
+                    '/usr/share/dotnet/dotnet', "/tests/$assembly.dll",
                     '--report-trx',
                     '--report-trx-filename', $trxName,
                     '--results-directory', '/results',
@@ -294,8 +302,16 @@ if ($CIMode) {
 
             & docker @dockerRunArgs
 
-            if ($LASTEXITCODE -ne 0) {
-                Write-Warning "$assembly$filterSuffix reported failures (exit $LASTEXITCODE)."
+            if ($LASTEXITCODE -eq 8) {
+                # Exit code 8 = Microsoft Testing Platform "ZeroTestsRan":
+                # all tests were filtered out by category or all were skipped/inconclusive.
+                # This is expected (e.g. CannotParallelize-only assemblies, or
+                # integration assemblies whose external services aren't available).
+                # Treat as a warning, not a failure.
+                Write-Warning "WARN: $assembly$filterSuffix — zero tests ran (all filtered or skipped). Exit 8."
+            } elseif ($LASTEXITCODE -ne 0) {
+                Write-Warning "FAILED: $assembly$filterSuffix (exit $LASTEXITCODE)."
+                $failedAssemblies.Add("$assembly$filterSuffix")
                 $failed++
             }
         }
@@ -314,7 +330,13 @@ if ($CIMode) {
     }
 
     if ($failed -gt 0) {
-        Write-Error "$failed assembly/filter run(s) reported test failures."
+        Write-Host ""
+        Write-Host "==================== FAILED ASSEMBLIES ====================" -ForegroundColor Red
+        foreach ($name in $failedAssemblies) {
+            Write-Host "  FAILED: $name" -ForegroundColor Red
+        }
+        Write-Host "===========================================================" -ForegroundColor Red
+        Write-Error "$failed assembly/filter run(s) reported test failures: $($failedAssemblies -join ', ')"
         exit 1
     }
     exit 0

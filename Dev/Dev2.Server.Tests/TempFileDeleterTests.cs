@@ -14,6 +14,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Threading;
 
 namespace Dev2.Server.Tests
@@ -54,11 +55,14 @@ namespace Dev2.Server.Tests
             var mockFileWrapper = new Mock<IFile>();
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
+            var expectedDebugTempPath = EnvironmentVariables.DebugItemTempPath;
+            var expectedSchedulerPath = Path.Combine(Config.AppDataPath, GlobalConstants.SchedulerDebugPath);
+
             mockFileWrapper.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             mockFileWrapper.Setup(o => o.Exists("Settings.config")).Returns(true);
             mockFileWrapper.Setup(o => o.Exists("secure.config")).Returns(true);
 
-            mockDirectoryWrapper.Setup(o => o.Exists("C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug")).Returns(true);
+            mockDirectoryWrapper.Setup(o => o.Exists(expectedDebugTempPath)).Returns(true);
 
             var mockFileInfo_getsDeleted = new Mock<IFileInfo>();
             var mockFileInfo_neverGetsDeleted = new Mock<IFileInfo>();
@@ -71,7 +75,7 @@ namespace Dev2.Server.Tests
                 yield return mockFileInfo_neverGetsDeleted.Object;
             }
 
-            mockDirectoryWrapper.Setup(o => o.GetFileInfos("C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug")).Returns(infos);
+            mockDirectoryWrapper.Setup(o => o.GetFileInfos(expectedDebugTempPath)).Returns(infos);
 
             ConfigurationManager.AppSettings.Set("DaysToKeepTempFiles", "1");
             using (var tempFileDeleter = new TempFileDeleter(mockDirectoryWrapper.Object, mockTimerFactory.Object))
@@ -83,11 +87,11 @@ namespace Dev2.Server.Tests
             Assert.IsTrue(wasCalled, "expect timercallback to be called");
 
             mockTimerFactory.Verify(o => o.New(It.IsAny<TimerCallback>(), null, expectedDueTime, expectedPeriod), Times.Once);
-            mockDirectoryWrapper.Verify(o => o.Exists("C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug"), Times.Once);
-            mockDirectoryWrapper.Verify(o => o.GetFileInfos("C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug"), Times.Once);
+            mockDirectoryWrapper.Verify(o => o.Exists(expectedDebugTempPath), Times.Once);
+            mockDirectoryWrapper.Verify(o => o.GetFileInfos(expectedDebugTempPath), Times.Once);
 
-            mockDirectoryWrapper.Verify(o => o.Exists("C:\\ProgramData\\Warewolf\\DebugOutPut\\"), Times.Once);
-            mockDirectoryWrapper.Verify(o => o.GetFileInfos("C:\\ProgramData\\Warewolf\\DebugOutPut\\"), Times.Never);
+            mockDirectoryWrapper.Verify(o => o.Exists(expectedSchedulerPath), Times.Once);
+            mockDirectoryWrapper.Verify(o => o.GetFileInfos(expectedSchedulerPath), Times.Never);
 
             mockFileInfo_getsDeleted.Verify(o => o.Delete(), Times.Once);
             mockFileInfo_neverGetsDeleted.Verify(o => o.Delete(), Times.Never);

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.InteropServices;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,6 +32,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestInitialize]
         public void Init()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             _taskServiceConvertorFactory = new Mock<ITaskServiceConvertorFactory>();
             _nativeService = new TaskService();//localhost
             _nativeTask = _nativeService.NewTask();//actually a definition , not an actual task

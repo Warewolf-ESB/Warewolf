@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
@@ -75,7 +76,8 @@ directory
         [TestCategory("ServerSchedulerFactory_Constructor")]
         public void ServerSchedulerFactory_Default()
         {
-
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform.");
 #pragma warning disable 168
             var factory = new ServerSchedulerFactory(a => a.WorkflowName);
 #pragma warning restore 168
@@ -105,6 +107,8 @@ directory
         [TestCategory("ServerSchedulerFactory_Model")]
         public void ServerSchedulerFactory_CreateModel()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler / Win32 security APIs are not available on this platform.");
             var service = new Mock<IDev2TaskService>().Object;
             var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
             var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryWrapper(), a => a.WorkflowName);
@@ -240,6 +244,8 @@ directory
 
         static void CheckTriggerTypes(Trigger t)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform.");
             IDev2TaskService s = new Dev2TaskService(new TaskServiceConvertorFactory());
             ITaskServiceConvertorFactory fact = new TaskServiceConvertorFactory();
             var schedulerFactory = new ServerSchedulerFactory(s, fact, new DirectoryWrapper(), a => a.WorkflowName);

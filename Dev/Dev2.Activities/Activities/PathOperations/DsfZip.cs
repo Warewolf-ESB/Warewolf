@@ -70,7 +70,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get => _archivePassword;
             set
-            {
+			{
+#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -83,6 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
                 else
+#endif
                 {
                     _archivePassword = value;
                 }
@@ -112,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get => _compressionRatio;
             set => _compressionRatio = string.IsNullOrEmpty(value) ? value : value.Replace(" ", "");
         }
-        #endregion Properties
+#endregion Properties
         public override IEnumerable<StateVariable> GetState()
         {
             return new[] {

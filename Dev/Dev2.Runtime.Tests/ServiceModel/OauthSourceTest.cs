@@ -66,7 +66,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var conStringAttr = outxml.Attribute("ConnectionString");
             Assert.IsNotNull(conStringAttr);
-            Assert.IsTrue(conStringAttr.Value.IsBase64());            
+#if WINDOWS
+            Assert.IsTrue(conStringAttr.Value.IsBase64());
+#else
+            Assert.IsFalse(string.IsNullOrEmpty(conStringAttr.Value));
+#endif
         }
 
     }

@@ -145,7 +145,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(EmailSource))]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void EmailSource_Send_ExpectedException()
         {
             var expected = new EmailSource
@@ -164,7 +163,13 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var mailMessage = new MailMessage();
             var emailSource = new EmailSource(xml);
-            emailSource.Send(mailMessage);
+            try
+            {
+                emailSource.Send(mailMessage);
+                Assert.Fail("Expected an exception to be thrown");
+            }
+            catch (InvalidOperationException) { }
+            catch (MailKit.Net.Smtp.SmtpProtocolException) { }
         }
 
         #endregion

@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             get
             {
-                var resourcePath = Path.Combine(@"C:\ProgramData\Warewolf\Triggers", Guid.NewGuid().ToString());
+                var resourcePath = Path.Combine(Path.GetTempPath(), "Warewolf", "Triggers", Guid.NewGuid().ToString());
                 return resourcePath;
             }
         }
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var contents = "";
             var triggerId = Guid.NewGuid();
             var resourceId = Guid.NewGuid();
-            var path = queueTriggersPath + "\\" + triggerId + ".bite";
+            var path = Path.Combine(queueTriggersPath, triggerId + ".bite");
 
             var serializerInstance = new Mock<IBuilderSerializer>();
             serializerInstance.Setup(serializer => serializer.Serialize(It.IsAny<ITriggerQueue>())).Returns(contents);
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var queueTriggersPath = QueueTriggersPath;
             var contents = "";
             var triggerId = Guid.NewGuid();
-            var path = queueTriggersPath + "\\" + triggerId + ".bite";
+            var path = Path.Combine(queueTriggersPath, triggerId + ".bite");
 
             var serializerInstance = new Mock<IBuilderSerializer>();
             serializerInstance.Setup(serializer => serializer.Serialize(It.IsAny<ITriggerQueue>())).Returns(contents);
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Runtime.Triggers
             mockSerializer.Setup(o => o.Serialize(It.IsAny<ITriggerQueue>())).Returns(serializer.Serialize(triggerQueueEvent));
             var serializerInstance = mockSerializer.Object;
 
-            var path = queueTriggersPath + "\\" + triggerId + ".bite";
+            var path = Path.Combine(queueTriggersPath, triggerId + ".bite");
 
             var directory = new Mock<IDirectory>().Object;
             var mockFile = new Mock<IFile>();
@@ -160,10 +160,14 @@ namespace Dev2.Tests.Runtime.Triggers
 
             mockFile.Verify(o => o.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
+#if WINDOWS
             var isEncrypted = DpapiWrapper.CanBeDecrypted(savedData);
             Assert.IsTrue(isEncrypted);
 
             var decryptedTrigger = DpapiWrapper.Decrypt(savedData);
+#else
+			var decryptedTrigger = savedData;
+#endif
 
             var theSavedTrigger = serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             Assert.IsNotNull(theSavedTrigger);
@@ -198,7 +202,7 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerQueue = SaveRandomTriggerQueue(triggerCatalog, Guid.Empty);
 
-            var path = queueTriggersPath + "\\" + triggerQueue.TriggerId + ".bite";
+            var path = Path.Combine(queueTriggersPath, triggerQueue.TriggerId + ".bite");
             mockFile.Setup(file => file.Exists(path)).Returns(true);
 
             triggerCatalog.DeleteTriggerQueue(triggerQueue);
@@ -217,8 +221,12 @@ namespace Dev2.Tests.Runtime.Triggers
             var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
 
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
             var expectedTrigger = new TriggerQueue();
             mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
@@ -243,8 +251,12 @@ namespace Dev2.Tests.Runtime.Triggers
             var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
 
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue();
             mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
@@ -274,8 +286,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var expectedResourceId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
             var expectedTrigger = new TriggerQueue {ResourceId = expectedResourceId};
             mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
@@ -296,7 +312,7 @@ namespace Dev2.Tests.Runtime.Triggers
         public void TriggersCatalog_PathFromResourceId()
         {
             var triggerId = Guid.NewGuid().ToString();
-            var expectedPath = Common.EnvironmentVariables.QueueTriggersPath + @"\" + triggerId + ".bite";
+            var expectedPath = Path.Combine(Common.EnvironmentVariables.QueueTriggersPath, triggerId + ".bite");
             var path = TriggersCatalog.Instance.PathFromResourceId(triggerId);
             Assert.AreEqual(expectedPath, path);
         }
@@ -327,8 +343,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId
@@ -362,8 +382,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId
@@ -397,8 +421,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId
@@ -433,8 +461,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId
@@ -469,8 +501,12 @@ namespace Dev2.Tests.Runtime.Triggers
 
             var triggerId = Guid.NewGuid();
             var decryptedTrigger = "serialized queue data";
+#if WINDOWS
             var expected = DpapiWrapper.Encrypt(decryptedTrigger);
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+#else
+			var expected = decryptedTrigger;
+#endif
+			mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId

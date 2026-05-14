@@ -350,15 +350,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var test = SetupServiceTestSteps();
             testObj.Invoke("UpdateTestWithStepValues", true, test.Object);
             //------------Execute Test---------------------------            
-            var expectedMessage = @"Failed Step:  
-Message: Test Failed because of some reasons
-Failed Output For Variable:  
-Message: This test has failed
-Invalid Output for Variable: 
-Message: This test is invalid
-Pending Output for Variable: 
-Test Failed because of some reasons
-";
+            var expectedMessage = "Failed Step:  " + Environment.NewLine + "Message: Test Failed because of some reasons" + Environment.NewLine + "Failed Output For Variable:  " + Environment.NewLine + "Message: This test has failed" + Environment.NewLine + "Invalid Output for Variable: " + Environment.NewLine + "Message: This test is invalid" + Environment.NewLine + "Pending Output for Variable: " + Environment.NewLine + "Test Failed because of some reasons" + Environment.NewLine;
             //------------Assert Results-------------------------
             test.VerifySet(to =>
             {

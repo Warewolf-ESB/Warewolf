@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(resultList.Items);
             Assert.IsTrue(resultList.HasErrors);
-            Assert.AreEqual("Error Occurred\r\nInner Error\r\n", resultList.Errors);
+            Assert.AreEqual("Error Occurred" + Environment.NewLine + "Inner Error" + Environment.NewLine, resultList.Errors);
         }
 
 

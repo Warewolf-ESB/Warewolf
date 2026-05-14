@@ -175,6 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get => _password;
             set
             {
+#if WINDOWS
                 if (DataListUtil.ShouldEncrypt(value))
                 {
                     try
@@ -187,6 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
                 else
+#endif
                 {
                     _password = value;
                 }
@@ -234,7 +236,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        #endregion Properties
+#endregion Properties
 
         #region Get Debug Inputs/Outputs
 

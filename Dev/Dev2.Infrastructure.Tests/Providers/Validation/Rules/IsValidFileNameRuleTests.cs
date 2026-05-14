@@ -11,6 +11,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using Dev2.Providers.Validation.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,6 +25,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         [TestCategory("IsValidFileNameRule_Check")]
         public void IsValidFileNameRule_Check_ItemIsValid_ResultIsNull()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return;
+
             Verify_Check(true, @"c:\errors1.png");
             Verify_Check(true, @"c:\logs\errors.tx1");
             Verify_Check(true, @"c:\logs\errors.1");

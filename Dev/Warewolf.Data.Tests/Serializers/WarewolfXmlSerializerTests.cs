@@ -10,6 +10,7 @@
 
 
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Data.Serializers;
 
@@ -19,10 +20,10 @@ namespace Warewolf.Data.Tests.Serializers
     [TestCategory(nameof(WarewolfXmlSerializer))]
     public class WarewolfXmlSerializerTests
     {
-        const string personIndentedXML = 
-            "<Person xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n" +
-            "  <FName>TestFName</FName>\r\n" +
-            "  <LName>TestLName</LName>\r\n" +
+        static readonly string personIndentedXML = 
+            "<Person xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + Environment.NewLine +
+            "  <FName>TestFName</FName>" + Environment.NewLine +
+            "  <LName>TestLName</LName>" + Environment.NewLine +
             "</Person>";
         const string personNonIndentedXML = "<Person xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><FName>TestFName</FName><LName>TestLName</LName></Person>";
 

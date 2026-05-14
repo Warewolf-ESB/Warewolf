@@ -13,6 +13,7 @@ namespace Warewolf.Data.Tests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Newtonsoft.Json.Linq;
+    using System;
     using System.Collections.Generic;
     using System.Xml.Linq;
 
@@ -83,13 +84,13 @@ namespace Warewolf.Data.Tests
 
                 Assert.IsTrue(result.IsXml(out XDocument _), "XML should still be valid after the CleanXmlSOAP call, Warewolf still expects xml after this call");
 
-                var expected = "<Envelope >\r\n" +
-                                "  <Body>\r\n" +
-                                "    <Addition >\r\n" +
-                                "      <a>333</a>\r\n" +
-                                "      <b>555</b>\r\n" +
-                                "    </Addition>\r\n" +
-                                "  </Body>\r\n" +
+                var expected = "<Envelope >" + Environment.NewLine +
+                                "  <Body>" + Environment.NewLine +
+                                "    <Addition >" + Environment.NewLine +
+                                "      <a>333</a>" + Environment.NewLine +
+                                "      <b>555</b>" + Environment.NewLine +
+                                "    </Addition>" + Environment.NewLine +
+                                "  </Body>" + Environment.NewLine +
                                 "</Envelope>";
 
                 Assert.AreEqual(expected, result.ToString());

@@ -47,7 +47,7 @@ namespace Dev2.Server.Tests
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(It.IsAny<string>()))
-                .Callback<string>((path) => Assert.IsTrue(path.EndsWith(@"\Resources - ServerTests")))
+                .Callback<string>((path) => Assert.IsTrue(path.EndsWith(Path.DirectorySeparatorChar + "Resources - ServerTests")))
                 .Returns(()=> null).Verifiable();
             //------------------Act-------------------
             var loadResources =  new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object,mockResourceCatalogFactory.Object);

@@ -298,6 +298,10 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
+            if (outputDescription == null || outputDescription.DataSourceShapes.Count == 0)
+            {
+                return pluginService.Recordsets;
+            }
             var dataSourceShape = outputDescription.DataSourceShapes[0];
             var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
             if (recSet != null)

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -78,6 +79,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_DeleteValid()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(true);
             Assert.AreEqual(false, output.HasError);
 
@@ -87,6 +90,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ScheduledResource_DeleteInValid()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput(false);
             Assert.AreEqual(true, output.HasError);
             Assert.AreEqual("No Resource Selected", output.Message.ToString());

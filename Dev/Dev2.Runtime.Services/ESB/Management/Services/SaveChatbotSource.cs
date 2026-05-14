@@ -90,7 +90,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         Name = chatbotSource.ResourceName,
                         Value = chatbotSource.ResourceID,
+#if WINDOWS
                         Payload = DpapiWrapper.Encrypt(payload)
+#else
+						Payload = payload
+#endif
                     };
                 }
 

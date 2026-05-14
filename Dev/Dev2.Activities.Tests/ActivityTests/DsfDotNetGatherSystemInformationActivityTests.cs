@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Dev2.Activities;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,6 +20,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("GatherSystemInformation")]
         public void GetCorrectSystemInformation_MultipleInformationGatherShouldHaveValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("CPU performance counters (CPUAvailable/CPUTotal) require Windows PerformanceCounter.");
             var ob = new DsfDotNetGatherSystemInformationActivity
             {
                 SystemInformationCollection = new List<GatherSystemInformationTO>
@@ -154,6 +157,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("GatherSystemInformation")]
         public void GetCorrectSystemInformation_WarewolfCPU_GatherShouldHaveValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("WarewolfCPU performance counter requires Windows PerformanceCounter.");
             var ob = new DsfDotNetGatherSystemInformationActivity
             {
                 SystemInformationCollection = new List<GatherSystemInformationTO>

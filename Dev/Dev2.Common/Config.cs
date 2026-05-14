@@ -36,20 +36,27 @@ namespace Dev2.Common
 
         private static string GetDirectory(string key, Environment.SpecialFolder defaultPath)
         {
-            // First try environment variable (for Linux containers)
+            // First try environment variable; skip Windows-style paths when running on Linux
             string path = Environment.GetEnvironmentVariable(key);
 
             // Fall back to ConfigurationManager.AppSettings
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
             {
                 path = ConfigurationManager.AppSettings[key];
             }
 
-            // Finally, fall back to special folder path
-            if (string.IsNullOrEmpty(path))
+            // Fall back to special folder path
+            if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
             {
                 path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
             }
+
+            // Ultimate fallback: temp directory (always writable, e.g. in CI containers)
+            if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
+            {
+                path = Path.GetTempPath();
+            }
+
             return Path.Combine(path, GlobalConstants.Warewolf);
         }
 

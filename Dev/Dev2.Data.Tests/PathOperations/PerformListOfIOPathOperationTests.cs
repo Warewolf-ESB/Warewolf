@@ -17,6 +17,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -59,6 +60,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(PerformListOfIOPathOperation))]
         public void PerformListOfIOPathOperation_AppendBackSlashes_Path_IsNotNull_ExpectNullReferenceException()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("AppendBackSlashes uses Windows path separator conventions");
             //-----------------------Arrange------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockFileWrapper = new Mock<IFile>();
@@ -99,6 +102,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(PerformListOfIOPathOperation))]
         public void PerformListOfIOPathOperation_AppendBackSlashes_Path_IsDirectory_DirectoryExist_And_IsNotStarWildCard_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("AppendBackSlashes uses Windows path separator conventions");
             //-----------------------Arrange------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockFileWrapper = new Mock<IFile>();

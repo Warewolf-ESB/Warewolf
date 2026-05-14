@@ -152,6 +152,10 @@ namespace Dev2.PathOperations
             else if (CommonDataUtils.IsNotFtpTypePath(path))
             {
                 tmp = path.Path.Split(splitOn);
+                if (path.Path.StartsWith("/"))
+                {
+                    builderPath.Append("/");
+                }
             }
             else
             {
