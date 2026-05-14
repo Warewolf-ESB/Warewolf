@@ -1,0 +1,63 @@
+/*
+ *  Warewolf - Once bitten, there's no going back
+ *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
+ *  Licensed under GNU Affero General Public License 3.0 or later.
+ */
+
+namespace Warewolf.Execution.Lightweight.Auth.Models;
+
+/// <summary>
+/// Immutable configuration snapshot used by the Bearer token validation pipeline.
+/// Sourced from the standard Warewolf environment variables documented in
+/// <c>EasyAuth-Runbook.md</c>:
+/// <list type="bullet">
+///   <item><c>WAREWOLF_ENTRA_TENANT_ID</c> – Entra tenant GUID.</item>
+///   <item><c>WAREWOLF_ENTRA_AUDIENCE</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).</item>
+///   <item><c>WAREWOLF_ENTRA_CLIENT_ID</c> – Optional alternative audience.</item>
+/// </list>
+/// </summary>
+public sealed class EntraAuthOptions
+{
+    /// <summary>Entra tenant GUID. <c>null</c> when not configured (token path disabled).</summary>
+    public string? TenantId { get; init; }
+
+    /// <summary>Expected token audience (<c>aud</c> claim).</summary>
+    public string? Audience { get; init; }
+
+    /// <summary>Optional alternative audience (typically the bare client GUID).</summary>
+    public string? ClientId { get; init; }
+
+    /// <summary>
+    /// <c>true</c> when sufficient configuration is present to attempt RS256 validation
+    /// against Microsoft's public OIDC metadata.
+    /// </summary>
+    public bool IsEnabled =>
+        !string.IsNullOrWhiteSpace(TenantId) &&
+        (!string.IsNullOrWhiteSpace(Audience) || !string.IsNullOrWhiteSpace(ClientId));
+
+    /// <summary>v2.0 OIDC metadata document URL for the configured tenant.</summary>
+    public string MetadataAddress =>
+        $"https://login.microsoftonline.com/{TenantId}/v2.0/.well-known/openid-configuration";
+
+    /// <summary>Acceptable issuer URLs for tokens issued to this tenant (v1 + v2).</summary>
+    public IReadOnlyCollection<string> ValidIssuers => new[]
+    {
+        $"https://login.microsoftonline.com/{TenantId}/v2.0",
+        $"https://sts.windows.net/{TenantId}/",
+    };
+
+    /// <summary>Audiences accepted on the <c>aud</c> claim.</summary>
+    public IReadOnlyCollection<string> ValidAudiences =>
+        new[] { Audience, ClientId }
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Select(v => v!)
+            .ToArray();
+
+    /// <summary>Reads the configuration from environment variables.</summary>
+    public static EntraAuthOptions FromEnvironment() => new()
+    {
+        TenantId = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_TENANT_ID"),
+        Audience = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_AUDIENCE"),
+        ClientId = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_CLIENT_ID"),
+    };
+}

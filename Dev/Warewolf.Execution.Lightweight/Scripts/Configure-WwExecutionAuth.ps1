@@ -45,6 +45,31 @@
 .PARAMETER WhatIfOnly
   Print the resolved configuration and exit without making any changes.
 
+.PARAMETER DryRun
+  (PRV-15) Alias for -WhatIfOnly.  Prints the full plan (Entra app, app roles,
+  app settings, Easy Auth provider) without touching Azure.  Safe to run in
+  CI/CD as a pre-merge sanity check.
+
+.PARAMETER UseManagedIdentity
+  (PRV-17) Skip client-secret creation entirely and configure the function
+  app to authenticate to Entra using its system-assigned Managed Identity
+  for app-only flows (where supported).  Note: Easy Auth still requires a
+  client secret for the Microsoft provider's confidential client flow; this
+  switch only suppresses *additional* secret rotations beyond that minimum.
+  Recommended for production tenants that prefer MI over secret rotation.
+
+.PARAMETER SecretLifetimeYears
+  (PRV-18) Validity period in years for any new client secret created by
+  the script.  Default is 1.  Maximum 2 (Entra cap).  Pair with
+  -RotateSecret to force rotation on every run.
+
+.PRESCRIPT-LAYOUT  (PRV-16)
+  This file is intentionally a single self-contained script so it can be
+  uploaded to Azure Cloud Shell or a deployment runner without fighting a
+  module path.  Logical sections (Stage 0 → Stage 11, helpers, formatters,
+  Easy Auth bridge) are clearly delimited by block comments.  Future module
+  extraction is documented in `Scripts/README.md`.
+
 .PREREQUISITES
   * Azure CLI >= 2.55  (must support `az ad app update --enable-id-token-issuance`
                         and `az webapp auth microsoft update`)
@@ -80,6 +105,23 @@ param(
     [switch]    $SkipUserAssignment,
     [switch]    $SkipSmokeTest,
     [switch]    $WhatIfOnly,
+    # PRV-15: dry-run alias.  Maps to -WhatIfOnly during normalization below.
+    [switch]    $DryRun,
+    # PRV-17: prefer MI over additional client-secret rotation.
+    [switch]    $UseManagedIdentity,
+
+    # When set, Stage 4 replaces ALL app roles with the desired set (disable
+    # then re-PATCH) without prompting.  In interactive mode the operator is
+    # always asked.  In -NonInteractive mode without this flag the script
+    # merges (adds new, keeps existing), which is safe for re-runs.
+    [switch]    $ReplaceAppRoles,
+
+    # When set, Stage 6 removes ALL existing appRoleAssignments on the SP
+    # for every listed user before re-assigning the desired set.  In
+    # interactive mode the operator is prompted when existing assignments are
+    # found.  In -NonInteractive mode without this flag the script merges
+    # (skips already-assigned, adds missing), which is safe for re-runs.
+    [switch]    $ReplaceUserAssignments,
 
     # Skip every interactive prompt.  Suitable for CI/CD; placeholders or
     # missing required values cause an early throw.
@@ -88,6 +130,17 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+# ── PRV-15 / PRV-18 normalisation ─────────────────────────────────────────────
+if ($DryRun) { $WhatIfOnly = $true }
+if ($PSBoundParameters.ContainsKey('SecretLifetimeYears')) {
+    if ($SecretLifetimeYears -lt 1 -or $SecretLifetimeYears -gt 2) {
+        throw "SecretLifetimeYears must be between 1 and 2 (Entra cap). Got: $SecretLifetimeYears"
+    }
+}
+if ($UseManagedIdentity -and $RotateSecret) {
+    Write-Warning '[PRV-17] -UseManagedIdentity supplied with -RotateSecret; secret rotation will still happen for the Easy Auth confidential client.'
+}
 
 # ──────────────────────────────────────────────────────────────────────────────
 # CONFIGURATION DEFAULTS  -- placeholders are auto-prompted when interactive,
@@ -288,13 +341,20 @@ function ConvertFrom-AzJson {
 
 function New-AppRoleObject {
     param([string] $Value, [string] $DisplayName, [string] $Description)
+    # Entra ID requires appRoles[].value (the JWT ClaimValue) to match
+    # ^[\w.:-]+$  — spaces and most punctuation are rejected with
+    # "Entitlement ClaimValue contains invalid characters."
+    # Sanitize by replacing every run of disallowed characters with '_',
+    # then trimming leading/trailing underscores so "Warewolf Developers"
+    # becomes "Warewolf_Developers" while the displayName stays readable.
+    $sanitizedValue = ($Value -replace '[^\w.:-]+', '_').Trim('_')
     [pscustomobject]@{
         allowedMemberTypes = @('User','Application')
         description        = $Description
         displayName        = $DisplayName
         id                 = [guid]::NewGuid().ToString()
         isEnabled          = $true
-        value              = $Value
+        value              = $sanitizedValue
     }
 }
 
@@ -589,6 +649,227 @@ function Format-CollectionForSummary {
     return [string]$Value
 }
 
+function Read-AppRoleConflictAction {
+    <#
+        Interactive prompt shown in Stage 4 when existing Entra app roles are
+        found that differ from the desired set.  Returns one of:
+            'keep'    - leave all existing roles untouched; only add new ones
+            'add'     - synonym for 'keep' (kept for clarity in the prompt)
+            'replace' - disable all existing roles, then write the desired set
+    #>
+    param(
+        [array]  $ExistingRoles = @(),
+        [Parameter(Mandatory)][array]  $DesiredRoles
+    )
+
+    $existing = @($ExistingRoles | Where-Object { $_.isEnabled -eq $true })
+    $toAdd    = @($DesiredRoles  | Where-Object { $r = $_; -not ($existing | Where-Object { $_.value -eq $r.value }) })
+    $toRemove = @($existing      | Where-Object { $r = $_; -not ($DesiredRoles | Where-Object { $_.value -eq $r.value }) })
+
+    Write-Host ""
+    Write-Host "  Existing enabled app roles:" -ForegroundColor White
+    if ($existing.Count -eq 0) {
+        Write-Host "    (none)" -ForegroundColor DarkGray
+    } else {
+        foreach ($r in $existing) { Write-Host "    $($r.value)" -ForegroundColor DarkGray }
+    }
+    Write-Host "  Desired app roles:" -ForegroundColor White
+    foreach ($r in $DesiredRoles) { Write-Host "    $($r.value)" -ForegroundColor DarkGray }
+
+    if ($toAdd.Count -gt 0) {
+        Write-Host "  New roles to add:    $($toAdd.value -join ', ')" -ForegroundColor Green
+    }
+    if ($toRemove.Count -gt 0) {
+        Write-Host "  Roles NOT in desired set: $($toRemove.value -join ', ')" -ForegroundColor Yellow
+    }
+
+    if ($toRemove.Count -eq 0 -and $toAdd.Count -eq 0) {
+        Write-Host "  No changes needed - all desired roles already present." -ForegroundColor Green
+        return 'keep'
+    }
+
+    Write-Host ""
+    $action = (Read-Host "  [k]eep (add new only) / [r]eplace all (disable+rewrite)  (default: k)").ToLower()
+    if ([string]::IsNullOrWhiteSpace($action) -or $action[0] -eq 'k') { return 'keep' }
+    return 'replace'
+}
+
+function Invoke-AppRolePatch {
+    <#
+        Two-phase safe app-role replacement required by Entra ID:
+
+        Phase 1 – Disable every role that is currently enabled but absent from
+                  (or being replaced in) $DesiredRoles.  Entra rejects any
+                  attempt to delete or change an *enabled* role with
+                  CannotDeleteOrUpdateEnabledEntitlement.
+
+        Phase 2 – PATCH the full $DesiredRoles array.  Roles that were
+                  disabled in phase 1 are simply omitted; Entra removes them
+                  from the manifest automatically when they are absent from the
+                  next appRoles write.
+
+        If $DesiredRoles already covers all existing enabled roles (merge-only
+        / add run) the function skips phase 1 and does a single PATCH.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $AppObjectId,
+        [array]                        $ExistingRoles = @(),
+        [Parameter(Mandatory)][array]  $DesiredRoles,
+        [Parameter(Mandatory)][string] $Mode   # 'keep' | 'replace'
+    )
+
+    $existing = @($ExistingRoles)
+    $desiredValues = @($DesiredRoles | ForEach-Object { $_.value })
+
+    # Roles that live on the app right now but are NOT in the desired set.
+    $rolesToDisable = @($existing | Where-Object {
+        $_.isEnabled -eq $true -and $desiredValues -notcontains $_.value
+    })
+
+    $needDisablePhase = ($Mode -eq 'replace') -and ($rolesToDisable.Count -gt 0)
+
+    function Write-RolePatch {
+        param([array] $Roles)
+        $tmp = [System.IO.Path]::GetTempFileName()
+        Write-TempJson -Path $tmp -Json (@{ appRoles = $Roles } | ConvertTo-Json -Depth 6)
+        try {
+            Invoke-AzCli @(
+                'rest','--method','PATCH',
+                '--url',"https://graph.microsoft.com/v1.0/applications/$AppObjectId",
+                '--headers','Content-Type=application/json',
+                '--body',"@$tmp"
+            ) | Out-Null
+        } finally {
+            Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    if ($needDisablePhase) {
+        Write-Host "    phase 1: disabling $($rolesToDisable.Count) role(s) before removal" -ForegroundColor DarkYellow
+
+        # Build a full role array: keep all roles in their current shape but
+        # flip isEnabled=false for the ones being retired, so Entra accepts the
+        # PATCH without CannotDeleteOrUpdateEnabledEntitlement.
+        $disableSet = New-Object 'System.Collections.Generic.List[object]'
+        foreach ($r in $existing) {
+            $copy = @{}
+            if ($r.PSObject) {
+                foreach ($p in $r.PSObject.Properties) { $copy[$p.Name] = $p.Value }
+            }
+            if ($desiredValues -notcontains $r.value) {
+                $copy['isEnabled'] = $false
+            }
+            [void]$disableSet.Add($copy)
+        }
+        # Also include any brand-new desired roles so they are present in the
+        # manifest by the time we reach phase 2 (avoids a second round-trip for
+        # net-new roles).
+        foreach ($d in $DesiredRoles) {
+            if (-not ($existing | Where-Object { $_.value -eq $d.value })) {
+                [void]$disableSet.Add($d)
+            }
+        }
+        Write-RolePatch -Roles $disableSet.ToArray()
+        Write-Host "    phase 1 complete - waiting 5s for Graph replication" -ForegroundColor DarkGray
+        Start-Sleep -Seconds 5
+    }
+
+    # Phase 2: write only the desired roles (disabled stubs are omitted so
+    # Entra removes them from the manifest).
+    Write-Host "    phase 2: writing $($DesiredRoles.Count) desired role(s)" -ForegroundColor DarkGray
+    Write-RolePatch -Roles $DesiredRoles
+}
+
+function Read-UserAssignmentConflictAction {
+    <#
+        Interactive prompt shown in Stage 6 when a user already has
+        appRoleAssignments on this SP.  Returns one of:
+            'keep'    - leave existing assignments; only add missing ones
+            'replace' - delete all existing assignments for the user, then
+                        re-assign the full desired set
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Upn,
+        [Parameter(Mandatory)][array]  $ExistingRoleValues,   # string[] of role .value names
+        [Parameter(Mandatory)][array]  $DesiredRoleValues     # string[]
+    )
+
+    $toAdd    = @($DesiredRoleValues  | Where-Object { $ExistingRoleValues -notcontains $_ })
+    $toRemove = @($ExistingRoleValues | Where-Object { $DesiredRoleValues  -notcontains $_ })
+
+    Write-Host ""
+    Write-Host "  User: $Upn" -ForegroundColor White
+    Write-Host "    Existing assignments : $($ExistingRoleValues -join ', ')" -ForegroundColor DarkGray
+    Write-Host "    Desired  assignments : $($DesiredRoleValues  -join ', ')" -ForegroundColor DarkGray
+    if ($toAdd.Count    -gt 0) { Write-Host "    To add               : $($toAdd    -join ', ')" -ForegroundColor Green  }
+    if ($toRemove.Count -gt 0) { Write-Host "    Not in desired set   : $($toRemove -join ', ')" -ForegroundColor Yellow }
+
+    if ($toRemove.Count -eq 0 -and $toAdd.Count -eq 0) {
+        Write-Host "    No changes needed." -ForegroundColor Green
+        return 'keep'
+    }
+
+    Write-Host ""
+    $action = (Read-Host "  [k]eep (add missing only) / [r]eplace all (clear+reassign)  (default: k)").ToLower()
+    if ([string]::IsNullOrWhiteSpace($action) -or $action[0] -eq 'k') { return 'keep' }
+    return 'replace'
+}
+
+function Remove-AllUserAppRoleAssignments {
+    <#
+        Deletes every appRoleAssignment for $UserOid that targets $SpObjectId.
+        Errors on individual DELETEs are warnings, not throws, so a partial
+        clean-up does not abort the whole run.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $UserOid,
+        [Parameter(Mandatory)][string] $SpObjectId,
+        [Parameter(Mandatory)][string] $Upn
+    )
+
+    $assignments = $null
+    try {
+        $assignments = Invoke-AzCli @(
+            'rest','--method','GET',
+            '--url',"https://graph.microsoft.com/v1.0/users/$UserOid/appRoleAssignments"
+        ) | ConvertFrom-AzJson
+    } catch {
+        Write-Warning "    could not list assignments for $Upn before clear: $($_.Exception.Message)"
+        return
+    }
+
+    if (-not $assignments -or -not $assignments.value) { return }
+
+    foreach ($a in $assignments.value) {
+        if ($a.resourceId -ne $SpObjectId) { continue }
+        try {
+            Invoke-AzCli @(
+                'rest','--method','DELETE',
+                '--url',"https://graph.microsoft.com/v1.0/users/$UserOid/appRoleAssignments/$($a.id)"
+            ) | Out-Null
+            Write-Host "    - $Upn : removed $($a.appRoleId)" -ForegroundColor DarkYellow
+        } catch {
+            Write-Warning "    could not remove assignment $($a.id) for $Upn : $($_.Exception.Message)"
+        }
+    }
+}
+
+function Write-TempJson {
+    <#
+        Writes $Json to $Path as UTF-8 WITHOUT BOM.
+        PowerShell 5.x's Set-Content -Encoding UTF8 always prepends a 3-byte
+        BOM (EF BB BF), which causes `az rest --body @file` to fail with
+        "Unable to read JSON request payload" because the Graph API sees the
+        BOM as invalid leading bytes before the first '{' or '['.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string] $Json
+    )
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($Path, $Json, $utf8NoBom)
+}
+
 function Get-EasyAuthConfig {
     <#
         Returns the V2 Easy Auth configuration, normalised to the inner
@@ -804,8 +1085,7 @@ try {
     # Older az CLI versions may not have the flag.  Fall back to a Graph PATCH.
     Write-Host "    --enable-id-token-issuance not supported by az CLI; using Graph PATCH" -ForegroundColor DarkYellow
     $tempPatch = [System.IO.Path]::GetTempFileName()
-    @{ web = @{ implicitGrantSettings = @{ enableIdTokenIssuance = $true; enableAccessTokenIssuance = $false } } } |
-        ConvertTo-Json -Depth 6 | Set-Content -Path $tempPatch -Encoding UTF8
+    Write-TempJson -Path $tempPatch -Json (@{ web = @{ implicitGrantSettings = @{ enableIdTokenIssuance = $true; enableAccessTokenIssuance = $false } } } | ConvertTo-Json -Depth 6)
     try {
         Invoke-AzCli @(
             'rest','--method','PATCH',
@@ -930,7 +1210,7 @@ if ($hasUserImpersonation) {
 
     $scopePatch = [System.IO.Path]::GetTempFileName()
     try {
-        $body | ConvertTo-Json -Depth 6 | Set-Content -Path $scopePatch -Encoding UTF8
+        Write-TempJson -Path $scopePatch -Json ($body | ConvertTo-Json -Depth 6)
         Invoke-AzCli @(
             'rest','--method','PATCH',
             '--url',"https://graph.microsoft.com/v1.0/applications/$AppObjectId",
@@ -956,6 +1236,10 @@ foreach ($groupName in $GroupPermissions.Keys) {
     $desiredRoles += New-AppRoleObject -Value $groupName -DisplayName $groupName `
         -Description "Warewolf group: $groupName"
 }
+
+### Not adding permissoins, only roles are assigned to match warewolf server implementation
+<#
+
 $permissionRoles = @{
     'Permission.View'          = 'Read workflow definitions and execution status'
     'Permission.Execute'       = 'Trigger workflow execution'
@@ -964,31 +1248,46 @@ $permissionRoles = @{
     'Permission.DeployFrom'    = 'Pull workflow deployments from a source environment'
     'Permission.Administrator' = 'Full permission over all workflow operations'
 }
+
+
+
 foreach ($p in $permissionRoles.GetEnumerator()) {
     $desiredRoles += New-AppRoleObject -Value $p.Key -DisplayName $p.Key -Description $p.Value
 }
+#>
 
 # Keep existing role IDs to avoid invalidating live appRoleAssignments
-$current = Invoke-AzCli @('ad','app','show','--id',$ClientId,'--query','appRoles','-o','json') |
-           ConvertFrom-AzJson
+$currentRoles = Invoke-AzCli @('ad','app','show','--id',$ClientId,'--query','appRoles','-o','json') |
+                ConvertFrom-AzJson
+$currentRolesArr = @()
+if ($null -ne $currentRoles) { $currentRolesArr = @($currentRoles) }
+
 foreach ($desired in $desiredRoles) {
-    $existing = $current | Where-Object { $_.value -eq $desired.value } | Select-Object -First 1
+    $existing = $currentRolesArr | Where-Object { $_.value -eq $desired.value } | Select-Object -First 1
     if ($existing) { $desired.id = $existing.id }
 }
 
-$tempPatch = [System.IO.Path]::GetTempFileName()
-@{ appRoles = $desiredRoles } | ConvertTo-Json -Depth 6 | Set-Content -Path $tempPatch -Encoding UTF8
-try {
-    Invoke-AzCli @(
-        'rest','--method','PATCH',
-        '--url',"https://graph.microsoft.com/v1.0/applications/$AppObjectId",
-        '--headers','Content-Type=application/json',
-        '--body',"@$tempPatch"
-    ) | Out-Null
-} finally {
-    Remove-Item $tempPatch -Force -ErrorAction SilentlyContinue
+# Decide whether to do a merge (add-only) or a full replace (disable+rewrite).
+# -ReplaceAppRoles suppresses the prompt and forces replace.
+# Otherwise, always prompt when existing roles conflict with the desired set,
+# even in -NonInteractive mode (the operator must explicitly choose).
+$stage4Mode = 'keep'
+$rolesNotInDesired = @($currentRolesArr | Where-Object {
+    $r = $_; $_.isEnabled -eq $true -and -not ($desiredRoles | Where-Object { $_.value -eq $r.value })
+})
+
+if ($ReplaceAppRoles) {
+    $stage4Mode = 'replace'
+    if ($rolesNotInDesired.Count -gt 0) {
+        Write-Host "    -ReplaceAppRoles: will disable and remove $($rolesNotInDesired.Count) existing role(s): $($rolesNotInDesired.value -join ', ')" -ForegroundColor Yellow
+    }
+} elseif ($rolesNotInDesired.Count -gt 0) {
+    # Always prompt — conflicting roles require an explicit operator decision.
+    $stage4Mode = Read-AppRoleConflictAction -ExistingRoles $currentRolesArr -DesiredRoles $desiredRoles
 }
-Write-Host "    reconciled $($desiredRoles.Count) app roles" -ForegroundColor Green
+
+Invoke-AppRolePatch -AppObjectId $AppObjectId -ExistingRoles $currentRolesArr -DesiredRoles $desiredRoles -Mode $stage4Mode
+Write-Host "    reconciled $($desiredRoles.Count) app roles (mode: $stage4Mode)" -ForegroundColor Green
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Stage 5 — Service principal
@@ -1024,11 +1323,10 @@ if (-not $SkipUserAssignment) {
         $userObj = Invoke-AzCli @('ad','user','show','--id',$u.Upn,'-o','json') | ConvertFrom-AzJson
         $userOid = $userObj.id
 
-        # Pre-fetch existing assignments on this user, keyed to OUR SP only,
-        # so we can decide locally whether to POST or skip.
-        $existing = $null
+        # Fetch all existing assignments for this user on OUR SP.
+        $existingAssignments = $null
         try {
-            $existing = Invoke-AzCli @(
+            $existingAssignments = Invoke-AzCli @(
                 'rest','--method','GET',
                 '--url',"https://graph.microsoft.com/v1.0/users/$userOid/appRoleAssignments"
             ) | ConvertFrom-AzJson
@@ -1036,17 +1334,48 @@ if (-not $SkipUserAssignment) {
             Write-Warning "    could not list existing assignments for $($u.Upn): $($_.Exception.Message)"
         }
 
-        $alreadyAssigned = New-Object 'System.Collections.Generic.HashSet[string]'
-        if ($existing -and $existing.value) {
-            foreach ($e in $existing.value) {
-                if ($e.resourceId -eq $SpObjectId) {
-                    [void]$alreadyAssigned.Add([string]$e.appRoleId)
-                }
+        # Map roleId -> roleName for display, restricted to OUR SP.
+        $alreadyAssigned = New-Object 'System.Collections.Generic.HashSet[string]'   # set of appRoleId GUIDs
+        $existingRoleValues = New-Object 'System.Collections.Generic.List[string]'   # human-readable names
+
+        if ($existingAssignments -and $existingAssignments.value) {
+            foreach ($e in $existingAssignments.value) {
+                if ($e.resourceId -ne $SpObjectId) { continue }
+                [void]$alreadyAssigned.Add([string]$e.appRoleId)
+                # resolve GUID -> .value for display
+                $matchedRole = $spRoles | Where-Object { $_.id -eq $e.appRoleId } | Select-Object -First 1
+                if ($matchedRole) { [void]$existingRoleValues.Add($matchedRole.value) }
+                else              { [void]$existingRoleValues.Add($e.appRoleId) }
             }
         }
 
-        $rolesToAssign = @($u.Group) + $GroupPermissions[$u.Group]
-        foreach ($roleValue in $rolesToAssign) {
+        # Compute the full desired role set for this user.
+        $desiredRoleValues = @(@($u.Group) + @($GroupPermissions[$u.Group]))
+
+        # Decide mode: replace (clear + reassign) or keep (merge).
+        $userMode = 'keep'
+        if ($alreadyAssigned.Count -gt 0) {
+            if ($ReplaceUserAssignments) {
+                $userMode = 'replace'
+                Write-Host "    -ReplaceUserAssignments: clearing all existing assignments for $($u.Upn)" -ForegroundColor Yellow
+            } else {
+                # Always prompt when there are existing assignments — the operator
+                # must decide whether to clear and reassign or just add missing ones.
+                $userMode = Read-UserAssignmentConflictAction `
+                    -Upn $u.Upn `
+                    -ExistingRoleValues $existingRoleValues.ToArray() `
+                    -DesiredRoleValues  $desiredRoleValues
+            }
+        }
+
+        if ($userMode -eq 'replace') {
+            Remove-AllUserAppRoleAssignments -UserOid $userOid -SpObjectId $SpObjectId -Upn $u.Upn
+            # After deletion clear the local set so every desired role is posted fresh.
+            $alreadyAssigned.Clear()
+        }
+
+        # Assign each desired role that is not yet present.
+        foreach ($roleValue in $desiredRoleValues) {
             $appRole = $spRoles | Where-Object { $_.value -eq $roleValue } | Select-Object -First 1
             if (-not $appRole) {
                 Write-Warning "    role '$roleValue' not found on SP, skipping for $($u.Upn)"
@@ -1064,7 +1393,7 @@ if (-not $SkipUserAssignment) {
                 appRoleId   = $appRole.id
             }
             $tempBody = [System.IO.Path]::GetTempFileName()
-            $bodyObj | ConvertTo-Json -Depth 4 | Set-Content -Path $tempBody -Encoding UTF8
+            Write-TempJson -Path $tempBody -Json ($bodyObj | ConvertTo-Json -Depth 4)
 
             try {
                 Invoke-AzCli @(
@@ -1362,7 +1691,7 @@ if (-not $hasProperties) {
     # id/name/type metadata that GET returned.
     $putBody = [pscustomobject]@{ properties = $liveAuth.properties }
     $tokenStorePut = [System.IO.Path]::GetTempFileName()
-    $putBody | ConvertTo-Json -Depth 50 | Set-Content -Path $tokenStorePut -Encoding UTF8
+    Write-TempJson -Path $tokenStorePut -Json ($putBody | ConvertTo-Json -Depth 50)
     try {
         Invoke-AzCli @(
             'rest','--method','PUT',

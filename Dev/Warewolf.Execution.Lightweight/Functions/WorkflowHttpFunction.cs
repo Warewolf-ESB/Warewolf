@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Auth;
+using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight
@@ -90,6 +92,7 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>Mirrors Services/{*name} — function-key authenticated execution.</summary>
         [Function("ExecuteService")]
+        [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteService(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Services/{*name}")] HttpRequestData req,
             string name)
@@ -101,8 +104,17 @@ namespace Warewolf.Execution.Lightweight
         /// not reject the request before we can validate the JWT ourselves.
         /// Auth is handled by the EasyAuth + WorkflowAuthorization middleware pipeline;
         /// FunctionContext is passed so the principal built by middleware can be reused.
+        /// <para>
+        /// (RTE-05) The <c>/secure/apis.json</c> discovery route flows through this same
+        /// function; the View|Execute requirement makes the View intent explicit and
+        /// keeps a single declarative source of truth.
+        /// (RTE-06) For an admin-only route, declare:
+        /// <code>[RequireWorkflowPermission(WorkflowPermission.Contribute)]</code>
+        /// or <see cref="WorkflowPermission.Administrator"/>.
+        /// </para>
         /// </summary>
         [Function("ExecuteSecureWorkflow")]
+        [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
             string name,
@@ -138,6 +150,7 @@ namespace Warewolf.Execution.Lightweight
         /// Mirrors <c>WebServerController.ExecuteService</c> + suffix handling.
         /// </summary>
         [Function("ExecuteWorkflowByName")]
+        [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteByName(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow/{workflowName}")] HttpRequestData req,
             string workflowName)
@@ -162,6 +175,7 @@ namespace Warewolf.Execution.Lightweight
         /// Mirrors <c>WebServerController.ExecuteService</c> (generic path).
         /// </summary>
         [Function("ExecuteWorkflow")]
+        [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> Execute(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow")] HttpRequestData req)
         {

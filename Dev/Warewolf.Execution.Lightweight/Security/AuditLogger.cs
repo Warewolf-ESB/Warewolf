@@ -94,5 +94,35 @@ namespace Warewolf.Execution.Lightweight.Security
         /// current UTC timestamp.</returns>
         public string GetDecryptionLog(string instanceId)
             => $"SECURITY_AUDIT | Event=DecryptionInvoked | InstanceId={instanceId} | Utc={DateTimeOffset.UtcNow}";
+
+        // ── Authorization audit (MWA-05 / OBS-02) ─────────────────────────────
+
+        /// <summary>
+        /// (MWA-05 / OBS-02) Emits a structured audit event for an authentication
+        /// or authorization outcome.  The event is logged at Warning so it is
+        /// included in default Application Insights retention.
+        ///
+        /// Cost-aware: a single structured log statement, no extra HTTP calls.
+        /// </summary>
+        /// <param name="outcome">"401" or "403".</param>
+        /// <param name="caller">Caller identity (UPN or "app:{oid}"); never include tokens.</param>
+        /// <param name="workflow">Workflow name in scope, or empty.</param>
+        /// <param name="path">Request path.</param>
+        /// <param name="reason">Denial reason; never include secret material.</param>
+        /// <param name="correlationId">Per-request correlation id.</param>
+        public void LogAuthOutcome(
+            string outcome,
+            string caller,
+            string workflow,
+            string path,
+            string reason,
+            string correlationId)
+        {
+            // Structured log so KQL queries can filter on outcome / workflow / caller.
+            _logger.LogWarning(
+                "SECURITY_AUDIT | Event=AuthOutcome | Outcome={Outcome} | Caller={Caller} | " +
+                "Workflow={Workflow} | Path={Path} | Reason={Reason} | CorrelationId={CorrelationId} | Utc={Utc}",
+                outcome, caller, workflow, path, reason, correlationId, DateTimeOffset.UtcNow);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Warewolf.Security.Encryption;
 
 namespace Warewolf.Execution.Lightweight.Logging
 {
@@ -65,6 +66,15 @@ namespace Warewolf.Execution.Lightweight.Logging
         {
             var xml = XElement.Load(filePath);
             var rawCs = xml.Attribute("ConnectionString")?.Value ?? string.Empty;
+
+            // Decrypt if the connection string is AES-encrypted (WFAES:: prefix)
+            // or DPAPI-encrypted (base64). The DpapiWrapper.AesDecryptHook must
+            // already be wired by KeyVaultStartupExtensions.InitializeKeyVaultAsync
+            // before this method is called.
+            if (!string.IsNullOrEmpty(rawCs) && rawCs.CanBeDecrypted())
+            {
+                rawCs = DpapiWrapper.Decrypt(rawCs);
+            }
 
             // Parse semicolon-delimited key=value pairs (split on first '=' only).
             var props = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

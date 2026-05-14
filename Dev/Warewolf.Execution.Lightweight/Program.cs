@@ -28,18 +28,9 @@ try
     // Single log-level gate shared by all sinks.
     // Set ExecutionLogLevel=Warning  → only Warning / Error / Critical reach any sink.
     // Set ExecutionLogLevel=Debug    → everything flows through.
-    var minimumLevel = Warewolf.Execution.Lightweight.Logging.ExecutionLogLevel.Read();
+    var minimumLevel =  ExecutionLogLevel.Read();
 
     Dev2Logger.Info($"Program minimum log level set to: {minimumLevel}", executionId);
-
-    var elasticOptions = enableElastic && File.Exists(elasticsearchSettingsPath)
-        ? ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath)
-        : null;
-
-    if (enableElastic && elasticOptions == null)
-    {
-        Dev2Logger.Warn($"Program Elasticsearch enabled but settings file not found or failed to load: {elasticsearchSettingsPath}", executionId);
-    }
 
     Dev2Logger.Debug("Program building host", executionId);
 
@@ -47,29 +38,11 @@ try
         .ConfigureWarewolf(config)
         .ConfigureServices(services =>
          {
-             services.AddSingleton<IExecutionLogger>(sp =>
-             {
-                 var loggers = new List<IExecutionLogger>();
-
-                 // AzureExecutionLogger — MEL sink (App Insights / console)
-                 if (enableConsole)
-                 {
-                     loggers.Add(new AzureExecutionLogger(
-                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
-                         minimumLevel));
-                     Dev2Logger.Debug("Program added AzureExecutionLogger to logging pipeline", executionId);
-                 }
-
-                 // ElasticsearchExecutionLogger — Elasticsearch sink
-                 if (elasticOptions is not null)
-                 {
-                     loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
-                     Dev2Logger.Debug("Program added ElasticsearchExecutionLogger to logging pipeline", executionId);
-                 }
-
-                 return new CompositeExecutionLogger(loggers);
-             });
-
+             services.AddExecutionLogging(
+                 enableConsole,
+                 enableElastic,
+                 elasticsearchSettingsPath,
+                 minimumLevel);
          })
         .Build();
 
@@ -77,12 +50,16 @@ try
 
     await StartupOrchestrator.RunStartupAsync(host, config);
 
+    // Explicitly resolve IExecutionLogger here — AFTER RunStartupAsync — so
+    // the AES decrypt hook is guaranteed to be wired before the singleton
+    // factory runs (which reads the encrypted ElasticsearchLoggingSource.bite).
+    var executionLogger = host.Services.GetRequiredService<IExecutionLogger>();
+
     Dev2Logger.Info("Program startup orchestrator completed, configuring Dev2Logger sinks", executionId);
 
     // Route every Dev2Logger.X() call to the IExecutionLogger sinks (Azure / Elasticsearch).
     // Must be set after RunStartupAsync so Config.Server is initialised before any Dev2Logger call.
-    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(
-        host.Services.GetRequiredService<IExecutionLogger>());
+    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
 
     // Also set the correlation prefix provider so that Dev2Logger's own log4net path
     // (when ExternalSink is bypassed) includes instance/invocation correlation.
