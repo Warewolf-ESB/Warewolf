@@ -1,68 +1,35 @@
 {
-
     "profiles": {
-
         "Docker (Azure Functions)": {
-
             "commandName": "Executable",
-
             "executablePath": "powershell.exe",
-
             "commandLineArgs": "-ExecutionPolicy Bypass -NoProfile -File engine\\run.ps1",
-
             "workingDirectory": "."
         },
-
-
-        "Azure Functions": {
-
-            "commandName": "Executable",
-
-            "executablePath": "func",
-
-            "commandLineArgs": "start --port 7071",
-
-            "workingDirectory": "$(ProjectDir)",
-
-            "launchBrowser": false
-        },
-
-
+      "Azure Functions": {
+        "commandName": "Executable",
+        "executablePath": "func",
+        "commandLineArgs": "start --port 7071",
+        "workingDirectory": "$(ProjectDir)",
+        "launchBrowser": false
+      },
         "Azure Functions (Debug)": {
-
             "commandName": "Project",
-
             "commandLineArgs": "--port 7071",
-
             "launchBrowser": false,
-
             "environmentVariables": {
-
                 "AZURE_FUNCTIONS_ENVIRONMENT": "Development"
             }
-
         },
-
-
         "Azure Functions (Coverage)": {
-
             "commandName": "Executable",
-
             "executablePath": "dotnet-coverage",
-
             "commandLineArgs": "collect --output coverage/engine.cobertura.xml --output-format cobertura --settings ..\\..\\coverage-settings.xml -- func start --port 7071",
-
             "workingDirectory": "$(ProjectDir)",
-
             "launchBrowser": false,
-
             "environmentVariables": {
-
-                "AZURE_FUNCTIONS_ENVIRONMENT": "Development"
+              "AZURE_FUNCTIONS_ENVIRONMENT": "Development"
             }
-
         }
-
     }
-
 }
