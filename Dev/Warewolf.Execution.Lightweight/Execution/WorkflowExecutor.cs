@@ -115,6 +115,8 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] WorkflowExecutor: file not found at '{request.WorkflowFilePath}' for workflow '{request.WorkflowName}'");
                 return WorkflowExecutionResult.NotFound($"Workflow '{request.WorkflowName}' not found.");
             }
 

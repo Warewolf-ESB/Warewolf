@@ -930,6 +930,49 @@ function Start-LightweightExecution {
             Write-Warn "WorkflowsDirectory probe found no Examples\Control Flow - Decision.bite under any of: $($candidates -join ', ')"
         }
     }
+    # Merge integration-test tool workflows into WorkflowsDirectory.
+    #
+    # The published TestBinaries layout stores security-spec workflows under
+    # "Resources - ServerTests\Resources" and integration-test workflows (e.g.
+    # tools\http get\TC013*.bite) under the sibling "Resources" directory.  The
+    # probe above picks "Resources - ServerTests\Resources" first (it contains
+    # the security-spec sentinel), but the Azure Functions Integration Tests job
+    # then fails because the tools\ workflows are absent from that directory.
+    #
+    # Fix: after resolving WorkflowsDirectory, scan every sibling Resources*
+    # directory for a "tools\" subfolder that is missing from WorkflowsDirectory
+    # and create a junction point for it.  Junctions are zero-copy and instant.
+    # If junction creation fails (e.g. cross-volume), fall back to a recursive
+    # file copy.  Either way, delete any stale workflow-index.json in
+    # WorkflowsDirectory afterwards so the engine rebuilds the index from disk
+    # and picks up the newly merged workflows.
+    if ($env:WorkflowsDirectory) {
+        $toolsTarget = Join-Path $env:WorkflowsDirectory 'tools'
+        if (-not (Test-Path $toolsTarget)) {
+            foreach ($sibling in @(Get-ChildItem -LiteralPath $runDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'Resources*' })) {
+                $siblingTools = Join-Path $sibling.FullName 'tools'
+                if (Test-Path $siblingTools) {
+                    Write-Host "Merging tools\ from '$siblingTools' into WorkflowsDirectory via junction"
+                    try {
+                        & cmd.exe /c mklink /J "$toolsTarget" "$siblingTools" 2>&1 | Write-Host
+                    } catch {
+                        Write-Host "Junction failed, falling back to file copy: $_"
+                        Copy-Item -LiteralPath $siblingTools -Destination $toolsTarget -Recurse -Force
+                    }
+                    if (Test-Path $toolsTarget) {
+                        Write-Host "tools\ merged successfully into '$env:WorkflowsDirectory'"
+                        # Remove stale index so the engine rescans and indexes the new workflows.
+                        $staleIndex = Join-Path $env:WorkflowsDirectory 'workflow-index.json'
+                        if (Test-Path $staleIndex) {
+                            Remove-Item $staleIndex -Force
+                            Write-Host "Removed stale workflow-index.json from WorkflowsDirectory"
+                        }
+                    }
+                    break
+                }
+            }
+        }
+    }
     # Bump Azure Functions worker log level so /Secure/<slug> 500s leave their
     # exception text in warewolf-server.log instead of being swallowed.
     if (-not $env:AzureFunctionsJobHost__Logging__LogLevel__Default) {

@@ -85,7 +85,11 @@ namespace Warewolf.Execution.Lightweight
 
             var index = GetIndex(workflowsDirectory);
             if (index.Count == 0)
+            {
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] Resolve miss: index is EMPTY for dir='{workflowsDirectory}' name='{nameWithoutExtension}'");
                 return null;
+            }
 
             // Normalise to forward slashes + lowercase, strip any leading separator.
             var key = nameWithoutExtension
@@ -93,9 +97,17 @@ namespace Warewolf.Execution.Lightweight
                 .TrimStart('/')
                 .ToLowerInvariant();
 
-            return index.TryGetValue(key, out var relPath)
-                ? Path.Combine(workflowsDirectory, relPath.Replace('/', Path.DirectorySeparatorChar))
-                : null;
+            if (index.TryGetValue(key, out var relPath))
+            {
+                var absPath = Path.Combine(workflowsDirectory, relPath.Replace('/', Path.DirectorySeparatorChar));
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] Resolve HIT: key='{key}' → '{absPath}'");
+                return absPath;
+            }
+
+            Console.WriteLine(
+                $"[WorkflowIndexDiag] Resolve miss: key='{key}' not in index (indexCount={index.Count}) dir='{workflowsDirectory}'");
+            return null;
         }
 
         // ── Internal helpers ──────────────────────────────────────────────────
@@ -125,20 +137,33 @@ namespace Warewolf.Execution.Lightweight
             var indexPath = Path.Combine(workflowsDirectory, IndexFileName);
 
             if (File.Exists(indexPath))
-                return TryDeserializeIndex(indexPath);
+            {
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] LoadIndex: reading index file '{indexPath}'");
+                var result = TryDeserializeIndex(indexPath);
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] LoadIndex: index file loaded, entryCount={result.Count}");
+                return result;
+            }
 
             // Index absent — build from disk, persist for future cold-starts, then return.
+            Console.WriteLine(
+                $"[WorkflowIndexDiag] LoadIndex: no index file at '{indexPath}', scanning disk");
             try
             {
                 var dict = BuildIndexFromDisk(workflowsDirectory);
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] LoadIndex: disk scan complete, entryCount={dict.Count}");
                 TryPersistIndex(indexPath, dict);
 
                 return dict.Count > 0
                     ? dict.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase)
                     : FrozenDictionary<string, string>.Empty;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(
+                    $"[WorkflowIndexDiag] LoadIndex: disk scan failed for '{workflowsDirectory}': {ex.GetType().Name}: {ex.Message}");
                 return FrozenDictionary<string, string>.Empty;
             }
         }
