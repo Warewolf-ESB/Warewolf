@@ -148,6 +148,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 "⚠ DEV BYPASS: {Header} header detected on {Path} — skipping all policy checks. " +
                 "This must NEVER happen in Production.",
                 BypassHeader, path);
+            context.Items[AuthConstants.DevBypassContextKey] = true;
             await next(context);
             return;
         }

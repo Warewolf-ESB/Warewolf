@@ -231,11 +231,15 @@ namespace Warewolf.Execution.Lightweight
             {
                 // Prefer the principal already built by the middleware pipeline (Secure/* routes).
                 // Fall back to direct JWT validation for Services/* routes that bypass middleware.
+                var devBypass =
+                    context?.Items.TryGetValue(Auth.Models.AuthConstants.DevBypassContextKey, out _) == true;
+
                 var principalAuthenticated =
-                    context is not null &&
-                    context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
-                    p is Auth.WorkflowClaimsPrincipal wcp &&
-                    wcp.Identity?.IsAuthenticated == true;
+                    devBypass ||
+                    (context is not null &&
+                     context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                     p is Auth.WorkflowClaimsPrincipal wcp &&
+                     wcp.Identity?.IsAuthenticated == true);
 
                 if (!principalAuthenticated)
                 {
