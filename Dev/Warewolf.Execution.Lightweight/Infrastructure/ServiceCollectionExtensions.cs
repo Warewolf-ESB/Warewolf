@@ -32,8 +32,10 @@ internal static class ServiceCollectionExtensions
     internal static IServiceCollection AddCoreServices(
         this IServiceCollection services,
         string workflowsDirectory)
-    {
-        services.AddLogging();
+	{
+		const string executionId = "ServiceCollectionExtensions-CoreServices";
+
+		services.AddLogging();
         services.AddSingleton<IExecutionLogger, AzureExecutionLogger>();
         services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
         services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
