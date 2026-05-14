@@ -136,12 +136,29 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [ClassInitialize]
         public static async Task Init(TestContext _)
         {
-            try
+            // Poll a real worker route — /admin/host/ping reports ready before
+            // the isolated worker is warm, which causes a cold first invocation
+            // to return 500 with an empty body when this class runs first.
+            // /login responds with 501 + a JSON body when no AuthenticationOverrideWorkflow
+            // is configured; any non-empty body proves the worker is warm.
+            const int maxAttempts = 30;
+            const int delayMs     = 2_000;
+            for (int i = 0; i < maxAttempts; i++)
             {
-                var r = await _http.GetAsync(BaseUrl + "/admin/host/ping");
-                _hostAvailable = (int)r.StatusCode < 500;
+                try
+                {
+                    var r    = await _http.GetAsync(BaseUrl + "/login");
+                    var body = await r.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrWhiteSpace(body))
+                    {
+                        _hostAvailable = true;
+                        return;
+                    }
+                }
+                catch { }
+                await Task.Delay(delayMs);
             }
-            catch { _hostAvailable = false; }
+            _hostAvailable = false;
         }
 
         void SkipIfUnavailable()
@@ -205,12 +222,28 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [ClassInitialize]
         public static async Task Init(TestContext _)
         {
-            try
+            // Poll a real worker route — /admin/host/ping reports ready before the
+            // isolated worker is warm, so the first /oauth/dropbox/* request would
+            // return 500 with an empty body when this class runs ahead of any
+            // other class that performs its own warm-up.
+            const int maxAttempts = 30;
+            const int delayMs     = 2_000;
+            for (int i = 0; i < maxAttempts; i++)
             {
-                var r = await _http.GetAsync(BaseUrl + "/admin/host/ping");
-                _hostAvailable = (int)r.StatusCode < 500;
+                try
+                {
+                    var r    = await _http.GetAsync(BaseUrl + "/oauth/dropbox/start");
+                    var body = await r.Content.ReadAsStringAsync();
+                    if ((int)r.StatusCode < 500 && !string.IsNullOrWhiteSpace(body))
+                    {
+                        _hostAvailable = true;
+                        return;
+                    }
+                }
+                catch { }
+                await Task.Delay(delayMs);
             }
-            catch { _hostAvailable = false; }
+            _hostAvailable = false;
         }
 
         void SkipIfUnavailable()

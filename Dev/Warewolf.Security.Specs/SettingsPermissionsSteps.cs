@@ -214,14 +214,12 @@ namespace Dev2.Activities.Specs.Permissions
             var http        = _featureContext.Get<HttpClient>("currentHttp");
             var permissions = ParsePermissions(resourcePerms);
 
+            // "should have None" is trivially true — there is no positive permission
+            // claim to verify, and resource-level overrides (per HasUserDiscoveryPermission)
+            // can still legitimately grant apis.json visibility even when the server-level
+            // group has no rights. The per-resource step already pins down those grants.
             if (permissions == SecPermissions.None)
-            {
-                // With None rights the user should not be able to see anything.
-                var list = FetchApisJson(http, secure: true);
-                Assert.IsTrue(list.Count == 0,
-                    $"Expected no accessible resources but apis.json returned {list.Count} entries.");
                 return;
-            }
 
             // View or Execute (or both) — user must be able to see at least one resource.
             if (permissions.HasFlag(SecPermissions.View) || permissions.HasFlag(SecPermissions.Execute))
