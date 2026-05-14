@@ -44,14 +44,9 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 ///
 /// When <c>secure.config</c> is not loaded, all authenticated routes pass through
 /// (open-access mode).
-///
-/// In <b>Development</b> only: sending the header <c>X-WW-Bypass-Auth: local-dev-bypass</c>
-/// skips all policy checks.  This bypass is never honoured in Production.
 /// </summary>
 public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 {
-    private const string BypassHeader        = "X-WW-Bypass-Auth";
-    private const string BypassHeaderValue   = "local-dev-bypass";
     private const string CorrelationIdHeader = "X-WW-Correlation-Id";
 
     private readonly IWorkflowPolicyMatcher                      _policyMatcher;
@@ -131,25 +126,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         // absent or expired JWT → empty list.  Never returns 401 for this endpoint.
         if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
         {
-            await next(context);
-            return;
-        }
-
-        // ── Development-only bypass ───────────────────────────────────────────
-        // NEVER active in Production — environment guard is mandatory.
-        // Check IHostEnvironment first (set correctly when the SDK propagates the
-        // env-var), then fall back to direct env-var reads via HostEnvironmentConfig
-        // (handles cases where the isolated-worker SDK does not propagate
-        // AZURE_FUNCTIONS_ENVIRONMENT / ASPNETCORE_ENVIRONMENT into IHostEnvironment).
-        if ((_hostEnvironment.IsDevelopment() || HostEnvironmentConfig.IsDevelopmentEnvironment()) &&
-            request.Headers.TryGetValues(BypassHeader, out var bypassValues) &&
-            bypassValues.Any(v => string.Equals(v, BypassHeaderValue, StringComparison.Ordinal)))
-        {
-            _logger.LogWarning(
-                "⚠ DEV BYPASS: {Header} header detected on {Path} — skipping all policy checks. " +
-                "This must NEVER happen in Production.",
-                BypassHeader, path);
-            context.Items[AuthConstants.DevBypassContextKey] = true;
             await next(context);
             return;
         }

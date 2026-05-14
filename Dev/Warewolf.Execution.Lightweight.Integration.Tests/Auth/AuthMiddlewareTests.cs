@@ -19,7 +19,6 @@
  *    - X-WW-Correlation-Id supplied by caller is echoed in the 401 response body and header
  *    - X-WW-Correlation-Id is auto-generated and present in 401 when caller does not supply it
  *    - /services/* route enforced: valid token passes auth gate
- *    - Dev bypass header (X-WW-Bypass-Auth: local-dev-bypass) skips policy checks
  *    - 403 Forbidden when authenticated caller has no matching group in secure.config
  *    - 403 response body schema matches 401 (error/message/path/correlationId/workflow)
  *    - X-WW-Correlation-Id echoed in 403 body and response header
@@ -409,35 +408,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
 
             Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
                 "A valid JWT must not produce 401 on /services/* routes. " +
-                $"Got {(int)resp.StatusCode}");
-        }
-
-        /// <summary>
-        /// Development-only bypass: X-WW-Bypass-Auth: local-dev-bypass skips all policy
-        /// checks in WorkflowAuthorizationMiddleware when IsDevelopment() is true.
-        /// The Azure Functions host started by the integration-test script uses Development
-        /// environment by default, so this header must be honoured.
-        /// Exercises: WorkflowAuthorizationMiddleware dev-bypass branch (lines 122-132).
-        /// </summary>
-        [TestMethod]
-        public async Task SecureRoute_DevBypassHeader_SkipsPolicyChecks()
-        {
-            SkipIfUnavailable();
-
-            // Use a wrong-key token so EasyAuthRedirectMiddleware passes it (hasAuthHeader=true),
-            // and BearerTokenPrincipalParser fails → anonymous principal.
-            // Without the bypass: 401. With the bypass: middleware skips all checks.
-            var badToken = JwtTestHelper.WrongKeyToken(_secretKey, "TeamA");
-            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", badToken);
-            req.Headers.Add("X-WW-Bypass-Auth", "local-dev-bypass");
-
-            var resp = await _http.SendAsync(req);
-
-            // Must not be 401 — the bypass header skips auth checks. Outcome is 404 (no such
-            // workflow) or 200/500 depending on what's deployed.
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "X-WW-Bypass-Auth: local-dev-bypass must skip policy checks in Development. " +
                 $"Got {(int)resp.StatusCode}");
         }
     }

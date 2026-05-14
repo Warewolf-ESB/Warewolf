@@ -1,1 +1,0 @@
-&".\Microsoft.TestPlatform\tools\net462\common7\ide\Extensions\TestPlatform\vstest.console.exe" /logger:trx .\Warewolf.Execution.Lightweight.Integration.Tests.dll    /ResultsDirectory:"C:\Users\ultra\warewolf\TestResults-Local"

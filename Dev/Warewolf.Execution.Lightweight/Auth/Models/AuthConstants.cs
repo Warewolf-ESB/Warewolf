@@ -40,15 +40,6 @@ public static class AuthConstants
     /// </summary>
     public const string PrincipalContextKey = "WorkflowClaimsPrincipal";
 
-    /// <summary>
-    /// Key set in <see cref="Microsoft.Azure.Functions.Worker.FunctionContext.Items"/>
-    /// by <c>WorkflowAuthorizationMiddleware</c> when the Development-only bypass header
-    /// (<c>X-WW-Bypass-Auth: local-dev-bypass</c>) is honoured.
-    /// Functions must check this flag to skip their own redundant auth check when
-    /// the middleware already granted access via the bypass.
-    /// </summary>
-    public const string DevBypassContextKey = "WwDevBypassActive";
-
     // ── Route prefixes ────────────────────────────────────────────────────────
 
     /// <summary>Prefix for anonymous public routes.</summary>

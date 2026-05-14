@@ -152,45 +152,6 @@ public class WorkflowAuthorizationMiddlewareHttpTests
         Assert.IsTrue(called[0]);
     }
 
-    // ── Development-only bypass header ───────────────────────────────────────
-
-    [TestMethod]
-    public async Task Invoke_DevBypassHeader_InDevelopment_CallsNext()
-    {
-        var mw  = Build(envName: "Development");
-        var ctx = new HttpFunctionContext();
-        var req = new FakeHttpRequestData(ctx, new Uri("https://x.test/secure/hello"));
-        req.AddHeader("X-WW-Bypass-Auth", "local-dev-bypass");
-        ctx.SetHttpRequest(req);
-        ctx.SetFunctionName("TestFn");
-
-        var (next, called) = TrackingNext();
-        await mw.Invoke(ctx, next);
-
-        Assert.IsTrue(called[0], "Dev bypass header in Development must skip policy checks");
-    }
-
-    [TestMethod]
-    public async Task Invoke_DevBypassHeader_InProduction_DoesNotBypass_AndAllowedMatcherContinues()
-    {
-        // Bypass header must be ignored in Production.
-        // We provide an authenticated principal so the middleware doesn't 401, and AllowedMatcher
-        // returns Allowed, confirming the request flowed past the (ignored) bypass check.
-        var mw  = Build(matcher: new AllowedMatcher(), envName: "Production");
-        var ctx = new HttpFunctionContext();
-        var req = new FakeHttpRequestData(ctx, new Uri("https://x.test/secure/hello"));
-        req.AddHeader("X-WW-Bypass-Auth", "local-dev-bypass"); // must be ignored
-        ctx.SetHttpRequest(req);
-        ctx.SetFunctionName("TestFn");
-        SetAuthenticatedPrincipal(ctx);
-
-        var (next, called) = TrackingNext();
-        await mw.Invoke(ctx, next);
-
-        // AllowedMatcher lets it through → proves bypass was not triggered in Production
-        Assert.IsTrue(called[0]);
-    }
-
     // ── Policy outcomes — Allowed ─────────────────────────────────────────────
 
     [TestMethod]
