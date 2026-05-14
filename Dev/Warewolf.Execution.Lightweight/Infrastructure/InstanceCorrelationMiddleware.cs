@@ -74,9 +74,23 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
             logger.LogInformation("InstanceCorrelationMiddleware invoked for function '{FunctionName}' (InvocationId: {InvocationId})", context.FunctionDefinition.Name,
             context.InvocationId);
 
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 await next(context);
+
+                stopwatch.Stop();
+                logger.LogInformation(
+                    "Request completed for function '{FunctionName}' (InvocationId: {InvocationId}) in {ElapsedMs}ms",
+                    functionName, invocationId, stopwatch.ElapsedMilliseconds);
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                logger.LogError(ex,
+                    "Request failed for function '{FunctionName}' (InvocationId: {InvocationId}) after {ElapsedMs}ms",
+                    functionName, invocationId, stopwatch.ElapsedMilliseconds);
+                throw;
             }
             finally
             {
