@@ -1,7 +1,7 @@
-<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=http://localhost;Port=9200;SearchIndex=warewolftestlogs;AuthenticationType=Password;Username=test;Password=test123" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-	<DisplayName>ElasticsearchLoggingSource</DisplayName>
-	<AuthorRoles>   </AuthorRoles>
-	<ErrorMessages />
-	<TypeOf>ElasticsearchSource</TypeOf>
-	<VersionInfo DateTimeStamp="2026-04-07T15:06:00.0698055+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f1dc0c3f-3d1c-444a-b94c-68411147f55e" VersionId="94d4b25c-41c3-4e2c-b760-f0cf329b8afb" />
+﻿<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="WFAES::aEKg8/Qs6n3RWotCZPY2CkSRguRNuifepywzZ9bPh6D86tgOZWShOfEezZua1Q96zH1fm2lHGLvWr1/T3CreWBht05HyDrr48UE6GQd+QlJFxgrMPEpSlsMHHD8eDG4g2kpTXhfk/pTc3wAmLxo8bk8zdkPIPHJFZge2ivJP8ok66C0utMys4/pZcWMNxUvcdFpZf6crEFXpRFg3863NDUIM" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>ElasticsearchLoggingSource</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ElasticsearchSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-04-07T15:06:00.0698055+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f1dc0c3f-3d1c-444a-b94c-68411147f55e" VersionId="94d4b25c-41c3-4e2c-b760-f0cf329b8afb" />
 </Source>

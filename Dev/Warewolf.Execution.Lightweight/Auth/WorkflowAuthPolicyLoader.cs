@@ -4,7 +4,6 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using System.IO;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;

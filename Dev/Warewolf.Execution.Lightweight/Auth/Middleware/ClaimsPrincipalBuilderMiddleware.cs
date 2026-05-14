@@ -43,8 +43,6 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
     /// <inheritdoc/>
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
-        const string executionId = "ClaimsPrincipalBuilderMiddleware";
-
         var request = await context.GetHttpRequestDataAsync();
 
         if (request is not null)
@@ -52,7 +50,7 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
             var principal = await BuildPrincipalAsync(request, context.CancellationToken);
             context.Items[AuthConstants.PrincipalContextKey] = principal;
 
-            _logger.LogDebug(
+            _logger.LogTrace(
                 "Principal built: User={User} Authenticated={Auth} Groups=[{Groups}] Permissions={Perms}",
                 principal.UserName,
                 principal.Identity?.IsAuthenticated,
@@ -80,31 +78,18 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex,
+                _logger.LogDebug(ex,
                     "Principal parser {Parser} threw — yielding to next strategy", parser.Name);
                 continue;
             }
 
             if (principal?.Identity?.IsAuthenticated == true)
             {
-                if (AuthConstants.VerboseAuthLogging)
-                {
-                    _logger.LogInformation(
-                        "[AuthDiag] Principal resolved by parser {Parser}: User={User}",
-                        parser.Name, principal.UserName);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] Principal resolved by parser {parser.Name}: User={principal.UserName}");
-                }
                 return principal;
             }
         }
 
-        if (AuthConstants.VerboseAuthLogging)
-        {
-            _logger.LogInformation("[AuthDiag] No parser produced an authenticated principal — returning Anonymous");
-            if (AuthConstants.VerboseConsoleAuthLogging)
-                Console.WriteLine("[AuthDiag] No parser produced an authenticated principal — returning Anonymous");
-        }
+        _logger.LogDebug("[AuthDiag] No parser produced an authenticated principal — returning Anonymous");
 
         return WorkflowClaimsPrincipal.Anonymous();
     }
@@ -113,46 +98,28 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
 
     private void LogVerboseDiagnostics(WorkflowClaimsPrincipal principal)
     {
-        if (!AuthConstants.VerboseAuthLogging)
-            return;
-
         try
         {
-            if (AuthConstants.VerboseConsoleAuthLogging)
-                Console.WriteLine($"WorkflowClaimsPrincipal=>: {principal}");
-
-            _logger.LogInformation("WorkflowClaimsPrincipal=>" + principal);
-
             var identity = principal.Identity as ClaimsIdentity;
             var roles = string.Join(", ", principal.Identities
                 .SelectMany(i => i.Claims)
                 .Where(c => c.Type == ClaimTypes.Role)
                 .Select(c => c.Value));
-            var groups     = string.Join(", ", principal.Groups);
-            var perms      = string.Join(", ", principal.Permissions);
+            var groups = string.Join(", ", principal.Groups);
+            var perms = string.Join(", ", principal.Permissions);
             var claimCount = identity?.Claims.Count() ?? 0;
 
-            _logger.LogInformation(
+            _logger.LogDebug(
                 "[AuthDiag] ClaimsPrincipal: User={User} AuthType={AuthType} IsAuthenticated={IsAuth} " +
                 "Roles=[{Roles}] Groups=[{Groups}] Permissions=[{Perms}] ClaimCount={ClaimCount}",
                 principal.UserName,
                 identity?.AuthenticationType ?? "(none)",
                 identity?.IsAuthenticated ?? false,
                 roles, groups, perms, claimCount);
-
-            if (AuthConstants.VerboseConsoleAuthLogging)
-                Console.WriteLine($"[AuthDiag] ClaimsPrincipal: User={principal.UserName} AuthType={identity?.AuthenticationType ?? "(none)"} IsAuthenticated={identity?.IsAuthenticated ?? false} Roles=[{roles}] Groups=[{groups}] Permissions=[{perms}] ClaimCount={claimCount}");
-
-            foreach (var claim in identity?.Claims ?? Enumerable.Empty<Claim>())
-            {
-                _logger.LogDebug("[AuthDiag] Claim: Type={Type} Value={Value}", claim.Type, claim.Value);
-                if (AuthConstants.VerboseConsoleAuthLogging)
-                    Console.WriteLine($"[AuthDiag] Claim: Type={claim.Type} Value={claim.Value}");
-            }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "[AuthDiag] Failed to log principal details — diagnostic logging error (non-fatal)");
+            _logger.LogDebug(ex, "[AuthDiag] Failed to log principal details — diagnostic logging error (non-fatal)");
         }
     }
 }

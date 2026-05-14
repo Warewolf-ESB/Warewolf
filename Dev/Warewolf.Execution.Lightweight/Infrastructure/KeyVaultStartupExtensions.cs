@@ -37,7 +37,6 @@ internal static class KeyVaultStartupExtensions
 
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
-        var logger = host.Services.GetRequiredService<IExecutionLogger>();
 
         try
         {
@@ -48,9 +47,9 @@ internal static class KeyVaultStartupExtensions
             DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
 
             Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption hook wired. KeyId: {secretManager.KeyId}", executionId);
-
+     
             var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
-            logger.LogInfo(log);
+            Dev2Logger.Info(log, executionId);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
 
             Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}, KeyId: {secretManager.KeyId}", executionId);
@@ -60,7 +59,8 @@ internal static class KeyVaultStartupExtensions
             Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}", ex, executionId);
 
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
-            logger.LogError(ex, log);
+            Dev2Logger.Error(log, ex, executionId);
+
             audit.LogKeyVaultErrorAndMessage(log, ex);
             throw; // Fail fast: cannot serve requests without the AES key.
         }

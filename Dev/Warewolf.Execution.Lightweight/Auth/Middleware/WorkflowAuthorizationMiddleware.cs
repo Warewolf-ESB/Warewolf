@@ -51,7 +51,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     private readonly IRouteAuthorizationRegistry                 _routeRegistry;
     private readonly AuditLogger                                 _auditLogger;
     private readonly ILogger<WorkflowAuthorizationMiddleware>    _logger;
-    private readonly Action<FunctionContext, HttpResponseData>   _responseWriter;
 
     private static readonly JsonSerializerOptions JsonOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
@@ -73,15 +72,13 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         IWorkflowPolicyMatcher                      policyMatcher,
         IRouteAuthorizationRegistry                 routeRegistry,
         AuditLogger                                 auditLogger,
-        ILogger<WorkflowAuthorizationMiddleware>    logger,
-        Action<FunctionContext, HttpResponseData>?  responseWriter = null)
+        ILogger<WorkflowAuthorizationMiddleware>    logger)
     {
         _policyMatcher   = policyMatcher;
         _routeRegistry   = routeRegistry;
+        _hostEnvironment = hostEnvironment;
         _auditLogger     = auditLogger;
         _logger          = logger;
-        _responseWriter  = responseWriter
-            ?? ((ctx, response) => ctx.GetInvocationResult().Value = response);
     }
 
     /// <inheritdoc/>
@@ -163,31 +160,13 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             _routeRegistry.GetRequiredPermissions(functionName)
             ?? (WorkflowPermission.View | WorkflowPermission.Execute);
 
-        if (AuthConstants.VerboseAuthLogging)
-        {
-            try
-            {
-                _logger.LogInformation(
-                    "[AuthDiag] Function={Function} Workflow={Workflow} Caller={Caller} " +
-                    "RequiredPerms={ReqPerms} CallerGroups=[{Groups}]",
-                    functionName, workflowName, principal.CallerIdentity,
-                    requiredPermissions, string.Join(", ", principal.Groups));
-                if (AuthConstants.VerboseConsoleAuthLogging)
-                    Console.WriteLine($"[AuthDiag] Function={functionName} Workflow={workflowName} Caller={principal.CallerIdentity} RequiredPerms={requiredPermissions} CallerGroups=[{string.Join(", ", principal.Groups)}]");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-            }
-        }
-
         // ── Delegate to IWorkflowPolicyMatcher ────────────────────────────────
         var result = _policyMatcher.Evaluate(workflowName, principal, requiredPermissions);
 
         switch (result.Outcome)
         {
             case PolicyMatchOutcome.Allowed:
-                _logger.LogInformation(
+                _logger.LogDebug(
                     "Authorised '{Caller}' for workflow '{Workflow}'",
                     principal.CallerIdentity, workflowName);
                 await next(context);
@@ -196,7 +175,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             case PolicyMatchOutcome.NoPolicyFound:
                 // BYPASS_SECURE_CONFIG=true and config not effective — open-access mode.
                 // Operator has explicitly opted in; log a prominent warning.
-                _logger.LogWarning(
+                _logger.LogDebug(
                     "OPEN-ACCESS MODE: secure.config not effective and BYPASS_SECURE_CONFIG=true. " +
                     "Allowing '{Caller}' for workflow '{Workflow}' without policy enforcement. " +
                     "This setting must NOT be used in production.",
@@ -247,22 +226,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                     path: path,
                     reason: result.DenialReason ?? "policy_denied",
                     correlationId: correlationId);
-
-                if (AuthConstants.VerboseAuthLogging)
-                {
-                    try
-                    {
-                        _logger.LogInformation(
-                            "[AuthDiag] 403: Workflow={Workflow} Caller={Caller} Reason={Reason}",
-                            workflowName, principal.CallerIdentity, result.DenialReason);
-                        if (AuthConstants.VerboseConsoleAuthLogging)
-                            Console.WriteLine($"[AuthDiag] 403: Workflow={workflowName} Caller={principal.CallerIdentity} Reason={result.DenialReason}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                    }
-                }
 
                 await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
                     "forbidden", result.DenialReason ?? "Insufficient permissions.", path, correlationId,
@@ -316,21 +279,18 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 
     private void LogDiag(FunctionContext context, object? principalObj, string path)
     {
-        if (!AuthConstants.VerboseAuthLogging) return;
         try
         {
             var hasPrincipalKey = context.Items.ContainsKey(AuthConstants.PrincipalContextKey);
             var principalType   = principalObj?.GetType().Name ?? "(null)";
             var isAuth          = (principalObj as WorkflowClaimsPrincipal)?.Identity?.IsAuthenticated;
-            _logger.LogInformation(
+            _logger.LogDebug(
                 "[AuthDiag] 401 on {Path}: PrincipalKeyExists={KeyExists} PrincipalType={Type} IsAuthenticated={IsAuth}",
                 path, hasPrincipalKey, principalType, isAuth);
-            if (AuthConstants.VerboseConsoleAuthLogging)
-                Console.WriteLine($"[AuthDiag] 401 on {path}: PrincipalKeyExists={hasPrincipalKey} PrincipalType={principalType} IsAuthenticated={isAuth}");
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
+            _logger.LogDebug(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
         }
     }
 

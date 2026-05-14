@@ -43,32 +43,6 @@ namespace Dev2.Activities
             //PBI: this added for us with CustomContainer.CreateInstance
         }
 
-        public IDev2Activity Parse(List<IDev2Activity> seenActivities, object flowChart)
-		{
-#if WINDOWS || NETFRAMEWORK
-            var modelItem = flowChart as ModelItem;
-            var currentValue = modelItem?.GetCurrentValue();
-            if (currentValue is null)
-            {
-                return default;
-            }
-
-            if (currentValue is FlowStep start)
-            {
-                var tool = ParseTools(start, seenActivities);
-                return tool.FirstOrDefault();
-            }
-            if (currentValue is FlowSwitch<string> flowstart)
-            {
-                return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
-            }
-            var flowdec = currentValue as FlowDecision;
-            return ParseDecision(flowdec, seenActivities).FirstOrDefault();
-#else
-            return default;
-#endif
-        }
-
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         public IEnumerable<IDev2Activity> ParseToLinkedFlatList(IDev2Activity topLevelActivity)
