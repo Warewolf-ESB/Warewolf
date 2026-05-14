@@ -82,7 +82,10 @@ namespace Dev2.Runtime.Hosting
         }
         void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type, Guid workSpaceId)
         {
-
+            if (resourceList == null)
+            {
+                return;
+            }
 
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type);
 
@@ -110,6 +113,10 @@ namespace Dev2.Runtime.Hosting
 
         void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, Guid workSpaceId)
         {
+            if (resourceList == null)
+            {
+                return;
+            }
 
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)).Equals(rootNode.ResourcePath, StringComparison.InvariantCultureIgnoreCase));
 
