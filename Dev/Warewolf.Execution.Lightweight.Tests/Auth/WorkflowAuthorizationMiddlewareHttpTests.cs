@@ -20,6 +20,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Middleware;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
@@ -36,10 +37,12 @@ public class WorkflowAuthorizationMiddlewareHttpTests
 
     private static WorkflowAuthorizationMiddleware Build(
         IWorkflowPolicyMatcher?    matcher  = null,
-        IRouteAuthorizationRegistry? registry = null) =>
+        IRouteAuthorizationRegistry? registry = null,
+        string                     envName  = "Production") =>
         new(
             matcher   ?? new AllowedMatcher(),
             registry  ?? new NullRegistry(),
+            new StubHostEnvironment(envName),
             new AuditLogger(NullLogger<AuditLogger>.Instance),
             NullLogger<WorkflowAuthorizationMiddleware>.Instance);
 
@@ -216,5 +219,14 @@ public class WorkflowAuthorizationMiddlewareHttpTests
     private sealed class NullRegistry : IRouteAuthorizationRegistry
     {
         public WorkflowPermission? GetRequiredPermissions(string functionName) => null;
+    }
+
+    private sealed class StubHostEnvironment : IHostEnvironment
+    {
+        public StubHostEnvironment(string env) => EnvironmentName = env;
+        public string EnvironmentName   { get; set; }
+        public string ApplicationName   { get; set; } = "test";
+        public string ContentRootPath   { get; set; } = ".";
+        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; } = null!;
     }
 }

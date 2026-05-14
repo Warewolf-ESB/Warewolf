@@ -6,6 +6,7 @@
 
 using System.Net;
 using System.Text.Json;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
@@ -49,32 +50,45 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 	private const string BypassHeaderValue = "local-dev-bypass";
 	private const string CorrelationIdHeader = "X-WW-Correlation-Id";
 
-	private readonly IWorkflowPolicyMatcher _policyMatcher;
-	private readonly IRouteAuthorizationRegistry _routeRegistry;
-	private readonly IHostEnvironment _hostEnvironment;
-	private readonly AuditLogger _auditLogger;
-	private readonly ILogger<WorkflowAuthorizationMiddleware> _logger;
+    private readonly IWorkflowPolicyMatcher                      _policyMatcher;
+    private readonly IRouteAuthorizationRegistry                 _routeRegistry;
+    private readonly IHostEnvironment                            _hostEnvironment;
+    private readonly AuditLogger                                 _auditLogger;
+    private readonly ILogger<WorkflowAuthorizationMiddleware>    _logger;
+    private readonly Action<FunctionContext, HttpResponseData>   _responseWriter;
 
 	private static readonly JsonSerializerOptions JsonOptions =
 		new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-	/// <summary>
-	/// Initialises the middleware with policy matcher, route registry,
-	/// host environment, audit logger and logger.
-	/// </summary>
-	public WorkflowAuthorizationMiddleware(
-		IWorkflowPolicyMatcher policyMatcher,
-		IRouteAuthorizationRegistry routeRegistry,
-		IHostEnvironment hostEnvironment,
-		AuditLogger auditLogger,
-		ILogger<WorkflowAuthorizationMiddleware> logger)
-	{
-		_policyMatcher = policyMatcher;
-		_routeRegistry = routeRegistry;
-		_hostEnvironment = hostEnvironment;
-		_auditLogger = auditLogger;
-		_logger = logger;
-	}
+    /// <summary>
+    /// Initialises the middleware with policy matcher, route registry,
+    /// host environment, audit logger and logger.
+    /// </summary>
+    /// <param name="responseWriter">
+    /// Test seam — replaces the production
+    /// <c>context.GetInvocationResult().Value = response</c> wiring with a hook
+    /// the test can capture. Defaults to the production behaviour.
+    /// <see cref="FunctionContextExtensions.GetInvocationResult(FunctionContext)"/>
+    /// requires <c>IFunctionBindingsFeature</c> which is SDK-internal and cannot
+    /// be implemented by external tests, so the error-response branches were
+    /// dormant under coverage until this seam was introduced.
+    /// </param>
+    public WorkflowAuthorizationMiddleware(
+        IWorkflowPolicyMatcher                      policyMatcher,
+        IRouteAuthorizationRegistry                 routeRegistry,
+        IHostEnvironment                            hostEnvironment,
+        AuditLogger                                 auditLogger,
+        ILogger<WorkflowAuthorizationMiddleware>    logger,
+        Action<FunctionContext, HttpResponseData>?  responseWriter = null)
+    {
+        _policyMatcher   = policyMatcher;
+        _routeRegistry   = routeRegistry;
+        _hostEnvironment = hostEnvironment;
+        _auditLogger     = auditLogger;
+        _logger          = logger;
+        _responseWriter  = responseWriter
+            ?? ((ctx, response) => ctx.GetInvocationResult().Value = response);
+    }
 
 	/// <inheritdoc/>
 	public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
@@ -281,9 +295,29 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 		}
 	}
 
-	private static async Task WriteErrorAsync(
+	private async Task WriteErrorAsync(
 		HttpRequestData request,
 		FunctionContext context,
+		HttpStatusCode statusCode,
+		string error,
+		string message,
+		string path,
+		string correlationId,
+		object? extra = null)
+	{
+		var response = await BuildErrorResponseAsync(
+			request, statusCode, error, message, path, correlationId, extra);
+		_responseWriter(context, response);
+	}
+
+	/// <summary>
+	/// Builds an error <see cref="HttpResponseData"/> with a canonical JSON body,
+	/// <c>Content-Type: application/json</c>, and <c>X-WW-Correlation-Id</c> header.
+	/// Exposed as <c>public static</c> so unit tests can verify the response shape
+	/// without going through the full middleware pipeline.
+	/// </summary>
+	public static async Task<HttpResponseData> BuildErrorResponseAsync(
+		HttpRequestData request,
 		HttpStatusCode statusCode,
 		string error,
 		string message,
@@ -309,6 +343,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 		response.Headers.Add("Content-Type", "application/json");
 		response.Headers.Add(CorrelationIdHeader, correlationId);
 		await response.WriteStringAsync(JsonSerializer.Serialize(body, JsonOptions));
-		context.GetInvocationResult().Value = response;
+		return response;
 	}
 }

@@ -61,6 +61,7 @@ public class WorkflowAuthorizationMiddlewareErrorResponseTests
         new(
             matcher  ?? new ForbiddenMatcher(),
             registry ?? new NullRegistry(),
+            new StubHostEnvironment(envName),
             new AuditLogger(NullLogger<AuditLogger>.Instance),
             NullLogger<WorkflowAuthorizationMiddleware>.Instance,
             responseWriter: captured.Writer);
@@ -319,14 +320,14 @@ public class WorkflowAuthorizationMiddlewareErrorResponseTests
     sealed class NullRegistry : IRouteAuthorizationRegistry
     {
         public WorkflowPermission? GetRequiredPermissions(string functionName) => null;
-	}
+    }
 
-	sealed class StubHostEnvironment : IHostEnvironment
-	{
-		public StubHostEnvironment(string env) => EnvironmentName = env;
-		public string EnvironmentName { get; set; }
-		public string ApplicationName { get; set; } = "test";
-		public string ContentRootPath { get; set; } = ".";
-		public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; } = null!;
-	}
+    sealed class StubHostEnvironment : IHostEnvironment
+    {
+        public StubHostEnvironment(string env) => EnvironmentName = env;
+        public string EnvironmentName   { get; set; }
+        public string ApplicationName   { get; set; } = "test";
+        public string ContentRootPath   { get; set; } = ".";
+        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; } = null!;
+    }
 }
