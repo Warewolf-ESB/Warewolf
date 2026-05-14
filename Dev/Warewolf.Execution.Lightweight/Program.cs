@@ -38,33 +38,11 @@ try
         .ConfigureWarewolf(config)
         .ConfigureServices(services =>
          {
-             services.AddSingleton<IExecutionLogger>(sp =>
-             {
-                 var loggers = new List<IExecutionLogger>();
-
-                 // AzureExecutionLogger — MEL sink (App Insights / console)
-                 if (enableConsole)
-                 {
-                     loggers.Add(new AzureExecutionLogger(
-                         sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
-                         minimumLevel));
-                     Dev2Logger.Debug("Program added AzureExecutionLogger to logging pipeline", executionId);
-                 }
-
-                 // ElasticsearchExecutionLogger — Elasticsearch sink
-                 // Resolved here (inside the factory) so the AES decrypt hook
-                 // from KeyVaultStartupExtensions is already wired by the time
-                 // we read the potentially-encrypted .bite file.
-                 if (enableElastic && File.Exists(elasticsearchSettingsPath))
-                 {
-                     var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath);
-                     loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
-                     Dev2Logger.Debug("Program added ElasticsearchExecutionLogger to logging pipeline", executionId);
-                 }
-
-                 return new CompositeExecutionLogger(loggers);
-             });
-
+             services.AddExecutionLogging(
+                 enableConsole,
+                 enableElastic,
+                 elasticsearchSettingsPath,
+                 minimumLevel);
          })
         .Build();
 
