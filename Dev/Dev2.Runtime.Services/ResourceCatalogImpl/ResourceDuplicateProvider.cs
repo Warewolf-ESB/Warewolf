@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Fail,
-                    Message = "Duplicated Unsuccessfully" + x.Message
+                    Message = "Duplicated Unsuccessfully" + FormatDiagnosticDetail(x)
                 };
             }
         }
@@ -96,9 +96,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch(Exception x)
             {
-                Dev2Logger.Error($"resource{resourceId} ", x, GlobalConstants.WarewolfError);
+                Dev2Logger.Error($"resource{resourceId} {FormatDiagnosticDetail(x)}", x, GlobalConstants.WarewolfError);
                 return null;
             }
+        }
+
+        // Surfaces the exception type and stack trace alongside Message so test
+        // assertions that include the result Message can pinpoint the throw site
+        // when the failure only reproduces on CI.
+        private static string FormatDiagnosticDetail(Exception x)
+        {
+            var top = x;
+            while (top.InnerException != null) { top = top.InnerException; }
+            return $" [{top.GetType().Name}] {top.Message}\n{top.StackTrace}";
         }
 
         IExplorerItem SaveResource(Guid resourceId, string newPath, string newResourceName)
