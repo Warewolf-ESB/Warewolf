@@ -51,6 +51,15 @@
 .PARAMETER AppRolesToAssign
   App role values to assign to the daemon SP (sanitized, underscores not spaces).
 
+.PARAMETER FunctionAppName
+  Name of the Azure Function App to configure CORS on (required for SPA CORS setup).
+
+.PARAMETER FunctionAppResourceGroup
+  Resource group of the Function App (required for SPA CORS setup).
+
+.PARAMETER SkipCorsConfiguration
+  Skip Function App CORS / Allowed Origins configuration for SPA clients.
+
 .PARAMETER DryRun
   Print resolved configuration and exit without changes.
 
@@ -61,6 +70,10 @@
   ./Configure-WwExecutionAuth-Clients.ps1
   ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -NonInteractive
   ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -DryRun -NonInteractive
+  ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -ClientType SPA `
+      -FunctionAppName "myfuncapp" -FunctionAppResourceGroup "myRG" -NonInteractive
+  ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -ClientType SPA `
+      -SkipCorsConfiguration -NonInteractive
 #>
 
 [CmdletBinding()]
@@ -88,6 +101,11 @@ param(
     [int]      $SecretLifetimeYears = 1,
 
     [string[]] $AppRolesToAssign = @('Permission.Execute', 'Permission.View'),
+
+    [string]   $FunctionAppName,
+    [string]   $FunctionAppResourceGroup,
+
+    [switch]   $SkipCorsConfiguration,
 
     [switch]   $DryRun,
     [switch]   $NonInteractive
@@ -401,16 +419,55 @@ function Grant-AppRoleToSP {
     }
 }
 
+function Set-FunctionAppCors {
+    param(
+        [Parameter(Mandatory)][string]   $AppName,
+        [Parameter(Mandatory)][string]   $ResourceGroup,
+        [Parameter(Mandatory)][string[]] $Origins
+    )
+    Write-Step "Enabling CORS and adding Allowed Origins on Function App '$AppName'"
+
+    # Fetch current allowed origins
+    $currentOriginsRaw = Invoke-AzCli @(
+        'functionapp', 'cors', 'show',
+        '--name', $AppName,
+        '--resource-group', $ResourceGroup,
+        '--query', 'allowedOrigins',
+        '-o', 'json'
+    ) | ConvertFrom-AzJson
+    $current = if ($currentOriginsRaw) { @($currentOriginsRaw | ForEach-Object { [string]$_ }) } else { @() }
+
+    $toAdd = @($Origins | Where-Object { $_ -notin $current })
+
+    if ($toAdd.Count -eq 0) {
+        Write-Info "All requested origins already present in Allowed Origins - skipped"
+    } else {
+        foreach ($origin in $toAdd) {
+            Write-Step "Adding origin '$origin' to Allowed Origins"
+            Invoke-AzCli @(
+                'functionapp', 'cors', 'add',
+                '--name', $AppName,
+                '--resource-group', $ResourceGroup,
+                '--allowed-origins', $origin
+            ) | Out-Null
+            Write-Ok "Allowed Origin added: $origin"
+        }
+    }
+    Write-Ok "Function App Allowed Origins configured on '$AppName'"
+}
+
 #endregion Helpers
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Defaults / placeholder sentinels
 # ──────────────────────────────────────────────────────────────────────────────
 
-if (-not $PSBoundParameters.ContainsKey('ResourceAppId'))           { $ResourceAppId          = '<resourceAppId>' }
-if (-not $PSBoundParameters.ContainsKey('TenantId'))                { $TenantId               = '<tenantId>' }
-if (-not $PSBoundParameters.ContainsKey('ClientDisplayNamePrefix')) { $ClientDisplayNamePrefix = 'wwexecution' }
-if (-not $PSBoundParameters.ContainsKey('SecretLifetimeYears'))     { $SecretLifetimeYears     = 1 }
+if (-not $PSBoundParameters.ContainsKey('ResourceAppId'))           { $ResourceAppId              = '<resourceAppId>' }
+if (-not $PSBoundParameters.ContainsKey('TenantId'))                { $TenantId                   = '<tenantId>' }
+if (-not $PSBoundParameters.ContainsKey('ClientDisplayNamePrefix')) { $ClientDisplayNamePrefix     = 'wwexecution' }
+if (-not $PSBoundParameters.ContainsKey('SecretLifetimeYears'))     { $SecretLifetimeYears         = 1 }
+if (-not $PSBoundParameters.ContainsKey('FunctionAppName'))         { $FunctionAppName             = '<functionAppName>' }
+if (-not $PSBoundParameters.ContainsKey('FunctionAppResourceGroup')){ $FunctionAppResourceGroup    = '<functionAppResourceGroup>' }
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Stage 1 — Interactive configuration / NonInteractive validation
@@ -464,6 +521,15 @@ if ($NonInteractive) {
     if ($miInput -eq 'true')  { $DaemonUseManagedIdentity = $true  }
     if ($miInput -eq 'false') { $DaemonUseManagedIdentity = $false }
 
+    $FunctionAppName          = Read-ScalarVariable -Name 'FunctionAppName'          -Current $FunctionAppName          -Description 'Azure Function App name (for CORS/Allowed Origins on SPA)'
+    $FunctionAppResourceGroup = Read-ScalarVariable -Name 'FunctionAppResourceGroup' -Current $FunctionAppResourceGroup -Description 'Resource group of the Function App'
+
+    Write-Host ""
+    Write-Host "  SkipCorsConfiguration  (skip CORS/Allowed Origins setup for SPA)" -ForegroundColor White
+    $skipCorsInput = (Read-Host "    [Enter = $SkipCorsConfiguration]  (true/false)").Trim()
+    if ($skipCorsInput -eq 'true')  { $SkipCorsConfiguration = $true  }
+    if ($skipCorsInput -eq 'false') { $SkipCorsConfiguration = $false }
+
     $provisionSpa    = $ClientType -in @('SPA', 'All')
     $provisionWeb    = $ClientType -in @('Confidential', 'All')
     $provisionDaemon = $ClientType -in @('Daemon', 'All')
@@ -482,6 +548,9 @@ if ($NonInteractive) {
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SpaRedirectUris',  ($SpaRedirectUris  -join ', ')) }
     if ($provisionWeb)    { Write-Host ("  {0,-25} : {1}" -f 'WebRedirectUris',  ($WebRedirectUris  -join ', ')) }
     if ($provisionDaemon) { Write-Host ("  {0,-25} : {1}" -f 'AppRolesToAssign', ($AppRolesToAssign -join ', ')) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppName',           $FunctionAppName) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppResourceGroup',  $FunctionAppResourceGroup) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SkipCorsConfiguration',     $SkipCorsConfiguration) }
     Write-Host ("  {0,-25} : {1}" -f 'DryRun',                 $DryRun)
     Write-Host ""
     Write-Host "  Client app names that will be created / updated:" -ForegroundColor DarkGray
@@ -518,6 +587,9 @@ if ($DryRun) {
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SpaRedirectUris',  ($SpaRedirectUris  -join ', ')) }
     if ($provisionWeb)    { Write-Host ("  {0,-25} : {1}" -f 'WebRedirectUris',  ($WebRedirectUris  -join ', ')) }
     if ($provisionDaemon) { Write-Host ("  {0,-25} : {1}" -f 'AppRolesToAssign', ($AppRolesToAssign -join ', ')) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppName',          $FunctionAppName) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppResourceGroup', $FunctionAppResourceGroup) }
+    if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SkipCorsConfiguration',    $SkipCorsConfiguration) }
     Write-Warn "-DryRun set: exiting without changes."
     return
 }
@@ -617,11 +689,47 @@ if ($provisionSpa) {
         Write-Warn "Admin consent failed (may require Global Admin): $($_.Exception.Message)"
     }
 
+    # ── CORS / Allowed Origins on the Function App ─────────────────────────────
+    # Browser-based SPA clients are subject to same-origin policy.  The Function
+    # App must list each SPA origin in its Allowed Origins so the browser will
+    # include the Authorization header in cross-origin fetch requests.
+    # Confidential web apps and daemon/service clients make server-side HTTP calls
+    # and are NOT subject to browser CORS restrictions, so they do not need this.
+    if (-not $SkipCorsConfiguration) {
+        if (Test-IsPlaceholder $FunctionAppName -or Test-IsPlaceholder $FunctionAppResourceGroup) {
+            Write-Warn "FunctionAppName or FunctionAppResourceGroup not provided - skipping CORS configuration."
+            Write-Warn "Re-run with -FunctionAppName and -FunctionAppResourceGroup, or configure CORS manually:"
+            foreach ($uri in $SpaRedirectUris) {
+                Write-Warn "  az functionapp cors add --name <appName> --resource-group <rg> --allowed-origins '$uri'"
+            }
+        } else {
+            # Derive the SPA origins (scheme + host, no path) from the redirect URIs
+            $corsOrigins = @($SpaRedirectUris | ForEach-Object {
+                $u = [System.Uri]$_
+                "$($u.Scheme)://$($u.Authority)"
+            } | Select-Object -Unique)
+
+            Set-FunctionAppCors `
+                -AppName       $FunctionAppName `
+                -ResourceGroup $FunctionAppResourceGroup `
+                -Origins       $corsOrigins
+        }
+    } else {
+        Write-Info "SkipCorsConfiguration set - Function App CORS not modified"
+    }
+
     $results['SPA'] = @{
-        DisplayName  = $spaName
-        ClientId     = $spaApp.appId
-        RedirectUris = $SpaRedirectUris
-        GrantType    = 'Authorization Code + PKCE (public client)'
+        DisplayName       = $spaName
+        ClientId          = $spaApp.appId
+        RedirectUris      = $SpaRedirectUris
+        GrantType         = 'Authorization Code + PKCE (public client)'
+        CorsOriginsAdded  = if (-not $SkipCorsConfiguration -and
+                                -not (Test-IsPlaceholder $FunctionAppName) -and
+                                -not (Test-IsPlaceholder $FunctionAppResourceGroup)) {
+                                @($SpaRedirectUris | ForEach-Object {
+                                    $u = [System.Uri]$_; "$($u.Scheme)://$($u.Authority)"
+                                } | Select-Object -Unique)
+                            } else { @() }
     }
     Write-Ok "SPA provisioned: $($spaApp.appId)"
 }
@@ -769,6 +877,8 @@ $outputObj  = [pscustomobject]@{
     Scope                   = "api://$ResourceAppId/.default"
     Authority               = "https://login.microsoftonline.com/$TenantId"
     ClientDisplayNamePrefix = $ClientDisplayNamePrefix
+    FunctionAppName         = $FunctionAppName
+    FunctionAppResourceGroup= $FunctionAppResourceGroup
     Clients                 = $results
 }
 Write-Step "Writing output JSON to $outputFile"
