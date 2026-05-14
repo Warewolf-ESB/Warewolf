@@ -88,11 +88,6 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
         var rolesList = callerRoles.ToList();
         var effectivePermissions = _policyLoader.GetEffectivePermissions(workflowName, rolesList);
 
-        Console.WriteLine(
-            $"[SecuritySpecsDiag] PolicyMatcher.Evaluate workflow='{workflowName}' " +
-            $"caller='{principal.CallerIdentity}' callerRoles=[{string.Join(", ", rolesList)}] " +
-            $"required=[{requiredPermissions}] effective=[{effectivePermissions}]");
-
         // ── No matching role and no Public entry in active scope ──────────────
         if (effectivePermissions == WorkflowPermission.None)
             return PolicyMatchResult.DenyGroup(

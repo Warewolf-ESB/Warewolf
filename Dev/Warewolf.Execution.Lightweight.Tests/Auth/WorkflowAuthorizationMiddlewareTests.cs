@@ -60,12 +60,13 @@ public class WorkflowAuthorizationMiddlewareTests
     }
 
     [TestMethod]
-    public void MWA06_ExtractWorkflowName_SubFolder_ReturnsFirstSegment()
+    public void MWA06_ExtractWorkflowName_SubFolder_ReturnsWorkflowName()
     {
-        // The middleware enforces policy on the first path segment after the prefix.
-        // Sub-folder routes flow through that same segment-based check.
+        // Policy lookup uses the workflow NAME (last path segment), not the folder.
+        // NormalizeWorkflowKey strips the folder prefix so resource-scope entries
+        // keyed by workflow name are found correctly.
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/folder/HelloWorld", isSecure: true);
-        Assert.AreEqual("folder", name);
+        Assert.AreEqual("helloworld", name);
     }
 
     [TestMethod]

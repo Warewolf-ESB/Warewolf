@@ -180,12 +180,6 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
             scopeLabel  = "global";
         }
 
-        Console.WriteLine(
-            $"[SecuritySpecsDiag] GetEffectivePermissions workflow='{workflowName}' key='{key}' " +
-            $"scope={scopeLabel} scopeKeys=[{string.Join(", ", activeScope.Keys)}] " +
-            $"resourceMapKeys=[{string.Join(", ", _resourceRoleMap.Keys)}] " +
-            $"callerRoles=[{string.Join(", ", roles)}]");
-
         // ── Collect permissions ───────────────────────────────────────────────
         var combined = WorkflowPermission.None;
 
@@ -322,8 +316,9 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 
     /// <summary>
     /// Converts the resource role map into pre-built <see cref="WorkflowAuthPolicy"/>
-    /// instances keyed by workflow name.  Only workflows that have at least one
-    /// entry with the Execute flag set produce a policy.
+    /// instances keyed by workflow name.  Every workflow that has at least one
+    /// non-None permission entry gets a resource-scope policy so that
+    /// View-only resources are correctly distinguished from the global scope.
     /// </summary>
     private IReadOnlyDictionary<string, WorkflowAuthPolicy> BuildPolicies(
         IReadOnlyDictionary<string, IReadOnlyDictionary<string, WorkflowPermission>> resourceMap)
@@ -336,11 +331,11 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 .Select(kvp => ResolvedRolePolicy.Create(kvp.Key, kvp.Value))
                 .ToList();
 
-            var hasExecute = rolePolicies.Any(e => e.EffectivePermissions.HasFlag(WorkflowPermission.Execute));
-            if (!hasExecute)
+            var hasAnyPermission = rolePolicies.Any(e => e.EffectivePermissions != WorkflowPermission.None);
+            if (!hasAnyPermission)
             {
                 _logger.LogDebug(
-                    "Skipping resource policy for '{Workflow}' — no role has Execute permission.",
+                    "Skipping resource policy for '{Workflow}' — no role has any permission.",
                     workflowKey);
                 continue;
             }

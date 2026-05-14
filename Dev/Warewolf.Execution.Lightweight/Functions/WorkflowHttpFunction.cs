@@ -213,11 +213,6 @@ namespace Warewolf.Execution.Lightweight
             bool isPublic,
             FunctionContext? context = null)
         {
-            // Sentinel proves which binary is loaded; bump on every diagnostic
-            // round so we can verify the deployed worker DLL matches HEAD.
-            Console.WriteLine(
-                $"[SecuritySpecsDiag] ExecuteNamedWorkflow enter v=3 name='{name}' isPublic={isPublic} workflowsDir='{_workflowsDirectory}'");
-
             // ── apis.json: always accessible, filtered by permissions ─────────────
             if (NameSuffixParser.IsApisJsonRequest(name))
             {
@@ -254,47 +249,20 @@ namespace Warewolf.Execution.Lightweight
             // Security Specs CI job leave the exception text in the engine log
             // (otherwise Azure Functions converts an unhandled exception to 500
             // and the trace never surfaces, even at Debug log level).
-            try
-            {
-                var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
-                var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
+            var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
+            var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
 
-                // Suffix flags are authoritative — override any format inferred from the URL path.
-                executionRequest.WebServerUri = req.Url;
-                executionRequest.ReturnType   = isXml ? EmitionTypes.XML
-                                              : isApi ? EmitionTypes.OPENAPI
-                                                      : EmitionTypes.JSON;
-                if (isDebug)
-                    executionRequest.IsDebug = true;
+            // Suffix flags are authoritative — override any format inferred from the URL path.
+            executionRequest.WebServerUri = req.Url;
+            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+                                          : isApi ? EmitionTypes.OPENAPI
+                                                  : EmitionTypes.JSON;
+            if (isDebug)
+                executionRequest.IsDebug = true;
 
-                var result = _workflowExecutor.Execute(executionRequest);
-                if (!result.IsSuccess)
-                {
-                    // ResponseBuilder converts !IsSuccess → 500 without throwing, so the
-                    // catch block below never fires. Log here so the Security Specs CI
-                    // job can surface the underlying workflow error (file not found,
-                    // invalid XAML, etc.) instead of just "500 with no trace".
-                    var errs = result.Errors is { Count: > 0 }
-                        ? string.Join(" | ", result.Errors)
-                        : "(no errors collected)";
-                    Console.WriteLine(
-                        $"[SecuritySpecsDiag] ExecuteNamedWorkflow result.IsSuccess=false for name='{name}' isPublic={isPublic} errors=[{errs}]");
-                }
-                return await ResponseBuilder.BuildAsync(req, result,
-                    isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(
-                    $"[SecuritySpecsDiag] ExecuteNamedWorkflow threw for name='{name}' isPublic={isPublic} workflowsDir='{_workflowsDirectory}': " +
-                    $"{ex.GetType().FullName}: {ex.Message}\n{ex.StackTrace}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine(
-                        $"[SecuritySpecsDiag]   inner: {ex.InnerException.GetType().FullName}: {ex.InnerException.Message}\n{ex.InnerException.StackTrace}");
-                }
-                throw;
-            }
+            var result = _workflowExecutor.Execute(executionRequest);
+            return await ResponseBuilder.BuildAsync(req, result,
+                isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
         }
 
         /// <summary>

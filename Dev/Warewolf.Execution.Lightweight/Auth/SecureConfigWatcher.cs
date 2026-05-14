@@ -52,9 +52,10 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var path = ResolveConfigPath();
+        _logger.LogInformation("SecureConfigWatcher: AppContext.BaseDirectory={BaseDir}", AppContext.BaseDirectory);
         if (path is null)
         {
-            _logger.LogInformation(
+            _logger.LogWarning(
                 "SecureConfigWatcher: could not resolve config path — skipping hot-reload.");
             return Task.CompletedTask;
         }
@@ -81,7 +82,7 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         _watcher.Created += OnChanged;
         _watcher.Renamed += OnChanged;
 
-        _logger.LogInformation(
+        _logger.LogWarning(
             "SecureConfigWatcher: monitoring {Path} for hot-reload.", path);
         return Task.CompletedTask;
     }
@@ -93,7 +94,10 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
     }
 
     private void OnChanged(object sender, FileSystemEventArgs e)
-        => _debounce?.Change(DebounceWindow, Timeout.InfiniteTimeSpan);
+    {
+        _logger.LogWarning("SecureConfigWatcher: file event {ChangeType} on '{Path}' — queuing reload.", e.ChangeType, e.FullPath);
+        _debounce?.Change(DebounceWindow, Timeout.InfiniteTimeSpan);
+    }
 
     private void SafeReload()
     {
@@ -101,7 +105,8 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         {
             SecureConfigLoader.Reload();
             _policyLoader.Reload();
-            _logger.LogInformation("SecureConfigWatcher: secure.config reloaded successfully.");
+            var loaded = SecureConfigLoader.Config.IsLoaded;
+            _logger.LogWarning("SecureConfigWatcher: secure.config reloaded — IsLoaded={IsLoaded}.", loaded);
         }
         catch (Exception ex)
         {

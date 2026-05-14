@@ -321,22 +321,25 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     internal static string? ExtractWorkflowName(string path, bool isSecure)
     {
         var prefix  = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
+
+        // Take the full path after the prefix (strip query string).
+        // Do NOT split on '/' — the workflow may be in a subfolder
+        // (e.g. /Secure/Examples/Control%20Flow%20-%20Decision).
+        // NormalizeWorkflowKey strips the folder prefix, so looking up
+        // "control flow - decision" finds the right resource-scope policy.
         var segment = path
             .Substring(prefix.Length)
-            .Split('/')[0]
             .Split('?')[0];
 
         // HttpRequestData.Url.AbsolutePath returns percent-encoded chars on the
         // Windows Functions host, so a request for `/Secure/Control Flow - Decision`
         // arrives as `/Secure/Control%20Flow%20-%20Decision`.  Decode here so the
         // workflow segment matches the ResourceName stored in secure.config.
-        var rawSegment = segment;
         segment = Uri.UnescapeDataString(segment);
 
+        // GetFileNameWithoutExtension on a slash-separated path returns the last
+        // component without its extension — which is the workflow name.
         var name = Path.GetFileNameWithoutExtension(segment).ToLowerInvariant();
-        Console.WriteLine(
-            $"[SecuritySpecsDiag] ExtractWorkflowName path='{path}' raw='{rawSegment}' " +
-            $"decoded='{segment}' name='{name}'");
         return string.IsNullOrEmpty(name) ? null : name;
     }
 
