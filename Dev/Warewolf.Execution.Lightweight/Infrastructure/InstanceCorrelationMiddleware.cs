@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
+using Microsoft.Extensions.Logging;
 
 namespace Warewolf.Execution.Lightweight.Infrastructure
 {
@@ -26,8 +27,8 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
     ///   <item><c>TraceId</c> — W3C distributed trace ID (if available)</item>
     /// </list>
     ///
-    /// For Dev2Logger-based logging, these flow automatically via
-    /// <see cref="Dev2Logger.CorrelationPrefixProvider"/>.
+    /// For MEL-based loggers (<see cref="Logging.AzureExecutionLogger"/>), these flow
+    /// automatically via <see cref="ILogger.BeginScope{TState}"/>.
     ///
     /// For non-MEL loggers (<see cref="Logging.ElasticsearchExecutionLogger"/>), the
     /// values are exposed through <see cref="InstanceCorrelationContext.Current"/> which
@@ -60,18 +61,18 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
                 TraceId      = traceId,
             };
 
-            // Set the correlation prefix provider for Dev2Logger
-            Dev2Logger.CorrelationPrefixProvider = () =>
+            // MEL scope — flows automatically to AzureExecutionLogger / Application Insights.
+            var logger = context.GetLogger<InstanceCorrelationMiddleware>();
+            using var scope = logger.BeginScope(new Dictionary<string, object>
             {
-                var ctx = InstanceCorrelationContext.Current;
-                if (ctx == null)
-                {
-                    return null;
-                }
-                return $"[{ctx.InstanceId}] [Inv:{ctx.InvocationId}] [Fn:{ctx.FunctionName}] [Trace:{ctx.TraceId}]";
-            };
+                ["InstanceId"]   = InstanceId,
+                ["InvocationId"] = invocationId,
+                ["Function"]     = functionName,
+                ["TraceId"]      = traceId,
+            });
 
-            Dev2Logger.Info($"InstanceCorrelationMiddleware invoked for function '{functionName}' (InvocationId: {invocationId})", invocationId);
+            logger.LogInformation("InstanceCorrelationMiddleware invoked for function '{FunctionName}' (InvocationId: {InvocationId})", context.FunctionDefinition.Name,
+            context.InvocationId);
 
             try
             {
@@ -80,7 +81,6 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
             finally
             {
                 InstanceCorrelationContext.Current = null;
-                Dev2Logger.CorrelationPrefixProvider = null;
             }
         }
     }
