@@ -193,21 +193,29 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                     // Scale the relative tolerance by the expected's significant-
                     // digit count: <=9 sig digits implies a low-precision capture
                     // and gets 1e-6; > 9 implies a full-precision double capture
-                    // and stays at 1e-12. As a belt-and-braces fallback, also
-                    // accept any pair that agrees once round-tripped through
-                    // float32 — catches IPMT-shape cases whose captured string
-                    // happens to be long even though the underlying math was
-                    // float-precision.
+                    // and stays at 1e-12. As a fallback, also accept any pair
+                    // that agrees within float32's relative precision (~1.2e-7
+                    // = 2^-23) at the value's magnitude — catches IPMT-shape
+                    // cases (e.g. -833.3333587646484 vs -833.3333333333334)
+                    // whose captured string is long even though the underlying
+                    // math was float-precision. A strict `(float)x == (float)y`
+                    // round-trip check is too narrow because values that sit
+                    // near float32 rounding boundaries can land on different
+                    // grid points despite being closer than 1 ULP apart.
                     var sigDigits = SignificantDigits(expectedResult);
                     var relativeTolerance = sigDigits <= 9 ? 1e-6 : 1e-12;
-                    var tolerance = Math.Max(Math.Abs(expectedNum), Math.Abs(actualNum)) * relativeTolerance;
+                    var maxMagnitude = Math.Max(Math.Abs(expectedNum), Math.Abs(actualNum));
+                    var tolerance = maxMagnitude * relativeTolerance;
                     if (tolerance < double.Epsilon) { tolerance = double.Epsilon; }
                     var diff = Math.Abs(actualNum - expectedNum);
-                    if (diff > tolerance && (float)expectedNum != (float)actualNum)
+                    // float32 mantissa = 23 bits; relative precision ≈ 2^-23 ≈ 1.19e-7.
+                    // Use 2e-7 to leave a touch of headroom for rounding boundaries.
+                    var float32Tolerance = maxMagnitude * 2e-7;
+                    if (diff > tolerance && diff > float32Tolerance)
                     {
                         diff.Should().BeLessThanOrEqualTo(
                             tolerance,
-                            $"calculated '{actualValue}' should match expected '{expectedResult}' within relative tolerance {relativeTolerance:G2} (sig digits = {sigDigits}); float32 round-trip didn't match either");
+                            $"calculated '{actualValue}' should match expected '{expectedResult}' within relative tolerance {relativeTolerance:G2} (sig digits = {sigDigits}) or within float32 precision");
                     }
                 }
                 else

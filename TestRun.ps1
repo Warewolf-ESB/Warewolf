@@ -1025,7 +1025,12 @@ function Start-WarewolfServer {
 function Stop-Engine {
     if ($script:_sessionId) {
         Write-Host "Shutting down dotnet-coverage session $($script:_sessionId)..."
-        dotnet-coverage shutdown $script:_sessionId 2>&1 | Out-Null
+        # cmd /c swallows non-zero exit + stderr so a shutdown timeout
+        # ("The operation has timed out.") doesn't bubble up under
+        # ErrorActionPreference=Stop and fail the whole step after the
+        # tests have already run and passed.
+        cmd /c "dotnet-coverage shutdown $($script:_sessionId) >nul 2>nul"
+        $global:LASTEXITCODE = 0
         Start-Sleep -Seconds 5
     }
     if ($script:_coverageProcess -and -not $script:_coverageProcess.HasExited) {
