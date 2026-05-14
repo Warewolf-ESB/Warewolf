@@ -123,7 +123,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             CustomContainer.Register(new Mock<IWarewolfPerformanceCounterLocater>().Object);
-            CustomContainer.Register(new Mock<IResourceCatalog>().Object);
+            // Pass the mock catalog via the constructor instead of registering it in
+            // CustomContainer. Why: ResourceCatalog.Instance is a Lazy<IResourceCatalog>
+            // whose initialiser captures whatever CustomContainer.Get<IResourceCatalog>()
+            // returns on first access — forever. When this test ran first in the
+            // sequential Not-Parallelizable job, the unconfigured mock became the
+            // process-wide ResourceCatalog.Instance, and every subsequent test that
+            // walked the explorer tree crashed with ArgumentNullException in
+            // ExplorerItemFactory.AddChildren (GetResourceList → null).
             var dependency = new Depends(Depends.ContainerType.Redis);
             var source = new RedisSource
             {
@@ -135,7 +142,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             try
             {
-                var handler = new RedisSources();
+                var handler = new RedisSources(new Mock<IResourceCatalog>().Object);
                 var result = handler.Test(source);
                 Assert.IsTrue(result.IsValid, result.ErrorMessage);
             }

@@ -244,6 +244,11 @@ function ConvertFrom-PipelineYaml {
             SessionId         = $null
             Sidecars          = @()
             Artifact          = $null
+            # Windows-native dep flags lifted from the args block so catalog mode can
+            # replay Windows bare-metal jobs that provision pyftpdlib/Samba/SMB share
+            # via the Start-Host* / -CreateUNCPath flags rather than docker images.
+            WinDepFlags       = @()
+            MSSQLArg          = $null
         }
 
         if ($argsBlock -match '-EngineSessionId\s+"([^"]+)"') {
@@ -299,6 +304,27 @@ function ConvertFrom-PipelineYaml {
         if ($body -match 'docker\.elastic\.co/elasticsearch')         { $sidecars += 'elasticsearch' }
         if ($body -match 'warewolfserver/exchange-connector-testing') { $sidecars += 'exchange' }
         $entry.Sidecars = $sidecars
+
+        # Windows-native dep flags from the args block. Recognised switches are
+        # added verbatim so Invoke-WindowsBareMetalJob can splat them straight
+        # into the recursive TestRun.ps1 invocation.
+        $winSwitches = @(
+            'StartFTPServer','StartFTPSServer','StartSFTPServer','StartSambaShare',
+            'StartMySQLServer','StartElasticsearchServer','StartRabbitMQServer',
+            'StartRedisServer','StartExchangeConnector',
+            'CreateUNCPath','UseRegionalSettings','CreateLocalSchedulerAdmin','LegacyWindowsDeps'
+        )
+        foreach ($flag in $winSwitches) {
+            if ($argsBlock -match "(?<!\w)-$flag(?!\w)") {
+                $entry.WinDepFlags += $flag
+            }
+        }
+        # -StartMSSQLServer takes a string argument (empty "" is valid).
+        if ($argsBlock -match '-StartMSSQLServer\s+"([^"]*)"') {
+            $entry.MSSQLArg = $matches[1]
+        } elseif ($argsBlock -match '(?<!\w)-StartMSSQLServer(?!\w)') {
+            $entry.MSSQLArg = ''
+        }
 
         $catalog.Add($entry) | Out-Null
     }
@@ -368,16 +394,60 @@ function Start-LinuxSidecar {
 # Host-port dep startup (Pattern A; sidecars publish to host ports)
 # ============================================================================
 
+# Resolve a writable base directory for native pyftpdlib sandboxes + entrypoint
+# scripts. CI hosted agents run as admin and have C:\ available; local dev runs
+# fall back to TEMP so the same script works without elevation. Cached for the
+# session so FTP and FTPS land on the same root.
+function Get-FTPSandboxRoot {
+    if ($script:_ftpSandboxRoot) { return $script:_ftpSandboxRoot }
+    $candidates = @('C:\', (Join-Path $env:LOCALAPPDATA 'Warewolf-TestRun'), $env:TEMP)
+    foreach ($c in $candidates) {
+        if (-not $c) { continue }
+        if (-not (Test-Path $c)) {
+            try { New-Item -ItemType Directory -Force -Path $c -ErrorAction Stop | Out-Null } catch { continue }
+        }
+        try {
+            $probe = Join-Path $c ('_wwprobe_' + [Guid]::NewGuid().ToString('N') + '.tmp')
+            Set-Content -LiteralPath $probe -Value 'x' -ErrorAction Stop
+            Remove-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue
+            $script:_ftpSandboxRoot = $c
+            return $c
+        } catch { continue }
+    }
+    throw "No writable sandbox root found (tried C:\, %LOCALAPPDATA%\Warewolf-TestRun, %TEMP%)."
+}
+
 function Start-HostFTPServer {
     if ($LegacyWindowsDeps) {
         # Native pyftpdlib path (Windows runtime).
-        foreach ($sub in 'FORUNZIPTESTING','FORCOPYFILETESTING') {
-            $d = "C:\ftp_home\dev2\$sub"
+        $ftpRoot       = Get-FTPSandboxRoot
+        $ftpHomeBase   = Join-Path $ftpRoot 'ftp_home\dev2'
+        $ftpEntryFile  = Join-Path $ftpRoot 'ftp_entrypoint.py'
+        # Subdirs every FileAndFolder .feature file references under
+        # ftp://localhost:21/. pyftpdlib does not auto-create parent
+        # directories on STOR, so a missing FOR*TESTING folder turns a
+        # legitimate write into a 550-failure and the spec reports "Failure".
+        foreach ($sub in
+            'FORCOPYFILETESTING',
+            'FORCREATEFILETESTING',
+            'FORDELETEFILETESTING',
+            'FOREADFOLDERTTESTING',
+            'FORFILERENAMETESTING',
+            'FORMOVEFILETESTING',
+            'FORREADFILETESTING',
+            'FORREADFOLDERTESTING',
+            'FORTESTING',
+            'FORUNZIPTESTING',
+            'FORWRITEFILETESTING',
+            'FORZIPTESTING'
+        ) {
+            $d = Join-Path $ftpHomeBase $sub
             if (!(Test-Path $d)) { mkdir $d | Out-Null }
         }
         pip install pyftpdlib
-        if (!(Test-Path "C:\ftp_entrypoint.py")) {
-@"
+        # Forward-slash form is what pyftpdlib expects in the embedded Python.
+        $ftpHomeForPy = ($ftpHomeBase -replace '\\','/')
+        $pyBody = @"
 import os
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
@@ -387,8 +457,8 @@ PASSIVE_PORTS = '17000-17007'
 
 def main():
     authorizer = DummyAuthorizer()
-    user_dir = "C:/ftp_home/dev2"
-    if not os.path.isdir(user_dir): os.mkdir(user_dir)
+    user_dir = "$ftpHomeForPy"
+    if not os.path.isdir(user_dir): os.makedirs(user_dir)
     authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
 
     handler = FTPHandler
@@ -402,9 +472,11 @@ def main():
 
 if __name__ == '__main__':
     main()
-"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
-        }
-        pythonw -u "C:\ftp_entrypoint.py"
+"@
+        # Always overwrite — the embedded user_dir is sandbox-root-dependent and
+        # may change between -CI- and -local- runs of the same checkout.
+        $pyBody | Out-File -LiteralPath $ftpEntryFile -Encoding utf8 -Force
+        pythonw -u $ftpEntryFile
         return
     }
     docker run -d --name ftpserver `
@@ -434,18 +506,40 @@ function Start-HostFTPSServer {
     if ($LegacyWindowsDeps) {
         # Native pyftpdlib+TLS (Windows runtime). Generates a self-signed cert
         # inline via pyOpenSSL so the legacy branch is self-contained.
-        foreach ($sub in 'FORFILERENAMETESTING','FORUNZIPTESTING','FORCOPYFILETESTING') {
-            $d = "C:\ftps_home\dev2\$sub"
+        # Same parent-dir requirement as the FTP branch — see Start-HostFTPServer.
+        $ftpRoot         = Get-FTPSandboxRoot
+        $ftpsHomeBase    = Join-Path $ftpRoot 'ftps_home\dev2'
+        $ftpsCertFile    = Join-Path $ftpRoot 'cert.crt'
+        $ftpsKeyFile     = Join-Path $ftpRoot 'cert.key'
+        $ftpsGenCertFile = Join-Path $ftpRoot 'ftps_gencert.py'
+        $ftpsEntryFile   = Join-Path $ftpRoot 'ftps_entrypoint.py'
+        foreach ($sub in
+            'FORCOPYFILETESTING',
+            'FORCREATEFILETESTING',
+            'FORDELETEFILETESTING',
+            'FORFILERENAMETESTING',
+            'FORMOVEFILETESTING',
+            'FORREADFILETESTING',
+            'FORREADFOLDERTESTING',
+            'FORRENAMETESTING',
+            'FORTESTING',
+            'FORUNZIPTESTING',
+            'FORWRITEFILETESTING',
+            'FORZIPTESTING'
+        ) {
+            $d = Join-Path $ftpsHomeBase $sub
             if (!(Test-Path $d)) { mkdir $d | Out-Null }
         }
         # Seed FTPS copy-file fixtures (mirrors the docker `docker exec ... echo` seeding).
         foreach ($i in 0..4) {
-            $seed = "C:\ftps_home\dev2\FORCOPYFILETESTING\copyfile$i.txt"
+            $seed = Join-Path $ftpsHomeBase "FORCOPYFILETESTING\copyfile$i.txt"
             if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
         }
         pip install pyftpdlib 'cryptography==38.0.4' 'pyOpenSSL==22.0.0'
-        if (!(Test-Path "C:\cert.crt") -or !(Test-Path "C:\cert.key")) {
-@"
+        $certForPy = ($ftpsCertFile -replace '\\','/')
+        $keyForPy  = ($ftpsKeyFile  -replace '\\','/')
+        if (!(Test-Path $ftpsCertFile) -or !(Test-Path $ftpsKeyFile)) {
+            $genBody = @"
 from OpenSSL import crypto
 key = crypto.PKey(); key.generate_key(crypto.TYPE_RSA, 2048)
 cert = crypto.X509()
@@ -458,13 +552,14 @@ cert.gmtime_adj_notAfter(5*365*24*60*60)
 cert.set_issuer(cert.get_subject())
 cert.set_pubkey(key)
 cert.sign(key, 'sha256')
-open('C:/cert.crt','wt').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode())
-open('C:/cert.key','wt').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode())
-"@ | Out-File -LiteralPath "C:\ftps_gencert.py" -Encoding utf8 -Force
-            python "C:\ftps_gencert.py"
+open('$certForPy','wt').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode())
+open('$keyForPy','wt').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode())
+"@
+            $genBody | Out-File -LiteralPath $ftpsGenCertFile -Encoding utf8 -Force
+            python $ftpsGenCertFile
         }
-        if (!(Test-Path "C:\ftps_entrypoint.py")) {
-@"
+        $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
+        $entryBody = @"
 import os
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import TLS_FTPHandler
@@ -474,13 +569,13 @@ PASSIVE_PORTS = '56001-56008'
 
 def main():
     authorizer = DummyAuthorizer()
-    user_dir = "C:/ftps_home/dev2"
-    if not os.path.isdir(user_dir): os.mkdir(user_dir)
+    user_dir = "$ftpsHomeForPy"
+    if not os.path.isdir(user_dir): os.makedirs(user_dir)
     authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
 
     handler = TLS_FTPHandler
-    handler.certfile = "C:/cert.crt"
-    handler.keyfile  = "C:/cert.key"
+    handler.certfile = "$certForPy"
+    handler.keyfile  = "$keyForPy"
     handler.tls_control_required = True
     handler.tls_data_required    = True
     handler.authorizer = authorizer
@@ -494,9 +589,9 @@ def main():
 
 if __name__ == '__main__':
     main()
-"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
-        }
-        pythonw -u "C:\ftps_entrypoint.py"
+"@
+        $entryBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
+        pythonw -u $ftpsEntryFile
         return
     }
     # Linux-container FTPS (same image, TLS enabled via env)
@@ -1378,6 +1473,13 @@ function Invoke-WindowsBareMetalJob {
         }
         if ($Job.ExcludeAssemblies.Count -gt 0) { $splat.ExcludeProjects = $Job.ExcludeAssemblies }
 
+        # Forward Windows-native dep flags (-StartFTPServer / -CreateUNCPath / etc.)
+        # captured by ConvertFrom-PipelineYaml. These provision the same host-side
+        # services the pipeline does and let local catalog-mode runs replicate
+        # Microsoft-hosted agent failures bit-for-bit.
+        foreach ($flag in $Job.WinDepFlags) { $splat[$flag] = $true }
+        if ($null -ne $Job.MSSQLArg) { $splat.StartMSSQLServer = $Job.MSSQLArg }
+
         Push-Location $ServerTestsBin
         try {
             & "$PSScriptRoot\TestRun.ps1" @splat
@@ -1413,7 +1515,9 @@ function Invoke-CatalogMode {
     Write-Host "Parsed $($catalog.Count) jobs from pipeline.yml"
 
     if ($List) {
-        $catalog | Sort-Object Name | Format-Table -AutoSize Name, Type, Assembly, Filter, @{n='Sidecars';e={$_.Sidecars -join ','}}
+        $catalog | Sort-Object Name | Format-Table -AutoSize Name, Type, Assembly, Filter,
+            @{n='Sidecars';e={$_.Sidecars -join ','}},
+            @{n='WinDeps';e={(($_.WinDepFlags | ForEach-Object { $_ -replace '^Start','' -replace 'Server$','' }) -join ',')}}
         exit 0
     }
 
