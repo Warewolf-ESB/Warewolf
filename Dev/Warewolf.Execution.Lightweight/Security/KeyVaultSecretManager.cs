@@ -6,6 +6,7 @@
 
 using Azure.Core;
 using Azure.Security.KeyVault.Secrets;
+using Dev2.Common;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -51,15 +52,24 @@ namespace Warewolf.Execution.Lightweight.Security
             ILogger<KeyVaultSecretManager> logger,
             string?                        debugSecret = null)
         {
+            const string executionId = "KeyVaultSecretManager-Constructor";
+
             _vaultUri    = vaultUri   ?? throw new ArgumentNullException(nameof(vaultUri));
             _secretName  = secretName ?? throw new ArgumentNullException(nameof(secretName));
             _logger      = logger     ?? throw new ArgumentNullException(nameof(logger));
             _debugSecret = debugSecret;
 
+            Dev2Logger.Debug($"KeyVaultSecretManager constructor. VaultUri: {vaultUri}, SecretName: {secretName}, HasDebugSecret: {debugSecret != null}, HasCredential: {credential != null}", executionId);
+
             if (debugSecret is null)
             {
                 _credential = credential ?? throw new ArgumentNullException(nameof(credential));
                 _client     = new SecretClient(new Uri(_vaultUri), _credential);
+                Dev2Logger.Info($"KeyVaultSecretManager initialized with SecretClient. VaultUri: {_vaultUri}, CredentialType: {_credential.GetType().Name}", executionId);
+            }
+            else
+            {
+                Dev2Logger.Warn("KeyVaultSecretManager initialized with DEBUG secret (Key Vault will be bypassed)", executionId);
             }
         }
 
@@ -76,33 +86,61 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
-            if (_debugSecret is not null)
+            const string executionId = "KeyVaultSecretManager-Initialize";
+
+            Dev2Logger.Info($"KeyVaultSecretManager InitializeAsync starting. SecretName: {_secretName}, IsDebugMode: {_debugSecret != null}", executionId);
+
+            try
             {
+                if (_debugSecret is not null)
+                {
+                    Dev2Logger.Warn("KeyVaultSecretManager using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped)", executionId);
+
+                    _logger.LogInformation(
+                        "KeyVault | Development mode — using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped).");
+                    ParseAndSetMaterial(_debugSecret);
+
+                    Dev2Logger.Info($"KeyVaultSecretManager InitializeAsync completed (DEBUG mode). KeyId: {KeyId}", executionId);
+                    return;
+                }
+
+                Dev2Logger.Debug($"KeyVaultSecretManager fetching secret '{_secretName}' from '{_vaultUri}'. CredentialType: {_credential!.GetType().Name}", executionId);
+
                 _logger.LogInformation(
-                    "KeyVault | Development mode — using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped).");
-                ParseAndSetMaterial(_debugSecret);
-                return;
+                    "KeyVault | Credential={CredentialType} | Fetching secret '{SecretName}' from '{VaultUri}'",
+                    _credential!.GetType().Name, _secretName, _vaultUri);
+
+                KeyVaultSecret secret =
+                    await _client!.GetSecretAsync(_secretName, version: null, cancellationToken)
+                                 .ConfigureAwait(false);
+
+                Dev2Logger.Debug($"KeyVaultSecretManager successfully fetched secret '{_secretName}' from Key Vault", executionId);
+
+                ParseAndSetMaterial(secret.Value);
+
+                Dev2Logger.Info($"KeyVaultSecretManager InitializeAsync completed successfully. KeyId: {KeyId}, SecretName: {_secretName}", executionId);
             }
-
-            _logger.LogInformation(
-                "KeyVault | Credential={CredentialType} | Fetching secret '{SecretName}' from '{VaultUri}'",
-                _credential!.GetType().Name, _secretName, _vaultUri);
-
-            KeyVaultSecret secret =
-                await _client!.GetSecretAsync(_secretName, version: null, cancellationToken)
-                             .ConfigureAwait(false);
-
-            ParseAndSetMaterial(secret.Value);
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"KeyVaultSecretManager InitializeAsync failed. SecretName: {_secretName}, VaultUri: {_vaultUri}", ex, executionId);
+                throw;
+            }
         }
 
         // ── Private helpers ───────────────────────────────────────────────────────
 
         void ParseAndSetMaterial(string rawJson)
         {
+            const string executionId = "KeyVaultSecretManager-Parse";
+
+            Dev2Logger.Debug($"KeyVaultSecretManager ParseAndSetMaterial starting. JsonLength: {rawJson?.Length ?? 0}", executionId);
+
             // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
             // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
             if (!rawJson.TrimStart().StartsWith("{\""))
             {
+                Dev2Logger.Warn($"KeyVaultSecretManager secret '{_secretName}' contained unquoted JSON - auto-repairing", executionId);
+
                 rawJson = Regex.Replace(rawJson, @"([\{,])\s*([a-zA-Z_]\w*)\s*:", "$1\"$2\":");
                 rawJson = Regex.Replace(rawJson, @":\s*(?!"")([^,\}]+)", ":\"$1\"");
                 _logger.LogWarning(
@@ -111,17 +149,30 @@ namespace Warewolf.Execution.Lightweight.Security
                     _secretName);
             }
 
-            _material = JsonSerializer.Deserialize<KeyRingMaterial>(rawJson, _jsonOptions)
-                        ?? throw new InvalidOperationException(
-                            $"Failed to deserialise key material from secret '{_secretName}'.");
+            try
+            {
+                _material = JsonSerializer.Deserialize<KeyRingMaterial>(rawJson, _jsonOptions)
+                            ?? throw new InvalidOperationException(
+                                $"Failed to deserialise key material from secret '{_secretName}'.");
 
-            if (string.IsNullOrWhiteSpace(_material.Key))
-                throw new InvalidOperationException(
-                    "Key Vault secret contains empty key material.");
+                if (string.IsNullOrWhiteSpace(_material.Key))
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager secret '{_secretName}' contains empty key material", executionId);
+                    throw new InvalidOperationException(
+                        "Key Vault secret contains empty key material.");
+                }
 
-            _logger.LogInformation(
-                "KeyVault | Key loaded. KeyId={KeyId} Created={Created}",
-                _material.KeyId, _material.Created);
+                Dev2Logger.Info($"KeyVaultSecretManager key material parsed successfully. KeyId: {_material.KeyId}, Created: {_material.Created}", executionId);
+
+                _logger.LogInformation(
+                    "KeyVault | Key loaded. KeyId={KeyId} Created={Created}",
+                    _material.KeyId, _material.Created);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"KeyVaultSecretManager ParseAndSetMaterial failed for secret '{_secretName}'", ex, executionId);
+                throw;
+            }
         }
 
         /// <summary>
@@ -131,19 +182,36 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         public byte[] GetKeyBytes()
         {
+            const string executionId = "KeyVaultSecretManager-GetKeyBytes";
+
             if (_material is null)
+            {
+                Dev2Logger.Error($"KeyVaultSecretManager GetKeyBytes called before InitializeAsync", executionId);
                 throw new InvalidOperationException(
                     $"{nameof(KeyVaultSecretManager)} is not initialised. " +
                     $"Call {nameof(InitializeAsync)} before resolving {nameof(FileDecryptionHelper)}.");
+            }
 
-            var keyBytes = Convert.FromBase64String(_material.Key);
+            try
+            {
+                var keyBytes = Convert.FromBase64String(_material.Key);
 
-            if (keyBytes.Length != 32)
-                throw new InvalidOperationException(
-                    $"AES-256 key must be 32 bytes; got {keyBytes.Length}. " +
-                    "Re-run Encrypt-Config.ps1 to regenerate the key material.");
+                if (keyBytes.Length != 32)
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager invalid key length: {keyBytes.Length} bytes (expected 32)", executionId);
+                    throw new InvalidOperationException(
+                        $"AES-256 key must be 32 bytes; got {keyBytes.Length}. " +
+                        "Re-run Encrypt-Config.ps1 to regenerate the key material.");
+                }
 
-            return keyBytes;
+                Dev2Logger.Debug($"KeyVaultSecretManager GetKeyBytes successful. KeyId: {_material.KeyId}, KeyLength: {keyBytes.Length} bytes", executionId);
+                return keyBytes;
+            }
+            catch (Exception ex) when (ex is not InvalidOperationException)
+            {
+                Dev2Logger.Error($"KeyVaultSecretManager GetKeyBytes failed. KeyId: {_material.KeyId}", ex, executionId);
+                throw;
+            }
         }
 
         // ── Key-material DTO (matches the JSON written by Encrypt-Config.ps1) ──

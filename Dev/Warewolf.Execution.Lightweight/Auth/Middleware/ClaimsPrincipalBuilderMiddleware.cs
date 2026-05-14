@@ -43,6 +43,8 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
     /// <inheritdoc/>
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
+        const string executionId = "ClaimsPrincipalBuilderMiddleware";
+
         var request = await context.GetHttpRequestDataAsync();
 
         if (request is not null)

@@ -4,6 +4,7 @@
 *  Licensed under GNU Affero General Public License 3.0 or later.
 */
 
+using Dev2.Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -36,6 +37,8 @@ namespace Warewolf.Execution.Lightweight
     /// </summary>
     internal sealed class WorkflowIndex
     {
+        private const string ExecutionIdForInfrastructure = "WorkflowIndex-Infrastructure";
+
         // ── Singleton ─────────────────────────────────────────────────────────
 
         static readonly Lazy<WorkflowIndex> _instance =
@@ -43,7 +46,10 @@ namespace Warewolf.Execution.Lightweight
 
         internal static WorkflowIndex Instance => _instance.Value;
 
-        private WorkflowIndex() { }
+        private WorkflowIndex() 
+        {
+            Dev2Logger.Info("WorkflowIndex singleton initialized", ExecutionIdForInfrastructure);
+        }
 
         // ── Constants ─────────────────────────────────────────────────────────
 
@@ -64,7 +70,20 @@ namespace Warewolf.Execution.Lightweight
         /// first HTTP request pays no file-system cost.  Safe to call multiple times;
         /// subsequent calls are no-ops once the index is loaded.
         /// </summary>
-        internal void WarmUp(string workflowsDirectory) => GetIndex(workflowsDirectory);
+        internal void WarmUp(string workflowsDirectory)
+        {
+            Dev2Logger.Info($"WorkflowIndex WarmUp started for directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+            try
+            {
+                var index = GetIndex(workflowsDirectory);
+                Dev2Logger.Info($"WorkflowIndex WarmUp completed. Indexed {index.Count} workflows from directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WorkflowIndex WarmUp failed for directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
+                throw;
+            }
+        }
 
         /// <summary>
         /// Resolves a workflow name (relative path without extension, any casing) to its
@@ -81,7 +100,10 @@ namespace Warewolf.Execution.Lightweight
         {
             if (string.IsNullOrWhiteSpace(workflowsDirectory) ||
                 string.IsNullOrWhiteSpace(nameWithoutExtension))
+            {
+                Dev2Logger.Warn($"WorkflowIndex Resolve called with invalid parameters. WorkflowsDirectory: '{workflowsDirectory}', Name: '{nameWithoutExtension}'", ExecutionIdForInfrastructure);
                 return null;
+            }
 
             var index = GetIndex(workflowsDirectory);
             if (index.Count == 0)
@@ -91,11 +113,11 @@ namespace Warewolf.Execution.Lightweight
                 return null;
             }
 
-            // Normalise to forward slashes + lowercase, strip any leading separator.
-            var key = nameWithoutExtension
-                .Replace('\\', '/')
-                .TrimStart('/')
-                .ToLowerInvariant();
+                // Normalise to forward slashes + lowercase, strip any leading separator.
+                var key = nameWithoutExtension
+                    .Replace('\\', '/')
+                    .TrimStart('/')
+                    .ToLowerInvariant();
 
             if (index.TryGetValue(key, out var relPath))
             {
@@ -108,6 +130,16 @@ namespace Warewolf.Execution.Lightweight
             Console.WriteLine(
                 $"[WorkflowIndexDiag] Resolve miss: key='{key}' not in index (indexCount={index.Count}) dir='{workflowsDirectory}'");
             return null;
+        }
+
+                Dev2Logger.Warn($"WorkflowIndex Resolve failed. No match found for key: '{key}' in directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WorkflowIndex Resolve error for name: '{nameWithoutExtension}' in directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
+                return null;
+            }
         }
 
         // ── Internal helpers ──────────────────────────────────────────────────
@@ -135,25 +167,23 @@ namespace Warewolf.Execution.Lightweight
         static FrozenDictionary<string, string> LoadIndex(string workflowsDirectory)
         {
             var indexPath = Path.Combine(workflowsDirectory, IndexFileName);
+            Dev2Logger.Debug($"WorkflowIndex LoadIndex attempting to load from: {indexPath}", "WorkflowIndex-Infrastructure");
 
             if (File.Exists(indexPath))
             {
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] LoadIndex: reading index file '{indexPath}'");
+                Dev2Logger.Info($"WorkflowIndex found existing index file: {indexPath}", "WorkflowIndex-Infrastructure");
                 var result = TryDeserializeIndex(indexPath);
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] LoadIndex: index file loaded, entryCount={result.Count}");
+                Dev2Logger.Info($"WorkflowIndex deserialized {result.Count} entries from: {indexPath}", "WorkflowIndex-Infrastructure");
                 return result;
             }
 
             // Index absent — build from disk, persist for future cold-starts, then return.
-            Console.WriteLine(
-                $"[WorkflowIndexDiag] LoadIndex: no index file at '{indexPath}', scanning disk");
+            Dev2Logger.Warn($"WorkflowIndex file not found at: {indexPath}. Building from disk scan...", "WorkflowIndex-Infrastructure");
             try
             {
                 var dict = BuildIndexFromDisk(workflowsDirectory);
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] LoadIndex: disk scan complete, entryCount={dict.Count}");
+                Dev2Logger.Info($"WorkflowIndex built {dict.Count} entries from disk for directory: {workflowsDirectory}", "WorkflowIndex-Infrastructure");
+
                 TryPersistIndex(indexPath, dict);
 
                 return dict.Count > 0
@@ -162,8 +192,7 @@ namespace Warewolf.Execution.Lightweight
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] LoadIndex: disk scan failed for '{workflowsDirectory}': {ex.GetType().Name}: {ex.Message}");
+                Dev2Logger.Error($"WorkflowIndex LoadIndex failed for directory: {workflowsDirectory}", ex, "WorkflowIndex-Infrastructure");
                 return FrozenDictionary<string, string>.Empty;
             }
         }
@@ -179,13 +208,17 @@ namespace Warewolf.Execution.Lightweight
             {
                 var json = File.ReadAllText(indexPath);
                 var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                return dict is null or { Count: 0 }
-                    ? FrozenDictionary<string, string>.Empty
-                    : dict.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+                if (dict is null or { Count: 0 })
+                {
+                    Dev2Logger.Warn($"WorkflowIndex deserialization resulted in empty dictionary from: {indexPath}", "WorkflowIndex-Infrastructure");
+                    return FrozenDictionary<string, string>.Empty;
+                }
+
+                return dict.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
             }
-            catch
+            catch (Exception ex)
             {
-                // Malformed or inaccessible — lookup will return null for every request.
+                Dev2Logger.Error($"WorkflowIndex deserialization failed for file: {indexPath}", ex, "WorkflowIndex-Infrastructure");
                 return FrozenDictionary<string, string>.Empty;
             }
         }
@@ -199,7 +232,12 @@ namespace Warewolf.Execution.Lightweight
         static Dictionary<string, string> BuildIndexFromDisk(string workflowsDirectory)
         {
             if (!Directory.Exists(workflowsDirectory))
+            {
+                Dev2Logger.Error($"WorkflowIndex BuildIndexFromDisk failed: Directory does not exist: {workflowsDirectory}", "WorkflowIndex-Infrastructure");
                 return new Dictionary<string, string>(0, StringComparer.OrdinalIgnoreCase);
+            }
+
+            Dev2Logger.Info($"WorkflowIndex BuildIndexFromDisk starting scan of directory: {workflowsDirectory}", "WorkflowIndex-Infrastructure");
 
             var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var basePrefix = workflowsDirectory.TrimEnd(
@@ -208,18 +246,42 @@ namespace Warewolf.Execution.Lightweight
 
             foreach (var ext in _workflowExtensions)
             {
-                foreach (var file in Directory.EnumerateFiles(
-                    workflowsDirectory, $"*{ext}", SearchOption.AllDirectories))
+                try
                 {
-                    var relPath = file[basePrefix.Length..];
-                    var noExt   = relPath[..^ext.Length];
-                    var key     = noExt.Replace('\\', '/').TrimStart('/').ToLowerInvariant();
-                    var value   = relPath.Replace('\\', '/');
+                    var files = Directory.EnumerateFiles(workflowsDirectory, $"*{ext}", SearchOption.AllDirectories).ToList();
+                    Dev2Logger.Debug($"WorkflowIndex found {files.Count} {ext} files in: {workflowsDirectory}", "WorkflowIndex-Infrastructure");
 
-                    dict.TryAdd(key, value);  // .bite wins: first writer is never overwritten.
+                    foreach (var file in files)
+                    {
+                        try
+                        {
+                            var relPath = file[basePrefix.Length..];
+                            var noExt   = relPath[..^ext.Length];
+                            var key     = noExt.Replace('\\', '/').TrimStart('/').ToLowerInvariant();
+                            var value   = relPath.Replace('\\', '/');
+
+                            if (dict.TryAdd(key, value))
+                            {
+                                Dev2Logger.Debug($"WorkflowIndex indexed: '{key}' -> '{value}'", "WorkflowIndex-Infrastructure");
+                            }
+                            else
+                            {
+                                Dev2Logger.Warn($"WorkflowIndex skipped duplicate key: '{key}' for file: {file}", "WorkflowIndex-Infrastructure");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Dev2Logger.Error($"WorkflowIndex error processing file: {file}", ex, "WorkflowIndex-Infrastructure");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error($"WorkflowIndex error enumerating {ext} files in: {workflowsDirectory}", ex, "WorkflowIndex-Infrastructure");
                 }
             }
 
+            Dev2Logger.Info($"WorkflowIndex BuildIndexFromDisk completed. Total entries: {dict.Count}", "WorkflowIndex-Infrastructure");
             return dict;
         }
 
@@ -231,16 +293,20 @@ namespace Warewolf.Execution.Lightweight
         {
             try
             {
+                Dev2Logger.Info($"WorkflowIndex TryPersistIndex attempting to write {dict.Count} entries to: {indexPath}", "WorkflowIndex-Infrastructure");
+
                 var sorted = dict
                     .OrderBy(kv => kv.Key, StringComparer.OrdinalIgnoreCase)
                     .ToDictionary(kv => kv.Key, kv => kv.Value);
 
                 var json = JsonConvert.SerializeObject(sorted, Formatting.Indented);
                 File.WriteAllText(indexPath, json);
+
+                Dev2Logger.Info($"WorkflowIndex successfully persisted index to: {indexPath}", "WorkflowIndex-Infrastructure");
             }
-            catch
+            catch (Exception ex)
             {
-                // Write failure is non-fatal; in-memory index remains valid.
+                Dev2Logger.Warn($"WorkflowIndex persist failed for: {indexPath}. In-memory index remains valid.", ex, "WorkflowIndex-Infrastructure");
             }
         }
     }

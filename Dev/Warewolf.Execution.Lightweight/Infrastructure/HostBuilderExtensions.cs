@@ -27,6 +27,10 @@ internal static class HostBuilderExtensions
         => builder
             .ConfigureFunctionsWorkerDefaults(worker =>
             {
+                // ── Instance correlation — MUST be first so all subsequent
+                //    middleware and function code inherits the scope ───────────
+                worker.UseMiddleware<InstanceCorrelationMiddleware>();
+
                 // ── Auth middleware pipeline — ORDER IS CRITICAL ──────────────
                 // 1. Intercept unauthenticated requests to /secure/* before
                 //    Easy Auth redirect fires. Pass /public/* straight through.

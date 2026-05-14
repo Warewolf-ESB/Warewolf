@@ -6,6 +6,7 @@
 
 using System.Net;
 using System.Text.Json;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
@@ -144,8 +145,8 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             request.Headers.TryGetValues(BypassHeader, out var bypassValues) &&
             bypassValues.Any(v => string.Equals(v, BypassHeaderValue, StringComparison.Ordinal)))
         {
-            _logger.LogWarning(
-                "⚠ DEV BYPASS: {Header} header detected on {Path} — skipping all policy checks. " +
+            Dev2Logger.Warn(
+                $"⚠ DEV BYPASS: {BypassHeader} header detected on {path} — skipping all policy checks. " +
                 "This must NEVER happen in Production.",
                 BypassHeader, path);
             context.Items[AuthConstants.DevBypassContextKey] = true;

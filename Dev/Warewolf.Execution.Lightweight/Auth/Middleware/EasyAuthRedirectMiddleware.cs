@@ -5,6 +5,7 @@
  */
 
 using System.Net;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
@@ -51,10 +52,13 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
     /// <inheritdoc/>
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
+        const string executionId = "EasyAuthRedirectMiddleware";
+
         var request = await context.GetHttpRequestDataAsync();
 
         if (request is null)
         {
+            Dev2Logger.Debug("EasyAuthRedirectMiddleware: No HTTP request data, passing to next middleware", executionId);
             await next(context);
             return;
         }
@@ -64,7 +68,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
         // Public routes bypass all auth checks
         if (path.StartsWith(AuthConstants.PublicRoutePrefix, StringComparison.OrdinalIgnoreCase))
         {
-            _logger.LogDebug("Public route {Path} — bypassing auth check", path);
+            Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Public route detected: {path}, bypassing auth check", executionId);
             await next(context);
             return;
         }
@@ -76,6 +80,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
         var isServices = path.StartsWith(AuthConstants.ServicesRoutePrefix, StringComparison.OrdinalIgnoreCase);
         if (!isSecure && !isServices)
         {
+            Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Non-secure route: {path}, passing through", executionId);
             await next(context);
             return;
         }
@@ -100,22 +105,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
         var isBrowser = LooksLikeBrowserNavigation(request);
 
-        if (AuthConstants.VerboseAuthLogging)
-        {
-            try
-            {
-                _logger.LogInformation(
-                    "[AuthDiag] EasyAuth check: Path={Path} HasPrincipalHeader={HasPrincipal} " +
-                    "HasAuthHeader={HasAuth} IsBrowserNavigation={IsBrowser}",
-                    path, hasPrincipalHeader, hasAuthHeader, isBrowser);
-                if (AuthConstants.VerboseConsoleAuthLogging)
-                    Console.WriteLine($"[AuthDiag] EasyAuth check: Path={path} HasPrincipalHeader={hasPrincipalHeader} HasAuthHeader={hasAuthHeader} IsBrowserNavigation={isBrowser}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-            }
-        }
+        Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Path={path}, HasPrincipalHeader={hasPrincipalHeader}, HasAuthHeader={hasAuthHeader}, IsBrowser={isBrowser}", executionId);
 
         if (!hasPrincipalHeader && !hasAuthHeader)
         {
@@ -123,19 +113,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             {
                 var redirect = $"/.auth/login/aad?post_login_redirect_uri={Uri.EscapeDataString(path + request.Url.Query)}";
 
-                if (AuthConstants.VerboseAuthLogging)
-                {
-                    try
-                    {
-                        _logger.LogInformation("[AuthDiag] Browser navigation detected — 302 redirect to {Redirect}", redirect);
-                        if (AuthConstants.VerboseConsoleAuthLogging)
-                            Console.WriteLine($"[AuthDiag] Browser navigation detected — 302 redirect to {redirect}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                    }
-                }
+                Dev2Logger.Info($"EasyAuthRedirectMiddleware: Browser navigation detected, redirecting to: {redirect}", executionId);
 
                 var resp302 = request.CreateResponse(HttpStatusCode.Redirect);
                 resp302.Headers.Add("Location", redirect);
@@ -143,26 +121,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
                 return;
             }
 
-            _logger.LogWarning(
-                "Unauthenticated request to protected route {Path} — returning 401", path);
-
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    var accept = request.Headers.TryGetValues("Accept", out var av) ? av.FirstOrDefault() : "(none)";
-                    var userAgent = request.Headers.TryGetValues("User-Agent", out var ua) ? ua.FirstOrDefault() : "(none)";
-                    _logger.LogInformation(
-                        "[AuthDiag] 401 details: Path={Path} Accept={Accept} UserAgent={UserAgent}",
-                        path, accept, userAgent);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] 401 details: Path={path} Accept={accept} UserAgent={userAgent}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
+            Dev2Logger.Warn($"EasyAuthRedirectMiddleware: Unauthenticated request to protected route: {path}, returning 401", executionId);
 
             var response = request.CreateResponse(HttpStatusCode.Unauthorized);
             response.Headers.Add("Content-Type", "application/json");
@@ -174,7 +133,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
-        _logger.LogDebug("Authenticated request to {Path} — passing to next middleware", path);
+        Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Authenticated request to {path}, passing to next middleware", executionId);
         await next(context);
     }
 

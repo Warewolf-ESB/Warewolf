@@ -10,21 +10,21 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// <see cref="IExecutionLogger"/> implementation that persists every log entry
     /// as an <see cref="ElasticsearchLogDocument"/> in an Elasticsearch index.
     ///
+    /// Inherits correlation-enrichment logic from <see cref="ExecutionLoggerBase"/>.
     /// Indexing is fire-and-forget: the calling thread is never blocked, and a
     /// failure to reach Elasticsearch is silently swallowed so it never disrupts
     /// workflow execution.
     /// </summary>
-    public sealed class ElasticsearchExecutionLogger : IExecutionLogger
+    public sealed class ElasticsearchExecutionLogger : ExecutionLoggerBase
     {
         readonly ElasticsearchClient _client;
         readonly string _indexName;
-        readonly Dev2LogLevel _minimumLevel;
  
         public ElasticsearchExecutionLogger(ElasticsearchLoggingOptions options,
                                             Dev2LogLevel minimumLevel = ExecutionLogLevel.Default)
+            : base(minimumLevel)
         {
             ArgumentNullException.ThrowIfNull(options);
-            _minimumLevel = minimumLevel;
 
              _indexName = options.IndexName ?? throw new ArgumentException("IndexName must be set.", nameof(options));
 
@@ -41,9 +41,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             _client = new ElasticsearchClient(settings);
         }
 
-        bool ShouldLog(Dev2LogLevel level) => ExecutionLogLevel.ShouldLog(level, _minimumLevel);
-
-        public void LogDebug(string message, Guid executionId)
+        public override void LogDebug(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -54,7 +52,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogDebug(string message, Exception exception, Guid executionId)
+        public override void LogDebug(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -68,7 +66,7 @@ namespace Warewolf.Execution.Lightweight.Logging
         }
 
 
-        public void LogInfo(string message, Guid executionId)
+        public override void LogInfo(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -79,7 +77,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogInfo(string message, Exception exception, Guid executionId)
+        public override void LogInfo(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -92,7 +90,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogWarning(string message, Guid executionId)
+        public override void LogWarning(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -103,7 +101,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogWarning(string message, Exception exception, Guid executionId)
+        public override void LogWarning(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -116,7 +114,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogError(string message, Guid executionId)
+        public override void LogError(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -127,7 +125,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogError(string activityName, Exception ex, Guid executionId)
+        public override void LogError(string activityName, Exception ex, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -142,7 +140,7 @@ namespace Warewolf.Execution.Lightweight.Logging
         }
 
 
-        public void LogFatal(string message, Guid executionId)
+        public override void LogFatal(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -153,7 +151,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogFatal(string message, Exception exception, Guid executionId)
+        public override void LogFatal(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
             IndexFireAndForget(new ElasticsearchLogDocument
@@ -175,6 +173,8 @@ namespace Warewolf.Execution.Lightweight.Logging
                 return;
             }
 
+            doc = EnrichWithCorrelation(doc);
+
             _ = Task.Run(async () =>
             {
                 try
@@ -190,14 +190,14 @@ namespace Warewolf.Execution.Lightweight.Logging
             });
         }
 
-        public void LogError(Exception ex, string log)
+        public override void LogError(Exception ex, string log)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
             var exception = new Exception(log, ex);
             this.LogError("", exception, new Guid());
         }
 
-        public void LogInfo(string message)
+        public override void LogInfo(string message)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
             this.LogInfo(message, new Guid());

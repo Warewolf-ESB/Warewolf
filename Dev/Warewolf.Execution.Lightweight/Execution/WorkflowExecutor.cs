@@ -67,11 +67,17 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         public WorkflowExecutionResult Execute(string workflowFilePath, Dictionary<string, string> inputs = null)
         {
-            return Execute(new WorkflowExecutionRequest
+            var executionId = Guid.NewGuid();
+            Dev2Logger.Info($"WorkflowExecutor Execute starting for file: {workflowFilePath}", executionId.ToString());
+
+            var result = Execute(new WorkflowExecutionRequest
             {
                 WorkflowFilePath = workflowFilePath,
                 InputParameters = inputs ?? new Dictionary<string, string>()
             });
+
+            Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, Duration: {result.Duration.TotalMilliseconds}ms", executionId.ToString());
+            return result;
         }
 
         /// <summary>
@@ -81,11 +87,13 @@ namespace Warewolf.Execution.Lightweight
         {
             if (request == null)
             {
+                Dev2Logger.Error("WorkflowExecutor Execute called with null request", "WorkflowExecutor-Validation");
                 return WorkflowExecutionResult.Failure("Execution request cannot be null.");
             }
 
             if (!request.IsValid)
             {
+                Dev2Logger.Error("WorkflowExecutor Execute called with invalid request (missing WorkflowFilePath)", "WorkflowExecutor-Validation");
                 return WorkflowExecutionResult.Failure("WorkflowFilePath must be provided.");
             }
 
@@ -115,25 +123,31 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] WorkflowExecutor: file not found at '{request.WorkflowFilePath}' for workflow '{request.WorkflowName}'");
-                return WorkflowExecutionResult.NotFound($"Workflow '{request.WorkflowName}' not found.");
+                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");
+                return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
             }
 
             var stopwatch = Stopwatch.StartNew();
             var startTime = DateTime.UtcNow;
             var executionId = Guid.NewGuid();
 
+            Dev2Logger.Info($"WorkflowExecutor Execute starting. File: {request.WorkflowFilePath}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
+
             try
             {
                 // Step 1: Read the workflow XML file
+                Dev2Logger.Debug($"WorkflowExecutor Step 1: Reading workflow file: {request.WorkflowFilePath}", executionId.ToString());
                 var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
+                Dev2Logger.Debug($"WorkflowExecutor Step 1 completed: Successfully read workflow file: {request.WorkflowFilePath}", executionId.ToString());
 
                 // Step 2: Extract XamlDefinition and DataList from the XML
+                Dev2Logger.Debug("WorkflowExecutor Step 2: Extracting workflow parts (XAML, DataList)", executionId.ToString());
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
+                Dev2Logger.Debug("WorkflowExecutor Step 2 completed: Successfully extracted workflow parts", executionId.ToString());
 
                 if (xamlDefinition == null || xamlDefinition.Length == 0)
                 {
+                    Dev2Logger.Error("WorkflowExecutor Execute: No XamlDefinition found in workflow file", executionId.ToString());
                     return WorkflowExecutionResult.Failure("No XamlDefinition found in the workflow file.");
                 }
 
@@ -141,39 +155,76 @@ namespace Warewolf.Execution.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
-                // (OPENAPI is handled before execution starts — see short-circuit above.)
-                // Step 3: Load XAML into a DynamicActivity. Cached per normalised file path;
-                // ActivityXamlServices.Load compiles XAML only once per unique workflow file.
+                Dev2Logger.Debug($"WorkflowExecutor Resolved workflow name: {resolvedName}", executionId.ToString());
+
+                // OPENAPI � generate the spec from the DataList only; no XAML load or execution needed.
+                if (request.ReturnType == EmitionTypes.OPENAPI)
+                {
+                    Dev2Logger.Info($"WorkflowExecutor generating OpenAPI spec for: {resolvedName}", executionId.ToString());
+                    var spec = WorkflowOpenApiGenerator.Generate(
+                        request.WorkflowFilePath,
+                        resolvedName,
+                        request.WebServerUri ?? new Uri("https://localhost"));
+                    stopwatch.Stop();
+                    Dev2Logger.Info($"WorkflowExecutor OpenAPI spec generated successfully. Duration: {stopwatch.Elapsed.TotalMilliseconds}ms", executionId.ToString());
+                    return new WorkflowExecutionResult
+                    {
+                        IsSuccess   = true,
+                        ExecutionId = executionId,
+                        StartTime   = startTime,
+                        EndTime     = DateTime.UtcNow,
+                        Duration    = stopwatch.Elapsed,
+                        ContentType = "application/json",
+                        PayloadWriter = (stream, ct) => WriteStringToStreamAsync(stream, spec, ct)
+                    };
+                }
+
+                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path �
+                // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
+                Dev2Logger.Debug("WorkflowExecutor Step 3: Loading DynamicActivity from XAML", executionId.ToString());
                 var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
+                Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Successfully loaded DynamicActivity from XAML", executionId.ToString());
 
                 if (dynamicActivity == null)
                 {
+                    Dev2Logger.Error("WorkflowExecutor Execute: Failed to load DynamicActivity from XAML", executionId.ToString());
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
 
                 // Step 4: Parse DynamicActivity into IDev2Activity chain
+                Dev2Logger.Debug("WorkflowExecutor Step 4: Parsing DynamicActivity into IDev2Activity chain", executionId.ToString());
                 var activityParser = new ActivityParser();
                 var startActivity = activityParser.Parse(dynamicActivity);
+                Dev2Logger.Debug("WorkflowExecutor Step 4 completed: Successfully parsed IDev2Activity chain", executionId.ToString());
 
                 if (startActivity == null)
                 {
+                    Dev2Logger.Error("WorkflowExecutor Execute: No start node found in workflow", executionId.ToString());
                     return WorkflowExecutionResult.Failure(GlobalConstants.NoStartNodeError);
                 }
 
                 // Step 5: Build DsfDataObject with inputs
+                Dev2Logger.Debug("WorkflowExecutor Step 5: Building DsfDataObject with inputs", executionId.ToString());
                 var dataObject = BuildDataObject(request, executionId, resolvedName, dataList);
+                Dev2Logger.Debug("WorkflowExecutor Step 5 completed: Successfully built DsfDataObject with inputs", executionId.ToString());
 
                 // Index DbSource bite files in the resources directory so they can be loaded
                 // on demand by ServiceExecutionAbstract.GetSource(Guid) without pre-loading them all.
                 var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
+                Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed for resources directory: {resourcesDir}", executionId.ToString());
                 LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
                 _executionLogger.LogInfo($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed completed for resources directory: {resourcesDir}", executionId.ToString());
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
+                Dev2Logger.Debug("WorkflowExecutor Step 6: Executing activity chain", executionId.ToString());
                 PerRequestDebugCapturer debugCapturer = null;
                 if (request.IsDebug)
+                {
+                    Dev2Logger.Debug("WorkflowExecutor Debug mode enabled, creating PerRequestDebugCapturer", executionId.ToString());
                     debugCapturer = new PerRequestDebugCapturer();
+                }
 
                 using (debugCapturer != null ? DebugDispatcher.UseContextDispatcher(debugCapturer) : null)
                 {
@@ -190,8 +241,10 @@ namespace Warewolf.Execution.Lightweight
                     if (debugCapturer != null)
                         EmitWorkflowEndState(dataObject, resolvedName, dataList, startTime);
                 }
+                Dev2Logger.Debug("WorkflowExecutor Step 6 completed: Successfully executed activity chain", executionId.ToString());
 
                 // Step 7: Extract outputs
+                Dev2Logger.Debug("WorkflowExecutor Step 7: Extracting outputs and building result", executionId.ToString());
                 stopwatch.Stop();
                 var result = new WorkflowExecutionResult
                 {
@@ -203,6 +256,7 @@ namespace Warewolf.Execution.Lightweight
 
                 CollectErrors(dataObject, result, executionId);
                 ExtractPayload(dataObject, dataList, request, result);
+                Dev2Logger.Debug("WorkflowExecutor Step 7 completed: Successfully extracted outputs and built result", executionId.ToString());
                 if (debugCapturer != null)
                 {
                     // Mirror Executor.DebugFromWebExecutionResponse: build a parent?child tree
@@ -229,11 +283,13 @@ namespace Warewolf.Execution.Lightweight
 
                 result.IsSuccess = result.Errors.Count == 0;
 
+                Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, ErrorCount: {result.Errors.Count}, Duration: {stopwatch.Elapsed.TotalMilliseconds}ms", executionId.ToString());
                 return result;
             }
             catch (InvalidWorkflowException iwe)
             {
                 stopwatch.Stop();
+                Dev2Logger.Error("WorkflowExecutor Execute: InvalidWorkflowException", iwe, executionId.ToString());
                 _executionLogger.LogError(nameof(Execute), iwe, executionId);
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
@@ -251,6 +307,7 @@ namespace Warewolf.Execution.Lightweight
             catch (Exception ex)
             {
                 stopwatch.Stop();
+                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
                 _executionLogger.LogError(nameof(Execute), ex, executionId);
                 return new WorkflowExecutionResult
                 {
