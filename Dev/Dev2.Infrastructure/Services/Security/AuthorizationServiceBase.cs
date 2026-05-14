@@ -107,8 +107,8 @@ namespace Dev2.Services.Security
                 }
 #else
 				//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
-				return false;
 #endif
+				return false;
             };
         }
 
@@ -529,8 +529,8 @@ namespace Dev2.Services.Security
             }
 #else
 			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
-			return false;
 #endif
+			return false;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

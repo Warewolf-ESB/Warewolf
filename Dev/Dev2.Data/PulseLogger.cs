@@ -124,19 +124,26 @@ namespace Dev2.Data
 #if WINDOWS || NETFRAMEWORK
             Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
 #else
-			GCMemoryInfo gcInfo = GC.GetGCMemoryInfo();
-			ulong total = (ulong)gcInfo.TotalAvailableMemoryBytes;
-			ulong used = (ulong)gcInfo.MemoryLoadBytes;
-			status.dwLength = (uint)Marshal.SizeOf<NativeMethods.MEMORYSTATUSEX>();
-			status.dwMemoryLoad = total > 0 ? (uint)(used * 100UL / total) : 0u;
-			status.ulTotalPhys = total;
-			status.ulAvailPhys = total > used ? total - used : 0UL;
-			status.ulTotalPageFile = 0UL;
-			status.ulAvailPageFile = 0UL;
-			status.ulTotalVirtual = 0UL;
-			status.ulAvailVirtual = 0UL;
-			status.ulAvailExtendedVirtual = 0UL;
-			Boolean ret = true;
+			Boolean ret = NativeMethods.TryReadProcMeminfo(ref status);
+			if (!ret)
+			{
+				// /proc/meminfo not available (e.g. macOS) — degrade to the
+				// runtime's view. Page-file / virtual fields stay zero since
+				// GCMemoryInfo doesn't expose them.
+				GCMemoryInfo gcInfo = GC.GetGCMemoryInfo();
+				ulong total = (ulong)gcInfo.TotalAvailableMemoryBytes;
+				ulong used = (ulong)gcInfo.MemoryLoadBytes;
+				status.dwLength = (uint)Marshal.SizeOf<NativeMethods.MEMORYSTATUSEX>();
+				status.dwMemoryLoad = total > 0 ? (uint)(used * 100UL / total) : 0u;
+				status.ulTotalPhys = total;
+				status.ulAvailPhys = total > used ? total - used : 0UL;
+				status.ulTotalPageFile = 0UL;
+				status.ulAvailPageFile = 0UL;
+				status.ulTotalVirtual = 0UL;
+				status.ulAvailVirtual = 0UL;
+				status.ulAvailExtendedVirtual = 0UL;
+				ret = true;
+			}
 #endif
 
 			StringBuilder stringBuilder = new StringBuilder();
