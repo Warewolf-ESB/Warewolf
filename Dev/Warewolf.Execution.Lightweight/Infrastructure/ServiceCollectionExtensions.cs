@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -42,20 +43,20 @@ internal static class ServiceCollectionExtensions
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
             services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
 
-        // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
-        // EntraAuthOptions is read from environment ONCE and shared as an
-        // immutable DI singleton.  Required by BearerTokenPrincipalParser and
-        // can be injected into health checks, audit, and tests.
-        services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
+            // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
+            // EntraAuthOptions is read from environment ONCE and shared as an
+            // immutable DI singleton.  Required by BearerTokenPrincipalParser and
+            // can be injected into health checks, audit, and tests.
+            services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
-        // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
-        // AuditLogger is registered unconditionally so authorization middleware
-        // can emit structured 401/403 audit events even when encryption is off.
-        services.AddSingleton<AuditLogger>();
+            // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
+            // AuditLogger is registered unconditionally so authorization middleware
+            // can emit structured 401/403 audit events even when encryption is off.
+            services.AddSingleton<AuditLogger>();
 
-        // Auth policy loader — builds WorkflowAuthPolicy from secure.config
-        // WindowsGroupPermissions entries at startup.
-        services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
+            // Auth policy loader — builds WorkflowAuthPolicy from secure.config
+            // WindowsGroupPermissions entries at startup.
+            services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
 
             Dev2Logger.Info("ServiceCollectionExtensions AddCoreServices completed successfully", executionId);
             return services;
@@ -123,8 +124,6 @@ internal static class ServiceCollectionExtensions
             return new CompositeExecutionLogger(loggers);
         });
 
-        return services;
-    }
         // Policy matcher — extracted matching strategy; swap implementation here to change behaviour.
         services.AddSingleton<IWorkflowPolicyMatcher, WorkflowPolicyMatcher>();
 
@@ -153,7 +152,7 @@ internal static class ServiceCollectionExtensions
     /// </summary>
     internal static IServiceCollection AddKeyVaultEncryption(
         this IServiceCollection services,
-        HostEnvironmentConfig   config)
+        HostEnvironmentConfig config)
     {
         var useDebugBypass = config.IsDevelopment && config.DebugKeyVaultSecret is not null;
         services.AddSingleton(sp => new KeyVaultSecretManager(
