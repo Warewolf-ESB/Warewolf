@@ -69,6 +69,7 @@ param(
     [String]   $EngineCoverageFile = "",
     [Switch]   $Coverage,
     [Switch]   $STA,
+    [Switch]   $Sequential,
     [String]   $PreTestRunScript,
     [String]   $PostTestRunScript,
     [String]   $VSTestPath = "",
@@ -963,6 +964,29 @@ function Start-LightweightExecution {
             Select-Object -First 20 |
             ForEach-Object { "    " + (Format-DirEntry $_) })
     }
+    # Drill into $env:WorkflowsDirectory specifically — the engine reads .bite
+    # workflow files from there, and the SecuritySpecs jobs need
+    # Examples\Control Flow - Decision.bite to exist. The top-level probe above
+    # only shows immediate children of "Resources*", which stops one level
+    # short of the workflow files.
+    $wfProbe = @()
+    if ($env:WorkflowsDirectory -and (Test-Path -LiteralPath $env:WorkflowsDirectory)) {
+        $wfProbe += "WorkflowsDirectory contents (up to 40 entries, 2 levels deep):"
+        $wfProbe += "  $($env:WorkflowsDirectory)/"
+        $top = @(Get-ChildItem -LiteralPath $env:WorkflowsDirectory -ErrorAction SilentlyContinue | Select-Object -First 40)
+        foreach ($t in $top) {
+            $wfProbe += "    " + (Format-DirEntry $t)
+            if ($t.PSIsContainer) {
+                $wfProbe += @(Get-ChildItem -LiteralPath $t.FullName -ErrorAction SilentlyContinue |
+                    Select-Object -First 20 |
+                    ForEach-Object { "      " + (Format-DirEntry $_) })
+            }
+        }
+        $biteCount = @(Get-ChildItem -LiteralPath $env:WorkflowsDirectory -Recurse -Filter '*.bite' -ErrorAction SilentlyContinue).Count
+        $wfProbe += "Total *.bite files under WorkflowsDirectory (recursive): $biteCount"
+    } else {
+        $wfProbe += "WorkflowsDirectory not set or does not exist: '$($env:WorkflowsDirectory)'"
+    }
     $diagLines = @(
         "=== TestRun.ps1 engine diagnostic snapshot ==="
         "Time          : $(Get-Date -Format o)"
@@ -977,6 +1001,8 @@ function Start-LightweightExecution {
         ""
         "Resources* subfolder contents (first 20 each):"
     ) + $resourcesProbe + @(
+        ""
+    ) + $wfProbe + @(
         "==============================================="
     )
     $diagLines | ForEach-Object { Write-Host $_ }
@@ -1688,24 +1714,65 @@ if ($LegacyWindowsDeps) {
         Add-LocalGroupMember -Group 'Warewolf Administrators' -Member 'LocalSchedulerAdmin' -ErrorAction SilentlyContinue
     }
     if ($CreateUNCPath) {
-        mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite -Force | Out-Null
-        "file contents to read" | Out-File -LiteralPath "C:\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
-        New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue
+        # Subdirs the File/Folder spec outlines reference under
+        # \\localhost\FileSystemShareTestingSite. Source files inside Copy/Move/
+        # Rename/Delete dirs are written at runtime by CommonSteps'
+        # CreateSourceFileWithSomeDummyData (path = literal feature value +
+        # AddGuidToPath suffix), but the *parent dir* must exist beforehand or
+        # the PutRaw fails and the test reports Failure.
+        $shareRoot = 'C:\FileSystemShareTestingSite'
+        foreach ($sub in @(
+            'ReadFileSharedTestingSite',
+            'ReadFolderSharedTestingSite',
+            'ReadFolderSharedTestingSite\emptydir',
+            'FileCopySharedTestingSite',
+            'FileMoveSharedTestingSite',
+            'FileRenameSharedTestingSite',
+            'FileCreateSharedTestingSite',
+            'FileDeleteSharedTestingSite',
+            'FileZipSharedTestingSite'
+        )) {
+            mkdir (Join-Path $shareRoot $sub) -Force | Out-Null
+        }
+        "file contents to read" | Out-File -LiteralPath "$shareRoot\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
+        # Delete-from-UNC reads pre-existing files (not created at runtime).
+        'delete me'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\filetodelete.txt" -Encoding ascii -Force
+        'memo body'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\Memo.txt" -Encoding ascii -Force
+        New-SmbShare -Path $shareRoot -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue
     }
     if ($UseRegionalSettings) {
         Set-Culture en-ZA
     }
 }
 
-if ($STA.IsPresent) {
+if ($STA.IsPresent -or $Sequential.IsPresent) {
+    # -Sequential forces a single MSTest worker, overriding the assembly-level
+    # [Parallelize(Workers=0)] (= ProcessorCount). Used by the Not Parallelizable
+    # Unit Tests job because [DoNotParallelize] does not reliably isolate tests
+    # that mutate static state (ResourceCatalog.Instance, GlobalConstants, etc.).
+    $rcBlock = if ($STA.IsPresent) {
 @"
-<?xml version="1.0" encoding="utf-8"?>
-<RunSettings>
   <RunConfiguration>
     <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
   </RunConfiguration>
-</RunSettings>
-"@ | Out-File -LiteralPath "$TestResultsPath\STA.runsettings" -Encoding utf8 -Force
+
+"@
+    } else { "" }
+    $msBlock = if ($Sequential.IsPresent) {
+@"
+  <MSTest>
+    <Parallelize>
+      <Workers>1</Workers>
+    </Parallelize>
+  </MSTest>
+
+"@
+    } else { "" }
+@"
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+$rcBlock$msBlock</RunSettings>
+"@ | Out-File -LiteralPath "$TestResultsPath\vstest.runsettings" -Encoding utf8 -Force
 }
 
 # SUT start
@@ -1761,7 +1828,7 @@ try {
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
-            $staArg = if ($STA.IsPresent) { "--settings:`"$TestResultsPath\STA.runsettings`"" } else { "" }
+            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) { "--settings:`"$TestResultsPath\vstest.runsettings`"" } else { "" }
             # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
             $resultsDirArg = "/ResultsDirectory:`"$TestResultsPath`""
 
@@ -1770,7 +1837,7 @@ try {
             if ($TestsToRun) {
                 if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
                 $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
-                "&`"$vstestExe`" /logger:trx $asmArg /Tests:`"$TestsToRun`" $staArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+                "&`"$vstestExe`" /logger:trx $asmArg /Tests:`"$TestsToRun`" $settingsArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             } else {
                 $categoryArg = ""
                 if ($ExcludeCategories -and $ExcludeCategories.Count -gt 0) {
@@ -1790,7 +1857,7 @@ try {
                 }
                 if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
                 $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
-                "&`"$vstestExe`" /logger:trx $asmArg $categoryArg $staArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+                "&`"$vstestExe`" /logger:trx $asmArg $categoryArg $settingsArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
             if ($PostTestRunScript) { "&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
             if ($UNCPassword) {

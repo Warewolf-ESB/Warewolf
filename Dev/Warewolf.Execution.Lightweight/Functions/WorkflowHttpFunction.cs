@@ -264,6 +264,18 @@ namespace Warewolf.Execution.Lightweight
                     executionRequest.IsDebug = true;
 
                 var result = _workflowExecutor.Execute(executionRequest);
+                if (!result.IsSuccess)
+                {
+                    // ResponseBuilder converts !IsSuccess → 500 without throwing, so the
+                    // catch block below never fires. Log here so the Security Specs CI
+                    // job can surface the underlying workflow error (file not found,
+                    // invalid XAML, etc.) instead of just "500 with no trace".
+                    var errs = result.Errors is { Count: > 0 }
+                        ? string.Join(" | ", result.Errors)
+                        : "(no errors collected)";
+                    Console.WriteLine(
+                        $"[SecuritySpecsDiag] ExecuteNamedWorkflow result.IsSuccess=false for name='{name}' isPublic={isPublic} errors=[{errs}]");
+                }
                 return await ResponseBuilder.BuildAsync(req, result,
                     isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
             }
