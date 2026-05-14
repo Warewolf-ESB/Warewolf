@@ -6,6 +6,7 @@
 
 using Azure.Core;
 using Azure.Identity;
+using Dev2.Common;
 
 namespace Warewolf.Execution.Lightweight.Security;
 
@@ -48,9 +49,26 @@ internal static class KeyVaultCredentialFactory
     /// Creates the optimal <see cref="TokenCredential"/> for the supplied options.
     /// </summary>
     internal static TokenCredential Create(KeyVaultCredentialOptions options)
-        => options.IsDevelopment
-            ? BuildDevelopmentChain(options.TenantId)
-            : BuildCloudCredential(options.ManagedIdentityClientId);
+    {
+        const string executionId = "KeyVaultCredentialFactory";
+
+        Dev2Logger.Info($"KeyVaultCredentialFactory Create starting. IsDevelopment: {options.IsDevelopment}, TenantId: {options.TenantId ?? "(not set)"}, ManagedIdentityClientId: {options.ManagedIdentityClientId ?? "(not set)"}", executionId);
+
+        try
+        {
+            var credential = options.IsDevelopment
+                ? BuildDevelopmentChain(options.TenantId)
+                : BuildCloudCredential(options.ManagedIdentityClientId);
+
+            Dev2Logger.Info($"KeyVaultCredentialFactory Create completed. Credential type: {credential.GetType().Name}", executionId);
+            return credential;
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Error("KeyVaultCredentialFactory Create failed", ex, executionId);
+            throw;
+        }
+    }
 
     // ── Private helpers ──────────────────────────────────────────────────────────
 
@@ -58,17 +76,33 @@ internal static class KeyVaultCredentialFactory
     /// Production path: single <see cref="ManagedIdentityCredential"/>, zero chain overhead.
     /// </summary>
     private static TokenCredential BuildCloudCredential(string? managedIdentityClientId)
-        => string.IsNullOrWhiteSpace(managedIdentityClientId)
-            ? new ManagedIdentityCredential()
-            : new ManagedIdentityCredential(
+    {
+        const string executionId = "KeyVaultCredentialFactory-Cloud";
+
+        if (string.IsNullOrWhiteSpace(managedIdentityClientId))
+        {
+            Dev2Logger.Info("KeyVaultCredentialFactory BuildCloudCredential using System-Assigned Managed Identity", executionId);
+            return new ManagedIdentityCredential();
+        }
+        else
+        {
+            Dev2Logger.Info($"KeyVaultCredentialFactory BuildCloudCredential using User-Assigned Managed Identity. ClientId: {managedIdentityClientId}", executionId);
+            return new ManagedIdentityCredential(
                 ManagedIdentityId.FromUserAssignedClientId(managedIdentityClientId));
+        }
+    }
 
     /// <summary>
     /// Development path: focused chain of credential providers that cover every
     /// local developer workflow, tenant-pinned when a tenant ID is supplied.
     /// </summary>
     private static ChainedTokenCredential BuildDevelopmentChain(string? tenantId)
-        => new(
+    {
+        const string executionId = "KeyVaultCredentialFactory-Dev";
+
+        Dev2Logger.Info($"KeyVaultCredentialFactory BuildDevelopmentChain creating credential chain. TenantId: {tenantId ?? "(not set)"}", executionId);
+
+        return new(
             // 0. Service-principal / container pass-through — resolves instantly when env vars present
             new EnvironmentCredential(),
 
@@ -78,4 +112,5 @@ internal static class KeyVaultCredentialFactory
             // 2. Visual Studio — fallback for IDE sign-in
             new VisualStudioCredential(new VisualStudioCredentialOptions { TenantId = tenantId })
         );
+    }
 }

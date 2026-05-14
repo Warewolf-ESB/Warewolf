@@ -6,6 +6,7 @@
 
 using System.Net;
 using System.Text.Json;
+using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
@@ -39,20 +40,17 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 
     private readonly IWorkflowAuthPolicyLoader _policyLoader;
     private readonly IHostEnvironment _hostEnvironment;
-    private readonly ILogger<WorkflowAuthorizationMiddleware> _logger;
 
     private static readonly JsonSerializerOptions JsonOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-    /// <summary>Initialises the middleware with policy loader, host environment and logger.</summary>
+    /// <summary>Initialises the middleware with policy loader and host environment.</summary>
     public WorkflowAuthorizationMiddleware(
         IWorkflowAuthPolicyLoader policyLoader,
-        IHostEnvironment hostEnvironment,
-        ILogger<WorkflowAuthorizationMiddleware> logger)
+        IHostEnvironment hostEnvironment)
     {
         _policyLoader = policyLoader;
         _hostEnvironment = hostEnvironment;
-        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -96,10 +94,10 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             request.Headers.TryGetValues(BypassHeader, out var bypassValues) &&
             bypassValues.Any(v => string.Equals(v, BypassHeaderValue, StringComparison.Ordinal)))
         {
-            _logger.LogWarning(
-                "⚠ DEV BYPASS: {Header} header detected on {Path} — skipping all policy checks. " +
+            Dev2Logger.Warn(
+                $"⚠ DEV BYPASS: {BypassHeader} header detected on {path} — skipping all policy checks. " +
                 "This must NEVER happen in Production.",
-                BypassHeader, path);
+                "WorkflowAuthorizationMiddleware");
             await next(context);
             return;
         }
@@ -110,26 +108,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             || principalObj is not WorkflowClaimsPrincipal principal
             || principal.Identity?.IsAuthenticated != true)
         {
-            _logger.LogWarning("No authenticated principal for secure route {Path}", path);
-
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    var hasPrincipalKey = context.Items.ContainsKey(AuthConstants.PrincipalContextKey);
-                    var principalType = principalObj?.GetType().Name ?? "(null)";
-                    var isAuth = (principalObj as WorkflowClaimsPrincipal)?.Identity?.IsAuthenticated;
-                    _logger.LogInformation(
-                        "[AuthDiag] 401 on {Path}: PrincipalKeyExists={KeyExists} PrincipalType={Type} IsAuthenticated={IsAuth}",
-                        path, hasPrincipalKey, principalType, isAuth);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] 401 on {path}: PrincipalKeyExists={hasPrincipalKey} PrincipalType={principalType} IsAuthenticated={isAuth}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
+            Dev2Logger.Warn($"No authenticated principal for secure route {path}", "WorkflowAuthorizationMiddleware");
 
             await WriteErrorAsync(request, context, HttpStatusCode.Unauthorized,
                 "unauthorized", "Authentication required.", path);
@@ -147,77 +126,22 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         // Open-access mode: no policies loaded → allow all authenticated callers
         if (_policyLoader.PolicyCount == 0)
         {
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    _logger.LogInformation(
-                        "[AuthDiag] PolicyCount=0 (open-access mode). Caller={Caller} Workflow={Workflow}",
-                        principal.CallerIdentity, workflowName);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] PolicyCount=0 (open-access mode). Caller={principal.CallerIdentity} Workflow={workflowName}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
-
-            _logger.LogDebug(
-                "No policies configured — open-access mode. Allowing '{Caller}' on '{Workflow}'",
-                principal.CallerIdentity, workflowName);
+            Dev2Logger.Debug(
+                $"No policies configured — open-access mode. Allowing '{principal.CallerIdentity}' on '{workflowName}'",
+                "WorkflowAuthorizationMiddleware");
             await next(context);
             return;
-        }
-
-        if (AuthConstants.VerboseAuthLogging)
-        {
-            try
-            {
-                var groups = string.Join(", ", principal.Groups);
-                var perms = string.Join(", ", principal.Permissions);
-                _logger.LogInformation(
-                    "[AuthDiag] PolicyCount={PolicyCount} Workflow={Workflow} Caller={Caller} " +
-                    "CallerGroups=[{Groups}] CallerPermissions=[{Perms}]",
-                    _policyLoader.PolicyCount, workflowName, principal.CallerIdentity,
-                    groups, perms);
-                if (AuthConstants.VerboseConsoleAuthLogging)
-                    Console.WriteLine($"[AuthDiag] PolicyCount={_policyLoader.PolicyCount} Workflow={workflowName} Caller={principal.CallerIdentity} CallerGroups=[{groups}] CallerPermissions=[{perms}]");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-            }
         }
 
         var policy = _policyLoader.GetPolicy(workflowName);
         if (policy is null)
         {
-            _logger.LogWarning(
-                "No policy found for workflow '{Workflow}' — denying '{Caller}'",
-                workflowName, principal.CallerIdentity);
+            Dev2Logger.Warn(
+                $"No policy found for workflow '{workflowName}' — denying '{principal.CallerIdentity}'",
+                "WorkflowAuthorizationMiddleware");
 
             //TODO: consider allowing access when no policy is found, to avoid accidental lockout if config is missing or malformed.  If we do allow, log a warning with details of the missing workflow and current policies.
             // log warning with workflowName and principal.CallerIdentity, and list all loaded policies for debugging
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    _logger.LogInformation(
-                    "No policy found for workflow '{Workflow}'. Caller='{Caller}'. Principal: {Policies}",
-                    workflowName, principal.CallerIdentity,
-                    principal.ToString());
-
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                    {
-                        Console.WriteLine($"No policy found for workflow '{workflowName}'. Caller='{principal.CallerIdentity}'. Principal: {principal.ToString()}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
 
             await next(context);
             //await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
@@ -225,52 +149,13 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
-        if (AuthConstants.VerboseAuthLogging)
-        {
-            try
-            {
-                var allowedGroups = string.Join(", ", policy.AllowedGroups);
-                _logger.LogInformation(
-                    "[AuthDiag] Policy matched for '{Workflow}': AllowedGroups=[{AllowedGroups}] " +
-                    "RequiredPermissions={ReqPerms} GroupEntryCount={EntryCount}",
-                    workflowName, allowedGroups, policy.RequiredPermissions, policy.GroupEntries.Count);
-                if (AuthConstants.VerboseConsoleAuthLogging)
-                    Console.WriteLine($"[AuthDiag] Policy matched for '{workflowName}': AllowedGroups=[{allowedGroups}] RequiredPermissions={policy.RequiredPermissions} GroupEntryCount={policy.GroupEntries.Count}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-            }
-        }
-
         // Group check (OR logic): caller must be in at least one allowed group
         if (!principal.IsInAnyGroup(policy.AllowedGroups))
         {
-            _logger.LogWarning(
-                "Group check failed for '{Caller}' on '{Workflow}'. " +
-                "Has=[{Has}] Allowed=[{Allowed}]",
-                principal.CallerIdentity, workflowName,
-                string.Join(", ", principal.Groups),
-                string.Join(", ", policy.AllowedGroups));
-
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    var callerGroups = string.Join(", ", principal.Groups);
-                    var policyGroups = string.Join(", ", policy.AllowedGroups);
-                    _logger.LogInformation(
-                        "[AuthDiag] 403 group denial: Workflow={Workflow} Caller={Caller} " +
-                        "CallerGroups=[{CallerGroups}] PolicyAllowedGroups=[{PolicyGroups}]",
-                        workflowName, principal.CallerIdentity, callerGroups, policyGroups);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] 403 group denial: Workflow={workflowName} Caller={principal.CallerIdentity} CallerGroups=[{callerGroups}] PolicyAllowedGroups=[{policyGroups}]");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
+            Dev2Logger.Warn(
+                $"Group check failed for '{principal.CallerIdentity}' on '{workflowName}'. " +
+                $"Has=[{string.Join(", ", principal.Groups)}] Allowed=[{string.Join(", ", policy.AllowedGroups)}]",
+                "WorkflowAuthorizationMiddleware");
 
             await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
                 "forbidden", "Insufficient group membership.", path,
@@ -286,29 +171,10 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         if (matchedEntry is not null &&
             !matchedEntry.Permissions.HasFlag(policy.RequiredPermissions))
         {
-            _logger.LogWarning(
-                "Permission check failed for '{Caller}' on '{Workflow}'. " +
-                "Has={Has} Required={Required}",
-                principal.CallerIdentity, workflowName,
-                matchedEntry.Permissions, policy.RequiredPermissions);
-
-            if (AuthConstants.VerboseAuthLogging)
-            {
-                try
-                {
-                    _logger.LogInformation(
-                        "[AuthDiag] 403 permission denial: Workflow={Workflow} Caller={Caller} " +
-                        "MatchedGroup={Group} HasPerms={HasPerms} RequiredPerms={ReqPerms}",
-                        workflowName, principal.CallerIdentity,
-                        matchedEntry.GroupName, matchedEntry.Permissions, policy.RequiredPermissions);
-                    if (AuthConstants.VerboseConsoleAuthLogging)
-                        Console.WriteLine($"[AuthDiag] 403 permission denial: Workflow={workflowName} Caller={principal.CallerIdentity} MatchedGroup={matchedEntry.GroupName} HasPerms={matchedEntry.Permissions} RequiredPerms={policy.RequiredPermissions}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[AuthDiag] Diagnostic logging error (non-fatal)");
-                }
-            }
+            Dev2Logger.Warn(
+                $"Permission check failed for '{principal.CallerIdentity}' on '{workflowName}'. " +
+                $"Has={matchedEntry.Permissions} Required={policy.RequiredPermissions}",
+                "WorkflowAuthorizationMiddleware");
 
             await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
                 "forbidden", "Insufficient permissions.", path,
@@ -316,9 +182,9 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
-        _logger.LogInformation(
-            "Authorised '{Caller}' for workflow '{Workflow}'",
-            principal.CallerIdentity, workflowName);
+        Dev2Logger.Info(
+            $"Authorised '{principal.CallerIdentity}' for workflow '{workflowName}'",
+            "WorkflowAuthorizationMiddleware");
 
         await next(context);
     }

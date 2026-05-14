@@ -14,7 +14,7 @@ using Dev2.Runtime.ResourceUpgrades;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
-using Dev2.Tests.Runtime;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {

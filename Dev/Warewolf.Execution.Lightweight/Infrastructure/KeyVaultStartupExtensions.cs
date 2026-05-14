@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warewolf.Execution.Lightweight.Logging;
@@ -30,22 +31,34 @@ internal static class KeyVaultStartupExtensions
     /// </param>
     internal static async Task InitializeKeyVaultAsync(this IHost host, HostEnvironmentConfig config)
     {
+        const string executionId = "KeyVaultStartupExtensions";
+
+        Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync starting for instance: {config.InstanceId}", executionId);
+
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
         var logger = host.Services.GetRequiredService<IExecutionLogger>();
 
         try
         {
+            Dev2Logger.Debug("KeyVaultStartupExtensions calling secretManager.InitializeAsync()", executionId);
             await secretManager.InitializeAsync().ConfigureAwait(false);
 
             var decryptionHelper = host.Services.GetRequiredService<FileDecryptionHelper>();
             DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
+
+            Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption hook wired. KeyId: {secretManager.KeyId}", executionId);
+
             var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
             logger.LogInfo(log);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
+
+            Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}, KeyId: {secretManager.KeyId}", executionId);
         }
         catch (Exception ex)
         {
+            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}", ex, executionId);
+
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
             logger.LogError(ex, log);
             audit.LogKeyVaultErrorAndMessage(log, ex);

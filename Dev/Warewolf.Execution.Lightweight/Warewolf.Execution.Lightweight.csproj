@@ -101,6 +101,9 @@
 
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
 
+    <!-- Diagnostics and logging -->
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
+
     <!-- Licensing / Chargebee integration -->
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
 
