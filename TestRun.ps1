@@ -904,6 +904,10 @@ function Start-LightweightExecution {
     if (-not $env:FUNCTIONS_WORKER_RUNTIME)     { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
     if (-not $env:ASPNETCORE_ENVIRONMENT)       { $env:ASPNETCORE_ENVIRONMENT = 'Development' }
     if (-not $env:AZURE_FUNCTIONS_ENVIRONMENT) { $env:AZURE_FUNCTIONS_ENVIRONMENT = 'Development' }
+    # Use in-memory distributed lock manager so the engine works without Azurite.
+    # CI agents that have a real storage account can override this by setting
+    # AzureWebJobsStorage before invoking the script.
+    if (-not $env:AzureWebJobsStorage)          { $env:AzureWebJobsStorage = '' }
     if ($SharedConfigDir) {
         # WAREWOLF_SECURE_CONFIG must point to a file path, not the dir.
         # Match the pipeline.yml convention: <SharedConfigDir>\secure.config.
