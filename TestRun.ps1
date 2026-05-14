@@ -897,10 +897,13 @@ function Start-LightweightExecution {
     $func   = Resolve-FuncExe
     Write-Host "Starting Lightweight Execution from $runDir using $func"
     # Match pipeline.yml engine env: avoid Azure Key Vault lookups, force the
-    # dotnet-isolated worker model.
-    if (-not $env:AZURE_KEYVAULT_NAME)        { $env:AZURE_KEYVAULT_NAME = '' }
-    if (-not $env:SkipFailureToRetrieveSecret) { $env:SkipFailureToRetrieveSecret = 'true' }
-    if (-not $env:FUNCTIONS_WORKER_RUNTIME)    { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
+    # dotnet-isolated worker model, and use Development environment so that
+    # dev-only features (e.g. X-WW-Bypass-Auth header) behave the same as CI.
+    if (-not $env:AZURE_KEYVAULT_NAME)          { $env:AZURE_KEYVAULT_NAME = '' }
+    if (-not $env:SkipFailureToRetrieveSecret)  { $env:SkipFailureToRetrieveSecret = 'true' }
+    if (-not $env:FUNCTIONS_WORKER_RUNTIME)     { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
+    if (-not $env:ASPNETCORE_ENVIRONMENT)       { $env:ASPNETCORE_ENVIRONMENT = 'Development' }
+    if (-not $env:AZURE_FUNCTIONS_ENVIRONMENT) { $env:AZURE_FUNCTIONS_ENVIRONMENT = 'Development' }
     if ($SharedConfigDir) {
         # WAREWOLF_SECURE_CONFIG must point to a file path, not the dir.
         # Match the pipeline.yml convention: <SharedConfigDir>\secure.config.

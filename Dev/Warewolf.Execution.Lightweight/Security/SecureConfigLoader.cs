@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Warewolf.Execution.Lightweight.Security
 {
@@ -116,14 +115,15 @@ namespace Warewolf.Execution.Lightweight.Security
                 if (settings is null)
                     return SecureConfigData.AllowAll;
 
-                // If the config has no secret key yet, generate one so the engine can
-                // still issue and validate JWT tokens consistently within this process.
+                // A config file with an empty SecretKey is not usable for JWT
+                // validation: two independent ReadConfig calls would each generate
+                // a different random key, so tokens minted by the test runner would
+                // be rejected by the engine. Treat this the same as a missing file
+                // so that (a) the engine enters AllowAll mode and (b) tests see
+                // IsLoaded=false → SkipIfServerLacksMatchingConfig → Inconclusive.
                 var secretKey = settings.SecretKey;
                 if (string.IsNullOrEmpty(secretKey))
-                {
-                    using var hmac = new HMACSHA256();
-                    secretKey = Convert.ToBase64String(hmac.Key);
-                }
+                    return SecureConfigData.AllowAll;
 
                 var permissions = BuildPermissions(settings);
                 var loginWorkflowName = settings.AuthenticationOverrideWorkflow?.Name ?? string.Empty;

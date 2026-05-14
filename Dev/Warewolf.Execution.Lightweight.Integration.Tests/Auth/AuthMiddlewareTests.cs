@@ -982,8 +982,16 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
 
             if (!string.IsNullOrWhiteSpace(_configPath) && File.Exists(_configPath))
             {
-                _watcherConfigured = true;
-                _originalContent   = File.ReadAllText(_configPath);
+                // Verify the file is writable — tests in this class overwrite it.
+                // A read-only path (e.g. a real server install) means the watcher
+                // cannot be exercised; skip just like a missing path.
+                try
+                {
+                    using var probe = File.Open(_configPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    _watcherConfigured = true;
+                    _originalContent   = File.ReadAllText(_configPath);
+                }
+                catch (UnauthorizedAccessException) { /* not writable — leave _watcherConfigured=false */ }
             }
         }
 
