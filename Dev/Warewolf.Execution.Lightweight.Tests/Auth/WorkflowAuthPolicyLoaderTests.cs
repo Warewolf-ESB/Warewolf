@@ -90,23 +90,23 @@ public class WorkflowAuthPolicyLoaderTests
     }
 
     [TestMethod]
-    public void TST08_EntriesWithoutExecute_ResourcePolicyNotBuilt()
+    public void TST08_ViewOnlyResourceEntry_ResourcePolicyBuilt()
     {
         var settings = SecureConfigBuilder.Build(
             SecureConfigBuilder.NewSecretKey(),
             SecureConfigBuilder.Admin(View: true),
             new PermSpec("ReadOnly", IsServer: false, View: true,
                 ResourceId: Guid.NewGuid(), ResourceName: "Wf2"));
-        // No Execute on resource entry → resource policy not built.
-        // Admin global entry has Execute so global fallback returns a policy.
+        // View-only resource entry builds a resource policy so that the resource
+        // scope (not the global fallback) is used for this workflow.
         var loader = BuildLoader(settings);
 
-        Assert.AreEqual(0, loader.PolicyCount);
+        Assert.AreEqual(1, loader.PolicyCount);
 
-        // Global fallback: Admin has Execute=true → non-null global policy returned
         var lookup = loader.GetPolicy("Wf2");
         Assert.IsTrue(lookup.HasPolicyScope);
-        Assert.IsNotNull(lookup.Value); // global policy via Admin entry
+        Assert.IsNotNull(lookup.Value);
+        Assert.IsTrue(lookup.Value!.AllowedGroups.Contains("ReadOnly"));
     }
 
     [TestMethod]
