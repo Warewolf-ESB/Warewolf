@@ -154,7 +154,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
                     "  </OuterNestedRecordSet>\r\n</Company>";
 
 
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected.Replace("\r\n", "\n"), actual.Replace("\r\n", "\n"));
             }
         }
 
@@ -313,7 +313,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
                     "</Company>"
                 };
 
-                Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
+                Assert.AreEqual(expected.FirstOrDefault().ToString().Replace("\r\n", "\n"), actual.FirstOrDefault().ToString().Replace("\r\n", "\n"));
             }
         }
 
@@ -617,7 +617,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
                     "  </OuterNestedRecordSet>\r\n" +
                     "</Company>";
 
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected.Replace("\r\n", "\n"), actual.Replace("\r\n", "\n"));
             }
         }
     }

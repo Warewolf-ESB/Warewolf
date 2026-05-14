@@ -554,6 +554,7 @@
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 		<ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
 		<PackageReference Include="CoreWCF.Http" Version="1.2.1" />

@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
+using System.Runtime.InteropServices;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf.Configuration;
 
@@ -24,6 +25,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(LegacySettings))]
         public void LegacySettingsData_Constants()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Default paths are platform-specific; Windows expected value not valid on Linux");
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", LegacySettings.DefaultAuditPath);
             Assert.AreEqual(@"ws://127.0.0.1:5000/ws", LegacySettings.DefaultEndpoint);
         }
@@ -75,6 +78,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(LegacySettings))]
         public void LegacySettings_Get_Settings()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Default audit path is platform-specific; Windows expected value not valid on Linux");
             const string expectedEndpoint = @"ws://127.0.0.1:5000/ws";
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
 
@@ -152,6 +157,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(LegacySettings))]
         public void LegacySettings_SQlite_AuditFilePath_Get()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Default audit path is platform-specific; Windows expected value not valid on Linux");
             //arrange
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);

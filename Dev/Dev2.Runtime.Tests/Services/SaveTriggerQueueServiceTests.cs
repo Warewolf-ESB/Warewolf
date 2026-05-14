@@ -24,11 +24,12 @@ using Moq;
 using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Triggers;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class SaveTriggerQueueServiceTests
+    public class SaveTriggerQueueServiceTests : DpapiTestBase
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -112,7 +113,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var jsonResult = saveTriggerQueueService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-            Assert.IsFalse(result.HasError);
+            Assert.IsFalse(result.HasError, result.Message.ToString());
             var triggerId = Guid.Parse(result.Message.ToString());
             Assert.IsTrue(triggerId != Guid.Empty);
             source.TriggerId = triggerId;

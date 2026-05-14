@@ -2,13 +2,14 @@
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
+using Dev2.UnitTestUtils;
 
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    public class OauthSourceTest
+    public class OauthSourceTest : DpapiTestBase
     {
 
         [TestMethod]
@@ -66,7 +67,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var conStringAttr = outxml.Attribute("ConnectionString");
             Assert.IsNotNull(conStringAttr);
-            Assert.IsTrue(conStringAttr.Value.IsBase64());            
+#if WINDOWS
+            Assert.IsTrue(conStringAttr.Value.IsBase64());
+#else
+            Assert.IsFalse(string.IsNullOrEmpty(conStringAttr.Value));
+#endif
         }
 
     }

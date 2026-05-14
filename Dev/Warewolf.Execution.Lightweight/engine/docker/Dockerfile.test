@@ -25,5 +25,9 @@ RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 ENV VSTEST_CONNECTION_TIMEOUT=300
 
 # The appservice base image has a startup entrypoint that launches sshd and the
-# Azure Functions host. Override it so docker run <cmd> executes <cmd> directly.
+# Azure Functions host. Override it with /bin/bash so that:
+#   - VS container tools can create the container without specifying a command
+#     (avoids "no command specified" / CTC1015 error in Azure Functions Runtime environment)
+#   - run-tests-in-container.ps1 strips this back to ENTRYPOINT [] before
+#     building the CI image so docker run <cmd> executes <cmd> directly.
 ENTRYPOINT []

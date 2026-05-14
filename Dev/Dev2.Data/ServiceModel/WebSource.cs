@@ -130,7 +130,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
-                new XAttribute("Type", GetType().Name),
+				new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 

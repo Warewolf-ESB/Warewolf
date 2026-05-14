@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Dev2.Common.Common;
 using Dev2.Data.Interfaces;
@@ -70,6 +71,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoDeleteOperation))]
         public void DoDeleteOperation_ExecuteOperationWithAuth_CTOR3Param_ImpersonatedUser_IsNull_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on non-Windows platforms");
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
@@ -99,6 +102,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoDeleteOperation))]
         public void DoDeleteOperation_ExecuteOperationWithAuth_CTOR3Param_DeleteHelperThrows_ReturnFalse()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on non-Windows platforms");
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();

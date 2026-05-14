@@ -270,7 +270,7 @@ namespace Dev2.Tests.Diagnostics
                 Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
                 Assert.IsFalse(item.ResultsList[0].HasError);
                 Assert.AreEqual("world", item.ResultsList[0].Value);
-                Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+                Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith($"http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath={EnvironmentVariables.DebugItemTempPath}", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
             } finally
             {
                 EnvironmentVariables.WebServerUri = oldWebServerUri;
@@ -314,7 +314,7 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsFalse(item.ResultsList[0].HasError);
             Assert.AreNotEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].Value, "To ensure that only the UI components are truncating the value we needed to add the TruncateValue property");
             Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].TruncatedValue);
-            Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
+            Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith($"http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath={EnvironmentVariables.DebugItemTempPath}", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
         }
 
         [TestMethod]

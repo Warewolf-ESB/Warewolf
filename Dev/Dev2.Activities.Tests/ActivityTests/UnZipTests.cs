@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;

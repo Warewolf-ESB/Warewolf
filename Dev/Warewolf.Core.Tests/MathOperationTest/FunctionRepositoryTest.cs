@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
@@ -29,6 +30,15 @@ namespace Dev2.Tests.MathOperationTest
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Assert.Inconclusive("COM Interop (STA thread) is not supported on Linux; skipping FunctionRepository tests.");
+            }
+        }
 
         #region Load Tests
 

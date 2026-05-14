@@ -11,6 +11,7 @@
 using Dev2.TaskScheduler.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
+using System.Runtime.InteropServices;
 
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Scheduler.Test
@@ -22,6 +23,8 @@ namespace Dev2.Scheduler.Test
         [TestInitialize]
         public void Init()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform.");
             _fact = new ClientSchedulerFactory(new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
         }
 

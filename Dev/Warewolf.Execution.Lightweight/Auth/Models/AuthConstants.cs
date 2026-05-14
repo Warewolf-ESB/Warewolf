@@ -45,8 +45,15 @@ public static class AuthConstants
     /// <summary>Prefix for anonymous public routes.</summary>
     public const string PublicRoutePrefix = "/public/";
 
-    /// <summary>Prefix for authenticated secure routes.</summary>
+    /// <summary>Prefix for authenticated secure routes (JWT / Easy Auth).</summary>
     public const string SecureRoutePrefix = "/secure/";
+
+    /// <summary>
+    /// Prefix for function-key authenticated service routes (<c>/services/{*name}</c>).
+    /// Policy matching is enforced on these routes in the same way as
+    /// <see cref="SecureRoutePrefix"/> when a <c>secure.config</c> is loaded.
+    /// </summary>
+    public const string ServicesRoutePrefix = "/services/";
 
     // ── Easy Auth HTTP headers ────────────────────────────────────────────────
 

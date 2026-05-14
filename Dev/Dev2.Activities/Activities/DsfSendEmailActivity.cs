@@ -415,6 +415,11 @@ namespace Dev2.Activities
             try
             {
                 var fromAddress = !string.IsNullOrEmpty(fromAccountValue) ? fromAccountValue : runtimeSource.UserName;
+                if (!string.IsNullOrEmpty(fromAccountValue))
+                {
+                    runtimeSource.UserName = fromAccountValue;
+                    runtimeSource.Password = passwordValue;
+                }
                 mailMessage.From = new MailAddress(fromAddress);
             }
             catch(Exception)

@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 
@@ -25,6 +26,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_Dev2RepetitionPattern_PassThrough")]
         public void TaskShedulerWrapper_Dev2TaskSettings_PassThrough()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on non-Windows platforms.");
             var service = new TaskService();
             var task =service.NewTask();
             

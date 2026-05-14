@@ -44,6 +44,7 @@ secure.config
 /Dev/UpgradeLog2.htm
 /Dev/UpgradeLog3.htm
 tools/
+!/Dev/Warewolf.Execution.Lightweight/Resources/tools/
 
 ####################################################################################
 # Compile outputs

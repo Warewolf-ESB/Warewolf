@@ -7,59 +7,123 @@
 namespace Warewolf.Execution.Lightweight.Auth.Models;
 
 /// <summary>
-/// Authorisation policy for a single named workflow, derived from the
-/// <c>WindowsGroupPermissions</c> entries in <c>secure.config</c>.
+/// Authorisation policy for a single named workflow (or the server-wide global
+/// scope), derived from the <c>WindowsGroupPermissions</c> entries in
+/// <c>secure.config</c>.
+///
+/// <para>
+/// Permission resolution rules:
+/// <list type="bullet">
+///   <item>
+///     <b>Public role</b> — when <see cref="HasPublicRole"/> is <c>true</c>,
+///     every caller automatically receives the Public entry's
+///     <see cref="ResolvedRolePolicy.EffectivePermissions"/> without needing a
+///     role match.
+///   </item>
+///   <item>
+///     <b>Role matching — OR logic</b> — the caller must match at least ONE
+///     non-Public entry in <see cref="RolePolicies"/> (by group name or UPN).
+///   </item>
+///   <item>
+///     <b>Permission union</b> — effective permissions for the caller are the
+///     bitwise OR of all matched role entries (including Public if present).
+///   </item>
+///   <item>
+///     <b>Required permission — AND logic</b> — the combined permissions must
+///     contain ALL flags in the route's <c>RequiredPermissions</c> declaration.
+///   </item>
+/// </list>
+/// </para>
 /// </summary>
-/// <remarks>
-/// Role check uses OR logic — the caller must match at least ONE of
-/// <see cref="AllowedGroups"/>.
-/// Permission check uses AND logic — the matched group entry must have ALL flags
-/// in <see cref="RequiredPermissions"/> set to <c>true</c>.
-/// </remarks>
 public sealed record WorkflowAuthPolicy(
-    /// <summary>Workflow resource name (case-insensitive match), e.g. "Hello World".</summary>
+    /// <summary>Workflow resource name (lowercase), e.g. "hello world".</summary>
     string WorkflowName,
 
     /// <summary>
-    /// Groups (Windows group or Entra UPN/role) that have at least one permission
-    /// entry for this workflow.  Uses OR logic — caller must be in at least one.
-    /// Values come from <c>WindowsGroupPermission.WindowsGroup</c> in secure.config.
+    /// Per-role resolved permission entries for this policy scope.
+    /// Each entry carries the post-union <see cref="WorkflowPermission"/> flags
+    /// for one <c>WindowsGroup</c> within the active scope (resource or global).
     /// </summary>
-    IReadOnlyList<string> AllowedGroups,
+    IReadOnlyList<ResolvedRolePolicy> RolePolicies,
 
     /// <summary>
-    /// The specific permission flags the caller's matched group entry must hold.
-    /// Uses AND logic — all flags must be present in the entry.
+    /// The minimum permission flags a caller must hold after resolution.
+    /// Stored for diagnostic logging; the actual check is performed by
+    /// <see cref="IWorkflowPolicyMatcher"/>.
     /// </summary>
-    WorkflowPermission RequiredPermissions,
-
-    /// <summary>
-    /// Full list of per-group permission entries for this workflow, used for
-    /// detailed per-group permission validation beyond <see cref="RequiredPermissions"/>.
-    /// </summary>
-    IReadOnlyList<WorkflowGroupEntry> GroupEntries)
+    WorkflowPermission RequiredPermissions)
 {
+    // ── Derived convenience properties ────────────────────────────────────────
+
     /// <summary>
-    /// Creates a <see cref="WorkflowAuthPolicy"/> from raw group-entry data.
+    /// <c>true</c> when at least one entry in <see cref="RolePolicies"/> is the
+    /// Public role — meaning every caller automatically receives those permissions.
+    /// </summary>
+    public bool HasPublicRole => RolePolicies.Any(e => e.IsPublic);
+
+    /// <summary>
+    /// All distinct group names in <see cref="RolePolicies"/>.
+    /// Preserved for backward-compatible diagnostic logging and test assertions.
+    /// </summary>
+    public IReadOnlyList<string> AllowedGroups =>
+        RolePolicies
+            .Select(e => e.GroupName)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList()
+            .AsReadOnly();
+
+    /// <summary>
+    /// <see cref="RolePolicies"/> projected as <see cref="WorkflowGroupEntry"/> instances
+    /// for backward compatibility with any existing callers that read <c>GroupEntries</c>.
+    /// </summary>
+    public IReadOnlyList<WorkflowGroupEntry> GroupEntries =>
+        RolePolicies
+            .Select(e => new WorkflowGroupEntry(e.GroupName, e.EffectivePermissions))
+            .ToList()
+            .AsReadOnly();
+
+    // ── Factories ─────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Creates a <see cref="WorkflowAuthPolicy"/> from a sequence of
+    /// <see cref="ResolvedRolePolicy"/> entries.
+    /// </summary>
+    public static WorkflowAuthPolicy Create(
+        string workflowName,
+        IEnumerable<ResolvedRolePolicy> rolePolicies,
+        WorkflowPermission requiredPermissions)
+    {
+        var list = rolePolicies.ToList().AsReadOnly();
+        return new WorkflowAuthPolicy(workflowName, list, requiredPermissions);
+    }
+
+    /// <summary>
+    /// Backward-compatible factory that accepts <see cref="WorkflowGroupEntry"/> instances.
+    /// Converts each entry to a <see cref="ResolvedRolePolicy"/> via
+    /// <see cref="ResolvedRolePolicy.Create"/>.
     /// </summary>
     public static WorkflowAuthPolicy Create(
         string workflowName,
         IEnumerable<WorkflowGroupEntry> entries,
         WorkflowPermission requiredPermissions)
     {
-        var entryList = entries.ToList().AsReadOnly();
-        var groups    = entryList.Select(e => e.GroupName).Distinct(StringComparer.OrdinalIgnoreCase).ToList().AsReadOnly();
-        return new WorkflowAuthPolicy(workflowName, groups, requiredPermissions, entryList);
+        var rolePolicies = entries
+            .Select(e => ResolvedRolePolicy.Create(e.GroupName, e.Permissions))
+            .ToList()
+            .AsReadOnly();
+        return new WorkflowAuthPolicy(workflowName, rolePolicies, requiredPermissions);
     }
 }
 
 /// <summary>
-/// Per-group permission snapshot for a single workflow, built from a
+/// Per-group permission snapshot for a single workflow scope, built from a
 /// <see cref="Security.PermissionEntry"/> record.
+/// Retained for backward compatibility — prefer <see cref="ResolvedRolePolicy"/>.
 /// </summary>
 public sealed record WorkflowGroupEntry(
     /// <summary>Windows group / Entra UPN or role name.</summary>
     string GroupName,
 
-    /// <summary>Combined <see cref="WorkflowPermission"/> flags this group holds for the workflow.</summary>
+    /// <summary>Combined <see cref="WorkflowPermission"/> flags this group holds.</summary>
     WorkflowPermission Permissions);
+

@@ -150,7 +150,7 @@ namespace Dev2.Data.ServiceModel
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("IsSharepointOnline", IsSharepointOnline),
+				new XAttribute("IsSharepointOnline", IsSharepointOnline),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );

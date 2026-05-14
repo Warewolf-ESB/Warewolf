@@ -53,7 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.Username = "[[val1]]";
             act.Password = DpapiWrapper.Encrypt("[[val2]]");
 
-            var mockDataObject = new Mock<IDSFDataObject>();
+			var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.Environment).Returns(env);
             mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
 

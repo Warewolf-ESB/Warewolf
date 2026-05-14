@@ -551,13 +551,13 @@ namespace Dev2.Data.Tests.PathOperations
                 var privateObject = driver;
                 var dst = new Mock<IActivityIOOperationsEndPoint>();
                 dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
-                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
                 dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
                 dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
 
                 dst.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>()))
                     .Returns<IActivityIOPath>(path => {
-                        if (path.Path.EndsWith(@"\", StringComparison.InvariantCulture))
+                        if (path.Path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.InvariantCulture))
                         {
                             return true;
                         }
@@ -590,7 +590,7 @@ namespace Dev2.Data.Tests.PathOperations
                 var privateObject = driver;
                 var dst = new Mock<IActivityIOOperationsEndPoint>();
                 dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
-                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
                 dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
                 dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
 
@@ -625,7 +625,7 @@ namespace Dev2.Data.Tests.PathOperations
                 var privateObject = driver;
                 var dst = new Mock<IActivityIOOperationsEndPoint>();
                 dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
-                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
                 dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
                 dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(-1);
 
@@ -691,7 +691,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
             mockSrc.Setup(o => o.IOPath.Path).Returns(tmpFileName);
             mockSrc.Setup(o => o.RequiresLocalTmpStorage()).Returns(true);
-            mockSrc.Setup(o => o.PathSeperator()).Returns(@"\");
+            mockSrc.Setup(o => o.PathSeperator()).Returns(Path.DirectorySeparatorChar.ToString());
             using (var tmpStream = new MemoryStream(new byte[] { 0x11, 0x22 }))
             {
                 mockSrc.Setup(o => o.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(tmpStream);

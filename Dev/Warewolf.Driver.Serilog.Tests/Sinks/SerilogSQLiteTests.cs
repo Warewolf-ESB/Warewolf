@@ -9,6 +9,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Common;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
@@ -24,7 +25,7 @@ namespace Warewolf.Driver.Serilog.Tests
             var sqliteConfig = new SeriLogSQLiteConfig();
             //---------------------------------Act---------------------------------
             //---------------------------------Assert------------------------------
-            Assert.AreEqual(expected: @"C:\ProgramData\Warewolf\Audits\AuditDB.db", actual: sqliteConfig.ConnectionString);
+            Assert.AreEqual(expected: System.IO.Path.Combine(Config.Legacy.AuditFilePath, "AuditDB.db"), actual: sqliteConfig.ConnectionString);
             Assert.IsNotNull(sqliteConfig.Logger);
             Assert.IsNotNull(sqliteConfig.Endpoint);
         }
@@ -44,7 +45,7 @@ namespace Warewolf.Driver.Serilog.Tests
             var sqliteConfig = new SeriLogSQLiteConfig(settings);
             //---------------------------------Act---------------------------------
             //---------------------------------Assert------------------------------
-            Assert.AreEqual(expected: @"C:\ProgramData\Warewolf\Tests\testDB.db", actual: sqliteConfig.ConnectionString);
+            Assert.AreEqual(expected: System.IO.Path.Combine(@"C:\ProgramData\Warewolf\Tests", "testDB.db"), actual: sqliteConfig.ConnectionString);
             Assert.IsNotNull(sqliteConfig.Logger);
             Assert.IsNotNull(sqliteConfig.Endpoint);
         }

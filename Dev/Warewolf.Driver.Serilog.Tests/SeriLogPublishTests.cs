@@ -95,7 +95,7 @@ namespace Warewolf.Driver.Serilog.Tests
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_SQLite_Success()
         {
             //-------------------------Arrange------------------------------
-            var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+            var testDBPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "SeriLogAuditTestDB.db");
             if (File.Exists(testDBPath))
                 File.Delete(testDBPath);
 

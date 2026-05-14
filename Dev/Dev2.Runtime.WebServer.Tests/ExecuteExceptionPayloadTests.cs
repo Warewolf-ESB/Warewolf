@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Tests
                .Returns(new ExecutionEnvironment());
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
-            Assert.AreEqual("<Error>\r\n  <Status>501</Status>\r\n  <Title>not_implemented</Title>\r\n  <Message>The method or operation is not implemented.</Message>\r\n</Error>", sut, "If the system was able to get this far then this might be a new behavior NotImplemented currently by Warewolf");
+            Assert.AreEqual("<Error>\r\n  <Status>501</Status>\r\n  <Title>not_implemented</Title>\r\n  <Message>The method or operation is not implemented.</Message>\r\n</Error>".Replace("\r\n", Environment.NewLine), sut, "If the system was able to get this far then this might be a new behavior NotImplemented currently by Warewolf");
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
-            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"bad_request\",\r\n    \"Message\": \"test error message\"\r\n  }\r\n}", sut);
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"bad_request\",\r\n    \"Message\": \"test error message\"\r\n  }\r\n}".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
-            Assert.AreEqual("<Error>\r\n  <Status>400</Status>\r\n  <Title>bad_request</Title>\r\n  <Message>test error message</Message>\r\n</Error>", sut);
+            Assert.AreEqual("<Error>\r\n  <Status>400</Status>\r\n  <Title>bad_request</Title>\r\n  <Message>test error message</Message>\r\n</Error>".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
-            Assert.AreEqual("<Error>\r\n  <Status>400</Status>\r\n  <Title>bad_request</Title>\r\n  <Message>test error message</Message>\r\n</Error>", sut);
+            Assert.AreEqual("<Error>\r\n  <Status>400</Status>\r\n  <Title>bad_request</Title>\r\n  <Message>test error message</Message>\r\n</Error>".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
-            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 500,\r\n    \"Title\": \"internal_server_error\",\r\n    \"Message\": \"test error message\"\r\n  }\r\n}", sut);
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 500,\r\n    \"Title\": \"internal_server_error\",\r\n    \"Message\": \"test error message\"\r\n  }\r\n}".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -144,7 +144,7 @@ namespace Dev2.Runtime.WebServer.Tests
         {
             var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.OPENAPI, HttpStatusCode.BadRequest, "test_title", "test_message");
 
-            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}", sut);
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace Dev2.Runtime.WebServer.Tests
         {
             var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.JSON, HttpStatusCode.BadRequest, "test_title", "test_message");
 
-            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}", sut);
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}".Replace("\r\n", Environment.NewLine), sut);
         }
 
         [TestMethod]
@@ -162,7 +162,7 @@ namespace Dev2.Runtime.WebServer.Tests
         {
             var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.TRX, HttpStatusCode.Forbidden, "test_title", "test_message");
 
-            Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>test_title</Title>\r\n  <Message>test_message</Message>\r\n</Error>", sut);
+            Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>test_title</Title>\r\n  <Message>test_message</Message>\r\n</Error>".Replace("\r\n", Environment.NewLine), sut);
         }
     }
 }

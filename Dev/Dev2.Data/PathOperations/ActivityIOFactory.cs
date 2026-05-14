@@ -49,7 +49,8 @@ namespace Dev2.PathOperations
             {
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
-                if (!Path.IsPathRooted(path))
+                var isWindowsDrivePath = path.Length >= 3 && char.IsLetter(path[0]) && path[1] == ':' && (path[2] == '\\' || path[2] == '/');
+                if (!Path.IsPathRooted(path) && !isWindowsDrivePath)
                 {
                     throw new IOException(ErrorResource.InvalidPath);
                 }

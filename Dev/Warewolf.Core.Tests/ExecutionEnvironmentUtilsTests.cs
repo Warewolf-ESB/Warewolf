@@ -464,7 +464,7 @@ namespace Dev2.Tests
             var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
                 new List<IWarewolfResource>(), "http://localhost/secure/workflow-one.api");
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/secure/workflow-one.api\",\r\n    \"description\": \"http://localhost/secure/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}", result);
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/secure/workflow-one.api\",\r\n    \"description\": \"http://localhost/secure/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}".Replace("\r\n", Environment.NewLine), result);
         }
 
         [TestMethod]
@@ -477,7 +477,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(new List<IWarewolfResource>(), "http://localhost/public/workflow-one.api");
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/public/workflow-one.api\",\r\n    \"description\": \"http://localhost/public/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}", result);
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/public/workflow-one.api\",\r\n    \"description\": \"http://localhost/public/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}".Replace("\r\n", Environment.NewLine), result);
         }
 
         [TestMethod]
@@ -530,7 +530,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(resources, "http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api");
             //------------Assert Results-------------------------
-            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"description\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n    {\r\n      \"/SECURe/Wolf/Resources_folder/workflow-one\": {\r\n        \"get\": {\r\n          \"tags\": [\r\n            \"\"\r\n          ],\r\n          \"description\": \"\",\r\n          \"parameters\": [\r\n            {\r\n              \"name\": \"input\",\r\n              \"in\": \"query\",\r\n              \"required\": true,\r\n              \"schema\": {\r\n                \"type\": \"string\"\r\n              }\r\n            }\r\n          ],\r\n          \"responses\": {\r\n            \"200\": {\r\n              \"description\": \"Success\",\r\n              \"content\": {\r\n                \"application/json\": {\r\n                  \"schema\": {\r\n                    \"type\": \"object\",\r\n                    \"properties\": {}\r\n                  }\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  \r\n}", result);
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"description\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n    {\r\n      \"/SECURe/Wolf/Resources_folder/workflow-one\": {\r\n        \"get\": {\r\n          \"tags\": [\r\n            \"\"\r\n          ],\r\n          \"description\": \"\",\r\n          \"parameters\": [\r\n            {\r\n              \"name\": \"input\",\r\n              \"in\": \"query\",\r\n              \"required\": true,\r\n              \"schema\": {\r\n                \"type\": \"string\"\r\n              }\r\n            }\r\n          ],\r\n          \"responses\": {\r\n            \"200\": {\r\n              \"description\": \"Success\",\r\n              \"content\": {\r\n                \"application/json\": {\r\n                  \"schema\": {\r\n                    \"type\": \"object\",\r\n                    \"properties\": {}\r\n                  }\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  \r\n}".Replace("\r\n", Environment.NewLine), result);
         }
 
     }

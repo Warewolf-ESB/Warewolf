@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 using Dev2.Activities.DropBox2016;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -59,6 +60,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [Owner("Nkosinathi Sangweni")]
         public void ManageDirectory_GivenInValid_ShouldBeNotNull()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Path uses Windows-style backslash separators (\\Home\\Hi\\hi.file) which are not directory separators on Linux.");
             //---------------Set up test pack-------------------
             var localPathManager = new LocalPathManager(InValidFileName);
             //---------------Assert Precondition----------------
@@ -103,6 +106,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [Owner("Nkosinathi Sangweni")]
         public void CreateValidFolder_GivenInValid_ShouldCreateFolder()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Path uses Windows-style backslash separators (\\Home\\Hi\\hi.file) which are not directory separators on Linux.");
             //---------------Set up test pack-------------------
             var localPathManager = new LocalPathManager(InValidFileName);
             //---------------Assert Precondition----------------
@@ -119,6 +124,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [Owner("Nkosinathi Sangweni")]
         public void GetFileName_GivenInValid_ShouldReturnFilename()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Path uses Windows-style backslash separators (\\Home\\Hi\\hi.file) which are not directory separators on Linux.");
             //---------------Set up test pack-------------------
             var localPathManager = new LocalPathManager(InValidFileName);
             //---------------Assert Precondition----------------
@@ -134,6 +141,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [Owner("Nkosinathi Sangweni")]
         public void GetFullFileName_GivenInValid_ShouldReturnFullFilename()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Path uses Windows-style backslash separators (\\Home\\Hi\\hi.file) which are not directory separators on Linux.");
             //---------------Set up test pack-------------------
             var localPathManager = new LocalPathManager(InValidFileName);
             //---------------Assert Precondition----------------
@@ -150,6 +159,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [Owner("Nkosinathi Sangweni")]
         public void FileExist_GivenTemp_ShouldReturnFalse()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Path uses Windows-style backslash separators (\\Home\\Hi\\hi.file) which are not directory separators on Linux.");
             //---------------Set up test pack-------------------
             var localPathManager = new LocalPathManager(InValidFileName);
             //---------------Assert Precondition----------------

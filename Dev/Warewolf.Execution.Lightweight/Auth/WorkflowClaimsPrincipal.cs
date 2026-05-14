@@ -14,10 +14,19 @@ namespace Warewolf.Execution.Lightweight.Auth;
 /// Built by <see cref="Middleware.ClaimsPrincipalBuilderMiddleware"/> from the
 /// X-MS-CLIENT-PRINCIPAL header injected by Azure Easy Auth.
 /// Supports both delegated (user impersonation) and app-only (client credentials) tokens.
+///
+/// <para>
+/// <b>Permission model.</b>  The Entra token carries only <em>role</em> claims
+/// (e.g. <c>"Developers"</c>, <c>"DevOps"</c>).  Permissions are <b>not</b> encoded
+/// in the token; they are resolved at request time by
+/// <see cref="IWorkflowAuthPolicyLoader.GetEffectivePermissions"/> against
+/// <c>secure.config</c> and stamped onto this principal via
+/// <see cref="SetResolvedPermissions"/>.
+/// </para>
 /// </summary>
 public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
 {
-    // Maps WorkflowPermission flag → Permission.* claim value
+    // Maps WorkflowPermission flag → human-readable label for logging/diagnostics
     private static readonly IReadOnlyDictionary<WorkflowPermission, string> PermissionFlagMap =
         new Dictionary<WorkflowPermission, string>
         {
@@ -44,20 +53,19 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
         IsAppOnlyToken = !IsUserToken;
         CallerIdentity = IsUserToken ? UserName : $"app:{UserId}";
 
+        // Groups = all role claim values from the Entra token.
+        // These are matched against WindowsGroup entries in secure.config.
         var roleClaims = Claims
             .Where(c => c.Type is AuthConstants.Roles or ClaimTypes.Role)
             .Select(c => c.Value)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
 
-        // The Groups property surfaces all role claim values, including group memberships
-        // matched against WindowsGroup entries in secure.config (e.g. email addresses).
         Groups = roleClaims.AsReadOnly();
 
-        Permissions = roleClaims
-            .Where(v => v.StartsWith("Permission.", StringComparison.OrdinalIgnoreCase))
-            .ToList()
-            .AsReadOnly();
+        // Permissions are resolved from secure.config at request time, not from the token.
+        // SetResolvedPermissions() is called by WorkflowPolicyMatcher after resolution.
+        Permissions = WorkflowPermission.None;
     }
 
     // ── Properties ────────────────────────────────────────────────────────────
@@ -84,17 +92,31 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
     public string CallerIdentity { get; }
 
     /// <summary>
-    /// All role/group claim values assigned to this principal.
+    /// All role/group claim values assigned to this principal from the Entra token.
     /// Matched against <c>WindowsGroup</c> values in <c>secure.config</c>.
-    /// e.g. ["alice@contoso.com", "Public"]
+    /// e.g. ["Developers", "DevOps"]
     /// </summary>
     public IReadOnlyList<string> Groups { get; }
 
     /// <summary>
-    /// Permission app roles assigned to this principal (Permission.* prefix only).
-    /// e.g. ["Permission.View", "Permission.Execute"]
+    /// Effective <see cref="WorkflowPermission"/> flags resolved from
+    /// <c>secure.config</c> for the current request's workflow.
+    ///
+    /// Populated by <see cref="SetResolvedPermissions"/> after
+    /// <see cref="IWorkflowAuthPolicyLoader.GetEffectivePermissions"/> runs.
+    /// Value is <see cref="WorkflowPermission.None"/> until resolution completes.
     /// </summary>
-    public IReadOnlyList<string> Permissions { get; }
+    public WorkflowPermission Permissions { get; private set; }
+
+    // ── Permission resolution ─────────────────────────────────────────────────
+
+    /// <summary>
+    /// Stamps the resolved <see cref="WorkflowPermission"/> flags onto this principal.
+    /// Called once per request by <see cref="WorkflowPolicyMatcher"/> after
+    /// <see cref="IWorkflowAuthPolicyLoader.GetEffectivePermissions"/> returns.
+    /// </summary>
+    public void SetResolvedPermissions(WorkflowPermission resolved) =>
+        Permissions = resolved;
 
     // ── Group / role methods ──────────────────────────────────────────────────
 
@@ -114,54 +136,30 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
 
     // ── Permission flag methods ───────────────────────────────────────────────
 
-    /// <summary>Returns true if this principal has the specified permission claim (case-insensitive).</summary>
-    public bool HasPermission(string permissionValue) =>
-        Permissions.Contains(permissionValue, StringComparer.OrdinalIgnoreCase);
-
     /// <summary>
-    /// Returns true if this principal has ALL permission flags specified (AND logic).
-    /// Each flag is mapped to its "Permission.*" claim value and checked individually.
+    /// Returns true if this principal's resolved permissions contain ALL flags
+    /// in <paramref name="permission"/> (AND logic).
     /// </summary>
     public bool HasPermissionFlag(WorkflowPermission permission)
     {
         if (permission == WorkflowPermission.None) return true;
-
-        foreach (var (flag, claimValue) in PermissionFlagMap)
-        {
-            if (permission.HasFlag(flag) && !HasPermission(claimValue))
-                return false;
-        }
-        return true;
+        return Permissions.HasFlag(permission);
     }
 
     /// <summary>
-    /// Returns the combined <see cref="WorkflowPermission"/> flags for all
-    /// Permission.* claims this principal holds.
-    /// Useful for diagnostic responses and structured logging.
+    /// The resolved <see cref="WorkflowPermission"/> flags — alias for
+    /// <see cref="Permissions"/> for backward-compatible callers.
     /// </summary>
-    public WorkflowPermission PermissionFlags
-    {
-        get
-        {
-            var flags = WorkflowPermission.None;
-            foreach (var (flag, claimValue) in PermissionFlagMap)
-            {
-                if (HasPermission(claimValue))
-                    flags |= flag;
-            }
-            return flags;
-        }
-    }
+    public WorkflowPermission PermissionFlags => Permissions;
 
     /// <summary>
-    /// Returns a dictionary mapping every known permission claim value to whether
-    /// this principal holds it.  Useful for diagnostic logging and secure-endpoint
-    /// response bodies.
+    /// Returns a dictionary mapping every known permission label to whether
+    /// this principal holds it.  Useful for diagnostic logging and response bodies.
     /// </summary>
     public Dictionary<string, bool> GetPermissionSummary() =>
         PermissionFlagMap.ToDictionary(
             kvp => kvp.Value,
-            kvp => HasPermission(kvp.Value),
+            kvp => Permissions.HasFlag(kvp.Key),
             StringComparer.OrdinalIgnoreCase);
 
     // ── Factory ───────────────────────────────────────────────────────────────
@@ -174,5 +172,6 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
 
     /// <inheritdoc/>
     public override string ToString() =>
-        $"User:{UserName}|Groups:{string.Join(",", Groups)}|Perms:{Permissions.Count}";
+        $"User:{UserName}|Groups:{string.Join(",", Groups)}|Perms:{Permissions}";
 }
+

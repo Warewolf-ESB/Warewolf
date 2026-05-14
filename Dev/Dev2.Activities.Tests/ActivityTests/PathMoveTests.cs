@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Common.State;
 using Dev2.Communication;

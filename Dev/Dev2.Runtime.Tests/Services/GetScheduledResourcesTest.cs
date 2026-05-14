@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -70,6 +71,8 @@ namespace Dev2.Tests.Runtime.Services
         public void GetScheduledResources_Execute_ReturnsScheduledResources()
 
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput();
 
             var result = JsonConvert.DeserializeObject<ObservableCollection<ScheduledResource>>(output.ToString(), new JsonSerializerSettings
@@ -112,6 +115,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void GetScheduledResources_Execute_ReturnsTrigger()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows Task Scheduler is not available on this platform");
             var output = RunOutput();
 
 

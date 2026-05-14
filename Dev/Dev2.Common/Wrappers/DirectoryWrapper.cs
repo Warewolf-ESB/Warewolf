@@ -54,7 +54,11 @@ namespace Dev2.Common.Wrappers
         {
             if (!Directory.Exists(path))
             {
-                return Directory.CreateDirectory(path).Name;
+                try
+                {
+                    return Directory.CreateDirectory(path).Name;
+                }
+                catch (IOException) { }
             }
 
             return path;

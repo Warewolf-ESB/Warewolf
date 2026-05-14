@@ -51,9 +51,9 @@ namespace Dev2.Runtime.Hosting
             var asm = Assembly.GetExecutingAssembly();
             var fileName = asm.Location;
             var versionResource = FileVersionInfo.GetVersionInfo(fileName);
-            var v = new Version(versionResource.FileVersion);
-
-            return v;
+            if (Version.TryParse(versionResource.FileVersion, out var v))
+                return v;
+            return asm.GetName().Version ?? new Version(0, 0, 0, 0);
         }
 
         public List<IUpgradePath> AvailableUpgrades { get; private set; }

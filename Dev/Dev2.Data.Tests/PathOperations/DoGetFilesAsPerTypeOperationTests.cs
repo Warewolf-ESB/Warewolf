@@ -15,6 +15,7 @@ using Dev2.Data.PathOperations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 
 namespace Dev2.Data.Tests.PathOperations
@@ -98,11 +99,14 @@ namespace Dev2.Data.Tests.PathOperations
             Assert.AreEqual(0, list.Count);
         }
 
+#if WINDOWS
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DoGetFilesAsPerTypeOperation))]
         public void DoGetFilesAsPerTypeOperation_ExecuteOperation_ImpersonatedUser_IsNotNull_AreEqual_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on non-Windows platforms");
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
@@ -132,6 +136,8 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(DoGetFilesAsPerTypeOperation))]
         public void DoGetFilesAsPerTypeOperation_ExecuteOperation_ImpersonatedUser_IsNotNull_IsStarWildCard_True_AreEqual_ExpectTrue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on non-Windows platforms");
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
@@ -155,6 +161,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockActivityIOPath.VerifyAll();
             Assert.AreEqual(0, list.Count);
         }
+#endif
 
         [TestMethod]
         [Owner("Siphamandla Dube")]

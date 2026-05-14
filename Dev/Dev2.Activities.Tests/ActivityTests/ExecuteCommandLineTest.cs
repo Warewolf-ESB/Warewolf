@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.State;
@@ -43,7 +44,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-      
+        static void RequiresWindows() 
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("This test requires Windows (cmd.exe or Windows-only executable).");
+        }
 
         [TestMethod]
         [Timeout(60000)]
@@ -100,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("CannotParallelize")]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             activity.CommandFileName = "\"" + TestContext.TestDeploymentDir + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
@@ -121,6 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
             string destFile;
@@ -169,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -250,6 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -285,6 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -373,6 +383,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [DeploymentItem(CommandLineToolConfig)]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
+            RequiresWindows();
             // ------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -404,6 +415,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -440,6 +452,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -477,6 +490,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -508,6 +522,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -537,6 +552,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
+            RequiresWindows();
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";

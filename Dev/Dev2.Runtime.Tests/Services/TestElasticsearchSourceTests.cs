@@ -141,11 +141,17 @@ namespace Dev2.Tests.Runtime.Services
                 var jsonResult = testElasticsearchSource.Execute(values, null);
                 var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
                 //---------------Test Result -----------------------
+                if (result.HasError)
+                {
+                    var msg = result.Message.ToString();
+                    if (msg.Contains("Connection refused") || msg.Contains("could not connect"))
+                        Assert.Inconclusive("Elasticsearch container not available: " + msg);
+                }
                 Assert.IsFalse(result.HasError, result.Message.ToString());
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("could not connect to elasticsearch Instance"))
+                if (e.Message.Contains("could not connect to elasticsearch Instance") || e.Message.Contains("Connection refused"))
                 {
                     Assert.Inconclusive(e.Message);
                 }

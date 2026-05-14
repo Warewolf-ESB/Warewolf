@@ -252,7 +252,7 @@ Pointing has no control about the blind texts it is an almost unorthographic lif
                 var sr = new StreamReader(stream);               
                 var js = new Dev2JsonSerializer();
                 var result = js.Deserialize<object>(sr);
-                Assert.AreEqual(json.Replace(" ", ""), result.ToString().Replace("\r\n","").Replace(" ", ""));
+                Assert.AreEqual(json.Replace(" ", ""), result.ToString().Replace("\r\n","").Replace("\n","").Replace(" ", ""));
             }
         }
 

@@ -158,7 +158,7 @@ namespace Dev2.Activities
                     currentuserprincipal = DpapiWrapper.Encrypt(currentuserprincipal);
                 }
 
-                var firstActivity = NextNodes.First();
+				var firstActivity = NextNodes.First();
                 var activityId = Guid.Parse(firstActivity?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var values = new Dictionary<string, StringBuilder>

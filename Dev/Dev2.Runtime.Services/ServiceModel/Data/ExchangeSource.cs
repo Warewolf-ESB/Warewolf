@@ -194,7 +194,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        #endregion ToXml
+#endregion ToXml
 
         public bool Equals(IExchangeSource other) => true;
     }

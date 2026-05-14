@@ -50,10 +50,11 @@ namespace Dev2.Diagnostics.Test
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(value);
-            Assert.AreEqual(value.ToString(), @"<mapping>
-  <level value=""Level0"" />
-  <eventLogEntryType value=""ERROR"" />
-</mapping>");
+            var expected = "<mapping>" + System.Environment.NewLine +
+                           "  <level value=\"Level0\" />" + System.Environment.NewLine +
+                           "  <eventLogEntryType value=\"ERROR\" />" + System.Environment.NewLine +
+                           "</mapping>";
+            Assert.AreEqual(expected, value.ToString());
         }
 
         [TestMethod]

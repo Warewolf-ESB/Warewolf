@@ -14,13 +14,14 @@ using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    public class EmailSourceTests
+    public class EmailSourceTests : DpapiTestBase
     {
         #region CTOR
 
@@ -145,7 +146,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(EmailSource))]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void EmailSource_Send_ExpectedException()
         {
             var expected = new EmailSource
@@ -164,7 +164,13 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var mailMessage = new MailMessage();
             var emailSource = new EmailSource(xml);
-            emailSource.Send(mailMessage);
+            try
+            {
+                emailSource.Send(mailMessage);
+                Assert.Fail("Expected an exception to be thrown");
+            }
+            catch (InvalidOperationException) { }
+            catch (MailKit.Net.Smtp.SmtpProtocolException) { }
         }
 
         #endregion

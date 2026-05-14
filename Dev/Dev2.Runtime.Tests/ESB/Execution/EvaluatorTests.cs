@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object);
             var serviceTest = evaluator.TryEval(EvaluatorTestSetup.HelloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Unauthorized to execute this resource.\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"Unauthorized to execute this resource.{Environment.NewLine}", serviceTest.FailureMessage);
         }
 
         [TestMethod]
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Object reference not set to an instance of an object.\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"Object reference not set to an instance of an object.{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Object reference not set to an instance of an object.\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"Object reference not set to an instance of an object.{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -327,7 +327,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Failed: Assert Equal. Expected Equal To '1' for '[[a]]' but got ''\r\nObject reference not set to an instance of an object.\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"Failed: Assert Equal. Expected Equal To '1' for '[[a]]' but got ''{Environment.NewLine}Object reference not set to an instance of an object.{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual(1, serviceTest.Outputs.Count);
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual("[[a]]", serviceTest.Outputs[0].Variable);
             Assert.IsNotNull(serviceTest.Outputs[0].Result);
             Assert.AreEqual(RunResult.TestFailed ,serviceTest.Outputs[0].Result.RunTestResult);
-            Assert.AreEqual("Failed: Assert Equal. Expected Equal To '1' for '[[a]]' but got ''\r\n", serviceTest.Outputs[0].Result.Message);
+            Assert.AreEqual($"Failed: Assert Equal. Expected Equal To '1' for '[[a]]' but got ''{Environment.NewLine}", serviceTest.Outputs[0].Result.Message);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
             Assert.AreEqual(StepType.Mock, serviceTest.TestSteps[0].Type);
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Failed\r\nFailed: Expected Error containing '' but got 'Object reference not set to an instance of an object.'", serviceTest.FailureMessage);
+            Assert.AreEqual($"Failed{Environment.NewLine}Failed: Expected Error containing '' but got 'Object reference not set to an instance of an object.'", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual(1, serviceTest.Outputs.Count);
@@ -469,7 +469,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Failed: Object reference not set to an instance of an object.\r\nFailed: Expected Error containing '' but got 'Object reference not set to an instance of an object.'", serviceTest.FailureMessage);
+            Assert.AreEqual($"Failed: Object reference not set to an instance of an object.{Environment.NewLine}Failed: Expected Error containing '' but got 'Object reference not set to an instance of an object.'", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual(1, serviceTest.Outputs.Count);
@@ -538,7 +538,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("Please ensure that you have entered an integer or decimal number for Start\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"Please ensure that you have entered an integer or decimal number for Start{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -681,7 +681,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("The FROM field is Required\r\nCannot execute a For Each with no content\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"The FROM field is Required{Environment.NewLine}Cannot execute a For Each with no content{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -749,7 +749,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("The FROM field is Required\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"The FROM field is Required{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -823,7 +823,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("DataSource cannot be empty\r\nAlias cannot be empty\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"DataSource cannot be empty{Environment.NewLine}Alias cannot be empty{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);
@@ -891,7 +891,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var evaluator = new Evaluator(mockDataObject.Object, mockResourceCatalog.Object, mockWorkspace.Object, mockBuilderSerializer.Object);
             var serviceTest = evaluator.TryEval(helloWorldId, mockDataObject.Object, serviceTestModelTO);
 
-            Assert.AreEqual("DataSource cannot be empty\r\nAlias cannot be empty\r\n", serviceTest.FailureMessage);
+            Assert.AreEqual($"DataSource cannot be empty{Environment.NewLine}Alias cannot be empty{Environment.NewLine}", serviceTest.FailureMessage);
             Assert.AreEqual(2, serviceTest.TestSteps.Count);
 
             Assert.AreEqual("StepOne", serviceTest.TestSteps[0].StepDescription);

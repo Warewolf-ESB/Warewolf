@@ -12,6 +12,7 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Warewolf.Auditing.Tests
     [TestClass]
     public class AuditQueryableTests
     {
-        string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+        string connstring = Path.Combine(Path.GetTempPath(), "AuditTestDB.db");
 
         [TestMethod]
         [Owner("Candice Daniel")]

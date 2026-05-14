@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using ActivityUnitTests;
 using Dev2.Activities.PathOperations;
 using Dev2.Diagnostics;
@@ -102,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputResultList.Count);
             Assert.AreEqual("", outputResultList[0].Value);
         }
-        
+
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(DsfAbstractMultipleFilesActivity))]
@@ -144,6 +145,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(password, decryptedPassword);
             Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
-
     }
 }

@@ -180,7 +180,7 @@ namespace Dev2.Utils.Tests
             var myJsonString = "{report: {Id: \"aaakkj98898983\"}}";
             ValueSystem = new JsonNetValueSystem();
             var obj = ValueSystem.GetMemberValue(JObject.Parse(myJsonString), "report");
-            Assert.AreEqual("{\r\n  \"Id\": \"aaakkj98898983\"\r\n}".ToString(), obj.ToString());
+            Assert.AreEqual("{\r\n  \"Id\": \"aaakkj98898983\"\r\n}".Replace("\r\n", Environment.NewLine), obj.ToString());
         }
 
         [TestMethod]

@@ -88,6 +88,10 @@
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
+    <!-- OIDC / JWT validation for Entra Bearer-token authentication -->
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+
   </ItemGroup>
 
 
@@ -116,17 +120,20 @@
   
   <ItemGroup>
     <!--
-      Local Resources folder: place workflow .bite / .xml files here for
-      project-specific resources (e.g. the login override workflow).
-      Files are merged with the Resources - Release content in the output and
-      publish directories, so they are included in every build and publish path
-      including 'dotnet publish -o …' and the Docker (Azure Functions) profile.
-      DO NOT commit sensitive workflow resources to source control.
+      Local Resources folder: workflow .bite files for development and testing.
+      Only included in Debug builds so that the bin/publish output is clean in
+      Release — users are expected to supply their own resources before publishing
+      to Azure Functions.
+      Files from Resources - Release\Resources that are needed for integration
+      tests have been copied here and are tracked in source control.
     -->
-    <Content Include="Resources\**\*" Condition="Exists('Resources')">
+    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Compile Remove="docs\ClientExamples\**" />
+    <EmbeddedResource Remove="docs\ClientExamples\**" />
+    <None Remove="docs\ClientExamples\**" />
 
     <!--
       Optional: if a secure.config is present next to the project file it will be
@@ -148,6 +155,17 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <None Include="docs\ClientExamples\Angular17\src\app\auth\auth.config.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\auth\auth.service.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\client-credentials\client-credentials.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\nav\navbar.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\shared\error-panel\error-panel.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\shared\token-display\token-display.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.component.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.model.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\app\workflow\workflow.service.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\environments\environment.prod.ts" />
+    <None Include="docs\ClientExamples\Angular17\src\environments\environment.ts" />
     <!--<None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -161,9 +179,17 @@
     <None Include="Scripts\KeyVaultSetup.azcli" />
     <None Include="Scripts\authsettingsV2.json" />
     <None Include="Scripts\Setup-EntraAuth.ps1" />
+    <None Include="Scripts\Configure-WwExecutionAuth.ps1" />
+    <None Include="Scripts\Configure-WwExecutionAuth-Clients.ps1" />
+    <None Include="Scripts\Get-WwExecutionToken.ps1" />
+    <None Include="Scripts\Example-ClientApps-OrdersSales.ps1" />
     <None Include="docs\README-Encryption.md" />
     <None Include="docs\KeyRotationRunbook.md" />
     <None Include="docs\SecurityChecklist.md" />
+    <None Include="docs\README-Authentication.md" />
+    <None Include="docs\AzureProvisioning-FunctionApp.md" />
+    <None Include="docs\AzureProvisioning-ClientApps.md" />
+    <None Include="docs\ClientsExamples.md" />
   </ItemGroup>
   
   <ItemGroup>

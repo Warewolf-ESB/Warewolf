@@ -8,16 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Dev2.Runtime.ResourceUpgrades;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
+using Dev2.UnitTestUtils;
 
 namespace Dev2.Tests.Runtime.ResourceUpgraders
 {
     [TestClass]
-    public class EncryptionResourceUpgraderTests
+    public class EncryptionResourceUpgraderTests : DpapiTestBase
     {
         readonly string _connectionString;
         readonly string _beforeContainingSource;

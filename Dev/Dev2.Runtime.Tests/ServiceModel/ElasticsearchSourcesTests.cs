@@ -40,6 +40,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             elasticsearchSource.Password = "test123";
             elasticsearchSource.AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password;
             var result = handler.Test(elasticsearchSource);
+            if (!result.IsValid && (result.ErrorMessage.Contains("Connection refused") || result.ErrorMessage.Contains("could not connect")))
+                Assert.Inconclusive("Elasticsearch container not available: " + result.ErrorMessage);
             Assert.IsTrue(result.IsValid);
         }
 
@@ -73,6 +75,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 var handler = new ElasticsearchSources();
                 var result = handler.Test(source);
+                if (!result.IsValid && (result.ErrorMessage.Contains("Connection refused") || result.ErrorMessage.Contains("could not connect")))
+                    Assert.Inconclusive("Elasticsearch container not available: " + result.ErrorMessage);
                 Assert.IsTrue(result.IsValid, result.ErrorMessage);
             }
             catch (Exception e)
@@ -107,7 +111,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new ElasticsearchSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-            Assert.IsTrue(result.ErrorMessage.StartsWith("Unsuccessful () low level call on HEAD: /\r\n Exception: No such host is known. (ddd:9300)\r\n\r\n# Audit trail of this API call:\r\n - [1] BadRequest: Node: http://ddd:9300/ Took: "));
+            var normalizedError = result.ErrorMessage.Replace("\r\n", "\n");
+            var startsWithExpectedWindows = normalizedError.StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: No such host is known. (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: ");
+            var startsWithExpectedLinux = normalizedError.StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: Name or service not known (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: ");
+            Assert.IsTrue(startsWithExpectedWindows || startsWithExpectedLinux, normalizedError);
         }
     }
 }

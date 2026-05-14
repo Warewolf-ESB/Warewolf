@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities.Scripting;
@@ -137,6 +138,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [Timeout(60000)]
         public void RubytmpHost_ShouldSetDefaultValues()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("RubyContext.TmpHost.Win8PAL uses kernel32.dll P/Invoke which is Windows-only.");
             var win8Pal = new RubyContext.TmpHost.Win8PAL();
             Assert.IsNotNull(win8Pal);
             Assert.IsFalse(win8Pal.FileExists(win8Pal.CurrentDirectory));

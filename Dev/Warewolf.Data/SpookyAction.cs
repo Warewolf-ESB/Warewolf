@@ -12,6 +12,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Warewolf.Data
 
@@ -32,12 +33,24 @@ namespace Warewolf.Data
         /// <summary>
         ///     Private method for intitailizing the list of options
         /// </summary>
+        static Type[] GetLoadableTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(t => t != null).ToArray();
+            }
+        }
+
         void Bootstrap()
         {
             var type = typeof(TReflect);
 
             var types =
-                type.Assembly.GetTypes()
+                GetLoadableTypes(type.Assembly)
                     .Where(t => type.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                     .ToList();
 

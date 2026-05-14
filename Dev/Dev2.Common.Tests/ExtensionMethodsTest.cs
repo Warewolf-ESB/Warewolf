@@ -469,7 +469,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var innerException = new Exception("Inner Exception");
             var ex = new Exception("Test Error", innerException);
-            const string expected = "Test Error\r\nInner Exception";
+            var expected = "Test Error" + Environment.NewLine + "Inner Exception";
 
             //------------Execute Test---------------------------
             var result = ex.GetAllMessages();

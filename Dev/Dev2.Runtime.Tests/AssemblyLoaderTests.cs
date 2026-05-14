@@ -159,7 +159,14 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
             foreach (var assemblyName in assemblyNames)
             {
-                mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
+                try
+                {
+                    mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
+                }
+                catch (FileNotFoundException)
+                {
+                    // Assembly not available on this platform (e.g., System.Data.SqlClient on Linux)
+                }
             }
             var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             var fieldInfo = typeof(Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);

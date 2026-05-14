@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 
 namespace Dev2.Common.Tests
@@ -20,6 +21,13 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class GetComputerNamesImplTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Computer name / domain lookup requires Windows");
+        }
+
         [ClassInitialize]
         public static void InitializeTests(TestContext testContext)
         {

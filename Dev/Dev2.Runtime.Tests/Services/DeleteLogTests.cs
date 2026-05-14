@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -146,6 +147,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void DeleteLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("File locking behavior preventing deletion is Windows-specific");
             //Lock because of access to file system
             lock(SyncRoot)
             {

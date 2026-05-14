@@ -262,7 +262,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, "\n  \"TestResults\": []\n");
         }
 
         [TestMethod]
@@ -286,9 +287,15 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
+#if WINDOWS
             StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
             StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 0,\r\n    \"CoveredNodes\": 0,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 0.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
+#else
+			StringAssert.Contains(executePayload, "\n  \"TestResults\": []\n");
+			StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 0,\n    \"CoveredNodes\": 0,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 0.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
+#endif
         }
 
         [TestMethod]
@@ -372,11 +379,12 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 3,\r\n    \"CoveredNodes\": 3,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 100.0\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n          \"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 3,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 2\r\n              }\r\n            ]\r\n          },");
-            StringAssert.Contains(executePayload, "\"ChildNodes\": [\r\n                        {\r\n                          \"Node Name\": null,\r\n                          \"ActivityID\": \"85d142b4-9db9-4d8e-bb8c-5900aad9588c\",\r\n                          \"UniqueID\": \"00000000-0000-0000-0000-000000000000\",\r\n                          \"MockSelected\": true,\r\n                          \"ChildNodes\": []\r\n                        }\r\n                      ]\r\n");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, "\"TestResults\": [\n    {\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\n  ");
+            StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 3,\n    \"CoveredNodes\": 3,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 100.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
+            StringAssert.Contains(executePayload, "\n          \"NodesSummary\": {\n            \"TotalNodesCount\": 0,\n            \"NotCoveredNodes\": 0,\n            \"CoveredNodes\": 3,\n            \"CoveredNodesDetails\": [\n              {\n                \"Assert\": 1,\n                \"Mocked\": 2\n              }\n            ]\n          },");
+            StringAssert.Contains(executePayload, "\"ChildNodes\": [\n                        {\n                          \"Node Name\": null,\n                          \"ActivityID\": \"85d142b4-9db9-4d8e-bb8c-5900aad9588c\",\n                          \"UniqueID\": \"00000000-0000-0000-0000-000000000000\",\n                          \"MockSelected\": true,\n                          \"ChildNodes\": []\n                        }\n                      ]\n");
         }
 
 
@@ -460,10 +468,11 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 3,\r\n    \"CoveredNodes\": 3,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 100.0\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n          \"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 3,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 2\r\n              }\r\n            ]\r\n          },");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, "\"TestResults\": [\n    {\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\n  ");
+            StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 3,\n    \"CoveredNodes\": 3,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 100.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 1\n  },");
+            StringAssert.Contains(executePayload, "\n          \"NodesSummary\": {\n            \"TotalNodesCount\": 0,\n            \"NotCoveredNodes\": 0,\n            \"CoveredNodes\": 3,\n            \"CoveredNodesDetails\": [\n              {\n                \"Assert\": 1,\n                \"Mocked\": 2\n              }\n            ]\n          },");
         }
 
         [TestMethod]
@@ -551,10 +560,11 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 1,\r\n    \"CoveredNodes\": 1,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 100.0\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 1,\r\n    \"TestsInvalid\": 0\r\n  }");
-            StringAssert.Contains(executePayload, "\r\n          \"NodesSummary\": {\r\n            \"TotalNodesCount\": 1,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 1,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 0\r\n              }\r\n            ]\r\n          },\r\n          \"AllTestNodesCovered\": [\r\n            {\r\n              \"TestNodesCovered\": [\r\n                {\r\n                  \"Node Name\": \"StepType Assert\",\r\n                  \"ActivityID\": \"ce9144ac-005f-41f4-bdb1-44817a3c287f\",\r\n                  \"UniqueID\": \"ce9144ac-005f-41f4-bdb1-44817a3c287f\",\r\n                  \"MockSelected\": false,\r\n                  \"ChildNodes\": []\r\n                }\r\n              ]\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, "\"TestResults\": [\n    {\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\n  ");
+            StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 1,\n    \"CoveredNodes\": 1,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 100.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 0,\n    \"TestsPassed\": 1,\n    \"TestsInvalid\": 0\n  }");
+            StringAssert.Contains(executePayload, "\n          \"NodesSummary\": {\n            \"TotalNodesCount\": 1,\n            \"NotCoveredNodes\": 0,\n            \"CoveredNodes\": 1,\n            \"CoveredNodesDetails\": [\n              {\n                \"Assert\": 1,\n                \"Mocked\": 0\n              }\n            ]\n          },\n          \"AllTestNodesCovered\": [\n            {\n              \"TestNodesCovered\": [\n                {\n                  \"Node Name\": \"StepType Assert\",\n                  \"ActivityID\": \"ce9144ac-005f-41f4-bdb1-44817a3c287f\",\n                  \"UniqueID\": \"ce9144ac-005f-41f4-bdb1-44817a3c287f\",\n                  \"MockSelected\": false,\n                  \"ChildNodes\": []\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}");
         }
 
         [TestMethod]
@@ -663,10 +673,11 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 1,\r\n    \"CoveredNodes\": 1,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 100.0\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 1,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 0\r\n  }");
-            StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 1,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 0\r\n              }\r\n            ]\r\n          }");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, "\"TestResults\": [\n    {\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\n  ");
+            StringAssert.Contains(executePayload, "\n  \"CoverageSummary\": {\n    \"TotalNodes\": 1,\n    \"CoveredNodes\": 1,\n    \"NotCoveredNodes\": 0,\n    \"TotalCoverage\": 100.0\n  },");
+            StringAssert.Contains(executePayload, "\n  \"TestSummary\": {\n    \"TestsTotalCount\": 1,\n    \"TestsFailed\": 1,\n    \"TestsPassed\": 0,\n    \"TestsInvalid\": 0\n  }");
+            StringAssert.Contains(executePayload, "\"NodesSummary\": {\n            \"TotalNodesCount\": 0,\n            \"NotCoveredNodes\": 0,\n            \"CoveredNodes\": 1,\n            \"CoveredNodesDetails\": [\n              {\n                \"Assert\": 1,\n                \"Mocked\": 0\n              }\n            ]\n          }");
         }
 
         [TestMethod]
@@ -1294,9 +1305,10 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, " \"Test Name\": \"test one saved\",\r\n");
-            StringAssert.Contains(executePayload, "\"Result\": \"Invalid\",\r\n");
-            StringAssert.Contains(executePayload, "\"Message\": \"Test has no selected nodes\"\r\n");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one saved\",\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Invalid\",\n");
+            StringAssert.Contains(executePayload, "\"Message\": \"Test has no selected nodes\"\n");
         }
 
 
@@ -1365,9 +1377,10 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
-            StringAssert.Contains(executePayload, "\"Result\": \"Failed\",\r\n");
-            StringAssert.Contains(executePayload, "\"Message\": \"test: failure mesage\"\r\n");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Failed\",\n");
+            StringAssert.Contains(executePayload, "\"Message\": \"test: failure mesage\"\n");
         }
 
 
@@ -1424,8 +1437,9 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
-            StringAssert.Contains(executePayload, "\"Result\": \"Passed\"\r\n");
+            executePayload = executePayload.Replace("\r\n", "\n");
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Passed\"\n");
         }
 
         [TestMethod]

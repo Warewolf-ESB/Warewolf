@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 
@@ -31,11 +32,23 @@ namespace Dev2.DataList
         ///  or to perform a particular action that needs to be performed once only.
         ///  It is called automatically before the first instance is created or any static members are referenced.
         /// </summary>
+        static Type[] GetLoadableTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(t => t != null).ToArray();
+            }
+        }
+
         static FindRecsetOptions()
         {
             var type = typeof(IFindRecsetOptions);
 
-            var types = typeof(IFindRecsetOptions).Assembly.GetTypes()
+            var types = GetLoadableTypes(typeof(IFindRecsetOptions).Assembly)
                    .Where(t => type.IsAssignableFrom(t)).ToList();
 
             foreach (Type t in types)

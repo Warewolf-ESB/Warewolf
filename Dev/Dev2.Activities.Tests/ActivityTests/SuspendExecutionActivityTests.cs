@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -595,6 +596,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(SuspendExecutionActivity))]
         public void SuspendExecutionActivity_Execute_EncryptData_True()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("WindowsIdentity.GetCurrent() is not supported on Linux.");
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
             var url = "http://localhost:3142/secure/WorkflowResume";
@@ -681,6 +684,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(SuspendExecutionActivity))]
         public void SuspendExecutionActivity_Execute_EncryptData_False()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("WindowsIdentity.GetCurrent() is not supported on Linux.");
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
             var url = "http://localhost:3142/secure/WorkflowResume";
@@ -905,6 +910,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(SuspendExecutionActivity))]
         public void SuspendExecutionActivity_Execute_ServiceTestExecution_Success()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("WindowsIdentity.GetCurrent() is not supported on Linux.");
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
             var url = "http://localhost:3142/secure/WorkflowResume";
@@ -1009,6 +1016,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("CannotParallelize")]
         public void SuspendExecutionActivity_Execute_Empty_SuspendOptionValue()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("WindowsIdentity.GetCurrent() is not supported on Linux.");
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
             var url = "http://localhost:3142/secure/WorkflowResume";

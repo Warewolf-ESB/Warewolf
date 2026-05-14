@@ -44,7 +44,7 @@ namespace Dev2.Common.Utils
                 return string.Empty;
             }
 
-            var cleanText = text.Replace(Environment.NewLine, string.Empty).Replace("\t", string.Empty);
+            var cleanText = text.Replace("\r", string.Empty).Replace("\n", string.Empty).Replace("\t", string.Empty);
 
             int indentation = 0;
             int quoteCount = 0;

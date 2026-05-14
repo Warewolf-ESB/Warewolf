@@ -234,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        #endregion Properties
+#endregion Properties
 
         #region Get Debug Inputs/Outputs
 

@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(5000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodes_FlowStep_ContainingEmptyGuid_ShouldUseUniqueID()

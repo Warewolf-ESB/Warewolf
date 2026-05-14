@@ -12,6 +12,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Moq;
 using System.Threading;
@@ -208,6 +209,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenAnonymousPrincipal_ShouldTryServerUser()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             var executed = false;
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
@@ -239,6 +242,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             var executed = false;
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
@@ -273,6 +278,8 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgainAndFailsAgain_ShouldThrow()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Assert.Inconclusive("Windows impersonation is not supported on this platform");
             var executedCount = 0;
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
