@@ -213,6 +213,11 @@ namespace Warewolf.Execution.Lightweight
             bool isPublic,
             FunctionContext? context = null)
         {
+            // Sentinel proves which binary is loaded; bump on every diagnostic
+            // round so we can verify the deployed worker DLL matches HEAD.
+            Console.WriteLine(
+                $"[SecuritySpecsDiag] ExecuteNamedWorkflow enter v=3 name='{name}' isPublic={isPublic} workflowsDir='{_workflowsDirectory}'");
+
             // ── apis.json: always accessible, filtered by permissions ─────────────
             if (NameSuffixParser.IsApisJsonRequest(name))
             {
