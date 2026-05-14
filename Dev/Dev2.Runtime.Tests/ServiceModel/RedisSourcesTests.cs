@@ -161,12 +161,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new RedisSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid);
-#if WINDOWS || NETFRAMEWORK
-            Assert.AreEqual("Exceeded timeout of 00:00:10\r\nNo such host is known.", result.ErrorMessage);
-#else
-			Assert.AreEqual("Exceeded timeout of 00:00:10\nName or service not known", result.ErrorMessage);
-#endif
-
+            StringAssert.StartsWith(result.ErrorMessage, "Exceeded timeout of 00:00:10");
+            var dnsError = result.ErrorMessage.Substring("Exceeded timeout of 00:00:10".Length).TrimStart('\r', '\n');
+            Assert.IsTrue(
+                dnsError == "No such host is known." || dnsError == "Name or service not known",
+                $"Unexpected DNS error text: '{dnsError}'");
         }
     }
 }

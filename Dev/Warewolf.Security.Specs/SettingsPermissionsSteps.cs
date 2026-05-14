@@ -257,11 +257,15 @@ namespace Dev2.Activities.Specs.Permissions
             var http        = _featureContext.Get<HttpClient>("currentHttp");
             var permissions = ParsePermissions(resourcePerms);
 
-            // Derive the route slug: last path segment without extension.
-            var slug = Path.GetFileNameWithoutExtension(
-                resourceName.Replace('\\', '/').Split('/')[^1]);
+            // Send the full relative path (e.g. "Examples/Control Flow - Decision")
+            // so the server's WorkflowIndex — which keys by lowercase forward-slash
+            // path — can resolve files nested under subfolders. Each segment is
+            // encoded individually so '/' stays literal for the catch-all route.
+            var relativePath = resourceName.Replace('\\', '/').TrimStart('/');
+            var basePath     = Path.ChangeExtension(relativePath, null);
+            var encodedPath  = string.Join('/', basePath.Split('/').Select(Uri.EscapeDataString));
 
-            var url      = $"{LightweightBaseUrl}/Secure/{Uri.EscapeDataString(slug)}";
+            var url      = $"{LightweightBaseUrl}/Secure/{encodedPath}";
             var response = http.GetAsync(url).Result;
 
             if (permissions == SecPermissions.None)
@@ -269,13 +273,13 @@ namespace Dev2.Activities.Specs.Permissions
                 Assert.IsTrue(
                     response.StatusCode == HttpStatusCode.Forbidden ||
                     response.StatusCode == HttpStatusCode.Unauthorized,
-                    $"Expected 403/401 for '{resourceName}' (None) but got {(int)response.StatusCode}.");
+                    $"Expected 403/401 for '{resourceName}' (None) but got {(int)response.StatusCode} from {url}.");
             }
             else
             {
                 Assert.AreEqual(
                     HttpStatusCode.OK, response.StatusCode,
-                    $"Expected 200 for '{resourceName}' [{resourcePerms}] but got {(int)response.StatusCode}.");
+                    $"Expected 200 for '{resourceName}' [{resourcePerms}] but got {(int)response.StatusCode} from {url}.");
             }
         }
 

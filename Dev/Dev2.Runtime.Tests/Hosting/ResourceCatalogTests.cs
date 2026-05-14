@@ -984,7 +984,9 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             var workflow = ResourceCatalog.Instance.GetResource<Workflow>(workspaceID, "Bugs\\" + resourceName);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(workflow);
+            var savedFiles = Directory.Exists(path) ? string.Join(", ", Directory.GetFiles(path)) : "<path missing>";
+            var loadedResources = string.Join(", ", ResourceCatalog.Instance.GetResources(workspaceID).Select(r => r.ResourceName));
+            Assert.IsNotNull(workflow, $"GetResource<Workflow>(workspaceID, \"Bugs\\\\{resourceName}\") returned null. Workspace path: {path}. Files on disk: [{savedFiles}]. Loaded resources: [{loadedResources}]");
             Assert.IsInstanceOfType(workflow, typeof(Workflow));
         }
 
@@ -3382,13 +3384,14 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             result = rc.GetResources(workspaceID);
             var dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
-            Assert.IsNotNull(dupResource);
+            var allNames = string.Join(", ", result.Select(r => r.ResourceName));
+            Assert.IsNotNull(dupResource, $"DuplicateResource did not produce a resource named '{destinationPath}'. ResourcePath: {EnvironmentVariables.ResourcePath}. Resources present: [{allNames}]. DuplicateResource returned: {(resourceCatalogResult == null ? "null" : $"Status={resourceCatalogResult.Status}, Message={resourceCatalogResult.Message}")}");
             var dupXelement = dupResource.ToXml();
             var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
             containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
-            Assert.IsTrue(newNamecontains);
-            Assert.IsNotNull(resourceCatalogResult);
-            Assert.IsFalse(containsOrgName);
+            Assert.IsTrue(newNamecontains, $"Duplicated resource XML does not contain new name '{destinationPath}'");
+            Assert.IsNotNull(resourceCatalogResult, "DuplicateResource returned null");
+            Assert.IsFalse(containsOrgName, $"Duplicated resource XML still contains original name '{resourceName}'");
         }
 
         [TestMethod]
@@ -3416,7 +3419,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID), "Destination", "NewName", false);
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status, $"DuplicateFolder failed. ResourcePath: {EnvironmentVariables.ResourcePath}. Source: {oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID)}. Status: {resourceCatalogResult.Status}. Message: {resourceCatalogResult.Message}");
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
@@ -3539,9 +3542,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var resultAfterDuplicateF = rc.GetResources(workspaceID);
             var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
             //------------Assert Precondition-----------------
-            Assert.AreEqual(numOfWfs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 8 on GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            var afterNames = string.Join(", ", resultAfterDuplicateF.Select(r => r.ResourceName));
+            var sourceDirExists = Directory.Exists(path);
+            var destDir = EnvironmentVariables.ResourcePath + "\\Duplicate_Destination";
+            var destDirExists = Directory.Exists(destDir);
+            var destFiles = destDirExists ? string.Join(", ", Directory.GetFiles(destDir, "*", SearchOption.AllDirectories)) : "<dir missing>";
+            Assert.AreEqual(numOfWfs * 2, resultAfterDuplicateF.Count, $"Expected {numOfWfs * 2} workflows after DuplicateFolder but got {resultAfterDuplicateF.Count}. DuplicateFolder status: {resourceCatalogResult.Status}, message: {resourceCatalogResult.Message}. Source dir '{path}' exists: {sourceDirExists}. Dest dir '{destDir}' exists: {destDirExists}. Dest files: [{destFiles}]. All resource names: [{afterNames}]");
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status, $"DuplicateFolder status: {resourceCatalogResult.Status}, message: {resourceCatalogResult.Message}");
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 

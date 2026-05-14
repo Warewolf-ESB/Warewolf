@@ -223,9 +223,10 @@ namespace Dev2.Tests.Runtime.Services
             var result = fetchResourceDefinition.Execute(values, mockWorkspace.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Contains("RSAKLFSVRGENDEV"));
-            Assert.IsTrue(result.Contains("testUser"));
-            Assert.IsTrue(result.Contains("Ex@mple!23Secure#PWD"));
+            var resultString = result.ToString();
+            Assert.IsTrue(result.Contains("RSAKLFSVRGENDEV"), $"Expected server name 'RSAKLFSVRGENDEV' in result. Actual: {resultString}");
+            Assert.IsTrue(result.Contains("testUser"), $"Expected user 'testUser' in result. Actual: {resultString}");
+            Assert.IsTrue(result.Contains("Ex@mple!23Secure#PWD"), $"Expected decrypted password 'Ex@mple!23Secure#PWD' in result. Actual: {resultString}");
         }
 
         DbSource CreateDev2TestingDbSource(Guid resourceID)
