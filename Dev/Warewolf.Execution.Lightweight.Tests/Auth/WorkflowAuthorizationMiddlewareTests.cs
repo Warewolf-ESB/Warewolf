@@ -16,7 +16,6 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
@@ -101,7 +100,6 @@ public class WorkflowAuthorizationMiddlewareTests
         new(
             policyMatcher:   new StubPolicyMatcher(),
             routeRegistry:   new StubRouteRegistry(),
-            hostEnvironment: new StubHostEnvironment("Production"),
             auditLogger:     new AuditLogger(NullLogger<AuditLogger>.Instance),
             logger:          NullLogger<WorkflowAuthorizationMiddleware>.Instance);
 
@@ -132,14 +130,5 @@ public class WorkflowAuthorizationMiddlewareTests
     private sealed class StubRouteRegistry : IRouteAuthorizationRegistry
     {
         public WorkflowPermission? GetRequiredPermissions(string functionName) => null;
-    }
-
-    private sealed class StubHostEnvironment : IHostEnvironment
-    {
-        public StubHostEnvironment(string envName) => EnvironmentName = envName;
-        public string EnvironmentName   { get; set; }
-        public string ApplicationName   { get; set; } = "test";
-        public string ContentRootPath   { get; set; } = ".";
-        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; } = null!;
     }
 }

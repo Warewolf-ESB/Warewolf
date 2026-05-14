@@ -6,11 +6,9 @@
 
 using System.Net;
 using System.Text.Json;
-using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
@@ -51,7 +49,6 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 
     private readonly IWorkflowPolicyMatcher                      _policyMatcher;
     private readonly IRouteAuthorizationRegistry                 _routeRegistry;
-    private readonly IHostEnvironment                            _hostEnvironment;
     private readonly AuditLogger                                 _auditLogger;
     private readonly ILogger<WorkflowAuthorizationMiddleware>    _logger;
     private readonly Action<FunctionContext, HttpResponseData>   _responseWriter;
@@ -75,14 +72,12 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
     public WorkflowAuthorizationMiddleware(
         IWorkflowPolicyMatcher                      policyMatcher,
         IRouteAuthorizationRegistry                 routeRegistry,
-        IHostEnvironment                            hostEnvironment,
         AuditLogger                                 auditLogger,
         ILogger<WorkflowAuthorizationMiddleware>    logger,
         Action<FunctionContext, HttpResponseData>?  responseWriter = null)
     {
         _policyMatcher   = policyMatcher;
         _routeRegistry   = routeRegistry;
-        _hostEnvironment = hostEnvironment;
         _auditLogger     = auditLogger;
         _logger          = logger;
         _responseWriter  = responseWriter
