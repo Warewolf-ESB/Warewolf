@@ -58,7 +58,9 @@ namespace Dev2.MathOperations.NCalc
                 long l      => FromExcelOADate(l),
                 float f     => DateTime.FromOADate(f),
                 decimal dec => DateTime.FromOADate((double)dec),
-                _           => DateTime.Parse(value?.ToString() ?? string.Empty, CultureInfo.InvariantCulture)
+                _           => double.TryParse(value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var d)
+                                  ? FromExcelOADate(d)
+                                  : DateTime.Parse(value?.ToString() ?? string.Empty, CultureInfo.InvariantCulture)
             };
         }
 

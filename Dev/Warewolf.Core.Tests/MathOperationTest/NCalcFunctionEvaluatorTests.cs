@@ -447,6 +447,20 @@ namespace Dev2.Tests.MathOperationTest
             AssertError("thisDoesNotExist(12,1234,567)");
         }
 
+        [TestMethod]
+        public void Minute_FromNumericString()
+        {
+            // "3" as a string should be treated as OA date 3 = Jan 3 1900 00:00:00 → minute 0
+            AssertEval("MINUTE(\"3\")", "0");
+        }
+
+        [TestMethod]
+        public void Hour_FromNumericString()
+        {
+            // "3" as OA date 3 = Jan 3 1900 00:00:00 → hour 0
+            AssertEval("HOUR(\"3\")", "0");
+        }
+
         #endregion
     }
 }

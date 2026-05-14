@@ -12,7 +12,7 @@ Scenario: Execute commands
 	| REM Testing multiple commands |
 	| dir [[drive]]                   |
 	When the command tool is executed
-	Then the result of the command tool will be "Volume in drive C has no label"
+	Then the result of the command tool will be "Directory of C"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Command         |
