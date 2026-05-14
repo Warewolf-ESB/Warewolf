@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Security;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 
@@ -135,7 +136,11 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 
         // ── Development-only bypass ───────────────────────────────────────────
         // NEVER active in Production — environment guard is mandatory.
-        if (_hostEnvironment.IsDevelopment() &&
+        // Check IHostEnvironment first (set correctly when the SDK propagates the
+        // env-var), then fall back to direct env-var reads via HostEnvironmentConfig
+        // (handles cases where the isolated-worker SDK does not propagate
+        // AZURE_FUNCTIONS_ENVIRONMENT / ASPNETCORE_ENVIRONMENT into IHostEnvironment).
+        if ((_hostEnvironment.IsDevelopment() || HostEnvironmentConfig.IsDevelopmentEnvironment()) &&
             request.Headers.TryGetValues(BypassHeader, out var bypassValues) &&
             bypassValues.Any(v => string.Equals(v, BypassHeaderValue, StringComparison.Ordinal)))
         {

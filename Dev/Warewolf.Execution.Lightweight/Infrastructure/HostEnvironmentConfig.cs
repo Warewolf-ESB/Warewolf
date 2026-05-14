@@ -53,7 +53,7 @@ internal sealed class HostEnvironmentConfig
     private static string? NullIfEmpty(string? value) =>
         string.IsNullOrWhiteSpace(value) ? null : value;
 
-    private static bool IsDevelopmentEnvironment()
+    internal static bool IsDevelopmentEnvironment()
     {
         static bool IsDevValue(string? v) =>
             string.Equals(v, "Development", StringComparison.OrdinalIgnoreCase);
