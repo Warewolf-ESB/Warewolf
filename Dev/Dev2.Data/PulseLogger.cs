@@ -9,20 +9,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Timers;
-using System.IO;
-using System.Linq;
-using System.Data.SQLite;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using System;
+using System.Data.SQLite;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Timers;
 using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
+using static Dev2.Data.NativeMethods;
 
 
 namespace Dev2.Data
@@ -122,9 +123,23 @@ namespace Dev2.Data
             status.dwLength = (uint)Marshal.SizeOf(status);
 #if WINDOWS || NETFRAMEWORK
             Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
+#else
+			GCMemoryInfo gcInfo = GC.GetGCMemoryInfo();
+			ulong total = (ulong)gcInfo.TotalAvailableMemoryBytes;
+			ulong used = (ulong)gcInfo.MemoryLoadBytes;
+			status.dwLength = (uint)Marshal.SizeOf<NativeMethods.MEMORYSTATUSEX>();
+			status.dwMemoryLoad = total > 0 ? (uint)(used * 100UL / total) : 0u;
+			status.ulTotalPhys = total;
+			status.ulAvailPhys = total > used ? total - used : 0UL;
+			status.ulTotalPageFile = 0UL;
+			status.ulAvailPageFile = 0UL;
+			status.ulTotalVirtual = 0UL;
+			status.ulAvailVirtual = 0UL;
+			status.ulAvailExtendedVirtual = 0UL;
+			Boolean ret = true;
 #endif
-            
-            StringBuilder stringBuilder = new StringBuilder();
+
+			StringBuilder stringBuilder = new StringBuilder();
             var memoryPressureMessage = string.Empty;
 
             switch (memoryStatus)

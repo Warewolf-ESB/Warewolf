@@ -66,6 +66,8 @@ namespace Dev2.Services.Security.MoqInstallerActions
                     return true;
                 }
             }
+#else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 #endif
 			return false;
         }

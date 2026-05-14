@@ -106,6 +106,7 @@ namespace Dev2.Services.Security
                     }
                 }
 #else
+				//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 				return false;
 #endif
             };
@@ -146,6 +147,7 @@ namespace Dev2.Services.Security
             }
             throw new Exception(ErrorResource.CannotFindGroup);
 #else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 			return string.Empty;
 #endif
 		}
@@ -526,6 +528,7 @@ namespace Dev2.Services.Security
                 }
             }
 #else
+			//On non-windows platforms groups are only managed by Warewolf.Lightweight.Execution
 			return false;
 #endif
         }
