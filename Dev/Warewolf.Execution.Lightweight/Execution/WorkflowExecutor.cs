@@ -97,30 +97,6 @@ namespace Warewolf.Execution.Lightweight
                 return WorkflowExecutionResult.Failure("WorkflowFilePath must be provided.");
             }
 
-            // OPENAPI: generate the spec before the file-exists guard so that
-            // workflows whose top-level .xml is absent (e.g. only test-case sub-files
-            // exist) still return a valid 200 spec.  ReadDataList handles missing
-            // files with an empty <DataList />, producing a minimal but valid spec.
-            if (request.ReturnType == EmitionTypes.OPENAPI)
-            {
-                var openApiName = request.WorkflowName
-                    ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
-                var spec = WorkflowOpenApiGenerator.Generate(
-                    request.WorkflowFilePath,
-                    openApiName,
-                    request.WebServerUri ?? new Uri("https://localhost"));
-                return new WorkflowExecutionResult
-                {
-                    IsSuccess     = true,
-                    ExecutionId   = Guid.NewGuid(),
-                    StartTime     = DateTime.UtcNow,
-                    EndTime       = DateTime.UtcNow,
-                    Duration      = TimeSpan.Zero,
-                    ContentType   = "application/json",
-                    PayloadWriter = (stream, ct) => WriteStringToStreamAsync(stream, spec, ct)
-                };
-            }
-
             if (!File.Exists(request.WorkflowFilePath))
             {
                 Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");

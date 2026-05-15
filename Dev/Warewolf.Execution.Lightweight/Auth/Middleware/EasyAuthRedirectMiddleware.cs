@@ -28,25 +28,9 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 /// </summary>
 public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<EasyAuthRedirectMiddleware>      _logger;
-    private readonly Action<FunctionContext, HttpResponseData> _responseWriter;
-
-    /// <summary>Initialises the middleware with a logger.</summary>
-    /// <param name="responseWriter">
-    /// Test seam — replaces the production
-    /// <c>context.GetInvocationResult().Value = response</c> wiring with a hook
-    /// the test can capture. Defaults to the production behaviour.
-    /// <c>GetInvocationResult</c> requires the SDK-internal
-    /// <c>IFunctionBindingsFeature</c>, so the 302 redirect and 401 branches
-    /// could not be unit-tested without this seam.
-    /// </param>
-    public EasyAuthRedirectMiddleware(
-        ILogger<EasyAuthRedirectMiddleware>        logger,
-        Action<FunctionContext, HttpResponseData>? responseWriter = null)
+    /// <summary>Initialises the middleware.</summary>
+    public EasyAuthRedirectMiddleware()
     {
-        _logger         = logger;
-        _responseWriter = responseWriter
-            ?? ((ctx, response) => ctx.GetInvocationResult().Value = response);
     }
 
     /// <inheritdoc/>
@@ -117,7 +101,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
                 var resp302 = request.CreateResponse(HttpStatusCode.Redirect);
                 resp302.Headers.Add("Location", redirect);
-                _responseWriter(context, resp302);
+                context.GetInvocationResult().Value = resp302;
                 return;
             }
 
@@ -129,7 +113,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             await response.WriteStringAsync(
                 $"{{\"error\":\"unauthorized\",\"message\":\"A valid Bearer token is required.\",\"path\":\"{path}\"}}");
 
-            _responseWriter(context, response);
+            context.GetInvocationResult().Value = response;
             return;
         }
 

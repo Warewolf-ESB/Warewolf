@@ -127,7 +127,7 @@
       Files from Resources - Release\Resources that are needed for integration
       tests have been copied here and are tracked in source control.
     -->
-    <Content Include="Resources\**\*" Condition="Exists('Resources')">
+    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -252,19 +252,6 @@
     <PropertyGroup>
       <_FunctionsExtensionRemoveProps>$(_FunctionsExtensionRemoveProps);OutDir</_FunctionsExtensionRemoveProps>
     </PropertyGroup>
-  </Target>
-
-  <!-- Copy workflow .bite files from Resources - Release to the output Resources directory.
-       Required so that ApisJsonGenerator finds workflow files during integration tests
-       (e.g. Warewolf.Security.Specs) regardless of build configuration. -->
-  <Target Name="CopyWorkflowResources" AfterTargets="Build">
-    <ItemGroup>
-      <_BiteResources Include="$(MSBuildProjectDirectory)\..\Resources - Release\Resources\**\*.bite" />
-    </ItemGroup>
-    <Copy SourceFiles="@(_BiteResources)"
-          DestinationFolder="$(OutDir)Resources\%(RecursiveDir)"
-          SkipUnchangedFiles="true"
-          ContinueOnError="true" />
   </Target>
 
   <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">

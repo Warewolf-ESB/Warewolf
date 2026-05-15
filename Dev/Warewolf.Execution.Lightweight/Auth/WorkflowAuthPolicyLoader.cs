@@ -110,7 +110,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 : PolicyLookupResult.ConfigMissing();
         }
 
-        var key = NormalizeWorkflowKey(workflowName);
+        var key = workflowName.ToLowerInvariant();
 
         // ── Resource scope takes priority ─────────────────────────────────────
         if (_policies.TryGetValue(key, out var resourcePolicy))
@@ -164,20 +164,13 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
         }
 
         // ── Determine active scope ─────────────────────────────────────────────
-        var key = NormalizeWorkflowKey(workflowName);
+        var key = workflowName.ToLowerInvariant();
         IReadOnlyDictionary<string, WorkflowPermission> activeScope;
-        string scopeLabel;
 
         if (_resourceRoleMap.TryGetValue(key, out var resourceMap))
-        {
             activeScope = resourceMap;
-            scopeLabel  = "resource";
-        }
         else
-        {
             activeScope = _globalRoleMap;
-            scopeLabel  = "global";
-        }
 
         // ── Collect permissions ───────────────────────────────────────────────
         var combined = WorkflowPermission.None;
@@ -290,7 +283,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 string.IsNullOrWhiteSpace(p.GroupName))
                 continue;
 
-            var wfKey = NormalizeWorkflowKey(p.ResourceName);
+            var wfKey = p.ResourceName.ToLowerInvariant();
 
             if (!outer.TryGetValue(wfKey, out var inner))
             {
@@ -315,9 +308,8 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 
     /// <summary>
     /// Converts the resource role map into pre-built <see cref="WorkflowAuthPolicy"/>
-    /// instances keyed by workflow name.  Every workflow that has at least one
-    /// non-None permission entry gets a resource-scope policy so that
-    /// View-only resources are correctly distinguished from the global scope.
+    /// instances keyed by workflow name.  Only workflows that have at least one
+    /// entry with the Execute flag set produce a policy.
     /// </summary>
     private IReadOnlyDictionary<string, WorkflowAuthPolicy> BuildPolicies(
         IReadOnlyDictionary<string, IReadOnlyDictionary<string, WorkflowPermission>> resourceMap)
@@ -330,11 +322,11 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 .Select(kvp => ResolvedRolePolicy.Create(kvp.Key, kvp.Value))
                 .ToList();
 
-            var hasAnyPermission = rolePolicies.Any(e => e.EffectivePermissions != WorkflowPermission.None);
-            if (!hasAnyPermission)
+            var hasExecute = rolePolicies.Any(e => e.EffectivePermissions.HasFlag(WorkflowPermission.Execute));
+            if (!hasExecute)
             {
                 _logger.LogDebug(
-                    "Skipping resource policy for '{Workflow}' — no role has any permission.",
+                    "Skipping resource policy for '{Workflow}' — no role has Execute permission.",
                     workflowKey);
                 continue;
             }
@@ -386,32 +378,6 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                     workflow);
             }
         }
-    }
-
-    // ── Workflow-key normaliser ───────────────────────────────────────────────
-
-    /// <summary>
-    /// Produces a stable lookup key for both <c>secure.config</c> ResourceName
-    /// entries and the workflow segment extracted from HTTP routes.
-    ///
-    /// <para>
-    /// Strips any folder prefix (handles both <c>'/'</c> and <c>'\\'</c>) and any
-    /// file extension, then lowercases.  Real Warewolf stores ResourceName as a
-    /// full path like <c>"Examples\Control Flow - Decision"</c>, while the
-    /// lightweight engine receives only the display name from
-    /// <c>/Secure/&lt;name&gt;</c> URLs.  Normalising both sides through this
-    /// helper keeps the policy lookup matching when the two representations
-    /// disagree on path-or-no-path.
-    /// </para>
-    /// </summary>
-    internal static string NormalizeWorkflowKey(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            return string.Empty;
-
-        var slashed = name.Replace('\\', '/');
-        var bare    = Path.GetFileNameWithoutExtension(slashed);
-        return bare.ToLowerInvariant();
     }
 
     // ── ToFlags helper ────────────────────────────────────────────────────────

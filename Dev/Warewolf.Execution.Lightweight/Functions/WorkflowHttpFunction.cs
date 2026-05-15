@@ -227,10 +227,10 @@ namespace Warewolf.Execution.Lightweight
                 // Prefer the principal already built by the middleware pipeline (Secure/* routes).
                 // Fall back to direct JWT validation for Services/* routes that bypass middleware.
                 var principalAuthenticated =
-                    (context is not null &&
-                     context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
-                     p is Auth.WorkflowClaimsPrincipal wcp &&
-                     wcp.Identity?.IsAuthenticated == true);
+                    context is not null &&
+                    context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                    p is Auth.WorkflowClaimsPrincipal wcp &&
+                    wcp.Identity?.IsAuthenticated == true;
 
                 if (!principalAuthenticated)
                 {
@@ -241,10 +241,6 @@ namespace Warewolf.Execution.Lightweight
             }
 
             // ── Execute the workflow ──────────────────────────────────────────────
-            // Wrapped in try/catch so the failing /Secure/<slug> requests in the
-            // Security Specs CI job leave the exception text in the engine log
-            // (otherwise Azure Functions converts an unhandled exception to 500
-            // and the trace never surfaces, even at Debug log level).
             var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
 
@@ -325,14 +321,6 @@ namespace Warewolf.Execution.Lightweight
         /// Tries the Warewolf HMAC-SHA256 JWT first; falls back to a Microsoft Entra
         /// token.  When neither is valid, returns a predicate that always returns
         /// <c>false</c> so that no workflows are revealed.
-        /// <para>
-        /// Uses <see cref="PermissionChecker.HasUserDiscoveryPermission"/> rather than the
-        /// View-only check: a workflow the authenticated user (or Public) can <em>execute</em>
-        /// is a workflow they need to discover in the listing — matching the documented
-        /// Warewolf semantics enforced by the Security Specs feature file
-        /// (e.g. <c>Public</c> with <c>Execute</c> grants apis.json visibility to any
-        /// authenticated user).
-        /// </para>
         /// </summary>
         Func<string, bool>? GetSecureFilter(HttpRequestData req, FunctionContext? context = null)
         {
@@ -347,7 +335,7 @@ namespace Warewolf.Execution.Lightweight
                 wcp.Identity?.IsAuthenticated == true)
             {
                 var middlewareGroups = (IReadOnlyList<string>)wcp.Groups;
-                return name => PermissionChecker.HasUserDiscoveryPermission(name, config, middlewareGroups);
+                return name => PermissionChecker.HasUserViewPermission(name, config, middlewareGroups);
             }
 
             // ── 2. Warewolf HMAC-SHA256 JWT (fallback for non-middleware routes) ───
@@ -365,7 +353,7 @@ namespace Warewolf.Execution.Lightweight
             if (groups is null)
                 return _ => false;  // Invalid / absent token → empty list.
 
-            return name => PermissionChecker.HasUserDiscoveryPermission(name, config, groups);
+            return name => PermissionChecker.HasUserViewPermission(name, config, groups);
         }
 
         // ── Response helpers ──────────────────────────────────────────────────────

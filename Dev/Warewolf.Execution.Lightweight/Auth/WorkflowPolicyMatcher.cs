@@ -85,8 +85,7 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
-        var rolesList = callerRoles.ToList();
-        var effectivePermissions = _policyLoader.GetEffectivePermissions(workflowName, rolesList);
+        var effectivePermissions = _policyLoader.GetEffectivePermissions(workflowName, callerRoles);
 
         // ── No matching role and no Public entry in active scope ──────────────
         if (effectivePermissions == WorkflowPermission.None)
@@ -98,16 +97,8 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
         // ── Stamp resolved permissions onto the principal ─────────────────────
         principal.SetResolvedPermissions(effectivePermissions);
 
-        // ── Permission sufficiency check (OR logic on multi-flag required) ────
-        // A caller is allowed when their resolved permissions overlap with the
-        // required-permission set in at least one bit.  This mirrors the
-        // Warewolf Security Specs contract where `[RequireWorkflowPermission(
-        // View | Execute)]` on /Secure/{name} means "View OR Execute is enough",
-        // not "View AND Execute" — a user with only View on a resource is
-        // expected to be able to access /Secure/<that-resource>.
-        // Single-flag requirements (e.g. Administrator) still behave identically
-        // because the overlap reduces to the same bit being set.
-        if ((effectivePermissions & requiredPermissions) == WorkflowPermission.None)
+        // ── Permission sufficiency check (AND logic) ──────────────────────────
+        if (!effectivePermissions.HasFlag(requiredPermissions))
         {
             // Find the first matched role entry to surface in the denial reason.
             var firstMatched = lookup.Value.RolePolicies

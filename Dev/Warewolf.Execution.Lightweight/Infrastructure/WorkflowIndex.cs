@@ -105,13 +105,14 @@ namespace Warewolf.Execution.Lightweight
                 return null;
             }
 
-            var index = GetIndex(workflowsDirectory);
-            if (index.Count == 0)
+            try
             {
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] Resolve miss: index is EMPTY for dir='{workflowsDirectory}' name='{nameWithoutExtension}'");
-                return null;
-            }
+                var index = GetIndex(workflowsDirectory);
+                if (index.Count == 0)
+                {
+                    Dev2Logger.Warn($"WorkflowIndex is empty for directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+                    return null;
+                }
 
                 // Normalise to forward slashes + lowercase, strip any leading separator.
                 var key = nameWithoutExtension
@@ -119,17 +120,21 @@ namespace Warewolf.Execution.Lightweight
                     .TrimStart('/')
                     .ToLowerInvariant();
 
-            if (index.TryGetValue(key, out var relPath))
-            {
-                var absPath = Path.Combine(workflowsDirectory, relPath.Replace('/', Path.DirectorySeparatorChar));
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] Resolve HIT: key='{key}' → '{absPath}'");
-                return absPath;
-            }
+                if (index.TryGetValue(key, out var relPath))
+                {
+                    var resolvedPath = Path.Combine(workflowsDirectory, relPath.Replace('/', Path.DirectorySeparatorChar));
+                    Dev2Logger.Debug($"WorkflowIndex Resolve successful. Key: '{key}' -> Path: '{resolvedPath}'", ExecutionIdForInfrastructure);
+                    return resolvedPath;
+                }
 
-            Console.WriteLine(
-                $"[WorkflowIndexDiag] Resolve miss: key='{key}' not in index (indexCount={index.Count}) dir='{workflowsDirectory}'");
-            return null;
+                Dev2Logger.Warn($"WorkflowIndex Resolve failed. No match found for key: '{key}' in directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WorkflowIndex Resolve error for name: '{nameWithoutExtension}' in directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
+                return null;
+            }
         }
 
         // ── Internal helpers ──────────────────────────────────────────────────

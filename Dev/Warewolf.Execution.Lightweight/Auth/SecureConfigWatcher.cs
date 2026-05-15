@@ -52,23 +52,15 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var path = ResolveConfigPath();
-        _logger.LogInformation("SecureConfigWatcher: AppContext.BaseDirectory={BaseDir}", AppContext.BaseDirectory);
-        if (path is null)
+        if (path is null || !File.Exists(path))
         {
-            _logger.LogWarning(
-                "SecureConfigWatcher: could not resolve config path — skipping hot-reload.");
+            _logger.LogInformation(
+                "SecureConfigWatcher: no secure.config to watch — skipping hot-reload.");
             return Task.CompletedTask;
         }
 
         var dir  = Path.GetDirectoryName(path)!;
         var file = Path.GetFileName(path);
-
-        if (!Directory.Exists(dir))
-        {
-            _logger.LogInformation(
-                "SecureConfigWatcher: directory {Dir} does not exist — skipping hot-reload.", dir);
-            return Task.CompletedTask;
-        }
 
         _debounce = new Timer(_ => SafeReload(), null, Timeout.Infinite, Timeout.Infinite);
 
@@ -82,7 +74,7 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         _watcher.Created += OnChanged;
         _watcher.Renamed += OnChanged;
 
-        _logger.LogWarning(
+        _logger.LogInformation(
             "SecureConfigWatcher: monitoring {Path} for hot-reload.", path);
         return Task.CompletedTask;
     }
@@ -94,10 +86,7 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
     }
 
     private void OnChanged(object sender, FileSystemEventArgs e)
-    {
-        _logger.LogWarning("SecureConfigWatcher: file event {ChangeType} on '{Path}' — queuing reload.", e.ChangeType, e.FullPath);
-        _debounce?.Change(DebounceWindow, Timeout.InfiniteTimeSpan);
-    }
+        => _debounce?.Change(DebounceWindow, Timeout.InfiniteTimeSpan);
 
     private void SafeReload()
     {
@@ -105,8 +94,7 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         {
             SecureConfigLoader.Reload();
             _policyLoader.Reload();
-            var loaded = SecureConfigLoader.Config.IsLoaded;
-            _logger.LogWarning("SecureConfigWatcher: secure.config reloaded — IsLoaded={IsLoaded}.", loaded);
+            _logger.LogInformation("SecureConfigWatcher: secure.config reloaded successfully.");
         }
         catch (Exception ex)
         {
@@ -120,9 +108,8 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         if (!string.IsNullOrWhiteSpace(env))
             return env;
 
-        // Return the default path even when the file doesn't exist yet — the
-        // watcher monitors the directory so it detects when the file is first created.
-        return Path.Combine(AppContext.BaseDirectory, "secure.config");
+        var bin = Path.Combine(AppContext.BaseDirectory, "secure.config");
+        return File.Exists(bin) ? bin : null;
     }
 
     public void Dispose()

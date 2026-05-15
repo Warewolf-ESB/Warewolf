@@ -43,13 +43,6 @@ namespace Warewolf.Execution.Lightweight.Models
         public bool IsSuccess { get; set; }
 
         /// <summary>
-        /// True when the execution failed because the workflow was not found.
-        /// Treated as HTTP 500 (same as other failures) to avoid leaking information
-        /// about which workflow names or file paths exist on the server.
-        /// </summary>
-        public bool IsNotFound { get; set; }
-
-        /// <summary>
         /// The execution ID assigned to this workflow run.
         /// </summary>
         public Guid ExecutionId { get; set; }
@@ -112,19 +105,6 @@ namespace Warewolf.Execution.Lightweight.Models
             Errors = new List<string> { errorMessage },
             StartTime = DateTime.UtcNow,
             EndTime = DateTime.UtcNow
-        };
-
-        /// <summary>
-        /// Creates a not-found failure result (workflow does not exist).
-        /// Returns HTTP 500 (not 404) to avoid leaking which workflow names exist.
-        /// </summary>
-        public static WorkflowExecutionResult NotFound(string errorMessage) => new()
-        {
-            IsSuccess  = false,
-            IsNotFound = true,
-            Errors     = new List<string> { errorMessage },
-            StartTime  = DateTime.UtcNow,
-            EndTime    = DateTime.UtcNow
         };
     }
 }

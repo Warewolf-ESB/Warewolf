@@ -228,8 +228,6 @@ namespace Warewolf.Execution.Lightweight
             var indexPath = WorkflowIndex.Instance.Resolve(workflowsDirectory, StripKnownExtension(fileName));
             if (indexPath != null)
             {
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] ResolveFilePath: index hit for name='{request.WorkflowName}' → '{indexPath}'");
                 request.WorkflowFilePath = indexPath;
                 return;
             }
@@ -245,8 +243,6 @@ namespace Warewolf.Execution.Lightweight
                 {
                     // Workflows directory absent — construct the default path without a disk hit.
                     request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName + ".xml");
-                    Console.WriteLine(
-                        $"[WorkflowIndexDiag] ResolveFilePath: directory '{fileDirectory}' absent, defaulting to '{request.WorkflowFilePath}'");
                     return;
                 }
 
@@ -256,16 +252,12 @@ namespace Warewolf.Execution.Lightweight
                             ?? FindFileCaseInsensitive(fileDirectory, baseName + ".xml");
                 if (resolved != null)
                 {
-                    Console.WriteLine(
-                        $"[WorkflowIndexDiag] ResolveFilePath: disk hit for name='{request.WorkflowName}' in dir='{fileDirectory}' → '{resolved}'");
                     request.WorkflowFilePath = resolved;
                     return;
                 }
 
                 // File not found on disk — default to .xml (preserves original behaviour).
                 request.WorkflowFilePath = Path.Combine(workflowsDirectory, fileName + ".xml");
-                Console.WriteLine(
-                    $"[WorkflowIndexDiag] ResolveFilePath: no file found in dir='{fileDirectory}' for baseName='{baseName}', defaulting to '{request.WorkflowFilePath}'");
                 return;
             }
 

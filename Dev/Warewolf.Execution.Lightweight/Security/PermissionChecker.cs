@@ -102,101 +102,28 @@ namespace Warewolf.Execution.Lightweight.Security
             return false;
         }
 
-        /// <summary>
-        /// Returns <c>true</c> when the workflow identified by <paramref name="workflowName"/>
-        /// is executable by the public (anonymous) group, meaning any authenticated user
-        /// should also be able to discover it.
-        ///
-        /// Mirrors <see cref="HasPublicViewPermission"/> but checks the Execute flag.
-        /// </summary>
-        static bool HasPublicExecutePermission(string workflowName, SecureConfigData config)
-        {
-            foreach (var perm in config.Permissions)
-            {
-                if (!perm.IsPublicGroup || !perm.Execute)
-                    continue;
-
-                if (perm.IsGlobal)
-                    return true;
-
-                if (NamesMatch(perm.ResourceName, workflowName))
-                    return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns <c>true</c> when any group in <paramref name="userGroups"/> grants
-        /// discovery access (View <b>or</b> Execute) to <paramref name="workflowName"/>.
-        ///
-        /// Discovery differs from View: a workflow an authenticated user can <em>execute</em>
-        /// should also be visible to them in listings, even if the Public group has no
-        /// View permission for it.
-        /// </summary>
-        internal static bool HasUserDiscoveryPermission(
-            string                  workflowName,
-            SecureConfigData        config,
-            IReadOnlyList<string>   userGroups)
-        {
-            if (!config.IsLoaded)
-                return true;
-
-            // If Public has global View or Execute, any authenticated user may discover any workflow.
-            if (HasPublicViewPermission(workflowName, config))
-                return true;
-
-            if (HasPublicExecutePermission(workflowName, config))
-                return true;
-
-            foreach (var perm in config.Permissions)
-            {
-                // Discovery requires at least View or Execute.
-                if (!perm.View && !perm.Execute)
-                    continue;
-
-                if (!ContainsGroup(userGroups, perm.GroupName))
-                    continue;
-
-                if (perm.IsGlobal)
-                    return true;
-
-                if (NamesMatch(perm.ResourceName, workflowName))
-                    return true;
-            }
-
-            return false;
-        }
-
         // ── Helpers ───────────────────────────────────────────────────────────────
 
         /// <summary>
         /// Compares <paramref name="permissionResourceName"/> against
         /// <paramref name="workflowName"/> using case-insensitive ordinal comparison.
         ///
-        /// Either side may be stored as a full relative path (e.g.
-        /// <c>"Examples\Control Flow - Decision"</c> from <c>secure.config</c>) or as
-        /// the bare display name (e.g. <c>"Decision"</c> emitted by the apis.json
-        /// generator).  All four combinations (path/path, path/bare, bare/path,
-        /// bare/bare) are accepted.  <c>'\\'</c> is normalised to <c>'/'</c> so
-        /// <see cref="Path.GetFileNameWithoutExtension"/> works on Linux too.
+        /// The workflow name may be a relative path with extension (e.g.
+        /// <c>tools/Hello World</c>); the permission ResourceName is typically just the
+        /// bare display name (e.g. <c>Hello World</c>).  Both forms are tried.
         /// </summary>
         static bool NamesMatch(string permissionResourceName, string workflowName)
         {
             if (string.IsNullOrEmpty(permissionResourceName))
                 return false;
 
-            // Exact match on whatever was stored.
+            // Exact match on whatever was stored (may already be a path).
             if (string.Equals(permissionResourceName, workflowName, StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            var bareWorkflow = Path.GetFileNameWithoutExtension(workflowName?.Replace('\\', '/'));
-            var barePerm     = Path.GetFileNameWithoutExtension(permissionResourceName.Replace('\\', '/'));
-
-            // path / bare or bare / path or bare / bare — any of these match.
-            return string.Equals(permissionResourceName, bareWorkflow, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(barePerm, workflowName,     StringComparison.OrdinalIgnoreCase)
-                || string.Equals(barePerm, bareWorkflow,     StringComparison.OrdinalIgnoreCase);
+            // Strip directory and extension from the workflow name for a bare-name comparison.
+            var bareName = Path.GetFileNameWithoutExtension(workflowName);
+            return string.Equals(permissionResourceName, bareName, StringComparison.OrdinalIgnoreCase);
         }
 
         static bool ContainsGroup(IReadOnlyList<string> groups, string groupName)
