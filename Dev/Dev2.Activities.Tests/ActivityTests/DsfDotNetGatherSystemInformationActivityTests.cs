@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDotNetGatherSystemInformationActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            List<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
             //------------Setup for test--------------------------
             var act = new DsfDotNetGatherSystemInformationActivity { SystemInformationCollection = systemInformationCollection };
             //------------Execute Test---------------------------

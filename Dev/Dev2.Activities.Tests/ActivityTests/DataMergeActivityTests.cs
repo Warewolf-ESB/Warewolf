@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DataMergeActivityTest : BaseActivityUnitTest
     {
-        IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
+        List<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
 
         #region Additional test attributes
 
@@ -494,7 +494,7 @@ Wallis0000Buchan
         }
         #region Private Test Methods
 
-        void SetupArguments(string currentDL, string testData, string result, IList<DataMergeDTO> mergeCollection)
+        void SetupArguments(string currentDL, string testData, string result, List<DataMergeDTO> mergeCollection)
         {
             TestStartNode = new FlowStep
             {

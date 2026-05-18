@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +19,7 @@ namespace Dev2.Activities.Specs
         [TestCategory("CompositionLoadTests")]
         public void LargeRows_SplitOnNewLine_ShouldSplitCorrectly()
         {
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
             resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
             var sourceString = "";
             if (File.Exists("LargeRowsDataSplit.txt"))

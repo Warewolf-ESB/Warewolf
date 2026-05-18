@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_AllUpper_Expected_AllUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this to upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfCaseConvertActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1), CaseConverterFactory.CreateCaseConverterTO("[[testVar2]]", "UPPER", "[[testVar2]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1), CaseConverterFactory.CreateCaseConverterTO("[[testVar2]]", "UPPER", "[[testVar2]]", 1) };
             var act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvertWithAllUpperAndMultipleRegionsExpectedAllUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]], [[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]], [[testVar]]", 1) };
 
             SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CaseConvert_Evaluate_WhenRecursiveRegion_ExpectSingleWellFormedRegionAsResult()
         {
             //------------Setup for test--------------------------
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[[[testVar]]]]", "UPPER", "[[[[testVar]]]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[[[testVar]]]]", "UPPER", "[[[[testVar]]]]", 1) };
 
             SetupArguments(@"<root><NewVar>change this to upper case</NewVar><testVar>NewVar</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvertWithAllUpperAndMultipleRegionsInStringToConvertWithSingleOutputTargetExpectedOneUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]]", 1) };
 
             SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // 27.08.2013
             // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation ;)
             // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "[", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "[", 1) };
 
             SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // 27.08.2013
             // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation ;)
             // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "", 1) };
 
             SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_AllLower_Expected_AllLowerCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "lower", "[[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "lower", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>CHANGE THIS TO LOWER CASE</testVar>  </root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
             var result = ExecuteProcess();
@@ -216,7 +216,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_FirstUpper_Expected_FirstLetterIsUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Sentence", "[[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Sentence", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this to first leter upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
             var result = ExecuteProcess();
@@ -237,7 +237,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_AllFirstUpper_Expected_AllFirstLettersIsUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this to first leter upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -255,7 +255,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_No_Result_Variable_Expected_AllFirstLettersIsUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "", 1) };
 
             SetupArguments(@"<root><testVar>change this to first leter upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_Numbers_In_StringToConvert_Expected_AllFirstLettersIsUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_Blank_StringToConvert_Expected_AllFirstLettersIsUpperCase()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("", "Title Case", "", 1) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("", "Title Case", "", 1) };
 
             SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
@@ -477,7 +477,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_WithRecordSetDataAndEmptyIndex_Expected_LastRecordCaseConverted()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(2).testVar]]", "Title Case", "[[testRecSet().testVar]]", 3) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(2).testVar]]", "Title Case", "[[testRecSet().testVar]]", 3) };
 
             SetupArguments(@"<root><testRecSet><testVar>do not change this to first leter upper case</testVar></testRecSet><testRecSet><testVar>change this to first leter upper case</testVar></testRecSet></root>", ActivityStrings.CaseConvert_DLWithRecordSetShape, convertCollection);
 
@@ -497,7 +497,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void CaseConvert_WithRecordSetDataAndStar_Expected_AllRecordsConverted()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).testVar]]", "Title Case", "[", 3) };
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).testVar]]", "Title Case", "[", 3) };
 
             SetupArguments(@"<root><testRecSet><testVar>do not change this to first leter upper case</testVar></testRecSet><testRecSet><testVar>change this to first leter upper case</testVar></testRecSet></root>", ActivityStrings.CaseConvert_DLWithRecordSetShape, convertCollection);
 
@@ -524,7 +524,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
         {
             //------------Setup for test--------------------------
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
             {
                 new CaseConvertTO("String to Convert", "UPPER", "[[testVar]]", 1),
                 new CaseConvertTO("String to Convert", "UPPER", "[[testLanguage]]", 2)
@@ -547,7 +547,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AddListToCollectionWhereNotOverwriteEmptyListExpectAddToCollection()
         {
             //------------Setup for test--------------------------
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>()
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>()
             {
                 new CaseConvertTO("", "UPPER", "[[testVar]]", 1)
             };
@@ -569,7 +569,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
             //------------Setup for test--------------------------
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
+            List<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
             {
                 new CaseConvertTO("String to Convert", "UPPER", "[[testVar]]", 1),
                 new CaseConvertTO("String to Convert", "UPPER", "[[testLanguage]]", 2)
@@ -592,7 +592,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        void SetupArguments(string currentDL, string testData, IList<ICaseConvertTO> convertCollection)
+        void SetupArguments(string currentDL, string testData, List<ICaseConvertTO> convertCollection)
         {
             TestStartNode = new FlowStep
             {
