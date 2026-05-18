@@ -982,8 +982,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
             StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
-            var expectedDoubleSample = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) ? "2.1" : "3.1";
-            StringAssert.Contains(result[0].Fields[0].Path.SampleData, expectedDoubleSample);
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
         }
 
         [TestMethod]
