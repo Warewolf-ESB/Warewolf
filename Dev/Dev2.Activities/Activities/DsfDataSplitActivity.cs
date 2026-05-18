@@ -51,11 +51,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         string _sourceString;
         int _indexCounter = 1;
-        IList<DataSplitDTO> _resultsCollection;
+        List<DataSplitDTO> _resultsCollection;
         bool _reverseOrder;
         bool _skipBlankRows;
 
-        public IList<DataSplitDTO> ResultsCollection
+        public List<DataSplitDTO> ResultsCollection
         {
             get => _resultsCollection;
             set

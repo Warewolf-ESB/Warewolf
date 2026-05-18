@@ -44,9 +44,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        IList<ActivityDTO> _fieldsCollection;
+        List<ActivityDTO> _fieldsCollection;
 
-        public IList<ActivityDTO> FieldsCollection
+        public List<ActivityDTO> FieldsCollection
 
         {
             get

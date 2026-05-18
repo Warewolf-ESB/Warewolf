@@ -42,7 +42,7 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        IList<XPathDTO> _resultsCollection;
+        List<XPathDTO> _resultsCollection;
         string _sourceString;
         bool _isDebugMode;
 
@@ -50,7 +50,7 @@ namespace Dev2.Activities
 
         #region Properties
 
-        public IList<XPathDTO> ResultsCollection
+        public List<XPathDTO> ResultsCollection
         {
             get
             {

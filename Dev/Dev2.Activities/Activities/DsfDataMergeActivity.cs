@@ -58,8 +58,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        IList<DataMergeDTO> _mergeCollection;
-        public IList<DataMergeDTO> MergeCollection
+        List<DataMergeDTO> _mergeCollection;
+        public List<DataMergeDTO> MergeCollection
         {
             get
             {

@@ -47,7 +47,7 @@ namespace Dev2.Activities
         IGetSystemInformation _getSystemInformation;
         IIdentity _currentIdentity;
 
-        public IList<GatherSystemInformationTO> SystemInformationCollection { get; set; }
+        public List<GatherSystemInformationTO> SystemInformationCollection { get; set; }
 
         public IGetSystemInformation GetSystemInformation
         {

@@ -50,7 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// The property that holds all the convertions
         /// </summary>
-        public IList<BaseConvertTO> ConvertCollection { get; set; }
+        public List<BaseConvertTO> ConvertCollection { get; set; }
 
         public DsfBaseConvertActivity()
             : base("Base Conversion")
