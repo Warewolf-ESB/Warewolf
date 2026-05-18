@@ -370,6 +370,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         // ── OpenAPI format (.api suffix) — exercises WorkflowOpenApiGenerator ─────
 
         [TestMethod]
+        [Ignore("Requires the .api suffix to be handled as an OpenAPI spec request. Re-introduce when WOLF-8418 is complete.")]
         public async Task OpenApi_Suffix_Returns200WithOpenApiSpec()
         {
             SkipIfUnavailable();

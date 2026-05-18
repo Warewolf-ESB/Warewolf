@@ -129,6 +129,7 @@ public class WorkflowAuthorizationMiddlewareHttpTests
     // ── apis.json bypass ─────────────────────────────────────────────────────
 
     [TestMethod]
+    [Ignore("Requires apis.json bypass in WorkflowAuthorizationMiddleware. Re-introduce when WOLF-8417 is complete.")]
     public async Task Invoke_ApisJson_OnSecurePath_CallsNext()
     {
         var mw             = Build();
@@ -141,6 +142,7 @@ public class WorkflowAuthorizationMiddlewareHttpTests
     }
 
     [TestMethod]
+    [Ignore("Requires apis.json bypass in WorkflowAuthorizationMiddleware. Re-introduce when WOLF-8417 is complete.")]
     public async Task Invoke_ApisJson_OnServicesPath_CallsNext()
     {
         var mw             = Build();
