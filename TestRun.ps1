@@ -495,7 +495,19 @@ if __name__ == '__main__':
         # Always overwrite — the embedded user_dir is sandbox-root-dependent and
         # may change between -CI- and -local- runs of the same checkout.
         $pyBody | Out-File -LiteralPath $ftpEntryFile -Encoding utf8 -Force
-        pythonw -u $ftpEntryFile
+        # `pythonw -u file.py` foreground would block here forever (serve_forever
+        # never returns). Launch via Start-Process so the orchestrator continues,
+        # then poll port 21 until the listener is up.
+        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
+        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTP server'; return }
+        $script:_ftpProcess = Start-Process -FilePath $pythonwCmd `
+            -ArgumentList @('-u', $ftpEntryFile) -PassThru -WindowStyle Hidden
+        Write-Host "Waiting for FTP server on port 21..."
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 21)).Close(); Write-Host "FTP server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+        }
+        Write-Warn "FTP server did not bind port 21 within 15s"
         return
     }
     docker run -d --name ftpserver `
@@ -610,7 +622,17 @@ if __name__ == '__main__':
     main()
 "@
         $entryBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
-        pythonw -u $ftpsEntryFile
+        # Async launch + port poll (see Start-HostFTPServer for the same rationale).
+        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
+        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTPS server'; return }
+        $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
+            -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
+        Write-Host "Waiting for FTPS server on port 1010..."
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+        }
+        Write-Warn "FTPS server did not bind port 1010 within 15s"
         return
     }
     # Linux-container FTPS (same image, TLS enabled via env)
@@ -1670,7 +1692,7 @@ function Invoke-CatalogMode {
                 reportgenerator "-reports:$mergedXml" "-targetdir:$reportDir" "-reporttypes:$ReportFormat" '-title:Warewolf Coverage' '-verbosity:Warning'
                 Test-Exit 'reportgenerator'
                 $index = Join-Path $reportDir 'index.html'
-                if (Test-Path $index -and -not $env:TF_BUILD) { Start-Process $index }
+                if ((Test-Path $index) -and -not $env:TF_BUILD) { Start-Process $index }
                 Write-Done "Report: $index"
             }
         }
