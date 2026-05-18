@@ -2008,7 +2008,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        void SetupArguments(string currentDL, string testData, ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString, DbSource dbSource = null, string destinationTableName = null, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows, bool keepIdentity = false)
+        void SetupArguments(string currentDL, string testData, ISqlBulkInserter sqlBulkInserter, List<DataColumnMapping> inputMappings, string resultString, DbSource dbSource = null, string destinationTableName = null, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows, bool keepIdentity = false)
         {
             var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
             if (dbSource == null)

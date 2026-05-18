@@ -60,7 +60,7 @@ namespace Dev2.Activities
             IgnoreBlankRows = true;
         }
 
-        public IList<DataColumnMapping> InputMappings { get; set; }
+        public List<DataColumnMapping> InputMappings { get; set; }
 
         [Inputs("Database")]
         public DbSource Database { get; set; }
@@ -765,7 +765,7 @@ namespace Dev2.Activities
             if (cell.data.TryGetString(Constants.RESULT, out var result)) Result = result;
 
             // Deserialize InputMappings
-            if (cell.data.TryGetInputMappings(out var inputMappings)) InputMappings = inputMappings;
+            if (cell.data.TryGetInputMappings(out var inputMappings)) InputMappings = inputMappings?.ToList();
 
             // Deserialize Database
             //if (cell.data.TryGetDatabase(out var database)) Database = database;
