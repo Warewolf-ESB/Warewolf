@@ -103,6 +103,26 @@ namespace Warewolf.Execution.Lightweight
                 return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
             }
 
+            // License/subscription gate — mirrors ExecutorBase.TryExecute subscription check.
+            // Controlled via WAREWOLF_LICENSE_CHECK_ENABLED env var (default: enabled).
+            if (IsLicenseCheckEnabled())
+            {
+                try
+                {
+                    var subscription = Dev2.Runtime.Subscription.SubscriptionProvider.Instance.GetSubscriptionData();
+                    if (subscription == null || !subscription.IsLicensed)
+                    {
+                        Dev2Logger.Warn("WorkflowExecutor Execute: License/subscription validation failed — execution blocked.", "WorkflowExecutor-License");
+                        return WorkflowExecutionResult.Failure("Execution blocked: a valid Warewolf license/subscription is required.");
+                    }
+                }
+                catch (Exception licEx)
+                {
+                    Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
+                    return WorkflowExecutionResult.Failure("Execution blocked: unable to validate license/subscription.");
+                }
+            }
+
             var stopwatch = Stopwatch.StartNew();
             var startTime = DateTime.UtcNow;
             var executionId = Guid.NewGuid();
@@ -395,7 +415,8 @@ namespace Warewolf.Execution.Lightweight
                 IsDebugFromWeb = request.IsDebug,
                 ReturnType = request.ReturnType,
                 ServiceName = workflowName,
-                ExecutionID = executionId,
+                ExecutionID = request.ExecutionId ?? executionId,
+                CustomTransactionID = request.CustomTransactionId ?? string.Empty,
                 ExecutionToken = new LightweightExecutionToken(),
                 EsbChannel = new LightweightEsbChannel(request.WorkflowsDirectory ?? workflowDir)
             };
@@ -760,6 +781,20 @@ namespace Warewolf.Execution.Lightweight
         {
             await using var writer = new StreamWriter(stream, _utf8NoBom, bufferSize: 4096, leaveOpen: true);
             await writer.WriteAsync(content.AsMemory(), ct);
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the license/subscription gate should be enforced.
+        /// Controlled by the <c>WAREWOLF_LICENSE_CHECK_ENABLED</c> environment variable.
+        /// Defaults to <c>true</c> (enabled) when the variable is absent or not explicitly "false"/"0".
+        /// </summary>
+        static bool IsLicenseCheckEnabled()
+        {
+            var value = Environment.GetEnvironmentVariable("WAREWOLF_LICENSE_CHECK_ENABLED");
+            if (string.IsNullOrWhiteSpace(value))
+                return true;
+            return !value.Equals("false", StringComparison.OrdinalIgnoreCase)
+                && !value.Equals("0", StringComparison.Ordinal);
         }
 
         }

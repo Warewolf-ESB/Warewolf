@@ -65,6 +65,31 @@ namespace Warewolf.Execution.Lightweight.Security
         }
 
         /// <summary>
+        /// Returns <c>true</c> when the workflow has <b>both</b> View and Execute
+        /// permissions for the Public group — matching the server's
+        /// <c>ApisJsonBuilder.BuildForPath</c> visibility rule for discovery.
+        /// </summary>
+        internal static bool HasPublicDiscoveryPermission(string workflowName, SecureConfigData config)
+        {
+            if (!config.IsLoaded)
+                return true;
+
+            foreach (var perm in config.Permissions)
+            {
+                if (!perm.IsPublicGroup || !perm.View || !perm.Execute)
+                    continue;
+
+                if (perm.IsGlobal)
+                    return true;
+
+                if (NamesMatch(perm.ResourceName, workflowName))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Returns <c>true</c> when any group in <paramref name="userGroups"/> grants
         /// View access to <paramref name="workflowName"/>.
         ///
@@ -87,6 +112,42 @@ namespace Warewolf.Execution.Lightweight.Security
             foreach (var perm in config.Permissions)
             {
                 if (!perm.View)
+                    continue;
+
+                if (!ContainsGroup(userGroups, perm.GroupName))
+                    continue;
+
+                if (perm.IsGlobal)
+                    return true;
+
+                if (NamesMatch(perm.ResourceName, workflowName))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when any group in <paramref name="userGroups"/> grants
+        /// <b>both</b> View and Execute access to <paramref name="workflowName"/> —
+        /// matching the server's <c>ApisJsonBuilder.BuildForPath</c> rule for
+        /// authenticated discovery.
+        /// </summary>
+        internal static bool HasUserDiscoveryPermission(
+            string                  workflowName,
+            SecureConfigData        config,
+            IReadOnlyList<string>   userGroups)
+        {
+            if (!config.IsLoaded)
+                return true;
+
+            // Public discovery covers the public group path.
+            if (HasPublicDiscoveryPermission(workflowName, config))
+                return true;
+
+            foreach (var perm in config.Permissions)
+            {
+                if (!perm.View || !perm.Execute)
                     continue;
 
                 if (!ContainsGroup(userGroups, perm.GroupName))

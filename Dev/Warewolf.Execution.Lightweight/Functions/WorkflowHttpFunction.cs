@@ -313,7 +313,7 @@ namespace Warewolf.Execution.Lightweight
             if (!config.IsLoaded)
                 return null;    // Open-access mode — show everything.
 
-            return name => PermissionChecker.HasPublicViewPermission(name, config);
+            return name => PermissionChecker.HasPublicDiscoveryPermission(name, config);
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Warewolf.Execution.Lightweight
                 wcp.Identity?.IsAuthenticated == true)
             {
                 var middlewareGroups = (IReadOnlyList<string>)wcp.Groups;
-                return name => PermissionChecker.HasUserViewPermission(name, config, middlewareGroups);
+                return name => PermissionChecker.HasUserDiscoveryPermission(name, config, middlewareGroups);
             }
 
             // ── 2. Warewolf HMAC-SHA256 JWT (fallback for non-middleware routes) ───
@@ -353,7 +353,7 @@ namespace Warewolf.Execution.Lightweight
             if (groups is null)
                 return _ => false;  // Invalid / absent token → empty list.
 
-            return name => PermissionChecker.HasUserViewPermission(name, config, groups);
+            return name => PermissionChecker.HasUserDiscoveryPermission(name, config, groups);
         }
 
         // ── Response helpers ──────────────────────────────────────────────────────

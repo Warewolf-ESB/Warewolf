@@ -43,6 +43,15 @@ namespace Warewolf.Execution.Lightweight
             ParseQueryString(request, executionRequest);
             await ParseBodyAsync(request, executionRequest);
 
+            // Propagate Warewolf tracing headers — mirrors DataObjectExtensions.SetHeaders().
+            var executionIdHeader = TryGetHeaderValue(request, "Warewolf-Execution-Id");
+            if (!string.IsNullOrEmpty(executionIdHeader) && Guid.TryParse(executionIdHeader, out var parsedExecId))
+                executionRequest.ExecutionId = parsedExecId;
+
+            var customTxId = TryGetHeaderValue(request, "Warewolf-Custom-Transaction-Id");
+            if (!string.IsNullOrEmpty(customTxId))
+                executionRequest.CustomTransactionId = customTxId;
+
             if (!string.IsNullOrWhiteSpace(workflowNameFromRoute))
             {
                 executionRequest.WorkflowName = workflowNameFromRoute;
@@ -124,7 +133,20 @@ namespace Warewolf.Execution.Lightweight
                 executionRequest.ReturnType = EmitionTypes.XML;
             else if (urlPath.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
                 executionRequest.ReturnType = EmitionTypes.OPENAPI;
-            // else: stays EmitionTypes.JSON (the default set in WorkflowExecutionRequest)
+            else
+            {
+                // No URL suffix — honour Content-Type / Accept headers as a fallback.
+                // Mirrors DataObjectExtensions.SetContentType() on the full server.
+                var contentType = TryGetHeaderValue(request, "Content-Type")
+                               ?? TryGetHeaderValue(request, "Accept");
+                if (!string.IsNullOrEmpty(contentType))
+                {
+                    if (contentType.Contains("xml", StringComparison.OrdinalIgnoreCase))
+                        executionRequest.ReturnType = EmitionTypes.XML;
+                    else if (contentType.Contains("json", StringComparison.OrdinalIgnoreCase))
+                        executionRequest.ReturnType = EmitionTypes.JSON;
+                }
+            }
 
             var queryParams = HttpUtility.ParseQueryString(request.Url.Query);
 
@@ -314,6 +336,21 @@ namespace Warewolf.Execution.Lightweight
 
             return Directory.EnumerateFiles(directory, fileName, _caseInsensitiveOptions)
                             .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Reads the first value of <paramref name="headerName"/> from the request headers.
+        /// Returns <c>null</c> when the header is absent or empty.
+        /// </summary>
+        static string? TryGetHeaderValue(HttpRequestData request, string headerName)
+        {
+            if (request.Headers.TryGetValues(headerName, out var values))
+            {
+                var v = values.FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(v))
+                    return v;
+            }
+            return null;
         }
     }
 }
