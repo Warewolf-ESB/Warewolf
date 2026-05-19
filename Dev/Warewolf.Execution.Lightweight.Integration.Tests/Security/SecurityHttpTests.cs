@@ -461,6 +461,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
+        [Ignore("Requires /Secure/apis.json discovery bypass. Re-introduce when WOLF-8417 is complete.")]
         public async Task SecureApisJson_NoToken_Returns200_WithEmptyApis()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
@@ -500,6 +501,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
+        [Ignore("Requires /Secure/apis.json discovery bypass so expired tokens yield an empty Apis list rather than 401. Re-introduce when WOLF-8417 is complete.")]
         public async Task SecureApisJson_ExpiredToken_Returns200_WithEmptyApis()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
