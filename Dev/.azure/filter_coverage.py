@@ -15,6 +15,11 @@ deny = re.compile(
     r'|FSharp\.Core'
     r'|DotNetWorker\.Grpc'
     r'|Microsoft\.Azure\.Functions\.Worker\.Grpc'
+    r'|.*\.Tests$'
+    r'|.*\.Specs$'
+    r'|Warewolf\.Testing'
+    r'|Warewolf\.UnitTestAttributes$'
+    r'|Dev2\.UnitTestUtils$'
     r')'
 )
 
