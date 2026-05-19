@@ -629,10 +629,41 @@ if __name__ == '__main__':
         $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
             -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
         Write-Host "Waiting for FTPS server on port 1010..."
+        $bound = $false
         for ($i = 1; $i -le 30; $i++) {
-            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); $bound = $true; break } catch { Start-Sleep -Milliseconds 500 }
         }
-        Write-Warn "FTPS server did not bind port 1010 within 15s"
+        if (-not $bound) {
+            Write-Warn "FTPS server did not bind port 1010 within 15s"
+            return
+        }
+        # Warm up the pyftpdlib TLS path. The first few AUTH TLS handshakes after
+        # a fresh server bind trigger one-time OpenSSL SSL_CTX init inside the
+        # Python process; on CI agents the first connection occasionally desyncs
+        # against .NET FtpWebRequest's parser (surfaces as the flaky
+        # "underlying connection was closed: server committed a protocol violation"
+        # error). Driving 3 successful PWD round-trips here forces that init
+        # before vstest opens its first FTPS connection.
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        [Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+        [Net.ServicePointManager]::Expect100Continue = $false
+        [Net.ServicePointManager]::UseNagleAlgorithm = $false
+        $warmupOk = 0
+        for ($w = 0; $w -lt 10 -and $warmupOk -lt 3; $w++) {
+            try {
+                $req = [Net.FtpWebRequest]::Create('ftp://localhost:1010/')
+                $req.EnableSsl = $true
+                $req.Credentials = New-Object Net.NetworkCredential('dev2', 'Q/ulw&]')
+                $req.Method = [Net.WebRequestMethods+Ftp]::PrintWorkingDirectory
+                $req.KeepAlive = $false
+                $req.Timeout = 5000
+                $resp = $req.GetResponse(); $resp.Close()
+                $warmupOk++
+            } catch {
+                Start-Sleep -Milliseconds 250
+            }
+        }
+        Write-Host "FTPS server ready (warm-up: $warmupOk/10)"
         return
     }
     # Linux-container FTPS (same image, TLS enabled via env)
