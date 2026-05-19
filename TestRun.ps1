@@ -1980,23 +1980,22 @@ if ($LegacyWindowsDeps) {
     }
     if ($UseRegionalSettings) {
         $culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")
+        [System.Globalization.CultureInfo]::DefaultThreadCurrentCulture   = $culture
+        [System.Globalization.CultureInfo]::DefaultThreadCurrentUICulture = $culture
+        [System.Threading.Thread]::CurrentThread.CurrentCulture   = $culture
+        [System.Threading.Thread]::CurrentThread.CurrentUICulture = $culture
         # PS 5.1 exposed Microsoft.PowerShell.NativeCultureResolver with private static
         # m_uiCulture/m_culture fields that had to be poked via reflection to make the
-        # running session pick up the new culture without a restart. The type is gone
-        # in PS 7+, so guard the lookups and fall back to the supported APIs.
+        # running session pick up the new culture without a restart. The type/fields
+        # are gone in PS 7+, so treat the reflection path as best-effort.
         $assembly = [System.Reflection.Assembly]::Load("System.Management.Automation")
         $type = $assembly.GetType("Microsoft.PowerShell.NativeCultureResolver")
         if ($null -ne $type) {
             $flags = [Reflection.BindingFlags]::NonPublic -bor [Reflection.BindingFlags]::Static
-            $field = $type.GetField("m_uiCulture", $flags)
-            if ($null -ne $field) { $field.SetValue($null, $culture) }
-            $field = $type.GetField("m_culture", $flags)
-            if ($null -ne $field) { $field.SetValue($null, $culture) }
-        } else {
-            [System.Globalization.CultureInfo]::DefaultThreadCurrentCulture   = $culture
-            [System.Globalization.CultureInfo]::DefaultThreadCurrentUICulture = $culture
-            [System.Threading.Thread]::CurrentThread.CurrentCulture   = $culture
-            [System.Threading.Thread]::CurrentThread.CurrentUICulture = $culture
+            foreach ($name in 'm_uiCulture','m_culture') {
+                $field = $type.GetField($name, $flags)
+                if ($null -ne $field) { $field.SetValue($null, $culture) }
+            }
         }
         Set-Culture en-ZA
         Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
