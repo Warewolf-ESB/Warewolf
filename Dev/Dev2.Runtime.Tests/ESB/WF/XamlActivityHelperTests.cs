@@ -134,6 +134,37 @@ namespace Dev2.Tests.Runtime.ESB.WF
 
         [TestMethod]
         [Owner("Ashley Lewis")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution_NullInput_ReturnsNull()
+        {
+            var result = XamlActivityHelper.GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution(null);
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution_EmptyInput_ReturnsNull()
+        {
+            var result = XamlActivityHelper.GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution(new StringBuilder());
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution_InvalidXaml_ReturnsNull()
+        {
+            var result = XamlActivityHelper.GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution(
+                new StringBuilder("<not valid xaml>"));
+
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
         [TestCategory(nameof(Dev2XamlSchemaContext))]
         public void Dev2XamlSchemaContext_RefreshAssemblyCache_Idempotent()
         {
