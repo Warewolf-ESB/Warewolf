@@ -222,6 +222,7 @@ targets for new tests.
 | Sidecar container name clash                             | Lingering containers from a prior crash. `docker ps -a --filter name=ww-cov- | docker rm -f`. |
 | `reportgenerator` not found                              | Re-run `TestRun.ps1`; it `dotnet tool install --global dotnet-reportgenerator-globaltool`.    |
 | Merged file shows no coverage for assembly X             | Filter in `coverage-settings.xml` excluded it, or X has no symbols. Check `Bin/ServerTests`.  |
+| Added a new test locally but coverage didn't change      | Catalog jobs run against `Bin/ServerTests/*.dll`. `-SkipBuild` skips `Compile.ps1` so your per-project `bin/Debug` build is invisible. Either drop `-SkipBuild` (slow) or copy the rebuilt `*.Tests.dll` + `.pdb` into `Bin/ServerTests/` before re-running. |
 | Python missing → noise in merged XML                     | Optional cleanup; report still works. Install Python 3 if you want filtered output.           |
 
 ## Related files
