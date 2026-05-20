@@ -534,150 +534,11 @@ function Stop-HostFTPServer {
 }
 
 function Start-HostFTPSServer {
-    if ($LegacyWindowsDeps) {
-        # Bare-metal Windows: FileZilla Server 1.x via Chocolatey.
-        # Replaces pyftpdlib whose TLS_FTPHandler doesn't reliably send TLS
-        # close_notify on the data socket — .NET FtpWebRequest then hangs on
-        # receive until its 100s default timeout. FZS uses a real TLS stack
-        # that interoperates cleanly with .NET FtpWebRequest.
-        #
-        # UNVERIFIED schema notes (run the local spike to inspect actual XML):
-        #   - <listener>/<port>/<address>/<tls_mode> confirmed by FZS forum t=58595
-        #   - users.xml <methods>/<password>/<mount_table> confirmed by t=53453, t=58615
-        #   - TLS cert XML element names are NOT officially documented; the
-        #     <certificate>/<private_key> guess below may need to be <pkcs12>,
-        #     <ftps_options>/<cert>, etc. depending on FZS minor version.
-        #     If FZS fails to start with "Could not load certificate", inspect
-        #     settings.xml after `filezilla-server.exe --write-config` and adjust.
-        $ftpsHome  = 'C:\ftps_home\dev2'
-        $certPath  = 'C:\ftps_home\fzs.crt'
-        $keyPath   = 'C:\ftps_home\fzs.key'
-        $cfgDir    = 'C:\ProgramData\filezilla-server'
-        $fzsExe    = 'C:\Program Files\FileZilla Server\filezilla-server.exe'
-        foreach ($sub in @('FORCOPYFILETESTING','FORFILERENAMETESTING','FORUNZIPTESTING')) {
-            $d = Join-Path $ftpsHome $sub
-            if (!(Test-Path $d)) { mkdir $d | Out-Null }
-        }
-        foreach ($i in 0..4) {
-            $seed = Join-Path $ftpsHome "FORCOPYFILETESTING\copyfile$i.txt"
-            if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
-        }
-
-        if (-not (Get-Service filezilla-server -ErrorAction SilentlyContinue)) {
-            choco install filezilla.server -y --no-progress
-        }
-
-        # Stop service so we can rewrite config without file locks.
-        Stop-Service filezilla-server -ErrorAction SilentlyContinue
-        for ($w = 1; $w -le 20; $w++) {
-            $s = Get-Service filezilla-server -ErrorAction SilentlyContinue
-            if (-not $s -or $s.Status -eq 'Stopped') { break }
-            Start-Sleep -Milliseconds 250
-        }
-
-        # Fresh self-signed cert (PEM, 5y validity) — replaces the previously
-        # hardcoded PEM that expired in 2022.
-        $rsa = [System.Security.Cryptography.RSA]::Create(2048)
-        try {
-            $req = [System.Security.Cryptography.X509Certificates.CertificateRequest]::new(
-                'CN=localhost,O=Warewolf,C=ZA', $rsa,
-                [System.Security.Cryptography.HashAlgorithmName]::SHA256,
-                [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
-            $cert = $req.CreateSelfSigned(
-                [DateTimeOffset]::UtcNow.AddDays(-1),
-                [DateTimeOffset]::UtcNow.AddYears(5))
-            $cBytes = $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert)
-            $kBytes = $rsa.ExportPkcs8PrivateKey()
-            "-----BEGIN CERTIFICATE-----`n" +
-                [Convert]::ToBase64String($cBytes, 'InsertLineBreaks') +
-                "`n-----END CERTIFICATE-----`n" |
-                Set-Content -LiteralPath $certPath -Encoding ascii -NoNewline
-            "-----BEGIN PRIVATE KEY-----`n" +
-                [Convert]::ToBase64String($kBytes, 'InsertLineBreaks') +
-                "`n-----END PRIVATE KEY-----`n" |
-                Set-Content -LiteralPath $keyPath -Encoding ascii -NoNewline
-        } finally { $rsa.Dispose() }
-
-        # Seed defaults if settings.xml doesn't exist yet.
-        if (!(Test-Path (Join-Path $cfgDir 'settings.xml'))) {
-            if (Test-Path $fzsExe) {
-                & $fzsExe --config-dir $cfgDir --write-config | Out-Null
-            } else {
-                Write-Warn "FileZilla Server exe not found at $fzsExe; skipping --write-config"
-            }
-        }
-
-        # Patch listener: port 1010, require AUTH TLS, all interfaces.
-        $settingsPath = Join-Path $cfgDir 'settings.xml'
-        if (Test-Path $settingsPath) {
-            [xml]$settings = Get-Content -LiteralPath $settingsPath -Raw
-            $listener = $settings.SelectSingleNode('//listener[1]')
-            if ($listener) {
-                foreach ($pair in @{port='1010'; address='0.0.0.0'; tls_mode='2'}.GetEnumerator()) {
-                    $n = $listener.SelectSingleNode($pair.Key)
-                    if (-not $n) { $n = $listener.AppendChild($settings.CreateElement($pair.Key)) }
-                    $n.InnerText = $pair.Value
-                }
-            }
-            # UNVERIFIED: TLS cert path element names. Best-effort top-level
-            # <certificate>/<private_key> append. If FZS rejects, inspect the
-            # default settings.xml for the actual element/attribute names
-            # (often nested under <ftps_options> or similar).
-            foreach ($pair in @{certificate=$certPath; private_key=$keyPath}.GetEnumerator()) {
-                $n = $settings.SelectSingleNode("//$($pair.Key)")
-                if (-not $n) {
-                    $n = $settings.DocumentElement.AppendChild($settings.CreateElement($pair.Key))
-                }
-                $n.InnerText = $pair.Value
-            }
-            $settings.Save($settingsPath)
-        }
-
-        # Write users.xml with PBKDF2-HMAC-SHA256 password (100k iterations,
-        # 32-byte hash, 32-byte salt, base64 without padding) — schema confirmed
-        # by FZS forum threads t=53453, t=54821, t=56843, t=58615.
-        $pw   = 'Q/ulw&]'
-        $salt = [byte[]]::new(32)
-        [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($salt)
-        $kdf  = [System.Security.Cryptography.Rfc2898DeriveBytes]::new(
-            $pw, $salt, 100000, [System.Security.Cryptography.HashAlgorithmName]::SHA256)
-        try { $hashBytes = $kdf.GetBytes(32) } finally { $kdf.Dispose() }
-        $hashB64 = [Convert]::ToBase64String($hashBytes).TrimEnd('=')
-        $saltB64 = [Convert]::ToBase64String($salt).TrimEnd('=')
-        @"
-<?xml version="1.0" encoding="UTF-8"?>
-<users>
-  <user name="dev2">
-    <methods>
-      <password index="1">
-        <hash>$hashB64</hash>
-        <salt>$saltB64</salt>
-        <iterations>100000</iterations>
-      </password>
-    </methods>
-    <mount_table>
-      <mount>
-        <tvfs_path>/</tvfs_path>
-        <native_path>$ftpsHome</native_path>
-        <access>2</access>
-        <recursive>2</recursive>
-        <flags>0</flags>
-      </mount>
-    </mount_table>
-    <allowed_ips/>
-    <disallowed_ips/>
-  </user>
-</users>
-"@ | Out-File -LiteralPath (Join-Path $cfgDir 'users.xml') -Encoding utf8 -Force
-
-        Start-Service filezilla-server
-        Write-Host "Waiting for FTPS server on port 1010..."
-        for ($i = 1; $i -le 30; $i++) {
-            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
-        }
-        Write-Warn "FTPS server did not bind port 1010 within 15s"
-        return
-    }
+    # FTPS uses Docker stilliard/pure-ftpd on every runtime. Pyftpdlib's TLS
+    # handler hangs against .NET FtpWebRequest (close_notify not sent on data
+    # socket — 100s receive timeout) and FileZilla Server via choco lands on
+    # 0.9.x with a totally different schema. Pure-ftpd is the only path proven
+    # to work, so $LegacyWindowsDeps is intentionally NOT honored here.
     docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
         -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
         -e FTP_USER_HOME=/home/ftpusers/dev2 `
@@ -694,10 +555,6 @@ function Start-HostFTPSServer {
 }
 
 function Stop-HostFTPSServer {
-    if ($LegacyWindowsDeps) {
-        Stop-Service filezilla-server -ErrorAction SilentlyContinue
-        return
-    }
     docker rm -f ftpsserver 2>$null | Out-Null
 }
 
