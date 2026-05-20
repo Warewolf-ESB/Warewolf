@@ -534,51 +534,106 @@ function Stop-HostFTPServer {
 }
 
 function Start-HostFTPSServer {
-    # FTPS uses Docker stilliard/pure-ftpd on every runtime. Pyftpdlib's TLS
-    # handler hangs against .NET FtpWebRequest (close_notify not sent on data
-    # socket — 100s receive timeout) and FileZilla Server via choco lands on
-    # 0.9.x with a totally different schema. Pure-ftpd is the only path proven
-    # to work, so $LegacyWindowsDeps is intentionally NOT honored here.
-    #
-    # Microsoft-hosted windows-2022 agents ship Docker Desktop in Windows
-    # container mode by default; pulling a Linux image fails with
-    # "image operating system 'linux' cannot be used on this platform".
-    # Switch the daemon to Linux mode if it isn't already. The switch is
-    # daemon-wide and takes ~30s, so guard with a docker-info probe.
-    $dockerOs = docker info --format '{{.OSType}}' 2>$null
-    if ($dockerOs -ne 'linux') {
-        $dockerCli = Join-Path $env:ProgramFiles 'Docker\Docker\DockerCli.exe'
-        if (Test-Path $dockerCli) {
-            Write-Host "Switching Docker Desktop to Linux containers..."
-            & $dockerCli -SwitchLinuxEngine
-            for ($i = 1; $i -le 60; $i++) {
-                if ((docker info --format '{{.OSType}}' 2>$null) -eq 'linux') { break }
-                Start-Sleep -Seconds 1
-            }
-            if ((docker info --format '{{.OSType}}' 2>$null) -ne 'linux') {
-                Write-Warn "Docker daemon did not switch to Linux mode within 60s; FTPS will fail"
-            }
-        } else {
-            Write-Warn "DockerCli.exe not found at $dockerCli; cannot switch to Linux containers"
+    # IIS FTPS — Windows-native, ships with Windows Server. Microsoft Schannel
+    # TLS interoperates cleanly with .NET FtpWebRequest. Replaces three failed
+    # prior attempts: pyftpdlib (TLS_FTPHandler hangs against .NET), FileZilla
+    # Server via choco (lands on 0.9.x not 1.x), Docker stilliard/pure-ftpd
+    # (hosted windows-2022 agents have no Linux Docker engine).
+    $siteName = 'WarewolfFTPS'
+    $ftpsHome = 'C:\ftps_home\dev2'
+
+    # 1. Enable Web-Ftp-Server feature.
+    $f = Get-WindowsFeature -Name Web-Ftp-Server -ErrorAction SilentlyContinue
+    if ($f -and $f.InstallState -ne 'Installed') {
+        Install-WindowsFeature -Name Web-Ftp-Server -IncludeManagementTools | Out-Null
+    }
+    Import-Module WebAdministration -ErrorAction SilentlyContinue
+
+    # 2. Local user 'dev2' with the same legacy password the other FTP sidecars use.
+    if (-not (Get-LocalUser -Name 'dev2' -ErrorAction SilentlyContinue)) {
+        $sec = ConvertTo-SecureString 'Q/ulw&]' -AsPlainText -Force
+        try {
+            New-LocalUser -Name 'dev2' -Password $sec `
+                -PasswordNeverExpires -AccountNeverExpires `
+                -UserMayNotChangePassword -ErrorAction Stop | Out-Null
+        } catch [Microsoft.PowerShell.Commands.InvalidPasswordException] {
+            Write-Warn "Hosted-agent password policy rejected legacy FTPS password for dev2"
         }
     }
-    docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
-        -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
-        -e FTP_USER_HOME=/home/ftpusers/dev2 `
-        -e PASV_ADDRESS=127.0.0.1 `
-        -e TLS_CN=localhost -e TLS_ORG=Warewolf -e TLS_C=ZA `
-        -e ADDED_FLAGS='--tls=2' `
-        stilliard/pure-ftpd | Out-Null
-    Start-Sleep -Seconds 5
-    docker exec ftpsserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
-    foreach ($i in 0..4) {
-        docker exec ftpsserver sh -c "echo 'testcontent' > /home/ftpusers/dev2/FORCOPYFILETESTING/copyfile$i.txt" 2>$null | Out-Null
+
+    # 3. Home dir + test fixtures + NTFS ACL granting dev2 full control.
+    foreach ($sub in @(
+        'FORCOPYFILETESTING','FORCREATEFILETESTING','FORDELETEFILETESTING',
+        'FORFILERENAMETESTING','FORMOVEFILETESTING','FORREADFILETESTING',
+        'FORREADFOLDERTESTING','FORRENAMETESTING','FORTESTING',
+        'FORUNZIPTESTING','FORWRITEFILETESTING','FORZIPTESTING')) {
+        $d = Join-Path $ftpsHome $sub
+        if (!(Test-Path $d)) { mkdir $d | Out-Null }
     }
-    docker exec ftpsserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
+    foreach ($i in 0..4) {
+        $seed = Join-Path $ftpsHome "FORCOPYFILETESTING\copyfile$i.txt"
+        if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
+    }
+    $acl  = Get-Acl -LiteralPath $ftpsHome
+    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+        'dev2','FullControl','ContainerInherit,ObjectInherit','None','Allow')
+    $acl.AddAccessRule($rule)
+    Set-Acl -LiteralPath $ftpsHome -AclObject $acl
+
+    # 4. Self-signed cert (5y validity) in LocalMachine\My, reused across runs.
+    $cert = Get-ChildItem 'cert:\LocalMachine\My' |
+            Where-Object { $_.Subject -eq 'CN=localhost-ftps' -and $_.NotAfter -gt (Get-Date) } |
+            Select-Object -First 1
+    if (-not $cert) {
+        $cert = New-SelfSignedCertificate `
+            -Subject 'CN=localhost-ftps' -DnsName 'localhost' `
+            -CertStoreLocation 'cert:\LocalMachine\My' `
+            -NotAfter (Get-Date).AddYears(5)
+    }
+    $thumbprint = $cert.Thumbprint
+
+    # 5. FTP site bound to 1010 with the home dir as physical root.
+    if (-not (Get-Website -Name $siteName -ErrorAction SilentlyContinue)) {
+        New-WebFtpSite -Name $siteName -Port 1010 -PhysicalPath $ftpsHome -Force | Out-Null
+    }
+
+    # 6. SSL + authentication via the IIS:\ provider's dot-notation property setter.
+    $psPath = "IIS:\Sites\$siteName"
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.serverCertHash'      -Value $thumbprint
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.serverCertStoreName' -Value 'MY'
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.controlChannelPolicy' -Value 'SslRequire'
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.dataChannelPolicy'    -Value 'SslRequire'
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.authentication.basicAuthentication.enabled'     -Value $true
+    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.authentication.anonymousAuthentication.enabled' -Value $false
+
+    # 7. Authorization rule via appcmd (cleaner than the Add-WebConfigurationProperty
+    # collection-item dance, which silently no-ops on duplicates).
+    $appcmd = "$env:windir\system32\inetsrv\appcmd.exe"
+    if (Test-Path $appcmd) {
+        & $appcmd set config "$siteName" `
+            "/section:system.ftpServer/security/authorization" `
+            "/+[accessType='Allow',users='dev2',permissions='Read, Write']" 2>$null | Out-Null
+    }
+
+    # 8. Passive port range — keep narrow + match what Depends.cs / firewall expect.
+    Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
+        -Filter '/system.ftpServer/firewallSupport' -Name 'lowDataChannelPort'  -Value 56001
+    Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
+        -Filter '/system.ftpServer/firewallSupport' -Name 'highDataChannelPort' -Value 56008
+
+    # 9. Cycle ftpsvc to pick up SSL/authorization config + start the site.
+    Restart-Service ftpsvc -Force -ErrorAction SilentlyContinue
+    Start-WebItem -PSPath $psPath -ErrorAction SilentlyContinue
+
+    Write-Host "Waiting for FTPS server on port 1010..."
+    for ($i = 1; $i -le 30; $i++) {
+        try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+    }
+    Write-Warn "FTPS server did not bind port 1010 within 15s"
 }
 
 function Stop-HostFTPSServer {
-    docker rm -f ftpsserver 2>$null | Out-Null
+    Stop-WebItem -PSPath 'IIS:\Sites\WarewolfFTPS' -ErrorAction SilentlyContinue
 }
 
 function Start-HostSFTPServer {
