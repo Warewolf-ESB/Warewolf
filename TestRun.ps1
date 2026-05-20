@@ -539,6 +539,29 @@ function Start-HostFTPSServer {
     # socket — 100s receive timeout) and FileZilla Server via choco lands on
     # 0.9.x with a totally different schema. Pure-ftpd is the only path proven
     # to work, so $LegacyWindowsDeps is intentionally NOT honored here.
+    #
+    # Microsoft-hosted windows-2022 agents ship Docker Desktop in Windows
+    # container mode by default; pulling a Linux image fails with
+    # "image operating system 'linux' cannot be used on this platform".
+    # Switch the daemon to Linux mode if it isn't already. The switch is
+    # daemon-wide and takes ~30s, so guard with a docker-info probe.
+    $dockerOs = docker info --format '{{.OSType}}' 2>$null
+    if ($dockerOs -ne 'linux') {
+        $dockerCli = Join-Path $env:ProgramFiles 'Docker\Docker\DockerCli.exe'
+        if (Test-Path $dockerCli) {
+            Write-Host "Switching Docker Desktop to Linux containers..."
+            & $dockerCli -SwitchLinuxEngine
+            for ($i = 1; $i -le 60; $i++) {
+                if ((docker info --format '{{.OSType}}' 2>$null) -eq 'linux') { break }
+                Start-Sleep -Seconds 1
+            }
+            if ((docker info --format '{{.OSType}}' 2>$null) -ne 'linux') {
+                Write-Warn "Docker daemon did not switch to Linux mode within 60s; FTPS will fail"
+            }
+        } else {
+            Write-Warn "DockerCli.exe not found at $dockerCli; cannot switch to Linux containers"
+        }
+    }
     docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
         -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
         -e FTP_USER_HOME=/home/ftpusers/dev2 `
