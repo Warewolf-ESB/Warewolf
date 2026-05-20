@@ -200,5 +200,43 @@ namespace WarewolfParsingTest
 
             Assert.AreEqual(rset.LastIndex + 1, pos);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("AssignEvaluation")]
+        public void AssignEvaluation_updateColumnWithValue_ExistingColumn_OverwritesEveryRow()
+        {
+            // Existing column path: iterates and assigns `value` to each row.
+            var env = EvalFunctionTests.CreateEnvironmentWithData();
+            var rset = env.RecordSets["Rec"]; // has columns a, b
+            Assert.IsTrue(rset.Data.ContainsKey("a"));
+            var value = WarewolfAtom.NewDataString("Z");
+
+            var updated = AssignEvaluation.updateColumnWithValue(rset, "a", value);
+
+            // Column instance is mutated in place; returned recordset is the same.
+            Assert.AreSame(rset, updated);
+            for (int i = 0; i < updated.Data["a"].Count; i++)
+            {
+                Assert.IsTrue(updated.Data["a"][i] is WarewolfAtom.DataString ds && ds.Item == "Z");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("AssignEvaluation")]
+        public void AssignEvaluation_updateColumnWithValue_MissingColumn_AddsFilledColumn()
+        {
+            // Missing-column branch: returns a new recordset with column added via createFilled.
+            var env = EvalFunctionTests.CreateEnvironmentWithData();
+            var rset = env.RecordSets["Rec"];
+            Assert.IsFalse(rset.Data.ContainsKey("brandNew"));
+            var value = WarewolfAtom.NewInt(7);
+
+            var updated = AssignEvaluation.updateColumnWithValue(rset, "brandNew", value);
+
+            Assert.IsTrue(updated.Data.ContainsKey("brandNew"));
+            Assert.AreEqual(rset.Count, updated.Data["brandNew"].Count);
+        }
     }
 }

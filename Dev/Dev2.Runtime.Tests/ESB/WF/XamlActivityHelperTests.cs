@@ -175,5 +175,34 @@ namespace Dev2.Tests.Runtime.ESB.WF
 
             Assert.IsTrue(ctx.CachedAssemblyCount >= before);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_TypeFromTargetAssembly_ReturnsXamlType()
+        {
+            var asm = typeof(Sequence).Assembly;
+            var ctx = new Dev2XamlSchemaContext(asm);
+
+            // Sequence lives in the target assembly -> early-return base path.
+            var xt = ctx.GetXamlType(typeof(Sequence));
+
+            Assert.IsNotNull(xt);
+            Assert.AreEqual(typeof(Sequence), xt.UnderlyingType);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_TypeFromCachedOtherAssembly_ReturnsXamlType()
+        {
+            var asm = typeof(Sequence).Assembly;
+            var ctx = new Dev2XamlSchemaContext(asm);
+
+            // typeof(int) is in a different assembly -> exercises the cache-lookup branch.
+            var xt = ctx.GetXamlType(typeof(int));
+
+            Assert.IsNotNull(xt);
+        }
     }
 }
