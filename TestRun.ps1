@@ -535,120 +535,142 @@ function Stop-HostFTPServer {
 
 function Start-HostFTPSServer {
     if ($LegacyWindowsDeps) {
-        # Bare-metal Windows: pyftpdlib+TLS with `net stop hns` to release
-        # Hyper-V Host Network Service's hold on passive data sockets.
-        # Without this, Docker Desktop / WSL2's HNS races with pyftpdlib for
-        # passive ports, manifesting as 100s receive-timeouts in FtpWebRequest.
-        if (!(Test-Path "C:\ftps_home\dev2\FORCOPYFILETESTING"))  { mkdir "C:\ftps_home\dev2\FORCOPYFILETESTING"  | Out-Null }
-        if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) { mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING" | Out-Null }
-        if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING"))      { mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"      | Out-Null }
+        # Bare-metal Windows: FileZilla Server 1.x via Chocolatey.
+        # Replaces pyftpdlib whose TLS_FTPHandler doesn't reliably send TLS
+        # close_notify on the data socket — .NET FtpWebRequest then hangs on
+        # receive until its 100s default timeout. FZS uses a real TLS stack
+        # that interoperates cleanly with .NET FtpWebRequest.
+        #
+        # UNVERIFIED schema notes (run the local spike to inspect actual XML):
+        #   - <listener>/<port>/<address>/<tls_mode> confirmed by FZS forum t=58595
+        #   - users.xml <methods>/<password>/<mount_table> confirmed by t=53453, t=58615
+        #   - TLS cert XML element names are NOT officially documented; the
+        #     <certificate>/<private_key> guess below may need to be <pkcs12>,
+        #     <ftps_options>/<cert>, etc. depending on FZS minor version.
+        #     If FZS fails to start with "Could not load certificate", inspect
+        #     settings.xml after `filezilla-server.exe --write-config` and adjust.
+        $ftpsHome  = 'C:\ftps_home\dev2'
+        $certPath  = 'C:\ftps_home\fzs.crt'
+        $keyPath   = 'C:\ftps_home\fzs.key'
+        $cfgDir    = 'C:\ProgramData\filezilla-server'
+        $fzsExe    = 'C:\Program Files\FileZilla Server\filezilla-server.exe'
+        foreach ($sub in @('FORCOPYFILETESTING','FORFILERENAMETESTING','FORUNZIPTESTING')) {
+            $d = Join-Path $ftpsHome $sub
+            if (!(Test-Path $d)) { mkdir $d | Out-Null }
+        }
         foreach ($i in 0..4) {
-            $seed = "C:\ftps_home\dev2\FORCOPYFILETESTING\copyfile$i.txt"
+            $seed = Join-Path $ftpsHome "FORCOPYFILETESTING\copyfile$i.txt"
             if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
         }
-        if (!(Test-Path "C:\cert.crt")) {
-@"
------BEGIN CERTIFICATE-----
-MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
-BQAwgYsxCzAJBgNVBAYTAlpBMQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxj
-cmVzdDERMA8GA1UECgwIV2FyZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UE
-AwwLb3Bzd29sZi5jb20xIDAeBgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29t
-MB4XDTIxMDQxODA2MzYzMVoXDTIyMDQxODA2MzYzMVowgYsxCzAJBgNVBAYTAlpB
-MQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxjcmVzdDERMA8GA1UECgwIV2Fy
-ZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UEAwwLb3Bzd29sZi5jb20xIDAe
-BgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29tMIIBIjANBgkqhkiG9w0BAQEF
-AAOCAQ8AMIIBCgKCAQEA2eWOl6OjY/V6xPKYKC8NwrtOYfmr04KYR+5xuzZhNPXV
-ICDZrHg3UfidSU9yiB8hRrZYlQ1YZw6kdfxYFiBqQV+450CHS2R9RbvPQTGxL0/I
-lO4LQVodiTW7Khiemye0OId04Ak6yVz6wF+UScPb2HLRM7dW2OMbDpUcb/6QSCBK
-1zdr6Co8O+okDdlXFSmqVuK5gIfT6lOKiny2XLaO6zPni4o6E5HzsX47YJiaTLCZ
-J9X5oCWhB0wIVgX7vkdBxiwXACaHWlN32//wya1h1dQQpGUvttzEHl+wc0Fk6R9f
-HKmP9owzuw40PPjdoOXhzqr7hCqszp/aTCqVFJU9xQIDAQABo1MwUTAdBgNVHQ4E
-FgQUk+fn8dM59dkM0u6ZWnRp70TDupwwHwYDVR0jBBgwFoAUk+fn8dM59dkM0u6Z
-WnRp70TDupwwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAR05k
-Ab9atURsGOHKZbKPFnwj6oKak3CcDSeB0wGAu75hKeGFBqisDg+s5pTcAlGgq8Md
-fv6AzFtmskYeHqzt3TtZ091kLXGPrEf4Gv0zYdJ5kEi5RKIxNz57BnntlG/YA1FC
-DAFen4U8zhavo4tQk04LkgnV4sHPutUMKqNNX64GAIfmeltr7yBaWs34nZ3+4OiF
-c5/UqCGPmHgd2paDzQ3qc5tpCy86mY0zy7FreP/Z8VrnoOKIoH8ULjQAxiopl6zg
-6bCLcDayKmfwBKrCgJobb76B7HJ5SKWpQCmgJeI/pFiQv67SsF63xtsPwtdmaY+T
-SfOUJf/1oE9T9vp1yQ==
------END CERTIFICATE-----
-"@ | Out-File -LiteralPath "C:\cert.crt" -Encoding ascii -Force
+
+        if (-not (Get-Service filezilla-server -ErrorAction SilentlyContinue)) {
+            choco install filezilla.server -y --no-progress
         }
-        if (!(Test-Path "C:\cert.key")) {
-@"
------BEGIN PRIVATE KEY-----
-MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDZ5Y6Xo6Nj9XrE
-8pgoLw3Cu05h+avTgphH7nG7NmE09dUgINmseDdR+J1JT3KIHyFGtliVDVhnDqR1
-/FgWIGpBX7jnQIdLZH1Fu89BMbEvT8iU7gtBWh2JNbsqGJ6bJ7Q4h3TgCTrJXPrA
-X5RJw9vYctEzt1bY4xsOlRxv/pBIIErXN2voKjw76iQN2VcVKapW4rmAh9PqU4qK
-fLZcto7rM+eLijoTkfOxfjtgmJpMsJkn1fmgJaEHTAhWBfu+R0HGLBcAJodaU3fb
-//DJrWHV1BCkZS+23MQeX7BzQWTpH18cqY/2jDO7DjQ8+N2g5eHOqvuEKqzOn9pM
-KpUUlT3FAgMBAAECggEAVzFN8w4vRsOnggIVsxbJKeBsCDaxdGzw5O/coO6szVWG
-GFos4KAmeu3CeuCI00GpvjMflV2Gv46TbwcwdII6IrjcM+WVfizTGEGEOPFalrUV
-bcsnw9n8sbhHkhvR9AJaUriZo0DuPj+vs6VLoIz4f0/KuSgnX5jZbedrPsGeGM3e
-HYGY/eCB1D6JzbDrW8jHe63SOPOizVA9m/c2CoH/YbL4rVN6+8aSAJaWnVzSUvPD
-mRdY15EtF9VURU3C549Pw4C1RC0op2xvP8vlOFGsWDd2HHzxuo13UXd8NIes5zAE
-VKIhLsEFkFIRwp7rTVaf9n6KCvvVuuG6N1Kxyv2roQKBgQD1Md/8BJIieFfd/fbq
-zL+uAttBGuM88IUgx8c9usldWGYXvDOkmMQvkH7lnxFpOyZDynZyIw4ILrnh1T2+
-f5g/qHxEabU59//aAbYoBAXxUUI7ZdBwzmn0yL6KU9hILDhRsEbVLOROC1tmUbUk
-GIqTNMFBUimfy7LJJGTdxciouQKBgQDjf7kMijEbqP8bLUATdtlVoiOfuqOlMHYm
-FzKsp75+rxSAjUyGvzBNe+HzSlfwPlD6bSYIm3Do80FVG+AawPN7uBApsTb32Lmj
-nB1b1GUuN7VGQYJNxmrYe1m8VdLHN5kNM8hwOCpyYMdkFf6aYXAEtEO+iL9ghn1N
-+tmW9e8fbQKBgQDIaFGIrTu8TNyUp4Vv+JYa5l7K4e0l2/kUB/YDsG3xi9U2RS94
-sxx3PAVcLR2QAzaNZihVte08JuTrft2OnL+WGGIpkLT9goRubcOzBUbOLPqTje5G
-pY/Y8VM7wLgglXQa4JekmaKpX4L/KH2D2UM6en4So9M9tsKUwNhoo8YUkQKBgQDQ
-KQfrP28bvhBej5L3vGG0hz1NY/tkpOkWhVdqv7oANLbvwVpqWPobi+T9NeMtAfga
-jFCmw4QWwq3e8DiogjDH3W18mJiRQ47o82mxorBKD9MgS8Ss4YbWOlerimPowSib
-+evHMr00FvWa0L08CTf0NfVem8Vwzt5MweDiznlUKQKBgQCb/2zy03hepOHmr8oZ
-2gUv8764Y865wFryfXoOlb+664sgMkNKJGzX/v97NQIeM4vFUb6FMVQO9z4pcXVq
-w+jDPTUUugs8MOyE1bUNJutBgEjkeKN8bQt3mQlIhC6HSuwS+NHcku5sKobvjohj
-SxVGgsgXs58fKq0k6khAOa4asQ==
------END PRIVATE KEY-----
-"@ | Out-File -LiteralPath "C:\cert.key" -Encoding ascii -Force
+
+        # Stop service so we can rewrite config without file locks.
+        Stop-Service filezilla-server -ErrorAction SilentlyContinue
+        for ($w = 1; $w -le 20; $w++) {
+            $s = Get-Service filezilla-server -ErrorAction SilentlyContinue
+            if (-not $s -or $s.Status -eq 'Stopped') { break }
+            Start-Sleep -Milliseconds 250
         }
-        pip install pyftpdlib
-        pip install 'cryptography==38.0.4'
-        pip install 'pyOpenSSL==22.0.0'
-        if (!(Test-Path "C:\ftps_entrypoint.py")) {
-@"
-import os, random, string
 
-from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import TLS_FTPHandler
-from pyftpdlib.servers import FTPServer
+        # Fresh self-signed cert (PEM, 5y validity) — replaces the previously
+        # hardcoded PEM that expired in 2022.
+        $rsa = [System.Security.Cryptography.RSA]::Create(2048)
+        try {
+            $req = [System.Security.Cryptography.X509Certificates.CertificateRequest]::new(
+                'CN=localhost,O=Warewolf,C=ZA', $rsa,
+                [System.Security.Cryptography.HashAlgorithmName]::SHA256,
+                [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
+            $cert = $req.CreateSelfSigned(
+                [DateTimeOffset]::UtcNow.AddDays(-1),
+                [DateTimeOffset]::UtcNow.AddYears(5))
+            $cBytes = $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert)
+            $kBytes = $rsa.ExportPkcs8PrivateKey()
+            "-----BEGIN CERTIFICATE-----`n" +
+                [Convert]::ToBase64String($cBytes, 'InsertLineBreaks') +
+                "`n-----END CERTIFICATE-----`n" |
+                Set-Content -LiteralPath $certPath -Encoding ascii -NoNewline
+            "-----BEGIN PRIVATE KEY-----`n" +
+                [Convert]::ToBase64String($kBytes, 'InsertLineBreaks') +
+                "`n-----END PRIVATE KEY-----`n" |
+                Set-Content -LiteralPath $keyPath -Encoding ascii -NoNewline
+        } finally { $rsa.Dispose() }
 
-PASSIVE_PORTS = '56001-56008'
-
-def main():
-    user_dir = "C:/ftps_home/dev2"
-    if not os.path.isdir(user_dir):
-        os.mkdir(user_dir)
-    authorizer = DummyAuthorizer()
-    authorizer.add_user('dev2', 'Q/ulw&]', user_dir, perm="elradfmw")
-
-    handler = TLS_FTPHandler
-    handler.authorizer = authorizer
-    handler.permit_foreign_addresses = True
-    handler.certfile = 'C:/cert.crt'
-    handler.keyfile = 'C:/cert.key'
-
-    passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
-    handler.passive_ports = range(passive_ports[0], passive_ports[1])
-
-    server = FTPServer(('0.0.0.0', 1010), handler)
-    server.serve_forever()
-
-if __name__ == '__main__':
-    main()
-"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
+        # Seed defaults if settings.xml doesn't exist yet.
+        if (!(Test-Path (Join-Path $cfgDir 'settings.xml'))) {
+            if (Test-Path $fzsExe) {
+                & $fzsExe --config-dir $cfgDir --write-config | Out-Null
+            } else {
+                Write-Warn "FileZilla Server exe not found at $fzsExe; skipping --write-config"
+            }
         }
-        net stop hns 2>$null | Out-Null
-        # serve_forever blocks; launch detached so PowerShell can poll and continue.
-        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
-        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
-        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTPS server'; return }
-        $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
-            -ArgumentList @('-u', 'C:\ftps_entrypoint.py') -PassThru -WindowStyle Hidden
+
+        # Patch listener: port 1010, require AUTH TLS, all interfaces.
+        $settingsPath = Join-Path $cfgDir 'settings.xml'
+        if (Test-Path $settingsPath) {
+            [xml]$settings = Get-Content -LiteralPath $settingsPath -Raw
+            $listener = $settings.SelectSingleNode('//listener[1]')
+            if ($listener) {
+                foreach ($pair in @{port='1010'; address='0.0.0.0'; tls_mode='2'}.GetEnumerator()) {
+                    $n = $listener.SelectSingleNode($pair.Key)
+                    if (-not $n) { $n = $listener.AppendChild($settings.CreateElement($pair.Key)) }
+                    $n.InnerText = $pair.Value
+                }
+            }
+            # UNVERIFIED: TLS cert path element names. Best-effort top-level
+            # <certificate>/<private_key> append. If FZS rejects, inspect the
+            # default settings.xml for the actual element/attribute names
+            # (often nested under <ftps_options> or similar).
+            foreach ($pair in @{certificate=$certPath; private_key=$keyPath}.GetEnumerator()) {
+                $n = $settings.SelectSingleNode("//$($pair.Key)")
+                if (-not $n) {
+                    $n = $settings.DocumentElement.AppendChild($settings.CreateElement($pair.Key))
+                }
+                $n.InnerText = $pair.Value
+            }
+            $settings.Save($settingsPath)
+        }
+
+        # Write users.xml with PBKDF2-HMAC-SHA256 password (100k iterations,
+        # 32-byte hash, 32-byte salt, base64 without padding) — schema confirmed
+        # by FZS forum threads t=53453, t=54821, t=56843, t=58615.
+        $pw   = 'Q/ulw&]'
+        $salt = [byte[]]::new(32)
+        [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($salt)
+        $kdf  = [System.Security.Cryptography.Rfc2898DeriveBytes]::new(
+            $pw, $salt, 100000, [System.Security.Cryptography.HashAlgorithmName]::SHA256)
+        try { $hashBytes = $kdf.GetBytes(32) } finally { $kdf.Dispose() }
+        $hashB64 = [Convert]::ToBase64String($hashBytes).TrimEnd('=')
+        $saltB64 = [Convert]::ToBase64String($salt).TrimEnd('=')
+        @"
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+  <user name="dev2">
+    <methods>
+      <password index="1">
+        <hash>$hashB64</hash>
+        <salt>$saltB64</salt>
+        <iterations>100000</iterations>
+      </password>
+    </methods>
+    <mount_table>
+      <mount>
+        <tvfs_path>/</tvfs_path>
+        <native_path>$ftpsHome</native_path>
+        <access>2</access>
+        <recursive>2</recursive>
+        <flags>0</flags>
+      </mount>
+    </mount_table>
+    <allowed_ips/>
+    <disallowed_ips/>
+  </user>
+</users>
+"@ | Out-File -LiteralPath (Join-Path $cfgDir 'users.xml') -Encoding utf8 -Force
+
+        Start-Service filezilla-server
         Write-Host "Waiting for FTPS server on port 1010..."
         for ($i = 1; $i -le 30; $i++) {
             try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
@@ -673,8 +695,7 @@ if __name__ == '__main__':
 
 function Stop-HostFTPSServer {
     if ($LegacyWindowsDeps) {
-        cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
-        $global:LASTEXITCODE = 0
+        Stop-Service filezilla-server -ErrorAction SilentlyContinue
         return
     }
     docker rm -f ftpsserver 2>$null | Out-Null
@@ -1527,6 +1548,12 @@ function Invoke-WindowsBareMetalJob {
             if ($Job.Output)    { $splat.EngineCoverageFile = Join-Path $splat.CoverageDir $Job.Output }
             if ($Job.SessionId) { $splat.EngineSessionId    = $Job.SessionId }
             $splat.CoverageIncludeFiles    = @((Join-Path $ServerTestsBin 'Warewolf.Execution.Lightweight.dll'))
+        } else {
+            # Unit jobs: enable vstest's /EnableCodeCoverage and the Cobertura.xml
+            # post-process. Without this, vstest produces TRX only, no .coverage
+            # snapshots are emitted, and the merge step at the end of catalog mode
+            # sees nothing from this job.
+            $splat.Coverage = $true
         }
         if ($Job.Name -match 'Security') {
             $splat.SharedConfigDir = Join-Path $CoverageOutDir "$slug\security-config"
@@ -1546,6 +1573,22 @@ function Invoke-WindowsBareMetalJob {
             & "$PSScriptRoot\TestRun.ps1" @splat
         } finally {
             Pop-Location
+        }
+
+        # Unit-job Cobertura.xml -> <slug>.cobertura.xml so the catalog merge
+        # picks it up. The pipeline.yml does the same rename step for CI; we
+        # replicate it here so catalog mode produces the same shape.
+        if ($Job.Type -ne 'EngineSpec') {
+            $srcCob  = Join-Path $splat.TestResultsDir 'Cobertura.xml'
+            $destDir = Join-Path $CoverageOutDir $slug
+            $destCob = Join-Path $destDir "$slug.cobertura.xml"
+            if (Test-Path $srcCob) {
+                New-Item -ItemType Directory -Force -Path $destDir | Out-Null
+                Move-Item $srcCob $destCob -Force
+                Write-Done "[$($Job.Name)] -> $destCob"
+            } else {
+                Write-Warn "[$($Job.Name)] no Cobertura.xml produced at $srcCob"
+            }
         }
     } finally {
         foreach ($s in $sidecarStarted) {
