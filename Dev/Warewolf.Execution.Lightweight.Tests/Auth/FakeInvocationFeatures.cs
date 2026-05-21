@@ -37,6 +37,13 @@ internal sealed class FakeInvocationFeatures : IInvocationFeatures
     public void Set<T>(T instance) =>
         _store[typeof(T)] = instance!;
 
+    /// <summary>
+    /// Registers <paramref name="instance"/> under a runtime <see cref="Type"/> key.
+    /// Used when the key type is SDK-internal and cannot be named at compile time.
+    /// </summary>
+    public void SetByType(Type type, object instance) =>
+        _store[type] = instance;
+
     public IEnumerator<KeyValuePair<Type, object>> GetEnumerator() =>
         _store.GetEnumerator();
 

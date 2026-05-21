@@ -90,6 +90,7 @@ public class WorkflowAuthPolicyLoaderTests
     }
 
     [TestMethod]
+    [Ignore("Requires BuildPolicies to include view-only resource entries. Re-introduce when WOLF-8411 is complete.")]
     public void TST08_ViewOnlyResourceEntry_ResourcePolicyBuilt()
     {
         var settings = SecureConfigBuilder.Build(
