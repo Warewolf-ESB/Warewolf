@@ -666,11 +666,34 @@ if __name__ == '__main__':
 }
 
 function Stop-HostFTPSServer {
+    # Copy pyftpdlib's stdout/stderr logs into $TestResultsDir before killing
+    # the server, so the pipeline's existing PublishBuildArtifacts step picks
+    # them up as `*_ServerLogs/<job>/ftps_server.*.log`. Per-call timestamp +
+    # PID guards against retries clobbering earlier logs. Wrapped in try/catch
+    # so a missing TestResultsDir or a locked log file can never abort the
+    # surrounding teardown — the test results matter more than the log copy.
+    try {
+        if ($TestResultsDir -and (Test-Path $TestResultsDir)) {
+            $ftpRoot = Get-FTPSandboxRoot
+            $stamp   = (Get-Date -Format 'yyyyMMdd_HHmmss')
+            $pidTag  = if ($script:_ftpsProcess) { $script:_ftpsProcess.Id } else { 'na' }
+            foreach ($name in 'ftps_server.log','ftps_server.err.log') {
+                $src = Join-Path $ftpRoot $name
+                if (Test-Path $src) {
+                    $dst = Join-Path $TestResultsDir ("{0}_{1}_{2}" -f $stamp, $pidTag, $name)
+                    Copy-Item -LiteralPath $src -Destination $dst -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+    } catch { }
     # Stop-HostFTPServer kills all pythonw.exe — call only one of the two stop
     # functions in a teardown sequence (the second is a no-op). Wrapped in cmd
     # /c so taskkill's stderr + non-zero exit when the process is already gone
-    # doesn't abort the surrounding script.
+    # doesn't abort the surrounding script. taskkill also matches python.exe
+    # (the FTPS server now runs under python.exe so stdout/stderr can be
+    # redirected — see Start-HostFTPSServer step 6).
     cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
+    cmd /c 'taskkill /im python.exe /f >nul 2>nul'
     $global:LASTEXITCODE = 0
 }
 
