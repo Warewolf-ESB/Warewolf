@@ -601,15 +601,40 @@ function Start-HostFTPSServer {
 import logging
 import os
 from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import TLS_FTPHandler
+from pyftpdlib.handlers import TLS_FTPHandler, TLS_DTPHandler
 from pyftpdlib.servers import FTPServer
 
-# DEBUG so every FTP command (PBSZ, PROT, PASV, STOR, etc.) lands in
-# ftps_server.err.log, not just the INFO-level outcomes. The previous artifact
-# only showed `USER 'dev2' logged in` followed by 98s of silence; without
-# DEBUG we can't tell which command .NET FtpWebRequest sends next and whether
-# pyftpdlib answers it.
+# Keep DEBUG on — small enough on a per-test-run basis and invaluable when
+# the next interop quirk surfaces. Artifacts are scoped per job.
 logging.basicConfig(level=logging.DEBUG)
+
+# Workaround for a .NET FtpWebRequest vs pyOpenSSL interop bug. After a
+# successful STOR, .NET closes the data-channel TCP socket without sending
+# a TLS close_notify; pyOpenSSL's SSL_shutdown() then returns Error([])
+# (incomplete shutdown), and pyftpdlib's asyncore loop calls
+# _do_ssl_shutdown forever (~60k attempts in a single 100s window — verified
+# in a prior CI artifact). The server never sends '226 Transfer Complete'
+# because it is stuck tearing down the data channel, so the client's 100s
+# Timeout fires and the test reports 'underlying connection was closed: An
+# unexpected error occurred on a receive'. Cap shutdown attempts at 3 and
+# force-close — DTPHandler.close() triggers the parent FTPHandler's
+# transfer-complete path which finally sends the 226. TLS-truncation risk
+# is acceptable on a localhost test harness; production FTPS clients that
+# send close_notify still get the original shutdown path on attempts 1-3.
+_orig_do_ssl_shutdown = TLS_DTPHandler._do_ssl_shutdown
+def _capped_do_ssl_shutdown(self):
+    attempts = getattr(self, '_ww_ssl_shutdown_attempts', 0) + 1
+    self._ww_ssl_shutdown_attempts = attempts
+    if attempts > 3:
+        self._ssl_established = False
+        self._ssl_closing = False
+        try:
+            self.close()
+        except Exception:
+            pass
+        return
+    return _orig_do_ssl_shutdown(self)
+TLS_DTPHandler._do_ssl_shutdown = _capped_do_ssl_shutdown
 
 PASSIVE_PORTS = '56001-56008'
 
@@ -623,14 +648,7 @@ def main():
     handler.authorizer = authorizer
     handler.certfile = "$ftpsPemForPy"
     handler.tls_control_required = True
-    # tls_data_required = False so the server accepts PROT C (plaintext data)
-    # in addition to PROT P. .NET FtpWebRequest with EnableSsl=true normally
-    # negotiates PROT P, but pyOpenSSL's data-channel TLS handshake is the
-    # prime suspect for the 98s hang after PASS. If .NET picks PROT C and the
-    # hang disappears, data-channel TLS is confirmed as the root cause; if it
-    # still hangs, we know to look at control-channel commands instead. Either
-    # outcome is diagnostic — and PROT C on localhost is acceptable for tests.
-    handler.tls_data_required = False
+    handler.tls_data_required = True
     handler.permit_foreign_addresses = True
     passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
     handler.passive_ports = range(passive_ports[0], passive_ports[1] + 1)
