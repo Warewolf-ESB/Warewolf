@@ -71,8 +71,7 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
                 ["TraceId"]      = traceId,
             });
 
-            logger.LogInformation("InstanceCorrelationMiddleware invoked for function '{FunctionName}' (InvocationId: {InvocationId})", context.FunctionDefinition.Name,
-            context.InvocationId);
+            Dev2Logger.Info($"InstanceCorrelationMiddleware invoked for function '{functionName}' (InvocationId: {invocationId})", invocationId);
 
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             try
@@ -80,16 +79,16 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
                 await next(context);
 
                 stopwatch.Stop();
-                logger.LogInformation(
-                    "Request completed for function '{FunctionName}' (InvocationId: {InvocationId}) in {ElapsedMs}ms",
-                    functionName, invocationId, stopwatch.ElapsedMilliseconds);
+                Dev2Logger.Info(
+                    $"Request completed for function '{functionName}' (InvocationId: {invocationId}) in {stopwatch.ElapsedMilliseconds}ms",
+                    invocationId);
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                logger.LogError(ex,
-                    "Request failed for function '{FunctionName}' (InvocationId: {InvocationId}) after {ElapsedMs}ms",
-                    functionName, invocationId, stopwatch.ElapsedMilliseconds);
+                Dev2Logger.Error(
+                    $"Request failed for function '{functionName}' (InvocationId: {invocationId}) after {stopwatch.ElapsedMilliseconds}ms: {ex.Message}",
+                    ex, invocationId);
                 throw;
             }
             finally

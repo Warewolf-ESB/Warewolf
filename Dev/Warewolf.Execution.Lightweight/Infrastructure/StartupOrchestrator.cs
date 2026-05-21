@@ -9,7 +9,6 @@ using Azure.Identity;
 using Dev2.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Linq;
 
@@ -40,15 +39,11 @@ internal static class StartupOrchestrator
 
         Dev2Logger.Info("StartupOrchestrator RunStartupAsync starting", executionId);
 
-        var logger = host.Services
-            .GetRequiredService<ILoggerFactory>()
-            .CreateLogger(nameof(StartupOrchestrator));
-
         try
         {
-            LogEnvironmentDiagnostics(config, logger);
-            await InitializeEncryptionAsync(host, config, logger);
-            WarmUpWorkflowIndex(config, logger);
+            LogEnvironmentDiagnostics(config);
+            await InitializeEncryptionAsync(host, config);
+            WarmUpWorkflowIndex(config);
 
             Dev2Logger.Info("StartupOrchestrator RunStartupAsync completed successfully", executionId);
         }
@@ -59,28 +54,26 @@ internal static class StartupOrchestrator
         }
     }
 
-    static void LogEnvironmentDiagnostics(HostEnvironmentConfig config, ILogger logger)
+    static void LogEnvironmentDiagnostics(HostEnvironmentConfig config)
     {
         const string executionId = "StartupOrchestrator-Diagnostics";
 
         Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
-        logger.LogWarning(
-            "Startup | Phase=Diagnostics | EncryptionEnabled={EncryptionEnabled} | " +
-            "VaultName={VaultName} | SecretName={SecretName} | " +
-            "WorkflowsDirectory={WorkflowsDirectory} | DirectoryExists={DirectoryExists}",
-            config.EncryptionEnabled, config.VaultName ?? "(not set)", config.SecretName,
-            config.WorkflowsDirectory, Directory.Exists(config.WorkflowsDirectory));
+        Dev2Logger.Warn(
+            $"Startup | Phase=Diagnostics | EncryptionEnabled={config.EncryptionEnabled} | " +
+            $"VaultName={config.VaultName ?? "(not set)"} | SecretName={config.SecretName} | " +
+            $"WorkflowsDirectory={config.WorkflowsDirectory} | DirectoryExists={Directory.Exists(config.WorkflowsDirectory)}",
+            executionId);
 
         if (Directory.Exists(config.WorkflowsDirectory))
         {
             var biteFiles = Directory.GetFiles(config.WorkflowsDirectory, "*.bite", SearchOption.AllDirectories);
             Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files in {config.WorkflowsDirectory}", executionId);
 
-            logger.LogWarning(
-                "Startup | Phase=Diagnostics | ResourceDirectory={Dir} | BiteFileCount={Count} | Files=[{Files}]",
-                config.WorkflowsDirectory, biteFiles.Length,
-                string.Join(", ", biteFiles.Select(Path.GetFileName)));
+            Dev2Logger.Warn(
+                $"Startup | Phase=Diagnostics | ResourceDirectory={config.WorkflowsDirectory} | BiteFileCount={biteFiles.Length} | Files=[{string.Join(", ", biteFiles.Select(Path.GetFileName))}]",
+                executionId);
         }
         else
         {
@@ -92,8 +85,7 @@ internal static class StartupOrchestrator
 
     static async Task InitializeEncryptionAsync(
         IHost                 host,
-        HostEnvironmentConfig config,
-        ILogger               logger)
+        HostEnvironmentConfig config)
     {
         const string executionId = "StartupOrchestrator-Encryption";
 
@@ -118,13 +110,13 @@ internal static class StartupOrchestrator
 
             if (!config.SkipFailureToRetrieveSecret)
             {
-                logger.LogCritical(ex,
-                    "Startup | Phase=KeyVaultInit | Status=Failed | Category={Category} | " +
-                    "VaultName={VaultName} | SecretName={SecretName} | InstanceId={InstanceId} | " +
-                    "Guidance={Guidance} | " +
+                Dev2Logger.Fatal(
+                    $"Startup | Phase=KeyVaultInit | Status=Failed | Category={category} | " +
+                    $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
+                    $"Guidance={guidance} | " +
                     "To bypass this failure and start with degraded decryption, " +
                     "set environment variable SkipFailureToRetrieveSecret=true (NOT recommended for production).",
-                    category, config.VaultName, config.SecretName, config.InstanceId, guidance);
+                    ex, executionId);
 
                 throw; // Fail fast — host cannot serve encrypted sources without the AES key.
             }
@@ -132,16 +124,16 @@ internal static class StartupOrchestrator
             // SkipFailureToRetrieveSecret=true: allow host to start in degraded mode.
             Dev2Logger.Warn($"StartupOrchestrator KeyVault initialization failed but SkipFailureToRetrieveSecret=true, starting in degraded mode. Category: {category}", executionId);
 
-            logger.LogWarning(ex,
-                "Startup | Phase=KeyVaultInit | Status=Degraded | Category={Category} | " +
-                "VaultName={VaultName} | SecretName={SecretName} | InstanceId={InstanceId} | " +
-                "Guidance={Guidance} | " +
+            Dev2Logger.Warn(
+                $"Startup | Phase=KeyVaultInit | Status=Degraded | Category={category} | " +
+                $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
+                $"Guidance={guidance} | " +
                 "SkipFailureToRetrieveSecret=true — host is starting WITHOUT the AES decryption key. " +
                 "All workflows that read encrypted sources (connection strings, credentials) " +
                 "will FAIL at execution time with a decryption error. " +
                 "Only unencrypted workflows will execute successfully. " +
                 "Resolve the Key Vault connectivity issue and restart to restore full functionality.",
-                category, config.VaultName, config.SecretName, config.InstanceId, guidance);
+                executionId);
         }
     }
 
@@ -198,7 +190,7 @@ internal static class StartupOrchestrator
                  "Check the full exception details above for diagnostics.")
         };
 
-    static void WarmUpWorkflowIndex(HostEnvironmentConfig config, ILogger logger)
+    static void WarmUpWorkflowIndex(HostEnvironmentConfig config)
     {
         const string executionId = "StartupOrchestrator-WarmUp";
 
@@ -207,22 +199,18 @@ internal static class StartupOrchestrator
         try
         {
             WorkflowIndex.Instance.WarmUp(config.WorkflowsDirectory);
-            logger.LogInformation(
-                "Startup | Phase=WorkflowIndexWarmUp | Status=Completed | " +
-                "Directory={WorkflowsDirectory}", config.WorkflowsDirectory);
-
-            Dev2Logger.Info($"StartupOrchestrator WarmUpWorkflowIndex completed successfully", executionId);
+            Dev2Logger.Info(
+                $"Startup | Phase=WorkflowIndexWarmUp | Status=Completed | Directory={config.WorkflowsDirectory}",
+                executionId);
         }
         catch (Exception ex)
         {
             Dev2Logger.Warn($"StartupOrchestrator WarmUpWorkflowIndex failed, falling back to on-demand resolution. Directory: {config.WorkflowsDirectory}", ex, executionId);
 
-            // Warm-up failure is non-fatal: WorkflowIndex falls back to
-            // disk-based resolution on the first HTTP request.
-            logger.LogWarning(ex,
-                "Startup | Phase=WorkflowIndexWarmUp | Status=Degraded | " +
-                "Falling back to on-demand disk resolution. " +
-                "Directory={WorkflowsDirectory}", config.WorkflowsDirectory);
+            Dev2Logger.Warn(
+                $"Startup | Phase=WorkflowIndexWarmUp | Status=Degraded | " +
+                $"Falling back to on-demand disk resolution. Directory={config.WorkflowsDirectory}",
+                executionId);
         }
     }
 }

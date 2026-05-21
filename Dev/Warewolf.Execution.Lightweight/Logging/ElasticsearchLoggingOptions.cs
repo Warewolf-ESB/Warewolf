@@ -47,6 +47,14 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// </summary>
         public bool IsConfigured => !string.IsNullOrWhiteSpace(Uri);
 
+        /// <summary>
+        /// When <c>true</c>, enables Elasticsearch HTTP debug mode which captures full
+        /// request/response bodies. <b>Never enable in production</b> — causes large
+        /// memory allocations per index call. Default: <c>false</c>.
+        /// Set via <c>ELASTIC_DEBUG_MODE=true</c> environment variable (development only).
+        /// </summary>
+        public bool EnableDebugMode { get; set; }
+
         // -------------------------------------------------------------------------
         // Factory — .bite file
         // -------------------------------------------------------------------------
