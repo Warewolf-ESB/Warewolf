@@ -8,9 +8,14 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// <see cref="IExecutionLogger"/> that forwards every call to multiple inner
     /// loggers in registration order.
     ///
-    /// Used in <c>Program.cs</c> to combine <see cref="AzureExecutionLogger"/>
-    /// (Application Insights / Azure Monitor) with
-    /// <see cref="ElasticsearchExecutionLogger"/> without changing any consumer code.
+    /// Used in <c>Program.cs</c> to combine <see cref="ConsoleExecutionLogger"/>
+    /// (always present), <see cref="AzureExecutionLogger"/> (opt-in Application Insights),
+    /// <see cref="ElasticsearchExecutionLogger"/> (opt-in), and
+    /// <see cref="AuditExecutionLogger"/> (always present, security events only)
+    /// without changing any consumer code.
+    ///
+    /// Each inner logger is wrapped in a try/catch so a failure in one sink
+    /// never prevents subsequent sinks from receiving the log entry.
     /// </summary>
     public sealed class CompositeExecutionLogger : IExecutionLogger
     {
@@ -26,21 +31,30 @@ namespace Warewolf.Execution.Lightweight.Logging
         public void LogDebug(string message, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogDebug(message, executionId);
+            {
+                try { logger.LogDebug(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
         public void LogDebug(string message, Exception exception, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogDebug(message, exception, executionId);
+            {
+                try { logger.LogDebug(message, exception, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
         public void LogInfo(string message, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogInfo(message, executionId);
+            {
+                try { logger.LogInfo(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
@@ -48,66 +62,87 @@ namespace Warewolf.Execution.Lightweight.Logging
         {
             foreach (var logger in _loggers)
             {
-                Console.WriteLine($"Logging info: {message} with logger: {logger.ToString()}");
-                logger.LogInfo(message, exception, executionId);
+                try { logger.LogInfo(message, exception, executionId); }
+                catch { /* individual sink failure must not cascade */ }
             }
         }
-
 
         /// <inheritdoc/>
         public void LogWarning(string message, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogWarning(message, executionId);
+            {
+                try { logger.LogWarning(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
         public void LogWarning(string message, Exception exception, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogWarning(message, exception, executionId);
+            {
+                try { logger.LogWarning(message, exception, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
-
 
         /// <inheritdoc/>
         public void LogError(string message, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogError(message, executionId);
+            {
+                try { logger.LogError(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
         public void LogError(string activityName, Exception ex, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogError(activityName, ex, executionId);
+            {
+                try { logger.LogError(activityName, ex, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
-
 
         /// <inheritdoc/>
         public void LogFatal(string message, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogFatal(message, executionId);
+            {
+                try { logger.LogFatal(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         /// <inheritdoc/>
         public void LogFatal(string message, Exception exception, Guid executionId)
         {
             foreach (var logger in _loggers)
-                logger.LogFatal(message, exception, executionId);
+            {
+                try { logger.LogFatal(message, exception, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         public void LogError(Exception ex, string log)
         {
-            var exception = new Exception(log, ex);
-            this.LogError("", exception, new Guid());
+            foreach (var logger in _loggers)
+            {
+                try { logger.LogError(ex, log); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
 
         public void LogInfo(string message)
         {
             foreach (var logger in _loggers)
-            logger.LogInfo(message);
+            {
+                try { logger.LogInfo(message); }
+                catch { /* individual sink failure must not cascade */ }
+            }
         }
     }
 }

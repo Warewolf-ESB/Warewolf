@@ -10,83 +10,66 @@ const string executionId = "Program-Startup";
 
 try
 {
-    Dev2Logger.Info("Program starting - loading host environment configuration", executionId);
-
+    // ── Step 1: Load configuration ───────────────────────────────────────────
     var config = HostEnvironmentConfig.Load();
+    var loggingConfig = LoggingConfiguration.FromEnvironment();
 
+    // ── Step 2: Bootstrap logging (FIRST — no log is lost) ───────────────────
+    // Create a lightweight console logger before the DI host exists so that
+    // all Dev2Logger calls during startup are captured immediately.
+    using var bootstrapFactory = LoggerFactory.Create(b => b.AddConsole().SetMinimumLevel(LogLevel.Debug));
+    var bootstrapLogger = new ConsoleExecutionLogger(
+        bootstrapFactory.CreateLogger<ConsoleExecutionLogger>(), loggingConfig.MinimumLevel);
+
+    Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(bootstrapLogger);
+    Dev2Logger.CorrelationPrefixProvider = ExecutionLoggerBase.GetCorrelationPrefixStatic;
+
+    Dev2Logger.Info("Program starting - bootstrap logging active", executionId);
     Dev2Logger.Info($"Program configuration loaded. WorkflowsDirectory: {config.WorkflowsDirectory}, EncryptionEnabled: {config.EncryptionEnabled}, IsDevelopment: {config.IsDevelopment}", executionId);
+    Dev2Logger.Debug($"Program logging configuration: EnableAI={loggingConfig.EnableApplicationInsights}, EnableElastic={loggingConfig.EnableElasticsearch}, MinLevel={loggingConfig.MinimumLevel}", executionId);
 
-    static bool IsEnabled(string key) =>
-        string.Equals(Environment.GetEnvironmentVariable(key), "true", StringComparison.OrdinalIgnoreCase);
-
-    var enableConsole   = IsEnabled("ENABLECONSOLELOGGING");
-    var enableElastic   = IsEnabled("ENABLEELASTICSEARCHLOGGING");
-    var elasticsearchSettingsPath = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
-
-    Dev2Logger.Debug($"Program logging configuration: EnableConsole={enableConsole}, EnableElastic={enableElastic}, ElasticsearchSettingsPath={elasticsearchSettingsPath}", executionId);
-
-    // Single log-level gate shared by all sinks.
-    // Set ExecutionLogLevel=Warning  → only Warning / Error / Critical reach any sink.
-    // Set ExecutionLogLevel=Debug    → everything flows through.
-    var minimumLevel =  ExecutionLogLevel.Read();
-
-    Dev2Logger.Info($"Program minimum log level set to: {minimumLevel}", executionId);
-
+    // ── Step 3: Build host ───────────────────────────────────────────────────
     Dev2Logger.Debug("Program building host", executionId);
 
     var host = new HostBuilder()
         .ConfigureWarewolf(config)
         .ConfigureServices(services =>
          {
-             services.AddExecutionLogging(
-                 enableConsole,
-                 enableElastic,
-                 elasticsearchSettingsPath,
-                 minimumLevel);
+             services.AddExecutionLogging(loggingConfig);
          })
         .Build();
 
     Dev2Logger.Info("Program host built successfully, running startup orchestrator", executionId);
 
+    // ── Step 4: Run startup (encryption, index warm-up) ──────────────────────
     await StartupOrchestrator.RunStartupAsync(host, config);
 
-    // Explicitly resolve IExecutionLogger here — AFTER RunStartupAsync — so
-    // the AES decrypt hook is guaranteed to be wired before the singleton
-    // factory runs (which reads the encrypted ElasticsearchLoggingSource.bite).
+    // ── Step 5: Upgrade to full composite logger ─────────────────────────────
+    // Resolve IExecutionLogger AFTER RunStartupAsync so the AES decrypt hook
+    // is wired before the Elasticsearch .bite file is read.
     var executionLogger = host.Services.GetRequiredService<IExecutionLogger>();
 
-    Dev2Logger.Info("Program startup orchestrator completed, configuring Dev2Logger sinks", executionId);
+    Dev2Logger.Info("Program startup orchestrator completed, upgrading to full composite logger", executionId);
 
-    // Route every Dev2Logger.X() call to the IExecutionLogger sinks (Azure / Elasticsearch).
-    // Must be set after RunStartupAsync so Config.Server is initialised before any Dev2Logger call.
-    Dev2.Common.Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
+    // Replace bootstrap sink with the full composite (Console + AI + Elastic + Audit).
+    Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
 
-    // Also set the correlation prefix provider so that Dev2Logger's own log4net path
-    // (when ExternalSink is bypassed) includes instance/invocation correlation.
-    Dev2.Common.Dev2Logger.CorrelationPrefixProvider =
-        Warewolf.Execution.Lightweight.Logging.ExecutionLoggerBase.GetCorrelationPrefixStatic;
+    Dev2Logger.Info("Program Dev2Logger external sink upgraded to full CompositeExecutionLogger", executionId);
 
-    Dev2Logger.Info("Program Dev2Logger external sink configured successfully", executionId);
-
-    var startupLogger = host.Services
-        .GetRequiredService<ILoggerFactory>()
-        .CreateLogger("Startup");
-
+    // ── Step 6: License check ────────────────────────────────────────────────
     Dev2Logger.Debug("Program loading Warewolf License", executionId);
 
-    startupLogger.LogInformation("Loading \"Warewolf License.secureconfig\"...");
     var licenseProvider = SubscriptionProvider.Instance;
     if (licenseProvider.IsLicensed)
     {
         Dev2Logger.Info($"Program license loaded successfully. Status: {licenseProvider.Status}", executionId);
-        startupLogger.LogInformation("\"Warewolf License.secureconfig\" loaded successfully. Server is licensed (Status: {Status}).", licenseProvider.Status);
     }
     else
     {
         Dev2Logger.Warn($"Program server not licensed. Status: {licenseProvider.Status}, StopExecutions: {licenseProvider.StopExecutions}", executionId);
-        startupLogger.LogWarning("\"Warewolf License.secureconfig\" loaded. Server is not licensed (Status: {Status}, StopExecutions: {StopExecutions}).", licenseProvider.Status, licenseProvider.StopExecutions);
     }
 
+    // ── Step 7: Run ──────────────────────────────────────────────────────────
     Dev2Logger.Info("Program initialization complete, starting host", executionId);
 
     await host.RunAsync();

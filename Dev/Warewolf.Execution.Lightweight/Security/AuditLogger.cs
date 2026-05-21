@@ -4,7 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using Microsoft.Extensions.Logging;
+using Dev2.Common;
 using System;
 using System.Management.Automation;
 
@@ -13,10 +13,9 @@ namespace Warewolf.Execution.Lightweight.Security
     /// <summary>
     /// Lightweight structured audit logger for security-relevant events.
     ///
-    /// Writes structured log entries via <see cref="ILogger"/> so entries flow
-    /// to Application Insights (free tier ≤ 5 GB/month) automatically when the
-    /// APPINSIGHTS_INSTRUMENTATIONKEY / APPLICATIONINSIGHTS_CONNECTION_STRING
-    /// app setting is present.
+    /// Routes all entries through <see cref="Dev2Logger"/> so they reach the
+    /// <see cref="Logging.AuditExecutionLogger"/> sink (always present in
+    /// <see cref="Logging.CompositeExecutionLogger"/>).
     ///
     /// Invariants:
     ///   ❌ Never logs key material (raw bytes or base64).
@@ -25,10 +24,9 @@ namespace Warewolf.Execution.Lightweight.Security
     /// </summary>
     public sealed class AuditLogger
     {
-        readonly ILogger<AuditLogger> _logger;
+        const string AuditExecutionId = "AuditLogger";
 
-        public AuditLogger(ILogger<AuditLogger> logger)
-            => _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        public AuditLogger() { }
 
         /// <summary>
         /// Gets Cold Start Log
@@ -45,14 +43,14 @@ namespace Warewolf.Execution.Lightweight.Security
         /// from Key Vault.
         /// </summary>
         public void LogColdStart(string instanceId, string keyId)
-            => _logger.LogInformation(GetColdStartLog(instanceId, keyId));
+            => Dev2Logger.Info(GetColdStartLog(instanceId, keyId), AuditExecutionId);
 
         /// <summary>
         /// Logged once per cold start after the AES key is successfully loaded
         /// from Key Vault.
         /// </summary>
         public void LogColdStart(string message)
-            => _logger.LogInformation(message);
+            => Dev2Logger.Info(message, AuditExecutionId);
 
 
         /// <summary>
@@ -70,10 +68,10 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Logged when Key Vault initialisation fails (thrown after this call).
         /// </summary>
         public void LogKeyVaultError(string instanceId, Exception ex)
-            => _logger.LogError(ex, GetKeyVaultErrorLog(instanceId));
+            => Dev2Logger.Error(GetKeyVaultErrorLog(instanceId), ex, AuditExecutionId);
 
         public void LogKeyVaultErrorAndMessage(string message, Exception ex)
-            => _logger.LogError(ex, message);
+            => Dev2Logger.Error(message, ex, AuditExecutionId);
 
 
         /// <summary>
@@ -82,7 +80,7 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         public void LogDecryption(string instanceId)
         {
-            _logger.LogDebug(message: GetDecryptionLog(instanceId));
+            Dev2Logger.Debug(GetDecryptionLog(instanceId), AuditExecutionId);
         }
 
         /// <summary>
@@ -118,11 +116,10 @@ namespace Warewolf.Execution.Lightweight.Security
             string reason,
             string correlationId)
         {
-            // Structured log so KQL queries can filter on outcome / workflow / caller.
-            _logger.LogWarning(
-                "SECURITY_AUDIT | Event=AuthOutcome | Outcome={Outcome} | Caller={Caller} | " +
-                "Workflow={Workflow} | Path={Path} | Reason={Reason} | CorrelationId={CorrelationId} | Utc={Utc}",
-                outcome, caller, workflow, path, reason, correlationId, DateTimeOffset.UtcNow);
+            Dev2Logger.Warn(
+                $"SECURITY_AUDIT | Event=AuthOutcome | Outcome={outcome} | Caller={caller} | " +
+                $"Workflow={workflow} | Path={path} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
+                AuditExecutionId);
         }
     }
 }

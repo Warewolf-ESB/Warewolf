@@ -52,7 +52,7 @@ internal static class ServiceCollectionExtensions
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware
             // can emit structured 401/403 audit events even when encryption is off.
-            services.AddSingleton<AuditLogger>();
+            services.AddSingleton(new AuditLogger());
 
             // Auth policy loader — builds WorkflowAuthPolicy from secure.config
             // WindowsGroupPermissions entries at startup.
@@ -70,8 +70,15 @@ internal static class ServiceCollectionExtensions
 
     /// <summary>
     /// Registers <see cref="IExecutionLogger"/> as a singleton
-    /// <see cref="CompositeExecutionLogger"/> that fans out to Azure (MEL) and/or
-    /// Elasticsearch sinks depending on environment variables.
+    /// <see cref="CompositeExecutionLogger"/> that fans out to all configured sinks.
+    ///
+    /// <para>Sink composition:</para>
+    /// <list type="bullet">
+    ///   <item><see cref="ConsoleExecutionLogger"/> — ALWAYS present (ensures no log is lost; feeds Azure Log Stream)</item>
+    ///   <item><see cref="AzureExecutionLogger"/> — opt-in via <c>ENABLEAPPLICATIONINSIGHTS=true</c> (rich App Insights telemetry)</item>
+    ///   <item><see cref="ElasticsearchExecutionLogger"/> — opt-in via <c>ENABLEELASTICSEARCHLOGGING=true</c></item>
+    ///   <item><see cref="AuditExecutionLogger"/> — ALWAYS present (security audit events only)</item>
+    /// </list>
     ///
     /// <para>
     /// The factory is deferred (runs on first resolution, not at registration time)
@@ -80,45 +87,48 @@ internal static class ServiceCollectionExtensions
     /// <c>ElasticsearchLoggingSource.bite</c> file is read.
     /// </para>
     /// </summary>
-    /// <param name="services">The service collection to register into.</param>
-    /// <param name="enableConsole">Whether the Azure/console logger sink is enabled.</param>
-    /// <param name="enableElastic">Whether the Elasticsearch logger sink is enabled.</param>
-    /// <param name="elasticsearchSettingsPath">Absolute path to the Elasticsearch <c>.bite</c> config file.</param>
-    /// <param name="minimumLevel">Minimum log level gate shared by all sinks.</param>
     internal static IServiceCollection AddExecutionLogging(
         this IServiceCollection services,
-        bool enableConsole,
-        bool enableElastic,
-        string elasticsearchSettingsPath,
-        Dev2.Data.Interfaces.Enums.LogLevel minimumLevel)
+        LoggingConfiguration loggingConfig)
     {
         const string executionId = "ServiceCollectionExtensions-ExecutionLogging";
 
-        Dev2Logger.Debug($"ServiceCollectionExtensions AddExecutionLogging registering. EnableConsole={enableConsole}, EnableElastic={enableElastic}", executionId);
+        Dev2Logger.Debug($"ServiceCollectionExtensions AddExecutionLogging registering. EnableAI={loggingConfig.EnableApplicationInsights}, EnableElastic={loggingConfig.EnableElasticsearch}", executionId);
+
+        services.AddSingleton(loggingConfig);
 
         services.AddSingleton<IExecutionLogger>(sp =>
         {
             var loggers = new List<IExecutionLogger>();
 
-            // AzureExecutionLogger — MEL sink (App Insights / console)
-            if (enableConsole)
+            // 1. ConsoleExecutionLogger — ALWAYS present (feeds stdout → Log Stream + AI traces)
+            loggers.Add(new ConsoleExecutionLogger(
+                sp.GetRequiredService<ILogger<ConsoleExecutionLogger>>(),
+                loggingConfig.MinimumLevel));
+            Dev2Logger.Debug("AddExecutionLogging added ConsoleExecutionLogger (always-on)", executionId);
+
+            // 2. AzureExecutionLogger — opt-in (rich Application Insights telemetry)
+            if (loggingConfig.EnableApplicationInsights)
             {
                 loggers.Add(new AzureExecutionLogger(
                     sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
-                    minimumLevel));
+                    loggingConfig.MinimumLevel));
                 Dev2Logger.Debug("AddExecutionLogging added AzureExecutionLogger", executionId);
             }
 
-            // ElasticsearchExecutionLogger — Elasticsearch sink
-            // Resolved here (inside the factory) so the AES decrypt hook
-            // from KeyVaultStartupExtensions is already wired by the time
-            // we read the potentially-encrypted .bite file.
-            if (enableElastic && File.Exists(elasticsearchSettingsPath))
+            // 3. ElasticsearchExecutionLogger — opt-in
+            if (loggingConfig.EnableElasticsearch && File.Exists(loggingConfig.ElasticsearchSettingsPath))
             {
-                var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(elasticsearchSettingsPath);
-                loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, minimumLevel));
+                var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(loggingConfig.ElasticsearchSettingsPath);
+                elasticOptions.EnableDebugMode = loggingConfig.ElasticDebugMode;
+                loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, loggingConfig.MinimumLevel));
                 Dev2Logger.Debug("AddExecutionLogging added ElasticsearchExecutionLogger", executionId);
             }
+
+            // 4. AuditExecutionLogger — ALWAYS present (security events only)
+            loggers.Add(new AuditExecutionLogger(
+                sp.GetRequiredService<ILogger<AuditExecutionLogger>>()));
+            Dev2Logger.Debug("AddExecutionLogging added AuditExecutionLogger (always-on)", executionId);
 
             Dev2Logger.Info($"AddExecutionLogging created CompositeExecutionLogger with {loggers.Count} sink(s)", executionId);
             return new CompositeExecutionLogger(loggers);

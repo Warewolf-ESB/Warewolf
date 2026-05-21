@@ -19,14 +19,18 @@ namespace Warewolf.Execution.Lightweight.Logging
     {
         readonly ElasticsearchClient _client;
         readonly string _indexName;
- 
+
+        /// <summary>Re-entrancy guard to prevent recursive logging when this logger fails.</summary>
+        [ThreadStatic]
+        static bool _isLoggingFailure;
+
         public ElasticsearchExecutionLogger(ElasticsearchLoggingOptions options,
                                             Dev2LogLevel minimumLevel = ExecutionLogLevel.Default)
             : base(minimumLevel)
         {
             ArgumentNullException.ThrowIfNull(options);
 
-             _indexName = options.IndexName ?? throw new ArgumentException("IndexName must be set.", nameof(options));
+            _indexName = options.IndexName ?? throw new ArgumentException("IndexName must be set.", nameof(options));
 
             var uri = new Uri(options.Uri ?? throw new ArgumentException("Uri must be set.", nameof(options)));
             var settings = new ElasticsearchClientSettings(uri);
@@ -36,7 +40,9 @@ namespace Warewolf.Execution.Lightweight.Logging
             else if (!string.IsNullOrWhiteSpace(options.Username) && !string.IsNullOrWhiteSpace(options.Password))
                 settings = settings.Authentication(new BasicAuthentication(options.Username, options.Password));
 
-            settings = settings.EnableDebugMode();
+            // EnableDebugMode captures full HTTP request/response — memory and perf issue in production.
+            if (options.EnableDebugMode)
+                settings = settings.EnableDebugMode();
 
             _client = new ElasticsearchClient(settings);
         }
@@ -169,7 +175,7 @@ namespace Warewolf.Execution.Lightweight.Logging
         {
             if (_client is null)
             {
-                Console.WriteLine("[ElasticsearchLogger] Client is null — skipping index.");
+                LogFailureSafe("[ElasticsearchLogger] Client is null — skipping index.");
                 return;
             }
 
@@ -185,16 +191,39 @@ namespace Warewolf.Execution.Lightweight.Logging
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[ElasticsearchLogger] Exception indexing document: {e.GetType().Name} — {e.Message}");
+                    LogFailureSafe($"[ElasticsearchLogger] Exception indexing document: {e.GetType().Name} — {e.Message}");
                 }
             });
+        }
+
+        /// <summary>
+        /// Logs an Elasticsearch failure without re-entrancy. Uses Dev2Logger.Warn
+        /// but guards against recursive calls back into this logger via CompositeExecutionLogger.
+        /// </summary>
+        static void LogFailureSafe(string message)
+        {
+            if (_isLoggingFailure) return;
+            _isLoggingFailure = true;
+            try
+            {
+                Dev2.Common.Dev2Logger.Warn(message, "ElasticsearchLogger");
+            }
+            finally
+            {
+                _isLoggingFailure = false;
+            }
         }
 
         public override void LogError(Exception ex, string log)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            var exception = new Exception(log, ex);
-            this.LogError("", exception, new Guid());
+            IndexFireAndForget(new ElasticsearchLogDocument
+            {
+                Level        = "error",
+                Message      = log,
+                ErrorMessage = ex?.Message,
+                StackTrace   = ex?.ToString(),
+            });
         }
 
         public override void LogInfo(string message)
