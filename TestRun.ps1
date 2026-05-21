@@ -549,6 +549,8 @@ function Start-HostFTPSServer {
     $ftpsHomeBase  = Join-Path $ftpRoot 'ftps_home\dev2'
     $ftpsEntryFile = Join-Path $ftpRoot 'ftps_entrypoint.py'
     $ftpsPemFile   = Join-Path $ftpRoot 'ftps_cert.pem'
+    $ftpsLogFile   = Join-Path $ftpRoot 'ftps_server.log'
+    $ftpsErrFile   = Join-Path $ftpRoot 'ftps_server.err.log'
 
     # 1. Subdirs every File/Folder .feature references under ftps://localhost:1010/.
     foreach ($sub in
@@ -586,8 +588,11 @@ function Start-HostFTPSServer {
             Set-Content -LiteralPath $ftpsPemFile -Encoding ascii -NoNewline
     } finally { $rsa.Dispose() }
 
-    # 3. Install pyftpdlib (idempotent; Start-HostFTPServer also installs it).
-    pip install pyftpdlib | Out-Null
+    # 3. Install pyftpdlib + pyOpenSSL (idempotent). pyftpdlib's TLS_FTPHandler
+    # imports `from OpenSSL import SSL, crypto` lazily at instantiation; without
+    # pyOpenSSL the server process exits immediately with ImportError and the
+    # port-21-style "FTPHandler" install of pyftpdlib alone is not enough.
+    pip install pyftpdlib pyOpenSSL | Out-Null
 
     # 4. Entrypoint script. Forward-slash form is what Python expects in literals.
     $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
@@ -634,18 +639,30 @@ if __name__ == '__main__':
         }
     }
 
-    # 6. Launch detached so the orchestrator continues; poll port 1010.
-    $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
-    if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
-    if (-not $pythonwCmd) { throw 'pythonw/python not found; cannot start FTPS server' }
-    $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
-        -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
+    # 6. Launch detached so the orchestrator continues; poll port 1010. Use
+    # python.exe (not pythonw) with stdout/stderr redirected so an ImportError
+    # or TLS-init crash lands in a log we can dump on timeout — pythonw drops
+    # both streams on Windows, which is what hid the previous failure mode.
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonCmd) { throw 'python/pythonw not found; cannot start FTPS server' }
+    if (Test-Path $ftpsLogFile) { Remove-Item -LiteralPath $ftpsLogFile -Force -ErrorAction SilentlyContinue }
+    if (Test-Path $ftpsErrFile) { Remove-Item -LiteralPath $ftpsErrFile -Force -ErrorAction SilentlyContinue }
+    $script:_ftpsProcess = Start-Process -FilePath $pythonCmd `
+        -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden `
+        -RedirectStandardOutput $ftpsLogFile -RedirectStandardError $ftpsErrFile
 
     Write-Host "Waiting for FTPS server on port 1010..."
     for ($i = 1; $i -le 30; $i++) {
         try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
     }
     Write-Warn "FTPS server did not bind port 1010 within 15s"
+    foreach ($pair in @(@($ftpsErrFile,'stderr'), @($ftpsLogFile,'stdout'))) {
+        if (Test-Path $pair[0]) {
+            $body = (Get-Content -LiteralPath $pair[0] -Raw -ErrorAction SilentlyContinue)
+            if ($body) { Write-Host "--- FTPS server $($pair[1]) ($($pair[0])) ---`n$body`n--- end ---" }
+        }
+    }
 }
 
 function Stop-HostFTPSServer {
