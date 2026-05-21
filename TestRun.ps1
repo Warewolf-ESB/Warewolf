@@ -598,10 +598,18 @@ function Start-HostFTPSServer {
     $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
     $ftpsPemForPy  = ($ftpsPemFile  -replace '\\','/')
     $pyBody = @"
+import logging
 import os
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import TLS_FTPHandler
 from pyftpdlib.servers import FTPServer
+
+# DEBUG so every FTP command (PBSZ, PROT, PASV, STOR, etc.) lands in
+# ftps_server.err.log, not just the INFO-level outcomes. The previous artifact
+# only showed `USER 'dev2' logged in` followed by 98s of silence; without
+# DEBUG we can't tell which command .NET FtpWebRequest sends next and whether
+# pyftpdlib answers it.
+logging.basicConfig(level=logging.DEBUG)
 
 PASSIVE_PORTS = '56001-56008'
 
@@ -615,7 +623,14 @@ def main():
     handler.authorizer = authorizer
     handler.certfile = "$ftpsPemForPy"
     handler.tls_control_required = True
-    handler.tls_data_required = True
+    # tls_data_required = False so the server accepts PROT C (plaintext data)
+    # in addition to PROT P. .NET FtpWebRequest with EnableSsl=true normally
+    # negotiates PROT P, but pyOpenSSL's data-channel TLS handshake is the
+    # prime suspect for the 98s hang after PASS. If .NET picks PROT C and the
+    # hang disappears, data-channel TLS is confirmed as the root cause; if it
+    # still hangs, we know to look at control-channel commands instead. Either
+    # outcome is diagnostic — and PROT C on localhost is acceptable for tests.
+    handler.tls_data_required = False
     handler.permit_foreign_addresses = True
     passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
     handler.passive_ports = range(passive_ports[0], passive_ports[1] + 1)
