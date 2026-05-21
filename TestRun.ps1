@@ -534,96 +534,112 @@ function Stop-HostFTPServer {
 }
 
 function Start-HostFTPSServer {
-    # IIS FTPS — Windows-native, ships with Windows Server. Microsoft Schannel
-    # TLS interoperates cleanly with .NET FtpWebRequest. Replaces three failed
-    # prior attempts: pyftpdlib (TLS_FTPHandler hangs against .NET), FileZilla
-    # Server via choco (lands on 0.9.x not 1.x), Docker stilliard/pure-ftpd
-    # (hosted windows-2022 agents have no Linux Docker engine).
-    $siteName = 'WarewolfFTPS'
-    $ftpsHome = 'C:\ftps_home\dev2'
+    # pyftpdlib + TLS_FTPHandler on port 1010. Mirrors Start-HostFTPServer's
+    # pyftpdlib pattern (port 21, FTPHandler) so dev2 / Q/ulw&] / passive range
+    # behaviour is identical across the plain and TLS variants. Replaces four
+    # prior attempts:
+    #   * Docker stilliard/pure-ftpd  — hosted windows-2022 has no Linux Docker
+    #   * FileZilla Server via choco  — choco lands on 0.9.x, not 1.x
+    #   * IIS FTPS                    — works on Server but Win11 client + PS7
+    #                                   blocked by 530.5.1 LogonUser regression
+    #   * pyftpdlib older versions    — earlier TLS_FTPHandler builds hung
+    #                                   .NET FtpWebRequest's data close_notify
+    # Current pyftpdlib 2.2+ interoperates cleanly with .NET FtpWebRequest.
+    $ftpRoot       = Get-FTPSandboxRoot
+    $ftpsHomeBase  = Join-Path $ftpRoot 'ftps_home\dev2'
+    $ftpsEntryFile = Join-Path $ftpRoot 'ftps_entrypoint.py'
+    $ftpsPemFile   = Join-Path $ftpRoot 'ftps_cert.pem'
 
-    # 1. Enable Web-Ftp-Server feature.
-    $f = Get-WindowsFeature -Name Web-Ftp-Server -ErrorAction SilentlyContinue
-    if ($f -and $f.InstallState -ne 'Installed') {
-        Install-WindowsFeature -Name Web-Ftp-Server -IncludeManagementTools | Out-Null
-    }
-    Import-Module WebAdministration -ErrorAction SilentlyContinue
-
-    # 2. Local user 'dev2' with the same legacy password the other FTP sidecars use.
-    if (-not (Get-LocalUser -Name 'dev2' -ErrorAction SilentlyContinue)) {
-        $sec = ConvertTo-SecureString 'Q/ulw&]' -AsPlainText -Force
-        try {
-            New-LocalUser -Name 'dev2' -Password $sec `
-                -PasswordNeverExpires -AccountNeverExpires `
-                -UserMayNotChangePassword -ErrorAction Stop | Out-Null
-        } catch [Microsoft.PowerShell.Commands.InvalidPasswordException] {
-            Write-Warn "Hosted-agent password policy rejected legacy FTPS password for dev2"
-        }
-    }
-
-    # 3. Home dir + test fixtures + NTFS ACL granting dev2 full control.
-    foreach ($sub in @(
+    # 1. Subdirs every File/Folder .feature references under ftps://localhost:1010/.
+    foreach ($sub in
         'FORCOPYFILETESTING','FORCREATEFILETESTING','FORDELETEFILETESTING',
         'FORFILERENAMETESTING','FORMOVEFILETESTING','FORREADFILETESTING',
         'FORREADFOLDERTESTING','FORRENAMETESTING','FORTESTING',
-        'FORUNZIPTESTING','FORWRITEFILETESTING','FORZIPTESTING')) {
-        $d = Join-Path $ftpsHome $sub
+        'FORUNZIPTESTING','FORWRITEFILETESTING','FORZIPTESTING'
+    ) {
+        $d = Join-Path $ftpsHomeBase $sub
         if (!(Test-Path $d)) { mkdir $d | Out-Null }
     }
     foreach ($i in 0..4) {
-        $seed = Join-Path $ftpsHome "FORCOPYFILETESTING\copyfile$i.txt"
+        $seed = Join-Path $ftpsHomeBase "FORCOPYFILETESTING\copyfile$i.txt"
         if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
     }
-    $acl  = Get-Acl -LiteralPath $ftpsHome
-    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
-        'dev2','FullControl','ContainerInherit,ObjectInherit','None','Allow')
-    $acl.AddAccessRule($rule)
-    Set-Acl -LiteralPath $ftpsHome -AclObject $acl
 
-    # 4. Self-signed cert (5y validity) in LocalMachine\My, reused across runs.
-    $cert = Get-ChildItem 'cert:\LocalMachine\My' |
-            Where-Object { $_.Subject -eq 'CN=localhost-ftps' -and $_.NotAfter -gt (Get-Date) } |
-            Select-Object -First 1
-    if (-not $cert) {
-        $cert = New-SelfSignedCertificate `
-            -Subject 'CN=localhost-ftps' -DnsName 'localhost' `
-            -CertStoreLocation 'cert:\LocalMachine\My' `
-            -NotAfter (Get-Date).AddYears(5)
+    # 2. Self-signed PEM (cert + PKCS8 key) for TLS_FTPHandler. Re-generated each
+    # call so an expired/corrupted cert never blocks tests. .NET FtpWebRequest
+    # bypasses cert validation when IsNotCertVerifiable=true (set in CopySteps),
+    # so chain trust doesn't matter.
+    $rsa = [System.Security.Cryptography.RSA]::Create(2048)
+    try {
+        $req = [System.Security.Cryptography.X509Certificates.CertificateRequest]::new(
+            'CN=localhost-pyftps,O=Warewolf,C=ZA', $rsa,
+            [System.Security.Cryptography.HashAlgorithmName]::SHA256,
+            [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
+        $cert = $req.CreateSelfSigned(
+            [DateTimeOffset]::UtcNow.AddDays(-1),
+            [DateTimeOffset]::UtcNow.AddYears(5))
+        $certB64 = [Convert]::ToBase64String(
+            $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert),
+            'InsertLineBreaks')
+        $keyB64  = [Convert]::ToBase64String($rsa.ExportPkcs8PrivateKey(), 'InsertLineBreaks')
+        "-----BEGIN CERTIFICATE-----`n$certB64`n-----END CERTIFICATE-----`n-----BEGIN PRIVATE KEY-----`n$keyB64`n-----END PRIVATE KEY-----`n" |
+            Set-Content -LiteralPath $ftpsPemFile -Encoding ascii -NoNewline
+    } finally { $rsa.Dispose() }
+
+    # 3. Install pyftpdlib (idempotent; Start-HostFTPServer also installs it).
+    pip install pyftpdlib | Out-Null
+
+    # 4. Entrypoint script. Forward-slash form is what Python expects in literals.
+    $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
+    $ftpsPemForPy  = ($ftpsPemFile  -replace '\\','/')
+    $pyBody = @"
+import os
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import TLS_FTPHandler
+from pyftpdlib.servers import FTPServer
+
+PASSIVE_PORTS = '56001-56008'
+
+def main():
+    authorizer = DummyAuthorizer()
+    user_dir = "$ftpsHomeForPy"
+    if not os.path.isdir(user_dir): os.makedirs(user_dir)
+    authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
+
+    handler = TLS_FTPHandler
+    handler.authorizer = authorizer
+    handler.certfile = "$ftpsPemForPy"
+    handler.tls_control_required = True
+    handler.tls_data_required = True
+    handler.permit_foreign_addresses = True
+    passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
+    handler.passive_ports = range(passive_ports[0], passive_ports[1] + 1)
+
+    server = FTPServer(('0.0.0.0', 1010), handler)
+    server.serve_forever()
+
+if __name__ == '__main__':
+    main()
+"@
+    $pyBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
+
+    # 5. Firewall — control + PASV. pyftpdlib binds the listener itself but the
+    # Windows Defender filter still drops inbound on the data ports.
+    foreach ($rule in @(
+        @{Name='Warewolf-FTPS-Control'; Port='1010'},
+        @{Name='Warewolf-FTPS-PASV';    Port='56001-56008'})) {
+        if (-not (Get-NetFirewallRule -DisplayName $rule.Name -ErrorAction SilentlyContinue)) {
+            New-NetFirewallRule -DisplayName $rule.Name -Direction Inbound -Action Allow `
+                -Protocol TCP -LocalPort $rule.Port -ErrorAction SilentlyContinue | Out-Null
+        }
     }
-    $thumbprint = $cert.Thumbprint
 
-    # 5. FTP site bound to 1010 with the home dir as physical root.
-    if (-not (Get-Website -Name $siteName -ErrorAction SilentlyContinue)) {
-        New-WebFtpSite -Name $siteName -Port 1010 -PhysicalPath $ftpsHome -Force | Out-Null
-    }
-
-    # 6. SSL + authentication via the IIS:\ provider's dot-notation property setter.
-    $psPath = "IIS:\Sites\$siteName"
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.serverCertHash'      -Value $thumbprint
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.serverCertStoreName' -Value 'MY'
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.controlChannelPolicy' -Value 'SslRequire'
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.ssl.dataChannelPolicy'    -Value 'SslRequire'
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.authentication.basicAuthentication.enabled'     -Value $true
-    Set-ItemProperty -Path $psPath -Name 'ftpServer.security.authentication.anonymousAuthentication.enabled' -Value $false
-
-    # 7. Authorization rule via appcmd (cleaner than the Add-WebConfigurationProperty
-    # collection-item dance, which silently no-ops on duplicates).
-    $appcmd = "$env:windir\system32\inetsrv\appcmd.exe"
-    if (Test-Path $appcmd) {
-        & $appcmd set config "$siteName" `
-            "/section:system.ftpServer/security/authorization" `
-            "/+[accessType='Allow',users='dev2',permissions='Read, Write']" 2>$null | Out-Null
-    }
-
-    # 8. Passive port range — keep narrow + match what Depends.cs / firewall expect.
-    Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
-        -Filter '/system.ftpServer/firewallSupport' -Name 'lowDataChannelPort'  -Value 56001
-    Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' `
-        -Filter '/system.ftpServer/firewallSupport' -Name 'highDataChannelPort' -Value 56008
-
-    # 9. Cycle ftpsvc to pick up SSL/authorization config + start the site.
-    Restart-Service ftpsvc -Force -ErrorAction SilentlyContinue
-    Start-WebItem -PSPath $psPath -ErrorAction SilentlyContinue
+    # 6. Launch detached so the orchestrator continues; poll port 1010.
+    $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+    if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonwCmd) { throw 'pythonw/python not found; cannot start FTPS server' }
+    $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
+        -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
 
     Write-Host "Waiting for FTPS server on port 1010..."
     for ($i = 1; $i -le 30; $i++) {
@@ -633,7 +649,12 @@ function Start-HostFTPSServer {
 }
 
 function Stop-HostFTPSServer {
-    Stop-WebItem -PSPath 'IIS:\Sites\WarewolfFTPS' -ErrorAction SilentlyContinue
+    # Stop-HostFTPServer kills all pythonw.exe — call only one of the two stop
+    # functions in a teardown sequence (the second is a no-op). Wrapped in cmd
+    # /c so taskkill's stderr + non-zero exit when the process is already gone
+    # doesn't abort the surrounding script.
+    cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
+    $global:LASTEXITCODE = 0
 }
 
 function Start-HostSFTPServer {
