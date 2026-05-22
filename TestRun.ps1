@@ -636,7 +636,7 @@ def _capped_do_ssl_shutdown(self):
     return _orig_do_ssl_shutdown(self)
 TLS_DTPHandler._do_ssl_shutdown = _capped_do_ssl_shutdown
 
-PASSIVE_PORTS = '56001-56008'
+PASSIVE_PORTS = '17008-17015'
 
 def main():
     authorizer = DummyAuthorizer()
@@ -665,7 +665,7 @@ if __name__ == '__main__':
     # Windows Defender filter still drops inbound on the data ports.
     foreach ($rule in @(
         @{Name='Warewolf-FTPS-Control'; Port='1010'},
-        @{Name='Warewolf-FTPS-PASV';    Port='56001-56008'})) {
+        @{Name='Warewolf-FTPS-PASV';    Port='17008-17015'})) {
         if (-not (Get-NetFirewallRule -DisplayName $rule.Name -ErrorAction SilentlyContinue)) {
             New-NetFirewallRule -DisplayName $rule.Name -Direction Inbound -Action Allow `
                 -Protocol TCP -LocalPort $rule.Port -ErrorAction SilentlyContinue | Out-Null
