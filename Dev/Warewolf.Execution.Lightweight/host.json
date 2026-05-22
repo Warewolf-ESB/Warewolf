@@ -1,82 +1,41 @@
 {
     "version": "2.0",
-
     "functionTimeout": "00:10:00",
-
     "extensions": {
         "http": {
             "routePrefix": ""
         }
     },
     "logging": {
-
-        // Controls WHEN logs are written to the filesystem.
-        // "always"    → always write to disk regardless of debug state (recommended for production)
-        // "never"     → disk writing disabled entirely; logs only appear in live stream
-        // "debugOnly" → disk writing only when a remote debugger is attached (DEFAULT if omitted)
         "fileLoggingMode": "always",
-
-        "logLevel": {
-
-            // Catch-all floor for any category not explicitly listed below.
-            // Any logger without its own entry here will use this level.
-            // Trace | Debug | Information | Warning | Error | Critical | None
-            "default": "Warning",
-
-            // Controls all function invocation logs — triggered code inside your [Function] methods.
-            // "Information" → logs function start, end, duration (useful for tracing slow invocations)
-            // "Warning"     → only logs when something goes wrong inside the function body
-            // "Error"       → only logs unhandled exceptions and explicit LogError calls
-            // "None"        → silences all function body logs entirely
-            "Function": "Error",
-
-            // Controls the per-invocation result summary line the host writes after every execution.
-            // Example line: "Executed 'ProcessOrder' (Succeeded, Id=abc-123, Duration=45ms)"
-            // "Information" → logs every invocation result (high volume in busy apps)
-            // "Warning"     → only logs when invocation result is a warning or worse
-            // "Error"       → only logs failed invocations (recommended to reduce noise)
-            // "None"        → suppresses result lines entirely
-            "Host.Results": "Error",
-
-            // Controls the metric aggregation summaries the host emits on a rolling window.
-            // Example line: "Flush 1 function activity entries"
-            // "Information" → emits aggregation summaries regularly (noisy, useful for throughput metrics)
-            // "Warning"     → only emits if aggregation itself encounters a problem
-            // "Error"       → near-silent; only critical aggregator failures surface
-            // "None"        → disables aggregation logging completely
-            "Host.Aggregator": "Error",
-
-            // Your custom execution logger — controls verbosity of runtime execution traces.
-            // "Debug"       → full execution step tracing (high volume, use only when diagnosing)
-            // "Information" → key execution milestones logged
-            // "Warning"     → only logs unexpected execution states or recoverable issues
-            // "Error"       → only logs execution failures
-            "Warewolf.Execution.Lightweight.Logging.AzureExecutionLogger": "Warning",
-
-            // Your audit logger — controls security and access audit trail verbosity.
-            // "Information" → logs every auditable action (recommended for compliance environments)
-            // "Warning"     → only logs audit events that represent anomalies or policy violations
-            // "Error"       → only logs audit failures (e.g. failed writes to audit store)
-            // "None"        → disables audit logging — avoid unless audit trail is handled elsewhere
-            "Warewolf.Execution.Lightweight.Security.AuditLogger": "Warning",
-
-            // Your startup orchestrator — controls infrastructure initialisation log verbosity.
-            // "Debug"       → full startup step tracing (useful when diagnosing cold start failures)
-            // "Information" → logs each startup phase completion
-            // "Warning"     → only logs startup anomalies or degraded-mode initialisation
-            // "Error"       → only logs startup failures that may affect runtime behaviour
-            "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Warning"
+        "applicationInsights": {
+            "samplingSettings": {
+                "isEnabled": true,
+                "maxTelemetryItemsPerSecond": 20,
+                "excludedTypes": "Request;Exception",
+                "includedTypes": "Dependency;Event;PageView"
+            },
+            "enableLiveMetricsFilters": true,
+            "enableDependencyTracking": true,
+            "enablePerformanceCountersCollection": true,
+            "httpAutoCollectionOptions": {
+                "enableHttpTriggerExtendedInfoCollection": true,
+                "enableW3CDistributedTracing": true,
+                "enableResponseHeaderInjection": true
+            }
         },
-
+        "logLevel": {
+            "default": "Information",
+            "Function": "Information",
+            "Host.Results": "Information",
+            "Host.Aggregator": "Warning",
+            "Warewolf.Execution.Lightweight.Logging.AzureExecutionLogger": "Information",
+            "Warewolf.Execution.Lightweight.Security.AuditLogger": "Information",
+            "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Information"
+        },
         "console": {
-            // Controls whether logs are written to stdout in addition to the filesystem.
-            // true  → logs appear in the live log stream (az webapp log tail) and Kudu log stream
-            // false → no console output; logs only go to filesystem if fileLoggingMode permits
-            // Should almost always be true — this is your only real-time visibility mechanism
-            // when Application Insights is not available
             "isEnabled": true
         }
-
     },
 
     "concurrency": {

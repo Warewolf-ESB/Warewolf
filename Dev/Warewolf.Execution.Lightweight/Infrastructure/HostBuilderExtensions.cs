@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
 

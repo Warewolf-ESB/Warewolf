@@ -78,6 +78,9 @@
     <!-- Analyzer only (IMPORTANT) -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
 
+    <!-- Application Insights for rich telemetry and structured logging -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />
+
     <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
 
