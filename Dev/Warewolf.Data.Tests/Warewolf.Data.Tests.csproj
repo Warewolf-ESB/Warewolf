@@ -23,7 +23,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" Version="6.23.1" />

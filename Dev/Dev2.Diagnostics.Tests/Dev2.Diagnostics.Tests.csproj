@@ -124,13 +124,13 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.config">

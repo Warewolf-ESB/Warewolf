@@ -400,13 +400,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="ServiceStack" Version="6.3.0" />
     <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />

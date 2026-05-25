@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -549,18 +549,18 @@
 		<PackageReference Include="System.Data.SQLite">
 			<Version>1.0.118</Version>
 		</PackageReference>
-		<PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+		<PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
 		<PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
 		<ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
-		<PackageReference Include="CoreWCF.Http" Version="1.2.1" />
-		<PackageReference Include="CoreWCF.NetTcp" Version="1.2.1" />
-		<PackageReference Include="CoreWCF.Primitives" Version="1.2.1" />
-		<PackageReference Include="CoreWCF.WebHttp" Version="1.2.1" />
+		<PackageReference Include="CoreWCF.Http" Version="1.9.0" />
+		<PackageReference Include="CoreWCF.NetTcp" Version="1.9.0" />
+		<PackageReference Include="CoreWCF.Primitives" Version="1.9.0" />
+		<PackageReference Include="CoreWCF.WebHttp" Version="1.9.0" />
 		<PackageReference Include="MessagePack" Version="2.4.59" />
 		<PackageReference Include="log4net">
 			<Version>2.0.15</Version>

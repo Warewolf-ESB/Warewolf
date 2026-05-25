@@ -15,7 +15,7 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
@@ -23,7 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <!--<Reference Include="ServiceStack.Interfaces">

@@ -105,9 +105,9 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="GherkinSpec.MsTest" Version="3.0.2" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System.Activities.Presentation" />

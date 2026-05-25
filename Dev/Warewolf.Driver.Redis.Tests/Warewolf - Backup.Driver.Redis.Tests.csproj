@@ -42,7 +42,7 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj" />

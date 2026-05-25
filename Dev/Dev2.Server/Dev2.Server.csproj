@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -372,12 +372,12 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
@@ -419,7 +419,7 @@
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.70" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.6.1" />
   </ItemGroup>
   <!-- Copy Resources - Release/Resources to the build output so they are included in the Linux Docker build context -->
   <Target Name="CopyReleaseResourcesToOutput" AfterTargets="Build" Condition="Exists('$(SolutionDir)Resources - Release\Resources')">

@@ -49,8 +49,8 @@
       <Version>3.8.3</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="System.Web.Services.Description" Version="4.10.0" />
