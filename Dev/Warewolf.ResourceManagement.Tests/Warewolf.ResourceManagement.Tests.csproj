@@ -65,7 +65,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
-    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

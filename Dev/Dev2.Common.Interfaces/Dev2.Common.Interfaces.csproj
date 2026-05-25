@@ -464,6 +464,10 @@
          which references System.Text.RegularExpressions 4.3.0 (GHSA-cmhx-cq75-c4mj).
          Pin to 4.3.1 (the patched version) so NuGet picks the safe one across the graph. -->
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <!-- UiPath.Workflow 6.0.3 -> Microsoft.CodeAnalysis.* 4.0.1 transitively requires
+         System.Runtime.CompilerServices.Unsafe 6.0.0, but CoreWCF 1.9.0's Kestrel chain
+         needs >= 6.1.0. Pin here so consumers resolve the higher version. -->
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
