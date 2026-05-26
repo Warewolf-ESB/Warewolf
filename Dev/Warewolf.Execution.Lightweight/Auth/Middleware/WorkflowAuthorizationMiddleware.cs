@@ -108,6 +108,13 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
+        // ── apis.json bypass — discovery has its own permission filtering ─────
+        if (path.EndsWith("/apis.json", StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return;
+        }
+
         // ── Development-only bypass ───────────────────────────────────────────
         // NEVER active in Production — environment guard is mandatory.
         if (_hostEnvironment.IsDevelopment() &&
@@ -249,19 +256,44 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 
     /// <summary>
     /// Extracts a normalised workflow name from a <c>/secure/*</c> or
-    /// <c>/services/*</c> path.  Marked <c>internal</c> for unit testing — no
-    /// production caller exists outside this assembly.
+    /// <c>/services/*</c> path, preserving any folder prefix so that
+    /// resource-scope lookups in <see cref="IWorkflowAuthPolicyLoader"/> resolve
+    /// correctly for nested workflows (e.g. <c>folder/workflow</c>).
+    ///
+    /// <para>Examples:</para>
+    /// <code>
+    ///   /secure/MyWorkflow.json     → "myworkflow"
+    ///   /secure/Folder/Sub.json     → "folder/sub"
+    ///   /services/A/B/Flow.json     → "a/b/flow"
+    /// </code>
+    ///
+    /// Marked <c>internal</c> for unit testing — no production caller exists
+    /// outside this assembly.
     /// </summary>
     internal static string? ExtractWorkflowName(string path, bool isSecure)
     {
-        var prefix  = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
-        var segment = path
-            .Substring(prefix.Length)
-            .Split('/')[0]
-            .Split('?')[0];
+        var prefix    = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
+        var remainder = path.Substring(prefix.Length).Split('?')[0];
 
-        var name = Path.GetFileNameWithoutExtension(segment).ToLowerInvariant();
-        return string.IsNullOrEmpty(name) ? null : name;
+        var segments = remainder.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (segments.Length == 0)
+            return null;
+
+        // Strip the recognised suffix (.json, .xml, .debug, .api) from the last segment only.
+        var lastSegment    = Uri.UnescapeDataString(segments[^1]);
+        var strippedLast   = Path.GetFileNameWithoutExtension(lastSegment);
+        if (string.IsNullOrEmpty(strippedLast))
+            return null;
+
+        // Preserve all preceding folder segments to support resource-scope policy matching.
+        if (segments.Length == 1)
+            return strippedLast.ToLowerInvariant();
+
+        var folderParts = segments[..^1]
+            .Select(Uri.UnescapeDataString)
+            .Select(s => s.ToLowerInvariant());
+
+        return string.Join("/", folderParts.Append(strippedLast.ToLowerInvariant()));
     }
 
     private void LogDiag(FunctionContext context, object? principalObj, string path)

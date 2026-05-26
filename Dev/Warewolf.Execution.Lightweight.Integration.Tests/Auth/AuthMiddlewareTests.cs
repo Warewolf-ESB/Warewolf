@@ -530,14 +530,25 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
                 ("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",    "John Doe"),
                 ("roles", "SomeGroup"));
 
-            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
+            // Use /Secure/apis.json — always returns 200 regardless of workflow inventory.
+            // The purpose of this test is to verify that EasyAuthPrincipalParser.NormalizeClaimType
+            // handles all three explicit claim-type mappings without crashing (no 500).
+            // Targeting a workflow execution route (e.g. /Secure/HelloWorld.json) is fragile
+            // because it returns 500 when the workflow file is absent on the test machine,
+            // masking the real assertion intent.
+            var req = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
             req.Headers.Add(AuthConstants.ClientPrincipalHeader, header);
 
             var resp = await _http.SendAsync(req);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
+                "Full claim-set EasyAuth header must allow the request through and return 200 on /Secure/apis.json. " +
+                $"Got {(int)resp.StatusCode}: {body}");
 
             Assert.AreNotEqual(HttpStatusCode.InternalServerError, resp.StatusCode,
                 "Full claim-set EasyAuth header must not cause a 500. " +
-                $"Got {(int)resp.StatusCode}");
+                $"Got {(int)resp.StatusCode}: {body}");
         }
 
         /// <summary>

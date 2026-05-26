@@ -47,7 +47,10 @@ internal sealed class HostEnvironmentConfig
             debugKeyVaultSecret:          isDevelopment
                                           ? NullIfEmpty(Environment.GetEnvironmentVariable("DEBUG_AZURE_KEYVAULT_SECRET"))
                                           : null,
-            isDevelopment:                isDevelopment);
+            isDevelopment:                isDevelopment,
+            debugPrincipalToken:          isDevelopment
+                                          ? NullIfEmpty(Environment.GetEnvironmentVariable("DEBUG_PRINCIPAL_TOKEN"))
+                                          : null);
     }
 
     private static string? NullIfEmpty(string? value) =>
@@ -105,6 +108,21 @@ internal sealed class HostEnvironmentConfig
     internal string? DebugKeyVaultSecret { get; }
 
     /// <summary>
+    /// Base64-encoded <c>X-MS-CLIENT-PRINCIPAL</c> payload for local debugging.
+    /// Obtained by calling <c>https://&lt;your-site&gt;/.auth/me</c>, taking the first
+    /// element's <c>clientPrincipal</c> JSON object and base64-encoding it.
+    ///
+    /// When set in development, <see cref="Parsers.DebugPrincipalParser"/> injects
+    /// this as the authenticated principal so that the full auth pipeline
+    /// (group resolution, permission checks) runs with real Azure roles — without
+    /// requiring a live EasyAuth-enabled App Service locally.
+    ///
+    /// Source: <c>DEBUG_PRINCIPAL_TOKEN</c> environment variable (<c>local.settings.json</c>).
+    /// <b>Never set in production.</b>
+    /// </summary>
+    internal string? DebugPrincipalToken { get; }
+
+    /// <summary>
     /// Pre-built credential options snapshot for Key Vault authentication.
     /// Consumed by <see cref="KeyVaultCredentialFactory.Create"/>.
     /// </summary>
@@ -150,7 +168,8 @@ internal sealed class HostEnvironmentConfig
         string? tenantId,
         string? managedIdentityClientId,
         string? debugKeyVaultSecret,
-        bool    isDevelopment)
+        bool    isDevelopment,
+        string? debugPrincipalToken)
     {
         WorkflowsDirectory          = workflowsDirectory;
         VaultName                   = vaultName;
@@ -161,5 +180,6 @@ internal sealed class HostEnvironmentConfig
         ManagedIdentityClientId     = managedIdentityClientId;
         DebugKeyVaultSecret         = debugKeyVaultSecret;
         IsDevelopment               = isDevelopment;
+        DebugPrincipalToken         = debugPrincipalToken;
     }
 }

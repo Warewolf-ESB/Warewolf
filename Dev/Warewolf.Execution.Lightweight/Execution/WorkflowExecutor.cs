@@ -97,6 +97,33 @@ namespace Warewolf.Execution.Lightweight
                 return WorkflowExecutionResult.Failure("WorkflowFilePath must be provided.");
             }
 
+            // OPENAPI short-circuit — generate the spec even when the workflow file is missing.
+            // WorkflowOpenApiGenerator.ReadDataList handles missing/unreadable files gracefully
+            // by returning an empty DataList, matching server GetOpenAPIServiceHandler behaviour.
+            if (request.ReturnType == EmitionTypes.OPENAPI)
+            {
+                var openapiId   = Guid.NewGuid();
+                var openapiStart = DateTime.UtcNow;
+                Dev2Logger.Info($"WorkflowExecutor generating OpenAPI spec for: {request.WorkflowName ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath)}", openapiId.ToString());
+                var resolvedNameForSpec = request.WorkflowName
+                    ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
+                var spec = WorkflowOpenApiGenerator.Generate(
+                    request.WorkflowFilePath,
+                    resolvedNameForSpec,
+                    request.WebServerUri ?? new Uri("https://localhost"));
+                Dev2Logger.Info("WorkflowExecutor OpenAPI spec generated successfully (pre-file-check path).", openapiId.ToString());
+                return new WorkflowExecutionResult
+                {
+                    IsSuccess     = true,
+                    ExecutionId   = openapiId,
+                    StartTime     = openapiStart,
+                    EndTime       = DateTime.UtcNow,
+                    Duration      = DateTime.UtcNow - openapiStart,
+                    ContentType   = "application/json",
+                    PayloadWriter = (stream, ct) => WriteStringToStreamAsync(stream, spec, ct)
+                };
+            }
+
             if (!File.Exists(request.WorkflowFilePath))
             {
                 Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");

@@ -322,15 +322,6 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 .Select(kvp => ResolvedRolePolicy.Create(kvp.Key, kvp.Value))
                 .ToList();
 
-            var hasExecute = rolePolicies.Any(e => e.EffectivePermissions.HasFlag(WorkflowPermission.Execute));
-            if (!hasExecute)
-            {
-                _logger.LogDebug(
-                    "Skipping resource policy for '{Workflow}' — no role has Execute permission.",
-                    workflowKey);
-                continue;
-            }
-
             var policy = WorkflowAuthPolicy.Create(
                 workflowKey,
                 rolePolicies,

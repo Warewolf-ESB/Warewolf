@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Auth.Middleware;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight
@@ -76,27 +77,44 @@ namespace Warewolf.Execution.Lightweight
     /// </summary>
     public sealed class WorkflowHttpFunction
     {
-        readonly IWorkflowExecutor   _workflowExecutor;
-        readonly IApisJsonGenerator  _apisJsonGenerator;
-        readonly string              _workflowsDirectory;
+        readonly IWorkflowExecutor      _workflowExecutor;
+        readonly IApisJsonGenerator     _apisJsonGenerator;
+        readonly IWorkflowPolicyMatcher _policyMatcher;
+        readonly string                 _workflowsDirectory;
 
-        public WorkflowHttpFunction(IWorkflowExecutor workflowExecutor, IApisJsonGenerator apisJsonGenerator)
+        public WorkflowHttpFunction(
+            IWorkflowExecutor      workflowExecutor,
+            IApisJsonGenerator     apisJsonGenerator,
+            IWorkflowPolicyMatcher policyMatcher)
         {
             _workflowExecutor   = workflowExecutor;
             _apisJsonGenerator  = apisJsonGenerator;
+            _policyMatcher      = policyMatcher;
             _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 
         // ── Authenticated workflow routes ─────────────────────────────────────
 
-        /// <summary>Mirrors Services/{*name} — function-key authenticated execution.</summary>
+        /// <summary>
+        /// Mirrors Services/{*name} — function-key authenticated execution.
+        /// <para>
+        /// <c>FunctionContext</c> is accepted so that the principal already built by
+        /// <see cref="ClaimsPrincipalBuilderMiddleware"/> can be reused for the
+        /// <c>/services/apis.json</c> discovery route — exactly as
+        /// <see cref="ExecuteSecureWorkflow"/> does for <c>/secure/apis.json</c>.
+        /// Without it, <see cref="GetSecureFilter"/> falls back to a raw JWT header
+        /// check which fails when App Service EasyAuth has already consumed the token,
+        /// resulting in an empty discovery list.
+        /// </para>
+        /// </summary>
         [Function("ExecuteService")]
         [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteService(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "Services/{*name}")] HttpRequestData req,
-            string name)
-            => await ExecuteNamedWorkflow(req, name, isPublic: false);
+            string name,
+            FunctionContext context)
+            => await ExecuteNamedWorkflow(req, name, isPublic: false, context);
 
         /// <summary>
         /// Mirrors Secure/{*name} — JWT-authenticated execution.
@@ -133,15 +151,56 @@ namespace Warewolf.Execution.Lightweight
         // ── apis.json discovery routes ────────────────────────────────────────
 
         /// <summary>
-        /// Root-level apis.json — lists all publicly visible workflows.
-        /// Mirrors <c>WebServerController.ExecuteGetRootLevelApisJson</c>.
-        /// Always accessible; filtered by public-view permissions when a
-        /// <c>secure.config</c> is present.
+        /// Root-level apis.json — lists workflows visible to the caller.
+        ///
+        /// <para>
+        /// Mirrors <c>WebServerController.ExecuteGetRootLevelApisJson</c> /
+        /// <c>GetApisJsonServiceHandler.ProcessRequest</c> together with
+        /// <c>ServerAuthorizationService.IsAuthorizedImpl</c> which routes both
+        /// <c>WebExecuteGetRootLevelApisJson</c> and <c>WebExecuteGetApisJsonForFolder</c>
+        /// through <c>IsAuthorizedToConnect(request.User)</c> — a global "any permission"
+        /// gate — before the per-resource discovery loop.
+        /// </para>
+        ///
+        /// <para>
+        /// <b>Connect gate (Q3 = same as server)</b>: because <c>/apis.json</c> is a
+        /// route and does not map to any workflow resource, the gate is the same
+        /// <c>AuthorizationContext.Any</c> check the server uses: at least one in-role
+        /// permission entry must exist (public or authenticated, depending on
+        /// <c>?isPublic</c>).
+        /// </para>
+        ///
+        /// <para>
+        /// <b>isPublic (Q2 = B)</b>: reads <c>?isPublic=true</c> from the query string.
+        /// When <c>true</c>, falls through without requiring a token and applies the
+        /// public discovery filter.  When absent or <c>false</c>, the secure filter is
+        /// used; if no valid credential is present <see cref="GetSecureFilter"/> returns
+        /// a predicate that hides every workflow.
+        /// </para>
         /// </summary>
         [Function("ExecuteRootApisJson")]
         public async Task<HttpResponseData> ExecuteRootApisJson(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "apis.json")] HttpRequestData req)
-            => await CreateApisJsonResponse(req, pathFilter: null, isPublic: true, GetPublicFilter());
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "apis.json")] HttpRequestData req, FunctionContext context)
+        {
+            var config   = SecureConfigLoader.Config;
+            var isPublic = IsPublicQueryParam(req);
+
+            if (isPublic)
+            {
+                // Connect gate — public path: any Public-group entry must grant ≥1 permission.
+                if (config.IsLoaded && !PermissionChecker.HasPublicConnectPermission(config))
+                    return await BuildForbiddenResponse(req, "Public access to apis.json is not permitted.");
+
+                return await CreateApisJsonResponse(req, pathFilter: null, isPublic: true, GetPublicFilter());
+            }
+
+            // Connect gate — authenticated path: caller must have ≥1 permission anywhere.
+            var (isAuthenticated, userGroups) = ResolveCallerGroups(req, context);
+            if (config.IsLoaded && !PermissionChecker.HasConnectPermission(config, userGroups))
+                return await BuildUnauthorizedResponse(req);
+
+            return await CreateApisJsonResponse(req, pathFilter: null, isPublic: false, GetSecureFilter(req, context));
+        }
 
         // ── Named-workflow routes ─────────────────────────────────────────────
 
@@ -202,9 +261,13 @@ namespace Warewolf.Execution.Lightweight
         ///
         /// <list type="bullet">
         ///   <item>apis.json routes → permission-filtered discovery, never returns 401.</item>
-        ///   <item>Secure execution routes → JWT validation; returns 401 when the token is
-        ///         absent, invalid, or no <c>secure.config</c> exists.</item>
-        ///   <item>Public execution routes → no auth check; executes unconditionally.</item>
+        ///   <item>Secure/Services execution routes → JWT validation + policy check
+        ///         (View|Execute); returns 401 when the token is absent or invalid,
+        ///         403 when the policy denies access.</item>
+        ///   <item>Public execution routes → policy check with an anonymous principal
+        ///         so only workflows whose <em>Public</em> group has Execute permission
+        ///         are reachable (mirrors server's <c>AuthorizationContext.Execute</c>
+        ///         check for <c>WebExecutePublicWorkflow</c>).</item>
         /// </list>
         /// </summary>
         async Task<HttpResponseData> ExecuteNamedWorkflow(
@@ -216,9 +279,58 @@ namespace Warewolf.Execution.Lightweight
             // ── apis.json: always accessible, filtered by permissions ─────────────
             if (NameSuffixParser.IsApisJsonRequest(name))
             {
-                var pathFilter   = NameSuffixParser.ExtractApisJsonPath(name);
-                var permFilter   = isPublic ? GetPublicFilter() : GetSecureFilter(req, context);
-                return await CreateApisJsonResponse(req, pathFilter, isPublic, permFilter);
+                var pathFilter = NameSuffixParser.ExtractApisJsonPath(name);
+
+                if (isPublic)
+                    return await CreateApisJsonResponse(req, pathFilter, isPublic, GetPublicFilter());
+
+                // ── Connect gate (authenticated path) ─────────────────────────────
+                // Mirrors ServerAuthorizationService.IsAuthorizedImpl routing both
+                // WebExecuteGetRootLevelApisJson and WebExecuteGetApisJsonForFolder
+                // through IsAuthorizedToConnect(request.User) — a global "any permission"
+                // gate — before the per-resource discovery loop.
+                var config = SecureConfigLoader.Config;
+                var (_, callerGroups) = ResolveCallerGroups(req, context);
+                if (config.IsLoaded && !PermissionChecker.HasConnectPermission(config, callerGroups))
+                    return await BuildUnauthorizedResponse(req);
+
+                return await CreateApisJsonResponse(req, pathFilter, isPublic, GetSecureFilter(req, context));
+            }
+
+            // ── Public execution — enforce Execute permission via the unified policy
+            //    matcher using an anonymous principal.  This mirrors the server's
+            //    AuthorizationContext.Execute check for WebExecutePublicWorkflow and
+            //    routes the decision through the same WorkflowPolicyMatcher /
+            //    WorkflowAuthPolicyLoader pipeline as secure routes, so that:
+            //      • Public group's Execute flag is the sole gate (no JWT required).
+            //      • Resource-scope vs global-scope resolution is consistent.
+            //      • BYPASS_SECURE_CONFIG=true is honoured in open-access mode.
+            if (isPublic)
+            {
+                var (publicWfName, _, _, _) = NameSuffixParser.Parse(name);
+                // Build a fully-qualified key that preserves folder context — mirrors
+                // how WorkflowAuthorizationMiddleware.ExtractWorkflowName resolves the
+                // resource scope key for /secure/ and /services/ routes.
+                var publicWfKey = BuildWorkflowKey(name);
+                var matchResult = _policyMatcher.Evaluate(
+                    publicWfKey,
+                    WorkflowClaimsPrincipal.Anonymous(),
+                    WorkflowPermission.Execute);
+
+                if (matchResult.Outcome == PolicyMatchOutcome.Forbidden ||
+                    matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny)
+                {
+                    var statusCode = matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny
+                        ? HttpStatusCode.ServiceUnavailable
+                        : HttpStatusCode.Forbidden;
+                    var response = req.CreateResponse(statusCode);
+                    await response.WriteStringAsync(JsonConvert.SerializeObject(new
+                    {
+                        error = matchResult.DenialReason
+                               ?? "The workflow does not have public Execute permission."
+                    }));
+                    return response;
+                }
             }
 
             // ── Secure (non-public) execution ─────────────────────────────────────
@@ -369,6 +481,57 @@ namespace Warewolf.Execution.Lightweight
             return response;
         }
 
+        static async Task<HttpResponseData> BuildForbiddenResponse(HttpRequestData req, string message)
+        {
+            var response = req.CreateResponse(HttpStatusCode.Forbidden);
+            await response.WriteStringAsync(JsonConvert.SerializeObject(new { error = message }));
+            return response;
+        }
+
+        /// <summary>
+        /// Reads the <c>?isPublic</c> query-string parameter.
+        /// Returns <c>true</c> only when the value is explicitly <c>true</c>
+        /// (case-insensitive), mirroring how the server binds the route variable.
+        /// </summary>
+        static bool IsPublicQueryParam(HttpRequestData req)
+        {
+            var qs = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+            var val = qs["isPublic"];
+            return string.Equals(val, "true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Resolves the caller's group list from the middleware principal context,
+        /// Warewolf HMAC-SHA256 JWT, or Entra token — in that order.
+        /// Returns <c>(true, groups)</c> when at least one valid source was found.
+        /// </summary>
+        (bool IsAuthenticated, IReadOnlyList<string>? Groups) ResolveCallerGroups(
+            HttpRequestData req, FunctionContext? context)
+        {
+            // ── 1. Middleware-built principal (preferred) ─────────────────────────
+            if (context is not null &&
+                context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                p is Auth.WorkflowClaimsPrincipal wcp &&
+                wcp.Identity?.IsAuthenticated == true)
+            {
+                return (true, (IReadOnlyList<string>)wcp.Groups);
+            }
+
+            var config     = SecureConfigLoader.Config;
+            var authHeader = TryGetAuthHeader(req);
+
+            // ── 2. Warewolf HMAC-SHA256 JWT ───────────────────────────────────────
+            var groups = JwtValidator.GetUserGroups(authHeader, config.SecretKey);
+            if (groups is not null)
+                return (true, groups);
+
+            // ── 3. Microsoft Entra OAuth token ────────────────────────────────────
+            var easyAuthHeader = TryGetEasyAuthPrincipalHeader(req);
+            var entraRoles = EntraTokenValidator.GetRoles(
+                authHeader, easyAuthHeader, config.EntraTenantId, config.EntraAudience);
+            return (entraRoles is not null, entraRoles);
+        }
+
         static string? TryGetAuthHeader(HttpRequestData req) =>
             req.Headers.TryGetValues("Authorization", out var vals)
                 ? vals.FirstOrDefault()
@@ -378,5 +541,35 @@ namespace Warewolf.Execution.Lightweight
             req.Headers.TryGetValues(EntraTokenValidator.EasyAuthPrincipalHeader, out var vals)
                 ? vals.FirstOrDefault()
                 : null;
+
+        // ── Resource key helpers ──────────────────────────────────────────────────
+
+        /// <summary>
+        /// Builds a lowercase, folder-preserving resource key from a raw route
+        /// segment (e.g. <c>"Folder/MyWorkflow.json"</c> → <c>"folder/myworkflow"</c>).
+        ///
+        /// Mirrors <see cref="WorkflowAuthorizationMiddleware.ExtractWorkflowName"/>
+        /// so that public-route policy lookups resolve the same resource-scope key as
+        /// secure/services routes.
+        /// </summary>
+        static string BuildWorkflowKey(string routeSegment)
+        {
+            var stripped = routeSegment.Split('?')[0];
+            var segments = stripped.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            if (segments.Length == 0)
+                return string.Empty;
+
+            var lastStripped = Path.GetFileNameWithoutExtension(
+                Uri.UnescapeDataString(segments[^1]));
+
+            if (segments.Length == 1)
+                return lastStripped.ToLowerInvariant();
+
+            var folderParts = segments[..^1]
+                .Select(Uri.UnescapeDataString)
+                .Select(s => s.ToLowerInvariant());
+
+            return string.Join("/", folderParts.Append(lastStripped.ToLowerInvariant()));
+        }
     }
 }

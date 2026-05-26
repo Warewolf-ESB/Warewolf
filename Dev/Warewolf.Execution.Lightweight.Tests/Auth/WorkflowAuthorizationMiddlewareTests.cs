@@ -62,11 +62,11 @@ public class WorkflowAuthorizationMiddlewareTests
     [TestMethod]
     public void MWA06_ExtractWorkflowName_SubFolder_ReturnsWorkflowName()
     {
-        // Policy lookup uses the workflow NAME (last path segment), not the folder.
-        // NormalizeWorkflowKey strips the folder prefix so resource-scope entries
-        // keyed by workflow name are found correctly.
+        // The implementation preserves the folder prefix so that resource-scope
+        // policy entries keyed as "folder/helloworld" in secure.config are resolved
+        // correctly for nested workflows (e.g. /secure/folder/HelloWorld → "folder/helloworld").
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/folder/HelloWorld", isSecure: true);
-        Assert.AreEqual("helloworld", name);
+        Assert.AreEqual("folder/helloworld", name);
     }
 
     [TestMethod]

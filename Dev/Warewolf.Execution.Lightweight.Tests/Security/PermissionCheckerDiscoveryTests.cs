@@ -174,12 +174,139 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void HasUserDiscoveryPermission_ResourcePathStripping()
+        public void HasUserDiscoveryPermission_BareName_DoesNotMatchSubfolderWorkflow()
         {
-            // Permission stored with bare name, request uses path format
+            // Permission ResourceName is bare "Ping" (root-level).
+            // ApisJsonGenerator now passes the relative path "Tools/Ping" to the filter.
+            // These are different resources — should not match.
             var config = MakeConfig(GroupViewAndExecute("Team", "Ping"));
-            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission(
+            Assert.IsFalse(PermissionChecker.HasUserDiscoveryPermission(
                 "Tools/Ping", config, new List<string> { "Team" }));
+        }
+
+        // ══════════════════════════════════════════════════════════════════════════
+        // Resource-override precedence (server GetGroupPermissions behaviour)
+        // When a group has a resource-specific entry, the global entry is suppressed.
+        // ══════════════════════════════════════════════════════════════════════════
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasPublicDiscoveryPermission_ResourceSpecificDenies_GlobalGrantSuppressed()
+        {
+            // Public has global View+Execute BUT also has a resource-specific entry for
+            // "HelloWorld" with Execute=false. The resource entry overrides the global one.
+            var config = MakeConfig(
+                PublicViewAndExecute("", isGlobal: true),           // global grant
+                new PermissionEntry("Public", IsGlobal: false, ResourceName: "HelloWorld",
+                    View: true, Execute: false));                    // resource override — Execute denied
+
+            // Global execute should be suppressed by resource override.
+            Assert.IsFalse(PermissionChecker.HasPublicDiscoveryPermission("HelloWorld", config));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasPublicDiscoveryPermission_ResourceSpecificDenies_UnrelatedWorkflowUnaffected()
+        {
+            // Resource override for "HelloWorld" should not affect "OtherWorkflow".
+            var config = MakeConfig(
+                PublicViewAndExecute("", isGlobal: true),
+                new PermissionEntry("Public", IsGlobal: false, ResourceName: "HelloWorld",
+                    View: true, Execute: false));
+
+            // OtherWorkflow is not overridden — global grant applies.
+            Assert.IsTrue(PermissionChecker.HasPublicDiscoveryPermission("OtherWorkflow", config));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasUserDiscoveryPermission_ResourceSpecificDenies_GlobalGrantSuppressed()
+        {
+            // Group "Developers" has global View+Execute but resource entry for "HelloWorld"
+            // has Execute=false → should be denied.
+            var config = MakeConfig(
+                GroupViewAndExecute("Developers", "", isGlobal: true),
+                new PermissionEntry("Developers", IsGlobal: false, ResourceName: "HelloWorld",
+                    View: true, Execute: false));
+
+            Assert.IsFalse(PermissionChecker.HasUserDiscoveryPermission(
+                "HelloWorld", config, new List<string> { "Developers" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasUserDiscoveryPermission_ResourceSpecificGrants_WhenGlobalIsDeny()
+        {
+            // Group has global View-only but resource-specific View+Execute for "HelloWorld".
+            var config = MakeConfig(
+                GroupViewOnly("Developers", "", isGlobal: true),    // global: View only
+                GroupViewAndExecute("Developers", "HelloWorld"));    // resource: View+Execute
+
+            Assert.IsTrue(PermissionChecker.HasUserDiscoveryPermission(
+                "HelloWorld", config, new List<string> { "Developers" }));
+        }
+
+        // ══════════════════════════════════════════════════════════════════════════
+        // Separator normalisation — ResourcePath back-slash vs forward-slash
+        // ══════════════════════════════════════════════════════════════════════════
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void NamesMatch_BackslashPath_MatchesForwardSlashWorkflow()
+        {
+            // ResourcePath from secure.config: "data\sales"
+            // Workflow name from route/scanner: "data/sales"
+            Assert.IsTrue(PermissionChecker.NamesMatch(@"data\sales", "data/sales"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void NamesMatch_BackslashPath_DoesNotMatchBareWorkflowName()
+        {
+            // "data\sales" targets the sales workflow inside the data folder.
+            // A bare "sales" refers to root-level sales — they are different resources.
+            Assert.IsFalse(PermissionChecker.NamesMatch(@"data\sales", "sales"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void NamesMatch_BarePermissionName_DoesNotMatchPathWorkflow()
+        {
+            // A bare-name permission "sales" targets root-level sales.
+            // "Tools/sales" is a different resource inside the Tools folder.
+            Assert.IsFalse(PermissionChecker.NamesMatch("sales", "Tools/sales"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void NamesMatch_DifferentNames_ReturnsFalse()
+        {
+            Assert.IsFalse(PermissionChecker.NamesMatch(@"data\sales", "invoices"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasPublicDiscoveryPermission_FolderWorkflow_BackslashResourcePath_DoesNotMatchBareName()
+        {
+            // ResourceName is "data\sales" (folder-qualified).
+            // ApisJsonGenerator passes the relative path to the filter — a bare "sales"
+            // would represent a root-level workflow and must NOT match.
+            var config = MakeConfig(
+                new PermissionEntry("Public", IsGlobal: false, ResourceName: @"data\sales",
+                    View: true, Execute: true));
+
+            Assert.IsFalse(PermissionChecker.HasPublicDiscoveryPermission("sales", config));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void HasPublicDiscoveryPermission_FolderWorkflow_ForwardSlashPath_ReturnsTrue()
+        {
+            var config = MakeConfig(
+                new PermissionEntry("Public", IsGlobal: false, ResourceName: @"data\sales",
+                    View: true, Execute: true));
+
+            Assert.IsTrue(PermissionChecker.HasPublicDiscoveryPermission("data/sales", config));
         }
     }
 }
