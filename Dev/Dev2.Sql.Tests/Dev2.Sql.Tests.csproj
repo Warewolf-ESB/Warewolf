@@ -60,6 +60,8 @@
     </Compile>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MySqlServerTests.cs" />
+    <Compile Include="ODBCServerTests.cs" />
     <Compile Include="OracleServerTests.cs" />
     <Compile Include="PostgreServerTests.cs" />
     <Compile Include="SQLiteServerTests.cs" />
