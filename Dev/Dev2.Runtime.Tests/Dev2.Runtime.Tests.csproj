@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="AppUsageStatsTests.cs" />
     <Compile Include="AssemblyLoaderTests.cs" />
+    <Compile Include="ExpectedAggregateExceptionAttributeTests.cs" />
+    <Compile Include="Net6Compatibility\HttpClientExceptionTests.cs" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
@@ -94,6 +96,16 @@
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\WF\XamlActivityHelperTests.cs" />
+    <Compile Include="ESB\Management\ChatbotToolNormalizerTests.cs" />
+    <Compile Include="ESB\Management\ChatbotContextBuilderTests.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceMetadataTests.cs" />
+    <Compile Include="Workspaces\WorkspaceItemCoverageTests.cs" />
+    <Compile Include="Coverage\PureHelpersCoverageTests.cs" />
+    <Compile Include="Coverage\ResourceAccessorCoverageTests.cs" />
+    <Compile Include="Coverage\PureMathAndStringCoverageTests.cs" />
+    <Compile Include="Coverage\NCalcExtendedCoverageTests.cs" />
+    <Compile Include="Coverage\ChatbotSourcePocoCoverageTests.cs" />
+    <Compile Include="Coverage\EsbManagementBulkMetadataCoverageTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />

@@ -68,7 +68,7 @@ param(
     [String[]] $CoverageIncludeFiles = @(),
     [String]   $EngineSessionId = "",
     [String]   $EngineCoverageFile = "",
-    [Switch]   $Coverage,
+    [Switch]   $Coverage = $true,
     [Switch]   $STA,
     [Switch]   $Sequential,
     [String]   $PreTestRunScript,
@@ -206,6 +206,13 @@ $DockerContext  = Split-Path $DockerfileTest -Parent
 $CompileScript  = Join-Path $RepoRoot 'Compile.ps1'
 
 $RunId = Get-Date -Format 'yyyyMMddHHmmss'
+
+# Coverage is on by default; if the caller didn't specify -CoverageDir, drop
+# snapshots into <repo>\coverage so a bare `TestRun.ps1` invocation still
+# produces a cobertura artifact.
+if ($Coverage.IsPresent -and -not $CoverageDir) {
+    $CoverageDir = Join-Path $RepoRoot 'coverage'
+}
 
 # ============================================================================
 # Pipeline.yml parser (ported from Run-Coverage.ps1)
@@ -583,7 +590,36 @@ function Start-HostFTPSServer {
         $certB64 = [Convert]::ToBase64String(
             $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert),
             'InsertLineBreaks')
-        $keyB64  = [Convert]::ToBase64String($rsa.ExportPkcs8PrivateKey(), 'InsertLineBreaks')
+        $keyBytes = $null
+        $exportMethod = $rsa.GetType().GetMethod('ExportPkcs8PrivateKey', [Type]::EmptyTypes)
+        if ($exportMethod) {
+            $keyBytes = $exportMethod.Invoke($rsa, $null)
+        } else {
+            # .NET Framework (Windows PowerShell 5.1) lacks ExportPkcs8PrivateKey.
+            # Build the PKCS#8 PrivateKeyInfo envelope manually around PKCS#1.
+            $rsaParams = $rsa.ExportParameters($true)
+            function _AsnLen([int]$n) {
+                if ($n -lt 0x80) { return ,[byte]$n }
+                $bytes = [System.BitConverter]::GetBytes([uint32]$n)
+                if ([System.BitConverter]::IsLittleEndian) { [Array]::Reverse($bytes) }
+                $bytes = $bytes | Where-Object { $_ -ne 0 }
+                if (-not $bytes) { $bytes = ,[byte]0 }
+                return ,([byte](0x80 -bor $bytes.Length)) + $bytes
+            }
+            function _AsnInt([byte[]]$v) {
+                $b = ,[byte]0 + $v
+                if ($b.Length -gt 1 -and $b[1] -lt 0x80) { $b = $v }
+                return ,[byte]0x02 + (_AsnLen $b.Length) + $b
+            }
+            function _AsnSeq([byte[]]$body) { return ,[byte]0x30 + (_AsnLen $body.Length) + $body }
+            $pkcs1 = _AsnSeq ((_AsnInt @([byte]0)) + (_AsnInt $rsaParams.Modulus) + (_AsnInt $rsaParams.Exponent) +
+                (_AsnInt $rsaParams.D) + (_AsnInt $rsaParams.P) + (_AsnInt $rsaParams.Q) +
+                (_AsnInt $rsaParams.DP) + (_AsnInt $rsaParams.DQ) + (_AsnInt $rsaParams.InverseQ))
+            $algId = _AsnSeq (@([byte]0x06,0x09,0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,0x01) + @([byte]0x05,0x00))
+            $octet = ,[byte]0x04 + (_AsnLen $pkcs1.Length) + $pkcs1
+            $keyBytes = _AsnSeq ((_AsnInt @([byte]0)) + $algId + $octet)
+        }
+        $keyB64  = [Convert]::ToBase64String($keyBytes, 'InsertLineBreaks')
         "-----BEGIN CERTIFICATE-----`n$certB64`n-----END CERTIFICATE-----`n-----BEGIN PRIVATE KEY-----`n$keyB64`n-----END PRIVATE KEY-----`n" |
             Set-Content -LiteralPath $ftpsPemFile -Encoding ascii -NoNewline
     } finally { $rsa.Dispose() }
@@ -2059,13 +2095,13 @@ if ($LegacyWindowsDeps) {
             }
         }
         Set-Culture en-ZA
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
