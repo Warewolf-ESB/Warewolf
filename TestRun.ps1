@@ -1097,6 +1097,19 @@ $script:_serverProcess   = $null
 $script:_coverageProcess = $null
 $script:_sessionId       = ""
 
+function Ensure-DotnetCoverage {
+    if (Get-Command dotnet-coverage -ErrorAction SilentlyContinue) { return }
+    Write-Host "Installing dotnet-coverage (global tool)..."
+    & dotnet tool install --global dotnet-coverage --ignore-failed-sources 2>&1 | Write-Host
+    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
+    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) {
+        $env:PATH = "$toolsDir;$env:PATH"
+    }
+    if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
+        throw "dotnet-coverage not available after install attempt; check that the .NET tools dir is on PATH ($toolsDir)."
+    }
+}
+
 function Resolve-FuncExe {
     if ($FuncExePath -and (Test-Path $FuncExePath)) { return $FuncExePath }
     # Prefer the real func.exe under the npm install dir. The npm-prefix
@@ -1306,6 +1319,7 @@ function Start-LightweightExecution {
         $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071", "--verbose")
+        Ensure-DotnetCoverage
         Push-Location $runDir
         $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
@@ -1329,6 +1343,7 @@ function Start-WarewolfServer {
         $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", "`"$serverExe`"")
+        Ensure-DotnetCoverage
         Push-Location $runDir
         $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
         Pop-Location
