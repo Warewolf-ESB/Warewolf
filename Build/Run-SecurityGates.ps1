@@ -15,8 +15,11 @@ Two fail-fast checks invoked by Compile.ps1 before any solution is built:
      in Build\dotnet-support.json, and exits 1 if the EOS date is past or
      within -WarnDays days of today.
 
-In-scope projects today: Warewolf.Execution.Lightweight (the lightweight server)
-and Dev2.Activities (the activity engine it depends on).
+In-scope projects: Warewolf.Execution.Lightweight (the lightweight server) and
+every project in its recursive <ProjectReference> closure (47 projects total,
+including the F# Warewolf.Language.Parser leaf). The list is generated from
+walking the .csproj/.fsproj graph rooted at Warewolf.Execution.Lightweight and
+must be regenerated when new project references are added to that closure.
 
 The script also writes Bin\security-report.md when the vulnerability gate fails
 so CI can attach it as a build artifact.
@@ -199,10 +202,57 @@ function Test-DotNetEndOfSupport {
     if ($failed) { exit 1 }
 }
 
-# In-scope projects: the lightweight server and the activity engine it depends on.
+# In-scope projects: Warewolf.Execution.Lightweight plus the full recursive
+# <ProjectReference> closure walked from its .csproj. Regenerate when the
+# project graph rooted at Warewolf.Execution.Lightweight changes.
 $SecurityScopedProjects = @(
     "$RepoRoot\Dev\Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj",
-    "$RepoRoot\Dev\Dev2.Activities\Dev2.Activities.csproj"
+    "$RepoRoot\Dev\Dev2.Activities\Dev2.Activities.csproj",
+    "$RepoRoot\Dev\Dev2.Common\Dev2.Common.csproj",
+    "$RepoRoot\Dev\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj",
+    "$RepoRoot\Dev\Dev2.Core\Dev2.Core.csproj",
+    "$RepoRoot\Dev\Dev2.CustomControls\Dev2.CustomControls.csproj",
+    "$RepoRoot\Dev\Dev2.Data\Dev2.Data.csproj",
+    "$RepoRoot\Dev\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj",
+    "$RepoRoot\Dev\Dev2.Development.Languages\Dev2.Development.Languages.csproj",
+    "$RepoRoot\Dev\Dev2.Diagnostics\Dev2.Diagnostics.csproj",
+    "$RepoRoot\Dev\Dev2.Infrastructure\Dev2.Infrastructure.csproj",
+    "$RepoRoot\Dev\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj",
+    "$RepoRoot\Dev\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj",
+    "$RepoRoot\Dev\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj",
+    "$RepoRoot\Dev\Dev2.Scheduler\Dev2.Scheduler.csproj",
+    "$RepoRoot\Dev\Dev2.Services.Execution\Dev2.Services.Execution.csproj",
+    "$RepoRoot\Dev\Dev2.Services.Sql\Dev2.Services.Sql.csproj",
+    "$RepoRoot\Dev\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj",
+    "$RepoRoot\Dev\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj",
+    "$RepoRoot\Dev\Dev2.Util\Dev2.Util.csproj",
+    "$RepoRoot\Dev\GACManagerApi\GACManagerApi.csproj",
+    "$RepoRoot\Dev\Log4Net.Async\Log4Net.Async.csproj",
+    "$RepoRoot\Dev\Warewolf.AI.Harness\Warewolf.AI.Harness.csproj",
+    "$RepoRoot\Dev\Warewolf.Auditing\Warewolf.Auditing.csproj",
+    "$RepoRoot\Dev\Warewolf.Common\Warewolf.Common.csproj",
+    "$RepoRoot\Dev\Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj",
+    "$RepoRoot\Dev\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj",
+    "$RepoRoot\Dev\Warewolf.Core\Warewolf.Core.csproj",
+    "$RepoRoot\Dev\Warewolf.Data\Warewolf.Data.csproj",
+    "$RepoRoot\Dev\Warewolf.Driver.Persistence\Warewolf.Driver.Persistence.csproj",
+    "$RepoRoot\Dev\Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj",
+    "$RepoRoot\Dev\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj",
+    "$RepoRoot\Dev\Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj",
+    "$RepoRoot\Dev\Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj",
+    "$RepoRoot\Dev\Warewolf.Interfaces\Warewolf.Interfaces.csproj",
+    "$RepoRoot\Dev\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj",
+    "$RepoRoot\Dev\Warewolf.Licensing\Warewolf.Licensing.csproj",
+    "$RepoRoot\Dev\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj",
+    "$RepoRoot\Dev\Warewolf.Resource\Warewolf.Resource.csproj",
+    "$RepoRoot\Dev\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj",
+    "$RepoRoot\Dev\Warewolf.Security\Warewolf.Security.csproj",
+    "$RepoRoot\Dev\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj",
+    "$RepoRoot\Dev\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj",
+    "$RepoRoot\Dev\Warewolf.Storage\Warewolf.Storage.csproj",
+    "$RepoRoot\Dev\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj",
+    "$RepoRoot\Dev\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj",
+    "$RepoRoot\Dev\Warewolf.Weave\Warewolf.Weave.csproj"
 )
 
 if ($SkipVulnerabilityCheck.IsPresent) {
