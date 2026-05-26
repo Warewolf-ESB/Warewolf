@@ -69,6 +69,7 @@ param(
     [String]   $EngineSessionId = "",
     [String]   $EngineCoverageFile = "",
     [Switch]   $Coverage = $true,
+    [String]   $CoverageSettings = "",
     [Switch]   $STA,
     [Switch]   $Sequential,
     [String]   $PreTestRunScript,
@@ -2150,10 +2151,29 @@ if ($STA.IsPresent -or $Sequential.IsPresent) {
 
 "@
     } else { "" }
+
+    # If a coverage runsettings is available (explicit -CoverageSettings or one
+    # sitting next to TestRun.ps1), inline its DataCollectionRunSettings into
+    # the generated vstest.runsettings so studio assemblies stay excluded from
+    # coverage even on the Sequential/STA paths (vstest.console.exe only honors
+    # a single /Settings file).
+    $covInline = ""
+    $covSrc = $CoverageSettings
+    if (-not $covSrc) {
+        $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
+        if (Test-Path $autoCov) { $covSrc = $autoCov }
+    }
+    if ($covSrc -and (Test-Path $covSrc)) {
+        try {
+            [xml]$covXml = Get-Content -LiteralPath $covSrc -Raw
+            $dcrs = $covXml.SelectSingleNode('//DataCollectionRunSettings')
+            if ($dcrs) { $covInline = $dcrs.OuterXml + "`r`n" }
+        } catch { Write-Warning "Could not inline coverage runsettings from ${covSrc}: $_" }
+    }
 @"
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
-$rcBlock$msBlock</RunSettings>
+$rcBlock$msBlock$covInline</RunSettings>
 "@ | Out-File -LiteralPath "$TestResultsPath\vstest.runsettings" -Encoding utf8 -Force
 }
 
@@ -2210,7 +2230,16 @@ try {
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
-            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) { "--settings:`"$TestResultsPath\vstest.runsettings`"" } else { "" }
+            $effectiveCovSettings = $CoverageSettings
+            if (-not $effectiveCovSettings) {
+                $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
+                if (Test-Path $autoCov) { $effectiveCovSettings = $autoCov }
+            }
+            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) {
+                "--settings:`"$TestResultsPath\vstest.runsettings`""
+            } elseif ($effectiveCovSettings -and (Test-Path $effectiveCovSettings)) {
+                "--settings:`"$effectiveCovSettings`""
+            } else { "" }
             # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
             $resultsDirArg = "/ResultsDirectory:`"$TestResultsPath`""
 

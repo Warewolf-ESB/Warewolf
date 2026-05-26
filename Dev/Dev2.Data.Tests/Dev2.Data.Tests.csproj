@@ -119,6 +119,7 @@
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
+    <Compile Include="ServiceModel\ConnectionCtorTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
     <Compile Include="ServiceModel\RedisSourceTests.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
+    <Compile Include="TO\DataListVerifyPartCtorTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />
     <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
     <Compile Include="TO\Dev2PutOperationTOTests.cs" />
