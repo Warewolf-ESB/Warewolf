@@ -3,14 +3,23 @@
 Pre-compile security gates for the Warewolf lightweight server.
 
 .DESCRIPTION
-Two fail-fast checks invoked by Compile.ps1 before any solution is built:
+Three fail-fast checks invoked by Compile.ps1 before any solution is built:
 
-  1. NuGet vulnerability scan
+  1. NuGet vulnerability scan (dotnet list)
      Runs 'dotnet list package --vulnerable --include-transitive --format json'
      against each in-scope project and exits 1 if any Critical/High CVE is
      reachable (top-level or transitive).
 
-  2. .NET runtime end-of-support window
+  2. NuGet vulnerability scan (NuGetAudit)
+     Runs 'dotnet restore' with /p:NuGetAudit=true /p:NuGetAuditMode=all so
+     NuGet's own audit feature emits NU1901..NU1904 warnings against the
+     advisory feed. Exits 1 if any high (NU1903) or critical (NU1904)
+     warnings are emitted. This complements the dotnet list scan because
+     NuGetAudit runs as part of dependency resolution and can catch issues
+     the post-restore lister misses (e.g. when transitive graph evaluation
+     differs).
+
+  3. .NET runtime end-of-support window
      Reads <TargetFramework> from each in-scope project, looks the moniker up
      in Build\dotnet-support.json, and exits 1 if the EOS date is past or
      within -WarnDays days of today.
@@ -21,15 +30,16 @@ including the F# Warewolf.Language.Parser leaf). The list is generated from
 walking the .csproj/.fsproj graph rooted at Warewolf.Execution.Lightweight and
 must be regenerated when new project references are added to that closure.
 
-The script also writes Bin\security-report.md when the vulnerability gate fails
+The script also writes Bin\security-report.md when a vulnerability gate fails
 so CI can attach it as a build artifact.
 
 .PARAMETER RepoRoot
 Path to the repo root (the directory containing Compile.ps1 and Dev\). Defaults
-to the parent of this script's directory.
+to the grandparent of this script's directory (Dev\.azure\ -> repo root).
 
 .PARAMETER SkipVulnerabilityCheck
-Bypass the vulnerability gate. Emits a loud warning so the bypass is recorded.
+Bypass both vulnerability gates (dotnet list and NuGetAudit). Emits a loud
+warning so the bypass is recorded.
 
 .PARAMETER SkipEosCheck
 Bypass the .NET end-of-support gate. Emits a loud warning so the bypass is recorded.
@@ -39,7 +49,7 @@ Threshold (in days) before the EOS date at which the build starts failing.
 Defaults to 90 (3 months).
 #>
 Param(
-    [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$RepoRoot = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)),
     [switch]$SkipVulnerabilityCheck,
     [switch]$SkipEosCheck,
     [int]$WarnDays = 90
@@ -53,7 +63,7 @@ function Test-VulnerablePackages {
     )
     Write-Host ""
     Write-Host "================================================================"
-    Write-Host " Security gate: NuGet vulnerability scan (Critical/High)"
+    Write-Host " Security gate: NuGet vulnerability scan (dotnet list)"
     Write-Host "================================================================"
     $findings = @()
     foreach ($projectFile in $ProjectFiles) {
@@ -90,6 +100,7 @@ function Test-VulnerablePackages {
                         if ($FailOnSeverity -contains $v.severity) {
                             $findings += [pscustomobject]@{
                                 Project  = (Split-Path $projectFile -Leaf)
+                                Source   = 'dotnet list'
                                 Kind     = 'Top-level'
                                 Package  = $pkg.id
                                 Version  = $pkg.resolvedVersion
@@ -104,6 +115,7 @@ function Test-VulnerablePackages {
                         if ($FailOnSeverity -contains $v.severity) {
                             $findings += [pscustomobject]@{
                                 Project  = (Split-Path $projectFile -Leaf)
+                                Source   = 'dotnet list'
                                 Kind     = 'Transitive'
                                 Package  = $pkg.id
                                 Version  = $pkg.resolvedVersion
@@ -117,34 +129,136 @@ function Test-VulnerablePackages {
         }
     }
     if ($findings.Count -eq 0) {
-        Write-Host "  OK - no Critical/High vulnerabilities detected."
+        Write-Host "  OK - no Critical/High vulnerabilities detected by dotnet list."
         return
     }
+    Write-VulnerabilityReport -Findings $findings -ReportPath $ReportPath -Heading "Vulnerable NuGet packages detected (dotnet list)"
+    exit 1
+}
+
+function Test-NuGetAuditPackages {
+    param(
+        [string[]]$ProjectFiles,
+        [string[]]$FailOnSeverity = @('Critical','High'),
+        [string]$ReportPath
+    )
+    Write-Host ""
+    Write-Host "================================================================"
+    Write-Host " Security gate: NuGet vulnerability scan (NuGetAudit)"
+    Write-Host "================================================================"
+    # NuGetAudit emits one warning per advisory during restore:
+    #   NU1901 = low, NU1902 = moderate, NU1903 = high, NU1904 = critical
+    # We force NuGetAuditLevel=low so all four warning codes are emitted, then
+    # filter by $FailOnSeverity here so the gate's severity policy stays in
+    # one place.
+    $severityByCode = @{
+        'NU1901' = 'Low'
+        'NU1902' = 'Moderate'
+        'NU1903' = 'High'
+        'NU1904' = 'Critical'
+    }
+    $findings = @()
+    foreach ($projectFile in $ProjectFiles) {
+        if (-not (Test-Path $projectFile)) {
+            Write-Host "  Project not found, skipping: $projectFile"
+            continue
+        }
+        Write-Host "  Auditing $projectFile..."
+        # --force so NuGetAudit re-evaluates the advisory feed even if a
+        # previous restore left a cached project.assets.json behind.
+        $output = & dotnet restore $projectFile `
+            --nologo `
+            --force `
+            --verbosity normal `
+            /p:NuGetAudit=true `
+            /p:NuGetAuditMode=all `
+            /p:NuGetAuditLevel=low 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "  ERROR: NuGetAudit restore failed for $projectFile" -ForegroundColor Red
+            Write-Host ($output -join "`n")
+            exit 1
+        }
+        $projLeaf = Split-Path $projectFile -Leaf
+        # NuGetAudit warning format from the MSBuild logger looks like:
+        #   <path>(0,0): warning NU1903: Package 'X' 1.2.3 has a known high severity vulnerability, https://github.com/advisories/GHSA-xxxx
+        $pattern = 'warning\s+(?<code>NU190[1-4])\s*:\s*(?<msg>.+)$'
+        foreach ($line in $output) {
+            $text = [string]$line
+            $m = [regex]::Match($text, $pattern)
+            if (-not $m.Success) { continue }
+            $code = $m.Groups['code'].Value
+            $severity = $severityByCode[$code]
+            if (-not ($FailOnSeverity -contains $severity)) { continue }
+            $msg = $m.Groups['msg'].Value.Trim()
+            $pkgId = ''
+            $pkgVer = ''
+            $pkgMatch = [regex]::Match($msg, "Package\s+'(?<id>[^']+)'\s+(?<ver>\S+)")
+            if ($pkgMatch.Success) {
+                $pkgId = $pkgMatch.Groups['id'].Value
+                $pkgVer = $pkgMatch.Groups['ver'].Value
+            }
+            $advisory = ''
+            $urlMatch = [regex]::Match($msg, 'https?://\S+')
+            if ($urlMatch.Success) { $advisory = $urlMatch.Value.TrimEnd('.',',',')') }
+            $findings += [pscustomobject]@{
+                Project  = $projLeaf
+                Source   = 'NuGetAudit'
+                Kind     = $code
+                Package  = $pkgId
+                Version  = $pkgVer
+                Severity = $severity
+                Advisory = $advisory
+            }
+        }
+    }
+    # NuGetAudit emits one warning per (package, advisory) per target framework,
+    # which can yield duplicates when a project multi-targets. Collapse them.
+    $findings = $findings | Sort-Object Project,Package,Version,Advisory -Unique
+    if (-not $findings -or $findings.Count -eq 0) {
+        Write-Host "  OK - no Critical/High vulnerabilities detected by NuGetAudit."
+        return
+    }
+    Write-VulnerabilityReport -Findings $findings -ReportPath $ReportPath -Heading "Vulnerable NuGet packages detected (NuGetAudit)"
+    exit 1
+}
+
+function Write-VulnerabilityReport {
+    param(
+        [object[]]$Findings,
+        [string]$ReportPath,
+        [string]$Heading
+    )
     @(
         "########################################################################",
-        "#  BUILD BLOCKED - Vulnerable NuGet packages detected (Critical/High)  #",
+        ("#  BUILD BLOCKED - {0}" -f $Heading),
         "########################################################################"
     ) | ForEach-Object { Write-Host $_ -ForegroundColor Red }
-    foreach ($f in $findings) {
-        Write-Host ("  [{0}] {1} {2} {3}  ({4})  {5}" -f $f.Severity.ToUpper(), $f.Project, $f.Package, $f.Version, $f.Kind, $f.Advisory) -ForegroundColor Red
+    foreach ($f in $Findings) {
+        Write-Host ("  [{0}] ({1}) {2} {3} {4}  ({5})  {6}" -f $f.Severity.ToUpper(), $f.Source, $f.Project, $f.Package, $f.Version, $f.Kind, $f.Advisory) -ForegroundColor Red
     }
     if ($ReportPath) {
         $dir = Split-Path $ReportPath -Parent
         if ($dir -and -not (Test-Path $dir)) { $null = New-Item -ItemType Directory -Path $dir -Force }
         $md = @()
-        $md += "# Warewolf Security Gate - Vulnerable Packages"
+        $md += "# Warewolf Security Gate - $Heading"
         $md += ""
         $md += "Build blocked at " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss") + "."
         $md += ""
-        $md += "| Project | Kind | Package | Version | Severity | Advisory |"
-        $md += "|---|---|---|---|---|---|"
-        foreach ($f in $findings) {
-            $md += "| $($f.Project) | $($f.Kind) | $($f.Package) | $($f.Version) | $($f.Severity) | $($f.Advisory) |"
+        $md += "| Project | Source | Kind | Package | Version | Severity | Advisory |"
+        $md += "|---|---|---|---|---|---|---|"
+        foreach ($f in $Findings) {
+            $md += "| $($f.Project) | $($f.Source) | $($f.Kind) | $($f.Package) | $($f.Version) | $($f.Severity) | $($f.Advisory) |"
         }
-        ($md -join "`n") | Out-File -LiteralPath $ReportPath -Encoding utf8 -Force
+        # Append to an existing report so a build that fails both vuln gates
+        # produces a single combined artifact rather than overwriting.
+        if (Test-Path $ReportPath) {
+            Add-Content -LiteralPath $ReportPath -Value "" -Encoding utf8
+            Add-Content -LiteralPath $ReportPath -Value ($md -join "`n") -Encoding utf8
+        } else {
+            ($md -join "`n") | Out-File -LiteralPath $ReportPath -Encoding utf8 -Force
+        }
         Write-Host "  Report written to: $ReportPath" -ForegroundColor Red
     }
-    exit 1
 }
 
 function Test-DotNetEndOfSupport {
@@ -255,13 +369,21 @@ $SecurityScopedProjects = @(
     "$RepoRoot\Dev\Warewolf.Weave\Warewolf.Weave.csproj"
 )
 
+$ReportPath = "$RepoRoot\Bin\security-report.md"
+# Clear any stale combined report from a previous run so the two vuln gates
+# always produce a fresh artifact.
+if (Test-Path $ReportPath) { Remove-Item -LiteralPath $ReportPath -Force }
+
 if ($SkipVulnerabilityCheck.IsPresent) {
     Write-Host ""
-    Write-Host "WARNING - vulnerability gate skipped by caller (-SkipVulnerabilityCheck)." -ForegroundColor Yellow
+    Write-Host "WARNING - vulnerability gates skipped by caller (-SkipVulnerabilityCheck)." -ForegroundColor Yellow
 } else {
     Test-VulnerablePackages -ProjectFiles $SecurityScopedProjects `
         -FailOnSeverity @('Critical','High') `
-        -ReportPath "$RepoRoot\Bin\security-report.md"
+        -ReportPath $ReportPath
+    Test-NuGetAuditPackages -ProjectFiles $SecurityScopedProjects `
+        -FailOnSeverity @('Critical','High') `
+        -ReportPath $ReportPath
 }
 
 if ($SkipEosCheck.IsPresent) {

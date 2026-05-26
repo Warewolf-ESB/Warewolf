@@ -51,14 +51,15 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 # =====================================================================
 # Pre-compile security gates
 # =====================================================================
-# Delegate to Build\Run-SecurityGates.ps1 for two fail-fast checks:
-#   1. NuGet vulnerability scan (Critical/High) against the lightweight server
-#      and Dev2.Activities.
-#   2. .NET runtime end-of-support window (< 90 days from EOS = fail).
-# Both gates can be bypassed via the -SkipVulnerabilityCheck / -SkipEosCheck
-# switches. The runner is a standalone script so the gates can also be invoked
-# directly (e.g. for ad-hoc local checks) without doing a full compile.
-& "$PSScriptRoot\Build\Run-SecurityGates.ps1" `
+# Delegate to Dev\.azure\Run-SecurityGates.ps1 for three fail-fast checks:
+#   1. NuGet vulnerability scan via 'dotnet list package --vulnerable'
+#      (Critical/High) against the lightweight server closure.
+#   2. NuGet vulnerability scan via NuGetAudit during restore (NU1903/NU1904).
+#   3. .NET runtime end-of-support window (< 90 days from EOS = fail).
+# Both vuln gates can be bypassed via -SkipVulnerabilityCheck and the EOS gate
+# via -SkipEosCheck. The runner is a standalone script so the gates can also
+# be invoked directly (e.g. for ad-hoc local checks) without doing a full compile.
+& "$PSScriptRoot\Dev\.azure\Run-SecurityGates.ps1" `
     -RepoRoot $PSScriptRoot `
     -SkipVulnerabilityCheck:$SkipVulnerabilityCheck `
     -SkipEosCheck:$SkipEosCheck
