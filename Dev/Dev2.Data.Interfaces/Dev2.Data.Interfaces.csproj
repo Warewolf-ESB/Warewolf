@@ -138,6 +138,7 @@
          Replaced with DotNetZip.Original, the maintained successor by DinoChiesa (the original DotNetZip author);
          the assembly + public API surface (namespace Ionic.Zip) is preserved so no source-code changes are required. -->
     <PackageReference Include="DotNetZip.Original" Version="2025.2.15" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
