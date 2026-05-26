@@ -293,6 +293,7 @@
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\WorkflowToX6ConverterTests.cs" />
+    <Compile Include="ActivityTests\X6ToWorkflowConverterCoverageTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />
