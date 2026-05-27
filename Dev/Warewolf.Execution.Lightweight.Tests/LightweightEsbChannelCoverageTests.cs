@@ -452,14 +452,7 @@ namespace Warewolf.Execution.Lightweight.Tests
 
         // ── Helpers ──────────────────────────────────────────────────────────
 
-        private static object NewCapturer()
-        {
-            var t = typeof(LightweightEsbChannel).Assembly
-                .GetType("Warewolf.Execution.Lightweight.PerRequestDebugCapturer", throwOnError: true)!;
-            return Activator.CreateInstance(t,
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
-                binder: null, args: null, culture: null)!;
-        }
+        private static object NewCapturer() => new PerRequestDebugCapturer();
 
         private static void InvokeWrite(object capturer, Dev2.Common.Interfaces.Diagnostics.Debug.IDebugState? debugState)
         {
