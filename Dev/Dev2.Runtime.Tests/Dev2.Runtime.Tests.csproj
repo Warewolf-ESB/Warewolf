@@ -211,6 +211,7 @@
     <Compile Include="ServiceModel\Data\EmailSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
+    <Compile Include="ServiceModel\Data\DbServiceCtorBranchTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
