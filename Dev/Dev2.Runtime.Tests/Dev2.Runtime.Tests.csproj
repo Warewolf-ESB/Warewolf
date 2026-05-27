@@ -215,6 +215,7 @@
     <Compile Include="ServiceModel\Data\WcfAndComPluginServiceCtorTests.cs" />
     <Compile Include="ServiceModel\Data\VersionInfoTests.cs" />
     <Compile Include="ServiceModel\Data\ServiceCreateInputsMethodBranchTests.cs" />
+    <Compile Include="ServiceModel\Data\ServiceCreateOutputsRecordsetListBranchTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
