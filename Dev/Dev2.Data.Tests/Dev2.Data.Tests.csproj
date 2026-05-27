@@ -137,6 +137,7 @@
     <Compile Include="ReverseIndexIteratorTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionToolLabelCoverageTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
     <Compile Include="TO\DataListVerifyPartCtorTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />

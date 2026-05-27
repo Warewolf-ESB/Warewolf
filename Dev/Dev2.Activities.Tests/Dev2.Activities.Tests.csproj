@@ -294,6 +294,7 @@
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\WorkflowToX6ConverterTests.cs" />
     <Compile Include="ActivityTests\X6ToWorkflowConverterCoverageTests.cs" />
+    <Compile Include="ActivityTests\CommonHelperCoverageTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />
@@ -322,6 +323,7 @@
     <Compile Include="TOTests\CaseConvertDTOTests.cs" />
     <Compile Include="TOTests\DataMergeTOTests.cs" />
     <Compile Include="TOTests\DataSplitDTOTests.cs" />
+    <Compile Include="TOTests\DecisionTOCoverageTests.cs" />
     <Compile Include="TOTests\FindRecordsTOTests.cs" />
     <Compile Include="TOTests\JsonMappingCompoundTests.cs" />
     <Compile Include="TOTests\JsonMappingEvaluatedTests.cs" />
