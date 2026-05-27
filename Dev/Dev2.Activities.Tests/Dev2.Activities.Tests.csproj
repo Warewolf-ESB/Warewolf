@@ -69,6 +69,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Activities\ActivityParserTests.cs" />
+    <Compile Include="BussinessLogic\RsOpSearchValidationTests.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivityTests.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
     <Compile Include="Activities\DsfComDllActivityTests.cs" />
@@ -293,6 +294,7 @@
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\WorkflowToX6ConverterTests.cs" />
+    <Compile Include="ActivityTests\WorkflowToX6ConverterCoverageTests.cs" />
     <Compile Include="ActivityTests\X6ToWorkflowConverterCoverageTests.cs" />
     <Compile Include="ActivityTests\CommonHelperCoverageTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />

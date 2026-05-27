@@ -1,0 +1,6 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+2,T1-trivial,68.7,11,5,16,90,"Warewolf.Driver.Serilog","Warewolf.Driver.Serilog.SeriLogElasticsearchConfig.Settings"
+3,T1-trivial,74.4,35,12,47,90,"Warewolf.Driver.Serilog","Warewolf.Driver.Serilog.SeriLogElasticsearchConfig"
+3,T1-trivial,65,13,7,20,51,"Warewolf.Driver.Serilog","Warewolf.Driver.Serilog.SeriLogPublisher"
+4,T1-trivial,37.5,3,5,8,30,"Warewolf.Driver.Serilog","Warewolf.Driver.Serilog.SeriLoggerSource"
+12,T2-small,62.6,42,25,67,102,"Warewolf.Driver.Serilog","Warewolf.Driver.Serilog.SeriLogSQLiteConfig"

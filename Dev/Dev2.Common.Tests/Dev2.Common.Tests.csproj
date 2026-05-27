@@ -114,6 +114,7 @@
     <Compile Include="Wrappers\FilePathWrapperTests.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
+    <Compile Include="MapperBranchCoverageTests.cs" />
     <Compile Include="DistinctByTests.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />

@@ -1,0 +1,3 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+1,T1-trivial,0,0,1,1,23,"Dev2.Data.Interfaces","Dev2.Data.Interfaces.Enums.EnumHelper<T>"
+26,T3-medium,0,0,32,32,61,"Dev2.Data.Interfaces","Dev2.Data.Interfaces.Enums.EnumHelper<T>"

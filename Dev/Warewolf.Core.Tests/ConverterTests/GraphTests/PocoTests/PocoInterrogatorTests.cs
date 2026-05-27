@@ -98,6 +98,20 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Creates the navigator with a path type that doesn't implement IPath, expecting an exception.
+        /// </summary>
+        [TestMethod]
+        public void CreateNavigator_WhenPathTypeDoesNotImplementIPath_ExpectException()
+        {
+            var pocoTestData = Given();
+            var pocoInterrogator = new PocoInterrogator();
+
+            var ex = Assert.ThrowsException<Exception>(() => pocoInterrogator.CreateNavigator(pocoTestData, typeof(string)));
+
+            StringAssert.Contains(ex.Message, "doesn't implement");
+        }
         #endregion Create Navigator Tests
     }
 }

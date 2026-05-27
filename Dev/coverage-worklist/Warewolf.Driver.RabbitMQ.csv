@@ -1,0 +1,4 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+8,T2-small,0,0,10,10,35,"Warewolf.Driver.RabbitMQ","Warewolf.Driver.RabbitMQ.RabbitPublisher"
+11,T2-small,17.6,3,14,17,43,"Warewolf.Driver.RabbitMQ","Warewolf.Driver.RabbitMQ.RabbitConfig"
+89,T4-large,0,0,111,111,159,"Warewolf.Driver.RabbitMQ","Warewolf.Driver.RabbitMQ.RabbitConnection"

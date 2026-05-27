@@ -1,0 +1,5 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+2,T1-trivial,33.3,1,2,3,544,"Dev2.Diagnostics","Dev2.Common.ByteConstants"
+2,T1-trivial,0,0,2,2,211,"Dev2.Diagnostics","Dev2.Diagnostics.Debug.DebugDispatcher.ContextScope"
+4,T1-trivial,63.1,12,7,19,211,"Dev2.Diagnostics","Dev2.Diagnostics.Debug.DebugDispatcher"
+21,T3-medium,10,3,27,30,523,"Dev2.Diagnostics","Dev2.Common.DefaultLogger"

@@ -134,11 +134,13 @@
     <Compile Include="Search\VariableListSearcherTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
+    <Compile Include="ServiceModel\Data\NamespaceAndServiceMethodListTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\Data\WorkflowTests.cs" />
+    <Compile Include="ServiceModel\Data\WorkflowXmlCtorTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourcesTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteTestTests.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
+    <Compile Include="Services\LoggingSettingsReadTests.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
     <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
@@ -210,6 +213,11 @@
     <Compile Include="ServiceModel\Data\EmailSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
+    <Compile Include="ServiceModel\Data\DbServiceCtorBranchTests.cs" />
+    <Compile Include="ServiceModel\Data\WcfAndComPluginServiceCtorTests.cs" />
+    <Compile Include="ServiceModel\Data\VersionInfoTests.cs" />
+    <Compile Include="ServiceModel\Data\ServiceCreateInputsMethodBranchTests.cs" />
+    <Compile Include="ServiceModel\Data\ServiceCreateOutputsRecordsetListBranchTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />

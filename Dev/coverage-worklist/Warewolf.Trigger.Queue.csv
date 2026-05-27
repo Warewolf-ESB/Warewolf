@@ -1,0 +1,3 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+4,T1-trivial,0,0,5,5,23,"Warewolf.Trigger.Queue","Warewolf.Trigger.Queue.DummyTriggerQueueView"
+302,T4-large,0,0,377,377,768,"Warewolf.Trigger.Queue","Warewolf.Trigger.Queue.TriggerQueueView"
