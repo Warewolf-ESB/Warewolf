@@ -9,8 +9,9 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Warewolf.Execution.Lightweight.Auth;
-using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
+using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Http;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight
@@ -77,19 +78,19 @@ namespace Warewolf.Execution.Lightweight
     /// </summary>
     public sealed class WorkflowHttpFunction
     {
-        readonly IWorkflowExecutor      _workflowExecutor;
-        readonly IApisJsonGenerator     _apisJsonGenerator;
+        readonly IWorkflowExecutor _workflowExecutor;
+        readonly IApisJsonGenerator _apisJsonGenerator;
         readonly IWorkflowPolicyMatcher _policyMatcher;
-        readonly string                 _workflowsDirectory;
+        readonly string _workflowsDirectory;
 
         public WorkflowHttpFunction(
-            IWorkflowExecutor      workflowExecutor,
-            IApisJsonGenerator     apisJsonGenerator,
+            IWorkflowExecutor workflowExecutor,
+            IApisJsonGenerator apisJsonGenerator,
             IWorkflowPolicyMatcher policyMatcher)
         {
-            _workflowExecutor   = workflowExecutor;
-            _apisJsonGenerator  = apisJsonGenerator;
-            _policyMatcher      = policyMatcher;
+            _workflowExecutor = workflowExecutor;
+            _apisJsonGenerator = apisJsonGenerator;
+            _policyMatcher = policyMatcher;
             _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
@@ -182,7 +183,7 @@ namespace Warewolf.Execution.Lightweight
         public async Task<HttpResponseData> ExecuteRootApisJson(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "apis.json")] HttpRequestData req, FunctionContext context)
         {
-            var config   = SecureConfigLoader.Config;
+            var config = SecureConfigLoader.Config;
             var isPublic = IsPublicQueryParam(req);
 
             if (isPublic)
@@ -197,7 +198,7 @@ namespace Warewolf.Execution.Lightweight
             // Connect gate — authenticated path: caller must have ≥1 permission anywhere.
             var (isAuthenticated, userGroups) = ResolveCallerGroups(req, context);
             if (config.IsLoaded && !PermissionChecker.HasConnectPermission(config, userGroups))
-                return await BuildUnauthorizedResponse(req);
+                return await BuildForbiddenResponse(req);
 
             return await CreateApisJsonResponse(req, pathFilter: null, isPublic: false, GetSecureFilter(req, context));
         }
@@ -218,7 +219,7 @@ namespace Warewolf.Execution.Lightweight
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, resolvedName);
 
             executionRequest.WebServerUri = req.Url;
-            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+            executionRequest.ReturnType = isXml ? EmitionTypes.XML
                                           : isApi ? EmitionTypes.OPENAPI
                                                   : EmitionTypes.JSON;
             if (isDebug)
@@ -271,101 +272,108 @@ namespace Warewolf.Execution.Lightweight
         /// </list>
         /// </summary>
         async Task<HttpResponseData> ExecuteNamedWorkflow(
-            HttpRequestData req,
+            HttpRequestData request,
             string name,
             bool isPublic,
             FunctionContext? context = null)
         {
-            // ── apis.json: always accessible, filtered by permissions ─────────────
-            if (NameSuffixParser.IsApisJsonRequest(name))
+
+            // (MWA-07 / OBS-05) Per-request correlation id — accept caller-supplied
+            // value or generate a short one when missing.  Same value is included
+            // in audit logs and 401/403 response headers + body.
+            var correlationId = HttpResponseHelper.ResolveCorrelationId(request);
+
+            // ── Route dispatch ────────────────────────────────────────────────────
+            // Cases are evaluated in priority order:
+            //   1. apis.json  — discovery listing (public or connect-gated).
+            //   2. isPublic   — anonymous Execute permission check via policy matcher.
+            //   3. !isPublic  — JWT/principal authentication check (secure routes).
+            var routeCase = NameSuffixParser.IsApisJsonRequest(name) ? RouteCase.ApisJson
+
+                          : isPublic ? RouteCase.PublicExecution
+                                                                      : RouteCase.SecureExecution;
+
+            switch (routeCase)
             {
-                var pathFilter = NameSuffixParser.ExtractApisJsonPath(name);
-
-                if (isPublic)
-                    return await CreateApisJsonResponse(req, pathFilter, isPublic, GetPublicFilter());
-
-                // ── Connect gate (authenticated path) ─────────────────────────────
-                // Mirrors ServerAuthorizationService.IsAuthorizedImpl routing both
-                // WebExecuteGetRootLevelApisJson and WebExecuteGetApisJsonForFolder
-                // through IsAuthorizedToConnect(request.User) — a global "any permission"
-                // gate — before the per-resource discovery loop.
-                var config = SecureConfigLoader.Config;
-                var (_, callerGroups) = ResolveCallerGroups(req, context);
-                if (config.IsLoaded && !PermissionChecker.HasConnectPermission(config, callerGroups))
-                    return await BuildUnauthorizedResponse(req);
-
-                return await CreateApisJsonResponse(req, pathFilter, isPublic, GetSecureFilter(req, context));
-            }
-
-            // ── Public execution — enforce Execute permission via the unified policy
-            //    matcher using an anonymous principal.  This mirrors the server's
-            //    AuthorizationContext.Execute check for WebExecutePublicWorkflow and
-            //    routes the decision through the same WorkflowPolicyMatcher /
-            //    WorkflowAuthPolicyLoader pipeline as secure routes, so that:
-            //      • Public group's Execute flag is the sole gate (no JWT required).
-            //      • Resource-scope vs global-scope resolution is consistent.
-            //      • BYPASS_SECURE_CONFIG=true is honoured in open-access mode.
-            if (isPublic)
-            {
-                var (publicWfName, _, _, _) = NameSuffixParser.Parse(name);
-                // Build a fully-qualified key that preserves folder context — mirrors
-                // how WorkflowAuthorizationMiddleware.ExtractWorkflowName resolves the
-                // resource scope key for /secure/ and /services/ routes.
-                var publicWfKey = BuildWorkflowKey(name);
-                var matchResult = _policyMatcher.Evaluate(
-                    publicWfKey,
-                    WorkflowClaimsPrincipal.Anonymous(),
-                    WorkflowPermission.Execute);
-
-                if (matchResult.Outcome == PolicyMatchOutcome.Forbidden ||
-                    matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny)
-                {
-                    var statusCode = matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny
-                        ? HttpStatusCode.ServiceUnavailable
-                        : HttpStatusCode.Forbidden;
-                    var response = req.CreateResponse(statusCode);
-                    await response.WriteStringAsync(JsonConvert.SerializeObject(new
+                // ── Case 1: apis.json discovery listing ───────────────────────────
+                // Always accessible; filtered by permissions.  Public endpoint returns
+                // workflows visible to the anonymous/Public group.  Authenticated endpoint
+                // mirrors ServerAuthorizationService.IsAuthorizedToConnect before listing.
+                case RouteCase.ApisJson:
                     {
-                        error = matchResult.DenialReason
-                               ?? "The workflow does not have public Execute permission."
-                    }));
-                    return response;
-                }
-            }
+                        var pathFilter = NameSuffixParser.ExtractApisJsonPath(name);
 
-            // ── Secure (non-public) execution ─────────────────────────────────────
-            if (!isPublic)
-            {
+                        if (isPublic)
+                            return await CreateApisJsonResponse(request, pathFilter, isPublic, GetPublicFilter());
+
+                        // Connect gate (authenticated path) — global "any permission" check.
+                        var config = SecureConfigLoader.Config;
+                        var (_, callerGroups) = ResolveCallerGroups(request, context);
+                        if (config.IsLoaded && !PermissionChecker.HasConnectPermission(config, callerGroups))
+                            return await BuildForbiddenResponse(request);
+
+                        return await CreateApisJsonResponse(request, pathFilter, isPublic, GetSecureFilter(request, context));
+                    }
+
+                // ── Case 2: public execution ──────────────────────────────────────
+                // Enforces Execute permission via the unified policy matcher with an
+                // anonymous principal.  Mirrors AuthorizationContext.Execute for
+                // WebExecutePublicWorkflow — Public group's Execute flag is the sole gate.
+                case RouteCase.PublicExecution:
+                    {
+                        bool isApiRequest = NameSuffixParser.IsApiRequest(name);
+                        var publicWfKey = BuildWorkflowKey(name);
+                        var matchResult = _policyMatcher.Evaluate(
+                            publicWfKey,
+                            WorkflowClaimsPrincipal.Anonymous(),
+                            isApiRequest ? WorkflowPermission.Execute : WorkflowPermission.View | WorkflowPermission.Execute);
+
+                        if (matchResult.Outcome == PolicyMatchOutcome.Forbidden ||
+                            matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny)
+                        {
+                            return await HttpResponseHelper.WriteWrappedErrorAsync(request, context, HttpStatusCode.InternalServerError,
+                                (int)HttpStatusCode.InternalServerError, "internal_server_error",
+                                "Invalid Authentication Token or invalid permissions to Execute resource",
+                                matchResult.DenialReason ?? "Insufficient permissions.", correlationId);
+                        }
+                        break;
+                    }
+
+                // ── Case 3: secure execution ──────────────────────────────────────
                 // Prefer the principal already built by the middleware pipeline (Secure/* routes).
                 // Fall back to direct JWT validation for Services/* routes that bypass middleware.
-                var principalAuthenticated =
-                    context is not null &&
-                    context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
-                    p is Auth.WorkflowClaimsPrincipal wcp &&
-                    wcp.Identity?.IsAuthenticated == true;
+                case RouteCase.SecureExecution:
+                    {
+                        var principalAuthenticated =
+                            context is not null &&
+                            context.Items.TryGetValue(Auth.Models.AuthConstants.PrincipalContextKey, out var p) &&
+                            p is Auth.WorkflowClaimsPrincipal wcp &&
+                            wcp.Identity?.IsAuthenticated == true;
 
-                if (!principalAuthenticated)
-                {
-                    var authResult = ValidateJwt(req);
-                    if (!authResult.IsValid)
-                        return await BuildUnauthorizedResponse(req);
-                }
+                        if (!principalAuthenticated)
+                        {
+                            var authResult = ValidateJwt(request);
+                            if (!authResult.IsValid)
+                                return await BuildForbiddenResponse(request);
+                        }
+                        break;
+                    }
             }
 
             // ── Execute the workflow ──────────────────────────────────────────────
             var (workflowName, isDebug, isXml, isApi) = NameSuffixParser.Parse(name);
-            var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, workflowName);
+            var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(request, _workflowsDirectory, workflowName);
 
             // Suffix flags are authoritative — override any format inferred from the URL path.
-            executionRequest.WebServerUri = req.Url;
-            executionRequest.ReturnType   = isXml ? EmitionTypes.XML
+            executionRequest.WebServerUri = request.Url;
+            executionRequest.ReturnType = isXml ? EmitionTypes.XML
                                           : isApi ? EmitionTypes.OPENAPI
                                                   : EmitionTypes.JSON;
             if (isDebug)
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
-            return await ResponseBuilder.BuildAsync(req, result,
+            return await ResponseBuilder.BuildAsync(request, result,
                 isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
         }
 
@@ -374,9 +382,9 @@ namespace Warewolf.Execution.Lightweight
         /// with an optional per-workflow permission predicate applied.
         /// </summary>
         async Task<HttpResponseData> CreateApisJsonResponse(
-            HttpRequestData    req,
-            string?            pathFilter,
-            bool               isPublic,
+            HttpRequestData req,
+            string? pathFilter,
+            bool isPublic,
             Func<string, bool>? workflowFilter)
         {
             var json = _apisJsonGenerator.Generate(pathFilter, req.Url, isPublic, workflowFilter);
@@ -470,13 +478,18 @@ namespace Warewolf.Execution.Lightweight
 
         // ── Response helpers ──────────────────────────────────────────────────────
 
-        static async Task<HttpResponseData> BuildUnauthorizedResponse(HttpRequestData req)
+        static async Task<HttpResponseData> BuildForbiddenResponse(HttpRequestData req)
         {
-            var response = req.CreateResponse(HttpStatusCode.Unauthorized);
+            var response = req.CreateResponse(HttpStatusCode.Forbidden);
             response.Headers.Add("WWW-Authenticate", "Bearer");
             await response.WriteStringAsync(JsonConvert.SerializeObject(new
             {
-                error = "Authentication required. Provide a valid JWT Bearer token in the Authorization header."
+                Error = new
+                {
+                    Status = 403,
+                    Title = "user_forbidden",
+                    Message = "Authorization has been denied for this request."
+                }
             }));
             return response;
         }
@@ -517,7 +530,7 @@ namespace Warewolf.Execution.Lightweight
                 return (true, (IReadOnlyList<string>)wcp.Groups);
             }
 
-            var config     = SecureConfigLoader.Config;
+            var config = SecureConfigLoader.Config;
             var authHeader = TryGetAuthHeader(req);
 
             // ── 2. Warewolf HMAC-SHA256 JWT ───────────────────────────────────────
@@ -548,28 +561,39 @@ namespace Warewolf.Execution.Lightweight
         /// Builds a lowercase, folder-preserving resource key from a raw route
         /// segment (e.g. <c>"Folder/MyWorkflow.json"</c> → <c>"folder/myworkflow"</c>).
         ///
-        /// Mirrors <see cref="WorkflowAuthorizationMiddleware.ExtractWorkflowName"/>
-        /// so that public-route policy lookups resolve the same resource-scope key as
-        /// secure/services routes.
+        /// Delegates normalization (query-string stripping, URL-decoding, backslash
+        /// normalization) to <see cref="NameSuffixParser.Normalize"/> so the produced
+        /// key is always consistent with <see cref="WorkflowAuthorizationMiddleware.ExtractWorkflowName"/>.
         /// </summary>
         static string BuildWorkflowKey(string routeSegment)
         {
-            var stripped = routeSegment.Split('?')[0];
-            var segments = stripped.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var normalized = NameSuffixParser.Normalize(routeSegment);
+            var segments = normalized.Split('/', StringSplitOptions.RemoveEmptyEntries);
             if (segments.Length == 0)
                 return string.Empty;
 
-            var lastStripped = Path.GetFileNameWithoutExtension(
-                Uri.UnescapeDataString(segments[^1]));
+            var lastStripped = Path.GetFileNameWithoutExtension(segments[^1]);
 
             if (segments.Length == 1)
                 return lastStripped.ToLowerInvariant();
 
-            var folderParts = segments[..^1]
-                .Select(Uri.UnescapeDataString)
-                .Select(s => s.ToLowerInvariant());
-
+            var folderParts = segments[..^1].Select(s => s.ToLowerInvariant());
             return string.Join("/", folderParts.Append(lastStripped.ToLowerInvariant()));
         }
+    }
+
+    /// <summary>
+    /// Identifies the dispatch branch chosen by <c>ExecuteNamedWorkflow</c>.
+    /// </summary>
+    internal enum RouteCase
+    {
+        /// <summary>apis.json discovery listing (public or connect-gated).</summary>
+        ApisJson,
+        /// <summary>Single-workflow OpenAPI spec request ({workflow}.api).</summary>
+        ApiSpec,
+        /// <summary>Public workflow execution — anonymous Execute permission check.</summary>
+        PublicExecution,
+        /// <summary>Secure workflow execution — JWT / middleware principal required.</summary>
+        SecureExecution,
     }
 }

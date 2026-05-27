@@ -31,17 +31,22 @@ internal static class ServiceCollectionExtensions
     /// </summary>
     internal static IServiceCollection AddCoreServices(
         this IServiceCollection services,
-        string workflowsDirectory)
+        HostEnvironmentConfig   config)
     {
         const string executionId = "ServiceCollectionExtensions-CoreServices";
 
-        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {workflowsDirectory}", executionId);
+        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
         try
         {
             services.AddLogging();
+
+            // Register the immutable environment config snapshot as a singleton so
+            // any middleware or service can receive it via constructor injection.
+            services.AddSingleton(config);
+
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(config.WorkflowsDirectory));
 
             // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
             // EntraAuthOptions is read from environment ONCE and shared as an

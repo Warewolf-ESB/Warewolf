@@ -151,12 +151,16 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
         {
             SkipIfUnavailable();
 
-            var resp = await _http.GetAsync(BaseUrl + "/Secure/SomeWorkflow.json");
+            var resp = await _http.GetAsync(BaseUrl + "/Secure/AnyWorkflow.json");
 
             Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
                 "API client request to /Secure/* with no token must return 401");
-            Assert.IsTrue(resp.Headers.Contains("WWW-Authenticate"),
-                "401 from EasyAuthRedirectMiddleware must include WWW-Authenticate header");
+            
+            var body = await resp.Content.ReadAsStringAsync();
+            var json = System.Text.Json.JsonDocument.Parse(body).RootElement;
+
+            Assert.AreEqual("unauthorized", json.GetProperty("error").GetString(),
+                "Response body 'error' must be 'unauthorized'");
         }
 
         /// <summary>

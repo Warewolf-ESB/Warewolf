@@ -11,6 +11,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 
@@ -26,11 +27,18 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 ///   <item><c>/secure/*</c> routes with a valid token header are passed to the next middleware.</item>
 /// </list>
 /// </summary>
+/// <remarks>Initialises the middleware.</remarks>
 public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 {
-    /// <summary>Initialises the middleware.</summary>
-    public EasyAuthRedirectMiddleware()
+    // True when running under func start / VS debugger (no EasyAuth platform available).
+    // In development the full auth pipeline still runs — DebugPrincipalParser injects
+    // the principal from DEBUG_PRINCIPAL_TOKEN so group/permission checks behave
+    // identically to the cloud environment.
+    private readonly bool _isDevelopment;
+
+    public EasyAuthRedirectMiddleware(HostEnvironmentConfig config)
     {
+        _isDevelopment = config.IsDevelopment;
     }
 
     /// <inheritdoc/>
@@ -69,13 +77,14 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             return;
         }
 
+        // Secure or Public apis.json must be processed through secure or public route
         // apis.json discovery — always accessible without a token.
         // WorkflowAuthorizationMiddleware handles permission-filtering (empty list when no JWT).
-        if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
-        {
-            await next(context);
-            return;
-        }
+        //if (path.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+        //{
+        //    await next(context);
+        //    return;
+        //}
 
         // Check for Easy Auth principal header (set by Azure after token validation)
         var hasPrincipalHeader = request.Headers
@@ -89,7 +98,16 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
         var isBrowser = LooksLikeBrowserNavigation(request);
 
-        Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Path={path}, HasPrincipalHeader={hasPrincipalHeader}, HasAuthHeader={hasAuthHeader}, IsBrowser={isBrowser}", executionId);
+        Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Path={path}, HasPrincipalHeader={hasPrincipalHeader}, HasAuthHeader={hasAuthHeader}, IsBrowser={isBrowser}, IsDevelopment={_isDevelopment}", executionId);
+
+        // In development there is no EasyAuth platform — pass every request through
+        // so DebugPrincipalParser can inject the principal from DEBUG_PRINCIPAL_TOKEN.
+        if (_isDevelopment && !hasPrincipalHeader && !hasAuthHeader)
+        {
+            Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Development environment, no auth headers on {path} — delegating to DebugPrincipalParser", executionId);
+            await next(context);
+            return;
+        }
 
         if (!hasPrincipalHeader && !hasAuthHeader)
         {
