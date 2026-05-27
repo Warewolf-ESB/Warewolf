@@ -165,6 +165,7 @@
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteTestTests.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
+    <Compile Include="Services\LoggingSettingsReadTests.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
     <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
