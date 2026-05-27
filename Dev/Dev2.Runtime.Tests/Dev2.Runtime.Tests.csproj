@@ -139,6 +139,7 @@
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\Data\WorkflowTests.cs" />
+    <Compile Include="ServiceModel\Data\WorkflowXmlCtorTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourcesTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />

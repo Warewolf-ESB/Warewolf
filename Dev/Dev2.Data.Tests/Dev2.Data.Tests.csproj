@@ -119,6 +119,7 @@
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
+    <Compile Include="ServiceModel\SharepointSourceCtorTests.cs" />
     <Compile Include="ServiceModel\ConnectionCtorTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
