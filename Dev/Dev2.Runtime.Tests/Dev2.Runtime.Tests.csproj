@@ -213,6 +213,7 @@
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceCtorBranchTests.cs" />
     <Compile Include="ServiceModel\Data\WcfAndComPluginServiceCtorTests.cs" />
+    <Compile Include="ServiceModel\Data\VersionInfoTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
