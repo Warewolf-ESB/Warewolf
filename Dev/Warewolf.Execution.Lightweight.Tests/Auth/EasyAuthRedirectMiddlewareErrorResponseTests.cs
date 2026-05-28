@@ -22,13 +22,14 @@ using System.Net;
 using System.Threading.Tasks;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Tests.Auth;
 
 [TestClass]
 public class EasyAuthRedirectMiddlewareErrorResponseTests
 {
-    static EasyAuthRedirectMiddleware Build() => new();
+    static EasyAuthRedirectMiddleware Build() => new(HostEnvironmentConfig.Load());
 
     static HttpFunctionContext Ctx(string path, Action<FakeHttpRequestData>? configure = null)
     {
