@@ -111,7 +111,7 @@ public static class HttpResponseHelper
         response.Headers.Add("Content-Type", "application/json");
         response.Headers.Add(CorrelationIdHeader, correlationId);
         await response.WriteStringAsync(JsonSerializer.Serialize(body));
-        context?.GetInvocationResult().Value = response;
+        if (context != null) context.GetInvocationResult().Value = response;
         return response;
     }
 
