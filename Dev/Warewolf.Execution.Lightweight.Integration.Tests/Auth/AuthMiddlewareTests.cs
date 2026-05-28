@@ -186,7 +186,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
         /// Exercises: EasyAuthRedirectMiddleware apis.json bypass branch (line 70-74).
         /// </summary>
         [TestMethod]
-        [Ignore("Requires /services/apis.json discovery bypass in EasyAuthRedirectMiddleware. Re-introduce when WOLF-8417 is complete.")]
         public async Task ServicesApisJson_NoToken_PassesThrough_Returns200()
         {
             SkipIfUnavailable();

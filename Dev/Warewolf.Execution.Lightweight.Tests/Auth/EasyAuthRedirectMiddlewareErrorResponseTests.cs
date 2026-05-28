@@ -15,6 +15,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.IO;
 using System.Linq;
@@ -22,13 +23,14 @@ using System.Net;
 using System.Threading.Tasks;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Tests.Auth;
 
 [TestClass]
 public class EasyAuthRedirectMiddlewareErrorResponseTests
 {
-    static EasyAuthRedirectMiddleware Build() => new();
+    static EasyAuthRedirectMiddleware Build() => new(new Mock<HostEnvironmentConfig>().Object);
 
     static HttpFunctionContext Ctx(string path, Action<FakeHttpRequestData>? configure = null)
     {

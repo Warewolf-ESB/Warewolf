@@ -8,7 +8,6 @@ Feature: Settings Permissions
 	Background: Initialize Feature Level settings
 	
 @ServerPermissionsSecurity
-@ignore #Re-introduce when WOLF-8417 is complete (apis.json authorization on /Secure path).
 Scenario Outline: Server Permissions
         Given I have Public with "<Given rights>"
 		And I have waited 10 seconds for the rights to propogate to all the resources
@@ -197,7 +196,6 @@ Examples:
         | 16 | Deploy To, Deploy From, Contribute, View, Execute, Administrator | View, Execute   | Users      | All       | Deploy To, Deploy From, Contribute, View, Execute, Administrator | Examples\Control Flow - Decision | View, Execute |
 
 @NoConflictingPermissionsSecurity
-@ignore #Re-introduce when WOLF-8417 is complete (apis.json authorization on /Secure path).
 Scenario Outline: Setting Selected Resource Permissions for users and no conflicting permissions
         Given I have Users with "<Given rights>" 
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
