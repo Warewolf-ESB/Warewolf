@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
-namespace Dev2.Tests.Comparers
+namespace Dev2.Tests
 {
     [TestClass]
     public class DataSourceShapeComparerTests

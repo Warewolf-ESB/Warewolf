@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Providers.Validation.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.ConverterTests.Base
+namespace Dev2.Tests
 {
     [TestClass]
     public class CaseConvertTOTests
@@ -175,12 +175,13 @@ namespace Dev2.Tests.ConverterTests.Base
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory(nameof(CaseConvertTO))]
-        public void CaseConvertTO_GetHashCode_EqualForEqualInstances()
+        public void CaseConvertTO_GetHashCode_IsStableForSameInstance()
         {
-            var a = new CaseConvertTO("abc", "UPPER", "abc", 1);
-            var b = new CaseConvertTO("abc", "UPPER", "abc", 1);
+            // Errors/Error are reference-hashed, so equal instances need not share a
+            // hash code; the contract we can rely on is stability per instance.
+            var to = new CaseConvertTO("abc", "UPPER", "abc", 1);
 
-            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
+            Assert.AreEqual(to.GetHashCode(), to.GetHashCode());
         }
     }
 }

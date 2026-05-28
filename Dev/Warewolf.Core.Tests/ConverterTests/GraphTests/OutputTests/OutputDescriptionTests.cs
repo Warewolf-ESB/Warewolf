@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
-namespace Dev2.Tests.ConverterTests.GraphTests.OutputTests
+namespace Dev2.Tests
 {
     [TestClass]
     public class OutputDescriptionTests

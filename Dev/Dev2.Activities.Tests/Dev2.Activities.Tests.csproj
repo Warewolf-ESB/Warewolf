@@ -297,6 +297,7 @@
     <Compile Include="ActivityTests\WorkflowToX6ConverterCoverageTests.cs" />
     <Compile Include="ActivityTests\X6ToWorkflowConverterCoverageTests.cs" />
     <Compile Include="ActivityTests\CommonHelperCoverageTests.cs" />
+    <Compile Include="ActivityTests\ForEachValueObjectsTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />

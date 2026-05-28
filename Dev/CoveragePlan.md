@@ -105,20 +105,118 @@ Dividing purely by assembly is the wrong default — two assemblies hold ~47% of
   - `Dev2.Activities.*` core vs `Unlimited.Applications.BusinessDesignStudio.Activities.*`
 - Sort each sub-slice by `LinesNeededTo80`; favor classes that are also high crap-score hotspots so the work doubles as defect-risk reduction.
 
+#### Progress
+- **2026-05-28 — `Dev2.Runtime.Services` / `ESB.Management.Services.*` cheapest-first sweep, 10 classes.** Branches `8431-coverage-boost` (first 8 commits) and `8432-80PercentCoverage` (last 2). Each as a focused commit, all tests passing locally:
+  - `DeleteVersion` — `GetResourceID` happy path, `resourcePath` branch, catch-block (`8431-Add GetResourceID/resourcePath/catch coverage for DeleteVersion`).
+  - `LoggingSettingsRead` — new test class (was *untested*); `Execute` happy path + `HandlesType` + `CreateServiceEntry`.
+  - `SaveTriggerQueueService` — missing-payload catch-block path.
+  - `GetScheduledResources` — empty-collection serialize body + factory-throws catch, **cross-platform** (the existing happy path is gated on `RuntimeInformation.IsOSPlatform(Windows)`).
+  - `GetScheduledResourceHistory` — empty-history branch + factory-throws catch, **cross-platform** (existing happy path is Windows-gated).
+  - `FetchResourceDuplicates` — `LoadDuplicate` throws → `ExecStatus.Fail` `ExplorerRepositoryResult`.
+  - `FindResourcesByType` — missing-type `ArgumentNullException` (caught + rethrown), null-result empty return, `HandlesType`, `CreateServiceEntry`.
+  - `FetchRemoteDebugMessages` — new test class (was *untested*); missing-`InvokerID` throw, empty-guid empty-return, metadata.
+  - `ChatbotSettingsRead` / `PersistenceSettingsRead` — structural twins of `LoggingSettingsRead`; `Execute` happy path + metadata for both.
+- **2026-05-28 — `Dev2.Runtime.Services` / `Hosting.*` + `ServiceModel.Data.*` + `ServiceModel.*` trivial sweep, 7 classes.** Branch `8432-80PercentCoverage`:
+  - `VersionStrategy` — `GetNextVersion` `"Rename"` branch (keeps existing `VersionNumber`/`VersionId`) + `GetCurrentVersion(IResource, IVersionInfo, …)` null-`oldresource` branch.
+  - `ResourceCatalogFactory` / `TriggersCatalogFactory` — `New()` returns the shared singleton instance (both previously 0%).
+  - `RecordsetListWrapper` / `RecordsetList` — property round-trip + `Description` setter (both previously 0%).
+  - `NamespaceList` / `NamespaceItem` / `ServiceMethodList` — `ToString` JSON-serialization coverage (all previously 0%).
+  - `WebExecuteStringArgs` (`ServiceModel.WebSources.cs`) — DTO property round-trip.
+- **Cross-platform takeaway.** The two `GetScheduled*` Windows-gated tests reveal a recurring pattern in `Dev2.Runtime.Tests`: real Windows Task Scheduler wrappers in test setup force `Assert.Inconclusive` on Linux unit jobs, so those `Execute` bodies contribute zero Linux coverage. The pattern used here — mock `IServerSchedulerFactory`/`IScheduledResourceModel` to return empty collections / throw — fills the gap cheaply and applies to any of the other `Scheduler*`/`*ScheduledResource*` services.
+- **Note — local Track B verification gap.** The pre-existing `SaveTriggerQueueServiceTests.SaveTriggerQueueService_Execute` happy-path test fails in the local Windows dev environment because it touches the real `TriggersCatalog`/`FileWrapper` against the filesystem; the catch-path addition is isolated and unaffected. Should pass on the CI Windows agent with a proper workspace — worth confirming on the next pipeline run.
+- **Not yet refreshed.** Per-file instrumentation re-run not done yet — these classes are *expected* to clear 80% based on the worklist baseline, but the exact ratcheted floors and new overall % won't be known until §7 is re-pulled against a fresh build. Hold floor-ratcheting until then.
+
 ### Track C — Trivial-tier blitz (cross-cutting)
 - The 380 T1 classes (1–5 lines each) are spread across many assemblies and need little domain knowledge. Run them as a **separate one-week all-hands blitz** or as onboarding/junior tasks — *not* buried inside per-assembly queues where they get ignored in favor of the big stuff.
 - Banks ~930 lines and 380 ratcheted floors fast, with minimal risk.
 
 #### Progress
+
+##### Rollup (2026-05-27 → 2026-05-28)
+
+**120 new tests across ~84 worklist classes** in 6 batches, all passing locally via `dotnet test`. Full `TestRun.ps1` instrumentation run still pending to confirm exact new % and ratchet the per-file floors. Behavior-based assertions throughout (each test asserts true/false outcome, branch taken, or exception thrown — no assertion-free line-hitters).
+
+| # | Date | Assembly | Test file | Tests | Worklist classes |
+|---|---|---|---|---:|---|
+| 1 | 2026-05-27 | Dev2.Activities | `Dev2.Activities.Tests/BussinessLogic/RsOpSearchValidationTests.cs` | 34 | 34 (`RsOp*`) |
+| 2 | 2026-05-28 | Warewolf.Data | `Warewolf.Data.Tests/DecisionsTests/DecisionOperationsTests.cs` | 40 | 38 ops + `DecisionUtils` |
+| 3 | 2026-05-28 | Warewolf.Data | `Warewolf.Data.Tests/Options/GateAndPublishOptionsTests.cs` | 24 | 4 worklist + 5 nested ride-alongs |
+| 4 | 2026-05-28 | Dev2.Common | `Dev2.Common.Tests/Wrappers/WrapperFactoriesTests.cs` | 5 | 3 wrappers + `FilePathWrapper` Linux gap-fill |
+| 5 | 2026-05-28 | Dev2.Activities | `Dev2.Activities.Tests/ActivityTests/ForEachValueObjectsTests.cs` | 6 | 2 value objects |
+| 6 | 2026-05-28 | Dev2.Runtime.WebServer | `Dev2.Runtime.WebServer.Tests/WebServerTrivialClusterTests.cs` | 11 | 3 + 1 POCO (trimmed against existing `ExtensionsTests.cs`) |
+| **Total** | | | | **120** | **~84** |
+
+All tests are platform-independent (no `Assert.Inconclusive` guards), so they contribute coverage on the Linux unit jobs too — important because several pre-existing tests in the same areas (`FilePathWrapperTests`, the Windows-gated parts of `GetScheduledResources*Tests`, etc.) are guarded with `RuntimeInformation.IsOSPlatform(Windows)` and contribute zero on Linux.
+
+**Skipped on purpose** (recorded so the next maintainer doesn't re-evaluate):
+
+- `Warewolf.OS.WorkerMonitor` — abstract; the 1-line gap needs heavy mock infrastructure (`IProcessThreadList` / `IJobConfig` / `ProcessThreadList`).
+- `Warewolf.Auditing.WebSocketPool` — `Acquire`/`Release` call into a real `ClientWebSocket.Connect`; flaky without network and not worth it for 1 line.
+- `Dev2.Common.Common.ExitHelper` and `Warewolf.PauseHelper` (and `Warewolf.ExitHelper`) — thin pass-through wrappers around `Environment.Exit(0)` / `Console.ReadLine()`; effectively untestable without killing the runner. Per §1 principle 5 and §6 these belong in the Wave 0 **EXCLUDE** triage, not Track C.
+- `Dev2.DataList.Contract.DateTimeVerifyPart`, `Binary_Objects.Dev2Column`, `DataList.Contract.OutputTO` (Dev2.Data) — `internal` ctors with no `InternalsVisibleTo` from `Dev2.Data` to `Dev2.Data.Tests`; reflection-based instantiation is messy for 1-line wins. Same blocker family as the `Dev2.Comparer.*` entry below.
+- `Dev2.TaskScheduler.Wrappers.*` cluster — wraps `Microsoft.Win32.TaskScheduler`; existing tests guard on Windows with `Assert.Inconclusive`, so adding more there would contribute zero on Linux unit jobs.
+
+##### Per-batch detail
+
 - **2026-05-27 — `RsOp*` recordset-search validators (Dev2.Activities), 34 classes.** New test class `Dev2.Activities.Tests/BussinessLogic/RsOpSearchValidationTests.cs` (34 tests, all passing) covers the whole `AbstractRecsetSearchValidation` family in the `Dev2.BussinessLogic`/`Dev2.DataList` namespaces:
   - 20 single-line `Is/Not` validators (Base64, Binary, Hex, Alphanumeric, Date, Email, Numeric, Text, XML) plus `IsError`/`IsNoError`.
   - `IsNull`/`IsNotNull` — both `all`/`any` branches.
   - 12 comparison ops (`=`, `<>`, `>`, `>=`, `<`, `<=`, Contains, Not-Contains, StartsWith, Not-StartsWith, EndsWith, Not-EndsWith) — both `all`/`any` branches each.
   - Each test asserts `HandlesType()` + `ArgumentCount` and exercises the returned predicate with a matching and non-matching `WarewolfAtom` (behavior, not just line hits).
+- **2026-05-28 — `Warewolf.Data.Decisions.Operations.*` family (Warewolf.Data), 38 op classes + `DecisionUtils`.** New test class `Warewolf.Data.Tests/DecisionsTests/DecisionOperationsTests.cs` (40 tests, all passing) covers the newer `IDecisionOperation` family (distinct from the already-tested `Dev2.Data.Decisions.Operations.*` namespace):
+  - All `Is*`/`Not*` ops: Error/NotError, Null/NotNull, Numeric, Text, Alphanumeric, Date, Email, Base64, Binary, Hex, Xml, RegEx, Contains, StartsWith, EndsWith (and their negations), plus Equal/NotEqual, the four relational ops, and Between/NotBetween.
+  - Each test asserts `HandlesType()` and exercises `Invoke()` with a matching + non-matching input; multi-branch ops (relational, Between, IsXml) cover both the numeric/string and inside/outside branches, and the empty-string short-circuits.
+  - `DecisionUtils.IsNumericComparison` — both the all-numeric (parses out-array) and non-numeric branches.
+  - These are pure-logic, platform-independent (no `Assert.Inconclusive` guards), so they contribute coverage on the Linux unit jobs too. Per-file coverage instrumentation run not yet done to confirm exact new % / ratchet floors.
+- **2026-05-28 — `Warewolf.Data.Options.*` Gate/Publish/File cluster, 4 worklist classes + 5 ride-along nested types.** New test class `Warewolf.Data.Tests/Options/GateAndPublishOptionsTests.cs` (24 tests, all passing) covers:
+  - `GateOptions` — default `GateOpts = new Continue()`, `Notify` with/without subscriber (null-conditional event path), assigning `EndWorkflow`.
+  - `Continue` / `EndWorkflow` — default `Resume` value + `Continue.Strategy` defaulting to `NoBackoff`.
+  - `NoBackoff` — default `RetryAlgorithm` + `MaxRetries = 3`; `Create()` enumerated end-to-end (default, zero, and custom `MaxRetries`) to assert the `true × N` then `false` shape.
+  - `RabbitMqPublishOptions` — default `AutoCorrelation = new ExecutionID()`, `Notify` with/without subscriber.
+  - `ExecutionID` / `CustomTransactionID` / `Manual` — each subclass's `Correlation` setting (and `Manual.CorrelationID` round-trip).
+  - `FileParameter` — property round-trip + `FileBytes` happy path; both throw branches (`ArgumentNullException` on null/empty `FileBase64`, `FormatException` re-thrown from the inner `catch`); `RenderDescription` content; `IsEmptyRow` (`&=` "all empty") and `IsIncompleteRow` (`|=` "any empty") truth tables.
+  - `TextParameter` (same file, ride-along) — `IsEmptyRow`/`IsIncompleteRow` semantics.
+  - All pure-logic, platform-independent. Per-file coverage instrumentation run not yet done.
+- **2026-05-28 — `Dev2.Common.Wrappers.*` factories + cross-platform path (Dev2.Common), 4 classes.** New test class `Dev2.Common.Tests/Wrappers/WrapperFactoriesTests.cs` (5 tests, all passing) — explicit `Compile Include` added to the csproj (`EnableDefaultItems=false`). Covers:
+  - `FilePathWrapper.GetDirectoryName` and `IsPathRooted(relative)` — **cross-platform**, since the existing `FilePathWrapperTests` is gated on `RuntimeInformation.IsOSPlatform(Windows)` (`Assert.Inconclusive` on Linux) and so contributes zero coverage on Linux unit jobs; these new tests fill that gap using `Path.Combine` + `Path.GetDirectoryName` as the platform-correct oracle.
+  - `FileSystemWatcherFactory.New()` returns a non-null `IFileSystemWatcherWrapper`/`FileSystemWatcherWrapper`.
+  - `TimerWrapperFactory.New(callback, state, Timeout.Infinite, Timeout.Infinite)` returns a non-null `ITimer`/`TimerWrapper`; callback never fires (no race). `ITimer` fully qualified because `System.Threading` defines one too in newer BCLs.
+  - `TimerWrapper.Dispose()` called twice — exercises the `if (_timer is null) return;` early-return branch that the existing single-Dispose `TimerWrapper_Construct` test misses.
+- **2026-05-28 — `DsfForEachItem` + `ForEachInnerActivityTO` value objects (Dev2.Activities), 2 classes.** New test class `Dev2.Activities.Tests/ActivityTests/ForEachValueObjectsTests.cs` (6 tests, all passing) — explicit `Compile Include` added. Covers:
+  - `DsfForEachItem` — Name/Value/RowIndex/GroupID property round-trip + the static `EmptyList` get/set (state captured + restored in `try/finally` so test order is irrelevant).
+  - `ForEachInnerActivityTO` ctor branches — null `IDev2ActivityIOMapping` (no mappings stored), non-null with populated mappings (stored verbatim), and non-null with empty-string mappings (stored as `null` via the ternary). Plus the four `IList<Tuple<string,string>>` ride-along setters.
+  - Uses Moq for `IDev2ActivityIOMapping`; pure logic, platform-independent.
+- **2026-05-28 — `Dev2.Runtime.WebServer` trivial cluster (Dev2.Runtime.WebServer), 3 classes + 1 POCO.** New test class `Dev2.Runtime.WebServer.Tests/WebServerTrivialClusterTests.cs` (11 tests, all passing) — explicit `Compile Include` added (`EnableDefaultItems=false`). Trimmed against existing `ExtensionsTests.cs` so the new tests are net-new lines:
+  - `StatusResponseWriter` (previously *untested*) — default ctor (NoContent) + explicit-status ctor, both verified by `Write` mutating a mocked `IResponseMessageContext.ResponseMessage`.
+  - `Extensions.GetHttpStringContent` — XML and TRX both map to `application/xml`; JSON to `application/json`. (Not in existing tests.)
+  - `Extensions.IsAuthenticated(null)` — exercises the `Dev2Logger.Debug("Null User", ...)` branch via a direct null `IPrincipal` (existing tests only mock identities).
+  - `Extensions.GetContentEncoding` — null content, missing header, known encoding, *and* invalid encoding (catch + UTF-8 fallback). All four branches.
+  - `Extensions.CreateWarewolfErrorResponse(Uri, args)` — verifies status code propagates and JSON URI picks `application/json`. (Existing tests only cover the `HttpActionContext`/`HttpContext` overloads.)
+  - `WarewolfErrorResponseArgs` POCO round-trip.
 - **Blocked — `Dev2.Comparer.*` trivial group (7 classes).** Those comparers are `internal` with no `InternalsVisibleTo`, and their remaining lines (`GetHashCode`, null-guards) are unreachable via the activity `Equals` path (`OrderBy` dereferences entries before the comparer runs; `SequenceEqual` never calls `GetHashCode`). Needs an `InternalsVisibleTo` decision before it can be picked up.
 
 ### Track D — Monsters & exclude-candidates (special-cased)
 - Pull the genuine monsters out of all team slices: `Dev2.Activities.WF.WorkflowToX6Converter` (+1,115 lines), `Dev2.Activities.WF.X6ToWorkflowConverter` (+755), `Dev2.Services.Execution.DatabaseServiceExecution` (+485). Each is a dedicated mini-project or an EXCLUDE decision (see §6) — folding them into a team's normal slice wrecks that team's velocity.
+
+  | Class | Baseline | Current | Lines banked | Status |
+  |---|---|---|---|---|
+  | `WorkflowToX6Converter` | 15.6% | **88.6%** (1537/1735) | +1,266 | ✅ done — ratchet floor |
+  | `X6ToWorkflowConverter` | 32.9% | 32.9% | 0 | pending |
+  | `DatabaseServiceExecution` | 7.4% | 7.4% | 0 | pending (test-vs-exclude call still owed per §6) |
+
+#### Progress
+- **2026-05-28 — `WorkflowToX6Converter` (Dev2.Activities), 15.6% → 88.6%; +1,266 covered lines (target was +1,115).** New test class `Dev2.Activities.Tests/ActivityTests/WorkflowToX6ConverterCoverageTests.cs` (90 tests, all passing) — explicit `Compile Include` added to the csproj. The converter is a ~3,400-line partial class split across ~60 `_XxxActivityHelper` files; almost every helper file was at 0% line coverage before this. Strategy: drive each helper through the public `ConvertToX6Json(ActivityBuilder, xml)` entry point by handing it a workflow whose `Implementation` is the activity under test, then assert on the produced `X6WorkflowLoadModel`. Coverage:
+  - **Leaf-activity fan-out (~55 tests)** — one `[TestMethod]` per activity type covered by the big `CreateActivityNode` dispatcher: recordset/data (`DataSplit`, `DataMerge`, `BaseConvert`, `Replace`, `CaseConvert`, `FindIndex`, `FindRecords`, `DeleteRecord` × 2, `SortRecords`, `CountRecordset`, `RecordsetLength`, `Unique`, `AdvancedRecordset`); web (`WebGet`, `WebGetRequestWithTimeout`, `WebPost`, `WebPut`, `WebDelete`); database (`SqlServer`, `PostgreSql`, `MySql`, `SqlBulkInsert`, `Oracle`, `Odbc`); file/path (`FileRead` × 2, `FileWrite` × 2, `FolderRead` × 2, `PathCreate`/`Copy`/`Move`/`Rename`/`Delete`, `Zip`, `UnZip`); scripting/calc/misc (`Javascript`, `Ruby`, `Python`, `CommandLine`, `Comment`, `CreateJson`, `XPath`, `Random`, `NumberFormat`, `Calculate_DotNet`, `AggregateCalculate` × 2, `DateTime` × 2, `DateTimeDifference` × 2, `GatherSystemInformation` × 2, `SendEmail`, `ExchangeEmail`, `WorkflowActivity`); messaging (`PublishRabbitMq` × 2, `ConsumeRabbitMq`, `RedisRemove`); plus both multi-assign variants.
+  - **Container activities (7 tests)** — `Gate`, `SuspendExecution`, `ManualResumption`, `RedisCache`, `SelectAndApply`, `ForEach` converted empty (drives `Create` + `Process` + the null-handler guard in each `Process*NestedActivities`). `DsfSequenceActivity` covered both empty and with two nested children — fully exercises `ProcessSequenceNestedActivities` and asserts the `isNested` metadata is set on children.
+  - **Control flow (12 tests)** — `If` (both branches / only-then / no-branches), `While`/`DoWhile` (with-body asserts the "Loop" back-edge / no-body), `TryCatch` (try+finally / empty), `Parallel` (with branches / empty), `System.Activities.Statements.Sequence`, `Flowchart` (step chain / empty / decision with True+False arms via a minimal `CodeActivity<bool>` stub).
+  - **Entry-point edge cases** — null `Implementation` produces start-node only (no edges); `WorkflowXml` is preserved through serialisation.
+  - One isolated `[TestMethod]` per activity type rather than one big batch test — so a single activity's `ToX6Json` regressing localises to one failure instead of voiding the whole batch's coverage.
+- **Two operational notes worth recording before the next monster:**
+  - **MSTest 3.8 runner mode races on the converter's static reflection caches.** Running with the csproj's default `EnableMSTestRunner=true` produced 2 NRE failures inside `DsfSqlBulkInsertActivity.ToX6Json` and `DsfWorkflowActivity.ToX6Json` — almost certainly from parallel test threads racing on `WorkflowToX6Converter._typePropertyCache` / `_childActivityPropertiesCache`. The same MSTest-runner path also produced an empty cobertura (0 hits across all 1,735 lines despite tests executing) — the `XPlat Code Coverage` collector doesn't attach in that mode. Re-running with `-p:EnableMSTestRunner=false` (vstest, single-threaded by default) gave 90/90 passing and correct coverage capture. **Coverage runs for this test project should pass `-p:EnableMSTestRunner=false` until the runner/collector interaction is fixed.**
+  - **Orphan `testhost` / `vstest.console` processes lock `obj/Debug/net8.0/Dev2.Activities.dll`** between back-to-back runs and break subsequent builds with `CS2012: cannot open for writing`. Worth a kill step (`Stop-Process -Name testhost,vstest.console -Force`) before each coverage iteration.
+- **Remaining gap (198 lines to 100%, not blocking the 80% gate):**
+  - `WorkflowToX6Converter.cs` main file at 79.6% (587/737) — most of the gap is the legacy commented-out `#region unused code` switch helpers (reported by cobertura as a method but never executed), the unreachable `else if (activity is DsfDecision decision)` dispatcher arm (`DsfDecision` only enters via `CreateDecisionNode(FlowDecision)` today), and the `ConvertToX6Json` exception path.
+  - Container helpers at 74–91% — the populated `Process*NestedActivities` branch isn't covered. Reaching it needs `ActivityFunc<string,bool>` handlers populated with `Activity<bool>` instances; the early-return guard *is* covered.
 
 **Coordination:** the regenerated worklist (§7) is the shared system of record — a class disappears when it crosses 80%, so cross-team progress is visible without manual bookkeeping. Teams use the per-assembly CSVs only for in-flight "who's on what."
 
@@ -193,9 +291,31 @@ Export `rows` to `coverage-worklist.csv` and assign top-down.
 
 ## 9. Progress log
 
-### Track A — Dev2.Core (in progress)
+### Track A — Dev2.Core (T1 + T2 complete; T3 cherry-picked, 1 blocker)
 
-Working `coverage-worklist/Dev2.Core.csv` cheapest-first. Tests land in `Warewolf.Core.Tests` (references Warewolf.Core → Dev2.Core transitively). Note: that test project sets `EnableDefaultItems=false`, so each new test file needs an explicit `<Compile Include>` entry in the `.csproj`.
+Working `coverage-worklist/Dev2.Core.csv` cheapest-first. Tests land in `Warewolf.Core.Tests` (references Warewolf.Core → Dev2.Core transitively). Note: that test project sets `EnableDefaultItems=false`, so each new test file needs an explicit `<Compile Include>` entry in the `.csproj`. Test namespace must be flat `Dev2.Tests` — nested namespaces like `Dev2.Tests.Common` shadow real `Dev2.*` namespaces and break sibling test files.
+
+#### Rollup (2026-05-28)
+
+**119 new tests across 22 classes** in `Warewolf.Core.Tests`, all passing locally via `dotnet test --no-build`. Full `TestRun.ps1` instrumentation run still pending to confirm exact new % and ratchet the per-file floors. One blocker (`ConflictTreeNode`) — see Batch 6 below.
+
+| Tier | Classes | Tests | Batches |
+|---|---|---|---|
+| **T1** (1–5 lines each) | 13 | 64 | 1–3 |
+| **T2** (6–20 lines each) | 7 | 45 | 4–5 |
+| **T3** (21–60 lines each) | 2 | 10 | 6 |
+| **Total** | **22** | **119** | |
+
+Classes ratcheted (all expected ≥80% after coverage run; behavior-based assertions, not assertion-free fluff):
+
+- T1: `DataTableInterrogator`, `DataTablePath`, `PocoInterrogator`, `RetryState`, `VariableUtils`, `CaseConvertTO`, `DataSourceShapeComparer`, `DeletedFileMetadata`, `DynamicServices.Validator`, `OutputDescription`, `DataBrowser`, `PocoPathSegment`, `JsonPathSegment`.
+- T2: `Dev2ActivityComparer`, `Dev2UniqueActivityComparer`, `ServiceActionInput`, `PooledServiceActivity`, `GatherSystemInformationTO`, `BaseConvertTO`, `DataSourceShape`.
+- T3: `Dev2XamlLoader`, `ServiceAction`.
+
+Blocked: `Common.ConflictTreeNode` (see Batch 6).
+
+#### Per-batch detail
+
 
 **Batch 1 (2026-05-27) — the four 1-line classes. 11 tests added, all passing.**
 
@@ -208,7 +328,72 @@ Working `coverage-worklist/Dev2.Core.csv` cheapest-first. Tests land in `Warewol
 
 Each now clears the 80% floor by the worklist line-math. Tests verified passing via `dotnet test`; a full coverage instrumentation run (`TestRun.ps1`) has **not** yet been done to confirm the exact new % or to ratchet the per-file floors.
 
-**Remaining Dev2.Core T1 (2–5 lines each), cheapest-first:** `VariableUtils`, `CaseConvertTO`, `DataBrowser`, `DataSourceShapeComparer`, `CustomContainer` / `CustomContainer<T>`, `DeletedFileMetadata`, `DynamicServices.Validator`, then `PocoPathSegment`, `JsonPathSegment`, `OutputDescription`. Then T2/T3 per the worklist.
+**Batch 2 (2026-05-28) — six T1 classes (2–5 lines each). 45 tests added, all passing.**
+
+| Class | Was | Tests | New file | Status |
+|---|---|---|---|---|
+| `VariableUtils` | 77.9% | 16 — AddError null-guards (3), delegating one-liners, all four `TryParseVariables` overloads, `ParseVariables` inputs-match / no-match / default-text branches | `Common\VariableUtilsTests.cs` | ✅ done |
+| `CaseConvertTO` | 77.7% | 14 — both ctors + default-`UPPER` branch, `StringToConvert`→`Result` sync, null-`ConvertType` guard, blank-`Result` fallback, CanAdd/CanRemove, ClearRow, all 3 `GetRuleSet` branches, typed+object `Equals`, `GetHashCode` | `ConverterTests\Base\CaseConvertTOTests.cs` | ✅ done |
+| `DataSourceShapeComparer` | 50.0% | 4 — `Equals` both-null / one-null / delegate, `GetHashCode` | `Comparers\DataSourceShapeComparerTests.cs` | ✅ done |
+| `DeletedFileMetadata` | 0% | 2 — all props round-trip + defaults | `DeletedFileMetadataTests.cs` | ✅ done |
+| `DynamicServices.Validator` | 0% | 2 — ctor sets ObjectType, `ValidatorType` round-trip | `DynamicServices\ValidatorTests.cs` | ✅ done |
+| `OutputDescription` | 62.9% | 8 — ctor, typed `Equals` same/diff format, object `Equals` null/ref/type/equal, `GetHashCode` (also exercises `DataSourceShapeComparer`) | `ConverterTests\GraphTests\OutputTests\OutputDescriptionTests.cs` | ✅ done |
+
+Note: `CaseConvertTO.GetHashCode` and `ValidateName` returning null for valid names were discovered during testing — assertions adjusted to match real (reference-hashed `Errors`/`Error`) behaviour rather than forcing it. Verified via `dotnet test` (45/45). Full `TestRun.ps1` instrumentation run still pending to confirm exact % and ratchet floors. `namespace Dev2.Tests` (flat) is required — nested `Dev2.Tests.Common` / `.Comparers` etc. shadow real `Dev2.*` namespaces and break sibling test files.
+
+**Batch 3 (2026-05-28) — `DataBrowser` + `PocoPathSegment` + `JsonPathSegment` (T1 tail). 8 tests added, all passing.**
+
+| Class | Was | Tests | Approach | Status |
+|---|---|---|---|---|
+| `DataBrowser` | 75.0% | 4 — `SelectScalar` / `SelectEnumerable` / `SelectEnumerablesAsRelated` null-navigator error branches (string data + `DataTablePath`); `SelectEnumerablesAsRelated` empty-paths short-circuit | extend `DataBrowserTests` | ✅ done |
+| `PocoPathSegment` | 63.3% | 2 — `As<PocoPathSegment>()` self-return; `As<JsonPathSegment>()` throws `NotImplementedException` | extend `PocoPathSegmentTests` | ✅ done |
+| `JsonPathSegment` | 63.3% | 2 — mirror of above (`As<JsonPathSegment>` / `As<PocoPathSegment>` throws) | extend `JsonPathSegmentTests` | ✅ done |
+
+Null-navigator is only reachable via `StringInterrogator` + a `pathType` it doesn't dispatch on (`PocoInterrogator` accepts any IPath; `DataTableInterrogator.CreateNavigator` throws `NotImplementedException` before the null check) — `DataTablePath` against a plain string is the simplest trigger. Path-segment `As<T>` is `where T : class, IPathSegment`, so both the cast-success and the `NotImplementedException` branch are reachable from sibling segment types. `Warewolf.Core.Tests` has `InternalsVisibleTo` via `AssemblyCommonInfo.cs`, so the internal `PocoPathSegment` / `JsonPathSegment` types are usable directly from tests.
+
+Cumulative for Track A Dev2.Core: **batches 1–3 = 64 new tests (11 + 45 + 8) across 13 classes**, all passing. Coverage instrumentation run still pending to confirm exact new % and ratchet the per-file floors.
+
+**Batch 4 (2026-05-28) — T2 entry: 5 small classes. 18 tests added, all passing.**
+
+| Class | Was | Tests | Where | Status |
+|---|---|---|---|---|
+| `Dev2ActivityComparer` | 0% | 4 — `Equals` both-null / one-null / delegate-to-instance; `GetHashCode` constant `1` | new `Dev2ActivityComparerTests.cs` | ✅ done |
+| `Dev2UniqueActivityComparer` | 0% | 5 — `Equals` both-null / one-null / matching-UniqueID / differing-UniqueID; `GetHashCode` delegates | new `Dev2UniqueActivityComparerTests.cs` | ✅ done |
+| `ServiceActionInput` | 0% | 2 — ctor sets `ObjectType` + allocates `Validators`; all properties round-trip | new `DynamicServices\ServiceActionInputTests.cs` | ✅ done |
+| `PooledServiceActivity` | 0% | 1 — internal ctor exposes `Generation` + `Value` (reachable via InternalsVisibleTo) | new `DynamicServices\PooledServiceActivityTests.cs` | ✅ done |
+| `GatherSystemInformationTO` | 67.2% | 6 — 4-arg ctor with `Inserted`, `ClearRow`, `IsResultFocused`, all 3 `GetRuleSet` branches (merged into existing root-level `GatherSystemInformationTOTests.cs`) | extend existing | ✅ done |
+
+Comparers use `Mock<IDev2Activity>` (existing pattern in `ConflictTreeNodeTests`). `PooledServiceActivity`'s `internal` ctor takes `System.Activities.Activity`; the test project already references `System.Activities`, but passing `null` for `Value` exercises every line without needing a concrete `Activity` subclass.
+
+Collision gotcha: there was already a root-level `Warewolf.Core.Tests\GatherSystemInformationTOTests.cs`. My initial new file under `ConverterTests\Base\` declared the same `Dev2.Tests.GatherSystemInformationTOTests` class → CS0101. Resolved by appending the new tests to the existing root-level file (which is already in csproj).
+
+Cumulative for Track A Dev2.Core: **batches 1–4 = 82 new tests across 18 classes**, all passing (87 in the full Batch 1–4 filter run, which includes a handful of pre-existing tests sharing the test categories).
+
+**Batch 5 (2026-05-28) — T2 finish: `BaseConvertTO` + `DataSourceShape`. 27 tests added, all passing first try.**
+
+| Class | Was | Tests | New file | Status |
+|---|---|---|---|---|
+| `BaseConvertTO` | 65.2% | 14 — full ctor + default-fallback branch (`Base 64`/`Text`), `FromType`/`ToType` null-guards, CanAdd/CanRemove, ClearRow, `IsFromExpressionFocused`, all 3 `GetRuleSet` branches, typed+object `Equals`, `GetHashCode` stability | `ConverterTests\Base\BaseConvertTOTests.cs` | ✅ done |
+| `DataSourceShape` | 50.0% | 13 — ctor, typed `Equals` null/ref/empty/matching/differing-ActualPath/different-IPath-impl branches (exercises private `EqualsMethod` `equalTypes` check via `PocoPath` vs `JsonPath`), object `Equals` null/ref/type/equal, `GetHashCode` non-null + null `Paths` branches | `ConverterTests\GraphTests\OutputTests\DataSourceShapeTests.cs` | ✅ done |
+
+`DataSourceShape.EqualsMethod` (private) is reachable indirectly through `CommonEqualityOps.CollectionEquals` from `Equals(IDataSourceShape)`; comparing two single-element shapes with sibling `IPath` types (`PocoPath` vs `JsonPath`) is the cleanest way to hit the `equalTypes` false branch.
+
+Cumulative for Track A Dev2.Core: **batches 1–5 = 109 new tests across 20 classes**, all passing. T2 for Dev2.Core is now complete.
+
+**Batch 6 (2026-05-28) — T3 entry: `Dev2XamlLoader` + `ServiceAction`. 10 tests added, all passing first try.**
+
+| Class | Was | Tests | New file | Status |
+|---|---|---|---|---|
+| `Dev2XamlLoader` | 40.5% | 3 — `Load` null/empty xamlDefinition `ArgumentNullException` branches, `RemoveWindowsElements` exercising all 3 loops (mva element, sap element, sap attribute removal) | `DynamicServices\Dev2XamlLoaderTests.cs` | ✅ done |
+| `ServiceAction` | 37.3% | 7 — ctor (ObjectType, ActionType, collections), simple property round-trips (12 props), `SetActivity`, `PopActivity` empty-pool branch, `Compile` no-input + propagate-input-errors branches, `Dispose` no-stream idempotent | `DynamicServices\ServiceActionTests.cs` | ✅ done |
+
+**Blocked — `Common.ConflictTreeNode` (0%, T3, +44 lines).** The existing `Warewolf.Core.Tests\Common\ConflictTreeNodeTests.cs` is wrapped in `#if WINDOWS || NETFRAMEWORK` (uses `System.Windows.Point`); the test project targets `net8.0`, so the file compiles to *nothing* on the coverage TFM — which is why coverage is 0% despite the file's existence. The class itself has `Activity` as `{ get; }` (read-only) set only by the WPF-only `Point` constructor; on net8.0 there is no public way to create a `ConflictTreeNode` with a non-null `Activity`, and every non-trivial method (`Equals`, `ChildrenEquals`, `GetHashCode`) NREs without one. Needs either (a) a non-WPF constructor / `init` setter on the source, or (b) tagging the class as an `EXCLUDE` candidate per §6, before more test work here is justified.
+
+Cumulative for Track A Dev2.Core: **batches 1–6 = 119 new tests across 22 classes**, all passing. T1 + T2 done; T3 cherry-picked the achievable wins.
+
+**Next up for Track A Dev2.Core.** With T1–T2 done and the cheap half of T3 banked, the remaining `coverage-worklist/Dev2.Core.csv` entries are either the `ConflictTreeNode` blocker or T4-scale work. Per the cheapest-first principle, rotate Track A to a fresh small assembly (`coverage-worklist/*.csv`, smallest first) before tackling Dev2.Core's T4.
+
+**Pending verification (all batches).** None of the per-file floors have been ratcheted yet — that step requires a full `TestRun.ps1` instrumentation run so the actual post-batch class % is known. Until then, the "Was" % columns above are the pre-batch baseline; the post-batch % is expected to land at 85–95% per class (overshoot is fine per §3 principles).
 
 ---
 

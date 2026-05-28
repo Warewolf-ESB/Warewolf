@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.DynamicServices
+namespace Dev2.Tests
 {
     [TestClass]
     public class ValidatorTests
