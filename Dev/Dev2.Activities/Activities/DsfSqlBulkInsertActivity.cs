@@ -751,7 +751,7 @@ namespace Dev2.Activities
             cell.data.TryAdd(Constants.SQLBULKINSERT_KEEPTABLELOCK, KeepTableLock);
             cell.data.TryAdd(Constants.SQLBULKINSERT_IGNOREBLANKROWS, IgnoreBlankRows);
             cell.data.TryAdd(Constants.SQLBULKINSERT_INPUTMAPPINGS, InputMappings);
-            cell.data.TryAdd(Constants.SQLBULKINSERT_DATABASE, Database.ResourceID);
+            cell.data.TryAdd(Constants.SQLBULKINSERT_DATABASE, Database?.ResourceID ?? Guid.Empty);
             cell.data.TryAdd(Constants.RESULT, Result);
         }
 

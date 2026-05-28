@@ -1,0 +1,9 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+3,T1-trivial,72.4,21,8,29,64,"Warewolf.Interfaces","Warewolf.Data.NamedGuidWithEncryptedPayload"
+3,T1-trivial,55.5,5,4,9,34,"Warewolf.Interfaces","Warewolf.Data.Headers"
+3,T1-trivial,0,0,3,3,24,"Warewolf.Interfaces","Warewolf.Interfaces.Auditing.WebSocketServerFactory"
+4,T1-trivial,0,0,4,4,30,"Warewolf.Interfaces","Warewolf.Writer"
+5,T1-trivial,0,0,6,6,25,"Warewolf.Interfaces","Warewolf.Configuration.StudioSettingsData"
+11,T2-small,0,0,13,13,43,"Warewolf.Interfaces","Warewolf.Interfaces.Auditing.WebSocketServerWrapper"
+24,T3-medium,40.6,24,35,59,112,"Warewolf.Interfaces","Warewolf.Data.NamedGuid"
+42,T3-medium,24,18,57,75,147,"Warewolf.Interfaces","Warewolf.Configuration.ChatbotSettingsData"

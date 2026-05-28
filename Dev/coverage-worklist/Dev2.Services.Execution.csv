@@ -1,0 +1,4 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+3,T1-trivial,33.3,2,4,6,528,"Dev2.Services.Execution","Dev2.Services.Execution.ServiceExecutionAbstract<TService, TSource>"
+162,T4-large,42.4,182,247,429,620,"Dev2.Services.Execution","Dev2.Services.Execution.ServiceExecutionAbstract<TService, TSource>"
+485,T4-large,7.4,50,618,668,886,"Dev2.Services.Execution","Dev2.Services.Execution.DatabaseServiceExecution"

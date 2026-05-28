@@ -46,6 +46,7 @@
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ServiceTestCoverageExecutorTests.cs" />
     <Compile Include="WebRequestExtentionsTests.cs" />
+    <Compile Include="WebServerTrivialClusterTests.cs" />
     <Compile Include="WorkflowTestResultsTests.cs" />
   </ItemGroup>
   <ItemGroup>

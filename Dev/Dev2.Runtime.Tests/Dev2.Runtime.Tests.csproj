@@ -123,6 +123,7 @@
     <Compile Include="Hosting\TestCoverageCatalogTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
+    <Compile Include="Hosting\CatalogFactoryAndRecordsetListWrapperTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Services\FindResourcesByTypeTests.cs" />
     <Compile Include="Services\FindResourceTestsS.cs" />
     <Compile Include="Services\FetchServerPermissionsTests.cs" />
+    <Compile Include="Services\FetchRemoteDebugMessagesTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Services\DeleteTestTests.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\LoggingSettingsReadTests.cs" />
+    <Compile Include="Services\SettingsReadServicesTests.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
     <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
@@ -226,6 +229,7 @@
     <Compile Include="ServiceModel\WebServicesMock.cs" />
     <Compile Include="ServiceModel\WebServicesTest.cs" />
     <Compile Include="ServiceModel\WebSourcesTests.cs" />
+    <Compile Include="ServiceModel\WebExecuteStringArgsTests.cs" />
     <Compile Include="Services\ClearLogsTest.cs" />
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />

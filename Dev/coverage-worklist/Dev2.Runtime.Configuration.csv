@@ -1,0 +1,5 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+1,T1-trivial,0,0,1,1,36,"Dev2.Runtime.Configuration","System.Windows.Controls.Extensions"
+5,T1-trivial,65.5,19,10,29,84,"Dev2.Runtime.Configuration","Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand"
+11,T2-small,0,0,13,13,142,"Dev2.Runtime.Configuration","System.Windows.Controls.InteractionHelper"
+12,T2-small,0,0,15,15,49,"Dev2.Runtime.Configuration","System.Windows.Controls.AutoCompleteSearch"

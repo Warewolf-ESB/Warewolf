@@ -1,0 +1,10 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+5,T1-trivial,0,0,6,6,224,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.Subscription"
+5,T1-trivial,0,0,6,6,459,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.ThreadExtensionMethods"
+7,T2-small,0,0,8,8,28,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.HubConnectionStateExtensions"
+8,T2-small,0,0,9,9,175,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.SubscriptionWrapper"
+10,T2-small,0,0,12,12,211,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.StateChangeWrapped"
+11,T2-small,0,0,13,13,157,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.HubProxyWrapper"
+60,T3-medium,0,0,74,74,447,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.StateController.Watcher"
+76,T4-large,0,0,95,95,209,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.HubConnectionWrapper"
+132,T4-large,0,0,165,165,447,"Dev2.SignalR.Wrappers.New","Dev2.SignalR.Wrappers.New.StateController"
