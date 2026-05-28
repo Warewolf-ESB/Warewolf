@@ -68,14 +68,19 @@ namespace Warewolf.Execution.Lightweight
                     if (!seen.Add(name))
                         continue;
 
-                    // Apply the caller-supplied permission filter before emitting.
-                    if (workflowFilter is not null && !workflowFilter(name))
-                        continue;
-
+                    // Compute the folder-relative path (no extension, forward-slashes) before
+                    // the filter check so the predicate receives the full path (e.g. "data/sales")
+                    // rather than the bare XML Name attribute (e.g. "sales").
+                    // This is required for NamesMatch to distinguish "data\sales" from root "sales".
                     var relative   = Path.GetRelativePath(_workflowsDirectory, file);
                     var ext        = Path.GetExtension(relative);
-                    var withoutExt = relative[..^ext.Length];
-                    yield return (name, withoutExt.Replace(Path.DirectorySeparatorChar, '/'));
+                    var withoutExt = relative[..^ext.Length].Replace(Path.DirectorySeparatorChar, '/');
+
+                    // Apply the caller-supplied permission filter before emitting.
+                    if (workflowFilter is not null && !workflowFilter(withoutExt))
+                        continue;
+
+                    yield return (name, withoutExt);
                 }
             }
         }

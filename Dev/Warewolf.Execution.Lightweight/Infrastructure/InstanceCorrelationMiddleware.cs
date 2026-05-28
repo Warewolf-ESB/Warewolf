@@ -90,7 +90,7 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
                 logger.LogError(ex,
                     "Request failed for function '{FunctionName}' (InvocationId: {InvocationId}) after {ElapsedMs}ms",
                     functionName, invocationId, stopwatch.ElapsedMilliseconds);
-                throw;
+                //throw;
             }
             finally
             {
