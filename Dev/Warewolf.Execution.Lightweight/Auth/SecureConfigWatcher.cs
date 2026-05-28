@@ -51,22 +51,46 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var path = ResolveConfigPath();
-        if (path is null || !File.Exists(path))
+        var path = ResolveExpectedConfigPath();
+        if (path is null)
         {
             _logger.LogInformation(
-                "SecureConfigWatcher: no secure.config to watch — skipping hot-reload.");
+                "SecureConfigWatcher: no secure.config path resolvable — skipping hot-reload.");
             return Task.CompletedTask;
         }
 
-        var dir  = Path.GetDirectoryName(path)!;
+        var dir  = Path.GetDirectoryName(path);
         var file = Path.GetFileName(path);
+
+        if (string.IsNullOrEmpty(dir) || string.IsNullOrEmpty(file))
+        {
+            _logger.LogInformation(
+                "SecureConfigWatcher: secure.config path {Path} has no directory/filename — skipping hot-reload.", path);
+            return Task.CompletedTask;
+        }
+
+        // Ensure the parent directory exists so the FileSystemWatcher can attach
+        // even when the secure.config file itself hasn't been written yet (CI
+        // pipelines often create the directory before tests, then have each
+        // test write the file later — we must still detect that Created event
+        // and reload).
+        try
+        {
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex,
+                "SecureConfigWatcher: could not ensure directory {Dir} exists — skipping hot-reload.", dir);
+            return Task.CompletedTask;
+        }
 
         _debounce = new Timer(_ => SafeReload(), null, Timeout.Infinite, Timeout.Infinite);
 
         _watcher = new FileSystemWatcher(dir, file)
         {
-            NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.CreationTime,
+            NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.CreationTime | NotifyFilters.FileName,
             EnableRaisingEvents = true,
         };
 
@@ -74,8 +98,22 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         _watcher.Created += OnChanged;
         _watcher.Renamed += OnChanged;
 
-        _logger.LogInformation(
-            "SecureConfigWatcher: monitoring {Path} for hot-reload.", path);
+        // If the file already exists at startup, the watcher only fires on future
+        // changes — perform an immediate load so we don't run with the AllowAll
+        // fallback any longer than necessary. When the file doesn't yet exist,
+        // the Created event will trigger the first SafeReload.
+        if (File.Exists(path))
+        {
+            _logger.LogInformation(
+                "SecureConfigWatcher: monitoring {Path} for hot-reload (file present).", path);
+            SafeReload();
+        }
+        else
+        {
+            _logger.LogInformation(
+                "SecureConfigWatcher: monitoring {Path} for hot-reload (file not yet present — will load on creation).", path);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -102,14 +140,15 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
         }
     }
 
-    private static string? ResolveConfigPath()
+    private static string? ResolveExpectedConfigPath()
     {
         var env = Environment.GetEnvironmentVariable("WAREWOLF_SECURE_CONFIG");
         if (!string.IsNullOrWhiteSpace(env))
             return env;
 
-        var bin = Path.Combine(AppContext.BaseDirectory, "secure.config");
-        return File.Exists(bin) ? bin : null;
+        // Fall back to the bin-side path; this is always returnable so the watcher
+        // can attach to the directory even when the file hasn't been written yet.
+        return Path.Combine(AppContext.BaseDirectory, "secure.config");
     }
 
     public void Dispose()
