@@ -55,6 +55,21 @@ namespace Warewolf.Execution.Lightweight.Models
         public Uri WebServerUri { get; set; }
 
         /// <summary>
+        /// Caller-supplied execution ID propagated from the <c>Warewolf-Execution-Id</c>
+        /// request header.  When set, this value is used instead of generating a new GUID,
+        /// enabling distributed tracing correlation across services.
+        /// Mirrors <c>DataObjectExtensions.SetHeaders()</c> on the full server.
+        /// </summary>
+        public Guid? ExecutionId { get; set; }
+
+        /// <summary>
+        /// Caller-supplied custom transaction ID propagated from the
+        /// <c>Warewolf-Custom-Transaction-Id</c> request header.
+        /// Mirrors <c>DataObjectExtensions.SetHeaders()</c> on the full server.
+        /// </summary>
+        public string CustomTransactionId { get; set; }
+
+        /// <summary>
         /// Validates that the request has the minimum required information.
         /// </summary>
         public bool IsValid => !string.IsNullOrWhiteSpace(WorkflowFilePath);

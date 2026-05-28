@@ -110,7 +110,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 : PolicyLookupResult.ConfigMissing();
         }
 
-        var key = workflowName.ToLowerInvariant();
+        var key = workflowName.Replace('\\', '/').ToLowerInvariant();
 
         // ── Resource scope takes priority ─────────────────────────────────────
         if (_policies.TryGetValue(key, out var resourcePolicy))
@@ -164,7 +164,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
         }
 
         // ── Determine active scope ─────────────────────────────────────────────
-        var key = workflowName.ToLowerInvariant();
+        var key = workflowName.Replace('\\', '/').ToLowerInvariant();
         IReadOnlyDictionary<string, WorkflowPermission> activeScope;
 
         if (_resourceRoleMap.TryGetValue(key, out var resourceMap))
@@ -283,7 +283,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 string.IsNullOrWhiteSpace(p.GroupName))
                 continue;
 
-            var wfKey = p.ResourceName.ToLowerInvariant();
+            var wfKey = p.ResourceName.Replace('\\', '/').ToLowerInvariant();
 
             if (!outer.TryGetValue(wfKey, out var inner))
             {
@@ -321,15 +321,6 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
             var rolePolicies = roleMap
                 .Select(kvp => ResolvedRolePolicy.Create(kvp.Key, kvp.Value))
                 .ToList();
-
-            var hasExecute = rolePolicies.Any(e => e.EffectivePermissions.HasFlag(WorkflowPermission.Execute));
-            if (!hasExecute)
-            {
-                _logger.LogDebug(
-                    "Skipping resource policy for '{Workflow}' — no role has Execute permission.",
-                    workflowKey);
-                continue;
-            }
 
             var policy = WorkflowAuthPolicy.Create(
                 workflowKey,

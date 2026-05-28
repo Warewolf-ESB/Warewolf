@@ -14,12 +14,12 @@ namespace Warewolf.Execution.Lightweight.Infrastructure;
 /// call so <c>Program.cs</c> contains zero raw env-var reads and each variable
 /// has exactly one canonical definition.
 /// </summary>
-internal sealed class HostEnvironmentConfig
+public sealed class HostEnvironmentConfig
 {
     // ── Defaults ────────────────────────────────────────────────────────────────
 
-    internal const string DefaultSecretName   = "dp-keyring-v1";
-    internal const string VaultUriTemplate    = "https://{0}.vault.azure.net/";
+    public const string DefaultSecretName   = "dp-keyring-v1";
+    public const string VaultUriTemplate    = "https://{0}.vault.azure.net/";
 
     // ── Factory ─────────────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ internal sealed class HostEnvironmentConfig
     /// Reads all relevant environment variables once and returns an immutable
     /// configuration snapshot.
     /// </summary>
-    internal static HostEnvironmentConfig Load()
+    public static HostEnvironmentConfig Load()
     {
         var isDevelopment = IsDevelopmentEnvironment();
         return new(
@@ -47,7 +47,10 @@ internal sealed class HostEnvironmentConfig
             debugKeyVaultSecret:          isDevelopment
                                           ? NullIfEmpty(Environment.GetEnvironmentVariable("DEBUG_AZURE_KEYVAULT_SECRET"))
                                           : null,
-            isDevelopment:                isDevelopment);
+            isDevelopment:                isDevelopment,
+            debugPrincipalToken:          isDevelopment
+                                          ? NullIfEmpty(Environment.GetEnvironmentVariable("DEBUG_PRINCIPAL_TOKEN"))
+                                          : null);
     }
 
     private static string? NullIfEmpty(string? value) =>
@@ -65,7 +68,7 @@ internal sealed class HostEnvironmentConfig
     // ── Properties ───────────────────────────────────────────────────────────────
 
     /// <summary>Absolute or relative path to the directory containing workflow files.</summary>
-    internal string WorkflowsDirectory { get; }
+    public string WorkflowsDirectory { get; }
 
     /// <summary>
     /// When <c>true</c> a failure to retrieve the AES key from Key Vault is treated
@@ -77,38 +80,53 @@ internal sealed class HostEnvironmentConfig
     ///
     /// <b>Default: <c>false</c></b> — the host refuses to start without the AES key.
     /// </summary>
-    internal bool SkipFailureToRetrieveSecret { get; }
+    public bool SkipFailureToRetrieveSecret { get; }
 
     /// <summary>
     /// Azure AD tenant ID used in development to pin the credential chain to the correct tenant.
     /// Source: <c>AZURE_TENANT_ID</c> environment variable.
     /// </summary>
-    internal string? TenantId { get; }
+    public string? TenantId { get; }
 
     /// <summary>
     /// Client ID of a User-Assigned Managed Identity.  When <c>null</c> the
     /// System-Assigned identity is used.  Source: <c>AZURE_CLIENT_ID</c> environment variable.
     /// </summary>
-    internal string? ManagedIdentityClientId { get; }
+    public string? ManagedIdentityClientId { get; }
 
     /// <summary>
     /// <c>true</c> when the host is running locally or inside a development container.
     /// Drives the credential strategy selected by <see cref="KeyVaultCredentialFactory"/>.
     /// </summary>
-    internal bool IsDevelopment { get; }
+    public bool IsDevelopment { get; }
 
     /// <summary>
     /// When set in development, the Key Vault secret value is taken directly from this
     /// property — no network call to Azure Key Vault is made.  <c>null</c> in production
     /// or when the <c>DEBUG_AZURE_KEYVAULT_SECRET</c> environment variable is absent/empty.
     /// </summary>
-    internal string? DebugKeyVaultSecret { get; }
+    public string? DebugKeyVaultSecret { get; }
+
+    /// <summary>
+    /// Base64-encoded <c>X-MS-CLIENT-PRINCIPAL</c> payload for local debugging.
+    /// Obtained by calling <c>https://&lt;your-site&gt;/.auth/me</c>, taking the first
+    /// element's <c>clientPrincipal</c> JSON object and base64-encoding it.
+    ///
+    /// When set in development, <see cref="Parsers.DebugPrincipalParser"/> injects
+    /// this as the authenticated principal so that the full auth pipeline
+    /// (group resolution, permission checks) runs with real Azure roles — without
+    /// requiring a live EasyAuth-enabled App Service locally.
+    ///
+    /// Source: <c>DEBUG_PRINCIPAL_TOKEN</c> environment variable (<c>local.settings.json</c>).
+    /// <b>Never set in production.</b>
+    /// </summary>
+    public string? DebugPrincipalToken { get; }
 
     /// <summary>
     /// Pre-built credential options snapshot for Key Vault authentication.
     /// Consumed by <see cref="KeyVaultCredentialFactory.Create"/>.
     /// </summary>
-    internal KeyVaultCredentialOptions CredentialOptions => new()
+    public KeyVaultCredentialOptions CredentialOptions => new()
     {
         IsDevelopment           = IsDevelopment,
         TenantId                = TenantId,
@@ -116,30 +134,30 @@ internal sealed class HostEnvironmentConfig
     };
 
     /// <summary>Azure Key Vault vault name.  <c>null</c> when encryption is disabled.</summary>
-    internal string? VaultName { get; }
+    public string? VaultName { get; }
 
     /// <summary>Key Vault secret name that holds the AES-256-GCM key ring.</summary>
-    internal string SecretName { get; }
+    public string SecretName { get; }
 
     /// <summary>
     /// Stable per-instance identifier used in audit log entries.
     /// Defaults to <see cref="Environment.MachineName"/> outside Azure.
     /// </summary>
-    internal string InstanceId { get; }
+    public string InstanceId { get; }
 
     /// <summary>
     /// <c>true</c> when <see cref="VaultName"/> is set and AES-256-GCM decryption
     /// of <c>.bite</c> source files should be activated at startup.
     /// </summary>
-    internal bool EncryptionEnabled => !string.IsNullOrWhiteSpace(VaultName);
+    public bool EncryptionEnabled => !string.IsNullOrWhiteSpace(VaultName);
 
     /// <summary>
     /// Fully-qualified Key Vault URI (e.g. <c>https://my-vault.vault.azure.net/</c>).
     /// Only valid when <see cref="EncryptionEnabled"/> is <c>true</c>.
     /// </summary>
-    internal string VaultUri => string.Format(VaultUriTemplate, VaultName);
+    public string VaultUri => string.Format(VaultUriTemplate, VaultName);
 
-    // ── Constructor ──────────────────────────────────────────────────────────────
+    // ── Constructor
 
     HostEnvironmentConfig(
         string  workflowsDirectory,
@@ -150,7 +168,8 @@ internal sealed class HostEnvironmentConfig
         string? tenantId,
         string? managedIdentityClientId,
         string? debugKeyVaultSecret,
-        bool    isDevelopment)
+        bool    isDevelopment,
+        string? debugPrincipalToken)
     {
         WorkflowsDirectory          = workflowsDirectory;
         VaultName                   = vaultName;
@@ -161,5 +180,6 @@ internal sealed class HostEnvironmentConfig
         ManagedIdentityClientId     = managedIdentityClientId;
         DebugKeyVaultSecret         = debugKeyVaultSecret;
         IsDevelopment               = isDevelopment;
+        DebugPrincipalToken         = debugPrincipalToken;
     }
 }

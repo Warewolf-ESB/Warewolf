@@ -42,7 +42,8 @@ try
                  enableConsole,
                  enableElastic,
                  elasticsearchSettingsPath,
-                 minimumLevel);
+                 minimumLevel,
+                 config);
          })
         .Build();
 

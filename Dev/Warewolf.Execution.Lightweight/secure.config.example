@@ -1,49 +1,86 @@
 {
+  "$id": "1",
+  "$type": "Dev2.Services.Security.SecuritySettingsTO, Dev2.Infrastructure",
+  "SecretKey": "",
+  "AuthenticationOverrideWorkflow": {
+    "$id": "2",
+    "$type": "Warewolf.Data.NamedGuid, Warewolf.Interfaces",
+    "Name": "",
+    "Value": "00000000-0000-0000-0000-000000000000"
+  },
   "WindowsGroupPermissions": [
     {
-      "Comment": "Server permissions apply to the whole server.",
-      "WindowsGroup": "Warewolf Adminstrators",
+      "$id": "3",
+      "$type": "Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure",
+      "IsServer": false,
+      "ResourcePath": "data\\sales",
+      "ResourceID": "7821a113-f2e8-4a66-8a09-7fd6b37ae84b",
+      "ResourceName": "sales",
+      "WindowsGroup": "wwusers",
+      "IsDeleted": false,
+      "CanChangeName": true,
+      "EnableCellEditing": true,
+      "RemoveRow": {
+        "$type": "Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration"
+      },
+      "CanRemove": true,
+      "View": true,
+      "Execute": true,
+      "Contribute": false,
+      "DeployTo": false,
+      "DeployFrom": false,
+      "Administrator": false,
+      "IsNew": false,
+      "Path": null
+    },
+    {
+      "$id": "4",
+      "$type": "Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure",
       "IsServer": true,
+      "ResourcePath": null,
+      "ResourceID": "00000000-0000-0000-0000-000000000000",
+      "ResourceName": null,
+      "WindowsGroup": "Warewolf Administrators",
+      "IsDeleted": false,
+      "CanChangeName": false,
+      "EnableCellEditing": false,
+      "RemoveRow": {
+        "$type": "Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration"
+      },
+      "CanRemove": false,
       "View": true,
       "Execute": true,
       "Contribute": true,
       "DeployTo": true,
       "DeployFrom": true,
-      "Administrator": true
+      "Administrator": true,
+      "IsNew": false,
+      "Path": null
     },
     {
-      "Comment": "Server permissions apply to the whole server.",
-      "WindowsGroup": "Public",
+      "$id": "5",
+      "$type": "Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure",
       "IsServer": true,
+      "ResourcePath": null,
+      "ResourceID": "00000000-0000-0000-0000-000000000000",
+      "ResourceName": null,
+      "WindowsGroup": "Public",
+      "IsDeleted": false,
+      "CanChangeName": false,
+      "EnableCellEditing": true,
+      "RemoveRow": {
+        "$type": "Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration"
+      },
+      "CanRemove": false,
       "View": false,
       "Execute": false,
       "Contribute": false,
       "DeployTo": false,
       "DeployFrom": false,
-      "Administrator": false
-    },
-    {
-      "Comment": "Resource permissions apply to a specific workflow only. Set IsServer to false and provide the ResourceName.",
-      "WindowsGroup": "Public",
-      "IsServer": false,
-      "ResourceName": "Hello World",
-      "View": true,
-      "Execute": true,
-      "Contribute": false
-    },
-    {
-      "Comment": "Another resource permission example — grant a specific user access to one workflow.",
-      "WindowsGroup": "another-user@example.com",
-      "IsServer": false,
-      "ResourceName": "Hello World",
-      "View": true,
-      "Execute": true,
-      "Contribute": false
+      "Administrator": false,
+      "IsNew": false,
+      "Path": null
     }
   ],
-  "AuthenticationOverrideWorkflow": {
-    "Comment": "Optional. When Name is non-empty, POST /login executes this Warewolf workflow instead of returning 501 Not Implemented. The workflow receives the request body and must return a JSON object containing a 'token' field. Leave Name empty (or omit this section entirely) to disable custom login.",
-    "Name": "Login",
-    "Value": "00000000-0000-0000-0000-000000000000"
-  }
+  "CacheTimeout": "01:00:00"
 }
