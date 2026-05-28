@@ -51,6 +51,8 @@ namespace Warewolf.Execution.Lightweight.Logging
 
         // ── Non-audit: no-ops ────────────────────────────────────────────────────
 
+        public void LogTrace(string message, Guid executionId) { }
+        public void LogTrace(string message, Exception exception, Guid executionId) { }
         public void LogDebug(string message, Guid executionId) { }
         public void LogDebug(string message, Exception exception, Guid executionId) { }
         public void LogInfo(string message, Guid executionId) { }

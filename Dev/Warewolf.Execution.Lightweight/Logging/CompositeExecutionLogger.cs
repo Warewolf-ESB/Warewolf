@@ -28,6 +28,26 @@ namespace Warewolf.Execution.Lightweight.Logging
         }
 
         /// <inheritdoc/>
+        public void LogTrace(string message, Guid executionId)
+        {
+            foreach (var logger in _loggers)
+            {
+                try { logger.LogTrace(message, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void LogTrace(string message, Exception exception, Guid executionId)
+        {
+            foreach (var logger in _loggers)
+            {
+                try { logger.LogTrace(message, exception, executionId); }
+                catch { /* individual sink failure must not cascade */ }
+            }
+        }
+
+        /// <inheritdoc/>
         public void LogDebug(string message, Guid executionId)
         {
             foreach (var logger in _loggers)

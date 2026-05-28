@@ -37,6 +37,13 @@ namespace Warewolf.Execution.Lightweight.Logging
         static string Str(object? message) => message?.ToString() ?? string.Empty;
 
 
+        public void Trace(object message, string executionId) =>
+            _inner.LogTrace(Str(message), ToGuid(executionId));
+
+        public void Trace(object message, Exception exception, string executionId) =>
+            _inner.LogTrace(Str(message), exception, ToGuid(executionId));
+
+
         public void Debug(object message, string executionId) =>
             _inner.LogDebug(Str(message), ToGuid(executionId));
 

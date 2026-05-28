@@ -47,6 +47,30 @@ namespace Warewolf.Execution.Lightweight.Logging
             _client = new ElasticsearchClient(settings);
         }
 
+        public override void LogTrace(string message, Guid executionId)
+        {
+            if (!ShouldLog(Dev2LogLevel.TRACE)) return;
+            IndexFireAndForget(new ElasticsearchLogDocument
+            {
+                Level       = "trace",
+                Message     = message,
+                ExecutionId = executionId,
+            });
+        }
+
+        public override void LogTrace(string message, Exception exception, Guid executionId)
+        {
+            if (!ShouldLog(Dev2LogLevel.TRACE)) return;
+            IndexFireAndForget(new ElasticsearchLogDocument
+            {
+                Level        = "trace",
+                Message      = message,
+                ExecutionId  = executionId,
+                ErrorMessage = exception?.Message,
+                StackTrace   = exception?.ToString(),
+            });
+        }
+
         public override void LogDebug(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;

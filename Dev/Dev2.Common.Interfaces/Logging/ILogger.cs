@@ -14,6 +14,9 @@ namespace Dev2.Common.Interfaces.Logging
 {
     public interface ILogger
     {
+        void Trace(object message, string executionId);
+        void Trace(object message, Exception exception, string executionId);
+
         void Debug(object message, string executionId);
         void Debug(object message, Exception exception, string executionId);
 

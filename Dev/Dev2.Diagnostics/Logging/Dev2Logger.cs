@@ -46,6 +46,33 @@ namespace Dev2.Common
         public static Func<string?> CorrelationPrefixProvider { get; set; }
 
 
+        public static void Trace(object message, string executionId)
+        {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Trace(message, executionId);
+                return;
+            }
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.TRACE)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage); // log4net doesn't have Trace, so we use Debug
+            }
+        }
+
+        public static void Trace(object message, Exception exception, string executionId)
+        {
+            if (ExternalSink != null)
+            {
+                ExternalSink?.Trace(message, exception, executionId);
+                return;
+            }
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.TRACE)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage, exception); // log4net doesn't have Trace, so we use Debug
+            }
+        }
 
         public static void Debug(object message, string executionId)
         {
@@ -471,6 +498,16 @@ namespace Dev2.Common
 
     class DefaultLogger : ILogger
     {
+        public void Trace(object message, string executionId)
+        {
+            Dev2Logger.Trace(message, executionId);
+        }
+
+        public void Trace(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Trace(message, exception, executionId);
+        }
+
         public void Debug(object message, string executionId)
         {
             Dev2Logger.Debug(message, executionId);

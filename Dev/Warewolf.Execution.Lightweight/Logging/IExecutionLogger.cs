@@ -10,6 +10,11 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// </summary>
     public interface IExecutionLogger
     {
+        /// <summary>Logs a trace message correlated to an execution run.</summary>
+        void LogTrace(string message, Guid executionId);
+
+        /// <summary>Logs a trace message with an associated exception.</summary>
+        void LogTrace(string message, Exception exception, Guid executionId);
 
         /// <summary>Logs a debug message correlated to an execution run.</summary>
         void LogDebug(string message, Guid executionId);

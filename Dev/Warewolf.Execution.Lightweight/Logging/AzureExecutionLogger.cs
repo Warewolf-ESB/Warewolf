@@ -25,6 +25,20 @@ namespace Warewolf.Execution.Lightweight.Logging
         string Correlation => GetCorrelationPrefix();
 
         /// <inheritdoc/>
+        public override void LogTrace(string message, Guid executionId)
+        {
+            if (!ShouldLog(Dev2LogLevel.TRACE)) return;
+            _logger.LogTrace("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+        }
+
+        /// <inheritdoc/>
+        public override void LogTrace(string message, Exception exception, Guid executionId)
+        {
+            if (!ShouldLog(Dev2LogLevel.TRACE)) return;
+            _logger.LogTrace(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+        }
+
+        /// <inheritdoc/>
         public override void LogDebug(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
