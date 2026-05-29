@@ -146,19 +146,7 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IRouteAuthorizationRegistry>(
             _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
 
-        // Principal parsers — ordered chain (first parser that returns an authenticated
-        // principal wins).  In development, DebugPrincipalParser is prepended so that
-        // a fixed token from DEBUG_PRINCIPAL_TOKEN is used instead of requiring a live
-        // EasyAuth-enabled App Service locally.
-        if (config.IsDevelopment && !string.IsNullOrWhiteSpace(config.DebugPrincipalToken))
-        {
-            var token = config.DebugPrincipalToken;
-            services.AddSingleton<IPrincipalParser>(sp =>
-                new DebugPrincipalParser(
-                    token,
-                    sp.GetRequiredService<ILogger<DebugPrincipalParser>>()));
-        }
-
+        // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
         services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
 
