@@ -508,7 +508,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return ResultsCollection.Count(findRecordsTo => !findRecordsTo.CanRemove());
         }
 
-        public IList<FindRecordsTO> ResultsCollection { get; set; }
+        public List<FindRecordsTO> ResultsCollection { get; set; }
 
 #if WINDOWS || NETFRAMEWORK
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
@@ -634,7 +634,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (cell.data.TryGetBool(Constants.FINDRECORDS_REQUIREALLFIELDSTOMATCH, out var requireAllFieldsToMatch)) RequireAllFieldsToMatch = requireAllFieldsToMatch;
 
             // Deserialize ResultsCollection
-            if (cell.data.TryGetFindRecordsCollection(out var resultsCollection)) ResultsCollection = resultsCollection;
+            if (cell.data.TryGetFindRecordsCollection(out var resultsCollection)) ResultsCollection = resultsCollection?.ToList();
         }
     }
 

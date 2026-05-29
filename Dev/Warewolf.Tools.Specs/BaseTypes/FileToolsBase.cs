@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.IO;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
@@ -36,15 +37,22 @@ namespace Warewolf.Tools.Specs.BaseTypes
             var broker = ActivityIOFactory.CreateOperationsBroker();
             if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out string destLocation))
             {
-                var dst = ActivityIOFactory.CreatePathFromString(destLocation,
-                    scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
-                    scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
-                    true);
-                var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                DeleteDestinationIfExists(broker, destLocation);
 
-                if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
+                // Zip rewrites a non-".zip" destination extension to ".zip" before writing,
+                // so the on-disk file does not match the configured path. Delete that variant
+                // too or subsequent Overwrite=False runs will see a leftover archive.
+                var zipVariant = Path.ChangeExtension(destLocation, ".zip");
+                if (!string.Equals(zipVariant, destLocation, StringComparison.OrdinalIgnoreCase))
                 {
-                    broker.Delete(dstEndPoint);
+                    try
+                    {
+                        DeleteDestinationIfExists(broker, zipVariant);
+                    }
+                    catch (Exception)
+                    {
+                        //Non-zip tests will not have a .zip variant; ignore.
+                    }
                 }
             }
 
@@ -73,6 +81,20 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
+        }
+
+        void DeleteDestinationIfExists(IActivityOperationsBroker broker, string location)
+        {
+            var dst = ActivityIOFactory.CreatePathFromString(location,
+                scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
+                scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
+                true);
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+            if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
+            {
+                broker.Delete(dstEndPoint);
+            }
         }
 
         #endregion

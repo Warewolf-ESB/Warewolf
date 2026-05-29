@@ -15,6 +15,17 @@ deny = re.compile(
     r'|FSharp\.Core'
     r'|DotNetWorker\.Grpc'
     r'|Microsoft\.Azure\.Functions\.Worker\.Grpc'
+    r'|.*\.Tests$'
+    r'|.*\.Specs$'
+    r'|Warewolf\.Testing'
+    r'|Warewolf\.UnitTestAttributes$'
+    r'|Dev2\.UnitTestUtils$'
+    # Desktop Studio code is owned by the web-studio repo now; exclude from
+    # this report so hotspot analysis focuses on server-side code.
+    r'|Dev2\.Studio\.'
+    r'|Warewolf\.Studio\.'
+    r'|Dev2\.CustomControls'
+    r'|Dev2\.Intellisense'
     r')'
 )
 

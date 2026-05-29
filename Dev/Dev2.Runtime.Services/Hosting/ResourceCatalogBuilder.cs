@@ -247,8 +247,29 @@ namespace Dev2.Runtime.Hosting
                 var resourceBaseType = typeof(IResourceSource);
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 var types = assemblies
-                    .SelectMany(s => s.GetTypes())
-                    .Where(p => resourceBaseType.IsAssignableFrom(p));
+                    .SelectMany(s =>
+                    {
+                        try
+                        {
+                            return s.GetTypes();
+                        }
+                        catch (ReflectionTypeLoadException e)
+                        {
+                            Dev2Logger.Warn($"Could not fully load types from assembly '{s.FullName}': {e.Message}", GlobalConstants.WarewolfWarn);
+                            return e.Types.Where(t => t != null);
+                        }
+                    })
+                    .Where(p =>
+                    {
+                        try
+                        {
+                            return resourceBaseType.IsAssignableFrom(p);
+                        }
+                        catch (Exception)
+                        {
+                            return false;
+                        }
+                    });
                 allTypes = types as IList<Type> ?? types.ToList();
             }
             catch (Exception e)

@@ -49,7 +49,7 @@ internal static class HostBuilderExtensions
             })
             .ConfigureServices(services =>
             {
-                services.AddCoreServices(config.WorkflowsDirectory);
+                services.AddCoreServices(config);
 
                 if (config.EncryptionEnabled)
                     services.AddKeyVaultEncryption(config);
