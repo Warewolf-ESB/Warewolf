@@ -1,4 +1,4 @@
-﻿<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="WFAES::aEKg8/Qs6n3RWotCZPY2CkSRguRNuifepywzZ9bPh6D86tgOZWShOfEezZua1Q96zH1fm2lHGLvWr1/T3CreWBht05HyDrr48UE6GQd+QlJFxgrMPEpSlsMHHD8eDG4g2kpTXhfk/pTc3wAmLxo8bk8zdkPIPHJFZge2ivJP8ok66C0utMys4/pZcWMNxUvcdFpZf6crEFXpRFg3863NDUIM" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+﻿<Source ID="f1dc0c3f-3d1c-444a-b94c-68411147f55e" Name="ElasticsearchLoggingSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="WFAES::3aKwZho6y8efhNNit8lmISw8zQcm39hnJ3vtezHUyF5euMdbaRwHG0rQOl0wCOHvKO1verp/vfCx2RJSVIH5ZRsQlvCp5Qd7/9hPOxXtDxuTscEhxJOTjOAmY/tb0fz0u8fH3LMErbMJdzOC9fb8zg4ZyQSnfsfZZrPGobXt+jkSF1d8FXFchZqTSryhIPRFLqm/JpQtghRHa+cxN11qT4RvSardVK2vxW093rhe" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>ElasticsearchLoggingSource</DisplayName>
   <AuthorRoles></AuthorRoles>
   <ErrorMessages />
