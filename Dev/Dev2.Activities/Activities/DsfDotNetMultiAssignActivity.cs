@@ -49,9 +49,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private string VariableLabelText = "";
         private string NewFieldLabelText = "";
 
-        IList<ActivityDTO> _fieldsCollection;
+        List<ActivityDTO> _fieldsCollection;
 
-        public IList<ActivityDTO> FieldsCollection
+        public List<ActivityDTO> FieldsCollection
         {
             get
             {

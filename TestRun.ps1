@@ -38,6 +38,7 @@ param(
     [String[]] $Jobs = @(),
     [String]   $PipelineYml = "",
     [Switch]   $List,
+    [Switch]   $IncludeDisabled,
     [Switch]   $SkipBuild,
     [Switch]   $SkipReport,
     [ValidateSet('Html','Badges','Cobertura','TextSummary','HtmlSummary','MarkdownSummary')]
@@ -211,13 +212,30 @@ $RunId = Get-Date -Format 'yyyyMMddHHmmss'
 # ============================================================================
 
 function ConvertFrom-PipelineYaml {
-    param([Parameter(Mandatory)][string]$YamlPath)
+    param(
+        [Parameter(Mandatory)][string]$YamlPath,
+        [Switch]$IncludeDisabled
+    )
 
     $text = [System.IO.File]::ReadAllText($YamlPath)
     $skip = @('build', 'Install_Func_CLI', 'MergeCoverage', 'build_release')
 
     $jobRegex = [regex]'(?ms)^  - job: (?<name>\S+)\s*$.*?(?=^  - job: |\Z)'
     $catalog  = New-Object System.Collections.Generic.List[object]
+
+    $disabledNames = @{}
+    if ($IncludeDisabled) {
+        # Track which jobs were sourced from commented blocks so -List can flag them.
+        $disabledRegex = [regex]'(?m)^#  - job: (?<name>\S+)\s*$'
+        foreach ($dm in $disabledRegex.Matches($text)) {
+            $disabledNames[$dm.Groups['name'].Value] = $true
+        }
+        # Strip the leading '#' from every commented line so the existing job regex
+        # picks up disabled job blocks. The commented format in pipeline.yml is a
+        # single '#' followed by the original indentation, so removing only '^#'
+        # restores the YAML structure exactly.
+        $text = [regex]::Replace($text, '(?m)^#', '')
+    }
 
     foreach ($m in $jobRegex.Matches($text)) {
         $name = $m.Groups['name'].Value
@@ -249,6 +267,7 @@ function ConvertFrom-PipelineYaml {
             # via the Start-Host* / -CreateUNCPath flags rather than docker images.
             WinDepFlags       = @()
             MSSQLArg          = $null
+            Disabled          = [bool]$disabledNames[$name]
         }
 
         if ($argsBlock -match '-EngineSessionId\s+"([^"]+)"') {
@@ -476,7 +495,19 @@ if __name__ == '__main__':
         # Always overwrite — the embedded user_dir is sandbox-root-dependent and
         # may change between -CI- and -local- runs of the same checkout.
         $pyBody | Out-File -LiteralPath $ftpEntryFile -Encoding utf8 -Force
-        pythonw -u $ftpEntryFile
+        # `pythonw -u file.py` foreground would block here forever (serve_forever
+        # never returns). Launch via Start-Process so the orchestrator continues,
+        # then poll port 21 until the listener is up.
+        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
+        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTP server'; return }
+        $script:_ftpProcess = Start-Process -FilePath $pythonwCmd `
+            -ArgumentList @('-u', $ftpEntryFile) -PassThru -WindowStyle Hidden
+        Write-Host "Waiting for FTP server on port 21..."
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 21)).Close(); Write-Host "FTP server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+        }
+        Write-Warn "FTP server did not bind port 21 within 15s"
         return
     }
     docker run -d --name ftpserver `
@@ -591,7 +622,17 @@ if __name__ == '__main__':
     main()
 "@
         $entryBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
-        pythonw -u $ftpsEntryFile
+        # Async launch + port poll (see Start-HostFTPServer for the same rationale).
+        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
+        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
+        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTPS server'; return }
+        $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
+            -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
+        Write-Host "Waiting for FTPS server on port 1010..."
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+        }
+        Write-Warn "FTPS server did not bind port 1010 within 15s"
         return
     }
     # Linux-container FTPS (same image, TLS enabled via env)
@@ -882,15 +923,15 @@ function Start-HostExchangeConnector {
                 -Uri "https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/$wmVer/wiremock-standalone-$wmVer.jar" `
                 -OutFile $wmJar
         }
-        $java = Get-Command java -ErrorAction SilentlyContinue
-        if (-not $java) {
+        $javaCmd = Get-Command java -ErrorAction SilentlyContinue
+        $javaPath = if ($javaCmd) { $javaCmd.Path } else {
             $bundled = Get-ChildItem 'C:\elasticsearch-*\jdk\bin\java.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
-            if ($bundled) { $java = $bundled }
+            if ($bundled) { $bundled.FullName } else { $null }
         }
-        if (-not $java) { Write-Warn "java not found; cannot start WireMock"; return }
+        if (-not $javaPath) { Write-Warn "java not found; cannot start WireMock"; return }
         $exchangeRoot = 'C:\exchange-connector-stub'
         if (-not (Test-Path $exchangeRoot)) { New-Item -ItemType Directory -Force -Path $exchangeRoot | Out-Null }
-        $script:_exchangeProcess = Start-Process -FilePath $java.Path `
+        $script:_exchangeProcess = Start-Process -FilePath $javaPath `
             -ArgumentList @('-jar', $wmJar, '--port', '8889', '--root-dir', $exchangeRoot, '--disable-banner') `
             -PassThru -WindowStyle Hidden
         Start-Sleep -Seconds 5
@@ -1511,13 +1552,20 @@ function Invoke-CatalogMode {
         Write-Error "pipeline.yml not found: $PipelineYml"
         exit 1
     }
-    $catalog = ConvertFrom-PipelineYaml -YamlPath $PipelineYml
-    Write-Host "Parsed $($catalog.Count) jobs from pipeline.yml"
+    $catalog = ConvertFrom-PipelineYaml -YamlPath $PipelineYml -IncludeDisabled:$IncludeDisabled
+    $enabledCount  = ($catalog | Where-Object { -not $_.Disabled }).Count
+    $disabledCount = ($catalog | Where-Object { $_.Disabled }).Count
+    if ($IncludeDisabled) {
+        Write-Host "Parsed $($catalog.Count) jobs from pipeline.yml ($enabledCount enabled, $disabledCount disabled)"
+    } else {
+        Write-Host "Parsed $($catalog.Count) jobs from pipeline.yml"
+    }
 
     if ($List) {
         $catalog | Sort-Object Name | Format-Table -AutoSize Name, Type, Assembly, Filter,
             @{n='Sidecars';e={$_.Sidecars -join ','}},
-            @{n='WinDeps';e={(($_.WinDepFlags | ForEach-Object { $_ -replace '^Start','' -replace 'Server$','' }) -join ',')}}
+            @{n='WinDeps';e={(($_.WinDepFlags | ForEach-Object { $_ -replace '^Start','' -replace 'Server$','' }) -join ',')}},
+            @{n='Disabled';e={if ($_.Disabled) {'*'} else {''}}}
         exit 0
     }
 
@@ -1563,14 +1611,19 @@ function Invoke-CatalogMode {
     New-Item -ItemType Directory -Force -Path $CoverageOutDir | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $CoverageOutDir 'merged') | Out-Null
 
-    # Pattern-A parallel risk: sidecars publish on host ports; two FTP jobs would
-    # collide on port 21. Force sequential for bare-metal jobs that use sidecars.
+    # Pattern-A parallel risk: bare-metal Windows shares host state. EngineSpec
+    # jobs all bind the lightweight engine on port 7071; sidecars publish on
+    # host ports (21/22/990/1433/...); WinDepFlags spin up pyftpdlib/OpenSSH/UNC
+    # shares on fixed host ports. Any of these in two parallel jobs => collision.
+    # Only pure Unit jobs with no deps are safe to fan out.
     $effectiveMaxParallel = $MaxParallel
     if ($NoParallel) { $effectiveMaxParallel = 1 }
     elseif ($SUTRuntime -eq 'Windows') {
-        $sidecarJobs = $selected | Where-Object { $_.Sidecars.Count -gt 0 }
-        if ($sidecarJobs.Count -gt 0 -and $effectiveMaxParallel -gt 1) {
-            Write-Warn "Bare-metal Windows with sidecar jobs: forcing sequential (port collision risk). Use -SUTRuntime Linux for parallel."
+        $unsafeJobs = $selected | Where-Object {
+            $_.Type -eq 'EngineSpec' -or $_.Sidecars.Count -gt 0 -or $_.WinDepFlags.Count -gt 0 -or $null -ne $_.MSSQLArg
+        }
+        if ($unsafeJobs.Count -gt 0 -and $effectiveMaxParallel -gt 1) {
+            Write-Warn "Bare-metal Windows with EngineSpec/sidecar/host-dep jobs: forcing sequential (port 7071 / FTP / UNC collision risk). Use -Runtime Linux for parallel."
             $effectiveMaxParallel = 1
         }
     }
@@ -1639,7 +1692,7 @@ function Invoke-CatalogMode {
                 reportgenerator "-reports:$mergedXml" "-targetdir:$reportDir" "-reporttypes:$ReportFormat" '-title:Warewolf Coverage' '-verbosity:Warning'
                 Test-Exit 'reportgenerator'
                 $index = Join-Path $reportDir 'index.html'
-                if (Test-Path $index -and -not $env:TF_BUILD) { Start-Process $index }
+                if ((Test-Path $index) -and -not $env:TF_BUILD) { Start-Process $index }
                 Write-Done "Report: $index"
             }
         }

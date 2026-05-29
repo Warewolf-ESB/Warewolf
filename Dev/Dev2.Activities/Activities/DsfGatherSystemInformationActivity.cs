@@ -52,7 +52,7 @@ namespace Dev2.Activities
         /// <summary>
         /// The property that holds all the conversions
         /// </summary>
-        public IList<GatherSystemInformationTO> SystemInformationCollection { get; set; }
+        public List<GatherSystemInformationTO> SystemInformationCollection { get; set; }
 
         public IGetSystemInformation GetSystemInformation
         {

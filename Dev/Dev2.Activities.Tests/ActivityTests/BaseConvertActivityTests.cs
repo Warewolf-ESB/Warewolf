@@ -31,7 +31,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_Base64_Expected_Base64()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this base</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
 
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseConvertActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar2]]", "Text", "Base 64", "[[testVar2]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar2]]", "Text", "Base 64", "[[testVar2]]", 1) };
             var act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvertWithBase64AndMultipleRegionsExpectedBase64()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]], [[testVar]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]], [[testVar]]", 1) };
 
             SetupArguments(ActivityStrings.BaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.BaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void BaseConvert_Evaluate_WhenRecursiveRegion_ExpectSingleWellFormedRegionAsResult()
         {
             //------------Setup for test--------------------------
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[[[testVar]]]]", "Text", "Base 64", "[[[[testVar]]]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[[[testVar]]]]", "Text", "Base 64", "[[[[testVar]]]]", 1) };
 
             SetupArguments(@"<root><NewVar>change this base</NewVar><testVar>NewVar</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
 
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvertWithBase64AndMultipleRegionsInFromExpressionWithSingleOutputTargetExpectedOneBase64()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]]", 1) };
 
             SetupArguments(ActivityStrings.BaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.BaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseConvert_OnExecute_StarNotation_ReplacesExistingData()
         {
             //------------Setup for test--------------------------
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).field]]", "Text", "Base 64", "[", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).field]]", "Text", "Base 64", "[", 1) };
 
             SetupArguments(ActivityStrings.BaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.BaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -133,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseConvert_OnExecute_StarNotation_NoResultField_ReplacesExistingData()
         {
             //------------Setup for test--------------------------
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).field]]", "Text", "Base 64", "", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).field]]", "Text", "Base 64", "", 1) };
 
             SetupArguments(ActivityStrings.BaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.BaseConvert_MixedRegionTypes_DLShape, convertCollection);
 
@@ -155,7 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_Binary_Expected_BinaryBase()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Binary", "[[testVar]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Binary", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>CHANGED THIS TO BINARY BASE</testVar>  </root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
             var result = ExecuteProcess();
@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_Hex_Expected_HexBase()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this base</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
             var result = ExecuteProcess();
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_No_Result_Variable_Expected_HexBase()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "", 1) };
 
             SetupArguments(@"<root><testVar>change this base</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
 
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_Numbers_In_FromExpression_Expected_HexBase()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
 
             SetupArguments(@"<root><testVar>change this 5435123130t lete2435r base</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
 
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_Blank_FromExpression_Expected_HexBase()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("", "Text", "Hex", "", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("", "Text", "Hex", "", 1) };
 
             SetupArguments(@"<root><testVar>change this 5435123130t lete2435r base</testVar></root>", ActivityStrings.BaseConvert_DLShape, convertCollection);
 
@@ -358,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
         {
             //------------Setup for test--------------------------
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar2]]", "Text", "Base 64", "[[testVar2]]", 1) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar2]]", "Text", "Base 64", "[[testVar2]]", 1) };
             var act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
             //------------Execute Test---------------------------
             var stateList = act.GetState();
@@ -379,7 +379,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_WithRecordSetDataAndEmptyIndex_Expected_LastRecordBaseConverted()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(2).testVar]]", "Text", "Hex", "[[testRecSet().testVar]]", 3) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(2).testVar]]", "Text", "Hex", "[[testRecSet().testVar]]", 3) };
 
             SetupArguments(@"<root><testRecSet><testVar>do not change this base</testVar></testRecSet><testRecSet><testVar>change this base</testVar></testRecSet></root>", ActivityStrings.BaseConvert_DLWithRecordSetShape, convertCollection);
 
@@ -397,7 +397,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         public void BaseConvert_WithRecordSetDataAndStar_Expected_AllRecordsConverted()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).testVar]]", "Text", "Hex", "[", 3) };
+            List<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).testVar]]", "Text", "Hex", "[", 3) };
 
             SetupArguments(@"<root><testRecSet><testVar>do not change this base</testVar></testRecSet><testRecSet><testVar>change this base</testVar></testRecSet></root>", ActivityStrings.BaseConvert_DLWithRecordSetShape, convertCollection);
 
@@ -417,7 +417,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        void SetupArguments(string currentDL, string testData, IList<BaseConvertTO> convertCollection)
+        void SetupArguments(string currentDL, string testData, List<BaseConvertTO> convertCollection)
         {
             TestStartNode = new FlowStep
             {

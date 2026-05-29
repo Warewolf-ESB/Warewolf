@@ -50,14 +50,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        IList<AssignObjectDTO> _fieldsCollection;
+        List<AssignObjectDTO> _fieldsCollection;
 
         #endregion Fields
 
         #region Properties
 
 
-        public IList<AssignObjectDTO> FieldsCollection
+        public List<AssignObjectDTO> FieldsCollection
 
         {
             get

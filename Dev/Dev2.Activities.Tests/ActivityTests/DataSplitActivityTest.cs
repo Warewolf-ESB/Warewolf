@@ -27,7 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
-        IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
+        List<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
         readonly string _source = ActivityStrings.DataSplit_SourceString;
         
         public TestContext TestContext { get; set; }
@@ -673,7 +673,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -689,7 +689,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1), new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1), new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             var tuple1 = new Tuple<string, string>("2", "Test");
@@ -711,7 +711,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -727,7 +727,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
@@ -744,7 +744,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -764,7 +764,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -781,7 +781,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_GetState_ReturnsStateVariable()
         {
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            List<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ReverseOrder = true, SkipBlankRows = true, ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -984,7 +984,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection, bool skipBlankRows = false)
+        void SetupArguments(string currentDL, string testData, string sourceString, List<DataSplitDTO> resultCollection, bool skipBlankRows = false)
         {
             TestStartNode = new FlowStep
             {

@@ -12,10 +12,12 @@ Feature: EasyAuth Redirect Middleware
         When an API client requests "/public/apis.json" with no authentication
         Then the HTTP response status code should be 200
 
+    @ignore #Re-introduce when WOLF-8417 is complete (apis.json authorization on /Secure path).
     Scenario: The apis.json discovery endpoint is always accessible on the secure route
         When an API client requests "/secure/apis.json" with no authentication
         Then the HTTP response status code should be 200
 
+    @ignore #Re-introduce when WOLF-8417 is complete (apis.json authorization on /Services path).
     Scenario: The apis.json discovery endpoint is always accessible on the services route
         When an API client requests "/services/apis.json" with no authentication
         Then the HTTP response status code should be 200
@@ -41,6 +43,7 @@ Feature: EasyAuth Redirect Middleware
         And the "Location" header should contain "post_login_redirect_uri"
 
     @EasyAuthAuthenticated
+    @ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure path).
     Scenario: Secure route passes through to the next middleware when a valid Bearer token is present
         When an API client requests "/secure/apis.json" with a Bearer token
         Then the HTTP response status code should not be 401

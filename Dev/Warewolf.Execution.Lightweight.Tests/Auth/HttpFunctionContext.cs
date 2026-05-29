@@ -30,7 +30,19 @@ internal sealed class HttpFunctionContext : FunctionContext
     private readonly Dictionary<object, object?> _items    = new();
     private readonly IServiceProvider             _services = new ServiceCollection().BuildServiceProvider();
     private readonly FakeInvocationFeatures       _features = new();
+    private readonly FakeBindingsFeature          _bindings = FakeBindingsFeature.Create();
     private FunctionDefinition?                   _def;
+
+    /// <summary>
+    /// The last value written to <c>context.GetInvocationResult().Value</c> by
+    /// middleware under test.  Typically an <see cref="Microsoft.Azure.Functions.Worker.Http.HttpResponseData"/>.
+    /// </summary>
+    public object? CapturedInvocationResult => _bindings.InvocationResult;
+
+    public HttpFunctionContext()
+    {
+        _bindings.Register(_features);
+    }
 
     // ── FunctionContext overrides ──────────────────────────────────────────────
 
