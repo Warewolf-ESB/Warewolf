@@ -1,4 +1,4 @@
-﻿@Security
+@Security
 @mstest:donotparallelize
 Feature: Settings Permissions
 	In order to set permissions for my server
@@ -32,7 +32,6 @@ Examples:
         | 16 |  Deploy To, Deploy From, Execute                   |  Deploy To, Deploy From, Execute                   |
 
 @ResourcePermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for Users
         Given I have a server "localhost"
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
@@ -47,7 +46,6 @@ Examples:
         | 4  | View, Execute             | Users      | All       | None   | Examples\Control Flow - Decision | View, Execute             |
 
 @OverlappingUserGroupsPermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for Users Overlapping Groups
 		Given I have Public with "<Given rights>" 
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
@@ -84,7 +82,6 @@ Examples:
         | 26 | None                                                             | Contribute, View, Execute | Users      | Users     | None                                                             | Examples\Control Flow - Decision | Contribute, View, Execute |
 
 @ConflictingViewPermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for users conflicting with View permissions
         Given I have a server "localhost"
         And it has "<Group>" with "<Given rights>" 
@@ -113,7 +110,6 @@ Examples:
         | 17 | Users | Deploy To, Deploy From, Contribute, View, Execute                | View            | Users      | All       | Deploy To, Deploy From , Contribute, View, Execute               | Examples\Control Flow - Decision | View        |
 
 @ConflictingExecutePermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for users and conflicting with Execute permissions
 		Given I have Users with "<Given rights>" 
         And Resource "<Resource Name>" has rights "<Resource Rights>" for "<User Group>"
@@ -141,7 +137,6 @@ Examples:
         | 17 | Users | Deploy To, Deploy From, Contribute, View, Execute                | Examples\Control Flow - Decision | Execute         | Users      | All       | Deploy To, Deploy From, Contribute, View, Execute                | Examples\Control Flow - Decision | Execute     |
 
 @ConflictingContributeViewExecutePermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for users and conflicting with Contribute, View and Execute permissions
        Given I have Users with "<Given rights>" 
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"
@@ -169,7 +164,6 @@ Examples:
         | 17 |Deploy To, Deploy From, Contribute, View, Execute, Administrator | Contribute, View, Execute | Users      | All       | Deploy To, Deploy From, Contribute, View, Execute, Administrator | Examples\Control Flow - Decision | Contribute, View, Execute |
 
 @ConflictingViewExecutePermissionsSecurity
-@ignore #Re-introduce when WOLF-8411 is complete (secure.config-driven request authorization on /Secure/{workflow}).
 Scenario Outline: Setting Selected Resource Permissions for users and conflicting with View and Execute permissions
         Given I have Users with "<Given rights>" 
         And Resource "<Resource>" has rights "<Resource Rights>" for "<User Group>"

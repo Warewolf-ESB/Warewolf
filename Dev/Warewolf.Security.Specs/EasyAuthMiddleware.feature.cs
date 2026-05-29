@@ -140,15 +140,15 @@ namespace Warewolf.Security.Specs
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("The apis.json discovery endpoint is always accessible on the secure route")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("The apis.json discovery endpoint on the secure route requires authentication")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "EasyAuth Redirect Middleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("EasyAuthMiddleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mstest:donotparallelize")]
-        public void TheApis_JsonDiscoveryEndpointIsAlwaysAccessibleOnTheSecureRoute()
+        public void TheApis_JsonDiscoveryEndpointOnTheSecureRouteRequiresAuthentication()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The apis.json discovery endpoint is always accessible on the secure route", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The apis.json discovery endpoint on the secure route requires authentication", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 15
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -163,7 +163,7 @@ namespace Warewolf.Security.Specs
     this.FeatureBackground();
 #line hidden
 #line 16
-        testRunner.When("an API client requests \"/secure/apis.json\" with no authentication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When("an API client requests \"/secure/apis.json\" with an Easy Auth principal header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
         testRunner.Then("the HTTP response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -174,15 +174,15 @@ namespace Warewolf.Security.Specs
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("The apis.json discovery endpoint is always accessible on the services route")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("The apis.json discovery endpoint on the services route requires authentication")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "EasyAuth Redirect Middleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("EasyAuthMiddleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mstest:donotparallelize")]
-        public void TheApis_JsonDiscoveryEndpointIsAlwaysAccessibleOnTheServicesRoute()
+        public void TheApis_JsonDiscoveryEndpointOnTheServicesRouteRequiresAuthentication()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The apis.json discovery endpoint is always accessible on the services route", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The apis.json discovery endpoint on the services route requires authentication", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 19
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -197,7 +197,7 @@ namespace Warewolf.Security.Specs
     this.FeatureBackground();
 #line hidden
 #line 20
-        testRunner.When("an API client requests \"/services/apis.json\" with no authentication", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When("an API client requests \"/services/apis.json\" with an Easy Auth principal header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 21
         testRunner.Then("the HTTP response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -338,17 +338,15 @@ namespace Warewolf.Security.Specs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "EasyAuth Redirect Middleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("EasyAuthMiddleware")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mstest:donotparallelize")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("EasyAuthAuthenticated")]
         public void SecureRoutePassesThroughToTheNextMiddlewareWhenAValidBearerTokenIsPresent()
         {
             string[] tagsOfScenario = new string[] {
-                    "EasyAuthAuthenticated",
-                    "ignore"};
+                    "EasyAuthAuthenticated"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Secure route passes through to the next middleware when a valid Bearer token is p" +
                     "resent", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 45
+#line 44
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -361,10 +359,10 @@ namespace Warewolf.Security.Specs
 #line 8
     this.FeatureBackground();
 #line hidden
-#line 46
+#line 45
         testRunner.When("an API client requests \"/secure/apis.json\" with a Bearer token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 46
         testRunner.Then("the HTTP response status code should not be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -386,7 +384,7 @@ namespace Warewolf.Security.Specs
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Secure route passes through to the next middleware when an Easy Auth principal he" +
                     "ader is present", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 50
+#line 49
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -399,10 +397,10 @@ namespace Warewolf.Security.Specs
 #line 8
     this.FeatureBackground();
 #line hidden
-#line 51
+#line 50
         testRunner.When("an API client requests \"/secure/apis.json\" with an Easy Auth principal header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 51
         testRunner.Then("the HTTP response status code should not be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

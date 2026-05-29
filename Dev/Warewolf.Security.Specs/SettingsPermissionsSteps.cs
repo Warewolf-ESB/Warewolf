@@ -221,8 +221,11 @@ namespace Dev2.Activities.Specs.Permissions
             if (permissions == SecPermissions.None)
                 return;
 
-            // View or Execute (or both) — user must be able to see at least one resource.
-            if (permissions.HasFlag(SecPermissions.View) || permissions.HasFlag(SecPermissions.Execute))
+            // apis.json discovery — mirrors the server's ApisJsonBuilder.BuildForPath, which
+            // calls IsAuthorized(Execute) AND IsAuthorized(View) independently
+            // (see PermissionChecker.HasUserDiscoveryPermission). A workflow only appears
+            // in the discovery list when the caller has BOTH View and Execute.
+            if (permissions.HasFlag(SecPermissions.View) && permissions.HasFlag(SecPermissions.Execute))
             {
                 var list = FetchApisJson(http, secure: true);
                 Assert.IsTrue(list.Count > 0,
