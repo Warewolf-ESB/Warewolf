@@ -534,69 +534,109 @@ function Stop-HostFTPServer {
 }
 
 function Start-HostFTPSServer {
-    if ($LegacyWindowsDeps) {
-        # Native pyftpdlib+TLS (Windows runtime). Generates a self-signed cert
-        # inline via pyOpenSSL so the legacy branch is self-contained.
-        # Same parent-dir requirement as the FTP branch — see Start-HostFTPServer.
-        $ftpRoot         = Get-FTPSandboxRoot
-        $ftpsHomeBase    = Join-Path $ftpRoot 'ftps_home\dev2'
-        $ftpsCertFile    = Join-Path $ftpRoot 'cert.crt'
-        $ftpsKeyFile     = Join-Path $ftpRoot 'cert.key'
-        $ftpsGenCertFile = Join-Path $ftpRoot 'ftps_gencert.py'
-        $ftpsEntryFile   = Join-Path $ftpRoot 'ftps_entrypoint.py'
-        foreach ($sub in
-            'FORCOPYFILETESTING',
-            'FORCREATEFILETESTING',
-            'FORDELETEFILETESTING',
-            'FORFILERENAMETESTING',
-            'FORMOVEFILETESTING',
-            'FORREADFILETESTING',
-            'FORREADFOLDERTESTING',
-            'FORRENAMETESTING',
-            'FORTESTING',
-            'FORUNZIPTESTING',
-            'FORWRITEFILETESTING',
-            'FORZIPTESTING'
-        ) {
-            $d = Join-Path $ftpsHomeBase $sub
-            if (!(Test-Path $d)) { mkdir $d | Out-Null }
-        }
-        # Seed FTPS copy-file fixtures (mirrors the docker `docker exec ... echo` seeding).
-        foreach ($i in 0..4) {
-            $seed = Join-Path $ftpsHomeBase "FORCOPYFILETESTING\copyfile$i.txt"
-            if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
-        }
-        pip install pyftpdlib 'cryptography==38.0.4' 'pyOpenSSL==22.0.0'
-        $certForPy = ($ftpsCertFile -replace '\\','/')
-        $keyForPy  = ($ftpsKeyFile  -replace '\\','/')
-        if (!(Test-Path $ftpsCertFile) -or !(Test-Path $ftpsKeyFile)) {
-            $genBody = @"
-from OpenSSL import crypto
-key = crypto.PKey(); key.generate_key(crypto.TYPE_RSA, 2048)
-cert = crypto.X509()
-cert.get_subject().CN = 'localhost'
-cert.get_subject().O  = 'Warewolf'
-cert.get_subject().C  = 'ZA'
-cert.set_serial_number(1000)
-cert.gmtime_adj_notBefore(0)
-cert.gmtime_adj_notAfter(5*365*24*60*60)
-cert.set_issuer(cert.get_subject())
-cert.set_pubkey(key)
-cert.sign(key, 'sha256')
-open('$certForPy','wt').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode())
-open('$keyForPy','wt').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode())
-"@
-            $genBody | Out-File -LiteralPath $ftpsGenCertFile -Encoding utf8 -Force
-            python $ftpsGenCertFile
-        }
-        $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
-        $entryBody = @"
+    # pyftpdlib + TLS_FTPHandler on port 1010. Mirrors Start-HostFTPServer's
+    # pyftpdlib pattern (port 21, FTPHandler) so dev2 / Q/ulw&] / passive range
+    # behaviour is identical across the plain and TLS variants. Replaces four
+    # prior attempts:
+    #   * Docker stilliard/pure-ftpd  — hosted windows-2022 has no Linux Docker
+    #   * FileZilla Server via choco  — choco lands on 0.9.x, not 1.x
+    #   * IIS FTPS                    — works on Server but Win11 client + PS7
+    #                                   blocked by 530.5.1 LogonUser regression
+    #   * pyftpdlib older versions    — earlier TLS_FTPHandler builds hung
+    #                                   .NET FtpWebRequest's data close_notify
+    # Current pyftpdlib 2.2+ interoperates cleanly with .NET FtpWebRequest.
+    $ftpRoot       = Get-FTPSandboxRoot
+    $ftpsHomeBase  = Join-Path $ftpRoot 'ftps_home\dev2'
+    $ftpsEntryFile = Join-Path $ftpRoot 'ftps_entrypoint.py'
+    $ftpsPemFile   = Join-Path $ftpRoot 'ftps_cert.pem'
+    $ftpsLogFile   = Join-Path $ftpRoot 'ftps_server.log'
+    $ftpsErrFile   = Join-Path $ftpRoot 'ftps_server.err.log'
+
+    # 1. Subdirs every File/Folder .feature references under ftps://localhost:1010/.
+    foreach ($sub in
+        'FORCOPYFILETESTING','FORCREATEFILETESTING','FORDELETEFILETESTING',
+        'FORFILERENAMETESTING','FORMOVEFILETESTING','FORREADFILETESTING',
+        'FORREADFOLDERTESTING','FORRENAMETESTING','FORTESTING',
+        'FORUNZIPTESTING','FORWRITEFILETESTING','FORZIPTESTING'
+    ) {
+        $d = Join-Path $ftpsHomeBase $sub
+        if (!(Test-Path $d)) { mkdir $d | Out-Null }
+    }
+    foreach ($i in 0..4) {
+        $seed = Join-Path $ftpsHomeBase "FORCOPYFILETESTING\copyfile$i.txt"
+        if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
+    }
+
+    # 2. Self-signed PEM (cert + PKCS8 key) for TLS_FTPHandler. Re-generated each
+    # call so an expired/corrupted cert never blocks tests. .NET FtpWebRequest
+    # bypasses cert validation when IsNotCertVerifiable=true (set in CopySteps),
+    # so chain trust doesn't matter.
+    $rsa = [System.Security.Cryptography.RSA]::Create(2048)
+    try {
+        $req = [System.Security.Cryptography.X509Certificates.CertificateRequest]::new(
+            'CN=localhost-pyftps,O=Warewolf,C=ZA', $rsa,
+            [System.Security.Cryptography.HashAlgorithmName]::SHA256,
+            [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
+        $cert = $req.CreateSelfSigned(
+            [DateTimeOffset]::UtcNow.AddDays(-1),
+            [DateTimeOffset]::UtcNow.AddYears(5))
+        $certB64 = [Convert]::ToBase64String(
+            $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert),
+            'InsertLineBreaks')
+        $keyB64  = [Convert]::ToBase64String($rsa.ExportPkcs8PrivateKey(), 'InsertLineBreaks')
+        "-----BEGIN CERTIFICATE-----`n$certB64`n-----END CERTIFICATE-----`n-----BEGIN PRIVATE KEY-----`n$keyB64`n-----END PRIVATE KEY-----`n" |
+            Set-Content -LiteralPath $ftpsPemFile -Encoding ascii -NoNewline
+    } finally { $rsa.Dispose() }
+
+    # 3. Install pyftpdlib + pyOpenSSL (idempotent). pyftpdlib's TLS_FTPHandler
+    # imports `from OpenSSL import SSL, crypto` lazily at instantiation; without
+    # pyOpenSSL the server process exits immediately with ImportError and the
+    # port-21-style "FTPHandler" install of pyftpdlib alone is not enough.
+    pip install pyftpdlib pyOpenSSL | Out-Null
+
+    # 4. Entrypoint script. Forward-slash form is what Python expects in literals.
+    $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
+    $ftpsPemForPy  = ($ftpsPemFile  -replace '\\','/')
+    $pyBody = @"
+import logging
 import os
 from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import TLS_FTPHandler
+from pyftpdlib.handlers import TLS_FTPHandler, TLS_DTPHandler
 from pyftpdlib.servers import FTPServer
 
-PASSIVE_PORTS = '56001-56008'
+# Keep DEBUG on — small enough on a per-test-run basis and invaluable when
+# the next interop quirk surfaces. Artifacts are scoped per job.
+logging.basicConfig(level=logging.DEBUG)
+
+# Workaround for a .NET FtpWebRequest vs pyOpenSSL interop bug. After a
+# successful STOR, .NET closes the data-channel TCP socket without sending
+# a TLS close_notify; pyOpenSSL's SSL_shutdown() then returns Error([])
+# (incomplete shutdown), and pyftpdlib's asyncore loop calls
+# _do_ssl_shutdown forever (~60k attempts in a single 100s window — verified
+# in a prior CI artifact). The server never sends '226 Transfer Complete'
+# because it is stuck tearing down the data channel, so the client's 100s
+# Timeout fires and the test reports 'underlying connection was closed: An
+# unexpected error occurred on a receive'. Cap shutdown attempts at 3 and
+# force-close — DTPHandler.close() triggers the parent FTPHandler's
+# transfer-complete path which finally sends the 226. TLS-truncation risk
+# is acceptable on a localhost test harness; production FTPS clients that
+# send close_notify still get the original shutdown path on attempts 1-3.
+_orig_do_ssl_shutdown = TLS_DTPHandler._do_ssl_shutdown
+def _capped_do_ssl_shutdown(self):
+    attempts = getattr(self, '_ww_ssl_shutdown_attempts', 0) + 1
+    self._ww_ssl_shutdown_attempts = attempts
+    if attempts > 3:
+        self._ssl_established = False
+        self._ssl_closing = False
+        try:
+            self.close()
+        except Exception:
+            pass
+        return
+    return _orig_do_ssl_shutdown(self)
+TLS_DTPHandler._do_ssl_shutdown = _capped_do_ssl_shutdown
+
+PASSIVE_PORTS = '17008-17015'
 
 def main():
     authorizer = DummyAuthorizer()
@@ -605,15 +645,13 @@ def main():
     authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
 
     handler = TLS_FTPHandler
-    handler.certfile = "$certForPy"
-    handler.keyfile  = "$keyForPy"
-    handler.tls_control_required = True
-    handler.tls_data_required    = True
     handler.authorizer = authorizer
+    handler.certfile = "$ftpsPemForPy"
+    handler.tls_control_required = True
+    handler.tls_data_required = True
     handler.permit_foreign_addresses = True
     passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
-    handler.passive_ports = range(passive_ports[0], passive_ports[1])
-    handler.masquerade_address = '127.0.0.1'
+    handler.passive_ports = range(passive_ports[0], passive_ports[1] + 1)
 
     server = FTPServer(('0.0.0.0', 1010), handler)
     server.serve_forever()
@@ -621,43 +659,75 @@ def main():
 if __name__ == '__main__':
     main()
 "@
-        $entryBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
-        # Async launch + port poll (see Start-HostFTPServer for the same rationale).
-        $pythonwCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source
-        if (-not $pythonwCmd) { $pythonwCmd = (Get-Command python -ErrorAction SilentlyContinue).Source }
-        if (-not $pythonwCmd) { Write-Warn 'pythonw/python not found; cannot start FTPS server'; return }
-        $script:_ftpsProcess = Start-Process -FilePath $pythonwCmd `
-            -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden
-        Write-Host "Waiting for FTPS server on port 1010..."
-        for ($i = 1; $i -le 30; $i++) {
-            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
+    $pyBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
+
+    # 5. Firewall — control + PASV. pyftpdlib binds the listener itself but the
+    # Windows Defender filter still drops inbound on the data ports.
+    foreach ($rule in @(
+        @{Name='Warewolf-FTPS-Control'; Port='1010'},
+        @{Name='Warewolf-FTPS-PASV';    Port='17008-17015'})) {
+        if (-not (Get-NetFirewallRule -DisplayName $rule.Name -ErrorAction SilentlyContinue)) {
+            New-NetFirewallRule -DisplayName $rule.Name -Direction Inbound -Action Allow `
+                -Protocol TCP -LocalPort $rule.Port -ErrorAction SilentlyContinue | Out-Null
         }
-        Write-Warn "FTPS server did not bind port 1010 within 15s"
-        return
     }
-    # Linux-container FTPS (same image, TLS enabled via env)
-    docker run -d --name ftpsserver -p 1010:21 -p 56001-56008:56001-56008 `
-        -e FTP_USER_NAME=dev2 -e "FTP_USER_PASS=Q/ulw&]" `
-        -e FTP_USER_HOME=/home/ftpusers/dev2 `
-        -e PASV_ADDRESS=127.0.0.1 `
-        -e TLS_CN=localhost -e TLS_ORG=Warewolf -e TLS_C=ZA `
-        -e ADDED_FLAGS='--tls=2' `
-        stilliard/pure-ftpd | Out-Null
-    Start-Sleep -Seconds 5
-    docker exec ftpsserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
-    foreach ($i in 0..4) {
-        docker exec ftpsserver sh -c "echo 'testcontent' > /home/ftpusers/dev2/FORCOPYFILETESTING/copyfile$i.txt" 2>$null | Out-Null
+
+    # 6. Launch detached so the orchestrator continues; poll port 1010. Use
+    # python.exe (not pythonw) with stdout/stderr redirected so an ImportError
+    # or TLS-init crash lands in a log we can dump on timeout — pythonw drops
+    # both streams on Windows, which is what hid the previous failure mode.
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonCmd) { throw 'python/pythonw not found; cannot start FTPS server' }
+    if (Test-Path $ftpsLogFile) { Remove-Item -LiteralPath $ftpsLogFile -Force -ErrorAction SilentlyContinue }
+    if (Test-Path $ftpsErrFile) { Remove-Item -LiteralPath $ftpsErrFile -Force -ErrorAction SilentlyContinue }
+    $script:_ftpsProcess = Start-Process -FilePath $pythonCmd `
+        -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden `
+        -RedirectStandardOutput $ftpsLogFile -RedirectStandardError $ftpsErrFile
+
+    Write-Host "Waiting for FTPS server on port 1010..."
+    for ($i = 1; $i -le 30; $i++) {
+        try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 1010)).Close(); Write-Host "FTPS server ready"; return } catch { Start-Sleep -Milliseconds 500 }
     }
-    docker exec ftpsserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
+    Write-Warn "FTPS server did not bind port 1010 within 15s"
+    foreach ($pair in @(@($ftpsErrFile,'stderr'), @($ftpsLogFile,'stdout'))) {
+        if (Test-Path $pair[0]) {
+            $body = (Get-Content -LiteralPath $pair[0] -Raw -ErrorAction SilentlyContinue)
+            if ($body) { Write-Host "--- FTPS server $($pair[1]) ($($pair[0])) ---`n$body`n--- end ---" }
+        }
+    }
 }
 
 function Stop-HostFTPSServer {
-    if ($LegacyWindowsDeps) {
-        cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
-        $global:LASTEXITCODE = 0
-        return
-    }
-    docker rm -f ftpsserver 2>$null | Out-Null
+    # Copy pyftpdlib's stdout/stderr logs into $TestResultsDir before killing
+    # the server, so the pipeline's existing PublishBuildArtifacts step picks
+    # them up as `*_ServerLogs/<job>/ftps_server.*.log`. Per-call timestamp +
+    # PID guards against retries clobbering earlier logs. Wrapped in try/catch
+    # so a missing TestResultsDir or a locked log file can never abort the
+    # surrounding teardown — the test results matter more than the log copy.
+    try {
+        if ($TestResultsDir -and (Test-Path $TestResultsDir)) {
+            $ftpRoot = Get-FTPSandboxRoot
+            $stamp   = (Get-Date -Format 'yyyyMMdd_HHmmss')
+            $pidTag  = if ($script:_ftpsProcess) { $script:_ftpsProcess.Id } else { 'na' }
+            foreach ($name in 'ftps_server.log','ftps_server.err.log') {
+                $src = Join-Path $ftpRoot $name
+                if (Test-Path $src) {
+                    $dst = Join-Path $TestResultsDir ("{0}_{1}_{2}" -f $stamp, $pidTag, $name)
+                    Copy-Item -LiteralPath $src -Destination $dst -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+    } catch { }
+    # Stop-HostFTPServer kills all pythonw.exe — call only one of the two stop
+    # functions in a teardown sequence (the second is a no-op). Wrapped in cmd
+    # /c so taskkill's stderr + non-zero exit when the process is already gone
+    # doesn't abort the surrounding script. taskkill also matches python.exe
+    # (the FTPS server now runs under python.exe so stdout/stderr can be
+    # redirected — see Start-HostFTPSServer step 6).
+    cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
+    cmd /c 'taskkill /im python.exe /f >nul 2>nul'
+    $global:LASTEXITCODE = 0
 }
 
 function Start-HostSFTPServer {
@@ -1507,6 +1577,12 @@ function Invoke-WindowsBareMetalJob {
             if ($Job.Output)    { $splat.EngineCoverageFile = Join-Path $splat.CoverageDir $Job.Output }
             if ($Job.SessionId) { $splat.EngineSessionId    = $Job.SessionId }
             $splat.CoverageIncludeFiles    = @((Join-Path $ServerTestsBin 'Warewolf.Execution.Lightweight.dll'))
+        } else {
+            # Unit jobs: enable vstest's /EnableCodeCoverage and the Cobertura.xml
+            # post-process. Without this, vstest produces TRX only, no .coverage
+            # snapshots are emitted, and the merge step at the end of catalog mode
+            # sees nothing from this job.
+            $splat.Coverage = $true
         }
         if ($Job.Name -match 'Security') {
             $splat.SharedConfigDir = Join-Path $CoverageOutDir "$slug\security-config"
@@ -1526,6 +1602,22 @@ function Invoke-WindowsBareMetalJob {
             & "$PSScriptRoot\TestRun.ps1" @splat
         } finally {
             Pop-Location
+        }
+
+        # Unit-job Cobertura.xml -> <slug>.cobertura.xml so the catalog merge
+        # picks it up. The pipeline.yml does the same rename step for CI; we
+        # replicate it here so catalog mode produces the same shape.
+        if ($Job.Type -ne 'EngineSpec') {
+            $srcCob  = Join-Path $splat.TestResultsDir 'Cobertura.xml'
+            $destDir = Join-Path $CoverageOutDir $slug
+            $destCob = Join-Path $destDir "$slug.cobertura.xml"
+            if (Test-Path $srcCob) {
+                New-Item -ItemType Directory -Force -Path $destDir | Out-Null
+                Move-Item $srcCob $destCob -Force
+                Write-Done "[$($Job.Name)] -> $destCob"
+            } else {
+                Write-Warn "[$($Job.Name)] no Cobertura.xml produced at $srcCob"
+            }
         }
     } finally {
         foreach ($s in $sidecarStarted) {
@@ -1948,7 +2040,39 @@ if ($LegacyWindowsDeps) {
         New-SmbShare -Path $shareRoot -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue
     }
     if ($UseRegionalSettings) {
+        $culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")
+        [System.Globalization.CultureInfo]::DefaultThreadCurrentCulture   = $culture
+        [System.Globalization.CultureInfo]::DefaultThreadCurrentUICulture = $culture
+        [System.Threading.Thread]::CurrentThread.CurrentCulture   = $culture
+        [System.Threading.Thread]::CurrentThread.CurrentUICulture = $culture
+        # PS 5.1 exposed Microsoft.PowerShell.NativeCultureResolver with private static
+        # m_uiCulture/m_culture fields that had to be poked via reflection to make the
+        # running session pick up the new culture without a restart. The type/fields
+        # are gone in PS 7+, so treat the reflection path as best-effort.
+        $assembly = [System.Reflection.Assembly]::Load("System.Management.Automation")
+        $type = $assembly.GetType("Microsoft.PowerShell.NativeCultureResolver")
+        if ($null -ne $type) {
+            $flags = [Reflection.BindingFlags]::NonPublic -bor [Reflection.BindingFlags]::Static
+            foreach ($name in 'm_uiCulture','m_culture') {
+                $field = $type.GetField($name, $flags)
+                if ($null -ne $field) { $field.SetValue($null, $culture) }
+            }
+        }
         Set-Culture en-ZA
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortDate -Value 'yyyy/MM/dd'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sDecimal -Value '.'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s1159 -Value 'AM'
+        Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s2359 -Value 'PM'
     }
 }
 

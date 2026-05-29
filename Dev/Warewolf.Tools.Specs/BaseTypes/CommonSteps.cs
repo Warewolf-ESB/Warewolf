@@ -1252,6 +1252,20 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [BeforeTestRun]
+        public static void ConfigureFtpClientForResilience()
+        {
+            // FTPS specs against pyftpdlib's TLS_FTPHandler hang on CI agents with
+            // "The underlying connection was closed: An unexpected error occurred
+            // on a receive" — pyOpenSSL's TLS 1.3 close_notify sequence on the
+            // data channel deadlocks against .NET FtpWebRequest. Pin TLS 1.2
+            // (not OR-in) so the data channel never negotiates 1.3. Also disable
+            // 100-Continue and Nagle to reduce framing surface area.
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
+        [BeforeTestRun]
         public static void CopyEncryptionKey()
         {
             var tempDir = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\Temp" : "/tmp";

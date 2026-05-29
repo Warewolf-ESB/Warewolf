@@ -37,6 +37,16 @@
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.5.3" />
   </ItemGroup>
 
+  <!-- Copy the repo-root TestRun.ps1 next to every test/spec assembly so the consolidated
+       test runner can be invoked from the project's bin directory (matches the layout the
+       pipeline and Run-Coverage.ps1 expect when iterating per-project output folders). -->
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) Or $(MSBuildProjectName.EndsWith('.Specs'))">
+    <None Include="$(MSBuildThisFileDirectory)..\TestRun.ps1" Link="TestRun.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
   <!-- Prevent parallel build of the temporary WPF projects to avoid file locks and isolate their output paths -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">
     <BuildInParallel>false</BuildInParallel>
