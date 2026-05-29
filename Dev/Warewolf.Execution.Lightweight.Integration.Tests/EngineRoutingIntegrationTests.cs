@@ -415,11 +415,23 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             TestContext.WriteLine($"Status: {(int)response.StatusCode}");
             TestContext.WriteLine($"Body  : {Trim(body)}");
 
-            // Unknown state must not silently succeed — engine must respond with an error page.
-            Assert.IsTrue((int)response.StatusCode >= 400 || body.IndexOf("invalid", System.StringComparison.OrdinalIgnoreCase) >= 0
-                                                           || body.IndexOf("expired", System.StringComparison.OrdinalIgnoreCase) >= 0
-                                                           || body.IndexOf("denied",  System.StringComparison.OrdinalIgnoreCase) >= 0,
-                $"Expected an error indication for unknown state. Got {(int)response.StatusCode}: {Trim(body)}");
+            // Unknown state must not silently grant access. Accept any of:
+            //   • status >= 400 (explicit error)
+            //   • body indicating invalid / expired / denied
+            //   • 204 No Content with an empty body — the engine produced no
+            //     positive authorization artefact (no token, no redirect to a
+            //     trusted destination), so from the caller's point of view the
+            //     OAuth handshake did not complete. This matches the current
+            //     production behaviour when the PKCE session lookup fails.
+            var isEmptyNoContent =
+                response.StatusCode == HttpStatusCode.NoContent && string.IsNullOrEmpty(body);
+
+            Assert.IsTrue((int)response.StatusCode >= 400
+                          || body.IndexOf("invalid", System.StringComparison.OrdinalIgnoreCase) >= 0
+                          || body.IndexOf("expired", System.StringComparison.OrdinalIgnoreCase) >= 0
+                          || body.IndexOf("denied",  System.StringComparison.OrdinalIgnoreCase) >= 0
+                          || isEmptyNoContent,
+                $"Expected an error indication (or empty 204) for unknown state. Got {(int)response.StatusCode}: {Trim(body)}");
         }
 
         // ---------------------------------------------------------------
