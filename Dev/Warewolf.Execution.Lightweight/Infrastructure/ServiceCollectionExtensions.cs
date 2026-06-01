@@ -45,6 +45,11 @@ internal static class ServiceCollectionExtensions
             // any middleware or service can receive it via constructor injection.
             services.AddSingleton(config);
 
+            // Per-execution usage telemetry (8438) — singleton emitter is injected
+            // into WorkflowExecutor so each successful (or failed) workflow run
+            // produces a row in the legacy UsageData SQL table via Warewolf.Usage.
+            services.AddSingleton<IUsageEventEmitter, UsageEventEmitter>();
+
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
             services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(config.WorkflowsDirectory));
 
