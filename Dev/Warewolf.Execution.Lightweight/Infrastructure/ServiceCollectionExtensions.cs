@@ -57,7 +57,7 @@ internal static class ServiceCollectionExtensions
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware
             // can emit structured 401/403 audit events even when encryption is off.
-            services.AddSingleton(new AuditLogger());
+            services.AddSingleton<AuditLogger>();
 
             // Auth policy loader — builds WorkflowAuthPolicy from secure.config
             // WindowsGroupPermissions entries at startup.

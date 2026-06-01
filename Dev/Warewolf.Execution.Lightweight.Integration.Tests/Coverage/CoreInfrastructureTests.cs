@@ -551,6 +551,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     {
         sealed class NoOpLogger : IExecutionLogger
         {
+            public void LogTrace(string message, Guid executionId) { }
+            public void LogTrace(string message, Exception exception, Guid executionId) { }
             public void LogDebug(string message, Guid executionId) { }
             public void LogDebug(string message, Exception exception, Guid executionId) { }
             public void LogInfo(string message, Guid executionId) { }
