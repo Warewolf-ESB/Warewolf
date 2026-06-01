@@ -64,10 +64,10 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void TrackWorkflowExecution_EmptyCustomerId_FallsBackToUnRegistered()
+        public void TrackWorkflowExecution_AllSubscriptionFieldsEmpty_FallsBackToUnRegistered()
         {
             var sink = new CapturingSink { Result = UsageDataResult.ok };
-            var subscription = new FakeSubscriptionProvider { CustomerId = "" };
+            var subscription = new FakeSubscriptionProvider();   // every field empty
 
             var emitter = new UsageEventEmitter(sink, () => subscription);
 
@@ -75,7 +75,72 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
                 "wf", Guid.NewGuid(), TimeSpan.Zero, true, 0, DateTime.UtcNow));
 
             Assert.AreEqual("UnRegistered", sink.Calls[0].CustomerId,
-                "Empty CustomerId must fall back to 'UnRegistered' to match UsageLogger behaviour.");
+                "Empty CustomerId + SubscriptionKey + SubscriptionSiteName must fall back to 'UnRegistered'.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TrackWorkflowExecution_EmptyCustomerId_FallsBackToSubscriptionKey()
+        {
+            var sink = new CapturingSink { Result = UsageDataResult.ok };
+            var subscription = new FakeSubscriptionProvider
+            {
+                CustomerId      = "",
+                SubscriptionKey = "Dev2-test-account",
+                SubscriptionSiteName = "warewolf"
+            };
+
+            var emitter = new UsageEventEmitter(sink, () => subscription);
+            emitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                "wf", Guid.NewGuid(), TimeSpan.Zero, true, 0, DateTime.UtcNow));
+
+            Assert.AreEqual("Dev2-test-account", sink.Calls[0].CustomerId,
+                "Empty CustomerId must promote SubscriptionKey ahead of SubscriptionSiteName.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TrackWorkflowExecution_OnlySubscriptionSiteName_FallsBackToIt()
+        {
+            var sink = new CapturingSink { Result = UsageDataResult.ok };
+            var subscription = new FakeSubscriptionProvider { SubscriptionSiteName = "warewolf" };
+
+            var emitter = new UsageEventEmitter(sink, () => subscription);
+            emitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                "wf", Guid.NewGuid(), TimeSpan.Zero, true, 0, DateTime.UtcNow));
+
+            Assert.AreEqual("warewolf", sink.Calls[0].CustomerId,
+                "When only SubscriptionSiteName is populated it must be used as CustomerId.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TrackWorkflowExecution_EnvVarOverride_WinsOverEverything()
+        {
+            const string envVar = "WAREWOLF_USAGE_CUSTOMER_ID";
+            var prior = Environment.GetEnvironmentVariable(envVar);
+            try
+            {
+                Environment.SetEnvironmentVariable(envVar, "dev-ashley@theunlimited");
+
+                var sink = new CapturingSink { Result = UsageDataResult.ok };
+                var subscription = new FakeSubscriptionProvider
+                {
+                    CustomerId      = "real-customer",
+                    SubscriptionKey = "real-key"
+                };
+
+                var emitter = new UsageEventEmitter(sink, () => subscription);
+                emitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                    "wf", Guid.NewGuid(), TimeSpan.Zero, true, 0, DateTime.UtcNow));
+
+                Assert.AreEqual("dev-ashley@theunlimited", sink.Calls[0].CustomerId,
+                    "WAREWOLF_USAGE_CUSTOMER_ID must override the subscription chain.");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable(envVar, prior);
+            }
         }
 
         [TestMethod]

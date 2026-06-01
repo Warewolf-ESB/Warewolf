@@ -29,10 +29,17 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// </summary>
     public sealed class UsageEventEmitter : IUsageEventEmitter
     {
-        // Match UsageLogger.cs (Dev2.Runtime.Services) so the SQL row's
-        // CustomerId column matches the legacy server's emission for the
-        // same customer.
+        // Final fallback when nothing in SubscriptionProvider yields a usable
+        // identifier — mirrors UsageLogger.cs (Dev2.Runtime.Services) so the
+        // SQL row's CustomerId column matches the legacy server's emission
+        // for a true unregistered install.
         private const string UnregisteredCustomerId = "UnRegistered";
+
+        // Optional operator-set override.  When set, this value is used as
+        // the CustomerId on every emit regardless of what SubscriptionProvider
+        // returns — useful for tagging dev / test / preview runs so their
+        // rows in the shared UsageData table are easy to find.
+        private const string CustomerIdOverrideEnvVar = "WAREWOLF_USAGE_CUSTOMER_ID";
 
         private readonly IUsageTrackerSink _sink;
         private readonly Func<ISubscriptionProvider> _subscriptionProviderAccessor;
@@ -65,9 +72,7 @@ namespace Warewolf.Execution.Lightweight.Logging
             try
             {
                 var subscription = _subscriptionProviderAccessor();
-                var customerId   = string.IsNullOrEmpty(subscription?.CustomerId)
-                    ? UnregisteredCustomerId
-                    : subscription.CustomerId;
+                var customerId   = ResolveCustomerId(subscription);
 
                 var payload = JsonConvert.SerializeObject(new
                 {
@@ -99,6 +104,42 @@ namespace Warewolf.Execution.Lightweight.Logging
                     $"UsageEventEmitter: failed to emit usage event for workflow '{evt.WorkflowName}': {ex.Message}",
                     GlobalConstants.UsageTracker);
             }
+        }
+
+        /// <summary>
+        /// Builds the <c>CustomerId</c> column value for the UsageData row, in
+        /// preference order:
+        /// <list type="number">
+        ///   <item><c>WAREWOLF_USAGE_CUSTOMER_ID</c> env-var override.</item>
+        ///   <item><see cref="ISubscriptionProvider.CustomerId"/> when non-empty.</item>
+        ///   <item>
+        ///     <see cref="ISubscriptionProvider.SubscriptionKey"/> when non-empty
+        ///     (dev licences ship with this set but with an empty CustomerId).
+        ///   </item>
+        ///   <item><see cref="ISubscriptionProvider.SubscriptionSiteName"/> when non-empty.</item>
+        ///   <item><c>"UnRegistered"</c> — final fallback, matches legacy server.</item>
+        /// </list>
+        /// Internal so the unit tests can exercise the chain directly.
+        /// </summary>
+        internal static string ResolveCustomerId(ISubscriptionProvider? subscription)
+        {
+            var envOverride = Environment.GetEnvironmentVariable(CustomerIdOverrideEnvVar);
+            if (!string.IsNullOrWhiteSpace(envOverride))
+                return envOverride;
+
+            if (subscription is null)
+                return UnregisteredCustomerId;
+
+            if (!string.IsNullOrWhiteSpace(subscription.CustomerId))
+                return subscription.CustomerId;
+
+            if (!string.IsNullOrWhiteSpace(subscription.SubscriptionKey))
+                return subscription.SubscriptionKey;
+
+            if (!string.IsNullOrWhiteSpace(subscription.SubscriptionSiteName))
+                return subscription.SubscriptionSiteName;
+
+            return UnregisteredCustomerId;
         }
     }
 
