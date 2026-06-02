@@ -14,6 +14,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -172,6 +173,49 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(output.Reason, "mook");
             Assert.AreEqual(output.User, "usr");
             Assert.AreEqual(output.DateTimeStamp.Date, DateTime.Today);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("VersionStrategy_GetNextVersion")]
+        public void VersionStrategy_GetNextVersion_Rename_KeepsExistingVersionNumber()
+        {
+            //------------Setup for test--------------------------
+            var versionStrategy = new VersionStrategy();
+            var id = Guid.NewGuid();
+            var ver = Guid.NewGuid();
+            var oldResource = new Mock<IResource>();
+            oldResource.Setup(a => a.ResourceID).Returns(id);
+            oldResource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "7", id, ver));
+
+            //------------Execute Test---------------------------
+            var output = versionStrategy.GetNextVersion(new Mock<IResource>().Object, oldResource.Object, "bob", "Rename");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("7", output.VersionNumber);
+            Assert.AreEqual("Rename", output.Reason);
+            Assert.AreEqual("bob", output.User);
+            Assert.AreEqual(ver, output.VersionId);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("VersionStrategy_GetNextVersion")]
+        public void VersionStrategy_GetCurrentVersion_NullVersionInfo_ExpectVersion1()
+        {
+            //------------Setup for test--------------------------
+            var versionStrategy = new VersionStrategy();
+            var newResource = new Mock<IResource>();
+            newResource.Setup(a => a.ResourceID).Returns(Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            var output = versionStrategy.GetCurrentVersion(newResource.Object, (IVersionInfo)null, "bob", "save");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("1", output.VersionNumber);
+            Assert.AreEqual("save", output.Reason);
+            Assert.AreEqual("bob", output.User);
+            Assert.AreEqual(DateTime.Today, output.DateTimeStamp.Date);
         }
     }
 }

@@ -1,0 +1,9 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+1,T1-trivial,78.9,15,4,19,55,"Warewolf.Auditing","Warewolf.Auditing.WebSocketPool"
+3,T1-trivial,75.5,37,12,49,92,"Warewolf.Auditing","Warewolf.Auditing.StateListener"
+6,T2-small,70.4,43,18,61,114,"Warewolf.Auditing","Warewolf.Auditing.StateNotifier"
+7,T2-small,70.6,53,22,75,157,"Warewolf.Auditing","Warewolf.Auditing.StateAuditLogger"
+8,T2-small,0,0,9,9,31,"Warewolf.Auditing","Warewolf.Auditing.StateNotifierFactory"
+25,T3-medium,70.7,186,77,263,397,"Warewolf.Auditing","Warewolf.Auditing.Drivers.AuditQueryableElastic"
+53,T3-medium,50.2,89,88,177,259,"Warewolf.Auditing","Warewolf.Auditing.Drivers.AuditQueryableSqlite"
+95,T4-large,18.8,29,125,154,288,"Warewolf.Auditing","Warewolf.Auditing.WebSocketWrapper"

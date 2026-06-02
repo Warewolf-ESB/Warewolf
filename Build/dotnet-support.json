@@ -1,0 +1,12 @@
+{
+  "_source": "https://dotnet.microsoft.com/platform/support/policy/dotnet-core",
+  "_lastUpdated": "2026-05-25",
+  "_note": "Microsoft official end-of-support dates for .NET runtimes. Update via Build/Update-DotNetSupportData.ps1 or by hand when a new release ships.",
+  "versions": {
+    "net6.0":  { "type": "LTS", "eosDate": "2024-11-12" },
+    "net7.0":  { "type": "STS", "eosDate": "2024-05-14" },
+    "net8.0":  { "type": "LTS", "eosDate": "2026-11-10" },
+    "net9.0":  { "type": "STS", "eosDate": "2026-05-12" },
+    "net10.0": { "type": "LTS", "eosDate": "2028-11-10" }
+  }
+}

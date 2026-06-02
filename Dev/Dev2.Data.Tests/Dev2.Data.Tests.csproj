@@ -119,6 +119,8 @@
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
+    <Compile Include="ServiceModel\SharepointSourceCtorTests.cs" />
+    <Compile Include="ServiceModel\ConnectionCtorTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
     <Compile Include="ServiceModel\RedisSourceTests.cs" />
@@ -136,7 +138,9 @@
     <Compile Include="ReverseIndexIteratorTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionToolLabelCoverageTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
+    <Compile Include="TO\DataListVerifyPartCtorTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />
     <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
     <Compile Include="TO\Dev2PutOperationTOTests.cs" />
@@ -277,9 +281,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.1" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>

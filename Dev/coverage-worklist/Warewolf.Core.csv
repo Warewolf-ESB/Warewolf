@@ -1,0 +1,6 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+3,T1-trivial,0,0,3,3,34,"Warewolf.Core","Warewolf.Core.HelpDescriptor"
+5,T1-trivial,0,0,6,6,27,"Warewolf.Core","Warewolf.Core.SqliteService"
+6,T2-small,0,0,7,7,17,"Warewolf.Core","Warewolf.Core.WcfService"
+7,T2-small,0,0,8,8,28,"Warewolf.Core","Warewolf.Core.DatabaseService"
+16,T2-small,61.1,52,33,85,186,"Warewolf.Core","Warewolf.Core.ServiceInput"

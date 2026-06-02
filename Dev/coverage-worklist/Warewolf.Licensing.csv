@@ -1,0 +1,3 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+12,T2-small,53.4,23,20,43,70,"Warewolf.Licensing","Warewolf.Licensing.Subscription"
+16,T2-small,54.8,34,28,62,102,"Warewolf.Licensing","Warewolf.Licensing.WarewolfLicense"

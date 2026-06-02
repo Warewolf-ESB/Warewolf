@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="AppUsageStatsTests.cs" />
     <Compile Include="AssemblyLoaderTests.cs" />
+    <Compile Include="ExpectedAggregateExceptionAttributeTests.cs" />
+    <Compile Include="Net6Compatibility\HttpClientExceptionTests.cs" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
@@ -94,6 +96,16 @@
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\WF\XamlActivityHelperTests.cs" />
+    <Compile Include="ESB\Management\ChatbotToolNormalizerTests.cs" />
+    <Compile Include="ESB\Management\ChatbotContextBuilderTests.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceMetadataTests.cs" />
+    <Compile Include="Workspaces\WorkspaceItemCoverageTests.cs" />
+    <Compile Include="Coverage\PureHelpersCoverageTests.cs" />
+    <Compile Include="Coverage\ResourceAccessorCoverageTests.cs" />
+    <Compile Include="Coverage\PureMathAndStringCoverageTests.cs" />
+    <Compile Include="Coverage\NCalcExtendedCoverageTests.cs" />
+    <Compile Include="Coverage\ChatbotSourcePocoCoverageTests.cs" />
+    <Compile Include="Coverage\EsbManagementBulkMetadataCoverageTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -106,9 +118,12 @@
     <Compile Include="Hosting\TestCatalogTests.cs" />
     <Compile Include="Hosting\ServiceActionRepoTests.cs" />
     <Compile Include="Hosting\ResourceLoadProviderTests.cs" />
+    <Compile Include="Hosting\ResourceLoadProviderCheckTypeTests.cs" />
+    <Compile Include="CustomContainerCreateInstanceTests.cs" />
     <Compile Include="Hosting\TestCoverageCatalogTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
+    <Compile Include="Hosting\CatalogFactoryAndRecordsetListWrapperTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
@@ -120,11 +135,13 @@
     <Compile Include="Search\VariableListSearcherTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
+    <Compile Include="ServiceModel\Data\NamespaceAndServiceMethodListTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\Data\WorkflowTests.cs" />
+    <Compile Include="ServiceModel\Data\WorkflowXmlCtorTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourcesTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
@@ -143,6 +160,7 @@
     <Compile Include="Services\FindResourcesByTypeTests.cs" />
     <Compile Include="Services\FindResourceTestsS.cs" />
     <Compile Include="Services\FetchServerPermissionsTests.cs" />
+    <Compile Include="Services\FetchRemoteDebugMessagesTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
@@ -150,6 +168,8 @@
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteTestTests.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
+    <Compile Include="Services\LoggingSettingsReadTests.cs" />
+    <Compile Include="Services\SettingsReadServicesTests.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
     <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
@@ -196,6 +216,11 @@
     <Compile Include="ServiceModel\Data\EmailSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbServiceTests.cs" />
+    <Compile Include="ServiceModel\Data\DbServiceCtorBranchTests.cs" />
+    <Compile Include="ServiceModel\Data\WcfAndComPluginServiceCtorTests.cs" />
+    <Compile Include="ServiceModel\Data\VersionInfoTests.cs" />
+    <Compile Include="ServiceModel\Data\ServiceCreateInputsMethodBranchTests.cs" />
+    <Compile Include="ServiceModel\Data\ServiceCreateOutputsRecordsetListBranchTests.cs" />
     <Compile Include="ServiceModel\Data\ConnectionTests.cs" />
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
@@ -204,6 +229,7 @@
     <Compile Include="ServiceModel\WebServicesMock.cs" />
     <Compile Include="ServiceModel\WebServicesTest.cs" />
     <Compile Include="ServiceModel\WebSourcesTests.cs" />
+    <Compile Include="ServiceModel\WebExecuteStringArgsTests.cs" />
     <Compile Include="Services\ClearLogsTest.cs" />
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />
@@ -647,10 +673,10 @@
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.3" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.3" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />

@@ -119,6 +119,20 @@ namespace Dev2.Tests.Runtime.Services
             source.TriggerId = triggerId;
             ((TriggersCatalog)TriggersCatalog.Instance).DeleteTriggerQueue(source);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(SaveTriggerQueueService))]
+        public void SaveTriggerQueueService_Execute_MissingTriggerQueue_ReturnsHasError()
+        {
+            var serializer = new Dev2JsonSerializer();
+            var saveTriggerQueueService = new SaveTriggerQueueService();
+
+            var jsonResult = saveTriggerQueueService.Execute(new Dictionary<string, StringBuilder>(), null);
+
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            Assert.IsTrue(result.HasError);
+        }
     }
 
     internal class TriggerQueueForTest : ITriggerQueue

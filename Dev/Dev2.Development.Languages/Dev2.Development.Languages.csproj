@@ -89,7 +89,7 @@
     </PackageReference>
     <PackageReference Include="Jurassic" Version="3.2.6" />
     <PackageReference Include="IronPython" Version="3.4.0" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System" />
@@ -107,7 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.1" />
     <Reference Include="IronRuby">
       <HintPath>..\Binaries\IronRuby.dll</HintPath>
     </Reference>

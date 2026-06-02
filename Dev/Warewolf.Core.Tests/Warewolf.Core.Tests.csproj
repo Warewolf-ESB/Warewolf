@@ -44,6 +44,21 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Common\ConflictTreeNodeTests.cs" />
+    <Compile Include="Common\VariableUtilsTests.cs" />
+    <Compile Include="Comparers\DataSourceShapeComparerTests.cs" />
+    <Compile Include="DeletedFileMetadataTests.cs" />
+    <Compile Include="Dev2ActivityComparerTests.cs" />
+    <Compile Include="Dev2UniqueActivityComparerTests.cs" />
+    <Compile Include="DynamicServices\ValidatorTests.cs" />
+    <Compile Include="DynamicServices\ServiceActionInputTests.cs" />
+    <Compile Include="DynamicServices\PooledServiceActivityTests.cs" />
+    <Compile Include="DynamicServices\Dev2XamlLoaderTests.cs" />
+    <Compile Include="DynamicServices\ServiceActionTests.cs" />
+    <Compile Include="ConverterTests\Base\CaseConvertTOTests.cs" />
+    <Compile Include="ConverterTests\Base\BaseConvertTOTests.cs" />
+    <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionTests.cs" />
+    <Compile Include="ConverterTests\GraphTests\OutputTests\DataSourceShapeTests.cs" />
+    <Compile Include="Interfaces\RetryStateTests.cs" />
     <Compile Include="Common\ResourceCriteriaTests.cs" />
     <Compile Include="ConverterTests\Base\BaseConvertTest.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeComparerTests.cs" />
@@ -51,6 +66,8 @@
     <Compile Include="ConverterTests\DateTimeTests\DateTimeParserTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\StandardDateTimeParserTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataBrowserTests.cs" />
+    <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableInterrogatorTests.cs" />
+    <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTablePathTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\ShapedXmlOutputFormatterTests.cs" />
@@ -92,6 +109,8 @@
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="TokenizerTest.cs" />
+    <Compile Include="ToolDescriptorTests.cs" />
+    <Compile Include="DbAndWebClientTests.cs" />
     <Compile Include="TypeExtentionTest.cs" />
     <Compile Include="Utils\Dev2XamlCleanerTest.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
@@ -141,9 +160,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
     <!--<PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />-->
-    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserStrings.Designer.cs">

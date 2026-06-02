@@ -1,0 +1,2 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+75,T4-large,3,3,94,97,160,"Warewolf.Exchange.Email.Wrapper","Warewolf.Exchange.Email.Wrapper.Dev2EmailSender"

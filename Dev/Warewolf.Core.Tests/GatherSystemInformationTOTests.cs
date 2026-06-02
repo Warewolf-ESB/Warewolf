@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Providers.Validation.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -101,6 +102,77 @@ namespace Dev2.Tests
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_FourArgConstructor_PreservesInsertedFlag()
+        {
+            var to = new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystemVersion, "[[r]]", 2, true);
+
+            Assert.IsTrue(to.Inserted);
+            Assert.AreEqual(enTypeOfSystemInformationToGather.OperatingSystemVersion, to.EnTypeOfSystemInformation);
+            Assert.AreEqual("[[r]]", to.Result);
+            Assert.AreEqual(2, to.IndexNumber);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_ClearRow_BlanksResult()
+        {
+            var to = new GatherSystemInformationTO(enTypeOfSystemInformationToGather.ComputerName, "[[a]]", 1);
+
+            to.ClearRow();
+
+            Assert.AreEqual("", to.Result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_IsResultFocused_GetSet_RoundTrip()
+        {
+            var to = new GatherSystemInformationTO { IsResultFocused = true };
+
+            Assert.IsTrue(to.IsResultFocused);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_GetRuleSet_ResultWithValue_AddsExpressionRule()
+        {
+            var to = new GatherSystemInformationTO { Result = "[[a]]" };
+
+            var ruleSet = (RuleSet)to.GetRuleSet("Result", "<DataList></DataList>");
+
+            Assert.AreEqual(1, ruleSet.Rules.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_GetRuleSet_ResultEmpty_AddsEmptyRule()
+        {
+            var to = new GatherSystemInformationTO();
+
+            var ruleSet = (RuleSet)to.GetRuleSet("Result", "<DataList></DataList>");
+
+            Assert.AreEqual(1, ruleSet.Rules.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(GatherSystemInformationTO))]
+        public void GatherSystemInformationTO_GetRuleSet_UnknownProperty_ReturnsEmptyRuleSet()
+        {
+            var to = new GatherSystemInformationTO { Result = "[[a]]" };
+
+            var ruleSet = (RuleSet)to.GetRuleSet("SomethingElse", "<DataList></DataList>");
+
+            Assert.AreEqual(0, ruleSet.Rules.Count);
+        }
     }
 
   
