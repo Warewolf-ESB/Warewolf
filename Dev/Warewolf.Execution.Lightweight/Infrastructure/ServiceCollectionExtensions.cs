@@ -15,6 +15,7 @@ using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Security;
+using Warewolf.Licensing;
 
 namespace Warewolf.Execution.Lightweight.Infrastructure;
 
@@ -52,6 +53,15 @@ internal static class ServiceCollectionExtensions
 
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
             services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(config.WorkflowsDirectory));
+
+            // (8439) Chargebee-backed licence client used by LicensingHttpFunction
+            // to serve /IsLicensed, /Subscriptions and /secure/Subscriptions.
+            // Without this registration every call to those routes fails activation
+            // with "Unable to resolve service for type 'IWarewolfLicense'" and the
+            // Functions runtime returns 204 No Content (no body).  The concrete
+            // WarewolfLicense exposes a parameterless ctor that builds its own
+            // Subscription, so a plain singleton wiring is sufficient.
+            services.AddSingleton<IWarewolfLicense, WarewolfLicense>();
 
             // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
             // EntraAuthOptions is read from environment ONCE and shared as an
