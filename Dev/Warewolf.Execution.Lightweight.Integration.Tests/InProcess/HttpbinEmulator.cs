@@ -22,7 +22,6 @@
 
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using WireMock;
 using WireMock.Matchers;
@@ -35,9 +34,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
     /// <summary>
     /// Assembly-wide httpbin emulator listening on the port baked into the WebSource
     /// fixtures (<see cref="Port"/>).
+    ///
+    /// Lifecycle is driven by the single assembly fixture (<c>IntegrationTestAssemblyInit</c>),
+    /// which calls <see cref="Start"/>/<see cref="Stop"/>. MSTest permits only one
+    /// <c>[AssemblyInitialize]</c> per assembly, so this is a plain helper — not a fixture.
     /// </summary>
-    [TestClass]
-    public static class HttpbinEmulator
+    internal static class HttpbinEmulator
     {
         /// <summary>Must match the port in the repointed httpbin.bite WebSource fixtures.</summary>
         public const int Port = 4000;
@@ -47,9 +49,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
 
         private static WireMockServer? _server;
 
-        [AssemblyInitialize]
-        public static void Start(TestContext _)
+        public static void Start()
         {
+            if (_server != null)
+                return;
+
             _server = WireMockServer.Start(Port);
 
             // Single catch-all stub — the response factory inspects the request and
@@ -63,8 +67,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
                         .WithBody(BuildHttpbinResponse));
         }
 
-        [AssemblyCleanup]
-        public static void Stop() => _server?.Stop();
+        public static void Stop()
+        {
+            _server?.Stop();
+            _server = null;
+        }
 
         // ── httpbin echo emulation ──────────────────────────────────────────────
 

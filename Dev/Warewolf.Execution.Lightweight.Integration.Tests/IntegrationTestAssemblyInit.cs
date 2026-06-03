@@ -6,21 +6,27 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
-    /// Assembly-level fixture for the integration test suite.
+    /// The single assembly-level fixture for the integration test suite (MSTest permits
+    /// only one <c>[AssemblyInitialize]</c> per assembly).
     ///
-    /// Disables the WorkflowExecutor licence/subscription gate for the lifetime
-    /// of the test process so the in-process end-to-end tests
-    /// (WorkflowExecutorEndToEndTests etc.) can drive real .bite workflows
-    /// through the executor without a production subscription being available.
-    ///
-    /// The gate is controlled by the <c>WAREWOLF_LICENSE_CHECK_ENABLED</c>
-    /// environment variable and defaults to enabled — so tests must explicitly
-    /// opt out, matching the convention used by WorkflowExecutorLicenseGateTests
-    /// in the unit-test assembly.
+    /// Responsibilities:
+    /// <list type="bullet">
+    ///   <item>
+    ///     Disables the WorkflowExecutor licence/subscription gate for the lifetime of the
+    ///     test process so in-process end-to-end tests can drive real .bite workflows through
+    ///     the executor without a production subscription. Controlled by
+    ///     <c>WAREWOLF_LICENSE_CHECK_ENABLED</c> (defaults to enabled, so tests opt out).
+    ///   </item>
+    ///   <item>
+    ///     Starts the in-process <see cref="HttpbinEmulator"/> (WireMock on port 4000) that the
+    ///     Web GET/POST workflow fixtures call instead of the live httpbin.org service.
+    ///   </item>
+    /// </list>
     /// </summary>
     [TestClass]
     public static class IntegrationTestAssemblyInit
@@ -33,11 +39,16 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         {
             _previousLicenseGateValue = Environment.GetEnvironmentVariable(LicenseGateEnvVar);
             Environment.SetEnvironmentVariable(LicenseGateEnvVar, "false");
+
+            HttpbinEmulator.Start();
+            ElasticsearchEmulator.Start();
         }
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
+            ElasticsearchEmulator.Stop();
+            HttpbinEmulator.Stop();
             Environment.SetEnvironmentVariable(LicenseGateEnvVar, _previousLicenseGateValue);
         }
     }

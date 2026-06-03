@@ -1,149 +1,53 @@
 /*
- * HTTP integration tests for JWT-based request validation in the lightweight engine.
+ * In-process HTTP integration tests for JWT-based request validation in the lightweight engine.
  *
- * PRE-REQUISITE: the Azure Functions host must be running at http://localhost:7071
- * with the WAREWOLF_SECURE_CONFIG env var pointing to the config file created by
- * ClassInitialize (or an existing file placed at that path before the test run).
+ * No longer requires a running engine on http://localhost:7071. LightweightInProcessHost runs
+ * the real worker middleware pipeline (EasyAuthRedirect → ClaimsPrincipalBuilder →
+ * WorkflowAuthorization → function) in-process against a secure.config seeded per test, and the
+ * Warewolf HMAC JWT parser validates tokens minted with the host's SecretKey — so the
+ * previously-required "matching server config" is now guaranteed and the SkipIf guards are gone.
  *
- * Because the function host is a separate process, we cannot hot-swap its
- * secure.config mid-run.  Instead each test class targets a specific configuration
- * variant.  Run the host once for all tests:
- *
- *   set WAREWOLF_SECURE_CONFIG=<path written by ClassInitialize>
- *   func start
- *
- * If the host is not reachable the tests are marked Inconclusive, not Failed.
- *
- * Test coverage:
- *   Secure/* routes
- *     - No token           → 401
- *     - Expired token      → 401
- *     - Bad signature      → 401
- *     - Valid token        → 200 (or 404 when workflow does not exist)
- *   Public/* routes
- *     - Always accessible  → 200 / 404
- *   apis.json routes
- *     - GET /apis.json                → 200 + valid JSON (public list)
- *     - GET /Public/{path}/apis.json  → 200 + filtered list
- *     - GET /Secure/apis.json no JWT  → 200 + empty Apis array
- *     - GET /Secure/apis.json valid   → 200 + non-empty Apis array (if workflows present)
+ * Config seeded here (mirrors the original Studio setup the comments described):
+ *   • "Warewolf Administrators" — global full permissions
+ *   • "Azure Functions Users"   — global View+Execute
+ *   • "Public"                  — global Execute (no global View) + resource View on "Hello World"
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Warewolf.Execution.Lightweight.Security;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 using Warewolf.Execution.Lightweight.Tests.Security;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
 {
     [TestClass]
+    [DoNotParallelize]
     public class SecurityHttpTests
     {
-        const string BaseUrl        = "http://localhost:7071";
-        const string RealConfigPath = @"C:\ProgramData\Warewolf\Server Settings\secure.config";
+        private LightweightInProcessHost _host = null!;
+        private string _secretKey = null!;
 
-        static readonly HttpClient _http = new() { Timeout = TimeSpan.FromSeconds(10) };
-
-        // Secret key loaded/derived from the real config (or a synthetic one).
-        static string _secretKey = null!;
-
-        // True when _secretKey came from the same config the server was started with,
-        // meaning tokens minted here will actually pass validation on the server.
-        static bool _secretKeyMatchesServer;
-
-        // ── Setup ─────────────────────────────────────────────────────────────────
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext _)
+        [TestInitialize]
+        public void Init()
         {
-            // Load the secret key we'll use to mint test tokens.
-            // MUST use the same key as the running server so tokens are accepted.
-            //
-            // Resolution order:
-            //   1. WAREWOLF_SECURE_CONFIG env var — this is exactly what the server
-            //      was started with (e.g. "func start" after setting the env var).
-            //   2. Well-known real-server install path (RealConfigPath).
-            //   3. Generate a fresh key — tokens won't be accepted by a server that
-            //      has no config, but non-JWT tests can still run.
-            var envPath = Environment.GetEnvironmentVariable(SecureConfigLoader.ConfigPathEnvVar);
-            if (!string.IsNullOrWhiteSpace(envPath) && File.Exists(envPath))
-            {
-                var cfg = SecureConfigLoader.LoadFrom(envPath);
-                if (cfg.IsLoaded)
-                {
-                    _secretKey = cfg.SecretKey;
-                    _secretKeyMatchesServer = true;
-                    return;
-                }
-            }
-
-            if (File.Exists(RealConfigPath))
-            {
-                var realCfg = SecureConfigLoader.LoadFrom(RealConfigPath);
-                if (realCfg.IsLoaded)
-                {
-                    _secretKey = realCfg.SecretKey;
-                    // Do NOT set _secretKeyMatchesServer = true here: in CI the func host
-                    // is started with a freshly-generated secure.config (different key from
-                    // the real server install), so tokens signed with this key are rejected.
-                    // Only the WAREWOLF_SECURE_CONFIG env-var path guarantees a key match.
-                    _secretKeyMatchesServer = false;
-                    return;
-                }
-            }
-
-            // No matching config found — generate a key for structural token tests,
-            // but JWT-acceptance tests will be Inconclusive (server can't validate).
             _secretKey = SecureConfigBuilder.NewSecretKey();
-            _secretKeyMatchesServer = false;
+            var settings = SecureConfigBuilder.Build(
+                _secretKey,
+                SecureConfigBuilder.Admin(View: true),
+                SecureConfigBuilder.ServerPerm("Azure Functions Users", View: true, Execute: true),
+                SecureConfigBuilder.ServerPerm(SecureConfigBuilder.PublicGroup, View: false, Execute: true),
+                SecureConfigBuilder.ResourcePerm(SecureConfigBuilder.PublicGroup, "Hello World", View: true));
+            _host = LightweightInProcessHost.WithSettings(settings);
         }
 
-        // ── Host availability helper ──────────────────────────────────────────────
+        [TestCleanup]
+        public void Cleanup() => _host?.Dispose();
 
-        static async Task<bool> IsHostRunningAsync()
-        {
-            try
-            {
-                var resp = await _http.GetAsync(BaseUrl + "/admin/host/ping");
-                return resp.IsSuccessStatusCode;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        static void SkipIfHostNotRunning(bool running)
-        {
-            if (!running)
-                Assert.Inconclusive(
-                    $"Skipped: Azure Functions host not reachable at {BaseUrl}. " +
-                    "Start the host with: func start --port 7071");
-        }
-
-        /// <summary>
-        /// Marks the test Inconclusive when no config matching the server's key was
-        /// found.  Without a matching key the server returns 401 for every token —
-        /// the test cannot distinguish a real auth failure from a misconfigured host.
-        ///
-        /// To fix: set <c>WAREWOLF_SECURE_CONFIG</c> to the path of the
-        /// <c>secure.config</c> used by the running host, then re-run.
-        /// </summary>
-        static void SkipIfServerLacksMatchingConfig()
-        {
-            if (!_secretKeyMatchesServer)
-                Assert.Inconclusive(
-                    $"Skipped: no usable secure.config found via " +
-                    $"{SecureConfigLoader.ConfigPathEnvVar} env var or {RealConfigPath}. " +
-                    "The server has no secret key, so it rejects every JWT with 401. " +
-                    $"Start the host after setting {SecureConfigLoader.ConfigPathEnvVar}=<path to secure.config>.");
-        }
+        private static Dictionary<string, string> Bearer(string token) =>
+            new() { ["Authorization"] = "Bearer " + token };
 
         // ══════════════════════════════════════════════════════════════════════════
         // /Secure/* — JWT-protected execution routes
@@ -152,145 +56,80 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_NoToken_Returns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json");
 
-            var resp = await _http.GetAsync(BaseUrl + "/Secure/HelloWorld.json");
-
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
                 "Expected 401 when no Authorization header is present");
-            Assert.IsTrue(resp.Headers.Contains("WWW-Authenticate"),
+            Assert.IsTrue(resp.Headers.ContainsKey("WWW-Authenticate"),
                 "Expected WWW-Authenticate header on 401 response");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_ExpiredToken_Returns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-
             var token = JwtTestHelper.ExpiredToken(_secretKey, "TeamA");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "Expected 401 for an expired JWT");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status, "Expected 401 for an expired JWT");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_BadSignatureToken_Returns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-
             var token = JwtTestHelper.BadSignatureToken(_secretKey, "TeamA");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "Expected 401 for a token with a bad signature");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status, "Expected 401 for a token with a bad signature");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_WrongKeyToken_Returns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-
             var token = JwtTestHelper.WrongKeyToken(_secretKey, "TeamA");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
                 "Expected 401 when the token is signed with the wrong key");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_ValidToken_Returns200OrNotFound()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // A valid token should pass authentication.
-            // The response is 200 when the workflow exists, 404/500 when it does not —
-            // either way it must NOT be 401.
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "A valid JWT must not return 401");
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status, "A valid JWT must not return 401");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_ValidToken_Post_Returns200OrNotFound()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "/Secure/HelloWorld.json")
-            {
-                Content = new StringContent("{}", System.Text.Encoding.UTF8, "application/json")
-            };
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("POST", "/Secure/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "A valid JWT POST must not return 401");
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status, "A valid JWT POST must not return 401");
         }
 
-        // ══════════════════════════════════════════════════════════════════════════
-        // Group permission tests
-        //
-        // Config assumed here (set up in Warewolf Studio before running):
-        //   • "Warewolf Administrators" — global full permissions (default)
-        //   • "Azure Functions Users"   — global full permissions; member: InfoBoet
-        //   • "Public"                  — no global View; resource-specific View on
-        //                                 "Hello World" only
-        // ══════════════════════════════════════════════════════════════════════════
+        // ── Group permission tests ─────────────────────────────────────────────────
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_AzureFunctionsUsers_ValidToken_Returns200OrNotFound()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // "Azure Functions Users" has global View — must not be rejected.
             var token = JwtTestHelper.ValidToken(_secretKey, "Azure Functions Users");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/Hello%20World.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/Hello%20World.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "'Azure Functions Users' JWT must not return 401");
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status, "'Azure Functions Users' JWT must not return 401");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_AzureFunctionsUsers_ShowsWorkflows()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // Global View on "Azure Functions Users" → at least one workflow visible.
             var token = JwtTestHelper.ValidToken(_secretKey, "Azure Functions Users");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status, $"Expected 200 for /Secure/apis.json. Body: {resp.Body}");
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"Expected 200 for /Secure/apis.json. Body: {body}");
-
-            var json = JObject.Parse(body);
-            var apis = json["Apis"] as JArray;
+            var apis = JObject.Parse(resp.Body)["Apis"] as JArray;
             Assert.IsNotNull(apis);
 
             if (apis.Count == 0)
@@ -299,7 +138,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
             foreach (var api in apis)
             {
                 var baseUrl = api["baseUrl"]?.ToString() ?? "";
-                Assert.IsTrue(baseUrl.Contains("/Secure/", StringComparison.OrdinalIgnoreCase),
+                Assert.IsTrue(baseUrl.Contains("/Secure/", System.StringComparison.OrdinalIgnoreCase),
                     $"Expected /Secure/ in baseUrl, got: {baseUrl}");
             }
         }
@@ -307,64 +146,34 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Secure_UnknownGroup_ValidToken_PassesAuthGate()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // The /Secure/ execution gate checks signature + expiry only, not group
-            // membership.  A valid token with an unknown group must pass auth (even
-            // though the group has no permissions and discovery returns nothing).
             var token = JwtTestHelper.ValidToken(_secretKey, "UnknownGroup");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/Hello%20World.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/Hello%20World.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status,
                 "A valid JWT must pass the auth gate regardless of group membership");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_UnknownGroup_ReturnsEmptyApis()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // Group not in secure.config → no View permission → empty discovery list.
             var token = JwtTestHelper.ValidToken(_secretKey, "UnknownGroup");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status, $"Discovery endpoint must not return 401. Body: {resp.Body}");
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"Discovery endpoint must not return 401. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.AreEqual(0, (json["Apis"] as JArray)?.Count,
+            Assert.AreEqual(0, (JObject.Parse(resp.Body)["Apis"] as JArray)?.Count,
                 "A group with no configured permissions must see an empty Apis array");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_PublicGroupJwt_ShowsOnlyResourcePermittedWorkflows()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
-            // "Public" has no global View but has resource-specific View on "Hello World".
-            // A JWT claiming "Public" must see exactly those permitted workflows via
-            // /Secure/apis.json — not a global dump.
             var token = JwtTestHelper.ValidToken(_secretKey, "Public");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status, $"Expected 200. Body: {resp.Body}");
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode, $"Expected 200. Body: {body}");
-
-            var json = JObject.Parse(body);
-            var apis = json["Apis"] as JArray;
+            var apis = JObject.Parse(resp.Body)["Apis"] as JArray;
             Assert.IsNotNull(apis);
 
             if (apis.Count == 0)
@@ -375,16 +184,13 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
                 return;
             }
 
-            // Every entry the Public group sees must use the /Secure/ prefix.
             foreach (var api in apis)
             {
                 var apiBaseUrl = api["baseUrl"]?.ToString() ?? "";
-                Assert.IsTrue(apiBaseUrl.Contains("/Secure/", StringComparison.OrdinalIgnoreCase),
+                Assert.IsTrue(apiBaseUrl.Contains("/Secure/", System.StringComparison.OrdinalIgnoreCase),
                     $"Expected /Secure/ in baseUrl, got: {apiBaseUrl}");
             }
 
-            // Every entry must be a workflow the Public group actually has permission for.
-            // With the test config, that is "Hello World" only.
             foreach (var api in apis)
             {
                 var name = api["Name"]?.ToString() ?? "";
@@ -400,27 +206,18 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Public_NoToken_IsAccessible()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/HelloWorld.json");
 
-            // Public endpoint must never return 401, regardless of auth.
-            var resp = await _http.GetAsync(BaseUrl + "/Public/HelloWorld.json");
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "/Public/* must not require authentication");
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status, "/Public/* must not require authentication");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task Public_WithToken_IsAccessible()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-
             var token = JwtTestHelper.ValidToken(_secretKey, "TeamA");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Public/HelloWorld.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Public/HelloWorld.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status,
                 "/Public/* must not require authentication even when a token is supplied");
         }
 
@@ -431,112 +228,67 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task RootApisJson_Returns200_WithValidJson()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/apis.json");
 
-            var resp = await _http.GetAsync(BaseUrl + "/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status, $"Expected 200 for /apis.json. Body: {resp.Body}");
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"Expected 200 for /apis.json. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.IsNotNull(json["Apis"],  "Expected 'Apis' array in apis.json");
-            Assert.IsNotNull(json["Name"],  "Expected 'Name' field in apis.json");
+            var json = JObject.Parse(resp.Body);
+            Assert.IsNotNull(json["Apis"], "Expected 'Apis' array in apis.json");
+            Assert.IsNotNull(json["Name"], "Expected 'Name' field in apis.json");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task PublicApisJson_Returns200_NeverReturns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/apis.json");
 
-            // /Public/apis.json must always be reachable (no authentication gate)
-            var resp = await _http.GetAsync(BaseUrl + "/Public/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"/Public/apis.json must return 200. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.IsNotNull(json["Apis"]);
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status, $"/Public/apis.json must return 200. Body: {resp.Body}");
+            Assert.IsNotNull(JObject.Parse(resp.Body)["Apis"]);
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_NoToken_Returns401()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json");
 
-            // /Secure/apis.json requires authentication — EasyAuthRedirectMiddleware
-            // rejects unauthenticated callers with a 401 JSON error before the
-            // discovery endpoint is reached. Authenticated callers receive a
-            // permission-filtered discovery document (covered by
-            // SecureApisJson_ValidToken_Returns200 below).
-            var resp = await _http.GetAsync(BaseUrl + "/Secure/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                $"/Secure/apis.json must return 401 without a token. Body: {body}");
-            StringAssert.Contains(body, "unauthorized",
-                $"Expected the 401 body to contain the 'unauthorized' error code. Body: {body}");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
+                $"/Secure/apis.json must return 401 without a token. Body: {resp.Body}");
+            StringAssert.Contains(resp.Body, "unauthorized",
+                $"Expected the 401 body to contain the 'unauthorized' error code. Body: {resp.Body}");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_ValidToken_Returns200()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"/Secure/apis.json with valid JWT must return 200. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.IsNotNull(json["Apis"]);
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status,
+                $"/Secure/apis.json with valid JWT must return 200. Body: {resp.Body}");
+            Assert.IsNotNull(JObject.Parse(resp.Body)["Apis"]);
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_ExpiredToken_Returns200_WithEmptyApis()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-
             var token = JwtTestHelper.ExpiredToken(_secretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
-
-            // Discovery endpoint never returns 401; expired token → empty list.
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"Expected 200 for /Secure/apis.json with expired token. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.AreEqual(0, (json["Apis"] as JArray)?.Count,
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status,
+                $"Expected 200 for /Secure/apis.json with expired token. Body: {resp.Body}");
+            Assert.AreEqual(0, (JObject.Parse(resp.Body)["Apis"] as JArray)?.Count,
                 "Expired token should yield an empty Apis array");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task SecureApisJson_Entries_UseSecureRoutePrefix()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
-            SkipIfServerLacksMatchingConfig();
-
             var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            var resp = await _http.SendAsync(req);
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status);
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode);
-
-            var json    = JObject.Parse(body);
-            var apis    = json["Apis"] as JArray;
+            var apis = JObject.Parse(resp.Body)["Apis"] as JArray;
             if (apis is null || apis.Count == 0)
             {
                 Assert.Inconclusive("No workflow entries in /Secure/apis.json — deploy workflows first.");
@@ -546,7 +298,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
             foreach (var api in apis)
             {
                 var baseUrl = api["baseUrl"]?.ToString() ?? "";
-                Assert.IsTrue(baseUrl.Contains("/Secure/", StringComparison.OrdinalIgnoreCase),
+                Assert.IsTrue(baseUrl.Contains("/Secure/", System.StringComparison.OrdinalIgnoreCase),
                     $"Expected /Secure/ prefix in baseUrl, got: {baseUrl}");
             }
         }
@@ -554,15 +306,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         [TestMethod, TestCategory("Security_HTTP")]
         public async Task PublicApisJson_Entries_UsePublicRoutePrefix()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/apis.json");
 
-            var resp = await _http.GetAsync(BaseUrl + "/Public/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status);
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode);
-
-            var json = JObject.Parse(body);
-            var apis = json["Apis"] as JArray;
+            var apis = JObject.Parse(resp.Body)["Apis"] as JArray;
             if (apis is null || apis.Count == 0)
             {
                 Assert.Inconclusive("No public workflow entries — configure public permissions first.");
@@ -572,34 +320,24 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
             foreach (var api in apis)
             {
                 var baseUrl = api["baseUrl"]?.ToString() ?? "";
-                Assert.IsTrue(baseUrl.Contains("/Public/", StringComparison.OrdinalIgnoreCase),
+                Assert.IsTrue(baseUrl.Contains("/Public/", System.StringComparison.OrdinalIgnoreCase),
                     $"Expected /Public/ prefix in baseUrl, got: {baseUrl}");
             }
         }
 
         // ══════════════════════════════════════════════════════════════════════════
-        // Real config integration — validate that a real server token round-trips
+        // Token round-trip through the secure route (in-process equivalent of the
+        // original real-server-install test).
         // ══════════════════════════════════════════════════════════════════════════
 
-        [TestMethod, TestCategory("Security_HTTP_RealConfig")]
+        [TestMethod, TestCategory("Security_HTTP")]
         public async Task RealConfig_TokenFromFile_AcceptedBySecureRoute()
         {
-            SkipIfHostNotRunning(await IsHostRunningAsync());
+            var token = JwtTestHelper.ValidToken(_secretKey, "Warewolf Administrators");
+            var resp  = await _host.SendThroughPipelineAsync("GET", "/Secure/apis.json", Bearer(token));
 
-            if (!File.Exists(RealConfigPath))
-                Assert.Inconclusive($"Skipped: {RealConfigPath} not found.");
-
-            var cfg   = SecureConfigLoader.LoadFrom(RealConfigPath);
-            if (!cfg.IsLoaded)
-                Assert.Inconclusive("Real config loaded but IsLoaded=false — check file content.");
-
-            var token = JwtTestHelper.ValidToken(cfg.SecretKey, "Warewolf Administrators");
-            var req   = new HttpRequestMessage(HttpMethod.Get, BaseUrl + "/Secure/apis.json");
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var resp = await _http.SendAsync(req);
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                "Token generated from the real config should be accepted by the running server");
+            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status,
+                "A token generated from the active secure.config should be accepted by the secure route");
         }
     }
 }

@@ -1,36 +1,48 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
-    /// Integration tests for the named workflow bite files:
+    /// In-process functional tests for the named record-set Web POST workflows:
     ///   - multipart-formdata (IsFormDataChecked, record set "rs")
     ///   - www-form-urlencoded (IsUrlEncodedChecked, record set "data")
-    /// Requires the Azure Function to be running at <see cref="BaseUrl"/> before running these tests.
-    /// The bite files are in Resources/tools/http post/ and target localhost:4000/post.
+    ///
+    /// No longer requires a running engine on port 7071: <see cref="LightweightInProcessHost"/>
+    /// executes the real workflow in-process, and the workflow's outbound POST hits the
+    /// in-process <see cref="HttpbinEmulator"/> (port 4000) instead of the live httpbin.org.
+    /// The .bite files target tools/http post/* and resolve the repointed httpbin WebSource.
+    ///
+    /// Marked <see cref="DoNotParallelizeAttribute"/> — the host mutates process-wide
+    /// SecureConfigLoader singleton + environment-variable state per test.
     /// </summary>
     [TestClass]
+    [DoNotParallelize]
     public class WebPostNamedWorkflowIntegrationTests
     {
-        private const string BaseUrl = TestConstants.AzureFunctionBaseUrl;
-        private static readonly HttpClient _client = new();
+        private const string RoutePrefix = "tools/http post";
+
+        private LightweightInProcessHost _host = null!;
+
+        [TestInitialize]
+        public void Init() => _host = LightweightInProcessHost.WithPublicExecuteAll();
+
+        [TestCleanup]
+        public void Cleanup() => _host?.Dispose();
 
         // ---------------------------------------------------------------
         // multipart-formdata workflow (record set "rs")
-        // Conditions: numbers=10,20,30 (text) + data=test.txt file attachment
-        // Settings: IsFormDataChecked=True
         // ---------------------------------------------------------------
 
-        /// <summary>multipart-formdata: POST multipart/form-data → rs[0].url == http://localhost:4000/post.</summary>
+        /// <summary>multipart-formdata: POST multipart/form-data → rs[0].url == httpbin /post.</summary>
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task MultipartFormdata_MapsUrl_Returns_HttpbinPost()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/multipart-formdata.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/multipart-formdata.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("rs", out var rs), $"Expected record set 'rs' in response: {json}");
@@ -43,9 +55,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task MultipartFormdata_MapsContentType_Contains_MultipartFormdata()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/multipart-formdata.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/multipart-formdata.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("rs", out var rs), $"Expected record set 'rs' in response: {json}");
@@ -55,13 +66,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.IsTrue(ctValue.StartsWith("multipart/form-data"), $"Expected headersContent-Type to start with 'multipart/form-data' but was '{ctValue}'. Full response: {json}");
         }
 
-        /// <summary>multipart-formdata: POST multipart/form-data → rs[0].headersHost == localhost:4000.</summary>
+        /// <summary>multipart-formdata: POST multipart/form-data → rs[0].headersHost == httpbin.org.</summary>
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task MultipartFormdata_MapsHost_Returns_HttpbinOrg()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/multipart-formdata.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/multipart-formdata.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("rs", out var rs), $"Expected record set 'rs' in response: {json}");
@@ -72,17 +82,14 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
 
         // ---------------------------------------------------------------
         // www-form-urlencoded workflow (record set "data")
-        // Conditions: id=100 (text), name=sachin (text)
-        // Settings: IsUrlEncodedChecked=True
         // ---------------------------------------------------------------
 
-        /// <summary>www-form-urlencoded: POST application/x-www-form-urlencoded → data[0].url == http://localhost:4000/post.</summary>
+        /// <summary>www-form-urlencoded: POST application/x-www-form-urlencoded → data[0].url == httpbin /post.</summary>
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task WwwFormUrlencoded_MapsUrl_Returns_HttpbinPost()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/www-form-urlencoded.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/www-form-urlencoded.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("data", out var data), $"Expected record set 'data' in response: {json}");
@@ -95,9 +102,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task WwwFormUrlencoded_MapsContentType_Returns_UrlEncoded()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/www-form-urlencoded.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/www-form-urlencoded.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("data", out var data), $"Expected record set 'data' in response: {json}");
@@ -106,13 +112,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.AreEqual("application/x-www-form-urlencoded", ct.GetString(), $"Expected headersContent-Type == 'application/x-www-form-urlencoded'. Full response: {json}");
         }
 
-        /// <summary>www-form-urlencoded: POST application/x-www-form-urlencoded → data[0].headersHost == localhost:4000.</summary>
+        /// <summary>www-form-urlencoded: POST application/x-www-form-urlencoded → data[0].headersHost == httpbin.org.</summary>
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task WwwFormUrlencoded_MapsHost_Returns_HttpbinOrg()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/www-form-urlencoded.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/www-form-urlencoded.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("data", out var data), $"Expected record set 'data' in response: {json}");
