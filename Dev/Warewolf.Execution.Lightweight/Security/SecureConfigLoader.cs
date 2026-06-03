@@ -146,11 +146,36 @@ namespace Warewolf.Execution.Lightweight.Security
             if (settings.WindowsGroupPermissions is null or { Count: 0 })
                 return Array.Empty<PermissionEntry>();
 
-            return settings.WindowsGroupPermissions
+            var permissions = settings.WindowsGroupPermissions;
+
+            // Mirror the full server's SecuritySettings.ProcessSettingsFile behavior:
+            // ensure built-in Administrators and Public (Guests) groups always exist.
+            // The server auto-adds these if missing so that admin users always have
+            // access and the Public group is always available for anonymous resolution.
+            var hasAdmin = permissions.Any(p =>
+                p.IsServer &&
+                string.Equals(p.WindowsGroup, WindowsGroupPermission.BuiltInAdministratorsText, StringComparison.OrdinalIgnoreCase));
+            var hasGuests = permissions.Any(p =>
+                p.IsServer &&
+                string.Equals(p.WindowsGroup, WindowsGroupPermission.BuiltInGuestsText, StringComparison.OrdinalIgnoreCase));
+
+            if (!hasAdmin || !hasGuests)
+            {
+                var mutable = permissions.ToList();
+                if (!hasAdmin)
+                    mutable.Insert(0, WindowsGroupPermission.CreateAdministrators());
+                if (!hasGuests)
+                    mutable.Add(WindowsGroupPermission.CreateGuests());
+                permissions = mutable;
+            }
+
+            // Normalize legacy "BuiltIn\\Administrators" group name to the canonical form
+            // (mirrors server's ProcessSettingsFile normalization).
+            return permissions
                 .Select(p => new PermissionEntry(
-                    GroupName:    p.WindowsGroup  ?? string.Empty,
+                    GroupName:    NormalizeGroupName(p.WindowsGroup ?? string.Empty),
                     IsGlobal:     p.IsServer && p.ResourceID == Guid.Empty,
-                    ResourceName: p.ResourceName  ?? string.Empty,
+                    ResourceName: !string.IsNullOrEmpty(p.ResourcePath) ? p.ResourcePath : (p.ResourceName ?? string.Empty),
                     View:         p.View,
                     Execute:      p.Execute,
                     Contribute:   p.Contribute,
@@ -158,6 +183,14 @@ namespace Warewolf.Execution.Lightweight.Security
                     DeployFrom:   p.DeployFrom,
                     Administrator: p.Administrator))
                 .ToArray();
+        }
+
+        static string NormalizeGroupName(string groupName)
+        {
+            // The full server normalizes "BuiltIn\\Administrators" to "Warewolf Administrators"
+            if (string.Equals(groupName, "BuiltIn\\Administrators", StringComparison.OrdinalIgnoreCase))
+                return WindowsGroupPermission.BuiltInAdministratorsText;
+            return groupName;
         }
     }
 }

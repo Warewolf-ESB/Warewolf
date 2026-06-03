@@ -5,13 +5,13 @@
  */
 
 using System.Net;
-using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Http;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight.Auth.Middleware;
@@ -45,18 +45,14 @@ namespace Warewolf.Execution.Lightweight.Auth.Middleware;
 /// </summary>
 public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
 {
-    private const string BypassHeader        = "X-WW-Bypass-Auth";
-    private const string BypassHeaderValue   = "local-dev-bypass";
-    private const string CorrelationIdHeader = "X-WW-Correlation-Id";
+    private const string BypassHeader      = "X-WW-Bypass-Auth";
+    private const string BypassHeaderValue = "local-dev-bypass";
 
     private readonly IWorkflowPolicyMatcher                      _policyMatcher;
     private readonly IRouteAuthorizationRegistry                 _routeRegistry;
     private readonly IHostEnvironment                            _hostEnvironment;
     private readonly AuditLogger                                 _auditLogger;
     private readonly ILogger<WorkflowAuthorizationMiddleware>    _logger;
-
-    private static readonly JsonSerializerOptions JsonOptions =
-        new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
     /// <summary>
     /// Initialises the middleware with policy matcher, route registry,
@@ -92,9 +88,9 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         // (MWA-07 / OBS-05) Per-request correlation id — accept caller-supplied
         // value or generate a short one when missing.  Same value is included
         // in audit logs and 401/403 response headers + body.
-        var correlationId = ResolveCorrelationId(request);
+        var correlationId = HttpResponseHelper.ResolveCorrelationId(request);
 
-        // Public routes — no policy enforcement
+        // Public routes — no policy enforcement here
         if (path.StartsWith(AuthConstants.PublicRoutePrefix, StringComparison.OrdinalIgnoreCase))
         {
             await next(context);
@@ -107,6 +103,19 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
             await next(context);
             return;
         }
+
+
+        var normalizedPath = NameSuffixParser.Normalize(path);
+        // ── apis.json bypass — discovery has its own permission filtering ─────
+        if (normalizedPath.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return;
+        }
+
+        // {workflow}.api request
+        bool isApiRequest = normalizedPath.EndsWith(".api", StringComparison.OrdinalIgnoreCase);
+
 
         // ── Development-only bypass ───────────────────────────────────────────
         // NEVER active in Production — environment guard is mandatory.
@@ -138,7 +147,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 reason: "no_authenticated_principal",
                 correlationId: correlationId);
 
-            await WriteErrorAsync(request, context, HttpStatusCode.Unauthorized,
+            await HttpResponseHelper.WriteErrorAsync(request, context, HttpStatusCode.Unauthorized,
                 "unauthorized", "Authentication required.", path, correlationId);
             return;
         }
@@ -147,7 +156,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         var workflowName = ExtractWorkflowName(path, isSecure);
         if (string.IsNullOrEmpty(workflowName))
         {
-            await WriteErrorAsync(request, context, HttpStatusCode.BadRequest,
+            await HttpResponseHelper.WriteErrorAsync(request, context, HttpStatusCode.BadRequest,
                 "bad_request", "Could not determine workflow name from path.", path, correlationId);
             return;
         }
@@ -157,8 +166,8 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         // fall back to View | Execute for any route without the attribute.
         var functionName = context.FunctionDefinition.Name;
         var requiredPermissions =
-            _routeRegistry.GetRequiredPermissions(functionName)
-            ?? (WorkflowPermission.View | WorkflowPermission.Execute);
+           isApiRequest ? WorkflowPermission.Execute : (_routeRegistry.GetRequiredPermissions(functionName)
+            ?? (WorkflowPermission.View | WorkflowPermission.Execute));
 
         // ── Delegate to IWorkflowPolicyMatcher ────────────────────────────────
         var result = _policyMatcher.Evaluate(workflowName, principal, requiredPermissions);
@@ -199,7 +208,7 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                     reason: "config_missing",
                     correlationId: correlationId);
 
-                await WriteErrorAsync(request, context, HttpStatusCode.ServiceUnavailable,
+                await HttpResponseHelper.WriteErrorAsync(request, context, HttpStatusCode.ServiceUnavailable,
                     "config_missing",
                     "Server configuration error: secure.config is absent or empty. " +
                     "Contact your administrator.",
@@ -227,41 +236,75 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                     reason: result.DenialReason ?? "policy_denied",
                     correlationId: correlationId);
 
-                await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
-                    "forbidden", result.DenialReason ?? "Insufficient permissions.", path, correlationId,
-                    new { workflow = workflowName });
+                // TODO: This is correct but to match the existing server response to avoid breaking clients or tests, temporariry it is matched with existing WW server.
+                // Future TODO: Consider returning 403 with good message (authorization denied and update all tests that matches 500 internal server error as output for this error
+                //await WriteErrorAsync(request, context, HttpStatusCode.Forbidden,
+                //    "forbidden", result.DenialReason ?? "Insufficient permissions.", path, correlationId,
+                //    new { workflow = workflowName });
+
+                await HttpResponseHelper.WriteWrappedErrorAsync(request, context, HttpStatusCode.InternalServerError,
+                    (int)HttpStatusCode.InternalServerError, "internal_server_error", "Invalid Authentication Token or invalid permissions to Execute resource",
+                    result.DenialReason ?? "Insufficient permissions.", correlationId);
+
                 return;
         }
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
-    private static string ResolveCorrelationId(HttpRequestData request)
-    {
-        if (request.Headers.TryGetValues(CorrelationIdHeader, out var values))
-        {
-            var v = values.FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(v)) return v!;
-        }
-        // Compact ID — short enough for HTTP headers, unique enough for tracing.
-        return Guid.NewGuid().ToString("N")[..16];
-    }
+    
 
     /// <summary>
     /// Extracts a normalised workflow name from a <c>/secure/*</c> or
-    /// <c>/services/*</c> path.  Marked <c>internal</c> for unit testing — no
-    /// production caller exists outside this assembly.
+    /// <c>/services/*</c> path, preserving any folder prefix so that
+    /// resource-scope lookups in <see cref="IWorkflowAuthPolicyLoader"/> resolve
+    /// correctly for nested workflows (e.g. <c>folder/workflow</c>).
+    ///
+    /// <para>Examples:</para>
+    /// <code>
+    ///   /secure/MyWorkflow.json     → "myworkflow"
+    ///   /secure/Folder/Sub.json     → "folder/sub"
+    ///   /services/A/B/Flow.json     → "a/b/flow"
+    /// </code>
+    ///
+    /// Marked <c>internal</c> for unit testing — no production caller exists
+    /// outside this assembly.
     /// </summary>
     internal static string? ExtractWorkflowName(string path, bool isSecure)
     {
-        var prefix  = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
-        var segment = path
-            .Substring(prefix.Length)
-            .Split('/')[0]
-            .Split('?')[0];
+        var prefix = isSecure ? AuthConstants.SecureRoutePrefix : AuthConstants.ServicesRoutePrefix;
 
-        var name = Path.GetFileNameWithoutExtension(segment).ToLowerInvariant();
-        return string.IsNullOrEmpty(name) ? null : name;
+        // Normalize raw backslashes → forward-slashes BEFORE splitting so that
+        // a URL such as /secure/data\sales.json is treated correctly.
+        var remainder = path.Substring(prefix.Length).Split('?')[0].Replace('\\', '/');
+
+        var rawSegments = remainder.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (rawSegments.Length == 0)
+            return null;
+
+        // Decode each segment, then normalize any backslash that was percent-encoded
+        // as %5C (e.g. /secure/data%5Csales.json) and re-split so it becomes a proper
+        // sub-path rather than being swallowed by Path.GetFileNameWithoutExtension.
+        var segments = rawSegments
+            .SelectMany(s => Uri.UnescapeDataString(s)
+                                .Replace('\\', '/')
+                                .Split('/', StringSplitOptions.RemoveEmptyEntries))
+            .ToArray();
+
+        if (segments.Length == 0)
+            return null;
+
+        // Strip the recognised suffix (.json, .xml, .debug, .api) from the last segment only.
+        var strippedLast = Path.GetFileNameWithoutExtension(segments[^1]);
+        if (string.IsNullOrEmpty(strippedLast))
+            return null;
+
+        // Preserve all preceding folder segments to support resource-scope policy matching.
+        if (segments.Length == 1)
+            return strippedLast.ToLowerInvariant();
+
+        var folderParts = segments[..^1].Select(s => s.ToLowerInvariant());
+        return string.Join("/", folderParts.Append(strippedLast.ToLowerInvariant()));
     }
 
     private void LogDiag(FunctionContext context, object? principalObj, string path)
@@ -281,34 +324,4 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         }
     }
 
-    private static async Task WriteErrorAsync(
-        HttpRequestData request,
-        FunctionContext context,
-        HttpStatusCode statusCode,
-        string error,
-        string message,
-        string path,
-        string correlationId,
-        object? extra = null)
-    {
-        var body = new Dictionary<string, object>
-        {
-            ["error"] = error,
-            ["message"] = message,
-            ["path"] = path,
-            ["correlationId"] = correlationId,
-        };
-
-        if (extra is not null)
-        {
-            foreach (var prop in extra.GetType().GetProperties())
-                body[prop.Name.ToLowerInvariant()] = prop.GetValue(extra) ?? string.Empty;
-        }
-
-        var response = request.CreateResponse(statusCode);
-        response.Headers.Add("Content-Type", "application/json");
-        response.Headers.Add(CorrelationIdHeader, correlationId);
-        await response.WriteStringAsync(JsonSerializer.Serialize(body, JsonOptions));
-        context.GetInvocationResult().Value = response;
     }
-}

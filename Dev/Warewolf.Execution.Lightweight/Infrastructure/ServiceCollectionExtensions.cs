@@ -31,17 +31,22 @@ internal static class ServiceCollectionExtensions
     /// </summary>
     internal static IServiceCollection AddCoreServices(
         this IServiceCollection services,
-        string workflowsDirectory)
+        HostEnvironmentConfig   config)
     {
         const string executionId = "ServiceCollectionExtensions-CoreServices";
 
-        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {workflowsDirectory}", executionId);
+        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
         try
         {
             services.AddLogging();
+
+            // Register the immutable environment config snapshot as a singleton so
+            // any middleware or service can receive it via constructor injection.
+            services.AddSingleton(config);
+
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
-            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(workflowsDirectory));
+            services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(config.WorkflowsDirectory));
 
             // ── AUTH-09 / DI-06 ──────────────────────────────────────────────────
             // EntraAuthOptions is read from environment ONCE and shared as an
@@ -85,12 +90,15 @@ internal static class ServiceCollectionExtensions
     /// <param name="enableElastic">Whether the Elasticsearch logger sink is enabled.</param>
     /// <param name="elasticsearchSettingsPath">Absolute path to the Elasticsearch <c>.bite</c> config file.</param>
     /// <param name="minimumLevel">Minimum log level gate shared by all sinks.</param>
+    /// <param name="config">Host environment configuration — used to conditionally register
+    /// <see cref="DebugPrincipalParser"/> in development environments.</param>
     internal static IServiceCollection AddExecutionLogging(
         this IServiceCollection services,
         bool enableConsole,
         bool enableElastic,
         string elasticsearchSettingsPath,
-        Dev2.Data.Interfaces.Enums.LogLevel minimumLevel)
+        Dev2.Data.Interfaces.Enums.LogLevel minimumLevel,
+        HostEnvironmentConfig config)
     {
         const string executionId = "ServiceCollectionExtensions-ExecutionLogging";
 
@@ -131,7 +139,19 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IRouteAuthorizationRegistry>(
             _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
 
-        // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
+        // Principal parsers — ordered chain (first parser that returns an authenticated
+        // principal wins).  In development, DebugPrincipalParser is prepended so that
+        // a fixed token from DEBUG_PRINCIPAL_TOKEN is used instead of requiring a live
+        // EasyAuth-enabled App Service locally.
+        if (config.IsDevelopment && !string.IsNullOrWhiteSpace(config.DebugPrincipalToken))
+        {
+            var token = config.DebugPrincipalToken;
+            services.AddSingleton<IPrincipalParser>(sp =>
+                new DebugPrincipalParser(
+                    token,
+                    sp.GetRequiredService<ILogger<DebugPrincipalParser>>()));
+        }
+
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
         services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
 

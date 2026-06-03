@@ -336,11 +336,14 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_UnconfiguredWorkflow_Returns_PolicyNull()
     {
-        // Config effective but workflow has no resource OR global entries
-        var settings = SecureConfigBuilder.Build(
-            SecureConfigBuilder.NewSecretKey());
-        // Only a blank permission — treated as config missing actually;
-        // use minimal valid config with a resource entry for a different workflow
+        // Config has one resource entry for "OtherWorkflow" (TeamA) and no global
+        // entries — but SecureConfigLoader always auto-injects "Warewolf Administrators"
+        // as a global entry.  Therefore GetPolicy("Missing") returns a non-null global
+        // policy (the auto-injected admin scope).
+        //
+        // The correct assertion is that TeamA — which is scoped to OtherWorkflow only —
+        // has NO effective permissions on "Missing", because "Missing" has no resource
+        // entries and TeamA is not in the global (admin) scope.
         var settings2 = SecureConfigBuilder.Build(
             SecureConfigBuilder.NewSecretKey(),
             new PermSpec("TeamA", IsServer: false, View: true,
@@ -349,10 +352,15 @@ public class WorkflowAuthPolicyLoaderTests
 
         var loader = BuildLoader(settings2);
 
-        // "Missing" has no resource entries AND no global entries → Policy(null)
+        // "Missing" has no resource entries; falls back to global scope (auto-injected admins).
         var lookup = loader.GetPolicy("Missing");
-        Assert.IsTrue(lookup.HasPolicyScope);
-        Assert.IsNull(lookup.Value);
+        Assert.IsTrue(lookup.HasPolicyScope, "Lookup must be in policy scope (global admin exists)");
+
+        // TeamA is resource-scoped to OtherWorkflow only — it must not appear in the
+        // global (admin) policy for "Missing".
+        var perms = loader.GetEffectivePermissions("Missing", new[] { "TeamA" });
+        Assert.AreEqual(WorkflowPermission.None, perms,
+            "TeamA (resource-only for OtherWorkflow) must have no permissions on an unconfigured workflow");
     }
 
     // ── Super-admin tests ─────────────────────────────────────────────────────

@@ -11,7 +11,7 @@ namespace Warewolf.Execution.Lightweight.Security;
 /// Decouples credential strategy from both the environment configuration and
 /// the Key Vault client, making each component independently testable.
 /// </summary>
-internal sealed record KeyVaultCredentialOptions
+public sealed record KeyVaultCredentialOptions
 {
     /// <summary>
     /// <c>true</c> when the host is running locally or inside a development container

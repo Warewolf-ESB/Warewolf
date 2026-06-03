@@ -97,10 +97,57 @@ namespace Warewolf.Execution.Lightweight
                 return WorkflowExecutionResult.Failure("WorkflowFilePath must be provided.");
             }
 
+            // OPENAPI short-circuit — generate the spec even when the workflow file is missing.
+            // WorkflowOpenApiGenerator.ReadDataList handles missing/unreadable files gracefully
+            // by returning an empty DataList, matching server GetOpenAPIServiceHandler behaviour.
+            if (request.ReturnType == EmitionTypes.OPENAPI)
+            {
+                var openapiId   = Guid.NewGuid();
+                var openapiStart = DateTime.UtcNow;
+                Dev2Logger.Info($"WorkflowExecutor generating OpenAPI spec for: {request.WorkflowName ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath)}", openapiId.ToString());
+                var resolvedNameForSpec = request.WorkflowName
+                    ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
+                var spec = WorkflowOpenApiGenerator.Generate(
+                    request.WorkflowFilePath,
+                    resolvedNameForSpec,
+                    request.WebServerUri ?? new Uri("https://localhost"));
+                Dev2Logger.Info("WorkflowExecutor OpenAPI spec generated successfully (pre-file-check path).", openapiId.ToString());
+                return new WorkflowExecutionResult
+                {
+                    IsSuccess     = true,
+                    ExecutionId   = openapiId,
+                    StartTime     = openapiStart,
+                    EndTime       = DateTime.UtcNow,
+                    Duration      = DateTime.UtcNow - openapiStart,
+                    ContentType   = "application/json",
+                    PayloadWriter = (stream, ct) => WriteStringToStreamAsync(stream, spec, ct)
+                };
+            }
+
             if (!File.Exists(request.WorkflowFilePath))
             {
                 Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");
                 return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
+            }
+
+            // License/subscription gate — mirrors ExecutorBase.TryExecute subscription check.
+            // Controlled via WAREWOLF_LICENSE_CHECK_ENABLED env var (default: enabled).
+            if (IsLicenseCheckEnabled())
+            {
+                try
+                {
+                    var subscription = Dev2.Runtime.Subscription.SubscriptionProvider.Instance.GetSubscriptionData();
+                    if (subscription == null || !subscription.IsLicensed)
+                    {
+                        Dev2Logger.Warn("WorkflowExecutor Execute: License/subscription validation failed — execution blocked.", "WorkflowExecutor-License");
+                        return WorkflowExecutionResult.Failure("Execution blocked: a valid Warewolf license/subscription is required.");
+                    }
+                }
+                catch (Exception licEx)
+                {
+                    Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
+                    return WorkflowExecutionResult.Failure("Execution blocked: unable to validate license/subscription.");
+                }
             }
 
             var stopwatch = Stopwatch.StartNew();
@@ -395,7 +442,8 @@ namespace Warewolf.Execution.Lightweight
                 IsDebugFromWeb = request.IsDebug,
                 ReturnType = request.ReturnType,
                 ServiceName = workflowName,
-                ExecutionID = executionId,
+                ExecutionID = request.ExecutionId ?? executionId,
+                CustomTransactionID = request.CustomTransactionId ?? string.Empty,
                 ExecutionToken = new LightweightExecutionToken(),
                 EsbChannel = new LightweightEsbChannel(request.WorkflowsDirectory ?? workflowDir)
             };
@@ -760,6 +808,20 @@ namespace Warewolf.Execution.Lightweight
         {
             await using var writer = new StreamWriter(stream, _utf8NoBom, bufferSize: 4096, leaveOpen: true);
             await writer.WriteAsync(content.AsMemory(), ct);
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the license/subscription gate should be enforced.
+        /// Controlled by the <c>WAREWOLF_LICENSE_CHECK_ENABLED</c> environment variable.
+        /// Defaults to <c>true</c> (enabled) when the variable is absent or not explicitly "false"/"0".
+        /// </summary>
+        static bool IsLicenseCheckEnabled()
+        {
+            var value = Environment.GetEnvironmentVariable("WAREWOLF_LICENSE_CHECK_ENABLED");
+            if (string.IsNullOrWhiteSpace(value))
+                return true;
+            return !value.Equals("false", StringComparison.OrdinalIgnoreCase)
+                && !value.Equals("0", StringComparison.Ordinal);
         }
 
         }

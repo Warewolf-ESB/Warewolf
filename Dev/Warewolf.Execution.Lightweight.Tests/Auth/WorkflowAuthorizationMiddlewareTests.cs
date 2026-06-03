@@ -63,11 +63,11 @@ public class WorkflowAuthorizationMiddlewareTests
     [Ignore("Requires ExtractWorkflowName to use the last path segment instead of the first. Re-introduce when WOLF-8411 is complete.")]
     public void MWA06_ExtractWorkflowName_SubFolder_ReturnsWorkflowName()
     {
-        // Policy lookup uses the workflow NAME (last path segment), not the folder.
-        // NormalizeWorkflowKey strips the folder prefix so resource-scope entries
-        // keyed by workflow name are found correctly.
+        // The implementation preserves the folder prefix so that resource-scope
+        // policy entries keyed as "folder/helloworld" in secure.config are resolved
+        // correctly for nested workflows (e.g. /secure/folder/HelloWorld → "folder/helloworld").
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/folder/HelloWorld", isSecure: true);
-        Assert.AreEqual("helloworld", name);
+        Assert.AreEqual("folder/helloworld", name);
     }
 
     [TestMethod]
@@ -88,6 +88,120 @@ public class WorkflowAuthorizationMiddlewareTests
         // space — see the 403/500 spectrum on the Security Specs feature file.
         var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName("/secure/Hello%20World", isSecure: true);
         Assert.AreEqual("hello world", name);
+    }
+
+    // ── Query string exclusion ────────────────────────────────────────────
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_QueryStringMultipleParams_Ignored()
+    {
+        // Multiple query parameters (?a=1&b=2) must all be stripped; only
+        // the path portion is used to derive the workflow name.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/HelloWorld.json?a=1&b=2", isSecure: true);
+        Assert.AreEqual("helloworld", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_QueryStringWithPathLikeValue_Ignored()
+    {
+        // A query value that itself looks like a path (e.g. ?redirect=/secure/Other)
+        // must not influence the extracted workflow name.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/HelloWorld.json?redirect=/secure/Other", isSecure: true);
+        Assert.AreEqual("helloworld", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_QueryStringOnEncodedName_StrippedBeforeDecoding()
+    {
+        // Query string must be removed before URL-decoding so that encoded
+        // characters inside query values don't bleed into the workflow name.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/Hello%20World.json?param=val%20ue", isSecure: true);
+        Assert.AreEqual("hello world", name);
+    }
+
+    // ── URL decoding ──────────────────────────────────────────────────────
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_EncodedBackslash_DecodedAndNormalized()
+    {
+        // %5C is the percent-encoding of '\'.  After decoding it must be treated
+        // as a path separator, not as part of the file name.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/data%5Csales.json", isSecure: true);
+        Assert.AreEqual("data/sales", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_MultiSegment_EncodedSpaces_Decoded()
+    {
+        // All path segments must be individually decoded; folder names that
+        // contain spaces are valid workflow paths in Warewolf.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/Hello%20World/My%20Flow.json", isSecure: true);
+        Assert.AreEqual("hello world/my flow", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_EncodedPlus_DecodedLiterally()
+    {
+        // %2B decodes to '+'; the character is valid in a workflow name.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/A%2BB.json", isSecure: true);
+        Assert.AreEqual("a+b", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_MultiLevel_EncodedBackslash_AllSegmentsNormalized()
+    {
+        // Multiple %5C separators across a deep path must all be normalised
+        // to '/' and each resulting segment lowercased.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/examples%5CControl%20Flow%5CDecision.json", isSecure: true);
+        Assert.AreEqual("examples/control flow/decision", name);
+    }
+
+    // ── Slash normalization ───────────────────────────────────────────────
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_RawBackslash_NormalizedToForwardSlash()
+    {
+        // A raw '\' in the URL path (sometimes produced by misconfigured clients)
+        // must be treated as a path separator, yielding "folder/workflow".
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/data\\sales.json", isSecure: true);
+        Assert.AreEqual("data/sales", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_MixedSlashes_AllNormalized()
+    {
+        // A mix of raw '\' and '/' must produce a clean forward-slash path.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/folder\\sub/workflow.json", isSecure: true);
+        Assert.AreEqual("folder/sub/workflow", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_MultiLevelRawBackslashes_AllNormalized()
+    {
+        // Three levels separated only by raw backslashes must produce a
+        // correctly joined forward-slash path.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/a\\b\\c.json", isSecure: true);
+        Assert.AreEqual("a/b/c", name);
+    }
+
+    [TestMethod]
+    public void MWA06_ExtractWorkflowName_RawBackslashWithQueryString_SlashNormalizedQueryIgnored()
+    {
+        // Backslash normalization and query-string stripping must both apply
+        // correctly when they appear together in the same URL.
+        var name = WorkflowAuthorizationMiddleware.ExtractWorkflowName(
+            "/secure/data\\sales.json?debug=true", isSecure: true);
+        Assert.AreEqual("data/sales", name);
     }
 
     [TestMethod]
