@@ -43,15 +43,20 @@
  *    - Covered by unit tests; the file-watch reload is not applicable to the in-process harness.
  */
 
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
+using Warewolf.Execution.Lightweight.Security;
 using Warewolf.Execution.Lightweight.Tests.Security;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
@@ -744,12 +749,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
     // ══════════════════════════════════════════════════════════════════════════════
     // SecureConfigWatcher — hot-reload lifecycle coverage
     //
-    // The SecureConfigWatcher is a hosted service that watches the on-disk secure.config
-    // for changes and triggers SecureConfigLoader.Reload + IWorkflowAuthPolicyLoader.Reload
-    // within a debounce window. This behaviour is inherent to the FileSystemWatcher +
-    // debounce timer and is exercised by unit tests; it is not meaningfully reproducible
-    // through the in-process request pipeline harness (which seeds a static config per test
-    // and has no running file watcher). These tests are therefore ignored here.
+    // SecureConfigWatcher is a hosted service that watches the on-disk secure.config
+    // (path from WAREWOLF_SECURE_CONFIG) and, on change, triggers SecureConfigLoader.Reload()
+    // + IWorkflowAuthPolicyLoader.Reload() within a 500 ms debounce window. These tests drive
+    // the real watcher against a temp config file and assert the reload behaviour directly.
+    // [DoNotParallelize] — they mutate the WAREWOLF_SECURE_CONFIG env var + the process-wide
+    // SecureConfigLoader singleton.
     // ══════════════════════════════════════════════════════════════════════════════
 
     [TestClass]
@@ -757,22 +762,140 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
     [TestCategory("Auth_Middleware")]
     public class SecureConfigWatcherHotReloadTests
     {
-        /// <summary>
-        /// Writing a new config to the path watched by SecureConfigWatcher must trigger
-        /// SecureConfigLoader.Reload() + IWorkflowAuthPolicyLoader.Reload() within the
-        /// 500 ms debounce window. A subsequent request must reflect the new policy.
-        /// </summary>
-        [TestMethod]
-        [Ignore("SecureConfigWatcher hot-reload is covered by unit tests; not applicable to the in-process pipeline harness")]
-        public Task SecureConfigWatcher_FileChange_TriggersReload_PolicyReflected() => Task.CompletedTask;
+        private const string ConfigPathEnvVar = "WAREWOLF_SECURE_CONFIG";
 
         /// <summary>
-        /// Writing a second config change within the debounce window (500 ms) must produce
-        /// exactly one reload, not two. After the debounce the server must use the final
-        /// config written, not an intermediate state.
+        /// Editing the watched secure.config triggers SecureConfigLoader.Reload() +
+        /// IWorkflowAuthPolicyLoader.Reload() within the debounce window, and the policy
+        /// loader reflects the new permissions afterwards.
         /// </summary>
         [TestMethod]
-        [Ignore("SecureConfigWatcher hot-reload is covered by unit tests; not applicable to the in-process pipeline harness")]
-        public Task SecureConfigWatcher_RapidDoubleWrite_ProducesSingleReload() => Task.CompletedTask;
+        public async Task SecureConfigWatcher_FileChange_TriggersReload_PolicyReflected()
+        {
+            var originalEnv = Environment.GetEnvironmentVariable(ConfigPathEnvVar);
+            var tempPath    = Path.Combine(Path.GetTempPath(), $"secwatch-{Guid.NewGuid():N}.config");
+            var secretKey   = SecureConfigBuilder.NewSecretKey();
+            SecureConfigWatcher? watcher = null;
+
+            try
+            {
+                // v1: "TeamA" has View only (no Execute) at server scope.
+                var v1 = SecureConfigBuilder.Build(secretKey,
+                    SecureConfigBuilder.Admin(View: true),
+                    SecureConfigBuilder.ServerPerm("TeamA", View: true, Execute: false));
+                File.WriteAllText(tempPath, SecureConfigBuilder.Encrypt(v1));
+                Environment.SetEnvironmentVariable(ConfigPathEnvVar, tempPath);
+                SecureConfigLoader.Reload();
+
+                var loader  = new WorkflowAuthPolicyLoader(NullLogger<WorkflowAuthPolicyLoader>.Instance);
+                watcher     = new SecureConfigWatcher(loader, NullLogger<SecureConfigWatcher>.Instance);
+                await watcher.StartAsync(CancellationToken.None); // file present → immediate load
+
+                var before = loader.GetEffectivePermissions("any-workflow", new[] { "TeamA" });
+                Assert.IsFalse(before.HasFlag(WorkflowPermission.Execute),
+                    $"Pre-reload: 'TeamA' must not yet have Execute. Got: {before}");
+
+                // v2: grant "TeamA" Execute and rewrite the watched file.
+                var v2 = SecureConfigBuilder.Build(secretKey,
+                    SecureConfigBuilder.Admin(View: true),
+                    SecureConfigBuilder.ServerPerm("TeamA", View: true, Execute: true));
+                File.WriteAllText(tempPath, SecureConfigBuilder.Encrypt(v2));
+
+                // The watcher must hot-reload (file-event + 500 ms debounce) so the policy
+                // loader now reports Execute for "TeamA".
+                var reflected = await WaitUntilAsync(
+                    () => loader.GetEffectivePermissions("any-workflow", new[] { "TeamA" })
+                                .HasFlag(WorkflowPermission.Execute),
+                    TimeSpan.FromSeconds(5));
+
+                Assert.IsTrue(reflected,
+                    "After editing secure.config, the watcher should hot-reload and the policy loader " +
+                    "should reflect 'TeamA's new Execute permission.");
+            }
+            finally
+            {
+                if (watcher is not null) await watcher.StopAsync(CancellationToken.None);
+                Environment.SetEnvironmentVariable(ConfigPathEnvVar, originalEnv);
+                try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { /* best effort */ }
+                SecureConfigLoader.Reload();
+            }
+        }
+
+        /// <summary>
+        /// Two rapid writes within the 500 ms debounce window coalesce into exactly one reload
+        /// (the debounce timer is reset by each file event and fires once after the quiet period).
+        /// </summary>
+        [TestMethod]
+        public async Task SecureConfigWatcher_RapidDoubleWrite_ProducesSingleReload()
+        {
+            var originalEnv = Environment.GetEnvironmentVariable(ConfigPathEnvVar);
+            var tempPath    = Path.Combine(Path.GetTempPath(), $"secwatch-{Guid.NewGuid():N}.config");
+            var secretKey   = SecureConfigBuilder.NewSecretKey();
+            SecureConfigWatcher? watcher = null;
+
+            try
+            {
+                var cfg = SecureConfigBuilder.Build(secretKey, SecureConfigBuilder.Admin(View: true));
+                File.WriteAllText(tempPath, SecureConfigBuilder.Encrypt(cfg));
+                Environment.SetEnvironmentVariable(ConfigPathEnvVar, tempPath);
+                SecureConfigLoader.Reload();
+
+                // A counting policy loader records how many times Reload() fires.
+                var counter = new CountingPolicyLoader();
+                watcher     = new SecureConfigWatcher(counter, NullLogger<SecureConfigWatcher>.Instance);
+                await watcher.StartAsync(CancellationToken.None); // file present → one immediate reload
+
+                var baseline = counter.ReloadCount;
+
+                // Two writes well within the 500 ms debounce window.
+                File.WriteAllText(tempPath, SecureConfigBuilder.Encrypt(cfg));
+                await Task.Delay(50);
+                File.WriteAllText(tempPath, SecureConfigBuilder.Encrypt(cfg));
+
+                // Wait past the debounce window (+ margin) for the coalesced reload to fire.
+                await Task.Delay(1200);
+
+                var delta = counter.ReloadCount - baseline;
+                Assert.AreEqual(1, delta,
+                    "Two rapid writes within the debounce window must coalesce into exactly one reload. " +
+                    $"Got {delta} (baseline {baseline}, total {counter.ReloadCount}).");
+            }
+            finally
+            {
+                if (watcher is not null) await watcher.StopAsync(CancellationToken.None);
+                Environment.SetEnvironmentVariable(ConfigPathEnvVar, originalEnv);
+                try { if (File.Exists(tempPath)) File.Delete(tempPath); } catch { /* best effort */ }
+                SecureConfigLoader.Reload();
+            }
+        }
+
+        private static async Task<bool> WaitUntilAsync(Func<bool> condition, TimeSpan timeout)
+        {
+            var deadline = DateTime.UtcNow + timeout;
+            while (DateTime.UtcNow < deadline)
+            {
+                if (condition()) return true;
+                await Task.Delay(100);
+            }
+            return condition();
+        }
+
+        /// <summary>
+        /// Minimal <see cref="IWorkflowAuthPolicyLoader"/> that counts Reload() calls — the only
+        /// member SecureConfigWatcher invokes. Other members return inert defaults.
+        /// </summary>
+        private sealed class CountingPolicyLoader : IWorkflowAuthPolicyLoader
+        {
+            private int _reloadCount;
+            public int ReloadCount => _reloadCount;
+
+            public void Reload() => Interlocked.Increment(ref _reloadCount);
+
+            public PolicyLookupResult GetPolicy(string workflowName) => PolicyLookupResult.FromPolicy(null);
+            public WorkflowPermission GetEffectivePermissions(string workflowName, IEnumerable<string> callerRoles)
+                => WorkflowPermission.None;
+            public int PolicyCount => 0;
+            public bool IsConfigEffective => false;
+        }
     }
 }
