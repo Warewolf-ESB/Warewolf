@@ -80,7 +80,7 @@ namespace Warewolf.Execution.Lightweight.Logging
                     subscriptionId  = subscription?.SubscriptionId ?? string.Empty,
                     planId          = subscription?.PlanId ?? string.Empty,
                     status          = subscription?.Status.ToString() ?? string.Empty,
-                    source          = "WolfClaw",       // identifies the lightweight engine in the UsageData row
+                    source          = "LightweightExecution",       // identifies the lightweight engine in the UsageData row
                     machineName     = Environment.MachineName
                 });
 

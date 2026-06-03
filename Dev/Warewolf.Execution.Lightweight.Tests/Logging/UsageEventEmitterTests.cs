@@ -56,7 +56,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
             Assert.AreEqual(42L,                                            (long)payload["durationMs"]);
             Assert.AreEqual(true,                                           (bool)payload["isSuccess"]);
             Assert.AreEqual(0,                                              (int)payload["errorCount"]);
-            Assert.AreEqual("WolfClaw",                                    (string)payload["source"]);
+            Assert.AreEqual("LightweightExecution",                        (string)payload["source"]);
             Assert.AreEqual("sub-456",                                     (string)payload["subscriptionId"]);
             Assert.AreEqual("developer",                                   (string)payload["planId"]);
             Assert.AreEqual("Active",                                      (string)payload["status"]);
