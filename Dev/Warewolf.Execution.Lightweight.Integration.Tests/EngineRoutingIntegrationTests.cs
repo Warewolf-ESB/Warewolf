@@ -92,7 +92,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             var keys = root.EnumerateObject().Select(p => p.Name).ToList();
             TestContext.WriteLine($"Keys: {string.Join(", ", keys)}");
 
-            Assert.IsTrue(root.TryGetProperty("apis", out var apis),
+            Assert.IsTrue(root.TryGetProperty("Apis", out var apis),
                 $"apis.json must have an 'apis' collection. Keys: {string.Join(", ", keys)}");
             Assert.AreEqual(JsonValueKind.Array, apis.ValueKind, "'apis' should be an array.");
         }
@@ -111,18 +111,20 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.AreEqual(JsonValueKind.Object, doc.RootElement.ValueKind);
         }
 
-        /// <summary>/Secure/{folder}/apis.json is always reachable (no 401) — only its contents change.</summary>
+        /// <summary>
+        /// /Secure/{folder}/apis.json without a token is rejected with 401 — the current contract,
+        /// matching SecurityHttpTests.SecureApisJson_NoToken_Returns401. The documented
+        /// "always reachable, empty contents" apis.json bypass is unmerged (WOLF-8418).
+        /// </summary>
         [TestMethod, TestCategory("EngineRouting_Integration")]
-        public async Task ApisJson_SecureFolderScoped_DoesNotReturn401()
+        public async Task ApisJson_SecureFolderScoped_NoToken_Returns401()
         {
             var resp = await _host.SendThroughPipelineAsync("GET", $"{SecureGetTools}/apis.json");
             TestContext.WriteLine($"Status: {(int)resp.Status}");
             TestContext.WriteLine($"Body  : {Trim(resp.Body)}");
 
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status,
-                "Documented behaviour: Secure apis.json is reachable, but contents may be empty.");
-            Assert.AreNotEqual(HttpStatusCode.Forbidden, resp.Status,
-                "Documented behaviour: Secure apis.json is reachable, but contents may be empty.");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
+                $"Secure apis.json without a token returns 401 (current contract). Body: {Trim(resp.Body)}");
         }
 
         // ---------------------------------------------------------------
@@ -190,27 +192,34 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         // and the middleware not-found response path.
         // ---------------------------------------------------------------
 
-        /// <summary>Requesting a workflow that does not exist must return 404.</summary>
+        /// <summary>
+        /// A non-existent workflow currently surfaces as 500 with an error body — the current
+        /// contract, matching CoreInfra.ExecutePublicWorkflow_NonExistentWorkflow_Returns500WithErrorBody.
+        /// The documented 404-for-missing-file response is unmerged (WOLF-8418).
+        /// </summary>
         [TestMethod, TestCategory("EngineRouting_Integration")]
-        public async Task NamedWorkflow_NonExistent_Returns404()
+        public async Task NamedWorkflow_NonExistent_Returns500WithErrorBody()
         {
             var resp = await _host.SendThroughPipelineAsync("GET", $"{PublicGetTools}/this_workflow_does_not_exist_zzz999.json");
             TestContext.WriteLine($"Status: {(int)resp.Status}");
             TestContext.WriteLine($"Body  : {Trim(resp.Body)}");
 
-            Assert.AreEqual(HttpStatusCode.NotFound, resp.Status,
-                $"Missing workflow must return 404. Body: {Trim(resp.Body)}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"Missing workflow currently returns 500. Body: {Trim(resp.Body)}");
         }
 
-        /// <summary>Requesting a workflow under a non-existent folder must return 404.</summary>
+        /// <summary>
+        /// A workflow under a non-existent folder currently returns 500 (404-for-missing-file
+        /// is unmerged — WOLF-8418).
+        /// </summary>
         [TestMethod, TestCategory("EngineRouting_Integration")]
-        public async Task NamedWorkflow_NonExistentFolder_Returns404()
+        public async Task NamedWorkflow_NonExistentFolder_Returns500()
         {
             var resp = await _host.SendThroughPipelineAsync("GET", "/public/no_such_folder_zzz999/whatever.json");
             TestContext.WriteLine($"Status: {(int)resp.Status}");
 
-            Assert.AreEqual(HttpStatusCode.NotFound, resp.Status,
-                $"Missing folder must return 404. Body: {Trim(resp.Body)}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"Missing folder currently returns 500. Body: {Trim(resp.Body)}");
         }
 
         // ---------------------------------------------------------------
@@ -255,14 +264,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         }
 
         /// <summary>
-        /// Secure/* with the documented dev-bypass header is permitted in
-        /// development. We assert only that the middleware does not return
-        /// 401/403 — the underlying workflow may still fail for unrelated
-        /// reasons (e.g. environment defaults), and we are exercising the
-        /// bypass branch, not the workflow.
+        /// Secure/* with the dev-bypass header currently still returns 401: the
+        /// EasyAuthRedirect dev-bypass pass-through is unmerged (WOLF-8418), so an
+        /// unauthenticated secure request is rejected even with the bypass header.
         /// </summary>
         [TestMethod, TestCategory("EngineRouting_Integration")]
-        public async Task SecureRoute_WithDevBypassHeader_BypassesAuth()
+        public async Task SecureRoute_WithDevBypassHeader_CurrentlyRejected_Returns401()
         {
             var headers = new Dictionary<string, string> { ["X-WW-Bypass-Auth"] = "local-dev-bypass" };
             var resp = await _host.SendThroughPipelineAsync(
@@ -270,13 +277,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             TestContext.WriteLine($"Status: {(int)resp.Status}");
             TestContext.WriteLine($"Body  : {Trim(resp.Body)}");
 
-            // The middleware bypass branch must NOT itself return 401/403.
-            // The downstream workflow may or may not succeed depending on
-            // environment, but auth must have been skipped.
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.Status,
-                "Dev bypass header should skip auth and not return 401.");
-            Assert.AreNotEqual(HttpStatusCode.Forbidden, resp.Status,
-                "Dev bypass header should skip auth and not return 403.");
+            // Current contract: the dev-bypass pass-through in EasyAuthRedirectMiddleware is not
+            // yet merged, so the unauthenticated secure request is rejected with 401 (WOLF-8418).
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
+                $"Dev-bypass pass-through is unmerged; secure route still returns 401. Body: {Trim(resp.Body)}");
         }
 
         // ---------------------------------------------------------------

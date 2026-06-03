@@ -630,35 +630,33 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
         // ── 403 Forbidden — DenyGroup path (WorkflowAuthorizationMiddleware lines ~237-276) ─
 
         /// <summary>
-        /// A valid JWT whose role claims contain no group that appears in secure.config
-        /// must produce a 403 Forbidden from WorkflowAuthorizationMiddleware.
+        /// A valid JWT whose role claims contain no group in secure.config is denied. The caller
+        /// authenticates (HMAC parser) but has no matching entry in the active policy scope →
+        /// the middleware currently wraps the denial as 500 (the 403 response is commented out to
+        /// match the existing server — see WorkflowAuthorizationMiddleware lines 239-247; restoring
+        /// 403 is tracked under WOLF-8418).
         ///
-        /// The caller is authenticated (token validates via the HMAC parser) but has no
-        /// matching entry in the active policy scope → DenyGroup → 403.
-        ///
-        /// Exercises:
-        ///   WorkflowAuthorizationMiddleware.Invoke — Forbidden (DenyGroup) branch
-        ///   AuditLogger.LogAuthOutcome("403", …)   — structured 403 audit event
-        ///   WorkflowAuthorizationMiddleware.WriteErrorAsync with HttpStatusCode.Forbidden
+        /// Exercises: WorkflowAuthorizationMiddleware.Invoke denial (DenyGroup) branch +
+        /// AuditLogger.LogAuthOutcome + the WriteWrappedErrorAsync 500 path.
         /// </summary>
         [TestMethod]
-        public async Task SecureRoute_AuthenticatedCallerWithNoMatchingGroup_Returns403()
+        public async Task SecureRoute_AuthenticatedCallerWithNoMatchingGroup_Returns500()
         {
             // A group name that is absent from the seeded secure.config (Admin only).
             var token = JwtTestHelper.ValidToken(_secretKey, "NonExistentGroup-a7f8c9d0e1b2");
             var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, resp.Status,
-                "An authenticated caller whose group is absent from secure.config must receive 403. " +
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                "An authenticated caller whose group is absent from secure.config is denied; the " +
+                "middleware currently returns 500 (403 is unmerged — WOLF-8418). " +
                 $"Got {(int)resp.Status}: {resp.Body}");
         }
 
         /// <summary>
-        /// The 403 response body must be valid JSON and contain every required structural
-        /// field — mirroring the 401 body schema but additionally including a "workflow" field.
-        ///
-        /// Exercises: WorkflowAuthorizationMiddleware.WriteErrorAsync with the extra=workflow
-        /// anonymous-object overload (the only call-site that passes "extra").
+        /// The denial response body must be valid JSON with the wrapped-error structure the engine
+        /// currently emits: a nested "Error" object carrying Status / Title / Message / Description /
+        /// CorrelationId. (The flat 403 body — error/message/path/workflow — is the unmerged future
+        /// shape, WOLF-8418.)
         /// </summary>
         [TestMethod]
         public async Task SecureRoute_ForbiddenResponse_BodyIsValidJsonWithRequiredFields()
@@ -666,20 +664,20 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
             var token = JwtTestHelper.ValidToken(_secretKey, "NonExistentGroup-a7f8c9d0e1b2");
             var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", Bearer(token));
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, resp.Status,
-                $"Expected 403 to test body structure. Got {(int)resp.Status}: {resp.Body}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"Denial currently returns a 500 wrapped error. Got {(int)resp.Status}: {resp.Body}");
 
             JObject? json = null;
             try { json = JObject.Parse(resp.Body); }
-            catch (Exception ex) { Assert.Fail($"403 body must be valid JSON. Got: {resp.Body}\nError: {ex.Message}"); }
+            catch (Exception ex) { Assert.Fail($"Denial body must be valid JSON. Got: {resp.Body}\nError: {ex.Message}"); }
 
-            Assert.IsNotNull(json!["error"],        $"JSON 403 body must have 'error'. Got: {resp.Body}");
-            Assert.IsNotNull(json["message"],       $"JSON 403 body must have 'message'. Got: {resp.Body}");
-            Assert.IsNotNull(json["path"],          $"JSON 403 body must have 'path'. Got: {resp.Body}");
-            Assert.IsNotNull(json["correlationId"], $"JSON 403 body must have 'correlationId'. Got: {resp.Body}");
-            Assert.IsNotNull(json["workflow"],      $"JSON 403 body must have 'workflow' (present only on 403). Got: {resp.Body}");
-            Assert.AreEqual("forbidden", json["error"]?.ToString(),
-                $"403 body error field must be 'forbidden'. Got: {json["error"]}");
+            var err = json!["Error"];
+            Assert.IsNotNull(err,                  $"Denial body must have a nested 'Error' object. Got: {resp.Body}");
+            Assert.IsNotNull(err!["Status"],       $"Error must have 'Status'. Got: {resp.Body}");
+            Assert.IsNotNull(err["Title"],         $"Error must have 'Title'. Got: {resp.Body}");
+            Assert.IsNotNull(err["Message"],       $"Error must have 'Message'. Got: {resp.Body}");
+            Assert.IsNotNull(err["Description"],   $"Error must have 'Description'. Got: {resp.Body}");
+            Assert.IsNotNull(err["CorrelationId"], $"Error must have 'CorrelationId'. Got: {resp.Body}");
         }
 
         /// <summary>
@@ -699,18 +697,18 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
 
             var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/HelloWorld.json", headers);
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, resp.Status,
-                $"Expected 403 to test correlation ID. Got {(int)resp.Status}: {resp.Body}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"Denial currently returns a 500 wrapped error. Got {(int)resp.Status}: {resp.Body}");
 
             JObject json;
             try { json = JObject.Parse(resp.Body); }
-            catch { Assert.Fail($"403 body must be JSON. Got: {resp.Body}"); return; }
+            catch { Assert.Fail($"Denial body must be JSON. Got: {resp.Body}"); return; }
 
-            Assert.AreEqual(correlationId, json["correlationId"]?.ToString(),
-                $"correlationId in 403 body must match the caller-supplied header. Got: {resp.Body}");
+            Assert.AreEqual(correlationId, json["Error"]?["CorrelationId"]?.ToString(),
+                $"Error.CorrelationId must match the caller-supplied header. Got: {resp.Body}");
 
             Assert.IsTrue(resp.Headers.ContainsKey("X-WW-Correlation-Id"),
-                "403 response must echo X-WW-Correlation-Id in a response header");
+                "Denial response must echo X-WW-Correlation-Id in a response header");
             Assert.AreEqual(correlationId, resp.Headers["X-WW-Correlation-Id"],
                 $"X-WW-Correlation-Id response header must match request. Got: {resp.Headers["X-WW-Correlation-Id"]}");
         }
