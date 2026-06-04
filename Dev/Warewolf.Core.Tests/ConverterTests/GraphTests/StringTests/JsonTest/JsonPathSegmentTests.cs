@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 
 
@@ -112,5 +114,27 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         }
 
         #endregion CreatePathSegment Tests
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void JsonPathSegment_As_SameType_ReturnsSelf()
+        {
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment("Name");
+
+            var same = segment.As<JsonPathSegment>();
+
+            Assert.AreSame(segment, same);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void JsonPathSegment_As_DifferentType_ThrowsNotImplemented()
+        {
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment("Name");
+
+            Assert.ThrowsException<NotImplementedException>(() => segment.As<PocoPathSegment>());
+        }
     }
 }

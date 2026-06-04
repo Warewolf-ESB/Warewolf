@@ -1,0 +1,9 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+6,T2-small,0,0,7,7,21,"Warewolf.AI.Harness","Warewolf.AI.Harness.AnthropicProvider"
+6,T2-small,0,0,7,7,21,"Warewolf.AI.Harness","Warewolf.AI.Harness.GeminiProvider"
+6,T2-small,0,0,7,7,21,"Warewolf.AI.Harness","Warewolf.AI.Harness.OpenAIProvider"
+6,T2-small,0,0,7,7,21,"Warewolf.AI.Harness","Warewolf.AI.Harness.OpenRouterProvider"
+8,T2-small,0,0,10,10,637,"Warewolf.AI.Harness","Warewolf.AI.Harness.TokenEstimate"
+12,T2-small,0,0,15,15,621,"Warewolf.AI.Harness","Warewolf.AI.Harness.TokenEstimator"
+36,T3-medium,0,0,44,44,708,"Warewolf.AI.Harness","Warewolf.AI.Harness.LlmTelemetry"
+286,T4-large,0,0,357,357,591,"Warewolf.AI.Harness","Warewolf.AI.Harness.ChatbotApiService"

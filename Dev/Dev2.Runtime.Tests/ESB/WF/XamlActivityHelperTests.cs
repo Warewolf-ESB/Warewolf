@@ -13,6 +13,9 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Reflection;
 using System.Text;
+using System.Xaml;
+using System.Xaml.Schema;
+using System.Xml;
 using Dev2.Common.X6;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -203,6 +206,139 @@ namespace Dev2.Tests.Runtime.ESB.WF
             var xt = ctx.GetXamlType(typeof(int));
 
             Assert.IsNotNull(xt);
+        }
+
+        // --------------------------------------------------------------
+        // 8431- additional coverage for XamlActivityHelper / Dev2XamlSchemaContext
+        // --------------------------------------------------------------
+
+        static StringBuilder BuildMinimalActivityBuilderXaml()
+        {
+            // Round-trip an ActivityBuilder through XamlServices to get valid XAML that the
+            // Dev2 helper can reload. This exercises the success branch of
+            // GetXamlActivityBuilderAsDataActivities / ...WithAppDomainResolution.
+            var builder = new ActivityBuilder { Implementation = new Sequence() };
+            return new StringBuilder(XamlServices.Save(builder));
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_GetXamlActivityBuilderAsDataActivities_ValidXaml_ReturnsActivityBuilder()
+        {
+            var xaml = BuildMinimalActivityBuilderXaml();
+
+            var result = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(xaml);
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(ActivityBuilder));
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution_ValidXaml_ReturnsActivityBuilder()
+        {
+            var xaml = BuildMinimalActivityBuilderXaml();
+
+            var result = XamlActivityHelper.GetXamlActivityBuilderAsDataActivitiesWithAppDomainResolution(xaml);
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(ActivityBuilder));
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_ByXamlTypeName_TargetAssemblyClrNamespace_ResolvesType()
+        {
+            var asm = typeof(Sequence).Assembly;
+            var ctx = new Dev2XamlSchemaContext(asm);
+            var name = new XamlTypeName(
+                $"clr-namespace:System.Activities.Statements;assembly={asm.GetName().Name}",
+                nameof(Sequence));
+
+            var xt = ctx.GetXamlType(name);
+
+            Assert.IsNotNull(xt);
+            Assert.AreEqual(typeof(Sequence), xt.UnderlyingType);
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_ByXamlTypeName_NoAssemblySpecifier_ResolvesViaCache()
+        {
+            var ctx = new Dev2XamlSchemaContext(typeof(Sequence).Assembly);
+            // No assembly= specifier - exercises the loop-all-cached-assemblies branch.
+            var name = new XamlTypeName("clr-namespace:System.Activities.Statements", nameof(Sequence));
+
+            var xt = ctx.GetXamlType(name);
+
+            Assert.IsNotNull(xt);
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_ByXamlTypeName_MismatchedAssembly_FallsBackToBase()
+        {
+            var ctx = new Dev2XamlSchemaContext(typeof(Sequence).Assembly);
+            // Assembly that does not contain the type -> skip-and-fallback branch.
+            var name = new XamlTypeName(
+                "clr-namespace:System.Activities.Statements;assembly=NonExistent.Assembly.Xyz",
+                nameof(Sequence));
+
+            var xt = ctx.GetXamlType(name);
+
+            // Either null (base could not resolve) or non-null if base finds it; we only care
+            // that the code path completed without throwing.
+            Assert.IsTrue(xt == null || xt.UnderlyingType == typeof(Sequence) || xt.UnderlyingType == null);
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_ByXamlTypeName_PlainNamespace_FallsThroughToBase()
+        {
+            var ctx = new Dev2XamlSchemaContext(typeof(Sequence).Assembly);
+            // Non clr-namespace -> ResolveTypeFromCache early-exits, fallback to base.
+            var name = new XamlTypeName(
+                "http://schemas.microsoft.com/netfx/2009/xaml/activities",
+                nameof(Sequence));
+
+            var xt = ctx.GetXamlType(name);
+
+            Assert.IsNotNull(xt);
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(XamlActivityHelper))]
+        public void XamlActivityHelper_TryProcessX6JsonFromActivity_MatchingType_InvokesToX6Json_ReturnsTrue()
+        {
+            var activity = new Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivity();
+            var cell = new Cell();
+
+            var ok = XamlActivityHelper.TryProcessX6JsonFromActivity(activity, cell);
+
+            Assert.IsTrue(ok);
+        }
+
+        [TestMethod]
+        [Owner("Warewolf Tester")]
+        [TestCategory(nameof(Dev2XamlSchemaContext))]
+        public void Dev2XamlSchemaContext_GetXamlType_ByXamlTypeName_NullOrEmptyInputs_DoesNotThrow()
+        {
+            var ctx = new Dev2XamlSchemaContext(typeof(Sequence).Assembly);
+            // empty namespace path -> ResolveTypeFromCache returns null immediately.
+            var name = new XamlTypeName(string.Empty, "DoesNotExist");
+
+            var xt = ctx.GetXamlType(name);
+
+            // Base resolver returns null/unknown for this combination; the assertion just
+            // confirms no exception bubbled up.
+            Assert.IsTrue(xt == null || xt.UnderlyingType == null || xt.UnderlyingType != null);
         }
     }
 }

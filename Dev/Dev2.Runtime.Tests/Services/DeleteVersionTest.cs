@@ -143,6 +143,68 @@ namespace Dev2.Tests.Runtime.Services
             serializer.Deserialize<ExecuteMessage>(ax);
             server.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""));
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_ValidResourceId_ShouldReturnParsedGuid()
+        {
+            //------------Setup for test--------------------------
+            var deleteVersion = new DeleteVersion();
+            var expected = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            var resId = deleteVersion.GetResourceID(new Dictionary<string, StringBuilder> { { "resourceId", new StringBuilder(expected.ToString()) } });
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, resId);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DeleteVersion_Execute")]
+        public void DeleteVersion_Execute_WithResourcePath_ExpectPathPassedToServer()
+        {
+            //------------Setup for test--------------------------
+            var deleteVersion = new DeleteVersion();
+            var ws = new Mock<IWorkspace>();
+            var server = new Mock<IServerVersionRepository>();
+            var res = Guid.NewGuid();
+            deleteVersion.ServerVersionRepo = server.Object;
+
+            //------------Execute Test---------------------------
+            deleteVersion.Execute(new Dictionary<string, StringBuilder>
+            {
+                { "resourceId", new StringBuilder(res.ToString()) },
+                { "versionNumber", new StringBuilder("2") },
+                { "resourcePath", new StringBuilder("a\\b\\c") }
+            }, ws.Object);
+
+            //------------Assert Results-------------------------
+            server.Verify(a => a.DeleteVersion(res, "2", "a\\b\\c"));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DeleteVersion_Execute")]
+        public void DeleteVersion_Execute_InvalidGuid_ExpectErrorFromCatch()
+        {
+            //------------Setup for test--------------------------
+            var deleteVersion = new DeleteVersion();
+            var serializer = new Dev2JsonSerializer();
+            var ws = new Mock<IWorkspace>();
+
+            //------------Execute Test---------------------------
+            var ax = deleteVersion.Execute(new Dictionary<string, StringBuilder>
+            {
+                { "resourceId", new StringBuilder("not-a-guid") },
+                { "versionNumber", new StringBuilder("1") }
+            }, ws.Object);
+
+            //------------Assert Results-------------------------
+            var des = serializer.Deserialize<ExecuteMessage>(ax);
+            Assert.IsTrue(des.HasError);
+        }
     }
-    
+
 }

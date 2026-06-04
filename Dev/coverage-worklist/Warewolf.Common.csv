@@ -1,0 +1,10 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+1,T1-trivial,78.1,43,12,55,102,"Warewolf.Common","Warewolf.OS.WorkerMonitor"
+2,T1-trivial,73.6,14,5,19,37,"Warewolf.Common","Warewolf.Licensing.SubscriptionData"
+2,T1-trivial,50,3,3,6,76,"Warewolf.Common","Warewolf.OS.ProcessWrapperFactory"
+3,T1-trivial,68,17,8,25,64,"Warewolf.Common","Warewolf.OS.ProcessWrapper"
+3,T1-trivial,0,0,3,3,21,"Warewolf.Common","Warewolf.ExitHelper"
+3,T1-trivial,0,0,3,3,21,"Warewolf.Common","Warewolf.PauseHelper"
+6,T2-small,74.5,79,27,106,168,"Warewolf.Common","Warewolf.OS.ProcessMonitor"
+10,T2-small,31.5,6,13,19,53,"Warewolf.Common","Warewolf.HttpClientWrapper"
+11,T2-small,0,0,13,13,43,"Warewolf.Common","Warewolf.Common.ConsoleWindow"

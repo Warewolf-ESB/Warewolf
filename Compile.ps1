@@ -22,7 +22,11 @@ Param(
   # Target RID for dotnet publish of test solutions.
   # Accepted values: linux-x64, win-x64.
   # Defaults to win-x64 on Windows hosts and linux-x64 on Linux/macOS hosts.
-  [string]$Runtime=""
+  [string]$Runtime="",
+  # Bypass switches for the pre-compile security gates. Use sparingly; both emit a
+  # loud warning to the log so an audit trail shows the build was knowingly relaxed.
+  [switch]$SkipVulnerabilityCheck,
+  [switch]$SkipEosCheck
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
 					  "Dev\UITesting.sln",
@@ -43,6 +47,27 @@ if ($Target -ne "") {
 if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
+
+# =====================================================================
+# Pre-compile security gates
+# =====================================================================
+# Delegate to Dev\.azure\Run-SecurityGates.ps1 for three fail-fast checks:
+#   1. NuGet vulnerability scan via 'dotnet list package --vulnerable'
+#      (Critical/High) against the lightweight server closure.
+#   2. NuGet vulnerability scan via NuGetAudit during restore (NU1903/NU1904).
+#   3. .NET runtime end-of-support window (< 90 days from EOS = fail).
+# Both vuln gates can be bypassed via -SkipVulnerabilityCheck and the EOS gate
+# via -SkipEosCheck. The runner is a standalone script so the gates can also
+# be invoked directly (e.g. for ad-hoc local checks) without doing a full compile.
+& "$PSScriptRoot\Dev\.azure\Run-SecurityGates.ps1" `
+    -RepoRoot $PSScriptRoot `
+    -SkipVulnerabilityCheck:$SkipVulnerabilityCheck `
+    -SkipEosCheck:$SkipEosCheck
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Build blocked by security gate. See output above." -ForegroundColor Red
+    exit $LASTEXITCODE
+}
+
 #Find Local NuGet
 if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 	$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue

@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             cell.data[Constants.TYPE] = Constants.DSFWORKFLOWACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_WORKFLOW;
             cell.data[Constants.UNIQUEID] = UniqueID;
-            cell.data[Constants.WORKFLOW_RESOURCEID] = ResourceID.Expression.ToString();
+            cell.data[Constants.WORKFLOW_RESOURCEID] = ResourceID?.Expression?.ToString() ?? string.Empty;
             cell.data[Constants.WORKFLOW_SERVICENAME] = ServiceName;
             cell.data[Constants.WORKFLOW_SERVICESERVER] = ServiceServer;
             cell.data[Constants.WORKFLOW_SOURCEID] = SourceId;

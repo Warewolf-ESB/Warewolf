@@ -1,0 +1,4 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+4,T1-trivial,0,0,5,5,70,"Warewolf.Driver.Redis","Warewolf.Driver.Redis.RedisCacheImpl"
+18,T2-small,0,0,22,22,86,"Warewolf.Driver.Redis","Warewolf.Driver.Redis.RedisCache"
+19,T2-small,0,0,23,23,46,"Warewolf.Driver.Redis","Warewolf.Driver.Redis.RedisConnection"

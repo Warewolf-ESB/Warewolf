@@ -112,8 +112,10 @@
     <Compile Include="Wrappers\TimerWrapperTests.cs" />
     <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <Compile Include="Wrappers\FilePathWrapperTests.cs" />
+    <Compile Include="Wrappers\WrapperFactoriesTests.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
+    <Compile Include="MapperBranchCoverageTests.cs" />
     <Compile Include="DistinctByTests.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
@@ -199,15 +201,15 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="coverlet.collector" Version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
-    <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
+    <PackageReference Include="System.Security.Permissions" Version="9.0.1" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -36,9 +36,17 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
     // identically to the cloud environment.
     private readonly bool _isDevelopment;
 
+    // True when DEBUG_PRINCIPAL_TOKEN is configured. Only then does the development
+    // bypass make sense — otherwise there is no principal to inject and the request
+    // must be treated as unauthenticated (401/302) exactly as in production. This
+    // matters for integration tests which run `func start` (defaults to Development)
+    // but deliberately omit DEBUG_PRINCIPAL_TOKEN to exercise the real auth path.
+    private readonly bool _hasDebugPrincipalToken;
+
     public EasyAuthRedirectMiddleware(HostEnvironmentConfig config)
     {
-        _isDevelopment = config.IsDevelopment;
+        _isDevelopment          = config.IsDevelopment;
+        _hasDebugPrincipalToken = !string.IsNullOrWhiteSpace(config.DebugPrincipalToken);
     }
 
     /// <inheritdoc/>
@@ -100,11 +108,13 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
         Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Path={path}, HasPrincipalHeader={hasPrincipalHeader}, HasAuthHeader={hasAuthHeader}, IsBrowser={isBrowser}, IsDevelopment={_isDevelopment}", executionId);
 
-        // In development there is no EasyAuth platform — pass every request through
-        // so DebugPrincipalParser can inject the principal from DEBUG_PRINCIPAL_TOKEN.
-        if (_isDevelopment && !hasPrincipalHeader && !hasAuthHeader)
+        // In development with DEBUG_PRINCIPAL_TOKEN configured there is no EasyAuth
+        // platform — pass every request through so DebugPrincipalParser can inject
+        // the principal from the env var. Without a debug token there is nothing to
+        // inject, so enforce the normal 401/302 behaviour.
+        if (_isDevelopment && _hasDebugPrincipalToken && !hasPrincipalHeader && !hasAuthHeader)
         {
-            Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Development environment, no auth headers on {path} — delegating to DebugPrincipalParser", executionId);
+            Dev2Logger.Debug($"EasyAuthRedirectMiddleware: Development environment with DEBUG_PRINCIPAL_TOKEN, no auth headers on {path} — delegating to DebugPrincipalParser", executionId);
             await next(context);
             return;
         }
