@@ -1,0 +1,5 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+5,T1-trivial,0,0,6,6,27,"Warewolf.Common.NetStandard20","Warewolf.Common.NetStandard20.WebClientFactory"
+13,T2-small,48.7,20,21,41,86,"Warewolf.Common.NetStandard20","Warewolf.Common.NetStandard20.WebClientWrapper"
+24,T3-medium,18.4,7,31,38,98,"Warewolf.Common.NetStandard20","Warewolf.Common.NetStandard20.WebRequestWrapper"
+30,T3-medium,63.9,119,67,186,306,"Warewolf.Common.NetStandard20","Warewolf.Common.NetStandard20.HttpClientWrapperV2"

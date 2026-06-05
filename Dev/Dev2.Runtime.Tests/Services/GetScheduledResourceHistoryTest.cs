@@ -105,6 +105,38 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(0, output.Count);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Services_ScheduledResource_GetHistory")]
+        public void GetScheduledResourceHistory_Execute_NoResource_ReturnsEmptyHistory()
+        {
+            var esbMethod = new GetScheduledResourceHistory();
+            var serializer = new Dev2JsonSerializer();
+
+            var output = esbMethod.Execute(new Dictionary<string, StringBuilder>(), new Mock<IWorkspace>().Object);
+
+            var result = serializer.Deserialize<List<IResourceHistory>>(output);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Services_ScheduledResource_GetHistory")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetScheduledResourceHistory_Execute_WhenFactoryThrows_Rethrows()
+        {
+            var esbMethod = new GetScheduledResourceHistory();
+            var serializer = new Dev2JsonSerializer();
+            var res = new ScheduledResource("a", SchedulerStatus.Enabled, DateTime.Now, null, "dave", Guid.NewGuid().ToString());
+            var factory = new Mock<IServerSchedulerFactory>();
+            factory.Setup(a => a.CreateModel(It.IsAny<string>(), It.IsAny<ISecurityWrapper>()))
+                   .Throws(new InvalidOperationException("boom"));
+            esbMethod.SchedulerFactory = factory.Object;
+            esbMethod.SecurityWrapper = new Mock<ISecurityWrapper>().Object;
+
+            esbMethod.Execute(new Dictionary<string, StringBuilder> { { "Resource", serializer.SerializeToBuilder(res) } }, new Mock<IWorkspace>().Object);
+        }
+
         List<IResourceHistory> RunOutput(bool expectCorrectInput)
         {
             var esbMethod = new GetScheduledResourceHistory();

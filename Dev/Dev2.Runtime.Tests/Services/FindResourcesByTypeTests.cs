@@ -80,5 +80,51 @@ namespace Dev2.Tests.Runtime.Services
             var expectedString = serializer.Serialize(expected, Newtonsoft.Json.Formatting.None);
             Assert.AreEqual(expectedString, result.ToString());
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(FindResourcesByType))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void FindResourcesByType_Execute_MissingType_Throws()
+        {
+            var service = new FindResourcesByType(new Lazy<IResourceCatalog>(() => new Mock<IResourceCatalog>().Object));
+
+            service.Execute(new Dictionary<string, StringBuilder>(), null);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(FindResourcesByType))]
+        public void FindResourcesByType_Execute_NullResult_ReturnsEmptyStringBuilder()
+        {
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.FindByType(It.IsAny<string>())).Returns((object[])null);
+            var service = new FindResourcesByType(new Lazy<IResourceCatalog>(() => mockResourceCatalog.Object));
+            var values = new Dictionary<string, StringBuilder> { { "Type", new StringBuilder("SomeType") } };
+
+            var result = service.Execute(values, null);
+
+            Assert.AreEqual(string.Empty, result.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(FindResourcesByType))]
+        public void FindResourcesByType_HandlesType_ReturnsName()
+        {
+            Assert.AreEqual("FindResourcesByType", new FindResourcesByType().HandlesType());
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(FindResourcesByType))]
+        public void FindResourcesByType_CreateServiceEntry_NamedAfterHandlesType()
+        {
+            var service = new FindResourcesByType();
+
+            var entry = service.CreateServiceEntry();
+
+            Assert.AreEqual(service.HandlesType(), entry.Name);
+        }
     }
 }

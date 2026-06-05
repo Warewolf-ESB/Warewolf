@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Converters.Graph.DataTable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Poco;
@@ -508,6 +509,54 @@ namespace Dev2.Tests.ConverterTests.GraphTests
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        // The string interrogator returns a null navigator for path types it doesn't
+        // recognise (e.g. DataTablePath against a plain string), and DataBrowser
+        // surfaces that with a CouldntCreateNavigator exception. These three tests
+        // hit the error-throw branches in SelectScalar / SelectEnumerable /
+        // SelectEnumerablesAsRelated, and the empty-paths short-circuit in the latter.
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void DataBrowserFactory_SelectScalar_NullNavigator_Throws()
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+
+            Assert.ThrowsException<Exception>(() =>
+                dataBrowser.SelectScalar(new DataTablePath(), "plain text"));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void DataBrowserFactory_SelectEnumerable_NullNavigator_Throws()
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+
+            Assert.ThrowsException<Exception>(() =>
+                dataBrowser.SelectEnumerable(new DataTablePath(), "plain text"));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void DataBrowserFactory_SelectEnumerablesAsRelated_NullNavigator_Throws()
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = new List<IPath> { new DataTablePath() };
+
+            Assert.ThrowsException<Exception>(() =>
+                dataBrowser.SelectEnumerablesAsRelated(paths, "plain text"));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void DataBrowserFactory_SelectEnumerablesAsRelated_EmptyPaths_ReturnsEmptyDictionary()
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+
+            var result = dataBrowser.SelectEnumerablesAsRelated(new List<IPath>(), GivenPoco());
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
         }
     }
 }

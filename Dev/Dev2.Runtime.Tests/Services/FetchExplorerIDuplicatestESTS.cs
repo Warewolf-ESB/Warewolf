@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Explorer;
@@ -85,6 +87,25 @@ namespace Dev2.Tests.Runtime.Services
             FetchResourceDuplicates.Execute(new Dictionary<string, StringBuilder>(), ws.Object);
             //------------Assert Results-------------------------
             repo.Verify(a => a.LoadDuplicate());
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("FetchResourceDuplicates_HandlesType")]
+        public void FetchResourceDuplicates_Execute_WhenLoadThrows_ReturnsFailResult()
+        {
+            //------------Setup for test--------------------------
+            var fetchResourceDuplicates = new FetchResourceDuplicates();
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            repo.Setup(a => a.LoadDuplicate()).Throws(new InvalidOperationException("boom"));
+            fetchResourceDuplicates.ServerExplorerRepo = repo.Object;
+            var serializer = new Dev2.Communication.Dev2JsonSerializer();
+            //------------Execute Test---------------------------
+            var result = fetchResourceDuplicates.Execute(new Dictionary<string, StringBuilder>(), new Mock<IWorkspace>().Object);
+            //------------Assert Results-------------------------
+            var deserialized = serializer.Deserialize<ExplorerRepositoryResult>(result);
+            Assert.AreEqual(ExecStatus.Fail, deserialized.Status);
+            StringAssert.Contains(deserialized.Message, "boom");
         }
 
         [TestMethod]

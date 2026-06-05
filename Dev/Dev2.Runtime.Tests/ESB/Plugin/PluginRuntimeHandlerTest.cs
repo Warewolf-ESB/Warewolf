@@ -854,7 +854,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.IsNotNull(jObject);
             var hasValues = jObject.HasValues;
             Assert.IsTrue(hasValues);
-            Assert.AreEqual(21, jObject.Count);
+            // Oracle.ManagedDataAccess.Core 23.6.1 added the FetchSqlId property to OracleCommand,
+            // raising the writable-property count from 21 to 22.
+            Assert.AreEqual(22, jObject.Count);
         }
 
         [TestMethod]
@@ -874,10 +876,12 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.IsNotNull(jObject);
             var hasValues = jObject.HasValues;
             Assert.IsTrue(hasValues);
-            Assert.AreEqual(21, jObject.Count);
+            // Oracle.ManagedDataAccess.Core 23.6.1 added the FetchSqlId property to OracleCommand,
+            // raising the writable-property count from 21 to 22.
+            Assert.AreEqual(22, jObject.Count);
             //---------------Test Result -----------------------
             //const string str = "{\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"Connection\":\"\",\"DesignTimeVisible\":\"\",\"Transaction\":\"\",\"UpdatedRowSource\":\"\",\"Site\":\"\"}";
-            const string str = "{\"AddRowid\":\"\",\"AddToStatementCache\":\"\",\"ArrayBindCount\":\"\",\"BindByName\":\"\",\"UseEdmMapping\":\"\",\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"XmlCommandType\":\"\",\"XmlQueryProperties\":\"\",\"XmlSaveProperties\":\"\",\"Connection\":\"\",\"Transaction\":\"\",\"DesignTimeVisible\":\"\",\"FetchSize\":\"\",\"InitialLOBFetchSize\":\"\",\"InitialLONGFetchSize\":\"\",\"UpdatedRowSource\":\"\",\"Notification\":\"\",\"NotificationAutoEnlist\":\"\",\"Site\":\"\"}";
+            const string str = "{\"AddRowid\":\"\",\"AddToStatementCache\":\"\",\"ArrayBindCount\":\"\",\"BindByName\":\"\",\"FetchSqlId\":\"\",\"UseEdmMapping\":\"\",\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"XmlCommandType\":\"\",\"XmlQueryProperties\":\"\",\"XmlSaveProperties\":\"\",\"Connection\":\"\",\"Transaction\":\"\",\"DesignTimeVisible\":\"\",\"FetchSize\":\"\",\"InitialLOBFetchSize\":\"\",\"InitialLONGFetchSize\":\"\",\"UpdatedRowSource\":\"\",\"Notification\":\"\",\"NotificationAutoEnlist\":\"\",\"Site\":\"\"}";
             var s = jObject.ToString(Formatting.None);
             Assert.AreEqual(str, s);
         }

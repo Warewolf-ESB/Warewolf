@@ -1,0 +1,3 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+3,T1-trivial,0,0,3,3,31,"Warewolf.Common.Framework48","Warewolf.Common.ResourceCatalogProxyFactory"
+5,T1-trivial,72.3,47,18,65,113,"Warewolf.Common.Framework48","Warewolf.Security.JwtManager"

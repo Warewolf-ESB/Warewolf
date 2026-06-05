@@ -1,0 +1,2 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+283,T4-large,9,36,362,398,643,"Warewolf.Sharepoint","Warewolf.Sharepoint.SharepointHelper"

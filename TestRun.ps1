@@ -68,7 +68,8 @@ param(
     [String[]] $CoverageIncludeFiles = @(),
     [String]   $EngineSessionId = "",
     [String]   $EngineCoverageFile = "",
-    [Switch]   $Coverage,
+    [Switch]   $Coverage = $true,
+    [String]   $CoverageSettings = "",
     [Switch]   $STA,
     [Switch]   $Sequential,
     [String]   $PreTestRunScript,
@@ -206,6 +207,13 @@ $DockerContext  = Split-Path $DockerfileTest -Parent
 $CompileScript  = Join-Path $RepoRoot 'Compile.ps1'
 
 $RunId = Get-Date -Format 'yyyyMMddHHmmss'
+
+# Coverage is on by default; if the caller didn't specify -CoverageDir, drop
+# snapshots into <repo>\coverage so a bare `TestRun.ps1` invocation still
+# produces a cobertura artifact.
+if ($Coverage.IsPresent -and -not $CoverageDir) {
+    $CoverageDir = Join-Path $RepoRoot 'coverage'
+}
 
 # ============================================================================
 # Pipeline.yml parser (ported from Run-Coverage.ps1)
@@ -583,7 +591,36 @@ function Start-HostFTPSServer {
         $certB64 = [Convert]::ToBase64String(
             $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert),
             'InsertLineBreaks')
-        $keyB64  = [Convert]::ToBase64String($rsa.ExportPkcs8PrivateKey(), 'InsertLineBreaks')
+        $keyBytes = $null
+        $exportMethod = $rsa.GetType().GetMethod('ExportPkcs8PrivateKey', [Type]::EmptyTypes)
+        if ($exportMethod) {
+            $keyBytes = $exportMethod.Invoke($rsa, $null)
+        } else {
+            # .NET Framework (Windows PowerShell 5.1) lacks ExportPkcs8PrivateKey.
+            # Build the PKCS#8 PrivateKeyInfo envelope manually around PKCS#1.
+            $rsaParams = $rsa.ExportParameters($true)
+            function _AsnLen([int]$n) {
+                if ($n -lt 0x80) { return ,[byte]$n }
+                $bytes = [System.BitConverter]::GetBytes([uint32]$n)
+                if ([System.BitConverter]::IsLittleEndian) { [Array]::Reverse($bytes) }
+                $bytes = $bytes | Where-Object { $_ -ne 0 }
+                if (-not $bytes) { $bytes = ,[byte]0 }
+                return ,([byte](0x80 -bor $bytes.Length)) + $bytes
+            }
+            function _AsnInt([byte[]]$v) {
+                $b = ,[byte]0 + $v
+                if ($b.Length -gt 1 -and $b[1] -lt 0x80) { $b = $v }
+                return ,[byte]0x02 + (_AsnLen $b.Length) + $b
+            }
+            function _AsnSeq([byte[]]$body) { return ,[byte]0x30 + (_AsnLen $body.Length) + $body }
+            $pkcs1 = _AsnSeq ((_AsnInt @([byte]0)) + (_AsnInt $rsaParams.Modulus) + (_AsnInt $rsaParams.Exponent) +
+                (_AsnInt $rsaParams.D) + (_AsnInt $rsaParams.P) + (_AsnInt $rsaParams.Q) +
+                (_AsnInt $rsaParams.DP) + (_AsnInt $rsaParams.DQ) + (_AsnInt $rsaParams.InverseQ))
+            $algId = _AsnSeq (@([byte]0x06,0x09,0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,0x01) + @([byte]0x05,0x00))
+            $octet = ,[byte]0x04 + (_AsnLen $pkcs1.Length) + $pkcs1
+            $keyBytes = _AsnSeq ((_AsnInt @([byte]0)) + $algId + $octet)
+        }
+        $keyB64  = [Convert]::ToBase64String($keyBytes, 'InsertLineBreaks')
         "-----BEGIN CERTIFICATE-----`n$certB64`n-----END CERTIFICATE-----`n-----BEGIN PRIVATE KEY-----`n$keyB64`n-----END PRIVATE KEY-----`n" |
             Set-Content -LiteralPath $ftpsPemFile -Encoding ascii -NoNewline
     } finally { $rsa.Dispose() }
@@ -1061,6 +1098,19 @@ $script:_serverProcess   = $null
 $script:_coverageProcess = $null
 $script:_sessionId       = ""
 
+function Ensure-DotnetCoverage {
+    if (Get-Command dotnet-coverage -ErrorAction SilentlyContinue) { return }
+    Write-Host "Installing dotnet-coverage (global tool)..."
+    & dotnet tool install --global dotnet-coverage --ignore-failed-sources 2>&1 | Write-Host
+    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
+    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) {
+        $env:PATH = "$toolsDir;$env:PATH"
+    }
+    if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
+        throw "dotnet-coverage not available after install attempt; check that the .NET tools dir is on PATH ($toolsDir)."
+    }
+}
+
 function Resolve-FuncExe {
     if ($FuncExePath -and (Test-Path $FuncExePath)) { return $FuncExePath }
     # Prefer the real func.exe under the npm install dir. The npm-prefix
@@ -1270,6 +1320,7 @@ function Start-LightweightExecution {
         $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071", "--verbose")
+        Ensure-DotnetCoverage
         Push-Location $runDir
         $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
         Pop-Location
@@ -1293,6 +1344,7 @@ function Start-WarewolfServer {
         $outFile = if ($EngineCoverageFile) { $EngineCoverageFile } else { Join-Path $CoverageDir "engine.cobertura.xml" }
         $includeArgs = @(); foreach ($f in $CoverageIncludeFiles) { $includeArgs += @("--include-files", $f) }
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", "`"$serverExe`"")
+        Ensure-DotnetCoverage
         Push-Location $runDir
         $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden
         Pop-Location
@@ -2059,13 +2111,13 @@ if ($LegacyWindowsDeps) {
             }
         }
         Set-Culture en-ZA
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
-        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
+        Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
         Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
@@ -2099,10 +2151,29 @@ if ($STA.IsPresent -or $Sequential.IsPresent) {
 
 "@
     } else { "" }
+
+    # If a coverage runsettings is available (explicit -CoverageSettings or one
+    # sitting next to TestRun.ps1), inline its DataCollectionRunSettings into
+    # the generated vstest.runsettings so studio assemblies stay excluded from
+    # coverage even on the Sequential/STA paths (vstest.console.exe only honors
+    # a single /Settings file).
+    $covInline = ""
+    $covSrc = $CoverageSettings
+    if (-not $covSrc) {
+        $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
+        if (Test-Path $autoCov) { $covSrc = $autoCov }
+    }
+    if ($covSrc -and (Test-Path $covSrc)) {
+        try {
+            [xml]$covXml = Get-Content -LiteralPath $covSrc -Raw
+            $dcrs = $covXml.SelectSingleNode('//DataCollectionRunSettings')
+            if ($dcrs) { $covInline = $dcrs.OuterXml + "`r`n" }
+        } catch { Write-Warning "Could not inline coverage runsettings from ${covSrc}: $_" }
+    }
 @"
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
-$rcBlock$msBlock</RunSettings>
+$rcBlock$msBlock$covInline</RunSettings>
 "@ | Out-File -LiteralPath "$TestResultsPath\vstest.runsettings" -Encoding utf8 -Force
 }
 
@@ -2159,7 +2230,16 @@ try {
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
-            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) { "--settings:`"$TestResultsPath\vstest.runsettings`"" } else { "" }
+            $effectiveCovSettings = $CoverageSettings
+            if (-not $effectiveCovSettings) {
+                $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
+                if (Test-Path $autoCov) { $effectiveCovSettings = $autoCov }
+            }
+            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) {
+                "--settings:`"$TestResultsPath\vstest.runsettings`""
+            } elseif ($effectiveCovSettings -and (Test-Path $effectiveCovSettings)) {
+                "--settings:`"$effectiveCovSettings`""
+            } else { "" }
             # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
             $resultsDirArg = "/ResultsDirectory:`"$TestResultsPath`""
 

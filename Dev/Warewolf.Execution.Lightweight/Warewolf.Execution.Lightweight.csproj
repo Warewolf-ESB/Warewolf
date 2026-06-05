@@ -50,6 +50,30 @@
 
   </PropertyGroup>
 
+  <!-- ========================================================= -->
+  <!-- PUBLISH GATING -->
+  <!-- ========================================================= -->
+  <!--
+    Skip 'dotnet publish' on Debug builds.
+
+    The hosted CI pipeline publishes ServerTests.sln (which transitively
+    includes this project) with the .NET 8.0.421 SDK and `-r win-x64`,
+    which triggers an MSB3030 in Microsoft.Azure.Functions.Worker.Sdk 1.18.1
+    when it tries to copy obj\Debug\net8.0\win-x64\extensions.json (the
+    Worker SDK writes the file to the non-RID-qualified obj path while the
+    main publish target looks for it under the RID subfolder).
+
+    Test projects only need this project's BUILD output (referenced via
+    ProjectReference and consumed in-process), not its PUBLISH output, so
+    skipping the publish step on Debug is safe for the test pipeline.
+
+    Release publishes (the Azure deployment path driven by Deploy-ToAzure.ps1)
+    still need to publish, so the gate is scoped to Debug only.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
 
   <!-- ========================================================= -->
   <!-- FASTEST STARTUP SETTINGS -->
@@ -115,6 +139,17 @@
 
     <!-- Licensing / Chargebee integration -->
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
+
+    <!--
+      Warewolf.Usage: third-party closed-source assembly (also referenced by
+      Dev2.Runtime.Services).  Provides UsageTracker.TrackEvent which writes
+      one row per call to the UsageData SQL table — used by the per-execution
+      usage emitter (8438).
+    -->
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
 
   </ItemGroup>
 

@@ -181,23 +181,23 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
         }
 
         /// <summary>
-        /// /services/apis.json must pass through the redirect middleware without a token,
-        /// because apis.json discovery is always accessible.
-        /// Exercises: EasyAuthRedirectMiddleware apis.json bypass branch (line 70-74).
+        /// /services/apis.json must require authentication — EasyAuthRedirectMiddleware
+        /// rejects unauthenticated callers on /services/* (and /secure/*) with a 401
+        /// JSON error before the discovery endpoint is reached.
+        /// Exercises: EasyAuthRedirectMiddleware unauthenticated /services branch.
         /// </summary>
         [TestMethod]
-        [Ignore("Requires /services/apis.json discovery bypass in EasyAuthRedirectMiddleware. Re-introduce when WOLF-8417 is complete.")]
-        public async Task ServicesApisJson_NoToken_PassesThrough_Returns200()
+        public async Task ServicesApisJson_NoToken_Returns401()
         {
             SkipIfUnavailable();
 
             var resp = await _http.GetAsync(BaseUrl + "/services/apis.json");
             var body = await resp.Content.ReadAsStringAsync();
 
-            Assert.AreNotEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                $"/services/apis.json must not return 401. Got {(int)resp.StatusCode}: {body}");
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"/services/apis.json should return 200. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+                $"/services/apis.json must return 401 without a token. Got {(int)resp.StatusCode}: {body}");
+            StringAssert.Contains(body, "unauthorized",
+                $"Expected the 401 body to contain the 'unauthorized' error code. Body: {body}");
         }
 
         /// <summary>
@@ -526,7 +526,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Auth
         /// Exercises: NormalizeClaimType switch (line 82-87) all three explicit branches.
         /// </summary>
         [TestMethod]
-        [Ignore("Requires secure.config-driven request authorization so a full EasyAuth claim set does not surface as a 500. Re-introduce when WOLF-8411 is complete.")]
         public async Task SecureRoute_WithFullClaimSet_PrincipalBuiltWithoutError()
         {
             SkipIfUnavailable();

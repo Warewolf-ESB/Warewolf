@@ -1,0 +1,2 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+15,T2-small,23,6,20,26,83,"Dev2.Util","Dev2.Util.AppUsageStats"

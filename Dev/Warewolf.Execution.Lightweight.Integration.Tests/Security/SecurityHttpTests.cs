@@ -461,23 +461,22 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
-        [Ignore("Requires /Secure/apis.json discovery bypass. Re-introduce when WOLF-8417 is complete.")]
-        public async Task SecureApisJson_NoToken_Returns200_WithEmptyApis()
+        public async Task SecureApisJson_NoToken_Returns401()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());
 
-            // /Secure/apis.json is a discovery endpoint — no 401, but it returns
-            // an empty Apis array when no valid JWT is presented.
+            // /Secure/apis.json requires authentication — EasyAuthRedirectMiddleware
+            // rejects unauthenticated callers with a 401 JSON error before the
+            // discovery endpoint is reached. Authenticated callers receive a
+            // permission-filtered discovery document (covered by
+            // SecureApisJson_ValidToken_Returns200 below).
             var resp = await _http.GetAsync(BaseUrl + "/Secure/apis.json");
             var body = await resp.Content.ReadAsStringAsync();
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"/Secure/apis.json must return 200 even without a token. Body: {body}");
-
-            var json = JObject.Parse(body);
-            Assert.IsNotNull(json["Apis"], "Expected 'Apis' key");
-            Assert.AreEqual(0, (json["Apis"] as JArray)?.Count,
-                "Expected empty Apis array when no valid JWT is supplied");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
+                $"/Secure/apis.json must return 401 without a token. Body: {body}");
+            StringAssert.Contains(body, "unauthorized",
+                $"Expected the 401 body to contain the 'unauthorized' error code. Body: {body}");
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
@@ -501,7 +500,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Security
         }
 
         [TestMethod, TestCategory("Security_HTTP")]
-        [Ignore("Requires /Secure/apis.json discovery bypass so expired tokens yield an empty Apis list rather than 401. Re-introduce when WOLF-8417 is complete.")]
         public async Task SecureApisJson_ExpiredToken_Returns200_WithEmptyApis()
         {
             SkipIfHostNotRunning(await IsHostRunningAsync());

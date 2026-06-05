@@ -133,6 +133,44 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Services_ScheduledResource_Get")]
+        public void GetScheduledResources_Execute_NoResources_ReturnsEmptyCollection()
+        {
+            var esbMethod = new GetScheduledResources();
+            var factory = new Mock<IServerSchedulerFactory>();
+            var model = new Mock<IScheduledResourceModel>();
+            model.Setup(a => a.GetScheduledResources()).Returns(new ObservableCollection<IScheduledResource>());
+            factory.Setup(a => a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
+            esbMethod.SchedulerFactory = factory.Object;
+            esbMethod.SecurityWrapper = new Mock<ISecurityWrapper>().Object;
+
+            var output = esbMethod.Execute(new Dictionary<string, StringBuilder>(), new Mock<IWorkspace>().Object);
+
+            var result = JsonConvert.DeserializeObject<ObservableCollection<ScheduledResource>>(output.ToString(), new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("Services_ScheduledResource_Get")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetScheduledResources_Execute_WhenFactoryThrows_Rethrows()
+        {
+            var esbMethod = new GetScheduledResources();
+            var factory = new Mock<IServerSchedulerFactory>();
+            factory.Setup(a => a.CreateModel(It.IsAny<string>(), It.IsAny<ISecurityWrapper>()))
+                   .Throws(new InvalidOperationException("boom"));
+            esbMethod.SchedulerFactory = factory.Object;
+            esbMethod.SecurityWrapper = new Mock<ISecurityWrapper>().Object;
+
+            esbMethod.Execute(new Dictionary<string, StringBuilder>(), new Mock<IWorkspace>().Object);
+        }
+
         StringBuilder RunOutput()
         {
             var esbMethod = new GetScheduledResources();

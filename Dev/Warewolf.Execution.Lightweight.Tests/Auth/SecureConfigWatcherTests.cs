@@ -195,6 +195,48 @@ public class SecureConfigWatcherTests
         InvokeSafeReload(watcher);
     }
 
+    // ── StartAsync — file arrives after watcher start ────────────────────────
+
+    /// <summary>
+    /// Regression test for the CI scenario where the security-config directory
+    /// is created before the function host starts but the secure.config file is
+    /// written later by the test runner.  Prior to the fix, the watcher would
+    /// short-circuit at startup and never reload — leaving the engine running
+    /// with the unloaded AllowAll fallback and causing GetSecureFilter to deny
+    /// every workflow in apis.json.
+    /// </summary>
+    [TestMethod]
+    public async Task StartAsync_DirectoryExistsButFileMissing_ReloadsWhenFileAppears()
+    {
+        var dir  = Path.Combine(Path.GetTempPath(), "swcfg_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        var path = Path.Combine(dir, "secure.config");
+        _tempConfigPath = path;
+        Environment.SetEnvironmentVariable(ConfigEnvVar, path);
+
+        var trackingLoader = new TrackingPolicyLoader();
+        using var watcher  = Build(trackingLoader);
+
+        await watcher.StartAsync(CancellationToken.None);
+
+        // File doesn't exist yet — no reload should have happened.
+        Assert.AreEqual(0, trackingLoader.ReloadCallCount,
+            "Reload must not fire before the file is created");
+
+        // Create the file — Created event should fire and trigger a debounced reload.
+        File.WriteAllText(path, "placeholder");
+
+        // Poll up to 3s for the debounced reload (500ms debounce + FSW latency).
+        var deadline = DateTime.UtcNow.AddSeconds(3);
+        while (DateTime.UtcNow < deadline && trackingLoader.ReloadCallCount == 0)
+            await Task.Delay(50);
+
+        Assert.IsTrue(trackingLoader.ReloadCallCount >= 1,
+            "Reload must fire after a late-arriving secure.config is created");
+
+        try { Directory.Delete(dir, recursive: true); } catch { /* best effort */ }
+    }
+
     // ── Stubs ─────────────────────────────────────────────────────────────────
 
     private sealed class NullPolicyLoader : IWorkflowAuthPolicyLoader

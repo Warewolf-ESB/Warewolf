@@ -1,0 +1,7 @@
+LinesNeededTo80,Tier,CoveragePct,Covered,Uncovered,Coverable,TotalLines,Assembly,Class
+3,T1-trivial,0,0,3,3,545,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.Drivers.WarewolfTransactionScopeFactory"
+4,T1-trivial,0,0,5,5,48,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.Drivers.PersistedValues"
+6,T2-small,0,0,7,7,566,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.Drivers.TransactionScopeWrapper"
+19,T2-small,0,0,23,23,41,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.ManuallyResumedState"
+27,T3-medium,0,0,33,33,78,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.PersistenceExecution"
+220,T4-large,0,0,275,275,532,"Warewolf.Driver.Persistence","Warewolf.Driver.Persistence.Drivers.HangfireScheduler"
