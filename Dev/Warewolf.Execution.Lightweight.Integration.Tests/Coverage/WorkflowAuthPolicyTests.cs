@@ -442,6 +442,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         {
             public readonly List<string> Calls = new();
 
+            public void LogTrace(string message, Guid executionId)              => Calls.Add($"Trace:{message}");
+            public void LogTrace(string message, Exception ex, Guid executionId)=> Calls.Add($"Trace+Ex:{message}");
             public void LogDebug(string message, Guid executionId)              => Calls.Add($"Debug:{message}");
             public void LogDebug(string message, Exception ex, Guid executionId)=> Calls.Add($"Debug+Ex:{message}");
             public void LogInfo(string message, Guid executionId)               => Calls.Add($"Info:{message}");

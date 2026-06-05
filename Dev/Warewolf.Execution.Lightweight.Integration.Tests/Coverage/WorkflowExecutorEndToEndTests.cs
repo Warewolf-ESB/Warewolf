@@ -69,6 +69,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             public void LogError(Exception ex, string log) { }
             public void LogFatal(string message, Guid executionId) { }
             public void LogFatal(string message, Exception exception, Guid executionId) { }
+            public void LogTrace(string message, Guid executionId) { }
+            public void LogTrace(string message, Exception exception, Guid executionId) { }
         }
 
         static IWorkflowExecutor CreateExecutor() => new WorkflowExecutor(new NoOpLogger());
