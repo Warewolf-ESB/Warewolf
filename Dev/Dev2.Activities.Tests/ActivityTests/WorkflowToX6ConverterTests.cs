@@ -20,7 +20,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldCreateSwitchNode()
         {
             //------------Setup for test--------------------------
@@ -180,7 +179,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldHandleEmptyExpressionText()
         {
             //------------Setup for test--------------------------
@@ -274,7 +272,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldHandleNullDefaultCase()
         {
             //------------Setup for test--------------------------

@@ -37,7 +37,6 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         [TestCategory("AnonymousRedis")]
-		[Ignore("Until WOLF-7979 is done")]
 		public void RedisRemoveIntegration_UseVariableAsKey()
         {
             try
@@ -113,7 +112,6 @@ namespace Dev2.Integration.Tests.Redis
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         [TestCategory("AnonymousRedis")]
-		[Ignore("Until WOLF-7979 is done")]
 		public void RedisRemoveIntegration_RecordsetAsKey()
         {
             try

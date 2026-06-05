@@ -48,7 +48,6 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestMethod]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void SaveNewServerSource_GivenSourceName()
         {
             using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
@@ -206,7 +205,6 @@ namespace Warewolf.UI.Tests.ServerSource
 
         [TestMethod]
         [TestCategory("Server Sources")]
-        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
             _containerOps = new Depends(Depends.ContainerType.CIRemote);

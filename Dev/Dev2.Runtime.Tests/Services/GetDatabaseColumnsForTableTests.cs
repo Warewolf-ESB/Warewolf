@@ -167,7 +167,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql")]
         [DoNotParallelize]
-        [Ignore]//Until we can get the DB
         public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource_WithSchema_OnlyReturnsForThatSchema()
         {
             var parser = new Mock<IActivityParser>();
@@ -227,7 +226,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("MSSql with Invalid Schema")]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        [Ignore]//Until we have a way to mock the DB
         public void GetDatabaseColumnsForTable_Execute_NullSchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
             var parser = new Mock<IActivityParser>();
@@ -282,7 +280,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("MSSql with Invalid Schema")]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        [Ignore]//Until we have a way to mock the DB
         public void GetDatabaseColumnsForTable_Execute_EmptySchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
             var parser = new Mock<IActivityParser>();
