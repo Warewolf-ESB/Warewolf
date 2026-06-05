@@ -1,5 +1,5 @@
 
-<Source ID="8061461e-7893-4135-9506-6b99b3e21332" Name="httpbin" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://httpbin.org;DefaultQuery=/get;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="8061461e-7893-4135-9506-6b99b3e21332" Name="httpbin" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://localhost:4000;DefaultQuery=/get;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>httpbin</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
