@@ -71,6 +71,8 @@
   <!-- ========================================================= -->
   <ItemGroup>
 
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
+
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.23.0" />
 
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
@@ -87,7 +89,7 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
 
     <!-- Azure Key Vault + Managed Identity (encryption support) -->
-    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Identity" Version="1.17.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
