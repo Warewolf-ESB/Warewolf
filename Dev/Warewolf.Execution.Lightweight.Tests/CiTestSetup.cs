@@ -1,15 +1,20 @@
 /*
  * Assembly-level test initialiser.
  *
- * When the environment variable WAREWOLF_GENERATE_CI_CONFIG=1 is set (as it is
- * by TestRun.ps1 when no WAREWOLF_SECURE_CONFIG_CONTENT secret is provided),
- * this class generates a minimal synthetic secure.config file and writes its path
- * into WAREWOLF_TEST_SECURE_CONFIG so that the F_RealConfig_* tests in
- * SecurityAuthTests can run instead of being skipped.
+ * Ensures the F_RealConfig_* tests in SecurityAuthTests always have a secure.config
+ * to load, so they run deterministically instead of being skipped (Assert.Inconclusive).
  *
- * The generated config contains only what those tests require:
- *   - A non-empty SecretKey
- *   - A "Warewolf Administrators" entry with global View permission
+ * Resolution precedence (first match wins):
+ *   1. WAREWOLF_TEST_SECURE_CONFIG already points at an existing file
+ *      (e.g. a pipeline secret written by TestRun.ps1) — use it as-is.
+ *   2. A real Warewolf server config is installed at the standard path
+ *      (C:\ProgramData\Warewolf\Server Settings\secure.config) — let the tests
+ *      validate the real config directly.
+ *   3. Neither exists — generate a minimal synthetic secure.config and point
+ *      WAREWOLF_TEST_SECURE_CONFIG at it.
+ *
+ * The synthetic config grants the Warewolf Administrators group global access and
+ * the Public group global View, which is everything the F_RealConfig_* assertions need.
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,16 +32,17 @@ namespace Warewolf.Execution.Lightweight.Tests
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext _)
         {
-            var generate = Environment.GetEnvironmentVariable("WAREWOLF_GENERATE_CI_CONFIG");
-            if (!string.Equals(generate, "1", StringComparison.Ordinal))
-                return;
-
-            // Only generate if WAREWOLF_TEST_SECURE_CONFIG isn't already pointing at
-            // an existing file (e.g. a pipeline secret written by TestRun.ps1).
+            // 1. An explicit config (pipeline secret / developer override) takes precedence.
             var existing = Environment.GetEnvironmentVariable("WAREWOLF_TEST_SECURE_CONFIG");
             if (!string.IsNullOrWhiteSpace(existing) && File.Exists(existing))
                 return;
 
+            // 2. A real server config installed on this machine is validated directly.
+            const string realConfigPath = @"C:\ProgramData\Warewolf\Server Settings\secure.config";
+            if (File.Exists(realConfigPath))
+                return;
+
+            // 3. Otherwise generate a synthetic fallback so the F_RealConfig_* tests still run.
             var key = SecureConfigBuilder.NewSecretKey();
             var settings = SecureConfigBuilder.AllPublicGlobal(key);
 
@@ -44,7 +50,7 @@ namespace Warewolf.Execution.Lightweight.Tests
             File.WriteAllText(_generatedConfigPath, SecureConfigBuilder.Encrypt(settings));
 
             Environment.SetEnvironmentVariable("WAREWOLF_TEST_SECURE_CONFIG", _generatedConfigPath);
-            Console.WriteLine($"[CiTestSetup] Generated CI secure.config -> {_generatedConfigPath}");
+            Console.WriteLine($"[CiTestSetup] Generated synthetic secure.config -> {_generatedConfigPath}");
         }
 
         [AssemblyCleanup]
