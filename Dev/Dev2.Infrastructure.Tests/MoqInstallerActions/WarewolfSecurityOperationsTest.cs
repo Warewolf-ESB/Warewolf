@@ -27,6 +27,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
         public void WarewolfSecurityOperations_AddWarewolfGroup_ExpectGroupAdded()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             var grpOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             grpOps.DeleteWarewolfGroup();
             grpOps.AddWarewolfGroup();
@@ -58,6 +59,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
         public void WarewolfSecurityOperations_DoesWarewolfGroupExist_WhenGroupDoesExist_ExpectTrue()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
@@ -115,6 +117,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAlreadyMember_ExpectAdministratorsMemberOfWarewolf()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
@@ -137,7 +140,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [DoNotParallelize]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
         {
-
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
@@ -156,6 +159,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
@@ -193,6 +197,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddLocalUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();

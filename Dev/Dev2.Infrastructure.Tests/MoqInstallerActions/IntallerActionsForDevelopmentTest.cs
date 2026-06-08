@@ -24,6 +24,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestCategory("InstallerActionsForDevelopment_ExecuteInstallerActions")]
         public void InstallerActionsForDevelopment_ExecuteInstallerActions_WhenNormalOperation_ExpectGroupCreatedAndUserAdded()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
             var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
@@ -49,6 +50,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         // ReSharper disable InconsistentNaming
         public void InstallerActionsForDevelopment_ExecuteInstallerActions_WhenGroupExist_ExpectUserNotAdded()
         {
+            InstallerActionTestRequirements.RequireWindowsLocalGroupAdmin();
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
