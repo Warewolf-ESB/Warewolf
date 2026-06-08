@@ -115,9 +115,10 @@ if (Test-Path $SecureConfigPath) {
     Write-Host "  NOTE: SecureConfigLoader will read it from the function app bin directory at runtime."
     Write-Host "  Alternatively, set the WAREWOLF_SECURE_CONFIG app setting to load it from a mounted path."
 } else {
-    Write-Host "No secure.config found — the function app will run in open-access mode (all workflows public)."
-    Write-Host "  To enable JWT auth: copy your secure.config next to this script and redeploy,"
+    Write-Warning "No secure.config found — the function app will DENY every request with HTTP 503 until a policy is supplied."
+    Write-Host "  To enforce authorization: copy your secure.config next to this script and redeploy,"
     Write-Host "  OR set the WAREWOLF_SECURE_CONFIG app setting to a mounted file path."
+    Write-Host "  For open-access (dev/test ONLY): set the BYPASS_SECURE_CONFIG=true app setting."
 }
 
 # Validate resources folder
@@ -190,7 +191,19 @@ else {
 $TempZipPath = Join-Path $env:TEMP "AzureFunctionsPackage-$AppName.zip"
 if (Test-Path $TempZipPath) { Remove-Item $TempZipPath -Force }
 Write-Host "Creating deployment package..."
-Compress-Archive -Path "$ScriptDir\*" -DestinationPath $TempZipPath -Force
+
+# Exclude documentation and developer-only artifacts from the deployed package.
+# These are never needed at runtime by the Azure Function. Excluding them keeps the
+# upload lean and avoids shipping internal docs / local dev settings to the cloud,
+# regardless of whether the script is run from the publish output or the source tree.
+$ExcludeNames = @('local.settings.json', 'Skill.md')
+$ExcludeDirs  = @('docs')
+$PackageItems = Get-ChildItem -Path $ScriptDir -Force | Where-Object {
+    $_.Name -notin $ExcludeNames -and
+    $_.Name -notlike '*.md' -and
+    -not ($_.PSIsContainer -and $_.Name -in $ExcludeDirs)
+}
+Compress-Archive -Path $PackageItems.FullName -DestinationPath $TempZipPath -Force
 Write-Host "Package created."
 
 # Deploy
