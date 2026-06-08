@@ -20,6 +20,16 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         /// </summary>
         public static void RequireWindowsLocalGroupAdmin()
         {
+#if (!(WINDOWS || NETFRAMEWORK))
+            Assert.Inconclusive(
+                                "Skipped: this test manages Windows local groups via the WinNT provider and is " +
+                                "not applicable on Linux/macOS, where Warewolf groups are managed by " +
+                                "Warewolf.Lightweight.Execution. Prerequisite to run it: execute on Windows in " +
+                                "an elevated (Administrator) process.");
+            return;
+#else
+
+
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Assert.Inconclusive(
@@ -39,6 +49,12 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
                     "Administrators' and 'Administrators'), which requires Administrator elevation. " +
                     "Re-run from an elevated (Run as administrator) process.");
             }
+
+
+
+#endif
         }
+
+
     }
 }
