@@ -95,8 +95,6 @@
   <!-- ========================================================= -->
   <ItemGroup>
 
-    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
-
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.23.0" />
 
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />

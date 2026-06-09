@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using Dev2.Data.Interfaces.Enums;
+using MelLogLevel = Microsoft.Extensions.Logging.LogLevel;
+using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
 
 namespace Warewolf.Execution.Lightweight.Logging
 {
@@ -38,6 +40,26 @@ namespace Warewolf.Execution.Lightweight.Logging
 
         /// <summary>Whether the current environment is Development.</summary>
         public bool IsDevelopment { get; init; }
+
+        /// <summary>
+        /// Maps the Dev2 <see cref="MinimumLevel"/> to its MEL equivalent for use in
+        /// <see cref="Microsoft.Extensions.Logging.LoggerFilterOptions"/> and the
+        /// bootstrap <see cref="Microsoft.Extensions.Logging.ILoggerFactory"/>.
+        ///
+        /// Dev2 convention: higher numeric value = more verbose (TRACE=6, OFF=0).
+        /// MEL convention:  lower  numeric value = more verbose (Trace=0, None=6).
+        /// </summary>
+        public MelLogLevel MelMinimumLevel => MinimumLevel switch
+        {
+            Dev2LogLevel.TRACE => MelLogLevel.Trace,
+            Dev2LogLevel.DEBUG => MelLogLevel.Debug,
+            Dev2LogLevel.INFO  => MelLogLevel.Information,
+            Dev2LogLevel.WARN  => MelLogLevel.Warning,
+            Dev2LogLevel.ERROR => MelLogLevel.Error,
+            Dev2LogLevel.FATAL => MelLogLevel.Critical,
+            Dev2LogLevel.OFF   => MelLogLevel.None,
+            _                  => MelLogLevel.Information,
+        };
 
         /// <summary>Absolute path to the Elasticsearch <c>.bite</c> config file.</summary>
         public string ElasticsearchSettingsPath { get; init; } = string.Empty;

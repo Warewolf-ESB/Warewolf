@@ -16,7 +16,8 @@ try
     var loggingConfig = LoggingConfiguration.FromEnvironment();
 
     // ── Step 2: Bootstrap logging (FIRST — no log is lost) ───────────────────
-    using var bootstrapFactory = LoggerFactory.Create(b => b.AddConsole().SetMinimumLevel(LogLevel.Debug));
+    using var bootstrapFactory = LoggerFactory.Create(b =>
+        b.AddConsole().SetMinimumLevel(loggingConfig.MelMinimumLevel));
     var bootstrapLogger = new ConsoleExecutionLogger(
         bootstrapFactory.CreateLogger<ConsoleExecutionLogger>(), loggingConfig.MinimumLevel);
 
@@ -36,21 +37,29 @@ try
          {
              services.AddExecutionLogging(loggingConfig);
 
-             services.AddApplicationInsightsTelemetryWorkerService();
-             services.ConfigureFunctionsApplicationInsights();
-
-             services.Configure<LoggerFilterOptions>(options =>
+             if (loggingConfig.EnableApplicationInsights)
              {
-                 var defaultRule = options.Rules.FirstOrDefault(rule =>
-                     rule.ProviderName ==
-                     "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
-                 if (defaultRule is not null)
-                 {
-                     options.Rules.Remove(defaultRule);
-                 }
+                 services.ConfigureFunctionsApplicationInsights();
 
-                 options.MinLevel = LogLevel.Debug;
-             });
+                 services.Configure<LoggerFilterOptions>(options =>
+                 {
+                     // Remove AI SDK's built-in Warning gate so our env-var level takes effect.
+                     const string aiProvider =
+                         "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider";
+
+                     var defaultRule = options.Rules.FirstOrDefault(r => r.ProviderName == aiProvider);
+                     if (defaultRule is not null)
+                         options.Rules.Remove(defaultRule);
+
+                     // Add a targeted rule for the AI provider only — does NOT affect Console,
+                     // Elasticsearch, or any other registered provider.
+                     options.Rules.Add(new LoggerFilterRule(
+                         providerName: aiProvider,
+                         categoryName: null,
+                         logLevel:     loggingConfig.MelMinimumLevel,
+                         filter:       null));
+                 });
+             }
          })
         .Build();
 

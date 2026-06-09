@@ -28,98 +28,113 @@ namespace Warewolf.Execution.Lightweight.Logging
         public override void LogTrace(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.TRACE)) return;
-            _logger.LogTrace("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogTrace("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogTrace(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.TRACE)) return;
-            _logger.LogTrace(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogTrace(exception, "{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogDebug(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
-            _logger.LogDebug("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogDebug("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogDebug(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.DEBUG)) return;
-            _logger.LogDebug(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogDebug(exception, "{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogInfo(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogInformation("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogInfo(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogInformation(exception, "{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogInfo(string message)
         {
             if (!ShouldLog(Dev2LogLevel.INFO)) return;
-            _logger.LogInformation("{Message}", $"{Correlation} {message}");
+            _logger.LogInformation("{Correlation} {Message}",
+                Correlation, message);
         }
 
         /// <inheritdoc/>
         public override void LogWarning(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
-            _logger.LogWarning("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogWarning("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogWarning(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.WARN)) return;
-            _logger.LogWarning(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogWarning(exception, "{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogError(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            _logger.LogError("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogError("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogError(string activityName, Exception ex, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            _logger.LogError(ex, "{Message}", $"{Correlation} [ExecutionId:{executionId}] [{activityName}] {ex?.Message}");
+            _logger.LogError(ex,
+                "{Correlation} [ExecutionId:{ExecutionId}] [{ActivityName}] {Message}",
+                Correlation, executionId, activityName, ex?.Message);
         }
 
         /// <inheritdoc/>
         public override void LogError(Exception ex, string log)
         {
             if (!ShouldLog(Dev2LogLevel.ERROR)) return;
-            _logger.LogError(ex, "{Message}", $"{Correlation} {log}");
+            _logger.LogError(ex, "{Correlation} {Message}",
+                Correlation, log);
         }
 
         /// <inheritdoc/>
         public override void LogFatal(string message, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
-            _logger.LogCritical("{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogCritical("{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
 
         /// <inheritdoc/>
         public override void LogFatal(string message, Exception exception, Guid executionId)
         {
             if (!ShouldLog(Dev2LogLevel.FATAL)) return;
-            _logger.LogCritical(exception, "{Message}", $"{Correlation} [ExecutionId:{executionId}] {message}");
+            _logger.LogCritical(exception, "{Correlation} [ExecutionId:{ExecutionId}] {Message}",
+                Correlation, executionId, message);
         }
     }
 }
