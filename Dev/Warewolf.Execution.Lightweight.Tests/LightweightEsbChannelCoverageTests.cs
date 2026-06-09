@@ -286,11 +286,10 @@ namespace Warewolf.Execution.Lightweight.Tests
         [TestCategory("ExecutionLogLevel_Coverage")]
         public void Parse_NumericOutOfRange_FallsThroughToEnumTryParse()
         {
-            // Enum.IsDefined fails for 99 — first branch skipped.
-            // Enum.TryParse<LogLevel>("99", ...) still succeeds and yields the cast value,
-            // because .NET accepts any integer-string as a valid enum parse.
-            // This documents the existing behaviour rather than ideal validation.
-            Assert.AreEqual((LogLevel)99, ExecutionLogLevel.Parse("99"));
+            // Out-of-range numeric values like 99 are rejected by the Enum.IsDefined checks
+            // in both the int.TryParse and Enum.TryParse branches.
+            // The method correctly returns Default (INFO) for invalid values.
+            Assert.AreEqual(LogLevel.INFO, ExecutionLogLevel.Parse("99"));
         }
 
         [TestMethod]
