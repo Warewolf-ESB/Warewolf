@@ -31,8 +31,8 @@
         "Host.Aggregator": "Warning",
         "Microsoft.Azure.WebJobs": "Trace",
         "Microsoft.Azure.WebJobs.Script": "Debug",
-        "Warewolf.Execution.Lightweight.Logging.AzureExecutionLogger": "Information",
-        "Warewolf.Execution.Lightweight.Logging.ConsoleExecutionLogger": "Information",
+        "Warewolf.Execution.Lightweight.Logging.AzureExecutionLogger": "Trace",
+        "Warewolf.Execution.Lightweight.Logging.ConsoleExecutionLogger": "Trace",
         "Warewolf.Execution.Lightweight.Security.AuditLogger": "Information",
         "Warewolf.Execution.Lightweight.Infrastructure.StartupOrchestrator": "Information"
       },

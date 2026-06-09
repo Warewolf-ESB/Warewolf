@@ -26,11 +26,24 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// <summary>Whether the Application Insights / AzureExecutionLogger sink is enabled.</summary>
         public bool EnableApplicationInsights { get; init; }
 
+        /// <summary>
+        /// Whether the Application Insights <b>SDK</b> should be registered at the DI host
+        /// level (<c>ConfigureFunctionsApplicationInsights</c> + the targeted
+        /// <see cref="Microsoft.Extensions.Logging.LoggerFilterOptions"/> rule).
+        ///
+        /// <para>This is intentionally <b>distinct</b> from <see cref="EnableApplicationInsights"/>:
+        /// the latter is also driven by the legacy <c>ENABLECONSOLELOGGING</c> alias and only
+        /// controls whether the MEL-based <c>AzureExecutionLogger</c> joins the composite sink.
+        /// Registering the AI SDK (and its telemetry ingestion / billing) must require an
+        /// explicit opt-in via <c>ENABLEAPPLICATIONINSIGHTS</c> only.</para>
+        /// </summary>
+        public bool RegisterApplicationInsightsSdk { get; init; }
+
         /// <summary>Whether the Elasticsearch sink is enabled.</summary>
         public bool EnableElasticsearch { get; init; }
 
         /// <summary>Minimum log level gate shared by all sinks.</summary>
-        public LogLevel MinimumLevel { get; init; }
+        public Dev2LogLevel MinimumLevel { get; init; }
 
         /// <summary>Whether console output should be structured JSON (ECS-compatible).</summary>
         public bool StructuredJson { get; init; }
@@ -76,7 +89,8 @@ namespace Warewolf.Execution.Lightweight.Logging
             return new LoggingConfiguration
             {
                 EnableApplicationInsights = IsEnabled("ENABLEAPPLICATIONINSIGHTS")
-                    || IsEnabled("ENABLECONSOLELOGGING"), // backward compat
+                    || IsEnabled("ENABLECONSOLELOGGING"), // backward compat: adds AzureExecutionLogger to composite
+                RegisterApplicationInsightsSdk = IsEnabled("ENABLEAPPLICATIONINSIGHTS"), // SDK + telemetry: explicit opt-in only
                 EnableElasticsearch = IsEnabled("ENABLEELASTICSEARCHLOGGING"),
                 MinimumLevel = ExecutionLogLevel.Read(),
                 StructuredJson = IsEnabled("STRUCTURED_LOGS") || !isDev,

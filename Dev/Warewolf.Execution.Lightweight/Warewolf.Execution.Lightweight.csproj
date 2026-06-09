@@ -231,18 +231,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <!-- NEVER publish local.settings.json — it may contain development secrets. -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
     <None Update="secure.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

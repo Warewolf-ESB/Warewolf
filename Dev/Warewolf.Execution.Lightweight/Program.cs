@@ -37,28 +37,15 @@ try
          {
              services.AddExecutionLogging(loggingConfig);
 
-             if (loggingConfig.EnableApplicationInsights)
+             if (loggingConfig.RegisterApplicationInsightsSdk)
              {
                  services.ConfigureFunctionsApplicationInsights();
 
+                 // Replace the AI SDK's built-in Warning gate with a targeted rule at the
+                 // configured EXECUTIONLOGLEVEL — scoped to the AI provider only, so Console,
+                 // Elasticsearch, and Audit sinks are unaffected.
                  services.Configure<LoggerFilterOptions>(options =>
-                 {
-                     // Remove AI SDK's built-in Warning gate so our env-var level takes effect.
-                     const string aiProvider =
-                         "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider";
-
-                     var defaultRule = options.Rules.FirstOrDefault(r => r.ProviderName == aiProvider);
-                     if (defaultRule is not null)
-                         options.Rules.Remove(defaultRule);
-
-                     // Add a targeted rule for the AI provider only — does NOT affect Console,
-                     // Elasticsearch, or any other registered provider.
-                     options.Rules.Add(new LoggerFilterRule(
-                         providerName: aiProvider,
-                         categoryName: null,
-                         logLevel:     loggingConfig.MelMinimumLevel,
-                         filter:       null));
-                 });
+                     ApplicationInsightsLogFilter.Apply(options, loggingConfig.MelMinimumLevel));
              }
          })
         .Build();

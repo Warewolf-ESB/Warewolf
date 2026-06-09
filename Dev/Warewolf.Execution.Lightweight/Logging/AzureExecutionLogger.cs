@@ -139,6 +139,3 @@ namespace Warewolf.Execution.Lightweight.Logging
     }
 }
 
-
-
-
