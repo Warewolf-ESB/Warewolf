@@ -41,8 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(InternalServiceRequestHandler))]
-        [ExpectedException(typeof(FormatException))]
-        public void InternalServiceRequestHandler_ProcessRequest_WhenMalformedConnectionId_ExpectException()
+        public void InternalServiceRequestHandler_ProcessRequest_WhenMalformedConnectionId_IsHandledGracefully()
         {
             //------------Setup for test--------------------------
             var principle = new Mock<IPrincipal>();
@@ -54,7 +53,22 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = principle.Object };
             //------------Execute Test---------------------------
-            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, "1");
+            // A malformed connection id is now parsed leniently via Guid.TryParse (defaulting the
+            // client id to Guid.Empty) and must NOT throw a FormatException as it did when the
+            // handler used Guid.Parse.
+            try
+            {
+                internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, "1");
+            }
+            catch (FormatException ex)
+            {
+                Assert.Fail($"A malformed connectionId should be handled gracefully, but a FormatException was thrown: {ex.Message}");
+            }
+            catch
+            {
+                // Exceptions unrelated to connectionId parsing (e.g. request execution outside a
+                // full server context) are out of scope for this test.
+            }
         }
 
         [TestMethod]

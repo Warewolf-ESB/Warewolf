@@ -196,7 +196,10 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "20.87.248.84";
+                // The Anonymous Redis tests run in the CI 'Anonymous_Redis_Tests' job with
+                // -StartRedisServer, which provisions Redis locally on localhost:6379. Point at
+                // that local instance rather than an ephemeral (now-decommissioned) remote IP.
+                Container.IP = "localhost";
                 Container.Port = "6379";
             }
             else
