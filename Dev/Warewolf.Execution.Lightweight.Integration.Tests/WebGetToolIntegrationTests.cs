@@ -1,28 +1,45 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
-    /// Integration tests for the HTTP GET Web Method tool executed via the Azure Function.
-    /// Requires the Azure Function to be running at <see cref="BaseUrl"/> before running these tests.
-    /// Each test triggers a named workflow (.bite file) and validates the JSON response.
+    /// In-process functional tests for the HTTP GET Web Method tool executed via
+    /// <see cref="WorkflowHttpFunction"/>.
+    ///
+    /// These no longer require a running engine on port 7071: <see cref="LightweightInProcessHost"/>
+    /// seeds a real secure.config granting the Public group View+Execute, and runs the REAL
+    /// WorkflowExecutor against the deployed <c>Resources/tools/http get/*.bite</c> workflows.
+    /// Each workflow performs a live call to <c>httpbin.org</c>, so these tests carry a real
+    /// external-network dependency (unchanged from the original HTTP-based version).
+    ///
+    /// Marked <see cref="DoNotParallelizeAttribute"/> — the host mutates process-wide
+    /// <c>SecureConfigLoader</c> singleton + environment-variable state per test.
     /// </summary>
     [TestClass]
+    [DoNotParallelize]
     public class WebGetToolIntegrationTests
     {
-        private const string BaseUrl = TestConstants.HttpbinGetBaseUrl;
-        private static readonly HttpClient _client = new();
+        // Folder route value as the Functions host supplies it (URL-decoded catch-all).
+        private const string RoutePrefix = "tools/http get";
+
+        private LightweightInProcessHost _host = null!;
+
+        [TestInitialize]
+        public void Init() => _host = LightweightInProcessHost.WithPublicExecuteAll();
+
+        [TestCleanup]
+        public void Cleanup() => _host?.Dispose();
 
         /// <summary>TC-001: GET /get?tag=hdr with X-Custom-Header → Maps headers.X-Custom-Header → [[headersX-Custom-Header]]. Expected: headersX-Custom-Header == MyValue.</summary>
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC001_Get_CustomHeader_Echoed()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC013_Get_CustomHeader_Echoed.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC013_Get_CustomHeader_Echoed.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("headersX-Custom-Header", out var prop), $"Expected 'headersX-Custom-Header' in response: {json}");
@@ -33,9 +50,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC002_Get_MultipleHeaders_Mapped()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC014_Get_MultipleHeaders_Mapped.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC014_Get_MultipleHeaders_Mapped.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("headersAccept", out var accept), $"Expected 'headersAccept' in response: {json}");
@@ -48,9 +64,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC003_Get_MapsOrigin_ReturnsIP()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC015_Get_MapsOrigin_ReturnsIP.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC015_Get_MapsOrigin_ReturnsIP.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("origin", out var prop), $"Expected 'origin' in response: {json}");
@@ -61,9 +76,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC004_Get_ThreeQueryParams_Mapped()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC016_Get_ThreeQueryParams_Mapped.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC016_Get_ThreeQueryParams_Mapped.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("argsa", out var a), $"Expected 'argsa' in response: {json}");
@@ -78,9 +92,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC005_Get_UrlEncodedValue_MapsDecoded()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC017_Get_UrlEncodedValue_MapsDecoded.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC017_Get_UrlEncodedValue_MapsDecoded.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("argsname", out var prop), $"Expected 'argsname' in response: {json}");
@@ -91,9 +104,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC006_Get_Anything_MapsMethodAndUrl()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC018_Get_Anything_MapsMethodAndUrl.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC018_Get_Anything_MapsMethodAndUrl.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("method", out var method), $"Expected 'method' in response: {json}");
@@ -106,9 +118,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC007_Get_ScalarOutput_MapsScore()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC019_Get_ScalarOutput_MapsScore.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC019_Get_ScalarOutput_MapsScore.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("argsscore", out var prop), $"Expected 'argsscore' in response: {json}");
@@ -119,9 +130,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC008_Get_MapsUserAgent_NonEmpty()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC020_Get_MapsUserAgent_NonEmpty.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC020_Get_MapsUserAgent_NonEmpty.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("headersUser-Agent", out var prop), $"Expected 'headersUser-Agent' in response: {json}");
@@ -132,9 +142,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC009_Response_As_Object()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC020_Response_As_Object.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC020_Response_As_Object.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("data", out var data), $"Expected 'data' in response: {json}");
@@ -154,9 +163,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebGetTool_Integration")]
         public async Task TC010_Get_MapsEchoedUrl_ContainsQuery()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC022_Get_MapsEchoedUrl_ContainsQuery.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC022_Get_MapsEchoedUrl_ContainsQuery.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("url", out var prop), $"Expected 'url' in response: {json}");

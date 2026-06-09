@@ -1,36 +1,54 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
-    /// Integration tests for the Gather System Information activity executed via the Azure Function.
-    /// Requires the Azure Function to be running at <see cref="BaseUrl"/> before running these tests.
-    /// The workflow file is Resources/tools/system info/TestGettingComputerName.bite.
+    /// In-process functional tests for the Gather System Information activity executed
+    /// via <see cref="WorkflowHttpFunction"/>.
+    ///
+    /// These tests no longer require a separately-running engine on port 7071. The
+    /// <see cref="LightweightInProcessHost"/> seeds a real (encrypted) secure.config so
+    /// permissions are resolved through the genuine loader/matcher, and runs the REAL
+    /// <c>WorkflowExecutor</c> against the deployed workflow resource
+    /// (<c>Resources/tools/system info/TestGettingComputerName.bite</c>) so the workflow
+    /// actually executes and produces real output.
+    ///
+    /// Marked <see cref="DoNotParallelizeAttribute"/> because the host mutates the
+    /// process-wide <c>SecureConfigLoader</c> singleton + <c>WAREWOLF_SECURE_CONFIG</c>
+    /// env var for the duration of each test.
     /// </summary>
     [TestClass]
+    [DoNotParallelize]
     public class GatherSystemInfoIntegrationTests
     {
-        private const string BaseUrl = TestConstants.SystemInfoBaseUrl;
-        private static readonly HttpClient _client = new();
+        // Catch-all route value exactly as the Functions host supplies it (URL-decoded).
+        private const string ComputerNameRoute = "tools/system info/TestGettingComputerName.json";
 
         /// <summary>
-        /// TC001: Executes TestGettingComputerName workflow → expects a non-empty ComputerName scalar in the JSON response.
-        /// First-pass version: accepts any name and logs what is returned so subsequent versions can assert the exact value.
+        /// TC001: Executes the TestGettingComputerName workflow on the anonymous /public/
+        /// route with the Public group granted View+Execute, and asserts a non-empty
+        /// ComputerName scalar is returned.
         /// </summary>
         [TestMethod, TestCategory("GatherSystemInfo_Integration")]
         public async Task TC001_GetComputerName_ReturnsNonEmpty()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TestGettingComputerName.json");
-            var json = await response.Content.ReadAsStringAsync();
+            // Arrange — Public group has server-wide View+Execute, so the anonymous
+            // caller is authorised to execute the workflow on the /public/ route.
+            using var host = LightweightInProcessHost.WithPublicExecuteAll();
 
-            TestContext.WriteLine($"HTTP status : {(int)response.StatusCode} {response.StatusCode}");
+            // Act
+            var (status, json) = await host.ExecutePublicAsync(ComputerNameRoute);
+
+            TestContext.WriteLine($"HTTP status : {(int)status} {status}");
             TestContext.WriteLine($"Raw response: {json}");
 
-            Assert.IsTrue(response.IsSuccessStatusCode,
-                $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            // Assert — authorisation succeeded and the workflow executed.
+            Assert.AreEqual(HttpStatusCode.OK, status,
+                $"Expected HTTP 200 but got {(int)status}: {json}");
 
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
