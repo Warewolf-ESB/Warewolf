@@ -1,5 +1,6 @@
 using Dev2.Common;
 using Dev2.Runtime.Subscription;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,9 +16,8 @@ try
     var loggingConfig = LoggingConfiguration.FromEnvironment();
 
     // ── Step 2: Bootstrap logging (FIRST — no log is lost) ───────────────────
-    // Create a lightweight console logger before the DI host exists so that
-    // all Dev2Logger calls during startup are captured immediately.
-    using var bootstrapFactory = LoggerFactory.Create(b => b.AddConsole().SetMinimumLevel(LogLevel.Debug));
+    using var bootstrapFactory = LoggerFactory.Create(b =>
+        b.AddConsole().SetMinimumLevel(loggingConfig.MelMinimumLevel));
     var bootstrapLogger = new ConsoleExecutionLogger(
         bootstrapFactory.CreateLogger<ConsoleExecutionLogger>(), loggingConfig.MinimumLevel);
 
@@ -36,6 +36,17 @@ try
         .ConfigureServices(services =>
          {
              services.AddExecutionLogging(loggingConfig);
+
+             if (loggingConfig.RegisterApplicationInsightsSdk)
+             {
+                 services.ConfigureFunctionsApplicationInsights();
+
+                 // Replace the AI SDK's built-in Warning gate with a targeted rule at the
+                 // configured EXECUTIONLOGLEVEL — scoped to the AI provider only, so Console,
+                 // Elasticsearch, and Audit sinks are unaffected.
+                 services.Configure<LoggerFilterOptions>(options =>
+                     ApplicationInsightsLogFilter.Apply(options, loggingConfig.MelMinimumLevel));
+             }
          })
         .Build();
 
@@ -69,7 +80,7 @@ try
         Dev2Logger.Warn($"Program server not licensed. Status: {licenseProvider.Status}, StopExecutions: {licenseProvider.StopExecutions}", executionId);
     }
 
-    // ── Step 7: Run ──────────────────────────────────────────────────────────
+    // ── Step 7: Run ──────────────────────────────────────────────────────────   
     Dev2Logger.Info("Program initialization complete, starting host", executionId);
 
     await host.RunAsync();

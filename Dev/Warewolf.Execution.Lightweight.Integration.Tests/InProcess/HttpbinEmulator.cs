@@ -13,9 +13,8 @@
  *
  *  Emulated endpoints: /get, /post, /anything (any method). The response mirrors httpbin's
  *  shape — args, headers, json, form, files, data, method, origin, url — echoing the request
- *  back. To satisfy the assertions (which were written against real httpbin), the echoed
- *  `headers.Host` and `url` host are hard-pinned to httpbin.org regardless of the real
- *  localhost:4000 endpoint.
+ *  back. The echoed `headers.Host` and `url` host are localhost:4000, matching the WebSource
+ *  fixtures and TestConstants (this stub IS the httpbin-style service the suite talks to).
  *
  *  Runs once per test assembly via [AssemblyInitialize]/[AssemblyCleanup].
  */
@@ -41,11 +40,19 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
     /// </summary>
     internal static class HttpbinEmulator
     {
-        /// <summary>Must match the port in the repointed httpbin.bite WebSource fixtures.</summary>
+        /// <summary>
+        /// Port the in-process emulator binds on. Must match the httpbin.bite WebSource fixtures
+        /// (Address=http://localhost:4000) and TestConstants. This emulator is the SOLE httpbin
+        /// mechanism for the integration suite — the CI go-httpbin sidecar container was removed
+        /// (see Dev/.azure/pipeline.yml), so there is no port contention on 4000.
+        /// </summary>
         public const int Port = 4000;
 
-        private const string HttpbinHost = "httpbin.org";
-        private const string HttpbinBase = "https://httpbin.org";
+        // The echoed host/url must match TestConstants. This WireMock stub IS the httpbin-style
+        // service the suite talks to, on localhost:4000 — no public httpbin.org and no separate
+        // go-httpbin container required.
+        private const string HttpbinHost = "localhost:4000";
+        private const string HttpbinBase = "http://localhost:4000";
 
         private static WireMockServer? _server;
 

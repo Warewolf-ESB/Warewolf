@@ -111,7 +111,7 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
 
     <!-- Azure Key Vault + Managed Identity (encryption support) -->
-    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Identity" Version="1.17.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
@@ -137,6 +137,17 @@
 
     <!-- Licensing / Chargebee integration -->
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
+
+    <!--
+      Warewolf.Usage: third-party closed-source assembly (also referenced by
+      Dev2.Runtime.Services).  Provides UsageTracker.TrackEvent which writes
+      one row per call to the UsageData SQL table — used by the per-execution
+      usage emitter (8438).
+    -->
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
 
   </ItemGroup>
 
@@ -220,18 +231,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <!-- NEVER publish local.settings.json — it may contain development secrets. -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
     <None Update="secure.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

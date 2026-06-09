@@ -46,6 +46,7 @@ namespace Warewolf.Execution.Lightweight
     public class WorkflowExecutor : IWorkflowExecutor
     {
         readonly IExecutionLogger _executionLogger;
+        readonly IUsageEventEmitter _usageEventEmitter;
 
         // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
         // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
@@ -58,8 +59,19 @@ namespace Warewolf.Execution.Lightweight
             new(StringComparer.OrdinalIgnoreCase);
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
+            : this(executionLogger, usageEventEmitter: null)
+        {
+        }
+
+        /// <summary>
+        /// DI-friendly constructor.  <paramref name="usageEventEmitter"/> is optional —
+        /// when null, a no-op emitter is used so existing call sites and tests that
+        /// pass only the logger keep working unchanged.
+        /// </summary>
+        public WorkflowExecutor(IExecutionLogger executionLogger, IUsageEventEmitter usageEventEmitter)
         {
             _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
+            _usageEventEmitter = usageEventEmitter ?? NoOpUsageEventEmitter.Instance;
         }
 
         /// <summary>
@@ -307,6 +319,17 @@ namespace Warewolf.Execution.Lightweight
                 result.IsSuccess = result.Errors.Count == 0;
 
                 Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, ErrorCount: {result.Errors.Count}, Duration: {stopwatch.Elapsed.TotalMilliseconds}ms", executionId.ToString());
+
+                // Per-execution usage telemetry (8438) — emit AFTER the result is built so the
+                // emit never affects response latency or content.  The emitter is non-throwing.
+                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                    workflowName: resolvedName,
+                    executionId:  executionId,
+                    duration:     stopwatch.Elapsed,
+                    isSuccess:    result.IsSuccess,
+                    errorCount:   result.Errors.Count,
+                    startedAtUtc: startTime));
+
                 return result;
             }
             catch (InvalidWorkflowException iwe)
@@ -317,6 +340,13 @@ namespace Warewolf.Execution.Lightweight
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
+                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    executionId:  executionId,
+                    duration:     stopwatch.Elapsed,
+                    isSuccess:    false,
+                    errorCount:   1,
+                    startedAtUtc: startTime));
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
@@ -332,6 +362,13 @@ namespace Warewolf.Execution.Lightweight
                 stopwatch.Stop();
                 Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
                 _executionLogger.LogError(nameof(Execute), ex, executionId);
+                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    executionId:  executionId,
+                    duration:     stopwatch.Elapsed,
+                    isSuccess:    false,
+                    errorCount:   1,
+                    startedAtUtc: startTime));
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,

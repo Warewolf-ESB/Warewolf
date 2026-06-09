@@ -47,7 +47,12 @@ namespace Warewolf.Execution.Lightweight.Logging
                 return (LogLevel)num;
 
             // Named: "INFO", "Debug", etc.
-            if (Enum.TryParse<LogLevel>(raw, ignoreCase: true, out var named))
+            // Note: Enum.TryParse also accepts numeric strings and does NOT validate
+            // that the result is a defined member, so an out-of-range numeric such as
+            // "99" or "-1" would otherwise leak through here. Guard with Enum.IsDefined
+            // to honour the documented "unrecognised -> Default" contract.
+            if (Enum.TryParse<LogLevel>(raw, ignoreCase: true, out var named)
+                && Enum.IsDefined(typeof(LogLevel), named))
                 return named;
 
             return Default;

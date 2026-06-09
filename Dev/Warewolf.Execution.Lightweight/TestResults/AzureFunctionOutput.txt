@@ -1,0 +1,46 @@
+
+
+Azure Functions Core Tools
+Core Tools Version:       4.7.0+af9404fa5872d8fa5fa2454a7cfeb2ee0cda2832 (64-bit)
+Function Runtime Version: 4.1045.200.25556
+
+[2026-06-02T08:36:08.884Z] Found C:\Users\ultra\warewolf\Dev\Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj. Using for user secrets file configuration.
+Skipping 'FUNCTIONS_WORKER_RUNTIME' from local settings as it's already defined in current environment variables.
+Skipping 'AZURE_KEYVAULT_NAME' from local settings as it's already defined in current environment variables.
+Skipping 'KEYVAULT_SECRET_NAME' from local settings as it's already defined in current environment variables.
+Skipping 'AZURE_TENANT_ID' from local settings as it's already defined in current environment variables.
+Skipping 'AZURE_CLIENT_ID' from local settings as it's already defined in current environment variables.
+Skipping 'WAREWOLF_LICENSE_CHECK_ENABLED' from local settings as it's already defined in current environment variables.
+Skipping 'AZURE_FUNCTIONS_ENVIRONMENT' from local settings as it's already defined in current environment variables.
+[2026-06-02T08:36:09.873Z] Worker process started and initialized.
+
+Functions:
+
+	DropboxOAuthCallback: [GET] http://localhost:7071/oauth/dropbox/callback
+
+	DropboxOAuthStart: [GET] http://localhost:7071/oauth/dropbox/start
+
+	ExecutePublicWorkflow: [GET,POST] http://localhost:7071/Public/{*name}
+
+	ExecuteRootApisJson: [GET] http://localhost:7071/apis.json
+
+	ExecuteSecureWorkflow: [GET,POST] http://localhost:7071/Secure/{*name}
+
+	ExecuteService: [GET,POST] http://localhost:7071/Services/{*name}
+
+	ExecuteWorkflow: [GET,POST] http://localhost:7071/workflow
+
+	ExecuteWorkflowByName: [GET,POST] http://localhost:7071/workflow/{workflowName}
+
+	GetLogFile: [GET] http://localhost:7071/internal/getlogfile
+
+	GetSubscriptionData: [GET] http://localhost:7071/Subscriptions
+
+	IsLicensed: [GET] http://localhost:7071/IsLicensed
+
+	Login: [GET,POST] http://localhost:7071/login
+
+	SaveSubscriptionData: [POST] http://localhost:7071/secure/Subscriptions
+
+For detailed output, run func with --verbose flag.
+[2026-06-02T08:36:14.824Z] Host lock lease acquired by instance ID '00000000000000000000000008FDDB82'.
