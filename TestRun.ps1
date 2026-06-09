@@ -396,7 +396,7 @@ function Start-LinuxSidecar {
                 mcr.microsoft.com/mssql/server:2019-latest | Out-Null
         }
         'rabbitmq' {
-            docker run -d --name $name --network="container:$TestContainer" rabbitmq:3-management | Out-Null
+            docker run -d --name $name --network="container:$TestContainer" -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null
         }
         'redis' {
             docker run -d --name $name --network="container:$TestContainer" redis:7-alpine | Out-Null
@@ -937,7 +937,7 @@ function Start-HostRabbitMQServer {
         Write-Warn "RabbitMQ did not bind 5672 within 60s"
         return
     }
-    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null
+    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null
     Start-Sleep -Seconds 5
 }
 function Stop-HostRabbitMQServer {
@@ -1607,7 +1607,7 @@ function Invoke-WindowsBareMetalJob {
                 'sftp'          { Start-HostSFTPServer;         $sidecarStarted += 'sftp' }
                 'sqlserver'     { Start-HostMSSQLServer "";     $sidecarStarted += 'sqlserver' }
                 'elasticsearch' { Start-HostElasticsearchServer; $sidecarStarted += 'elasticsearch' }
-                'rabbitmq'      { docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null; Start-Sleep 5; $sidecarStarted += 'rabbitmq' }
+                'rabbitmq'      { docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null; Start-Sleep 5; $sidecarStarted += 'rabbitmq' }
                 'redis'         { docker run -d --name redis -p 6379:6379 redis:7-alpine | Out-Null; Start-Sleep 2; $sidecarStarted += 'redis' }
                 'samba'         { docker run -d --name sambaserver -p 445:445 -e USER="smbuser%smbpass" -e SHARE="share;/share;yes;no;no;smbuser" dperson/samba -u "smbuser;smbpass" -s "share;/share;yes;no;no;smbuser" | Out-Null; Start-Sleep 3; $sidecarStarted += 'samba' }
                 'exchange'      { docker run -d -p 8889:8080 --name exchange-connector-testing warewolfserver/exchange-connector-testing 2>$null | Out-Null; Start-Sleep 5; $sidecarStarted += 'exchange' }

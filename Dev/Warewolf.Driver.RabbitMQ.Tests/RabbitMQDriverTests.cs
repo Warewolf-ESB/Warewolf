@@ -57,6 +57,10 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             using (var connection = queueSource.NewConnection(config))
             {
                 connection.StartConsuming(config, testConsumer);
+
+                // Deterministic check (no timing dependency): the source produced a live
+                // connection to the broker before the using-block disposes it.
+                Assert.IsTrue(connection.IsOpen);
             }
 
             int i = 0;

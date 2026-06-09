@@ -167,6 +167,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource_WithSchema_OnlyReturnsForThatSchema()
         {
             var parser = new Mock<IActivityParser>();

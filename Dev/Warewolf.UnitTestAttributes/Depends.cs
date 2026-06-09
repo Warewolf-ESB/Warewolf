@@ -156,7 +156,10 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.RabbitMQ)
             {
-                Container.IP = "4.221.39.39";
+                // The RabbitMQ driver tests run in the CI 'Unit_Tests' job with -StartRabbitMQServer,
+                // which provisions RabbitMQ locally on localhost:5672 (with the test/test user). Point
+                // at that local instance rather than an ephemeral (now-decommissioned) remote IP.
+                Container.IP = "localhost";
                 Container.Port = "5672";
             }
             else if (_containerType == ContainerType.HTTPVerbsApi)

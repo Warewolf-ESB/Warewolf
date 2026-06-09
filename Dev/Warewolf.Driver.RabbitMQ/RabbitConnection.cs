@@ -118,15 +118,38 @@ namespace Warewolf.Driver.RabbitMQ
 
         protected virtual void Dispose(bool isDisposing)
         {
-            if (!_isDisposed)
+            if (_isDisposed)
             {
-                if (isDisposing)
+                return;
+            }
+
+            if (isDisposing)
+            {
+                // Stop the watchdog timer and block until any in-flight callback has
+                // finished BEFORE closing the connection. This guarantees the timer can
+                // never run QueueDeclarePassive against a closed channel during teardown
+                // (which would re-throw on the timer's background thread and crash the
+                // process), without needing any cross-thread disposal flag.
+                var timer = connectionTimer;
+                if (timer != null)
                 {
-                    _connection.Dispose();
+                    using (var timerDisposed = new ManualResetEvent(false))
+                    {
+                        // Dispose(WaitHandle) returns false if the timer was already
+                        // disposed (e.g. the watchdog self-disposed in its catch), in
+                        // which case there is no in-flight callback to wait for.
+                        if (timer.Dispose(timerDisposed))
+                        {
+                            timerDisposed.WaitOne();
+                        }
+                    }
+                    connectionTimer = null;
                 }
 
-                _isDisposed = true;
+                _connection.Dispose();
             }
+
+            _isDisposed = true;
         }
 
         public void Dispose()

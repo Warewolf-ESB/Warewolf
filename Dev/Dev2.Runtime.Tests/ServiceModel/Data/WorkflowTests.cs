@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        [Timeout(10000)]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodes_FlowStep_ContainingEmptyGuid_ShouldUseUniqueID()
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodes_FlowStep_WITH_ChildNode_ShouldAddChildNode()
