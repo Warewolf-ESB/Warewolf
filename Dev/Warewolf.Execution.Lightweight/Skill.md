@@ -488,6 +488,25 @@ Format: `WFAES::{Base64( [12-byte nonce][ciphertext][16-byte GCM tag] )}`.
 - Set `AZURE_KEYVAULT_NAME` (and optionally `KEYVAULT_SECRET_NAME`, default `dp-keyring-v1`).
 - Leave `AZURE_KEYVAULT_NAME` unset locally to skip Key Vault entirely.
 
+> **Workflows must be encrypted before deployment.** The `.bite` files in `Resources/`
+> are *workflows*, and they routinely carry sensitive material — embedded source
+> `ConnectionString`s, credentials, API keys, and hard-coded values inside the workflow
+> XAML. Treat every workflow `.bite` as needing encryption: run
+> [`Scripts/Encrypt-Config.ps1`](./Scripts/Encrypt-Config.ps1) over the whole `Resources/`
+> tree (and `Settings/`) so every secret is stored as `WFAES::…`, and never ship a workflow
+> whose secrets are still in clear text.
+
+> **Agent directive — always prompt for the Key Vault name and secret name.**
+> Before encrypting, decrypting, or wiring runtime decryption, **stop and ask the operator
+> for the two Key Vault identifiers** (do not guess or hard-code them):
+> 1. **Key Vault name** → used for `-VaultName` and the `AZURE_KEYVAULT_NAME` app setting
+>    (vault name only, e.g. `kv-warewolf-prod`, **not** a full URI).
+> 2. **Secret name** → used for `-SecretName` and the `KEYVAULT_SECRET_NAME` app setting
+>    (the key-ring secret; default `dp-keyring-v1` — offer it as the default but still confirm).
+>
+> Use the supplied values consistently for `Encrypt-Config.ps1`, the Function App settings,
+> and any verification step, so the key used to encrypt matches the key the runtime fetches.
+
 > ⚠️ **Verify encryption state before packaging — the failure modes are asymmetric and easy to miss.**
 > The runtime only AES-decrypts values carrying the `WFAES::` prefix. Any other state slips through:
 > - **Plain-text** connection strings pass through **unchanged and the workflow still runs** — so
@@ -583,7 +602,7 @@ entries in the enabled sinks.
 3. [ ] `./publish/Settings/ElasticsearchLoggingSource.bite` present (and points at your cluster).
 4. [ ] `Warewolf License.secureconfig` present and **encrypted** (`Protect-LicenseConfig.ps1 -Encrypt`), or a UI-registration plan exists.
 5. [ ] `secure.config` present and reviewed (Public locked down; intended grants only). **If missing, STOP and resolve per §5.2** (reuse from `%ProgramData%\Warewolf\Server Settings`, or generate from user intent) — do not deploy a deny-all (503) service.
-6. [ ] Key Vault provisioned; managed identity has access; **every** `.bite` `ConnectionString` encrypted with that key — begins with `WFAES::`, with **no** plain-text or DPAPI values (verify with the `Select-String` check in §6.4).
+6. [ ] Key Vault provisioned; managed identity has access. **Prompt the operator for the Key Vault name and secret name** (§6.4), then encrypt **every workflow `.bite` in `Resources/`** (and `Settings/`) with that key — **every** `ConnectionString` begins with `WFAES::`, with **no** plain-text or DPAPI values (verify with the `Select-String` check in §6.4). Workflows must not ship with clear-text secrets.
 7. [ ] Run `Deploy-ToAzure.ps1 -AppName <unique> [-ResourceGroup ... -Location ...]`.
 8. [ ] Set application settings (§3.4): logging, licensing, Entra, Key Vault.
 9. [ ] `az functionapp update --set httpsOnly=true`.
