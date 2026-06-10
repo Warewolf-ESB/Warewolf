@@ -925,16 +925,41 @@ function Stop-HostElasticsearchServer {
     docker rm -f elasticsearch-coverage 2>$null | Out-Null
 }
 
+function Add-RabbitMQTestUser {
+    # The native (choco) RabbitMQ install only provisions the loopback-only 'guest'
+    # user, but the driver tests authenticate as 'test'/'test'. Create that user via
+    # the management HTTP API (authenticating as guest over loopback) so the tests can
+    # connect. The HTTP API avoids the Erlang cookie/PATH problems that make rabbitmqctl
+    # unreliable on Windows. (The Docker path already seeds test/test via env vars.)
+    $guestAuth = @{ Authorization = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('guest:guest')) }
+    $mgmtReady = $false
+    for ($i = 1; $i -le 30; $i++) {
+        try {
+            Invoke-RestMethod -Uri 'http://localhost:15672/api/overview' -Headers $guestAuth -TimeoutSec 5 -ErrorAction Stop | Out-Null
+            $mgmtReady = $true; break
+        } catch { Start-Sleep 2 }
+    }
+    if (-not $mgmtReady) { Write-Warn "RabbitMQ management API (15672) not ready; cannot create 'test' user"; return }
+    try {
+        Invoke-RestMethod -Method Put -Uri 'http://localhost:15672/api/users/test' -Headers $guestAuth -ContentType 'application/json' -Body '{"password":"test","tags":"administrator"}' -ErrorAction Stop | Out-Null
+        Invoke-RestMethod -Method Put -Uri 'http://localhost:15672/api/permissions/%2F/test' -Headers $guestAuth -ContentType 'application/json' -Body '{"configure":".*","write":".*","read":".*"}' -ErrorAction Stop | Out-Null
+        Write-Host "RabbitMQ 'test' user provisioned"
+    } catch {
+        Write-Warn ("Failed to provision RabbitMQ 'test' user: " + $_.Exception.Message)
+    }
+}
 function Start-HostRabbitMQServer {
     if ($LegacyWindowsDeps) {
         if (-not (Get-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue)) {
             choco install rabbitmq -y --no-progress
         }
         Start-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
+        $bound = $false
         for ($i = 1; $i -le 30; $i++) {
-            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 5672)).Close(); return } catch { Start-Sleep 2 }
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 5672)).Close(); $bound = $true; break } catch { Start-Sleep 2 }
         }
-        Write-Warn "RabbitMQ did not bind 5672 within 60s"
+        if (-not $bound) { Write-Warn "RabbitMQ did not bind 5672 within 60s"; return }
+        Add-RabbitMQTestUser
         return
     }
     docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null

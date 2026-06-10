@@ -37,7 +37,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [Ignore("Requires a live RabbitMQ broker (test/test) that is not available on Microsoft-hosted CI agents; the Unit Tests job starts no RabbitMQ broker. See WOLF-8448 / WOLF-8013.")]
 		public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
@@ -81,7 +80,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [Ignore("Requires a live RabbitMQ broker (test/test) that is not available on Microsoft-hosted CI agents; the Unit Tests job starts no RabbitMQ broker. See WOLF-8448 / WOLF-8013.")]
 		public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
