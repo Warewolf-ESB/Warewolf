@@ -313,7 +313,7 @@ So for a working deployment you must do **one** of:
   "SecretKey": "",                                  // HMAC key for locally-issued JWTs (LoginFunction)
   "AuthenticationOverrideWorkflow": { "Name": "", "Value": "00000000-0000-0000-0000-000000000000" },
   "WindowsGroupPermissions": [
-    { "WindowsGroup": "Warewolf Administrators", "IsServer": true,
+    { "WindowsGroup": "Warewolf.Administrators", "IsServer": true,
       "View": true, "Execute": true, "Contribute": true,
       "DeployTo": true, "DeployFrom": true, "Administrator": true },
     { "WindowsGroup": "Public", "IsServer": true,
@@ -330,6 +330,15 @@ So for a working deployment you must do **one** of:
 - **Permission flags:** `View`, `Execute`, `Contribute`, `DeployTo`, `DeployFrom`,
   `Administrator`. Execution needs at least `View` **and** `Execute`.
 - **Groups** are matched against the caller's `roles` claim (Entra app roles / group names).
+- **`WindowsGroup` naming (Entra ID):** when the group is backed by an Entra **app role**, the
+  role `value` must match `^[\w.:-]+$` — i.e. **alphanumeric plus `.` `_` `-` `:` only, no
+  spaces** (Entra rejects spaces/punctuation with *"Entitlement ClaimValue contains invalid
+  characters"*). The provisioning scripts sanitise automatically, replacing each run of
+  disallowed characters with `_` (`Warewolf Administrators` → `Warewolf_Administrators`), so the
+  value that arrives in the `roles` claim has **no spaces**. The `WindowsGroup` in `secure.config`
+  must match that sanitised value **exactly** — use e.g. `Warewolf.Administrators` or
+  `Warewolf_Administrators`, **not** `Warewolf Administrators`. (`Public` is a local pseudo-group,
+  not an Entra role, so it is exempt.)
 
 > A common integration failure is HTTP 500
 > `resolved permissions [Execute] do not satisfy required [View, Execute]` — the `Public`
