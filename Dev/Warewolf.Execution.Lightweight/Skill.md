@@ -40,7 +40,7 @@ Release-config publish output only** (i.e. `dotnet publish -c Release` artifacts
      Warewolf License.secureconfig      (license; ENCRYPTED via Protect-LicenseConfig.ps1; see §4)
      Settings/ElasticsearchLoggingSource.bite  (logging sink; ships with the build; see §6)
 3. Create + deploy:                    → ./Deploy-ToAzure.ps1 -AppName <globally-unique>
-4. Set application settings (§3):      → az functionapp config appsettings set ...
+4. **Set application settings (§3.4):** → az functionapp config appsettings set ...   ← Deploy-ToAzure.ps1 sets NONE; the instance has zero env vars until you run this
 5. Configure Entra Easy Auth (§5):     → ./Scripts/Configure-WwExecutionAuth.ps1
 6. Verify each subsystem (§7):         → licensing, security, logging smoke tests
 ```
@@ -48,6 +48,11 @@ Release-config publish output only** (i.e. `dotnet publish -c Release` artifacts
 If you do only step 3 (deploy) and skip 4–6, the app will be **unlicensed**
 (executions blocked), will **deny every request with HTTP 503** (no effective
 `secure.config`), and will emit **no logs**. Do not stop at step 3.
+
+> ⚠️ **`Deploy-ToAzure.ps1` does NOT set a single application setting / environment variable.**
+> A freshly deployed app has **none** of the `WAREWOLF_*` / `AZURE_*` / logging settings — they
+> exist only after you run the `az functionapp config appsettings set` command in **§3.4**.
+> Step 4 is mandatory, not optional.
 
 ---
 
@@ -131,7 +136,14 @@ Running the script from a folder (`$ScriptDir`):
 
 ### 3.2 What the script does **NOT** do (you must do these)
 
-- It does **not** set any application settings (logging, licensing, Entra, Key Vault).
+> 🚨 **The deployed instance starts with ZERO application settings.** `Deploy-ToAzure.ps1`
+> only creates infrastructure and uploads the zip — it never calls
+> `az functionapp config appsettings set`. Every `WAREWOLF_*`, `AZURE_*`, Entra, Key Vault
+> and logging variable is **absent** until you set it yourself with the command in **§3.4**.
+> This is the single most common deployment defect: the app runs on bare defaults
+> (unlicensed-gate behaviour, no Key Vault decrypt, no Entra validation, no logging).
+
+- It does **not** set any application settings (logging, licensing, Entra, Key Vault) — **see §3.4 for the exact command to run immediately after deploy.**
 - It does **not** enable Easy Auth / Entra (see §5.5).
 - It does **not** enforce `--https-only` (set it yourself, below).
 - It does **not** license the app (see §4).
@@ -154,6 +166,34 @@ Set with:
 az functionapp config appsettings set --name <app> --resource-group <rg> --settings KEY=VALUE [KEY=VALUE ...]
 az functionapp update --name <app> --resource-group <rg> --set httpsOnly=true   # enforce HTTPS
 ```
+
+> ⚠️ **Mandatory post-deploy step — `Deploy-ToAzure.ps1` sets none of these.** Run the command
+> below **immediately after** the deploy. First **prompt the operator for the Key Vault name and
+> secret name** (§6.4) and substitute the `<...>` placeholders. Omit any line that does not apply
+> to your environment, but do **not** skip the command entirely.
+
+```bash
+az functionapp config appsettings set --name <app> --resource-group <rg> --settings \
+  FUNCTIONS_WORKER_RUNTIME=dotnet-isolated \
+  WAREWOLF_LICENSE_CHECK_ENABLED=true \
+  AZURE_KEYVAULT_NAME=<vault-name> \
+  KEYVAULT_SECRET_NAME=<secret-name> \
+  WAREWOLF_ENTRA_TENANT_ID=<tenant-guid> \
+  WAREWOLF_ENTRA_AUDIENCE=api://<client-id> \
+  ENABLEAPPLICATIONINSIGHTS=true \
+  EXECUTIONLOGLEVEL=4
+# Then enforce HTTPS:
+az functionapp update --name <app> --resource-group <rg> --set httpsOnly=true
+```
+
+Notes on the lines above:
+- `WAREWOLF_LICENSE_CHECK_ENABLED` — leave `true` for prod (default); set `false` only for isolated tests (§4).
+- `AZURE_KEYVAULT_NAME` / `KEYVAULT_SECRET_NAME` — required whenever any `.bite` carries `WFAES::` secrets; prompt for both (§6.4). Leave unset only when no encryption is used.
+- `WAREWOLF_ENTRA_*` — required to validate JWTs on `/Secure/*` (§5.5); omit for anonymous/public-only deployments.
+- `WAREWOLF_SECURE_CONFIG` — set **only** when `secure.config` is mounted at a non-default path; when it ships in the package (bin dir) leave it unset (§5).
+- After setting, the app **restarts**; re-run the §7 verification suite.
+
+The full set of recognised settings:
 
 **Logging (§6)**
 
@@ -604,7 +644,7 @@ entries in the enabled sinks.
 5. [ ] `secure.config` present and reviewed (Public locked down; intended grants only). **If missing, STOP and resolve per §5.2** (reuse from `%ProgramData%\Warewolf\Server Settings`, or generate from user intent) — do not deploy a deny-all (503) service.
 6. [ ] Key Vault provisioned; managed identity has access. **Prompt the operator for the Key Vault name and secret name** (§6.4), then encrypt **every workflow `.bite` in `Resources/`** (and `Settings/`) with that key — **every** `ConnectionString` begins with `WFAES::`, with **no** plain-text or DPAPI values (verify with the `Select-String` check in §6.4). Workflows must not ship with clear-text secrets.
 7. [ ] Run `Deploy-ToAzure.ps1 -AppName <unique> [-ResourceGroup ... -Location ...]`.
-8. [ ] Set application settings (§3.4): logging, licensing, Entra, Key Vault.
+8. [ ] **Set application settings (§3.4) — MANDATORY:** run the concrete `az functionapp config appsettings set` command (logging, licensing, Entra, Key Vault). `Deploy-ToAzure.ps1` sets **none** of these; skipping this leaves the instance with **zero** environment variables. Confirm afterwards with `az functionapp config appsettings list --name <app> --resource-group <rg>`.
 9. [ ] `az functionapp update --set httpsOnly=true`.
 10. [ ] Configure Entra Easy Auth + client apps (§5.5).
 11. [ ] Run the §7 verification suite; confirm licensing, security, and logging all green.
