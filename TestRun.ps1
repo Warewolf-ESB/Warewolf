@@ -953,6 +953,25 @@ function Start-HostRabbitMQServer {
         if (-not (Get-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue)) {
             choco install rabbitmq -y --no-progress
         }
+        # RabbitMQ 4.x forbids transient (non-durable) non-exclusive queues by default
+        # ('transient_nonexcl_queues' deprecated feature). The RabbitMQ driver declares
+        # exactly that kind of queue, so re-permit the feature via rabbitmq.conf. Written
+        # to both the install-user and LocalSystem config locations to cover whichever
+        # base dir the Windows service resolves. (The Docker path uses rabbitmq:3 which
+        # still permits it.)
+        $confLine = 'deprecated_features.permit.transient_nonexcl_queues = true'
+        $confDirs = @(
+            (Join-Path $env:APPDATA 'RabbitMQ'),
+            'C:\Windows\System32\config\systemprofile\AppData\Roaming\RabbitMQ'
+        )
+        foreach ($d in $confDirs) {
+            try {
+                if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+                Set-Content -Path (Join-Path $d 'rabbitmq.conf') -Value $confLine -Encoding ascii -Force
+            } catch { Write-Warn ("Could not write rabbitmq.conf to ${d}: " + $_.Exception.Message) }
+        }
+        # Restart so the config is applied (Restart is a no-op if not yet running).
+        Restart-Service -Name 'RabbitMQ' -Force -ErrorAction SilentlyContinue
         Start-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
         $bound = $false
         for ($i = 1; $i -le 30; $i++) {
