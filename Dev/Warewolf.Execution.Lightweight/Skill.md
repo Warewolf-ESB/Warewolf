@@ -69,7 +69,7 @@ Knowing this order tells you *why* each piece of configuration matters and *when
 | 2 | Bootstrap console logger (so no startup log is lost) | `EXECUTIONLOGLEVEL` |
 | 3 | Build host (`ConfigureWarewolf` + `AddExecutionLogging`) | logging flags |
 | 4 | `StartupOrchestrator.RunStartupAsync` — wires the **Key Vault AES decrypt hook**, warms the workflow index | Key Vault secret |
-| 5 | Upgrade `Dev2Logger.ExternalSink` to the full **CompositeExecutionLogger** (Console + App Insights + Elasticsearch + Audit). Resolved **after** step 4 so the decrypt hook is live before the Elasticsearch `.bite` connection string is read | `ENABLECONSOLELOGGING`, `ENABLEELASTICSEARCHLOGGING` |
+| 5 | Upgrade `Dev2Logger.ExternalSink` to the full **CompositeExecutionLogger** (Console + App Insights + Elasticsearch + Audit). Resolved **after** step 4 so the decrypt hook is live before the Elasticsearch `.bite` connection string is read | `ENABLEAPPLICATIONINSIGHTS`, `ENABLEELASTICSEARCHLOGGING` |
 | 6 | License check via `SubscriptionProvider.Instance` | `Warewolf License.secureconfig` |
 | 7 | `host.RunAsync()` | — |
 
@@ -159,9 +159,9 @@ az functionapp update --name <app> --resource-group <rg> --set httpsOnly=true   
 
 | Setting | Values | Default | Effect |
 |---|---|---|---|
-| `ENABLECONSOLELOGGING` | `true`/`false` | false | Console / App Insights execution sink |
+| `ENABLEAPPLICATIONINSIGHTS` | `true`/`false` | false | Adds the rich **AzureExecutionLogger** → Application Insights sink (`ENABLECONSOLELOGGING` accepted as a backward-compat alias). Console / Azure **Log Stream** is **always on** regardless. |
 | `ENABLEELASTICSEARCHLOGGING` | `true`/`false` | false | Elasticsearch execution sink (also needs the `.bite` file) |
-| `EXECUTIONLOGLEVEL` | `0`–`6` or name | `4` (INFO) | Min level for both execution sinks |
+| `EXECUTIONLOGLEVEL` | `0`–`6` or name | `4` (INFO) | Min level for **all** execution sinks (Console/Log Stream, App Insights, Elasticsearch); `5`/`6` send Debug/Trace to App Insights too |
 | `APPLICATIONINSIGHTS_CONNECTION_STRING` | conn string | — | App Insights export |
 | `Elasticsearch__Uri` / `__IndexName` / `__Username` / `__Password` / `__ApiKey` | strings | from `.bite` | Override the `.bite` Elasticsearch source |
 
@@ -378,37 +378,69 @@ Full walk-throughs: [`docs/README-Authentication.md`](./docs/README-Authenticati
 ### 6.1 Architecture (two pipelines)
 
 ```
-Execution loggers (composite — controlled by env vars):
+Execution loggers (composite — each sink added by AddExecutionLogging):
   Dev2Logger → Dev2LoggerSinkAdapter → CompositeExecutionLogger
-        ├── AzureExecutionLogger        → MEL → Console / Application Insights
-        └── ElasticsearchExecutionLogger → direct HTTP → Elasticsearch index
+        ├── ConsoleExecutionLogger       → MEL → stdout → Azure Log Stream + App Insights traces   (ALWAYS on)
+        ├── AzureExecutionLogger         → MEL → Application Insights (rich telemetry)   (ENABLEAPPLICATIONINSIGHTS=true)
+        ├── ElasticsearchExecutionLogger → direct HTTP → Elasticsearch index            (ENABLEELASTICSEARCHLOGGING=true)
+        └── AuditExecutionLogger         → MEL → security audit events                  (ALWAYS on)
 
 Infrastructure loggers (MEL only — controlled by host.json):
   AuditLogger, InstanceCorrelationMiddleware, StartupOrchestrator
 ```
 
 Two filter gates apply to every entry:
-- **Gate 1 — `EXECUTIONLOGLEVEL`** (`ExecutionLoggerBase.ShouldLog`): gates **both** execution
-  sinks.
+- **Gate 1 — `EXECUTIONLOGLEVEL`** (`ExecutionLoggerBase.ShouldLog`): gates **all** execution
+  sinks. `DEBUG` (5) / `TRACE` (6) let Debug/Trace through to the Log Stream **and** App Insights.
 - **Gate 2 — `host.json` `logging.logLevel`** (MEL category filters): affects only MEL sinks
-  (Azure console/App Insights, Audit, middleware). **Elasticsearch bypasses MEL**, so
+  (Console/Log Stream, App Insights, Audit, middleware). **Elasticsearch bypasses MEL**, so
   `host.json` does **not** throttle it.
 
 ### 6.2 The three knobs
 
 | Variable | Values | Default | Effect |
 |---|---|---|---|
-| `ENABLECONSOLELOGGING` | `true`/`false` | false | Console + App Insights execution logging |
+| `ENABLEAPPLICATIONINSIGHTS` | `true`/`false` | false | Adds the rich **AzureExecutionLogger** → Application Insights sink. (`ENABLECONSOLELOGGING` is accepted as a backward-compat alias.) The console / Azure **Log Stream** sink is **always on** regardless of this flag. |
 | `ENABLEELASTICSEARCHLOGGING` | `true`/`false` | false | Elasticsearch logging — **also requires** `Settings/ElasticsearchLoggingSource.bite` to exist |
-| `EXECUTIONLOGLEVEL` | `0`–`6` / name | `4` (INFO) | `0 OFF · 1 FATAL · 2 ERROR · 3 WARN · 4 INFO · 5 DEBUG · 6 TRACE` |
+| `EXECUTIONLOGLEVEL` | `0`–`6` / name | `4` (INFO) | `0 OFF · 1 FATAL · 2 ERROR · 3 WARN · 4 INFO · 5 DEBUG · 6 TRACE` — gates **every** sink, including App Insights and the Log Stream |
 
 ```bash
-# Elasticsearch + console at INFO (typical prod)
+# Elasticsearch + App Insights at INFO (typical prod)
 az functionapp config appsettings set --name <app> --resource-group <rg> \
-  --settings ENABLEELASTICSEARCHLOGGING=true ENABLECONSOLELOGGING=true EXECUTIONLOGLEVEL=4
-# Live console stream (App Service feature; silent unless ENABLECONSOLELOGGING=true)
+  --settings ENABLEELASTICSEARCHLOGGING=true ENABLEAPPLICATIONINSIGHTS=true EXECUTIONLOGLEVEL=4
+# Live console (Log Stream) — always on; tail it with:
 az webapp log tail --name <app> --resource-group <rg>
 ```
+
+#### Debug & Trace in Application Insights and the Live Log Stream (WOLF-8436)
+
+Setting `EXECUTIONLOGLEVEL=DEBUG` (5) or `TRACE` (6) lowers the gate so Debug/Trace execution
+entries flow all the way to **Application Insights** and the Azure Portal **Live Log Stream**, not
+just stdout. Two things to know when reading them in App Insights:
+
+- Both **Trace** and **Debug** map to App Insights **`severityLevel` 0**, so filter by message,
+  not severity, when you are after that level. Full mapping:
+
+  | `EXECUTIONLOGLEVEL` | Dev2 value | MEL `LogLevel` | App Insights `severityLevel` |
+  |---|---|---|---|
+  | `TRACE` (6) | TRACE | Trace (0) | 0 |
+  | `DEBUG` (5) | DEBUG | Debug (1) | 0 |
+  | `INFO` (4)  | INFO  | Information (2) | 1 |
+  | `WARN` (3)  | WARN  | Warning (3) | 2 |
+  | `ERROR` (2) | ERROR | Error (4) | 3 |
+  | `FATAL` (1) | FATAL | Critical (5) | 4 |
+
+- Query the App Insights **`traces`** table (Debug/Trace included once the level gate is lowered):
+
+  ```kusto
+  traces
+  | where message contains "[ExecutionId:"
+  | project timestamp, severityLevel, message
+  | order by timestamp desc
+  ```
+
+`DEBUG`/`TRACE` is verbose — raise `EXECUTIONLOGLEVEL` back to `INFO` (4) for steady-state prod to
+keep App Insights ingestion cost down.
 
 ### 6.3 The Elasticsearch sink — `Settings/ElasticsearchLoggingSource.bite`
 
@@ -526,7 +558,8 @@ entries in the enabled sinks.
 | **401 on `/Secure/*` (no/invalid token)** | Missing, expired or invalid token — includes `WAREWOLF_ENTRA_AUDIENCE`/`WAREWOLF_ENTRA_TENANT_ID` ≠ token `aud`/`tid`, which fails validation so the caller is unauthenticated | Send a valid token; align the audience/tenant — §3.4 / §5.5 |
 | **HTTP 500 with a valid token** (`Invalid Authentication Token or invalid permissions to Execute resource`, or `resolved permissions [Execute] do not satisfy required [View, Execute]`) | Caller's group not granted the required `View`/`Execute` for that workflow (e.g. `Public` group missing `View:true`) | Grant the group the needed permissions in `secure.config` — §5.3. (The authorization middleware returns **500** for this today; a `TODO` in `WorkflowAuthorizationMiddleware` tracks changing it to **403**.) |
 | **No Elasticsearch logs** | flag off, `.bite` missing, or Key Vault decrypt failing | Set `ENABLEELASTICSEARCHLOGGING=true`, ensure `Settings/ElasticsearchLoggingSource.bite` is deployed, set `AZURE_KEYVAULT_NAME` + managed identity — §6.3/§6.4 |
-| **No console logs in `az webapp log tail`** | `ENABLECONSOLELOGGING=false` or `host.json` filter | Enable the flag; check `host.json` category level — §6.1/§6.2 |
+| **No console / Log Stream logs in `az webapp log tail`** | `EXECUTIONLOGLEVEL=0` (OFF), a `host.json` category filter, or App Service Log Stream not enabled (console sink itself is always-on) | Raise `EXECUTIONLOGLEVEL`; check `host.json` category level; enable App Service logs — §6.1/§6.2 |
+| **No Debug/Trace in App Insights / Live Log Stream** | `EXECUTIONLOGLEVEL` above `DEBUG`/`TRACE`, or `ENABLEAPPLICATIONINSIGHTS` off (no rich AI sink) | Set `EXECUTIONLOGLEVEL=DEBUG` (5) or `TRACE` (6); set `ENABLEAPPLICATIONINSIGHTS=true` for the AI sink. Trace/Debug land under `severityLevel` 0 — §6.2 |
 | **`CryptographicException` decrypting a `.bite`** | Wrong/rotated Key Vault key, **or** a DPAPI-encrypted value copied from a full Warewolf Server (DPAPI can't be decrypted in Azure) | Re-encrypt the source with `Scripts/Encrypt-Config.ps1` using the current Key Vault key — §6.4; for rotation see KeyRotationRunbook |
 | **A source connects using a plain-text secret (no error at all)** | A `.bite` `ConnectionString` shipped as plain text — values without the `WFAES::` prefix pass through unencrypted and **still work**, so nothing fails while the secret sits in clear text | Re-encrypt with `Scripts/Encrypt-Config.ps1`; verify every `ConnectionString` starts with `WFAES::` before packaging (see the `Select-String` check in §6.4) |
 | **Deploy script errors: "Resources folder not found"** | no `Resources/` next to the script | Create `Resources/` and add `.bite` files before deploying — §3.1 |
