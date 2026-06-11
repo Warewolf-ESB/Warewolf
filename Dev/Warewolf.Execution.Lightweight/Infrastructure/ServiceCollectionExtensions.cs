@@ -113,7 +113,7 @@ internal static class ServiceCollectionExtensions
     {
         const string executionId = "ServiceCollectionExtensions-ExecutionLogging";
 
-        Dev2Logger.Debug($"ServiceCollectionExtensions AddExecutionLogging registering. EnableAI={loggingConfig.EnableApplicationInsights}, EnableElastic={loggingConfig.EnableElasticsearch}", executionId);
+        Dev2Logger.Debug($"ServiceCollectionExtensions AddExecutionLogging registering. EnableAI={loggingConfig.RegisterApplicationInsightsSdk}, EnableElastic={loggingConfig.EnableElasticsearch}", executionId);
 
         services.AddSingleton(loggingConfig);
 
@@ -121,22 +121,34 @@ internal static class ServiceCollectionExtensions
         {
             var loggers = new List<IExecutionLogger>();
 
-            // 1. ConsoleExecutionLogger — ALWAYS present (feeds stdout → Log Stream + AI traces)
-            loggers.Add(new ConsoleExecutionLogger(
-                sp.GetRequiredService<ILogger<ConsoleExecutionLogger>>(),
-                loggingConfig.MinimumLevel));
-            Dev2Logger.Debug("AddExecutionLogging added ConsoleExecutionLogger (always-on)", executionId);
-
-            // 2. AzureExecutionLogger — opt-in (rich Application Insights telemetry)
-            if (loggingConfig.EnableApplicationInsights)
+            // 1. General-purpose MEL logger — EXACTLY ONE of Console/Azure is added to
+            //    avoid duplicate stdout AND Application Insights entries. Both loggers wrap
+            //    ILogger<T>, which in the isolated worker broadcasts to EVERY registered MEL
+            //    provider (Console + Application Insights); the category <T> only labels the
+            //    entry, it does NOT select a provider. Adding both therefore emits everything
+            //    twice, so the active sink is chosen by whether the AI SDK is registered.
+            if (loggingConfig.RegisterApplicationInsightsSdk)
             {
+                // AI SDK registered → AzureExecutionLogger. Its ILogger<AzureExecutionLogger>
+                // reaches the Application Insights provider (primary sink, correct per-level
+                // severity) AND the Console provider (stdout → Live Log Stream). Requirement 2.
                 loggers.Add(new AzureExecutionLogger(
                     sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
                     loggingConfig.MinimumLevel));
-                Dev2Logger.Debug("AddExecutionLogging added AzureExecutionLogger", executionId);
+                Dev2Logger.Debug("AddExecutionLogging added AzureExecutionLogger (AI + stdout)", executionId);
+            }
+            else if (loggingConfig.EnableConsoleLogging)
+            {
+                // AI SDK not registered → ConsoleExecutionLogger. With no Application Insights
+                // provider attached it reaches the Console provider only (stdout → Live Log
+                // Stream) and never reaches Application Insights. Requirement 1.
+                loggers.Add(new ConsoleExecutionLogger(
+                    sp.GetRequiredService<ILogger<ConsoleExecutionLogger>>(),
+                    loggingConfig.MinimumLevel));
+                Dev2Logger.Debug("AddExecutionLogging added ConsoleExecutionLogger (stdout only)", executionId);
             }
 
-            // 3. ElasticsearchExecutionLogger — opt-in
+            // 2. ElasticsearchExecutionLogger — opt-in
             if (loggingConfig.EnableElasticsearch && File.Exists(loggingConfig.ElasticsearchSettingsPath))
             {
                 var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(loggingConfig.ElasticsearchSettingsPath);
@@ -145,7 +157,7 @@ internal static class ServiceCollectionExtensions
                 Dev2Logger.Debug("AddExecutionLogging added ElasticsearchExecutionLogger", executionId);
             }
 
-            // 4. AuditExecutionLogger — ALWAYS present (security events only)
+            // 3. AuditExecutionLogger — ALWAYS present (security events only)
             loggers.Add(new AuditExecutionLogger(
                 sp.GetRequiredService<ILogger<AuditExecutionLogger>>()));
             Dev2Logger.Debug("AddExecutionLogging added AuditExecutionLogger (always-on)", executionId);

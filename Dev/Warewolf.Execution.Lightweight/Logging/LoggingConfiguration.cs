@@ -23,24 +23,23 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// </summary>
     public sealed record LoggingConfiguration
     {
-        /// <summary>Whether the Application Insights / AzureExecutionLogger sink is enabled.</summary>
-        public bool EnableApplicationInsights { get; init; }
-
         /// <summary>
-        /// Whether the Application Insights <b>SDK</b> should be registered at the DI host
-        /// level (<c>ConfigureFunctionsApplicationInsights</c> + the targeted
-        /// <see cref="Microsoft.Extensions.Logging.LoggerFilterOptions"/> rule).
+        /// The single authoritative Application Insights switch, driven by
+        /// <c>ENABLEAPPLICATIONINSIGHTS</c>. When <c>true</c> the worker-side AI SDK is
+        /// registered (<c>AzureExecutionLogger</c> + <c>ConfigureFunctionsApplicationInsights</c>
+        /// + the targeted <see cref="Microsoft.Extensions.Logging.LoggerFilterOptions"/> rule)
+        /// and supplied the connection string from <c>WAREWOLF_APPINSIGHTS_CONNECTION_STRING</c>.
         ///
-        /// <para>This is intentionally <b>distinct</b> from <see cref="EnableApplicationInsights"/>:
-        /// the latter is also driven by the legacy <c>ENABLECONSOLELOGGING</c> alias and only
-        /// controls whether the MEL-based <c>AzureExecutionLogger</c> joins the composite sink.
-        /// Registering the AI SDK (and its telemetry ingestion / billing) must require an
-        /// explicit opt-in via <c>ENABLEAPPLICATIONINSIGHTS</c> only.</para>
+        /// <para>The worker SDK is the <b>only</b> path to App Insights: the standard
+        /// <c>APPLICATIONINSIGHTS_CONNECTION_STRING</c> setting (which would auto-enable the
+        /// Functions host's own AI pipeline) is deliberately never used, so registering the AI
+        /// SDK — and its telemetry ingestion / billing — is an explicit opt-in only.</para>
         /// </summary>
         public bool RegisterApplicationInsightsSdk { get; init; }
 
         /// <summary>Whether the Elasticsearch sink is enabled.</summary>
         public bool EnableElasticsearch { get; init; }
+        public bool EnableConsoleLogging { get; init; }
 
         /// <summary>Minimum log level gate shared by all sinks.</summary>
         public Dev2LogLevel MinimumLevel { get; init; }
@@ -88,8 +87,7 @@ namespace Warewolf.Execution.Lightweight.Logging
 
             return new LoggingConfiguration
             {
-                EnableApplicationInsights = IsEnabled("ENABLEAPPLICATIONINSIGHTS")
-                    || IsEnabled("ENABLECONSOLELOGGING"), // backward compat: adds AzureExecutionLogger to composite
+                EnableConsoleLogging = IsEnabled("ENABLECONSOLELOGGING"),
                 RegisterApplicationInsightsSdk = IsEnabled("ENABLEAPPLICATIONINSIGHTS"), // SDK + telemetry: explicit opt-in only
                 EnableElasticsearch = IsEnabled("ENABLEELASTICSEARCHLOGGING"),
                 MinimumLevel = ExecutionLogLevel.Read(),

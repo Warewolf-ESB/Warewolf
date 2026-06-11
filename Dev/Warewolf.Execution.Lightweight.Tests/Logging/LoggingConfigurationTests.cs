@@ -122,24 +122,21 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void FromEnvironment_NoAiVars_BothAiFlagsFalse()
+        public void FromEnvironment_NoAiVars_DoesNotRegisterAiSdk()
         {
             var config = LoggingConfiguration.FromEnvironment();
 
-            Assert.IsFalse(config.EnableApplicationInsights);
             Assert.IsFalse(config.RegisterApplicationInsightsSdk);
         }
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void FromEnvironment_EnableApplicationInsights_SetsBothFlags()
+        public void FromEnvironment_EnableApplicationInsights_RegistersAiSdk()
         {
             Environment.SetEnvironmentVariable("ENABLEAPPLICATIONINSIGHTS", "true");
 
             var config = LoggingConfiguration.FromEnvironment();
 
-            Assert.IsTrue(config.EnableApplicationInsights,
-                "AI explicitly enabled → AzureExecutionLogger joins the composite.");
             Assert.IsTrue(config.RegisterApplicationInsightsSdk,
                 "AI explicitly enabled → AI SDK must be registered.");
         }
@@ -148,15 +145,16 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
         [TestCategory("UnitTest")]
         public void FromEnvironment_EnableConsoleLoggingOnly_DoesNotRegisterAiSdk()
         {
-            // DEF-A regression guard: the legacy backward-compat alias must NOT trigger
-            // AI SDK registration (telemetry ingestion / billing). It only keeps the
-            // AzureExecutionLogger in the composite for log-routing compatibility.
+            // DEF-A regression guard: console logging must NOT trigger AI SDK registration
+            // (telemetry ingestion / billing). ENABLEAPPLICATIONINSIGHTS is the single
+            // authoritative App Insights switch; ENABLECONSOLELOGGING only selects the
+            // stdout-bound ConsoleExecutionLogger sink.
             Environment.SetEnvironmentVariable("ENABLECONSOLELOGGING", "true");
 
             var config = LoggingConfiguration.FromEnvironment();
 
-            Assert.IsTrue(config.EnableApplicationInsights,
-                "Backward compat: ENABLECONSOLELOGGING still enables the composite sink.");
+            Assert.IsTrue(config.EnableConsoleLogging,
+                "ENABLECONSOLELOGGING selects the ConsoleExecutionLogger sink.");
             Assert.IsFalse(config.RegisterApplicationInsightsSdk,
                 "DEF-A: ENABLECONSOLELOGGING must NOT register the AI SDK.");
         }
@@ -170,7 +168,6 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
 
             var config = LoggingConfiguration.FromEnvironment();
 
-            Assert.IsTrue(config.EnableApplicationInsights);
             Assert.IsTrue(config.RegisterApplicationInsightsSdk);
         }
 
