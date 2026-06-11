@@ -70,7 +70,16 @@
     Release publishes (the Azure deployment path driven by Deploy-ToAzure.ps1)
     still need to publish, so the gate is scoped to Debug only.
   -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+  <!--
+    Scope the publish-skip to the RID-qualified CI scenario only.
+    The MSB3030 (extensions.json copied to the non-RID obj path while publish
+    looks under the RID subfolder) is only triggered when ServerTests.sln is
+    published with `-r win-x64`. The Docker / local debug publish path
+    (engine\run.ps1) uses `dotnet publish -c Debug` with NO RuntimeIdentifier,
+    so it must remain publishable — otherwise the Worker SDK post-publish target
+    never runs and the `.azurefunctions` folder is missing from the output.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' != ''">
     <IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
@@ -99,8 +108,8 @@
 
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
 
-    <!-- Analyzer only (IMPORTANT) -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
+    <!-- Worker SDK for isolated process model - generates .azurefunctions folder -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" />
 
     <!-- Application Insights for rich telemetry and structured logging -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />

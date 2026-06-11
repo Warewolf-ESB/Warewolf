@@ -18,6 +18,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using Newtonsoft.Json.Linq;
@@ -406,6 +407,16 @@ namespace Dev2.Activities
         PluginInvokeArgs BuidlPluginInvokeArgs(int update, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
             var pluginSource = ResourceCatalog.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+
+            if (pluginSource == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources
+                       .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    pluginSource = ws.OfType<PluginSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
+
             return new PluginInvokeArgs
             {
                 AssemblyLocation = pluginSource.AssemblyLocation,

@@ -34,6 +34,8 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Exchange.Email.Wrapper;
 using Dev2.Common.State;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Activities.Exchange
 {
@@ -169,6 +171,14 @@ namespace Dev2.Activities.Exchange
             try
             {
                 IExchange runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SavedSource.ResourceID);
+
+                if (runtimeSource == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(SavedSource.ResourceID) == true
+                    && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        runtimeSource = ws.OfType<ExchangeSource>().FirstOrDefault(r => r.ResourceID == SavedSource.ResourceID);
+                }
 
                 if (runtimeSource == null)
                 {

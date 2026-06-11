@@ -783,6 +783,16 @@ namespace Dev2.Activities
             if (cell.data.TryGetGuid(Constants.SQLBULKINSERT_DATABASE, out Guid databaseResourceId))
             {
                 var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(Guid.Empty, databaseResourceId);
+
+                if (runtimeDatabase == null
+                    && AmbientSourceLoader.Current?.EnsureSourceLoaded(databaseResourceId) == true
+                    && ResourceCatalog.WorkspaceResources
+                           .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+                {
+                    lock (ws)
+                        runtimeDatabase = ws.OfType<DbSource>().FirstOrDefault(r => r.ResourceID == databaseResourceId);
+                }
+
                 this.Database = runtimeDatabase;
             }
         }

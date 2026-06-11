@@ -50,6 +50,14 @@ namespace Dev2.Activities
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            if (url == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources
+                       .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    url = ws.OfType<WebSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
             var debugItem = new DebugItem();

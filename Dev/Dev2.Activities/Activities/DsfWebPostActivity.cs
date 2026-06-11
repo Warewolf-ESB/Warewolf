@@ -64,6 +64,14 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            if (url == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources
+                       .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    url = ws.OfType<WebSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
             var headerString=string.Empty;
             if (head != null)
             {
