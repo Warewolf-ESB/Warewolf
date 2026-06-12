@@ -117,17 +117,6 @@ try
 
     Dev2Logger.Info("Program Dev2Logger external sink upgraded to full CompositeExecutionLogger", executionId);
 
-    // AppInsights severity validation — MUST run AFTER the ExternalSink upgrade above so
-    // entries flow through AzureExecutionLogger (the AI SDK ILogger provider) which preserves
-    // per-level severity. Before the upgrade only the console sink is active, so the Functions
-    // host captures stdout and stamps every entry as Information (severity 1).
-    Dev2Logger.Trace("[AppInsights-Test] TRACE level log entry - validates TRACE severity in Application Insights", executionId);
-    Dev2Logger.Debug("[AppInsights-Test] DEBUG level log entry - validates DEBUG severity in Application Insights", executionId);
-    Dev2Logger.Info("[AppInsights-Test] INFO level log entry - validates INFO severity in Application Insights", executionId);
-    Dev2Logger.Warn("[AppInsights-Test] WARN level log entry - validates WARN severity in Application Insights", executionId);
-    Dev2Logger.Error("[AppInsights-Test] ERROR level log entry - validates ERROR severity in Application Insights", executionId);
-    Dev2Logger.Fatal("[AppInsights-Test] FATAL level log entry - validates FATAL severity in Application Insights", executionId);
-
     // ── Step 6: License check ────────────────────────────────────────────────
     Dev2Logger.Debug("Program loading Warewolf License", executionId);
 
