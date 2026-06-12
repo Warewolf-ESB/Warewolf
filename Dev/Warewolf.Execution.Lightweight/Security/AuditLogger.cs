@@ -5,8 +5,7 @@
  */
 
 using Dev2.Common;
-using System;
-using System.Management.Automation;
+using Microsoft.Extensions.Logging;
 
 namespace Warewolf.Execution.Lightweight.Security
 {
@@ -26,7 +25,11 @@ namespace Warewolf.Execution.Lightweight.Security
     {
         const string AuditExecutionId = "AuditLogger";
 
-        public AuditLogger() { }
+        readonly ILogger<AuditLogger> _logger;
+
+        public AuditLogger(ILogger<AuditLogger> logger)
+            => _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
 
         /// <summary>
         /// Gets Cold Start Log
@@ -43,14 +46,14 @@ namespace Warewolf.Execution.Lightweight.Security
         /// from Key Vault.
         /// </summary>
         public void LogColdStart(string instanceId, string keyId)
-            => Dev2Logger.Info(GetColdStartLog(instanceId, keyId), AuditExecutionId);
+            => _logger.LogInformation(GetColdStartLog(instanceId, keyId), AuditExecutionId);
 
         /// <summary>
         /// Logged once per cold start after the AES key is successfully loaded
         /// from Key Vault.
         /// </summary>
         public void LogColdStart(string message)
-            => Dev2Logger.Info(message, AuditExecutionId);
+            => _logger.LogInformation(message, AuditExecutionId);
 
 
         /// <summary>
@@ -68,10 +71,10 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Logged when Key Vault initialisation fails (thrown after this call).
         /// </summary>
         public void LogKeyVaultError(string instanceId, Exception ex)
-            => Dev2Logger.Error(GetKeyVaultErrorLog(instanceId), ex, AuditExecutionId);
+            => _logger.LogError(ex, GetKeyVaultErrorLog(instanceId));
 
         public void LogKeyVaultErrorAndMessage(string message, Exception ex)
-            => Dev2Logger.Error(message, ex, AuditExecutionId);
+            => _logger.LogError(ex, message);
 
 
         /// <summary>
@@ -80,7 +83,7 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         public void LogDecryption(string instanceId)
         {
-            Dev2Logger.Debug(GetDecryptionLog(instanceId), AuditExecutionId);
+            _logger.LogDebug(GetDecryptionLog(instanceId), AuditExecutionId);
         }
 
         /// <summary>
@@ -116,7 +119,7 @@ namespace Warewolf.Execution.Lightweight.Security
             string reason,
             string correlationId)
         {
-            Dev2Logger.Warn(
+            _logger.LogWarning(
                 $"SECURITY_AUDIT | Event=AuthOutcome | Outcome={outcome} | Caller={caller} | " +
                 $"Workflow={workflow} | Path={path} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
                 AuditExecutionId);

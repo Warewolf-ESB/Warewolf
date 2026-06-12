@@ -12,9 +12,9 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.IO;
 using System.Threading;
 using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 using Warewolf.Execution.Lightweight.Logging;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
@@ -30,24 +30,19 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            var biteFile = Path.Combine(AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite");
-            _opts = File.Exists(biteFile)
-                ? ElasticsearchLoggingOptions.FromBiteFile(biteFile)
-                : new ElasticsearchLoggingOptions { Uri = "http://localhost:9200", IndexName = "warewolftestlogs" };
+            // Point the logger at the in-process Elasticsearch stub (started by
+            // IntegrationTestAssemblyInit) instead of the shipped remote ES source, so the
+            // tests are deterministic and require no external Elasticsearch on :9200.
+            _opts = new ElasticsearchLoggingOptions
+            {
+                Uri       = ElasticsearchEmulator.Url,
+                IndexName = "warewolf-integration-test-logs",
+            };
 
-            // Override the index so CI tests don't pollute the production index
-            _opts.IndexName = "warewolf-integration-test-logs";
-
-            // Probe whether Elasticsearch is reachable before running tests.
+            // Probe the stub (always reachable) so the availability guard passes in-process.
             try
             {
                 using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-                if (!string.IsNullOrEmpty(_opts.Username) && !string.IsNullOrEmpty(_opts.Password))
-                {
-                    var creds = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{_opts.Username}:{_opts.Password}"));
-                    http.DefaultRequestHeaders.Authorization =
-                        new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", creds);
-                }
                 var resp = http.GetAsync(_opts.Uri).GetAwaiter().GetResult();
                 _elasticsearchAvailable = resp.IsSuccessStatusCode || (int)resp.StatusCode == 401;
             }
@@ -62,7 +57,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         void SkipIfUnavailable()
         {
             if (!_elasticsearchAvailable)
-                Assert.Inconclusive("Elasticsearch is not reachable at the configured URL — skipping logger integration tests.");
+                Assert.Inconclusive("Elasticsearch stub is not reachable — skipping logger integration tests.");
         }
 
         // ── LogDebug ──────────────────────────────────────────────────────────────

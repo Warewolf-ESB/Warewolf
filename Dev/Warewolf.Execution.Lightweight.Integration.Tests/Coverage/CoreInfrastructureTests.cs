@@ -25,6 +25,7 @@
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -551,6 +552,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     {
         sealed class NoOpLogger : IExecutionLogger
         {
+            public void LogTrace(string message, Guid executionId) { }
+            public void LogTrace(string message, Exception exception, Guid executionId) { }
             public void LogDebug(string message, Guid executionId) { }
             public void LogDebug(string message, Exception exception, Guid executionId) { }
             public void LogInfo(string message, Guid executionId) { }
@@ -615,7 +618,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         [TestMethod]
-        [Ignore("Requires WorkflowExecutor to handle the OPENAPI emission type before the file-exists guard. Re-introduce when WOLF-8418 is complete.")]
+        // (WOLF-8418) Un-ignored per request; may fail until the OPENAPI-before-file-guard
+        // path is merged — tracked in the WIP-failures list.
         public async Task Execute_OpenApiRequest_MissingFile_ReturnsValidOpenApiSpec()
         {
             // The OPENAPI path is handled BEFORE the file-exists guard in WorkflowExecutor,
@@ -670,49 +674,27 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
     [TestClass]
     [TestCategory("HTTP_Coverage")]
+    [DoNotParallelize]
     public class WorkflowHttpFunctionHttpTests
     {
-        const string BaseUrl = "http://localhost:7071";
+        private LightweightInProcessHost _host = null!;
 
-        static readonly HttpClient _http = new(new HttpClientHandler { AllowAutoRedirect = false })
-        {
-            Timeout = TimeSpan.FromSeconds(15)
-        };
+        [TestInitialize]
+        public void Init() => _host = LightweightInProcessHost.WithPublicExecuteAll();
 
-        static bool _hostAvailable;
-
-        [ClassInitialize]
-        public static async Task Init(TestContext _)
-        {
-            try
-            {
-                var r = await _http.GetAsync(BaseUrl + "/admin/host/ping");
-                _hostAvailable = (int)r.StatusCode < 500;
-            }
-            catch
-            {
-                _hostAvailable = false;
-            }
-        }
-
-        void SkipIfUnavailable()
-        {
-            if (!_hostAvailable)
-                Assert.Inconclusive($"Azure Functions host not reachable at {BaseUrl}");
-        }
+        [TestCleanup]
+        public void Cleanup() => _host?.Dispose();
 
         // ── /workflow (no params) → 400 ──────────────────────────────────────────
 
         [TestMethod]
         public async Task Execute_GetWorkflow_NoParams_Returns400()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/workflow");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/workflow");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.BadRequest, resp.StatusCode,
-                $"GET /workflow with no params should be 400. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.BadRequest, resp.Status,
+                $"GET /workflow with no params should be 400. Got {(int)resp.Status}: {body}");
 
             // Body should be valid JSON describing the missing parameter error.
             var json = JObject.Parse(body);
@@ -725,13 +707,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task ExecuteByName_NonExistentWorkflow_Returns500WithErrorBody()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/workflow/NonExistentWorkflow_unique_f3a9c1");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/workflow/NonExistentWorkflow_unique_f3a9c1");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.StatusCode,
-                $"GET /workflow/NonExistentWorkflow_unique_f3a9c1 should be 500. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"GET /workflow/NonExistentWorkflow_unique_f3a9c1 should be 500. Got {(int)resp.Status}: {body}");
 
             var json = JObject.Parse(body);
             Assert.IsTrue(json.ContainsKey("hasErrors") || json.ContainsKey("errors"),
@@ -743,13 +723,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task ExecutePublicWorkflow_NonExistentWorkflow_Returns500WithErrorBody()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/NonExistentWorkflow_unique_b7d2e4");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/Public/NonExistentWorkflow_unique_b7d2e4");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.StatusCode,
-                $"GET /Public/NonExistentWorkflow should be 500. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"GET /Public/NonExistentWorkflow should be 500. Got {(int)resp.Status}: {body}");
 
             var json = JObject.Parse(body);
             Assert.IsTrue(json.ContainsKey("hasErrors") || json.ContainsKey("errors"),
@@ -757,21 +735,20 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         // ── /Public/{name}.api → 200 with OpenAPI JSON ───────────────────────────
+        // (WOLF-8418) Un-ignored per request; may fail until the OpenAPI .api
+        // short-circuit is merged — tracked in the WIP-failures list.
 
         [TestMethod]
-        [Ignore("Requires /Public/{workflow}.api to return an OpenAPI spec instead of falling through to the workflow file lookup. Re-introduce when WOLF-8418 is complete.")]
         public async Task ExecutePublicWorkflow_ApiSuffix_Returns200WithOpenApiJson()
         {
-            SkipIfUnavailable();
-
             // Even a non-existent workflow file returns a valid OpenAPI spec when the
             // .api suffix is used — WorkflowExecutor generates the spec before the
             // file-exists guard and WorkflowOpenApiGenerator handles missing files.
-            var resp = await _http.GetAsync(BaseUrl + "/Public/NonExistentWorkflow_unique_c8e5f1.api");
-            var body = await resp.Content.ReadAsStringAsync();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/NonExistentWorkflow_unique_c8e5f1.api");
+            var body = resp.Body;
 
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"GET /Public/name.api should be 200 even for a missing file. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status,
+                $"GET /Public/name.api should be 200 even for a missing file. Got {(int)resp.Status}: {body}");
 
             var json = JObject.Parse(body);
             Assert.AreEqual("3.0.1", json["openapi"]?.Value<string>(),
@@ -783,13 +760,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task ExecuteRootApisJson_Returns200WithJsonBody()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/apis.json");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"GET /apis.json should be 200. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status,
+                $"GET /apis.json should be 200. Got {(int)resp.Status}: {body}");
 
             // Body must be valid JSON.
             Assert.IsNotNull(JToken.Parse(body),
@@ -801,14 +776,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task ExecuteSecureWorkflow_NoJwt_Returns401()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Secure/AnyWorkflow");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/Secure/AnyWorkflow");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            // The middleware or WorkflowHttpFunction must reject unauthenticated requests.
-            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.StatusCode,
-                $"GET /Secure/AnyWorkflow without JWT should be 401. Got {(int)resp.StatusCode}: {body}");
+            // The middleware must reject unauthenticated requests.
+            Assert.AreEqual(HttpStatusCode.Unauthorized, resp.Status,
+                $"GET /Secure/AnyWorkflow without JWT should be 401. Got {(int)resp.Status}: {body}");
         }
 
         // ── /workflow (POST body) → 400 when body missing workflowFilePath/Name ──
@@ -816,14 +789,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task Execute_PostWorkflow_EmptyBody_Returns400()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("POST", "/workflow");
+            var body = resp.Body;
 
-            var content = new StringContent("{}", Encoding.UTF8, "application/json");
-            var resp    = await _http.PostAsync(BaseUrl + "/workflow", content);
-            var body    = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.BadRequest, resp.StatusCode,
-                $"POST /workflow with empty body should be 400. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.BadRequest, resp.Status,
+                $"POST /workflow with empty body should be 400. Got {(int)resp.Status}: {body}");
         }
 
         // ── /Public/apis.json → 200 with JSON body ────────────────────────────────
@@ -831,13 +801,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task ExecutePublicApisJson_Returns200WithJsonBody()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/Public/apis.json");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/Public/apis.json");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode,
-                $"GET /Public/apis.json should be 200. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.OK, resp.Status,
+                $"GET /Public/apis.json should be 200. Got {(int)resp.Status}: {body}");
 
             Assert.IsNotNull(JToken.Parse(body),
                 $"Response body should be valid JSON. Got: {body}");
@@ -848,13 +816,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         [TestMethod]
         public async Task Execute_QueryStringWorkflowName_NonExistent_Returns500()
         {
-            SkipIfUnavailable();
+            var resp = await _host.SendThroughPipelineAsync("GET", "/workflow?workflowName=NonExistent_e9a3b7");
+            var body = resp.Body;
 
-            var resp = await _http.GetAsync(BaseUrl + "/workflow?workflowName=NonExistent_e9a3b7");
-            var body = await resp.Content.ReadAsStringAsync();
-
-            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.StatusCode,
-                $"GET /workflow?workflowName=NonExistent should be 500. Got {(int)resp.StatusCode}: {body}");
+            Assert.AreEqual(HttpStatusCode.InternalServerError, resp.Status,
+                $"GET /workflow?workflowName=NonExistent should be 500. Got {(int)resp.Status}: {body}");
 
             var json = JObject.Parse(body);
             Assert.IsTrue(json.ContainsKey("hasErrors") || json.ContainsKey("errors"),

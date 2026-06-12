@@ -93,7 +93,6 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void Edit_Server_Removes_Server_From_Explorer()
         {
             using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))

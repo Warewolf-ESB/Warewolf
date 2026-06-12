@@ -70,9 +70,11 @@ az monitor app-insights component create `
     --app "$AppName-ai" --location $Loc --resource-group $Rg --kind web
 $aiKey = az monitor app-insights component show `
     --app "$AppName-ai" --resource-group $Rg --query connectionString -o tsv
+# Deploy the connection string under the deliberately non-standard name so the Functions host's
+# auto-AI pipeline stays dormant, and turn AI on with ENABLEAPPLICATIONINSIGHTS (the authoritative switch).
 az functionapp config appsettings set `
     --name $AppName --resource-group $Rg `
-    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$aiKey"
+    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$aiKey" "ENABLEAPPLICATIONINSIGHTS=true"
 ```
 
 Expected: `az functionapp show -n $AppName -g $Rg --query state` returns `Running`.

@@ -60,8 +60,10 @@ $FunctionAppName = "your-function-app-name"
 az functionapp config appsettings set `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$ConnectionString" "ENABLEAPPLICATIONINSIGHTS=true"
+    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$ConnectionString" "ENABLEAPPLICATIONINSIGHTS=true"
 ```
+
+> **Note**: The connection string is deployed under the deliberately non-standard name `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` (the Azure Functions host does not recognise this name, so its built-in auto-AI pipeline stays dormant). `ENABLEAPPLICATIONINSIGHTS=true` is the single authoritative switch — the connection string alone does NOT enable telemetry.
 
 ---
 
@@ -184,7 +186,7 @@ union traces, requests, dependencies, exceptions
 | Check | Command/Action | Expected Result |
 |-------|----------------|-----------------|
 | **1. AI Resource Created** | Check Azure Portal → Application Insights | Resource exists |
-| **2. Connection String Set** | `az functionapp config appsettings list` | `APPLICATIONINSIGHTS_CONNECTION_STRING` present |
+| **2. Connection String Set** | `az functionapp config appsettings list` | `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` present |
 | **3. Logging Enabled** | `az functionapp config appsettings list` | `ENABLEAPPLICATIONINSIGHTS=true` |
 | **4. Telemetry Flowing** | Run Query 1 above | See logs from last 10 minutes |
 | **5. Requests Tracked** | Run Query 2 above | See function invocations |
@@ -204,7 +206,7 @@ $ResourceGroup = "your-resource-group"
 az functionapp config appsettings list `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']"
+    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']"
 
 # 2. Restart Function App
 az functionapp restart --name $FunctionAppName --resource-group $ResourceGroup

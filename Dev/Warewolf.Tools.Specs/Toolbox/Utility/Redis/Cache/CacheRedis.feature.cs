@@ -95,15 +95,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No data in cache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public void NoDataInCache()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
-                    "AnonymousRedis",
-                    "ignore"};
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No data in cache", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9
@@ -162,15 +160,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data exists for given TTL not hit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public void DataExistsForGivenTTLNotHit()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
-                    "AnonymousRedis",
-                    "ignore"};
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data exists for given TTL not hit", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 27
@@ -229,15 +225,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Not Exist For Given Key (TTL exceeded) Spec")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public void DataNotExistForGivenKeyTTLExceededSpec()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
-                    "AnonymousRedis",
-                    "ignore"};
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Not Exist For Given Key (TTL exceeded) Spec", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 45
@@ -302,15 +296,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input Variable Keys Are Less Then Cached Data Variable Keys")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public void InputVariableKeysAreLessThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
-                    "AnonymousRedis",
-                    "ignore"};
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Less Then Cached Data Variable Keys", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 65
@@ -413,15 +405,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input Variable Keys Are Greater Then Cached Data Variable Keys")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
-                    "AnonymousRedis",
-                    "ignore"};
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Greater Then Cached Data Variable Keys", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 93

@@ -1,28 +1,45 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests
 {
     /// <summary>
-    /// Integration tests for the HTTP POST Web Method tool executed via the Azure Function.
-    /// Requires the Azure Function to be running at <see cref="BaseUrl"/> before running these tests.
-    /// Each test triggers a named workflow (.bite file in Resources/) and validates the JSON response.
+    /// In-process functional tests for the HTTP POST Web Method tool executed via
+    /// <see cref="WorkflowHttpFunction"/>.
+    ///
+    /// Each test fires a GET trigger at the workflow; the workflow itself performs the
+    /// outbound POST to <c>httpbin.org</c>. <see cref="LightweightInProcessHost"/> seeds a
+    /// real secure.config granting the Public group View+Execute and runs the REAL
+    /// WorkflowExecutor against the deployed <c>Resources/tools/http post/*.bite</c> workflows,
+    /// so these carry a real external-network dependency (unchanged from the original version).
+    ///
+    /// Marked <see cref="DoNotParallelizeAttribute"/> — the host mutates process-wide
+    /// <c>SecureConfigLoader</c> singleton + environment-variable state per test.
     /// </summary>
     [TestClass]
+    [DoNotParallelize]
     public class WebPostToolIntegrationTests
     {
-        private const string BaseUrl = TestConstants.AzureFunctionBaseUrl;
-        private static readonly HttpClient _client = new();
+        // Folder route value as the Functions host supplies it (URL-decoded catch-all).
+        private const string RoutePrefix = "tools/http post";
+
+        private LightweightInProcessHost _host = null!;
+
+        [TestInitialize]
+        public void Init() => _host = LightweightInProcessHost.WithPublicExecuteAll();
+
+        [TestCleanup]
+        public void Cleanup() => _host?.Dispose();
 
         /// <summary>TC-005:
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC005_PostJsonBody_MapsName_Returns_Alice()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC005_PostJsonBody_MapsName_Returns_Alice.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC005_PostJsonBody_MapsName_Returns_Alice.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Name", out var prop), $"Expected 'Name' in response: {json}");
@@ -33,9 +50,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC012_PostJsonBody_MapsUrl_Returns_HttpbinPost()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC012_PostJsonBody_MapsUrl_Returns_HttpbinPost.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC012_PostJsonBody_MapsUrl_Returns_HttpbinPost.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Url", out var prop), $"Expected 'Url' in response: {json}");
@@ -46,9 +62,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC013_PostJsonBody_MapsHost_Returns_HttpbinOrg()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC013_PostJsonBody_MapsHost_Returns_HttpbinOrg.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC013_PostJsonBody_MapsHost_Returns_HttpbinOrg.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Host", out var prop), $"Expected 'Host' in response: {json}");
@@ -59,9 +74,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC014_PostJsonBody_MapsContentType_Returns_ApplicationJson()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC014_PostJsonBody_MapsContentType_Returns_ApplicationJson.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC014_PostJsonBody_MapsContentType_Returns_ApplicationJson.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("ContentType", out var prop), $"Expected 'ContentType' in response: {json}");
@@ -72,9 +86,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC026_PostToAnything_MapsUrl_Returns_HttpbinAnything()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC026_PostToAnything_MapsUrl_Returns_HttpbinAnything.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC026_PostToAnything_MapsUrl_Returns_HttpbinAnything.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Url", out var prop), $"Expected 'Url' in response: {json}");
@@ -85,9 +98,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC031_PostJsonBody_MapsCity_Country_Method()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC031_PostJsonBody_MapsCity_Country_Method.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC031_PostJsonBody_MapsCity_Country_Method.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("City", out var city), $"Expected 'City' in response: {json}");
@@ -100,9 +112,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC051_PostWithQueryParam_MapsSearch_Returns_Warewolf()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC051_PostWithQueryParam_MapsSearch_Returns_Warewolf.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC051_PostWithQueryParam_MapsSearch_Returns_Warewolf.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Search", out var prop), $"Expected 'Search' in response: {json}");
@@ -113,9 +124,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC052_PostWithMultipleQueryParams_MapsArgX_And_ArgY()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC052_PostWithMultipleQueryParams_MapsArgX_And_ArgY.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC052_PostWithMultipleQueryParams_MapsArgX_And_ArgY.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("ArgX", out var argX), $"Expected 'ArgX' in response: {json}");
@@ -128,9 +138,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC053_PostWithCustomHeader_MapsRequestId_Returns_ReqAbc789()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC053_PostWithCustomHeader_MapsRequestId_Returns_ReqAbc789.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC053_PostWithCustomHeader_MapsRequestId_Returns_ReqAbc789.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("RequestId", out var prop), $"Expected 'RequestId' in response: {json}");
@@ -141,9 +150,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC054_PostWithFourOutputs_MapsAll_Returns_CorrectValues()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC054_PostWithFourOutputs_MapsAll_Returns_CorrectValues.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC054_PostWithFourOutputs_MapsAll_Returns_CorrectValues.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("A", out var a), $"Expected 'A' in response: {json}");
@@ -160,9 +168,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC055_PostWithQueryAndBody_MapsMode_And_Item()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC055_PostWithQueryAndBody_MapsMode_And_Item.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC055_PostWithQueryAndBody_MapsMode_And_Item.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Mode", out var mode), $"Expected 'Mode' in response: {json}");
@@ -175,9 +182,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC056_PostToAnythingWithQuery_MapsAction_Form_Method()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC056_PostToAnythingWithQuery_MapsAction_Form_Method.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC056_PostToAnythingWithQuery_MapsAction_Form_Method.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Action", out var action), $"Expected 'Action' in response: {json}");
@@ -192,9 +198,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC057_PostEmptyBody_MapsMethod_Returns_POST()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC057_PostEmptyBody_MapsMethod_Returns_POST.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC057_PostEmptyBody_MapsMethod_Returns_POST.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Method", out var prop), $"Expected 'Method' in response: {json}");
@@ -205,9 +210,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC058_PostWithCustomHeaderAndBody_MapsTraceId_And_Level()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC058_PostWithCustomHeaderAndBody_MapsTraceId_And_Level.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC058_PostWithCustomHeaderAndBody_MapsTraceId_And_Level.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("TraceId", out var traceId), $"Expected 'TraceId' in response: {json}");
@@ -220,9 +224,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC059_PostFormData_MapsSingleTextField_Returns_Alice()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC059_PostFormData_MapsSingleTextField_Returns_Alice.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC059_PostFormData_MapsSingleTextField_Returns_Alice.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormName", out var prop), $"Expected 'FormName' in response: {json}");
@@ -233,9 +236,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC060_PostFormData_MapsMultipleTextFields_Returns_ParisFrance()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC060_PostFormData_MapsMultipleTextFields_Returns_ParisFrance.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC060_PostFormData_MapsMultipleTextFields_Returns_ParisFrance.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormCity", out var city), $"Expected 'FormCity' in response: {json}");
@@ -248,9 +250,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC061_PostFormData_MapsTextField_And_Url()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC061_PostFormData_MapsTextField_And_Url.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC061_PostFormData_MapsTextField_And_Url.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormTag", out var tag), $"Expected 'FormTag' in response: {json}");
@@ -263,9 +264,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC062_PostUrlEncoded_MapsSingleField_Returns_Widget()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC062_PostUrlEncoded_MapsSingleField_Returns_Widget.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC062_PostUrlEncoded_MapsSingleField_Returns_Widget.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("UrlProduct", out var prop), $"Expected 'UrlProduct' in response: {json}");
@@ -276,9 +276,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC063_PostUrlEncoded_MapsMultipleFields_Returns_10And20()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC063_PostUrlEncoded_MapsMultipleFields_Returns_10And20.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC063_PostUrlEncoded_MapsMultipleFields_Returns_10And20.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("UrlX", out var x), $"Expected 'UrlX' in response: {json}");
@@ -291,13 +290,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC064_PostUrlEncoded_MapsField_And_Method()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC064_PostUrlEncoded_MapsField_And_Method.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC064_PostUrlEncoded_MapsField_And_Method.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
-            Assert.IsTrue(root.TryGetProperty("UrlStatus", out var status), $"Expected 'UrlStatus' in response: {json}");
-            Assert.AreEqual("active", status.GetString(), $"Expected UrlStatus == 'active'. Full response: {json}");
+            Assert.IsTrue(root.TryGetProperty("UrlStatus", out var status2), $"Expected 'UrlStatus' in response: {json}");
+            Assert.AreEqual("active", status2.GetString(), $"Expected UrlStatus == 'active'. Full response: {json}");
             Assert.IsTrue(root.TryGetProperty("UrlOut", out var urlOut), $"Expected 'UrlOut' in response: {json}");
             Assert.AreEqual(TestConstants.HttpbinPostUrl, urlOut.GetString(), $"Expected UrlOut == '{TestConstants.HttpbinPostUrl}'. Full response: {json}");
         }
@@ -306,9 +304,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC065_PostJsonBody_IsObject_Returns_FullResponse()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC065_PostJsonBody_IsObject_Returns_FullResponse.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC065_PostJsonBody_IsObject_Returns_FullResponse.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("Response", out var responseProp), $"Expected 'Response' object in response: {json}");
@@ -333,9 +330,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC066_PostFormData_IsObject_Returns_FullResponse()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC066_PostFormData_IsObject_Returns_FullResponse.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC066_PostFormData_IsObject_Returns_FullResponse.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FormResponse", out var responseProp), $"Expected 'FormResponse' object in response: {json}");
@@ -360,9 +356,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         [TestMethod, TestCategory("WebPostTool_Integration")]
         public async Task TC067_PostFormData_FileAttachment_MapsFilesData_Returns_HelloWorld()
         {
-            var response = await _client.GetAsync($"{BaseUrl}/TC067_PostFormData_FileAttachment_MapsFilesData_Returns_HelloWorld.json");
-            var json = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(response.IsSuccessStatusCode, $"Expected HTTP 200 but got {(int)response.StatusCode}: {json}");
+            var (status, json) = await _host.ExecutePublicAsync($"{RoutePrefix}/TC067_PostFormData_FileAttachment_MapsFilesData_Returns_HelloWorld.json");
+            Assert.AreEqual(HttpStatusCode.OK, status, $"Expected HTTP 200 but got {(int)status}: {json}");
             using var doc = JsonDocument.Parse(json!);
             var root = doc.RootElement;
             Assert.IsTrue(root.TryGetProperty("FileContent", out var prop), $"Expected 'FileContent' in response: {json}");

@@ -144,10 +144,11 @@ namespace Dev2.Activities.WorkflowConverters
                     {
                         cell.data[Constants.EXPRESSION] = $"[[{cleanVariable}]]";
                     }
-
-                    var switchExpressionJson = CreateSwitchExpressionJson(expressionText, flowSwitch);
-                    cell.data[Constants.SWITCH_EXPRESSION] = switchExpressionJson;
                 }
+
+                // Always emit a switch expression so the X6 designer always has switch metadata;
+                // falls back to the default variable when ExpressionText is empty.
+                cell.data[Constants.SWITCH_EXPRESSION] = CreateSwitchExpressionJson(expressionText, flowSwitch);
 
                 if (!string.IsNullOrEmpty(uniqueId))
                 {
@@ -187,10 +188,11 @@ namespace Dev2.Activities.WorkflowConverters
                     {
                         cell.data[Constants.EXPRESSION] = $"[[{cleanVariable}]]";
                     }
-
-                    var switchExpressionJson = CreateSwitchExpressionJsonString(expressionText, flowSwitch);
-                    cell.data[Constants.SWITCH_EXPRESSION] = switchExpressionJson;
                 }
+
+                // Always emit a switch expression so the X6 designer always has switch metadata;
+                // falls back to the default variable when ExpressionText is empty.
+                cell.data[Constants.SWITCH_EXPRESSION] = CreateSwitchExpressionJsonString(expressionText, flowSwitch);
 
                 if (!string.IsNullOrEmpty(uniqueId))
                 {

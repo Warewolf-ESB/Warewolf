@@ -243,7 +243,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting a Resource Remote")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeleteFromExplorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#TODO:")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Re-introduce")]
@@ -263,7 +262,6 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting a Resource Remote", new string[] {
                         "DeleteFromExplorer",
-                        "Ignore",
                         "#TODO:",
                         "Re-introduce",
                         "this",
