@@ -220,12 +220,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     retryState = gates[currentGate].Item1;
                     UniqueID = retryState != null ? retryState.GateToRetry.UniqueID : UniqueID;
                 }
+                WorkSurfaceMappingId = Guid.Parse(UniqueID);
             }
             else
             {
+                // Capture the original (design-surface) id as the work-surface mapping id BEFORE
+                // regenerating UniqueID for a nested (ForEach) iteration, so every iteration still
+                // maps back to the original activity on the design surface.
+                WorkSurfaceMappingId = Guid.Parse(UniqueID);
                 UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
             }
-            WorkSurfaceMappingId = Guid.Parse(UniqueID);
         }
 
        internal IAuthorizationService AuthorizationService

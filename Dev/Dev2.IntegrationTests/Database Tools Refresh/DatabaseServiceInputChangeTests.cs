@@ -116,7 +116,6 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [Ignore]//Until we can get the DB
         public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
         {
             const string procName = "TestingAddingANewInput";

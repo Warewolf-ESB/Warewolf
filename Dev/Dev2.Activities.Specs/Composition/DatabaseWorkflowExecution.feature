@@ -139,7 +139,6 @@ Examples:
     | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 @MSSql
-@Ignore #Until we can get the DB mocked
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -168,7 +167,6 @@ Examples:
      | TestWFWithDBSqlServerErrorProcSql | dbo.willalwayserror | [[name]]     | [[email]]     | YES          |
 
 @MSSql
-@Ignore #Until we can get the DB mocked
 Scenario Outline: Database SqlDB  service using int indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -186,7 +184,6 @@ Examples:
     | TestWFWithDBSqlServerIntIndex | dbo.SQLEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 @MSSql
-@Ignore #Until we can get the DB mocked
 Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -204,7 +201,6 @@ Examples:
     | TestWFWithDBSqlServerLastIndex | dbo.SQLEmail    | [[rec().name]] | [[rec().email]] | NO           |
 
 @MSSql
-@Ignore #Until we can get the DB mocked
 Scenario Outline: Database SqlDB  service using scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as

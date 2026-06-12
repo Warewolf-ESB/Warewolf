@@ -5,7 +5,6 @@
 
 @RedisCache
 @AnonymousRedis
-@ignore #Until WOLF-7979 is done
 Scenario: No data in cache
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "3000" milliseconds
@@ -23,7 +22,6 @@ Scenario: No data in cache
 
 @RedisCache
 @AnonymousRedis
-@ignore #Until WOLF-7979 is done
 Scenario: Data exists for given TTL not hit
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "20000" milliseconds
@@ -41,7 +39,6 @@ Scenario: Data exists for given TTL not hit
 
 @RedisCache
 @AnonymousRedis
-@ignore #Until WOLF-7979 is done
 Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "3000" milliseconds
@@ -61,7 +58,6 @@ Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 
 @RedisCache
 @AnonymousRedis
-@ignore #Until WOLF-7979 is done
 Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 	Given valid Redis source
 	And I have "key1" of "MyData" with GUID and "ttl1" of "15" seconds
@@ -89,7 +85,6 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 
 @RedisCache
 @AnonymousRedis
-@ignore #Until WOLF-7979 is done
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 	Given valid Redis source
 	And I have "key1" of "MyData" with GUID and "ttl1" of "15" seconds

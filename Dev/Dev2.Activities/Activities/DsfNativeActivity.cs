@@ -1265,20 +1265,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (cell == null || cell.data == null) return;
 
-            object onerrordatastring = null;
-
-            if (!cell.data.TryGetValue(Constants.ONERRORDATA, out onerrordatastring)) return;
+            if (!cell.data.TryGetValue(Constants.ONERRORDATA, out var onerrordata) || onerrordata == null) return;
 
             try
             {
-                var settings = new JsonSerializerSettings
-                {
-                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                    FloatParseHandling = FloatParseHandling.Decimal,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
+                X6NodeOnErrorData onErroData;
 
-                var onErroData = JsonConvert.DeserializeObject<X6NodeOnErrorData>(onerrordatastring.ToString(), settings);
+                // The value may already be a materialised X6NodeOnErrorData (in-memory round trip
+                // via ToX6Json) or a JSON string / JObject (after a serialize/deserialize cycle).
+                if (onerrordata is X6NodeOnErrorData typed)
+                {
+                    onErroData = typed;
+                }
+                else
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                        FloatParseHandling = FloatParseHandling.Decimal,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    var json = onerrordata as string ?? onerrordata.ToString();
+                    onErroData = JsonConvert.DeserializeObject<X6NodeOnErrorData>(json, settings);
+                }
+
                 if(onErroData != null)
                 {
                     this.OnErrorVariable = onErroData.OnErrorVariable;

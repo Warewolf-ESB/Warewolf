@@ -240,6 +240,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void PluginServices_Test_WhenTestingPluginReturningBool_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -266,6 +268,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void PluginServices_Test_WhenTestingPluginReturningDouble_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
