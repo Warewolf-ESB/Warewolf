@@ -12,11 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
@@ -70,6 +72,16 @@ namespace Dev2.Activities.WcfEndPoint
         {
             errors = new ErrorResultTO();
             Source = ResourceCatalog.GetResource<WcfSource>(dataObject.WorkspaceID, SourceId);
+
+            if (Source == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources
+                       .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    Source = ws.OfType<WcfSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
+
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
             var methodParameters = Inputs.Select(a => new MethodParameter {EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName}).ToList();

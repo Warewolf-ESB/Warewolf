@@ -96,8 +96,10 @@ InstrumentationKey=12345678-1234-1234-1234-123456789012;IngestionEndpoint=https:
 2. Navigate to **Settings** → **Configuration**
 3. Under **Application settings**, click **+ New application setting**
 4. Add:
-   - **Name**: `APPLICATIONINSIGHTS_CONNECTION_STRING`
+   - **Name**: `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`
    - **Value**: Paste the connection string from Step 1
+
+   > **Why not the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` name?** The connection string is deployed under the deliberately non-standard `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` name. The Azure Functions host does NOT recognise this name, so its built-in auto-AI pipeline stays dormant and never forwards worker stdout to App Insights. The worker AI SDK reads this setting explicitly, and telemetry is only sent when `ENABLEAPPLICATIONINSIGHTS=true` (see Step 3).
 5. Click **OK** → **Save** → **Continue**
 6. The Function App will restart automatically
 
@@ -109,12 +111,14 @@ $FunctionAppName = "your-function-app-name"
 $ResourceGroup = "your-resource-group"
 $ConnectionString = "InstrumentationKey=...your-connection-string..."
 
-# Set the connection string
+# Set the connection string (non-standard name so the host's auto-AI pipeline stays dormant)
 az functionapp config appsettings set `
   --name $FunctionAppName `
   --resource-group $ResourceGroup `
-  --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$ConnectionString"
+  --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$ConnectionString"
 ```
+
+> **Note**: Setting the connection string alone does NOT enable App Insights. You must also set `ENABLEAPPLICATIONINSIGHTS=true` (Step 3) — that is the single authoritative switch.
 
 ---
 
@@ -140,16 +144,16 @@ az functionapp config appsettings set `
 az functionapp config appsettings list `
   --name $FunctionAppName `
   --resource-group $ResourceGroup `
-  --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
+  --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
   --output table
 ```
 
 Expected output:
 ```
-Name                                   Value
-------------------------------------   --------------------------------------------------
-APPLICATIONINSIGHTS_CONNECTION_STRING  InstrumentationKey=...
-ENABLEAPPLICATIONINSIGHTS              true
+Name                                      Value
+---------------------------------------   --------------------------------------------------
+WAREWOLF_APPINSIGHTS_CONNECTION_STRING    InstrumentationKey=...
+ENABLEAPPLICATIONINSIGHTS                 true
 ```
 
 ---
@@ -163,7 +167,7 @@ For local testing, update your `local.settings.json`:
 ```json
 {
   "Values": {
-    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=...your-connection-string...",
+    "WAREWOLF_APPINSIGHTS_CONNECTION_STRING": "InstrumentationKey=...your-connection-string...",
     "ENABLEAPPLICATIONINSIGHTS": "true"
   }
 }
@@ -301,18 +305,18 @@ traces
 ### Problem: No Data Appearing in Application Insights
 
 **Possible Causes:**
-1. ❌ Connection string not set or incorrect
-2. ❌ `ENABLEAPPLICATIONINSIGHTS` not set to `true`
+1. ❌ `ENABLEAPPLICATIONINSIGHTS` not set to `true` (this is the single authoritative switch — when false, nothing reaches App Insights)
+2. ❌ `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` not set or incorrect
 3. ⏱️ Data ingestion delay (wait 2-5 minutes)
 4. ❌ Function app not restarted after config change
 
 **Solution:**
 ```powershell
-# Verify settings
+# Verify settings — BOTH must be present: ENABLEAPPLICATIONINSIGHTS=true AND the connection string
 az functionapp config appsettings list `
   --name $FunctionAppName `
   --resource-group $ResourceGroup `
-  --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']"
+  --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']"
 
 # Restart function app
 az functionapp restart --name $FunctionAppName --resource-group $ResourceGroup

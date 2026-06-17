@@ -20,7 +20,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldCreateSwitchNode()
         {
             //------------Setup for test--------------------------
@@ -56,7 +55,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                                n.data[Constants.TYPE].ToString() == Constants.FLOWSWITCH);
             Assert.IsNotNull(switchNode);
             Assert.AreEqual(Constants.POLYGON, switchNode.shape);
-            Assert.AreEqual(Constants.SWITCH, switchNode.label);
+            // The switch node label follows the activity's DisplayName (see ShouldExtractSwitchVariable).
+            Assert.AreEqual("Test Switch", switchNode.label);
         }
 
         [TestMethod]
@@ -180,7 +180,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldHandleEmptyExpressionText()
         {
             //------------Setup for test--------------------------
@@ -274,7 +273,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WorkflowToX6Converter_ProcessFlowSwitch")]
-		[Ignore]
 		public void WorkflowToX6Converter_ProcessFlowSwitch_ShouldHandleNullDefaultCase()
         {
             //------------Setup for test--------------------------
@@ -310,8 +308,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var switchExpressionJson = switchNode.data["switchExpression"].ToString();
             var switchExpression = JsonConvert.DeserializeObject<dynamic>(switchExpressionJson);
             
-            // DefaultCase should be null when no default is provided
-            Assert.IsNull(switchExpression.DefaultCase);
+            // DefaultCase should be null when no default is provided. Deserialized as dynamic,
+            // a JSON null surfaces as a JValue of type Null rather than a CLR null reference.
+            var defaultCase = switchExpression.DefaultCase;
+            Assert.IsTrue(defaultCase == null || defaultCase.Type == Newtonsoft.Json.Linq.JTokenType.Null);
         }
     }
 }

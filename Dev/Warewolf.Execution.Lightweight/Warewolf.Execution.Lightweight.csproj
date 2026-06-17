@@ -70,7 +70,16 @@
     Release publishes (the Azure deployment path driven by Deploy-ToAzure.ps1)
     still need to publish, so the gate is scoped to Debug only.
   -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+  <!--
+    Scope the publish-skip to the RID-qualified CI scenario only.
+    The MSB3030 (extensions.json copied to the non-RID obj path while publish
+    looks under the RID subfolder) is only triggered when ServerTests.sln is
+    published with `-r win-x64`. The Docker / local debug publish path
+    (engine\run.ps1) uses `dotnet publish -c Debug` with NO RuntimeIdentifier,
+    so it must remain publishable — otherwise the Worker SDK post-publish target
+    never runs and the `.azurefunctions` folder is missing from the output.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' != ''">
     <IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
@@ -99,11 +108,22 @@
 
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
 
-    <!-- Analyzer only (IMPORTANT) -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" OutputItemType="Analyzer" PrivateAssets="all" />
+    <!-- Worker SDK for isolated process model - generates .azurefunctions folder -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" />
 
     <!-- Application Insights for rich telemetry and structured logging -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />
+
+    <!-- Required for AddApplicationInsightsTelemetryWorkerService() in the isolated
+         worker. NOT a transitive dependency of the Functions AI package above, so it
+         must be referenced explicitly; without it ConfigureFunctionsApplicationInsights()
+         throws "Application Insights SDK has not been added" at startup.
+         MUST stay on the 2.x line: Microsoft.Azure.Functions.Worker.ApplicationInsights
+         1.4.0 is built against the Application Insights v2 core (Microsoft.ApplicationInsights
+         2.x, which is where Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer
+         lives). Using 3.0.0 pulls Microsoft.ApplicationInsights 3.0.0.1 and crashes the worker
+         at startup with TypeLoadException: 'Could not load type ... ITelemetryInitializer'. -->
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
 
     <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
@@ -111,13 +131,13 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
 
     <!-- Azure Key Vault + Managed Identity (encryption support) -->
-    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Identity" Version="1.20.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
     <!-- OIDC / JWT validation for Entra Bearer-token authentication -->
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.17.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
 
   </ItemGroup>
 
@@ -231,18 +251,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <!-- NEVER publish local.settings.json — it may contain development secrets. -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
     <None Update="secure.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

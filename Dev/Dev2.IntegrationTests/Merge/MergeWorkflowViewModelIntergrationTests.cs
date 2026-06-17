@@ -84,7 +84,6 @@ namespace Dev2.Integration.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]
         public void Batch_Compare_All_Examples_Have_No_Differences()
         {
             //---------------Set up test pack-------------------

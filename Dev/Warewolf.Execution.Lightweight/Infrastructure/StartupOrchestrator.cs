@@ -6,7 +6,10 @@
 
 using Azure;
 using Azure.Identity;
+using Dev2;
 using Dev2.Common;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
@@ -41,6 +44,7 @@ internal static class StartupOrchestrator
 
         try
         {
+            RegisterLightweightResourceCatalog();
             LogEnvironmentDiagnostics(config);
             await InitializeEncryptionAsync(host, config);
             WarmUpWorkflowIndex(config);
@@ -51,6 +55,52 @@ internal static class StartupOrchestrator
         {
             Dev2Logger.Error("StartupOrchestrator RunStartupAsync failed", ex, executionId);
             throw;
+        }
+    }
+
+    /// <summary>
+    /// Pre-registers an <see cref="IResourceCatalog"/> built WITHOUT the ESB management
+    /// services so the lazy <see cref="ResourceCatalog.Instance"/> factory never calls
+    /// <c>EsbManagementServiceLocator.GetServices()</c> — a reflection scan over the whole
+    /// Dev2.Runtime.Services assembly that instantiates and compiles ~150 management service
+    /// definitions.
+    ///
+    /// The lightweight executor never dispatches management/internal services: it reads
+    /// workflow XML from disk and walks the activity chain directly (see WorkflowExecutor and
+    /// LightweightEsbChannel). The catalog is used here purely as the in-memory store for
+    /// on-demand source resources (WorkspaceResources). Skipping the management services trims
+    /// cold-start CPU and a small amount of working set with no impact on tool execution.
+    ///
+    /// Best-effort and idempotent: if a catalog is already registered this is a no-op; if
+    /// registration throws, the default lazy factory still runs (building the catalog WITH
+    /// management services), so workflow execution is never broken — only the optimisation is lost.
+    /// </summary>
+    static void RegisterLightweightResourceCatalog()
+    {
+        const string executionId = "StartupOrchestrator-ResourceCatalog";
+
+        try
+        {
+            if (CustomContainer.Get<IResourceCatalog>() != null)
+            {
+                Dev2Logger.Info("StartupOrchestrator IResourceCatalog already registered — skipping lightweight (no-management-services) catalog registration", executionId);
+                return;
+            }
+
+            // The parameterless ctor delegates to ResourceCatalog(null) => no management services loaded.
+            CustomContainer.Register<IResourceCatalog>(new ResourceCatalog());
+
+            Dev2Logger.Info(
+                "Startup | Phase=ResourceCatalog | Status=Completed | ManagementServices=skipped | " +
+                "Lightweight executor does not dispatch management services; catalog holds on-demand sources only.",
+                executionId);
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Warn(
+                "StartupOrchestrator RegisterLightweightResourceCatalog failed — falling back to the default lazy " +
+                "ResourceCatalog.Instance (management services WILL be loaded). Workflow execution is unaffected.",
+                ex, executionId);
         }
     }
 

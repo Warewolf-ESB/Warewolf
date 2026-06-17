@@ -37,7 +37,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-		[Ignore("Until WOLF-8013 is done.")]
 		public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
@@ -58,6 +57,10 @@ namespace Warewolf.Driver.RabbitMQ.Tests
             using (var connection = queueSource.NewConnection(config))
             {
                 connection.StartConsuming(config, testConsumer);
+
+                // Deterministic check (no timing dependency): the source produced a live
+                // connection to the broker before the using-block disposes it.
+                Assert.IsTrue(connection.IsOpen);
             }
 
             int i = 0;
@@ -77,7 +80,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [Ignore("Until WOLF-8013 is done.")]
 		public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------

@@ -156,7 +156,10 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.RabbitMQ)
             {
-                Container.IP = "4.221.39.39";
+                // The RabbitMQ driver tests run in the CI 'Unit_Tests' job with -StartRabbitMQServer,
+                // which provisions RabbitMQ locally on localhost:5672 (with the test/test user). Point
+                // at that local instance rather than an ephemeral (now-decommissioned) remote IP.
+                Container.IP = "localhost";
                 Container.Port = "5672";
             }
             else if (_containerType == ContainerType.HTTPVerbsApi)
@@ -196,7 +199,10 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "20.87.248.84";
+                // The Anonymous Redis tests run in the CI 'Anonymous_Redis_Tests' job with
+                // -StartRedisServer, which provisions Redis locally on localhost:6379. Point at
+                // that local instance rather than an ephemeral (now-decommissioned) remote IP.
+                Container.IP = "localhost";
                 Container.Port = "6379";
             }
             else

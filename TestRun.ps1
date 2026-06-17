@@ -396,7 +396,7 @@ function Start-LinuxSidecar {
                 mcr.microsoft.com/mssql/server:2019-latest | Out-Null
         }
         'rabbitmq' {
-            docker run -d --name $name --network="container:$TestContainer" rabbitmq:3-management | Out-Null
+            docker run -d --name $name --network="container:$TestContainer" -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null
         }
         'redis' {
             docker run -d --name $name --network="container:$TestContainer" redis:7-alpine | Out-Null
@@ -925,19 +925,63 @@ function Stop-HostElasticsearchServer {
     docker rm -f elasticsearch-coverage 2>$null | Out-Null
 }
 
+function Add-RabbitMQTestUser {
+    # The native (choco) RabbitMQ install only provisions the loopback-only 'guest'
+    # user, but the driver tests authenticate as 'test'/'test'. Create that user via
+    # the management HTTP API (authenticating as guest over loopback) so the tests can
+    # connect. The HTTP API avoids the Erlang cookie/PATH problems that make rabbitmqctl
+    # unreliable on Windows. (The Docker path already seeds test/test via env vars.)
+    $guestAuth = @{ Authorization = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes('guest:guest')) }
+    $mgmtReady = $false
+    for ($i = 1; $i -le 30; $i++) {
+        try {
+            Invoke-RestMethod -Uri 'http://localhost:15672/api/overview' -Headers $guestAuth -TimeoutSec 5 -ErrorAction Stop | Out-Null
+            $mgmtReady = $true; break
+        } catch { Start-Sleep 2 }
+    }
+    if (-not $mgmtReady) { Write-Warn "RabbitMQ management API (15672) not ready; cannot create 'test' user"; return }
+    try {
+        Invoke-RestMethod -Method Put -Uri 'http://localhost:15672/api/users/test' -Headers $guestAuth -ContentType 'application/json' -Body '{"password":"test","tags":"administrator"}' -ErrorAction Stop | Out-Null
+        Invoke-RestMethod -Method Put -Uri 'http://localhost:15672/api/permissions/%2F/test' -Headers $guestAuth -ContentType 'application/json' -Body '{"configure":".*","write":".*","read":".*"}' -ErrorAction Stop | Out-Null
+        Write-Host "RabbitMQ 'test' user provisioned"
+    } catch {
+        Write-Warn ("Failed to provision RabbitMQ 'test' user: " + $_.Exception.Message)
+    }
+}
 function Start-HostRabbitMQServer {
     if ($LegacyWindowsDeps) {
         if (-not (Get-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue)) {
             choco install rabbitmq -y --no-progress
         }
-        Start-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
-        for ($i = 1; $i -le 30; $i++) {
-            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 5672)).Close(); return } catch { Start-Sleep 2 }
+        # RabbitMQ 4.x forbids transient (non-durable) non-exclusive queues by default
+        # ('transient_nonexcl_queues' deprecated feature). The RabbitMQ driver declares
+        # exactly that kind of queue, so re-permit the feature via rabbitmq.conf. Written
+        # to both the install-user and LocalSystem config locations to cover whichever
+        # base dir the Windows service resolves. (The Docker path uses rabbitmq:3 which
+        # still permits it.)
+        $confLine = 'deprecated_features.permit.transient_nonexcl_queues = true'
+        $confDirs = @(
+            (Join-Path $env:APPDATA 'RabbitMQ'),
+            'C:\Windows\System32\config\systemprofile\AppData\Roaming\RabbitMQ'
+        )
+        foreach ($d in $confDirs) {
+            try {
+                if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+                Set-Content -Path (Join-Path $d 'rabbitmq.conf') -Value $confLine -Encoding ascii -Force
+            } catch { Write-Warn ("Could not write rabbitmq.conf to ${d}: " + $_.Exception.Message) }
         }
-        Write-Warn "RabbitMQ did not bind 5672 within 60s"
+        # Restart so the config is applied (Restart is a no-op if not yet running).
+        Restart-Service -Name 'RabbitMQ' -Force -ErrorAction SilentlyContinue
+        Start-Service -Name 'RabbitMQ' -ErrorAction SilentlyContinue
+        $bound = $false
+        for ($i = 1; $i -le 30; $i++) {
+            try { (New-Object System.Net.Sockets.TcpClient('127.0.0.1', 5672)).Close(); $bound = $true; break } catch { Start-Sleep 2 }
+        }
+        if (-not $bound) { Write-Warn "RabbitMQ did not bind 5672 within 60s"; return }
+        Add-RabbitMQTestUser
         return
     }
-    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null
+    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null
     Start-Sleep -Seconds 5
 }
 function Stop-HostRabbitMQServer {
@@ -1607,7 +1651,7 @@ function Invoke-WindowsBareMetalJob {
                 'sftp'          { Start-HostSFTPServer;         $sidecarStarted += 'sftp' }
                 'sqlserver'     { Start-HostMSSQLServer "";     $sidecarStarted += 'sqlserver' }
                 'elasticsearch' { Start-HostElasticsearchServer; $sidecarStarted += 'elasticsearch' }
-                'rabbitmq'      { docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management | Out-Null; Start-Sleep 5; $sidecarStarted += 'rabbitmq' }
+                'rabbitmq'      { docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test rabbitmq:3-management | Out-Null; Start-Sleep 5; $sidecarStarted += 'rabbitmq' }
                 'redis'         { docker run -d --name redis -p 6379:6379 redis:7-alpine | Out-Null; Start-Sleep 2; $sidecarStarted += 'redis' }
                 'samba'         { docker run -d --name sambaserver -p 445:445 -e USER="smbuser%smbpass" -e SHARE="share;/share;yes;no;no;smbuser" dperson/samba -u "smbuser;smbpass" -s "share;/share;yes;no;no;smbuser" | Out-Null; Start-Sleep 3; $sidecarStarted += 'samba' }
                 'exchange'      { docker run -d -p 8889:8080 --name exchange-connector-testing warewolfserver/exchange-connector-testing 2>$null | Out-Null; Start-Sleep 5; $sidecarStarted += 'exchange' }

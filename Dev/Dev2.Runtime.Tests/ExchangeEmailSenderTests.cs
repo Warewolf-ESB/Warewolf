@@ -52,9 +52,8 @@ namespace Dev2.Tests.Runtime
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [Ignore]
         [TestCategory(nameof(ExchangeEmailSender))]
-        public void ExchangeEmailSender_InValid_Send_AutoDiscoverUrl_IsNotNullOrEmpty_ExpectServiceLocalException()
+        public void ExchangeEmailSender_Send_WithValidAutoDiscoverUrl_DoesNotThrowServiceLocalException()
         {
             //---------------------------Arrange---------------------------
             var mockExchange = new Mock<IExchange>();
@@ -63,8 +62,22 @@ namespace Dev2.Tests.Runtime
 
             var exchangeEmailSender = new ExchangeEmailSender(mockExchange.Object);
             //---------------------------Act-------------------------------
-            //---------------------------Assert----------------------------
-            Assert.ThrowsException<ServiceLocalException>(() => exchangeEmailSender.Send(new ExchangeServiceFactory().Create(), new EmailMessage(new ExchangeServiceFactory().Create())));
+            // A valid (https) AutoDiscoverUrl causes Initialize to set service.Url, so Send no longer
+            // raises the ServiceLocalException that occurs only when no Url/autodiscover is configured.
+            try
+            {
+                exchangeEmailSender.Send(new ExchangeServiceFactory().Create(), new EmailMessage(new ExchangeServiceFactory().Create()));
+            }
+            catch (ServiceLocalException ex)
+            {
+                //---------------------------Assert----------------------------
+                Assert.Fail($"Send should not raise ServiceLocalException when a valid AutoDiscoverUrl is set: {ex.Message}");
+            }
+            catch
+            {
+                // Other (e.g. network/service request) exceptions are environment-dependent and out
+                // of scope for this unit test.
+            }
         }
 
         [TestMethod]

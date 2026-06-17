@@ -948,6 +948,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Test")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void Services_Test_WhenTestingPluginHavingARecordSetFieldWithEmptyName_ExpectNotAdded()
         {
             //------------Setup for test--------------------------

@@ -16,7 +16,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_ToX6Json")]
-		[Ignore]
 		public void DsfFlowSwitchActivity_ToX6Json_ShouldSerializeCorrectly()
         {
             //------------Setup for test--------------------------
@@ -46,19 +45,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             // Should have error handling data
             Assert.IsTrue(cell.data.ContainsKey(Constants.ONERRORDATA));
             
-            var onErrorDataJson = cell.data[Constants.ONERRORDATA].ToString();
-            var onErrorData = JsonConvert.DeserializeObject<dynamic>(onErrorDataJson);
-            
-            Assert.AreEqual("[[ErrorVar]]", onErrorData.OnErrorVariable.ToString());
-            Assert.AreEqual("ErrorWorkflow", onErrorData.OnErrorWorkflow.ToString());
-            Assert.AreEqual(true, (bool)onErrorData.IsEndedOnError);
+            // ToX6Json stores the OnError data as an X6NodeOnErrorData instance (its JSON wire
+            // contract uses errorMessage/webServiceUrl/endWorkflow, consumed by the X6 designer).
+            var onErrorData = (X6NodeOnErrorData)cell.data[Constants.ONERRORDATA];
+
+            Assert.AreEqual("[[ErrorVar]]", onErrorData.OnErrorVariable);
+            Assert.AreEqual("ErrorWorkflow", onErrorData.OnErrorWorkflow);
+            Assert.IsTrue(onErrorData.IsEndedOnError);
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_FromX6Json")]
-        [Ignore]
         public void DsfFlowSwitchActivity_FromX6Json_ShouldDeserializeCorrectly()
         {
             //------------Setup for test--------------------------
@@ -68,11 +67,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                 UniqueID = uniqueId
             };
 
+            // Seed using the real X6 OnError wire-contract property names.
             var onErrorData = new
             {
-                OnErrorVariable = "[[ErrorVar]]",
-                OnErrorWorkflow = "ErrorWorkflow",
-                IsEndedOnError = true
+                errorMessage = "[[ErrorVar]]",
+                webServiceUrl = "ErrorWorkflow",
+                endWorkflow = true
             };
 
             var cell = new Cell
@@ -97,7 +97,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_RoundTrip")]
-        [Ignore]
         public void DsfFlowSwitchActivity_RoundTrip_ShouldMaintainState()
         {
             //------------Setup for test--------------------------
@@ -232,7 +231,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_ToX6Json")]
-		[Ignore]
 		public void DsfFlowSwitchActivity_ToX6Json_WithEmptyErrorProperties_ShouldSerializeCorrectly()
         {
             //------------Setup for test--------------------------
@@ -258,19 +256,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(cell.data);
             Assert.IsTrue(cell.data.ContainsKey(Constants.ONERRORDATA));
             
-            var onErrorDataJson = cell.data[Constants.ONERRORDATA].ToString();
-            var onErrorData = JsonConvert.DeserializeObject<dynamic>(onErrorDataJson);
-            
-            Assert.AreEqual("", onErrorData.OnErrorVariable.ToString());
-            Assert.AreEqual("", onErrorData.OnErrorWorkflow.ToString());
-            Assert.AreEqual(false, (bool)onErrorData.IsEndedOnError);
+            var onErrorData = (X6NodeOnErrorData)cell.data[Constants.ONERRORDATA];
+
+            Assert.AreEqual("", onErrorData.OnErrorVariable);
+            Assert.AreEqual("", onErrorData.OnErrorWorkflow);
+            Assert.IsFalse(onErrorData.IsEndedOnError);
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfFlowSwitchActivity_FromX6Json")]
-        [Ignore]
         public void DsfFlowSwitchActivity_FromX6Json_WithPartialOnErrorData_ShouldDeserializeAvailableProperties()
         {
             //------------Setup for test--------------------------
@@ -280,10 +276,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 UniqueID = uniqueId
             };
 
+            // Seed using the real X6 OnError wire-contract property name (errorMessage).
             var onErrorData = new
             {
-                OnErrorVariable = "[[ErrorVar]]"
-                // Missing OnErrorWorkflow and IsEndedOnError
+                errorMessage = "[[ErrorVar]]"
+                // Missing webServiceUrl and endWorkflow
             };
 
             var cell = new Cell

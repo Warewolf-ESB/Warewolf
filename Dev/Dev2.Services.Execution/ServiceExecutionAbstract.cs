@@ -94,10 +94,27 @@ namespace Dev2.Services.Execution
         {
             Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID) ??
                      catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
+
+            // Add AmbientSourceLoader fallback for Azure Function context
+            if (Source == null 
+                && Service?.Source?.ResourceID != Guid.Empty
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(Service.Source.ResourceID) == true
+                && catalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                {
+                    Source = ws.OfType<TSource>().FirstOrDefault(r => r.ResourceID == Service.Source.ResourceID);
+                }
+            }
+
             if (Source == null)
             {
                 _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                     Service.Source.ResourceID, Service.Source.ResourceName));
+            }
+            else
+            {
+                _errorResult.ClearErrors();
             }
         }
 

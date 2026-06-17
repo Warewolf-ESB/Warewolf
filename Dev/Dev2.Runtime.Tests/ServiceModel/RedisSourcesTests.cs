@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
-        [Ignore("Until WOLF-7979 is done")]
+        [TestCategory("AnonymousRedis")]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Anonymous_Expected_ValidValidationResult()
         {
             try

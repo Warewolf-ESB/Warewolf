@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Factories;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
@@ -20,6 +21,8 @@ using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Unlimited.Framework.Converters.Graph;
@@ -75,6 +78,15 @@ namespace Dev2.Activities
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
             var source = ResourceCatalog.GetResource<ComPluginSource>(dataObject.WorkspaceID, SourceId);
+
+            if (source == null
+                && AmbientSourceLoader.Current?.EnsureSourceLoaded(SourceId) == true
+                && ResourceCatalog.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                    source = ws.OfType<ComPluginSource>().FirstOrDefault(r => r.ResourceID == SourceId);
+            }
+
             var methodParameters = Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
             BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
             var args = new ComPluginInvokeArgs

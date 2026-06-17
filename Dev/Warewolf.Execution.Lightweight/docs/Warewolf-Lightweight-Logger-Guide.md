@@ -132,7 +132,7 @@ In Azure, the three env vars are set as Function App application settings. They 
 
 ### I.3.1 Console — Azure Live Log Stream
 
-When `ENABLECONSOLELOGGING=true`, `AzureExecutionLogger` writes to `ILogger<AzureExecutionLogger>`. From there entries flow into the Azure Functions worker console (visible via Live Log Stream / Kudu) and into Application Insights if the `APPLICATIONINSIGHTS_CONNECTION_STRING` is configured.
+When `ENABLECONSOLELOGGING=true`, `AzureExecutionLogger` writes to `ILogger<AzureExecutionLogger>`. From there entries flow into the Azure Functions worker console (visible via Live Log Stream / Kudu). They also flow into Application Insights, but only when `ENABLEAPPLICATIONINSIGHTS=true` (the single authoritative AI switch) and the connection string is supplied via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. The connection string is deliberately NOT deployed under the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` name — that name would auto-enable the Functions host's own AI pipeline, which forwards worker stdout to App Insights regardless of `ENABLEAPPLICATIONINSIGHTS`. The non-standard name keeps the host pipeline dormant so the worker AI SDK is the only thing shipping telemetry.
 
 **Enable / disable from the Azure CLI:**
 
@@ -261,7 +261,7 @@ Edit `Settings/ElasticsearchLoggingSource.bite` and re-publish. If the new conne
 
 **What flows into Application Insights:**
 
-Because AuditLogger uses MEL, every audit event is captured by Application Insights when `APPLICATIONINSIGHTS_CONNECTION_STRING` is configured on the Function App. KQL queries can filter on `Event=AuthOutcome`, `Outcome`, `Workflow`, `Caller` — these are the structured fields emitted by `LogAuthOutcome`.
+Because AuditLogger uses MEL, every audit event is captured by Application Insights when AI is enabled on the Function App — i.e. `ENABLEAPPLICATIONINSIGHTS=true` with the connection string supplied via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. KQL queries can filter on `Event=AuthOutcome`, `Outcome`, `Workflow`, `Caller` — these are the structured fields emitted by `LogAuthOutcome`.
 
 ---
 
@@ -531,7 +531,7 @@ If you see the middleware lines but NOT the bracketed `[Instance:...] [Invocatio
 
 **Step 4 — Cross-check in Application Insights:**
 
-Application Insights captures everything that flows through MEL when `APPLICATIONINSIGHTS_CONNECTION_STRING` is set. From the Function App → Application Insights → Logs, run:
+Application Insights captures everything that flows through MEL when AI is enabled — that is, `ENABLEAPPLICATIONINSIGHTS=true` with the connection string supplied via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` (the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` name is deliberately not used, so the host's auto-AI pipeline never forwards stdout on its own). From the Function App → Application Insights → Logs, run:
 
 ```kql
 // Last 15 min of execution-logger traces
@@ -853,7 +853,7 @@ When verification fails, work this table top-to-bottom. The first matching row i
 | Banner shows "0 sink(s)" | Env vars / app settings | Both `ENABLECONSOLELOGGING` and `ENABLEELASTICSEARCHLOGGING` are unset or false. Set at least one. |
 | Banner shows "1 sink(s)" but ES expected | `Settings/ElasticsearchLoggingSource.bite` in publish | File missing → `File.Exists()` returned false, sink was silently skipped. Confirm `<Content>` entry in `.csproj` has `CopyToPublishDirectory=Always`. |
 | Middleware lines visible, execution logger silent | `EXECUTIONLOGLEVEL` and `host.json` category | Gate 1 (env var) or Gate 2 (host.json) is too strict for `AzureExecutionLogger`. Lower one or both. |
-| Console fine, App Insights empty | `APPLICATIONINSIGHTS_CONNECTION_STRING` app setting | Missing or wrong instrumentation key/connection string. App Insights ingestion off. |
+| Console fine, App Insights empty | `ENABLEAPPLICATIONINSIGHTS` and `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` app settings | AI is off unless BOTH are set: `ENABLEAPPLICATIONINSIGHTS=true` (the authoritative switch) AND a valid connection string in `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. Check both; a missing/wrong connection string or `ENABLEAPPLICATIONINSIGHTS≠true` means no worker telemetry is shipped. |
 | ES sink added but index empty | Console for `[ElasticsearchLogger] Exception` lines | Cluster unreachable from worker. Check network rules / VNET / firewall, then the credentials in the `.bite` ConnectionString. |
 | ES index has data but missing `instance.id` / `invocation.id` | Whether logs were emitted during an invocation | Startup-time entries (Program.cs `Dev2Logger.Info` calls) run before `InstanceCorrelationContext` is set; correlation fields are null by design. |
 | No `SECURITY_AUDIT` lines at all | `host.json` `AuditLogger` category | Set to `None` → audit disabled. Change to `Warning` or `Information` and redeploy. |

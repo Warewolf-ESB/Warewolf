@@ -77,7 +77,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
-        [Ignore]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
@@ -107,7 +106,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
-        [Ignore]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
