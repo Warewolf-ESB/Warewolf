@@ -363,8 +363,8 @@ if (Test-Path -LiteralPath $FilePath -PathType Leaf) {
         exit 1
     }
 } elseif (Test-Path -LiteralPath $FilePath -PathType Container) {
-    $files = Get-ChildItem -LiteralPath $FilePath -Recurse -Filter '*.bite' |
-             Select-Object -ExpandProperty FullName
+    $files = @(Get-ChildItem -LiteralPath $FilePath -Recurse -Filter '*.bite' |
+             Select-Object -ExpandProperty FullName)
 } else {
     Write-Fail "Path '$FilePath' not found."
     exit 1

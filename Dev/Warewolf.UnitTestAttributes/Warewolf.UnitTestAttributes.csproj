@@ -8,6 +8,11 @@
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.13.0</Version>
     </PackageReference>
+    <!-- Needed so Depends can throw AssertInconclusiveException to mark MSTest
+         tests as Skipped (not Failed) when an external dependency is unreachable. -->
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.8.3</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>

@@ -103,7 +103,7 @@ if [ -n "$APPINSIGHTS_NAME" ]; then
   az functionapp config appsettings set \
     --name           "$FUNCTION_APP_NAME" \
     --resource-group "$RESOURCE_GROUP" \
-    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$APPINSIGHTS_CONNSTR"
+    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$APPINSIGHTS_CONNSTR"
   echo "      Application Insights linked."
 else
   echo "[6/6] Skipping Application Insights (APPINSIGHTS_NAME not set)."
