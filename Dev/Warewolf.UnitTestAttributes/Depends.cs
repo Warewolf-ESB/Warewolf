@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
@@ -240,15 +239,6 @@ namespace Warewolf.UnitTestAttributes
                 Container.Port = foundPort;
             }
 
-            // Self-resolving dependency gate: for the localhost-hardcoded data-store
-            // container types, verify the dependency is actually reachable before any
-            // test relies on it. If it is not (e.g. the CI agent could not start the
-            // SQL/MySQL/Postgres/Elasticsearch container), skip the test via an
-            // AssertInconclusiveException rather than letting it fail with a 30s TCP
-            // timeout. When the dependency IS up, this is a no-op and behaviour is
-            // unchanged.
-            EnsureReachable();
-
             if (!performSourceInjection) return;
             switch (_containerType)
             {
@@ -275,61 +265,6 @@ namespace Warewolf.UnitTestAttributes
                     InjectWebApiContainer();
                     break;
             }
-        }
-
-        /// <summary>
-        /// Container types whose address is hardcoded to a local/well-known endpoint and
-        /// which are provisioned out-of-band (CI <c>-Start*</c> flags or Docker). For these
-        /// we actively confirm reachability so a missing dependency becomes a skipped test
-        /// instead of a slow, misleading failure.
-        /// </summary>
-        static bool IsGatedDependency(ContainerType type) =>
-            type == ContainerType.MSSQL
-            || type == ContainerType.MySQL
-            || type == ContainerType.PostGreSQL
-            || type == ContainerType.Elasticsearch
-            || type == ContainerType.AnonymousElasticsearch;
-
-        /// <summary>
-        /// Probes <see cref="Container"/>'s IP/port and, if it cannot be reached after a
-        /// short retry window, throws <see cref="AssertInconclusiveException"/> so the
-        /// calling MSTest test (or its ClassInitialize) is reported as Skipped rather than
-        /// Failed. No-op when the dependency type is not gated or the endpoint is reachable.
-        /// </summary>
-        void EnsureReachable()
-        {
-            if (!IsGatedDependency(_containerType)) return;
-            if (Container?.IP == null || !int.TryParse(Container.Port, out var port)) return;
-
-            const int attempts = 5;
-            const int connectTimeoutMs = 2000;
-            for (var attempt = 0; attempt < attempts; attempt++)
-            {
-                try
-                {
-                    using (var client = new TcpClient())
-                    {
-                        var async = client.BeginConnect(Container.IP, port, null, null);
-                        if (async.AsyncWaitHandle.WaitOne(connectTimeoutMs) && client.Connected)
-                        {
-                            client.EndConnect(async);
-                            return; // reachable
-                        }
-                    }
-                }
-                catch (SocketException) { /* not up yet */ }
-                catch (Exception) { /* transient; retry */ }
-
-                if (attempt < attempts - 1)
-                {
-                    Thread.Sleep(1000);
-                }
-            }
-
-            throw new AssertInconclusiveException(
-                $"[Depends] {ConvertToString(_containerType)} dependency is not reachable at " +
-                $"{Container.IP}:{Container.Port}. Skipping test. Start the dependency before running " +
-                "(e.g. TestRun.ps1 -Start* flag or a local Docker container).");
         }
 
         public static string[] GetPossiblePorts(ContainerType type)

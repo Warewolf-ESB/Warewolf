@@ -153,11 +153,11 @@ Write-Host ""
 Write-Host "[Step 5/6] Configuring Function App..." -ForegroundColor Yellow
 
 # Set Application Insights connection string
-Write-Host "   → Setting WAREWOLF_APPINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
+Write-Host "   → Setting APPLICATIONINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
 az functionapp config appsettings set `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$connectionString" `
+    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$connectionString" `
     --output none
 
 if ($LASTEXITCODE -ne 0) {
@@ -190,10 +190,10 @@ Write-Host "[Step 6/6] Verifying configuration..." -ForegroundColor Yellow
 $settings = az functionapp config appsettings list `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
+    --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
     --output json | ConvertFrom-Json
 
-$aiConnectionSet = $settings | Where-Object { $_.name -eq "WAREWOLF_APPINSIGHTS_CONNECTION_STRING" }
+$aiConnectionSet = $settings | Where-Object { $_.name -eq "APPLICATIONINSIGHTS_CONNECTION_STRING" }
 $aiEnabledSet = $settings | Where-Object { $_.name -eq "ENABLEAPPLICATIONINSIGHTS" }
 
 if ($aiConnectionSet -and $aiEnabledSet.value -eq "true") {

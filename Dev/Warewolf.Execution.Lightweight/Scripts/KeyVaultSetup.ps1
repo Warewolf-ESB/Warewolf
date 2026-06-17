@@ -131,11 +131,11 @@ if ($AppInsightsName) {
     } else {
         if ($PSCmdlet.ShouldProcess(
                 "Function App '$FunctionAppName'",
-                'Set WAREWOLF_APPINSIGHTS_CONNECTION_STRING app setting')) {
+                'Set APPLICATIONINSIGHTS_CONNECTION_STRING app setting')) {
             az functionapp config appsettings set `
                 --name           $FunctionAppName `
                 --resource-group $ResourceGroup `
-                --settings       "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$AppInsightsConnStr" `
+                --settings       "APPLICATIONINSIGHTS_CONNECTION_STRING=$AppInsightsConnStr" `
                 --output none
         }
         Write-Host '      Application Insights linked.' -ForegroundColor Green
