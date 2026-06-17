@@ -2384,4 +2384,27 @@ if ($Coverage.IsPresent) {
     }
 }
 
+# Rename the merged TRX to the CI job name so published artifacts are
+# self-identifying. vstest emits a generic name (VssAdministrator_<host>_<date>_
+# net8.0.trx), making it impossible to tell which pipeline job a TRX came from
+# without opening it. Azure DevOps sets SYSTEM_JOBDISPLAYNAME / AGENT_JOBNAME on
+# every job; locally these are empty so the default vstest name is left untouched.
+$ciJobName = $env:SYSTEM_JOBDISPLAYNAME
+if (-not $ciJobName) { $ciJobName = $env:AGENT_JOBNAME }
+if ($ciJobName -and (Test-Path $TestResultsPath)) {
+    $safeName = ($ciJobName -replace '[^\w\.\-]+', '_').Trim('_')
+    if ($safeName) {
+        $trxFiles = @(Get-ChildItem -Path $TestResultsPath -Filter '*.trx' -File -ErrorAction SilentlyContinue | Sort-Object Name)
+        for ($t = 0; $t -lt $trxFiles.Count; $t++) {
+            $target     = if ($trxFiles.Count -eq 1) { "$safeName.trx" } else { "${safeName}_$t.trx" }
+            $targetPath = Join-Path $TestResultsPath $target
+            if ($trxFiles[$t].FullName -ne $targetPath) {
+                if (Test-Path $targetPath) { Remove-Item $targetPath -Force }
+                Move-Item -LiteralPath $trxFiles[$t].FullName -Destination $targetPath -Force
+                Write-Host "Renamed TRX '$($trxFiles[$t].Name)' -> '$target'"
+            }
+        }
+    }
+}
+
 exit 0
