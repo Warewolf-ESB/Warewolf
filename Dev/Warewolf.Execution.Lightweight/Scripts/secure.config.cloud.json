@@ -1,0 +1,68 @@
+{
+  "_comment": [
+    "Plain-text source for the secure.config shipped to the warewolfserver-uat",
+    "Cloud test Function App by Dev/.azure/pipeline-CLOUD.yml.",
+    "",
+    "The pipeline's Build stage encrypts this JSON with",
+    "Dev2.Services.Security.SecurityEncryption.Encrypt (the same AES-CBC routine",
+    "the Warewolf Studio uses) and writes the result to the publish output as",
+    "'secure.config'. SecureConfigLoader reads it from AppContext.BaseDirectory",
+    "at runtime; without it the engine has no effective permission map and",
+    "WorkflowAuthPolicyLoader denies every request with 503 ConfigMissing.",
+    "",
+    "SecretKey is intentionally empty: SecureConfigLoader synthesises an",
+    "in-memory HMAC key when it is blank, so no secret is committed here.",
+    "",
+    "Public is granted server-wide View+Execute so the public smoke-test",
+    "workflows exercised by the pipeline (Hello World, azure db) authorise and",
+    "execute through the anonymous /Public/ route."
+  ],
+  "$id": "1",
+  "$type": "Dev2.Services.Security.SecuritySettingsTO, Dev2.Infrastructure",
+  "SecretKey": "",
+  "AuthenticationOverrideWorkflow": {
+    "$id": "2",
+    "$type": "Warewolf.Data.NamedGuid, Warewolf.Interfaces",
+    "Name": "",
+    "Value": "00000000-0000-0000-0000-000000000000"
+  },
+  "WindowsGroupPermissions": [
+    {
+      "$id": "3",
+      "$type": "Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure",
+      "IsServer": true,
+      "ResourcePath": null,
+      "ResourceID": "00000000-0000-0000-0000-000000000000",
+      "ResourceName": null,
+      "WindowsGroup": "Warewolf Administrators",
+      "IsDeleted": false,
+      "View": true,
+      "Execute": true,
+      "Contribute": true,
+      "DeployTo": true,
+      "DeployFrom": true,
+      "Administrator": true,
+      "IsNew": false,
+      "Path": null
+    },
+    {
+      "$id": "4",
+      "$type": "Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure",
+      "IsServer": true,
+      "ResourcePath": null,
+      "ResourceID": "00000000-0000-0000-0000-000000000000",
+      "ResourceName": null,
+      "WindowsGroup": "Public",
+      "IsDeleted": false,
+      "View": true,
+      "Execute": true,
+      "Contribute": false,
+      "DeployTo": false,
+      "DeployFrom": false,
+      "Administrator": false,
+      "IsNew": false,
+      "Path": null
+    }
+  ],
+  "CacheTimeout": "01:00:00"
+}
