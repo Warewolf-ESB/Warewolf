@@ -394,3 +394,11 @@ if ($SkipEosCheck.IsPresent) {
         -SupportDataFile "$RepoRoot\Build\dotnet-support.json" `
         -WarnDays $WarnDays
 }
+
+# All gates passed. Each gate function only calls 'exit 1' on failure and returns
+# on success, so when no native command runs (e.g. -SkipVulnerabilityCheck skips
+# the dotnet-based vuln gates) $LASTEXITCODE is never set and stays $null. The
+# caller (Compile.ps1) tests 'if ($LASTEXITCODE -ne 0)', and '$null -ne 0' is
+# $true in PowerShell, which would falsely block the build. Exit 0 explicitly so
+# success is always reported unambiguously regardless of which gates ran.
+exit 0
