@@ -1102,23 +1102,47 @@ function Stop-HostExchangeConnector {
 }
 
 function Start-HostMSSQLServer([string]$BakFile) {
-    if ($LegacyWindowsDeps) {
-        choco install sql-server-2022 -y
-        [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
-        $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
-        $comp = $env:ComputerName
-        $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-        $Tcp.IsEnabled = $true; $Tcp.Alter()
-        $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
-        $Np.IsEnabled = $true; $Np.Alter()
-        $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
-        $sql.Settings.LoginMode = 'Mixed'; $sql.Alter()
-        sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
-        sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
-        if (!(Test-Path "C:\Builds")) { New-Item -ItemType Directory "C:\Builds" | Out-Null }
-        sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$BakFile' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
-        sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+    # Native Windows provisioning. Runs on Windows agents (including hosted windows-2022,
+    # where the Linux mssql container cannot run) and whenever -LegacyWindowsDeps is set.
+    # Provisions the Dev2TestingDB fixture that Depends(MSSQL) -> localhost:1433 expects:
+    # the SQL tests connect as testuser / Ex@mple!23Secure#PWD against Dev2TestingDB.
+    if ($LegacyWindowsDeps -or ($env:OS -eq 'Windows_NT')) {
+        Write-Host "Installing SQL Server 2022 (native)..."
+        choco install sql-server-2022 -y --no-progress
+
+        Write-Host "Enabling TCP + Mixed-mode auth via registry (no SMO dependency)..."
+        # The SMO/WMI ManagedComputer API does not load reliably on hosted agents, so
+        # configure the instance through the registry and restart the service instead.
+        $instKey = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL').MSSQLSERVER
+        $sqlRoot = "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\$instKey\MSSQLServer"
+        Set-ItemProperty -Path $sqlRoot -Name 'LoginMode' -Value 2
+        $tcpKey = "$sqlRoot\SuperSocketNetLib\Tcp"
+        Set-ItemProperty -Path $tcpKey -Name 'Enabled' -Value 1
+        Set-ItemProperty -Path "$tcpKey\IPAll" -Name 'TcpPort' -Value '1433'
+        Set-ItemProperty -Path "$tcpKey\IPAll" -Name 'TcpDynamicPorts' -Value ''
         Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+        for ($i = 0; $i -lt 30; $i++) {
+            if ((Get-Service 'MSSQLSERVER').Status -eq 'Running') { break }
+            Start-Sleep -Seconds 2
+        }
+
+        # Resolve the Dev2TestingDB backup: use an explicitly supplied .bak path, otherwise
+        # clone the canonical fixture repo (needs a gitlab token in $env:TestDependencyPassword).
+        if (-not $BakFile -or -not (Test-Path $BakFile)) {
+            $bakDir = Join-Path $env:TEMP 'mssql-connector-testing'
+            if (Test-Path $bakDir) { Remove-Item $bakDir -Recurse -Force }
+            $gitUser = if ($env:GitlabUser) { $env:GitlabUser } else { 'oauth2' }
+            git clone "https://$($gitUser):$($env:TestDependencyPassword)@gitlab.com/warewolf/mssql-connector-testing.git" $bakDir | Out-Null
+            $BakFile = Join-Path $bakDir 'dev2testingdb.bak'
+        }
+
+        if (!(Test-Path "C:\Builds")) { New-Item -ItemType Directory "C:\Builds" | Out-Null }
+        sqlcmd -S "localhost" -E -Q "IF SUSER_ID('testuser') IS NULL CREATE LOGIN [testuser] WITH PASSWORD = 'Ex@mple!23Secure#PWD', CHECK_POLICY = OFF"
+        sqlcmd -S "localhost" -E -Q "EXEC sp_addsrvrolemember 'testuser','sysadmin'"
+        sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$BakFile' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf', REPLACE"
+        sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB; EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+        Write-Host "Verifying testuser can connect to Dev2TestingDB over TCP..."
+        sqlcmd -S "localhost,1433" -U testuser -P 'Ex@mple!23Secure#PWD' -d Dev2TestingDB -Q "SET NOCOUNT ON; SELECT TABLE_SCHEMA + '.' + TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"
         return
     }
     docker run -d --name sqlserver `
@@ -2237,7 +2261,7 @@ try {
             if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
             if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
             if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
-            if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
+            if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer }
 
             if ($RetryRebuild.IsPresent) {
                 if (Test-Path "$PWD\..\..\Compile.ps1") {
@@ -2359,7 +2383,7 @@ try {
         if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
         if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
         if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
-        if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
+        if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer }
     }
 } finally {
     if ($ServerType) { Stop-Engine }
