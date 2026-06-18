@@ -135,7 +135,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                         var authString = AuthenticationType == AuthenticationType.Windows
                             ? "Integrated Security=SSPI;"
                             : $"User ID={UserID};Password={Password};";
-                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout}";
+                        // Microsoft.Data.SqlClient defaults Encrypt=true, so a connection to a
+                        // server presenting an untrusted/self-signed certificate fails during the
+                        // login handshake ("The certificate chain was issued by an authority that
+                        // is not trusted"). TrustServerCertificate=True keeps the connection
+                        // encrypted in transit while skipping chain validation, matching the
+                        // pre-migration System.Data.SqlClient behaviour for on-prem SQL servers.
+                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout};TrustServerCertificate=True";
 
                     case enSourceType.MySqlDatabase:
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
