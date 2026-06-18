@@ -24,7 +24,7 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
 {
-#if WINDOWS
+
     [Binding]
     public class ReadFolderSteps : FileToolsBase
     {
@@ -89,12 +89,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
             };
 
             scenarioContext.Add("activity", folderRead);
-            var viewModel = new ReadFolderDesignerViewModel(ModelItemUtils.CreateModelItem(folderRead));
+
+#if WINDOWS
+            var viewModel = new ReadFolderDesignerViewModel(
+                ModelItemUtils.CreateModelItem(folderRead));
+
             if (!scenarioContext.ContainsKey("viewModel"))
             {
                 scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
+ 
 }
