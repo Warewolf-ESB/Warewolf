@@ -1101,6 +1101,33 @@ function Stop-HostExchangeConnector {
     docker rm -f exchange-connector-testing 2>$null | Out-Null
 }
 
+function Resolve-SqlPackage {
+    # Locate SqlPackage.exe for importing the Dev2TestingDB .bacpac fixture, installing the
+    # microsoft.sqlpackage dotnet global tool on demand. Returns the full path, or $null when
+    # it can neither be found nor installed (caller then falls back to the deterministic seed).
+    foreach ($name in 'SqlPackage', 'sqlpackage') {
+        $cmd = Get-Command $name -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+    $candidates = @("$env:USERPROFILE\.dotnet\tools\SqlPackage.exe")
+    foreach ($root in @("$env:ProgramFiles\Microsoft SQL Server", "${env:ProgramFiles(x86)}\Microsoft SQL Server")) {
+        if ($root -and (Test-Path $root)) {
+            $candidates += (Get-ChildItem (Join-Path $root '*\DAC\bin\SqlPackage.exe') -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
+        }
+    }
+    foreach ($c in $candidates) { if ($c -and (Test-Path $c)) { return $c } }
+
+    Write-Host "SqlPackage not found; installing microsoft.sqlpackage global tool..."
+    & dotnet tool install --global microsoft.sqlpackage --ignore-failed-sources 2>&1 | Write-Host
+    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
+    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) { $env:PATH = "$toolsDir;$env:PATH" }
+    $exe = Join-Path $toolsDir 'SqlPackage.exe'
+    if (Test-Path $exe) { return $exe }
+    $cmd = Get-Command SqlPackage -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    return $null
+}
+
 function Start-HostMSSQLServer([string]$BakFile) {
     # Native Windows provisioning. Runs on Windows agents (including hosted windows-2022,
     # where the Linux mssql container cannot run) and whenever -LegacyWindowsDeps is set.
@@ -1147,25 +1174,16 @@ function Start-HostMSSQLServer([string]$BakFile) {
         sqlcmd -S "localhost" -E -Q "IF SUSER_ID('testUser') IS NULL CREATE LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF ELSE ALTER LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF"
         sqlcmd -S "localhost" -E -Q "ALTER SERVER ROLE [sysadmin] ADD MEMBER [testUser]"
 
-        # Best-effort restore of the canonical Dev2TestingDB fixture. Preference order:
-        #   1. an explicit -StartMSSQLServer <path-to-.bak>
-        #   2. a pre-cloned fixture on disk (C:\Builds\mssql-connector-testing) - no token
-        #   3. cloning the fixture repo (needs a gitlab token in $env:TestDependencyPassword)
-        # The token is frequently unavailable on hosted agents ("HTTP Basic: Access denied"),
-        # so a failure here is non-fatal and the deterministic seeding below still runs.
+        # Provision the canonical Dev2TestingDB fixture. Preference order:
+        #   1. an explicit -StartMSSQLServer <path-to-.bak>            (full DB, real data)
+        #   2. a pre-cloned .bak on disk (C:\Builds\mssql-connector-testing)
+        #   3. the committed dev2testingdb.bacpac (imported with SqlPackage) - the full schema,
+        #      self-contained in the repo, no gitlab token required.
+        # Each step is non-fatal; the deterministic seeding below still runs so the metadata-only
+        # tests pass even when neither the .bak nor the .bacpac could be provisioned.
         if (-not $BakFile -or -not (Test-Path $BakFile)) {
             $preCloned = 'C:\Builds\mssql-connector-testing\dev2testingdb.bak'
-            if (Test-Path $preCloned) {
-                $BakFile = $preCloned
-            }
-            elseif ($env:TestDependencyPassword) {
-                $bakDir = Join-Path $env:TEMP 'mssql-connector-testing'
-                if (Test-Path $bakDir) { Remove-Item $bakDir -Recurse -Force }
-                $gitUser = if ($env:GitlabUser) { $env:GitlabUser } else { 'oauth2' }
-                git clone "https://$($gitUser):$($env:TestDependencyPassword)@gitlab.com/warewolf/mssql-connector-testing.git" $bakDir *> $null
-                $candidate = Join-Path $bakDir 'dev2testingdb.bak'
-                if (Test-Path $candidate) { $BakFile = $candidate }
-            }
+            if (Test-Path $preCloned) { $BakFile = $preCloned }
         }
         if ($BakFile -and (Test-Path $BakFile)) {
             Write-Host "Restoring Dev2TestingDB from $BakFile..."
@@ -1174,15 +1192,45 @@ function Start-HostMSSQLServer([string]$BakFile) {
             sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB; EXEC sp_change_users_login 'AUTO_FIX', 'testUser'"
         }
 
+        # If no .bak produced the full fixture, import the committed bacpac. It carries the
+        # complete schema the SQL integration / bulk-insert jobs depend on: 149 tables (incl.
+        # every SqlBulkInsertSpecFlowTestTable*), 50 stored procedures (incl.
+        # Pr_GeneralTestColumnData) and the fn_diagramobjects function. Idempotent: Pr_General-
+        # TestColumnData acts as a sentinel so re-runs (RetryCount) don't re-import.
+        $probe = sqlcmd -S "localhost" -E -h -1 -W -Q "SET NOCOUNT ON; SELECT CASE WHEN DB_ID('Dev2TestingDB') IS NOT NULL AND OBJECT_ID('Dev2TestingDB.dbo.Pr_GeneralTestColumnData') IS NOT NULL THEN 1 ELSE 0 END" 2>$null
+        $probeVal = $probe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
+        if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
+            $bacpac = @(
+                (Join-Path $PSScriptRoot 'dev2testingdb.bacpac'),
+                (Join-Path $PSScriptRoot 'Dev\.azure\dev2testingdb.bacpac'),
+                'C:\Builds\mssql-connector-testing\dev2testingdb.bacpac'
+            ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+            if ($bacpac) {
+                $sqlPackage = Resolve-SqlPackage
+                if ($sqlPackage) {
+                    Write-Host "Importing full Dev2TestingDB fixture from $bacpac via $sqlPackage..."
+                    sqlcmd -S "localhost" -E -Q "IF DB_ID('Dev2TestingDB') IS NOT NULL BEGIN ALTER DATABASE [Dev2TestingDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Dev2TestingDB]; END"
+                    & $sqlPackage /Action:Import /SourceFile:"$bacpac" /TargetServerName:"localhost" /TargetDatabaseName:"Dev2TestingDB" /TargetTrustServerCertificate:True 2>&1 | Write-Host
+                    sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB; EXEC sp_change_users_login 'AUTO_FIX', 'testUser'"
+                }
+                else {
+                    Write-Warn "SqlPackage unavailable; the full SQL fixture could not be imported. Falling back to the minimal seed (SQL integration / bulk-insert tests will fail)."
+                }
+            }
+            else {
+                Write-Warn "dev2testingdb.bacpac not found next to TestRun.ps1 or under Dev\.azure; falling back to the minimal seed."
+            }
+        }
+
         # Deterministic seeding (always runs, fully idempotent). Guarantees the schema the
-        # MSSQL metadata tests assert exists even when no .bak could be restored. Column
-        # types/nullability/identity mirror the canonical fixture (dev2testingdb.bak):
+        # MSSQL metadata tests assert exists even when no .bak/.bacpac could be provisioned.
+        # Column types/nullability/identity mirror the canonical fixture:
         #   dbo.City       -> 3 cols, CityID int NOT identity
         #   Warewolf.City  -> 4 cols, CityID int IDENTITY, nullable nchar(10) TestCol
         #   dbo.Country    -> extra table so total table count exceeds 2
         # (GetDatabaseTables_Execute_ValidDatabaseSource asserts Items.Count > 2 while
         # still finding exactly two [City] tables.) IF NOT EXISTS guards leave any
-        # restored objects untouched.
+        # restored/imported objects untouched.
         sqlcmd -S "localhost" -E -Q "IF DB_ID('Dev2TestingDB') IS NULL CREATE DATABASE [Dev2TestingDB]"
         $seedSql = "USE Dev2TestingDB; " +
             "IF SCHEMA_ID('Warewolf') IS NULL EXEC('CREATE SCHEMA Warewolf'); " +
