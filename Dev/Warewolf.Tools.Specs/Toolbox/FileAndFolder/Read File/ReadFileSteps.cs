@@ -24,7 +24,6 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 {
-#if WINDOWS
     [Binding]
     public class ReadFileSteps : FileToolsBase
     {
@@ -62,12 +61,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 
             scenarioContext.Add("activity", fileRead);
 
+#if WINDOWS
             var viewModel = new ReadFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileRead));
             if (!scenarioContext.ContainsKey("viewModel"))
             {
                 scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
 }

@@ -24,7 +24,6 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
 {
-#if WINDOWS
     [Binding]
     public class DeleteSteps : FileToolsBase
     {
@@ -73,6 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             var delete = scenarioContext.Get<DsfPathDelete>("activity");
             delete.PerformValidation();
 
+#if WINDOWS
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
             if (!scenarioContext.ContainsKey("viewModel"))
             {
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             }
 
             viewModel.Validate();
+#endif
         }
     }
-#endif
 }

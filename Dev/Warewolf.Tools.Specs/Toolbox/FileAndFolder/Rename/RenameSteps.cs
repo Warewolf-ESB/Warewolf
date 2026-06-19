@@ -36,8 +36,7 @@ using Dev2.Common;
 using Dev2.Runtime.Subscription;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
-{
-#if WINDOWS
+{ 
     [Binding]
     public class RenameSteps : FileToolsBase
     {
@@ -194,13 +193,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             }
 
             dsfRename.PerformValidation();
-
+#if WINDOWS
             var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
             if (!scenarioContext.ContainsKey("viewModel"))
             {
                 scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
+ 
 }
