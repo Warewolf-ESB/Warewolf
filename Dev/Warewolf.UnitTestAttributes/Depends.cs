@@ -426,8 +426,10 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
+            // CI SQL Server presents a self-signed certificate; opt the injected test sources in
+            // to skip chain validation (round-tripped into DbSource.TrustServerCertificate).
             UpdateSourcesConnectionStrings(
-                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=Ex@mple!23Secure#PWD;",
+                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=Ex@mple!23Secure#PWD;TrustServerCertificate=True;",
                 knownMssqlServerSources);
         }
         

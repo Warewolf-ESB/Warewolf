@@ -91,6 +91,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         public int Port { get; set; }
         public int ConnectionTimeout { get; set; }
 
+        // Secure by default: production SQL sources keep full certificate-chain validation.
+        // Only dedicated test servers (e.g. hosted CI agents with a self-signed certificate)
+        // should opt in. The flag is round-tripped through the persisted connection string.
+        public bool TrustServerCertificate { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
@@ -139,9 +144,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                         // server presenting an untrusted/self-signed certificate fails during the
                         // login handshake ("The certificate chain was issued by an authority that
                         // is not trusted"). TrustServerCertificate=True keeps the connection
-                        // encrypted in transit while skipping chain validation, matching the
-                        // pre-migration System.Data.SqlClient behaviour for on-prem SQL servers.
-                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout};TrustServerCertificate=True";
+                        // encrypted in transit while skipping chain validation. This is opt-in and
+                        // OFF by default so production sources keep full certificate validation;
+                        // only dedicated test servers (self-signed cert) set the flag.
+                        var trustServerCertificateString = TrustServerCertificate ? ";TrustServerCertificate=True" : string.Empty;
+                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout}{trustServerCertificateString}";
 
                     case enSourceType.MySqlDatabase:
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
@@ -263,6 +270,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                         case "connection timeout":
                             containsTimeout = true;
                             ConnectionTimeout = int.TryParse(prm[1], out int timeout) ? timeout : defaultTimeout;
+                            break;
+                        case "trustservercertificate":
+                        case "trust server certificate":
+                            TrustServerCertificate = bool.TryParse(prm[1], out var trustServerCertificate) && trustServerCertificate;
                             break;
                         default:
                             break;
