@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 <#
 .SYNOPSIS
   Provisions client app registrations in Microsoft Entra ID for calling the

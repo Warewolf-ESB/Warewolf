@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 #Requires -Version 7.0
 <#
 .SYNOPSIS
