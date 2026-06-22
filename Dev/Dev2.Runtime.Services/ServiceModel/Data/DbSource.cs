@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Data.SqlClient;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -130,25 +131,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 switch (ServerType)
                 {
                     case enSourceType.SqlDatabase:
-                        var isNamedInstance = Server != null && Server.Contains('\\');
-                        if (isNamedInstance && Port == 1433)
-                        {
-                            Port = 0;
-                        }
-
-                        portString = Port > 0 ? "," + Port : string.Empty;
-                        var authString = AuthenticationType == AuthenticationType.Windows
-                            ? "Integrated Security=SSPI;"
-                            : $"User ID={UserID};Password={Password};";
-                        // Microsoft.Data.SqlClient defaults Encrypt=true, so a connection to a
-                        // server presenting an untrusted/self-signed certificate fails during the
-                        // login handshake ("The certificate chain was issued by an authority that
-                        // is not trusted"). TrustServerCertificate=True keeps the connection
-                        // encrypted in transit while skipping chain validation. This is opt-in and
-                        // OFF by default so production sources keep full certificate validation;
-                        // only dedicated test servers (self-signed cert) set the flag.
-                        var trustServerCertificateString = TrustServerCertificate ? ";TrustServerCertificate=True" : string.Empty;
-                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout}{trustServerCertificateString}";
+                        return BuildSqlServerConnectionString();
 
                     case enSourceType.MySqlDatabase:
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
@@ -284,6 +267,55 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     ConnectionTimeout = defaultTimeout;
                 }
+            }
+        }
+
+        // Builds the SQL Server connection string with SqlConnectionStringBuilder so keyword
+        // escaping/normalisation is handled by the driver and encryption is explicit. Encryption
+        // is always Mandatory; server-certificate validation is the default and is only skipped
+        // when the per-source TrustServerCertificate flag is opted in (e.g. self-signed test SQL).
+        string BuildSqlServerConnectionString()
+        {
+            // Preserve named-instance handling: "host\\INSTANCE" is addressed by name, so the
+            // default 1433 port must be dropped.
+            var isNamedInstance = Server != null && Server.Contains('\\');
+            if (isNamedInstance && Port == 1433)
+            {
+                Port = 0;
+            }
+            var portString = Port > 0 ? "," + Port : string.Empty;
+
+            var builder = new SqlConnectionStringBuilder
+            {
+                DataSource = $"{Server}{portString}",
+                InitialCatalog = DatabaseName ?? string.Empty,
+                ConnectTimeout = ConnectionTimeout,
+                // Transport encryption ON everywhere, explicit rather than relying on the driver default.
+                Encrypt = SqlConnectionEncryptOption.Mandatory
+            };
+
+            // Secure by default: only opt-in (self-signed) test servers skip chain validation, so
+            // production connection strings stay clean (the keyword is emitted only when true).
+            if (TrustServerCertificate)
+            {
+                builder.TrustServerCertificate = true;
+            }
+
+            ApplySqlAuthentication(builder);
+
+            return builder.ConnectionString;
+        }
+
+        void ApplySqlAuthentication(SqlConnectionStringBuilder builder)
+        {
+            if (AuthenticationType == AuthenticationType.Windows)
+            {
+                builder.IntegratedSecurity = true;
+            }
+            else
+            {
+                builder.UserID = UserID ?? string.Empty;
+                builder.Password = Password ?? string.Empty;
             }
         }
 

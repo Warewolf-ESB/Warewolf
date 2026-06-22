@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -71,21 +72,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_SqlDatabase_DefaultsToValidatingCertificate()
         {
-            //------------Setup for test--------------------------
             var dbSource = new DbSource
             {
-                Server = "myserver",
-                ServerType = enSourceType.SqlDatabase,
-                AuthenticationType = AuthenticationType.Windows,
-                DatabaseName = "testdb",
-                Port = 1433
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows, DatabaseName = "testdb", Port = 1433
             };
-            //------------Execute Test---------------------------
-            var connectionString = dbSource.ConnectionString;
-            //------------Assert Results-------------------------
+            var builder = new SqlConnectionStringBuilder(dbSource.ConnectionString);
             Assert.IsFalse(dbSource.TrustServerCertificate, "TrustServerCertificate must default to false (secure).");
-            Assert.IsFalse(connectionString.Contains("TrustServerCertificate", StringComparison.OrdinalIgnoreCase),
-                $"Production connection string must not disable certificate validation: {connectionString}");
+            Assert.IsFalse(builder.TrustServerCertificate, "Production connection string must validate the server certificate.");
         }
 
         [TestMethod]
@@ -93,20 +87,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_SqlDatabase_WhenTrustServerCertificate_SkipsValidation()
         {
-            //------------Setup for test--------------------------
             var dbSource = new DbSource
             {
-                Server = "myserver",
-                ServerType = enSourceType.SqlDatabase,
-                AuthenticationType = AuthenticationType.Windows,
-                DatabaseName = "testdb",
-                Port = 1433,
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows, DatabaseName = "testdb", Port = 1433,
                 TrustServerCertificate = true
             };
-            //------------Execute Test---------------------------
-            var connectionString = dbSource.ConnectionString;
-            //------------Assert Results-------------------------
-            StringAssert.Contains(connectionString, "TrustServerCertificate=True");
+            var builder = new SqlConnectionStringBuilder(dbSource.ConnectionString);
+            Assert.IsTrue(builder.TrustServerCertificate);
         }
 
         [TestMethod]
@@ -114,13 +102,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_SqlDatabase_TrustServerCertificate_RoundTrips()
         {
-            //------------Setup for test--------------------------
             var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
-            //------------Execute Test---------------------------
             dbSource.ConnectionString = "Data Source=myserver,1433;Initial Catalog=testdb;User ID=u;Password=p;Connection Timeout=30;TrustServerCertificate=True";
-            //------------Assert Results-------------------------
             Assert.IsTrue(dbSource.TrustServerCertificate, "Flag must round-trip from the persisted connection string.");
-            StringAssert.Contains(dbSource.ConnectionString, "TrustServerCertificate=True");
+            Assert.IsTrue(new SqlConnectionStringBuilder(dbSource.ConnectionString).TrustServerCertificate);
         }
 
         [TestMethod]
@@ -128,13 +113,61 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_SqlDatabase_WithoutTrustServerCertificate_RoundTripsAsValidated()
         {
-            //------------Setup for test--------------------------
             var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
-            //------------Execute Test---------------------------
             dbSource.ConnectionString = "Data Source=myserver,1433;Initial Catalog=testdb;User ID=u;Password=p;Connection Timeout=30";
-            //------------Assert Results-------------------------
             Assert.IsFalse(dbSource.TrustServerCertificate, "Absent keyword must parse as secure (false).");
-            Assert.IsFalse(dbSource.ConnectionString.Contains("TrustServerCertificate", StringComparison.OrdinalIgnoreCase));
+            Assert.IsFalse(new SqlConnectionStringBuilder(dbSource.ConnectionString).TrustServerCertificate);
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_AlwaysSetsEncryptMandatory()
+        {
+            var win = new SqlConnectionStringBuilder(new DbSource
+            {
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows, DatabaseName = "testdb", Port = 1433
+            }.ConnectionString);
+            var user = new SqlConnectionStringBuilder(new DbSource
+            {
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.User, UserID = "u", Password = "p",
+                DatabaseName = "testdb", Port = 1433
+            }.ConnectionString);
+            Assert.AreEqual(SqlConnectionEncryptOption.Mandatory, win.Encrypt, "Encryption must be mandatory for Windows auth.");
+            Assert.AreEqual(SqlConnectionEncryptOption.Mandatory, user.Encrypt, "Encryption must be mandatory for SQL auth.");
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_Windows_UsesIntegratedSecurity()
+        {
+            var dbSource = new DbSource
+            {
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows, DatabaseName = "testdb", Port = 1433
+            };
+            var builder = new SqlConnectionStringBuilder(dbSource.ConnectionString);
+            Assert.IsTrue(builder.IntegratedSecurity);
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_User_SetsUserIdAndPassword()
+        {
+            var dbSource = new DbSource
+            {
+                Server = "myserver", ServerType = enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.User, UserID = "myuser", Password = "mypwd",
+                DatabaseName = "testdb", Port = 1433
+            };
+            var builder = new SqlConnectionStringBuilder(dbSource.ConnectionString);
+            Assert.IsFalse(builder.IntegratedSecurity);
+            Assert.AreEqual("myuser", builder.UserID);
+            Assert.AreEqual("mypwd", builder.Password);
         }
 
         [TestMethod]
