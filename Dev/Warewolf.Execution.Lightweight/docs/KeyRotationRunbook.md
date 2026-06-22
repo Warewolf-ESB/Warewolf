@@ -25,16 +25,15 @@ files.  **You must have the original DPAPI-encrypted or plain-text `.bite`
 files**, not the deployed `WFAES::`-encrypted versions.
 
 ```powershell
-# Supply original (DPAPI/plain) files and add -KeyRotate.
+# Supply original (DPAPI/plain) files and add -GenerateKeys.
 # The script fetches the OLD key to decrypt any existing WFAES:: values,
-# then generates and stores a NEW key, and re-encrypts all files.
+# then generates and stores a NEW key version, and re-encrypts all files.
+# -SecretName is mandatory and must always be provided.
 .\Scripts\Encrypt-Config.ps1 `
-    -FilePath      "C:\Warewolf\OriginalResources" `
-    -VaultName     "kv-warewolf-prod" `
-    -KeyRotate `
-    -FunctionApp   "func-warewolf-prod" `
-    -ResourceGroup "rg-warewolf-prod" `
-    -UploadToAzure
+    -FilePath   "C:\Warewolf\OriginalResources" `
+    -VaultName  "kv-warewolf-prod" `
+    -SecretName "dp-keyring-v1" `
+    -GenerateKeys
 ```
 
 What happens internally:
@@ -42,7 +41,7 @@ What happens internally:
 2. Any `WFAES::` values in the supplied files are decrypted with the old key.
 3. A **new** 256-bit key is generated and stored via `az keyvault secret set`
    (Key Vault retains the old version automatically).
-4. All files are re-encrypted with the new key and uploaded.
+4. All files are re-encrypted with the new key. Deploy them separately (Phase 2).
 
 ### Phase 2 — Deploy and verify
 
@@ -109,7 +108,7 @@ az keyvault secret set-attributes \
   --enabled    false
 
 # 2. Run rotation (same as planned — generates new key from original files).
-.\Scripts\Encrypt-Config.ps1 -FilePath "..." -VaultName "kv-warewolf-prod" -KeyRotate -UploadToAzure ...
+.\Scripts\Encrypt-Config.ps1 -FilePath "..." -VaultName "kv-warewolf-prod" -SecretName "dp-keyring-v1" -GenerateKeys
 
 # 3. Restart all instances to force cold start with the new key.
 az functionapp restart \
