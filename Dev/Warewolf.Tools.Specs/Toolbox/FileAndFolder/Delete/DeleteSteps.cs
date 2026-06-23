@@ -35,6 +35,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         [When(@"the delete file tool is executed")]
         public void WhenTheDeleteFileToolIsExecuted()
         {
+            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);

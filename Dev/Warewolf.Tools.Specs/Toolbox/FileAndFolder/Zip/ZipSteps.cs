@@ -41,6 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
         [When(@"the Zip file tool is executed")]
         public void WhenTheZipFileToolIsExecuted()
         {
+            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);

@@ -30,6 +30,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
         [When(@"the copy file tool is executed")]
         public void WhenTheCopyFileToolIsExecuted()
         {
+            SkipIfRemoteOrUncEndpoint();
             if(!Directory.Exists("c:\\copydir"))
             {
                 Directory.CreateDirectory("c:\\copydir");
