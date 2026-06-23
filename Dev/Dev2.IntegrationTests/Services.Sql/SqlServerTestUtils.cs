@@ -31,7 +31,9 @@ namespace Dev2.Integration.Tests.Services.Sql
                 UserID = authenticationType == AuthenticationType.User ? "testuser" : null,
                 Password = authenticationType == AuthenticationType.User ? "Ex@mple!23Secure#PWD" : null,
                 ConnectionTimeout = 30,
-                Port = port
+                Port = port,
+                // CI SQL Server presents a self-signed certificate; opt in to skip chain validation.
+                TrustServerCertificate = true
             };
             return dbSource;
         }
