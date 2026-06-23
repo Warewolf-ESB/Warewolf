@@ -63,7 +63,7 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
     -RepoRoot $PSScriptRoot `
     -SkipVulnerabilityCheck:$SkipVulnerabilityCheck `
     -SkipEosCheck:$SkipEosCheck
-if ($LASTEXITCODE -ne 0) {
+if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0) {
     Write-Host "Build blocked by security gate. See output above." -ForegroundColor Red
     exit $LASTEXITCODE
 }
