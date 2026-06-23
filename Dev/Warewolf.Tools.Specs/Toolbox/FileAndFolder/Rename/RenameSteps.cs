@@ -70,7 +70,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         // reachable and skipped when it is not, instead of being unconditionally skipped.
         // ftp/sftp/unc remain unconditionally skipped pending the same infra reliability work.
         // Reverse: delete this method and its call once the CI file-server infra is reliable.
-        static readonly string[] _remoteOrUncPrefixes = { "ftp://", "sftp://", "\\\\" };
+        // NB: the ftp prefix is the bare scheme "ftp:" (not "ftp://") so rows whose destination
+        // is built from variables - e.g. "ftp:[[a]][[b]].txt" resolving to ftp://localhost:1010/...
+        // - are also recognised as remote and skipped. "ftps://" is intentionally NOT matched by
+        // "ftp:" (its 4th char is 's', not ':') and remains handled by the reachability gate below.
+        static readonly string[] _remoteOrUncPrefixes = { "ftp:", "sftp://", "\\\\" };
 
         void SkipIfKnownRemoteOrUncRenameRow()
         {
