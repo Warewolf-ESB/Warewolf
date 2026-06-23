@@ -28,17 +28,20 @@ namespace Warewolf.Tools.Specs.BaseTypes
         {
         }
 
-        // TEMPORARY (WOLF-8451): file-operation rows that target a remote (ftp/ftps/sftp) or
+        // TEMPORARY (WOLF-8451): file-operation rows that target a remote (ftp/sftp) or
         // UNC endpoint depend on external file servers (started in CI via -StartFTPServer/
-        // -StartFTPSServer/-StartSFTPServer/-CreateUNCPath/-StartSambaShare). When those
-        // endpoints are unavailable - locally in Test Explorer, or when the server containers
-        // fail to come up in CI - the rows fail with connection / "directory not found" errors
-        // that are environmental, not product defects. Calling this at the start of a tool's
-        // "is executed" step marks such rows Inconclusive (MSTest NotExecuted -> ADO "Others")
+        // -StartSFTPServer/-CreateUNCPath/-StartSambaShare). When those endpoints are
+        // unavailable - locally in Test Explorer, or when the server containers fail to come
+        // up in CI - the rows fail with connection / "directory not found" errors that are
+        // environmental, not product defects. Calling this at the start of a tool's "is
+        // executed" step marks such rows Inconclusive (MSTest NotExecuted -> ADO "Others")
         // so they no longer show as failures. Pure-local (C:\...) rows are unaffected.
+        // NOTE: ftps:// was removed from the skip list - the FTPS server now starts reliably
+        // (TestRun.ps1 PKCS#8 key-encoding fix), so FTPS rows execute again and validate the
+        // tool end-to-end. ftp/sftp/unc remain skipped pending the same infra reliability work.
         // Reverse: remove the SkipIfRemoteOrUncEndpoint() calls (and this method) once the CI
         // file-server infrastructure is reliable.
-        static readonly string[] RemoteOrUncPrefixes = { "ftp://", "ftps://", "sftp://", "\\\\" };
+        static readonly string[] RemoteOrUncPrefixes = { "ftp://", "sftp://", "\\\\" };
 
         protected void SkipIfRemoteOrUncEndpoint()
         {
@@ -56,7 +59,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     if (RemoteOrUncPrefixes.Any(prefix => p.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
                     {
                         Assert.Inconclusive(
-                            "Skipped (WOLF-8451): this row targets a remote (ftp/ftps/sftp) or UNC endpoint that " +
+                            "Skipped (WOLF-8451): this row targets a remote (ftp/sftp) or UNC endpoint that " +
                             "depends on external file-server infrastructure. Marked NotExecuted to avoid environmental " +
                             "failures; remove the SkipIfRemoteOrUncEndpoint guard once CI file servers are reliable.");
                     }

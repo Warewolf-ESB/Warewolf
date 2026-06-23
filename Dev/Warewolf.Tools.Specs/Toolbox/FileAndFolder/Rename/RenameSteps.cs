@@ -55,17 +55,20 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             scenarioContext.Add("result", result);
         }
 
-        // TEMPORARY (WOLF-XXXX): the FTP/FTPS/SFTP/UNC Rename rows depend on external file
-        // servers (started in CI via -StartFTPServer/-StartFTPSServer/-StartSFTPServer/
-        // -CreateUNCPath/-StartSambaShare). When those endpoints are unavailable - locally in
-        // Test Explorer, or when the server containers fail to come up in CI - the rows fail
-        // with connection / "directory not found" errors that are environmental, not product
-        // defects. Mark any Rename row whose source OR destination resolves to a remote
-        // (ftp/ftps/sftp) or UNC path as Inconclusive, which MSTest reports as NotExecuted ->
-        // ADO "Others", so they no longer show as failures in the pipeline or Test Explorer.
-        // Pure-local (C:\...) rows are unaffected and still run.
+        // TEMPORARY (WOLF-8451): the FTP/SFTP/UNC Rename rows depend on external file
+        // servers (started in CI via -StartFTPServer/-StartSFTPServer/-CreateUNCPath/
+        // -StartSambaShare). When those endpoints are unavailable - locally in Test Explorer,
+        // or when the server containers fail to come up in CI - the rows fail with connection /
+        // "directory not found" errors that are environmental, not product defects. Mark any
+        // Rename row whose source OR destination resolves to a remote (ftp/sftp) or UNC path as
+        // Inconclusive, which MSTest reports as NotExecuted -> ADO "Others", so they no longer
+        // show as failures in the pipeline or Test Explorer. Pure-local (C:\...) rows are
+        // unaffected and still run.
+        // NOTE: ftps:// was removed from the skip list - the FTPS server now starts reliably
+        // (TestRun.ps1 PKCS#8 key-encoding fix), so the FTP-to-FTPS Rename row executes again.
+        // ftp/sftp/unc remain skipped pending the same infra reliability work.
         // Reverse: delete this method and its call once the CI file-server infra is reliable.
-        static readonly string[] _remoteOrUncPrefixes = { "ftp://", "ftps://", "sftp://", "\\\\" };
+        static readonly string[] _remoteOrUncPrefixes = { "ftp://", "sftp://", "\\\\" };
 
         void SkipIfKnownRemoteOrUncRenameRow()
         {
@@ -82,7 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                     if (_remoteOrUncPrefixes.Any(prefix => p.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
                     {
                         Assert.Inconclusive(
-                            "Skipped (WOLF-8451): Rename row targets a remote (ftp/ftps/sftp) or UNC endpoint that " +
+                            "Skipped (WOLF-8451): Rename row targets a remote (ftp/sftp) or UNC endpoint that " +
                             "depends on external file-server infrastructure. Marked NotExecuted to avoid environmental " +
                             "failures; remove SkipIfKnownRemoteOrUncRenameRow once CI file servers are reliable.");
                     }
