@@ -64,9 +64,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         // Inconclusive, which MSTest reports as NotExecuted -> ADO "Others", so they no longer
         // show as failures in the pipeline or Test Explorer. Pure-local (C:\...) rows are
         // unaffected and still run.
-        // NOTE: ftps:// was removed from the skip list - the FTPS server now starts reliably
-        // (TestRun.ps1 PKCS#8 key-encoding fix), so the FTP-to-FTPS Rename row executes again.
-        // ftp/sftp/unc remain skipped pending the same infra reliability work.
+        // FTPS handling is conditional: the FTPS server now starts reliably (TestRun.ps1
+        // PKCS#8 key-encoding fix), but it is only started in the dedicated "* From FTPS"
+        // jobs. So an ftps:// Rename row is run only when the FTPS endpoint is actually
+        // reachable and skipped when it is not, instead of being unconditionally skipped.
+        // ftp/sftp/unc remain unconditionally skipped pending the same infra reliability work.
         // Reverse: delete this method and its call once the CI file-server infra is reliable.
         static readonly string[] _remoteOrUncPrefixes = { "ftp://", "sftp://", "\\\\" };
 
@@ -88,6 +90,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                             "Skipped (WOLF-8451): Rename row targets a remote (ftp/sftp) or UNC endpoint that " +
                             "depends on external file-server infrastructure. Marked NotExecuted to avoid environmental " +
                             "failures; remove SkipIfKnownRemoteOrUncRenameRow once CI file servers are reliable.");
+                    }
+                    if (p.StartsWith(FtpsPrefix, StringComparison.OrdinalIgnoreCase) && !IsRemoteEndpointReachable(p))
+                    {
+                        Assert.Inconclusive(
+                            "Skipped (WOLF-8451): Rename row targets an FTPS endpoint that is not reachable in this " +
+                            "job (the FTPS server is only started in the dedicated '* From FTPS' jobs). Marked " +
+                            "NotExecuted to avoid environmental failures; it runs where the FTPS server is available.");
                     }
                 }
             }

@@ -9,8 +9,10 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -36,12 +38,59 @@ namespace Warewolf.Tools.Specs.BaseTypes
         // environmental, not product defects. Calling this at the start of a tool's "is
         // executed" step marks such rows Inconclusive (MSTest NotExecuted -> ADO "Others")
         // so they no longer show as failures. Pure-local (C:\...) rows are unaffected.
-        // NOTE: ftps:// was removed from the skip list - the FTPS server now starts reliably
-        // (TestRun.ps1 PKCS#8 key-encoding fix), so FTPS rows execute again and validate the
-        // tool end-to-end. ftp/sftp/unc remain skipped pending the same infra reliability work.
+        // FTPS handling is conditional: the FTPS server now starts reliably (TestRun.ps1
+        // PKCS#8 key-encoding fix), but it is only started in the dedicated "* From FTPS"
+        // jobs. So an ftps:// row is run only when the FTPS endpoint is actually reachable
+        // (dedicated FTPS jobs) and skipped when it is not (other jobs / local Test Explorer),
+        // instead of being unconditionally skipped. ftp/sftp/unc remain unconditionally
+        // skipped pending the same infra reliability work.
         // Reverse: remove the SkipIfRemoteOrUncEndpoint() calls (and this method) once the CI
         // file-server infrastructure is reliable.
         static readonly string[] RemoteOrUncPrefixes = { "ftp://", "sftp://", "\\\\" };
+        protected const string FtpsPrefix = "ftps://";
+        static readonly ConcurrentDictionary<string, bool> _endpointReachableCache = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
+        // Returns true when a TCP connection to the endpoint's host:port can be opened within a
+        // short timeout. Used to decide whether an ftps:// row should run (server present in the
+        // dedicated FTPS CI job) or be skipped (server absent). Result is cached per host:port.
+        protected static bool IsRemoteEndpointReachable(string url)
+        {
+            string host;
+            int port;
+            try
+            {
+                var uri = new Uri(url);
+                host = uri.Host;
+                port = uri.Port > 0 ? uri.Port : 1010;
+            }
+            catch
+            {
+                return false;
+            }
+
+            var cacheKey = host + ":" + port;
+            return _endpointReachableCache.GetOrAdd(cacheKey, _ =>
+            {
+                try
+                {
+                    using (var client = new TcpClient())
+                    {
+                        var ar = client.BeginConnect(host, port, null, null);
+                        var connected = ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(3));
+                        if (connected && client.Connected)
+                        {
+                            client.EndConnect(ar);
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+        }
 
         protected void SkipIfRemoteOrUncEndpoint()
         {
@@ -62,6 +111,13 @@ namespace Warewolf.Tools.Specs.BaseTypes
                             "Skipped (WOLF-8451): this row targets a remote (ftp/sftp) or UNC endpoint that " +
                             "depends on external file-server infrastructure. Marked NotExecuted to avoid environmental " +
                             "failures; remove the SkipIfRemoteOrUncEndpoint guard once CI file servers are reliable.");
+                    }
+                    if (p.StartsWith(FtpsPrefix, StringComparison.OrdinalIgnoreCase) && !IsRemoteEndpointReachable(p))
+                    {
+                        Assert.Inconclusive(
+                            "Skipped (WOLF-8451): this row targets an FTPS endpoint that is not reachable in this " +
+                            "job (the FTPS server is only started in the dedicated '* From FTPS' jobs). Marked " +
+                            "NotExecuted to avoid environmental failures; it runs where the FTPS server is available.");
                     }
                 }
             }
