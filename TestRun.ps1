@@ -542,6 +542,34 @@ function Stop-HostFTPServer {
     docker rm -f ftpserver 2>$null | Out-Null
 }
 
+function Copy-FTPSLogsToResults {
+    # Copy pyftpdlib's stdout/stderr logs (ftps_server.log / ftps_server.err.log)
+    # into $TestResultsDir so the pipeline's existing PublishBuildArtifacts step
+    # uploads them as `*_ServerLogs/<job>/...ftps_server.*.log`. Called BOTH the
+    # instant the server fails to bind (a start failure can abort the run before
+    # teardown ever executes — without this the err.log holding the Python
+    # traceback never reaches the build artifacts) AND from Stop-HostFTPSServer.
+    # Per-call timestamp + PID + reason tag stops retries and the start-fail vs
+    # teardown copies from clobbering each other. Wrapped in try/catch so a
+    # missing TestResultsDir or a locked log file can never abort the caller.
+    param([string] $Reason = '')
+    try {
+        if ($TestResultsDir -and (Test-Path $TestResultsDir)) {
+            $ftpRoot = Get-FTPSandboxRoot
+            $stamp   = (Get-Date -Format 'yyyyMMdd_HHmmss')
+            $pidTag  = if ($script:_ftpsProcess) { $script:_ftpsProcess.Id } else { 'na' }
+            $tag     = if ($Reason) { "${Reason}_" } else { '' }
+            foreach ($name in 'ftps_server.log','ftps_server.err.log') {
+                $src = Join-Path $ftpRoot $name
+                if (Test-Path $src) {
+                    $dst = Join-Path $TestResultsDir ("{0}{1}_{2}_{3}" -f $tag, $stamp, $pidTag, $name)
+                    Copy-Item -LiteralPath $src -Destination $dst -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+    } catch { }
+}
+
 function Start-HostFTPSServer {
     # pyftpdlib + TLS_FTPHandler on port 1010. Mirrors Start-HostFTPServer's
     # pyftpdlib pattern (port 21, FTPHandler) so dev2 / Q/ulw&] / passive range
@@ -734,29 +762,17 @@ if __name__ == '__main__':
             if ($body) { Write-Host "--- FTPS server $($pair[1]) ($($pair[0])) ---`n$body`n--- end ---" }
         }
     }
+    # Persist the logs to the published artifact dir now — a start failure may
+    # abort the run before Stop-HostFTPSServer's teardown copy ever executes, so
+    # ftps_server.err.log (the Python traceback) would otherwise be lost.
+    Copy-FTPSLogsToResults -Reason 'startfail'
 }
 
 function Stop-HostFTPSServer {
     # Copy pyftpdlib's stdout/stderr logs into $TestResultsDir before killing
     # the server, so the pipeline's existing PublishBuildArtifacts step picks
-    # them up as `*_ServerLogs/<job>/ftps_server.*.log`. Per-call timestamp +
-    # PID guards against retries clobbering earlier logs. Wrapped in try/catch
-    # so a missing TestResultsDir or a locked log file can never abort the
-    # surrounding teardown — the test results matter more than the log copy.
-    try {
-        if ($TestResultsDir -and (Test-Path $TestResultsDir)) {
-            $ftpRoot = Get-FTPSandboxRoot
-            $stamp   = (Get-Date -Format 'yyyyMMdd_HHmmss')
-            $pidTag  = if ($script:_ftpsProcess) { $script:_ftpsProcess.Id } else { 'na' }
-            foreach ($name in 'ftps_server.log','ftps_server.err.log') {
-                $src = Join-Path $ftpRoot $name
-                if (Test-Path $src) {
-                    $dst = Join-Path $TestResultsDir ("{0}_{1}_{2}" -f $stamp, $pidTag, $name)
-                    Copy-Item -LiteralPath $src -Destination $dst -Force -ErrorAction SilentlyContinue
-                }
-            }
-        }
-    } catch { }
+    # them up as `*_ServerLogs/<job>/ftps_server.*.log`. See Copy-FTPSLogsToResults.
+    Copy-FTPSLogsToResults
     # Stop-HostFTPServer kills all pythonw.exe — call only one of the two stop
     # functions in a teardown sequence (the second is a no-op). Wrapped in cmd
     # /c so taskkill's stderr + non-zero exit when the process is already gone
@@ -2363,6 +2379,11 @@ try {
         if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
     }
 } finally {
+    # Always publish the FTPS server logs, even when a test run throws/exits
+    # before the per-loop Stop-HostFTPSServer teardown runs — ftps_server.err.log
+    # is the primary artifact for debugging FTP server start failures on the
+    # hosted agents.
+    if ($StartFTPSServer.IsPresent) { Copy-FTPSLogsToResults -Reason 'teardown' }
     if ($ServerType) { Stop-Engine }
 }
 
