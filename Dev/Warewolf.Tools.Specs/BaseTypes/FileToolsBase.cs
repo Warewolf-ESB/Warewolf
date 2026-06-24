@@ -9,9 +9,11 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -44,20 +46,34 @@ namespace Warewolf.Tools.Specs.BaseTypes
         // Reverse: remove the SkipIfRemoteOrUncError(...) calls (and this method) once the CI
         // file-server infrastructure is reliable.
         static readonly string[] RemoteOrUncErrorMarkers = { "ftp://", "ftps://", "sftp://", "\\\\" };
+        static readonly string[] RemoteUrlPrefixes = { "ftps://", "ftp://", "sftp://" };
+        static readonly ConcurrentDictionary<string, bool> _endpointReachableCache = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         protected void SkipIfRemoteOrUncError(IEnumerable<string> executionErrors)
         {
-            if (executionErrors == null)
-            {
-                return;
-            }
             // Rows that are SUPPOSED to fail validation (errorOccured != "NO", e.g. "AN") pass by
             // producing their expected validation error, and may only incidentally surface a
             // remote-path error in the environment - they must keep running and asserting. Only
-            // treat a remote/UNC error as an environmental skip when the row expected to SUCCEED
+            // treat a remote/UNC failure as an environmental skip when the row expected to SUCCEED
             // (errorOccured = "NO") - those are the rows that genuinely depend on the file server.
             var errorOccured = (scenarioContext?.ScenarioInfo?.Arguments?["errorOccured"] as string ?? string.Empty).Trim();
             if (errorOccured.Length > 0 && !errorOccured.Equals("NO", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            // A remote (ftp/ftps/sftp) row whose server is not reachable in this job can fail
+            // SILENTLY: the broker returns "Failure" (ResultBad) without adding any error to the
+            // environment (this happens on the Overwrite/CreateEndPoint path, whereas the Append
+            // path throws a connection error). The error-marker scan below only sees rows that DID
+            // surface an error, so it would miss the silent ones and they would assert
+            // Success != Failure. The remote servers only start in their dedicated CI jobs (e.g. the
+            // FTPS server in the "* From FTPS" jobs), so detect the unreachable case from the
+            // configured endpoint plus a TCP reachability probe and skip it. Where the server IS
+            // reachable (its dedicated job) the probe passes and the row runs and asserts normally.
+            SkipIfRemoteEndpointUnreachable();
+
+            if (executionErrors == null)
             {
                 return;
             }
@@ -72,6 +88,93 @@ namespace Warewolf.Tools.Specs.BaseTypes
                         "environmental failures; remove the SkipIfRemoteOrUncError guard once CI file servers are reliable.");
                 }
             }
+        }
+
+        // Marks the row Inconclusive when it targets a remote (ftp/ftps/sftp) endpoint that is not
+        // reachable in this job. Needed because an unreachable remote write/read can fail silently
+        // (broker returns "Failure" with no environment error - the Overwrite path), which the
+        // error-string scan in SkipIfRemoteOrUncError cannot see. Reachable endpoints (the row's
+        // dedicated CI job) are left to run and assert normally.
+        void SkipIfRemoteEndpointUnreachable()
+        {
+            string[] holders =
+            {
+                CommonSteps.ActualSourceHolder, CommonSteps.ActualDestinationHolder,
+                CommonSteps.SourceHolder, CommonSteps.DestinationHolder
+            };
+            foreach (var key in holders)
+            {
+                if (scenarioContext != null && scenarioContext.TryGetValue(key, out string path)
+                    && !string.IsNullOrWhiteSpace(path))
+                {
+                    var p = path.TrimStart();
+                    if (RemoteUrlPrefixes.Any(prefix => p.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                        && !IsRemoteEndpointReachable(p))
+                    {
+                        Assert.Inconclusive(
+                            "Skipped (WOLF-8451): this row targets a remote (ftp/ftps/sftp) endpoint that is not " +
+                            "reachable in this job (the file servers only start in their dedicated CI jobs, e.g. the " +
+                            "FTPS server in the '* From FTPS' jobs). An unreachable remote write can fail silently " +
+                            "(broker returns \"Failure\" with no error), so it is marked NotExecuted to avoid " +
+                            "environmental failures; it runs where the endpoint is available.");
+                    }
+                }
+            }
+        }
+
+        // Returns true when a TCP connection to the endpoint's host:port can be opened within a
+        // short timeout. Used to decide whether a remote row should run (server present in its
+        // dedicated CI job) or be skipped (server absent). Result is cached per host:port.
+        protected static bool IsRemoteEndpointReachable(string url)
+        {
+            string host;
+            int port;
+            try
+            {
+                var uri = new Uri(url);
+                host = uri.Host;
+                port = uri.Port > 0 ? uri.Port : DefaultPortForScheme(uri.Scheme);
+            }
+            catch
+            {
+                return false;
+            }
+
+            var cacheKey = host + ":" + port;
+            return _endpointReachableCache.GetOrAdd(cacheKey, _ =>
+            {
+                try
+                {
+                    using (var client = new TcpClient())
+                    {
+                        var ar = client.BeginConnect(host, port, null, null);
+                        var connected = ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(3));
+                        if (connected && client.Connected)
+                        {
+                            client.EndConnect(ar);
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+        }
+
+        static int DefaultPortForScheme(string scheme)
+        {
+            if (string.Equals(scheme, "sftp", StringComparison.OrdinalIgnoreCase))
+            {
+                return 22;
+            }
+            if (string.Equals(scheme, "ftps", StringComparison.OrdinalIgnoreCase))
+            {
+                return 990;
+            }
+            return 21;
         }
 
         #region Overrides of RecordSetBases
