@@ -95,6 +95,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 Console.WriteLine("Error putting IActivityParser into the DI container:\n" + e.Message);
             }
 
+            // Reset the static activity-parser cache so each test starts isolated.
+            // Otherwise an ordering-sensitive Parse test can inherit a _parsers entry
+            // (e.g. a mock cached by an earlier test) and fail non-deterministically.
+            typeof(ResourceCatalog)
+                .GetField("_parsers", BindingFlags.NonPublic | BindingFlags.Static)
+                ?.SetValue(null, new ConcurrentDictionary<Guid, IResourceActivityCache>());
+
             if (EnvironmentVariables.ApplicationPath == null)
             {
                 var assembly = Assembly.GetExecutingAssembly();

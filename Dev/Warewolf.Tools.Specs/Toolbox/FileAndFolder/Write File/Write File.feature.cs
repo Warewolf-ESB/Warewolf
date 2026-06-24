@@ -2060,7 +2060,7 @@ this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Variable name [[var$]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Variable name [[var$]]  contains invalid character(s)")]
@@ -2068,7 +2068,7 @@ this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         public void WriteFileValidation_48()
         {
 #line 54
-this.WriteFileValidation("48", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[var$]]", "\"\"", "\"\"", "[[result]]", "Success", "AN", "True", "Contents - Variable name [[var$]]  contains invalid character(s)", "1.Contents - Variable name [[var$]]  contains invalid character(s)", "", ((string[])(null)));
+this.WriteFileValidation("48", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[var$]]", "\"\"", "\"\"", "[[result]]", "Success", "NO", "True", "Contents - Variable name [[var$]]  contains invalid character(s)", "1.Contents - Variable name [[var$]]  contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
