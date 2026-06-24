@@ -42,10 +42,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
         [When(@"the read folder file tool is executed")]
         public void WhenTheReadFolderFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         protected override void BuildDataList()

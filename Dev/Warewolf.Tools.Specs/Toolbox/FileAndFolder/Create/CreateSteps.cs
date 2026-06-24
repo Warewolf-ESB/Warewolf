@@ -29,10 +29,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         [When(@"the create file tool is executed")]
         public void WhenTheCreateFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         #region Overrides of RecordSetBases

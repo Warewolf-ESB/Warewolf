@@ -63,10 +63,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         [When(@"the write file tool is executed")]
         public void WhenTheWriteFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             _scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         [Given(@"the input contents from a file ""(.*)""")]

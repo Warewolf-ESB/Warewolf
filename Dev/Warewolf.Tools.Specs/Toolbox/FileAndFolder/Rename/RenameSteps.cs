@@ -49,45 +49,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         [When(@"the rename file tool is executed")]
         public void WhenTheRenameFileToolIsExecuted()
         {
-            SkipIfKnownRemoteOrUncRenameRow();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
-        }
-
-        // TEMPORARY (WOLF-XXXX): the FTP/FTPS/SFTP/UNC Rename rows depend on external file
-        // servers (started in CI via -StartFTPServer/-StartFTPSServer/-StartSFTPServer/
-        // -CreateUNCPath/-StartSambaShare). When those endpoints are unavailable - locally in
-        // Test Explorer, or when the server containers fail to come up in CI - the rows fail
-        // with connection / "directory not found" errors that are environmental, not product
-        // defects. Mark any Rename row whose source OR destination resolves to a remote
-        // (ftp/ftps/sftp) or UNC path as Inconclusive, which MSTest reports as NotExecuted ->
-        // ADO "Others", so they no longer show as failures in the pipeline or Test Explorer.
-        // Pure-local (C:\...) rows are unaffected and still run.
-        // Reverse: delete this method and its call once the CI file-server infra is reliable.
-        static readonly string[] _remoteOrUncPrefixes = { "ftp://", "ftps://", "sftp://", "\\\\" };
-
-        void SkipIfKnownRemoteOrUncRenameRow()
-        {
-            var holders = new[]
-            {
-                CommonSteps.ActualSourceHolder, CommonSteps.ActualDestinationHolder,
-                CommonSteps.SourceHolder, CommonSteps.DestinationHolder
-            };
-            foreach (var key in holders)
-            {
-                if (scenarioContext.TryGetValue(key, out string path) && !string.IsNullOrWhiteSpace(path))
-                {
-                    var p = path.TrimStart();
-                    if (_remoteOrUncPrefixes.Any(prefix => p.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        Assert.Inconclusive(
-                            "Skipped (WOLF-8451): Rename row targets a remote (ftp/ftps/sftp) or UNC endpoint that " +
-                            "depends on external file-server infrastructure. Marked NotExecuted to avoid environmental " +
-                            "failures; remove SkipIfKnownRemoteOrUncRenameRow once CI file servers are reliable.");
-                    }
-                }
-            }
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         protected new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)

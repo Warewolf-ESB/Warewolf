@@ -43,10 +43,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
         [When(@"the new read folder file tool is executed")]
         public void WhenTheNewReadFolderFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             _scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         protected override void BuildDataList()

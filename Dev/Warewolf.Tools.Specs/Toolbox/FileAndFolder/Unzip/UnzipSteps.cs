@@ -48,20 +48,20 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         [When(@"the Unzip file tool is executed")]
         public void WhenTheUnzipFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         [When(@"the Unzip file tool is executed with a single file")]
         public void WhenTheUnzipFileToolIsExecutedWithASingleFile()
         {
-            SkipIfRemoteOrUncEndpoint();
             scenarioContext.Add("singleFile", true);
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         [When(@"validating the unzip tool")]

@@ -30,7 +30,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
         [When(@"the copy file tool is executed")]
         public void WhenTheCopyFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             if(!Directory.Exists("c:\\copydir"))
             {
                 Directory.CreateDirectory("c:\\copydir");
@@ -45,6 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         protected override void BuildDataList()

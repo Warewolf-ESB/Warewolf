@@ -35,10 +35,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
         [When(@"the read file tool is executed")]
         public void WhenTheReadFileToolIsExecuted()
         {
-            SkipIfRemoteOrUncEndpoint();
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            SkipIfRemoteOrUncError(result.Environment.AllErrors);
         }
 
         protected override void BuildDataList()
