@@ -10,6 +10,16 @@
     Requires the Azure CLI (az) to be installed and logged in:
         az login
 
+    NOTE — encryption & verification are NOT performed here. This minimal deployer
+    zip-deploys the folder AS-IS. Source encryption of .bite ConnectionStrings
+    (workflows + Elasticsearch), the Key Vault wiring, and the optional in-memory
+    decrypt verification are handled by the orchestrator
+    Scripts/Deploy-WwExecutionEngine.ps1 via its OPTIONAL switches:
+        -EncryptResources   (default off — encrypt once; later deploys stage as-is)
+        -VerifyDecryption   (default off — in-memory verify, no plaintext on disk)
+    Use that orchestrator if you need encryption; this script assumes any .bite
+    files in Resources are already in their intended (plain or encrypted) form.
+
 .PARAMETER AppName
     The name of your Azure Functions app (e.g. "my-warewolf-server").
     Must be globally unique across Azure.
@@ -132,6 +142,8 @@ if ($BiteFiles.Count -eq 0) {
 }
 else {
     Write-Host "Found $($BiteFiles.Count) .bite file(s) in Resources."
+    Write-Host "  NOTE: these are deployed AS-IS (no encryption/verification here)." -ForegroundColor DarkYellow
+    Write-Host "  For WFAES source encryption + Key Vault wiring, use Scripts/Deploy-WwExecutionEngine.ps1 -EncryptResources." -ForegroundColor DarkYellow
 }
 
 # Verify az CLI is available
