@@ -1139,6 +1139,41 @@ function Stop-HostSambaShare {
     docker rm -f sambaserver 2>$null | Out-Null
 }
 
+function Start-HostUNCPath {
+    # Provisions \\localhost\FileSystemShareTestingSite, the UNC endpoint every
+    # File/Folder spec UNC row targets. Declared as a real dependency (-CreateUNCPath)
+    # rather than skipped: a UNC write/delete against a missing share fails SILENTLY
+    # (Dev2ActivityIOBroker.Delete swallows the exception and returns "Failure" with no
+    # environment error), so the row would otherwise assert Success != Failure.
+    #
+    # Idempotent so it can run at the start of every retry iteration: the Delete tool
+    # CONSUMES its seed files, so they are re-created each call to keep retries green.
+    $shareRoot = 'C:\FileSystemShareTestingSite'
+    foreach ($sub in @(
+        'ReadFileSharedTestingSite',
+        'ReadFolderSharedTestingSite',
+        'ReadFolderSharedTestingSite\emptydir',
+        'FileCopySharedTestingSite',
+        'FileMoveSharedTestingSite',
+        'FileRenameSharedTestingSite',
+        'FileCreateSharedTestingSite',
+        'FileDeleteSharedTestingSite',
+        'FileZipSharedTestingSite'
+    )) {
+        mkdir (Join-Path $shareRoot $sub) -Force | Out-Null
+    }
+    'file contents to read' | Out-File -LiteralPath "$shareRoot\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
+    # Delete-from-UNC reads pre-existing files (the Delete tool then removes them).
+    'delete me'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\filetodelete.txt" -Encoding ascii -Force
+    'memo body'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\Memo.txt" -Encoding ascii -Force
+    if (-not (Get-SmbShare -Name 'FileSystemShareTestingSite' -ErrorAction SilentlyContinue)) {
+        New-SmbShare -Path $shareRoot -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue | Out-Null
+    }
+}
+function Stop-HostUNCPath {
+    Remove-SmbShare -Name 'FileSystemShareTestingSite' -Force -ErrorAction SilentlyContinue
+}
+
 function Start-HostExchangeConnector {
     if ($LegacyWindowsDeps) {
         # WireMock standalone on :8889 (replaces warewolfserver/exchange-connector-testing,
@@ -2308,33 +2343,6 @@ if ($LegacyWindowsDeps) {
         Add-LocalGroupMember -Group 'Administrators'          -Member 'LocalSchedulerAdmin' -ErrorAction SilentlyContinue
         Add-LocalGroupMember -Group 'Warewolf Administrators' -Member 'LocalSchedulerAdmin' -ErrorAction SilentlyContinue
     }
-    if ($CreateUNCPath) {
-        # Subdirs the File/Folder spec outlines reference under
-        # \\localhost\FileSystemShareTestingSite. Source files inside Copy/Move/
-        # Rename/Delete dirs are written at runtime by CommonSteps'
-        # CreateSourceFileWithSomeDummyData (path = literal feature value +
-        # AddGuidToPath suffix), but the *parent dir* must exist beforehand or
-        # the PutRaw fails and the test reports Failure.
-        $shareRoot = 'C:\FileSystemShareTestingSite'
-        foreach ($sub in @(
-            'ReadFileSharedTestingSite',
-            'ReadFolderSharedTestingSite',
-            'ReadFolderSharedTestingSite\emptydir',
-            'FileCopySharedTestingSite',
-            'FileMoveSharedTestingSite',
-            'FileRenameSharedTestingSite',
-            'FileCreateSharedTestingSite',
-            'FileDeleteSharedTestingSite',
-            'FileZipSharedTestingSite'
-        )) {
-            mkdir (Join-Path $shareRoot $sub) -Force | Out-Null
-        }
-        "file contents to read" | Out-File -LiteralPath "$shareRoot\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
-        # Delete-from-UNC reads pre-existing files (not created at runtime).
-        'delete me'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\filetodelete.txt" -Encoding ascii -Force
-        'memo body'  | Out-File -LiteralPath "$shareRoot\FileDeleteSharedTestingSite\Memo.txt" -Encoding ascii -Force
-        New-SmbShare -Path $shareRoot -FullAccess Everyone -Name FileSystemShareTestingSite -ErrorAction SilentlyContinue
-    }
     if ($UseRegionalSettings) {
         $culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")
         [System.Globalization.CultureInfo]::DefaultThreadCurrentCulture   = $culture
@@ -2432,6 +2440,7 @@ try {
             if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
             if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
+            if ($CreateUNCPath)                      { Start-HostUNCPath }
             if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
             if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
             if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
@@ -2542,6 +2551,7 @@ try {
             if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) { Stop-HostFTPServer; Stop-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Stop-HostSFTPServer }
             if ($StartSambaShare.IsPresent)          { Stop-HostSambaShare }
+            if ($CreateUNCPath)                      { Stop-HostUNCPath }
             if ($StartMySQLServer.IsPresent)         { Stop-HostMySQLServer }
             if ($StartElasticsearchServer.IsPresent) { Stop-HostElasticsearchServer }
             if ($StartRabbitMQServer.IsPresent)      { Stop-HostRabbitMQServer }
@@ -2554,6 +2564,7 @@ try {
         if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
         if ($StartSFTPServer.IsPresent)          { Start-HostSFTPServer }
         if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
+        if ($CreateUNCPath)                      { Start-HostUNCPath }
         if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
         if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
         if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
