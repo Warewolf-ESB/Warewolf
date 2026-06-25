@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 # ============================================================
 # test.ps1
 # Publish test assemblies and run them inside the container
