@@ -1101,24 +1101,146 @@ function Stop-HostExchangeConnector {
     docker rm -f exchange-connector-testing 2>$null | Out-Null
 }
 
+function Resolve-SqlPackage {
+    # Locate SqlPackage.exe for importing the Dev2TestingDB .bacpac fixture, installing the
+    # microsoft.sqlpackage dotnet global tool on demand. Returns the full path, or $null when
+    # it can neither be found nor installed (caller then falls back to the deterministic seed).
+    foreach ($name in 'SqlPackage', 'sqlpackage') {
+        $cmd = Get-Command $name -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+    $candidates = @("$env:USERPROFILE\.dotnet\tools\SqlPackage.exe")
+    foreach ($root in @("$env:ProgramFiles\Microsoft SQL Server", "${env:ProgramFiles(x86)}\Microsoft SQL Server")) {
+        if ($root -and (Test-Path $root)) {
+            $candidates += (Get-ChildItem (Join-Path $root '*\DAC\bin\SqlPackage.exe') -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
+        }
+    }
+    foreach ($c in $candidates) { if ($c -and (Test-Path $c)) { return $c } }
+
+    Write-Host "SqlPackage not found; installing microsoft.sqlpackage global tool..."
+    & dotnet tool install --global microsoft.sqlpackage --ignore-failed-sources 2>&1 | Write-Host
+    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
+    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) { $env:PATH = "$toolsDir;$env:PATH" }
+    $exe = Join-Path $toolsDir 'SqlPackage.exe'
+    if (Test-Path $exe) { return $exe }
+    $cmd = Get-Command SqlPackage -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    return $null
+}
+
 function Start-HostMSSQLServer([string]$BakFile) {
-    if ($LegacyWindowsDeps) {
-        choco install sql-server-2022 -y
-        [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
-        $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
-        $comp = $env:ComputerName
-        $Tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Tcp']")
-        $Tcp.IsEnabled = $true; $Tcp.Alter()
-        $Np = $wmi.GetSmoObject("ManagedComputer[@Name='$comp']/ServerInstance[@Name='MSSQLSERVER']/ServerProtocol[@Name='Np']")
-        $Np.IsEnabled = $true; $Np.Alter()
-        $sql = [Microsoft.SqlServer.Management.Smo.Server]::new("$comp")
-        $sql.Settings.LoginMode = 'Mixed'; $sql.Alter()
-        sqlcmd -S "localhost" -E -Q "CREATE LOGIN [testuser] WITH PASSWORD = 'test123', CHECK_POLICY = OFF"
-        sqlcmd -S "localhost" -E -Q "SP_ADDSRVROLEMEMBER 'testuser','SYSADMIN'"
-        if (!(Test-Path "C:\Builds")) { New-Item -ItemType Directory "C:\Builds" | Out-Null }
-        sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$BakFile' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf'"
-        sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB EXEC sp_change_users_login 'AUTO_FIX', 'testuser'"
+    # Native Windows provisioning. Runs on Windows agents (including hosted windows-2022,
+    # where the Linux mssql container cannot run) and whenever -LegacyWindowsDeps is set.
+    # Provisions the Dev2TestingDB fixture that Depends(MSSQL) -> localhost:1433 expects:
+    # the SQL tests connect as testUser / Ex@mple!23Secure#PWD against Dev2TestingDB.
+    #
+    # sqlcmd writes connection-level failures (e.g. "TCP Provider: The wait operation
+    # timed out") to stderr. Under the AzDO PowerShell task default in Windows
+    # PowerShell 5.1 ($ErrorActionPreference='Stop'), a native command writing to stderr
+    # is promoted to a terminating NativeCommandError that aborts the whole script
+    # (exit 1) before tests even run - and 2>/*> redirection does NOT suppress it. Force
+    # Continue so transient connection probes during provisioning never abort the job.
+    $ErrorActionPreference = 'Continue'
+    if ($LegacyWindowsDeps -or ($env:OS -eq 'Windows_NT')) {
+        $sqlPwd = 'Ex@mple!23Secure#PWD'
+
+        Write-Host "Installing SQL Server 2022 (native)..."
+        choco install sql-server-2022 -y --no-progress
+
+        Write-Host "Enabling TCP + Mixed-mode auth via registry (no SMO dependency)..."
+        # The SMO/WMI ManagedComputer API does not load reliably on hosted agents, so
+        # configure the instance through the registry and restart the service instead.
+        $instKey = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL').MSSQLSERVER
+        $sqlRoot = "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\$instKey\MSSQLServer"
+        Set-ItemProperty -Path $sqlRoot -Name 'LoginMode' -Value 2
+        $tcpKey = "$sqlRoot\SuperSocketNetLib\Tcp"
+        Set-ItemProperty -Path $tcpKey -Name 'Enabled' -Value 1
+        Set-ItemProperty -Path "$tcpKey\IPAll" -Name 'TcpPort' -Value '1433'
+        Set-ItemProperty -Path "$tcpKey\IPAll" -Name 'TcpDynamicPorts' -Value ''
         Get-Service -Name 'MSSQLSERVER' | Restart-Service -Force
+        for ($i = 0; $i -lt 30; $i++) {
+            if ((Get-Service 'MSSQLSERVER').Status -eq 'Running') { break }
+            Start-Sleep -Seconds 2
+        }
+        # Wait for the engine to actually accept connections after the restart.
+        for ($i = 0; $i -lt 30; $i++) {
+            sqlcmd -S "localhost" -E -l 2 -b -Q "SELECT 1" *> $null
+            if ($LASTEXITCODE -eq 0) { break }
+            Start-Sleep -Seconds 2
+        }
+
+        # Create/repair the exact SQL login the tests use (idempotent across retries).
+        # ALTER fixes a stale password if the login already exists.
+        sqlcmd -S "localhost" -E -Q "IF SUSER_ID('testUser') IS NULL CREATE LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF ELSE ALTER LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF"
+        sqlcmd -S "localhost" -E -Q "ALTER SERVER ROLE [sysadmin] ADD MEMBER [testUser]"
+
+        # Provision the canonical Dev2TestingDB fixture. Preference order:
+        #   1. an explicit -StartMSSQLServer <path-to-.bak>            (full DB, real data)
+        #   2. a pre-cloned .bak on disk (C:\Builds\mssql-connector-testing)
+        #   3. the committed dev2testingdb.bacpac (imported with SqlPackage) - the full schema,
+        #      self-contained in the repo, no gitlab token required.
+        # Each step is non-fatal; the deterministic seeding below still runs so the metadata-only
+        # tests pass even when neither the .bak nor the .bacpac could be provisioned.
+        if (-not $BakFile -or -not (Test-Path $BakFile)) {
+            $preCloned = 'C:\Builds\mssql-connector-testing\dev2testingdb.bak'
+            if (Test-Path $preCloned) { $BakFile = $preCloned }
+        }
+        if ($BakFile -and (Test-Path $BakFile)) {
+            Write-Host "Restoring Dev2TestingDB from $BakFile..."
+            if (!(Test-Path "C:\Builds")) { New-Item -ItemType Directory "C:\Builds" | Out-Null }
+            sqlcmd -S "localhost" -E -Q "RESTORE DATABASE [Dev2TestingDB] FROM DISK='$BakFile' WITH MOVE 'Dev2TestingDB' TO 'C:\Builds\Dev2TestingDB.mdf', MOVE 'Dev2TestingDB_log' TO 'C:\Builds\Dev2TestingDB.ldf', REPLACE"
+            sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB; EXEC sp_change_users_login 'AUTO_FIX', 'testUser'"
+        }
+
+        # If no .bak produced the full fixture, import the committed bacpac. It carries the
+        # complete schema the SQL integration / bulk-insert jobs depend on: 149 tables (incl.
+        # every SqlBulkInsertSpecFlowTestTable*), 50 stored procedures (incl.
+        # Pr_GeneralTestColumnData) and the fn_diagramobjects function. Idempotent: Pr_General-
+        # TestColumnData acts as a sentinel so re-runs (RetryCount) don't re-import.
+        $probe = sqlcmd -S "localhost" -E -h -1 -W -Q "SET NOCOUNT ON; SELECT CASE WHEN DB_ID('Dev2TestingDB') IS NOT NULL AND OBJECT_ID('Dev2TestingDB.dbo.Pr_GeneralTestColumnData') IS NOT NULL THEN 1 ELSE 0 END" 2>$null
+        $probeVal = $probe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
+        if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
+            $bacpac = @(
+                (Join-Path $PSScriptRoot 'dev2testingdb.bacpac'),
+                (Join-Path $PSScriptRoot 'Dev\.azure\dev2testingdb.bacpac'),
+                'C:\Builds\mssql-connector-testing\dev2testingdb.bacpac'
+            ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+            if ($bacpac) {
+                $sqlPackage = Resolve-SqlPackage
+                if ($sqlPackage) {
+                    Write-Host "Importing full Dev2TestingDB fixture from $bacpac via $sqlPackage..."
+                    sqlcmd -S "localhost" -E -Q "IF DB_ID('Dev2TestingDB') IS NOT NULL BEGIN ALTER DATABASE [Dev2TestingDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Dev2TestingDB]; END"
+                    & $sqlPackage /Action:Import /SourceFile:"$bacpac" /TargetServerName:"localhost" /TargetDatabaseName:"Dev2TestingDB" /TargetTrustServerCertificate:True 2>&1 | Write-Host
+                    sqlcmd -S "localhost" -E -Q "USE Dev2TestingDB; EXEC sp_change_users_login 'AUTO_FIX', 'testUser'"
+                }
+                else {
+                    Write-Warn "SqlPackage unavailable; the full SQL fixture could not be imported. Falling back to the minimal seed (SQL integration / bulk-insert tests will fail)."
+                }
+            }
+            else {
+                Write-Warn "dev2testingdb.bacpac not found next to TestRun.ps1 or under Dev\.azure; falling back to the minimal seed."
+            }
+        }
+
+        # Deterministic seeding (always runs, fully idempotent). Guarantees the schema the
+        # MSSQL metadata tests assert exists even when no .bak/.bacpac could be provisioned.
+        # Column types/nullability/identity mirror the canonical fixture:
+        #   dbo.City       -> 3 cols, CityID int NOT identity
+        #   Warewolf.City  -> 4 cols, CityID int IDENTITY, nullable nchar(10) TestCol
+        #   dbo.Country    -> extra table so total table count exceeds 2
+        # (GetDatabaseTables_Execute_ValidDatabaseSource asserts Items.Count > 2 while
+        # still finding exactly two [City] tables.) IF NOT EXISTS guards leave any
+        # restored/imported objects untouched.
+        sqlcmd -S "localhost" -E -Q "IF DB_ID('Dev2TestingDB') IS NULL CREATE DATABASE [Dev2TestingDB]"
+        $seedSql = "USE Dev2TestingDB; " +
+            "IF SCHEMA_ID('Warewolf') IS NULL EXEC('CREATE SCHEMA Warewolf'); " +
+            "IF OBJECT_ID('dbo.City') IS NULL CREATE TABLE dbo.City (CityID int NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL); " +
+            "IF OBJECT_ID('Warewolf.City') IS NULL CREATE TABLE Warewolf.City (CityID int IDENTITY(1,1) NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL, TestCol nchar(10) NULL); " +
+            "IF OBJECT_ID('dbo.Country') IS NULL CREATE TABLE dbo.Country (CountryID int NOT NULL, Description varchar(50) NOT NULL);"
+        sqlcmd -S "localhost" -E -Q $seedSql
+
+        Write-Host "Verifying testUser can connect to Dev2TestingDB over TCP..."
+        sqlcmd -S "localhost,1433" -U testUser -P $sqlPwd -d Dev2TestingDB -Q "SET NOCOUNT ON; SELECT TABLE_SCHEMA + '.' + TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"
         return
     }
     docker run -d --name sqlserver `
@@ -2237,7 +2359,7 @@ try {
             if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
             if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
             if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
-            if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
+            if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer }
 
             if ($RetryRebuild.IsPresent) {
                 if (Test-Path "$PWD\..\..\Compile.ps1") {
@@ -2359,7 +2481,7 @@ try {
         if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
         if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
         if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
-        if ($StartMSSQLServer)                   { Start-HostMSSQLServer $StartMSSQLServer }
+        if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer }
     }
 } finally {
     if ($ServerType) { Stop-Engine }

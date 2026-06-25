@@ -78,7 +78,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var dbSource = serializer.Deserialize<DbSource>(database);
-                var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
+                // Fall back to the supplied source when the catalog lookup returns nothing,
+                // otherwise the connection string dereference below throws a NullReferenceException.
+                var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID) ?? dbSource;
                 DataTable columnInfo = GetColumnInfo(dbSource, runtTimedbSource, tableName, schema);
 
                 var dbColumns = new DbColumnList();

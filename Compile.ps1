@@ -431,6 +431,11 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				}
 			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"
+			# Stage the canonical Dev2TestingDB fixture so TestRun.ps1 can provision the
+			# full schema (SqlPackage import) for the SQL integration / bulk-insert jobs.
+			if (Test-Path "$PSScriptRoot\Dev\.azure\dev2testingdb.bacpac") {
+				Copy-Item "$PSScriptRoot\Dev\.azure\dev2testingdb.bacpac" "$PSScriptRoot\Bin\$OutputFolderName\dev2testingdb.bacpac" -Force
+			}
 			Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 			                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 							                Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
@@ -464,6 +469,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                             Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$WinOutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
                         }
                         Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$WinOutputFolderName\TestRun.ps1" -Force
+                        # Stage the canonical Dev2TestingDB fixture alongside TestRun.ps1 (see note above).
+                        if (Test-Path "$PSScriptRoot\Dev\.azure\dev2testingdb.bacpac") {
+                            Copy-Item -Path "$PSScriptRoot\Dev\.azure\dev2testingdb.bacpac" "$PSScriptRoot\Bin\$WinOutputFolderName\dev2testingdb.bacpac" -Force
+                        }
                     }
                     if (Test-Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll") {
                         Copy-Item -Path "$PSScriptRoot\Bin\$WinOutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$WinOutputFolderName\SQLite.Interop.dll" -Force
