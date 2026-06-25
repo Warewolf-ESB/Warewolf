@@ -4077,7 +4077,7 @@ this.RenameFileValidation("31", "[[sourcePath]]", "ftp://localhost", "1010/FORFI
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile37.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp:[[a]][[b]].txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftps:[[a]][[b]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftps://localhost:1010/FORFILERENAMETESTING/renamed29.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
@@ -4091,7 +4091,7 @@ this.RenameFileValidation("31", "[[sourcePath]]", "ftp://localhost", "1010/FORFI
         public void RenameFileValidation_Variant33()
         {
 #line 293
-this.RenameFileValidation("32", "[[sourcePath]]", "//localhost:1010/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftp:[[a]][[b]].txt", "ftps://localhost:1010/FORFILERENAMETESTING/renamed29.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("32", "[[sourcePath]]", "//localhost:1010/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftps:[[a]][[b]].txt", "ftps://localhost:1010/FORFILERENAMETESTING/renamed29.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -4227,7 +4227,7 @@ this.RenameFileValidation("36", "[[sourcePath]]", "ftps://localhost:1010/FORRENA
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile42.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftp:[[rec(1).a]][[rec(2).a]].txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "ftps:[[rec(1).a]][[rec(2).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftps://localhost:1010/FORFILERENAMETESTING/renamed34.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
@@ -4241,7 +4241,7 @@ this.RenameFileValidation("36", "[[sourcePath]]", "ftps://localhost:1010/FORRENA
         public void RenameFileValidation_Variant38()
         {
 #line 293
-this.RenameFileValidation("37", "[[sourcePath]]", "//localhost:1010/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftp:[[rec(1).a]][[rec(2).a]].txt", "ftps://localhost:1010/FORFILERENAMETESTING/renamed34.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("37", "[[sourcePath]]", "//localhost:1010/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftps:[[rec(1).a]][[rec(2).a]].txt", "ftps://localhost:1010/FORFILERENAMETESTING/renamed34.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
