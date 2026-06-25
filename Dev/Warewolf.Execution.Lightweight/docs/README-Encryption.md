@@ -71,18 +71,20 @@ and assigns the minimum required RBAC roles.
 ## Encrypting Source Files (Developer Machine)
 
 ```powershell
-# First run (creates key + encrypts)
+# First run — generates the key and encrypts.
+# -SecretName is mandatory and must always be provided.
 .\Scripts\Encrypt-Config.ps1 `
-    -FilePath      "C:\Warewolf\Resources" `
-    -VaultName     "kv-warewolf-prod" `
-    -FunctionApp   "func-warewolf-prod" `
-    -ResourceGroup "rg-warewolf-prod" `
-    -UploadToAzure
+    -FilePath   "C:\Warewolf\Resources" `
+    -VaultName  "kv-warewolf-prod" `
+    -SecretName "dp-keyring-v1" `
+    -GenerateKeys
 
-# Subsequent runs (re-encrypts changed files with the same key)
+# Subsequent runs — re-encrypt changed files with the existing key.
+# Omit -GenerateKeys; -SecretName is still required.
 .\Scripts\Encrypt-Config.ps1 `
-    -FilePath  "C:\Warewolf\Resources" `
-    -VaultName "kv-warewolf-prod"
+    -FilePath   "C:\Warewolf\Resources" `
+    -VaultName  "kv-warewolf-prod" `
+    -SecretName "dp-keyring-v1"
 ```
 
 The script:
@@ -93,6 +95,18 @@ The script:
 
 > **Delete `.bite.bak` files after verifying the deployment** — they may
 > contain DPAPI-encrypted values from the original files.
+
+`Encrypt-Config.ps1` does **not** deploy anything. Once the files are
+encrypted, deploy the updated `Resources` folder with your normal CI/CD
+pipeline or a manual zip-deploy:
+
+```bash
+az functionapp deploy \
+  --resource-group rg-warewolf-prod \
+  --name           func-warewolf-prod \
+  --src-path       warewolf-func.zip \
+  --type           zip
+```
 
 ---
 
@@ -154,3 +168,7 @@ because:
 
 AES-256-GCM is a NIST-approved, widely audited algorithm and provides
 equivalent security with simpler cross-tool interoperability.
+
+---
+
+> This document is for version 3.0.2.79 of the scripts, as of 2026-06-22.

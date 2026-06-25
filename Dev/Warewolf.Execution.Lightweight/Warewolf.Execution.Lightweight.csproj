@@ -248,6 +248,16 @@
     <None Include="docs\AzureProvisioning-FunctionApp.md" />
     <None Include="docs\AzureProvisioning-ClientApps.md" />
     <None Include="docs\ClientsExamples.md" />
+    <!--
+      Skill.md ships INTO the Release publish output (so it travels inside every
+      "release" zip and an operator/LLM deploying from the zip has the deploy guide),
+      but Deploy-ToAzure.ps1 excludes *.md from the Azure upload so it is never pushed
+      to the running Function App.
+    -->
+    <Content Include="Skill.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   
   <ItemGroup>
