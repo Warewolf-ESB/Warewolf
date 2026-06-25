@@ -51,9 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-            SkipIfRemoteOrUncError(result.Environment.AllErrors);
-        }
+            scenarioContext.Add("result", result);        }
 
         protected new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {

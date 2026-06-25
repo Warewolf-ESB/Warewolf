@@ -9,11 +9,8 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Dev2.PathOperations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Interfaces;
@@ -27,51 +24,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
         public FileToolsBase(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-        }
-
-        // TEMPORARY (WOLF-8451): a file-operation row only needs skipping when it ACTUALLY fails
-        // because of an external file server - i.e. the execution produced an error that names a
-        // remote (ftp/ftps/sftp) URL or a UNC path, e.g.
-        //   "Recursive Directory Create Failed For [ ftps://localhost:1010/... ]"
-        //   "The remote server returned an error: (421) ... [ftp://...]"
-        //   "Could not find a part of the path '\\host\share'".
-        // Those endpoints only exist when the matching CI servers are started, so the failures are
-        // environmental, not product defects. Call this AFTER executing the tool: if the result
-        // carries such a remote/UNC error, mark the row Inconclusive (MSTest NotExecuted -> ADO
-        // "Others"). Rows that fail for other reasons (e.g. a validation row that only references a
-        // remote destinationLocation but errors on an empty username) produce non-remote errors and
-        // are left to run and assert normally - so they keep passing.
-        // Reverse: remove the SkipIfRemoteOrUncError(...) calls (and this method) once the CI
-        // file-server infrastructure is reliable.
-        static readonly string[] RemoteOrUncErrorMarkers = { "ftp://", "ftps://", "sftp://", "\\\\" };
-
-        protected void SkipIfRemoteOrUncError(IEnumerable<string> executionErrors)
-        {
-            if (executionErrors == null)
-            {
-                return;
-            }
-            // Rows that are SUPPOSED to fail validation (errorOccured != "NO", e.g. "AN") pass by
-            // producing their expected validation error, and may only incidentally surface a
-            // remote-path error in the environment - they must keep running and asserting. Only
-            // treat a remote/UNC error as an environmental skip when the row expected to SUCCEED
-            // (errorOccured = "NO") - those are the rows that genuinely depend on the file server.
-            var errorOccured = (scenarioContext?.ScenarioInfo?.Arguments?["errorOccured"] as string ?? string.Empty).Trim();
-            if (errorOccured.Length > 0 && !errorOccured.Equals("NO", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-            foreach (var error in executionErrors)
-            {
-                var e = error ?? string.Empty;
-                if (RemoteOrUncErrorMarkers.Any(marker => e.IndexOf(marker, StringComparison.OrdinalIgnoreCase) >= 0))
-                {
-                    Assert.Inconclusive(
-                        "Skipped (WOLF-8451): execution failed against a remote (ftp/ftps/sftp) or UNC endpoint that " +
-                        "depends on external file-server infrastructure [" + e + "]. Marked NotExecuted to avoid " +
-                        "environmental failures; remove the SkipIfRemoteOrUncError guard once CI file servers are reliable.");
-                }
-            }
         }
 
         #region Overrides of RecordSetBases

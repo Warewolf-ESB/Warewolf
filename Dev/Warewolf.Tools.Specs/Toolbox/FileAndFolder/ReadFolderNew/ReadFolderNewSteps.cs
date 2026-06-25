@@ -45,9 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            _scenarioContext.Add("result", result);
-            SkipIfRemoteOrUncError(result.Environment.AllErrors);
-        }
+            _scenarioContext.Add("result", result);        }
 
         protected override void BuildDataList()
         {

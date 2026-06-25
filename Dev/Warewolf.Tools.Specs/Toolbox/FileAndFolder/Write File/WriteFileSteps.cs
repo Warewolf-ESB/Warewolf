@@ -65,9 +65,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            _scenarioContext.Add("result", result);
-            SkipIfRemoteOrUncError(result.Environment.AllErrors);
-        }
+            _scenarioContext.Add("result", result);        }
 
         [Given(@"the input contents from a file ""(.*)""")]
         public void GivenTheInputContentsFromAFile(string fileName)

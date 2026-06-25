@@ -43,9 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
             }
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-            SkipIfRemoteOrUncError(result.Environment.AllErrors);
-        }
+            scenarioContext.Add("result", result);        }
 
         protected override void BuildDataList()
         {
