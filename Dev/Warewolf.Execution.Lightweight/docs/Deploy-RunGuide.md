@@ -21,6 +21,7 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 2. [Step-by-step execution](#2-step-by-step-execution)
 3. [Parameter reference](#3-parameter-reference)
 4. [Worked parameter examples](#4-worked-parameter-examples)
+5. [Resources: created by the script vs. assumed pre-existing](#5-resources-created-by-the-script-vs-assumed-pre-existing)
 
 ---
 
@@ -28,15 +29,72 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 
 | Tool | Minimum version | Why it's needed | Download / install |
 |---|---|---|---|
-| **PowerShell** | **7.0+** (7.4 LTS recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest`, ternary/null-coalescing operators, `&&`/`\|\|`. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
+| **PowerShell** | **7.0+** (latest recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest`, ternary/null-coalescing operators, `&&`/`\|\|`. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
 | **Azure CLI (`az`)** | **2.55.0+** (latest recommended) | All cloud provisioning (resource group, storage, Function App, App Insights, Key Vault, app settings, zip-deploy) runs through `az`. Must be logged in (`az login`). | [aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindowsx64) · or `winget install Microsoft.AzureCLI` |
 | **Azure Functions Core Tools (`func`)** | **4.x** | **Only** required when you choose `-PublishMethod Func` (advanced/opt-in). The default `Auto`/`Zip` path uses `az` zip-deploy and does **not** need `func`. | [github.com/Azure/azure-functions-core-tools](https://go.microsoft.com/fwlink/?linkid=2174087) · or `winget install Microsoft.Azure.FunctionsCoreTools` |
 
 **Azure-side prerequisites**
 
-- An Azure subscription with rights to create resource groups, storage accounts, Function Apps,
-  Application Insights, and (if encrypting) Key Vaults + role assignments.
+- An Azure subscription to deploy into.
 - You must be **logged in** and pointed at the right subscription (see Step 0 below).
+- The signed-in user must hold the roles below — see [Required roles & privileges](#required-roles--privileges).
+
+### Required roles & privileges
+
+The deploy chain touches **three independent planes** (Azure RBAC, Key Vault data plane, and
+Microsoft Entra ID). Azure RBAC roles never grant Entra permissions and vice-versa, so the user
+needs grants from each plane that applies to the flags you run with. The script grants itself only
+the Key Vault **data-plane** role — every other role below must already be on the user before you run.
+
+| Plane | Role | When needed | Why |
+|---|---|---|---|
+| **Azure RBAC** (control) | **Contributor** at **subscription** scope (or RG scope if the RG already exists) | Always | Creates the resource group, storage, Function App, App Insights, managed identity, app settings, zip-deploy, and Easy Auth. Creating the RG itself needs subscription scope. |
+| **Azure RBAC** (control) | **User Access Administrator** (or **Owner** / **Role Based Access Control Administrator**), scope covering the Key Vault (RG or subscription) | When a Key Vault is in play (`-EncryptResources`, or any `-KeyVaultName`) | The script runs `az role assignment create` (`Microsoft.Authorization/roleAssignments/write`), which **Contributor does not include**. This is the most commonly-missed grant. |
+| **Key Vault** (data) | **Key Vault Secrets Officer** on the vault | When a Key Vault is in play | Reads/writes the AES-key secret. The deploy **auto-assigns this to the signed-in user** — *but only if the user already has User Access Administrator / Owner above.* Pre-grant it manually if not. |
+| **Microsoft Entra** (directory) | **Application Administrator** (or Graph `Application.ReadWrite.All`) | Unless `-SkipAuthProvisioning` | Creates/updates the Entra app registration, service principal, OAuth scope, app roles, and client secret. |
+| **Microsoft Entra** (directory) | Directory **read users** + write user **appRoleAssignments** (covered by Application Administrator + default directory read) | When `UserAssignments` are provided (Stage 6) | Looks up each user by UPN and assigns app roles. Avoidable with `-SkipUserAssignment` / empty `UserAssignments`. |
+
+> **Minimal path.** With `-SkipAuthProvisioning` **and** no Key Vault (no encryption), **Contributor alone**
+> is enough — no User Access Administrator, no Entra role.
+
+> **Owner shortcut.** Granting **Owner** at subscription scope covers both Contributor and User Access
+> Administrator in one role. It does **not** cover the Entra (directory) roles — those are always separate.
+
+**Grant commands (an Admin runs these for the deploying user)**
+
+```powershell
+# --- Resolve the target user's object id ---
+$UserOid = az ad user show --id 'deployer@yourtenant.com' --query id -o tsv
+$Sub     = 'dd0bc517-5cc7-4b56-bd6a-68e6140db7b3'   # your subscription id
+$Rg      = 'DEV2'
+$Vault   = 'WWExecutionEngine'
+
+# === A. Azure RBAC (control plane) ===
+# Simplest: Owner at subscription = Contributor + role-assignment rights in one grant
+az role assignment create --assignee $UserOid --role 'Owner' --scope "/subscriptions/$Sub"
+
+# --- OR least-privilege: the two roles separately ---
+az role assignment create --assignee $UserOid --role 'Contributor' --scope "/subscriptions/$Sub"
+az role assignment create --assignee $UserOid --role 'User Access Administrator' --scope "/subscriptions/$Sub"
+# (If the RG already exists you may scope these to
+#  "/subscriptions/$Sub/resourceGroups/$Rg" instead — but RG *creation* needs subscription scope.)
+
+# === B. Key Vault data plane (optional pre-grant; otherwise the deploy self-grants it
+#         IF the user has User Access Administrator / Owner. The vault must exist for this scope to resolve.) ===
+az role assignment create --assignee $UserOid --role 'Key Vault Secrets Officer' `
+  --scope "/subscriptions/$Sub/resourceGroups/$Rg/providers/Microsoft.KeyVault/vaults/$Vault"
+
+# === C. Entra directory role: Application Administrator ===
+# roleDefinitionId 9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3 = Application Administrator (fixed template id)
+az rest --method POST `
+  --url 'https://graph.microsoft.com/v1.0/roleManagement/directory/roleAssignments' `
+  --headers 'Content-Type=application/json' `
+  --body "{`"principalId`":`"$UserOid`",`"roleDefinitionId`":`"9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3`",`"directoryScopeId`":`"/`"}"
+```
+
+> The admin running **step C** must themselves be **Privileged Role Administrator** or **Global
+> Administrator**. Azure RBAC grants (steps A/B) require **Owner** or **User Access Administrator** at
+> the target scope.
 
 **Encryption-specific prerequisite**
 
@@ -370,6 +428,52 @@ Force an early, explicit throw on any missing required value instead of promptin
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 @deploy -NonInteractive
 ```
+
+---
+
+## 5. Resources: created by the script vs. assumed pre-existing
+
+The orchestrator is a **thin deployer**: it provisions cloud infrastructure and wires it up, but it
+does **not** build the package and does **not** create your input files or your identities. Every
+infrastructure resource is existence-checked first and recorded in the run summary's `created` map
+(`true` = this run created it; `false` = found pre-existing) so the rollback only ever removes what
+this run actually created.
+
+### Created by the script (when absent)
+
+| Resource | Condition | Notes |
+|---|---|---|
+| Resource group | Always | Created in `-Location` if it doesn't exist. |
+| Storage account | Always | `Standard_LRS`, `StorageV2`, TLS 1.2. |
+| Function App | Always | Consumption (Y1), `dotnet-isolated` 8, Functions v4, HTTPS-only. |
+| Application Insights | When `-EnableAppInsights` | Default name `<AppName>-ai`; worker telemetry wired via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. |
+| System-assigned managed identity | When a Key Vault is in play | Enabled on the Function App so the engine can read the key at runtime. |
+| **Key Vault** | **Only with `-EncryptResources`** | RBAC-authorized vault. If a vault is needed but missing and `-EncryptResources` is **off**, the script **throws** (it will not create one). |
+| **AES key (stored as a Key Vault *secret*)** | **Only with `-EncryptResources`, real run** | The "key" is AES-256 material written as a JSON **secret** (`-KeyVaultSecretName`). The script does **not** create a Key Vault *cryptographic key* object — no `az keyvault key create` is ever called. |
+| Key Vault role assignments | When a Key Vault is in play | `Key Vault Secrets User` → Function App identity (always); `Key Vault Secrets Officer` → current user (only when encrypting). |
+| Entra app registration, service principal, OAuth scope, app roles, client secret, Easy Auth config | Unless `-SkipAuthProvisioning` | Provisioned by `Configure-WwExecutionAuth.ps1`. Idempotent — re-runs upgrade in place. |
+| App settings / environment variables | Always | The engine's env-var map (see [§3](#3-parameter-reference)). |
+| `Resources\workflow-index.json` | When workflows are staged | Generated over the staged `Resources` and bundled into the deploy zip. |
+
+### Assumed to already exist (the script validates and **throws** if missing — it does not create these)
+
+| Item | Supplied via | Behaviour if missing |
+|---|---|---|
+| Azure subscription + active `az login` | `az login` (Step 0) | Pre-flight throws: "Not logged in to Azure CLI." |
+| The signed-in user's **roles/privileges** | Admin grants (see [Required roles & privileges](#required-roles--privileges)) | Not self-granted (except the Key Vault data-plane role). Azure returns authorization errors mid-run. |
+| **Published package** | `-PublishPath` (folder or `.zip`) | Throws — you must `dotnet publish` yourself first; the script never builds. |
+| `secure.config` | `-SecureConfigPath` | Validated (plaintext auto-encrypted; encrypted validated decryptable); throws if unreadable/invalid. |
+| Workflow `.bite` resources | `-WorkflowsSourcePath` | Throws if the path doesn't exist. |
+| `Warewolf License.secureconfig` | `-LicenseConfigPath` | **Optional.** If omitted, the license check (default ON) may fail at startup. |
+| `ElasticsearchLoggingSource.bite` | `-ElasticsearchSourcePath` | Required when `-EnableElasticsearch`; throws if missing or not named exactly `ElasticsearchLoggingSource.bite`. |
+| Auth config JSON | `-AuthConfigPath` | Throws if specified but not found. If omitted, auth is provisioned with empty group/user maps. |
+| Entra **users** referenced in `UserAssignments` | Auth config JSON | Each is resolved by UPN (`az ad user show`); a missing user fails that row (Stage 6 never aborts the whole run). |
+| **Existing Key Vault** | `-KeyVaultName` **without** `-EncryptResources` | Re-deploy of already-encrypted sources requires the vault to already exist — the script **throws** rather than creating it. |
+| Tooling: PowerShell 7+, Azure CLI (logged in), `func` (only for `-PublishMethod Func`) | Local install | Pre-flight throws if `az` (or `func`, when selected) is absent. |
+
+> **Dry run note.** `-DryRun` creates nothing. A Key Vault / secret are only treated as "reachable"
+> if they already exist; otherwise encryption is deferred to a real run and the source is staged in
+> plaintext for preview.
 
 ---
 

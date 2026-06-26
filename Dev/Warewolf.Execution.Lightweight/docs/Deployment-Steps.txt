@@ -23,9 +23,39 @@ and point the script at that folder (or a .zip of it).
   * Azure CLI only is needed to deploy — Auto/Zip use az zip-deploy (config-zip).
     Azure Functions Core Tools (func) are NOT required (and NOT used) by default;
     they are only invoked for the advanced -PublishMethod Func.
-  * Caller permissions: Contributor on the resource group; Application
-    Administrator in the tenant (auth provisioning); and — when encrypting —
-    permission to create a Key Vault and assign RBAC roles.
+  * Caller roles/privileges (three independent planes — see the full table in
+    docs/Deploy-RunGuide.md "Required roles & privileges"). The script self-grants
+    ONLY the Key Vault data-plane role; every other role below must already be on
+    the signed-in user:
+      - Azure RBAC: Contributor at SUBSCRIPTION scope (or RG scope if the RG
+        already exists) — always. Creating the RG itself needs subscription scope.
+      - Azure RBAC: User Access Administrator (or Owner / RBAC Administrator),
+        scope covering the Key Vault — WHEN a Key Vault is in play. The script runs
+        'az role assignment create' (Microsoft.Authorization/roleAssignments/write),
+        which Contributor does NOT include. Most commonly-missed grant.
+      - Key Vault data plane: Key Vault Secrets Officer on the vault — WHEN a Key
+        Vault is in play. Auto-assigned to the signed-in user, but ONLY if that
+        user already has User Access Administrator / Owner (else pre-grant it).
+      - Microsoft Entra: Application Administrator (or Graph Application.ReadWrite.All)
+        — unless -SkipAuthProvisioning. Plus directory read-users + write user
+        appRoleAssignments when UserAssignments are supplied (Stage 6).
+    MINIMAL PATH: with -SkipAuthProvisioning AND no Key Vault, Contributor alone
+    is enough. OWNER at subscription scope = Contributor + User Access Administrator
+    in one role (but NOT the Entra role — that is always separate).
+
+  * Grant commands an Admin runs for the deploying user (condensed; full version
+    with the Entra Graph call in docs/Deploy-RunGuide.md):
+      $UserOid = az ad user show --id 'deployer@yourtenant.com' --query id -o tsv
+      # Azure RBAC — simplest single grant:
+      az role assignment create --assignee $UserOid --role 'Owner' --scope "/subscriptions/<sub>"
+      #   OR least-privilege: 'Contributor' + 'User Access Administrator' separately.
+      # Key Vault data plane (optional pre-grant; vault must exist for the scope):
+      az role assignment create --assignee $UserOid --role 'Key Vault Secrets Officer' \
+        --scope "/subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.KeyVault/vaults/<vault>"
+      # Entra Application Administrator (roleDefinitionId 9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3)
+      # via 'az rest' POST to roleManagement/directory/roleAssignments — see Deploy-RunGuide.md.
+    The admin granting the Entra role must be Privileged Role Administrator or
+    Global Administrator; Azure RBAC grants need Owner / User Access Administrator.
 
   The orchestrator does NOT build or publish the project, so the .NET SDK is NOT
   a deployment prerequisite. Producing the published package (Step 1) is a
@@ -165,6 +195,44 @@ and point the script at that folder (or a .zip of it).
   Every resource the run CREATES is tagged 'wwx-test-run=<runId>' and recorded in
   summary.json's `created` map (true = created by this run, false = pre-existing).
   Rollback-WwExecutionEngine.ps1 uses this to delete ONLY what the run created.
+
+--------------------------------------------------------------------------------
+ RESOURCES: CREATED BY THE SCRIPT vs. ASSUMED PRE-EXISTING
+--------------------------------------------------------------------------------
+  (Full tables in docs/Deploy-RunGuide.md section 5.) Every infrastructure
+  resource is existence-checked first and recorded in summary.json's `created` map
+  (true = created by this run, false = pre-existing) so rollback only removes what
+  this run created.
+
+  CREATED BY THE SCRIPT (when absent):
+    * Resource group, storage account, Function App                  always
+    * Application Insights                                           if -EnableAppInsights
+    * System-assigned managed identity on the Function App          when a Key Vault is in play
+    * Key Vault                                                     ONLY with -EncryptResources
+        (needed-but-missing + -EncryptResources OFF => HARD ERROR; it won't create one)
+    * AES key — stored as a Key Vault SECRET, not a crypto-key      ONLY with -EncryptResources,
+        object (no 'az keyvault key create' is ever called)            real run
+    * Key Vault role assignments (Secrets User -> Function App MI   when a Key Vault is in play
+        always; Secrets Officer -> current user when encrypting)
+    * Entra app reg, service principal, OAuth scope, app roles,     unless -SkipAuthProvisioning
+        client secret, Easy Auth config
+    * App settings / env vars; Resources\workflow-index.json        always / when workflows staged
+
+  ASSUMED TO ALREADY EXIST (validated; the script THROWS if missing — never creates):
+    * Azure subscription + active 'az login'                        pre-flight throws if not logged in
+    * The signed-in user's roles/privileges (see PREREQUISITES)     NOT self-granted (except KV data-plane)
+    * Published package (-PublishPath)                              throws; you 'dotnet publish' yourself
+    * secure.config (-SecureConfigPath)                             validated; plaintext auto-encrypted
+    * Workflow .bite resources (-WorkflowsSourcePath)               throws if path missing
+    * Warewolf License.secureconfig (-LicenseConfigPath)           OPTIONAL; license check may fail if omitted
+    * ElasticsearchLoggingSource.bite (-ElasticsearchSourcePath)   required+exact name when -EnableElasticsearch
+    * Auth config JSON (-AuthConfigPath)                            throws if specified-but-missing
+    * Entra users referenced in UserAssignments                     resolved by UPN; missing user fails that row
+    * Existing Key Vault, when -KeyVaultName WITHOUT -EncryptResources   throws rather than creating it
+    * Tooling: PowerShell 7+, az (logged in), func (only -PublishMethod Func)
+
+  DRY-RUN creates nothing: a Key Vault / secret count as "reachable" only if they
+  already exist; otherwise encryption is deferred and the source is staged plaintext.
 
 --------------------------------------------------------------------------------
  secure.config  (validated before anything is changed)
