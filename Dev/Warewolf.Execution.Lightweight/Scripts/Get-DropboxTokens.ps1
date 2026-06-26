@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 <#
 .SYNOPSIS
     Performs a Dropbox PKCE Authorization Code flow and outputs the resulting

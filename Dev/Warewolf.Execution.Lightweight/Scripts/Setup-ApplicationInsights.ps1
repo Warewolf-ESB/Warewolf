@@ -1,4 +1,5 @@
 #!/usr/bin/env pwsh
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 <#
 .SYNOPSIS
     Configure Application Insights for Warewolf Execution Lightweight Azure Function
@@ -152,12 +153,17 @@ Write-Host ""
 
 Write-Host "[Step 5/6] Configuring Function App..." -ForegroundColor Yellow
 
-# Set Application Insights connection string
-Write-Host "   → Setting APPLICATIONINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
+# Set Application Insights connection string.
+# IMPORTANT: the lightweight worker reads WAREWOLF_APPINSIGHTS_CONNECTION_STRING — a
+# DELIBERATELY non-standard name (see Program.cs). The standard
+# APPLICATIONINSIGHTS_CONNECTION_STRING auto-enables the Functions HOST's own AI
+# pipeline (a separate process the worker cannot switch off), so it is intentionally
+# NOT set here — ENABLEAPPLICATIONINSIGHTS remains the single authoritative switch.
+Write-Host "   → Setting WAREWOLF_APPINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
 az functionapp config appsettings set `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --settings "APPLICATIONINSIGHTS_CONNECTION_STRING=$connectionString" `
+    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$connectionString" `
     --output none
 
 if ($LASTEXITCODE -ne 0) {
@@ -190,10 +196,10 @@ Write-Host "[Step 6/6] Verifying configuration..." -ForegroundColor Yellow
 $settings = az functionapp config appsettings list `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
+    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
     --output json | ConvertFrom-Json
 
-$aiConnectionSet = $settings | Where-Object { $_.name -eq "APPLICATIONINSIGHTS_CONNECTION_STRING" }
+$aiConnectionSet = $settings | Where-Object { $_.name -eq "WAREWOLF_APPINSIGHTS_CONNECTION_STRING" }
 $aiEnabledSet = $settings | Where-Object { $_.name -eq "ENABLEAPPLICATIONINSIGHTS" }
 
 if ($aiConnectionSet -and $aiEnabledSet.value -eq "true") {

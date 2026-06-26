@@ -1,0 +1,360 @@
+================================================================================
+ Warewolf Workflow Execution Engine — Deployment Steps
+ (Warewolf.Execution.Lightweight Azure Function App)
+================================================================================
+
+The end-to-end deployment is driven by:
+
+    Scripts/Deploy-WwExecutionEngine.ps1
+
+It provisions Azure infrastructure, configures Entra ID + Easy Auth, stages (and
+OPTIONALLY encrypts — see -EncryptResources, default OFF) the package contents
+(secure.config, workflow resources, Elasticsearch source), applies the engine's
+environment variables, and deploys an ALREADY-PUBLISHED package to the Function App.
+
+The orchestrator does NOT build/publish the project — you publish once yourself
+and point the script at that folder (or a .zip of it).
+
+--------------------------------------------------------------------------------
+ PREREQUISITES  (for running the deployment orchestrator)
+--------------------------------------------------------------------------------
+  * PowerShell 7+
+  * Azure CLI (az), logged in:            az login
+  * Azure CLI only is needed to deploy — Auto/Zip use az zip-deploy (config-zip).
+    Azure Functions Core Tools (func) are NOT required (and NOT used) by default;
+    they are only invoked for the advanced -PublishMethod Func.
+  * Caller permissions: Contributor on the resource group; Application
+    Administrator in the tenant (auth provisioning); and — when encrypting —
+    permission to create a Key Vault and assign RBAC roles.
+
+  The orchestrator does NOT build or publish the project, so the .NET SDK is NOT
+  a deployment prerequisite. Producing the published package (Step 1) is a
+  separate, upstream task done in your own build environment.
+
+--------------------------------------------------------------------------------
+ STEP 1 — Publish the project (separate upstream task — NOT run by the orchestrator)
+--------------------------------------------------------------------------------
+  Performed once in your build environment, which needs the .NET 8 SDK. This is a
+  precondition for deployment, not a step the orchestrator performs or requires.
+
+    cd Dev/Warewolf.Execution.Lightweight
+    dotnet publish Warewolf.Execution.Lightweight.csproj -c Release -o D:\ExecutionEngine\Publish
+
+  The orchestrator's -PublishPath then points at this folder, OR at a .zip of
+  it (the zip is extracted to a sibling folder, which becomes the package dir).
+
+--------------------------------------------------------------------------------
+ STEP 2 — Run the orchestrator
+--------------------------------------------------------------------------------
+  Interactive (prompts for anything not supplied, prints a full settings
+  summary, and asks once to proceed BEFORE making any change):
+
+    ./Scripts/Deploy-WwExecutionEngine.ps1
+
+  Non-interactive example — FIRST-TIME deploy (encrypt sources once + verify):
+
+    ./Scripts/Deploy-WwExecutionEngine.ps1 `
+        -ResourceGroup   DEV2 `
+        -Location        southafricanorth `
+        -StorageAccount  stwwenginetest `
+        -AppName         wwenginetest `
+        -PublishPath     D:\ExecutionEngine\Publish `
+        -AuthConfigPath  ./Scripts/Deploy-WwExecutionEngine.authconfig.json `
+        -SecureConfigPath 'C:\cfg\secure.config' `
+        -LicenseConfigPath 'C:\cfg\Warewolf License.secureconfig' `
+        -WorkflowsSourcePath 'C:\Warewolf\Resources' `
+        -EncryptResources:$true -VerifyDecryption `
+        -KeyVaultName wwengine-kv -KeyVaultSecretName wwengine-aes-key `
+        -EnableAppInsights:$true `
+        -EnableElasticsearch:$true -ElasticsearchSourcePath 'C:\cfg\ElasticsearchLoggingSource.bite' `
+        -NonInteractive
+
+  SUBSEQUENT deploys — sources are ALREADY encrypted, so DROP -EncryptResources
+  (default off) and -VerifyDecryption. Still pass -KeyVaultName/-KeyVaultSecretName
+  so the engine's managed identity is wired to decrypt them at runtime:
+
+    ./Scripts/Deploy-WwExecutionEngine.ps1 `
+        -ResourceGroup DEV2 -Location southafricanorth -StorageAccount stwwenginetest `
+        -AppName wwenginetest -PublishPath D:\ExecutionEngine\Publish `
+        -WorkflowsSourcePath 'C:\Warewolf\Resources' `
+        -KeyVaultName wwengine-kv -KeyVaultSecretName wwengine-aes-key `
+        -EnableElasticsearch:$true -ElasticsearchSourcePath 'C:\cfg\ElasticsearchLoggingSource.bite' `
+        -NonInteractive
+
+  Dry-run (prints every action, changes no cloud state; still writes a '.dryrun.'
+  transcript + summary so the rollback can be exercised from it):
+
+    ./Scripts/Deploy-WwExecutionEngine.ps1 -PublishPath D:\ExecutionEngine\Publish -DryRun
+
+  NOTE on paths: the orchestrator resolves its sibling scripts
+  (Configure-WwExecutionAuth.ps1, Setup-ApplicationInsights.ps1,
+  Encrypt-Config.ps1) relative to its OWN folder ($PSScriptRoot), so it can be
+  invoked from any working directory.  Path PARAMETERS you pass (-PublishPath,
+  -SecureConfigPath, -LicenseConfigPath, -WorkflowsSourcePath, -AuthConfigPath,
+  -ElasticsearchSourcePath) are resolved against your current directory — use
+  absolute paths to avoid ambiguity.
+
+--------------------------------------------------------------------------------
+ *** BREAKING CHANGE ***  Required parameters no longer have defaults
+--------------------------------------------------------------------------------
+  -ResourceGroup, -Location, -StorageAccount, -AppName and -PublishPath are now
+  REQUIRED (previously defaulted to DEV2 / southafricanorth / stwwenginetest /
+  wwenginetest / <project>\publish).  -KeyVaultName / -KeyVaultSecretName are
+  required whenever a Key Vault is in play (i.e. -EncryptResources is set, OR you
+  pass -KeyVaultName to let the engine decrypt already-encrypted sources at
+  runtime).  Non-interactive callers MUST pass these explicitly or the script
+  throws early.
+
+  ENCRYPTION IS NOW OPTIONAL: -EncryptResources defaults to FALSE (previously the
+  Elasticsearch source was always encrypted when -EnableElasticsearch was on).
+  Encrypt once, then omit it on later deploys. -VerifyDecryption (default FALSE)
+  gates the in-memory decrypt verification.
+
+--------------------------------------------------------------------------------
+ WHAT THE ORCHESTRATOR DOES (phases)
+--------------------------------------------------------------------------------
+  Phase 0    Pre-flight    az present + logged in; resolve subscription/tenant.
+  Phase 0.5  PLAN          Resolve every decision (targeting, publish source,
+                           feature toggles, all env-var values, secure.config
+                           classification, encryption/Key Vault, Elasticsearch),
+                           print a full masked summary, confirm ONCE.
+  Phase 1    Infra         Resource group, storage (StorageV2/TLS1_2), Function
+                           App (Consumption Y1, dotnet-isolated 8, Functions v4,
+                           https-only), Application Insights (if enabled).
+  Phase 2    Auth          Configure-WwExecutionAuth.ps1 (Entra ID + Easy Auth).
+  Phase 3    Stage         secure.config (see below), the Warewolf License
+                           .secureconfig, workflow resources, the Elasticsearch
+                           source, OPTIONAL encryption (-EncryptResources, default
+                           OFF) + OPTIONAL verify (-VerifyDecryption), workflow
+                           index (Resources\workflow-index.json via
+                           Generate-WorkflowIndex.ps1 — bundled INTO the zip so the
+                           engine gets O(1) startup lookups; falls back to a disk
+                           scan when absent), and env vars.
+  Phase 4    Deploy        Upload the package via az zip-deploy (config-zip) — the
+                           correct method for a PRE-BUILT artifact. (func is opt-in
+                           only: -PublishMethod Func, for project source dirs.)
+  Phase 5    Verify        Endpoint banner + optional /apis.json probe.
+
+  A timestamped transcript log and a masked *.summary.json are written under
+  -LogDir (default <PublishDir>\..\deploy-logs) for BOTH dry-run and real runs.
+
+  CRASH-SAFE SUMMARY: the summary is written BEFORE the first mutating action and
+  re-written after every phase and from the failure handler, so it ALWAYS exists
+  no matter where a run stops (e.g. a Phase 4 deploy failure). It carries:
+    * status     in-progress | completed | failed
+    * lastPhase  the phase in progress when the file was last written
+    * error      the failure message (when status = failed)
+  The `created` map records creation INTENT (set the moment a resource is decided
+  to be created, BEFORE the mutating call), so a resource that fails mid-create is
+  still recorded for cleanup. Rollback re-verifies existence + the run tag before
+  deleting, so a never-created resource is skipped and a pre-existing one is kept.
+  => You can roll back a FAILED/partial deploy directly from its summary.json.
+
+  DRY-RUN produces the SAME outputs as a real run, except no cloud resource is
+  created/updated and nothing is uploaded:
+    * Files are prepared into a timestamped SIBLING preview dir
+      ('<PublishDir>-dryrun-<stamp>'), so your real publish dir is never touched.
+    * The transcript + summary.json are written (dry-run files carry a '.dryrun.'
+      infix and the summary has "dryRun": true) so the rollback can be exercised
+      from a dry-run summary.
+    * Encryption only happens when -EncryptResources is set AND the Key Vault key
+      is reachable; otherwise sources are staged as-is (or deferred to the real run).
+    * The App Insights connection string is read from the live/existing component
+      (placeholder when it does not yet exist).
+
+  Every resource the run CREATES is tagged 'wwx-test-run=<runId>' and recorded in
+  summary.json's `created` map (true = created by this run, false = pre-existing).
+  Rollback-WwExecutionEngine.ps1 uses this to delete ONLY what the run created.
+
+--------------------------------------------------------------------------------
+ secure.config  (validated before anything is changed)
+--------------------------------------------------------------------------------
+  * Already AES-encrypted (Warewolf SecurityEncryption) -> validated decryptable
+    and staged AS-IS (never re-encrypted).
+  * Plaintext JSON                                       -> validated, then AES-
+    encrypted automatically before staging.
+  * Neither (undecryptable / not a usable config)        -> HARD ERROR (the
+    engine would otherwise silently fall back to open access).
+
+--------------------------------------------------------------------------------
+ Warewolf License.secureconfig  (-LicenseConfigPath)
+--------------------------------------------------------------------------------
+  The engine's license gate reads a 'Warewolf License.secureconfig' file from the
+  site root (app.config: subscriptionSettings configSource="Warewolf
+  License.secureconfig").  The orchestrator PROMPTS for its path (Enter to skip)
+  and, when supplied, copies it to <PublishDir>\Warewolf License.secureconfig.
+
+  It is OPTIONAL: if omitted, the script warns that the license check (default ON
+  via WAREWOLF_LICENSE_CHECK_ENABLED) may fail at startup.  Produce/encrypt the
+  file per https://warewolf.io/knowledge-base/articles/security-encryption/
+  (see also Protect-LicenseConfig.ps1).
+
+--------------------------------------------------------------------------------
+ Source encryption  (-EncryptResources, default OFF — ONE toggle for ALL sources)
+--------------------------------------------------------------------------------
+  -EncryptResources is OPTIONAL and defaults to FALSE. It is a SINGLE switch that
+  governs encryption of ALL deployable sources — workflow .bite ConnectionStrings,
+  the Elasticsearch source, and any others. The intended workflow is "encrypt
+  ONCE":
+    * First deploy: pass -EncryptResources (optionally -VerifyDecryption). Plain or
+      DPAPI ConnectionStrings are converted to AES-256-GCM (WFAES::) with an Azure
+      Key Vault key. DPAPI values can only be re-encrypted on the machine that
+      created them.
+    * Later deploys: leave -EncryptResources OFF. Sources are already encrypted and
+      are staged AS-IS (never re-encrypted).
+  -VerifyDecryption (default OFF) does an optional IN-MEMORY round-trip decrypt to
+  prove the engine's key works — no plaintext is ever written to disk.
+  See docs/README-Encryption.md.
+
+  RUNTIME DECRYPTION (independent of the above): whenever your sources are WFAES-
+  encrypted, the engine must decrypt them at runtime, so you MUST pass
+  -KeyVaultName / -KeyVaultSecretName on EVERY deploy (even when not encrypting).
+  The script then wires the app settings + grants the Function App's managed
+  identity 'Key Vault Secrets User'. The dev-side 'Secrets Officer' role + key
+  generation are added only when -EncryptResources is set.
+
+--------------------------------------------------------------------------------
+ Elasticsearch logging  (-EnableElasticsearch)
+--------------------------------------------------------------------------------
+  You MUST supply -ElasticsearchSourcePath pointing to a file named EXACTLY
+  'ElasticsearchLoggingSource.bite' (the engine reads {site}/Settings/
+  ElasticsearchLoggingSource.bite). It is ALWAYS staged into <PublishDir>/Settings.
+  Its ConnectionString is encrypted ONLY when -EncryptResources is set; otherwise
+  it is staged as-is (assumed already encrypted or plain). Enabling Elasticsearch
+  no longer forces Key Vault — but if the source IS WFAES-encrypted you must pass
+  -KeyVaultName / -KeyVaultSecretName so the engine can decrypt it at runtime.
+
+--------------------------------------------------------------------------------
+ Environment variables applied to the Function App (engine surface)
+--------------------------------------------------------------------------------
+  Configurable (defaults shown):
+    EXECUTIONLOGLEVEL                TRACE|DEBUG|INFO|WARN|ERROR|FATAL|OFF (-ExecutionLogLevel,
+                                     default INFO; PROMPTED when interactive and not supplied;
+                                     drives the engine's console + App Insights logging IN CODE.
+                                     Optionally also rewrites host.json — see below)
+    ENABLECONSOLELOGGING             -EnableConsoleLogging   (default TRUE)
+    STRUCTURED_LOGS                  -StructuredLogs         (default true)
+    ENABLEAPPLICATIONINSIGHTS        -EnableAppInsights      (default TRUE)
+    ENABLEELASTICSEARCHLOGGING       -EnableElasticsearch    (default FALSE — when enabled,
+                                     requires -ElasticsearchSourcePath; Key Vault only if the
+                                     source is WFAES-encrypted)
+    WAREWOLF_LICENSE_CHECK_ENABLED   -LicenseCheckEnabled    (default true)
+
+  When a Key Vault is in play (encrypting now via -EncryptResources, OR deploying
+  already-encrypted sources so the engine can decrypt at runtime):
+    AZURE_KEYVAULT_NAME              -KeyVaultName
+    KEYVAULT_SECRET_NAME             -KeyVaultSecretName (REQUIRED — no default; name the secret)
+
+  FIXED:
+    ASPNETCORE_ENVIRONMENT           always 'Production' (set on the app; shown in summary)
+
+  NOT set on the Function App AT ALL (not shown in logs/summary, not created):
+    BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED, SkipFailureToRetrieveSecret
+      The engine defaults each to disabled/false when the variable is absent, so
+      the script intentionally never creates them. If a specific override is ever
+      required, an admin adds it manually in the Function App configuration.
+
+  Application Insights (when enabled) — set by Setup-ApplicationInsights.ps1:
+    WAREWOLF_APPINSIGHTS_CONNECTION_STRING   auto-read from the App Insights
+    resource (az ... --query connectionString); never prompted.  NOTE: this is
+    the WAREWOLF_-prefixed name, NOT the standard
+    APPLICATIONINSIGHTS_CONNECTION_STRING, which the worker deliberately ignores.
+
+  Auth (when not -SkipAuthProvisioning) — set by Configure-WwExecutionAuth.ps1:
+    WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_AUDIENCE / WAREWOLF_ENTRA_CLIENT_ID
+
+  Platform-managed (NOT set or prompted): WEBSITE_INSTANCE_ID,
+  AZURE_FUNCTIONS_ENVIRONMENT.  The development-only DEBUG_AZURE_KEYVAULT_SECRET
+  / DEBUG_PRINCIPAL_TOKEN settings are no longer exposed by the orchestrator.
+
+--------------------------------------------------------------------------------
+ host.json logLevel alignment  (OPT-IN: -AlignHostJsonLogLevel)
+--------------------------------------------------------------------------------
+  NOT required for the engine's own logging.  The isolated WORKER's console and
+  Application Insights pipelines are configured IN CODE (Program.cs) from
+  EXECUTIONLOGLEVEL and do NOT read host.json — host.json logLevel governs only
+  the Functions HOST process.
+
+  When -AlignHostJsonLogLevel is passed, the chosen EXECUTIONLOGLEVEL is also
+  written into the published host.json: logging.logLevel."default" and every
+  "Warewolf.Execution.Lightweight.*" category are set to the mapped
+  Microsoft.Extensions.Logging level (TRACE->Trace, DEBUG->Debug, INFO->Information,
+  WARN->Warning, ERROR->Error, FATAL->Critical, OFF->None); Microsoft/Host
+  framework categories are left untouched.  Default: the step is skipped.
+
+--------------------------------------------------------------------------------
+ Provision Client App Registrations (optional, after Step 2)
+--------------------------------------------------------------------------------
+  $output = Get-Content ./Scripts/Configure-WwExecutionAuth.output.json | ConvertFrom-Json
+  $ResourceAppId = $output.ClientId
+  # ... then ./Scripts/Configure-WwExecutionAuth-Clients.ps1
+
+--------------------------------------------------------------------------------
+ ROLLBACK / TEARDOWN  (Rollback-WwExecutionEngine.ps1)
+--------------------------------------------------------------------------------
+  Reverses a deploy run, deleting ONLY what that run created (existing resources
+  are preserved).  Ownership is taken from the deploy's summary.json `created`
+  map, or the 'wwx-test-run=<runId>' tag when no summary is given.
+
+  PARTIAL / FAILED runs: a deploy that stopped mid-run still writes a summary
+  (status = failed | in-progress). Rollback accepts it, prints a note naming the
+  status + lastPhase, and tears down the recorded created-map. Each created=true
+  entry is re-verified for existence AND the run tag, so a resource that was never
+  actually created is skipped and a pre-existing one (created=false) is preserved.
+
+  Dry-run the rollback (shows the plan; deletes nothing):
+    ./Scripts/Rollback-WwExecutionEngine.ps1 `
+        -SummaryPath <deploy-logs>\deploy-WwExecutionEngine-<stamp>.summary.json -DryRun
+
+  Execute the rollback:
+    ./Scripts/Rollback-WwExecutionEngine.ps1 `
+        -SummaryPath <deploy-logs>\deploy-WwExecutionEngine-<stamp>.summary.json -Force
+
+  Teardown order (dependency-aware):
+    1. Auth        delegate to Cleanup-WwExecutionAuth.ps1 (disable Easy Auth,
+                   remove the 4 auth app-settings, delete the Entra app -> cascades
+                   its service principal, role assignments and secrets)
+    2. Key Vault   delete THEN purge (soft-delete) so the name is freed
+    3. App Insights delete the component (a shared/default Log Analytics workspace
+                   is intentionally left untouched)
+    4. Function App delete (also removes its system-assigned managed identity)
+    5. Storage     delete the account
+    6. Resource grp ONLY with -DeleteResourceGroup AND when the run created the RG
+    7. Local       (-CleanLocal) remove staged secure.config / license / ES source
+
+  A leak check re-queries every owned artifact (incl. the Key Vault soft-delete
+  list and the Entra app) and reports anything still present.  A masked
+  rollback-<stamp>.summary.json is written next to the deploy summary.
+
+  SAFETY: the script NEVER deletes a resource recorded as pre-existing
+  (created=false) or whose run tag does not match; the resource group itself is
+  never deleted unless the run created it and -DeleteResourceGroup is passed.
+  Interactively (not -Force / -NonInteractive) it CONFIRMS EACH deletion
+  individually before acting.  The Entra app carries no Azure tag, so it is only
+  auto-targeted when a summary records created.entraApp=true; in the no-summary
+  fallback it is preserved unless -IncludeEntraApp is passed.
+
+--------------------------------------------------------------------------------
+ LIVE-AZURE TEST RUNBOOK  (driven, with per-phase validation)
+--------------------------------------------------------------------------------
+  1. az login  (as the operator running the test).
+  2. Collect all inputs (subscription, region, RG, names, KV secret name, paths,
+     license, ES source, log level, toggles).
+  3. DryRun against the real subscription -> review the resolved summary.
+  4. Confirm, then run the deploy -NonInteractive; validate each phase:
+       Phase 1  group/storage/functionapp/AI provisioned
+       Phase 2  Entra app + Easy Auth present; WAREWOLF_ENTRA_* set
+       Phase 3  KV + secret exist; MI has 'Key Vault Secrets User'; (if encrypting:
+                WFAES round-trip decrypt passes when -VerifyDecryption); secure.config + license staged;
+                app settings correct (ASPNETCORE_ENVIRONMENT=Production, toggles,
+                AI auto-read, BYPASS/SUPER_ADMIN=false)
+       Phase 4  deploy exit 0
+       Phase 5  GET /apis.json reachable (allow cold start)
+  5. Roll back: Rollback-WwExecutionEngine.ps1 -SummaryPath <...> -DryRun, confirm,
+     then -Force; verify the leak check is clean.
+
+  Best practices applied: system-assigned managed identity (no secrets in app
+  settings), least-privilege KV RBAC (Secrets User for the MI), HTTPS-only / TLS1.2,
+  single-tenant Entra app with short-lived Easy Auth secret, workspace-based App
+  Insights (consider a daily ingestion cap for the test window), Key Vault
+  delete+purge, and tag-scoped/summary-driven teardown.

@@ -1,0 +1,28 @@
+{
+  "_comment": [
+    "Auth provisioning input for Deploy-WwExecutionEngine.ps1 (-AuthConfigPath).",
+    "Maps directly onto Configure-WwExecutionAuth.ps1 -GroupPermissions / -UserAssignments.",
+    "",
+    "GroupPermissions: each key is an Entra app role / group name; the value is",
+    "  an array of Permission.* roles auto-assigned alongside the group role to",
+    "  every user mapped to that group (empty array = group role only).",
+    "",
+    "UserAssignments: each entry maps a user UPN to one of the groups above.",
+    "  A UPN whose Group has no GroupPermissions entry receives only the group role.",
+    "",
+    "Copy this file (drop the _comment), edit the values, and pass it via",
+    "  -AuthConfigPath ./Deploy-WwExecutionEngine.authconfig.json"
+  ],
+
+  "GroupPermissions": {
+    "Warewolf_Developers": [],
+    "Warewolf_Operators": [],
+    "Warewolf_Adminstrators": []
+  },
+
+  "UserAssignments": [
+    { "Upn": "user1@theunlimited.co.za", "Group": "Warewolf_Adminstrators" },
+    { "Upn": "user2@theunlimited.co.za", "Group": "Warewolf_Developers" },
+    { "Upn": "user3@theunlimited.co.za", "Group": "Warewolf_Operators" }
+  ]
+}

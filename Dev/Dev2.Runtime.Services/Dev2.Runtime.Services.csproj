@@ -557,10 +557,10 @@
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
 		<ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
-		<PackageReference Include="CoreWCF.Http" Version="1.9.0" />
-		<PackageReference Include="CoreWCF.NetTcp" Version="1.9.0" />
-		<PackageReference Include="CoreWCF.Primitives" Version="1.9.0" />
-		<PackageReference Include="CoreWCF.WebHttp" Version="1.9.0" />
+		<PackageReference Include="CoreWCF.Http" Version="1.9.1" />
+		<PackageReference Include="CoreWCF.NetTcp" Version="1.9.1" />
+		<PackageReference Include="CoreWCF.Primitives" Version="1.9.1" />
+		<PackageReference Include="CoreWCF.WebHttp" Version="1.9.1" />
 		<PackageReference Include="MessagePack" Version="2.5.301" />
 		<PackageReference Include="log4net">
 			<Version>2.0.15</Version>
