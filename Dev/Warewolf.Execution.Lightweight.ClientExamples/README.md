@@ -12,9 +12,10 @@ supported by the **Warewolf wwexecution** Azure Function App.
 | Test from PowerShell / terminal | [PowerShell script](#powershell-all-flows) |
 | Build an Angular SPA | [Angular / MSAL Angular](#angular-spa) |
 | Build a React SPA | [React / MSAL React](#react-spa) |
-| Build a React Native mobile app | [React Native / MSAL RN](#react-native) |
+| Build a server-rendered .NET 8 web app | [.NET 8 Web App (MVC)](#net-8-web-app-mvc) |
 | Build a .NET 8 desktop / console tool | [.NET 8 Console](#net-8-console-app) |
 | Call wwexecution from another Azure Function | [Azure Function client](#azure-function-client) |
+| Trigger wwexecution from an Azure Service Bus queue | [Azure Service Bus worker](#azure-service-bus-worker) |
 
 ---
 
@@ -84,7 +85,7 @@ SPA_CLIENT_ID=$(jq -r '.Clients.SPA.ClientId'       ./Scripts/Configure-WwExecut
 
 ## PowerShell (All Flows)
 
-**Script:** [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../../Scripts/Get-WwExecutionToken-AllFlows.ps1)
+**Script:** [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../Warewolf.Execution.Lightweight/Scripts/Get-WwExecutionToken-AllFlows.ps1)
 
 Covers all 9 flows (A–I) with both PowerShell and `curl.exe` examples.  Auto-loads
 values from the provisioning output JSON files when present.
@@ -231,14 +232,14 @@ $TOKEN = $tokenResp.access_token
 
 ### E — Auth Code Confidential / F — OBO / G — Managed Identity / H — Federated / I — ROPC
 
-See [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../../Scripts/Get-WwExecutionToken-AllFlows.ps1)
+See [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../Warewolf.Execution.Lightweight/Scripts/Get-WwExecutionToken-AllFlows.ps1)
 sections E through I for full PowerShell and `curl.exe` examples.
 
 ---
 
 ## Angular SPA
 
-**Location:** [`docs/ClientExamples/Angular/`](Angular/)
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/Angular17/`](Angular17/)
 
 Uses `@azure/msal-angular` with the `MsalInterceptor` to attach Bearer tokens
 automatically to all HTTP calls matching `/secure/*` and `/services/*`.
@@ -278,7 +279,7 @@ const protectedResourceMap = new Map([
 
 ## React SPA
 
-**Location:** [`docs/ClientExamples/React/`](React/)
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/React/`](React/)
 
 Uses `@azure/msal-react` with a custom `useWorkflowApi` hook.  MSAL handles
 silent token acquisition with automatic interactive fallback.
@@ -306,35 +307,38 @@ const resp  = await fetch(url, { headers: { Authorization: `Bearer ${token.acces
 
 ---
 
-## React Native
+## .NET 8 Web App (MVC)
 
-**Location:** [`docs/ClientExamples/ReactNative/`](ReactNative/)
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/DotNetWebMvc/`](DotNetWebMvc/)
 
-Uses `@azure/msal-react-native` with `acquireTokenSilent` + interactive fallback.
-The SPA app registration is reused with an additional mobile redirect URI.
+A server-rendered ASP.NET Core MVC app — a **confidential client** — that signs
+users in with **Microsoft.Identity.Web** (Authorization Code flow) and calls
+wwexecution on the signed-in user's behalf. Tokens are cached server-side and
+auto-injected into the downstream call via `ITokenAcquisition` / `IDownstreamApi`.
 
 ```bash
-npm install @azure/msal-react-native react-native-keychain
-cd ios && pod install
+# Configure appsettings.json — AzureAd (ClientId, ClientSecret) + WwExecution scopes
+dotnet run    # browse https://localhost:5001
 ```
-
-**Extra setup required:**
-
-- Android: Add `BrowserTabActivity` to `AndroidManifest.xml`
-- iOS: Add `CFBundleURLTypes` to `Info.plist`
-- Azure Portal: Register `msauth.<bundle-id>://auth` as a mobile redirect URI
 
 | File | Purpose |
 |---|---|
-| `src/authConfig.ts` | MSAL RN config + singleton instance |
-| `src/useWorkflowApi.ts` | sign-in, sign-out, token + fetch hook |
-| `App.tsx` | Full React Native app with UI |
+| `WwExecutionWebMvc.csproj` | Project + Microsoft.Identity.Web packages |
+| `appsettings.json` | AzureAd + downstream WwExecution config |
+| `Program.cs` | `AddMicrosoftIdentityWebApp().EnableTokenAcquisitionToCallDownstreamApi()` |
+| `Services/WwExecutionService.cs` | Token acquisition + HTTP calls (Bearer auto-inject) |
+| `Controllers/WorkflowController.cs` | `[Authorize]` demo action + challenge handling |
+| `Views/…` | Razor views, login partial, layout |
+
+**Key pattern:** delegated token for `api://<ResourceAppId>/user_impersonation`,
+acquired per-request via `ITokenAcquisition.GetAccessTokenForUserAsync` with
+incremental-consent (`MicrosoftIdentityWebChallengeUserException`) handling.
 
 ---
 
 ## .NET 8 Console App
 
-**Location:** [`docs/ClientExamples/DotNetConsole/`](DotNetConsole/)
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/DotNetConsole/`](DotNetConsole/)
 
 Uses **MSAL.NET** (`Microsoft.Identity.Client`) and **Azure.Identity**
 (`DefaultAzureCredential`) with a typed `WwExecutionService`.
@@ -369,7 +373,7 @@ dotnet run
 
 ## Azure Function Client
 
-**Location:** [`docs/ClientExamples/AzureFunction/`](AzureFunction/)
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/`](AzureFunction/)
 
 A .NET 8 isolated Azure Function that calls wwexecution as a downstream
 service.  Uses `DefaultAzureCredential` → **Managed Identity** in Azure
@@ -418,6 +422,45 @@ az rest --method POST \
 
 ---
 
+## Azure Service Bus worker
+
+**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/`](AzureServiceBus/)
+
+> **Why a worker?** Azure Service Bus is a message broker — it cannot hold an
+> Entra token or make HTTP calls itself. The realistic pattern is a **Service
+> Bus–triggered worker** (a .NET 8 isolated Function) that, on each message,
+> acquires an **app-only token** and calls wwexecution over HTTP.
+
+A `ServiceBusTrigger` Function reads a `{ "workflow": "...", "inputs": {...} }`
+message and calls a secure workflow. Auth is **Managed Identity** via
+`DefaultAzureCredential` (client-secret fallback for local dev). The token is
+cached/refreshed and auto-injected by a `DelegatingHandler`.
+
+```bash
+# Local dev
+az login
+func start
+
+# Enqueue a test message onto the 'wwexecution-queue' queue:
+#   { "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
+```
+
+| File | Purpose |
+|---|---|
+| `WwExecutionServiceBusWorker.csproj` | Isolated-worker project + Extensions.ServiceBus + Azure.Identity |
+| `Program.cs` | DI: `TokenCredential`, token handler, typed `HttpClient` |
+| `Auth/WwExecutionTokenHandler.cs` | App-only token acquire/cache/refresh + Bearer auto-inject |
+| `Functions/WorkflowQueueTrigger.cs` | `[ServiceBusTrigger]` → calls `/secure/{workflow}.json` |
+| `WwExecutionClient.cs` | Typed engine client (public/secure/services) |
+
+**Token chain:** identical to the Azure Function client — `DefaultAzureCredential`
+(Managed Identity in Azure, az CLI locally), scope `api://<ResourceAppId>/.default`.
+The worker's MI/daemon SP **must** be assigned an app role on the resource SP (see
+the `az rest … appRoleAssignedTo` snippet above, or
+[`Configure-WwExecutionAuth-Clients.ps1 -DaemonUseManagedIdentity`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-Clients.ps1)).
+
+---
+
 ## Troubleshooting
 
 | Problem | Solution |
@@ -435,8 +478,8 @@ az rest --method POST \
 
 ## See Also
 
-- [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../../Scripts/Get-WwExecutionToken-AllFlows.ps1) — all flows in one script
-- [`Scripts/Configure-WwExecutionAuth.ps1`](../../Scripts/Configure-WwExecutionAuth.ps1) — provision function app + Entra
-- [`Scripts/Configure-WwExecutionAuth-Clients.ps1`](../../Scripts/Configure-WwExecutionAuth-Clients.ps1) — provision client registrations
-- [`docs/README-Authentication.md`](../README-Authentication.md) — end-to-end auth architecture
-- [`docs/Part5-ClientTokenManagement.md`](../Part5-ClientTokenManagement.md) — MSAL integration patterns
+- [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../Warewolf.Execution.Lightweight/Scripts/Get-WwExecutionToken-AllFlows.ps1) — all flows in one script
+- [`Scripts/Configure-WwExecutionAuth.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth.ps1) — provision function app + Entra
+- [`Scripts/Configure-WwExecutionAuth-Clients.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-Clients.ps1) — provision client registrations
+- [`docs/README-Authentication.md`](../Warewolf.Execution.Lightweight/docs/README-Authentication.md) — end-to-end auth architecture
+- [`docs/Part5-ClientTokenManagement.md`](../Warewolf.Execution.Lightweight/docs/Part5-ClientTokenManagement.md) — MSAL integration patterns

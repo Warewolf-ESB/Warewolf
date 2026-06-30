@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="hero">
+    <h1>Warewolf Execution Engine — Web Client</h1>
+    <p>
+        This ASP.NET Core MVC app is a <strong>confidential client</strong>. It signs you in with
+        <strong>Microsoft Entra ID</strong> using the OpenID Connect Authorization Code flow, then
+        calls the Warewolf Execution Engine <strong>on your behalf</strong> using a delegated access
+        token acquired silently by <code>Microsoft.Identity.Web</code>.
+    </p>
+</section>
+
+<section class="card">
+    <h2>What this sample demonstrates</h2>
+    <ul>
+        <li>OIDC sign-in (auth code flow) with a client secret.</li>
+        <li>Server-side token cache + silent token acquisition for a downstream API.</li>
+        <li>Auto-injected <code>Authorization: Bearer</code> for <code>/secure/*</code> calls.</li>
+        <li>Optional <code>x-functions-key</code> for <code>/services/*</code> calls.</li>
+        <li>Incremental consent / re-auth via <code>[AuthorizeForScopes]</code>.</li>
+    </ul>
+</section>
+
+<section class="card">
+    <h2>Try it</h2>
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <p>You're signed in. <a asp-controller="Workflow" asp-action="Index">Run the secure "Hello World" workflow &raquo;</a></p>
+    }
+    else
+    {
+        <p>
+            <a class="btn" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in to continue</a>
+        </p>
+    }
+</section>

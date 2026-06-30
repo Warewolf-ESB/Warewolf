@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>WwExecutionWebMvc</RootNamespace>
+    <AssemblyName>WwExecutionWebMvc</AssemblyName>
+    <UserSecretsId>wwexecution-webmvc-sample</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft.Identity.Web brings in the OIDC sign-in + confidential-client token acquisition stack. -->
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.8.2" />
+    <!-- Adds the scaffolded Account controller/views (sign-in, sign-out, consent pages). -->
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.8.2" />
+    <!-- IDownstreamApi: auto-acquires + injects the user's delegated access token into outbound calls. -->
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.8.2" />
+  </ItemGroup>
+
+</Project>

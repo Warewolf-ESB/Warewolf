@@ -126,7 +126,13 @@ param(
 
     # Skip every interactive prompt.  Suitable for CI/CD; placeholders or
     # missing required values cause an early throw.
-    [switch]    $NonInteractive
+    [switch]    $NonInteractive,
+
+    # Test hook: when dot-sourced with -LoadFunctionsOnly, the script defines its
+    # helper functions and returns BEFORE any interactive prompt or cloud action,
+    # so the Pester suite (Tests/Configure-WwExecutionAuth.Tests.ps1) can unit-test
+    # the helpers.  Not for normal runs.
+    [switch]    $LoadFunctionsOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -902,6 +908,34 @@ function Get-EasyAuthConfig {
     return $raw
 }
 
+function Resolve-AssignmentUser {
+    <#
+        Resolve a UserAssignment row's UPN to its Entra user object for Stage 6.
+        The lookup throws on a missing/typo'd UPN (Invoke-AzCli throws on a
+        non-transient az failure), which would otherwise abort the whole stage and
+        the run.  Stage 6 is meant to "never abort on one row", so on any failure
+        (or an empty result) this warns and returns $null; the caller skips the row
+        and carries on with the remaining assignments.
+    #>
+    param([Parameter(Mandatory)][string] $Upn)
+    $userObj = $null
+    try {
+        $userObj = Invoke-AzCli @('ad','user','show','--id',$Upn,'-o','json') | ConvertFrom-AzJson
+    } catch {
+        Write-Warning "    user '$Upn' not found / lookup failed: $($_.Exception.Message) - skipping this row"
+        return $null
+    }
+    if (-not $userObj) {
+        Write-Warning "    user '$Upn' lookup returned no object - skipping this row"
+        return $null
+    }
+    return $userObj
+}
+
+# Test hook: stop here when only the helper functions are wanted (Pester), BEFORE
+# any interactive prompt or cloud/Graph action below.
+if ($LoadFunctionsOnly) { return }
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Interactive configuration  -- runs unless -NonInteractive is passed.
 # Resolves placeholders, displays the full plan, and asks for confirmation
@@ -1321,7 +1355,11 @@ if (-not $SkipUserAssignment) {
     Write-Host "═══ Stage 6  User role assignments ═══════════════════════════════" -ForegroundColor Cyan
 
     foreach ($u in $UserAssignments) {
-        $userObj = Invoke-AzCli @('ad','user','show','--id',$u.Upn,'-o','json') | ConvertFrom-AzJson
+        # One bad row must not abort the whole stage (see the header note above):
+        # Resolve-AssignmentUser warns and returns $null on a missing/typo'd UPN
+        # instead of letting the lookup exception kill Stage 6 and the run.
+        $userObj = Resolve-AssignmentUser -Upn $u.Upn
+        if (-not $userObj) { continue }
         $userOid = $userObj.id
 
         # Fetch all existing assignments for this user on OUR SP.

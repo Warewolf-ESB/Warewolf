@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Warewolf Execution Engine — Azure Function downstream client example.
+
+    A .NET 8 Azure Functions v4 *isolated worker* app that calls the Warewolf
+    Execution Engine (wwexecution) as a downstream service. Authentication is
+    app-only via Managed Identity (DefaultAzureCredential), with an MSAL
+    client-credentials fallback for local development.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
+    <RootNamespace>WwExecutionCaller</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Functions isolated-worker entry point generation -->
+    <FunctionsEnableWorkerIndexing>true</FunctionsEnableWorkerIndexing>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Azure Functions isolated worker host + SDK -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.22.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.4" OutputItemType="Analyzer" />
+
+    <!-- HTTP and Timer triggers -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+
+    <!-- Application Insights (optional but idiomatic for Functions) -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+
+    <!-- DefaultAzureCredential (Managed Identity / az CLI) -->
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+
+    <!-- MSAL fallback (client-credentials for local dev) -->
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.66.2" />
+
+    <!-- Typed HttpClient + Options binding/validation -->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

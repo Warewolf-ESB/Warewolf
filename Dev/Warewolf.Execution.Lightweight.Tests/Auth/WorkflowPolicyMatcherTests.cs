@@ -269,5 +269,64 @@ public class WorkflowPolicyMatcherTests
 
         Assert.AreEqual(PolicyMatchOutcome.Allowed, result.Outcome);
     }
+
+    // ── Authenticated-but-roleless rejection (WOLF-8469) ──────────────────────
+    // Requirement: an Entra user who is authenticated but holds NO app-role
+    // (empty `roles` claim ⇒ empty Groups) must be rejected on /secure & /services
+    // when no permission resolves for them from the secure.config group→permission
+    // map.  The two deliberately-retained escape hatches (Public-OR and UPN-direct)
+    // still grant access — see TST15 and TST12 — matching the agreed behaviour
+    // ("keep both, no behaviour change").
+
+    [TestMethod]
+    public void TST13_DenyGroup_AuthenticatedCaller_NoRoles_NoPublic_NoUpn()
+    {
+        // Caller is authenticated (valid token) but carries zero role claims and
+        // is not named directly; the workflow only grants the "TeamA" group.
+        // No permission resolves ⇒ the matcher must reject (Forbidden / 500).
+        var policy  = MakePolicy("hello",
+            ("TeamA", WorkflowPermission.View | WorkflowPermission.Execute));
+        var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
+        var matcher = new WorkflowPolicyMatcher(loader);
+
+        var principal = Principal("roleless@x.com"); // no roles passed ⇒ Groups empty
+        Assert.AreEqual(0, principal.Groups.Count, "precondition: principal has no roles");
+
+        var result = matcher.Evaluate("hello", principal);
+
+        Assert.AreEqual(PolicyMatchOutcome.Forbidden, result.Outcome);
+        StringAssert.Contains(result.DenialReason ?? "", "no matching role");
+    }
+
+    [TestMethod]
+    public void TST14_DenyGroup_AuthenticatedCaller_NoRoles_PublicViewOnly_RequiresExecute()
+    {
+        // Roleless caller; Public grants View only. Required View|Execute is not
+        // satisfied, so even with the Public-OR escape hatch the caller is rejected.
+        var policy  = MakePolicy("hello", ("Public", WorkflowPermission.View));
+        var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
+        var matcher = new WorkflowPolicyMatcher(loader);
+
+        var result = matcher.Evaluate("hello", Principal("roleless@x.com"),
+            WorkflowPermission.View | WorkflowPermission.Execute);
+
+        Assert.AreEqual(PolicyMatchOutcome.Forbidden, result.Outcome);
+    }
+
+    [TestMethod]
+    public void TST15_Allow_AuthenticatedCaller_NoRoles_PublicGrantsRequired()
+    {
+        // Retained exception: a roleless authenticated caller IS allowed when the
+        // Public group (always OR'd into the active scope) grants the required
+        // permissions. This documents the deliberate "keep Public-OR" decision.
+        var policy  = MakePolicy("hello",
+            ("Public", WorkflowPermission.View | WorkflowPermission.Execute));
+        var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
+        var matcher = new WorkflowPolicyMatcher(loader);
+
+        var result = matcher.Evaluate("hello", Principal("roleless@x.com"));
+
+        Assert.AreEqual(PolicyMatchOutcome.Allowed, result.Outcome);
+    }
 }
 

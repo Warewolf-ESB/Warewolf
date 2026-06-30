@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="card alert">
+    <h1>An error occurred</h1>
+    <p>Something went wrong while processing your request.</p>
+    @if (Context.Request.Host.Host is "localhost" or "127.0.0.1")
+    {
+        <p>Check the application console / logs for the full exception and correlation details.</p>
+    }
+</section>

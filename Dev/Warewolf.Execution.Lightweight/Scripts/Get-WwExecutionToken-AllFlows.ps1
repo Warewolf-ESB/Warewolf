@@ -504,7 +504,7 @@ if (-not $Section -or $Section -eq 'D') {
   but the token exchange step is shown below for reference / testing.
 
   NOTE: In a real SPA, use MSAL.js (Angular/React) or MSAL React Native.
-  The examples in docs/ClientExamples/ show full MSAL integration.
+  The examples in the Warewolf.Execution.Lightweight.ClientExamples/ folder show full MSAL integration.
 
   SPA CLIENT: $($SpaClientId ?? '<wwexecution-spa ClientId>')
   PKCE:       Required (code_challenge / code_verifier)

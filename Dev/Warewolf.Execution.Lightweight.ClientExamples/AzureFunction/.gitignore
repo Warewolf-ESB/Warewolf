@@ -1,0 +1,6 @@
+# Local Functions settings can carry secrets — never commit a populated copy.
+local.settings.json
+
+# Build output
+bin/
+obj/

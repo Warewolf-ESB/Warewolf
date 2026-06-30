@@ -29,7 +29,7 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 
 | Tool | Minimum version | Why it's needed | Download / install |
 |---|---|---|---|
-| **PowerShell** | **7.0+** (latest recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest`, ternary/null-coalescing operators, `&&`/`\|\|`. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
+| **PowerShell** | **7.0+** (latest recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest` and PowerShell 7 ternary operators. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
 | **Azure CLI (`az`)** | **2.55.0+** (latest recommended) | All cloud provisioning (resource group, storage, Function App, App Insights, Key Vault, app settings, zip-deploy) runs through `az`. Must be logged in (`az login`). | [aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindowsx64) · or `winget install Microsoft.AzureCLI` |
 | **Azure Functions Core Tools (`func`)** | **4.x** | **Only** required when you choose `-PublishMethod Func` (advanced/opt-in). The default `Auto`/`Zip` path uses `az` zip-deploy and does **not** need `func`. | [github.com/Azure/azure-functions-core-tools](https://go.microsoft.com/fwlink/?linkid=2174087) · or `winget install Microsoft.Azure.FunctionsCoreTools` |
 
@@ -65,9 +65,9 @@ the Key Vault **data-plane** role — every other role below must already be on 
 ```powershell
 # --- Resolve the target user's object id ---
 $UserOid = az ad user show --id 'deployer@yourtenant.com' --query id -o tsv
-$Sub     = 'dd0bc517-5cc7-4b56-bd6a-68e6140db7b3'   # your subscription id
-$Rg      = 'DEV2'
-$Vault   = 'WWExecutionEngine'
+$Sub     = '<your-subscription-id>'   # e.g. 00000000-0000-0000-0000-000000000000
+$Rg      = '<your-resource-group>'
+$Vault   = '<your-key-vault-name>'
 
 # === A. Azure RBAC (control plane) ===
 # Simplest: Owner at subscription = Contributor + role-assignment rights in one grant
@@ -125,9 +125,31 @@ az account show                # confirms you are logged in
 ```powershell
 # PowerShell 7+ (run as Administrator), Azure CLI installed and logged in
 az login
-az account set --subscription dd0bc517-5cc7-4b56-bd6a-68e6140db7b3
+
+# ── Set your deployment values ONCE — every example in this guide reuses these ──
+# Run this whole block in your session first; later snippets reference the $vars.
+$SubscriptionId          = '<your-subscription-id>'      # e.g. 00000000-0000-0000-0000-000000000000
+$ResourceGroup           = '<your-resource-group>'       # e.g. DEV2
+$Location                = 'southafricanorth'
+$StorageAccount          = '<your-storage-account>'      # 3-24 lowercase chars
+$AppName                 = '<your-function-app-name>'    # globally unique
+$PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200'
+$AuthConfigPath          = 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json'
+$SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'
+$WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'
+$LicenseConfigPath       = 'D:\ExecutionEngine\Warewolf License.secureconfig'
+$KeyVaultName            = '<your-key-vault-name>'
+$KeyVaultSecretName      = '<your-kv-secret-name>'
+$ElasticsearchSourcePath = 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite'
+$LogDir                  = 'D:\ExecutionEngine\Scripts\logs'
+
+az account set --subscription $SubscriptionId
 cd D:\ExecutionEngine\Scripts
 ```
+
+> **Set values once.** The block above defines every reused value as a `$variable`; all the
+> deploy snippets below (Step 1 and Examples A–F) reference those variables, so you only edit a
+> value in one place. Run the block in the same PowerShell session before the snippets.
 
 > The script can resolve `SubscriptionId` / `TenantId` from `az account show` when you omit them, so
 > setting the active subscription here is what targets the deployment.
@@ -139,18 +161,18 @@ $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
 Start-Transcript -Path ".\logs\deploy-$ts.log" | Out-Null
 
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
-  -LicenseConfigPath 'D:\ExecutionEngine\Warewolf License.secureconfig' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
+  -LicenseConfigPath $LicenseConfigPath `
   -EncryptResources:$true -VerifyDecryption `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
-  -EnableElasticsearch:$true -ElasticsearchSourcePath 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite' `
-  -LogDir 'D:\ExecutionEngine\Scripts\logs' `
+  -EnableElasticsearch:$true -ElasticsearchSourcePath $ElasticsearchSourcePath `
+  -LogDir $LogDir `
   -PublishMethod Zip
 
 Stop-Transcript | Out-Null
@@ -190,7 +212,7 @@ Stop-Transcript | Out-Null
 First locate the **real** run's summary (exclude dry-run files):
 
 ```powershell
-$summary = (Get-ChildItem 'D:\ExecutionEngine\Scripts\logs\deploy-WwExecutionEngine-*.summary.json' |
+$summary = (Get-ChildItem (Join-Path $LogDir 'deploy-WwExecutionEngine-*.summary.json') |
             Where-Object { $_.Name -notlike '*dryrun*' } |
             Sort-Object LastWriteTime | Select-Object -Last 1).FullName
 $summary    # confirm it's the REAL run's summary
@@ -320,6 +342,8 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 
 ## 4. Worked parameter examples
 
+> All examples below reuse the `$variables` defined once in [Step 0](#step-0--log-in-and-select-the-subscription) — run that block in your session first.
+
 ### Example A — Dry run (no Azure changes; inspect the plan)
 
 Same arguments as the real deploy, plus `-DryRun`. Prints the full masked plan and writes a
@@ -327,9 +351,9 @@ Same arguments as the real deploy, plus `-DryRun`. Prints the full masked plan a
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
   -DryRun
 ```
 
@@ -340,12 +364,12 @@ auto-encrypted on staging.
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
   -EnableAppInsights:$false -EnableElasticsearch:$false `
   -PublishMethod Zip
 ```
@@ -356,15 +380,15 @@ Encrypt **once** with a brand-new AES key, verifying decryption in memory. App I
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
-  -LicenseConfigPath 'D:\ExecutionEngine\Warewolf License.secureconfig' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
+  -LicenseConfigPath $LicenseConfigPath `
   -EncryptResources:$true -VerifyDecryption -GenerateNewKey `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
   -PublishMethod Zip
 ```
@@ -376,14 +400,14 @@ Vault so the runtime app settings + managed-identity role are wired for decrypti
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
   -EncryptResources:$false `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
   -PublishMethod Zip
 ```
@@ -395,23 +419,23 @@ easy to diff/version.
 
 ```powershell
 $deploy = @{
-  ResourceGroup           = 'DEV2'
-  Location                = 'southafricanorth'
-  StorageAccount          = 'stwwenginetestv1'
-  AppName                 = 'wwenginetestv1'
-  PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200'
-  AuthConfigPath          = 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json'
-  SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'
-  WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'
-  LicenseConfigPath       = 'D:\ExecutionEngine\Warewolf License.secureconfig'
+  ResourceGroup           = $ResourceGroup
+  Location                = $Location
+  StorageAccount          = $StorageAccount
+  AppName                 = $AppName
+  PublishPath             = $PublishPath
+  AuthConfigPath          = $AuthConfigPath
+  SecureConfigPath        = $SecureConfigPath
+  WorkflowsSourcePath     = $WorkflowsSourcePath
+  LicenseConfigPath       = $LicenseConfigPath
   EncryptResources        = $true
   VerifyDecryption        = $true
-  KeyVaultName            = 'WWExecutionEngine'
-  KeyVaultSecretName      = 'WWExecutionEngineTestSecret'
+  KeyVaultName            = $KeyVaultName
+  KeyVaultSecretName      = $KeyVaultSecretName
   EnableAppInsights       = $true
   EnableElasticsearch     = $true
-  ElasticsearchSourcePath = 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite'
-  LogDir                  = 'D:\ExecutionEngine\Scripts\logs'
+  ElasticsearchSourcePath = $ElasticsearchSourcePath
+  LogDir                  = $LogDir
   PublishMethod           = 'Zip'
 }
 
@@ -467,9 +491,9 @@ this run actually created.
 | `Warewolf License.secureconfig` | `-LicenseConfigPath` | **Optional.** If omitted, the license check (default ON) may fail at startup. |
 | `ElasticsearchLoggingSource.bite` | `-ElasticsearchSourcePath` | Required when `-EnableElasticsearch`; throws if missing or not named exactly `ElasticsearchLoggingSource.bite`. |
 | Auth config JSON | `-AuthConfigPath` | Throws if specified but not found. If omitted, auth is provisioned with empty group/user maps. |
-| Entra **users** referenced in `UserAssignments` | Auth config JSON | Each is resolved by UPN (`az ad user show`); a missing user fails that row (Stage 6 never aborts the whole run). |
+| Entra **users** referenced in `UserAssignments` | Auth config JSON | Each is resolved by UPN (`az ad user show`). A missing/typo'd UPN is **skipped with a warning** and Stage 6 continues — check the log so an intended user isn't silently skipped. |
 | **Existing Key Vault** | `-KeyVaultName` **without** `-EncryptResources` | Re-deploy of already-encrypted sources requires the vault to already exist — the script **throws** rather than creating it. |
-| Tooling: PowerShell 7+, Azure CLI (logged in), `func` (only for `-PublishMethod Func`) | Local install | Pre-flight throws if `az` (or `func`, when selected) is absent. |
+| Tooling: PowerShell 7+, Azure CLI (logged in), `func` (only for `-PublishMethod Func`) | Local install | Pre-flight throws if `az` is absent or not logged in; `func` is checked at publish time and throws then when `-PublishMethod Func` is selected. |
 
 > **Dry run note.** `-DryRun` creates nothing. A Key Vault / secret are only treated as "reachable"
 > if they already exist; otherwise encryption is deferred to a real run and the source is staged in

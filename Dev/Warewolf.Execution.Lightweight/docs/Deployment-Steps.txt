@@ -81,22 +81,35 @@ and point the script at that folder (or a .zip of it).
 
     ./Scripts/Deploy-WwExecutionEngine.ps1
 
+  Set your values ONCE — every example below reuses these (run the block first):
+
+    $ResourceGroup           = '<your-resource-group>'      # e.g. DEV2
+    $Location                = 'southafricanorth'
+    $StorageAccount          = '<your-storage-account>'     # 3-24 lowercase chars
+    $AppName                 = '<your-function-app-name>'   # globally unique
+    $PublishPath             = 'D:\ExecutionEngine\Publish'
+    $AuthConfigPath          = './Scripts/Deploy-WwExecutionEngine.authconfig.json'
+    $SecureConfigPath        = 'C:\cfg\secure.config'
+    $LicenseConfigPath       = 'C:\cfg\Warewolf License.secureconfig'
+    $WorkflowsSourcePath     = 'C:\Warewolf\Resources'
+    $KeyVaultName            = '<your-key-vault-name>'
+    $KeyVaultSecretName      = '<your-kv-secret-name>'
+    $ElasticsearchSourcePath = 'C:\cfg\ElasticsearchLoggingSource.bite'
+
   Non-interactive example — FIRST-TIME deploy (encrypt sources once + verify):
 
     ./Scripts/Deploy-WwExecutionEngine.ps1 `
-        -ResourceGroup   DEV2 `
-        -Location        southafricanorth `
-        -StorageAccount  stwwenginetest `
-        -AppName         wwenginetest `
-        -PublishPath     D:\ExecutionEngine\Publish `
-        -AuthConfigPath  ./Scripts/Deploy-WwExecutionEngine.authconfig.json `
-        -SecureConfigPath 'C:\cfg\secure.config' `
-        -LicenseConfigPath 'C:\cfg\Warewolf License.secureconfig' `
-        -WorkflowsSourcePath 'C:\Warewolf\Resources' `
+        -ResourceGroup $ResourceGroup -Location $Location `
+        -StorageAccount $StorageAccount -AppName $AppName `
+        -PublishPath $PublishPath `
+        -AuthConfigPath $AuthConfigPath `
+        -SecureConfigPath $SecureConfigPath `
+        -LicenseConfigPath $LicenseConfigPath `
+        -WorkflowsSourcePath $WorkflowsSourcePath `
         -EncryptResources:$true -VerifyDecryption `
-        -KeyVaultName wwengine-kv -KeyVaultSecretName wwengine-aes-key `
+        -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
         -EnableAppInsights:$true `
-        -EnableElasticsearch:$true -ElasticsearchSourcePath 'C:\cfg\ElasticsearchLoggingSource.bite' `
+        -EnableElasticsearch:$true -ElasticsearchSourcePath $ElasticsearchSourcePath `
         -NonInteractive
 
   SUBSEQUENT deploys — sources are ALREADY encrypted, so DROP -EncryptResources
@@ -104,17 +117,17 @@ and point the script at that folder (or a .zip of it).
   so the engine's managed identity is wired to decrypt them at runtime:
 
     ./Scripts/Deploy-WwExecutionEngine.ps1 `
-        -ResourceGroup DEV2 -Location southafricanorth -StorageAccount stwwenginetest `
-        -AppName wwenginetest -PublishPath D:\ExecutionEngine\Publish `
-        -WorkflowsSourcePath 'C:\Warewolf\Resources' `
-        -KeyVaultName wwengine-kv -KeyVaultSecretName wwengine-aes-key `
-        -EnableElasticsearch:$true -ElasticsearchSourcePath 'C:\cfg\ElasticsearchLoggingSource.bite' `
+        -ResourceGroup $ResourceGroup -Location $Location -StorageAccount $StorageAccount `
+        -AppName $AppName -PublishPath $PublishPath `
+        -WorkflowsSourcePath $WorkflowsSourcePath `
+        -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
+        -EnableElasticsearch:$true -ElasticsearchSourcePath $ElasticsearchSourcePath `
         -NonInteractive
 
   Dry-run (prints every action, changes no cloud state; still writes a '.dryrun.'
   transcript + summary so the rollback can be exercised from it):
 
-    ./Scripts/Deploy-WwExecutionEngine.ps1 -PublishPath D:\ExecutionEngine\Publish -DryRun
+    ./Scripts/Deploy-WwExecutionEngine.ps1 -PublishPath $PublishPath -DryRun
 
   NOTE on paths: the orchestrator resolves its sibling scripts
   (Configure-WwExecutionAuth.ps1, Setup-ApplicationInsights.ps1,
@@ -227,7 +240,7 @@ and point the script at that folder (or a .zip of it).
     * Warewolf License.secureconfig (-LicenseConfigPath)           OPTIONAL; license check may fail if omitted
     * ElasticsearchLoggingSource.bite (-ElasticsearchSourcePath)   required+exact name when -EnableElasticsearch
     * Auth config JSON (-AuthConfigPath)                            throws if specified-but-missing
-    * Entra users referenced in UserAssignments                     resolved by UPN; missing user fails that row
+    * Entra users referenced in UserAssignments                     resolved by UPN; a missing UPN is skipped with a warning (Stage 6 continues)
     * Existing Key Vault, when -KeyVaultName WITHOUT -EncryptResources   throws rather than creating it
     * Tooling: PowerShell 7+, az (logged in), func (only -PublishMethod Func)
 
