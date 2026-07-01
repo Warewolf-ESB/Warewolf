@@ -377,4 +377,4 @@ Force an early, explicit throw on any missing required value instead of promptin
 
 - [Deployment-Steps.txt](Deployment-Steps.txt) — terse end-to-end runbook (incl. crash-safe summary + rollback notes).
 - [Scripts/README.md](../Scripts/README.md) — script-suite overview.
-- [README-Encryption.md](README-Encryption.md) · [README-Authentication.md](README-Authentication.md) · [README-ApplicationInsights.md](README-ApplicationInsights.md).
+- [README-Encryption.md](README-Encryption.md) · [README-Authentication.md](README-Authentication.md) · [Warewolf-Lightweight-Logging-Guide.md](Warewolf-Lightweight-Logging-Guide.md) — all logging (console, App Insights, Elasticsearch, audit).

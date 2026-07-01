@@ -249,6 +249,6 @@ Write-Host "   | where message contains '[AUDIT]'" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "🔗 Quick Links:" -ForegroundColor Cyan
 Write-Host "   Portal: https://portal.azure.com/#@/resource/subscriptions/.../resourceGroups/$ResourceGroup/providers/microsoft.insights/components/$AppInsightsName" -ForegroundColor Blue
-Write-Host "   Docs  : docs/README-ApplicationInsights.md" -ForegroundColor Blue
+Write-Host "   Docs  : docs/Warewolf-Lightweight-Logging-Guide.md" -ForegroundColor Blue
 Write-Host ""
 Write-Host "════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
