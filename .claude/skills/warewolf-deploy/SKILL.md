@@ -18,6 +18,7 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 |---|---|
 | `Deploy-WwExecutionEngine.ps1` | **Thin orchestrator.** Provisions infra, configures auth, stages + encrypts package contents, applies env vars, deploys an already-published package. `#Requires -Version 7.0`. |
 | `Configure-WwExecutionAuth.ps1` / `Configure-WwExecutionAuth-Clients.ps1` | Entra ID + Easy Auth app registration and client (audience/role) configuration. |
+| `Configure-WwExecutionAuth-ClientApps.ps1` | Orchestrator: one registration per client-**example** app (Angular/React/WebMvc/Console/AzureFunction/ServiceBus), prompts, validates `/secure/{workflow}.json`, masked summary. Companion: `docs/KB-ClientApps-Configuration.md`. |
 | `Remove-WwExecutionAuth-Clients.ps1` / `Cleanup-WwExecutionAuth.ps1` | Tear down client registrations / auth artefacts. |
 | `Setup-EntraAuth.ps1` | Entra tenant/app bootstrap. |
 | `KeyVaultSetup.ps1` / `KeyVaultSetup.azcli` | Provision Key Vault for AES-backed secure.config encryption. |

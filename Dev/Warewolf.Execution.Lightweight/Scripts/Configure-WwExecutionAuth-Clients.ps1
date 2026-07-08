@@ -24,9 +24,11 @@
   App-only callers (Daemon / MI, and the client-credentials flow of Console)
   are authorised purely by their app-role assignments: a caller with no role
   carries no 'roles' claim and is REJECTED by the engine authorization
-  middleware.  For that reason -AppRolesToAssign has NO default and the daemon
-  / managed-identity path FAILS LOUDLY (throws) when no role resolves, rather
-  than silently provisioning a roleless client.
+  middleware.  The daemon / managed-identity path therefore DEFAULTS
+  -AppRolesToAssign to the dedicated 'Warewolf_ClientApps' group role when none
+  is supplied, and FAILS LOUDLY (throws) when the resolved role does not exist
+  on the resource app - never falling back to the first defined role or the
+  all-zeros default-access assignment, which would leave the caller roleless.
 
   Stage 0   Pre-flight        - resolve resource app, SP, scope, role IDs
   Stage 1   Interactive cfg   - prompt / validate all inputs, confirm plan
@@ -65,6 +67,18 @@
   with -DaemonUseManagedIdentity, the resource app roles are assigned directly to
   this SP and no daemon app registration is created.
 
+.PARAMETER DaemonFunctionAppName
+  Name of the CLIENT Azure Function App whose system-assigned managed identity should
+  call the engine.  When supplied with -DaemonUseManagedIdentity (and no explicit
+  -ManagedIdentityObjectId), the script enables the Function App's system-assigned
+  managed identity ('az functionapp identity assign'), reads its principalId, and
+  assigns the resource app roles to it - automating the manual "enable MI + look up
+  principalId" step.  Distinct from -FunctionAppName, which targets the ENGINE app
+  for SPA CORS.  Requires -DaemonFunctionAppResourceGroup.
+
+.PARAMETER DaemonFunctionAppResourceGroup
+  Resource group of the CLIENT Function App named by -DaemonFunctionAppName.
+
 .PARAMETER SecretLifetimeYears
   Secret validity in years (1-2).  Default: 1.
 
@@ -72,10 +86,16 @@
   App role values to assign to app-only clients (daemon / MI SP, and the
   client-credentials flow of a Console registration).  These MUST match app-role
   values that exist on the resource app (created by Configure-WwExecutionAuth.ps1
-  from its -GroupPermissions, e.g. group names like 'Warewolf_Developers').
-  There is intentionally NO default: provisioning a Daemon / MI with no
-  resolvable role throws, because a roleless app-only caller is rejected by the
-  engine.  (For SPA / Confidential delegated clients this is optional.)
+  from its -GroupPermissions, e.g. group names like 'Warewolf_ClientApps' or
+  'Warewolf_Developers').  The deploy authconfig example
+  (Deploy-WwExecutionEngine.authconfig.example.json) ships a dedicated
+  'Warewolf_ClientApps' group for app-only client apps; the caller is only
+  authorized for workflows whose secure.config has a matching
+  WindowsGroupPermissions row (WindowsGroup = the app-role value, Execute=true).
+  For the Daemon / MI path this DEFAULTS to 'Warewolf_ClientApps' when left empty;
+  provisioning still throws if that role does not exist on the resource app, because
+  a roleless app-only caller is rejected by the engine.  (For SPA / Confidential
+  delegated clients this is optional.)
 
 .PARAMETER ConsoleRedirectUris
   Public-client (Mobile & desktop) redirect URIs for the Console registration.
@@ -113,9 +133,19 @@
       -FunctionAppName "myfuncapp" -FunctionAppResourceGroup "myRG" -NonInteractive
 
   # Daemon / Managed Identity (Azure Function / Service Bus worker) — roles REQUIRED
+  # 'Warewolf_ClientApps' must exist as a GroupPermissions key on the resource app
+  # (see Deploy-WwExecutionEngine.authconfig.example.json) and have a matching
+  # secure.config WindowsGroupPermissions row for the workflows the client calls.
   ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -ClientType Daemon `
       -DaemonUseManagedIdentity -ManagedIdentityObjectId "<mi-sp-object-id>" `
-      -AppRolesToAssign "Warewolf_Developers" -NonInteractive
+      -AppRolesToAssign "Warewolf_ClientApps" -NonInteractive
+
+  # Daemon / Managed Identity — derive the MI from a CLIENT Function App:
+  # enables its system-assigned MI, reads principalId, assigns 'Warewolf_ClientApps'
+  # (the default) automatically.  No -ManagedIdentityObjectId or -AppRolesToAssign needed.
+  ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -ClientType Daemon `
+      -DaemonUseManagedIdentity -DaemonFunctionAppName "my-caller-func" `
+      -DaemonFunctionAppResourceGroup "myRG" -NonInteractive
 
   # Console (.NET console: device-code + interactive + client-credentials on one reg)
   ./Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId "..." -TenantId "..." -ClientType Console `
@@ -148,6 +178,14 @@ param(
     # When supplied together with -DaemonUseManagedIdentity, the resource app roles
     # are assigned directly to this SP and NO daemon app registration is created.
     [string]   $ManagedIdentityObjectId,
+
+    # Name + resource group of the CLIENT Azure Function App whose system-assigned
+    # managed identity should call the engine. When supplied with -DaemonUseManagedIdentity
+    # and no explicit -ManagedIdentityObjectId, the script enables the app's MI
+    # ('az functionapp identity assign'), reads its principalId and assigns the roles.
+    # Distinct from -FunctionAppName (which targets the ENGINE app for SPA CORS).
+    [string]   $DaemonFunctionAppName,
+    [string]   $DaemonFunctionAppResourceGroup,
 
     [ValidateRange(1, 2)]
     [int]      $SecretLifetimeYears = 1,
@@ -580,6 +618,82 @@ function Resolve-AppRoleAssignment {
     return $resolved.ToArray()
 }
 
+function Resolve-MiPrincipalIdFromCli {
+    <#
+    .SYNOPSIS
+      Extracts the managed-identity principalId from a parsed
+      'az functionapp identity assign|show' result object.
+
+    .DESCRIPTION
+      Pure function of its input (no cloud/Graph calls) so the Pester suite can drive
+      it via -LoadFunctionsOnly. Returns the principalId string. Throws a clear message
+      when none is present, UNLESS -AllowNull is set - which the caller uses to probe
+      the 'identity assign' output before falling back to 'identity show'.
+    #>
+    param(
+        [object] $IdentityObject,
+        [switch] $AllowNull
+    )
+
+    $principalId = $null
+    if ($IdentityObject -and $IdentityObject.PSObject.Properties['principalId']) {
+        $principalId = [string]$IdentityObject.principalId
+    }
+
+    if ([string]::IsNullOrWhiteSpace($principalId)) {
+        if ($AllowNull) { return $null }
+        throw (
+            "Could not resolve a managed-identity principalId from the Azure CLI output. " +
+            "Ensure the client Function App exists and its system-assigned identity is " +
+            "enabled ('az functionapp identity assign')."
+        )
+    }
+    return $principalId
+}
+
+function Enable-FunctionAppManagedIdentity {
+    <#
+    .SYNOPSIS
+      Enables the system-assigned managed identity on a CLIENT Azure Function App and
+      returns its service-principal object (principal) id.
+
+    .DESCRIPTION
+      Automates the operator's "Step 1" - 'az functionapp identity assign' - which is
+      idempotent (re-running returns the existing principalId when the identity is
+      already enabled). If the assign output omits principalId it falls back to
+      'az functionapp identity show', then waits briefly for Entra replication so the
+      freshly created SP is resolvable before role assignment.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $AppName,
+        [Parameter(Mandatory)][string] $ResourceGroup
+    )
+    Write-Step "Enabling system-assigned managed identity on client Function App '$AppName'"
+    $assignRaw = Invoke-AzCli @(
+        'functionapp', 'identity', 'assign',
+        '--name', $AppName,
+        '--resource-group', $ResourceGroup,
+        '-o', 'json'
+    ) | ConvertFrom-AzJson
+
+    $principalId = Resolve-MiPrincipalIdFromCli -IdentityObject $assignRaw -AllowNull
+    if ([string]::IsNullOrWhiteSpace($principalId)) {
+        Write-Info "principalId absent from 'identity assign' output - querying 'identity show'"
+        $showRaw = Invoke-AzCli @(
+            'functionapp', 'identity', 'show',
+            '--name', $AppName,
+            '--resource-group', $ResourceGroup,
+            '-o', 'json'
+        ) | ConvertFrom-AzJson
+        $principalId = Resolve-MiPrincipalIdFromCli -IdentityObject $showRaw
+    }
+
+    Write-Ok "Managed identity principalId: $principalId"
+    Write-Info "Waiting 10s for Entra replication of the managed-identity SP"
+    Start-Sleep -Seconds 10
+    return $principalId
+}
+
 #endregion Helpers
 
 # When dot-sourced by the test suite we only need the helper functions above;
@@ -597,6 +711,8 @@ if (-not $PSBoundParameters.ContainsKey('SecretLifetimeYears'))     { $SecretLif
 if (-not $PSBoundParameters.ContainsKey('FunctionAppName'))         { $FunctionAppName             = '<functionAppName>' }
 if (-not $PSBoundParameters.ContainsKey('FunctionAppResourceGroup')){ $FunctionAppResourceGroup    = '<functionAppResourceGroup>' }
 if (-not $PSBoundParameters.ContainsKey('ManagedIdentityObjectId')) { $ManagedIdentityObjectId     = '<managedIdentityObjectId>' }
+if (-not $PSBoundParameters.ContainsKey('DaemonFunctionAppName'))   { $DaemonFunctionAppName        = '<daemonFunctionAppName>' }
+if (-not $PSBoundParameters.ContainsKey('DaemonFunctionAppResourceGroup')) { $DaemonFunctionAppResourceGroup = '<daemonFunctionAppResourceGroup>' }
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Stage 1 — Interactive configuration / NonInteractive validation
@@ -643,13 +759,24 @@ if ($NonInteractive) {
     $SpaRedirectUris     = Read-StringArrayVariable -Name 'SpaRedirectUris'     -Current $SpaRedirectUris     -Description 'Redirect URIs for the SPA client (PKCE)'
     $WebRedirectUris     = Read-StringArrayVariable -Name 'WebRedirectUris'     -Current $WebRedirectUris     -Description 'Redirect URIs for the confidential web client'
     $ConsoleRedirectUris = Read-StringArrayVariable -Name 'ConsoleRedirectUris' -Current $ConsoleRedirectUris -Description 'Public-desktop redirect URIs for the Console client (e.g. http://localhost)'
-    $AppRolesToAssign    = Read-StringArrayVariable -Name 'AppRolesToAssign'    -Current $AppRolesToAssign    -Description 'App-role values for app-only clients (daemon/MI/console), MUST exist on resource app e.g. Warewolf_Developers'
+    $AppRolesToAssign    = Read-StringArrayVariable -Name 'AppRolesToAssign'    -Current $AppRolesToAssign    -Description 'App-role values for app-only clients (daemon/MI/console), MUST exist on resource app e.g. Warewolf_ClientApps'
 
     Write-Host ""
     Write-Host "  DaemonUseManagedIdentity  (skip client-secret for daemon)" -ForegroundColor White
     $miInput = (Read-Host "    [Enter = $DaemonUseManagedIdentity]  (true/false)").Trim()
     if ($miInput -eq 'true')  { $DaemonUseManagedIdentity = $true  }
     if ($miInput -eq 'false') { $DaemonUseManagedIdentity = $false }
+
+    if (($ClientType -in @('Daemon', 'All')) -and $DaemonUseManagedIdentity) {
+        Write-Host ""
+        Write-Host "  Daemon Managed Identity - provide EITHER an existing MI SP object id" -ForegroundColor White
+        Write-Host "  OR a client Function App name + resource group (its system-assigned MI is enabled)." -ForegroundColor DarkGray
+        $ManagedIdentityObjectId        = Read-ScalarVariable -Name 'ManagedIdentityObjectId'        -Current $ManagedIdentityObjectId        -Description 'Existing managed-identity SP object id (blank to derive from the Function App below)'
+        if (Test-IsPlaceholder $ManagedIdentityObjectId) {
+            $DaemonFunctionAppName          = Read-ScalarVariable -Name 'DaemonFunctionAppName'          -Current $DaemonFunctionAppName          -Description 'Client Function App name (its system-assigned MI will be enabled)'
+            $DaemonFunctionAppResourceGroup = Read-ScalarVariable -Name 'DaemonFunctionAppResourceGroup' -Current $DaemonFunctionAppResourceGroup -Description 'Resource group of the client Function App'
+        }
+    }
 
     $FunctionAppName          = Read-ScalarVariable -Name 'FunctionAppName'          -Current $FunctionAppName          -Description 'Azure Function App name (for CORS/Allowed Origins on SPA)'
     $FunctionAppResourceGroup = Read-ScalarVariable -Name 'FunctionAppResourceGroup' -Current $FunctionAppResourceGroup -Description 'Resource group of the Function App'
@@ -681,6 +808,13 @@ if ($NonInteractive) {
     if ($provisionWeb)     { Write-Host ("  {0,-25} : {1}" -f 'WebRedirectUris',     ($WebRedirectUris     -join ', ')) }
     if ($provisionConsole) { Write-Host ("  {0,-25} : {1}" -f 'ConsoleRedirectUris', ($ConsoleRedirectUris -join ', ')) }
     if ($provisionDaemon -or $provisionConsole) { Write-Host ("  {0,-25} : {1}" -f 'AppRolesToAssign', ($AppRolesToAssign -join ', ')) }
+    if ($provisionDaemon -and $DaemonUseManagedIdentity) {
+        if (-not (Test-IsPlaceholder $ManagedIdentityObjectId)) {
+            Write-Host ("  {0,-25} : {1}" -f 'ManagedIdentityObjectId', $ManagedIdentityObjectId)
+        } elseif (-not (Test-IsPlaceholder $DaemonFunctionAppName)) {
+            Write-Host ("  {0,-25} : {1}" -f 'DaemonFunctionApp', "$DaemonFunctionAppName (rg: $DaemonFunctionAppResourceGroup)")
+        }
+    }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppName',           $FunctionAppName) }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppResourceGroup',  $FunctionAppResourceGroup) }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SkipCorsConfiguration',     $SkipCorsConfiguration) }
@@ -724,6 +858,13 @@ if ($DryRun) {
     if ($provisionWeb)     { Write-Host ("  {0,-25} : {1}" -f 'WebRedirectUris',     ($WebRedirectUris     -join ', ')) }
     if ($provisionConsole) { Write-Host ("  {0,-25} : {1}" -f 'ConsoleRedirectUris', ($ConsoleRedirectUris -join ', ')) }
     if ($provisionDaemon -or $provisionConsole) { Write-Host ("  {0,-25} : {1}" -f 'AppRolesToAssign', ($AppRolesToAssign -join ', ')) }
+    if ($provisionDaemon -and $DaemonUseManagedIdentity) {
+        if (-not (Test-IsPlaceholder $ManagedIdentityObjectId)) {
+            Write-Host ("  {0,-25} : {1}" -f 'ManagedIdentityObjectId', $ManagedIdentityObjectId)
+        } elseif (-not (Test-IsPlaceholder $DaemonFunctionAppName)) {
+            Write-Host ("  {0,-25} : {1}" -f 'DaemonFunctionApp', "$DaemonFunctionAppName (rg: $DaemonFunctionAppResourceGroup)")
+        }
+    }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppName',          $FunctionAppName) }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'FunctionAppResourceGroup', $FunctionAppResourceGroup) }
     if ($provisionSpa)    { Write-Host ("  {0,-25} : {1}" -f 'SkipCorsConfiguration',    $SkipCorsConfiguration) }
@@ -973,46 +1114,86 @@ if ($provisionWeb) {
 # Stage 4 — Type C: Daemon / Service (Client Credentials or MI)
 # ──────────────────────────────────────────────────────────────────────────────
 
-$assignToExistingMi = $provisionDaemon -and $DaemonUseManagedIdentity -and -not (Test-IsPlaceholder $ManagedIdentityObjectId)
+# ── Resolve the daemon's managed-identity SP object id ─────────────────────────
+# Precedence: an explicit -ManagedIdentityObjectId wins; otherwise, when a client
+# Function App name + resource group are supplied, enable that app's system-assigned
+# managed identity (the operator's "Step 1") and read its principalId. Either route
+# ends in the same role-assignment flow below; no daemon app registration is created.
+$daemonMiObjectId = $null
+$daemonMiSource   = $null
+if ($provisionDaemon -and $DaemonUseManagedIdentity) {
+    if (-not (Test-IsPlaceholder $ManagedIdentityObjectId)) {
+        $daemonMiObjectId = $ManagedIdentityObjectId
+        $daemonMiSource   = 'explicit'
+    }
+    elseif (-not (Test-IsPlaceholder $DaemonFunctionAppName) -and
+            -not (Test-IsPlaceholder $DaemonFunctionAppResourceGroup)) {
+        $daemonMiObjectId = Enable-FunctionAppManagedIdentity `
+            -AppName       $DaemonFunctionAppName `
+            -ResourceGroup $DaemonFunctionAppResourceGroup
+        $daemonMiSource   = "functionapp:$DaemonFunctionAppName"
+    }
+}
+
+# App-only daemon/MI callers default to the dedicated 'Warewolf_ClientApps' group
+# role when none is requested. Resolution (below) still fails loud if it does not
+# exist on the resource app - it never falls back to a first/all-zeros role.
+$DefaultAppOnlyRole = 'Warewolf_ClientApps'
+
+$assignToExistingMi = $provisionDaemon -and $DaemonUseManagedIdentity -and $daemonMiObjectId
 
 if ($assignToExistingMi) {
-    # ── Existing Managed Identity SP — assign roles, create NO app registration ──
+    # ── Managed Identity SP — assign roles, create NO app registration ───────────
     # Used for an Azure Function App / Service Bus worker whose system- or
-    # user-assigned managed identity already exists. We only need to grant it the
-    # resource app roles so its app-only token carries the matching role claims.
+    # user-assigned managed identity exists (or was just enabled above). We only need
+    # to grant it the resource app roles so its app-only token carries the role claims.
     Write-Host ""
-    Write-Host "═══ Stage 4  Type C - Daemon (existing Managed Identity) ══════════" -ForegroundColor Cyan
-    Write-Info "Assigning resource app roles to existing MI SP: $ManagedIdentityObjectId"
+    Write-Host "═══ Stage 4  Type C - Daemon (Managed Identity) ══════════════════" -ForegroundColor Cyan
+    Write-Info "Assigning resource app roles to MI SP: $daemonMiObjectId (source: $daemonMiSource)"
 
+    $daemonRolesRequested = if (@($AppRolesToAssign | Where-Object { $_ }).Count -gt 0) {
+        $AppRolesToAssign
+    } else {
+        Write-Info "No -AppRolesToAssign supplied - defaulting the daemon to '$DefaultAppOnlyRole'"
+        @($DefaultAppOnlyRole)
+    }
     # Fail loud: an MI with no resolvable role would be roleless and rejected.
-    $rolesToAssign = Resolve-AppRoleAssignment -RequestedRoles $AppRolesToAssign -RoleIdMap $roleIdMap -RequireAtLeastOne -ClientKind 'managed identity'
+    $rolesToAssign = Resolve-AppRoleAssignment -RequestedRoles $daemonRolesRequested -RoleIdMap $roleIdMap -RequireAtLeastOne -ClientKind 'managed identity'
 
     foreach ($r in $rolesToAssign) {
         Grant-AppRoleToSP `
-            -ClientSpObjectId $ManagedIdentityObjectId `
+            -ClientSpObjectId $daemonMiObjectId `
             -ResourceSpId     $ResourceSpId `
             -RoleId           $r.Id `
             -RoleName         $r.Name
     }
 
     $results['Daemon'] = @{
-        DisplayName              = '(existing managed identity)'
-        ManagedIdentityObjectId  = $ManagedIdentityObjectId
-        SpObjectId               = $ManagedIdentityObjectId
+        DisplayName              = if ($daemonMiSource -eq 'explicit') { '(existing managed identity)' } else { "(managed identity: $DaemonFunctionAppName)" }
+        ManagedIdentityObjectId  = $daemonMiObjectId
+        SpObjectId               = $daemonMiObjectId
+        ManagedIdentitySource    = $daemonMiSource
         ClientSecret             = $null
         UseMI                    = $true
         RolesAssigned            = @($rolesToAssign.Name)
-        GrantType                = 'Managed Identity (existing SP)'
+        GrantType                = 'Managed Identity'
     }
-    Write-Ok "Roles assigned to existing managed identity: $ManagedIdentityObjectId"
+    Write-Ok "Roles assigned to managed identity: $daemonMiObjectId"
 }
 elseif ($provisionDaemon) {
     Write-Host ""
     Write-Host "═══ Stage 4  Type C - Daemon / Service ════════════════════════════" -ForegroundColor Cyan
 
     # Preflight (fail-loud): resolve roles BEFORE creating any registration so a
-    # roleless daemon is never provisioned. Throws if none resolve.
-    $rolesToAssign = Resolve-AppRoleAssignment -RequestedRoles $AppRolesToAssign -RoleIdMap $roleIdMap -RequireAtLeastOne -ClientKind 'daemon'
+    # roleless daemon is never provisioned. Defaults to 'Warewolf_ClientApps' when
+    # none is requested; throws if the resolved role does not exist on the resource app.
+    $daemonRolesRequested = if (@($AppRolesToAssign | Where-Object { $_ }).Count -gt 0) {
+        $AppRolesToAssign
+    } else {
+        Write-Info "No -AppRolesToAssign supplied - defaulting the daemon to '$DefaultAppOnlyRole'"
+        @($DefaultAppOnlyRole)
+    }
+    $rolesToAssign = Resolve-AppRoleAssignment -RequestedRoles $daemonRolesRequested -RoleIdMap $roleIdMap -RequireAtLeastOne -ClientKind 'daemon'
 
     $daemonName = "$ClientDisplayNamePrefix-daemon"
     $daemonApp  = Get-OrCreateApp -DisplayName $daemonName

@@ -6,12 +6,20 @@ recommended **app-only / Managed Identity** pattern: no secrets at rest in produ
 acquisition and refresh handled automatically, and a typed `HttpClient` that injects the
 `Authorization: Bearer` header (plus `x-functions-key` for `/services/*`) on every call.
 
-It exposes two triggers:
+It exposes four functions (all **`AuthorizationLevel.Anonymous`** — no function key required):
 
-| Trigger | What it does |
+| Function | What it does |
 |---|---|
-| `CallWorkflowOnHttpTrigger` | HTTP proxy — `GET\|POST /api/run/{*workflow}` forwards the query string to the engine's `/secure/{workflow}.json` and returns the engine's response. |
-| `CallWorkflowOnTimer` | Scheduled call — every 15 minutes (`0 */15 * * * *`) invokes a configured workflow on `/secure`. |
+| `CallWorkflowOnHttpTrigger.RunAsync` | HTTP proxy — `GET\|POST /api/run/{*workflow}` forwards the query string to the engine's `/secure/{workflow}.json` and returns the engine's response. Supports folder-qualified workflow names, e.g. `/api/run/data/sales`. |
+| `CallWorkflowOnHttpTrigger.RunPublic` | HTTP proxy — `GET\|POST /api/runpublic/{*workflow}` forwards the query string to the engine's anonymous `/public/{workflow}.json` route. |
+| `CallWorkflowOnHttpTrigger.GetInfo` | `GET /api/info` — acquires the downstream engine's Bearer token and returns it decoded, as JSON: `{ rawToken, tokenType, expiresOn, header, claims }`. Diagnostic only — see the security note below. |
+| `CallWorkflowOnTimer` | Scheduled call — every hour (`0 0 * * * *`) invokes a configured workflow on `/secure`. |
+
+> ⚠️ **All functions are Anonymous** — no `?code=<functionkey>` is required to invoke them. In
+> particular, `GET /api/info` returns a **live Bearer token** for the downstream engine to anyone
+> who can reach the endpoint. Treat `/api/info` as diagnostic-only and restrict/remove public
+> access before exposing this function app in production (network restrictions, APIM, or
+> re-scoping it back to `AuthorizationLevel.Function`).
 
 ---
 
@@ -21,7 +29,7 @@ It exposes two triggers:
    Caller / Scheduler                  THIS Azure Function (isolated worker)                 Warewolf Execution Engine
  ┌────────────────────┐        ┌────────────────────────────────────────────────┐        ┌──────────────────────────┐
  │ curl / browser     │  HTTP  │  CallWorkflowOnHttpTrigger  (run/{*workflow})    │        │  Easy Auth + Entra ID    │
- │ /api/run/...       │ ─────► │  CallWorkflowOnTimer        (0 */15 * * * *)      │        │  middleware              │
+ │ /api/run/...       │ ─────► │  CallWorkflowOnTimer        (0 0 * * * *)         │        │  middleware              │
  └────────────────────┘        │                    │                             │        │                          │
                                │                    ▼                             │        │  GET  /public/{wf}.json  │
                                │   IWwExecutionDownstreamService (typed client)   │        │  GET|POST /secure/{wf}   │
@@ -45,9 +53,10 @@ It exposes two triggers:
 | `Auth/WwExecutionTokenHandler.cs` | `DelegatingHandler` — acquires/caches/refreshes the app-only token and injects headers. |
 | `IWwExecutionDownstreamService.cs` | Typed client contract (`ExecuteSecureAsync` / `ExecuteServicesAsync`) + `WwExecutionResult`. |
 | `WwExecutionDownstreamService.cs` | Typed-`HttpClient` implementation — shapes URLs, reads responses. |
-| `Functions/CallWorkflowOnHttpTrigger.cs` | HTTP-trigger proxy to `/secure`. |
+| `Functions/CallWorkflowOnHttpTrigger.cs` | HTTP-trigger proxy to `/secure` (`RunAsync`) and `/public` (`RunPublic`), plus the token-inspection endpoint (`GetInfo`). |
 | `Functions/CallWorkflowOnTimer.cs` | Timer-trigger scheduled call. |
-| `Program.cs` | `HostBuilder` + DI: options binding/validation, `TokenCredential`, token handler, typed `AddHttpClient`. |
+| `Middleware/ExceptionHandlingMiddleware.cs` | Global `IFunctionsWorkerMiddleware` — converts unhandled exceptions into short/detailed HTTP responses (see "Error handling" below). |
+| `Program.cs` | `HostBuilder` + DI: options binding/validation, `TokenCredential`, token handler, typed `AddHttpClient`, exception-handling middleware. |
 | `host.json` / `local.settings.json` | Function host + local dev settings. |
 
 ---
@@ -107,15 +116,28 @@ The engine's authorization middleware **rejects roleless callers**. The caller's
 (or daemon app) must be granted an **app role** on the engine's resource service principal — an
 app-only token with no `roles` claim is denied even when the `aud` is correct.
 
+The engine's app roles are the **group names** defined in the deploy auth config
+(`GroupPermissions` in `Scripts/Deploy-WwExecutionEngine.authconfig.example.json`, applied by
+`Configure-WwExecutionAuth.ps1`) plus the fixed `Permission.*` catalog. The example config ships a
+dedicated **`Warewolf_ClientApps`** group for app-only client apps like this one. Authorization is
+a two-part contract:
+
+1. **Token side** — the caller's MI holds the group app role, so its token carries
+   `roles: ["Warewolf_ClientApps"]`.
+2. **Policy side** — the engine's `secure.config` has a `WindowsGroupPermissions` row with
+   `WindowsGroup` equal to that role value (per-workflow, `IsServer=false`) granting
+   `View`/`Execute` on each workflow this client may call. Permissions always come from
+   `secure.config`, not from the token.
+
 Find the IDs, then create the assignment:
 
 ```bash
 # Resource SP (the engine's app registration) object id
 RESOURCE_SP_ID=$(az ad sp show --id "api://<ResourceAppId>" --query id -o tsv)
 
-# App role id exposed by the engine (e.g. the "Workflow.Execute" app role)
+# App role id exposed by the engine (the group role for client apps)
 APP_ROLE_ID=$(az ad sp show --id "api://<ResourceAppId>" \
-  --query "appRoles[?value=='Workflow.Execute'].id | [0]" -o tsv)
+  --query "appRoles[?value=='Warewolf_ClientApps'].id | [0]" -o tsv)
 
 # Caller's Managed Identity service principal object id
 #   system-assigned: read it from the function app's identity
@@ -129,9 +151,26 @@ az rest --method POST \
   --body "{\"principalId\":\"${CALLER_MI_SP_ID}\",\"resourceId\":\"${RESOURCE_SP_ID}\",\"appRoleId\":\"${APP_ROLE_ID}\"}"
 ```
 
-Alternatively run **`Scripts/Configure-WwExecutionAuth-Clients.ps1`** (see the parent
-[ClientExamples README](../README.md)), which provisions the daemon registration and the role
-assignment for you.
+Alternatively let the provisioning scripts do all of the above — **including enabling the
+Function App's managed identity (Step 1) and looking up its `principalId`** — for you:
+
+```powershell
+# By-type script: enable the client Function App's system-assigned MI, read its
+# principalId, and assign the role. -AppRolesToAssign defaults to 'Warewolf_ClientApps'.
+Scripts/Configure-WwExecutionAuth-Clients.ps1 -ClientType Daemon -DaemonUseManagedIdentity `
+  -DaemonFunctionAppName <caller-func-app> -DaemonFunctionAppResourceGroup <rg>
+
+# …or with an already-known MI SP object id:
+Scripts/Configure-WwExecutionAuth-Clients.ps1 -ClientType Daemon -DaemonUseManagedIdentity `
+  -ManagedIdentityObjectId <mi-sp-object-id> -AppRolesToAssign "Warewolf_ClientApps"
+
+# …or via the per-example orchestrator:
+Scripts/Configure-WwExecutionAuth-ClientApps.ps1 -Apps azurefunction `
+  -AzureFunctionClientAppName <caller-func-app> -AzureFunctionClientResourceGroup <rg>
+```
+
+All routes assign the role for you and fail loudly if it does not exist on the resource app.
+See the parent [ClientExamples README](../README.md).
 
 ---
 
@@ -165,9 +204,17 @@ func start               # starts the worker on http://localhost:7071
 
 ### 3. Azure deployment
 
-1. Deploy the function app and **enable a Managed Identity** (system- or user-assigned).
+1. Deploy the function app (Windows Consumption plan — `az functionapp create … --os-type Windows`)
+   and **enable a Managed Identity** (system- or user-assigned).
+   *(The provisioning scripts can enable the system-assigned MI for you — pass
+   `-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup`; see "assign an app role" above.)*
 2. Grant that identity the engine app role (see above).
-3. Set the `WwExecution:*` App Settings. Leave `ClientId`/`ClientSecret` unset — MI handles auth.
+3. Set the `WwExecution:*` App Settings (incl. optional `WwExecution:Scope`). Leave
+   `ClientId`/`ClientSecret` unset — MI handles auth.
+
+> For the full copy-paste sequence — create the caller app, register its MI as a Daemon, and set its
+> App Settings — see the
+> [End-to-End Runbook §4–§6](../../Warewolf.Execution.Lightweight/docs/Deploy-EndToEnd-Runbook.md#4-optional-create-the-client-caller-function-app).
 
 ---
 
@@ -176,10 +223,40 @@ func start               # starts the worker on http://localhost:7071
 ```bash
 # HTTP proxy → engine /secure/Hello World.json?Name=CallerTest
 curl "http://localhost:7071/api/run/Hello%20World?Name=CallerTest"
+
+# Folder-qualified workflow → engine /secure/data/sales.json?Name=CallerTest
+curl "http://localhost:7071/api/run/data/sales?Name=CallerTest"
+
+# Anonymous public proxy → engine /public/Hello World.json?Name=CallerTest
+curl "http://localhost:7071/api/runpublic/Hello%20World?Name=CallerTest"
+
+# Decoded downstream Bearer token + claims, as JSON
+curl "http://localhost:7071/api/info"
+
+# Force the full stack trace instead of the short "{ExceptionType}: {Message}" error body
+curl "http://localhost:7071/api/run/Hello%20World?showerror"
 ```
 
 Expected: the engine's JSON for the Hello World workflow, echoing `Name=CallerTest`. The timer
-fires automatically every 15 minutes (watch the `func start` console for `CallWorkflowOnTimer` logs).
+fires automatically every hour (watch the `func start` console for `CallWorkflowOnTimer` logs).
+
+---
+
+## Error handling
+
+Every function is wrapped by a single global `IFunctionsWorkerMiddleware`
+(`Middleware/ExceptionHandlingMiddleware.cs`), so an unhandled exception never surfaces as an
+opaque host-level failure:
+
+| Scenario | Response |
+|---|---|
+| Unhandled exception, HTTP trigger, default | `500` with a short body: `{ExceptionType}: {Message}` |
+| Unhandled exception, HTTP trigger, `showerror` present anywhere in the query string | `500` with the full `Exception.ToString()` (type, message, stack trace, inner exceptions) |
+| Unhandled exception, `CallWorkflowOnTimer` (no HTTP response to write to) | Logged and swallowed — the next timer tick retries, matching the function's own existing try/catch |
+
+`showerror` is a presence check (case-insensitive) — `?showerror`, `?showerror=1`, and
+`?showerror=true` are all equivalent. Omit it (the default) in any environment where stack traces
+shouldn't be exposed to callers.
 
 ---
 
@@ -188,7 +265,7 @@ fires automatically every 15 minutes (watch the `func start` console for `CallWo
 | Problem | Solution |
 |---|---|
 | `401` from engine | Token `aud` mismatch — confirm `WwExecution:ResourceAppId` ⇒ `api://<ResourceAppId>`. |
-| `403` / denial (engine may wrap as `500`) | Caller MI has **no app role** on the resource SP — assign one (see above). |
+| `403` / denial (engine may wrap as `500`) | Caller MI has **no app role** on the resource SP — assign one (see above) — or `secure.config` has no `WindowsGroup` row matching the role with `Execute=true` for the requested workflow. |
 | `DefaultAzureCredential` fails locally | Run `az login`, or set `WwExecution:ClientId` + `:ClientSecret` for the MSAL fallback. |
 | `x-functions-key` missing on `/services` | Set `WwExecution:FunctionKey` and call `ExecuteServicesAsync`. |
 | `302` redirect instead of data | Non-browser clients must send `Authorization: Bearer` — the handler does this automatically; verify the token was acquired (check logs). |

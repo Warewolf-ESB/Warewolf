@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WwExecutionCaller;
 using WwExecutionCaller.Auth;
+using WwExecutionCaller.Middleware;
 
 // -----------------------------------------------------------------------------
 // Warewolf Execution Engine — downstream caller (Azure Functions v4 isolated worker)
@@ -21,7 +22,12 @@ using WwExecutionCaller.Auth;
 // -----------------------------------------------------------------------------
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(workerApplication =>
+    {
+        // Global safety net: converts any unhandled exception into a short/detailed HTTP
+        // response (see ExceptionHandlingMiddleware) instead of an opaque host-level failure.
+        workerApplication.UseMiddleware<ExceptionHandlingMiddleware>();
+    })
     .ConfigureServices((context, services) =>
     {
         var configuration = context.Configuration;
@@ -32,6 +38,9 @@ var host = new HostBuilder()
             .Bind(configuration.GetSection(WwExecutionCallerOptions.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        // --- Global exception-handling middleware ---------------------------------------
+        services.AddSingleton<ExceptionHandlingMiddleware>();
 
         // --- Application Insights (idiomatic for Functions; no-op without a connection) -
         services.AddApplicationInsightsTelemetryWorkerService();

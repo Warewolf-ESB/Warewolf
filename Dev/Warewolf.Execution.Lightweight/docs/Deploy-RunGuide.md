@@ -22,6 +22,7 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 3. [Parameter reference](#3-parameter-reference)
 4. [Worked parameter examples](#4-worked-parameter-examples)
 5. [Resources: created by the script vs. assumed pre-existing](#5-resources-created-by-the-script-vs-assumed-pre-existing)
+6. [Troubleshooting](#6-troubleshooting)
 
 ---
 
@@ -190,7 +191,7 @@ Stop-Transcript | Out-Null
 |---|---|
 | 0 / 0.5 | Pre-flight (`az` login, resolve subscription/tenant) → **PLAN**: resolve every decision, print a masked summary, ask once to proceed |
 | 1 | Create resource group, storage, Function App, Application Insights |
-| 2 | Provision Entra ID + Easy Auth (from `-AuthConfigPath`) |
+| 2 | Provision Microsoft Entra ID app registration, service principal, OAuth scope, app roles, and Easy Auth from the `-AuthConfigPath` JSON |
 | 3 | Stage secure.config (validate / auto-encrypt), workflow resources (+ optional WFAES encryption), Elasticsearch source, **generate `Resources\workflow-index.json`** (bundled into the zip), env vars |
 | 4 | Deploy the package to the Function App (zip-deploy) |
 | 5 | Verify — endpoint banner + optional HTTP probe |
@@ -287,7 +288,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `-SkipAuthProvisioning` | switch | off | Skip Entra ID + Easy Auth provisioning entirely. |
-| `-AuthConfigPath` | string | prompt | JSON describing `GroupPermissions` + `UserAssignments` for `Configure-WwExecutionAuth.ps1`. |
+| `-AuthConfigPath` | string | prompt | JSON describing `GroupPermissions` + `UserAssignments` for `Configure-WwExecutionAuth.ps1`. Each `GroupPermissions` key becomes an app role assignable to users **and** to app-only client apps (daemon / Managed Identity); the example ships a dedicated `Warewolf_ClientApps` group for those callers — assign it to the client SP via `Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign` (the daemon / Managed Identity path defaults to `Warewolf_ClientApps` when the switch is omitted, and can enable a client Function App's system-assigned MI directly via `-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup`), and grant the matching `WindowsGroup` row `Execute` in `secure.config`. See `Deploy-WwExecutionEngine.authconfig.example.json`. |
 
 ### Package inputs
 
@@ -501,8 +502,33 @@ this run actually created.
 
 ---
 
+## 6. Troubleshooting
+
+Common failures and how to resolve them. Most issues trace back to a missing prerequisite
+([§1](#1-prerequisites)) or a role/privilege gap ([Required roles & privileges](#required-roles--privileges)).
+
+| Symptom | Likely cause | Resolution |
+|---|---|---|
+| Script aborts citing `#Requires -Version 7.0` | Launched under Windows PowerShell 5.1 | Open **PowerShell 7+** and confirm with `$PSVersionTable.PSVersion`. 5.1 cannot run the script (see [§1](#1-prerequisites)). |
+| `az` calls fail with *"Please run 'az login'"* | Not logged in to Azure CLI | Run `az login`, then `az account set --subscription <id>` (Step 0). |
+| Deploy lands in the wrong subscription | Active subscription not set | `az account set --subscription <id>`, or pass `-SubscriptionId` explicitly. |
+| `az role assignment create` fails with an authorization error mid-run | Signed-in user lacks **User Access Administrator** / **Owner** over the Key Vault scope | Have an admin grant it (see [Required roles & privileges](#required-roles--privileges) step A). This is the most commonly-missed grant. |
+| Entra provisioning fails (app registration / role / secret) | User lacks **Application Administrator** (or Graph `Application.ReadWrite.All`) | Grant the Entra role (step C), or run with `-SkipAuthProvisioning` if auth is provisioned separately. |
+| A user in `UserAssignments` is silently not assigned | UPN typo / user not in directory | Stage 6 **skips with a warning** and continues — check the transcript so an intended user isn't missed. |
+| Phase 4 zip-deploy fails or times out | Large package, transient network, or Function App still starting | Inspect the transcript in `-LogDir`; re-run — the deploy is idempotent and existence-checks every resource. |
+| `-PublishMethod Func` fails immediately | `func` not installed, or pointed at a pre-built package | Use the default `Auto`/`Zip` (az zip-deploy) for the pre-built artifact; `Func` is advanced/opt-in and expects a project source dir. |
+| Engine returns HTTP 503 after deploy | Missing / invalid `secure.config` | Verify `-SecureConfigPath` resolves to a valid file (plaintext is auto-encrypted; an encrypted file must be engine-decryptable). |
+| Workflows blocked: *"valid Warewolf license required"* | No license staged (the check is ON by default) | Supply a valid `-LicenseConfigPath`. **There is no auto-generated test license** — if omitted, the license check may fail at startup. |
+| WFAES decryption fails at runtime | Key Vault app settings or managed-identity role not wired | Re-deploy passing `-KeyVaultName` / `-KeyVaultSecretName` (leave `-EncryptResources` **off** for already-encrypted sources — see [Example D](#example-d--re-deploy-already-encrypted-sources-do-not-re-encrypt)). |
+| DPAPI re-encryption fails | DPAPI sources can only be re-encrypted on the machine that created them | Run `-EncryptResources` on the original machine, or re-export the sources as plaintext first. |
+| App Insights blade shows *"Turn On Application Insights"* | **By design** — the engine reads the non-standard `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | Do **not** click "Turn On". Verify telemetry in the App Insights resource's own *Logs* / *Live Metrics* blades ([§3](#application-insights)). |
+| Rollback deletes the wrong resources | A dry-run summary was selected | Confirm the summary is the **real** run's file (exclude `*dryrun*`); the rollback only removes resources with `created = true` and previews by default (Step 2). |
+
+---
+
 ## Related docs
 
+- [Deploy-EndToEnd-Runbook.md](Deploy-EndToEnd-Runbook.md) — single copy-paste PS7 + `az` sequence covering engine deploy **and** daemon client-app registration (create client Function App → enable MI → assign `Warewolf_ClientApps`).
 - [Deployment-Steps.txt](Deployment-Steps.txt) — terse end-to-end runbook (incl. crash-safe summary + rollback notes).
 - [Scripts/README.md](../Scripts/README.md) — script-suite overview.
 - [README-Encryption.md](README-Encryption.md) · [README-Authentication.md](README-Authentication.md) · [README-ApplicationInsights.md](README-ApplicationInsights.md).

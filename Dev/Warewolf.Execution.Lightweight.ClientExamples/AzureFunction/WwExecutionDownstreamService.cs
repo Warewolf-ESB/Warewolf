@@ -21,6 +21,10 @@ public sealed class WwExecutionDownstreamService : IWwExecutionDownstreamService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    public Task<WwExecutionResult> ExecutePublicAsync(
+        string workflow, string? queryString = null, CancellationToken cancellationToken = default)
+        => SendAsync("public", workflow, queryString, cancellationToken);
+
     public Task<WwExecutionResult> ExecuteSecureAsync(
         string workflow, string? queryString = null, CancellationToken cancellationToken = default)
         => SendAsync("secure", workflow, queryString, cancellationToken);
@@ -63,12 +67,17 @@ public sealed class WwExecutionDownstreamService : IWwExecutionDownstreamService
 
     /// <summary>
     /// Builds the route-relative URL: <c>{prefix}/{UrlEncodedWorkflow}.json{?query}</c>.
-    /// The workflow segment is URL-encoded so names with spaces (e.g. "Hello World") work.
+    /// Each path segment is URL-encoded independently (so names with spaces, e.g. "Hello World",
+    /// work) while the '/' separators themselves are preserved — this lets folder-qualified
+    /// workflow names such as <c>data/sales</c> resolve to <c>{prefix}/data/sales.json</c> instead
+    /// of being collapsed into a single, non-existent "data%2Fsales" segment.
     /// </summary>
     private static string BuildRelativeUrl(string routePrefix, string workflow, string? queryString)
     {
-        var encoded = Uri.EscapeDataString(workflow);
-        var path = $"{routePrefix}/{encoded}.json";
+        var encodedSegments = workflow
+            .Split('/', StringSplitOptions.RemoveEmptyEntries)
+            .Select(Uri.EscapeDataString);
+        var path = $"{routePrefix}/{string.Join('/', encodedSegments)}.json";
 
         if (string.IsNullOrWhiteSpace(queryString))
         {

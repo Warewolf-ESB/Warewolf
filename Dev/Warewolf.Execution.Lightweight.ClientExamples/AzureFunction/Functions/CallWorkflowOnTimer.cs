@@ -6,8 +6,8 @@ namespace WwExecutionCaller.Functions;
 
 /// <summary>
 /// Timer-trigger that invokes a configured secure workflow on a schedule.
-/// Default CRON <c>0 *&#47;15 * * * *</c> fires every 15 minutes. The downstream Bearer token is
-/// acquired/cached/injected automatically by <see cref="Auth.WwExecutionTokenHandler"/>.
+/// Default CRON <c>0 0 * * * *</c> fires once every hour, on the hour. The downstream Bearer
+/// token is acquired/cached/injected automatically by <see cref="Auth.WwExecutionTokenHandler"/>.
 ///
 /// The schedule and the target workflow (<c>WwExecution:ScheduledWorkflow</c>) are configurable;
 /// for environment-driven schedules, replace the literal with a <c>%AppSetting%</c> token.
@@ -30,7 +30,7 @@ public sealed class CallWorkflowOnTimer
 
     [Function(nameof(CallWorkflowOnTimer))]
     public async Task RunAsync(
-        [TimerTrigger("0 */15 * * * *")] TimerInfo timer,
+        [TimerTrigger("0 0 * * * *")] TimerInfo timer,
         CancellationToken cancellationToken)
     {
         var workflow = _options.ScheduledWorkflow;

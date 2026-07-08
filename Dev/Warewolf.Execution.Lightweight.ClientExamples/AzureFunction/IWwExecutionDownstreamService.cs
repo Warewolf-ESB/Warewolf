@@ -1,12 +1,24 @@
 namespace WwExecutionCaller;
 
 /// <summary>
-/// Typed client abstraction over the Warewolf Execution Engine's authenticated routes.
-/// Implementations rely on the registered <see cref="Auth.WwExecutionTokenHandler"/> to
-/// attach the <c>Authorization: Bearer</c> (and, for /services, <c>x-functions-key</c>) headers.
+/// Typed client abstraction over the Warewolf Execution Engine's routes (public, secure, and
+/// services tiers). Implementations rely on the registered <see cref="Auth.WwExecutionTokenHandler"/>
+/// to attach the <c>Authorization: Bearer</c> (and, for /services, <c>x-functions-key</c>) headers.
 /// </summary>
 public interface IWwExecutionDownstreamService
 {
+    /// <summary>
+    /// Invokes a workflow on the engine's anonymous <c>/public/{workflow}.json</c> route.
+    /// </summary>
+    /// <param name="workflow">Workflow name, URL-decoded (e.g. <c>Hello World</c>).</param>
+    /// <param name="queryString">Optional raw query string (with or without a leading <c>?</c>).</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The engine's status code and response body.</returns>
+    Task<WwExecutionResult> ExecutePublicAsync(
+        string workflow,
+        string? queryString = null,
+        CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Invokes a workflow on the engine's Bearer-protected <c>/secure/{workflow}.json</c> route.
     /// </summary>

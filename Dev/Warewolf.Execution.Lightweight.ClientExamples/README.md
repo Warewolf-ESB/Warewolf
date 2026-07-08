@@ -411,7 +411,9 @@ DefaultAzureCredential
 Fallback: MSAL Client Credentials (WwExecution:DaemonClientId set)
 ```
 
-**Required: assign app role to the caller MI:**
+**Required: assign app role to the caller MI** (`<role-id>` = the id of a group app role
+such as `Warewolf_ClientApps`, created from the deploy authconfig's `GroupPermissions`;
+the engine's `secure.config` must grant that `WindowsGroup` `Execute` on the target workflows):
 
 ```bash
 az rest --method POST \
@@ -419,6 +421,18 @@ az rest --method POST \
   --headers "Content-Type=application/json" \
   --body "{\"principalId\":\"<caller-mi-sp-id>\",\"resourceId\":\"<resource-sp-id>\",\"appRoleId\":\"<role-id>\"}"
 ```
+
+Or let `Configure-WwExecutionAuth-Clients.ps1 -ClientType Daemon -DaemonUseManagedIdentity
+-ManagedIdentityObjectId <caller-mi-sp-id> -AppRolesToAssign "Warewolf_ClientApps"` do it for you.
+To also **enable** the caller Function App's system-assigned MI and look up its principalId,
+pass `-DaemonFunctionAppName <caller-func> -DaemonFunctionAppResourceGroup <rg>` instead of the
+object id; `-AppRolesToAssign` then defaults to `Warewolf_ClientApps`.
+
+> **Deploying the caller app end-to-end?** The
+> [End-to-End Runbook §4–§6](../Warewolf.Execution.Lightweight/docs/Deploy-EndToEnd-Runbook.md#4-optional-create-the-client-caller-function-app)
+> has the full copy-paste sequence: create the caller Function App (Windows Consumption plan,
+> `--os-type Windows`), register its Managed Identity as a Daemon, and set its `WwExecution:*`
+> App Settings — including the optional `WwExecution:Scope` (defaults to `api://<ResourceAppId>/.default`).
 
 ---
 
@@ -480,6 +494,9 @@ the `az rest … appRoleAssignedTo` snippet above, or
 
 - [`Scripts/Get-WwExecutionToken-AllFlows.ps1`](../Warewolf.Execution.Lightweight/Scripts/Get-WwExecutionToken-AllFlows.ps1) — all flows in one script
 - [`Scripts/Configure-WwExecutionAuth.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth.ps1) — provision function app + Entra
-- [`Scripts/Configure-WwExecutionAuth-Clients.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-Clients.ps1) — provision client registrations
+- [`Scripts/Configure-WwExecutionAuth-Clients.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-Clients.ps1) — provision client registrations (by type)
+- [`Scripts/Configure-WwExecutionAuth-ClientApps.ps1`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-ClientApps.ps1) — provision one registration per example app (below) + validate access
+- [`docs/Deploy-EndToEnd-Runbook.md`](../Warewolf.Execution.Lightweight/docs/Deploy-EndToEnd-Runbook.md) — copy-paste deploy of the engine + register a caller app as a Daemon end-to-end
+- [`docs/KB-ClientApps-Configuration.md`](../Warewolf.Execution.Lightweight/docs/KB-ClientApps-Configuration.md) — how to configure each example app, what params to pass, how the token is retrieved and passed to `/secure/{workflow}.json`
 - [`docs/README-Authentication.md`](../Warewolf.Execution.Lightweight/docs/README-Authentication.md) — end-to-end auth architecture
 - [`docs/Part5-ClientTokenManagement.md`](../Warewolf.Execution.Lightweight/docs/Part5-ClientTokenManagement.md) — MSAL integration patterns

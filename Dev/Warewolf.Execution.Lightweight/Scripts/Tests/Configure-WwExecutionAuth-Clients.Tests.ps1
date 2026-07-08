@@ -71,6 +71,16 @@ Describe 'Configure-WwExecutionAuth-Clients — Resolve-AppRoleAssignment' {
         $res[0].Id    | Should -Be 'role-guid-1'
     }
 
+    It 'resolves the dedicated Warewolf_ClientApps group role for an MI daemon (fail-loud path satisfied)' {
+        # Warewolf_ClientApps is the group the deploy authconfig example ships for
+        # app-only client apps (e.g. the AzureFunction example's Managed Identity).
+        $map = @{ 'Warewolf_ClientApps' = 'role-guid-ca'; 'Warewolf_Developers' = 'role-guid-1' }
+        $res = Resolve-AppRoleAssignment -RequestedRoles @('Warewolf_ClientApps') -RoleIdMap $map -RequireAtLeastOne -ClientKind 'managed identity'
+        @($res).Count | Should -Be 1
+        $res[0].Name  | Should -Be 'Warewolf_ClientApps'
+        $res[0].Id    | Should -Be 'role-guid-ca'
+    }
+
     It 'omits requested roles that do not exist on the resource app' {
         $map = @{ 'Warewolf_Developers' = 'role-guid-1' }
         $res = Resolve-AppRoleAssignment -RequestedRoles @('Warewolf_Developers', 'Ghost') -RoleIdMap $map 6>$null
@@ -95,5 +105,61 @@ Describe 'Configure-WwExecutionAuth-Clients — Resolve-AppRoleAssignment' {
     It 'THROWS mentioning none-defined when the resource app exposes no roles' {
         { Resolve-AppRoleAssignment -RequestedRoles @('Anything') -RoleIdMap @{} -RequireAtLeastOne 6>$null } |
             Should -Throw -ExpectedMessage '*no app roles defined*'
+    }
+}
+
+Describe 'Configure-WwExecutionAuth-Clients — Daemon Managed-Identity params' {
+
+    It 'exposes -DaemonFunctionAppName and -DaemonFunctionAppResourceGroup' {
+        $params = (Get-Command $script:ClientScript).Parameters
+        $params.ContainsKey('DaemonFunctionAppName')          | Should -BeTrue
+        $params.ContainsKey('DaemonFunctionAppResourceGroup') | Should -BeTrue
+    }
+
+    It 'documents both new params in comment-based help' {
+        $raw = Get-Content $script:ClientScript -Raw
+        $raw | Should -Match '\.PARAMETER\s+DaemonFunctionAppName'
+        $raw | Should -Match '\.PARAMETER\s+DaemonFunctionAppResourceGroup'
+    }
+}
+
+Describe 'Configure-WwExecutionAuth-Clients — Resolve-MiPrincipalIdFromCli' {
+
+    BeforeAll {
+        . $script:ClientScript -LoadFunctionsOnly
+    }
+
+    It 'returns the principalId from a parsed identity object' {
+        $obj = [pscustomobject]@{ principalId = '11111111-2222-3333-4444-555555555555'; type = 'SystemAssigned' }
+        Resolve-MiPrincipalIdFromCli -IdentityObject $obj | Should -Be '11111111-2222-3333-4444-555555555555'
+    }
+
+    It 'ignores unrelated properties and still returns the principalId' {
+        $obj = [pscustomobject]@{ tenantId = 'aaaa'; userAssignedIdentities = @{}; principalId = 'pid-123' }
+        Resolve-MiPrincipalIdFromCli -IdentityObject $obj | Should -Be 'pid-123'
+    }
+
+    It 'returns $null (no throw) when principalId is absent and -AllowNull is set' {
+        $obj = [pscustomobject]@{ tenantId = 'aaaa' }
+        Resolve-MiPrincipalIdFromCli -IdentityObject $obj -AllowNull | Should -BeNullOrEmpty
+    }
+
+    It 'returns $null (no throw) for a $null input when -AllowNull is set' {
+        Resolve-MiPrincipalIdFromCli -IdentityObject $null -AllowNull | Should -BeNullOrEmpty
+    }
+
+    It 'THROWS when principalId is absent and -AllowNull is NOT set' {
+        { Resolve-MiPrincipalIdFromCli -IdentityObject ([pscustomobject]@{ tenantId = 'aaaa' }) } |
+            Should -Throw -ExpectedMessage '*principalId*'
+    }
+
+    It 'THROWS for a $null input when -AllowNull is NOT set' {
+        { Resolve-MiPrincipalIdFromCli -IdentityObject $null } |
+            Should -Throw -ExpectedMessage '*principalId*'
+    }
+
+    It 'treats a whitespace-only principalId as absent (throws without -AllowNull)' {
+        { Resolve-MiPrincipalIdFromCli -IdentityObject ([pscustomobject]@{ principalId = '   ' }) } |
+            Should -Throw -ExpectedMessage '*principalId*'
     }
 }
