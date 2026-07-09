@@ -45,16 +45,19 @@ Base URL (configurable): `https://WWExecutionEngine.azurewebsites.net`
 
 | Route | Auth | Notes |
 |---|---|---|
-| `GET /public/{workflow}.json` | none (anonymous) | No token required |
-| `GET\|POST /secure/{workflow}.json` | `Authorization: Bearer <token>` (Entra) | **What this sample calls** |
-| `GET\|POST /services/{workflow}.json` | Bearer token **and** `x-functions-key` header | Set `WwExecution:FunctionKey` |
+| `GET /public/{workflow}.json` | none (anonymous) | Callable per message via `"route": "public"` |
+| `GET\|POST /secure/{workflow}.json` | `Authorization: Bearer <token>` (Entra) | **Default** — `"route": "secure"` (or omitted) |
+| `GET\|POST /services/{workflow}.json` | Bearer token **and** `x-functions-key` header | Not selectable from the queue; the typed client still supports it |
 | `GET /apis.json` | — | Discovery |
 
-Sample call this worker makes:
+The worker chooses the route from each message's optional `route` field (see **Message contract**),
+mirroring the AzureFunction sample's `run` (secure) / `runpublic` (public) proxies. Sample calls:
 
 ```
-GET /secure/Hello%20World.json?Name=FromServiceBus
+GET /secure/Hello%20World.json?Name=FromServiceBus     ("route": "secure" or omitted)
 Authorization: Bearer eyJ...
+
+GET /public/Hello%20World.json?Name=FromServiceBus     ("route": "public")
 ```
 
 ---
@@ -65,15 +68,26 @@ The queue message body is JSON:
 
 ```json
 {
+  "route": "secure",
   "workflow": "Hello World",
   "inputs": { "Name": "FromServiceBus" }
 }
 ```
 
-- `workflow` (required) — the workflow name. Spaces are URL-encoded for you (`Hello World` → `Hello%20World`).
+- `route` (optional) — target engine route: `secure` (default when omitted/blank) or `public`
+  (anonymous). Any other value throws — see **dead-lettering** below.
+- `workflow` (required) — the workflow name. Each `/`-separated segment is URL-encoded for you, so
+  spaces (`Hello World` → `Hello%20World`) and folder-qualified names (`data/sales` → `data/sales.json`) both work.
 - `inputs` (optional) — a string map sent as query-string parameters.
 
-A message with invalid JSON or a missing `workflow` throws — see **dead-lettering** below.
+Call a public (anonymous) workflow by setting the route:
+
+```json
+{ "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
+```
+
+A message with invalid JSON, a missing `workflow`, or an unsupported `route` throws — see
+**dead-lettering** below.
 
 ---
 
@@ -174,10 +188,17 @@ func start
 Using the Azure CLI:
 
 ```bash
+# Secure route (default — route omitted)
 az servicebus queue message send \
   --namespace-name <your-namespace> \
   --queue-name wwexecution-queue \
   --body '{ "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }'
+
+# Public route (anonymous)
+az servicebus queue message send \
+  --namespace-name <your-namespace> \
+  --queue-name wwexecution-queue \
+  --body '{ "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }'
 ```
 
 The worker logs the engine's JSON response. To exercise the engine directly (anonymous, no token):
@@ -190,8 +211,8 @@ GET https://WWExecutionEngine.azurewebsites.net/public/Hello%20World.json?Name=D
 
 ## Dead-lettering
 
-The trigger **does not swallow exceptions**. A bad message (invalid JSON, missing `workflow`) or a
-failed engine call throws; the Functions runtime abandons the message, and after the queue's
+The trigger **does not swallow exceptions**. A bad message (invalid JSON, missing `workflow`, or an
+unsupported `route`) or a failed engine call throws; the Functions runtime abandons the message, and after the queue's
 max-delivery-count the broker moves it to the **dead-letter sub-queue** for inspection — the correct
 behaviour for poison messages.
 

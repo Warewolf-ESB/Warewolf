@@ -64,8 +64,13 @@ public sealed class WwExecutionClient : IWwExecutionClient
 
     private static string BuildRelativeUrl(string area, string workflow, IDictionary<string, string?>? query)
     {
-        // Encode the workflow segment (e.g. "Hello World" -> "Hello%20World").
-        var path = $"{area}/{Uri.EscapeDataString(workflow)}.json";
+        // Encode each '/'-separated segment independently (e.g. "Hello World" -> "Hello%20World")
+        // while preserving the '/' separators — so folder-qualified names such as "data/sales"
+        // resolve to "{area}/data/sales.json" instead of collapsing into a single "data%2Fsales" segment.
+        var encodedSegments = workflow
+            .Split('/', StringSplitOptions.RemoveEmptyEntries)
+            .Select(Uri.EscapeDataString);
+        var path = $"{area}/{string.Join('/', encodedSegments)}.json";
 
         if (query is null || query.Count == 0)
         {

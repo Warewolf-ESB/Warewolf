@@ -50,9 +50,12 @@ public sealed class WwExecutionTokenHandler : DelegatingHandler
         var token = await GetTokenAsync(cancellationToken).ConfigureAwait(false);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        // /services/* routes require BOTH a Bearer token and a function key.
-        if (!string.IsNullOrWhiteSpace(_options.FunctionKey) &&
-            !request.Headers.Contains("x-functions-key"))
+        // Only the engine's /services/* routes require a function key; scope the header to those
+        // paths so it is never leaked on /public or /secure calls.
+        if (!string.IsNullOrWhiteSpace(_options.FunctionKey)
+            && request.RequestUri is { } uri
+            && uri.AbsolutePath.Contains("/services/", StringComparison.OrdinalIgnoreCase)
+            && !request.Headers.Contains("x-functions-key"))
         {
             request.Headers.Add("x-functions-key", _options.FunctionKey);
         }

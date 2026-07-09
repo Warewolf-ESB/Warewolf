@@ -7,8 +7,9 @@ namespace Warewolf.Execution.ClientExamples.AzureServiceBus.Functions;
 
 /// <summary>
 /// Triggered by a message on the <c>wwexecution-queue</c> Service Bus queue. Each message names
-/// a Warewolf workflow plus its inputs; this worker authenticates to Entra (Managed Identity) and
-/// calls the engine's <c>/secure</c> route on the message's behalf.
+/// a Warewolf workflow, an optional target route, and its inputs; this worker authenticates to
+/// Entra (Managed Identity) and calls the engine's <c>/secure</c> or <c>/public</c> route on the
+/// message's behalf (mirroring the AzureFunction sample's <c>run</c> / <c>runpublic</c> proxies).
 ///
 /// Why an SB-triggered worker (and not "Service Bus calls the engine")? Service Bus is a message
 /// broker — it cannot hold an OAuth token or make an outbound HTTP call. The realistic pattern is
@@ -32,7 +33,10 @@ public sealed class WorkflowQueueTrigger
     }
 
     /// <summary>
-    /// Message contract: <c>{ "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }</c>
+    /// Message contract:
+    /// <c>{ "route": "secure", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }</c>
+    /// <para><c>route</c> is optional: omitted/blank defaults to <c>secure</c>; <c>public</c> targets
+    /// the engine's anonymous route. Any other value dead-letters the message.</para>
     /// </summary>
     [Function(nameof(WorkflowQueueTrigger))]
     public async Task RunAsync(
@@ -62,23 +66,49 @@ public sealed class WorkflowQueueTrigger
                 $"Message is missing the required 'workflow' field. Body: {messageBody}");
         }
 
+        var route = ResolveRoute(request.Route);
         var query = request.Inputs ?? new Dictionary<string, string?>();
 
         _logger.LogInformation(
-            "Executing workflow '{Workflow}' with {InputCount} input(s) from Service Bus message.",
-            request.Workflow, query.Count);
+            "Executing workflow '{Workflow}' on the '{Route}' route with {InputCount} input(s) from Service Bus message.",
+            request.Workflow, route, query.Count);
 
-        var result = await _client
-            .ExecuteSecureAsync(request.Workflow, query, cancellationToken)
-            .ConfigureAwait(false);
+        var result = route == "public"
+            ? await _client.ExecutePublicAsync(request.Workflow, query, cancellationToken).ConfigureAwait(false)
+            : await _client.ExecuteSecureAsync(request.Workflow, query, cancellationToken).ConfigureAwait(false);
 
         _logger.LogInformation(
-            "Workflow '{Workflow}' completed. Response: {Response}", request.Workflow, result);
+            "Workflow '{Workflow}' completed on '{Route}'. Response: {Response}",
+            request.Workflow, route, result);
+    }
+
+    /// <summary>
+    /// Normalizes the optional message <c>route</c> to a supported engine route. A blank/absent value
+    /// defaults to <c>secure</c> (back-compatible); <c>secure</c> and <c>public</c> are accepted
+    /// case-insensitively. Any other value throws so the runtime dead-letters the poison message.
+    /// </summary>
+    private static string ResolveRoute(string? route)
+    {
+        if (string.IsNullOrWhiteSpace(route))
+        {
+            return "secure";
+        }
+
+        return route.Trim().ToLowerInvariant() switch
+        {
+            "secure" => "secure",
+            "public" => "public",
+            _ => throw new InvalidOperationException(
+                $"Unsupported route '{route}'. Supported values: 'secure' (default) or 'public'.")
+        };
     }
 
     /// <summary>Deserialized Service Bus message payload.</summary>
     private sealed class WorkflowExecutionRequest
     {
+        [JsonPropertyName("route")]
+        public string? Route { get; init; }
+
         [JsonPropertyName("workflow")]
         public string? Workflow { get; init; }
 

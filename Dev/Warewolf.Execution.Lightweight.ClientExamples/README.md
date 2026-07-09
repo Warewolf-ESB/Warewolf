@@ -445,10 +445,11 @@ object id; `-AppRolesToAssign` then defaults to `Warewolf_ClientApps`.
 > Bus–triggered worker** (a .NET 8 isolated Function) that, on each message,
 > acquires an **app-only token** and calls wwexecution over HTTP.
 
-A `ServiceBusTrigger` Function reads a `{ "workflow": "...", "inputs": {...} }`
-message and calls a secure workflow. Auth is **Managed Identity** via
-`DefaultAzureCredential` (client-secret fallback for local dev). The token is
-cached/refreshed and auto-injected by a `DelegatingHandler`.
+A `ServiceBusTrigger` Function reads a `{ "route": "...", "workflow": "...", "inputs": {...} }`
+message and calls the engine's **secure** or **public** route per the optional `route` field
+(default `secure`), mirroring the Azure Function client's `run` / `runpublic` proxies. Auth is
+**Managed Identity** via `DefaultAzureCredential` (client-secret fallback for local dev). The token
+is cached/refreshed and auto-injected by a `DelegatingHandler`.
 
 ```bash
 # Local dev
@@ -456,7 +457,8 @@ az login
 func start
 
 # Enqueue a test message onto the 'wwexecution-queue' queue:
-#   { "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
+#   secure (default): { "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
+#   public:           { "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
 ```
 
 | File | Purpose |
@@ -464,7 +466,7 @@ func start
 | `WwExecutionServiceBusWorker.csproj` | Isolated-worker project + Extensions.ServiceBus + Azure.Identity |
 | `Program.cs` | DI: `TokenCredential`, token handler, typed `HttpClient` |
 | `Auth/WwExecutionTokenHandler.cs` | App-only token acquire/cache/refresh + Bearer auto-inject |
-| `Functions/WorkflowQueueTrigger.cs` | `[ServiceBusTrigger]` → calls `/secure/{workflow}.json` |
+| `Functions/WorkflowQueueTrigger.cs` | `[ServiceBusTrigger]` → calls `/secure` or `/public` per the message `route` |
 | `WwExecutionClient.cs` | Typed engine client (public/secure/services) |
 
 **Token chain:** identical to the Azure Function client — `DefaultAzureCredential`
