@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 <#
 .SYNOPSIS
   Reverses everything Configure-WwExecutionAuth.ps1 set up.  Safe to run

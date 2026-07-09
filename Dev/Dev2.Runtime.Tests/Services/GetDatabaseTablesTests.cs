@@ -211,7 +211,9 @@ namespace Dev2.Tests.Runtime.Services
                 ReloadActions = true,
                 UserID = "testUser",
                 Password = "Ex@mple!23Secure#PWD",
-                ConnectionTimeout = 30
+                ConnectionTimeout = 30,
+                // CI SQL Server presents a self-signed certificate; opt in to skip chain validation.
+                TrustServerCertificate = true
             };
             dbSource.Port = int.Parse(GetDatabaseColumnsForTableTests._containerOps.Container.Port);
             return dbSource;

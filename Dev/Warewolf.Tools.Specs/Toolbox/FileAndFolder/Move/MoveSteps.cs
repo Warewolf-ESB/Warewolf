@@ -31,8 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-        }
+            scenarioContext.Add("result", result);        }
 
         protected override void BuildDataList()
         {

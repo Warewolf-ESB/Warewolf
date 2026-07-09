@@ -50,8 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-        }
+            scenarioContext.Add("result", result);        }
 
         [When(@"the Unzip file tool is executed with a single file")]
         public void WhenTheUnzipFileToolIsExecutedWithASingleFile()
@@ -59,8 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add("singleFile", true);
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-        }
+            scenarioContext.Add("result", result);        }
 
         [When(@"validating the unzip tool")]
         public void WhenValidatingTheUnzipTool()

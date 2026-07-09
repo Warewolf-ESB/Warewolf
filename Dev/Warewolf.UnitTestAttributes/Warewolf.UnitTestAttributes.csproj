@@ -3,10 +3,26 @@
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug</Configurations>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- This is a shared test-support library, NOT a test project. It references
+         MSTest.TestFramework only so Depends can throw AssertInconclusiveException.
+         Mark it explicitly so VS Test Explorer does not try to discover/run it as a
+         test project (which fails with "no .NET NuGet adapter / Could not find testhost"). -->
+    <IsTestProject>false</IsTestProject>
+    <EnableMSTestRunner>false</EnableMSTestRunner>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.13.0</Version>
+    </PackageReference>
+    <!-- Needed so Depends can throw AssertInconclusiveException to mark MSTest
+         tests as Skipped (not Failed) when an external dependency is unreachable. -->
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.8.3</Version>
+      <!-- compile+runtime gives the AssertInconclusiveException type; exclude the
+           build/buildTransitive props so this project is not treated as an MSTest
+           test project by VS Test Explorer / the MSTest runner. -->
+      <IncludeAssets>compile; runtime</IncludeAssets>
+      <ExcludeAssets>build; buildTransitive</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>

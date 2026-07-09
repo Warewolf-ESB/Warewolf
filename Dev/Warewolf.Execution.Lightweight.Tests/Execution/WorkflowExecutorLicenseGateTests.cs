@@ -127,7 +127,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Execution
             public void LogFatal(string message, Exception exception, Guid executionId) { }
             public void LogTrace(string message, Guid executionId) { }
             public void LogTrace(string message, Exception exception, Guid executionId) { }
+
         }
-    }
     }
 }

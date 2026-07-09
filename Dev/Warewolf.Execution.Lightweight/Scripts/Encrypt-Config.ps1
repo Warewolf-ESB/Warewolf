@@ -1,3 +1,4 @@
+# Warewolf Version: 3.0.2.79  |  Stamped: 2026-06-22
 <#
 .SYNOPSIS
     Encrypts Warewolf source .bite files for deployment to Azure Function.
@@ -108,13 +109,31 @@ param(
 
     [switch] $GenerateKeys,
 
-    [switch] $Decrypt
+    [switch] $Decrypt,
+
+    # In-memory verification only: decrypt every WFAES/DPAPI ConnectionString in
+    # memory to prove the Key Vault key works, WITHOUT writing any plaintext to
+    # disk. Read-only; cannot be combined with -GenerateKeys.
+    [switch] $VerifyOnly,
+
+    # Unattended operation (e.g. driven by Deploy-WwExecutionEngine.ps1):
+    #   -NonInteractive  never prompt; implies -NoBackup unless -OutputDirectory
+    #                    supplies a backup/decrypt target.
+    #   -NoBackup        skip the pre-encryption backup prompt/step.
+    #   -OutputDirectory explicit target for the backup (encrypt mode) or the
+    #                    decrypted files (decrypt mode); suppresses that prompt.
+    [switch] $NonInteractive,
+
+    [switch] $NoBackup,
+
+    [string] $OutputDirectory
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 if ($Decrypt -and $GenerateKeys) { Write-Host '[!] -Decrypt and -GenerateKeys cannot be used together.' -ForegroundColor Red; exit 1 }
+if ($VerifyOnly -and $GenerateKeys) { Write-Host '[!] -VerifyOnly and -GenerateKeys cannot be used together.' -ForegroundColor Red; exit 1 }
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 $WFAES_PREFIX    = 'WFAES::'
@@ -233,29 +252,26 @@ function Test-IsWfAesEncrypted ([string]$value) {
 #   1. Unquoted GUID only:  {"version":1,"keyId":26d979c7-...,"key":"..."}
 #   2. Fully unquoted:      {version:1,keyId:26d979c7-...,key:...,created:...}
 function ConvertFrom-KeyMaterial ([string]$json) {
-    try {
+    # Validate quietly FIRST. Test-Json -ErrorAction SilentlyContinue returns a bool
+    # without emitting the transcript-logged TerminatingError that a speculative
+    # ConvertFrom-Json would on malformed input.
+    if ($json | Test-Json -ErrorAction SilentlyContinue) {
         return $json | ConvertFrom-Json
-    } catch {
-        # Step 1 — quote all unquoted property names:  {version: → {"version":
-        $repaired = $json -replace '([\{,])\s*([a-zA-Z_]\w*)\s*:', '$1"$2":'
-        # Step 2 — quote all unquoted property values:  :"value" already quoted values
-        #           are skipped by the (?!") negative lookahead.
-        #           [^,\}]+ stops at the next comma or closing brace so datetime
-        #           values containing colons are captured as a single token.
-        $repaired = $repaired -replace ':\s*(?!")([^,\}]+)', ':"$1"'
-
-        if ($repaired -ceq $json) {
-            Write-Fail "Key material JSON could not be parsed. Raw value: $json"
-            throw
-        }
-        Write-Skip 'Note: Key Vault secret was not valid JSON (unquoted keys/values) — auto-repaired.'
-        try {
-            return $repaired | ConvertFrom-Json
-        } catch {
-            Write-Fail "Key material JSON repair failed. Repaired attempt: $repaired"
-            throw
-        }
     }
+    # Malformed (a legacy/external tool wrote unquoted keys/values, e.g. an unquoted
+    # GUID keyId). Repair the STRING so it parses. This fixes PARSING ONLY — it does
+    # NOT create, rotate, or alter any Key Vault key/secret/value.
+    # Step 1 — quote unquoted property names:  {version: → {"version":
+    $repaired = $json -replace '([\{,])\s*([a-zA-Z_]\w*)\s*:', '$1"$2":'
+    # Step 2 — quote unquoted property values ((?!") skips already-quoted values;
+    #          [^,\}]+ keeps datetime values with colons as one token).
+    $repaired = $repaired -replace ':\s*(?!")([^,\}]+)', ':"$1"'
+    if ($repaired -ceq $json) {
+        Write-Fail "Key material JSON could not be parsed. Raw value: $json"
+        throw
+    }
+    Write-Skip 'Note: Key Vault secret was not valid JSON (unquoted keys/values) — parsing was auto-repaired IN MEMORY (no Key Vault changes).'
+    return $repaired | ConvertFrom-Json
 }
 
 # ── Prerequisite checks ────────────────────────────────────────────────────────
@@ -372,6 +388,53 @@ if (Test-Path -LiteralPath $FilePath -PathType Leaf) {
 
 Write-OK "Found $($files.Count) .bite file(s)"
 
+# ── In-memory verification (-VerifyOnly) ───────────────────────────────────────
+# Decrypts every WFAES/DPAPI ConnectionString in MEMORY to prove the Key Vault key
+# works, and NEVER writes any plaintext (or any file) to disk. Exits before the
+# encrypt/decrypt/backup paths.
+if ($VerifyOnly) {
+    Write-Step 'Verifying ConnectionString values decrypt in-memory (no files written)...'
+    $vFiles = 0; $vOk = 0; $vFail = 0
+    $vFailFiles = [System.Collections.Generic.List[string]]::new()
+    foreach ($file in $files) {
+        $leafName = Split-Path $file -Leaf
+        try {
+            $content = Get-Content -LiteralPath $file -Raw -Encoding UTF8
+            if ($content -notmatch '<Source\b' -or $content -notmatch '\bConnectionString\s*=') { continue }
+            [xml]$xml = $content
+            $sources  = $xml.SelectNodes('//Source[@ConnectionString]')
+            $hadEnc   = $false
+            foreach ($src in $sources) {
+                $rawValue = $src.GetAttribute('ConnectionString')
+                if ([string]::IsNullOrWhiteSpace($rawValue)) { continue }
+                if (Test-IsWfAesEncrypted $rawValue) {
+                    $hadEnc = $true
+                    $null = Invoke-WfAesDecrypt $keyBytes $rawValue   # in-memory; result discarded
+                } elseif (Test-IsDpapiEncrypted $rawValue) {
+                    $hadEnc = $true
+                    $null = Invoke-DpapiDecrypt $rawValue
+                }
+            }
+            if ($hadEnc) { $vFiles++; $vOk++ }
+        } catch {
+            $vFiles++; $vFail++; $vFailFiles.Add($leafName)
+            Write-Fail "  Verify FAILED for '$leafName': $_"
+        }
+    }
+    [Array]::Clear($keyBytes, 0, $keyBytes.Length)
+    Write-Host ''
+    Write-Host ('─' * 55) -ForegroundColor DarkGray
+    Write-Host '  In-Memory Verification Summary' -ForegroundColor Cyan
+    Write-Host ('─' * 55) -ForegroundColor DarkGray
+    Write-Host "  Files with encrypted values : $vFiles"
+    Write-Host "  Decrypt OK (in-memory)       : $vOk"   -ForegroundColor ($vOk   -gt 0 ? 'Green' : 'DarkGray')
+    Write-Host "  Decrypt FAILED               : $vFail" -ForegroundColor ($vFail -gt 0 ? 'Red'   : 'DarkGray')
+    Write-Host ('─' * 55) -ForegroundColor DarkGray
+    if ($vFail -gt 0) { Write-Fail 'One or more values failed to decrypt.'; exit 1 }
+    Write-OK 'Verified: all encrypted ConnectionString values decrypt in-memory. No plaintext was written to disk.'
+    exit 0
+}
+
 # ── Step 3: Process each file ──────────────────────────────────────────────────
 # Shared
 $skippedCount          = 0
@@ -396,7 +459,9 @@ $stamp      = Get-Date -Format 'yyyy-MM-dd-HH-mm-ss-ff'
 $sourceBase = if (Test-Path -LiteralPath $FilePath -PathType Container) { $FilePath } else { Split-Path $FilePath -Parent }
 
 # ── Backup prompt (encrypt mode only) ─────────────────────────────────────────
-if (-not $Decrypt -and $files.Count -gt 0) {
+# Unattended runs (-NonInteractive / -NoBackup) skip the backup entirely so the
+# script never blocks on Read-Host; the caller is expected to operate on a copy.
+if (-not $Decrypt -and $files.Count -gt 0 -and -not $NoBackup -and -not $NonInteractive) {
     $yn = Read-Host 'Create a backup of .bite files before encrypting? [Y/n]'
     if ([string]::IsNullOrWhiteSpace($yn) -or $yn -imatch '^y') {
         $defaultBackupRoot = "$($FilePath.TrimEnd('\', '/'))_$stamp"
@@ -420,8 +485,15 @@ if (-not $Decrypt -and $files.Count -gt 0) {
 # ── Decrypt output directory ───────────────────────────────────────────────────
 if ($Decrypt) {
     $defaultDecryptRoot = "$($FilePath.TrimEnd('\', '/'))_decrypted_$stamp"
-    $inputPath          = Read-Host "Output directory for decrypted files [$defaultDecryptRoot]"
-    $decryptOutputRoot  = if ([string]::IsNullOrWhiteSpace($inputPath)) { $defaultDecryptRoot } else { $inputPath.Trim() }
+    if (-not [string]::IsNullOrWhiteSpace($OutputDirectory)) {
+        # Explicit target supplied (unattended) — no prompt.
+        $decryptOutputRoot = $OutputDirectory.Trim()
+    } elseif ($NonInteractive) {
+        $decryptOutputRoot = $defaultDecryptRoot
+    } else {
+        $inputPath         = Read-Host "Output directory for decrypted files [$defaultDecryptRoot]"
+        $decryptOutputRoot = if ([string]::IsNullOrWhiteSpace($inputPath)) { $defaultDecryptRoot } else { $inputPath.Trim() }
+    }
     Write-Step "Decrypted files will be written to '$decryptOutputRoot'"
 }
 

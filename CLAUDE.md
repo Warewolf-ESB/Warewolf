@@ -182,7 +182,7 @@ For each failure:
 
 | Error | Likely cause | Fix |
 |---|---|---|
-| HTTP 500 `resolved permissions [Execute] do not satisfy required [View, Execute]` | `secure.config` missing `Public` group `View=true` | Add `View: true` to the `Public` group entry, or set `WAREWOLF_BYPASS_SECURE_CONFIG=true` |
+| HTTP 500 `resolved permissions [Execute] do not satisfy required [View, Execute]` | `secure.config` missing `Public` group `View=true` | Add `View: true` to the `Public` group entry, or set `BYPASS_SECURE_CONFIG=true` |
 | `No connection could be made` / `Connection refused` on port 7071 | Engine not started or still booting | Wait for the engine to be reachable before running tests |
 | HTTP 404 on a workflow path | Workflow `.bite` file missing from `Resources/` | Verify the workflow file exists; check `workflow-index.json` |
 | `Assert.AreEqual failed` with mismatched values | Workflow logic or output mapping changed | Read the workflow XML and align test expectations |

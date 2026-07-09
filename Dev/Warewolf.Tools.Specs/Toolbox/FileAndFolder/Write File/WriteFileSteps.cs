@@ -32,7 +32,6 @@ using Dev2.Studio.Core.Activities.Utils;
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
 {
-#if WINDOWS
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
@@ -66,8 +65,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            _scenarioContext.Add("result", result);
-        }
+            _scenarioContext.Add("result", result);        }
 
         [Given(@"the input contents from a file ""(.*)""")]
         public void GivenTheInputContentsFromAFile(string fileName)
@@ -143,12 +141,13 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             _scenarioContext.Add("activity", fileWrite);
 
+#if WINDOWS
             var viewModel = new WriteFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
             if (!_scenarioContext.ContainsKey("viewModel"))
             {
                 _scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
 }

@@ -21,6 +21,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Activities.Utils;
 #endif
 using Dev2.Workspaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Activities.Statements;
@@ -36,8 +37,7 @@ using Dev2.Common;
 using Dev2.Runtime.Subscription;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
-{
-#if WINDOWS
+{ 
     [Binding]
     public class RenameSteps : FileToolsBase
     {
@@ -51,8 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-        }
+            scenarioContext.Add("result", result);        }
 
         protected new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
@@ -194,13 +193,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             }
 
             dsfRename.PerformValidation();
-
+#if WINDOWS
             var viewModel = new RenameDesignerViewModel(ModelItemUtils.CreateModelItem(dsfRename));
             if (!scenarioContext.ContainsKey("viewModel"))
             {
                 scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
+ 
 }

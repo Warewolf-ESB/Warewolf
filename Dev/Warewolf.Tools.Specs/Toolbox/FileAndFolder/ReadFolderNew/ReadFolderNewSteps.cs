@@ -23,7 +23,7 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
 {
-#if WINDOWS
+
     [Binding]
     public class ReadFolderNewSteps : FileToolsBase
     {
@@ -45,8 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            _scenarioContext.Add("result", result);
-        }
+            _scenarioContext.Add("result", result);        }
 
         protected override void BuildDataList()
         {
@@ -89,13 +88,18 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
                 Action = folderRead
             };
 
-            _scenarioContext.Add("activity", folderRead);
-            var viewModel = new ReadFolderNewDesignerViewModel(ModelItemUtils.CreateModelItem(folderRead));
-            if (!_scenarioContext.ContainsKey("viewModel"))
+            scenarioContext.Add("activity", folderRead);
+
+#if WINDOWS
+            var viewModel = new ReadFolderNewDesignerViewModel(
+                ModelItemUtils.CreateModelItem(folderRead));
+
+            if (!scenarioContext.ContainsKey("viewModel"))
             {
-                _scenarioContext.Add("viewModel", viewModel);
+                scenarioContext.Add("viewModel", viewModel);
             }
+#endif
         }
     }
-#endif
+
 }
