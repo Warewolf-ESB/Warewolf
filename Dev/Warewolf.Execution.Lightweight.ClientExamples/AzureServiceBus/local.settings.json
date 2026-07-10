@@ -1,0 +1,30 @@
+{
+  "//": "LOCAL DEV ONLY. NEVER COMMIT REAL VALUES. This file is git-ignored by Functions templates; keep it that way. In Azure, set these as the Function App's application settings instead.",
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "//ServiceBusConnection": "Connection string OR (preferred) '<namespace>.servicebus.windows.net' to use identity-based connection. For the latter add ServiceBusConnection__fullyQualifiedNamespace below instead.",
+    "ServiceBusConnection": "Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<policy>;SharedAccessKey=<key>",
+
+    "//WwExecution settings": "Bound to WwExecutionOptions. Double-underscore maps to nested config keys.",
+    "WwExecution__BaseUrl": "https://WWExecutionEngine.azurewebsites.net",
+    "WwExecution__TenantId": "00000000-0000-0000-0000-000000000000",
+    "WwExecution__ResourceAppId": "11111111-1111-1111-1111-111111111111",
+
+    "//Scope": "Optional. Defaults to api://{ResourceAppId}/.default when omitted.",
+    "WwExecution__Scope": "",
+
+    "//FunctionKey": "Only needed when calling /services/* routes.",
+    "WwExecution__FunctionKey": "",
+
+    "//Local client-secret fallback": "Set UseClientSecretFallback=true to authenticate with a daemon app (client id + secret) instead of Managed Identity. In Azure leave this false and rely on MI.",
+    "WwExecution__UseClientSecretFallback": "false",
+    "WwExecution__ClientId": "",
+    "WwExecution__ClientSecret": "",
+
+    "//ManagedIdentityClientId": "Optional user-assigned MI client id (Azure). Leave blank for system-assigned.",
+    "WwExecution__ManagedIdentityClientId": ""
+  }
+}

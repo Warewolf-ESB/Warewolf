@@ -94,6 +94,20 @@
     },
 
     {
+      "_comment": "Warewolf_ClientApps - app-only client apps (e.g. the AzureFunction example's Managed Identity). WindowsGroup must equal the sanitized Entra app-role value carried in the token's roles claim; the app role is created from the GroupPermissions key in Deploy-WwExecutionEngine.authconfig.json and assigned to the client SP by Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign.",
+      "WindowsGroup": "Warewolf_ClientApps",
+      "ResourceID": "22222222-2222-2222-2222-222222222222",
+      "ResourceName": "sales",
+      "IsServer": false,
+      "View": true,
+      "Execute": true,
+      "Contribute": false,
+      "DeployTo": false,
+      "DeployFrom": false,
+      "Administrator": false
+    },
+
+    {
       "_comment": "wwoperators group - can View+Execute the getdata workflow",
       "WindowsGroup": "wwoperators",
       "ResourceID": "33333333-3333-3333-3333-333333333333",

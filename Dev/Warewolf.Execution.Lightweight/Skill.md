@@ -581,8 +581,8 @@ emits security events through MEL → tune via `host.json` category
 | Elasticsearch | target index receives documents after a workflow run (check the `.bite` cluster) |
 | Audit | security events appear under the `AuditLogger` category |
 
-Full reference: [`docs/Warewolf-Lightweight-Logger-Guide.md`](./docs/Warewolf-Lightweight-Logger-Guide.md)
-(enable/disable + verification, all environments).
+Full reference: [`docs/Warewolf-Lightweight-Logging-Guide.md`](./docs/Warewolf-Lightweight-Logging-Guide.md)
+(all sinks, enable/disable + verification, App Insights setup, all environments).
 
 ---
 
@@ -671,7 +671,6 @@ entries in the enabled sinks.
 | Connection-string encryption | [`docs/README-Encryption.md`](./docs/README-Encryption.md) |
 | Key rotation | [`docs/KeyRotationRunbook.md`](./docs/KeyRotationRunbook.md) |
 | Security checklist | [`docs/SecurityChecklist.md`](./docs/SecurityChecklist.md) |
-| Logging enable/disable & verification | [`docs/Warewolf-Lightweight-Logger-Guide.md`](./docs/Warewolf-Lightweight-Logger-Guide.md) |
-| Application Insights | [`docs/README-ApplicationInsights.md`](./docs/README-ApplicationInsights.md) |
+| Logging (all sinks, enable/disable, verification, App Insights) | [`docs/Warewolf-Lightweight-Logging-Guide.md`](./docs/Warewolf-Lightweight-Logging-Guide.md) |
 | License encryption script | [`Protect-LicenseConfig.ps1`](./Protect-LicenseConfig.ps1) |
 | Deploy script | [`Deploy-ToAzure.ps1`](./Deploy-ToAzure.ps1) |
