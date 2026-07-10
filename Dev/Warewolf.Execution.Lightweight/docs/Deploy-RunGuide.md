@@ -21,6 +21,8 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 2. [Step-by-step execution](#2-step-by-step-execution)
 3. [Parameter reference](#3-parameter-reference)
 4. [Worked parameter examples](#4-worked-parameter-examples)
+5. [Resources: created by the script vs. assumed pre-existing](#5-resources-created-by-the-script-vs-assumed-pre-existing)
+6. [Troubleshooting](#6-troubleshooting)
 
 ---
 
@@ -28,15 +30,72 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 
 | Tool | Minimum version | Why it's needed | Download / install |
 |---|---|---|---|
-| **PowerShell** | **7.0+** (7.4 LTS recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest`, ternary/null-coalescing operators, `&&`/`\|\|`. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
+| **PowerShell** | **7.0+** (latest recommended) | The script declares `#Requires -Version 7.0`; uses `Set-StrictMode -Version Latest` and PowerShell 7 ternary operators. Windows PowerShell 5.1 will **not** run it. | [github.com/PowerShell/PowerShell/releases](https://github.com/PowerShell/PowerShell/releases/download/v7.6.3/PowerShell-7.6.3-win-x64.msi) · or `winget install Microsoft.PowerShell` |
 | **Azure CLI (`az`)** | **2.55.0+** (latest recommended) | All cloud provisioning (resource group, storage, Function App, App Insights, Key Vault, app settings, zip-deploy) runs through `az`. Must be logged in (`az login`). | [aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindowsx64) · or `winget install Microsoft.AzureCLI` |
 | **Azure Functions Core Tools (`func`)** | **4.x** | **Only** required when you choose `-PublishMethod Func` (advanced/opt-in). The default `Auto`/`Zip` path uses `az` zip-deploy and does **not** need `func`. | [github.com/Azure/azure-functions-core-tools](https://go.microsoft.com/fwlink/?linkid=2174087) · or `winget install Microsoft.Azure.FunctionsCoreTools` |
 
 **Azure-side prerequisites**
 
-- An Azure subscription with rights to create resource groups, storage accounts, Function Apps,
-  Application Insights, and (if encrypting) Key Vaults + role assignments.
+- An Azure subscription to deploy into.
 - You must be **logged in** and pointed at the right subscription (see Step 0 below).
+- The signed-in user must hold the roles below — see [Required roles & privileges](#required-roles--privileges).
+
+### Required roles & privileges
+
+The deploy chain touches **three independent planes** (Azure RBAC, Key Vault data plane, and
+Microsoft Entra ID). Azure RBAC roles never grant Entra permissions and vice-versa, so the user
+needs grants from each plane that applies to the flags you run with. The script grants itself only
+the Key Vault **data-plane** role — every other role below must already be on the user before you run.
+
+| Plane | Role | When needed | Why |
+|---|---|---|---|
+| **Azure RBAC** (control) | **Contributor** at **subscription** scope (or RG scope if the RG already exists) | Always | Creates the resource group, storage, Function App, App Insights, managed identity, app settings, zip-deploy, and Easy Auth. Creating the RG itself needs subscription scope. |
+| **Azure RBAC** (control) | **User Access Administrator** (or **Owner** / **Role Based Access Control Administrator**), scope covering the Key Vault (RG or subscription) | When a Key Vault is in play (`-EncryptResources`, or any `-KeyVaultName`) | The script runs `az role assignment create` (`Microsoft.Authorization/roleAssignments/write`), which **Contributor does not include**. This is the most commonly-missed grant. |
+| **Key Vault** (data) | **Key Vault Secrets Officer** on the vault | When a Key Vault is in play | Reads/writes the AES-key secret. The deploy **auto-assigns this to the signed-in user** — *but only if the user already has User Access Administrator / Owner above.* Pre-grant it manually if not. |
+| **Microsoft Entra** (directory) | **Application Administrator** (or Graph `Application.ReadWrite.All`) | Unless `-SkipAuthProvisioning` | Creates/updates the Entra app registration, service principal, OAuth scope, app roles, and client secret. |
+| **Microsoft Entra** (directory) | Directory **read users** + write user **appRoleAssignments** (covered by Application Administrator + default directory read) | When `UserAssignments` are provided (Stage 6) | Looks up each user by UPN and assigns app roles. Avoidable with `-SkipUserAssignment` / empty `UserAssignments`. |
+
+> **Minimal path.** With `-SkipAuthProvisioning` **and** no Key Vault (no encryption), **Contributor alone**
+> is enough — no User Access Administrator, no Entra role.
+
+> **Owner shortcut.** Granting **Owner** at subscription scope covers both Contributor and User Access
+> Administrator in one role. It does **not** cover the Entra (directory) roles — those are always separate.
+
+**Grant commands (an Admin runs these for the deploying user)**
+
+```powershell
+# --- Resolve the target user's object id ---
+$UserOid = az ad user show --id 'deployer@yourtenant.com' --query id -o tsv
+$Sub     = '<your-subscription-id>'   # e.g. 00000000-0000-0000-0000-000000000000
+$Rg      = '<your-resource-group>'
+$Vault   = '<your-key-vault-name>'
+
+# === A. Azure RBAC (control plane) ===
+# Simplest: Owner at subscription = Contributor + role-assignment rights in one grant
+az role assignment create --assignee $UserOid --role 'Owner' --scope "/subscriptions/$Sub"
+
+# --- OR least-privilege: the two roles separately ---
+az role assignment create --assignee $UserOid --role 'Contributor' --scope "/subscriptions/$Sub"
+az role assignment create --assignee $UserOid --role 'User Access Administrator' --scope "/subscriptions/$Sub"
+# (If the RG already exists you may scope these to
+#  "/subscriptions/$Sub/resourceGroups/$Rg" instead — but RG *creation* needs subscription scope.)
+
+# === B. Key Vault data plane (optional pre-grant; otherwise the deploy self-grants it
+#         IF the user has User Access Administrator / Owner. The vault must exist for this scope to resolve.) ===
+az role assignment create --assignee $UserOid --role 'Key Vault Secrets Officer' `
+  --scope "/subscriptions/$Sub/resourceGroups/$Rg/providers/Microsoft.KeyVault/vaults/$Vault"
+
+# === C. Entra directory role: Application Administrator ===
+# roleDefinitionId 9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3 = Application Administrator (fixed template id)
+az rest --method POST `
+  --url 'https://graph.microsoft.com/v1.0/roleManagement/directory/roleAssignments' `
+  --headers 'Content-Type=application/json' `
+  --body "{`"principalId`":`"$UserOid`",`"roleDefinitionId`":`"9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3`",`"directoryScopeId`":`"/`"}"
+```
+
+> The admin running **step C** must themselves be **Privileged Role Administrator** or **Global
+> Administrator**. Azure RBAC grants (steps A/B) require **Owner** or **User Access Administrator** at
+> the target scope.
 
 **Encryption-specific prerequisite**
 
@@ -67,9 +126,31 @@ az account show                # confirms you are logged in
 ```powershell
 # PowerShell 7+ (run as Administrator), Azure CLI installed and logged in
 az login
-az account set --subscription dd0bc517-5cc7-4b56-bd6a-68e6140db7b3
+
+# ── Set your deployment values ONCE — every example in this guide reuses these ──
+# Run this whole block in your session first; later snippets reference the $vars.
+$SubscriptionId          = '<your-subscription-id>'      # e.g. 00000000-0000-0000-0000-000000000000
+$ResourceGroup           = '<your-resource-group>'       # e.g. DEV2
+$Location                = 'southafricanorth'
+$StorageAccount          = '<your-storage-account>'      # 3-24 lowercase chars
+$AppName                 = '<your-function-app-name>'    # globally unique
+$PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200'
+$AuthConfigPath          = 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json'
+$SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'
+$WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'
+$LicenseConfigPath       = 'D:\ExecutionEngine\Warewolf License.secureconfig'
+$KeyVaultName            = '<your-key-vault-name>'
+$KeyVaultSecretName      = '<your-kv-secret-name>'
+$ElasticsearchSourcePath = 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite'
+$LogDir                  = 'D:\ExecutionEngine\Scripts\logs'
+
+az account set --subscription $SubscriptionId
 cd D:\ExecutionEngine\Scripts
 ```
+
+> **Set values once.** The block above defines every reused value as a `$variable`; all the
+> deploy snippets below (Step 1 and Examples A–F) reference those variables, so you only edit a
+> value in one place. Run the block in the same PowerShell session before the snippets.
 
 > The script can resolve `SubscriptionId` / `TenantId` from `az account show` when you omit them, so
 > setting the active subscription here is what targets the deployment.
@@ -81,18 +162,18 @@ $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
 Start-Transcript -Path ".\logs\deploy-$ts.log" | Out-Null
 
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
-  -LicenseConfigPath 'D:\ExecutionEngine\Warewolf License.secureconfig' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
+  -LicenseConfigPath $LicenseConfigPath `
   -EncryptResources:$true -VerifyDecryption `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
-  -EnableElasticsearch:$true -ElasticsearchSourcePath 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite' `
-  -LogDir 'D:\ExecutionEngine\Scripts\logs' `
+  -EnableElasticsearch:$true -ElasticsearchSourcePath $ElasticsearchSourcePath `
+  -LogDir $LogDir `
   -PublishMethod Zip
 
 Stop-Transcript | Out-Null
@@ -110,7 +191,7 @@ Stop-Transcript | Out-Null
 |---|---|
 | 0 / 0.5 | Pre-flight (`az` login, resolve subscription/tenant) → **PLAN**: resolve every decision, print a masked summary, ask once to proceed |
 | 1 | Create resource group, storage, Function App, Application Insights |
-| 2 | Provision Entra ID + Easy Auth (from `-AuthConfigPath`) |
+| 2 | Provision Microsoft Entra ID app registration, service principal, OAuth scope, app roles, and Easy Auth from the `-AuthConfigPath` JSON |
 | 3 | Stage secure.config (validate / auto-encrypt), workflow resources (+ optional WFAES encryption), Elasticsearch source, **generate `Resources\workflow-index.json`** (bundled into the zip), env vars |
 | 4 | Deploy the package to the Function App (zip-deploy) |
 | 5 | Verify — endpoint banner + optional HTTP probe |
@@ -132,7 +213,7 @@ Stop-Transcript | Out-Null
 First locate the **real** run's summary (exclude dry-run files):
 
 ```powershell
-$summary = (Get-ChildItem 'D:\ExecutionEngine\Scripts\logs\deploy-WwExecutionEngine-*.summary.json' |
+$summary = (Get-ChildItem (Join-Path $LogDir 'deploy-WwExecutionEngine-*.summary.json') |
             Where-Object { $_.Name -notlike '*dryrun*' } |
             Sort-Object LastWriteTime | Select-Object -Last 1).FullName
 $summary    # confirm it's the REAL run's summary
@@ -207,7 +288,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `-SkipAuthProvisioning` | switch | off | Skip Entra ID + Easy Auth provisioning entirely. |
-| `-AuthConfigPath` | string | prompt | JSON describing `GroupPermissions` + `UserAssignments` for `Configure-WwExecutionAuth.ps1`. |
+| `-AuthConfigPath` | string | prompt | JSON describing `GroupPermissions` + `UserAssignments` for `Configure-WwExecutionAuth.ps1`. Each `GroupPermissions` key becomes an app role assignable to users **and** to app-only client apps (daemon / Managed Identity); the example ships a dedicated `Warewolf_ClientApps` group for those callers — assign it to the client SP via `Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign` (the daemon / Managed Identity path defaults to `Warewolf_ClientApps` when the switch is omitted, and can enable a client Function App's system-assigned MI directly via `-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup`), and grant the matching `WindowsGroup` row `Execute` in `secure.config`. See `Deploy-WwExecutionEngine.authconfig.example.json`. |
 
 ### Package inputs
 
@@ -262,6 +343,8 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 
 ## 4. Worked parameter examples
 
+> All examples below reuse the `$variables` defined once in [Step 0](#step-0--log-in-and-select-the-subscription) — run that block in your session first.
+
 ### Example A — Dry run (no Azure changes; inspect the plan)
 
 Same arguments as the real deploy, plus `-DryRun`. Prints the full masked plan and writes a
@@ -269,9 +352,9 @@ Same arguments as the real deploy, plus `-DryRun`. Prints the full masked plan a
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
   -DryRun
 ```
 
@@ -282,12 +365,12 @@ auto-encrypted on staging.
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
   -EnableAppInsights:$false -EnableElasticsearch:$false `
   -PublishMethod Zip
 ```
@@ -298,15 +381,15 @@ Encrypt **once** with a brand-new AES key, verifying decryption in memory. App I
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
-  -LicenseConfigPath 'D:\ExecutionEngine\Warewolf License.secureconfig' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
+  -LicenseConfigPath $LicenseConfigPath `
   -EncryptResources:$true -VerifyDecryption -GenerateNewKey `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
   -PublishMethod Zip
 ```
@@ -318,14 +401,14 @@ Vault so the runtime app settings + managed-identity role are wired for decrypti
 
 ```powershell
 .\Deploy-WwExecutionEngine.ps1 `
-  -ResourceGroup DEV2 -Location southafricanorth `
-  -StorageAccount stwwenginetestv1 -AppName wwenginetestv1 `
-  -PublishPath 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200' `
-  -AuthConfigPath 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json' `
-  -SecureConfigPath 'C:\ProgramData\Warewolf\Server Settings\secure.config' `
-  -WorkflowsSourcePath 'C:\ProgramData\Warewolf\Resources' `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath `
+  -AuthConfigPath $AuthConfigPath `
+  -SecureConfigPath $SecureConfigPath `
+  -WorkflowsSourcePath $WorkflowsSourcePath `
   -EncryptResources:$false `
-  -KeyVaultName WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
   -EnableAppInsights:$true `
   -PublishMethod Zip
 ```
@@ -337,23 +420,23 @@ easy to diff/version.
 
 ```powershell
 $deploy = @{
-  ResourceGroup           = 'DEV2'
-  Location                = 'southafricanorth'
-  StorageAccount          = 'stwwenginetestv1'
-  AppName                 = 'wwenginetestv1'
-  PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200'
-  AuthConfigPath          = 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json'
-  SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'
-  WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'
-  LicenseConfigPath       = 'D:\ExecutionEngine\Warewolf License.secureconfig'
+  ResourceGroup           = $ResourceGroup
+  Location                = $Location
+  StorageAccount          = $StorageAccount
+  AppName                 = $AppName
+  PublishPath             = $PublishPath
+  AuthConfigPath          = $AuthConfigPath
+  SecureConfigPath        = $SecureConfigPath
+  WorkflowsSourcePath     = $WorkflowsSourcePath
+  LicenseConfigPath       = $LicenseConfigPath
   EncryptResources        = $true
   VerifyDecryption        = $true
-  KeyVaultName            = 'WWExecutionEngine'
-  KeyVaultSecretName      = 'WWExecutionEngineTestSecret'
+  KeyVaultName            = $KeyVaultName
+  KeyVaultSecretName      = $KeyVaultSecretName
   EnableAppInsights       = $true
   EnableElasticsearch     = $true
-  ElasticsearchSourcePath = 'D:\ExecutionEngine\ElasticsearchLoggingSource.bite'
-  LogDir                  = 'D:\ExecutionEngine\Scripts\logs'
+  ElasticsearchSourcePath = $ElasticsearchSourcePath
+  LogDir                  = $LogDir
   PublishMethod           = 'Zip'
 }
 
@@ -373,8 +456,79 @@ Force an early, explicit throw on any missing required value instead of promptin
 
 ---
 
+## 5. Resources: created by the script vs. assumed pre-existing
+
+The orchestrator is a **thin deployer**: it provisions cloud infrastructure and wires it up, but it
+does **not** build the package and does **not** create your input files or your identities. Every
+infrastructure resource is existence-checked first and recorded in the run summary's `created` map
+(`true` = this run created it; `false` = found pre-existing) so the rollback only ever removes what
+this run actually created.
+
+### Created by the script (when absent)
+
+| Resource | Condition | Notes |
+|---|---|---|
+| Resource group | Always | Created in `-Location` if it doesn't exist. |
+| Storage account | Always | `Standard_LRS`, `StorageV2`, TLS 1.2. |
+| Function App | Always | Consumption (Y1), `dotnet-isolated` 8, Functions v4, HTTPS-only. |
+| Application Insights | When `-EnableAppInsights` | Default name `<AppName>-ai`; worker telemetry wired via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. |
+| System-assigned managed identity | When a Key Vault is in play | Enabled on the Function App so the engine can read the key at runtime. |
+| **Key Vault** | **Only with `-EncryptResources`** | RBAC-authorized vault. If a vault is needed but missing and `-EncryptResources` is **off**, the script **throws** (it will not create one). |
+| **AES key (stored as a Key Vault *secret*)** | **Only with `-EncryptResources`, real run** | The "key" is AES-256 material written as a JSON **secret** (`-KeyVaultSecretName`). The script does **not** create a Key Vault *cryptographic key* object — no `az keyvault key create` is ever called. |
+| Key Vault role assignments | When a Key Vault is in play | `Key Vault Secrets User` → Function App identity (always); `Key Vault Secrets Officer` → current user (only when encrypting). |
+| Entra app registration, service principal, OAuth scope, app roles, client secret, Easy Auth config | Unless `-SkipAuthProvisioning` | Provisioned by `Configure-WwExecutionAuth.ps1`. Idempotent — re-runs upgrade in place. |
+| App settings / environment variables | Always | The engine's env-var map (see [§3](#3-parameter-reference)). |
+| `Resources\workflow-index.json` | When workflows are staged | Generated over the staged `Resources` and bundled into the deploy zip. |
+
+### Assumed to already exist (the script validates and **throws** if missing — it does not create these)
+
+| Item | Supplied via | Behaviour if missing |
+|---|---|---|
+| Azure subscription + active `az login` | `az login` (Step 0) | Pre-flight throws: "Not logged in to Azure CLI." |
+| The signed-in user's **roles/privileges** | Admin grants (see [Required roles & privileges](#required-roles--privileges)) | Not self-granted (except the Key Vault data-plane role). Azure returns authorization errors mid-run. |
+| **Published package** | `-PublishPath` (folder or `.zip`) | Throws — you must `dotnet publish` yourself first; the script never builds. |
+| `secure.config` | `-SecureConfigPath` | Validated (plaintext auto-encrypted; encrypted validated decryptable); throws if unreadable/invalid. |
+| Workflow `.bite` resources | `-WorkflowsSourcePath` | Throws if the path doesn't exist. |
+| `Warewolf License.secureconfig` | `-LicenseConfigPath` | **Optional.** If omitted, the license check (default ON) may fail at startup. |
+| `ElasticsearchLoggingSource.bite` | `-ElasticsearchSourcePath` | Required when `-EnableElasticsearch`; throws if missing or not named exactly `ElasticsearchLoggingSource.bite`. |
+| Auth config JSON | `-AuthConfigPath` | Throws if specified but not found. If omitted, auth is provisioned with empty group/user maps. |
+| Entra **users** referenced in `UserAssignments` | Auth config JSON | Each is resolved by UPN (`az ad user show`). A missing/typo'd UPN is **skipped with a warning** and Stage 6 continues — check the log so an intended user isn't silently skipped. |
+| **Existing Key Vault** | `-KeyVaultName` **without** `-EncryptResources` | Re-deploy of already-encrypted sources requires the vault to already exist — the script **throws** rather than creating it. |
+| Tooling: PowerShell 7+, Azure CLI (logged in), `func` (only for `-PublishMethod Func`) | Local install | Pre-flight throws if `az` is absent or not logged in; `func` is checked at publish time and throws then when `-PublishMethod Func` is selected. |
+
+> **Dry run note.** `-DryRun` creates nothing. A Key Vault / secret are only treated as "reachable"
+> if they already exist; otherwise encryption is deferred to a real run and the source is staged in
+> plaintext for preview.
+
+---
+
+## 6. Troubleshooting
+
+Common failures and how to resolve them. Most issues trace back to a missing prerequisite
+([§1](#1-prerequisites)) or a role/privilege gap ([Required roles & privileges](#required-roles--privileges)).
+
+| Symptom | Likely cause | Resolution |
+|---|---|---|
+| Script aborts citing `#Requires -Version 7.0` | Launched under Windows PowerShell 5.1 | Open **PowerShell 7+** and confirm with `$PSVersionTable.PSVersion`. 5.1 cannot run the script (see [§1](#1-prerequisites)). |
+| `az` calls fail with *"Please run 'az login'"* | Not logged in to Azure CLI | Run `az login`, then `az account set --subscription <id>` (Step 0). |
+| Deploy lands in the wrong subscription | Active subscription not set | `az account set --subscription <id>`, or pass `-SubscriptionId` explicitly. |
+| `az role assignment create` fails with an authorization error mid-run | Signed-in user lacks **User Access Administrator** / **Owner** over the Key Vault scope | Have an admin grant it (see [Required roles & privileges](#required-roles--privileges) step A). This is the most commonly-missed grant. |
+| Entra provisioning fails (app registration / role / secret) | User lacks **Application Administrator** (or Graph `Application.ReadWrite.All`) | Grant the Entra role (step C), or run with `-SkipAuthProvisioning` if auth is provisioned separately. |
+| A user in `UserAssignments` is silently not assigned | UPN typo / user not in directory | Stage 6 **skips with a warning** and continues — check the transcript so an intended user isn't missed. |
+| Phase 4 zip-deploy fails or times out | Large package, transient network, or Function App still starting | Inspect the transcript in `-LogDir`; re-run — the deploy is idempotent and existence-checks every resource. |
+| `-PublishMethod Func` fails immediately | `func` not installed, or pointed at a pre-built package | Use the default `Auto`/`Zip` (az zip-deploy) for the pre-built artifact; `Func` is advanced/opt-in and expects a project source dir. |
+| Engine returns HTTP 503 after deploy | Missing / invalid `secure.config` | Verify `-SecureConfigPath` resolves to a valid file (plaintext is auto-encrypted; an encrypted file must be engine-decryptable). |
+| Workflows blocked: *"valid Warewolf license required"* | No license staged (the check is ON by default) | Supply a valid `-LicenseConfigPath`. **There is no auto-generated test license** — if omitted, the license check may fail at startup. |
+| WFAES decryption fails at runtime | Key Vault app settings or managed-identity role not wired | Re-deploy passing `-KeyVaultName` / `-KeyVaultSecretName` (leave `-EncryptResources` **off** for already-encrypted sources — see [Example D](#example-d--re-deploy-already-encrypted-sources-do-not-re-encrypt)). |
+| DPAPI re-encryption fails | DPAPI sources can only be re-encrypted on the machine that created them | Run `-EncryptResources` on the original machine, or re-export the sources as plaintext first. |
+| App Insights blade shows *"Turn On Application Insights"* | **By design** — the engine reads the non-standard `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | Do **not** click "Turn On". Verify telemetry in the App Insights resource's own *Logs* / *Live Metrics* blades ([§3](#application-insights)). |
+| Rollback deletes the wrong resources | A dry-run summary was selected | Confirm the summary is the **real** run's file (exclude `*dryrun*`); the rollback only removes resources with `created = true` and previews by default (Step 2). |
+
+---
+
 ## Related docs
 
+- [Deploy-EndToEnd-Runbook.md](Deploy-EndToEnd-Runbook.md) — single copy-paste PS7 + `az` sequence covering engine deploy **and** daemon client-app registration (create client Function App → enable MI → assign `Warewolf_ClientApps`).
 - [Deployment-Steps.txt](Deployment-Steps.txt) — terse end-to-end runbook (incl. crash-safe summary + rollback notes).
 - [Scripts/README.md](../Scripts/README.md) — script-suite overview.
 - [README-Encryption.md](README-Encryption.md) · [README-Authentication.md](README-Authentication.md) · [Warewolf-Lightweight-Logging-Guide.md](Warewolf-Lightweight-Logging-Guide.md) — all logging (console, App Insights, Elasticsearch, audit).

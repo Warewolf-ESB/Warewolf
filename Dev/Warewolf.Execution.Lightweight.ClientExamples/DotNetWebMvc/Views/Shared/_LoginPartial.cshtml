@@ -1,0 +1,25 @@
+@using System.Security.Principal
+@using Microsoft.Identity.Web
+
+@*
+    Shows the signed-in user and a Sign out link, or a Sign in link.
+    The AccountController endpoints (SignIn / SignOut) come from
+    Microsoft.Identity.Web.UI via AddMicrosoftIdentityUI().
+*@
+<ul class="nav-auth">
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <li class="nav-user">
+            Hello, @(User.GetDisplayName() ?? User.Identity?.Name)
+        </li>
+        <li>
+            <a class="btn-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a class="btn-link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+        </li>
+    }
+</ul>
