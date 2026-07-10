@@ -1,4 +1,5 @@
 #pragma warning disable
+using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
 
@@ -21,6 +22,16 @@ namespace Dev2.Services.Sql
                 Pooling = true,
                 ApplicationName = "Warewolf Service"
             };
+            // In non-DPAPI / cloud hosts (e.g. the lightweight Azure Function) the target SQL Server
+            // may present a self-signed or otherwise untrusted certificate. Microsoft.Data.SqlClient
+            // defaults to Encrypt=true with full certificate-chain validation, which rejects such certs
+            // ("The certificate chain was issued by an authority that is not trusted."). Opt in to
+            // trusting the server certificate only when WAREWOLF_SQL_TRUST_SERVER_CERT is set, so
+            // production keeps strict validation by default.
+            if (bool.TryParse(Environment.GetEnvironmentVariable("WAREWOLF_SQL_TRUST_SERVER_CERT"), out var trustServerCertificate) && trustServerCertificate)
+            {
+                conStrBuilder.TrustServerCertificate = true;
+            }
             _actualConnectionString = conStrBuilder.ConnectionString;
             return _actualConnectionString;
         }

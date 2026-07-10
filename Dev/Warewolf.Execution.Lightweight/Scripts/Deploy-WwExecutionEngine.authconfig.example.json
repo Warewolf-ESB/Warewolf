@@ -6,9 +6,30 @@
     "GroupPermissions: each key is an Entra app role / group name; the value is",
     "  an array of Permission.* roles auto-assigned alongside the group role to",
     "  every user mapped to that group (empty array = group role only).",
+    "  Every key becomes an app role on the resource app with allowedMemberTypes",
+    "  ['User','Application'], so it is assignable both to users and to app-only",
+    "  clients (daemon / Managed Identity service principals).",
     "",
     "UserAssignments: each entry maps a user UPN to one of the groups above.",
     "  A UPN whose Group has no GroupPermissions entry receives only the group role.",
+    "",
+    "Client apps (app-only callers such as the AzureFunction / ServiceBus examples",
+    "  calling the engine with a Managed Identity or client-credentials token)",
+    "  CANNOT be listed in UserAssignments - that section is UPN-only. Instead:",
+    "  1. Keep a group for them in GroupPermissions (e.g. Warewolf_ClientApps)",
+    "     so the app role exists on the resource app.",
+    "  2. Assign that role to the client's service principal / Managed Identity",
+    "     via Configure-WwExecutionAuth-Clients.ps1 (or the per-example",
+    "     Configure-WwExecutionAuth-ClientApps.ps1) with",
+    "     -AppRolesToAssign Warewolf_ClientApps - a roleless app-only caller",
+    "     carries no 'roles' claim and is rejected by the engine.",
+    "  3. Add a matching secure.config WindowsGroupPermissions row",
+    "     (WindowsGroup = the app-role value, per-workflow IsServer=false,",
+    "     Execute=true) - the token's roles claim only authorizes what",
+    "     secure.config grants.",
+    "  Note: Entra sanitizes app-role values (runs of disallowed characters",
+    "  become '_'), so the secure.config WindowsGroup must use the sanitized",
+    "  value, e.g. 'Warewolf ClientApps' -> 'Warewolf_ClientApps'.",
     "",
     "Copy this file (drop the _comment), edit the values, and pass it via",
     "  -AuthConfigPath ./Deploy-WwExecutionEngine.authconfig.json"
@@ -17,11 +38,12 @@
   "GroupPermissions": {
     "Warewolf_Developers": [],
     "Warewolf_Operators": [],
-    "Warewolf_Adminstrators": []
+    "Warewolf_Administrators": [],
+    "Warewolf_ClientApps": []
   },
 
   "UserAssignments": [
-    { "Upn": "user1@theunlimited.co.za", "Group": "Warewolf_Adminstrators" },
+    { "Upn": "user1@theunlimited.co.za", "Group": "Warewolf_Administrators" },
     { "Upn": "user2@theunlimited.co.za", "Group": "Warewolf_Developers" },
     { "Upn": "user3@theunlimited.co.za", "Group": "Warewolf_Operators" }
   ]

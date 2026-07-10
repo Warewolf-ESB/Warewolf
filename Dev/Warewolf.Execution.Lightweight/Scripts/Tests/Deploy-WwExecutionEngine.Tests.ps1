@@ -23,8 +23,10 @@
 #>
 
 BeforeAll {
-    $script:DeployScript      = Join-Path (Split-Path $PSScriptRoot -Parent) 'Deploy-WwExecutionEngine.ps1'
-    $script:ExampleAuthConfig = Join-Path (Split-Path $PSScriptRoot -Parent) 'Deploy-WwExecutionEngine.authconfig.example.json'
+    $script:DeployScript        = Join-Path (Split-Path $PSScriptRoot -Parent) 'Deploy-WwExecutionEngine.ps1'
+    $script:ExampleAuthConfig   = Join-Path (Split-Path $PSScriptRoot -Parent) 'Deploy-WwExecutionEngine.authconfig.example.json'
+    $script:ExampleSecureConfig = Join-Path (Split-Path $PSScriptRoot -Parent) 'secure.config.example.json'
+    $script:CloudSecureConfig   = Join-Path (Split-Path $PSScriptRoot -Parent) 'secure.config.cloud.json'
 }
 
 Describe 'Deploy-WwExecutionEngine — static' {
@@ -57,6 +59,51 @@ Describe 'Deploy-WwExecutionEngine — auth config template' {
         $cfg = Get-Content $script:ExampleAuthConfig -Raw | ConvertFrom-Json -AsHashtable
         $cfg.GroupPermissions | Should -BeOfType [hashtable]
         @($cfg.UserAssignments).Count | Should -BeGreaterThan 0
+    }
+
+    It 'ships the dedicated Warewolf_ClientApps group for app-only client apps' {
+        $cfg = Get-Content $script:ExampleAuthConfig -Raw | ConvertFrom-Json -AsHashtable
+        $cfg.GroupPermissions.Keys | Should -Contain 'Warewolf_ClientApps'
+    }
+
+    It 'maps every UserAssignments group to an existing GroupPermissions key' {
+        # Guards against group-name drift/typos (e.g. Adminstrators vs Administrators):
+        # a UPN mapped to a non-existent group would silently receive only a group
+        # role that no GroupPermissions entry defines.
+        $cfg = Get-Content $script:ExampleAuthConfig -Raw | ConvertFrom-Json -AsHashtable
+        foreach ($u in @($cfg.UserAssignments)) {
+            $cfg.GroupPermissions.Keys | Should -Contain $u.Group
+        }
+    }
+}
+
+Describe 'Deploy-WwExecutionEngine — secure.config templates' {
+    # The Warewolf_ClientApps app role only authorizes app-only callers when
+    # secure.config carries a matching per-workflow WindowsGroup row — these
+    # tests keep the templates in lockstep with the authconfig example.
+
+    It 'example template grants Warewolf_ClientApps per-workflow View+Execute' {
+        $cfg  = Get-Content $script:ExampleSecureConfig -Raw | ConvertFrom-Json
+        $rows = @($cfg.WindowsGroupPermissions | Where-Object { $_.WindowsGroup -eq 'Warewolf_ClientApps' })
+        $rows.Count | Should -BeGreaterThan 0
+        foreach ($row in $rows) {
+            $row.IsServer | Should -BeFalse
+            [string]::IsNullOrWhiteSpace($row.ResourceName) | Should -BeFalse
+            $row.View     | Should -BeTrue
+            $row.Execute  | Should -BeTrue
+        }
+    }
+
+    It 'cloud template grants Warewolf_ClientApps per-workflow View+Execute' {
+        $cfg  = Get-Content $script:CloudSecureConfig -Raw | ConvertFrom-Json
+        $rows = @($cfg.WindowsGroupPermissions | Where-Object { $_.WindowsGroup -eq 'Warewolf_ClientApps' })
+        $rows.Count | Should -BeGreaterThan 0
+        foreach ($row in $rows) {
+            $row.IsServer | Should -BeFalse
+            [string]::IsNullOrWhiteSpace($row.ResourceName) | Should -BeFalse
+            $row.View     | Should -BeTrue
+            $row.Execute  | Should -BeTrue
+        }
     }
 }
 

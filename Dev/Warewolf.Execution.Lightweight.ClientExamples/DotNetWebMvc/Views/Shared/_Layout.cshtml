@@ -1,0 +1,34 @@
+<!-- Layout body. The host wraps this with <!doctype>/<head> via the shared template. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Warewolf Execution Engine Client</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="brand" asp-controller="Home" asp-action="Index">Warewolf Engine Client</a>
+            <ul class="nav-links">
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a asp-controller="Workflow" asp-action="Index">Run Workflow</a></li>
+            </ul>
+            <partial name="_LoginPartial" />
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            &copy; @DateTime.UtcNow.Year — Warewolf Execution Engine reference client (ASP.NET Core MVC, Microsoft.Identity.Web)
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

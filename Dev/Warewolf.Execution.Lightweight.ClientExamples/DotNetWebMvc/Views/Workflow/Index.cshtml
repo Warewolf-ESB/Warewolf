@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Run Workflow";
+    var workflow = ViewData["Workflow"] as string ?? "Hello World";
+    var name = ViewData["Name"] as string;
+    var result = ViewData["Result"] as string;
+    var error = ViewData["Error"] as string;
+}
+
+<section class="card">
+    <h1>Run a secured workflow</h1>
+    <p>
+        Calls <code>GET /secure/@(Uri.EscapeDataString(workflow)).json</code> on the engine with your
+        delegated access token. Change the workflow or <code>Name</code> parameter and re-run.
+    </p>
+
+    <form method="get" asp-controller="Workflow" asp-action="Index" class="run-form">
+        <label>
+            Workflow
+            <input type="text" name="workflow" value="@workflow" />
+        </label>
+        <label>
+            Name (query param)
+            <input type="text" name="name" value="@name" />
+        </label>
+        <button type="submit" class="btn">Run</button>
+    </form>
+</section>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <section class="card alert">
+        <h2>Error</h2>
+        <p>@error</p>
+    </section>
+}
+
+@if (!string.IsNullOrEmpty(result))
+{
+    <section class="card">
+        <h2>Engine response</h2>
+        <pre class="result">@result</pre>
+    </section>
+}

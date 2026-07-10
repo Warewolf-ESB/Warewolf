@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local environment (never commit real tenant values / secrets)
+.env.local
+.env.*.local
+
+# Editor / OS
+.vscode/
+.DS_Store
+*.log

@@ -1,0 +1,23 @@
+{
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    },
+    "logLevel": {
+      "default": "Information",
+      "Warewolf.Execution.ClientExamples.AzureServiceBus": "Information"
+    }
+  },
+  "extensions": {
+    "serviceBus": {
+      "maxConcurrentCalls": 16,
+      "maxAutoLockRenewalDuration": "00:05:00",
+      "autoCompleteMessages": true,
+      "prefetchCount": 0
+    }
+  }
+}
