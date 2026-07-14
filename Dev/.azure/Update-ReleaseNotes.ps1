@@ -26,7 +26,11 @@ param(
     [Parameter(Mandatory)] [string]$Path,
     [Parameter(Mandatory)] [string]$NewVersion,
     [string]$NewDate = (Get-Date -Format 'yyyy/MM/dd'),
-    [Parameter(Mandatory)] [string[]]$NotesBullets,
+    # Not mandatory: an empty array falls back to a default bullet below. PowerShell
+    # rejects binding an empty array to a *mandatory* array parameter, which would
+    # otherwise hard-fail the pipeline whenever the release notes textbox is left
+    # blank - release notes are optional, only PublishRelease should gate anything.
+    [string[]]$NotesBullets = @(),
     [Parameter(Mandatory)] [string]$EngineZipUrl,
     [Parameter(Mandatory)] [string]$ScriptsZipUrl
 )
