@@ -1,5 +1,64 @@
 # Azure Functions Telemetry Reference
 > PowerShell commands for querying Azure Function App performance data via Azure CLI and Application Insights REST API.
+>
+> **Project:** `Warewolf.Execution.Lightweight` — Azure Functions v4 isolated worker, .NET 8
+
+---
+
+## Project Overview
+
+| Property | Value |
+|---|---|
+| Project | `Warewolf.Execution.Lightweight` |
+| Azure Functions Version | v4 (isolated worker model) |
+| Target Framework | net8.0 |
+| Function App | `wwenginenewscriptai` |
+| Resource Group | `DEV2` |
+| Region | South Africa North |
+| Runtime | Framework-dependent (Azure-provided, not self-contained) |
+
+### Key Packages Relevant to Telemetry
+
+| Package | Version | Purpose |
+|---|---|---|
+| `Microsoft.Azure.Functions.Worker.ApplicationInsights` | 1.4.0 | App Insights integration for isolated worker |
+| `Microsoft.ApplicationInsights.WorkerService` | 2.22.0 | Must stay on **2.x** — 3.x causes `TypeLoadException` at startup |
+| `Elastic.Clients.Elasticsearch` | 8.15.6 | Secondary log/telemetry sink |
+| `Azure.Identity` | 1.20.0 | Managed Identity auth (used for Key Vault and Entra token) |
+
+### Startup Optimization Settings (Affects Cold Start Telemetry)
+
+```xml
+<!-- Faster CLR warmup — reduces cold start duration -->
+<TieredCompilation>true</TieredCompilation>
+<TieredPGO>true</TieredPGO>
+
+<!-- Prevents embedding runtime (~200MB saving) -->
+<SelfContained>false</SelfContained>
+<PublishSingleFile>false</PublishSingleFile>
+<PublishTrimmed>false</PublishTrimmed>
+<PublishReadyToRun>false</PublishReadyToRun>
+```
+
+> `TieredPGO` means the CLR JIT-compiles hot paths progressively — initial requests after a cold start may be slower than subsequent ones even within the same instance lifetime.
+
+### Publish Gating Note
+
+Debug builds with a `RuntimeIdentifier` set (e.g. `-r win-x64`) are **not publishable** (`IsPublishable=false`). Only Release builds trigger the full Azure publish pipeline via `Deploy-ToAzure.ps1`. Telemetry gaps during Debug CI runs are expected.
+
+---
+
+## Important: Ingestion Lag
+
+> App Insights has two query paths that behave differently:
+>
+> - `union ... | summarize count()` — reads from a **pre-aggregated summary**. Data appears almost instantly (seconds).
+> - `traces | where timestamp > ago(...)` — scans the **raw indexed table**. Requires **5–10 minutes** after ingestion before results appear.
+>
+> **Always wait 5–10 minutes after triggering a function before running raw table queries.**
+> If queries return `{"tables": []}` immediately after an invocation, wait and retry — the data is in flight.
+>
+> **Use single-line `--analytics-query` strings only.** Multiline PowerShell strings passed to `--analytics-query` can silently malform the KQL and return empty results even when data exists.
 
 ---
 
@@ -10,29 +69,79 @@
 az extension add --name application-insights --allow-preview True --upgrade
 ```
 
-### Set Common Variables
-> Update these values to match your environment. All commands below depend on these variables.
+### Required App Settings on the Function App
+
+> `ENABLEAPPLICATIONINSIGHTS=true` is the single authoritative switch — without it the App Insights SDK never registers and zero telemetry is sent, regardless of whether the connection string is present.
+> The project uses `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` instead of the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` to keep the Azure Functions host's own AI pipeline dormant.
 
 ```powershell
-$RG         = "DEV2"
-$FUNC_APP   = "wwengineai"
-$AI_NAME    = "wwengineai-ai"
-$SUB_ID     = "dd0bc517-5cc7-4b56-bd6a-68e6140db7b3"
-$APP_ID     = "85fdd0ce-0560-424c-8c23-4633d03c9877"
-$START_TIME = "2026-07-01T00:00:00Z"
-$END_TIME   = "2026-07-16T23:59:00Z"
-$RESOURCE   = "/subscriptions/$SUB_ID/resourceGroups/$RG/providers/Microsoft.Web/sites/$FUNC_APP"
+# Verify all required logging flags are set
+az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='ENABLEAPPLICATIONINSIGHTS' || name=='ENABLECONSOLELOGGING' || name=='ENABLEELASTICSEARCHLOGGING' || name=='EXECUTIONLOGLEVEL' || name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING'].{Key:name,Value:value}" --output table
+```
+
+| Setting | Required Value | Purpose |
+|---|---|---|
+| `ENABLEAPPLICATIONINSIGHTS` | `true` | **Must be true** — gates the entire AI SDK registration |
+| `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | `InstrumentationKey=...` | Connection string to App Insights |
+| `EXECUTIONLOGLEVEL` | `TRACE` / `INFO` / `WARN` | Min log level (use `INFO` in production) |
+| `ENABLECONSOLELOGGING` | `true` / `false` | stdout → filesystem / live log stream |
+| `ENABLEELASTICSEARCHLOGGING` | `true` / `false` | Elasticsearch sink |
+
+```powershell
+# Set if missing
+$AI_CONN_STR = az monitor app-insights component show --app $AI_NAME -g $RG --query "connectionString" -o tsv
+az functionapp config appsettings set --name $FUNC_APP -g $RG --settings "ENABLEAPPLICATIONINSIGHTS=true" "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$AI_CONN_STR" "EXECUTIONLOGLEVEL=INFO"
+```
+
+### Look Up Variable Values
+
+```powershell
+# SUB_ID — your active subscription
+$SUB_ID = az account show --query id -o tsv
+
+# RG — list all resource groups
+az group list --query "[].name" -o tsv
+
+# FUNC_APP — list all function apps in the resource group
+az functionapp list -g $RG --query "[].name" -o tsv
+
+# AI_NAME — list all App Insights in the resource group
+az resource list -g $RG --resource-type "microsoft.insights/components" --query "[].name" -o tsv
+
+# APP_ID — from App Insights name
+$APP_ID = az monitor app-insights component show --app $AI_NAME -g $RG --query appId -o tsv
+
+# ASP_RESOURCE — App Service Plan resource ID
+$ASP_RESOURCE = az functionapp show --name $FUNC_APP -g $RG --query "appServicePlanId" -o tsv
+```
+
+### Set Common Variables
+
+> `$START_TIME`/`$END_TIME` default to the last 15 days and are used only by `az monitor metrics list`. KQL queries use `ago(1d)` or `ago(15d)` directly.
+
+```powershell
+$RG           = "DEV2"
+$FUNC_APP     = "wwenginenewscriptai"
+$AI_NAME      = "wwenginenewscriptai-ai"
+$SUB_ID       = "dd0bc517-5cc7-4b56-bd6a-68e6140db7b3"
+$APP_ID       = "1e202c97-2eaa-44ea-83f5-5f75508d3bf0"
+$END_TIME     = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$START_TIME   = (Get-Date).AddDays(-15).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$RESOURCE     = "/subscriptions/$SUB_ID/resourceGroups/$RG/providers/Microsoft.Web/sites/$FUNC_APP"
 $ASP_RESOURCE = az functionapp show --name $FUNC_APP -g $RG --query "appServicePlanId" -o tsv
 ```
 
 ### Verify Variables
+
 ```powershell
-Write-Host "RG: $RG"
-Write-Host "AI_NAME: $AI_NAME"
-Write-Host "FUNC_APP: $FUNC_APP"
-Write-Host "APP_ID: $APP_ID"
-Write-Host "SUB_ID: $SUB_ID"
-Write-Host "RESOURCE: $RESOURCE"
+Write-Host "SUB_ID:       $SUB_ID"
+Write-Host "RG:           $RG"
+Write-Host "FUNC_APP:     $FUNC_APP"
+Write-Host "AI_NAME:      $AI_NAME"
+Write-Host "APP_ID:       $APP_ID"
+Write-Host "START_TIME:   $START_TIME"
+Write-Host "END_TIME:     $END_TIME"
+Write-Host "RESOURCE:     $RESOURCE"
 Write-Host "ASP_RESOURCE: $ASP_RESOURCE"
 ```
 
@@ -42,269 +151,131 @@ Write-Host "ASP_RESOURCE: $ASP_RESOURCE"
 
 ## Validate Data Exists
 
-Run these first to confirm App Insights is receiving telemetry before running detailed queries.
+> Run these first. These use aggregated queries and return data immediately — no ingestion lag.
 
 ```powershell
-# Check data exists across all telemetry tables
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "union requests, traces, dependencies, exceptions, customEvents | summarize count() by itemType"
+# Check row counts across all telemetry tables (aggregated — instant result)
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "union requests, traces, dependencies, exceptions, customEvents | summarize count() by itemType"
 
-# Check last recorded request (no time filter)
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "requests | summarize lastSeen=max(timestamp), total=count()"
+# Find actual timestamp range of ingested data
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | summarize min(timestamp), max(timestamp)"
 
-# Daily request breakdown across date range
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "requests | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME')) | summarize count() by bin(timestamp, 1d) | order by timestamp desc"
+# Total request count and last seen (no time filter)
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | summarize lastSeen=max(timestamp), total=count()"
 
 # Check App Insights sampling config and retention
-az monitor app-insights component show --app $AI_NAME -g $RG `
-  --query "{SamplingPercentage:samplingPercentage, RetentionDays:retentionInDays}" -o json
+az monitor app-insights component show --app $AI_NAME -g $RG --query "{SamplingPercentage:samplingPercentage, RetentionDays:retentionInDays}" -o json
 
-# Confirm App Insights is linked to the Function App
-az functionapp config appsettings list `
-  --name $FUNC_APP -g $RG `
-  --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING' || name=='APPINSIGHTS_INSTRUMENTATIONKEY'].{Key:name,Value:value}" `
-  --output table
+# Confirm WAREWOLF_APPINSIGHTS_CONNECTION_STRING and ENABLEAPPLICATIONINSIGHTS are set
+az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS'].{Key:name,Value:value}" --output table
 ```
 
 ---
 
 ## 1. Startup Traces (Uptime / Cold Start)
 
-Queries the `traces` table for Function App host startup and initialization events.
+> Wait 5–10 minutes after function invocation before running these.
+> Startup logs from `Program.cs` are emitted via `Dev2Logger` and appear in the `traces` table.
 
 ```powershell
-# Host startup events
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    traces
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | where message has 'Host started' or message has 'Host initialized'
-    | project timestamp, message, cloud_RoleInstance, operation_Id
-    | order by timestamp desc
-    | take 100
-  "
+# All startup and program init messages
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | where timestamp > ago(1d) | where message has 'Program' or message has 'Host started' or message has 'startup' or message has 'initialized' | project timestamp, severityLevel, message, cloud_RoleInstance | order by timestamp asc"
 
-# Cold start detection (requests flagged as cold starts)
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    requests
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | where customDimensions['ColdStart'] == 'True'
-    | summarize coldStarts=count(), avgDuration=avg(duration) by name, bin(timestamp, 1h)
-    | order by timestamp desc
-  "
+# Cold start detection
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | where customDimensions['ColdStart'] == 'True' | summarize coldStarts=count(), avgDuration=avg(duration) by name, bin(timestamp, 1h) | order by timestamp desc"
+
+# Startup duration per instance (first to last startup trace)
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | where timestamp > ago(1d) | where message has 'Program' | summarize startupStart=min(timestamp), startupEnd=max(timestamp) by cloud_RoleInstance, tostring(operation_Id) | extend startupMs=datetime_diff('millisecond', startupEnd, startupStart) | order by startupStart desc"
+
+# Active connections — proxy for uptime (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "AppConnections" --interval PT1M --start-time $START_TIME --end-time $END_TIME
 ```
 
 ---
 
 ## 2. Running Instances (Parallel Instances / Scale Out)
 
-Tracks how many Function App instances were active over time.
-
 ```powershell
-# Active connections via Azure Monitor
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "AppConnections" `
-  --interval PT1M `
-  --start-time $START_TIME `
-  --end-time $END_TIME
+# Distinct active instances in 5-minute buckets
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | where timestamp > ago(1d) | summarize instances=dcount(cloud_RoleInstance) by bin(timestamp, 5m) | order by timestamp desc"
 
-# Instance count via App Insights (distinct host instances)
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    traces
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize instances=dcount(cloud_RoleInstance) by bin(timestamp, 5m)
-    | order by timestamp desc
-  "
+# All distinct instances — first/last seen
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | where timestamp > ago(15d) | summarize firstSeen=min(timestamp), lastSeen=max(timestamp), traceCount=count() by cloud_RoleInstance | order by firstSeen desc"
 
-# Thread and handle count per instance
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "Threads,Handles,InstanceCount" `
-  --interval PT5M `
-  --start-time $START_TIME `
-  --end-time $END_TIME
+# Thread and handle count (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "Threads,Handles,InstanceCount" --interval PT5M --start-time $START_TIME --end-time $END_TIME
+
+# Active connections (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "AppConnections" --interval PT1M --start-time $START_TIME --end-time $END_TIME
 ```
 
 ---
 
 ## 3. Execution Metrics (Per Function Endpoint)
 
-Breaks down request counts, success rates, and latency per function endpoint.
-
 ```powershell
-# Execution count and compute units via Azure Monitor
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "FunctionExecutionCount,FunctionExecutionUnits" `
-  --interval PT5M `
-  --start-time $START_TIME `
-  --end-time $END_TIME
-
-# Per-function breakdown: count, success rate, avg/P95/P99 latency
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    requests
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize
-        total=count(),
-        success=countif(success==true),
-        avgDuration=avg(duration),
-        p95=percentile(duration, 95),
-        p99=percentile(duration, 99)
-      by name
-    | order by total desc
-  "
+# Per-function: count, success rate, avg/P95/P99 latency
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | summarize total=count(), success=countif(success==true), avgDuration=avg(duration), p95=percentile(duration, 95), p99=percentile(duration, 99) by name | order by total desc"
 
 # HTTP response code breakdown per endpoint
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    requests
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize count() by name, resultCode
-    | order by count_ desc
-  "
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | summarize count() by name, resultCode | order by count_ desc"
 
-# Average + P95 response time via Azure Monitor
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "AverageResponseTime,HttpResponseTime" `
-  --interval PT5M `
-  --aggregation Average Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
+# Daily request volume trend
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(15d) | summarize count() by bin(timestamp, 1d) | order by timestamp desc"
+
+# Execution count and compute units (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "FunctionExecutionCount,FunctionExecutionUnits" --interval PT5M --start-time $START_TIME --end-time $END_TIME
+
+# Average + max response time (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "AverageResponseTime,HttpResponseTime" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME
 ```
 
 ---
 
 ## 4. Memory / CPU Usage
 
-> **Important:** `CpuPercentage` is **not** a valid metric for `Microsoft.Web/sites`. Use IO metrics as a CPU proxy on the Function App, and query `CpuPercentage` on the **App Service Plan** resource instead.
+> **Important:** `CpuPercentage` is **not** valid for `Microsoft.Web/sites`. Query it on the **App Service Plan** resource instead.
 
-### Memory (Function App)
 ```powershell
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "MemoryWorkingSet,AverageMemoryWorkingSet,PrivateBytes" `
-  --interval PT5M `
-  --aggregation Average Minimum Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
-```
+# Memory — non-zero rows only, formatted as table
+$result = az monitor metrics list --resource $RESOURCE --metric "MemoryWorkingSet,PrivateBytes" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME | ConvertFrom-Json
+$result.value | ForEach-Object { $m = $_.name.value; $_.timeseries[0].data | Where-Object { $_.average -gt 0 -or $_.maximum -gt 0 } | ForEach-Object { [PSCustomObject]@{ Metric=$m; Timestamp=$_.timeStamp; Average_MB=[math]::Round($_.average/1MB,2); Maximum_MB=[math]::Round($_.maximum/1MB,2) } } } | Sort-Object Timestamp | Format-Table -AutoSize
 
-### IO Metrics — CPU Proxy (Function App)
-```powershell
-# Bytes per second
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "IoReadBytesPerSecond,IoWriteBytesPerSecond,IoOtherBytesPerSecond" `
-  --interval PT5M `
-  --aggregation Average Minimum Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
+# IO bytes per second — non-zero rows only
+$result = az monitor metrics list --resource $RESOURCE --metric "IoReadBytesPerSecond,IoWriteBytesPerSecond,IoOtherBytesPerSecond" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME | ConvertFrom-Json
+$result.value | ForEach-Object { $m = $_.name.value; $_.timeseries[0].data | Where-Object { $_.average -gt 0 -or $_.maximum -gt 0 } | ForEach-Object { [PSCustomObject]@{ Metric=$m; Timestamp=$_.timeStamp; Average=[math]::Round($_.average,2); Maximum=[math]::Round($_.maximum,2); Unit="Bytes/sec" } } } | Sort-Object Timestamp | Format-Table -AutoSize
 
-# Operations per second
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "IoReadOperationsPerSecond,IoWriteOperationsPerSecond,IoOtherOperationsPerSecond" `
-  --interval PT5M `
-  --aggregation Average Minimum Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
-```
+# IO operations per second — non-zero rows only
+$result = az monitor metrics list --resource $RESOURCE --metric "IoReadOperationsPerSecond,IoWriteOperationsPerSecond,IoOtherOperationsPerSecond" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME | ConvertFrom-Json
+$result.value | ForEach-Object { $m = $_.name.value; $_.timeseries[0].data | Where-Object { $_.average -gt 0 -or $_.maximum -gt 0 } | ForEach-Object { [PSCustomObject]@{ Metric=$m; Timestamp=$_.timeStamp; Average=[math]::Round($_.average,2); Maximum=[math]::Round($_.maximum,2); Unit="Ops/sec" } } } | Sort-Object Timestamp | Format-Table -AutoSize
 
-### CPU Percentage (App Service Plan)
-```powershell
-az monitor metrics list `
-  --resource $ASP_RESOURCE `
-  --metric "CpuPercentage,MemoryPercentage,DiskQueueLength,HttpQueueLength" `
-  --interval PT5M `
-  --aggregation Average Minimum Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
-```
+# CPU % on App Service Plan — non-zero rows only
+$result = az monitor metrics list --resource $ASP_RESOURCE --metric "CpuPercentage,MemoryPercentage" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME | ConvertFrom-Json
+$result.value | ForEach-Object { $m = $_.name.value; $_.timeseries[0].data | Where-Object { $_.average -gt 0 -or $_.maximum -gt 0 } | ForEach-Object { [PSCustomObject]@{ Metric=$m; Timestamp=$_.timeStamp; Average=[math]::Round($_.average,2); Maximum=[math]::Round($_.maximum,2); Unit="%" } } } | Sort-Object Timestamp | Format-Table -AutoSize
 
-### .NET GC Pressure
-```powershell
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "Gen0Collections,Gen1Collections,Gen2Collections" `
-  --interval PT5M `
-  --aggregation Average Maximum `
-  --start-time $START_TIME `
-  --end-time $END_TIME
-```
+# .NET GC pressure (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "Gen0Collections,Gen1Collections,Gen2Collections" --interval PT5M --aggregation Average Maximum --start-time $START_TIME --end-time $END_TIME
 
-### Performance Counters via App Insights
-```powershell
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    performanceCounters
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | where name in ('% Processor Time', 'Private Bytes', 'IO Data Bytes/sec')
-    | summarize avgValue=avg(value) by name, bin(timestamp, 5m)
-    | order by timestamp desc
-  "
+# Performance counters via App Insights
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "performanceCounters | where timestamp > ago(1d) | where name in ('% Processor Time', 'Private Bytes', 'IO Data Bytes/sec') | summarize avgValue=avg(value) by name, bin(timestamp, 5m) | order by timestamp desc"
 
-# List all available performance counters for this app
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    performanceCounters
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | distinct name, category
-  "
+# List all available performance counters
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "performanceCounters | where timestamp > ago(15d) | distinct name, category"
 ```
 
 ---
 
 ## 5. Parallel Request Execution Metrics
 
-Measures concurrency — how many requests were in-flight simultaneously across instances.
-
 ```powershell
-# Requests and queue depth via Azure Monitor
-az monitor metrics list `
-  --resource $RESOURCE `
-  --metric "Requests,RequestsInApplicationQueue" `
-  --interval PT1M `
-  --start-time $START_TIME `
-  --end-time $END_TIME
+# Max concurrent requests per minute per instance
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | summarize concurrent=count() by bin(timestamp, 1m), cloud_RoleInstance | summarize maxConcurrent=max(concurrent) by bin(timestamp, 1m) | order by timestamp desc"
 
-# Max concurrent requests per minute via App Insights
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    requests
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize concurrent=count() by bin(timestamp, 1m), cloud_RoleInstance
-    | summarize maxConcurrent=max(concurrent) by bin(timestamp, 1m)
-    | order by timestamp desc
-  "
+# Dependency summary — success vs failure with avg duration
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "dependencies | where timestamp > ago(1d) | summarize total=count(), failed=countif(success==false), avgDuration=avg(duration) by target, type | order by total desc"
 
-# Dependency (outbound call) failures
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    dependencies
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | where success == false
-    | summarize count() by target, type, bin(timestamp, 15m)
-    | order by timestamp desc
-  "
+# Requests and queue depth (Azure Monitor)
+az monitor metrics list --resource $RESOURCE --metric "Requests,RequestsInApplicationQueue" --interval PT1M --start-time $START_TIME --end-time $END_TIME
 ```
 
 ---
@@ -324,26 +295,17 @@ az monitor app-insights query `
 | IO throughput | `IoReadBytesPerSecond`, `IoWriteBytesPerSecond` | Azure Monitor |
 
 ```powershell
-# Exception rate
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    exceptions
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize count() by bin(timestamp, 1m), type
-    | order by timestamp desc
-  "
+# Exception rate per minute
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "exceptions | where timestamp > ago(1d) | summarize count() by bin(timestamp, 1m), type | order by timestamp desc"
 
-# Error rate per function
-az monitor app-insights query `
-  --app $AI_NAME -g $RG `
-  --analytics-query "
-    requests
-    | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME'))
-    | summarize total=count(), failures=countif(success==false) by name
-    | extend errorRate=round(100.0 * failures / total, 2)
-    | order by errorRate desc
-  "
+# Error rate per function endpoint
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | summarize total=count(), failures=countif(success==false) by name | extend errorRate=round(100.0 * failures / total, 2) | order by errorRate desc"
+
+# Requests per second (throughput)
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests | where timestamp > ago(1d) | summarize rps=count() by bin(timestamp, 1s) | summarize avgRps=avg(rps), maxRps=max(rps)"
+
+# Severity level breakdown of all traces
+az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "traces | where timestamp > ago(1d) | summarize count() by severityLevel | extend level=case(severityLevel==0,'Verbose',severityLevel==1,'Info',severityLevel==2,'Warning',severityLevel==3,'Error',severityLevel==4,'Critical','Unknown') | order by severityLevel asc"
 ```
 
 ---
@@ -354,7 +316,6 @@ An alternative to the CLI — useful for scripting, dashboards, or integrations.
 
 ### Authentication (Entra ID — API keys are retired)
 ```powershell
-# Get bearer token
 $TOKEN   = az account get-access-token --resource "https://api.applicationinsights.io" --query accessToken -o tsv
 $HEADERS = @{ Authorization = "Bearer $TOKEN" }
 $BASE    = "https://api.applicationinsights.io/v1/apps/$APP_ID"
@@ -363,39 +324,23 @@ $SPAN    = "timespan=$START_TIME/$END_TIME"
 
 ### Metrics Endpoint
 ```powershell
-# Request count over time
 Invoke-RestMethod -Uri "$BASE/metrics/requests/count?$SPAN&interval=PT5M" -Headers $HEADERS
-
-# Avg + P95 + P99 duration
 Invoke-RestMethod -Uri "$BASE/metrics/requests/duration?$SPAN&aggregation=avg,percentile_95,percentile_99&interval=PT5M" -Headers $HEADERS
-
-# Failed requests
 Invoke-RestMethod -Uri "$BASE/metrics/requests/failed/count?$SPAN" -Headers $HEADERS
-
-# Exception count
 Invoke-RestMethod -Uri "$BASE/metrics/exceptions/count?$SPAN" -Headers $HEADERS
-
-# List all available metric IDs
 Invoke-RestMethod -Uri "$BASE/metrics/metadata" -Headers $HEADERS
 ```
 
 ### Query Endpoint (KQL via POST)
 ```powershell
-$BODY = @{
-  query    = "requests | where timestamp between(datetime('$START_TIME') .. datetime('$END_TIME')) | summarize count(), avg(duration) by name | order by count_ desc"
-  timespan = "$START_TIME/$END_TIME"
-} | ConvertTo-Json
-
+$BODY = @{ query = "requests | where timestamp > ago(1d) | summarize count(), avg(duration) by name | order by count_ desc" } | ConvertTo-Json
 Invoke-RestMethod -Method POST -Uri "$BASE/query" -Headers $HEADERS -Body $BODY -ContentType "application/json"
 ```
 
 ### Events Endpoint (Individual Records)
 ```powershell
-# Last 50 exceptions
 Invoke-RestMethod -Uri "$BASE/events/exceptions?$SPAN&`$top=50&`$orderby=timestamp+desc" -Headers $HEADERS
-
-# Recent requests for a specific function
-Invoke-RestMethod -Uri "$BASE/events/requests?`$filter=request/name+eq+'HttpTrigger1'&`$top=100&$SPAN" -Headers $HEADERS
+Invoke-RestMethod -Uri "$BASE/events/requests?`$filter=request/name+eq+'ExecuteWorkflow'&`$top=100&$SPAN" -Headers $HEADERS
 ```
 
 > **Supported event types:** `requests`, `traces`, `exceptions`, `dependencies`, `customEvents`, `pageViews`, `availabilityResults`, `$all`
@@ -411,7 +356,7 @@ az monitor metrics list-definitions --resource $RESOURCE --output table
 # List all valid metrics for the App Service Plan
 az monitor metrics list-definitions --resource $ASP_RESOURCE --output table
 
-# List all functions in the app
+# List all functions and their states
 az functionapp function list --name $FUNC_APP -g $RG --output table
 
 # Tail live logs
@@ -421,17 +366,27 @@ az webapp log tail --name $FUNC_APP --resource-group $RG
 az account show --query id -o tsv
 
 # List all App Insights in subscription
-az resource list `
-  --resource-type "microsoft.insights/components" `
-  --query "[].{Name:name, ResourceGroup:resourceGroup, Location:location}" `
-  --output table
+az resource list --resource-type "microsoft.insights/components" --query "[].{Name:name, ResourceGroup:resourceGroup, Location:location}" --output table
 ```
 
 ---
 
-## Valid Metrics Reference for Microsoft.Web/sites
+## Severity Level Reference
 
-The following are all valid metric names for `--metric` when targeting a Function App resource:
+| `EXECUTIONLOGLEVEL` | App Insights `severityLevel` | Notes |
+|---|---|---|
+| TRACE | 0 | Most verbose — high volume, use in dev only |
+| DEBUG | 0 | Verbose |
+| INFO | 1 | Information — recommended for production |
+| WARN | 2 | Warning |
+| ERROR | 3 | Error |
+| FATAL | 4 | Critical |
+
+> Use `EXECUTIONLOGLEVEL=INFO` in production to reduce telemetry noise and App Insights ingestion cost.
+
+---
+
+## Valid Metrics Reference for Microsoft.Web/sites
 
 | Category | Metrics |
 |---|---|
