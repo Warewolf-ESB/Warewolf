@@ -6,6 +6,8 @@
 *.secureconfig
 # Warewolf lightweight engine — never commit an encrypted security config
 secure.config
+# Local backups created by Dev\.azure\Set-PipelineJobs.ps1
+/Dev/.azure/.pipeline-backups/
 *.force
 *.usi
 *.uws
