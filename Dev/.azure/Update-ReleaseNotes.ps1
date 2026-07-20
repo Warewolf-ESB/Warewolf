@@ -19,8 +19,8 @@
 .EXAMPLE
     .\Update-ReleaseNotes.ps1 -Path .\release-notes.php -NewVersion 3.0.2.90 `
         -NotesBullets @('Added X', 'Fixed Y') `
-        -EngineZipUrl 'https://storageaccountwarew83c6.blob.core.windows.net/releases/AzureFunctionsPackage-3.0.2.90.zip' `
-        -ScriptsZipUrl 'https://storageaccountwarew83c6.blob.core.windows.net/releases/Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip'
+        -EngineZipUrl 'https://stwwreleases.blob.core.windows.net/releases/AzureFunctionsPackage-3.0.2.90.zip' `
+        -ScriptsZipUrl 'https://stwwreleases.blob.core.windows.net/releases/Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip'
 #>
 param(
     [Parameter(Mandatory)] [string]$Path,
