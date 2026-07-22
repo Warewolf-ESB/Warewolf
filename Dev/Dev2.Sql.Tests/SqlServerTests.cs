@@ -1104,6 +1104,80 @@ namespace Dev2.Sql.Tests
 
         }
 
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithCredentials_ShouldStripCredentialsFromPrimaryConnectionString()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;";
+
+            //------------Execute Test---------------------------
+            var primaryConnectionString = connectionBuilder.ConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(primaryConnectionString, "Authentication=ActiveDirectoryManagedIdentity");
+            Assert.IsFalse(primaryConnectionString.Contains("fallbackuser"), "Primary Managed Identity connection string must not carry credentials.");
+            Assert.IsFalse(primaryConnectionString.Contains("fallbackpwd"), "Primary Managed Identity connection string must not carry credentials.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithCredentials_ShouldPrecomputeFallbackConnectionStringWithCredentials()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;";
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(fallbackConnectionString, "A fallback connection string must be precomputed when credentials are present alongside Managed Identity.");
+            StringAssert.Contains(fallbackConnectionString, "fallbackuser");
+            StringAssert.Contains(fallbackConnectionString, "fallbackpwd");
+            Assert.IsFalse(fallbackConnectionString.Contains("Authentication", StringComparison.OrdinalIgnoreCase), "Fallback connection string must drop the Managed Identity authentication mode so plain SQL auth is used.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithoutCredentials_ShouldNotPrecomputeFallback()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;";
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(fallbackConnectionString, "No fallback is available (and none is needed) when Managed Identity is used without embedded credentials.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenPlainConnectionString_ShouldNotPrecomputeFallback()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            var source = new DbSource
+            {
+                Server = "localhost",
+                ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows
+            };
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(source.ConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(fallbackConnectionString, "Non-Entra connection strings must never produce a fallback.");
+        }
+
     }
     class DbEx : DbException
     {

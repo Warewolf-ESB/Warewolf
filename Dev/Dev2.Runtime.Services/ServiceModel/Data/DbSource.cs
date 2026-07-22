@@ -119,6 +119,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region ConnectionString
 
+        // Microsoft Entra (Azure AD) Managed Identity support for SQL Server sources: detected purely
+        // from a hand-authored connection string containing "Authentication=Active Directory Managed
+        // Identity" (there is no Studio UI/enum for this — it is opt-in via the raw connection string
+        // only, scoped to the Lightweight execution engine's SQL Server driver). When detected, the
+        // getter below returns the original string verbatim — bypassing the "******"-masked
+        // reconstruction used for the other authentication types — so any User ID/Password present
+        // are preserved unmodified and can be used as a fallback by Dev2.Services.Sql if the Managed
+        // Identity connection attempt fails.
+        bool _isEntraManagedIdentityConnectionString;
+        string _entraRawConnectionString;
+
         public string ConnectionString
         {
             //
@@ -126,6 +137,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             //
             get
             {
+                if (ServerType == enSourceType.SqlDatabase && _isEntraManagedIdentityConnectionString && !string.IsNullOrEmpty(_entraRawConnectionString))
+                {
+                    return _entraRawConnectionString;
+                }
+
                 var portString = string.Empty;
                 switch (ServerType)
                 {
@@ -222,6 +238,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
 
                 AuthenticationType = AuthenticationType.Windows;
+                _isEntraManagedIdentityConnectionString = false;
+                _entraRawConnectionString = null;
                 bool containsTimeout = false;
                 int defaultTimeout = 30;
                 foreach (var prm in value.Split(';').Select(p => p.Split('=')))
@@ -275,6 +293,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                         case "trust server certificate":
                             TrustServerCertificate = bool.TryParse(prm[1], out var trustServerCertificate) && trustServerCertificate;
                             break;
+                        case "authentication":
+                            _isEntraManagedIdentityConnectionString = prm.Length > 1 &&
+                                (string.Equals(prm[1], "Active Directory Managed Identity", StringComparison.OrdinalIgnoreCase) ||
+                                 string.Equals(prm[1], "ActiveDirectoryManagedIdentity", StringComparison.OrdinalIgnoreCase));
+                            break;
                         default:
                             break;
                     }
@@ -283,6 +306,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                 if (!containsTimeout)
                 {
                     ConnectionTimeout = defaultTimeout;
+                }
+
+                if (_isEntraManagedIdentityConnectionString)
+                {
+                    _entraRawConnectionString = value;
                 }
             }
         }

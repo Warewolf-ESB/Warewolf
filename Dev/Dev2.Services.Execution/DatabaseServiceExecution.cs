@@ -337,11 +337,26 @@ namespace Dev2.Services.Execution
 
 
             var connectionBuilder = new ConnectionBuilder();
-            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(connectionTimeout)));
+            var connectionStringWithTimeout = Source.GetConnectionStringWithTimeout(connectionTimeout);
+            var connection = new SqlConnection(connectionBuilder.ConnectionString(connectionStringWithTimeout));
+            var entraFallbackConnectionString = connectionBuilder.FallbackConnectionString(connectionStringWithTimeout);
             var startTime = Stopwatch.StartNew();
             try
             {
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) when (!string.IsNullOrEmpty(entraFallbackConnectionString))
+                {
+                    Dev2Logger.Warn(
+                        $"SQL Server: Microsoft Entra Managed Identity authentication failed ({ex.Message}). Falling back to SQL Server username/password authentication.",
+                        GlobalConstants.WarewolfWarn);
+
+                    connection.Dispose();
+                    connection = new SqlConnection(entraFallbackConnectionString);
+                    connection.Open();
+                }
                 if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
                 {
                     MssqlReadDataForXml(update, startTime, connection, commandTimeout);
