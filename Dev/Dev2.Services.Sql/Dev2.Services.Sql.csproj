@@ -59,6 +59,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AzureSqlTransientErrorRetry.cs" />
     <Compile Include="ConnectionBuilder.cs" />
     <Compile Include="IConnectionBuilder.cs" />
     <Compile Include="ISqlConnection.cs" />

@@ -152,11 +152,28 @@ namespace Dev2.Services.Sql
                 return;
             }
 
-            try
+            if (string.IsNullOrEmpty(_entraFallbackConnectionString))
             {
                 _connection.Open();
+                return;
             }
-            catch (Exception ex) when (!string.IsNullOrEmpty(_entraFallbackConnectionString))
+
+            try
+            {
+                // Give Managed Identity a fair chance against transient failures (most notably
+                // a serverless Azure SQL database still resuming from Paused, which Azure SQL
+                // rejects fast with error 40613 rather than the client timing out) before
+                // falling back to the SQL-auth credentials.
+                AzureSqlTransientErrorRetry.Retry(
+                    () => _connection.Open(),
+                    AzureSqlTransientErrorRetry.IsTransient,
+                    AzureSqlTransientErrorRetry.ManagedIdentityMaxAttempts,
+                    AzureSqlTransientErrorRetry.ManagedIdentityRetryBaseDelay,
+                    (attempt, maxAttempts, ex) => Dev2Logger.Warn(
+                        $"SQL Server: Microsoft Entra Managed Identity authentication attempt {attempt}/{maxAttempts} hit a transient error ({ex.Message}). Retrying...",
+                        GlobalConstants.WarewolfWarn));
+            }
+            catch (Exception ex)
             {
                 Dev2Logger.Warn(
                     $"SQL Server: Microsoft Entra Managed Identity authentication failed ({ex.Message}). Falling back to SQL Server username/password authentication.",

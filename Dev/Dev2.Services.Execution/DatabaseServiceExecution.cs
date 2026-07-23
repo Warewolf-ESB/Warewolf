@@ -377,19 +377,37 @@ namespace Dev2.Services.Execution
             var startTime = Stopwatch.StartNew();
             try
             {
-                try
+                if (string.IsNullOrEmpty(entraFallbackConnectionString))
                 {
                     connection.Open();
                 }
-                catch (Exception ex) when (!string.IsNullOrEmpty(entraFallbackConnectionString))
+                else
                 {
-                    Dev2Logger.Warn(
-                        $"SQL Server: Microsoft Entra Managed Identity authentication failed ({BuildSqlErrorDetail(ex)}). Falling back to SQL Server username/password authentication.",
-                        GlobalConstants.WarewolfWarn);
+                    try
+                    {
+                        // Give Managed Identity a fair chance against transient failures (most
+                        // notably a serverless Azure SQL database still resuming from Paused,
+                        // which Azure SQL rejects fast with error 40613 rather than the client
+                        // timing out) before falling back to the SQL-auth credentials.
+                        AzureSqlTransientErrorRetry.Retry(
+                            () => connection.Open(),
+                            AzureSqlTransientErrorRetry.IsTransient,
+                            AzureSqlTransientErrorRetry.ManagedIdentityMaxAttempts,
+                            AzureSqlTransientErrorRetry.ManagedIdentityRetryBaseDelay,
+                            (attempt, maxAttempts, ex) => Dev2Logger.Warn(
+                                $"SQL Server: Microsoft Entra Managed Identity authentication attempt {attempt}/{maxAttempts} hit a transient error ({BuildSqlErrorDetail(ex)}). Retrying...",
+                                GlobalConstants.WarewolfWarn));
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Warn(
+                            $"SQL Server: Microsoft Entra Managed Identity authentication failed ({BuildSqlErrorDetail(ex)}). Falling back to SQL Server username/password authentication.",
+                            GlobalConstants.WarewolfWarn);
 
-                    connection.Dispose();
-                    connection = new SqlConnection(entraFallbackConnectionString);
-                    connection.Open();
+                        connection.Dispose();
+                        connection = new SqlConnection(entraFallbackConnectionString);
+                        connection.Open();
+                    }
                 }
                 if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
                 {

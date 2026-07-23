@@ -58,6 +58,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AzureSqlTransientErrorRetryTests.cs" />
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MySqlServerTests.cs" />
