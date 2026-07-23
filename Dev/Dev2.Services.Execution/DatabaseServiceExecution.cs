@@ -54,6 +54,40 @@ namespace Dev2.Services.Execution
         public int ConnectionTimeout { private get; set; }
         public int? CommandTimeout { private get; set; }
 
+        // Distinguishes an authentication rejection (credentials/contained-user problem, connection
+        // reached the server fine) from a network/firewall policy block (connection never got that
+        // far) so failures like "Login failed for user 'x'" aren't mistaken for an IP-allowlisting
+        // issue. Azure SQL always embeds the offending client IP directly in firewall-block error
+        // text (e.g. "Client with IP address 'x.x.x.x' is not allowed..."), so no separate IP logging
+        // is needed to act on that case - the message itself carries it.
+        private static string ClassifySqlErrorNumber(int errorNumber)
+        {
+            switch (errorNumber)
+            {
+                case 18456:
+                    return "Authentication rejected by SQL Server (bad credentials, auth mode mismatch, or user not mapped in the target database) - not a network/firewall issue.";
+                case 40615:
+                case 40532:
+                    return "Network/firewall policy blocked the connection before login was evaluated (client IP not allowed) - see the error text above for the rejected IP.";
+                case 40613:
+                    return "Requested database is currently unavailable (e.g. paused/scaling) - not an authentication issue.";
+                case -2:
+                case 258:
+                    return "Connection or command timeout - could be a cold start, network latency, or the server not responding.";
+                default:
+                    return "Unclassified SQL error number; see SQL Server documentation for error " + errorNumber + ".";
+            }
+        }
+
+        private static string BuildSqlErrorDetail(Exception ex)
+        {
+            if (ex is SqlException sqlEx)
+            {
+                return $"SQL Error [Number={sqlEx.Number}, Class={sqlEx.Class}, State={sqlEx.State}, Server={sqlEx.Server}]: {sqlEx.Message} ({ClassifySqlErrorNumber(sqlEx.Number)})";
+            }
+            return $"SQL Error: {ex.Message}";
+        }
+
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
             var server = new MySqlServer();
@@ -350,7 +384,7 @@ namespace Dev2.Services.Execution
                 catch (Exception ex) when (!string.IsNullOrEmpty(entraFallbackConnectionString))
                 {
                     Dev2Logger.Warn(
-                        $"SQL Server: Microsoft Entra Managed Identity authentication failed ({ex.Message}). Falling back to SQL Server username/password authentication.",
+                        $"SQL Server: Microsoft Entra Managed Identity authentication failed ({BuildSqlErrorDetail(ex)}). Falling back to SQL Server username/password authentication.",
                         GlobalConstants.WarewolfWarn);
 
                     connection.Dispose();
@@ -368,8 +402,9 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                errors.AddError($"SQL Error: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                var detail = BuildSqlErrorDetail(ex);
+                Dev2Logger.Error(detail, ex, GlobalConstants.WarewolfError);
+                errors.AddError($"{detail}{Environment.NewLine}{ex.StackTrace}");
             }
             finally
             {
