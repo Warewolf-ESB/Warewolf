@@ -1178,6 +1178,45 @@ namespace Dev2.Sql.Tests
             Assert.IsNull(fallbackConnectionString, "Non-Entra connection strings must never produce a fallback.");
         }
 
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("SqlConnectionWrapper")]
+        public void SqlConnectionWrapper_GivenManagedIdentityConnectionString_ShouldUseLongerDefaultConnectTimeout()
+        {
+            //------------Setup for test--------------------------
+            var sqlConnectionWrapper = new SqlConnectionWrapper();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;";
+
+            //------------Execute Test---------------------------
+            var actualConnectionString = sqlConnectionWrapper.CreateConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            var builder = new SqlConnectionStringBuilder(actualConnectionString);
+            Assert.AreEqual(60, builder.ConnectTimeout, "Managed Identity connections should use a fixed 60s ConnectTimeout to survive Entra token acquisition and serverless Azure SQL auto-resume.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("SqlConnectionWrapper")]
+        public void SqlConnectionWrapper_GivenPlainConnectionString_ShouldKeepDefaultConnectTimeoutOf30()
+        {
+            //------------Setup for test--------------------------
+            var sqlConnectionWrapper = new SqlConnectionWrapper();
+            var source = new DbSource
+            {
+                Server = "localhost",
+                ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows
+            };
+
+            //------------Execute Test---------------------------
+            var actualConnectionString = sqlConnectionWrapper.CreateConnectionString(source.ConnectionString);
+
+            //------------Assert Results-------------------------
+            var builder = new SqlConnectionStringBuilder(actualConnectionString);
+            Assert.AreEqual(30, builder.ConnectTimeout, "Non-Entra connections must keep the existing 30s default ConnectTimeout, unaffected by the Managed Identity timeout.");
+        }
+
     }
     class DbEx : DbException
     {

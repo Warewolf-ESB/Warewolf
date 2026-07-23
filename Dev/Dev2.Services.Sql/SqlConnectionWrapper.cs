@@ -19,6 +19,10 @@ namespace Dev2.Services.Sql
         // connection string) — in which case a failed open is simply propagated as before.
         private string _entraFallbackConnectionString;
         SqlConnection _connection;
+
+        private const int DefaultConnectTimeoutSeconds = 30;
+        private const int DefaultEntraManagedIdentityConnectTimeoutSeconds = 60;
+
         public SqlConnectionWrapper()
         {
         }
@@ -27,7 +31,7 @@ namespace Dev2.Services.Sql
         {
             var conStrBuilder = new SqlConnectionStringBuilder(connString)
             {
-                ConnectTimeout = 30,
+                ConnectTimeout = DefaultConnectTimeoutSeconds,
                 MaxPoolSize = 100,
                 Pooling = true,
                 ApplicationName = "Warewolf Service"
@@ -41,6 +45,18 @@ namespace Dev2.Services.Sql
             if (bool.TryParse(Environment.GetEnvironmentVariable("WAREWOLF_SQL_TRUST_SERVER_CERT"), out var trustServerCertificate) && trustServerCertificate)
             {
                 conStrBuilder.TrustServerCertificate = true;
+            }
+
+            // Microsoft Entra Managed Identity connections need more headroom than the default
+            // 30s ConnectTimeout: acquiring the Managed Identity token (IMDS/Entra ID) and, for
+            // serverless Azure SQL databases, waiting for auto-resume from a paused state can
+            // together take well over 30 seconds - even though a subsequent plain SQL-auth
+            // fallback attempt (started once the database is already resuming) then succeeds
+            // quickly, masking the fact that Managed Identity never got a fair chance to
+            // connect. Use a longer fixed timeout for Managed Identity connections only.
+            if (conStrBuilder.Authentication == SqlAuthenticationMethod.ActiveDirectoryManagedIdentity)
+            {
+                conStrBuilder.ConnectTimeout = DefaultEntraManagedIdentityConnectTimeoutSeconds;
             }
 
             _entraFallbackConnectionString = null;
