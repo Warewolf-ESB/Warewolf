@@ -342,10 +342,86 @@ curl "https://$ClientAppName.azurewebsites.net/api/run/Hello%20World?Name=FromDa
 
 ---
 
-## 7. Teardown
+## 7. (Optional) ExecutionEngineJobProcessor — deploy + authorize
+
+The **ExecutionEngineJobProcessor** (`Warewolf.Execution.EngineJobProcessor`) is the
+dedicated timer-driven Function App that replaces `hangfireserver.exe`: it polls Hangfire
+SQL storage for **due `Scheduled`** suspend/resume jobs and fire-and-forget POSTs each to
+the engine's `/secure/resume/{jobId}` route (managed-identity bearer token), and reaps
+stale `Processing` jobs to `Failed` (fail-only). It is a **daemon caller of the engine**,
+so it obeys the SAME two-part authorization contract as any client — just with the role
+**`Warewolf_JobProcessor`** and the resume route:
+
+- **Token side** — the processor's system-assigned MI must hold the engine app role
+  `Warewolf_JobProcessor` (roleless ⇒ HTTP **500**, WOLF-8418).
+- **Config side** — the engine's `secure.config` must grant that role a **global-scope**
+  (`IsServer=true`) `Execute` row, because the resume route has no per-workflow resource
+  entry (see [§2](#2-prepare-the-engines-auth--permission-config)). Add `Warewolf_JobProcessor`
+  to the engine's auth config + `secure.config` before this step.
+
+### 7a. Deploy the processor
+
+Publish first (the script does **not** build), then deploy standalone:
+
+```powershell
+dotnet publish Dev/Warewolf.Execution.EngineJobProcessor/Warewolf.Execution.EngineJobProcessor.csproj -c Release -o D:\JobProcessor\Publish
+
+.\Deploy-WwJobProcessor.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount stwwjobproc -AppName $JobProcessorApp `
+  -PublishPath D:\JobProcessor\Publish `
+  -EngineResumeBaseUrl $EngineUrl `
+  -EngineResumeScope "api://$ResourceAppId/.default" `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName
+  # -PersistenceSettingsPath / -PersistenceDbSourcePath are PROMPTED if omitted
+```
+
+…or as a companion of the engine deploy (runs after the engine, reusing the engine's URL +
+Key Vault + persistence pair; prompts for anything not passed):
+
+```powershell
+.\Deploy-WwExecutionEngine.ps1 ... -EnablePersistence `
+  -DeployJobProcessor -JobProcessorAppName $JobProcessorApp `
+  -JobProcessorPublishPath D:\JobProcessor\Publish `
+  -EngineResumeScope "api://$ResourceAppId/.default"
+```
+
+### 7b. Authorize the processor MI (role `Warewolf_JobProcessor`)
+
+Mirror the daemon registration from [§5](#5-register-the-client-as-a-daemon), substituting
+the role — `-AppRolesToAssign` **fails loudly** if `Warewolf_JobProcessor` does not exist on
+the engine (add it in [§2](#2-prepare-the-engines-auth--permission-config) first):
+
+```powershell
+.\Configure-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId `
+  -ClientType Daemon -DaemonUseManagedIdentity `
+  -DaemonFunctionAppName $JobProcessorApp `
+  -DaemonFunctionAppResourceGroup $ResourceGroup `
+  -AppRolesToAssign Warewolf_JobProcessor `
+  -NonInteractive
+```
+
+### 7c. Verify
+
+```powershell
+# Functions registered (JobPoll + JobReaper timers):
+az functionapp function list --name $JobProcessorApp --resource-group $ResourceGroup -o table
+```
+
+A successful dispatch shows the engine returning **200** (claimed + executed) or **409**
+(benign duplicate); a stale `Processing` job is failed by the reaper — never re-run.
+
+---
+
+## 8. Teardown
 
 ```powershell
 # Remove the client registration / role assignment (safe to re-run):
+.\Remove-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId -ClientType Daemon
+
+# Remove the JobProcessor role assignment (if deployed — §7):
 .\Remove-WwExecutionAuth-Clients.ps1 `
   -ResourceAppId $ResourceAppId -TenantId $TenantId -ClientType Daemon
 
@@ -354,12 +430,19 @@ $summary = (Get-ChildItem "$LogDir\deploy-WwExecutionEngine-*.summary.json" |
             Where-Object { $_.Name -notlike '*dryrun*' } |
             Sort-Object LastWriteTime | Select-Object -Last 1).FullName
 .\Rollback-WwExecutionEngine.ps1 -SummaryPath $summary
+
+# Roll back the JobProcessor deployment (same summary schema + run tags):
+$jpSummary = (Get-ChildItem "$LogDir\deploy-WwJobProcessor-*.summary.json" -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -notlike '*dryrun*' } |
+              Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+if ($jpSummary) { .\Rollback-WwExecutionEngine.ps1 -SummaryPath $jpSummary }
 ```
 
 ---
 
 ## Related docs
 
+- [HangfireDemo-Deploy-Validate-Runbook.md](HangfireDemo-Deploy-Validate-Runbook.md) — deploy **with persistence** + validate the suspend/resume demo (suspend → poll → scheduled resume → manual resumption).
 - [Deploy-RunGuide.md](Deploy-RunGuide.md) — full engine-deploy reference (parameters, roles, encryption, troubleshooting).
 - `Scripts/Configure-WwExecutionAuth-Clients.ps1` / `Configure-WwExecutionAuth-ClientApps.ps1` — client registration (`-?` for help).
 - `Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/README.md` — the daemon client sample.

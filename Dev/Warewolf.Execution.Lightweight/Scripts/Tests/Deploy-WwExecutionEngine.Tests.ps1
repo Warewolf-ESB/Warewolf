@@ -51,6 +51,18 @@ Describe 'Deploy-WwExecutionEngine — static' {
         Get-Command Resolve-Toggle -CommandType Function -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Test-SecureConfig -CommandType Function -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
+
+    It 'exposes the persistence + JobProcessor parameters (DeployJobProcessor is an off-by-default switch)' {
+        $ast   = [System.Management.Automation.Language.Parser]::ParseFile($script:DeployScript, [ref]$null, [ref]$null)
+        $names = $ast.ParamBlock.Parameters | ForEach-Object { $_.Name.VariablePath.UserPath }
+        foreach ($p in 'EnablePersistence','PersistenceSettingsPath','PersistenceDbSourcePath',
+                       'DeployJobProcessor','JobProcessorAppName','JobProcessorPublishPath',
+                       'JobProcessorStorageAccount','EngineResumeScope') {
+            $names | Should -Contain $p
+        }
+        $dj = $ast.ParamBlock.Parameters | Where-Object { $_.Name.VariablePath.UserPath -eq 'DeployJobProcessor' }
+        $dj.StaticType.Name | Should -Be 'SwitchParameter'   # switch -> off unless passed
+    }
 }
 
 Describe 'Deploy-WwExecutionEngine — auth config template' {
@@ -255,8 +267,8 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             return '{}'
         }
 
-        # A throwaway publish directory (its contents are copied into a dry-run
-        # sibling and staged into; the real dir is never modified by a dry-run).
+        # A throwaway publish directory (its contents are copied into a fresh temp
+        # staging dir and staged into; the real dir is never modified by any run).
         $global:pubDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwpub-" + [guid]::NewGuid())
         New-Item -ItemType Directory -Path $global:pubDir -Force | Out-Null
         '{ "logging": { "logLevel": { "default": "Information" } } }' | Set-Content (Join-Path $global:pubDir 'host.json')
@@ -284,8 +296,8 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
     AfterEach {
         if ($global:pubDir -and (Test-Path -LiteralPath $global:pubDir)) { Remove-Item -LiteralPath $global:pubDir -Recurse -Force }
         if ($global:logDir -and (Test-Path -LiteralPath $global:logDir)) { Remove-Item -LiteralPath $global:logDir -Recurse -Force }
-        # Dry-run sibling preview dirs ('<pubDir>-dryrun-<stamp>').
-        Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter ((Split-Path $global:pubDir -Leaf) + '-dryrun-*') -ErrorAction SilentlyContinue |
+        # Temp staging dirs ('wwexecutionengine-stage-<AppName>-<stamp>[-dryrun]').
+        Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter 'wwexecutionengine-stage-*' -ErrorAction SilentlyContinue |
             ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
     }
 
@@ -463,11 +475,11 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
                 $callArgs = $script:commonArgs.Clone(); $callArgs.PublishPath = $zipPath
                 $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
                 $out | Should -Match 'extracted from zip'          # pre-confirm summary line
-                $out | Should -Match 'building preview artifact'    # dry-run extracts into the sibling
+                $out | Should -Match 'building preview artifact'    # dry-run extracts into the temp staging dir
             } finally {
                 Remove-Item -LiteralPath $zipSrc -Recurse -Force -ErrorAction SilentlyContinue
                 Remove-Item -LiteralPath $zipPath -Force -ErrorAction SilentlyContinue
-                Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter ((Split-Path $zipSrc -Leaf) + '-dryrun-*') -ErrorAction SilentlyContinue |
+                Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter 'wwexecutionengine-stage-*' -ErrorAction SilentlyContinue |
                     ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
             }
         }
@@ -478,6 +490,43 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
                 $callArgs = $script:commonArgs.Clone(); $callArgs.PublishPath = $txt
                 { & $script:DeployScript @callArgs } | Should -Throw '*folder or a .zip*'
             } finally { Remove-Item -LiteralPath $txt -Force -ErrorAction SilentlyContinue }
+        }
+    }
+
+    Context 'JobProcessor companion — separate publish directory' {
+        BeforeEach {
+            # A DISTINCT publish output for the processor (different Function App / csproj).
+            $global:jpPubDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwjppub-" + [guid]::NewGuid())
+            New-Item -ItemType Directory -Path $global:jpPubDir -Force | Out-Null
+            '{ "version": "2.0" }' | Set-Content -LiteralPath (Join-Path $global:jpPubDir 'host.json')
+        }
+        AfterEach {
+            if (Test-Path -LiteralPath $global:jpPubDir) { Remove-Item -LiteralPath $global:jpPubDir -Recurse -Force -ErrorAction SilentlyContinue }
+            Remove-Variable -Name jpPubDir -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'throws at plan time when JobProcessorPublishPath equals the engine PublishPath' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.DeployJobProcessor      = $true
+            $callArgs.JobProcessorPublishPath = $global:pubDir   # SAME dir as the engine -> illegal
+            { & $script:DeployScript @callArgs } | Should -Throw '*SAME directory*'
+        }
+
+        It 'throws when -DeployJobProcessor is set but JobProcessorPublishPath is omitted (NonInteractive)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.DeployJobProcessor = $true              # no JobProcessorPublishPath supplied
+            { & $script:DeployScript @callArgs } | Should -Throw '*JobProcessorPublishPath*'
+        }
+
+        It 'accepts a distinct JobProcessorPublishPath and invokes the companion child (dry-run)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.DeployJobProcessor      = $true
+            $callArgs.JobProcessorPublishPath = $global:jpPubDir
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'JobProcessor PublishPath'
+            $out | Should -Match 'separate from engine PublishDir'
+            $out | Should -Match 'Phase 6  Deploy ExecutionEngineJobProcessor'
+            $out | Should -Match "\[DRYRUN\] & 'Deploy-WwJobProcessor.ps1'"
         }
     }
 
@@ -596,10 +645,10 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Match 'Generating workflow index'
             $out | Should -Match 'workflow-index\.json generated \(1 entry\)'
 
-            # The file must exist in the dry-run preview artifact's Resources folder.
+            # The file must exist in the temp staging dir's Resources folder.
             $previewDir = Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory `
-                -Filter ((Split-Path $global:pubDir -Leaf) + '-dryrun-*') -ErrorAction SilentlyContinue |
-                Select-Object -Last 1
+                -Filter 'wwexecutionengine-stage-wwenginetest-*' -ErrorAction SilentlyContinue |
+                Sort-Object LastWriteTime | Select-Object -Last 1
             $previewDir | Should -Not -BeNullOrEmpty
             $indexPath = Join-Path $previewDir.FullName 'Resources/workflow-index.json'
             Test-Path -LiteralPath $indexPath | Should -BeTrue

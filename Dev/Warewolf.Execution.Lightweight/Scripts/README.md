@@ -8,8 +8,10 @@ control plane.
 |-----------------------------------------------|-------------------------------------------------------------------------|
 | `Deploy-WwExecutionEngine.ps1`                | **End-to-end deployment orchestrator** — runs every step in `docs/Deployment-Steps.txt` (RG → storage → Function App → App Insights → Entra/Easy Auth → publish, with optional Key Vault setup + resource encryption). Thin: reuses the scripts below. |
 | `Deploy-WwExecutionEngine.authconfig.example.json` | Template for the orchestrator's `-AuthConfigPath` (GroupPermissions + UserAssignments). Each GroupPermissions key becomes an MI-assignable app role; the `Warewolf_ClientApps` entry is the dedicated role for app-only client apps (daemon/MI callers get it via `Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign`, and `secure.config` must grant the matching `WindowsGroup` Execute on the workflows they call). |
+| `Deploy-WwJobProcessor.ps1`                   | **ExecutionEngineJobProcessor deploy orchestrator** — provisions the poller/reaper Function App (RG → storage → Function App + system-assigned MI → App Insights → Key Vault wiring → stage + WFAES-encrypt the persistence settings pair → app settings → publish). Standalone, or invoked by `Deploy-WwExecutionEngine.ps1 -DeployJobProcessor`. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions. The persistence source files (`persistencesettings.json`, `persistencesettingsdbsource.bite`) are **prompted when not passed**. Role assignment (`Warewolf_JobProcessor`) is a separate step via `Configure-WwExecutionAuth-Clients.ps1` — see the runbook. |
 | `Rollback-WwExecutionEngine.ps1`              | **Teardown companion** — deletes ONLY what a deploy run created (summary-/tag-driven), in dependency order, with a leak check. Existing resources are preserved. |
 | `Tests/Deploy-WwExecutionEngine.Tests.ps1`    | Pester 5 suite for the orchestrator (helpers + DryRun end-to-end). Run: `Invoke-Pester -Path ./Tests/Deploy-WwExecutionEngine.Tests.ps1`. |
+| `Tests/Deploy-WwJobProcessor.Tests.ps1`       | Pester 5 suite for the JobProcessor orchestrator (static/ValidateSet, helpers via `-LoadFunctionsOnly`, DryRun end-to-end with az-shim, persistence-pair staging + fail-loud prompt validation). Run: `Invoke-Pester -Path ./Tests/Deploy-WwJobProcessor.Tests.ps1`. |
 | `Tests/Rollback-WwExecutionEngine.Tests.ps1`  | Pester 5 suite for the rollback script (ownership resolver + DryRun teardown). |
 | `Tests/Configure-WwExecutionAuth.Tests.ps1`   | Pester 5 suite for the auth script's helpers (e.g. `Resolve-AssignmentUser` Stage 6 guard) via `-LoadFunctionsOnly`. |
 | `Configure-WwExecutionAuth.ps1`               | End-to-end Entra + Easy Auth + secure-config provisioning (idempotent). |
@@ -75,8 +77,12 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
 
 Highlights:
 
-- **Publish source** — `-PublishPath` accepts a folder or a `.zip` (extracted to a
-  sibling folder that becomes the package dir). No `dotnet publish` is run by the script.
+- **Publish source** — `-PublishPath` accepts a folder or a `.zip`. No `dotnet publish`
+  is run by the script. The publish output is **never modified**: every run copies (or
+  extracts) it into a **fresh staging dir under the OS temp path**
+  (`wwexecutionengine-stage-<AppName>-<stamp>`), prepares the package there, zips **that**,
+  uploads it, then removes the staging dir on a successful real run. This keeps each
+  zip clean and lets the engine and the JobProcessor stage in **separate** directories.
 - **secure.config** — an already-AES-encrypted file is validated (must be engine-
   decryptable) and staged as-is; a plaintext-JSON file is validated then AES-encrypted
   automatically; an undecryptable file is a hard error.
@@ -103,11 +109,12 @@ Highlights:
   **auto-read** from the App Insights resource, never prompted. See the env-var
   matrix in `docs/Deployment-Steps.txt`.
 - **Dry-run parity** — `-DryRun` produces the **same** outputs as a real run except
-  it creates/uploads nothing in Azure: files are prepared into a timestamped sibling
-  preview dir (`<PublishPath>-dryrun-<stamp>`, leaving your publish dir untouched),
-  and a transcript + `*.dryrun.summary.json` (with `"dryRun": true`) are written so
-  the rollback can be exercised from a dry-run summary. Encryption runs only when the
-  Key Vault key is reachable, else it's staged unencrypted and deferred.
+  it creates/uploads nothing in Azure: files are prepared into a temp staging dir
+  (`wwexecutionengine-stage-<AppName>-<stamp>-dryrun`, leaving your publish output
+  untouched) that is **kept** for inspection, and a transcript + `*.dryrun.summary.json`
+  (with `"dryRun": true`) are written so the rollback can be exercised from a dry-run
+  summary. Encryption runs only when the Key Vault key is reachable, else it's staged
+  unencrypted and deferred.
 - **Logging** — `-ExecutionLogLevel` is prompted when interactive and sets `EXECUTIONLOGLEVEL`,
   which drives the engine's console + App Insights logging **in code** (the isolated worker
   does not read host.json). Rewriting the published host.json logLevel is **opt-in** via
@@ -141,6 +148,71 @@ Install-Module Pester -MinimumVersion 5.0 -Scope CurrentUser   # one-time
 Invoke-Pester -Path ./Tests                                    # all suites
 Invoke-Pester -Path ./Tests/Deploy-WwExecutionEngine.Tests.ps1
 ```
+
+---
+
+## ExecutionEngineJobProcessor deployment (`Deploy-WwJobProcessor.ps1`)
+
+The dedicated poller/reaper Function App (`Warewolf.Execution.EngineJobProcessor`) that
+replaces `hangfireserver.exe`: it polls Hangfire SQL storage for due `Scheduled`
+suspend/resume jobs and fire-and-forget POSTs them to the engine's
+`/secure/resume/{jobId}` route (managed-identity bearer token), and reaps stale
+`Processing` jobs to `Failed` (fail-only).
+
+Publish first, then deploy (the script does **not** build):
+
+```powershell
+dotnet publish Dev/Warewolf.Execution.EngineJobProcessor/Warewolf.Execution.EngineJobProcessor.csproj -c Release -o D:\JobProcessor\Publish
+
+./Deploy-WwJobProcessor.ps1 `
+  -ResourceGroup   DEV2 `
+  -Location        southafricanorth `
+  -StorageAccount  stwwjobproc `
+  -AppName         wwjobproc `
+  -PublishPath     D:\JobProcessor\Publish `
+  -EngineResumeBaseUrl https://wwengine.azurewebsites.net `
+  -EngineResumeScope   api://<engine-app-id>/.default `
+  -KeyVaultName    kv-warewolf `
+  -KeyVaultSecretName dp-keyring-v1
+  # -PersistenceSettingsPath / -PersistenceDbSourcePath are PROMPTED if omitted
+```
+
+Highlights:
+
+- **Same conventions as the engine deploy** — `Write-Phase` banners, `Invoke-Az`
+  wrapper, secret masking, `-DryRun` (produces the same logs + `*.summary.json` with a
+  `dryRun: true` flag), and a *params-first, prompt-if-missing* model that resolves
+  everything, prints a masked plan, and asks once before any change.
+- **Persistence pair, prompted** — `persistencesettings.json` (staged as-is) and
+  `persistencesettingsdbsource.bite` (ConnectionString WFAES-encrypted with the engine's
+  Key Vault key when `-EncryptResources`, exactly like the Elasticsearch source) are
+  prompted when not passed, and validated to their exact filenames.
+- **Own publish output + clean zip** — the processor is a **different** Function App
+  built from a **different** csproj, so it must be published to a **separate directory**
+  from the engine. Like the engine, it never mutates the publish output: it stages into
+  a fresh temp dir (`wwjobprocessor-stage-<AppName>-<stamp>`), zips that, uploads it, and
+  removes the staging dir on a successful real run — so the engine and processor prepare
+  and upload their zips independently.
+- **System-assigned MI** is always enabled (Key Vault decrypt + engine token).
+- **App settings** applied: `JOB_POLL_SCHEDULE`, `JOB_REAPER_SCHEDULE`,
+  `JOB_STALE_MINUTES`, `ENGINE_RESUME_BASEURL`, `ENGINE_RESUME_SCOPE`,
+  `ENGINE_RESUME_TIMEOUT_SECONDS`, `ENGINE_RESUME_AUTH_DISABLED`, plus
+  `AZURE_KEYVAULT_NAME` / `KEYVAULT_SECRET_NAME` when a vault is in play.
+- **Companion mode** — `Deploy-WwExecutionEngine.ps1 -DeployJobProcessor` runs this
+  script after the engine deploy, passing the shared context (subscription/tenant/RG/
+  location/Key Vault/persistence pair + the engine's own URL as `-EngineResumeBaseUrl`);
+  the child prompts for anything not supplied (its own `AppName`/`PublishPath`/`StorageAccount`).
+  The engine resolves `-JobProcessorPublishPath` at **plan time** and **fails loudly** if
+  it is the **same directory** as the engine's `-PublishPath` (it would otherwise zip the
+  engine's binaries into the processor app) — publish the two projects to separate folders.
+
+**Authorization is a separate operator step** (the two-part contract): grant this app's
+managed identity the engine app role `Warewolf_JobProcessor` and add the matching
+global-scope `Execute` row to the engine's `secure.config`. See
+[`docs/Deploy-EndToEnd-Runbook.md`](../docs/Deploy-EndToEnd-Runbook.md) (JobProcessor section).
+
+Tested by `Tests/Deploy-WwJobProcessor.Tests.ps1` (Pester 5) following the same
+`-LoadFunctionsOnly` + az-shim / `-DryRun` conventions as the engine suite.
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AZURE_FUNCTIONS_ENVIRONMENT": "Development",
+
+    "JOB_POLL_SCHEDULE": "0 */1 * * * *",
+    "JOB_REAPER_SCHEDULE": "30 */5 * * * *",
+    "JOB_STALE_MINUTES": "15",
+
+    "ENGINE_RESUME_BASEURL": "http://localhost:7071",
+    "ENGINE_RESUME_SCOPE": "",
+    "ENGINE_RESUME_AUTH_DISABLED": "true",
+    "ENGINE_RESUME_TIMEOUT_SECONDS": "15"
+  }
+}
