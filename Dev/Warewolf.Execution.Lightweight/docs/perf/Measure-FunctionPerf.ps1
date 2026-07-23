@@ -41,7 +41,15 @@ param(
 	[int]      $IngestWaitSeconds = 360,   # App Insights raw-table ingestion lag (5-10 min typical)
 	[int]      $IngestRetries     = 6,
 	[int]      $IngestRetryWait   = 60,
-	[string]   $OutDir        = (Join-Path $PSScriptRoot "runs")
+	[string]   $OutDir        = (Join-Path $PSScriptRoot "runs"),
+
+	# ── NEW: small-batch and load-test parameters ──────────────────────────────────────────
+	# SmallBatch : number of requests for Seq5 / Par5 phases  (default 5, per requirements)
+	# LoadCount  : number of requests for LoadSeq / LoadPar   (default 100, per requirements)
+	# LoadThrottle: max parallel threads for LoadPar phase
+	[int]      $SmallBatch    = 5,
+	[int]      $LoadCount     = 100,
+	[int]      $LoadThrottle  = 50
 )
 
 $ErrorActionPreference = "Stop"
@@ -296,17 +304,259 @@ function Invoke-CorrelationPhase {
 	foreach ($r in $pcRows) { Write-Log ("  PC| {0,-24} inst={1} avg={2} max={3}" -f $r[0], $r[1], $r[2], $r[3]) }
 }
 
+# ══════════════════════════════════════════════════════════════════════════════════════════
+# NEW PHASES — added on top of the existing harness (existing phases untouched above)
+# ══════════════════════════════════════════════════════════════════════════════════════════
+
+# Helper: poll Azure Monitor InstanceCount with no ingestion lag.
+# Used immediately after a parallel burst to capture scale-out in real time.
+function Get-LiveInstanceCount {
+	param([string]$StartIso, [string]$EndIso)
+	$resource = "/subscriptions/$((az account show --query id -o tsv))/resourceGroups/$ResourceGroup/providers/Microsoft.Web/sites/$FunctionApp"
+	try {
+		$json = az monitor metrics list --resource $resource --metric "InstanceCount" `
+			--start-time $StartIso --end-time $EndIso --interval PT1M `
+			--aggregation Maximum -o json 2>$null | ConvertFrom-Json
+		$max = ($json.value[0].timeseries[0].data | Where-Object { $_.maximum -gt 0 } | Measure-Object -Property maximum -Maximum).Maximum
+		return [int]$max
+	} catch { return 0 }
+}
+
+# ── NEW PHASE: Seq5 ── 5 sequential requests, time each individually ──────────────────────
+# Satisfies requirement 2: execute 5 requests in sequence and measure time for each request.
+function Invoke-Seq5Phase {
+	param([string]$Label = "Seq5")
+	Write-Log "=== PHASE $Label : $SmallBatch sequential requests (individual timing) ==="
+	$target = "$BaseUrl/Public/Hello World.json?Name=$Label"
+	for ($i = 1; $i -le $SmallBatch; $i++) {
+		$r = Invoke-Timed -Url $target -Phase $Label -Seq $i
+		Add-Result $r
+		Write-Log ("  [$i/$SmallBatch] {0} ms  http={1}" -f $r.Ms, $r.Status)
+	}
+	Show-Stats -Phase $Label -Rows ($results | Where-Object Phase -eq $Label)
+}
+
+# ── NEW PHASE: Par5 ── 5 parallel requests, time each + immediate instance count check ───
+# Satisfies requirements 3 and 4: parallel timing per-request + scale-out check.
+function Invoke-Par5Phase {
+	param([string]$Label = "Par5")
+	Write-Log "=== PHASE $Label : $SmallBatch parallel requests (individual timing + instance check) ==="
+	$target = "$BaseUrl/Public/Hello World.json?Name=$Label"
+	$burstStart = (Get-Date).ToUniversalTime()
+
+	$parRows = 1..$SmallBatch | ForEach-Object -Parallel {
+		$u  = $using:target
+		$lbl = $using:Label
+		$sw = [System.Diagnostics.Stopwatch]::StartNew()
+		$status = 0; $ok = $false; $err = ""
+		try {
+			$r = Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 120
+			$sw.Stop(); $status = [int]$r.StatusCode; $ok = $true
+		} catch {
+			$sw.Stop()
+			try { $status = [int]$_.Exception.Response.StatusCode.value__ } catch { $status = -1 }
+			$err = $_.Exception.Message
+		}
+		[PSCustomObject]@{
+			Phase        = $lbl
+			Seq          = $_
+			TimestampUtc = (Get-Date).ToUniversalTime().ToString("o")
+			Ms           = [math]::Round($sw.Elapsed.TotalMilliseconds, 1)
+			Status       = $status
+			Ok           = $ok
+			Bytes        = 0
+			Url          = $u
+			Error        = $err
+		}
+	} -ThrottleLimit $SmallBatch
+
+	$burstEnd = (Get-Date).ToUniversalTime()
+	foreach ($r in $parRows) {
+		$results.Add($r) | Out-Null
+		Write-Log ("  [seq={0}] {1} ms  http={2}" -f $r.Seq, $r.Ms, $r.Status)
+	}
+	Show-Stats -Phase $Label -Rows $parRows
+
+	# Immediate instance count poll — Azure Monitor has no ingestion lag
+	Write-Log "Polling Azure Monitor InstanceCount (no ingestion lag)..."
+	$startIso = $burstStart.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
+	$endIso   = $burstEnd.AddMinutes(2).ToString("yyyy-MM-ddTHH:mm:ssZ")
+	$instances = Get-LiveInstanceCount -StartIso $startIso -EndIso $endIso
+	Write-Log ("  $Label scale-out: {0} instance(s) detected during burst" -f $(if ($instances -gt 0) { $instances } else { "unknown (metric not yet available — retry with -Correlate)" }))
+	return $instances
+}
+
+# ── NEW PHASE: ColdVsWarm ── runs Seq5 + Par5 under both cold and warm conditions ─────────
+# Satisfies requirement 5: measure 2, 3, 4 with cold start and warm start.
+function Invoke-ColdVsWarmPhase {
+	Write-Log "=== PHASE ColdVsWarm : Seq5 + Par5 under COLD then WARM conditions ==="
+
+	# ── COLD RUN ──
+	Write-Log "--- Cold run: stopping function app to force cold start ---"
+	az functionapp stop --name $FunctionApp -g $ResourceGroup | Out-Null
+	Write-Log "Stopped. Waiting 60s for full shutdown."
+	Start-Sleep -Seconds 60
+	az functionapp start --name $FunctionApp -g $ResourceGroup | Out-Null
+	Write-Log "Started. Firing cold Seq5..."
+	Invoke-Seq5Phase -Label "ColdSeq5"
+
+	Write-Log "Firing cold Par5..."
+	Invoke-Par5Phase -Label "ColdPar5"
+
+	# ── WARM RUN ──
+	Write-Log "--- Warm run: sending $WarmRequests warm-up requests to stabilise JIT ---"
+	$warmTarget = "$BaseUrl/Public/Hello World.json?Name=WarmUp"
+	for ($i = 1; $i -le $WarmRequests; $i++) {
+		Invoke-WebRequest -Uri $warmTarget -UseBasicParsing -TimeoutSec 60 | Out-Null
+	}
+	Write-Log "Warm-up complete. Firing warm Seq5..."
+	Invoke-Seq5Phase -Label "WarmSeq5"
+
+	Write-Log "Firing warm Par5..."
+	Invoke-Par5Phase -Label "WarmPar5"
+
+	# ── COMPARISON SUMMARY ──
+	Write-Log "=== ColdVsWarm COMPARISON ==="
+	$phases = @("ColdSeq5", "WarmSeq5", "ColdPar5", "WarmPar5")
+	foreach ($ph in $phases) {
+		$rows = $results | Where-Object Phase -eq $ph | Where-Object Ok
+		if ($rows) {
+			$ms = $rows.Ms | Sort-Object
+			Write-Log ("  {0,-12} n={1} first={2}ms avg={3}ms p95={4}ms max={5}ms" -f `
+				$ph, $rows.Count, ($rows | Select-Object -First 1).Ms,
+				[math]::Round(($ms | Measure-Object -Average).Average, 1),
+				$ms[[math]::Max(0, [math]::Ceiling(0.95 * $ms.Count) - 1)],
+				$ms[-1])
+		}
+	}
+}
+
+# ── NEW PHASE: LoadSeq100 ── 100 sequential requests load test ───────────────────────────
+# Satisfies requirement 6: Load testing — 100 sequential requests.
+function Invoke-LoadSeqPhase {
+	Write-Log "=== PHASE LoadSeq : $LoadCount sequential requests (load test) ==="
+	$target = "$BaseUrl/Public/Hello World.json?Name=LoadSeq"
+	$wallSw = [System.Diagnostics.Stopwatch]::StartNew()
+	$errors = 0
+	for ($i = 1; $i -le $LoadCount; $i++) {
+		$r = Invoke-Timed -Url $target -Phase "LoadSeq" -Seq $i
+		Add-Result $r
+		if (-not $r.Ok) { $errors++ }
+		# Progress every 10 requests
+		if ($i % 10 -eq 0) {
+			$elapsed = [math]::Round($wallSw.Elapsed.TotalSeconds, 1)
+			$rps     = [math]::Round($i / $wallSw.Elapsed.TotalSeconds, 2)
+			Write-Log ("  Progress: {0}/{1}  errors={2}  elapsed={3}s  rps={4}" -f $i, $LoadCount, $errors, $elapsed, $rps)
+		}
+	}
+	$wallSw.Stop()
+	Show-Stats -Phase "LoadSeq" -Rows ($results | Where-Object Phase -eq "LoadSeq")
+	Write-Log ("LoadSeq LOAD TEST: total={0} errors={1} wall={2}s throughput={3} req/s" -f `
+		$LoadCount, $errors,
+		[math]::Round($wallSw.Elapsed.TotalSeconds, 1),
+		[math]::Round($LoadCount / $wallSw.Elapsed.TotalSeconds, 2))
+}
+
+# ── NEW PHASE: LoadPar100 ── 100 parallel requests load test ─────────────────────────────
+# Satisfies requirement 7: Load testing — 100 parallel requests.
+function Invoke-LoadParPhase {
+	Write-Log "=== PHASE LoadPar : $LoadCount parallel requests (load test, throttle=$LoadThrottle) ==="
+	$target   = "$BaseUrl/Public/Hello World.json?Name=LoadPar"
+	$burstStart = (Get-Date).ToUniversalTime()
+	$wallSw   = [System.Diagnostics.Stopwatch]::StartNew()
+
+	$parRows = 1..$LoadCount | ForEach-Object -Parallel {
+		$u = $using:target
+		$sw = [System.Diagnostics.Stopwatch]::StartNew()
+		$status = 0; $ok = $false; $err = ""
+		try {
+			$r = Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 180
+			$sw.Stop(); $status = [int]$r.StatusCode; $ok = $true
+		} catch {
+			$sw.Stop()
+			try { $status = [int]$_.Exception.Response.StatusCode.value__ } catch { $status = -1 }
+			$err = $_.Exception.Message
+		}
+		[PSCustomObject]@{
+			Phase        = "LoadPar"
+			Seq          = $_
+			TimestampUtc = (Get-Date).ToUniversalTime().ToString("o")
+			Ms           = [math]::Round($sw.Elapsed.TotalMilliseconds, 1)
+			Status       = $status
+			Ok           = $ok
+			Bytes        = 0
+			Url          = $u
+			Error        = $err
+		}
+	} -ThrottleLimit $LoadThrottle
+
+	$wallSw.Stop()
+	$burstEnd = (Get-Date).ToUniversalTime()
+	foreach ($r in $parRows) { $results.Add($r) | Out-Null }
+
+	$errors = ($parRows | Where-Object { -not $_.Ok }).Count
+	Show-Stats -Phase "LoadPar" -Rows $parRows
+	Write-Log ("LoadPar LOAD TEST: total={0} errors={1} wall={2}s throughput={3} req/s" -f `
+		$LoadCount, $errors,
+		[math]::Round($wallSw.Elapsed.TotalSeconds, 1),
+		[math]::Round($LoadCount / $wallSw.Elapsed.TotalSeconds, 2))
+
+	# Instance count check after parallel burst
+	Write-Log "Polling Azure Monitor InstanceCount after LoadPar burst..."
+	$startIso = $burstStart.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
+	$endIso   = $burstEnd.AddMinutes(2).ToString("yyyy-MM-ddTHH:mm:ssZ")
+	$instances = Get-LiveInstanceCount -StartIso $startIso -EndIso $endIso
+	Write-Log ("  LoadPar scale-out: {0} instance(s) detected during burst" -f $(if ($instances -gt 0) { $instances } else { "unknown — retry with -Correlate" }))
+}
+
 # --- Main --------------------------------------------------------------------------------
 Write-Log "RUN $runStamp  app=$FunctionApp  base=$BaseUrl  phases=$($Phases -join ',')"
 Get-Targets | ForEach-Object { Write-Log "  target: $_" }
 
-if ($Phases -contains "ColdStart")     { Invoke-ColdStartPhase }
-if ($Phases -contains "Warm")          { Invoke-WarmPhase }
-if ($Phases -contains "Concurrency")   { Invoke-ConcurrencyPhase }
+# ── Existing phases (untouched) ──────────────────────────────────────────────────────────
+if ($Phases -contains "ColdStart")       { Invoke-ColdStartPhase }
+if ($Phases -contains "Warm")            { Invoke-WarmPhase }
+if ($Phases -contains "Concurrency")     { Invoke-ConcurrencyPhase }
 if ($Phases -contains "HighConcurrency") { Invoke-HighConcurrencyPhase }
-if ($Phases -contains "IdleColdStart") { Invoke-IdleColdStartPhase }
-
+if ($Phases -contains "IdleColdStart")   { Invoke-IdleColdStartPhase }
 if ($Correlate -or ($Phases -contains "Correlate")) { Invoke-CorrelationPhase }
+
+# ── New phases ───────────────────────────────────────────────────────────────────────────
+
+# Fire 5 requests one after another and record how long each individual request takes.
+# This tells you the steady-state response time when requests are not competing with each other.
+if ($Phases -contains "Seq5")            { Invoke-Seq5Phase }
+
+# Fire 5 requests all at the same time and record how long each one takes.
+# Also checks Azure Monitor immediately after the burst to see how many instances
+# the Function App scaled out to in order to handle the load.
+if ($Phases -contains "Par5")            { Invoke-Par5Phase | Out-Null }
+
+# Runs the 5-sequential and 5-parallel tests twice — once right after a forced cold start
+# (app has been stopped and restarted, so the first requests pay the full startup cost)
+# and again after the app has been warmed up (JIT compiled, caches hot).
+# Prints a side-by-side comparison so you can see exactly how much cold start hurts.
+if ($Phases -contains "ColdVsWarm")      { Invoke-ColdVsWarmPhase }
+
+# Sends 100 requests back-to-back (one at a time) and measures the time for each.
+# Reports total wall-clock time, requests per second, and error count.
+# Use this to understand single-threaded throughput and spot latency drift over time.
+if ($Phases -contains "LoadSeq")         { Invoke-LoadSeqPhase }
+
+# Sends 100 requests all at once (up to $LoadThrottle threads at a time) and measures
+# how long each request takes under real concurrency pressure.
+# Also checks how many instances the Function App scaled out to during the burst.
+# Use this to find your concurrency ceiling and scaling behaviour under load.
+if ($Phases -contains "LoadPar")         { Invoke-LoadParPhase }
+
+# Convenience shortcut — runs all five new phases above in one go.
+if ($Phases -contains "AllNew") {
+	Invoke-Seq5Phase
+	Invoke-Par5Phase | Out-Null
+	Invoke-ColdVsWarmPhase
+	Invoke-LoadSeqPhase
+	Invoke-LoadParPhase
+}
 
 $results | Export-Csv -Path $csv -NoTypeInformation
 Write-Log "DONE. Rows=$($results.Count)  csv=$csv  log=$log"
