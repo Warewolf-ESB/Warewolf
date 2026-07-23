@@ -1,0 +1,6 @@
+"Phase","Seq","TimestampUtc","Ms","Status","Ok","Bytes","Url","Error"
+"ColdStart","1","2026-07-22T20:51:29.8562147Z","720.8","403","False","0","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=ColdStart","Response status code does not indicate success: 403 (Site Disabled)."
+"ColdStart","2","2026-07-22T20:51:55.7496072Z","22857","200","True","37","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=ColdStart",""
+"ColdStart","3","2026-07-22T20:51:56.6986960Z","937.1","200","True","37","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=ColdStart",""
+"ColdStart","4","2026-07-22T20:51:57.5237209Z","813.6","200","True","37","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=ColdStart",""
+"ColdStart","5","2026-07-22T20:51:58.1149888Z","580","200","True","37","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=ColdStart",""

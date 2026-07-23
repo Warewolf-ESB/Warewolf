@@ -1,0 +1,6 @@
+"Phase","Seq","TimestampUtc","Ms","Status","Ok","Bytes","Url","Error"
+"IdleColdStart","1","2026-07-22T21:11:48.0966976Z","30659.7","200","True","36","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=IdleCold",""
+"IdleColdStart","2","2026-07-22T21:11:57.2393508Z","9124.3","200","True","36","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=IdleCold",""
+"IdleColdStart","3","2026-07-22T21:11:57.9738440Z","729.6","200","True","36","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=IdleCold",""
+"IdleColdStart","4","2026-07-22T21:12:28.5587861Z","30574.4","200","True","36","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=IdleCold",""
+"IdleColdStart","5","2026-07-22T21:12:59.5393199Z","30975","200","True","36","https://wwenginenewscriptai.azurewebsites.net/Public/Hello World.json?Name=IdleCold",""
