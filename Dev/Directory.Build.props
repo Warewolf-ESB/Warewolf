@@ -28,6 +28,17 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
   </ItemGroup>
 
+  <!-- Pin System.Security.Cryptography.Xml to 8.0.4 solution-wide.
+       Microsoft.Windows.Compatibility 8.0.27 and Microsoft.Exchange.WebServices.NETStandard 1.1.3
+       pull in System.Security.Cryptography.Xml 8.0.3 transitively, which is affected by five HIGH
+       severity denial-of-service advisories (GHSA-g8r8-53c2-pm3f, GHSA-8q5v-6pqq-x66h,
+       GHSA-cvvh-rhrc-wg4q, GHSA-23rf-6693-g89p, GHSA-mmjf-rqrv-855v) in EncryptedXml. All are fixed
+       in 8.0.4 for .NET 8. Setting the minimum version here forces every project's NuGet resolution
+       to 8.0.4 so the "Packages Vulnerability Test" security gate (Run-SecurityGates.ps1) passes. -->
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.4" />
+  </ItemGroup>
+
   <!-- Add TRX report support for projects using Microsoft.Testing.Platform (EnableMSTestRunner=true).
        MSTest 3.x with EnableMSTestRunner generates a standalone MTP executable whose report-trx
        flag requires the Microsoft.Testing.Extensions.TrxReport package; it is not pulled in

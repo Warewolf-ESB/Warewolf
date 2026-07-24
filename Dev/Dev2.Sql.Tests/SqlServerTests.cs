@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Runtime.ServiceModel.Data;
@@ -1102,6 +1102,119 @@ namespace Dev2.Sql.Tests
             Assert.IsNotNull(connection);
             Assert.IsInstanceOfType(connection, typeof(ISqlConnection));
 
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithCredentials_ShouldStripCredentialsFromPrimaryConnectionString()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;";
+
+            //------------Execute Test---------------------------
+            var primaryConnectionString = connectionBuilder.ConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(primaryConnectionString, "Authentication=ActiveDirectoryManagedIdentity");
+            Assert.IsFalse(primaryConnectionString.Contains("fallbackuser"), "Primary Managed Identity connection string must not carry credentials.");
+            Assert.IsFalse(primaryConnectionString.Contains("fallbackpwd"), "Primary Managed Identity connection string must not carry credentials.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithCredentials_ShouldPrecomputeFallbackConnectionStringWithCredentials()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;";
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(fallbackConnectionString, "A fallback connection string must be precomputed when credentials are present alongside Managed Identity.");
+            StringAssert.Contains(fallbackConnectionString, "fallbackuser");
+            StringAssert.Contains(fallbackConnectionString, "fallbackpwd");
+            Assert.IsFalse(fallbackConnectionString.Contains("Authentication", StringComparison.OrdinalIgnoreCase), "Fallback connection string must drop the Managed Identity authentication mode so plain SQL auth is used.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenEntraManagedIdentityConnectionStringWithoutCredentials_ShouldNotPrecomputeFallback()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;";
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(fallbackConnectionString, "No fallback is available (and none is needed) when Managed Identity is used without embedded credentials.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenPlainConnectionString_ShouldNotPrecomputeFallback()
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            var source = new DbSource
+            {
+                Server = "localhost",
+                ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows
+            };
+
+            //------------Execute Test---------------------------
+            var fallbackConnectionString = connectionBuilder.FallbackConnectionString(source.ConnectionString);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(fallbackConnectionString, "Non-Entra connection strings must never produce a fallback.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("SqlConnectionWrapper")]
+        public void SqlConnectionWrapper_GivenManagedIdentityConnectionString_ShouldUseLongerDefaultConnectTimeout()
+        {
+            //------------Setup for test--------------------------
+            var sqlConnectionWrapper = new SqlConnectionWrapper();
+            const string rawConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;";
+
+            //------------Execute Test---------------------------
+            var actualConnectionString = sqlConnectionWrapper.CreateConnectionString(rawConnectionString);
+
+            //------------Assert Results-------------------------
+            var builder = new SqlConnectionStringBuilder(actualConnectionString);
+            Assert.AreEqual(60, builder.ConnectTimeout, "Managed Identity connections should use a fixed 60s ConnectTimeout to survive Entra token acquisition and serverless Azure SQL auto-resume.");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("SqlConnectionWrapper")]
+        public void SqlConnectionWrapper_GivenPlainConnectionString_ShouldKeepDefaultConnectTimeoutOf30()
+        {
+            //------------Setup for test--------------------------
+            var sqlConnectionWrapper = new SqlConnectionWrapper();
+            var source = new DbSource
+            {
+                Server = "localhost",
+                ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase,
+                AuthenticationType = AuthenticationType.Windows
+            };
+
+            //------------Execute Test---------------------------
+            var actualConnectionString = sqlConnectionWrapper.CreateConnectionString(source.ConnectionString);
+
+            //------------Assert Results-------------------------
+            var builder = new SqlConnectionStringBuilder(actualConnectionString);
+            Assert.AreEqual(30, builder.ConnectTimeout, "Non-Entra connections must keep the existing 30s default ConnectTimeout, unaffected by the Managed Identity timeout.");
         }
 
     }

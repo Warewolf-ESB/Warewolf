@@ -12,7 +12,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;

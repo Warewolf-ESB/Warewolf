@@ -96,5 +96,41 @@ namespace Dev2.Services.Execution.Tests
             table.Rows.Add(25, "Indocin", "David", DateTime.Now);
             return table;
         }
+
+        [DataTestMethod]
+        [Owner("Copilot")]
+        [DataRow(18456, "Authentication")]
+        [DataRow(40615, "Network/firewall")]
+        [DataRow(40532, "Network/firewall")]
+        [DataRow(40613, "unavailable")]
+        [DataRow(-2, "timeout")]
+        [DataRow(258, "timeout")]
+        [DataRow(99999, "Unclassified")]
+        public void ClassifySqlErrorNumber_GivenKnownAndUnknownErrorNumbers_ShouldReturnExpectedClassificationSubstring(int errorNumber, string expectedSubstring)
+        {
+            //---------------Set up test pack-------------------
+            var methodInfo = typeof(DatabaseServiceExecution).GetMethod("ClassifySqlErrorNumber", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo, "ClassifySqlErrorNumber method not found via reflection.");
+            //---------------Execute Test ----------------------
+            var result = (string)methodInfo.Invoke(null, new object[] { errorNumber });
+            //---------------Test Result -----------------------
+            StringAssert.Contains(result, expectedSubstring);
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        public void BuildSqlErrorDetail_GivenNonSqlException_ShouldReturnPlainMessage()
+        {
+            //---------------Set up test pack-------------------
+            var ex = new InvalidOperationException("some non-sql failure");
+            var methodInfo = typeof(DatabaseServiceExecution).GetMethod("BuildSqlErrorDetail", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo, "BuildSqlErrorDetail method not found via reflection.");
+            //---------------Execute Test ----------------------
+            var result = (string)methodInfo.Invoke(null, new object[] { ex });
+            //---------------Test Result -----------------------
+            Assert.AreEqual("SQL Error: some non-sql failure", result);
+        }
     }
 }

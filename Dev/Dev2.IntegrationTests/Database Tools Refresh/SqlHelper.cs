@@ -1,5 +1,5 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Transactions;
 
 namespace Dev2.Integration.Tests.Database_Tools_Refresh

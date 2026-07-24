@@ -119,6 +119,66 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_EntraManagedIdentity_RoundTripsVerbatim()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            const string connectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;Connection Timeout=30";
+
+            dbSource.ConnectionString = connectionString;
+
+            Assert.AreEqual(connectionString, dbSource.ConnectionString,
+                "Entra Managed Identity connection strings must round-trip verbatim (not go through the '******'-masked reconstruction) so the embedded fallback credentials remain usable.");
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_EntraManagedIdentity_AlternateKeywordSpelling_IsDetected()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            const string connectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=ActiveDirectoryManagedIdentity;";
+
+            dbSource.ConnectionString = connectionString;
+
+            Assert.AreEqual(connectionString, dbSource.ConnectionString,
+                "The unspaced 'ActiveDirectoryManagedIdentity' spelling (as produced by SqlConnectionStringBuilder) must also be detected.");
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_NonSqlDatabase_AuthenticationKeyword_DoesNotShortCircuitMasking()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.MySqlDatabase };
+            dbSource.ConnectionString = "Server=myserver;Database=testdb;Authentication=Active Directory Managed Identity;Username=u;Password=p;";
+
+            var reconstructed = dbSource.ConnectionString;
+
+            Assert.IsFalse(reconstructed.Contains("Authentication", StringComparison.OrdinalIgnoreCase),
+                "Non-SqlDatabase server types must keep using the existing reconstruction from properties, never the Entra verbatim passthrough.");
+            StringAssert.Contains(reconstructed, "Uid=u");
+        }
+
+        [TestMethod]
+        [Owner("Security Review")]
+        [TestCategory("DbSource_ConnectionString")]
+        public void DbSource_ConnectionString_SqlDatabase_ReassigningAwayFromEntra_ClearsRawEntraState()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            dbSource.ConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=entrauser;Password=entrasecret;";
+
+            dbSource.ConnectionString = "Data Source=myserver,1433;Initial Catalog=testdb;User ID=plainuser;Connection Timeout=30";
+            var reconstructed = dbSource.ConnectionString;
+
+            Assert.IsFalse(reconstructed.Contains("Authentication", StringComparison.OrdinalIgnoreCase),
+                "Setting a plain (non-Entra) connection string afterwards must fall back to normal reconstruction, not leak the previously stored raw Entra string.");
+            StringAssert.Contains(reconstructed, "User ID=plainuser");
+            Assert.IsFalse(reconstructed.Contains("entrauser"));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NamedInstanceDefaultPort_ShouldNotUsePort()
