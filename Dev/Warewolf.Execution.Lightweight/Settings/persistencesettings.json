@@ -1,0 +1,32 @@
+{
+  // Warewolf Execution Engine — suspend/resume persistence settings.
+  //
+  // Loaded at cold start by PersistenceConfigLoader (after Key Vault init) and hydrated
+  // into Config.Persistence IN MEMORY — this file is never written to at runtime, so it
+  // is safe for read-only deployments (zip-deploy / run-from-package).
+  //
+  // The Hangfire SQL Server connection is NOT stored here: it lives in the companion
+  // Settings/persistencesettingsdbsource.bite (a Warewolf DbSource whose ConnectionString
+  // is WFAES-encrypted at deploy time, exactly like Settings/ElasticsearchLoggingSource.bite).
+
+  // Master switch. false = SuspendExecution / ManualResumption tools report
+  // "persistence settings not configured" (same behaviour as an unconfigured Server).
+  // When false, the loader also clears PersistenceScheduler in memory so workflows
+  // containing suspend/resume tools still parse without a database.
+  "Enable": false,
+
+  // Only supported scheduler. Matches PersistenceExecution.GetScheduler().
+  "PersistenceScheduler": "Hangfire",
+
+  // Always false in the engine: the DbSource payload is built in memory from the
+  // already-decrypted .bite — there is no DPAPI/AES-encrypted JSON payload to decrypt.
+  "EncryptDataSource": false,
+
+  // Let Hangfire create its schema on first use (set false when the DB is pre-provisioned
+  // and the runtime SQL login has no DDL rights).
+  "PrepareSchemaIfNecessary": true,
+
+  // Engine never hosts Hangfire workers or the dashboard — jobs are executed via the
+  // /Resume route (invoked by the ExecutionEngineJobProcessor Function App).
+  "UseAsServer": false
+}

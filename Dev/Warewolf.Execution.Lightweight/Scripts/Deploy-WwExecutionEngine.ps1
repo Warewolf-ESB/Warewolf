@@ -214,6 +214,28 @@ param(
     [nullable[bool]] $EnableElasticsearch,
     [string] $ElasticsearchSourcePath,
 
+    # ── Suspend/resume persistence (Hangfire) ─────────────────────────────────
+    # The resume route reads Config.Persistence; the DbSource ConnectionString is
+    # WFAES-encrypted exactly like the Elasticsearch source. Both files are PROMPTED
+    # when persistence is enabled and a path is not passed.
+    [nullable[bool]] $EnablePersistence,
+    [string] $PersistenceSettingsPath,       # persistencesettings.json
+    [string] $PersistenceDbSourcePath,       # persistencesettingsdbsource.bite
+
+    # ── ExecutionEngineJobProcessor (optional companion deploy) ───────────────
+    # When -DeployJobProcessor, after the engine deploy this calls
+    # Deploy-WwJobProcessor.ps1 for the poller/reaper Function App, passing the
+    # shared context (subscription/tenant/RG/location/Key Vault/persistence pair);
+    # the child prompts for anything not supplied here.
+    # JobProcessorPublishPath MUST be a SEPARATE publish output from the engine's
+    # (it is a different csproj / different Function App); the plan phase resolves
+    # it and fails loudly if it collides with the engine PublishPath.
+    [switch] $DeployJobProcessor,
+    [string] $JobProcessorAppName,
+    [string] $JobProcessorPublishPath,
+    [string] $JobProcessorStorageAccount,
+    [string] $EngineResumeScope,             # MI token scope the processor uses (api://<engine-app-id>/.default)
+
     # ── Other logging / feature env vars ─────────────────────────────────────
     [nullable[bool]] $EnableConsoleLogging,
     [ValidateSet('TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF')]
@@ -643,6 +665,11 @@ function Save-DeploySummary {
         encryptResources = $doEncryptResources
         verifyDecryption = [bool]$VerifyDecryption
         elasticsearch   = $enableEs
+        persistence     = $enablePersistence
+        persistenceSettings = ($enablePersistence ? $PersistenceSettingsPath : $null)
+        persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
+        deployJobProcessor  = [bool]$DeployJobProcessor
+        jobProcessorAppName = ($DeployJobProcessor ? $JobProcessorAppName : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
         appSettings     = $maskedSettings
     }
@@ -666,6 +693,13 @@ $WorkflowIndexScript = Join-Path $ScriptDir 'Generate-WorkflowIndex.ps1'
 $AuthOutputPath      = Join-Path $ScriptDir 'Configure-WwExecutionAuth.output.json'
 
 $ElasticsearchBiteName = 'ElasticsearchLoggingSource.bite'
+
+# Suspend/resume persistence pair (staged into Settings\ exactly like the ES source).
+$PersistenceSettingsName = 'persistencesettings.json'
+$PersistenceDbSourceName = 'persistencesettingsdbsource.bite'
+
+# Companion JobProcessor deploy (invoked only when -DeployJobProcessor).
+$JobProcessorScript = Join-Path $ScriptDir 'Deploy-WwJobProcessor.ps1'
 
 # Test hook: stop here when only the helper functions are wanted (Pester).
 if ($LoadFunctionsOnly) { return }
@@ -733,6 +767,7 @@ if (-not $LogDir) { $LogDir = Join-Path (Split-Path $PublishDir -Parent) 'deploy
 $enableAppInsights   = Resolve-Toggle -Name 'EnableAppInsights'   -Current $EnableAppInsights   -Default $true  -Prompt 'Provision + enable Application Insights?'
 $enableConsole       = Resolve-Toggle -Name 'EnableConsoleLogging' -Current $EnableConsoleLogging -Default $true  -Prompt 'Enable console logging?'
 $enableEs            = Resolve-Toggle -Name 'EnableElasticsearch' -Current $EnableElasticsearch -Default $false -Prompt 'Enable Elasticsearch logging?'
+$enablePersistence   = Resolve-Toggle -Name 'EnablePersistence'   -Current $EnablePersistence   -Default $false -Prompt 'Enable suspend/resume persistence (Hangfire) — stage the persistence settings pair?'
 $doEncryptResources  = Resolve-Toggle -Name 'EncryptResources'    -Current $EncryptResources    -Default $false -Prompt 'Encrypt ALL sources (workflows + Elasticsearch + others) now? (encrypt once; leave off if already encrypted)'
 $licenseCheck        = Resolve-Toggle -Name 'LicenseCheckEnabled' -Current $LicenseCheckEnabled  -Default $true  -Prompt 'Enable license/subscription check?'
 $structuredLogs      = Resolve-Toggle -Name 'StructuredLogs'      -Current $StructuredLogs       -Default $true  -Prompt 'Structured (JSON) console logs?'
@@ -769,6 +804,51 @@ if ($enableEs) {
     $esLeaf = Split-Path $ElasticsearchSourcePath -Leaf
     if ($esLeaf -ine $ElasticsearchBiteName) {
         throw "Elasticsearch source must be named exactly '$ElasticsearchBiteName' (the engine reads that exact path); got '$esLeaf'."
+    }
+}
+
+# ── Persistence settings pair (prompted when enabled; exact filenames) ─────────
+if ($enablePersistence) {
+    $PersistenceSettingsPath = Read-Required -Name 'PersistenceSettingsPath' -Current $PersistenceSettingsPath -Hint "path to $PersistenceSettingsName"
+    if (-not (Test-Path -LiteralPath $PersistenceSettingsPath -PathType Leaf)) {
+        throw "PersistenceSettingsPath not found (must be a file): $PersistenceSettingsPath"
+    }
+    $psLeaf = Split-Path $PersistenceSettingsPath -Leaf
+    if ($psLeaf -ine $PersistenceSettingsName) {
+        throw "Persistence settings must be named exactly '$PersistenceSettingsName' (the engine reads that exact path); got '$psLeaf'."
+    }
+    $PersistenceDbSourcePath = Read-Required -Name 'PersistenceDbSourcePath' -Current $PersistenceDbSourcePath -Hint "path to $PersistenceDbSourceName"
+    if (-not (Test-Path -LiteralPath $PersistenceDbSourcePath -PathType Leaf)) {
+        throw "PersistenceDbSourcePath not found (must be a file): $PersistenceDbSourcePath"
+    }
+    $dbLeaf = Split-Path $PersistenceDbSourcePath -Leaf
+    if ($dbLeaf -ine $PersistenceDbSourceName) {
+        throw "Persistence DbSource must be named exactly '$PersistenceDbSourceName' (the engine reads that exact path); got '$dbLeaf'."
+    }
+}
+
+# ── JobProcessor companion — its publish output MUST differ from the engine's ──
+# The processor is a SEPARATE Function App built from a DIFFERENT csproj
+# (Warewolf.Execution.EngineJobProcessor). Sharing a publish/upload directory with
+# the engine would zip the engine's binaries and upload them to the processor app —
+# a silently-wrong deploy. Resolve + validate the processor publish path up-front so
+# it fails at PLAN time (before the engine is even deployed), not deep in the child.
+if ($DeployJobProcessor) {
+    $JobProcessorPublishPath = Read-Required -Name 'JobProcessorPublishPath' -Current $JobProcessorPublishPath -Hint 'folder or .zip of the JobProcessor Release publish output — MUST differ from the engine PublishPath'
+    if (-not (Test-Path -LiteralPath $JobProcessorPublishPath)) {
+        throw "JobProcessorPublishPath not found: $JobProcessorPublishPath"
+    }
+    $jpItem = Get-Item -LiteralPath $JobProcessorPublishPath
+    $jpDir  =
+        if     ($jpItem.PSIsContainer)         { $jpItem.FullName }
+        elseif ($jpItem.Extension -ieq '.zip') { Join-Path $jpItem.DirectoryName $jpItem.BaseName }
+        else   { throw "JobProcessorPublishPath must be a folder or a .zip file: $JobProcessorPublishPath" }
+    $engineFull = ([System.IO.Path]::GetFullPath($PublishDir)).TrimEnd('\','/')
+    $jpFull     = ([System.IO.Path]::GetFullPath($jpDir)).TrimEnd('\','/')
+    if ($jpFull -ieq $engineFull) {
+        throw ("JobProcessorPublishPath resolves to the SAME directory as the engine PublishPath ('$engineFull'). " +
+               "The processor is a different Function App built from Warewolf.Execution.EngineJobProcessor and MUST publish to its own directory. " +
+               "Publish it separately, e.g. dotnet publish Warewolf.Execution.EngineJobProcessor -c Release -o <different-path>.")
     }
 }
 
@@ -840,6 +920,11 @@ Write-Host ("    {0,-28}: {1}" -f 'Workflows source', ($WorkflowsSourcePath ? $W
 Write-Host ("    {0,-28}: {1}" -f 'Encrypt sources (this run)', ($doEncryptResources ? 'YES (workflows + ES + others)' : 'no (staged as-is; assumed already encrypted)'))
 Write-Host ("    {0,-28}: {1}" -f 'Verify decryption', ($doEncryptResources ? ($VerifyDecryption ? 'yes (in-memory)' : 'no') : 'n/a'))
 Write-Host ("    {0,-28}: {1}" -f 'Elasticsearch logging', ($enableEs ? "enabled ($ElasticsearchSourcePath)" : 'disabled'))
+Write-Host ("    {0,-28}: {1}" -f 'Persistence (Hangfire)', ($enablePersistence ? "enabled ($PersistenceDbSourcePath)" : 'disabled'))
+Write-Host ("    {0,-28}: {1}" -f 'Deploy JobProcessor', ($DeployJobProcessor ? "yes -> Deploy-WwJobProcessor.ps1$($JobProcessorAppName ? " ($JobProcessorAppName)" : '')" : 'no'))
+if ($DeployJobProcessor) {
+    Write-Host ("    {0,-28}: {1}" -f 'JobProcessor PublishPath', "$JobProcessorPublishPath  (separate from engine PublishDir)")
+}
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
     Write-Host ("    {0,-28}: {1}" -f 'Key Vault', "$KeyVaultName / secret '$KeyVaultSecretName' ($kvPurpose)")
@@ -1036,35 +1121,23 @@ try {
     Write-Phase 'Phase 3  Stage package, encrypt, apply environment variables'
     $script:DeployLastPhase = 'Phase 3  Stage package'
 
-    # 3.0 Resolve the STAGING directory — the folder we prepare and (on a real run)
-    # upload as the final artifact.
-    #   real run -> the publish dir itself
-    #   dry run  -> a timestamped sibling copy ('<PublishDir>-dryrun-<stamp>'), so the
-    #               real publish dir is never modified, yet the preview artifact is
-    #               produced identically for inspection.
-    if ($DryRun) {
-        $StagingDir = "$PublishDir-dryrun-$runStamp"
-        Write-Step "Dry-run: building preview artifact in '$StagingDir' (your publish dir is left untouched)"
-        if (Test-Path -LiteralPath $StagingDir) { Remove-Item -LiteralPath $StagingDir -Recurse -Force }
-        New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null
-        if ($publishIsZip) {
-            Expand-Archive -LiteralPath $PublishPath -DestinationPath $StagingDir -Force
-        } else {
-            Copy-Item -Path (Join-Path $PublishDir '*') -Destination $StagingDir -Recurse -Force
-        }
-        Write-Ok "Preview artifact base copied to '$StagingDir'."
+    # 3.0 Resolve the STAGING directory — a FRESH, dedicated copy under the OS temp
+    # dir that we prepare and (on a real run) upload as the final artifact. The
+    # operator's publish OUTPUT is NEVER mutated, so the zip is built cleanly on every
+    # run and the engine + JobProcessor always stage in SEPARATE directories.
+    #   real run -> removed after a successful upload (Phase 4).
+    #   dry run  -> kept as the inspectable preview artifact (path printed at the end).
+    $stageSuffix = if ($DryRun) { '-dryrun' } else { '' }
+    $StagingDir  = Join-Path ([System.IO.Path]::GetTempPath()) "wwexecutionengine-stage-$AppName-$runStamp$stageSuffix"
+    Write-Step "$($DryRun ? 'Dry-run: building preview artifact' : 'Staging deploy artifact') in '$StagingDir' (your publish output is left untouched)"
+    if (Test-Path -LiteralPath $StagingDir) { Remove-Item -LiteralPath $StagingDir -Recurse -Force }
+    New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null
+    if ($publishIsZip) {
+        Expand-Archive -LiteralPath $PublishPath -DestinationPath $StagingDir -Force
     } else {
-        $StagingDir = $PublishDir
-        if ($publishIsZip) {
-            Write-Step "Extracting publish zip '$PublishPath' -> '$StagingDir'"
-            if (Test-Path -LiteralPath $StagingDir) { Remove-Item -LiteralPath $StagingDir -Recurse -Force }
-            New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null
-            Expand-Archive -LiteralPath $PublishPath -DestinationPath $StagingDir -Force
-            Write-Ok "Extracted to '$StagingDir'."
-        } else {
-            Write-Ok "Using publish directory '$StagingDir'."
-        }
+        Copy-Item -Path (Join-Path $PublishDir '*') -Destination $StagingDir -Recurse -Force
     }
+    Write-Ok "Publish output copied to staging dir '$StagingDir'."
     if (-not (Test-Path -LiteralPath $StagingDir)) {
         throw "Staging directory '$StagingDir' does not exist after resolution."
     }
@@ -1228,6 +1301,33 @@ try {
         }
     }
 
+    # 3.5b Persistence settings pair (suspend/resume). persistencesettings.json is
+    # staged AS-IS (flags only); the DbSource ConnectionString is WFAES-encrypted with
+    # the SAME pass as the Elasticsearch source — encrypted ONLY when -EncryptResources
+    # (otherwise staged as-is / assumed already encrypted). The engine's resume route
+    # (and the JobProcessor) decrypt it at runtime through the shared AesDecryptHook.
+    if ($enablePersistence) {
+        $settingsDir = Join-Path $StagingDir 'Settings'
+        if (-not (Test-Path -LiteralPath $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
+
+        $psDest = Join-Path $settingsDir $PersistenceSettingsName
+        Write-Step "Staging '$PersistenceSettingsName' -> '$psDest'"
+        Copy-Item -LiteralPath $PersistenceSettingsPath -Destination $psDest -Force
+
+        $dbDest = Join-Path $settingsDir $PersistenceDbSourceName
+        Write-Step "Staging '$PersistenceDbSourceName' -> '$dbDest'"
+        Copy-Item -LiteralPath $PersistenceDbSourcePath -Destination $dbDest -Force
+        if (-not $doEncryptResources) {
+            Write-Note 'Persistence DbSource staged AS-IS (source encryption disabled; assumed already encrypted).'
+        } elseif (-not $keyReachable) {
+            Write-Note 'Persistence DbSource staged UNENCRYPTED — Key Vault key not reachable; encryption deferred to a real run.'
+        } else {
+            Write-Step 'Encrypting persistence DbSource connection string (WFAES via Key Vault)'
+            Invoke-EncryptAndVerify -TargetPath $dbDest -Label 'persistence DbSource'
+            Write-Ok 'Persistence DbSource encrypted.'
+        }
+    }
+
     # 3.6 Workflow index — generate workflow-index.json over the STAGED Resources so
     # it ships INSIDE the publish zip built in Phase 4. The engine reads it at
     # startup for O(1) lookups and falls back to a disk scan only when absent
@@ -1310,6 +1410,13 @@ try {
         }
     }
 
+    # Real run: the staging copy has been uploaded — remove it (it lives under the OS
+    # temp dir, not the publish tree). The dry-run preview is intentionally KEPT.
+    if (-not $DryRun -and (Test-Path -LiteralPath $StagingDir)) {
+        Remove-Item -LiteralPath $StagingDir -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Ok "Staging dir removed (publish output was never modified)."
+    }
+
     # ════════════════════════════════════════════════════════════════════════
     # Phase 5 — Verify
     # ════════════════════════════════════════════════════════════════════════
@@ -1331,6 +1438,49 @@ try {
         }
     }
 
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 6 — (optional) ExecutionEngineJobProcessor companion deploy
+    # ════════════════════════════════════════════════════════════════════════
+    if ($DeployJobProcessor) {
+        Write-Phase 'Phase 6  Deploy ExecutionEngineJobProcessor (companion)'
+        $script:DeployLastPhase = 'Phase 6  JobProcessor'
+
+        if (-not (Test-Path -LiteralPath $JobProcessorScript)) {
+            throw "Deploy-WwJobProcessor.ps1 not found at '$JobProcessorScript'."
+        }
+
+        # Pass the shared context; Deploy-WwJobProcessor.ps1 prompts (interactively) for
+        # anything omitted here — including its own AppName / PublishPath / StorageAccount.
+        # The DbSource is re-staged + (re-)encrypted by the child from the SAME operator
+        # source file, so it stands alone even if run separately later.
+        $jpParams = [ordered]@{
+            SubscriptionId          = $SubscriptionId
+            TenantId                = $TenantId
+            ResourceGroup           = $ResourceGroup
+            Location                = $Location
+            EngineResumeBaseUrl     = $baseUrl
+            PersistenceSettingsPath = $PersistenceSettingsPath
+            PersistenceDbSourcePath = $PersistenceDbSourcePath
+            EncryptResources        = [bool]$doEncryptResources
+        }
+        if ($JobProcessorAppName)        { $jpParams['AppName']        = $JobProcessorAppName }
+        if ($JobProcessorPublishPath)    { $jpParams['PublishPath']    = $JobProcessorPublishPath }
+        if ($JobProcessorStorageAccount) { $jpParams['StorageAccount'] = $JobProcessorStorageAccount }
+        if ($EngineResumeScope)          { $jpParams['EngineResumeScope'] = $EngineResumeScope }
+        if ($kvRequired) {
+            $jpParams['KeyVaultName']       = $KeyVaultName
+            $jpParams['KeyVaultSecretName'] = $KeyVaultSecretName
+        }
+        if ($VerifyDecryption)  { $jpParams['VerifyDecryption']  = $true }
+        if ($enableAppInsights) { $jpParams['EnableAppInsights'] = $true }
+        if ($NonInteractive)    { $jpParams['NonInteractive']    = $true }
+        if ($DryRun)            { $jpParams['DryRun']            = $true }
+
+        Invoke-ChildScript -Path $JobProcessorScript -Label 'Deploy-WwJobProcessor.ps1' -Parameters $jpParams
+        Write-Ok 'JobProcessor companion deploy invoked.'
+        Write-Note 'Reminder: grant the JobProcessor MI the engine role Warewolf_JobProcessor (see runbook).'
+    }
+
     # ── Final summary — completed status ─────────────────────────────────────
     # (Incremental in-progress summaries were already written after each phase;
     # this records the terminal 'completed' state for BOTH dry-run and real runs.)
@@ -1341,7 +1491,7 @@ try {
     Write-Host "  App      : $AppName" -ForegroundColor White
     Write-Host "  RG       : $ResourceGroup" -ForegroundColor White
     Write-Host "  Endpoint : $baseUrl" -ForegroundColor White
-    Write-Host "  Artifact : $StagingDir$($DryRun ? '  (dry-run preview)' : '')" -ForegroundColor White
+    Write-Host "  Artifact : $($DryRun ? "$StagingDir  (dry-run preview)" : 'staged under OS temp, uploaded, then removed (publish output untouched)')" -ForegroundColor White
     Write-Host "  Summary  : $summaryPath" -ForegroundColor White
     if (-not $SkipAuthProvisioning -and (Test-Path -LiteralPath $AuthOutputPath)) {
         Write-Host "  Auth out : $AuthOutputPath" -ForegroundColor White

@@ -1,0 +1,7 @@
+<Source ID="cfe43056-b935-47ba-89b7-638c0ae76812" Name="hangfiredb" ResourceType="DbSource" IsValid="true" ConnectionString="Data Source=(local)\sqlexpress;Initial Catalog=hangfiredb;Integrated Security=SSPI;Connection Timeout=30" Type="DbSource" ServerType="SqlDatabase" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>hangfiredb</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DbSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-07-23T00:00:00.0000000+00:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="cfe43056-b935-47ba-89b7-638c0ae76812" VersionId="4df2fde5-253d-4391-be7f-a7be82719d4a" />
+</Source>

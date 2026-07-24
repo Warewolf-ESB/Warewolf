@@ -267,7 +267,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `-PublishPath` | string | **required** | The already-published package — a **folder** or a **`.zip`** of the publish output (a zip is extracted to a sibling folder, which becomes the package dir). |
+| `-PublishPath` | string | **required** | The already-published package — a **folder** or a **`.zip`** of the publish output. The publish output is never modified: it is copied/extracted into a fresh temp staging dir (`wwexecutionengine-stage-<AppName>-<stamp>`) that is zipped, uploaded, and removed on a successful real run (kept, with a `-dryrun` suffix, under `-DryRun`). |
 | `-PublishMethod` | `Auto` \| `Zip` \| `Func` | `Auto` | `Auto`/`Zip` both use `az` zip-deploy (config-zip) — correct for the pre-built artifact. `Func` uses `func azure functionapp publish --dotnet-isolated --no-build` and is **advanced/opt-in only** (it expects a project source dir and fails on a pre-built package). |
 
 ### Application Insights
@@ -314,6 +314,29 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 |---|---|---|---|
 | `-EnableElasticsearch` | bool (nullable) | prompt | Enable Elasticsearch logging. Requires `-ElasticsearchSourcePath` **and** Key Vault (the source's ConnectionString is WFAES-encrypted before deploy). |
 | `-ElasticsearchSourcePath` | string | conditional | Path to the Elasticsearch source. The file **must be named exactly `ElasticsearchLoggingSource.bite`** (the engine reads that exact path). |
+
+### Suspend/resume persistence (Hangfire)
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `-EnablePersistence` | bool (nullable) | prompt | Stage the persistence settings pair so the engine's resume route can run. When on, both source files are prompted if not passed. The DbSource `ConnectionString` is WFAES-encrypted in the **same pass** as the Elasticsearch source (requires `-EncryptResources` + Key Vault to encrypt; otherwise staged as-is). |
+| `-PersistenceSettingsPath` | string | prompt | Path to `persistencesettings.json` (Enable/scheduler/flags). Must be named exactly that. Staged as-is. |
+| `-PersistenceDbSourcePath` | string | prompt | Path to `persistencesettingsdbsource.bite` (Hangfire SQL `DbSource`). Must be named exactly that. |
+
+### ExecutionEngineJobProcessor (optional companion)
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `-DeployJobProcessor` | switch | off | After the engine deploy, also run `Deploy-WwJobProcessor.ps1` for the poller/reaper Function App, passing the shared context (subscription/tenant/RG/location/Key Vault/persistence pair + the engine URL as `-EngineResumeBaseUrl`). The child prompts for anything not supplied. |
+| `-JobProcessorAppName` | string | prompt (child) | Function App name for the processor. |
+| `-JobProcessorPublishPath` | string | prompt / required for companion | Folder/.zip of the processor's `dotnet publish` output. **Must be a different directory than the engine's `-PublishPath`** (different app/csproj); the engine resolves it at plan time and fails loudly on a collision. Required (no prompt) under `-NonInteractive`. |
+| `-JobProcessorStorageAccount` | string | prompt (child) | Storage account for the processor. |
+| `-EngineResumeScope` | string | prompt (child) | MI token scope the processor uses to call the resume route, e.g. `api://<engine-app-id>/.default`. |
+
+> Role assignment for the processor's MI (`Warewolf_JobProcessor`) + the matching global
+> `Execute` row in `secure.config` is a **separate** step — see
+> [Deploy-EndToEnd-Runbook.md](Deploy-EndToEnd-Runbook.md) §7. `Deploy-WwJobProcessor.ps1`
+> can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
 
 ### Logging / feature env vars
 

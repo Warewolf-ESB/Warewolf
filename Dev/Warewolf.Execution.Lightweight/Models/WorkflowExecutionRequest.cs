@@ -1,6 +1,8 @@
 using Dev2.Web;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace Warewolf.Execution.Lightweight.Models
 {
@@ -68,6 +70,18 @@ namespace Warewolf.Execution.Lightweight.Models
         /// Mirrors <c>DataObjectExtensions.SetHeaders()</c> on the full server.
         /// </summary>
         public string CustomTransactionId { get; set; }
+
+        /// <summary>
+        /// The authenticated principal of the caller, taken from the auth middleware
+        /// (<c>FunctionContext.Items[AuthConstants.PrincipalContextKey]</c>) — never from
+        /// the request payload. Flows into <c>DsfDataObject.ExecutingUser</c> so activities
+        /// that capture the executing user (e.g. <c>SuspendExecutionActivity</c> persisting
+        /// <c>currentuserprincipal</c>) work inside the engine.
+        /// <see cref="JsonIgnoreAttribute"/> guards against a caller injecting a principal
+        /// through the JSON request body.
+        /// </summary>
+        [JsonIgnore]
+        public IPrincipal ExecutingPrincipal { get; set; }
 
         /// <summary>
         /// Validates that the request has the minimum required information.

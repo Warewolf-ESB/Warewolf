@@ -240,7 +240,8 @@ namespace Warewolf.Execution.Lightweight
 
                 // Step 5: Build DsfDataObject with inputs
                 Dev2Logger.Debug("WorkflowExecutor Step 5: Building DsfDataObject with inputs", executionId.ToString());
-                var dataObject = BuildDataObject(request, executionId, resolvedName, dataList);
+                var (resourceId, versionNumber) = ExtractResourceIdentity(fileContents);
+                var dataObject = BuildDataObject(request, executionId, resolvedName, dataList, resourceId, versionNumber);
                 Dev2Logger.Debug("WorkflowExecutor Step 5 completed: Successfully built DsfDataObject with inputs", executionId.ToString());
 
                 // Index DbSource bite files in the resources directory so they can be loaded
@@ -262,6 +263,11 @@ namespace Warewolf.Execution.Lightweight
                 }
 
                 using (debugCapturer != null ? DebugDispatcher.UseContextDispatcher(debugCapturer) : null)
+                // Ambient suspend-snapshot context: when a SuspendExecutionActivity inside this
+                // chain schedules a persistence job, LightweightJobValuesEnricher reads this
+                // scope to stamp engine-specific keys (workflow name/path, execution id) into
+                // the persisted job values — without touching the activity or the 5 legacy keys.
+                using (SuspendSnapshotContext.BeginScope(resolvedName, request.WorkflowFilePath, dataObject.ExecutionID ?? executionId))
                 {
                     // Emit workflow Start state before activities run � mirrors the Start marker
                     // the full Warewolf server emits from WfExecutionContainer.
@@ -434,6 +440,42 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
+        /// Extracts the resource identity from the workflow XML: the root <c>ID</c>
+        /// attribute and the <c>VersionInfo/@VersionNumber</c> (default 1).
+        /// Suspend/resume persistence keys these values —
+        /// <c>SuspendExecutionActivity</c> persists <c>ResourceID</c> and
+        /// <c>VersionNumber</c> from the data object, and resumption resolves the
+        /// workflow by that ID — so they must be populated before execution.
+        /// </summary>
+        internal static (Guid resourceId, int versionNumber) ExtractResourceIdentity(StringBuilder fileContents)
+        {
+            try
+            {
+                var xe = fileContents.ToXElement();
+
+                Guid.TryParse(
+                    Dev2.Common.Common.ExtensionMethods.AttributeSafe(xe, "ID"),
+                    out var resourceId);
+
+                var versionNumber = 1;
+                var versionInfo = xe.Element("VersionInfo");
+                if (versionInfo != null
+                    && int.TryParse(versionInfo.Attribute("VersionNumber")?.Value, out var parsed)
+                    && parsed > 0)
+                {
+                    versionNumber = parsed;
+                }
+
+                return (resourceId, versionNumber);
+            }
+            catch
+            {
+                // Malformed XML is reported by the main parse path; identity stays default.
+                return (Guid.Empty, 1);
+            }
+        }
+
+        /// <summary>
         /// Step 3: Load XAML definition into a DynamicActivity using ActivityXamlServices.
         /// Applies namespace cleaning for cross-platform compatibility.
         /// </summary>
@@ -468,7 +510,9 @@ namespace Warewolf.Execution.Lightweight
             WorkflowExecutionRequest request,
             Guid executionId,
             string workflowName,
-            string dataList)
+            string dataList,
+            Guid resourceId,
+            int versionNumber)
         {
             var rawPayload = BuildJsonPayload(request.InputParameters);
             var workflowDir = Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
@@ -482,7 +526,13 @@ namespace Warewolf.Execution.Lightweight
                 ExecutionID = request.ExecutionId ?? executionId,
                 CustomTransactionID = request.CustomTransactionId ?? string.Empty,
                 ExecutionToken = new LightweightExecutionToken(),
-                EsbChannel = new LightweightEsbChannel(request.WorkflowsDirectory ?? workflowDir)
+                EsbChannel = new LightweightEsbChannel(request.WorkflowsDirectory ?? workflowDir),
+                // Suspend/resume requirements: SuspendExecutionActivity dereferences
+                // ExecutingUser.Identity.Name and persists ResourceID + VersionNumber,
+                // so all three must be populated on every execution.
+                ResourceID = resourceId,
+                VersionNumber = versionNumber,
+                ExecutingUser = ResolveExecutingUser(request.ExecutingPrincipal)
             };
 
             if (!string.IsNullOrEmpty(dataList)
@@ -496,6 +546,25 @@ namespace Warewolf.Execution.Lightweight
             }
 
             return dataObject;
+        }
+
+        /// <summary>
+        /// Returns the authenticated principal when it carries a usable identity name;
+        /// otherwise substitutes a named <c>GenericPrincipal("Public")</c>. A principal
+        /// with a null <c>Identity.Name</c> (e.g. <c>WorkflowClaimsPrincipal.Anonymous()</c>
+        /// on <c>/public</c> routes) would persist an empty <c>currentuserprincipal</c> at
+        /// suspend time and fail principal reconstruction on resume.
+        /// </summary>
+        internal static System.Security.Principal.IPrincipal ResolveExecutingUser(System.Security.Principal.IPrincipal principal)
+        {
+            if (!string.IsNullOrWhiteSpace(principal?.Identity?.Name))
+            {
+                return principal;
+            }
+
+            return new System.Security.Principal.GenericPrincipal(
+                new System.Security.Principal.GenericIdentity("Public"),
+                Array.Empty<string>());
         }
 
         /// <summary>

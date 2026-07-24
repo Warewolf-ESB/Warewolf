@@ -43,6 +43,17 @@ namespace Warewolf.Execution.Lightweight
             ParseQueryString(request, executionRequest);
             await ParseBodyAsync(request, executionRequest);
 
+            // Attach the authenticated principal AFTER body parsing so a request payload
+            // can never supply or override it. The auth middleware stores a
+            // WorkflowClaimsPrincipal for every request (Anonymous() on /public routes).
+            if (request.FunctionContext?.Items != null
+                && request.FunctionContext.Items.TryGetValue(
+                       Auth.Models.AuthConstants.PrincipalContextKey, out var principalObj)
+                && principalObj is System.Security.Principal.IPrincipal principal)
+            {
+                executionRequest.ExecutingPrincipal = principal;
+            }
+
             // Propagate Warewolf tracing headers — mirrors DataObjectExtensions.SetHeaders().
             var executionIdHeader = TryGetHeaderValue(request, "Warewolf-Execution-Id");
             if (!string.IsNullOrEmpty(executionIdHeader) && Guid.TryParse(executionIdHeader, out var parsedExecId))

@@ -45,8 +45,15 @@ internal static class StartupOrchestrator
         try
         {
             RegisterLightweightResourceCatalog();
+            RegisterNoOpPerformanceCounters();
             LogEnvironmentDiagnostics(config);
             await InitializeEncryptionAsync(host, config);
+            // Must run AFTER encryption init: the persistence DbSource .bite has a
+            // WFAES::-encrypted ConnectionString that DbSource(XElement) decrypts via
+            // DpapiWrapper.AesDecryptHook.
+            PersistenceConfigLoader.Initialize();
+            RegisterJobValuesEnricher();
+            RegisterResumptionExecutor(host);
             WarmUpWorkflowIndex(config);
 
             Dev2Logger.Info("StartupOrchestrator RunStartupAsync completed successfully", executionId);
@@ -101,6 +108,77 @@ internal static class StartupOrchestrator
                 "StartupOrchestrator RegisterLightweightResourceCatalog failed — falling back to the default lazy " +
                 "ResourceCatalog.Instance (management services WILL be loaded). Workflow execution is unaffected.",
                 ex, executionId);
+        }
+    }
+
+    /// <summary>
+    /// Registers the no-op performance counter locater so no code path (in particular
+    /// <c>HangfireScheduler.LoadAndRegisterTypes</c>) ever constructs real Windows
+    /// performance counters — those require admin rights to create categories and are
+    /// blocked by the Azure App Service sandbox. Azure telemetry (Application Insights)
+    /// replaces them in this host. Idempotent: a pre-registered locater is left as-is.
+    /// </summary>
+    static void RegisterNoOpPerformanceCounters()
+    {
+        const string executionId = "StartupOrchestrator-PerfCounters";
+
+        if (CustomContainer.Get<Dev2.Common.Interfaces.Monitoring.IWarewolfPerformanceCounterLocater>() != null)
+        {
+            Dev2Logger.Info("StartupOrchestrator IWarewolfPerformanceCounterLocater already registered — skipping no-op registration", executionId);
+            return;
+        }
+
+        CustomContainer.Register<Dev2.Common.Interfaces.Monitoring.IWarewolfPerformanceCounterLocater>(new NoOpPerformanceCounterLocater());
+
+        Dev2Logger.Info(
+            "Startup | Phase=PerfCounters | Status=Completed | Locater=NoOp | " +
+            "Windows performance counters are disabled in the Azure sandbox; Application Insights provides telemetry.",
+            executionId);
+    }
+
+    /// <summary>
+    /// Registers the engine's <see cref="Warewolf.Driver.Persistence.IJobValuesEnricher"/>
+    /// so suspend-time persistence jobs carry engine-resume metadata (workflow name/path,
+    /// execution id). Only registered when persistence is enabled; idempotent.
+    /// </summary>
+    static void RegisterJobValuesEnricher()
+    {
+        const string executionId = "StartupOrchestrator-JobEnricher";
+
+        if (!Dev2.Common.Config.Persistence.Enable)
+        {
+            return;
+        }
+
+        if (CustomContainer.Get<Warewolf.Driver.Persistence.IJobValuesEnricher>() == null)
+        {
+            CustomContainer.Register<Warewolf.Driver.Persistence.IJobValuesEnricher>(new LightweightJobValuesEnricher());
+            Dev2Logger.Info("Startup | Phase=Persistence | JobValuesEnricher registered (engine suspend metadata).", executionId);
+        }
+    }
+
+    /// <summary>
+    /// Registers the engine's <see cref="ResumptionExecutor"/> as the
+    /// <see cref="Warewolf.Driver.Persistence.IResumptionExecutor"/> host seam so
+    /// <c>ManualResumptionActivity</c>'s two paths (via <c>HangfireScheduler</c>) execute
+    /// suspended-workflow continuations on the lightweight pipeline — synchronously,
+    /// preserving the activity's Response contract. Only when persistence is enabled;
+    /// idempotent.
+    /// </summary>
+    static void RegisterResumptionExecutor(IHost host)
+    {
+        const string executionId = "StartupOrchestrator-Resumption";
+
+        if (!Dev2.Common.Config.Persistence.Enable)
+        {
+            return;
+        }
+
+        if (CustomContainer.Get<Warewolf.Driver.Persistence.IResumptionExecutor>() == null)
+        {
+            CustomContainer.Register<Warewolf.Driver.Persistence.IResumptionExecutor>(
+                host.Services.GetRequiredService<ResumptionExecutor>());
+            Dev2Logger.Info("Startup | Phase=Persistence | ResumptionExecutor registered (manual resumption runs on the engine pipeline).", executionId);
         }
     }
 

@@ -171,7 +171,13 @@ internal static class ServiceCollectionExtensions
 
         // Route authorization registry — built once from [RequireWorkflowPermission] attributes.
         services.AddSingleton<IRouteAuthorizationRegistry>(
-            _ => RouteAuthorizationRegistry.BuildFrom(typeof(WorkflowHttpFunction)));
+            _ => RouteAuthorizationRegistry.BuildFrom(
+                typeof(WorkflowHttpFunction),
+                typeof(Functions.WorkflowResumeFunction)));
+
+        // Suspend/resume: executes suspended-workflow continuations on the lightweight
+        // pipeline (resume route + both manual-resumption paths via the driver seam).
+        services.AddSingleton<ResumptionExecutor>();
 
         // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
@@ -206,10 +212,12 @@ internal static class ServiceCollectionExtensions
             sp.GetRequiredService<ILogger<KeyVaultSecretManager>>(),
             useDebugBypass ? config.DebugKeyVaultSecret : null));
 
-        // FileDecryptionHelper is resolved AFTER InitializeAsync() completes,
-        // so GetKeyBytes() is always safe at construction time.
+        // FileDecryptionHelper / FileEncryptionHelper are resolved AFTER InitializeAsync()
+        // completes, so GetKeyBytes() is always safe at construction time.
         services.AddSingleton(sp =>
             new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+        services.AddSingleton(sp =>
+            new FileEncryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
 
         // AuditLogger is registered globally in AddCoreServices (DI-07);
         // no per-encryption registration needed here.

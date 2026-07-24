@@ -46,7 +46,13 @@ internal static class KeyVaultStartupExtensions
             var decryptionHelper = host.Services.GetRequiredService<FileDecryptionHelper>();
             DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
 
-            Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption hook wired. KeyId: {secretManager.KeyId}", executionId);
+            // Encryption counterpart: every DpapiWrapper.Encrypt call in this host (e.g.
+            // SuspendExecutionActivity persisting a workflow environment) produces Key
+            // Vault-backed WFAES:: ciphertext instead of machine-bound Windows DPAPI.
+            var encryptionHelper = host.Services.GetRequiredService<FileEncryptionHelper>();
+            DpapiWrapper.AesEncryptHook = encryptionHelper.Encrypt;
+
+            Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption + encryption hooks wired. KeyId: {secretManager.KeyId}", executionId);
      
             var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
             Dev2Logger.Info(log, executionId);
