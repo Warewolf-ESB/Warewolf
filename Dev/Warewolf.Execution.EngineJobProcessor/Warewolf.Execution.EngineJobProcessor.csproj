@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- ========================================================= -->
+  <!-- ExecutionEngineJobProcessor — dedicated Azure Function App -->
+  <!--                                                            -->
+  <!-- Polls Hangfire SQL storage for DUE Scheduled suspend/resume -->
+  <!-- jobs and fire-and-forget invokes the Execution Engine's     -->
+  <!-- secured /resume/{jobId} route (managed-identity token).     -->
+  <!-- Also reaps stale Processing jobs to Failed (fail-only).     -->
+  <!-- Replaces the on-prem hangfireserver.exe worker loop.        -->
+  <!-- See docs: HangeFire-Azure-Architecture.md                   -->
+  <!-- ========================================================= -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+
+    <RootNamespace>Warewolf.Execution.EngineJobProcessor</RootNamespace>
+    <AssemblyName>Warewolf.Execution.EngineJobProcessor</AssemblyName>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>true</EnableDefaultItems>
+
+    <!-- Same size discipline as the Execution Engine (Azure provides the runtime). -->
+    <SelfContained>false</SelfContained>
+    <UseAppHost>false</UseAppHost>
+    <RuntimeIdentifier></RuntimeIdentifier>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Azure Functions isolated worker (versions aligned with Warewolf.Execution.Lightweight). -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.23.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+
+    <!-- Managed-identity token acquisition + Key Vault AES key (linked security files). -->
+    <PackageReference Include="Azure.Identity" Version="1.20.0" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Hangfire storage access + persistence settings types (Dev2.Common etc. transitively). -->
+    <ProjectReference Include="..\Warewolf.Driver.Persistence\Warewolf.Driver.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Shared-source links from the Execution Engine: settings hydration and the Key Vault
+      AES decryption stack. Linked (not project-referenced) because two Azure Functions
+      Exe projects cannot reference each other; the files are host-agnostic by design.
+      Any change to the originals flows into this project automatically at build time.
+    -->
+    <Compile Include="..\Warewolf.Execution.Lightweight\Infrastructure\PersistenceConfigLoader.cs" Link="Shared\PersistenceConfigLoader.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultSecretManager.cs" Link="Shared\KeyVaultSecretManager.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\FileDecryptionHelper.cs" Link="Shared\FileDecryptionHelper.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialFactory.cs" Link="Shared\KeyVaultCredentialFactory.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialOptions.cs" Link="Shared\KeyVaultCredentialOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <!-- NEVER publish local.settings.json — it may contain development secrets. -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <!-- Same persistence settings pair as the Execution Engine (deploy overwrites both). -->
+    <None Update="Settings\persistencesettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings\persistencesettingsdbsource.bite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+</Project>

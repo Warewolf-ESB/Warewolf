@@ -1,0 +1,30 @@
+{
+  "version": "2.0",
+  "functionTimeout": "00:05:00",
+  "logging": {
+    "fileLoggingMode": "always",
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "maxTelemetryItemsPerSecond": 20,
+        "excludedTypes": "Request;Exception",
+        "includedTypes": "Dependency;Event"
+      },
+      "enableLiveMetricsFilters": true,
+      "enableDependencyTracking": true
+    },
+    "logLevel": {
+      "default": "Information",
+      "Function": "Information",
+      "Host.Results": "Information",
+      "Host.Aggregator": "Warning",
+      "Warewolf.Execution.EngineJobProcessor.Functions.JobPollFunction": "Information",
+      "Warewolf.Execution.EngineJobProcessor.Functions.ReaperFunction": "Information",
+      "Warewolf.Execution.EngineJobProcessor.Services.EngineResumeClient": "Information"
+    },
+    "console": {
+      "isEnabled": true,
+      "includeScopes": false
+    }
+  }
+}

@@ -27,7 +27,13 @@ namespace Warewolf.Driver.Persistence
         [ExcludeFromCodeCoverage]
         public PersistenceExecution()
         {
-            _persistenceScheduler = GetScheduler();
+            // Intentionally do NOT build the scheduler here. The XAML/activity parser
+            // instantiates a SuspendExecutionActivity (which news up a PersistenceExecution)
+            // for every node when merely LOADING a workflow — including on the engine's
+            // resume path, which parses the .bite to locate the continuation node. Building
+            // the Hangfire scheduler eagerly there would force a live SQL storage connection
+            // just to parse. Each method below builds it lazily via `?? GetScheduler()` on
+            // first real use (suspend / resume), so behaviour is only deferred, not changed.
         }
         public PersistenceExecution(IPersistenceScheduler persistenceScheduler)
         {

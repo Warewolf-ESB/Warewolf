@@ -28,10 +28,11 @@ namespace Warewolf.Security.Encryption
         public static Func<string, string>? AesDecryptHook { get; set; }
 
         /// <summary>
-        /// Optional hook for AES-256-CBC encryption in non-DPAPI environments.
-        /// When set, <see cref="Encrypt"/> routes through this delegate instead of DPAPI.
-        /// The produced value must be prefixed with <c>WFAES::</c> so that
-        /// <see cref="AesDecryptHook"/> can recognise and decrypt it.
+        /// Optional hook for AES-256-GCM encryption in non-DPAPI environments
+        /// (e.g., Azure Function).  When set, <see cref="Encrypt"/> routes through
+        /// this delegate instead of DPAPI. The produced value must be prefixed with
+        /// <c>WFAES::</c> so that <see cref="AesDecryptHook"/> can recognise and
+        /// decrypt it. Set once at startup in <c>Program.cs</c>; never altered at runtime.
         /// </summary>
         public static Func<string, string>? AesEncryptHook { get; set; }
 

@@ -91,7 +91,6 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             _activityParserType = Type.GetType(ActivityParserTypeString);
             _resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
-            _performanceCounter = GetPerformanceCounter();
         }
 
         public WorkflowResume WorkflowResume
@@ -279,8 +278,15 @@ namespace Warewolf.Driver.Persistence.Drivers
                     values["currentuserprincipal"] = new StringBuilder(decryptCurrentUserPrincipal);
                 }
 
-                var workflowResume = new WorkflowResume();
-                var result = workflowResume.Execute(values, null);
+                // Host seam: the Azure Execution Engine registers an IResumptionExecutor that
+                // runs the continuation on its lightweight pipeline — SYNCHRONOUSLY, preserving
+                // this method's contract that "Success" is returned only after the resumed
+                // workflow completed. The Server registers nothing and keeps the in-process
+                // WorkflowResume endpoint, byte-for-byte the existing behaviour.
+                var externalExecutor = CustomContainer.Get<IResumptionExecutor>();
+                var result = externalExecutor != null
+                    ? externalExecutor.Execute(values)
+                    : new WorkflowResume().Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
                 if (executeMessage.HasError)
@@ -368,6 +374,17 @@ namespace Warewolf.Driver.Persistence.Drivers
                 }
                 var manuallyResumedState = new ManuallyResumedState(environment);
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
+
+                // Host seam: on the Azure Execution Engine the continuation executes HERE,
+                // synchronously, against the caller's merged environment (StartActivityId was
+                // set by ManualResumptionActivity). On the Server this is a no-op — there the
+                // continuation runs via the StartActivityId sub-execution pipeline
+                // (EsbServicesEndpoint), which the engine does not have.
+                var overrideExecutor = CustomContainer.Get<IResumptionExecutor>();
+                if (overrideExecutor != null && jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> jobValues)
+                {
+                    overrideExecutor.ExecuteOverrideContinuation(dsfDataObject, jobValues);
+                }
             }
             catch (Exception ex)
             {
@@ -384,6 +401,11 @@ namespace Warewolf.Driver.Persistence.Drivers
             string jobId;
             try
             {
+                // Host seam: the Azure Execution Engine registers an IJobValuesEnricher that
+                // stamps engine-resume metadata (additive keys only). The Server registers
+                // nothing, so this is a no-op there.
+                CustomContainer.Get<IJobValuesEnricher>()?.Enrich(values);
+
                 var suspensionDate = DateTime.Now;
                 var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
                 var state = new ScheduledState(resumptionDate.ToUniversalTime());
@@ -417,7 +439,16 @@ namespace Warewolf.Driver.Persistence.Drivers
             
                 _activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
                 if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(_activityParserInstance);
-                if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
+                if (CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null)
+                {
+                    // Windows performance counters require admin rights to create categories and are
+                    // blocked by the Azure App Service sandbox. They are therefore constructed lazily,
+                    // and only when no host has pre-registered its own locater (the Azure Execution
+                    // Engine registers a no-op locater at startup; the Server reaches this line and
+                    // gets the real counters, unchanged).
+                    _performanceCounter = _performanceCounter ?? GetPerformanceCounter();
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
+                }
             }
             finally
             {

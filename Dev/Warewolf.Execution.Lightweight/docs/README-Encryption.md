@@ -24,13 +24,23 @@ Azure Function (.NET 8 — Consumption / Free Tier)
        ├─ KeyVaultSecretManager → DefaultAzureCredential → 1 KV GET
        ├─ Deserialise key bytes → held in memory for instance lifetime
        ├─ Register DpapiWrapper.AesDecryptHook = FileDecryptionHelper.DecryptConnectionString
+       ├─ Register DpapiWrapper.AesEncryptHook = FileEncryptionHelper.Encrypt
+       │  (suspend/resume: SuspendExecutionActivity + HangfireScheduler encrypt
+       │   persisted environments/principals as WFAES:: instead of Windows DPAPI)
        └─ WorkflowIndex.WarmUp()
 
   └─ Every invocation (zero Key Vault ops)
        └─ DbSource(XElement) → DpapiWrapper.CanBeDecrypted/Decrypt
             → hook detects WFAES:: → FileDecryptionHelper.DecryptConnectionString
             → AES-256-GCM in-memory → plain connection string
+       └─ DpapiWrapper.Encrypt (any caller)
+            → hook → FileEncryptionHelper.Encrypt
+            → AES-256-GCM in-memory → WFAES::{Base64(nonce|ciphertext|tag)}
 ```
+
+> **Cross-host constraint:** values encrypted with WFAES (engine) and values encrypted
+> with Windows DPAPI (on-prem Server) are mutually undecryptable — a job suspended on
+> one host cannot be resumed on the other.
 
 ### Encrypted attribute format
 
