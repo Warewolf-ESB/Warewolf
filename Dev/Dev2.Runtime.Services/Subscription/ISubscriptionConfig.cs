@@ -17,6 +17,7 @@ namespace Dev2.Runtime.Subscription
         string CustomerId { get; }
         string PlanId { get; }
         string SubscriptionId { get; }
+        string MarketplaceResourceId { get; }
         string Status { get; }
         string SubscriptionKey { get; }
         string SubscriptionSiteName { get; }

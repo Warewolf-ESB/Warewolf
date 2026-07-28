@@ -33,6 +33,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
                 CustomerId     = "cust-123",
                 SubscriptionId = "sub-456",
                 PlanId         = "developer",
+                MarketplaceResourceId = "",
                 Status         = SubscriptionStatus.Active
             };
 
@@ -59,7 +60,33 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
             Assert.AreEqual("LightweightExecution",                        (string)payload["source"]);
             Assert.AreEqual("sub-456",                                     (string)payload["subscriptionId"]);
             Assert.AreEqual("developer",                                   (string)payload["planId"]);
+            Assert.AreEqual("",                                            (string)payload["marketplaceResourceId"]);
             Assert.AreEqual("Active",                                      (string)payload["status"]);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TrackWorkflowExecution_PopulatedMarketplaceResourceId_IncludesItInPayload()
+        {
+            // A populated MarketplaceResourceId identifies an Azure Marketplace-billed
+            // customer (vs. Chargebee) — Warewolf.Invoicing's reportMarketplaceUsage
+            // function relies on this field being present in UsageData rows.
+            var sink = new CapturingSink { Result = UsageDataResult.ok };
+            var subscription = new FakeSubscriptionProvider
+            {
+                CustomerId            = "cust-789",
+                MarketplaceResourceId = "8f14e45f-ceea-467e-abd0-2c1a1c8b9600",
+                Status                = SubscriptionStatus.Active
+            };
+
+            var emitter = new UsageEventEmitter(sink, () => subscription);
+
+            emitter.TrackWorkflowExecution(new WorkflowUsageEvent(
+                "wf", Guid.NewGuid(), TimeSpan.FromMilliseconds(5), true, 0, DateTime.UtcNow));
+
+            Assert.AreEqual(1, sink.Calls.Count);
+            var payload = JObject.Parse(sink.Calls[0].UsageInfo);
+            Assert.AreEqual("8f14e45f-ceea-467e-abd0-2c1a1c8b9600", (string)payload["marketplaceResourceId"]);
         }
 
         [TestMethod]
@@ -153,6 +180,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
             public string CustomerId           { get; set; } = string.Empty;
             public string PlanId               { get; set; } = string.Empty;
             public string SubscriptionId       { get; set; } = string.Empty;
+            public string MarketplaceResourceId { get; set; } = string.Empty;
             public bool   IsLicensed           { get; set; }
             public bool   StopExecutions       { get; set; }
             public SubscriptionStatus Status   { get; set; } = SubscriptionStatus.NotActive;

@@ -39,6 +39,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("", provider.CustomerId);
             Assert.AreEqual(true, provider.StopExecutions);
             Assert.AreEqual("", provider.SubscriptionId);
+            Assert.AreEqual("", provider.MarketplaceResourceId);
             Assert.AreEqual("NotRegistered", provider.PlanId);
             Assert.AreEqual(SubscriptionStatus.NotActive, provider.Status);
             Assert.AreEqual("warewolf-test", provider.SubscriptionSiteName);
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(true, provider.StopExecutions);
             Assert.AreEqual("", provider.CustomerId);
             Assert.AreEqual("", provider.SubscriptionId);
+            Assert.AreEqual("", provider.MarketplaceResourceId);
             Assert.AreEqual("NotRegistered", provider.PlanId);
             Assert.AreEqual(SubscriptionStatus.NotActive, provider.Status);
             Assert.AreEqual("warewolf-test", provider.SubscriptionSiteName);
@@ -75,10 +77,12 @@ namespace Dev2.Tests.Runtime.Services
             mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
             mockSubscriptionData.Setup(o => o.CustomerId).Returns("VMxitsiobdAyth62k0DiqpAUKocG6sV3");
             mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            mockSubscriptionData.Setup(o => o.MarketplaceResourceId).Returns("8f14e45f-ceea-467e-abd0-2c1a1c8b9600");
 
             var config = new Mock<ISubscriptionConfig>();
             config.Setup(c => c.CustomerId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultCustomerId));
             config.Setup(c => c.SubscriptionId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionId));
+            config.Setup(c => c.MarketplaceResourceId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultMarketplaceResourceId));
             config.Setup(c => c.PlanId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultPlanId));
             config.Setup(c => c.SubscriptionSiteName).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionSiteName));
             config.Setup(c => c.SubscriptionKey).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionKey));
@@ -116,6 +120,7 @@ namespace Dev2.Tests.Runtime.Services
             var config = new Mock<ISubscriptionConfig>();
             config.Setup(c => c.CustomerId).Returns(customerId);
             config.Setup(c => c.SubscriptionId).Returns(subscriptionId);
+            config.Setup(c => c.MarketplaceResourceId).Returns(string.Empty);
             config.Setup(c => c.PlanId).Returns(planId);
             config.Setup(c => c.SubscriptionSiteName).Returns(subscriptionSiteName);
             config.Setup(c => c.SubscriptionKey).Returns(subscriptionKey);
