@@ -28,6 +28,8 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 | `Get-DropboxTokens.ps1` | Dropbox OAuth token retrieval. |
 | `Generate-WorkflowIndex.ps1` | Regenerate `workflow-index.json` from `Resources/`. |
 | `Rollback-WwExecutionEngine.ps1` | Roll a deployment back. |
+| `Deploy-WwExecutionServiceBusWorker.ps1` | **Shovel bridge, Azure side.** Provisions the Service Bus-triggered Function App (`ClientExamples/AzureServiceBus`), a Service Bus namespace/queue + dead-lettering, Managed Identity listen auth, and a Send-only SAS rule (`shovel-send`) for the RabbitMQ Shovel. See `docs/ShovelBridge-Architecture.md`. |
+| `Configure-RabbitMqShovel.ps1` | **Shovel bridge, RabbitMQ side.** Configures a dynamic RabbitMQ Shovel (Management HTTP API) forwarding an existing RabbitMQ queue to the Service Bus queue above, per Microsoft's AMQP 0.9.1→1.0 bridging pattern. See `docs/ShovelBridge-Architecture.md`. |
 | `Example-ClientApps-OrdersSales.ps1` | Worked client-app example. |
 | `*.example.json`, `authsettingsV2.json`, `secure.config.*.json` | Config templates/examples. |
 | `Tests/` | Pester/script tests for the deployment tooling. |
@@ -55,5 +57,6 @@ When changing deployment scripts or their behaviour, update the relevant docs (s
 - `docs/EasyAuth-Runbook.md`, `EasyAuth-Entra-Tutorial.md`, `README-Authentication.md` — auth.
 - `docs/KeyRotationRunbook.md`, `README-Encryption.md`, `SecurityChecklist.md` — Key Vault / encryption / security.
 - `docs/README-ApplicationInsights.md`, `QUICKSTART-ApplicationInsights.md` — App Insights.
+- `docs/ShovelBridge-Architecture.md`, `Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/README.md` — shovel bridge topology + the Service Bus worker's own docs.
 
 When a script's **roles/requirements** change, reconcile the script, its `Tests/`, the run guide, and the implementation-plan docs together — and confirm the changes with the user before committing.
