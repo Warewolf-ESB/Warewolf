@@ -159,9 +159,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
             string routeName, string method = "GET")
         {
             var url = new Uri($"http://localhost:7071/public/{routeName}");
-            var request = new FakeHttpRequestData(new TestFunctionContext(), url, method);
+            var ctx = new HttpFunctionContext();
+            var request = new FakeHttpRequestData(ctx, url, method);
 
-            var response = await _function.ExecutePublicWorkflow(request, routeName);
+            var response = await _function.ExecutePublicWorkflow(request, routeName, ctx);
             return (response.StatusCode, await ReadBodyAsync(response));
         }
 
@@ -234,17 +235,17 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
             if (p.Equals("/apis.json", StringComparison.OrdinalIgnoreCase))
                 return await _function.ExecuteRootApisJson(req, ctx);
             if (p.StartsWith("/public/", StringComparison.OrdinalIgnoreCase))
-                return await _function.ExecutePublicWorkflow(req, p.Substring("/public/".Length));
+                return await _function.ExecutePublicWorkflow(req, p.Substring("/public/".Length), ctx);
             if (p.StartsWith("/secure/", StringComparison.OrdinalIgnoreCase))
                 return await _function.ExecuteSecureWorkflow(req, p.Substring("/secure/".Length), ctx);
             if (p.StartsWith("/services/", StringComparison.OrdinalIgnoreCase))
                 return await _function.ExecuteService(req, p.Substring("/services/".Length), ctx);
             if (p.StartsWith("/workflow/", StringComparison.OrdinalIgnoreCase))
-                return await _function.ExecuteByName(req, p.Substring("/workflow/".Length));
+                return await _function.ExecuteByName(req, p.Substring("/workflow/".Length), ctx);
             if (p.Equals("/workflow", StringComparison.OrdinalIgnoreCase))
-                return await _function.Execute(req);
+                return await _function.Execute(req, ctx);
 
-            return await _function.ExecutePublicWorkflow(req, p.TrimStart('/'));
+            return await _function.ExecutePublicWorkflow(req, p.TrimStart('/'), ctx);
         }
 
         /// <summary>Maps a route to its [Function] name so the route registry resolves required permissions.</summary>
