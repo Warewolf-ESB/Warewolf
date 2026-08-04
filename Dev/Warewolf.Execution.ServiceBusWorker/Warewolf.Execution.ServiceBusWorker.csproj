@@ -17,7 +17,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>12.0</LangVersion>
-    <RootNamespace>Warewolf.Execution.ClientExamples.AzureServiceBus</RootNamespace>
+    <RootNamespace>Warewolf.Execution.ServiceBusWorker</RootNamespace>
     <AssemblyName>WwExecutionServiceBusWorker</AssemblyName>
   </PropertyGroup>
 

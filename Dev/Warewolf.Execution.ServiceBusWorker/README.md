@@ -186,7 +186,7 @@ Prerequisites: .NET 8 SDK, Azure Functions Core Tools v4, an Azure Service Bus n
 queue named `wwexecution-queue`, and (for local auth) `az login` or a daemon client secret.
 
 ```bash
-cd Dev/Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus
+cd Dev/Warewolf.Execution.ServiceBusWorker
 
 # 1. Fill in local.settings.json (tenant, resource app id, SB connection, etc.)
 # 2. Build & run the worker

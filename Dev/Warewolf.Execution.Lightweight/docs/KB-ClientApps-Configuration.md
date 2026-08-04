@@ -236,7 +236,7 @@ VITE_FUNCTION_APP_URL=https://<wwexecution>.azurewebsites.net
 
 - **Registration:** `wwexecution-servicebus` · type **Daemon** (Managed Identity recommended via `-ServiceBusMiObjectId`, secret fallback otherwise). **App role required.**
 - **Flow:** app-only client-credentials / Managed Identity, scope `api://<ResourceAppId>/.default`.
-- **Config file:** [`appsettings.json`](../../Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/appsettings.json) (non-secret) + `local.settings.json` for local secrets.
+- **Config file:** [`appsettings.json`](../../Warewolf.Execution.ServiceBusWorker/appsettings.json) (non-secret) + `local.settings.json` for local secrets.
 
 ```jsonc
 "WwExecution": {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Warewolf.Execution.ClientExamples.AzureServiceBus;
+namespace Warewolf.Execution.ServiceBusWorker;
 
 /// <summary>
 /// Strongly-typed configuration for calling the Warewolf Execution Engine.

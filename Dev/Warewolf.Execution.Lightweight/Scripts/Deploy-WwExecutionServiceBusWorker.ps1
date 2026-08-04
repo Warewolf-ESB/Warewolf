@@ -3,7 +3,7 @@
 .SYNOPSIS
     Deploys the Warewolf Execution Service Bus worker — the dedicated Azure Function
     App (WwExecutionServiceBusWorker, published from
-    Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus) that is triggered by
+    Warewolf.Execution.ServiceBusWorker) that is triggered by
     an Azure Service Bus queue message and calls the Execution Engine's /secure or
     /public route on the message's behalf. Also provisions the Service Bus namespace,
     queue and dead-letter/authorization settings this worker (and the "shovel bridge"
@@ -109,7 +109,7 @@
 
 .NOTES
     Publish first (this script does NOT build):
-      dotnet publish Dev/Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/WwExecutionServiceBusWorker.csproj -c Release -o D:\SbWorker\Publish
+      dotnet publish Dev/Warewolf.Execution.ServiceBusWorker/Warewolf.Execution.ServiceBusWorker.csproj -c Release -o D:\SbWorker\Publish
 #>
 [CmdletBinding()]
 param(

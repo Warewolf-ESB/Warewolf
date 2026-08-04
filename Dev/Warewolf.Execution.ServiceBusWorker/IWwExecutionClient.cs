@@ -1,4 +1,4 @@
-namespace Warewolf.Execution.ClientExamples.AzureServiceBus;
+namespace Warewolf.Execution.ServiceBusWorker;
 
 /// <summary>
 /// Typed client for the Warewolf Execution Engine HTTP API.

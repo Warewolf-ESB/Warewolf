@@ -38,7 +38,7 @@ RabbitMQ source queue (AMQP 0.9.1)
 Azure Service Bus queue (dead-lettering + max-delivery-count configured)
    │  ServiceBusTrigger (Managed Identity listen connection, by default)
    ▼
-WorkflowQueueTrigger (Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus)
+WorkflowQueueTrigger (Warewolf.Execution.ServiceBusWorker)
    │  parses message → acquires Entra token (Managed Identity) → HTTP call
    ▼
 Lightweight Execution Engine (Warewolf.Execution.Lightweight, /secure or /public route)
@@ -90,7 +90,7 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   (`ServiceBusConnection__fullyQualifiedNamespace` + `ServiceBusConnection__credential
   =managedidentity`) — no SAS secret in the Function App's own settings.
 - The worker calls the Lightweight engine via Managed Identity too (see
-  `Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/README.md` and
+  `Warewolf.Execution.ServiceBusWorker/README.md` and
   `docs/KB-ClientApps-Configuration.md` §2.6) — role assignment
   (`Warewolf_ClientApps`) is a separate operator step via
   `Configure-WwExecutionAuth-Clients.ps1`.
@@ -107,22 +107,73 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   translation is an accepted risk** (explicit decision — not spiked further). This is a
   known lossy point in protocol bridging; revisit with a dedicated spike if end-to-end
   tracing through the bridge becomes a hard requirement.
-- **Shovel health monitoring is not yet automated.** A stalled or continuously-erroring
-  shovel (e.g. after an SAS key rotation that wasn't propagated) silently stops
-  triggering workflows. `Configure-RabbitMqShovel.ps1` polls the shovel's `running`
-  state once at configuration time, but there is no ongoing alerting yet — consider the
-  RabbitMQ Prometheus exporter or a periodic `GET /api/shovels/{vhost}` health check.
-- **No end-to-end integration test yet** chaining a real RabbitMQ + Shovel + Service Bus
-  + the worker + the Lightweight engine — the two provisioning scripts have full Pester
-  suites (`Scripts/Tests/Deploy-WwExecutionServiceBusWorker.Tests.ps1`,
-  `Scripts/Tests/Configure-RabbitMqShovel.Tests.ps1`) and have each been proven against
-  real infrastructure manually, but a fully automated E2E test would need a dedicated
-  disposable Service Bus namespace (or emulator) and is a larger follow-up effort.
+- **Shovel health monitoring — closed.** A stalled or continuously-erroring shovel (e.g.
+  after a SAS key rotation that wasn't propagated) used to silently stop triggering
+  workflows with no further signal. `Configure-RabbitMqShovel.ps1` still polls the
+  shovel's `running` state once at configuration time; ongoing health is now covered by
+  `Scripts/Monitor-RabbitMqShovel.ps1` — a standalone script the operator schedules
+  (Task Scheduler / cron / Azure Automation) since RabbitMQ is customer/on-prem
+  infrastructure a serverless Function can't reliably poll. It re-checks
+  `GET /api/shovels/{vhost}` and, on an unhealthy or missing shovel, emits a
+  `ShovelHealthCheck` Application Insights custom event (`healthy=false`) via the plain
+  HTTP `/v2/track` ingestion API and throws (non-zero exit) so the scheduler can alert;
+  `-SendHeartbeatOnHealthy` can also emit a heartbeat event on healthy checks. Covered by
+  `Scripts/Tests/Monitor-RabbitMqShovel.Tests.ps1` (16 tests). The Azure Monitor alert
+  rule itself (watching `customEvents` for `healthy == "false"`, or a heartbeat gap) is a
+  one-time operator setup step, not something this script provisions.
+- **End-to-end integration test — closed.** `Scripts/Tests/Integration/Test-ShovelBridgeE2E.ps1`
+  chains a real RabbitMQ container (shovel + management plugins pre-baked into a
+  bind-mounted `enabled_plugins` file), a real shovel (configured via
+  `Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly`), the local Azure Service Bus emulator
+  (+ its Azure SQL Edge metadata-store dependency), and the
+  `Warewolf.Execution.ServiceBusWorker.E2EHarness` console app, which publishes a
+  uniquely-marked message to RabbitMQ and polls the Service Bus queue for it via the
+  `Azure.Messaging.ServiceBus` SDK — proving the bridge actually delivers a message
+  end-to-end, against real containers, not mocks. Wired into CI as the
+  `ShovelBridgeE2ETest` job in `Dev/.azure/pipeline.yml` (Emulator mode, local containers
+  only). All readiness polling is done purely over the RabbitMQ management HTTP API
+  (`/api/overview`, `/api/shovels`) — deliberately never via `docker exec rabbitmqctl` /
+  `docker exec rabbitmq-plugins`, since those CLI tools each spin up their own short-lived
+  Erlang node to talk to the broker over distribution, and doing so repeatedly while the
+  main node is still booting was found to race its `.erlang.cookie` handling and crash it.
+  The script also supports an `-DestinationMode ExternalServiceBus` variant, against a
+  real (caller-provisioned) Service Bus namespace/queue. This is now wired into CI as the
+  `ShovelBridgeE2ETest_ExternalServiceBus` job in the "Test on Azure" stage of
+  `Dev/.azure/pipeline-CLOUD.yml`, against the dedicated `WarewolfShovelBridgeTesting`
+  namespace (resource group `DEV2`). That job logs in to Azure CLI with the same service
+  principal already used elsewhere in that pipeline (`AzureClientId`/`AzureClientSecret`/
+  `AzureTenantId`), then idempotently ensures a single fixed queue
+  (`wwexecution-queue-e2e`) and its two queue-scoped SAS rules exist — `shovel-e2e-send`
+  (Send-only, used to build `-ExternalShovelDestUri`) and `shovel-e2e-listen` (Listen-only,
+  used to build `-ExternalServiceBusConnectionString`) — mirroring the same least-privilege
+  Send/Listen rule split `Deploy-WwExecutionServiceBusWorker.ps1` uses. Nothing is deleted
+  after the run: the queue/rules are provisioned once and reused by every run against that
+  dedicated testing namespace, rather than provisioned/torn down per-run.
+
+## Promotion status
+
+This worker was originally built as a client example and has been promoted to a
+**first-class, officially supported** component of the Lightweight execution engine:
+
+- Relocated from `Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus` to the
+  top-level `Warewolf.Execution.ServiceBusWorker/` project (still built via
+  `.\Compile.ps1 -ServerTests`, part of `Dev\ServerTests.sln`).
+- Dedicated unit test project and CI job — see `Dev/.azure/pipeline.yml`
+  (`LightweightExecutionUnitTests` job).
+- Deploy chaining via `Deploy-WwExecutionEngine.ps1 -DeployServiceBusWorker`, mirroring
+  `-DeployJobProcessor`.
+- Shovel health monitoring is closed (`Scripts/Monitor-RabbitMqShovel.ps1`), and the
+  automated E2E test is closed (`Scripts/Tests/Integration/Test-ShovelBridgeE2E.ps1`,
+  wired into CI as the `ShovelBridgeE2ETest` job) — see "Known risks / open work" above.
+  The `ExternalServiceBus`-mode variant against the real `WarewolfShovelBridgeTesting`
+  Service Bus namespace is now wired into `pipeline-CLOUD.yml`'s "Test on Azure" stage as
+  the `ShovelBridgeE2ETest_ExternalServiceBus` job.
+
 
 ## See also
 
 - `Scripts/README.md` — script index.
-- `Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/README.md` — the
+- `Warewolf.Execution.ServiceBusWorker/README.md` — the
   worker's own architecture, auth, and message-contract documentation.
 - `docs/KB-ClientApps-Configuration.md` §2.6 — the worker's Entra app registration.
 - `docs/KeyRotationRunbook.md` — SAS/key rotation conventions.

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Warewolf.Execution.ClientExamples.AzureServiceBus.Functions;
+namespace Warewolf.Execution.ServiceBusWorker.Functions;
 
 /// <summary>
 /// Triggered by a message on the <c>wwexecution-queue</c> Service Bus queue. Each message names

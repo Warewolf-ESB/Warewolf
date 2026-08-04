@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Warewolf.Execution.ClientExamples.AzureServiceBus;
-using Warewolf.Execution.ClientExamples.AzureServiceBus.Auth;
+using Warewolf.Execution.ServiceBusWorker;
+using Warewolf.Execution.ServiceBusWorker.Auth;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()

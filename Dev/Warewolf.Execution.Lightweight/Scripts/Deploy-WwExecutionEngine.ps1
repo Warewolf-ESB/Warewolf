@@ -236,6 +236,23 @@ param(
     [string] $JobProcessorStorageAccount,
     [string] $EngineResumeScope,             # MI token scope the processor uses (api://<engine-app-id>/.default)
 
+    # ── Warewolf.Execution.ServiceBusWorker (optional companion deploy) ───────
+    # When -DeployServiceBusWorker, after the engine deploy this calls
+    # Deploy-WwExecutionServiceBusWorker.ps1 for the Service Bus-triggered
+    # Function App (the engine's other first-class trigger path alongside
+    # HTTPS), passing the shared context (subscription/tenant/RG/location);
+    # the child prompts for anything not supplied here, including the Service
+    # Bus namespace/queue it provisions.
+    # ServiceBusWorkerPublishPath MUST be a SEPARATE publish output from the
+    # engine's (it is a different csproj / different Function App); the plan
+    # phase resolves it and fails loudly if it collides with the engine
+    # PublishPath.
+    [switch] $DeployServiceBusWorker,
+    [string] $ServiceBusWorkerAppName,
+    [string] $ServiceBusWorkerPublishPath,
+    [string] $ServiceBusWorkerStorageAccount,
+    [string] $WwExecutionScope,               # MI token scope the worker uses (api://<engine-app-id>/.default)
+
     # ── Other logging / feature env vars ─────────────────────────────────────
     [nullable[bool]] $EnableConsoleLogging,
     [ValidateSet('TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF')]
@@ -670,6 +687,8 @@ function Save-DeploySummary {
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
         deployJobProcessor  = [bool]$DeployJobProcessor
         jobProcessorAppName = ($DeployJobProcessor ? $JobProcessorAppName : $null)
+        deployServiceBusWorker  = [bool]$DeployServiceBusWorker
+        serviceBusWorkerAppName = ($DeployServiceBusWorker ? $ServiceBusWorkerAppName : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
         appSettings     = $maskedSettings
     }
@@ -700,6 +719,9 @@ $PersistenceDbSourceName = 'persistencesettingsdbsource.bite'
 
 # Companion JobProcessor deploy (invoked only when -DeployJobProcessor).
 $JobProcessorScript = Join-Path $ScriptDir 'Deploy-WwJobProcessor.ps1'
+
+# Companion ServiceBusWorker deploy (invoked only when -DeployServiceBusWorker).
+$ServiceBusWorkerScript = Join-Path $ScriptDir 'Deploy-WwExecutionServiceBusWorker.ps1'
 
 # Test hook: stop here when only the helper functions are wanted (Pester).
 if ($LoadFunctionsOnly) { return }
@@ -852,6 +874,31 @@ if ($DeployJobProcessor) {
     }
 }
 
+# ── ServiceBusWorker companion — its publish output MUST differ from the engine's ──
+# The worker is a SEPARATE Function App built from a DIFFERENT csproj
+# (Warewolf.Execution.ServiceBusWorker). Sharing a publish/upload directory with
+# the engine would zip the engine's binaries and upload them to the worker app —
+# a silently-wrong deploy. Resolve + validate the worker publish path up-front so
+# it fails at PLAN time (before the engine is even deployed), not deep in the child.
+if ($DeployServiceBusWorker) {
+    $ServiceBusWorkerPublishPath = Read-Required -Name 'ServiceBusWorkerPublishPath' -Current $ServiceBusWorkerPublishPath -Hint 'folder or .zip of the ServiceBusWorker Release publish output — MUST differ from the engine PublishPath'
+    if (-not (Test-Path -LiteralPath $ServiceBusWorkerPublishPath)) {
+        throw "ServiceBusWorkerPublishPath not found: $ServiceBusWorkerPublishPath"
+    }
+    $sbwItem = Get-Item -LiteralPath $ServiceBusWorkerPublishPath
+    $sbwDir  =
+        if     ($sbwItem.PSIsContainer)         { $sbwItem.FullName }
+        elseif ($sbwItem.Extension -ieq '.zip') { Join-Path $sbwItem.DirectoryName $sbwItem.BaseName }
+        else   { throw "ServiceBusWorkerPublishPath must be a folder or a .zip file: $ServiceBusWorkerPublishPath" }
+    $engineFull2 = ([System.IO.Path]::GetFullPath($PublishDir)).TrimEnd('\','/')
+    $sbwFull     = ([System.IO.Path]::GetFullPath($sbwDir)).TrimEnd('\','/')
+    if ($sbwFull -ieq $engineFull2) {
+        throw ("ServiceBusWorkerPublishPath resolves to the SAME directory as the engine PublishPath ('$engineFull2'). " +
+               "The worker is a different Function App built from Warewolf.Execution.ServiceBusWorker and MUST publish to its own directory. " +
+               "Publish it separately, e.g. dotnet publish Warewolf.Execution.ServiceBusWorker -c Release -o <different-path>.")
+    }
+}
+
 # ── secure.config classification (validate now, before any change) ─────────────
 $secureConfigKind = $null
 if ($SecureConfigPath) {
@@ -924,6 +971,10 @@ Write-Host ("    {0,-28}: {1}" -f 'Persistence (Hangfire)', ($enablePersistence 
 Write-Host ("    {0,-28}: {1}" -f 'Deploy JobProcessor', ($DeployJobProcessor ? "yes -> Deploy-WwJobProcessor.ps1$($JobProcessorAppName ? " ($JobProcessorAppName)" : '')" : 'no'))
 if ($DeployJobProcessor) {
     Write-Host ("    {0,-28}: {1}" -f 'JobProcessor PublishPath', "$JobProcessorPublishPath  (separate from engine PublishDir)")
+}
+Write-Host ("    {0,-28}: {1}" -f 'Deploy ServiceBusWorker', ($DeployServiceBusWorker ? "yes -> Deploy-WwExecutionServiceBusWorker.ps1$($ServiceBusWorkerAppName ? " ($ServiceBusWorkerAppName)" : '')" : 'no'))
+if ($DeployServiceBusWorker) {
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusWorker PublishPath', "$ServiceBusWorkerPublishPath  (separate from engine PublishDir)")
 }
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
@@ -1479,6 +1530,46 @@ try {
         Invoke-ChildScript -Path $JobProcessorScript -Label 'Deploy-WwJobProcessor.ps1' -Parameters $jpParams
         Write-Ok 'JobProcessor companion deploy invoked.'
         Write-Note 'Reminder: grant the JobProcessor MI the engine role Warewolf_JobProcessor (see runbook).'
+    }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 7 — (optional) ServiceBusWorker companion deploy
+    # ════════════════════════════════════════════════════════════════════════
+    if ($DeployServiceBusWorker) {
+        Write-Phase 'Phase 7  Deploy Warewolf.Execution.ServiceBusWorker (companion)'
+        $script:DeployLastPhase = 'Phase 7  ServiceBusWorker'
+
+        if (-not (Test-Path -LiteralPath $ServiceBusWorkerScript)) {
+            throw "Deploy-WwExecutionServiceBusWorker.ps1 not found at '$ServiceBusWorkerScript'."
+        }
+
+        # Pass the shared context; Deploy-WwExecutionServiceBusWorker.ps1 prompts
+        # (interactively) for anything omitted here — including its own
+        # AppName / PublishPath / StorageAccount / Service Bus namespace+queue.
+        $sbwParams = [ordered]@{
+            SubscriptionId     = $SubscriptionId
+            TenantId           = $TenantId
+            ResourceGroup      = $ResourceGroup
+            Location           = $Location
+            WwExecutionBaseUrl = $baseUrl
+        }
+        if ($ServiceBusWorkerAppName)        { $sbwParams['AppName']        = $ServiceBusWorkerAppName }
+        if ($ServiceBusWorkerPublishPath)    { $sbwParams['PublishPath']    = $ServiceBusWorkerPublishPath }
+        if ($ServiceBusWorkerStorageAccount) { $sbwParams['StorageAccount'] = $ServiceBusWorkerStorageAccount }
+        if ($authOut) {
+            $sbwParams['WwExecutionTenantId']       = $TenantId
+            $sbwParams['WwExecutionResourceAppId']  = $authOut.ClientId
+            $sbwParams['WwExecutionScope']          = ($WwExecutionScope ? $WwExecutionScope : "api://$($authOut.ClientId)/.default")
+        } elseif ($WwExecutionScope) {
+            $sbwParams['WwExecutionScope'] = $WwExecutionScope
+        }
+        if ($enableAppInsights) { $sbwParams['EnableAppInsights'] = $true }
+        if ($NonInteractive)    { $sbwParams['NonInteractive']    = $true }
+        if ($DryRun)            { $sbwParams['DryRun']            = $true }
+
+        Invoke-ChildScript -Path $ServiceBusWorkerScript -Label 'Deploy-WwExecutionServiceBusWorker.ps1' -Parameters $sbwParams
+        Write-Ok 'ServiceBusWorker companion deploy invoked.'
+        Write-Note 'Reminder: grant the ServiceBusWorker MI the engine role Warewolf_ClientApps (see docs/KB-ClientApps-Configuration.md §2.6).'
     }
 
     # ── Final summary — completed status ─────────────────────────────────────
