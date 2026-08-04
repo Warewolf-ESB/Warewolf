@@ -598,6 +598,17 @@ namespace Warewolf.Execution.Lightweight
             while (next != null)
             {
                 var current = next;
+
+                // Nested sub-workflow invocation nodes (e.g. "Hello World" called from a
+                // continuation) default to the Server's legacy Windows-groups authorization
+                // (ServerAuthorizationService), which the Lightweight engine has no secure.config
+                // to satisfy. The caller was already authorized at the HTTP/claims layer before
+                // execution began, so hand nested invocations a permissive service instead.
+                if (current is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity dsfActivity)
+                {
+                    dsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
                 next = current.Execute(dataObject, 0);
                 environment.AllErrors.UnionWith(environment.Errors);
 
