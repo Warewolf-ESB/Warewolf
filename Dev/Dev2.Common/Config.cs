@@ -39,10 +39,21 @@ namespace Dev2.Common
             // First try environment variable; skip Windows-style paths when running on Linux
             string path = Environment.GetEnvironmentVariable(key);
 
-            // Fall back to ConfigurationManager.AppSettings
+            // Fall back to ConfigurationManager.AppSettings.
+            // This can throw in hosts that lack a classic app-config system (e.g. an Azure
+            // Functions isolated-worker process), so treat any failure as "no value" and let
+            // the remaining fallback tiers below handle it instead of crashing this static
+            // initializer (Config's static fields are constructed eagerly).
             if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
             {
-                path = ConfigurationManager.AppSettings[key];
+                try
+                {
+                    path = ConfigurationManager.AppSettings[key];
+                }
+                catch (Exception)
+                {
+                    path = null;
+                }
             }
 
             // Fall back to special folder path
