@@ -51,18 +51,47 @@ namespace Dev2.Common
                         CultureInfo.CurrentCulture.ClearCachedData();
                     };
                 }
-                catch (Exception e) when (e is ExternalException or PlatformNotSupportedException or TypeInitializationException)
+                catch (Exception)
                 {
-                    // Windows Nano Server and other headless environments do not support
-                    // the Win32 system events window thread. Culture cache clearing on
-                    // time/preference changes is not available in these environments.
+                    // Windows Nano Server, Azure Functions isolated-worker processes, and
+                    // other headless/restricted environments do not reliably support the
+                    // Win32 system events window thread (no interactive window station).
+                    // Catch broadly (not just the previously-listed ExternalException /
+                    // PlatformNotSupportedException / TypeInitializationException) because
+                    // this is purely best-effort culture-cache invalidation — it must never
+                    // crash this static initializer regardless of the exact exception type
+                    // the restricted host throws.
                 }
             }
 
-            var serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
+            // ConfigurationManager.AppSettings can throw in hosts that lack a classic
+            // app-config system (e.g. an Azure Functions isolated-worker process) —
+            // see the identical guard in Config.GetDirectory. Treat any failure as
+            // "no value" and fall back to the hard-coded default port instead of
+            // crashing this static initializer (GlobalConstants' fields are
+            // constructed eagerly, and a failure here previously surfaced only as an
+            // opaque "TypeInitializationException ... (Parameter 'provider')" with
+            // no indication that this was the actual throw site).
+            string serverPort = null;
+            try
+            {
+                serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
+            }
+            catch (Exception)
+            {
+                serverPort = null;
+            }
             WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
-         
-            var sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+
+            string sslPort = null;
+            try
+            {
+                sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+            }
+            catch (Exception)
+            {
+                sslPort = null;
+            }
             WebServerSslPort = !string.IsNullOrEmpty(sslPort) ? sslPort : "3143";
         }
 
