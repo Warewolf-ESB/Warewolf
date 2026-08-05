@@ -71,12 +71,45 @@ namespace Dev2.Common
             return Path.Combine(path, GlobalConstants.Warewolf);
         }
 
-        public static ServerSettings Server = new ServerSettings();
-        public static StudioSettings Studio = new StudioSettings();
-        public static AuditingSettings Auditing = new AuditingSettings();
-        public static LegacySettings Legacy = new LegacySettings();
-        public static PersistenceSettings Persistence = new PersistenceSettings();
-        public static ChatbotSettings Chatbot = new ChatbotSettings();
+        public static ServerSettings Server;
+        public static StudioSettings Studio;
+        public static AuditingSettings Auditing;
+        public static LegacySettings Legacy;
+        public static PersistenceSettings Persistence;
+        public static ChatbotSettings Chatbot;
+
+        // Explicit static constructor (rather than inline field initializers) so a failure
+        // constructing any one settings object can be attributed to that specific type and
+        // logged in full before the CLR wraps it in a bare TypeInitializationException.
+        // Some hosts (e.g. the Azure Functions isolated-worker process) terminate the process
+        // immediately on an unhandled exception from a type initializer, with no opportunity
+        // for a caller-side catch block to observe the inner exception's message or stack
+        // trace — see WOLF-8508. Writing to stderr here ensures the real root cause is
+        // captured in process logs even when the process is about to crash.
+        static Config()
+        {
+            var step = "unknown";
+            try
+            {
+                step = nameof(Server);
+                Server = new ServerSettings();
+                step = nameof(Studio);
+                Studio = new StudioSettings();
+                step = nameof(Auditing);
+                Auditing = new AuditingSettings();
+                step = nameof(Legacy);
+                Legacy = new LegacySettings();
+                step = nameof(Persistence);
+                Persistence = new PersistenceSettings();
+                step = nameof(Chatbot);
+                Chatbot = new ChatbotSettings();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[Dev2.Common.Config] Static initialization failed while constructing '{step}': {ex}");
+                throw;
+            }
+        }
     }
     public class PersistenceSettings : ConfigSettingsBase<PersistenceSettingsData>
     {
