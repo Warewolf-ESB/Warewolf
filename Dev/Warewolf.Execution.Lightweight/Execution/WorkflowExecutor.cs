@@ -600,6 +600,13 @@ namespace Warewolf.Execution.Lightweight
                     dsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
                 }
 
+                // A sub-workflow invoke may also be nested inside a composite/container
+                // activity (DsfSequenceActivity, DsfForEachActivity, GateActivity, etc.) whose
+                // own Execute() iterates its children internally, never surfacing them through
+                // this flat `next`-chain loop. Walk GetChildrenNodes() recursively so every
+                // nested DsfActivity gets the same permissive patch before `current` executes.
+                PatchNestedAuthorizationServices(current, new HashSet<string>());
+
                 next = current.Execute(dataObject, 0);
                 environment.AllErrors.UnionWith(environment.Errors);
 
@@ -612,6 +619,46 @@ namespace Warewolf.Execution.Lightweight
                     }
                     break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Recursively walks <paramref name="node"/>'s <see cref="IDev2Activity.GetChildrenNodes"/>
+        /// tree, patching every nested <c>DsfActivity</c> (sub-workflow invoke) onto the permissive
+        /// <see cref="Security.LightweightAuthorizationService"/> — mirroring the flat top-level
+        /// patch in <see cref="ExecuteActivityChain"/> for nodes reachable only through a
+        /// composite/container activity's own internal iteration (Sequence, ForEach, Gate,
+        /// ManualResumption, RedisCache, SelectAndApply, etc.), which never surface through the
+        /// outer `next`-chain loop. <paramref name="visited"/> is keyed on <see cref="IDev2Activity.UniqueID"/>
+        /// to guard against re-processing a node twice and against any cyclic/self-referencing
+        /// GetChildrenNodes() implementation causing unbounded recursion.
+        /// </summary>
+        static void PatchNestedAuthorizationServices(IDev2Activity node, HashSet<string> visited)
+        {
+            if (node == null || !visited.Add(node.UniqueID))
+            {
+                return;
+            }
+
+            var children = node.GetChildrenNodes();
+            if (children == null)
+            {
+                return;
+            }
+
+            foreach (var child in children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity childDsfActivity)
+                {
+                    childDsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                PatchNestedAuthorizationServices(child, visited);
             }
         }
 
