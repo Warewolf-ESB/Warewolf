@@ -382,22 +382,51 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			if ($OutputFolderName -eq "ServerTests") {
 				# WOLF-8508: ServerTests.sln publishes Warewolf.Execution.Lightweight
 				# alongside its companion Function Apps (EngineJobProcessor,
-				# ServiceBusWorker) into this one shared flat directory. Each project
-				# has its own host.json and, being a flat filename collision (not
-				# disambiguated per-project), whichever publishes last silently
-				# overwrites the others -- e.g. ServiceBusWorker's host.json (which has
-				# no "extensions.http.routePrefix" override, so Functions falls back to
-				# the default "api" prefix) can clobber Lightweight's host.json (which
-				# sets routePrefix to "" so routes are reachable at their documented,
-				# unprefixed paths like /Public/apis.json). Re-pin Lightweight's own
-				# host.json after the shared publish so its routing/logging/timeout
-				# settings always take effect for its own worker process, regardless of
-				# companion-project publish order.
+				# ServiceBusWorker) into this one shared flat directory
+				# (-p:ErrorOnDuplicatePublishOutputFiles=false above silences the
+				# resulting filename collisions). Two SDK-generated/static files are
+				# named identically across all three projects, so whichever project's
+				# copy happens to publish last wins non-deterministically:
+				#   - host.json: only Lightweight's sets extensions.http.routePrefix to
+				#     "", so a sibling's host.json winning breaks every documented
+				#     unprefixed route (e.g. /Public/apis.json 404s under the
+				#     Functions-default "api" prefix).
+				#   - worker.config.json: its defaultWorkerPath names which project's own
+				#     .dll is actually launched as the dotnet-isolated worker process. If
+				#     a sibling's wins, THAT project's Program.cs becomes the process's
+				#     composition root instead of Lightweight's -- e.g.
+				#     ServiceBusWorker's Program.cs eagerly validates its own
+				#     WwExecutionOptions (TenantId/ResourceAppId) via DataAnnotations. The
+				#     "Other Specs" test harness (StartAsAzureFunction.ps1) only ever
+				#     writes Lightweight's own required local.settings.json values, so
+				#     when ServiceBusWorker's worker.config.json wins the race the
+				#     process crashes at startup with "OptionsValidationException: ...
+				#     'TenantId' ... is required", even though Lightweight (the app under
+				#     test) never uses that option at all.
+				# (local.settings.json itself isn't part of this collision:
+				# StartAsAzureFunction.ps1 unconditionally regenerates it with exactly
+				# Lightweight's required keys immediately before starting func, for every
+				# test run.)
+				# Re-pin both files so Lightweight's own routing and worker process
+				# always win regardless of companion-project publish order.
 				$_lightweightHostJson = "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\host.json"
 				if (Test-Path $_lightweightHostJson) {
 					Copy-Item -Path $_lightweightHostJson -Destination "$PSScriptRoot\Bin\$OutputFolderName\host.json" -Force
 					Write-Host "Pinned Warewolf.Execution.Lightweight's host.json in $OutputFolderName (routePrefix, logging, functionTimeout)."
 				}
+				$_workerConfigPath = "$PSScriptRoot\Bin\$OutputFolderName\worker.config.json"
+				$_workerConfig = [ordered]@{
+					description = [ordered]@{
+						language              = "dotnet-isolated"
+						extensions            = @(".dll")
+						defaultExecutablePath = "dotnet"
+						defaultWorkerPath     = "Warewolf.Execution.Lightweight.dll"
+						workerIndexing        = "true"
+						canUsePlaceholder     = $true
+					}
+				}
+				$_workerConfig | ConvertTo-Json -Depth 4 | Set-Content -Path $_workerConfigPath -Encoding UTF8
+				Write-Host "Pinned worker.config.json's defaultWorkerPath to Warewolf.Execution.Lightweight.dll in $OutputFolderName."
 			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
