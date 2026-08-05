@@ -64,7 +64,7 @@
     <Compile Include="BrowserWebDrivers\BaseWebDriver.cs" />
     <Compile Include="Web_UITests_For_Firefox.cs" />
     <Compile Include="Web_UITests_For_IE.cs" />
-    <Compile Include="Web_UITests_For_Opera.cs" />
+    <Compile Include="Web_UITEsts_For_Opera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

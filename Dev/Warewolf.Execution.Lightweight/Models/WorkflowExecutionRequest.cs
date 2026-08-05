@@ -37,6 +37,28 @@ namespace Warewolf.Execution.Lightweight.Models
         public Dictionary<string, string> InputParameters { get; set; } = new();
 
         /// <summary>
+        /// The caller's request body, kept VERBATIM when it is not the
+        /// <c>{ "inputParameters": { ... } }</c> envelope.
+        /// </summary>
+        /// <remarks>
+        /// Parity with the full server: Dev2.Runtime.WebServer reads the body into
+        /// <c>WebRequestTO.RawRequestPayload</c> and hands it straight to
+        /// <c>DsfDataObject</c>, so <c>ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload</c>
+        /// receives the ORIGINAL payload. This engine used to rebuild a payload from
+        /// <see cref="InputParameters"/> instead, which silently lost three things:
+        ///   * a FLAT body ({"message":"x"}) - no DTO member matches it, and Newtonsoft ignores
+        ///     unknown members, so every input arrived unbound (queue workers post exactly this);
+        ///   * an XML body - JsonConvert.DeserializeObject&lt;WorkflowExecutionRequest&gt; throws on
+        ///     it, even though the shared helper converts XML happily;
+        ///   * NESTED objects - Dictionary&lt;string,string&gt; cannot carry a JTokenType.Object, so
+        ///     recordset inputs could never bind.
+        /// <see cref="JsonIgnoreAttribute"/>: this is captured from the raw body by
+        /// <c>WorkflowFunctionHelper</c>, never bound from a property inside it.
+        /// </remarks>
+        [JsonIgnore]
+        public string RawInputPayload { get; set; }
+
+        /// <summary>
         /// Whether to execute the workflow in debug mode.
         /// </summary>
         public bool IsDebug { get; set; }
