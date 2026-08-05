@@ -28,6 +28,20 @@
     <PackageReference Include="Google.Protobuf" Version="3.25.2" />
   </ItemGroup>
 
+  <!-- Pin System.Text.Json to 10.0.3 solution-wide.
+       Warewolf.Execution.Lightweight (and its EngineJobProcessor/Tests/Integration.Tests siblings)
+       pull in Azure.Core 1.52.0 via the Azure Functions worker SDK, which requires
+       System.Text.Json >= 10.0.3 for net8.0. Most other projects only need an older floor
+       (commonly via Microsoft.PowerFx.Core at 4.7.2, or plain net8.0 defaults at 8.0.x). When all
+       projects share a flat OutDir (ServerTests.sln publish) whichever project's copy is written
+       last wins, so an older DLL can silently overwrite the 10.0.3 copy Lightweight requires,
+       causing the dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on
+       startup (assembly version 10.0.0.0 not found). Setting the minimum version here forces every
+       project's NuGet resolution to 10.0.3. -->
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
+  </ItemGroup>
+
   <!-- Pin System.Security.Cryptography.Xml to 8.0.4 solution-wide.
        Microsoft.Windows.Compatibility 8.0.27 and Microsoft.Exchange.WebServices.NETStandard 1.1.3
        pull in System.Security.Cryptography.Xml 8.0.3 transitively, which is affected by five HIGH
