@@ -8,6 +8,7 @@ using Azure.Core;
 using Azure.Security.KeyVault.Secrets;
 using Dev2.Common;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -38,10 +39,10 @@ namespace Warewolf.Execution.Lightweight.Security
 
         readonly string                         _vaultUri;
         readonly string                         _secretName;
-        readonly TokenCredential?                _credential;
-        readonly SecretClient?                   _client;
-        readonly ILogger<KeyVaultSecretManager>  _logger;
-        readonly string?                         _debugSecret;
+        readonly TokenCredential?               _credential;
+        readonly SecretClient?                  _client;
+        readonly ILogger<KeyVaultSecretManager> _logger;
+        readonly string?                        _debugSecret;
 
         KeyRingMaterial? _material;
 
@@ -162,11 +163,24 @@ namespace Warewolf.Execution.Lightweight.Security
                         "Key Vault secret contains empty key material.");
                 }
 
-                Dev2Logger.Info($"KeyVaultSecretManager key material parsed successfully. KeyId: {_material.KeyId}, Created: {_material.Created}", executionId);
+                var previousKeyCount = _material.PreviousKeys?.Count ?? 0;
+                Dev2Logger.Info($"KeyVaultSecretManager key material parsed successfully. KeyId: {_material.KeyId}, Created: {_material.Created}, PreviousKeyCount: {previousKeyCount}", executionId);
 
-                _logger.LogInformation(
-                    "KeyVault | Key loaded. KeyId={KeyId} Created={Created}",
-                    _material.KeyId, _material.Created);
+                if (previousKeyCount > 0)
+                {
+                    var retiredIds = string.Join(", ", _material.PreviousKeys!.Select(p => $"'{p.KeyId}' (retired {p.Retired})"));
+                    Dev2Logger.Info($"KeyVaultSecretManager secret contains {previousKeyCount} previous key(s) — key rotation fallback will be active: [{retiredIds}].", executionId);
+                    _logger.LogInformation(
+                        "KeyVault | Key loaded. KeyId={KeyId} Created={Created} | Key rotation fallback active — {PreviousKeyCount} previous key(s) found: [{RetiredIds}]. " +
+                        "Resources encrypted with retired keys will be decrypted transparently.",
+                        _material.KeyId, _material.Created, previousKeyCount, retiredIds);
+                }
+                else
+                {
+                    _logger.LogInformation(
+                        "KeyVault | Key loaded. KeyId={KeyId} Created={Created} | No previous keys in secret — single-key mode.",
+                        _material.KeyId, _material.Created);
+                }
             }
             catch (Exception ex)
             {
@@ -214,13 +228,81 @@ namespace Warewolf.Execution.Lightweight.Security
             }
         }
 
-        // ── Key-material DTO (matches the JSON written by Encrypt-Config.ps1) ──
+        /// <summary>
+        /// Returns all available decryption keys: the primary key first, followed by
+        /// any previous keys in reverse-chronological order (most recently retired first).
+        ///
+        /// When no <c>PreviousKeys</c> are present in the secret (Version 1 format),
+        /// only the primary key is returned — fully backward compatible.
+        ///
+        /// Each entry is a tuple of (KeyId, KeyBytes) so callers can log which key
+        /// succeeded without exposing raw key material.
+        /// </summary>
+        public IReadOnlyList<(string KeyId, byte[] KeyBytes)> GetAllKeyBytes()
+        {
+            const string executionId = "KeyVaultSecretManager-GetAllKeyBytes";
 
-        internal sealed record KeyRingMaterial(
-            [property: JsonPropertyName("version")] int    Version,
+            if (_material is null)
+                throw new InvalidOperationException(
+                    $"{nameof(KeyVaultSecretManager)} is not initialised. " +
+                    $"Call {nameof(InitializeAsync)} before resolving {nameof(FileDecryptionHelper)}.");
+
+            var keys = new List<(string, byte[])>
+            {
+                (_material.KeyId, GetKeyBytes()),
+            };
+
+            if (_material.PreviousKeys is { Count: > 0 })
+            {
+                foreach (var prev in _material.PreviousKeys)
+                {
+                    var prevBytes = Convert.FromBase64String(prev.Key);
+                    if (prevBytes.Length != 32)
+                    {
+                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid length {prevBytes.Length} bytes — skipping.", executionId);
+                        continue;
+                    }
+                    keys.Add((prev.KeyId, prevBytes));
+                }
+                Dev2Logger.Info($"Key ring loaded — {keys.Count} key(s) available for decryption. PreviousKeyIds: [{string.Join(", ", _material.PreviousKeys.Select(p => p.KeyId))}]", executionId);
+            }
+            else
+            {
+                Dev2Logger.Info("Key ring loaded — primary key only (no previous keys in secret). Single-key decryption mode active.", executionId);
+                _logger.LogInformation(
+                    "KeyVault | Key ring loaded — primary key only (KeyId={KeyId}). No previous keys found in secret. Single-key decryption mode active.",
+                    _material.KeyId);
+            }
+
+            return keys;
+        }
+
+        // ── Key-material DTOs (match the JSON written by Encrypt-Config.ps1) ────
+
+        /// <summary>
+        /// A previously-active key that has been rotated out. Retained in the Key Vault
+        /// secret for the duration of the rotation window so that resources encrypted
+        /// with this key can still be decrypted.
+        /// </summary>
+        internal sealed record PreviousKeyEntry(
             [property: JsonPropertyName("keyId")]   string KeyId,
             [property: JsonPropertyName("key")]     string Key,
-            [property: JsonPropertyName("created")] string Created
+            [property: JsonPropertyName("retired")] string Retired
+        );
+
+        /// <summary>
+        /// Root key-ring document stored in Key Vault.
+        ///
+        /// Version 1: primary key only (PreviousKeys absent / null).
+        /// Version 2: primary key + optional PreviousKeys array for rotation support.
+        /// Both versions are fully supported — PreviousKeys defaults to an empty list.
+        /// </summary>
+        internal sealed record KeyRingMaterial(
+            [property: JsonPropertyName("version")]      int                      Version,
+            [property: JsonPropertyName("keyId")]        string                   KeyId,
+            [property: JsonPropertyName("key")]          string                   Key,
+            [property: JsonPropertyName("created")]      string                   Created,
+            [property: JsonPropertyName("previousKeys")] List<PreviousKeyEntry>?  PreviousKeys = null
         );
     }
 }

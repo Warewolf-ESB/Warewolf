@@ -215,7 +215,9 @@ internal static class ServiceCollectionExtensions
         // FileDecryptionHelper / FileEncryptionHelper are resolved AFTER InitializeAsync()
         // completes, so GetKeyBytes() is always safe at construction time.
         services.AddSingleton(sp =>
-            new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+            new FileDecryptionHelper(
+                sp.GetRequiredService<KeyVaultSecretManager>(),
+                sp.GetRequiredService<ILogger<FileDecryptionHelper>>()));
         services.AddSingleton(sp =>
             new FileEncryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
 
