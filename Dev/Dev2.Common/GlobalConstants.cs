@@ -37,62 +37,93 @@ namespace Dev2.Common
 
         static GlobalConstants()
 		{
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            // Everything below is wrapped in one outer try/catch so that ANY unforeseen
+            // failure here — known or not-yet-discovered — can never surface as an
+            // unhandled TypeInitializationException that crashes the whole process before
+            // Program.cs's Main ever runs (see WOLF-8508: this has happened twice on
+            // Microsoft-hosted CI agents even after guarding the two known-risky calls
+            // below, so this is a deliberate last-resort safety net, not just those two
+            // guards). If something here throws, we log the full diagnostic (innermost
+            // exception first, in case the host's log capture truncates long output) and
+            // swallow it — WebServerPort/WebServerSslPort simply keep their auto-property
+            // defaults ("3142"/"3143") and the SystemEvents subscription is skipped.
+            try
             {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    try
+                    {
+                        SystemEvents.TimeChanged += (sender, args) =>
+                        {
+                            CultureInfo.CurrentCulture.ClearCachedData();
+                        };
+
+                        SystemEvents.UserPreferenceChanged += (sender, args) =>
+                        {
+                            CultureInfo.CurrentCulture.ClearCachedData();
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        // Windows Nano Server, Azure Functions isolated-worker processes, and
+                        // other headless/restricted environments do not reliably support the
+                        // Win32 system events window thread (no interactive window station).
+                        // Catch broadly (not just the previously-listed ExternalException /
+                        // PlatformNotSupportedException / TypeInitializationException) because
+                        // this is purely best-effort culture-cache invalidation — it must never
+                        // crash this static initializer regardless of the exact exception type
+                        // the restricted host throws.
+                    }
+                }
+
+                // ConfigurationManager.AppSettings can throw in hosts that lack a classic
+                // app-config system (e.g. an Azure Functions isolated-worker process) —
+                // see the identical guard in Config.GetDirectory. Treat any failure as
+                // "no value" and fall back to the hard-coded default port instead of
+                // crashing this static initializer (GlobalConstants' fields are
+                // constructed eagerly, and a failure here previously surfaced only as an
+                // opaque "TypeInitializationException ... (Parameter 'provider')" with
+                // no indication that this was the actual throw site).
+                string serverPort = null;
                 try
                 {
-                    SystemEvents.TimeChanged += (sender, args) =>
-                    {
-                        CultureInfo.CurrentCulture.ClearCachedData();
-                    };
-
-                    SystemEvents.UserPreferenceChanged += (sender, args) =>
-                    {
-                        CultureInfo.CurrentCulture.ClearCachedData();
-                    };
+                    serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
                 }
                 catch (Exception)
                 {
-                    // Windows Nano Server, Azure Functions isolated-worker processes, and
-                    // other headless/restricted environments do not reliably support the
-                    // Win32 system events window thread (no interactive window station).
-                    // Catch broadly (not just the previously-listed ExternalException /
-                    // PlatformNotSupportedException / TypeInitializationException) because
-                    // this is purely best-effort culture-cache invalidation — it must never
-                    // crash this static initializer regardless of the exact exception type
-                    // the restricted host throws.
+                    serverPort = null;
                 }
-            }
+                WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
 
-            // ConfigurationManager.AppSettings can throw in hosts that lack a classic
-            // app-config system (e.g. an Azure Functions isolated-worker process) —
-            // see the identical guard in Config.GetDirectory. Treat any failure as
-            // "no value" and fall back to the hard-coded default port instead of
-            // crashing this static initializer (GlobalConstants' fields are
-            // constructed eagerly, and a failure here previously surfaced only as an
-            // opaque "TypeInitializationException ... (Parameter 'provider')" with
-            // no indication that this was the actual throw site).
-            string serverPort = null;
-            try
-            {
-                serverPort = System.Configuration.ConfigurationManager.AppSettings["webServerPort"];
+                string sslPort = null;
+                try
+                {
+                    sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
+                }
+                catch (Exception)
+                {
+                    sslPort = null;
+                }
+                WebServerSslPort = !string.IsNullOrEmpty(sslPort) ? sslPort : "3143";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                serverPort = null;
+                var root = ex;
+                while (root.InnerException != null)
+                {
+                    root = root.InnerException;
+                }
+                // Front-load the innermost exception's type/message/stack as flattened
+                // single lines: the Azure Functions host's own crash-diagnostic capture
+                // has repeatedly been observed to retain only the FIRST line or two of a
+                // multi-line Console.Error write, silently dropping everything after it
+                // (including the "---> " inner-exception section of a multi-line
+                // ex.ToString() dump) — so the most useful information must come first.
+                Console.Error.WriteLine($"[Dev2.Common.GlobalConstants] Static initializer failed. ROOT CAUSE: {root.GetType().FullName}: {root.Message}");
+                Console.Error.WriteLine($"[Dev2.Common.GlobalConstants] ROOT CAUSE STACK: {(root.StackTrace ?? "(none)").Replace(Environment.NewLine, " | ")}");
+                Console.Error.WriteLine($"[Dev2.Common.GlobalConstants] Full exception (may be truncated by host log capture): {ex}");
+                // Deliberately NOT rethrown — see the outer try's summary comment above.
             }
-            WebServerPort = !string.IsNullOrEmpty(serverPort) ? serverPort : "3142";
-
-            string sslPort = null;
-            try
-            {
-                sslPort = System.Configuration.ConfigurationManager.AppSettings["webServerSslPort"];
-            }
-            catch (Exception)
-            {
-                sslPort = null;
-            }
-            WebServerSslPort = !string.IsNullOrEmpty(sslPort) ? sslPort : "3143";
         }
 
 

@@ -106,7 +106,20 @@ namespace Dev2.Common
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"[Dev2.Common.Config] Static initialization failed while constructing '{step}': {ex}");
+                var root = ex;
+                while (root.InnerException != null)
+                {
+                    root = root.InnerException;
+                }
+                // Front-load the innermost exception's type/message/stack as flattened
+                // single lines before the full multi-line ex.ToString() dump: the Azure
+                // Functions host's own crash-diagnostic capture has been observed to
+                // retain only the first line or two of a multi-line Console.Error write,
+                // silently dropping the "---> " inner-exception section that actually
+                // identifies the real root cause — see WOLF-8508.
+                Console.Error.WriteLine($"[Dev2.Common.Config] Static initialization failed while constructing '{step}'. ROOT CAUSE: {root.GetType().FullName}: {root.Message}");
+                Console.Error.WriteLine($"[Dev2.Common.Config] ROOT CAUSE STACK: {(root.StackTrace ?? "(none)").Replace(Environment.NewLine, " | ")}");
+                Console.Error.WriteLine($"[Dev2.Common.Config] Full exception (may be truncated by host log capture): {ex}");
                 throw;
             }
         }
