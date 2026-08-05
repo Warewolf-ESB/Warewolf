@@ -676,16 +676,35 @@ if ($LicenseConfigPath) {
 # reliably receives it.  The func CLI (Node.js) reads local.settings.json and passes
 # its Values entries to the worker process; plain env-var inheritance through the
 # Node.js → dotnet worker process boundary is not guaranteed on all CI agents.
+#
+# Also disable dynamic concurrency (snapshot persistence) and the host health monitor
+# via host.json env-var overrides (AzureFunctionsJobHost__<path>). Both features
+# acquire a "primary host" blob/file lease at startup and can force the WebJobs
+# Script Host to restart itself once fully up (observed as "Host lock lease
+# acquired..." followed by "Restarting host." in warewolf-server.log). With worker
+# indexing enabled (see worker.config.json), that restart hits a known
+# azure-functions-host bug where the dotnet-isolated worker channel started at the
+# webhost level is not shut down before the new host re-requests the same function
+# loads, throwing "Unable to load Function '<name>'. A function with the id
+# '<id>' name already exists." and permanently 500-ing every request for the rest
+# of the run (see Azure/azure-functions-dotnet-worker#2124,
+# Azure/azure-functions-host#9851 — fixed upstream only for the "unhealthy host"
+# restart path, not for this lease/specialization-style restart). Neither feature
+# has any value for this short-lived, single-instance CI test host, so disabling
+# both here avoids triggering the restart at all rather than trying to survive it.
 $localSettings = [ordered]@{
     IsEncrypted = $false
     Values      = [ordered]@{
         AzureWebJobsStorage      = if ($env:AzureWebJobsStorage) { $env:AzureWebJobsStorage } else { "" }
         FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
         WAREWOLF_SECURE_CONFIG   = $env:WAREWOLF_SECURE_CONFIG
+        "AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled" = "false"
+        "AzureFunctionsJobHost__healthMonitor__enabled"                 = "false"
     }
 }
 $localSettings | ConvertTo-Json -Depth 3 | Set-Content (Join-Path $FuncDir "local.settings.json") -Encoding UTF8
 Write-Host "  local.settings.json written with WAREWOLF_SECURE_CONFIG=$env:WAREWOLF_SECURE_CONFIG"
+Write-Host "  dynamic concurrency and host health monitor disabled to avoid known worker-indexing restart bug"
 
 # -----------------------------------------------------------------------------
 # endregion
