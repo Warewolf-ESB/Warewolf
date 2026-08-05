@@ -379,6 +379,26 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
+			if ($OutputFolderName -eq "ServerTests") {
+				# WOLF-8508: ServerTests.sln publishes Warewolf.Execution.Lightweight
+				# alongside its companion Function Apps (EngineJobProcessor,
+				# ServiceBusWorker) into this one shared flat directory. Each project
+				# has its own host.json and, being a flat filename collision (not
+				# disambiguated per-project), whichever publishes last silently
+				# overwrites the others -- e.g. ServiceBusWorker's host.json (which has
+				# no "extensions.http.routePrefix" override, so Functions falls back to
+				# the default "api" prefix) can clobber Lightweight's host.json (which
+				# sets routePrefix to "" so routes are reachable at their documented,
+				# unprefixed paths like /Public/apis.json). Re-pin Lightweight's own
+				# host.json after the shared publish so its routing/logging/timeout
+				# settings always take effect for its own worker process, regardless of
+				# companion-project publish order.
+				$_lightweightHostJson = "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\host.json"
+				if (Test-Path $_lightweightHostJson) {
+					Copy-Item -Path $_lightweightHostJson -Destination "$PSScriptRoot\Bin\$OutputFolderName\host.json" -Force
+					Write-Host "Pinned Warewolf.Execution.Lightweight's host.json in $OutputFolderName (routePrefix, logging, functionTimeout)."
+				}
+			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
 				# host when the publish targeted linux-x64 --self-contained.  A self-contained
