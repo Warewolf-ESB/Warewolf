@@ -139,8 +139,10 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 {
                     // A failed passive declare CLOSES the channel, and AlreadyClosedException derives
                     // from OperationInterruptedException - so the active declare must go on a FRESH
-                    // channel. PublishRabbitMQActivity reuses the closed one and would throw
-                    // AlreadyClosedException instead of creating the queue; do not repeat that.
+                    // channel. PublishRabbitMQActivity used to reuse the closed one and throw
+                    // AlreadyClosedException instead of creating the queue; it now reopens a fresh
+                    // channel too (see Dev2.Activities/Activities/RabbitMQ/Publish/
+                    // PublishRabbitMQActivity.cs) - do not reintroduce that bug here either.
                     //
                     // Only the CHANNEL is dead here - the CONNECTION is still open and must be
                     // reused, not torn down: DisposeChannelAsync() disposes both, so calling it here
