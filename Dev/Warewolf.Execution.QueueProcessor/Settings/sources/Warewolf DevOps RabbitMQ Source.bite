@@ -1,0 +1,8 @@
+<Source ID="1a82a341-b678-4992-a25a-39cdd57198d4" Name="Warewolf DevOps RabbitMQ Source" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="HostName=;Port=20313;UserName=;Password=;VirtualHost=/" Type="RabbitMQSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Warewolf DevOps RabbitMQ Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RabbitMQSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-07-27T08:33:20.836Z" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1a82a341-b678-4992-a25a-39cdd57198d4" VersionId="1ece9a89-22c9-4dc9-b8b8-3a87440218e3" />
+</Source>

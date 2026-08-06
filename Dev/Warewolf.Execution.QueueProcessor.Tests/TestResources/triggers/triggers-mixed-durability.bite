@@ -1,0 +1,53 @@
+{
+    "$id": "1",
+    "$type": "Warewolf.Trigger.Queue.TriggerQueue, Warewolf.Trigger.Queue",
+    "_comment": "Work queue DURABLE, dead-letter queue NON-DURABLE, and the work queue also declares Exclusive. Durability is per-queue: Options drives the work queue, DeadLetterOptions drives the dead-letter queue, and the two must never be conflated - a wrong value makes the broker reject the re-declare with PRECONDITION_FAILED (inequivalent arg 'durable') and the replica cannot consume at all.",
+    "Id": "7f2a91c4-55d3-4a18-9e0b-6c1d84fa3e77",
+    "TriggerId": "7f2a91c4-55d3-4a18-9e0b-6c1d84fa3e77",
+    "Name": "MixedDurabilityTrigger",
+    "QueueSourceId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+    "QueueName": "mixed-durability-queue",
+    "WorkflowName": "folder\\MixedDurability",
+    "Prefetch": 3,
+    "Concurrency": 2,
+    "Options": [
+        {
+            "$id": "2",
+            "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+            "Name": "Durable",
+            "Value": true,
+            "Default": true
+        },
+        {
+            "$id": "3",
+            "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+            "Name": "Exclusive",
+            "Value": true,
+            "Default": false
+        }
+    ],
+    "QueueSinkId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+    "DeadLetterQueue": "mixed-durability-queue-errors",
+    "DeadLetterOptions": [
+        {
+            "$id": "4",
+            "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+            "Name": "Durable",
+            "Value": false,
+            "Default": true
+        }
+    ],
+    "MapEntireMessage": true,
+    "Inputs": [
+        {
+            "$id": "5",
+            "$type": "Warewolf.Core.ServiceInput, Warewolf.Core",
+            "Name": "message",
+            "Value": "",
+            "RequiredField": true,
+            "EmptyIsNull": true,
+            "FullName": "message"
+        }
+    ],
+    "ResourceId": "b3c17e28-0d94-4a6f-8f52-9e7a1c40db61"
+}

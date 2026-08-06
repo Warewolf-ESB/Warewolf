@@ -1,0 +1,58 @@
+{
+  "$id": "1",
+  "$type": "Warewolf.Trigger.Queue.TriggerQueue, Warewolf.Trigger.Queue",
+  "Id": "03fb9052-7fe4-4e8b-ac18-53779b0ebcba",
+  "TriggerId": "03fb9052-7fe4-4e8b-ac18-53779b0ebcba",
+  "Name": "OrderQueue",
+  "QueueSourceId": "1a82a341-b678-4992-a25a-39cdd57198d4",
+  "QueueName": "order-queue",
+  "WorkflowName": "rabbit\\RabbitProcess",
+  "Prefetch": 1,
+  "Concurrency": 1,
+  "UserName": null,
+  "Password": null,
+  "Options": [
+    {
+      "$id": "2",
+      "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+      "Name": "Durable",
+      "HelpText": "Set if the queue is durable",
+      "Tooltip": "Set if the queue is durable",
+      "Value": false,
+      "Default": true
+    }
+  ],
+  "QueueSinkId": "1a82a341-b678-4992-a25a-39cdd57198d4",
+  "DeadLetterQueue": "order-queue-errors",
+  "DeadLetterOptions": [
+    {
+      "$id": "3",
+      "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+      "Name": "Durable",
+      "HelpText": "Set if the queue is durable",
+      "Tooltip": "Set if the queue is durable",
+      "Value": false,
+      "Default": true
+    }
+  ],
+  "MapEntireMessage": true,
+  "Inputs": [
+    {
+      "$id": "4",
+      "$type": "Warewolf.Core.ServiceInput, Warewolf.Core",
+      "Name": "Name",
+      "Value": "",
+      "RequiredField": true,
+      "EmptyIsNull": true,
+      "TypeName": null,
+      "IntellisenseFilter": 0,
+      "IsObject": false,
+      "Dev2ReturnType": null,
+      "ShortTypeName": null,
+      "FullName": "Name",
+      "ActionName": null,
+      "Path": null
+    }
+  ],
+  "ResourceId": "e83704af-0f03-47ce-89dd-ccf87e18adb5"
+}
