@@ -220,15 +220,22 @@ function Test-ServiceBusQueueExists {
         # exist" — surface it as a note but don't claim the queue is missing.
         $hint = ''
         if ($statusCode -eq 401) {
-            # A SAS-signed call rejected with 401 (rather than the connection string
-            # simply not parsing — that's handled separately above) most commonly means
-            # the namespace's local (SAS) authentication has been disabled
-            # ('disableLocalAuth' = true), e.g. by a security baseline/policy drifting it
-            # back on — see the "Security" section of docs/ShovelBridge-Architecture.md.
-            # This affects the Shovel's own dest-uri connection too (SASL PLAIN has no
-            # Azure AD/OAuth fallback), so Phase 3 will also fail with reason
-            # "failed to connect to destination" if this is the cause.
-            $hint = " This commonly means the namespace has local (SAS) auth disabled (disableLocalAuth=true) — check with 'az servicebus namespace show --query disableLocalAuth' and restore with 'az servicebus namespace update --disable-local-auth false' if so; see docs/ShovelBridge-Architecture.md."
+            # A SAS-signed call rejected with 401 here is EXPECTED and benign for this
+            # script's Send/Listen-only rules: the entity-management REST surface
+            # (GET .../{queue}?api-version=...) requires a SAS rule with the "Manage"
+            # claim, which neither shovel-e2e-send (Send-only) nor
+            # shovel-e2e-listen/-ExternalServiceBusConnectionString's rule (Listen-only)
+            # carry by design (least privilege — see "Security" in
+            # docs/ShovelBridge-Architecture.md). Confirmed empirically: both rules 401
+            # here even when the namespace's disableLocalAuth is false and a
+            # Manage-claim rule (e.g. RootManageSharedAccessKey) succeeds with 200
+            # against the same queue. A disableLocalAuth=true drift is a SEPARATE,
+            # also-possible cause of a 401 here (and would additionally break the
+            # Shovel's own dest-uri connection, since SASL PLAIN has no Azure
+            # AD/OAuth fallback) but is not the expected/common cause for the rules
+            # this script actually uses — do not assume the queue check's 401 implies
+            # disableLocalAuth drift without corroborating it independently.
+            $hint = " (Expected/benign for this script's Send/Listen-only SAS rules, which lack the Manage claim required by the entity-management REST API — this does not by itself indicate a problem. A disableLocalAuth=true drift is a separate possible cause; check with 'az servicebus namespace show --query disableLocalAuth' if the Shovel itself also fails to connect. See docs/ShovelBridge-Architecture.md.)"
         }
         Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)$hint"
         return $null
@@ -587,7 +594,10 @@ try {
         # Status), since a bare "did not reach running" gives no lead on WHICH
         # side (src vs dest) is failing.
         $stateDetail = if ($lastShovelState) { " Last observed state: $($lastShovelState | ConvertTo-Json -Compress)." } else { ' No shovel status was ever observed for this name — check the PUT above succeeded.' }
-        throw "Shovel '$ShovelName' did not reach the 'running' state.$stateDetail Check the RabbitMQ broker logs (or Admin > Shovel Status in the management UI) for the connect failure reason — commonly a src-uri auth/permission failure, or a dest-uri (Service Bus) auth/network/queue-not-found failure."
+        $destHint = if ($DestinationMode -eq 'ExternalServiceBus') {
+            " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom)."
+        } else { '' }
+        throw "Shovel '$ShovelName' did not reach the 'running' state.$stateDetail Check the RabbitMQ broker logs (or Admin > Shovel Status in the management UI) for the connect failure reason — commonly a src-uri auth/permission failure, or a dest-uri (Service Bus) auth/network/queue-not-found failure.$destHint"
     }
     Write-Ok "Shovel '$ShovelName' is running."
 

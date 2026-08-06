@@ -77,7 +77,10 @@ Two scripts under `Scripts/`, run in order:
    from step 1 (fetching the key live via `az`, or accepting it directly). See the
    script's own `.SYNOPSIS`/`.DESCRIPTION` for full parameter reference, including the
    one-time, broker-host `rabbitmq-plugins enable rabbitmq_shovel
-   rabbitmq_shovel_management` prerequisite that this script cannot automate remotely.
+   rabbitmq_shovel_management` prerequisite that this script cannot automate remotely,
+   **and** the broker-host `advanced.config` TLS-hostname-check prerequisite described
+   in "Security" below (also not automatable remotely) — without it, every shovel this
+   script configures against a real Service Bus namespace fails to connect.
 
 Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked-summary
 + transcript conventions (see `Scripts/README.md`).
@@ -120,6 +123,52 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   checks `disableLocalAuth` before every run and restores `false` if a policy has
   flipped it. Any *other* namespace (e.g. a real deployment target) still needs this
   checked/restored manually per the guidance above.
+- **The broker needs a `customize_hostname_check` TLS fix in `advanced.config`, or
+  every Shovel destination connection to a real Service Bus namespace fails.** This
+  produces the *exact same* symptom as the `disableLocalAuth` drift above (Shovel
+  `terminated`, reason `"failed to connect to destination"`), but is a completely
+  different, unrelated root cause — **do not assume `disableLocalAuth` drift is the
+  only explanation for that reason string.** Root cause: the Shovel's dest-uri
+  (`amqps://...?sasl=plain`, no explicit `verify=` override) uses Erlang's default TLS
+  peer verification (`verify_peer`), and Erlang's *default* certificate hostname check
+  does a **literal** match against the certificate's SANs — it does not expand
+  wildcards the way RFC 6125 (and Erlang's own `https`-specific match function) does.
+  Azure Service Bus presents a certificate for `*.servicebus.windows.net` /
+  `servicebus.windows.net`, which never literal-matches a real namespace FQDN (e.g.
+  `mynamespace.servicebus.windows.net`), so the TLS handshake always fails with
+  `{tls_alert,{bad_certificate,{bad_cert,{hostname_check_failed, ...}}}}` in the
+  broker's own log (only visible via broker logs / `Admin > Shovel Status`, not the
+  Management API's shovel-status summary). **Root-caused and reproduced live** against
+  the real `WarewolfShovelBridgeTesting` namespace (RabbitMQ 4.3.4) by standing up a
+  local RabbitMQ broker and configuring the identical dynamic shovel directly against
+  that namespace: the connection fails identically without the fix below, and
+  succeeds (shovel reaches `running`/`flow`, message delivered end-to-end) with it —
+  confirmed with **full TLS peer/chain validation still enabled** (`verify_peer`, no
+  downgrade to `verify_none`). Fix: add this to the broker's `advanced.config`
+  (`%APPDATA%\RabbitMQ\advanced.config` on a Windows/choco install,
+  `/etc/rabbitmq/advanced.config` on Linux) and restart the broker so it's read at
+  boot:
+  ```erlang
+  [
+    {amqp10_client, [
+      {ssl_options, [
+        {customize_hostname_check, [
+          {match_fun, public_key:pkix_verify_hostname_match_fun(https)}
+        ]}
+      ]}
+    ]}
+  ].
+  ```
+  This applies Erlang's own wildcard-aware match function (built for `https`, but
+  generically RFC 6125-correct) to `amqp10_client` connections, restoring correct
+  wildcard-SAN acceptance without weakening certificate validation. The
+  `ShovelBridgeE2ETest_ExternalServiceBus` CI job's `Install & start local RabbitMQ`
+  step now writes this `advanced.config` automatically (see `pipeline-CLOUD.yml`).
+  Any broker you don't control the config of (a shared/managed broker) cannot apply
+  this fix — the only remaining option there is adding `&verify=verify_none` to the
+  dest-uri, which disables *all* peer certificate validation (not just the hostname
+  check); not recommended, but documented as a fallback in
+  `Configure-RabbitMqShovel.ps1`'s header comment.
 
 ## Known risks / open work
 
@@ -185,13 +234,18 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `choco install rabbitmq` + `rabbitmq.conf` (`transient_nonexcl_queues` re-permit) technique
   `TestRun.ps1`'s `Start-HostRabbitMQServer` already uses for other RabbitMQ-dependent CI jobs
   on Windows agents, plus explicitly enabling `rabbitmq_shovel`/`rabbitmq_shovel_management`
-  via `rabbitmq-plugins.bat` (not needed by `Start-HostRabbitMQServer`'s own callers). This
-  previously pointed at a standing, self-hosted "Warewolf DevOps RabbitMQ Source" broker
+  via `rabbitmq-plugins.bat` (not needed by `Start-HostRabbitMQServer`'s own callers), **plus
+  writing the `advanced.config` TLS-hostname-check fix described in "Security" above**
+  (without it this job fails identically to how it did before that fix was found — Shovel
+  `terminated`, `"failed to connect to destination"`). This previously pointed at a
+  standing, self-hosted "Warewolf DevOps RabbitMQ Source" broker
   (`rabbitmq.warewolf.online`) reached over a non-Azure tunnel; that was replaced because its
-  outbound network path to the real Service Bus destination was unreliable/opaque from CI —
-  the shovel would connect to the source fine but never reach the `running` state against
-  Service Bus. A broker local to the hosted agent uses Microsoft's own outbound networking to
-  Azure, which is what this test actually needs to exercise. With both RabbitMQ (local
+  outbound network path to the real Service Bus destination was *assumed*
+  unreliable/opaque from CI — the shovel would connect to the source fine but never reach
+  the `running` state against Service Bus. In hindsight that broker was very likely hitting
+  the same TLS-hostname-check bug documented above rather than a genuine network problem.
+  A broker local to the hosted agent still uses Microsoft's own outbound networking to
+  Azure, which remains worth exercising regardless. With both RabbitMQ (local
   Windows service) and the Service Bus destination (external, real Azure) available, this job
   needs no docker at all.
 

@@ -38,6 +38,37 @@
     stock RabbitMQ install. The script PROBES for the plugin (Phase 1) and fails with
     that exact instruction if it's missing, rather than silently no-op'ing.
 
+    SECOND PREREQUISITE (also NOT automated by this script, and easy to miss because
+    it produces no error until you actually run the shovel): the broker needs an
+    advanced.config entry so its AMQP 1.0 client (amqp10_client, used for the
+    dest-protocol=amqp10 connection to Service Bus) does RFC 6125-correct wildcard
+    hostname matching. Erlang's *default* TLS peer verification (verify_peer, which
+    applies whenever dest-uri omits an explicit '?verify=' override, as this script's
+    dest-uri always does) does a LITERAL match against the certificate's SANs and does
+    NOT expand wildcards — Azure Service Bus presents *.servicebus.windows.net /
+    servicebus.windows.net, which never literal-matches a real namespace FQDN. Without
+    this fix, EVERY shovel built by this script against a real Service Bus namespace
+    will fail with the Shovel going to 'terminated', reason "failed to connect to
+    destination" (root-caused and reproduced live against a real namespace — see
+    docs/ShovelBridge-Architecture.md). Add this to the broker's advanced.config
+    (typically %APPDATA%\RabbitMQ\advanced.config on Windows, or
+    /etc/rabbitmq/advanced.config on Linux) and restart the broker:
+        [
+          {amqp10_client, [
+            {ssl_options, [
+              {customize_hostname_check, [
+                {match_fun, public_key:pkix_verify_hostname_match_fun(https)}
+              ]}
+            ]}
+          ]}
+        ].
+    This keeps full certificate chain + hostname validation (verify_peer, no downgrade
+    to verify_none) while correctly accepting the wildcard SAN — verified against the
+    real WarewolfShovelBridgeTesting namespace. If you cannot modify the broker's
+    config (e.g. a managed/shared broker you don't control), verify_none is the only
+    other option this dest-uri format supports, but it disables ALL peer certificate
+    validation (not just the hostname check) — not recommended.
+
     The destination SAS credential should be the queue-scoped Send-only rule created
     by Deploy-WwExecutionServiceBusWorker.ps1 (default name: shovel-send) — least
     privilege: the Shovel only ever needs to publish, never to manage or receive.
@@ -376,6 +407,16 @@ if ($shovelPluginSeen) {
     Write-Note 'Could not confirm rabbitmq_shovel is enabled from /api/nodes (older brokers omit enabled_plugins here).'
     Write-Note 'If Phase 2 fails with an "unknown component" error, enable it on the broker host: rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management'
 }
+
+# The dest-uri built below always uses Erlang's default TLS peer verification
+# (verify_peer, no '?verify=' override) — which requires the broker's advanced.config
+# to include the wildcard-aware amqp10_client hostname-check match_fun documented in
+# this script's header comment. There is no Management HTTP API endpoint that can
+# confirm advanced.config's contents remotely, so this can only ever be a reminder,
+# not a probe: if Phase 2's shovel never reaches 'running' with reason "failed to
+# connect to destination" even though the SAS key/queue are confirmed correct, this is
+# the first thing to check on the broker host.
+Write-Note "Reminder: the destination dest-uri below relies on the broker's advanced.config having the amqp10_client wildcard-hostname-check fix (see this script's header comment) — without it, the shovel will fail with '`"failed to connect to destination`"' against any real Azure Service Bus namespace."
 
 # ════════════════════════════════════════════════════════════════════════════
 # Phase 0.5 — PLAN  (resolve every decision; no broker/cloud change yet)
