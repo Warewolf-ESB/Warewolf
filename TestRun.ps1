@@ -1499,6 +1499,72 @@ function Wait-ForEngine {
     Write-Warn "Engine did not become ready within $MaxSeconds seconds."
 }
 
+function Wait-ForLightweightEngineStable {
+    # Root cause #4 (continued): func.exe's cold start for a worker-indexed
+    # isolated-worker app does a one-or-twice "Host lock lease acquired" ->
+    # "Restarting host." dance a few (5-19) seconds after its first response,
+    # regardless of concurrency/health-monitor settings or storage backend
+    # (all ruled out via CI evidence). Combined with a known
+    # azure-functions-host bug where the old worker channel isn't torn down
+    # (Azure/azure-functions-dotnet-worker#2124), each restart briefly (and
+    # sometimes permanently) 500s every function route with "already exists."
+    # Wait-ForEngine's generic check treats any non-503 status -- including
+    # 500 -- as "ready" and only probes "/", so it was returning "ready"
+    # immediately after the very first host generation's first response,
+    # before the restart window even started. That let SpecFlow's own
+    # single-shot readiness probe (GivenTheLightweightWarewolfServerIsRunning
+    # in EasyAuthMiddlewareSteps.cs, which only accepts 200/401 and does not
+    # retry) land squarely in the collision window and fail immediately.
+    # Fix: poll the same route the SpecFlow probe uses and require several
+    # consecutive non-5xx responses (resetting the streak on any 5xx) before
+    # declaring the engine ready, so we wait out the restart/collision window
+    # here instead of failing the first scenario that happens to run into it.
+    param(
+        [int]$Port = 7071,
+        [int]$MaxSeconds = 150,
+        [string]$Path = "/public/apis.json",
+        [int]$RequiredConsecutiveSuccesses = 3
+    )
+    Write-Host "Waiting for Lightweight engine to stabilize on port $Port$Path (up to ${MaxSeconds}s, needs $RequiredConsecutiveSuccesses consecutive non-5xx responses)..."
+    $deadline = (Get-Date).AddSeconds($MaxSeconds)
+    $consecutive = 0
+    while ((Get-Date) -lt $deadline) {
+        # Invoke-WebRequest throws on ANY non-2xx status (401 included), so a
+        # status code has to be pulled out of the exception's response too --
+        # otherwise every legitimate 401 (which the SpecFlow probe itself
+        # accepts as "ready") would be misclassified as a failure here and
+        # the streak would never reach $RequiredConsecutiveSuccesses.
+        $statusCode = $null
+        try {
+            $resp = Invoke-WebRequest -Uri "http://localhost:${Port}${Path}" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+            $statusCode = [int]$resp.StatusCode
+        } catch [System.Net.WebException] {
+            if ($_.Exception.Response) {
+                $statusCode = [int]$_.Exception.Response.StatusCode
+            }
+        } catch {
+            if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+                $statusCode = [int]$_.Exception.Response.StatusCode
+            }
+        }
+
+        if ($null -ne $statusCode -and $statusCode -lt 500) {
+            $consecutive++
+            if ($consecutive -ge $RequiredConsecutiveSuccesses) {
+                Write-Host "Lightweight engine stable (HTTP $statusCode x$consecutive)."
+                return
+            }
+        } else {
+            if ($consecutive -gt 0) {
+                Write-Host "Got HTTP $statusCode after $consecutive good response(s); resetting streak (host likely mid-restart)."
+            }
+            $consecutive = 0
+        }
+        Start-Sleep -Seconds 2
+    }
+    Write-Warn "Lightweight engine did not stabilize (>= $RequiredConsecutiveSuccesses consecutive non-5xx responses on $Path) within $MaxSeconds seconds."
+}
+
 function Start-LightweightExecution {
     $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
     $func   = Resolve-FuncExe
@@ -1710,6 +1776,7 @@ function Start-LightweightExecution {
         Pop-Location
     }
     Wait-ForEngine -Port 7071 -MaxSeconds 180
+    Wait-ForLightweightEngineStable -Port 7071
 }
 
 function Start-WarewolfServer {
