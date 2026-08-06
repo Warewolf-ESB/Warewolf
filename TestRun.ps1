@@ -1582,6 +1582,32 @@ function Wait-ForLightweightEngineStable {
     Write-Warn "Lightweight engine did not stabilize (>= $MinStableSeconds continuous stable seconds on $Path) within $MaxSeconds seconds."
 }
 
+function Test-LightweightEngineHealthy {
+    # Root cause #4 (continued): the "Host lock lease acquired" -> "Restarting
+    # host." collision that Wait-ForLightweightEngineStable waits out before
+    # the first test attempt can *also* recur later, mid-run -- a captured
+    # "Other Specs" CI run (2026-08-06) showed the stability check pass (HTTP
+    # 200 x11 over 32s) and then, seconds after vstest started, the exact
+    # same restart/collision hit and permanently 500'd every route for the
+    # rest of that run (every retry included, since Wait-ForLightweightEngineStable
+    # only runs once, before the retry loop). Give the retry loop a cheap way
+    # to notice that and recover instead of burning every remaining retry
+    # against a permanently broken engine.
+    param([int]$Port = 7071, [string]$Path = "/public/apis.json")
+    try {
+        $resp = Invoke-WebRequest -Uri "http://localhost:${Port}${Path}" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+        return ([int]$resp.StatusCode -lt 500)
+    } catch [System.Net.WebException] {
+        if ($_.Exception.Response) { return ([int]$_.Exception.Response.StatusCode -lt 500) }
+        return $false
+    } catch {
+        if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+            return ([int]$_.Exception.Response.StatusCode -lt 500)
+        }
+        return $false
+    }
+}
+
 function Start-LightweightExecution {
     $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
     $func   = Resolve-FuncExe
@@ -1700,6 +1726,41 @@ function Start-LightweightExecution {
     }
     if (-not $env:AzureFunctionsJobHost__healthMonitor__enabled) {
         $env:AzureFunctionsJobHost__healthMonitor__enabled = 'false'
+    }
+    # NOTE (confirmed by a captured "Other Specs" CI run, 2026-08-06): the two
+    # env-var overrides above do NOT reliably disable the behaviour -- that
+    # run had both set to 'false' in the diagnostic snapshot below and still
+    # hit "Host lock lease acquired..." -> "Restarting host." -> "Unable to
+    # load Function '<name>'. A function with the id '<id>' name already
+    # exists." for every request thereafter. StartAsAzureFunction.ps1 hit the
+    # same wall for local/manual runs and found that ConcurrencyOptions /
+    # HostHealthMonitorOptions are apparently bound before, or independently
+    # of, the env-var configuration layer func.exe applies -- only patching
+    # the deployed host.json directly reliably takes effect. Apply the same
+    # patch here so CI gets the proven fix instead of the ineffective one.
+    # This only touches the copy under $runDir (the test-publish output);
+    # it never modifies Warewolf.Execution.Lightweight's source-controlled,
+    # production host.json.
+    $hostJsonPath = Join-Path $runDir 'host.json'
+    if (Test-Path $hostJsonPath) {
+        try {
+            $hostJson = Get-Content $hostJsonPath -Raw | ConvertFrom-Json
+            if (-not $hostJson.concurrency) {
+                $hostJson | Add-Member -MemberType NoteProperty -Name concurrency -Value ([pscustomobject]@{})
+            }
+            $hostJson.concurrency | Add-Member -MemberType NoteProperty -Name dynamicConcurrencyEnabled -Value $false -Force
+            $hostJson.concurrency | Add-Member -MemberType NoteProperty -Name snapshotPersistenceEnabled -Value $false -Force
+            if (-not $hostJson.healthMonitor) {
+                $hostJson | Add-Member -MemberType NoteProperty -Name healthMonitor -Value ([pscustomobject]@{})
+            }
+            $hostJson.healthMonitor | Add-Member -MemberType NoteProperty -Name enabled -Value $false -Force
+            $hostJson | ConvertTo-Json -Depth 10 | Set-Content $hostJsonPath -Encoding UTF8
+            Write-Host "host.json patched: concurrency.dynamicConcurrencyEnabled=false, concurrency.snapshotPersistenceEnabled=false, healthMonitor.enabled=false (avoids known worker-indexing restart bug)"
+        } catch {
+            Write-Warn "Failed to patch host.json at $hostJsonPath for concurrency/healthMonitor overrides: $_"
+        }
+    } else {
+        Write-Warn "host.json not found at $hostJsonPath -- cannot apply concurrency/healthMonitor restart-avoidance patch."
     }
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
@@ -2736,6 +2797,23 @@ try {
             $break = Merge-RetryTrx -TestResultsPath $TestResultsPath
             if ($break) { break }
             $TestsToRun = (Get-FailedTestNames -TestResultsPath $TestResultsPath) -join ","
+
+            # Recover from a permanently-broken engine before burning the
+            # remaining retries on it. Wait-ForLightweightEngineStable only
+            # runs once, before this loop starts -- it cannot see a "Host
+            # lock lease acquired" -> "Restarting host." collision (root
+            # cause #4) that hits mid-run, after the pre-loop stability
+            # check already passed. A captured "Other Specs" CI run
+            # (2026-08-06) showed exactly that: stability check passed, then
+            # every route 500'd with "already exists" for the rest of the
+            # run, so all $RetryCount retries re-ran against the same
+            # broken engine and failed identically. Detect that here and
+            # restart the whole engine so the next retry gets a healthy one.
+            if ($ServerType -eq 'LightweightExecution' -and $loop -lt $RetryCount -and -not (Test-LightweightEngineHealthy)) {
+                Write-Warn "Lightweight engine failed its post-run health probe (likely the known 'Host lock lease acquired' / 'Restarting host.' collision, root cause #4) -- restarting the engine before the next retry instead of re-running against a broken one."
+                Stop-Engine
+                Start-LightweightExecution
+            }
 
             if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) { Stop-HostFTPServer; Stop-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Stop-HostSFTPServer }
