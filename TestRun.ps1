@@ -59,6 +59,7 @@ param(
     [ValidateSet('','LightweightExecution','FullServer')]
     [String]   $ServerType = "",
     [String]   $FuncExePath = "",
+    [String]   $AzuriteExePath = "",
     [String]   $LightweightExecutionDir = "",
     [String]   $SharedConfigDir = "",
 
@@ -1375,6 +1376,7 @@ function Stop-HostMSSQLServer { docker rm -f sqlserver 2>$null | Out-Null }
 
 $script:_serverProcess   = $null
 $script:_coverageProcess = $null
+$script:_azuriteProcess  = $null
 $script:_sessionId       = ""
 
 function Ensure-DotnetCoverage {
@@ -1410,6 +1412,76 @@ function Resolve-FuncExe {
     throw "func.exe not found. Provide -FuncExePath or install azure-functions-core-tools@4."
 }
 
+function Resolve-AzuriteExe {
+    # Azurite is optional: if it can't be found, Start-Azurite falls back to
+    # the previous no-storage-account behavior. Returns $null when not found.
+    if ($AzuriteExePath -and (Test-Path $AzuriteExePath)) { return $AzuriteExePath }
+    $candidates = @(
+        "$env:APPDATA\npm\node_modules\.bin\azurite.cmd",
+        "$env:APPDATA\npm\node_modules\azurite\bin\azurite",
+        "azurite.cmd",
+        "azurite"
+    )
+    foreach ($c in $candidates) {
+        if (Test-Path $c) { return $c }
+        $cmd = Get-Command $c -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+    return $null
+}
+
+function Start-Azurite {
+    # Root cause #4 (see Start-LightweightExecution comment below): with
+    # AzureWebJobsStorage empty, the WebJobs Script Host falls back to an
+    # in-memory distributed lock manager for "primary host" lease
+    # coordination. That fallback path triggers a "Host lock lease
+    # acquired..." -> "Restarting host." dance that, combined with worker
+    # indexing, hits a known azure-functions-host worker-channel-teardown bug
+    # ("already exists" 500s -- see Azure/azure-functions-dotnet-worker#2124).
+    # The project's own local.settings.json template uses
+    # AzureWebJobsStorage=UseDevelopmentStorage=true (i.e. Azurite), which
+    # takes the standard, heavily-used blob-lease coordinator path instead.
+    # Start a real (emulated) storage backend here so CI takes that same,
+    # well-tested path rather than the rare in-memory fallback.
+    if ($env:AzureWebJobsStorage) {
+        Write-Host "AzureWebJobsStorage already set; skipping Azurite startup."
+        return
+    }
+    $azurite = Resolve-AzuriteExe
+    if (-not $azurite) {
+        Write-Warn "Azurite not found (install with 'npm install -g azurite' or pass -AzuriteExePath). Falling back to no-storage-account mode; this may hit the known 'Host lock lease acquired' / 'already exists' restart bug."
+        return
+    }
+    $dataDir = Join-Path ([System.IO.Path]::GetTempPath()) ("azurite-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
+    Write-Host "Starting Azurite from $azurite (data dir: $dataDir)"
+    $azuriteOut = Join-Path $dataDir 'azurite.log'
+    $azuriteErr = Join-Path $dataDir 'azurite.err.log'
+    $script:_azuriteProcess = Start-Process $azurite -ArgumentList @("--silent", "--location", $dataDir, "--debug", (Join-Path $dataDir 'azurite-debug.log')) -PassThru -WindowStyle Hidden -RedirectStandardOutput $azuriteOut -RedirectStandardError $azuriteErr
+    $deadline = (Get-Date).AddSeconds(30)
+    $up = $false
+    while ((Get-Date) -lt $deadline) {
+        if ($script:_azuriteProcess.HasExited) { break }
+        try {
+            $client = New-Object System.Net.Sockets.TcpClient
+            $client.Connect("127.0.0.1", 10000)
+            $client.Close()
+            $up = $true
+            break
+        } catch { Start-Sleep -Milliseconds 500 }
+    }
+    if (-not $up) {
+        Write-Warn "Azurite did not become ready on port 10000 within 30s. Falling back to no-storage-account mode."
+        if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
+            $script:_azuriteProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+        $script:_azuriteProcess = $null
+        return
+    }
+    Write-Host "Azurite ready on port 10000 (blob)."
+    $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+}
+
 function Wait-ForEngine {
     param([int]$Port = 7071, [int]$MaxSeconds = 120)
     Write-Host "Waiting for engine on port $Port (up to ${MaxSeconds}s)..."
@@ -1439,9 +1511,13 @@ function Start-LightweightExecution {
     if (-not $env:FUNCTIONS_WORKER_RUNTIME)     { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
     if (-not $env:ASPNETCORE_ENVIRONMENT)       { $env:ASPNETCORE_ENVIRONMENT = 'Development' }
     if (-not $env:AZURE_FUNCTIONS_ENVIRONMENT) { $env:AZURE_FUNCTIONS_ENVIRONMENT = 'Development' }
-    # Use in-memory distributed lock manager so the engine works without Azurite.
-    # CI agents that have a real storage account can override this by setting
+    # Start Azurite (if available) so AzureWebJobsStorage points at a real
+    # (emulated) storage account instead of falling back to the in-memory
+    # distributed lock manager -- see Start-Azurite for why that fallback
+    # matters (root cause #4: "Host lock lease acquired" / "already exists").
+    # CI agents that have a real storage account can skip this by setting
     # AzureWebJobsStorage before invoking the script.
+    Start-Azurite
     if (-not $env:AzureWebJobsStorage)          { $env:AzureWebJobsStorage = '' }
     if ($SharedConfigDir) {
         # WAREWOLF_SECURE_CONFIG must point to a file path, not the dir.
@@ -1601,6 +1677,7 @@ function Start-LightweightExecution {
         "Func          : $func"
         "WAREWOLF_SECURE_CONFIG : $($env:WAREWOLF_SECURE_CONFIG)"
         "WorkflowsDirectory     : $($env:WorkflowsDirectory)"
+        "AzureWebJobsStorage    : $($env:AzureWebJobsStorage)"
         "AzureFunctionsJobHost__Logging__LogLevel__Default : $($env:AzureFunctionsJobHost__Logging__LogLevel__Default)"
         "AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled : $($env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled)"
         "AzureFunctionsJobHost__healthMonitor__enabled : $($env:AzureFunctionsJobHost__healthMonitor__enabled)"
@@ -1676,9 +1753,13 @@ function Stop-Engine {
     if ($script:_serverProcess -and -not $script:_serverProcess.HasExited) {
         $script:_serverProcess | Stop-Process -Force -ErrorAction SilentlyContinue
     }
+    if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
+        $script:_azuriteProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+    }
     Get-Process -Name "func"                           -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf Server"                -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf.Execution.Lightweight" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "azurite"                        -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
 # ============================================================================
