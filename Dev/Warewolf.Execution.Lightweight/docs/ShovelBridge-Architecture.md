@@ -218,6 +218,7 @@ This worker was originally built as a client example and has been promoted to a
 
 ## See also
 
+- `docs/Deploy-EndToEnd-Runbook.md` §8.5 — copy-paste deploy/authorize/verify/teardown walkthrough.
 - `Scripts/README.md` — script index.
 - `Warewolf.Execution.ServiceBusWorker/README.md` — the
   worker's own architecture, auth, and message-contract documentation.
