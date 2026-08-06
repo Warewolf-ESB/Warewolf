@@ -4,11 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using HttpRequestData = Microsoft.Azure.Functions.Worker.Http.HttpRequestData;
@@ -18,7 +14,7 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 /// <summary>
 /// Validates an <c>Authorization: Bearer &lt;jwt&gt;</c> header against Microsoft Entra
 /// using the published OIDC metadata for the configured tenant (RS256 signing keys
-/// are fetched and cached automatically by <see cref="ConfigurationManager{T}"/>).
+/// are fetched and cached automatically by <see cref="EntraBearerTokenValidator"/>).
 ///
 /// On success an authenticated <see cref="WorkflowClaimsPrincipal"/> is produced
 /// with claims normalised to the same shape as the Easy Auth pipeline, so the
@@ -28,13 +24,11 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 /// </summary>
 public sealed class BearerTokenPrincipalParser : IPrincipalParser
 {
-    private const string AuthenticationType = "Bearer";
-    private const string BearerScheme       = "Bearer ";
+    private const string BearerScheme = "Bearer ";
 
     private readonly EntraAuthOptions _options;
     private readonly ILogger<BearerTokenPrincipalParser> _logger;
-    private readonly Lazy<ConfigurationManager<OpenIdConnectConfiguration>?> _configManager;
-    private readonly JwtSecurityTokenHandler _handler = new() { MapInboundClaims = false };
+    private readonly EntraBearerTokenValidator _validator;
 
     /// <inheritdoc/>
     public string Name => "Bearer";
@@ -44,23 +38,9 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
         EntraAuthOptions options,
         ILogger<BearerTokenPrincipalParser> logger)
     {
-        _options = options;
-        _logger  = logger;
-
-        _configManager = new Lazy<ConfigurationManager<OpenIdConnectConfiguration>?>(() =>
-        {
-            if (!_options.IsEnabled)
-                return null;
-
-            return new ConfigurationManager<OpenIdConnectConfiguration>(
-                _options.MetadataAddress,
-                new OpenIdConnectConfigurationRetriever(),
-                new HttpDocumentRetriever { RequireHttps = true })
-            {
-                AutomaticRefreshInterval = TimeSpan.FromHours(24),
-                RefreshInterval          = TimeSpan.FromMinutes(5),
-            };
-        });
+        _options   = options;
+        _logger    = logger;
+        _validator = new EntraBearerTokenValidator(options);
     }
 
     /// <inheritdoc/>
@@ -90,33 +70,7 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
 
         try
         {
-            var configuration = await _configManager.Value!
-                .GetConfigurationAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            var parameters = new TokenValidationParameters
-            {
-                ValidateIssuer           = true,
-                ValidIssuers             = _options.ValidIssuers,
-                ValidateAudience         = true,
-                ValidAudiences           = _options.ValidAudiences,
-                ValidateLifetime         = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKeys        = configuration.SigningKeys,
-                ClockSkew                = TimeSpan.FromMinutes(2),
-                NameClaimType            = ClaimTypes.Name,
-                RoleClaimType            = ClaimTypes.Role,
-            };
-
-            var result = _handler.ValidateToken(token, parameters, out _);
-
-            // Re-project claims into the same normalised shape produced by the EasyAuth
-            // parser so downstream authorization is identical for both auth paths.
-            var identity = new ClaimsIdentity(
-                NormalizeClaims(result.Claims),
-                authenticationType: AuthenticationType,
-                nameType:           ClaimTypes.Name,
-                roleType:           ClaimTypes.Role);
+            var identity = await _validator.ValidateAsync(token, cancellationToken).ConfigureAwait(false);
 
             _logger.LogDebug("Bearer token validated for {User}", identity.Name ?? "(unknown)");
             return new WorkflowClaimsPrincipal(identity);
@@ -135,25 +89,6 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
         {
             _logger.LogWarning(ex, "Unexpected error validating Bearer token — yielding to next strategy");
             return null;
-        }
-    }
-
-    // ── Private helpers ───────────────────────────────────────────────────────
-
-    private static IEnumerable<Claim> NormalizeClaims(IEnumerable<Claim> source)
-    {
-        foreach (var claim in source)
-        {
-            var type = claim.Type switch
-            {
-                "oid"              => ClaimTypes.NameIdentifier,
-                AuthConstants.ObjectIdentifier => ClaimTypes.NameIdentifier,
-                "name"             => ClaimTypes.Name,
-                AuthConstants.PreferredUsername => ClaimTypes.Name,
-                AuthConstants.Roles            => ClaimTypes.Role,
-                _                  => claim.Type,
-            };
-            yield return new Claim(type, claim.Value);
         }
     }
 }

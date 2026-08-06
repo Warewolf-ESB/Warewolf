@@ -4,6 +4,9 @@
     "extensions": {
         "http": {
             "routePrefix": ""
+        },
+        "serviceBus": {
+            "autoCompleteMessages": false
         }
     },
     "logging": {

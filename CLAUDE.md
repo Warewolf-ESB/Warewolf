@@ -49,8 +49,8 @@ Pick the model tier that matches the task. If the targeted model is unavailable,
 
 | Task type | Model | Current model ID |
 |---|---|---|
-| **Heavy** — deep reasoning, root-cause analysis, architectural design, complex multi-file refactors, security review | Latest Claude **Opus** | `claude-opus-4-8` |
-| **Normal** — routine edits, simple bug fixes, test stubs, documentation, straightforward single-file changes | Latest Claude **Sonnet** | `claude-sonnet-4-6` |
+| **Heavy** — deep reasoning, root-cause analysis, architectural design, complex multi-file refactors, security review | Latest Claude **Opus** | `claude-opus-5` |
+| **Normal** — routine edits, simple bug fixes, test stubs, documentation, straightforward single-file changes | Latest Claude **Sonnet** | `claude-sonnet-5` |
 
 ## Architecture orientation
 
