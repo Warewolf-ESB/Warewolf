@@ -100,6 +100,26 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
 - Follow `docs/KeyRotationRunbook.md` conventions for rotating the `shovel-send` SAS
   key; rotating it requires re-running `Configure-RabbitMqShovel.ps1` (or a future
   `-RotateOnly` mode) so the Shovel picks up the new key.
+- **The destination namespace MUST keep local (SAS) authentication enabled**
+  (`disableLocalAuth` / "Local authentication" = **off**, i.e. `false`). RabbitMQ's
+  built-in Shovel plugin (both the AMQP 0.9.1 and AMQP 1.0 dialects) only supports
+  SASL PLAIN with a `policy-name:key` credential pair — it has no Azure AD/OAuth
+  client, so it cannot use Managed Identity or an Entra token. If a security
+  baseline/policy flips `disableLocalAuth` to `true` on the namespace, the Shovel's
+  `dest-uri` connection fails outright (surfaces as the Shovel going to `terminated`
+  with reason `"failed to connect to destination"` — see
+  `Scripts/Tests/Integration/Test-ShovelBridgeE2E.ps1`). This is orthogonal to, and
+  does not conflict with, the worker's own **Managed Identity** listen connection
+  above — only the Shovel's Send-side credential needs SAS. Check with
+  `az servicebus namespace show --name <ns> --resource-group <rg> --query
+  disableLocalAuth` and restore it with `az servicebus namespace update --name <ns>
+  --resource-group <rg> --disable-local-auth false` if it drifts. The
+  `ShovelBridgeE2ETest_ExternalServiceBus` CI job (below) self-heals this specific
+  drift against the `WarewolfShovelBridgeTesting` testing namespace automatically —
+  its `Ensure Service Bus namespace allows local (SAS) auth for the Shovel` step
+  checks `disableLocalAuth` before every run and restores `false` if a policy has
+  flipped it. Any *other* namespace (e.g. a real deployment target) still needs this
+  checked/restored manually per the guidance above.
 
 ## Known risks / open work
 
@@ -143,7 +163,11 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `Dev/.azure/pipeline-CLOUD.yml`, against the dedicated `WarewolfShovelBridgeTesting`
   namespace (resource group `DEV2`). That job logs in to Azure CLI with the same service
   principal already used elsewhere in that pipeline (`AzureClientId`/`AzureClientSecret`/
-  `AzureTenantId`), then idempotently ensures a single fixed queue
+  `AzureTenantId`), then idempotently ensures the namespace still allows local (SAS)
+  authentication (`disableLocalAuth=false` — see "Security" above; this is a documented
+  drift risk if a security baseline/policy re-flips it, and would otherwise fail the
+  Shovel's dest-uri connection AND the destination-queue existence check with 401s),
+  then idempotently ensures a single fixed queue
   (`wwexecution-queue-e2e`) and its two queue-scoped SAS rules exist — `shovel-e2e-send`
   (Send-only, used to build `-ExternalShovelDestUri`) and `shovel-e2e-listen` (Listen-only,
   used to build `-ExternalServiceBusConnectionString`) — mirroring the same least-privilege

@@ -218,7 +218,19 @@ function Test-ServiceBusQueueExists {
         if ($statusCode -eq 404) { return $false }
         # Any other failure (network/DNS/auth) is inconclusive for "does the queue
         # exist" — surface it as a note but don't claim the queue is missing.
-        Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)"
+        $hint = ''
+        if ($statusCode -eq 401) {
+            # A SAS-signed call rejected with 401 (rather than the connection string
+            # simply not parsing — that's handled separately above) most commonly means
+            # the namespace's local (SAS) authentication has been disabled
+            # ('disableLocalAuth' = true), e.g. by a security baseline/policy drifting it
+            # back on — see the "Security" section of docs/ShovelBridge-Architecture.md.
+            # This affects the Shovel's own dest-uri connection too (SASL PLAIN has no
+            # Azure AD/OAuth fallback), so Phase 3 will also fail with reason
+            # "failed to connect to destination" if this is the cause.
+            $hint = " This commonly means the namespace has local (SAS) auth disabled (disableLocalAuth=true) — check with 'az servicebus namespace show --query disableLocalAuth' and restore with 'az servicebus namespace update --disable-local-auth false' if so; see docs/ShovelBridge-Architecture.md."
+        }
+        Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)$hint"
         return $null
     }
 }
@@ -527,7 +539,13 @@ try {
         } elseif ($queueExists -eq $true) {
             Write-Ok "Destination queue '$DestinationQueueName' confirmed to exist on the external namespace."
         } else {
-            Write-Note "Could not confirm destination queue '$DestinationQueueName' exists (connection string not in key-name/key form) — assuming it exists."
+            # $queueExists is $null for two distinct reasons: the connection string
+            # wasn't in key-name/key form (nothing more to say), or the management API
+            # call itself failed (network/DNS/auth) — Test-ServiceBusQueueExists already
+            # wrote a specific Write-Note with the real reason (and an actionable hint
+            # for the common 401/disableLocalAuth case) for the latter, so avoid
+            # repeating a misleading blanket "not in key-name/key form" claim here.
+            Write-Note "Could not confirm destination queue '$DestinationQueueName' exists — assuming it exists (see note above, if any, for why the check was inconclusive)."
         }
     }
 
