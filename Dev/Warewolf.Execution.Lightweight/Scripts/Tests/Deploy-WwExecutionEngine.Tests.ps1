@@ -728,3 +728,90 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         }
     }
 }
+
+Describe 'Deploy-WwExecutionEngine — RabbitMQ queue-trigger companion (parameter surface)' {
+
+    # The -DeployRabbitMqTriggers fan-out is exercised end-to-end in
+    # Deploy-WwQueueProcessor.Tests.ps1 (the child does the work). What must be pinned HERE is
+    # the engine orchestrator's parameter contract and its ValidateSet, so a rename or a
+    # dropped default is caught before it reaches an operator's command line.
+
+    BeforeAll {
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            $script:DeployScript, [ref]$null, [ref]$null)
+        $script:QpParams = $ast.ParamBlock.Parameters
+    }
+
+    It 'declares the queue-trigger companion parameters' {
+        $names = $script:QpParams | ForEach-Object { $_.Name.VariablePath.UserPath }
+
+        foreach ($expected in @('DeployRabbitMqTriggers', 'QueueTriggerPath', 'QueueTriggerFilter',
+                                'QueueTriggerFilePath', 'QueueTriggerManifestPath', 'QueueSourcePath',
+                                'AcaEnvironment', 'AcrName', 'QueueProcessorPublishPath',
+                                'QueueProcessorImage', 'QueueEngineResourceAppId', 'RabbitMqSecretUri',
+                                'QueueScalingMode', 'ContinueOnQueueTriggerError')) {
+            $names | Should -Contain $expected
+        }
+    }
+
+    It 'defaults -QueueTriggerFilter to every .bite in the trigger folder' {
+        # Triggers live in their own folder (Settings\triggers\), so the glob matches ANY .bite
+        # rather than a 'triggers*' filename prefix - the prefix was a leftover from the earlier
+        # flat layout and would have matched nothing in a per-trigger folder.
+        $p = $script:QpParams | Where-Object { $_.Name.VariablePath.UserPath -eq 'QueueTriggerFilter' }
+        $p.DefaultValue.Extent.Text | Should -Match '\*\.bite'
+        $p.DefaultValue.Extent.Text | Should -Not -Match 'triggers\*'
+    }
+
+    It 'passes the resolved TenantId through to the queue companion' {
+        # A blank tenant is legal ONLY for a system-assigned MI; for any other credential the
+        # chain fails with 'Invalid tenant id provided', which reads like a missing app role.
+        $text = Get-Content -LiteralPath $script:DeployScript -Raw
+        $text | Should -Match 'EngineTenantId\s*=\s*\$TenantId'
+    }
+
+    It 'defaults -QueueScalingMode to Elastic (the standard; Fixed/Warm are exceptions)' {
+        $p = $script:QpParams | Where-Object { $_.Name.VariablePath.UserPath -eq 'QueueScalingMode' }
+        $p.DefaultValue.Extent.Text | Should -Match 'Elastic'
+    }
+
+    It 'constrains -QueueScalingMode with a ValidateSet' {
+        { & $script:DeployScript -QueueScalingMode 'Turbo' -LoadFunctionsOnly } | Should -Throw
+    }
+
+    It 'exposes -DeployRabbitMqTriggers and -ContinueOnQueueTriggerError as switches' {
+        foreach ($switch in @('DeployRabbitMqTriggers', 'ContinueOnQueueTriggerError')) {
+            $p = $script:QpParams | Where-Object { $_.Name.VariablePath.UserPath -eq $switch }
+            $p.StaticType.Name | Should -Be 'SwitchParameter'
+        }
+    }
+
+    It 'resolves the child script path beside itself' {
+        $text = Get-Content $script:DeployScript -Raw
+        $text | Should -Match "QueueProcessorScript\s*=\s*Join-Path\s+\`$ScriptDir\s+'Deploy-WwQueueProcessor\.ps1'"
+    }
+
+    It 'guards the queue publish path against the engine AND JobProcessor publish paths' {
+        $text = Get-Content $script:DeployScript -Raw
+        $text | Should -Match 'QueueProcessorPublishPath resolves to the SAME directory as the engine PublishPath'
+        $text | Should -Match 'QueueProcessorPublishPath resolves to the SAME directory as'
+        $text | Should -Match 'JobProcessorPublishPath'
+    }
+
+    It 'fails at plan time on zero matching triggers and on an unsubstituted release token' {
+        $text = Get-Content $script:DeployScript -Raw
+        $text | Should -Match 'Refusing to run a queue-trigger deploy that would deploy nothing'
+        $text | Should -Match 'unsubstituted release token'
+    }
+
+    It 'reports the companion state in the plan summary' {
+        $text = Get-Content $script:DeployScript -Raw
+        $text | Should -Match "Deploy RabbitMQ triggers"
+    }
+
+    It 'invokes the child once per trigger and reminds about the per-app role assignment' {
+        $text = Get-Content $script:DeployScript -Raw
+        $text | Should -Match 'foreach \(\$qpTriggerFile in \$script:QueueTriggerFiles\)'
+        $text | Should -Match 'Warewolf_QueueProcessor'
+    }
+}

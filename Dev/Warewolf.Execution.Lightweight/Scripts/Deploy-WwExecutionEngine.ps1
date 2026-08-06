@@ -253,6 +253,32 @@ param(
     [string] $ServiceBusWorkerStorageAccount,
     [string] $WwExecutionScope,               # MI token scope the worker uses (api://<engine-app-id>/.default)
 
+    # ── RabbitMQ queue triggers (optional companion deploy) ───────────────────
+    # When -DeployRabbitMqTriggers, after the engine deploy this calls
+    # Deploy-WwQueueProcessor.ps1 ONCE PER TRIGGER FILE resolved from
+    # -QueueTriggerPath / -QueueTriggerFilePath / -QueueTriggerManifestPath, so one
+    # command provisions the engine AND a Container App per queue trigger. Each app is
+    # autoscaled 0..Concurrency by the KEDA rabbitmq scaler (maxReplicas is derived from
+    # the trigger's Concurrency; the KEDA target from its Prefetch).
+    # QueueProcessorPublishPath MUST be a SEPARATE publish output from both the engine's
+    # and the JobProcessor's; the plan phase resolves it and fails loudly on a collision.
+    # Docs: docs/Deploy-EndToEnd-Runbook.md section 8.
+    [switch] $DeployRabbitMqTriggers,
+    [string] $QueueTriggerPath,                       # folder of trigger .bite files
+    [string] $QueueTriggerFilter = '*.bite',
+    [string] $QueueTriggerFilePath,                   # or exactly one file
+    [string] $QueueTriggerManifestPath,               # or a manifest with per-trigger overrides
+    [string] $QueueSourcePath,                        # folder holding {QueueSourceId}.bite
+    [string] $AcaEnvironment,
+    [string] $AcrName,
+    [string] $QueueProcessorPublishPath,
+    [string] $QueueProcessorImage,                    # or reuse a pre-built digest
+    [string] $QueueEngineResourceAppId,               # engine Entra app id for the worker's token
+    [string] $RabbitMqSecretUri,                      # Key Vault secret holding the broker URI (KEDA)
+    [ValidateSet('Elastic', 'Fixed', 'Warm')]
+    [string] $QueueScalingMode = 'Elastic',
+    [switch] $ContinueOnQueueTriggerError,
+
     # ── Other logging / feature env vars ─────────────────────────────────────
     [nullable[bool]] $EnableConsoleLogging,
     [ValidateSet('TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF')]
@@ -689,6 +715,8 @@ function Save-DeploySummary {
         jobProcessorAppName = ($DeployJobProcessor ? $JobProcessorAppName : $null)
         deployServiceBusWorker  = [bool]$DeployServiceBusWorker
         serviceBusWorkerAppName = ($DeployServiceBusWorker ? $ServiceBusWorkerAppName : $null)
+        deployRabbitMqTriggers = [bool]$DeployRabbitMqTriggers
+        queueProcessorApps  = ($DeployRabbitMqTriggers ? $script:QueueProcessorApps : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
         appSettings     = $maskedSettings
     }
@@ -722,6 +750,10 @@ $JobProcessorScript = Join-Path $ScriptDir 'Deploy-WwJobProcessor.ps1'
 
 # Companion ServiceBusWorker deploy (invoked only when -DeployServiceBusWorker).
 $ServiceBusWorkerScript = Join-Path $ScriptDir 'Deploy-WwExecutionServiceBusWorker.ps1'
+
+# Companion QueueProcessor deploy (invoked only when -DeployRabbitMqTriggers), once per
+# resolved trigger file.
+$QueueProcessorScript = Join-Path $ScriptDir 'Deploy-WwQueueProcessor.ps1'
 
 # Test hook: stop here when only the helper functions are wanted (Pester).
 if ($LoadFunctionsOnly) { return }
@@ -899,6 +931,100 @@ if ($DeployServiceBusWorker) {
     }
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Plan-time validation for the RabbitMQ queue-trigger companion deploy.
+# Runs BEFORE the engine is deployed so an operator sees the whole fan-out (and any
+# mistake) up front rather than after the engine is already live.
+# ─────────────────────────────────────────────────────────────────────────────
+$script:QueueTriggerFiles  = @()
+$script:QueueProcessorApps = @()
+
+if ($DeployRabbitMqTriggers) {
+    if (-not (Test-Path -LiteralPath $QueueProcessorScript)) {
+        throw "Deploy-WwQueueProcessor.ps1 not found at '$QueueProcessorScript'."
+    }
+
+    $modeCount = @([bool]$QueueTriggerPath, [bool]$QueueTriggerFilePath, [bool]$QueueTriggerManifestPath |
+                   Where-Object { $_ }).Count
+    if ($modeCount -gt 1) {
+        throw ('-QueueTriggerPath, -QueueTriggerFilePath and -QueueTriggerManifestPath are mutually ' +
+               'exclusive; pass exactly one.')
+    }
+
+    # Resolve the trigger set now, so "zero triggers" fails at plan time.
+    if ($QueueTriggerFilePath) {
+        if (-not (Test-Path -LiteralPath $QueueTriggerFilePath)) {
+            throw "QueueTriggerFilePath not found: '$QueueTriggerFilePath'."
+        }
+        $script:QueueTriggerFiles = @((Get-Item -LiteralPath $QueueTriggerFilePath).FullName)
+    }
+    elseif ($QueueTriggerManifestPath) {
+        if (-not (Test-Path -LiteralPath $QueueTriggerManifestPath)) {
+            throw "QueueTriggerManifestPath not found: '$QueueTriggerManifestPath'."
+        }
+        $qpManifest = Get-Content -LiteralPath $QueueTriggerManifestPath -Raw | ConvertFrom-Json
+        $script:QueueTriggerFiles = @($qpManifest.triggers | ForEach-Object { $_.file })
+        if ($script:QueueTriggerFiles.Count -eq 0) {
+            throw "Trigger manifest '$QueueTriggerManifestPath' declares no triggers."
+        }
+    }
+    else {
+        $QueueTriggerPath = Read-Required -Name 'QueueTriggerPath' -Current $QueueTriggerPath `
+                                          -Hint 'folder containing the queue-trigger .bite files'
+        if (-not (Test-Path -LiteralPath $QueueTriggerPath)) {
+            throw "QueueTriggerPath not found: '$QueueTriggerPath'."
+        }
+        $script:QueueTriggerFiles = @(Get-ChildItem -LiteralPath $QueueTriggerPath -Filter $QueueTriggerFilter -File |
+                                      Sort-Object Name | Select-Object -ExpandProperty FullName)
+        if ($script:QueueTriggerFiles.Count -eq 0) {
+            throw ("No trigger files matching '$QueueTriggerFilter' were found in '$QueueTriggerPath'. " +
+                   'Refusing to run a queue-trigger deploy that would deploy nothing.')
+        }
+    }
+
+    # An unsubstituted release token means maxReplicas would be derived from a token, so the
+    # app would silently get the wrong capacity. Fail here, not in the child.
+    foreach ($qpFile in $script:QueueTriggerFiles) {
+        $qpRaw = Get-Content -LiteralPath $qpFile -Raw
+        if ($qpRaw -match '#\{') {
+            throw ("Trigger file '$qpFile' still contains an unsubstituted release token ('#{...'). " +
+                   'The release pipeline must substitute Concurrency before the deploy runs.')
+        }
+    }
+
+    $QueueSourcePath = Read-Required -Name 'QueueSourcePath' -Current $QueueSourcePath `
+                                     -Hint 'folder holding the {QueueSourceId}.bite RabbitMQ source files'
+    $AcaEnvironment  = Read-Required -Name 'AcaEnvironment' -Current $AcaEnvironment `
+                                     -Hint 'Container Apps environment for the queue workers'
+
+    # Publish-path isolation: the worker is a different project (and a Linux container), so
+    # sharing a publish directory with the engine or the JobProcessor would ship the wrong bits.
+    if (-not $QueueProcessorImage) {
+        $QueueProcessorPublishPath = Read-Required -Name 'QueueProcessorPublishPath' `
+            -Current $QueueProcessorPublishPath `
+            -Hint 'folder of the Warewolf.Execution.QueueProcessor publish output (or pass -QueueProcessorImage)'
+        if (-not (Test-Path -LiteralPath $QueueProcessorPublishPath)) {
+            throw "QueueProcessorPublishPath not found: $QueueProcessorPublishPath"
+        }
+        $AcrName = Read-Required -Name 'AcrName' -Current $AcrName -Hint 'Azure Container Registry name'
+
+        $qpFull = ([System.IO.Path]::GetFullPath($QueueProcessorPublishPath)).TrimEnd('\', '/')
+        $engineFullForQp = ([System.IO.Path]::GetFullPath($PublishDir)).TrimEnd('\', '/')
+        if ($qpFull -ieq $engineFullForQp) {
+            throw ("QueueProcessorPublishPath resolves to the SAME directory as the engine PublishPath " +
+                   "('$engineFullForQp'). The queue worker is a different project " +
+                   '(Warewolf.Execution.QueueProcessor) and MUST publish to its own directory.')
+        }
+        if ($DeployJobProcessor -and $JobProcessorPublishPath) {
+            $jpFullForQp = ([System.IO.Path]::GetFullPath($JobProcessorPublishPath)).TrimEnd('\', '/')
+            if ($qpFull -ieq $jpFullForQp) {
+                throw ("QueueProcessorPublishPath resolves to the SAME directory as " +
+                       "JobProcessorPublishPath ('$jpFullForQp'). Each app must publish separately.")
+            }
+        }
+    }
+}
+
 # ── secure.config classification (validate now, before any change) ─────────────
 $secureConfigKind = $null
 if ($SecureConfigPath) {
@@ -975,6 +1101,12 @@ if ($DeployJobProcessor) {
 Write-Host ("    {0,-28}: {1}" -f 'Deploy ServiceBusWorker', ($DeployServiceBusWorker ? "yes -> Deploy-WwExecutionServiceBusWorker.ps1$($ServiceBusWorkerAppName ? " ($ServiceBusWorkerAppName)" : '')" : 'no'))
 if ($DeployServiceBusWorker) {
     Write-Host ("    {0,-28}: {1}" -f 'ServiceBusWorker PublishPath', "$ServiceBusWorkerPublishPath  (separate from engine PublishDir)")
+}
+Write-Host ("    {0,-28}: {1}" -f 'Deploy RabbitMQ triggers', ($DeployRabbitMqTriggers ? "yes -> Deploy-WwQueueProcessor.ps1 ($($script:QueueTriggerFiles.Count) trigger(s): $((($script:QueueTriggerFiles | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_) }) -join ', ')))" : 'no'))
+if ($DeployRabbitMqTriggers) {
+    Write-Host ("    {0,-28}: {1}" -f 'QueueProcessor image', ($QueueProcessorImage ? $QueueProcessorImage : "build from $QueueProcessorPublishPath -> $AcrName"))
+    Write-Host ("    {0,-28}: {1}" -f 'ACA environment', $AcaEnvironment)
+    Write-Host ("    {0,-28}: {1}" -f 'Queue scaling mode', $QueueScalingMode)
 }
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
@@ -1533,6 +1665,7 @@ try {
     }
 
     # ════════════════════════════════════════════════════════════════════════
+    # ════════════════════════════════════════════════════════════════════════
     # Phase 7 — (optional) ServiceBusWorker companion deploy
     # ════════════════════════════════════════════════════════════════════════
     if ($DeployServiceBusWorker) {
@@ -1570,6 +1703,90 @@ try {
         Invoke-ChildScript -Path $ServiceBusWorkerScript -Label 'Deploy-WwExecutionServiceBusWorker.ps1' -Parameters $sbwParams
         Write-Ok 'ServiceBusWorker companion deploy invoked.'
         Write-Note 'Reminder: grant the ServiceBusWorker MI the engine role Warewolf_ClientApps (see docs/KB-ClientApps-Configuration.md §2.6).'
+    }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 8 — (optional) RabbitMQ QueueProcessors, one Container App per trigger
+    # ════════════════════════════════════════════════════════════════════════
+    if ($DeployRabbitMqTriggers) {
+        Write-Phase 'Phase 8  Deploy RabbitMQ QueueProcessors (companion, one per trigger)'
+        $script:DeployLastPhase = 'Phase 8  QueueProcessors'
+
+        # The engine is deployed by now, so its URL is known and can be handed to every worker.
+        $queueEngineBaseUrl = "https://$AppName.azurewebsites.net"
+
+        # Prefer an explicitly supplied app id; otherwise derive it from the resume scope
+        # (api://<app-id>/.default) that the JobProcessor path already uses. If neither is
+        # available the child prompts, rather than guessing an audience.
+        $queueEngineAppId = $QueueEngineResourceAppId
+        if (-not $queueEngineAppId -and $EngineResumeScope -match 'api://([^/]+)/') {
+            $queueEngineAppId = $Matches[1]
+        }
+
+        $qpFailures = 0
+
+        foreach ($qpTriggerFile in $script:QueueTriggerFiles) {
+            $qpLabel = [System.IO.Path]::GetFileNameWithoutExtension($qpTriggerFile)
+
+            $qpParams = [ordered]@{
+                ResourceGroup                 = $ResourceGroup
+                Location                      = $Location
+                AcaEnvironment                = $AcaEnvironment
+                TriggerFilePath               = $qpTriggerFile
+                QueueSourcePath               = $QueueSourcePath
+                EngineBaseUrl                 = $queueEngineBaseUrl
+                ScalingMode                   = $QueueScalingMode
+                ExecutionLogLevel             = $ExecutionLogLevel
+                # Always pass the tenant explicitly. The worker acquires an app-only engine token
+                # with its managed identity, and a BLANK tenant is legal only for a
+                # system-assigned MI - anywhere else the credential chain fails with
+                # 'Invalid tenant id provided', which looks like a missing app role rather than
+                # missing config. $TenantId is already resolved from `az account show` above.
+                EngineTenantId                = $TenantId
+            }
+
+            if ($queueEngineAppId)          { $qpParams['EngineResourceAppId'] = $queueEngineAppId }
+            if ($EngineResumeScope)          { $qpParams['EngineScope']         = $EngineResumeScope }
+            if ($QueueProcessorImage)        { $qpParams['Image']               = $QueueProcessorImage }
+            if ($QueueProcessorPublishPath)  { $qpParams['PublishPath']         = $QueueProcessorPublishPath }
+            if ($AcrName)                    { $qpParams['AcrName']             = $AcrName }
+            if ($RabbitMqSecretUri)          { $qpParams['RabbitMqSecretUri']   = $RabbitMqSecretUri }
+            if ($kvRequired) {
+                $qpParams['KeyVaultName']       = $KeyVaultName
+                $qpParams['KeyVaultSecretName'] = $KeyVaultSecretName
+                $qpParams['EncryptStagedSettings'] = $true
+            }
+            if ($enableAppInsights) { $qpParams['EnableAppInsights'] = $true }
+            if ($NonInteractive)    { $qpParams['NonInteractive']    = $true }
+            if ($DryRun)            { $qpParams['DryRun']            = $true }
+
+            try {
+                Invoke-ChildScript -Path $QueueProcessorScript `
+                    -Label "Deploy-WwQueueProcessor.ps1 ($qpLabel)" -Parameters $qpParams
+                $script:QueueProcessorApps += @{ trigger = $qpLabel; file = $qpTriggerFile; status = 'invoked' }
+            }
+            catch {
+                $qpFailures++
+                $script:QueueProcessorApps += @{
+                    trigger = $qpLabel; file = $qpTriggerFile; status = 'failed'; error = $_.Exception.Message
+                }
+                Write-Note "QueueProcessor deploy failed for '$qpLabel': $($_.Exception.Message)"
+
+                if (-not $ContinueOnQueueTriggerError) {
+                    throw ("QueueProcessor deploy failed for '$qpLabel' and -ContinueOnQueueTriggerError " +
+                           'was not supplied, so the remaining triggers were skipped. The engine deploy ' +
+                           'itself completed successfully.')
+                }
+            }
+        }
+
+        Write-Ok "QueueProcessor companion deploy invoked for $($script:QueueTriggerFiles.Count) trigger(s)."
+        Write-Note 'Reminder: grant EACH QueueProcessor MI the engine role Warewolf_QueueProcessor, and add'
+        Write-Note 'a PER-WORKFLOW Execute row to secure.config for each trigger workflow (runbook section 8).'
+
+        if ($qpFailures -gt 0) {
+            Write-Note "$qpFailures trigger deploy(s) failed - see the summary JSON."
+        }
     }
 
     # ── Final summary — completed status ─────────────────────────────────────

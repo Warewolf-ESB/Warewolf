@@ -70,7 +70,7 @@
     <Compile Include="OracleServer.cs" />
     <Compile Include="OracleSqlFactory.cs" />
     <Compile Include="PostgreFactory.cs" />
-    <Compile Include="PostgreServer.cs" />
+    <Compile Include="PostGreServer.cs" />
     <Compile Include="SqlConExtension.cs" />
     <Compile Include="SqlConnectionWrapper.cs" />
     <Compile Include="SqliteServerFactory.cs" />

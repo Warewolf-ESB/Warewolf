@@ -355,6 +355,60 @@ The engine's other first-class trigger path alongside HTTPS — see
 > see `docs/KB-ClientApps-Configuration.md` §2.6. `Deploy-WwExecutionServiceBusWorker.ps1`
 > can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
 
+### RabbitMQ QueueProcessor (optional companion)
+
+Fans out **one Azure Container App per queue-trigger**, autoscaled 0 → N by the KEDA `rabbitmq`
+scaler, replacing `N × QueueWorker.exe` on the Azure path. Runs as Phase 7 of the engine deploy,
+*after* the engine is live (each app needs the engine URL). The on-prem Server + `QueueWorker.exe`
+path is untouched.
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `-DeployRabbitMqTriggers` | switch | off | After the engine deploy, run `Deploy-WwQueueProcessor.ps1` **once per pointed trigger file**, passing the shared context (subscription/tenant/RG/location/Key Vault + the engine URL). |
+| `-QueueTriggerPath` | string | — | Folder of trigger `.bite` files → one Container App **per matching file**. |
+| `-QueueTriggerFilter` | string | `*.bite` | Glob applied to `-QueueTriggerPath`. **Zero matches is a hard error**, never a silent no-op. |
+| `-QueueTriggerFilePath` | string | — | A **single** trigger file → exactly one Container App. |
+| `-QueueTriggerManifestPath` | string | — | JSON manifest → one app per entry, with per-trigger overrides. |
+| `-QueueSourcePath` | string | prompt | Folder holding the `RabbitMQSource` `.bite` files referenced by each trigger — **both `QueueSourceId` and `QueueSinkId`**. Every referenced source is copied into the image at `Settings/sources/{sourceId}.bite`; a sink source that is not staged yields a replica that starts but cannot dead-letter. |
+| `-AcaEnvironment` | string | prompt | Container Apps environment that hosts the workers. |
+| `-AcrName` | string | prompt | Container registry; the image is built with `az acr build`. |
+| `-QueueProcessorPublishPath` | string | prompt / required for companion | `dotnet publish` output of `Warewolf.Execution.QueueProcessor`. **Must differ from the engine's `-PublishPath`.** Required (no prompt) under `-NonInteractive`. |
+| `-QueueProcessorImage` | string | derived | Override the image tag instead of building. |
+| `-QueueEngineResourceAppId` | string | engine's app id | Token audience — `api://{id}/.default`. |
+| `-RabbitMqSecretUri` | string | prompt | Key Vault secret URI for the broker URI, surfaced as an ACA secret. **Consumed by the KEDA scale rule only** — KEDA cannot use a managed identity against RabbitMQ. |
+| `-QueueScalingMode` | `Elastic`\|`Fixed`\|`Warm` | `Elastic` | `Elastic` = `minReplicas 0`. `Fixed`/`Warm` are exception paths and are flagged in the plan output. |
+| `-ContinueOnQueueTriggerError` | switch | off | Keep deploying the remaining triggers when one fails. Off = stop at the first failure. |
+
+The three targeting parameters are **mutually exclusive**. Everything scale-shaped is
+**derived from the trigger file** so it stays the single source of truth:
+`maxReplicas = Concurrency` and KEDA `value = Prefetch × MaxConcurrency`. The worker reads
+`Prefetch` straight from the staged trigger for its per-consumer QoS — there is no prefetch env var,
+so the trigger stays the single source of truth.
+`Concurrency = 0` deploys `min = max = 0` (disabled), mirroring on-prem. Peak core usage
+(`Σ maxReplicas × cpu`) is printed so it can be checked against the environment quota.
+
+**Config is baked into the image**, not volume-mounted or fetched at startup — with
+`minReplicas = 0` any mount or download is paid on every 0→1 scale and adds a dependency that can
+stop a replica starting. The image tag therefore pins the config version, and a trigger edit means
+a new revision. Staged layout: `Settings/triggers/{TriggerId}.bite` +
+`Settings/sources/{sourceId}.bite`.
+
+**Optimum shape:** `minReplicas 0`, `maxReplicas = Concurrency`, and trigger
+`Prefetch = MaxConcurrency` (both 1 unless a workflow is measured safe to run concurrently).
+Dispatch is serial per channel — measured, deliveries ~2.2 s apart with no overlap — so a larger
+prefetch adds no throughput; it raises the KEDA target, **delaying** scale-out, and leaves more
+buffered messages to nack on drain. A prefetch above the cap is a plan-time advisory, not an error.
+
+**Tenant id:** the engine deploy always forwards its resolved `-TenantId` to the companion as
+`-EngineTenantId`. Blank is legal only for a *system-assigned* managed identity; for any other
+credential a blank tenant fails with *"Invalid tenant id provided"* at the first message, which
+looks like a missing app role rather than a config gap.
+
+> Role assignment for **each** app's MI (`Warewolf_QueueProcessor`) plus a **per-workflow**
+> (`IsServer=false`) `View`+`Execute` row in `secure.config` for every trigger's `WorkflowName`
+> is a **separate** step — see [Deploy-EndToEnd-Runbook.md](Deploy-EndToEnd-Runbook.md) §8.
+> Note this differs from the JobProcessor, which uses one **global** row.
+> `Deploy-WwQueueProcessor.ps1` can also be run **standalone**.
 
 ### Logging / feature env vars
 

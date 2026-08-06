@@ -88,12 +88,23 @@ between Entra identity and Warewolf `secure.config` groups:
 | `Permission.DeployTo` | Fine-grained permission flag |
 | `Permission.DeployFrom` | Fine-grained permission flag |
 | `Permission.Administrator` | Fine-grained permission flag |
+| `Warewolf_ClientApps` | Dedicated role for app-only (daemon / managed-identity) client callers |
+| `Warewolf_JobProcessor` | The suspend/resume poller Function App (`Warewolf.Execution.EngineJobProcessor`). Needs a **global-scope** (`IsServer=true`) `Execute` row, because `/secure/resume/{jobId}` has no per-workflow resource entry |
+| `Warewolf_QueueProcessor` | The RabbitMQ queue workers (`Warewolf.Execution.QueueProcessor`, one Container App per trigger). Needs a **per-workflow** (`IsServer=false`) `View`+`Execute` row for **each** trigger's `WorkflowName`, because a queue worker calls a named workflow on `/Secure/{*name}` |
 
 > **Design rule** — the group app roles (`WarewolfAdministrators`, `PUBLIC`,
 > etc.) represent *membership* in a Warewolf group.  The `Permission.*` roles
 > represent individual capability flags.  Both are declared as app roles with
 > `allowedMemberTypes: ["User", "Application"]` so both users and daemon clients
 > can be assigned them.
+
+> **Daemon callers and scope.** The two processor roles above illustrate the scope rule in §5:
+> a caller whose route resolves to a **named workflow** is authorized from the **resource** role
+> map, so it needs a per-workflow row; a caller on a route with no resource entry falls back to
+> the **global** map and needs `IsServer=true`. Getting this the wrong way round yields the
+> WOLF-8418 **HTTP 500** denial rather than a 403, which is the usual first symptom.
+> Each queue worker Container App has its **own** system-assigned managed identity, so
+> `Warewolf_QueueProcessor` is assigned once **per app** (see `Deploy-EndToEnd-Runbook.md` §8d).
 
 ### 2.3 Easy Auth Configuration
 

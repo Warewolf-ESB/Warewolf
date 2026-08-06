@@ -22,6 +22,28 @@ Same activity/runtime libraries, different hosting models:
 
 Both consume `Dev2.Activities`, `Dev2.Core`, `Dev2.Runtime.*`, and the shared driver/data libraries.
 
+### Azure-side satellite workers
+
+Two additional deployables exist **only on the Azure path**; each replaces an on-prem child process
+and calls the engine as a daemon (managed identity + Entra app role). The on-prem Server equivalents
+are untouched.
+
+| | `Warewolf.Execution.EngineJobProcessor` | `Warewolf.Execution.QueueProcessor` |
+|---|---|---|
+| Replaces | `hangfireserver.exe` | `N × QueueWorker.exe` (+ `QueueWorkerMonitor`) |
+| Host | Azure **Function App** (TimerTrigger) | Azure **Container Apps**, Linux container |
+| Scaling | singleton timer | **KEDA `rabbitmq` scaler, 0→N replicas, one app per queue-trigger** |
+| Engine role | `Warewolf_JobProcessor` — **global-scope** `Execute` row | `Warewolf_QueueProcessor` — **per-workflow** `Execute` row, one MI per app |
+| Engine route | POST `/secure/resume/{jobId}` | POST `/Secure/{workflow}.json` |
+| RabbitMQ client | n/a | **`RabbitMQ.Client` 7.x, worker-local** — deliberately NOT `Warewolf.Driver.RabbitMQ` (pinned to 5.1.2; `QueueingBasicConsumer`, used by `DsfConsumeRabbitMQActivity`, was removed in v6, so the shared package is not upgraded) |
+| Config source | staged `Settings/persistencesettings*.bite` | staged `Settings/triggers*.bite` + `{QueueSourceId}.bite` |
+
+Both consume the engine's Key Vault WFAES stack as **linked shared source** (two `Exe` projects
+cannot reference each other). The QueueProcessor does **not** link the engine's logger sinks:
+`ExecutionLoggerBase` depends on Functions invocation correlation, so it implements its own
+`Dev2Logger.ExternalSink` against the same `EXECUTIONLOGLEVEL`/`ENABLE*` env-var contract.
+Neither worker references `Dev2.Data` (it would re-pin `RabbitMQ.Client`).
+
 ### Lightweight (`Warewolf.Execution.Lightweight`)
 
 Azure Function App with five function classes under `Functions/`:

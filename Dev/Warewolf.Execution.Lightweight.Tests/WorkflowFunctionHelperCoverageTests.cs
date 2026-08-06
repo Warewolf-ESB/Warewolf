@@ -32,6 +32,7 @@ using System.Threading.Tasks;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Tests.Auth;
+using Warewolf.Execution.Lightweight.Models;
 
 namespace Warewolf.Execution.Lightweight.Tests
 {
@@ -131,6 +132,191 @@ namespace Warewolf.Execution.Lightweight.Tests
             Assert.AreEqual("Wf", req.WorkflowName);
             Assert.IsTrue(req.IsDebug);
             Assert.AreEqual("v", req.InputParameters["k"]);
+        }
+
+        // ════════════════════════════════════════════════════════════════════
+        // Raw body payload — parity with Dev2.Runtime.WebServer
+        //
+        // The full server puts the body straight into WebRequestTO.RawRequestPayload and hands it
+        // to DsfDataObject, so ExecutionEnvironmentUtils receives the ORIGINAL payload. This engine
+        // used to rebuild a payload from InputParameters, which silently dropped a FLAT body, an XML
+        // body, and any nested/recordset input. Verified live before the fix:
+        //   POST {"message":"x"}                     -> 500 "Scalar value { message } is NULL"
+        //   POST {"inputParameters":{"message":"x"}} -> 200 {"output":"x"}
+        // ════════════════════════════════════════════════════════════════════
+
+        [TestMethod]
+        public async Task ParseRequestAsync_FlatJsonBody_IsKeptVerbatimAsRawPayload()
+        {
+            // What every on-prem queue worker posts: MessageToInputsMapper emits a FLAT object and
+            // WarewolfWebRequestForwarder posts it as-is.
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json", @"{""message"":""hello""}"), null);
+
+            Assert.AreEqual(@"{""message"":""hello""}", req.RawInputPayload,
+                "the body must survive untouched - re-synthesising it is what lost the inputs");
+            Assert.AreEqual(0, req.InputParameters.Count,
+                "a flat body must NOT be forced through the string dictionary");
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_EnvelopeBody_DoesNotSetRawPayload()
+        {
+            // The documented contract still takes precedence, so existing callers are unaffected.
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json",
+                            @"{""inputParameters"":{""message"":""hello""}}"), null);
+
+            Assert.AreEqual("hello", req.InputParameters["message"]);
+            Assert.IsNull(req.RawInputPayload,
+                "the envelope path already populates InputParameters; duplicating it as a raw payload would double-bind");
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_XmlBody_IsKeptInsteadOfThrowingAway()
+        {
+            // Previously JsonConvert.DeserializeObject<WorkflowExecutionRequest>(xml) threw straight
+            // into a silent catch, so XML was discarded - even though
+            // ExecutionEnvironmentUtils.TryUpdateEnviromentWithMappings converts XML payloads.
+            const string xml = "<DataList><message>hello</message></DataList>";
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json", xml), null);
+
+            Assert.AreEqual(xml, req.RawInputPayload);
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_NestedJsonBody_KeepsTheStructure()
+        {
+            // Dictionary<string,string> cannot carry a JTokenType.Object, so recordset inputs were
+            // unreachable through the HTTP layer. Keeping the raw body restores them.
+            const string nested = @"{""orders"":[{""id"":""1""},{""id"":""2""}]}";
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json", nested), null);
+
+            Assert.AreEqual(nested, req.RawInputPayload);
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_EmptyOrMalformedBody_LeavesRawPayloadUnset()
+        {
+            var empty = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json", "   "), null);
+            Assert.IsNull(empty.RawInputPayload);
+
+            // Malformed JSON must not throw - it is treated as an opaque payload and the workflow
+            // simply binds nothing, exactly as a mismatched payload does on the full server.
+            var malformed = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json", "{not json"), null);
+            Assert.AreEqual("{not json", malformed.RawInputPayload);
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_RoutedWorkflow_CannotBeRedirectedByTheBody()
+        {
+            // SECURITY REGRESSION LOCK. Authorization is evaluated on the ROUTE-derived name
+            // (WorkflowHttpFunction:326) before the request is parsed (:365), and ResolveFilePath
+            // returns early when WorkflowFilePath is already set - so a body-supplied
+            // 'workflowFilePath' used to win and execute a workflow the caller was never authorized
+            // for. On /Public that reaches workflows that are not public at all.
+            //
+            // This test FAILED when first written (WorkflowFilePath came back as '\etc\passwd'),
+            // which is how the bypass was found.
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/Public/wf.json",
+                            @"{""workflowFilePath"":""/etc/passwd"",""message"":""x""}"),
+                workflowsDirectory: null,
+                workflowNameFromRoute: "RoutedWorkflow");
+
+            Assert.AreEqual("RoutedWorkflow", req.WorkflowName);
+            Assert.IsTrue(req.WorkflowFilePath is null
+                          || !req.WorkflowFilePath.Contains("passwd", StringComparison.OrdinalIgnoreCase),
+                "a routed request must never execute a body-supplied path");
+
+            // The rest of the body is still honoured as inputs.
+            StringAssert.Contains(req.RawInputPayload, "message");
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_FormUrlEncodedBody_BindsAsInputParameters()
+        {
+            // Parity with SubmittedData.ExtractKeyValuePairForPostMethod, which falls through to
+            // ExtractArgumentsFromDataListOrQueryString for a non-XML/non-JSON body - i.e. treats the
+            // body as a query string. These must become InputParameters, NOT a raw payload:
+            // ExecutionEnvironmentUtils only parses JSON and XML, so 'a=1&b=2' would bind nothing.
+            var req = MakeRequest("http://localhost/Public/wf.json", "message=form-x&other=2");
+            req.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+
+            var parsed = await WorkflowFunctionHelper.ParseRequestAsync(req, null);
+
+            Assert.AreEqual("form-x", parsed.InputParameters["message"]);
+            Assert.AreEqual("2", parsed.InputParameters["other"]);
+            Assert.IsNull(parsed.RawInputPayload,
+                "a form body is not a payload the environment helper can parse");
+        }
+
+        [TestMethod]
+        public async Task ParseRequestAsync_GenericRoute_StillHonoursAnExplicitPath()
+        {
+            // The generic /workflow route passes no route name, so selecting a workflow by path
+            // remains legitimate there and must keep working.
+            var req = await WorkflowFunctionHelper.ParseRequestAsync(
+                MakeRequest("http://localhost/workflow", @"{""workflowFilePath"":""/wf/A.bite""}"), null);
+
+            StringAssert.Contains(req.WorkflowFilePath, "A.bite");
+        }
+
+        // ── Payload selection (WorkflowExecutor.ResolveInputPayload) ─────────
+
+        [TestMethod]
+        public void ResolveInputPayload_RawBodyWins_ButQueryInputsAreStillMerged()
+        {
+            var request = new WorkflowExecutionRequest
+            {
+                RawInputPayload = @"{""message"":""from-body""}",
+                InputParameters = new Dictionary<string, string>
+                {
+                    ["message"] = "from-query",   // clash: body must win
+                    ["extra"]   = "kept",          // no clash: must survive
+                },
+            };
+
+            var payload = WorkflowExecutor
+                                  .ResolveInputPayload(request);
+
+            var parsed = Newtonsoft.Json.Linq.JObject.Parse(payload);
+            Assert.AreEqual("from-body", (string)parsed["message"],
+                "body-after-query precedence must be preserved");
+            Assert.AreEqual("kept", (string)parsed["extra"]);
+        }
+
+        [TestMethod]
+        public void ResolveInputPayload_XmlBody_IsUsedUnmodified()
+        {
+            // Merging query values into arbitrary XML would mean guessing its shape, so the body is
+            // used as-is.
+            const string xml = "<DataList><message>x</message></DataList>";
+            var request = new WorkflowExecutionRequest
+            {
+                RawInputPayload = xml,
+                InputParameters = new Dictionary<string, string> { ["ignored"] = "y" },
+            };
+
+            Assert.AreEqual(xml, WorkflowExecutor
+                                       .ResolveInputPayload(request));
+        }
+
+        [TestMethod]
+        public void ResolveInputPayload_NoRawBody_FallsBackToQueryInputs()
+        {
+            var request = new WorkflowExecutionRequest
+            {
+                InputParameters = new Dictionary<string, string> { ["message"] = "qs" },
+            };
+
+            var parsed = Newtonsoft.Json.Linq.JObject.Parse(
+                WorkflowExecutor.ResolveInputPayload(request));
+            Assert.AreEqual("qs", (string)parsed["message"]);
         }
 
         // ════════════════════════════════════════════════════════════════════
@@ -352,7 +538,7 @@ namespace Warewolf.Execution.Lightweight.Tests
         [TestMethod]
         public void ResolveFilePath_FilePathPreSet_OnlyNormalizes()
         {
-            var req = new Warewolf.Execution.Lightweight.Models.WorkflowExecutionRequest
+            var req = new WorkflowExecutionRequest
             {
                 WorkflowFilePath = "a/b/c.bite",
                 WorkflowName     = "ignored"
@@ -420,3 +606,5 @@ namespace Warewolf.Execution.Lightweight.Tests
         }
     }
 }
+
+

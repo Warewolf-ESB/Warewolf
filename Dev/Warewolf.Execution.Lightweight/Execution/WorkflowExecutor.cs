@@ -505,7 +505,7 @@ namespace Warewolf.Execution.Lightweight
             Guid resourceId,
             int versionNumber)
         {
-            var rawPayload = BuildJsonPayload(request.InputParameters);
+            var rawPayload = ResolveInputPayload(request);
             var workflowDir = Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
 
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), rawPayload)
@@ -526,9 +526,10 @@ namespace Warewolf.Execution.Lightweight
                 ExecutingUser = ResolveExecutingUser(request.ExecutingPrincipal)
             };
 
-            if (!string.IsNullOrEmpty(dataList)
-                && request.InputParameters != null
-                && request.InputParameters.Count > 0)
+            // Gate on the PAYLOAD, not on InputParameters.Count: a raw body (flat JSON or XML)
+            // carries inputs without ever populating InputParameters, and gating on the dictionary
+            // meant such a body was never handed to the environment at all.
+            if (!string.IsNullOrEmpty(dataList) && !string.IsNullOrWhiteSpace(rawPayload))
             {
                 ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(
                     dataObject,
@@ -537,6 +538,59 @@ namespace Warewolf.Execution.Lightweight
             }
 
             return dataObject;
+        }
+
+        /// <summary>
+        /// Chooses the payload handed to <c>UpdateEnvironmentFromInputPayload</c>, preferring the
+        /// caller's ORIGINAL body over one re-synthesised from <see cref="WorkflowExecutionRequest.InputParameters"/>.
+        /// </summary>
+        /// <remarks>
+        /// Parity with Dev2.Runtime.WebServer, which passes <c>WebRequestTO.RawRequestPayload</c>
+        /// straight through. Re-synthesising from a Dictionary&lt;string,string&gt; silently dropped
+        /// flat bodies, XML bodies and nested/recordset inputs - see
+        /// <see cref="WorkflowExecutionRequest.RawInputPayload"/>.
+        ///
+        /// Query-string inputs are merged in when the raw body is a JSON object, and the BODY WINS
+        /// on a name clash - the same precedence as before, where the body was parsed after the
+        /// query string and overwrote it. An XML body is used as-is, because merging query values
+        /// into arbitrary XML would require guessing its shape.
+        /// </remarks>
+        internal static string ResolveInputPayload(WorkflowExecutionRequest request)
+        {
+            var raw = request.RawInputPayload;
+            var hasQueryInputs = request.InputParameters is { Count: > 0 };
+
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return BuildJsonPayload(request.InputParameters);
+            }
+
+            if (!hasQueryInputs)
+            {
+                return raw;
+            }
+
+            if (raw.TrimStart().StartsWith("{", StringComparison.Ordinal))
+            {
+                try
+                {
+                    var merged = JObject.Parse(raw);
+                    foreach (var kv in request.InputParameters)
+                    {
+                        if (merged[kv.Key] == null)
+                        {
+                            merged[kv.Key] = kv.Value;
+                        }
+                    }
+                    return merged.ToString(Formatting.None);
+                }
+                catch
+                {
+                    // Not parseable after all - fall through and use the body untouched.
+                }
+            }
+
+            return raw;
         }
 
         /// <summary>

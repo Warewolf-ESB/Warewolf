@@ -164,3 +164,8 @@ Dev/SonarQube/SolutionBinding.sqconfig
 Dev/Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth.output.json
 /Dev/Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/.vs
 /Dev/Warewolf.Execution.ServiceBusWorker/.vs
+/Dev/Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/.vs
+
+# Local-only queue-processor settings tree (docker-compose bind mount). Developers copy the
+# committed Settings/ here and edit the broker ConnectionString, so it must never be committed.
+/Dev/Warewolf.Execution.QueueProcessor/Settings.local/
