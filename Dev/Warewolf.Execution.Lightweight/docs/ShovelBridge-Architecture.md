@@ -165,10 +165,40 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `ShovelBridgeE2ETest_ExternalServiceBus` CI job's `Install & start local RabbitMQ`
   step now writes this `advanced.config` automatically (see `pipeline-CLOUD.yml`).
   Any broker you don't control the config of (a shared/managed broker) cannot apply
-  this fix — the only remaining option there is adding `&verify=verify_none` to the
-  dest-uri, which disables *all* peer certificate validation (not just the hostname
-  check); not recommended, but documented as a fallback in
-  `Configure-RabbitMqShovel.ps1`'s header comment.
+  this fix — the only remaining option there is `-DestUriVerifyNone` (implemented as an
+  opt-in switch on `Configure-RabbitMqShovel.ps1` / the E2E test scripts, appending
+  `&verify=verify_none` to the dest-uri), which disables *all* peer certificate
+  validation (not just the hostname check); not recommended outside of diagnosing this
+  specific case.
+- **Erlang/OTP 26+ brokers additionally need an explicit `cacertfile`/`cacerts` TLS
+  option on the dest-uri, or the Shovel crash-loops with `{cacerts, undefined}`.** This
+  is a SEPARATE, ADDITIONAL prerequisite from the hostname-check fix above — a broker
+  can have the `customize_hostname_check` fix applied and still fail with this error,
+  because OTP 26 changed `ssl_options` default behaviour: `verify_peer` (Erlang's
+  default, used whenever dest-uri omits an explicit `verify=` override, as this script's
+  dest-uri always does) now requires the caller to explicitly supply a CA trust store —
+  it no longer falls back to any implicit/system store. Without one, the AMQP 1.0
+  client fails immediately on every connection attempt with `{cacerts, undefined}` in
+  the broker's log. **This produces a near-instant fail/retry loop that the Management
+  API's shovel-status summary reports only as `"starting"`** (the same transient state
+  it shows during a normal connection attempt) — polling `/api/shovels/{vhost}` every
+  few seconds can miss the brief `terminated` state between retries entirely, making a
+  crash-loop indistinguishable from a genuinely slow/hanging connection attempt without
+  checking the broker's own log. **Root-caused live** against the real
+  `WarewolfShovelBridgeTesting` namespace: the shovel remained stuck at `"starting"` per
+  the Management API even after applying the `customize_hostname_check` fix above and
+  restarting the broker, and only the broker's own log revealed the real
+  `{cacerts, undefined}` reason. Fix: append a `cacertfile` (or `cacerts`) parameter
+  pointing at a CA bundle to the dest-uri, e.g. `&cacertfile=/etc/ssl/certs/ca-certificates.crt`
+  (the standard system CA bundle path on the Debian-based official RabbitMQ Docker
+  image), then reconfigure the shovel with the updated dest-uri (e.g.
+  `rabbitmqctl set_parameter shovel <name> '<json with fixed dest-uri>'`, or re-run
+  `Configure-RabbitMqShovel.ps1` / the E2E test script with `-DestUriCaCertFile
+  /etc/ssl/certs/ca-certificates.crt`, both of which append this the same way).
+  Because the dest-uri's credential-bearing userinfo is masked by design in both
+  `rabbitmqctl` and Management API output, this fix must be applied by whoever holds
+  the real SAS key/credentials — it cannot be verified or reapplied from masked output
+  alone.
 
 ## Known risks / open work
 
@@ -243,7 +273,10 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   outbound network path to the real Service Bus destination was *assumed*
   unreliable/opaque from CI — the shovel would connect to the source fine but never reach
   the `running` state against Service Bus. In hindsight that broker was very likely hitting
-  the same TLS-hostname-check bug documented above rather than a genuine network problem.
+  the same TLS-hostname-check bug documented above — or, per the `{cacerts, undefined}`
+  finding also documented in "Security" above (confirmed live against this exact broker,
+  after the hostname-check fix alone did not resolve it), the Erlang/OTP 26 explicit-CA
+  requirement — rather than a genuine network problem.
   A broker local to the hosted agent still uses Microsoft's own outbound networking to
   Azure, which remains worth exercising regardless. With both RabbitMQ (local
   Windows service) and the Service Bus destination (external, real Azure) available, this job

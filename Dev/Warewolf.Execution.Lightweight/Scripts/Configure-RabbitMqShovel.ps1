@@ -65,9 +65,28 @@
     This keeps full certificate chain + hostname validation (verify_peer, no downgrade
     to verify_none) while correctly accepting the wildcard SAN — verified against the
     real WarewolfShovelBridgeTesting namespace. If you cannot modify the broker's
-    config (e.g. a managed/shared broker you don't control), verify_none is the only
-    other option this dest-uri format supports, but it disables ALL peer certificate
-    validation (not just the hostname check) — not recommended.
+    config (e.g. a managed/shared broker you don't control), pass -DestUriVerifyNone
+    to append '&verify=verify_none' to the dest-uri instead — this disables ALL peer
+    certificate validation (not just the hostname check), not just as documentation
+    but as an actual opt-in switch. NOT recommended outside of diagnosing/confirming
+    this exact TLS issue against a broker you don't control; prefer the advanced.config
+    fix above wherever possible.
+
+    THIRD PREREQUISITE, separate from and additional to the above (also not automated by
+    this script): on Erlang/OTP 26+ brokers, the dest-uri's default verify_peer TLS mode
+    ALSO requires an explicit CA trust store, or the Shovel crash-loops with
+    '{cacerts, undefined}' in the broker's log — OTP 26 no longer falls back to an
+    implicit/system CA store. This produces a near-instant fail/retry loop that the
+    Management API's shovel-status summary reports only as "starting" (the same
+    transient state seen during a normal connection attempt), so it can look like a
+    hanging connection rather than a crash-loop unless you check the broker's own log.
+    Root-caused live against the real WarewolfShovelBridgeTesting namespace: applying
+    ONLY the advanced.config hostname-check fix above did not resolve it; the broker log
+    showed '{cacerts, undefined}' as the actual reason. Fix: pass -DestUriCaCertFile
+    pointing at a CA bundle path readable by the broker (e.g.
+    /etc/ssl/certs/ca-certificates.crt, the standard system bundle on the Debian-based
+    official RabbitMQ Docker image) to append '&cacertfile=<path>' to the dest-uri. See
+    docs/ShovelBridge-Architecture.md "Security" for full detail.
 
     The destination SAS credential should be the queue-scoped Send-only rule created
     by Deploy-WwExecutionServiceBusWorker.ps1 (default name: shovel-send) — least
@@ -117,6 +136,22 @@
         az servicebus queue authorization-rule keys list ... --query primaryKey
     to fetch the raw key live (never written to disk) and URL-encodes it into the
     destination URI itself.
+.PARAMETER DestUriVerifyNone
+    Opt-in fallback for the advanced.config TLS-hostname-check prerequisite documented
+    above: appends '&verify=verify_none' to the dest-uri, disabling ALL AMQP 1.0 peer
+    certificate validation (not just the hostname check) for the Shovel's connection to
+    Service Bus. Only use this when you cannot modify the broker's advanced.config (e.g.
+    a managed/shared broker) and need to confirm the hostname-check bug is the cause, or
+    unblock a diagnostic run — NOT recommended for a broker you control or for
+    production use. Prefer the advanced.config fix in the header comment above instead.
+.PARAMETER DestUriCaCertFile
+    Fix for the Erlang/OTP 26+ '{cacerts, undefined}' prerequisite documented above:
+    appends '&cacertfile=<path>' to the dest-uri, pointing the Shovel's AMQP 1.0 TLS
+    client at an explicit CA bundle (e.g. /etc/ssl/certs/ca-certificates.crt) readable
+    by the broker process. Unlike -DestUriVerifyNone, this keeps full certificate
+    validation — it is the recommended fix, not a fallback, whenever the broker's log
+    shows '{cacerts, undefined}'. Path is not validated locally (it must exist on the
+    broker host, which this script does not have filesystem access to).
 .PARAMETER AckMode
     Shovel acknowledgement mode: on-confirm (default, safest — waits for the
     destination's publisher confirm before acking the source message), on-publish, or
@@ -165,6 +200,8 @@ param(
     [string] $ServiceBusSasKeyName = 'shovel-send',
     [securestring] $ServiceBusSasKey,
     [string] $ServiceBusResourceGroup,
+    [switch] $DestUriVerifyNone,
+    [string] $DestUriCaCertFile,
 
     # Shovel behaviour
     [ValidateSet('on-confirm', 'on-publish', 'no-ack')] [string] $AckMode = 'on-confirm',
@@ -329,11 +366,26 @@ function Format-ServiceBusAmqp10Uri {
         documents for RabbitMQ Shovel bridging: amqps://<policy>:<key>@<namespace>
         .servicebus.windows.net:5671/?sasl=plain — the destination queue itself is NOT
         part of the URI; it goes in the shovel's separate "dest-address" field.
+
+        -VerifyNone appends '&verify=verify_none', disabling ALL AMQP 1.0 peer
+        certificate validation for this connection — the documented fallback for a
+        broker whose advanced.config cannot be given the wildcard-hostname-check fix
+        (see this script's header comment / docs/ShovelBridge-Architecture.md
+        "Security"). Not recommended outside of that specific, narrow case.
+
+        -CaCertFile appends '&cacertfile=<path>', pointing the AMQP 1.0 TLS client at an
+        explicit CA bundle on the broker host — the fix (not a fallback; keeps full
+        certificate validation) for Erlang/OTP 26+ brokers, which crash-loop with
+        '{cacerts, undefined}' unless one is supplied (see header comment / "Security").
+        Mutually exclusive with -VerifyNone (verify_none disables all cert validation,
+        making an explicit CA bundle moot); the caller enforces this, not this function.
     #>
-    param([string] $Namespace, [string] $PolicyName, [string] $Key)
+    param([string] $Namespace, [string] $PolicyName, [string] $Key, [switch] $VerifyNone, [string] $CaCertFile)
     $policyEnc = [Uri]::EscapeDataString($PolicyName)
     $keyEnc    = [Uri]::EscapeDataString($Key)
-    return "amqps://${policyEnc}:${keyEnc}@${Namespace}.servicebus.windows.net:5671/?sasl=plain"
+    $verifySuffix    = if ($VerifyNone) { '&verify=verify_none' } else { '' }
+    $caCertSuffix    = if (-not [string]::IsNullOrWhiteSpace($CaCertFile)) { '&cacertfile=' + [Uri]::EscapeDataString($CaCertFile) } else { '' }
+    return "amqps://${policyEnc}:${keyEnc}@${Namespace}.servicebus.windows.net:5671/?sasl=plain${verifySuffix}${caCertSuffix}"
 }
 
 function Save-ConfigureSummary {
@@ -356,6 +408,8 @@ function Save-ConfigureSummary {
         serviceBusQueueName  = $ServiceBusQueueName
         serviceBusSasKeyName = $ServiceBusSasKeyName
         destUri              = (Get-MaskedUri $script:destUri)
+        destUriVerifyNone    = [bool]$DestUriVerifyNone
+        destUriCaCertFile    = $DestUriCaCertFile
         ackMode              = $AckMode
         reconnectDelaySeconds = $ReconnectDelaySeconds
         srcPrefetchCount     = $SrcPrefetchCount
@@ -380,6 +434,9 @@ $RabbitMqPassword      = Read-RequiredSecure -Name 'RabbitMqPassword' -Current $
 
 if (-not [string]::IsNullOrWhiteSpace($ServiceBusSasKeyName) -and $null -ne $ServiceBusSasKey -and -not [string]::IsNullOrWhiteSpace($ServiceBusResourceGroup)) {
     throw 'Supply either -ServiceBusSasKey or -ServiceBusResourceGroup (to fetch the key live via az), not both.'
+}
+if ($DestUriVerifyNone -and -not [string]::IsNullOrWhiteSpace($DestUriCaCertFile)) {
+    throw 'Supply either -DestUriVerifyNone or -DestUriCaCertFile, not both: verify_none disables all peer certificate validation, making an explicit CA bundle moot. Prefer -DestUriCaCertFile — it keeps full certificate validation.'
 }
 
 Write-Step "Probing RabbitMQ management API at $RabbitMqManagementUri"
@@ -456,7 +513,15 @@ if ($null -ne $ServiceBusSasKey -and $ServiceBusSasKey.Length -gt 0) {
 
 $sourcePasswordPlain = ConvertFrom-SecureStringPlain $SourcePassword
 $script:sourceUri = Format-Amqp091Uri -HostName $SourceHost -Port $SourcePort -User $SourceUsername -Password $sourcePasswordPlain -VHostName $VHost
-$script:destUri   = Format-ServiceBusAmqp10Uri -Namespace $ServiceBusNamespace -PolicyName $ServiceBusSasKeyName -Key $sasKeyPlain
+$script:destUri   = Format-ServiceBusAmqp10Uri -Namespace $ServiceBusNamespace -PolicyName $ServiceBusSasKeyName -Key $sasKeyPlain -VerifyNone:$DestUriVerifyNone -CaCertFile $DestUriCaCertFile
+
+if ($DestUriVerifyNone) {
+    Write-Note 'DestUriVerifyNone is set: the dest-uri disables ALL AMQP 1.0 peer certificate validation (not just the hostname check).'
+    Write-Note 'Only use this to diagnose/unblock the advanced.config wildcard-hostname-check issue on a broker you do not control — never on a broker you do control, and never for production use.'
+}
+if (-not [string]::IsNullOrWhiteSpace($DestUriCaCertFile)) {
+    Write-Note "DestUriCaCertFile is set: the dest-uri points the AMQP 1.0 TLS client at '$DestUriCaCertFile' on the broker host (Erlang/OTP 26+ '{cacerts, undefined}' fix)."
+}
 
 $shovelDefinition = [ordered]@{
     'src-protocol'      = 'amqp091'
@@ -486,6 +551,8 @@ Write-Host ("    {0,-24}: {1}" -f 'AckMode', $AckMode)
 Write-Host ("    {0,-24}: {1}" -f 'ReconnectDelaySeconds', $ReconnectDelaySeconds)
 Write-Host ("    {0,-24}: {1}" -f 'SrcPrefetchCount', $SrcPrefetchCount)
 Write-Host ("    {0,-24}: {1}" -f 'DryRun', $DryRun)
+Write-Host ("    {0,-24}: {1}" -f 'DestUriVerifyNone', $DestUriVerifyNone)
+Write-Host ("    {0,-24}: {1}" -f 'DestUriCaCertFile', $DestUriCaCertFile)
 Write-Host ''
 Write-Note 'Least privilege reminder: ServiceBusSasKeyName should be a Send-only rule'
 Write-Note '(e.g. the "shovel-send" rule created by Deploy-WwExecutionServiceBusWorker.ps1) —'
