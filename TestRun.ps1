@@ -1515,19 +1515,33 @@ function Wait-ForLightweightEngineStable {
     # single-shot readiness probe (GivenTheLightweightWarewolfServerIsRunning
     # in EasyAuthMiddlewareSteps.cs, which only accepts 200/401 and does not
     # retry) land squarely in the collision window and fail immediately.
-    # Fix: poll the same route the SpecFlow probe uses and require several
-    # consecutive non-5xx responses (resetting the streak on any 5xx) before
+    # Fix: poll the same route the SpecFlow probe uses and require a
+    # continuous run of non-5xx responses spanning at least $MinStableSeconds
+    # (resetting the streak -- and its start time -- on any 5xx) before
     # declaring the engine ready, so we wait out the restart/collision window
     # here instead of failing the first scenario that happens to run into it.
+    #
+    # A short "N consecutive polls" check is NOT enough: CI build 30240 showed
+    # the host emitting "Host lock lease acquired" ~5s after its first
+    # response and then "Restarting host." ~5s after THAT (~10s total), with
+    # the lease-acquire/restart pair recurring again shortly after the next
+    # generation started -- i.e. the collision can recur in ~10s waves rather
+    # than happening once near cold start. A 3-poll/~4-6s window can finish
+    # (and declare "stable") in the brief calm between two such waves. Anchor
+    # on elapsed wall-clock time since the streak began, not just poll count,
+    # so the window comfortably spans more than one observed wave.
     param(
         [int]$Port = 7071,
         [int]$MaxSeconds = 150,
         [string]$Path = "/public/apis.json",
-        [int]$RequiredConsecutiveSuccesses = 3
+        [int]$RequiredConsecutiveSuccesses = 3,
+        [int]$MinStableSeconds = 30,
+        [int]$PollIntervalSeconds = 3
     )
-    Write-Host "Waiting for Lightweight engine to stabilize on port $Port$Path (up to ${MaxSeconds}s, needs $RequiredConsecutiveSuccesses consecutive non-5xx responses)..."
+    Write-Host "Waiting for Lightweight engine to stabilize on port $Port$Path (up to ${MaxSeconds}s, needs $MinStableSeconds continuous stable seconds and $RequiredConsecutiveSuccesses+ non-5xx polls)..."
     $deadline = (Get-Date).AddSeconds($MaxSeconds)
     $consecutive = 0
+    $streakStart = $null
     while ((Get-Date) -lt $deadline) {
         # Invoke-WebRequest throws on ANY non-2xx status (401 included), so a
         # status code has to be pulled out of the exception's response too --
@@ -1549,9 +1563,11 @@ function Wait-ForLightweightEngineStable {
         }
 
         if ($null -ne $statusCode -and $statusCode -lt 500) {
+            if ($consecutive -eq 0) { $streakStart = Get-Date }
             $consecutive++
-            if ($consecutive -ge $RequiredConsecutiveSuccesses) {
-                Write-Host "Lightweight engine stable (HTTP $statusCode x$consecutive)."
+            $streakElapsed = ((Get-Date) - $streakStart).TotalSeconds
+            if ($consecutive -ge $RequiredConsecutiveSuccesses -and $streakElapsed -ge $MinStableSeconds) {
+                Write-Host "Lightweight engine stable (HTTP $statusCode x$consecutive over $([int]$streakElapsed)s)."
                 return
             }
         } else {
@@ -1559,10 +1575,11 @@ function Wait-ForLightweightEngineStable {
                 Write-Host "Got HTTP $statusCode after $consecutive good response(s); resetting streak (host likely mid-restart)."
             }
             $consecutive = 0
+            $streakStart = $null
         }
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds $PollIntervalSeconds
     }
-    Write-Warn "Lightweight engine did not stabilize (>= $RequiredConsecutiveSuccesses consecutive non-5xx responses on $Path) within $MaxSeconds seconds."
+    Write-Warn "Lightweight engine did not stabilize (>= $MinStableSeconds continuous stable seconds on $Path) within $MaxSeconds seconds."
 }
 
 function Start-LightweightExecution {
