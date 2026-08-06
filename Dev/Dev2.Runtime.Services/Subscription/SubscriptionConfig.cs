@@ -54,6 +54,7 @@ namespace Dev2.Runtime.Subscription
         public string CustomerId { get; private set; }
         public string PlanId { get; private set; }
         public string SubscriptionId { get; private set; }
+        public string MarketplaceResourceId { get; private set; }
         public string Status { get; private set; }
 
         public bool StopExecutions { get; private set; }
@@ -78,6 +79,8 @@ namespace Dev2.Runtime.Subscription
                 isPlainText |= settings["PlanId"] != string.Empty && PlanId == settings["PlanId"];
                 SubscriptionId = DecryptKey(settings["SubscriptionId"]);
                 isPlainText |= settings["SubscriptionId"] != string.Empty && SubscriptionId == settings["SubscriptionId"];
+                MarketplaceResourceId = DecryptKey(settings["MarketplaceResourceId"]);
+                isPlainText |= settings["MarketplaceResourceId"] != string.Empty && MarketplaceResourceId == settings["MarketplaceResourceId"];
                 Status = DecryptKey(settings["Status"]);
                 isPlainText |= settings["Status"] != string.Empty && Status == settings["Status"];
                 StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
@@ -92,6 +95,7 @@ namespace Dev2.Runtime.Subscription
                         CustomerId = CustomerId,
                         PlanId = PlanId,
                         SubscriptionId = SubscriptionId,
+                        MarketplaceResourceId = MarketplaceResourceId,
                         Status = status,
                         StopExecutions = StopExecutions
                     });
@@ -111,6 +115,7 @@ namespace Dev2.Runtime.Subscription
                 var newSettings = new NameValueCollection();
                 newSettings["CustomerId"] = "";
                 newSettings["SubscriptionId"] = "";
+                newSettings["MarketplaceResourceId"] = "";
                 newSettings["Status"] = SubscriptionProvider.SubscriptionDefaultStatus;
                 newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
                 newSettings["SubscriptionKey"] = subscriptionKey;
@@ -138,6 +143,7 @@ namespace Dev2.Runtime.Subscription
                 var newSettings = new NameValueCollection();
                 newSettings["CustomerId"] = "";
                 newSettings["SubscriptionId"] = "";
+                newSettings["MarketplaceResourceId"] = "";
                 newSettings["Status"] = SubscriptionProvider.SubscriptionDefaultStatus;
                 newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
                 newSettings["SubscriptionKey"] = subscriptionKey;
@@ -154,6 +160,7 @@ namespace Dev2.Runtime.Subscription
                 var newSettings = new NameValueCollection();
                 newSettings["CustomerId"] = SecurityEncryption.Encrypt(subscriptionData.CustomerId);
                 newSettings["SubscriptionId"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionId);
+                newSettings["MarketplaceResourceId"] = SecurityEncryption.Encrypt(subscriptionData.MarketplaceResourceId ?? string.Empty);
                 newSettings["Status"] = SecurityEncryption.Encrypt(subscriptionData.Status.ToString());
                 newSettings["PlanId"] = SecurityEncryption.Encrypt(subscriptionData.PlanId);
                 newSettings["SubscriptionKey"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionKey);
@@ -209,7 +216,8 @@ namespace Dev2.Runtime.Subscription
             string status,
             string subscriptionSiteName,
             string subscriptionKey,
-            string stopExecutions) => new NameValueCollection
+            string stopExecutions,
+            string marketplaceResourceId = "") => new NameValueCollection
         {
             {
                 "CustomerId", customerId
@@ -219,6 +227,9 @@ namespace Dev2.Runtime.Subscription
             },
             {
                 "SubscriptionId", subscriptionId
+            },
+            {
+                "MarketplaceResourceId", marketplaceResourceId
             },
             {
                 "Status", status
