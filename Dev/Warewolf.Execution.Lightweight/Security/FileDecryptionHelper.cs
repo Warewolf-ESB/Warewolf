@@ -27,8 +27,9 @@ namespace Warewolf.Execution.Lightweight.Security
     ///
     /// Decryption walks the full key ring from <see cref="KeyVaultSecretManager.GetAllKeyBytes"/>.
     /// The primary key is always tried first (zero overhead in steady state); previous keys
-    /// are only attempted on GCM tag mismatch. A warning is logged whenever a fallback key
-    /// is used so operators can track rotation progress.
+    /// are only attempted on GCM tag mismatch, in most-recently-retired-first order as
+    /// returned by the key ring. A warning is logged whenever a fallback key is used so
+    /// operators can track rotation progress.
     ///
     /// The static method <see cref="IsAesEncrypted"/> is registered into
     /// <see cref="Warewolf.Security.Encryption.DpapiWrapper.AesDecryptHook"/>
@@ -125,6 +126,7 @@ namespace Warewolf.Execution.Lightweight.Security
 
             CryptographicException? lastException = null;
             var isPrimary = true;
+            var attempted = 0;
 
             foreach (var (keyId, keyBytes) in _keyRing)
             {
@@ -132,10 +134,13 @@ namespace Warewolf.Execution.Lightweight.Security
                 {
                     if (!isPrimary)
                     {
-                        Dev2Logger.Info($"FileDecryptionHelper primary key did not match — attempting fallback key '{keyId}'.", executionId);
+                        // NOTE: with more than two keys in the ring this is not necessarily
+                        // the primary that failed — report how many have been tried instead
+                        // of blaming the primary on every fallback attempt.
+                        Dev2Logger.Info($"FileDecryptionHelper no match after {attempted} key(s) — attempting fallback key '{keyId}'.", executionId);
                         _logger.LogInformation(
-                            "Decryption | Primary key did not match. Attempting fallback key '{FallbackKeyId}'.",
-                            keyId);
+                            "Decryption | No match after {AttemptedCount} key(s). Attempting fallback key '{FallbackKeyId}'.",
+                            attempted, keyId);
                     }
 
                     using var aes = new AesGcm(keyBytes, TagSize);
@@ -159,6 +164,7 @@ namespace Warewolf.Execution.Lightweight.Security
                 catch (CryptographicException ex)
                 {
                     lastException = ex;
+                    attempted++;
                     Dev2Logger.Debug($"FileDecryptionHelper key '{keyId}' did not match — trying next key in ring.", executionId);
                     isPrimary = false;
                 }

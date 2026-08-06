@@ -8,6 +8,7 @@ using Azure.Core;
 using Azure.Security.KeyVault.Secrets;
 using Dev2.Common;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -36,6 +37,13 @@ namespace Warewolf.Execution.Lightweight.Security
     {
         static readonly JsonSerializerOptions _jsonOptions =
             new(JsonSerializerDefaults.Web);
+
+        /// <summary>
+        /// Highest <c>Version</c> of the key-ring document this build understands.
+        /// Version 1 = primary key only; Version 2 = primary key + <c>previousKeys</c>.
+        /// A higher version is accepted with a warning (see <see cref="ParseAndSetMaterial"/>).
+        /// </summary>
+        const int MaxSupportedVersion = 2;
 
         readonly string                         _vaultUri;
         readonly string                         _secretName;
@@ -163,6 +171,18 @@ namespace Warewolf.Execution.Lightweight.Security
                         "Key Vault secret contains empty key material.");
                 }
 
+                // The key-ring wire format is ADDITIVE — a newer version only ever adds
+                // fields this build will ignore. Forward-compatibility is therefore
+                // best-effort: warn loudly, but never block startup on an unknown version.
+                if (_material.Version > MaxSupportedVersion)
+                {
+                    Dev2Logger.Warn($"Key Vault secret '{_secretName}' declares Version {_material.Version}, but this build supports up to Version {MaxSupportedVersion}. Proceeding on a best-effort basis — upgrade the runtime.", executionId);
+                    _logger.LogWarning(
+                        "KeyVault | Secret '{SecretName}' declares Version {SecretVersion}, but this build supports up to Version {MaxSupportedVersion}. " +
+                        "Proceeding on a best-effort basis — upgrade the runtime to guarantee correct handling.",
+                        _secretName, _material.Version, MaxSupportedVersion);
+                }
+
                 var previousKeyCount = _material.PreviousKeys?.Count ?? 0;
                 Dev2Logger.Info($"KeyVaultSecretManager key material parsed successfully. KeyId: {_material.KeyId}, Created: {_material.Created}, PreviousKeyCount: {previousKeyCount}", executionId);
 
@@ -229,11 +249,18 @@ namespace Warewolf.Execution.Lightweight.Security
         }
 
         /// <summary>
-        /// Returns all available decryption keys: the primary key first, followed by
-        /// any previous keys in reverse-chronological order (most recently retired first).
+        /// Returns all available decryption keys: the primary key first, followed by any
+        /// previous keys sorted by <c>Retired</c> descending (most recently retired first),
+        /// so the key most likely to match is attempted earliest. Entries with a blank or
+        /// unparseable <c>Retired</c> value are retained but sorted last.
         ///
         /// When no <c>PreviousKeys</c> are present in the secret (Version 1 format),
         /// only the primary key is returned — fully backward compatible.
+        ///
+        /// A previous key with malformed Base64 or a non-32-byte length is SKIPPED with a
+        /// warning rather than throwing: one bad retired entry must never prevent the ring
+        /// (and therefore the engine) from loading. The primary key remains fail-fast — an
+        /// invalid primary key is a genuine misconfiguration and still throws.
         ///
         /// Each entry is a tuple of (KeyId, KeyBytes) so callers can log which key
         /// succeeded without exposing raw key material.
@@ -254,17 +281,57 @@ namespace Warewolf.Execution.Lightweight.Security
 
             if (_material.PreviousKeys is { Count: > 0 })
             {
-                foreach (var prev in _material.PreviousKeys)
+                // Order previous keys most-recently-retired first, so the key most likely
+                // to match a given ciphertext is attempted earliest during fallback.
+                // Blank or unparseable Retired values sort to DateTime.MinValue (last) —
+                // they are never dropped, only deprioritised.
+                var ordered = _material.PreviousKeys
+                    .OrderByDescending(p =>
+                        DateTime.TryParse(p.Retired, CultureInfo.InvariantCulture, DateTimeStyles.None, out var retiredOn)
+                            ? retiredOn
+                            : DateTime.MinValue);
+
+                var skipped = 0;
+
+                foreach (var prev in ordered)
                 {
-                    var prevBytes = Convert.FromBase64String(prev.Key);
-                    if (prevBytes.Length != 32)
+                    // A malformed PREVIOUS key must never abort the ring — the primary key
+                    // (already decoded above) stays usable and the engine still starts.
+                    // Only the primary key is fail-fast; see GetKeyBytes().
+                    byte[] prevBytes;
+                    try
                     {
-                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid length {prevBytes.Length} bytes — skipping.", executionId);
+                        prevBytes = Convert.FromBase64String(prev.Key);
+                    }
+                    catch (FormatException)
+                    {
+                        skipped++;
+                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid Base64 material — skipping. The key ring remains usable; resources encrypted with this key will fail to decrypt until the secret is corrected.", executionId);
+                        _logger.LogWarning(
+                            "KeyVault | Previous key '{PreviousKeyId}' has invalid Base64 material — skipped. " +
+                            "Correct the '{SecretName}' secret if resources are still encrypted with this key.",
+                            prev.KeyId, _secretName);
                         continue;
                     }
+
+                    if (prevBytes.Length != 32)
+                    {
+                        skipped++;
+                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid length {prevBytes.Length} bytes (expected 32) — skipping.", executionId);
+                        _logger.LogWarning(
+                            "KeyVault | Previous key '{PreviousKeyId}' has invalid length {KeyLength} bytes (expected 32) — skipped.",
+                            prev.KeyId, prevBytes.Length);
+                        continue;
+                    }
+
                     keys.Add((prev.KeyId, prevBytes));
                 }
-                Dev2Logger.Info($"Key ring loaded — {keys.Count} key(s) available for decryption. PreviousKeyIds: [{string.Join(", ", _material.PreviousKeys.Select(p => p.KeyId))}]", executionId);
+
+                var loadedIds = string.Join(", ", keys.Skip(1).Select(k => k.Item1));
+                Dev2Logger.Info($"Key ring loaded — {keys.Count} key(s) available for decryption. PreviousKeyIds (newest retired first): [{loadedIds}]. Skipped: {skipped}.", executionId);
+                _logger.LogInformation(
+                    "KeyVault | Key ring loaded — {KeyCount} key(s) available. Primary={KeyId}, previous (newest retired first)=[{PreviousKeyIds}], skipped={SkippedCount}.",
+                    keys.Count, _material.KeyId, loadedIds, skipped);
             }
             else
             {
@@ -284,9 +351,12 @@ namespace Warewolf.Execution.Lightweight.Security
         /// secret for the duration of the rotation window so that resources encrypted
         /// with this key can still be decrypted.
         ///
-        /// Intentionally a class with init properties (not a positional record) so that
-        /// System.Text.Json can deserialize it property-by-property without requiring
-        /// constructor-parameter matching, which fails for nested types inside a List.
+        /// Declared as a class with init-only properties rather than a positional record
+        /// for clarity: each JSON field maps to one explicitly-attributed property, so the
+        /// binding is obvious at a glance and does not depend on constructor-parameter
+        /// matching. (Positional records DO deserialize correctly under
+        /// <see cref="JsonSerializerDefaults.Web"/>; this is a readability choice, not a
+        /// workaround.)
         /// </summary>
         internal sealed class PreviousKeyEntry
         {
@@ -307,10 +377,12 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Version 2: primary key + optional PreviousKeys array for rotation support.
         /// Both versions are fully supported — PreviousKeys defaults to null when absent.
         ///
-        /// Intentionally a class with init properties (not a positional record) so that
-        /// System.Text.Json can deserialize all fields — including the nested PreviousKeys
-        /// list — property-by-property without constructor-parameter matching, which is
-        /// unreliable for optional parameters and nested collection types.
+        /// Declared as a class with init-only properties rather than a positional record
+        /// for clarity: the optional nested <c>PreviousKeys</c> collection reads more
+        /// explicitly as a nullable property than as an optional constructor parameter.
+        /// (Positional records DO deserialize correctly under
+        /// <see cref="JsonSerializerDefaults.Web"/>; this is a readability choice, not a
+        /// workaround.)
         /// </summary>
         internal sealed class KeyRingMaterial
         {
