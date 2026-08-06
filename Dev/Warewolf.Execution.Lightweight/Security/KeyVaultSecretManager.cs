@@ -45,6 +45,21 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         const int MaxSupportedVersion = 2;
 
+        /// <summary>
+        /// Upper bound on the legacy-repair regex engine. The secret is external input, so
+        /// an unbounded match on pathological content could hang cold start indefinitely.
+        /// A timeout surfaces as a clean startup error instead of a hung Function host.
+        /// </summary>
+        static readonly TimeSpan LegacyRepairTimeout = TimeSpan.FromMilliseconds(250);
+
+        /// <summary>Quotes bare object keys: <c>{version:</c> → <c>{"version":</c>.</summary>
+        static readonly Regex LegacyKeyQuoteRegex =
+            new(@"([\{,])\s*([a-zA-Z_]\w*)\s*:", RegexOptions.None, LegacyRepairTimeout);
+
+        /// <summary>Quotes bare scalar values: <c>:abc,</c> → <c>:"abc",</c>.</summary>
+        static readonly Regex LegacyValueQuoteRegex =
+            new(@":\s*(?!"")([^,\}]+)", RegexOptions.None, LegacyRepairTimeout);
+
         readonly string                         _vaultUri;
         readonly string                         _secretName;
         readonly TokenCredential?               _credential;
@@ -101,6 +116,25 @@ namespace Warewolf.Execution.Lightweight.Security
 
             try
             {
+                // Defence in depth. ServiceCollectionExtensions already gates the debug
+                // bypass on HostEnvironmentConfig.IsDevelopment, so _debugSecret is
+                // normally null in the cloud. This second check closes the remaining hole:
+                // someone setting ASPNETCORE_ENVIRONMENT=Development on a live Function App
+                // would otherwise re-open the bypass and inject unmanaged key material.
+                // Cloud markers are authoritative here — they cannot be faked by an env-var
+                // flip. Fail-fast is correct: this is a misconfiguration, not a rotation
+                // edge case.
+                if (_debugSecret is not null && IsProductionEnvironment())
+                {
+                    Dev2Logger.Error("DEBUG_AZURE_KEYVAULT_SECRET is set in a production/cloud-hosted environment — refusing to bypass Key Vault.", executionId);
+                    _logger.LogError(
+                        "KeyVault | DEBUG_AZURE_KEYVAULT_SECRET is set while running cloud-hosted — refusing to bypass Key Vault.");
+                    throw new InvalidOperationException(
+                        "DEBUG_AZURE_KEYVAULT_SECRET must not be used in production. " +
+                        "Remove the environment variable from the Function App and use " +
+                        "Managed Identity + Key Vault instead.");
+                }
+
                 if (_debugSecret is not null)
                 {
                     Dev2Logger.Warn("KeyVaultSecretManager using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped)", executionId);
@@ -138,31 +172,108 @@ namespace Warewolf.Execution.Lightweight.Security
 
         // ── Private helpers ───────────────────────────────────────────────────────
 
+        /// <summary>
+        /// <c>true</c> when the process is running cloud-hosted AND not explicitly marked
+        /// as a development environment.
+        ///
+        /// Detection uses platform-injected markers rather than a configuration value:
+        /// <c>WEBSITE_INSTANCE_ID</c> and <c>FUNCTIONS_WORKER_RUNTIME</c> are set by Azure
+        /// Functions / App Service and cannot be produced by flipping an app setting, so
+        /// they are a trustworthy signal that this is real hosted infrastructure.
+        ///
+        /// An absent environment name while cloud-hosted is treated as production — the
+        /// safe default, since the debug bypass should never be reachable by omission.
+        /// Local development is unaffected: with no cloud markers present this always
+        /// returns <c>false</c> and the bypass keeps working.
+        /// </summary>
+        static bool IsProductionEnvironment()
+        {
+            var isCloudHosted =
+                Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID")     is not null ||
+                Environment.GetEnvironmentVariable("FUNCTIONS_WORKER_RUNTIME") is not null;
+
+            if (!isCloudHosted)
+                return false;
+
+            var environmentName =
+                Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") ??
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")      ??
+                Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+            // Unset while cloud-hosted → treat as production.
+            return environmentName is null
+                || string.Equals(environmentName, "Production", StringComparison.OrdinalIgnoreCase);
+        }
+
         void ParseAndSetMaterial(string rawJson)
         {
             const string executionId = "KeyVaultSecretManager-Parse";
 
             Dev2Logger.Debug($"KeyVaultSecretManager ParseAndSetMaterial starting. JsonLength: {rawJson?.Length ?? 0}", executionId);
 
-            // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
-            // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
+            // ── Legacy unquoted-JSON repair ────────────────────────────────────────────
+            // Old versions of Encrypt-Config.ps1 wrote unquoted JSON, e.g.
+            //   {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
+            // The trigger below is deliberately narrow so a canonical secret is NEVER
+            // touched by the regex engine.
+            var wasRepaired = false;
+
             if (!rawJson.TrimStart().StartsWith("{\""))
             {
+                // The repair is FLAT-ONLY. Both passes are line-noise regexes with no
+                // concept of '[', ']' or nesting, so on a Version 2 secret (which carries
+                // a previousKeys array) they silently mangle the array into invalid JSON
+                // and surface later as a confusing "could not be converted to
+                // List<PreviousKeyEntry>" deserialisation error. Refuse up front and tell
+                // the operator exactly what to do instead of corrupting the document.
+                if (rawJson.Contains('['))
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager secret '{_secretName}' is unquoted JSON containing a nested array — the legacy repair cannot handle nested structures and will not be attempted.", executionId);
+                    throw new InvalidOperationException(
+                        $"Key Vault secret '{_secretName}' is in the legacy unquoted-JSON format AND contains a " +
+                        "nested array (previousKeys). The legacy auto-repair only supports the flat Version 1 " +
+                        "shape and cannot repair nested structures without corrupting them. " +
+                        "Rewrite the secret as canonical, fully-quoted JSON — e.g. re-run " +
+                        "Encrypt-Config.ps1 -GenerateKeys, or write the value from a UTF-8 (no BOM) file via " +
+                        "'az keyvault secret set --file' so the quotes are preserved.");
+                }
+
                 Dev2Logger.Warn($"KeyVaultSecretManager secret '{_secretName}' contained unquoted JSON - auto-repairing", executionId);
 
-                rawJson = Regex.Replace(rawJson, @"([\{,])\s*([a-zA-Z_]\w*)\s*:", "$1\"$2\":");
-                rawJson = Regex.Replace(rawJson, @":\s*(?!"")([^,\}]+)", ":\"$1\"");
+                try
+                {
+                    rawJson = LegacyKeyQuoteRegex.Replace(rawJson, "$1\"$2\":");
+                    rawJson = LegacyValueQuoteRegex.Replace(rawJson, ":\"$1\"");
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager legacy repair of secret '{_secretName}' exceeded the {LegacyRepairTimeout.TotalMilliseconds}ms timeout — aborting.", ex, executionId);
+                    throw new InvalidOperationException(
+                        $"Legacy unquoted-JSON repair of Key Vault secret '{_secretName}' exceeded the " +
+                        $"{LegacyRepairTimeout.TotalMilliseconds}ms limit. The secret is malformed or " +
+                        "pathologically large. Rewrite it as canonical, fully-quoted JSON.", ex);
+                }
+
+                wasRepaired = true;
+
                 _logger.LogWarning(
-                    "KeyVault | Secret '{SecretName}' contained unquoted JSON — auto-repaired. " +
+                    "KeyVault | Secret '{SecretName}' contained unquoted JSON — auto-repaired (flat Version 1 shape). " +
                     "Re-run Encrypt-Config.ps1 -GenerateKeys to store a canonical version.",
                     _secretName);
             }
 
             try
             {
+                // Fail closed: if the repaired document still does not deserialise, the
+                // secret is a non-repairable legacy format — say so plainly rather than
+                // letting a generic parse error mislead the operator.
                 _material = JsonSerializer.Deserialize<KeyRingMaterial>(rawJson, _jsonOptions)
                             ?? throw new InvalidOperationException(
-                                $"Failed to deserialise key material from secret '{_secretName}'.");
+                                wasRepaired
+                                    ? $"Key Vault secret '{_secretName}' is a non-repairable legacy format — " +
+                                      "auto-repair of the unquoted JSON ran but the result still did not " +
+                                      "deserialise. Rewrite the secret as canonical, fully-quoted JSON."
+                                    : $"Failed to deserialise key material from secret '{_secretName}'.");
 
                 if (string.IsNullOrWhiteSpace(_material.Key))
                 {
@@ -201,6 +312,17 @@ namespace Warewolf.Execution.Lightweight.Security
                         "KeyVault | Key loaded. KeyId={KeyId} Created={Created} | No previous keys in secret — single-key mode.",
                         _material.KeyId, _material.Created);
                 }
+            }
+            catch (JsonException ex) when (wasRepaired)
+            {
+                // The repair ran but produced something System.Text.Json still rejects.
+                // Surface the legacy cause instead of a raw path/byte-position error.
+                Dev2Logger.Error($"KeyVaultSecretManager secret '{_secretName}' failed to deserialise after legacy auto-repair", ex, executionId);
+                throw new InvalidOperationException(
+                    $"Key Vault secret '{_secretName}' is a non-repairable legacy format. The unquoted-JSON " +
+                    "auto-repair ran but the result is still not valid key-ring JSON. Rewrite the secret as " +
+                    "canonical, fully-quoted JSON — e.g. re-run Encrypt-Config.ps1 -GenerateKeys, or write the " +
+                    "value from a UTF-8 (no BOM) file via 'az keyvault secret set --file'.", ex);
             }
             catch (Exception ex)
             {
