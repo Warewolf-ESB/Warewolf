@@ -27,6 +27,8 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 | `Get-WwExecutionToken.ps1` / `Get-WwExecutionToken-AllFlows.ps1` | Acquire JWT/Entra tokens for calling secured routes. |
 | `Get-DropboxTokens.ps1` | Dropbox OAuth token retrieval. |
 | `Generate-WorkflowIndex.ps1` | Regenerate `workflow-index.json` from `Resources/`. |
+| `Deploy-WwJobProcessor.ps1` | Suspend/resume poller Function App (`Warewolf.Execution.EngineJobProcessor`), replacing `hangfireserver.exe`. Also runnable as an engine companion via `-DeployJobProcessor`. |
+| `Deploy-WwQueueProcessor.ps1` | **RabbitMQ queue workers on Azure Container Apps** (`Warewolf.Execution.QueueProcessor`), replacing `N × QueueWorker.exe` for the Azure path. **One Container App per queue-trigger**, autoscaled 0→N by the KEDA `rabbitmq` scaler. Pointed at a trigger file / folder / manifest; also runnable as an engine companion via `-DeployRabbitMqTriggers`. |
 | `Rollback-WwExecutionEngine.ps1` | Roll a deployment back. |
 | `Example-ClientApps-OrdersSales.ps1` | Worked client-app example. |
 | `*.example.json`, `authsettingsV2.json`, `secure.config.*.json` | Config templates/examples. |
@@ -44,13 +46,29 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 - **Phase 4 — Deploy:** publish the package dir to the Function App (`func`, falling back to `az` zip-deploy).
 - **Phase 5 — Verify:** endpoint banner + optional HTTP probe.
 
+- **Phase 6 — (optional) JobProcessor companion:** `-DeployJobProcessor` → `Deploy-WwJobProcessor.ps1`.
+- **Phase 7 — (optional) QueueProcessor companion:** `-DeployRabbitMqTriggers` → `Deploy-WwQueueProcessor.ps1`, invoked **once per resolved trigger file** (`-QueueTriggerPath`/`-QueueTriggerFilePath`/`-QueueTriggerManifestPath`). Fail-fast unless `-ContinueOnQueueTriggerError`.
+
 A timestamped transcript log and a masked `*.summary.json` are written for every real (non-`-DryRun`) run. Use `-DryRun` to preview without changes.
+
+## Queue workers (ACA + KEDA) — the bits that surprise people
+
+- **Publish paths must differ.** Engine, JobProcessor and QueueProcessor are three different projects; the engine orchestrator **fails at plan time** if their publish paths collide.
+- **Scale is derived from the trigger `.bite`, not invented:** `maxReplicas = Concurrency`; KEDA `value = Prefetch × MaxConcurrency` (messages per replica ⇒ `replicas = ceil(queueLength / value)`); `Concurrency = 0` ⇒ `min = max = 0` (disabled). `-ScalingMode` defaults to `Elastic` (`min = 0`); `Fixed`/`Warm` are flagged exceptions.
+- **`Prefetch` bounds useful parallelism** — one replica claims up to `Prefetch` messages, so a `value` far below `Prefetch` starts replicas that find an empty queue.
+- **Unsubstituted `#{…}` release tokens fail loudly** at plan time and at container startup: `Concurrency` must be substituted before deploy because `maxReplicas` derives from it.
+- **DPAPI cannot travel.** Trigger/source `.bite` files must be plaintext or WFAES (`-EncryptStagedSettings`); a Windows DPAPI blob fails with an actionable error in the Linux container.
+- **Authorization differs from the JobProcessor:** one MI **per app** (assign `Warewolf_QueueProcessor` in a loop, `-ManagedIdentityObjectId` works unchanged for Container Apps) and `secure.config` needs a **per-workflow** `Execute` row, not a global one.
+- **TLS is opt-in, default off** (parity with `PublishRabbitMQActivity`, which never sets `Ssl`); production requires `amqps` + `RABBITMQ__USESSL=true` — a documented go-live gate.
 
 ## Docs to keep in sync
 
 When changing deployment scripts or their behaviour, update the relevant docs (see `warewolf-sync` rule in CLAUDE.md):
 - `Dev/Warewolf.Execution.Lightweight/Scripts/README.md` — script set overview.
 - `Dev/Warewolf.Execution.Lightweight/docs/Deploy-RunGuide.md` — run guide.
+- `Dev/Warewolf.Execution.Lightweight/docs/Deploy-EndToEnd-Runbook.md` — §7 JobProcessor, **§8 QueueProcessors (ACA + KEDA)**, §9 teardown.
+- `Dev/Warewolf.Execution.Lightweight/docs/Deploy-E2E-Verification-Runbook.md` — **full E2E deploy + PROOF** into a disposable RG: engine (`/Public` + `/Secure`), one Container App per RabbitMQ trigger, ACA/KEDA scale rules, then a live scale-`0→N` test by publishing to the queue, plus teardown. Use this to validate the Azure queue path end to end. **NB:** ACA runs KEDA internally — an ACA `rabbitmq` scale rule *is* the KEDA scaler; there is no separate KEDA instance to deploy.
+- `Dev/Warewolf.Execution.Lightweight/docs/QueueWorker-Migration-To-AzureContainerApps-KEDA-Plan-Step-By-Step.md` — queue-worker migration plan (phases, decisions, concurrency/prefetch → KEDA mapping).
 - `docs/Part3-ImplementationPlan.md`, `Part4-ResourceProvisioning.md`, `Part5-ClientTokenManagement.md`, `Part6-FullImplementationTaskList.md` — execution plans / task lists.
 - `docs/EasyAuth-Runbook.md`, `EasyAuth-Entra-Tutorial.md`, `README-Authentication.md` — auth.
 - `docs/KeyRotationRunbook.md`, `README-Encryption.md`, `SecurityChecklist.md` — Key Vault / encryption / security.

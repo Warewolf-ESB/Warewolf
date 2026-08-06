@@ -1,0 +1,4 @@
+<Source ID="1a82a341-b678-4992-a25a-39cdd57198d4" Name="Warewolf DevOps RabbitMQ Source" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="HostName=4.tcp.eu.ngrok.io;Port=20313;UserName=testuser;Password=test123;VirtualHost=/" Type="RabbitMQSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Warewolf DevOps RabbitMQ Source</DisplayName>
+  <TypeOf>RabbitMQSource</TypeOf>
+</Source>

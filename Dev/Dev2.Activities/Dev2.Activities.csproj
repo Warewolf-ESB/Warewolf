@@ -455,7 +455,7 @@
     <Compile Include="TO\JsonMappingCompoundTo.cs" />
     <Compile Include="TO\JsonMappingTo.cs" />
     <Compile Include="TO\SharepointReadListTo.cs" />
-    <Compile Include="TO\SharepointSearchTo.cs" />
+    <Compile Include="TO\SharepointSearchTO.cs" />
     <Compile Include="TO\ValidatedObject.cs" />
     <Compile Include="TO\XPathDTO.cs" />
     <Compile Include="Util.cs" />

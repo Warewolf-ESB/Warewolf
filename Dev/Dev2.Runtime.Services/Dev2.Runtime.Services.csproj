@@ -310,7 +310,7 @@
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.partial.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.partial.cs" />
-		<Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
+		<Compile Include="ServiceModel\Esb\Brokers\PostGreSqlDataBaseBroker.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\SqliteDatabaseBroker.cs" />
 		<Compile Include="ServiceModel\HubFactory.cs" />
