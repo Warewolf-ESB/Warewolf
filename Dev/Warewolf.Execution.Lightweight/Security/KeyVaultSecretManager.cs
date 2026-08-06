@@ -283,26 +283,51 @@ namespace Warewolf.Execution.Lightweight.Security
         /// A previously-active key that has been rotated out. Retained in the Key Vault
         /// secret for the duration of the rotation window so that resources encrypted
         /// with this key can still be decrypted.
+        ///
+        /// Intentionally a class with init properties (not a positional record) so that
+        /// System.Text.Json can deserialize it property-by-property without requiring
+        /// constructor-parameter matching, which fails for nested types inside a List.
         /// </summary>
-        internal sealed record PreviousKeyEntry(
-            [property: JsonPropertyName("keyId")]   string KeyId,
-            [property: JsonPropertyName("key")]     string Key,
-            [property: JsonPropertyName("retired")] string Retired
-        );
+        internal sealed class PreviousKeyEntry
+        {
+            [JsonPropertyName("keyId")]
+            public string KeyId { get; init; } = string.Empty;
+
+            [JsonPropertyName("key")]
+            public string Key { get; init; } = string.Empty;
+
+            [JsonPropertyName("retired")]
+            public string Retired { get; init; } = string.Empty;
+        }
 
         /// <summary>
         /// Root key-ring document stored in Key Vault.
         ///
         /// Version 1: primary key only (PreviousKeys absent / null).
         /// Version 2: primary key + optional PreviousKeys array for rotation support.
-        /// Both versions are fully supported — PreviousKeys defaults to an empty list.
+        /// Both versions are fully supported — PreviousKeys defaults to null when absent.
+        ///
+        /// Intentionally a class with init properties (not a positional record) so that
+        /// System.Text.Json can deserialize all fields — including the nested PreviousKeys
+        /// list — property-by-property without constructor-parameter matching, which is
+        /// unreliable for optional parameters and nested collection types.
         /// </summary>
-        internal sealed record KeyRingMaterial(
-            [property: JsonPropertyName("version")]      int                      Version,
-            [property: JsonPropertyName("keyId")]        string                   KeyId,
-            [property: JsonPropertyName("key")]          string                   Key,
-            [property: JsonPropertyName("created")]      string                   Created,
-            [property: JsonPropertyName("previousKeys")] List<PreviousKeyEntry>?  PreviousKeys = null
-        );
+        internal sealed class KeyRingMaterial
+        {
+            [JsonPropertyName("version")]
+            public int Version { get; init; }
+
+            [JsonPropertyName("keyId")]
+            public string KeyId { get; init; } = string.Empty;
+
+            [JsonPropertyName("key")]
+            public string Key { get; init; } = string.Empty;
+
+            [JsonPropertyName("created")]
+            public string Created { get; init; } = string.Empty;
+
+            [JsonPropertyName("previousKeys")]
+            public List<PreviousKeyEntry>? PreviousKeys { get; init; }
+        }
     }
 }
