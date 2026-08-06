@@ -1520,6 +1520,28 @@ function Start-LightweightExecution {
     if (-not $env:AzureFunctionsJobHost__Logging__LogLevel__Default) {
         $env:AzureFunctionsJobHost__Logging__LogLevel__Default = 'Debug'
     }
+    # Disable dynamic concurrency (snapshot persistence) and the host health
+    # monitor. Both features acquire a "primary host" lease at startup and can
+    # make the WebJobs Script Host restart itself once fully up (observed as
+    # "Host lock lease acquired..." followed by "Restarting host." in
+    # warewolf-server.log). With worker indexing enabled (see
+    # worker.config.json), that restart hits a known azure-functions-host bug
+    # where the dotnet-isolated worker channel started at the webhost level is
+    # not shut down before the new host re-requests the same function loads,
+    # throwing "Unable to load Function '<name>'. A function with the id
+    # '<id>' name already exists." and permanently 500-ing every request for
+    # the rest of the run (see Azure/azure-functions-dotnet-worker#2124,
+    # Azure/azure-functions-host#9851 -- fixed upstream only for the
+    # "unhealthy host" restart path, not for this lease/specialization-style
+    # restart). Neither feature has any value for this short-lived,
+    # single-instance CI test host, so disabling both here avoids triggering
+    # the restart at all rather than trying to survive it.
+    if (-not $env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled) {
+        $env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled = 'false'
+    }
+    if (-not $env:AzureFunctionsJobHost__healthMonitor__enabled) {
+        $env:AzureFunctionsJobHost__healthMonitor__enabled = 'false'
+    }
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
     # $TestResultsPath\warewolf-server.log when the test step finishes.
@@ -1580,6 +1602,8 @@ function Start-LightweightExecution {
         "WAREWOLF_SECURE_CONFIG : $($env:WAREWOLF_SECURE_CONFIG)"
         "WorkflowsDirectory     : $($env:WorkflowsDirectory)"
         "AzureFunctionsJobHost__Logging__LogLevel__Default : $($env:AzureFunctionsJobHost__Logging__LogLevel__Default)"
+        "AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled : $($env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled)"
+        "AzureFunctionsJobHost__healthMonitor__enabled : $($env:AzureFunctionsJobHost__healthMonitor__enabled)"
         ""
         "RunDir top-level (first 60):"
     ) + $runDirTop + @(
