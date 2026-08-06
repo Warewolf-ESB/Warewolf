@@ -8,10 +8,22 @@
     (ExternalServiceBus mode, Azure)" job in Dev/.azure/pipeline-CLOUD.yml, but using
     the standing DevOps broker instead of a local choco RabbitMQ on the agent.
 
-    SCOPE: proves  publish -> RabbitMQ source queue -> Shovel -> Azure Service Bus queue
-    ARRIVAL. It does NOT itself execute a workflow on the Lightweight engine — that last
-    hop (Service Bus -> engine) is done by the ServiceBusWorker / in-engine trigger and
-    is covered by different tests. See the notes printed at the end.
+    SCOPE (default): proves publish -> RabbitMQ source queue -> Shovel -> Azure Service
+    Bus queue ARRIVAL. It does NOT itself execute a workflow on the Lightweight engine.
+
+    SCOPE (-VerifyWorkflowExecution): proves the FULL pipeline, including actual workflow
+    EXECUTION — publish -> RabbitMQ -> Shovel -> Service Bus queue -> the Lightweight
+    engine's in-process secure Service Bus trigger (ServiceBusWorkflowTriggerFunction,
+    "Model A" — see docs/ServiceBusSecureTrigger-Architecture.md) -> workflow runs -> result
+    polled back from the engine's own GET /secure/servicebus-result/{correlationId}
+    endpoint. This REQUIRES the target engine (-EngineBaseUrl) to already have that trigger
+    configured and enabled (ServiceBusConnection__fullyQualifiedNamespace,
+    WAREWOLF_SERVICEBUS_TRIGGER_QUEUE = -ServiceBusQueueName, WAREWOLF_ENTRA_TENANT_ID,
+    WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE, and a Service Bus Data Receiver role grant for the
+    engine's managed identity on the namespace) — this script does NOT provision that; it
+    is a separate, reviewed operator step (see the provisioning script referenced in
+    docs/ServiceBusSecureTrigger-Architecture.md) precisely because it mutates a live engine
+    deployment's auth configuration.
 
 .NOTES
     Prereqs already verified against the DevOps broker: testuser has the 'administrator'
@@ -56,7 +68,22 @@ param(
     # -DestUriVerifyNone this keeps full certificate validation — prefer it whenever the
     # broker's log shows '{cacerts, undefined}'. See docs/ShovelBridge-Architecture.md
     # "Security". Mutually exclusive with -DestUriVerifyNone.
-    [string] $DestUriCaCertFile
+    [string] $DestUriCaCertFile,
+
+    # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
+    # See docs/ServiceBusSecureTrigger-Architecture.md. Requires -EngineBaseUrl /
+    # -WorkflowName / -MessageAuthToken, and that the target engine already has the secure
+    # Service Bus trigger provisioned (see .SYNOPSIS) — this script only provisions the
+    # Shovel's Send-only SAS rule, never the engine's own listen-side config.
+    [switch] $VerifyWorkflowExecution,
+    [string] $WorkflowName,
+    [string] $WorkflowInputsJson,
+    [string] $CorrelationId,
+    [securestring] $MessageAuthToken,
+    [string] $Jti,
+    [string] $EngineBaseUrl,
+    [securestring] $ResultPollAuthToken,
+    [int]    $ResultTimeoutSeconds = 90
 )
 
 Set-StrictMode -Version Latest
@@ -64,6 +91,24 @@ $ErrorActionPreference = 'Stop'
 
 if ($DestUriVerifyNone -and -not [string]::IsNullOrWhiteSpace($DestUriCaCertFile)) {
     throw 'Supply either -DestUriVerifyNone or -DestUriCaCertFile, not both: verify_none disables all peer certificate validation, making an explicit CA bundle moot. Prefer -DestUriCaCertFile — it keeps full certificate validation.'
+}
+
+if ($VerifyWorkflowExecution) {
+    if ([string]::IsNullOrWhiteSpace($WorkflowName)) { throw '-WorkflowName is required when -VerifyWorkflowExecution.' }
+    if ($null -eq $MessageAuthToken -or $MessageAuthToken.Length -eq 0) { throw '-MessageAuthToken is required when -VerifyWorkflowExecution.' }
+    if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) { throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.' }
+
+    # The secure Service Bus trigger's queue is a distinct convention from Model B's
+    # 'wwexecution-queue(-e2e)' — default to it here UNLESS the caller explicitly passed
+    # their own -ServiceBusQueueName (which must then match WAREWOLF_SERVICEBUS_TRIGGER_QUEUE
+    # as configured on -EngineBaseUrl).
+    if (-not $PSBoundParameters.ContainsKey('ServiceBusQueueName')) {
+        $ServiceBusQueueName = 'wwexecution-secure-trigger-queue-e2e'
+    }
+    if ([string]::IsNullOrWhiteSpace($CorrelationId)) {
+        $CorrelationId = [Guid]::NewGuid().ToString('N')
+    }
+    Write-Host "VerifyWorkflowExecution is set: targeting queue '$ServiceBusQueueName' (must match WAREWOLF_SERVICEBUS_TRIGGER_QUEUE on '$EngineBaseUrl'), correlationId '$CorrelationId'." -ForegroundColor Cyan
 }
 
 # Resolve the real test script relative to THIS script's own location, not a hardcoded
@@ -87,7 +132,11 @@ if ($disableLocalAuth -eq 'true') {
     az servicebus namespace update --name $ServiceBusNamespace --resource-group $ServiceBusResourceGroup --disable-local-auth false | Out-Null
 }
 
-# ── 2. Idempotently ensure queue + Send-only / Listen-only SAS rules exist ────────
+# ── 2. Idempotently ensure the queue + Send-only SAS rule exist. A Listen-only SAS rule
+#       is also provisioned UNLESS -VerifyWorkflowExecution, whose target queue is consumed
+#       exclusively via the engine's own Managed Identity subscription — a second, SAS-based
+#       Listen consumer on that queue would compete with it (see Test-ShovelBridgeE2E.ps1's
+#       own -VerifyWorkflowExecution help). ─────────────────────────────────────────────
 function Test-AzExists([string[]] $CliArgs) {
     $ErrorActionPreference = 'Continue'
     $null = & az @CliArgs -o json 2>&1
@@ -100,11 +149,14 @@ if (-not (Test-AzExists @('servicebus','queue','show','--name',$q,'--namespace-n
 if (-not (Test-AzExists @('servicebus','queue','authorization-rule','show','--name',$ServiceBusSendRule,'--namespace-name',$ns,'--resource-group',$rg,'--queue-name',$q))) {
     az servicebus queue authorization-rule create --name $ServiceBusSendRule --namespace-name $ns --resource-group $rg --queue-name $q --rights Send | Out-Null
 }
-if (-not (Test-AzExists @('servicebus','queue','authorization-rule','show','--name',$ServiceBusListenRule,'--namespace-name',$ns,'--resource-group',$rg,'--queue-name',$q))) {
-    az servicebus queue authorization-rule create --name $ServiceBusListenRule --namespace-name $ns --resource-group $rg --queue-name $q --rights Listen | Out-Null
+if (-not $VerifyWorkflowExecution) {
+    if (-not (Test-AzExists @('servicebus','queue','authorization-rule','show','--name',$ServiceBusListenRule,'--namespace-name',$ns,'--resource-group',$rg,'--queue-name',$q))) {
+        az servicebus queue authorization-rule create --name $ServiceBusListenRule --namespace-name $ns --resource-group $rg --queue-name $q --rights Listen | Out-Null
+    }
 }
 
-# ── 3. Build the Shovel dest-uri (Send-only) and the harness Listen connection string ─
+# ── 3. Build the Shovel dest-uri (Send-only). The harness Listen connection string is
+#       only needed in the default (arrival-proof) mode. ─────────────────────────────
 $sendKey = az servicebus queue authorization-rule keys list --name $ServiceBusSendRule --namespace-name $ns --resource-group $rg --queue-name $q --query primaryKey -o tsv
 if ([string]::IsNullOrWhiteSpace($sendKey)) { throw "Failed to read primary key for '$ServiceBusSendRule'." }
 $policyEnc = [Uri]::EscapeDataString($ServiceBusSendRule)
@@ -119,20 +171,21 @@ if (-not [string]::IsNullOrWhiteSpace($DestUriCaCertFile)) {
     Write-Host "DestUriCaCertFile is set: pointing the Shovel's dest-uri at CA bundle '$DestUriCaCertFile' on the broker host (Erlang/OTP 26+ '{cacerts, undefined}' fix)." -ForegroundColor Yellow
 }
 
-$listenConnStr = az servicebus queue authorization-rule keys list --name $ServiceBusListenRule --namespace-name $ns --resource-group $rg --queue-name $q --query primaryConnectionString -o tsv
-if ([string]::IsNullOrWhiteSpace($listenConnStr)) { throw "Failed to read connection string for '$ServiceBusListenRule'." }
-
-Write-Host "Provisioned queue '$q' on '$ns' (Send='$ServiceBusSendRule', Listen='$ServiceBusListenRule')." -ForegroundColor Green
+if ($VerifyWorkflowExecution) {
+    Write-Host "Provisioned queue '$q' on '$ns' (Send='$ServiceBusSendRule'; no Listen rule — the engine's own Managed Identity subscription is the only consumer)." -ForegroundColor Green
+} else {
+    $listenConnStr = az servicebus queue authorization-rule keys list --name $ServiceBusListenRule --namespace-name $ns --resource-group $rg --queue-name $q --query primaryConnectionString -o tsv
+    if ([string]::IsNullOrWhiteSpace($listenConnStr)) { throw "Failed to read connection string for '$ServiceBusListenRule'." }
+    Write-Host "Provisioned queue '$q' on '$ns' (Send='$ServiceBusSendRule', Listen='$ServiceBusListenRule')." -ForegroundColor Green
+}
 
 # ── 4. Run the real E2E test against the DevOps RabbitMQ broker ────────────────────
 $rabbitPwd  = ConvertTo-SecureString $RabbitMqPassword -AsPlainText -Force
-$listenSec  = ConvertTo-SecureString $listenConnStr   -AsPlainText -Force
 
 $testArgs = @{
     DestinationMode                   = 'ExternalServiceBus'
     DestinationQueueName              = $ServiceBusQueueName
     ExternalShovelDestUri             = $destUri
-    ExternalServiceBusConnectionString = $listenSec
     RabbitMqMode                      = 'External'
     ExternalRabbitMqManagementUri     = $RabbitMqManagementUri
     ExternalRabbitMqUsername          = $RabbitMqUsername
@@ -141,5 +194,19 @@ $testArgs = @{
     HarnessTimeoutSeconds             = $HarnessTimeoutSeconds
 }
 if ($SkipTeardown) { $testArgs.SkipTeardown = $true }
+
+if ($VerifyWorkflowExecution) {
+    $testArgs.VerifyWorkflowExecution = $true
+    $testArgs.WorkflowName            = $WorkflowName
+    $testArgs.CorrelationId           = $CorrelationId
+    $testArgs.MessageAuthToken        = $MessageAuthToken
+    $testArgs.EngineBaseUrl           = $EngineBaseUrl
+    $testArgs.ResultTimeoutSeconds    = $ResultTimeoutSeconds
+    if ($ResultPollAuthToken) { $testArgs.ResultPollAuthToken = $ResultPollAuthToken }
+    if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $testArgs.WorkflowInputsJson = $WorkflowInputsJson }
+    if (-not [string]::IsNullOrWhiteSpace($Jti)) { $testArgs.Jti = $Jti }
+} else {
+    $testArgs.ExternalServiceBusConnectionString = ConvertTo-SecureString $listenConnStr -AsPlainText -Force
+}
 
 & $testScript @testArgs

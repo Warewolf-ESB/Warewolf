@@ -281,6 +281,16 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   Azure, which remains worth exercising regardless. With both RabbitMQ (local
   Windows service) and the Service Bus destination (external, real Azure) available, this job
   needs no docker at all.
+  **Scope note:** as described above, this test proves message *arrival* on the Service Bus
+  queue (bridge connectivity/plumbing) — it does not execute a Warewolf workflow or exercise
+  any engine trigger. `-VerifyWorkflowExecution` (both scripts) extends this same pipeline to
+  additionally prove workflow *execution* through the in-process Model A trigger
+  (`ServiceBusWorkflowTriggerFunction`) — see
+  `docs/ServiceBusSecureTrigger-Architecture.md` § "End-to-end verification" for the harness
+  mode, new parameters, and the separate `Enable-ServiceBusSecureTrigger.ps1` provisioning
+  prerequisite. That mode is not yet wired into either CI pipeline (it requires the target
+  Function App to have the trigger provisioned and an Entra token available, which is a
+  manual/reviewed setup step, not something CI can safely automate today).
 
 
 ## Promotion status

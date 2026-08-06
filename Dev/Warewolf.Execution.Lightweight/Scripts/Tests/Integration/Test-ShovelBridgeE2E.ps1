@@ -85,6 +85,59 @@
 .PARAMETER SkipTeardown
     Leaves all containers/network running after the test (pass/fail) for local
     debugging. Never set this in CI.
+.PARAMETER VerifyWorkflowExecution
+    Additive, opt-in "full pipeline" mode. Without this switch, the test only proves
+    RabbitMQ -> Shovel -> Service Bus message ARRIVAL (see docs/ShovelBridge-Architecture.md)
+    — it never proves a workflow actually executed. With this switch, Phase 4 instead
+    publishes the real ServiceBusWorkflowMessage contract (workflow/inputs/correlationId,
+    plus the caller's bearer token as a message header the Shovel bridges to a Service Bus
+    application property) and polls the target Lightweight engine's own
+    GET /secure/servicebus-result/{correlationId} endpoint until it reports a terminal
+    outcome — proving the message was actually consumed and executed by
+    ServiceBusWorkflowTriggerFunction (the in-process "Model A" secure trigger; see
+    docs/ServiceBusSecureTrigger-Architecture.md), not just that it reached the queue.
+    REQUIRES -DestinationMode ExternalServiceBus (a live engine must already be listening
+    on -DestinationQueueName via Managed Identity — the local emulator has no engine
+    attached to it) and -WorkflowName / -MessageAuthToken / -EngineBaseUrl. Deliberately does
+    NOT also run the Service Bus receiver-based arrival check in this mode: a second
+    receiver on the same queue would compete with the engine's own subscription and could
+    steal the message before the engine processes it.
+.PARAMETER WorkflowName
+    REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "Hello World" —
+    matched against the target engine's secure.config exactly as an HTTP /secure/{workflow}
+    path segment would be.
+.PARAMETER WorkflowInputsJson
+    Only used when -VerifyWorkflowExecution. Optional JSON object of string inputs, e.g.
+    '{"Name":"FromRabbitMq"}'. Passed through to the workflow exactly like HTTP query-string
+    inputs are today.
+.PARAMETER CorrelationId
+    Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
+    omitted, a fresh GUID is generated and printed so it can be used to poll
+    /secure/servicebus-result/{correlationId} independently if this script's own polling
+    times out.
+.PARAMETER MessageAuthToken
+    REQUIRED when -VerifyWorkflowExecution. A valid Entra bearer token (audience =
+    WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE on the target engine) for a caller authorized to run
+    -WorkflowName. Embedded as the message's Authorization application property — this is
+    the CALLER's own delegated identity, not a system/shared credential (see
+    docs/ServiceBusSecureTrigger-Architecture.md "Two trust boundaries").
+.PARAMETER Jti
+    Only used when -VerifyWorkflowExecution. Optional — mirrors -MessageAuthToken's own
+    `jti` claim as a message header for a cheaper replay-cache lookup on the engine side.
+    Falls back to the claim inside the token itself when omitted.
+.PARAMETER EngineBaseUrl
+    REQUIRED when -VerifyWorkflowExecution. Base URL of the Lightweight engine Function App
+    that is listening on -DestinationQueueName, e.g.
+    https://warewolfserver-uat.azurewebsites.net. Used to poll
+    GET /secure/servicebus-result/{correlationId}.
+.PARAMETER ResultPollAuthToken
+    Only used when -VerifyWorkflowExecution. Bearer token used to call
+    GET /secure/servicebus-result/{correlationId} (protected by the ordinary HTTP
+    EasyAuth/claims/policy pipeline, requiring WorkflowPermission.View on -WorkflowName).
+    Defaults to -MessageAuthToken when omitted (the same caller polling their own result).
+.PARAMETER ResultTimeoutSeconds
+    Only used when -VerifyWorkflowExecution. How long to poll for a terminal result before
+    failing. Default: 90.
 #>
 [CmdletBinding()]
 param(
@@ -122,7 +175,18 @@ param(
     [securestring] $ExternalServiceBusConnectionString,
 
     [int]    $HarnessTimeoutSeconds = 90,
-    [switch] $SkipTeardown
+    [switch] $SkipTeardown,
+
+    # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
+    [switch] $VerifyWorkflowExecution,
+    [string] $WorkflowName,
+    [string] $WorkflowInputsJson,
+    [string] $CorrelationId,
+    [securestring] $MessageAuthToken,
+    [string] $Jti,
+    [string] $EngineBaseUrl,
+    [securestring] $ResultPollAuthToken,
+    [int]    $ResultTimeoutSeconds = 90
 )
 
 Set-StrictMode -Version Latest
@@ -252,8 +316,12 @@ if ($DestinationMode -eq 'ExternalServiceBus') {
     if ([string]::IsNullOrWhiteSpace($ExternalShovelDestUri)) {
         throw '-ExternalShovelDestUri is required when -DestinationMode ExternalServiceBus.'
     }
-    if ($null -eq $ExternalServiceBusConnectionString -or $ExternalServiceBusConnectionString.Length -eq 0) {
-        throw '-ExternalServiceBusConnectionString is required when -DestinationMode ExternalServiceBus.'
+    # -ExternalServiceBusConnectionString is normally required — it's how the harness's own
+    # Service Bus receiver checks arrival (Phase 4). Skipped only under -VerifyWorkflowExecution,
+    # where a second receiver on the same queue would compete with the engine's own
+    # subscription and could steal the message before the engine processes it.
+    if (-not $VerifyWorkflowExecution -and ($null -eq $ExternalServiceBusConnectionString -or $ExternalServiceBusConnectionString.Length -eq 0)) {
+        throw '-ExternalServiceBusConnectionString is required when -DestinationMode ExternalServiceBus (unless -VerifyWorkflowExecution is set).'
     }
 }
 
@@ -267,6 +335,28 @@ if ($RabbitMqMode -eq 'External') {
     if ($null -eq $ExternalRabbitMqPassword -or $ExternalRabbitMqPassword.Length -eq 0) {
         throw '-ExternalRabbitMqPassword is required when -RabbitMqMode External.'
     }
+}
+
+if ($VerifyWorkflowExecution) {
+    # A live engine must already be listening (Managed Identity) on -DestinationQueueName —
+    # the local emulator has no engine attached to it, so this mode only makes sense against
+    # a real, already-provisioned Service Bus namespace/queue.
+    if ($DestinationMode -ne 'ExternalServiceBus') {
+        throw '-VerifyWorkflowExecution requires -DestinationMode ExternalServiceBus (a live Lightweight engine must already be listening on -DestinationQueueName).'
+    }
+    if ([string]::IsNullOrWhiteSpace($WorkflowName)) {
+        throw '-WorkflowName is required when -VerifyWorkflowExecution.'
+    }
+    if ($null -eq $MessageAuthToken -or $MessageAuthToken.Length -eq 0) {
+        throw '-MessageAuthToken is required when -VerifyWorkflowExecution.'
+    }
+    if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) {
+        throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.'
+    }
+    if ([string]::IsNullOrWhiteSpace($CorrelationId)) {
+        $CorrelationId = [Guid]::NewGuid().ToString('N')
+    }
+    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' (correlationId '$CorrelationId') and poll $EngineBaseUrl for its execution result, instead of proving bare message arrival."
 }
 
 # Docker is only needed when something is actually going to be containerized:
@@ -534,25 +624,35 @@ try {
     } else {
         Write-Step 'Using externally-provisioned Service Bus namespace/queue (ExternalServiceBus mode)'
         $shovelDestUri = $ExternalShovelDestUri
-        $serviceBusConnectionStringPlain = ConvertFrom-SecureStringPlain $ExternalServiceBusConnectionString
 
-        # Fail fast with an actionable message rather than burning the full Phase 3
-        # shovel-running wait (30s) only to time out with no indication of WHY: a
-        # missing destination queue is a common setup mistake in this mode (Phase 2
-        # here never creates the queue — it must already exist on the namespace).
-        $queueExists = Test-ServiceBusQueueExists -ConnectionString $serviceBusConnectionStringPlain -QueueName $DestinationQueueName
-        if ($queueExists -eq $false) {
-            throw "Destination queue '$DestinationQueueName' does not exist on the external Service Bus namespace. Create it (e.g. via 'az servicebus queue create') before running this test — see docs/ShovelBridge-Architecture.md."
-        } elseif ($queueExists -eq $true) {
-            Write-Ok "Destination queue '$DestinationQueueName' confirmed to exist on the external namespace."
+        if ($VerifyWorkflowExecution) {
+            # No harness-owned receiver in this mode (see -VerifyWorkflowExecution help) — the
+            # queue-exists probe below needs a Listen-capable connection string, which we
+            # deliberately don't require here. Verification happens entirely via the engine's
+            # own /secure/servicebus-result endpoint in Phase 4.
+            $serviceBusConnectionStringPlain = $null
+            Write-Note "Skipping the destination queue existence probe (-VerifyWorkflowExecution: no Listen connection string is used in this mode — the target engine's own Managed Identity subscription is the only consumer)."
         } else {
-            # $queueExists is $null for two distinct reasons: the connection string
-            # wasn't in key-name/key form (nothing more to say), or the management API
-            # call itself failed (network/DNS/auth) — Test-ServiceBusQueueExists already
-            # wrote a specific Write-Note with the real reason (and an actionable hint
-            # for the common 401/disableLocalAuth case) for the latter, so avoid
-            # repeating a misleading blanket "not in key-name/key form" claim here.
-            Write-Note "Could not confirm destination queue '$DestinationQueueName' exists — assuming it exists (see note above, if any, for why the check was inconclusive)."
+            $serviceBusConnectionStringPlain = ConvertFrom-SecureStringPlain $ExternalServiceBusConnectionString
+
+            # Fail fast with an actionable message rather than burning the full Phase 3
+            # shovel-running wait (30s) only to time out with no indication of WHY: a
+            # missing destination queue is a common setup mistake in this mode (Phase 2
+            # here never creates the queue — it must already exist on the namespace).
+            $queueExists = Test-ServiceBusQueueExists -ConnectionString $serviceBusConnectionStringPlain -QueueName $DestinationQueueName
+            if ($queueExists -eq $false) {
+                throw "Destination queue '$DestinationQueueName' does not exist on the external Service Bus namespace. Create it (e.g. via 'az servicebus queue create') before running this test — see docs/ShovelBridge-Architecture.md."
+            } elseif ($queueExists -eq $true) {
+                Write-Ok "Destination queue '$DestinationQueueName' confirmed to exist on the external namespace."
+            } else {
+                # $queueExists is $null for two distinct reasons: the connection string
+                # wasn't in key-name/key form (nothing more to say), or the management API
+                # call itself failed (network/DNS/auth) — Test-ServiceBusQueueExists already
+                # wrote a specific Write-Note with the real reason (and an actionable hint
+                # for the common 401/disableLocalAuth case) for the latter, so avoid
+                # repeating a misleading blanket "not in key-name/key form" claim here.
+                Write-Note "Could not confirm destination queue '$DestinationQueueName' exists — assuming it exists (see note above, if any, for why the check was inconclusive)."
+            }
         }
     }
 
@@ -606,16 +706,37 @@ try {
     # ════════════════════════════════════════════════════════════════════════
     Write-Phase 'Phase 4  Publish + verify via E2EHarness'
 
-    $harnessArgs = @(
-        'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
-        '--rabbitmq-management-uri', $mgmtUri
-        '--rabbitmq-username', $rmqUser
-        '--rabbitmq-password', $rmqPassword
-        '--source-queue', $SourceQueueName
-        '--servicebus-connection-string', $serviceBusConnectionStringPlain
-        '--destination-queue', $DestinationQueueName
-        '--timeout-seconds', $HarnessTimeoutSeconds
-    )
+    if ($VerifyWorkflowExecution) {
+        $resultTokenSecure = if ($ResultPollAuthToken) { $ResultPollAuthToken } else { $MessageAuthToken }
+        $harnessArgs = @(
+            'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
+            '--mode', 'workflow-execution'
+            '--rabbitmq-management-uri', $mgmtUri
+            '--rabbitmq-username', $rmqUser
+            '--rabbitmq-password', $rmqPassword
+            '--rabbitmq-vhost', $rmqVHost
+            '--source-queue', $SourceQueueName
+            '--workflow', $WorkflowName
+            '--correlation-id', $CorrelationId
+            '--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)
+            '--engine-base-url', $EngineBaseUrl
+            '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $resultTokenSecure)
+            '--result-timeout-seconds', $ResultTimeoutSeconds
+        )
+        if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $harnessArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
+        if (-not [string]::IsNullOrWhiteSpace($Jti)) { $harnessArgs += @('--jti', $Jti) }
+    } else {
+        $harnessArgs = @(
+            'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
+            '--rabbitmq-management-uri', $mgmtUri
+            '--rabbitmq-username', $rmqUser
+            '--rabbitmq-password', $rmqPassword
+            '--source-queue', $SourceQueueName
+            '--servicebus-connection-string', $serviceBusConnectionStringPlain
+            '--destination-queue', $DestinationQueueName
+            '--timeout-seconds', $HarnessTimeoutSeconds
+        )
+    }
     Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
     $harnessOutput = & dotnet @harnessArgs 2>&1
     $harnessExitCode = $LASTEXITCODE
@@ -626,9 +747,18 @@ try {
     }
 
     Write-Phase 'ShovelBridge E2E test PASSED'
-    Write-Host "  Mode        : $DestinationMode" -ForegroundColor White
-    Write-Host "  Source      : $SourceQueueName (RabbitMQ)" -ForegroundColor White
-    Write-Host "  Destination : $DestinationQueueName (Service Bus)" -ForegroundColor White
+    if ($VerifyWorkflowExecution) {
+        Write-Host "  Mode          : $DestinationMode (VerifyWorkflowExecution)" -ForegroundColor White
+        Write-Host "  Source        : $SourceQueueName (RabbitMQ)" -ForegroundColor White
+        Write-Host "  Destination   : $DestinationQueueName (Service Bus, Managed Identity trigger)" -ForegroundColor White
+        Write-Host "  Workflow      : $WorkflowName" -ForegroundColor White
+        Write-Host "  CorrelationId : $CorrelationId" -ForegroundColor White
+        Write-Host "  Engine        : $EngineBaseUrl" -ForegroundColor White
+    } else {
+        Write-Host "  Mode        : $DestinationMode" -ForegroundColor White
+        Write-Host "  Source      : $SourceQueueName (RabbitMQ)" -ForegroundColor White
+        Write-Host "  Destination : $DestinationQueueName (Service Bus)" -ForegroundColor White
+    }
     Write-Host ''
 }
 catch {

@@ -84,6 +84,20 @@ namespace Warewolf.Execution.Lightweight
         readonly IWorkflowPolicyMatcher _policyMatcher;
         readonly string _workflowsDirectory;
 
+        // The Azure Functions host's HTTP route table matches by function-registration
+        // order (observed alphabetical-by-function-name), NOT by route specificity — a
+        // catch-all route like "Secure/{*name}" therefore SHADOWS more specific sibling
+        // routes registered under the same "Secure/" prefix (e.g. ServiceBusResultFunction's
+        // "Secure/servicebus-result/{correlationId}" and WorkflowResumeFunction's
+        // "Secure/resume/{suspensionId}"), since "ExecuteSecureWorkflow" sorts before both
+        // alphabetically. Confirmed: requests to those routes were being silently executed
+        // here instead, failing with "Workflow file not found" for the reserved sub-path.
+        // This constraint excludes every literal Secure/ sibling route so the catch-all only
+        // claims names that aren't already owned elsewhere. Keep this list in sync whenever a
+        // new literal route is added under "Secure/" (currently: ServiceBusResultFunction,
+        // WorkflowResumeFunction, LicensingHttpFunction.SaveSubscriptionData).
+        const string NotReservedSecureSubPathPattern = "^(?!(?i:servicebus-result/|resume/|Subscriptions$)).*$";
+
         public WorkflowHttpFunction(
             IWorkflowExecutor workflowExecutor,
             IApisJsonGenerator apisJsonGenerator,
@@ -136,7 +150,7 @@ namespace Warewolf.Execution.Lightweight
         [Function("ExecuteSecureWorkflow")]
         [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name:regex(" + NotReservedSecureSubPathPattern + ")}")] HttpRequestData req,
             string name,
             FunctionContext context)
             => await ExecuteNamedWorkflow(req, name, isPublic: false, context);

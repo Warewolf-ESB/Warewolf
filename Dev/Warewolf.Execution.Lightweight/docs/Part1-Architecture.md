@@ -288,6 +288,26 @@ dictionary of `WorkflowAuthPolicy` objects keyed by lowercase workflow name.
 - Only entries with `Execute == true` are included in `AllowedGroups`
 - Server-wide entries (`IsGlobal == true`) are excluded from per-workflow policies
 
+### 4.7 Non-HTTP trigger authorization — `ServiceBusWorkflowTriggerFunction`
+
+**Files:** `Functions/ServiceBusWorkflowTriggerFunction.cs`, `Auth/Parsers/EntraBearerTokenValidator.cs`
+
+The HTTP middleware pipeline above (4.1–4.3) only runs for HTTP-triggered functions.
+The secure Service Bus trigger (Model A of
+`docs/ServiceBusSecureTrigger-Architecture.md`) is a non-HTTP entry point, so it
+performs the equivalent steps **inline**, reusing the same shared, transport-agnostic
+pieces rather than a parallel implementation:
+
+- Token validation delegates to `EntraBearerTokenValidator` — the same RS256/issuer/
+  audience/lifetime validation core that `BearerTokenPrincipalParser` (§4.2) uses for
+  HTTP, just bound to a Service-Bus-specific audience (`ServiceBusEntraAuthOptions`).
+- The authorization decision itself calls the **same** `IWorkflowPolicyMatcher.Evaluate(...)`
+  singleton described in §4.4 — zero changes to the matcher were needed since it was
+  already transport-agnostic.
+
+See `docs/ServiceBusSecureTrigger-Architecture.md` for the full message flow, threat
+model mapping, and configuration reference.
+
 ---
 
 ## 5. Policy Data Model
@@ -380,6 +400,10 @@ WorkflowClaimsPrincipal : ClaimsPrincipal
 | `KEYVAULT_SECRET_NAME` | `HostEnvironmentConfig` | Key Vault secret name (default `dp-keyring-v1`) |
 | `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | Easy Auth | Client secret reference |
 | `AZURE_FUNCTIONS_ENVIRONMENT` | `HostEnvironmentConfig` | `Development` triggers dev bypasses |
+| `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` | `ServiceBusEntraAuthOptions` | Expected `aud` claim for tokens carried in secure Service Bus trigger messages (see `docs/ServiceBusSecureTrigger-Architecture.md`) |
+| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | `[ServiceBusTrigger]` attribute indirection | Queue name the secure trigger listens on |
+| `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | `ServiceBusTriggerOptions` | Replay-prevention window for message-borne token `jti` values |
+| `ServiceBusConnection__fullyQualifiedNamespace` | Functions Service Bus binding | Identity-based Service Bus connection (no connection string) |
 
 ---
 
