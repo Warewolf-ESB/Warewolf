@@ -16,7 +16,7 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 
 | Script | Role |
 |---|---|
-| `Deploy-WwExecutionEngine.ps1` | **Thin orchestrator.** Provisions infra, configures auth, stages + encrypts package contents, applies env vars, deploys an already-published package. `#Requires -Version 7.0`. |
+| `Deploy-WwExecutionEngine.ps1` | **Thin orchestrator.** Provisions infra, configures auth, stages + encrypts package contents, applies env vars, deploys an already-published package. `#Requires -Version 7.0`. Optional companion switches chain a separately-published Function App after the engine deploy: `-DeployJobProcessor` (→ `Deploy-WwJobProcessor.ps1`) and `-DeployServiceBusWorker` (→ `Deploy-WwExecutionServiceBusWorker.ps1`). |
 | `Configure-WwExecutionAuth.ps1` / `Configure-WwExecutionAuth-Clients.ps1` | Entra ID + Easy Auth app registration and client (audience/role) configuration. |
 | `Configure-WwExecutionAuth-ClientApps.ps1` | Orchestrator: one registration per client-**example** app (Angular/React/WebMvc/Console/AzureFunction/ServiceBus), prompts, validates `/secure/{workflow}.json`, masked summary. Companion: `docs/KB-ClientApps-Configuration.md`. |
 | `Remove-WwExecutionAuth-Clients.ps1` / `Cleanup-WwExecutionAuth.ps1` | Tear down client registrations / auth artefacts. |
@@ -30,6 +30,8 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 | `Deploy-WwJobProcessor.ps1` | Suspend/resume poller Function App (`Warewolf.Execution.EngineJobProcessor`), replacing `hangfireserver.exe`. Also runnable as an engine companion via `-DeployJobProcessor`. |
 | `Deploy-WwQueueProcessor.ps1` | **RabbitMQ queue workers on Azure Container Apps** (`Warewolf.Execution.QueueProcessor`), replacing `N × QueueWorker.exe` for the Azure path. **One Container App per queue-trigger**, autoscaled 0→N by the KEDA `rabbitmq` scaler. Pointed at a trigger file / folder / manifest; also runnable as an engine companion via `-DeployRabbitMqTriggers`. |
 | `Rollback-WwExecutionEngine.ps1` | Roll a deployment back. |
+| `Deploy-WwExecutionServiceBusWorker.ps1` | **Shovel bridge, Azure side.** Provisions the Service Bus-triggered Function App — a **first-class supported component**, `Warewolf.Execution.ServiceBusWorker/` — a Service Bus namespace/queue + dead-lettering, Managed Identity listen auth, and a Send-only SAS rule (`shovel-send`) for the RabbitMQ Shovel. Can be run standalone or chained from `Deploy-WwExecutionEngine.ps1 -DeployServiceBusWorker`. See `docs/ShovelBridge-Architecture.md`. |
+| `Configure-RabbitMqShovel.ps1` | **Shovel bridge, RabbitMQ side.** Configures a dynamic RabbitMQ Shovel (Management HTTP API) forwarding an existing RabbitMQ queue to the Service Bus queue above, per Microsoft's AMQP 0.9.1→1.0 bridging pattern. See `docs/ShovelBridge-Architecture.md`. |
 | `Example-ClientApps-OrdersSales.ps1` | Worked client-app example. |
 | `*.example.json`, `authsettingsV2.json`, `secure.config.*.json` | Config templates/examples. |
 | `Tests/` | Pester/script tests for the deployment tooling. |
@@ -73,5 +75,6 @@ When changing deployment scripts or their behaviour, update the relevant docs (s
 - `docs/EasyAuth-Runbook.md`, `EasyAuth-Entra-Tutorial.md`, `README-Authentication.md` — auth.
 - `docs/KeyRotationRunbook.md`, `README-Encryption.md`, `SecurityChecklist.md` — Key Vault / encryption / security.
 - `docs/README-ApplicationInsights.md`, `QUICKSTART-ApplicationInsights.md` — App Insights.
+- `docs/ShovelBridge-Architecture.md`, `Warewolf.Execution.ServiceBusWorker/README.md` — shovel bridge topology + the Service Bus worker's own docs.
 
 When a script's **roles/requirements** change, reconcile the script, its `Tests/`, the run guide, and the implementation-plan docs together — and confirm the changes with the user before committing.

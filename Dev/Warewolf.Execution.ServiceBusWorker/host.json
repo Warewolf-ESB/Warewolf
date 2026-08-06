@@ -9,7 +9,7 @@
     },
     "logLevel": {
       "default": "Information",
-      "Warewolf.Execution.ClientExamples.AzureServiceBus": "Information"
+      "Warewolf.Execution.ServiceBusWorker": "Information"
     }
   },
   "extensions": {

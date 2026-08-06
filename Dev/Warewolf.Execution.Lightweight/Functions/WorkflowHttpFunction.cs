@@ -12,6 +12,7 @@ using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Middleware;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Http;
+using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight
@@ -83,6 +84,20 @@ namespace Warewolf.Execution.Lightweight
         readonly IWorkflowPolicyMatcher _policyMatcher;
         readonly string _workflowsDirectory;
 
+        // The Azure Functions host's HTTP route table matches by function-registration
+        // order (observed alphabetical-by-function-name), NOT by route specificity — a
+        // catch-all route like "Secure/{*name}" therefore SHADOWS more specific sibling
+        // routes registered under the same "Secure/" prefix (e.g. ServiceBusResultFunction's
+        // "Secure/servicebus-result/{correlationId}" and WorkflowResumeFunction's
+        // "Secure/resume/{suspensionId}"), since "ExecuteSecureWorkflow" sorts before both
+        // alphabetically. Confirmed: requests to those routes were being silently executed
+        // here instead, failing with "Workflow file not found" for the reserved sub-path.
+        // This constraint excludes every literal Secure/ sibling route so the catch-all only
+        // claims names that aren't already owned elsewhere. Keep this list in sync whenever a
+        // new literal route is added under "Secure/" (currently: ServiceBusResultFunction,
+        // WorkflowResumeFunction, LicensingHttpFunction.SaveSubscriptionData).
+        const string NotReservedSecureSubPathPattern = "^(?!(?i:servicebus-result/|resume/|Subscriptions$)).*$";
+
         public WorkflowHttpFunction(
             IWorkflowExecutor workflowExecutor,
             IApisJsonGenerator apisJsonGenerator,
@@ -135,7 +150,7 @@ namespace Warewolf.Execution.Lightweight
         [Function("ExecuteSecureWorkflow")]
         [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteSecureWorkflow(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Secure/{*name:regex(" + NotReservedSecureSubPathPattern + ")}")] HttpRequestData req,
             string name,
             FunctionContext context)
             => await ExecuteNamedWorkflow(req, name, isPublic: false, context);
@@ -146,8 +161,9 @@ namespace Warewolf.Execution.Lightweight
         [Function("ExecutePublicWorkflow")]
         public async Task<HttpResponseData> ExecutePublicWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "Public/{*name}")] HttpRequestData req,
-            string name)
-            => await ExecuteNamedWorkflow(req, name, isPublic: true);
+            string name,
+            FunctionContext context)
+            => await ExecuteNamedWorkflow(req, name, isPublic: true, context);
 
         // ── apis.json discovery routes ────────────────────────────────────────
 
@@ -213,7 +229,8 @@ namespace Warewolf.Execution.Lightweight
         [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> ExecuteByName(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow/{workflowName}")] HttpRequestData req,
-            string workflowName)
+            string workflowName,
+            FunctionContext context)
         {
             var (resolvedName, isDebug, isXml, isApi) = NameSuffixParser.Parse(workflowName);
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory, resolvedName);
@@ -226,6 +243,7 @@ namespace Warewolf.Execution.Lightweight
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
+            FlushUsagePublishContext(context);
             return await ResponseBuilder.BuildAsync(req, result,
                 isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
         }
@@ -237,7 +255,8 @@ namespace Warewolf.Execution.Lightweight
         [Function("ExecuteWorkflow")]
         [RequireWorkflowPermission(WorkflowPermission.View | WorkflowPermission.Execute)]
         public async Task<HttpResponseData> Execute(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "workflow")] HttpRequestData req,
+            FunctionContext context)
         {
             var executionRequest = await WorkflowFunctionHelper.ParseRequestAsync(req, _workflowsDirectory);
 
@@ -252,6 +271,7 @@ namespace Warewolf.Execution.Lightweight
             }
 
             var result = _workflowExecutor.Execute(executionRequest);
+            FlushUsagePublishContext(context);
             return await ResponseBuilder.BuildAsync(req, result);
         }
 
@@ -373,8 +393,35 @@ namespace Warewolf.Execution.Lightweight
                 executionRequest.IsDebug = true;
 
             var result = _workflowExecutor.Execute(executionRequest);
+            FlushUsagePublishContext(context);
             return await ResponseBuilder.BuildAsync(request, result,
                 isXml ? ResponseBuilder.XmlContentType : ResponseBuilder.JsonContentType);
+        }
+
+        /// <summary>
+        /// Transfers the ambient <see cref="UsagePublishContext"/> (if any) that
+        /// <c>WorkflowExecutor.Execute</c> just populated into
+        /// <c>FunctionContext.Items</c>, where <see cref="Infrastructure.UsagePublishMiddleware"/>
+        /// can reliably read it after the rest of the pipeline unwinds.
+        ///
+        /// <para>
+        /// Must be called immediately after <c>_workflowExecutor.Execute(...)</c>,
+        /// on the same synchronous call stack — see the AsyncLocal caveat
+        /// documented on <see cref="UsagePublishContext"/>. When <paramref name="context"/>
+        /// is <c>null</c> (a Function overload that does not receive
+        /// <see cref="FunctionContext"/>), the ambient value is simply discarded —
+        /// no usage event will be published for that invocation. Every current
+        /// entry point that calls <c>_workflowExecutor.Execute</c> passes its
+        /// <see cref="FunctionContext"/> here.
+        /// </para>
+        /// </summary>
+        internal static void FlushUsagePublishContext(FunctionContext? context)
+        {
+            var pending = UsagePublishContext.TakeCurrent();
+            if (context is not null && pending is not null)
+            {
+                context.Items[UsagePublishContext.ItemsKey] = pending;
+            }
         }
 
         /// <summary>

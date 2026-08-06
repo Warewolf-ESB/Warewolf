@@ -108,6 +108,11 @@
 
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
 
+    <!-- Service Bus trigger for the secure, in-process "Model A" workflow trigger
+         (Spec-Secure-ServiceBus-Triggered-Execution.md). Pinned to the same version
+         already used by the companion Warewolf.Execution.ServiceBusWorker project. -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.20.0" />
+
     <!-- Worker SDK for isolated process model - generates .azurefunctions folder -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" />
 
@@ -127,8 +132,6 @@
 
     <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
-
-    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
 
     <!-- Azure Key Vault + Managed Identity (encryption support) -->
     <PackageReference Include="Azure.Identity" Version="1.20.0" />

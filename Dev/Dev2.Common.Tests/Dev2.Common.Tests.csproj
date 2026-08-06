@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="AuditingSettingsTests.cs" />
     <Compile Include="CommonComparerTests.cs" />
+    <Compile Include="ConfigTests.cs" />
     <Compile Include="Common\GetComputerNamesImplTests.cs" />
     <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
     <Compile Include="Core\ServerSourceTests.cs" />

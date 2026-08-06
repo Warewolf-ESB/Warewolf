@@ -622,6 +622,104 @@ Then publish a message to the queue and confirm the workflow executed on the eng
 
 ---
 
+## 8.5 (Optional) Shovel bridge — Service Bus worker + RabbitMQ shovel
+
+The **shovel bridge** lets an existing on-prem/customer **RabbitMQ** broker feed the engine
+without exposing RabbitMQ to Azure or running a queue-worker container per trigger. It has two
+first-class parts, both documented in full in
+[`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md):
+
+- **Azure side — `Deploy-WwExecutionServiceBusWorker.ps1`** provisions the Service Bus-triggered
+  Function App (`Warewolf.Execution.ServiceBusWorker/`): a Service Bus namespace/queue with
+  dead-lettering, Managed Identity listen auth, and a queue-scoped **Send-only SAS rule**
+  (`shovel-send` by default) — the credential the RabbitMQ Shovel plugin uses as its AMQP 1.0
+  destination. Like the JobProcessor, it is a **daemon caller of the engine** and needs the
+  **`Warewolf_ClientApps`** app role + a matching `secure.config` `Execute` row
+  ([§2](#2-prepare-the-engines-auth--permission-config)).
+- **RabbitMQ side — `Configure-RabbitMqShovel.ps1`** configures a dynamic Shovel (RabbitMQ
+  Management HTTP API) that forwards an existing source queue (AMQP 0.9.1) to the Service Bus
+  queue above (AMQP 1.0). Requires the `rabbitmq_shovel`/`rabbitmq_shovel_management` plugins
+  enabled on the broker (one-time, broker-host admin action).
+
+### 8.5a Deploy the Service Bus worker
+
+Publish first (the script does **not** build) — its publish output **MUST differ** from the
+engine's:
+
+```powershell
+dotnet publish Dev/Warewolf.Execution.ServiceBusWorker/Warewolf.Execution.ServiceBusWorker.csproj -c Release -o D:\ServiceBusWorker\Publish
+
+.\Deploy-WwExecutionServiceBusWorker.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount stwwsbworker -AppName $ServiceBusWorkerApp `
+  -PublishPath D:\ServiceBusWorker\Publish `
+  -ServiceBusNamespace $ServiceBusNamespace -ServiceBusQueueName wwexecution-queue `
+  -CreateShovelSendRule $true `
+  -WwExecutionBaseUrl $EngineUrl -WwExecutionTenantId $TenantId `
+  -WwExecutionResourceAppId $ResourceAppId
+```
+
+…or as a companion of the engine deploy (runs after the engine, reusing the engine's URL/tenant;
+prompts for anything not passed):
+
+```powershell
+.\Deploy-WwExecutionEngine.ps1 ... `
+  -DeployServiceBusWorker -ServiceBusWorkerAppName $ServiceBusWorkerApp `
+  -ServiceBusWorkerPublishPath D:\ServiceBusWorker\Publish `
+  -ServiceBusWorkerStorageAccount stwwsbworker
+```
+
+### 8.5b Authorize the worker MI (role `Warewolf_ClientApps`)
+
+Mirror the daemon registration from [§5](#5-register-the-client-as-a-daemon) — `-AppRolesToAssign`
+**fails loudly** if `Warewolf_ClientApps` does not exist on the engine (it ships in the example
+authconfig, see [§2](#2-prepare-the-engines-auth--permission-config)):
+
+```powershell
+.\Configure-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId `
+  -ClientType Daemon -DaemonUseManagedIdentity `
+  -DaemonFunctionAppName $ServiceBusWorkerApp `
+  -DaemonFunctionAppResourceGroup $ResourceGroup `
+  -AppRolesToAssign Warewolf_ClientApps `
+  -NonInteractive
+```
+
+See `docs/KB-ClientApps-Configuration.md` §2.6 for the worker's own `appsettings.json` shape and
+token-acquisition details.
+
+### 8.5c Configure the RabbitMQ shovel
+
+Fetches the destination `shovel-send` SAS key live via `az` — never writes it to disk:
+
+```powershell
+.\Configure-RabbitMqShovel.ps1 `
+  -RabbitMqManagementUri "https://<broker-host>:15671" `
+  -RabbitMqUsername <user> -RabbitMqPassword <SecureString> `
+  -SourceQueue <existing-rabbitmq-queue> `
+  -ServiceBusNamespace $ServiceBusNamespace -ServiceBusQueueName wwexecution-queue `
+  -ServiceBusResourceGroup $ResourceGroup -ServiceBusSasKeyName shovel-send
+```
+
+### 8.5d Verify
+
+```powershell
+# Shovel running state:
+az servicebus queue show --namespace-name $ServiceBusNamespace --resource-group $ResourceGroup --name wwexecution-queue -o table
+
+# Or use the standalone health monitor (schedule via Task Scheduler/cron/Azure Automation —
+# RabbitMQ is customer/on-prem infra, not something a Function can reliably poll):
+.\Monitor-RabbitMqShovel.ps1 -RabbitMqManagementUri "https://<broker-host>:15671" `
+  -RabbitMqUsername <user> -RabbitMqPassword <SecureString> -ShovelName <name>
+```
+
+Publish a message to the RabbitMQ source queue and confirm it arrives on the Service Bus queue
+and is executed on the engine. A `500` from the engine means the worker's MI lacks
+`Warewolf_ClientApps` or `secure.config` has no matching `Execute` row (denials are wrapped as
+**500**, WOLF-8418 — same as every other daemon caller in this runbook).
+
+---
+
 ## 9. Teardown
 
 ```powershell
@@ -664,6 +762,19 @@ if ($qpSummary) {
     # app is gone and no other Warewolf install uses it:
     # az containerapp env delete --name aca-warewolf --resource-group $ResourceGroup --yes
 }
+
+# Remove the shovel bridge (if deployed — §8.5):
+# 1. Delete the RabbitMQ shovel itself (broker-side, via the Management API — no script
+#    companion; use the RabbitMQ management UI/API DELETE /api/parameters/shovel/{vhost}/{name}).
+# 2. Remove the worker's role assignment (safe to re-run):
+.\Remove-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId -ClientType Daemon
+# 3. Roll back the Service Bus worker deployment (no dedicated Rollback companion, same as the
+#    JobProcessor — the run summary JSON records what to tear down manually):
+$sbwSummary = (Get-ChildItem "$LogDir\deploy-WwExecutionServiceBusWorker-*.summary.json" -ErrorAction SilentlyContinue |
+               Where-Object { $_.Name -notlike '*dryrun*' } |
+               Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+if ($sbwSummary) { .\Rollback-WwExecutionEngine.ps1 -SummaryPath $sbwSummary }
 ```
 
 ---
@@ -672,6 +783,7 @@ if ($qpSummary) {
 
 - [HangfireDemo-Deploy-Validate-Runbook.md](HangfireDemo-Deploy-Validate-Runbook.md) — deploy **with persistence** + validate the suspend/resume demo (suspend → poll → scheduled resume → manual resumption).
 - [Deploy-RunGuide.md](Deploy-RunGuide.md) — full engine-deploy reference (parameters, roles, encryption, troubleshooting).
+- [ShovelBridge-Architecture.md](ShovelBridge-Architecture.md) — shovel bridge topology, security model, and troubleshooting (§8.5).
 - `Scripts/Configure-WwExecutionAuth-Clients.ps1` / `Configure-WwExecutionAuth-ClientApps.ps1` — client registration (`-?` for help).
 - `Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/README.md` — the daemon client sample.
 - `docs/KB-ClientApps-Configuration.md` — per-example client configuration reference.

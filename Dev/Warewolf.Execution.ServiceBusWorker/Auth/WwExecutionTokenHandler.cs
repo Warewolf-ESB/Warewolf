@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 
-namespace Warewolf.Execution.ClientExamples.AzureServiceBus.Auth;
+namespace Warewolf.Execution.ServiceBusWorker.Auth;
 
 /// <summary>
 /// A <see cref="DelegatingHandler"/> that transparently authenticates every outbound request

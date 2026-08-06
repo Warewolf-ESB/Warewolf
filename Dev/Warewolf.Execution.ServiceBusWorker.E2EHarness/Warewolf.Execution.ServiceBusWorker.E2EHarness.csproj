@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Standalone console harness for the ShovelBridge E2E test
+    (Scripts/Tests/Integration/Test-ShovelBridgeE2E.ps1).
+
+    NOT a unit/integration test project in the MSTest sense — it is a throwaway
+    process the orchestration script shells out to, because Pester/PowerShell has
+    no built-in AMQP 1.0 client and the Service Bus SDK is the natural way to
+    prove a message survived the RabbitMQ (AMQP 0.9.1) -> Shovel -> Service Bus
+    (AMQP 1.0) bridge. Deliberately NOT added to ServerTests.sln / any
+    -Projects glob picked up by TestRun.ps1 — it is invoked directly via
+    `dotnet run` by the orchestration script, never by the unit-test runner.
+
+    Works against both the local Azure Service Bus emulator
+    (Endpoint=sb://localhost;...;UseDevelopmentEmulator=true;) and a real Azure
+    Service Bus namespace (Endpoint=sb://<namespace>.servicebus.windows.net/;...)
+    — same SDK call surface either way; only the connection string differs.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <RootNamespace>Warewolf.Execution.ServiceBusWorker.E2EHarness</RootNamespace>
+    <AssemblyName>ShovelBridgeE2EHarness</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.2" />
+  </ItemGroup>
+
+</Project>

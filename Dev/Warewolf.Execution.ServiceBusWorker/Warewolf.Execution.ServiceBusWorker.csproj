@@ -17,7 +17,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>12.0</LangVersion>
-    <RootNamespace>Warewolf.Execution.ClientExamples.AzureServiceBus</RootNamespace>
+    <RootNamespace>Warewolf.Execution.ServiceBusWorker</RootNamespace>
     <AssemblyName>WwExecutionServiceBusWorker</AssemblyName>
   </PropertyGroup>
 
@@ -39,6 +39,21 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
 
     <!--
+      Microsoft.Azure.Functions.Worker 1.22.0 only floors Microsoft.Extensions.Hosting at
+      5.0.0, and nothing else in this project's graph bumps it, so NuGet resolves the whole
+      5.0.0 Hosting/Configuration family here, including a netstandard2.0-era
+      Microsoft.Extensions.FileProviders.Physical 5.0.0. Compile.ps1 publishes ServerTests.sln
+      into ONE flat output directory (-p:ErrorOnDuplicatePublishOutputFiles=false), so whichever
+      project's copy of that DLL is written last silently overwrites the other. When this
+      project's old 5.0.0 copy wins over Warewolf.Execution.Lightweight's required 8.0.0 copy,
+      the Lightweight isolated-worker process fails to start (FileNotFoundException: Version=
+      8.0.0.0) and every SpecFlow test that depends on the lightweight engine being reachable on
+      port 7071 fails with a connection-refused error. Pin Hosting to the net8.0-aligned release
+      so this project's own publish output only ever contains the 8.0.0 family.
+    -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+
+    <!--
       The Service Bus worker extension (5.20.0) requires Google.Protobuf >= 3.27.1.
       When this sample is built INSIDE the Warewolf repo it inherits a solution-wide
       Google.Protobuf 3.25.2 pin from Dev/Directory.Build.props (needed by the engine),
@@ -48,6 +63,27 @@
     -->
     <PackageReference Update="Google.Protobuf" Version="3.27.1" />
   </ItemGroup>
+
+  <!--
+    Skip 'dotnet publish' on Debug builds when a RuntimeIdentifier is set.
+
+    The hosted CI pipeline publishes ServerTests.sln (which transitively
+    includes this project) with `-r win-x64`, which triggers an MSB3030 in
+    the Azure Functions Worker SDK when it tries to copy
+    obj\Debug\net8.0\win-x64\extensions.json (the Worker SDK writes the file
+    to the non-RID-qualified obj path while the main publish target looks
+    for it under the RID subfolder). Same root cause and fix as the
+    companion Warewolf.Execution.Lightweight project.
+
+    Warewolf.Execution.ServiceBusWorker.Tests only needs this project's
+    BUILD output (via ProjectReference), not its PUBLISH output, so skipping
+    the publish step on Debug is safe for the test pipeline. Release
+    publishes (the Azure deployment path) still need to publish, so the
+    gate is scoped to Debug only.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' != ''">
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Update="host.json">

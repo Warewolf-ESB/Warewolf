@@ -55,6 +55,10 @@ Azure Function App with five function classes under `Functions/`:
 
 Startup sequence (7 steps in `Program.cs`): load config → bootstrap console logger → build host → run `StartupOrchestrator` → upgrade to composite logger (Console + App Insights + Elasticsearch + Audit) → license check → `host.RunAsync()`.
 
+**Companion Function Apps** (separate deployables, sharing the engine's auth/token model, each with its own project + `.Tests` project in `ServerTests.sln`):
+- `Warewolf.Execution.EngineJobProcessor` — polls Hangfire storage for due suspend/resume jobs and calls the engine's `/resume/{jobId}` route.
+- `Warewolf.Execution.ServiceBusWorker` — **first-class supported** Service Bus-triggered trigger for the engine (HTTPS is the other supported trigger). A `ServiceBusTrigger` Function reads `{route, workflow, inputs}` messages and calls `/secure` or `/public` via an app-only Entra token (Managed Identity). Also underpins the RabbitMQ→Service Bus "Shovel bridge" pattern (existing RabbitMQ producers can trigger the engine unmodified). See `docs/ShovelBridge-Architecture.md` and `warewolf-deploy`.
+
 Auth middleware pipeline: EasyAuth redirect → claims builder → policy enforcement. Sensitive config optionally encrypted via Azure Key Vault–backed AES.
 
 **Authorization model** (`WorkflowAuthPolicyLoader` / `WorkflowPolicyMatcher`, secure.config-driven):

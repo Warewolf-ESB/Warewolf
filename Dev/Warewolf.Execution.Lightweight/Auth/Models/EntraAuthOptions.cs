@@ -16,7 +16,7 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 ///   <item><c>WAREWOLF_ENTRA_CLIENT_ID</c> – Optional alternative audience.</item>
 /// </list>
 /// </summary>
-public sealed class EntraAuthOptions
+public class EntraAuthOptions
 {
     /// <summary>Entra tenant GUID. <c>null</c> when not configured (token path disabled).</summary>
     public string? TenantId { get; init; }

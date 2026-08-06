@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace Warewolf.Execution.ClientExamples.AzureServiceBus;
+namespace Warewolf.Execution.ServiceBusWorker;
 
 /// <summary>
 /// Default <see cref="IWwExecutionClient"/>. A thin wrapper over a typed <see cref="HttpClient"/>

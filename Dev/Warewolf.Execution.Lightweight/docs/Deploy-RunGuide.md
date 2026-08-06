@@ -338,6 +338,23 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 > [Deploy-EndToEnd-Runbook.md](Deploy-EndToEnd-Runbook.md) §7. `Deploy-WwJobProcessor.ps1`
 > can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
 
+### Warewolf.Execution.ServiceBusWorker (optional companion)
+
+The engine's other first-class trigger path alongside HTTPS — see
+[`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md).
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `-DeployServiceBusWorker` | switch | off | After the engine deploy, also run `Deploy-WwExecutionServiceBusWorker.ps1` for the Service Bus-triggered Function App, passing the shared context (subscription/tenant/RG/location + the engine URL as `-WwExecutionBaseUrl`, and — when auth was provisioned this run — `-WwExecutionTenantId`/`-WwExecutionResourceAppId`/`-WwExecutionScope`). The child prompts for anything not supplied, including its own Service Bus namespace/queue. |
+| `-ServiceBusWorkerAppName` | string | prompt (child) | Function App name for the worker. |
+| `-ServiceBusWorkerPublishPath` | string | prompt / required for companion | Folder/.zip of the worker's `dotnet publish` output. **Must be a different directory than the engine's `-PublishPath`** (different app/csproj); the engine resolves it at plan time and fails loudly on a collision. Required (no prompt) under `-NonInteractive`. |
+| `-ServiceBusWorkerStorageAccount` | string | prompt (child) | Storage account for the worker. |
+| `-WwExecutionScope` | string | derived from auth output, or prompt (child) | MI token scope the worker uses to call the engine, e.g. `api://<engine-app-id>/.default`. |
+
+> Role assignment for the worker's MI (`Warewolf_ClientApps`) is a **separate** step —
+> see `docs/KB-ClientApps-Configuration.md` §2.6. `Deploy-WwExecutionServiceBusWorker.ps1`
+> can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
+
 ### RabbitMQ QueueProcessor (optional companion)
 
 Fans out **one Azure Container App per queue-trigger**, autoscaled 0 → N by the KEDA `rabbitmq`

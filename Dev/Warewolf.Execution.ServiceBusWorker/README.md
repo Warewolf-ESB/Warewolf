@@ -18,6 +18,16 @@ own. So the realistic, production pattern is:
 
 This sample *is* that compute trigger.
 
+> **Production deployment / "shovel bridge":** this worker is deployed as-is (no code changes) by
+> `Dev/Warewolf.Execution.Lightweight/Scripts/Deploy-WwExecutionServiceBusWorker.ps1`, which
+> provisions its Function App, Service Bus namespace/queue, and app settings. It is also the
+> compute step of the **RabbitMQ → Azure Service Bus "shovel bridge"** — RabbitMQ's Shovel plugin
+> forwards messages from an existing RabbitMQ queue into this worker's Service Bus queue over
+> AMQP 1.0, letting a RabbitMQ producer trigger the Lightweight engine with no code change on
+> either side. See
+> `Dev/Warewolf.Execution.Lightweight/docs/ShovelBridge-Architecture.md` for the full topology,
+> and `Scripts/Configure-RabbitMqShovel.ps1` for the bridge configuration script.
+
 ```
  ┌────────────┐      enqueue       ┌──────────────────────┐     trigger     ┌─────────────────────────────┐
  │  Producer  │  ───────────────▶  │  Azure Service Bus    │  ────────────▶  │  This Functions worker       │
@@ -176,7 +186,7 @@ Prerequisites: .NET 8 SDK, Azure Functions Core Tools v4, an Azure Service Bus n
 queue named `wwexecution-queue`, and (for local auth) `az login` or a daemon client secret.
 
 ```bash
-cd Dev/Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus
+cd Dev/Warewolf.Execution.ServiceBusWorker
 
 # 1. Fill in local.settings.json (tenant, resource app id, SB connection, etc.)
 # 2. Build & run the worker
