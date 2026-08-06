@@ -20,6 +20,7 @@ namespace Dev2.Runtime.Subscription
         string CustomerId { get; }
         string PlanId { get; }
         string SubscriptionId { get; }
+        string MarketplaceResourceId { get; }
         bool IsLicensed { get; }
         bool StopExecutions { get; }
 

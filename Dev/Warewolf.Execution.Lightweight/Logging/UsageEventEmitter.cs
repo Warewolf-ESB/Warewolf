@@ -79,6 +79,7 @@ namespace Warewolf.Execution.Lightweight.Logging
                     startedAtUtc    = evt.StartedAtUtc,
                     subscriptionId  = subscription?.SubscriptionId ?? string.Empty,
                     planId          = subscription?.PlanId ?? string.Empty,
+                    marketplaceResourceId = subscription?.MarketplaceResourceId ?? string.Empty,
                     status          = subscription?.Status.ToString() ?? string.Empty,
                     source          = "LightweightExecution",       // identifies the lightweight engine in the UsageData row
                     machineName     = Environment.MachineName

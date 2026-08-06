@@ -28,6 +28,7 @@ namespace Dev2.Runtime.Subscription
         public string CustomerId { get; }
         public string PlanId { get; }
         public string SubscriptionId { get; }
+        public string MarketplaceResourceId { get; }
         public bool StopExecutions{get;}
         public SubscriptionStatus Status { get; }
         public bool IsLicensed { get; }
@@ -77,6 +78,7 @@ namespace Dev2.Runtime.Subscription
             CustomerId = config.CustomerId;
             PlanId = config.PlanId;
             SubscriptionId = config.SubscriptionId;
+            MarketplaceResourceId = config.MarketplaceResourceId;
             Enum.TryParse(config.Status, out SubscriptionStatus status);
             Status = status;
             IsLicensed = Status == SubscriptionStatus.Active || Status == SubscriptionStatus.InTrial;
@@ -97,6 +99,7 @@ namespace Dev2.Runtime.Subscription
                 CustomerId = subscriptionData.CustomerId,
                 SubscriptionId = subscriptionData.SubscriptionId,
                 PlanId = subscriptionData.PlanId,
+                MarketplaceResourceId = subscriptionData.MarketplaceResourceId,
                 Status = subscriptionData.Status,
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
@@ -113,6 +116,7 @@ namespace Dev2.Runtime.Subscription
                 CustomerId = CustomerId,
                 SubscriptionId = SubscriptionId,
                 PlanId = PlanId,
+                MarketplaceResourceId = MarketplaceResourceId,
                 Status = Status,
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
@@ -128,6 +132,7 @@ namespace Dev2.Runtime.Subscription
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
                 PlanId = PlanId,
+                MarketplaceResourceId = MarketplaceResourceId,
                 Status = Status,
                 IsLicensed = IsLicensed,
                 StopExecutions =  StopExecutions,

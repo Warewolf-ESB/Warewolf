@@ -56,10 +56,24 @@ namespace Dev2.Common
                 }
             }
 
-            // Fall back to special folder path
+            // Fall back to special folder path. SpecialFolderOption.Create attempts to
+            // create the directory if it doesn't exist yet, which can throw (e.g.
+            // UnauthorizedAccessException/IOException) in sandboxed hosts such as Azure
+            // Functions where %ProgramData% isn't writable. Swallow that and fall through
+            // to the temp-directory fallback below, rather than letting it bubble up and
+            // fail this class's static field initializers (Server/Studio/Auditing/etc.),
+            // which would otherwise take down the whole process with a
+            // TypeInitializationException on first access to any Config member.
             if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
             {
-                path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
+                try
+                {
+                    path = Environment.GetFolderPath(defaultPath, Environment.SpecialFolderOption.Create);
+                }
+                catch (Exception)
+                {
+                    path = null;
+                }
             }
 
             // Ultimate fallback: temp directory (always writable, e.g. in CI containers)

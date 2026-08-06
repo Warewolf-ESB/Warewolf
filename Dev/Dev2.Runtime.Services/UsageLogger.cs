@@ -83,6 +83,7 @@ namespace Dev2.Runtime
                 sessionId,
                 subscriptionProvider.SubscriptionId,
                 subscriptionProvider.PlanId,
+                subscriptionProvider.MarketplaceResourceId,
                 subscriptionProvider.Status,
                 VersionNo = Studio.Utils.VersionInfo.FetchVersionInfo(),
                 Environment.MachineName,

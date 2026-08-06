@@ -18,6 +18,7 @@ namespace Warewolf.Licensing
         string CustomerId { get; set; }
         string SubscriptionId { get; set; }
         string PlanId { get; set; }
+        string MarketplaceResourceId { get; set; }
         string CustomerFirstName { get; set; }
         string CustomerLastName { get; set; }
         string CustomerEmail { get; set; }

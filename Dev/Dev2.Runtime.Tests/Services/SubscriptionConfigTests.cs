@@ -23,6 +23,7 @@ namespace Dev2.Tests.Runtime.Services
     {
         internal const string DefaultCustomerId = "";
         internal const string DefaultSubscriptionId = "";
+        internal const string DefaultMarketplaceResourceId = "";
         internal const string DefaultPlanId = "qj2HmQwVsUt12btj/iXadA==";
         internal const string DefaultSubscriptionKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
         internal const string DefaultSubscriptionSiteName = "L8NilnImZ18r8VCMD88AdQ==";
@@ -32,7 +33,7 @@ namespace Dev2.Tests.Runtime.Services
 
         private static NameValueCollection CreateDefaultConfig()
         {
-            return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey, DefaultStopExecutions);
+            return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey, DefaultStopExecutions, DefaultMarketplaceResourceId);
         }
 
         /*[TestMethod]
@@ -90,6 +91,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultCustomerId), config.CustomerId);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultPlanId), config.PlanId);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionId), config.SubscriptionId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultMarketplaceResourceId), config.MarketplaceResourceId);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionSiteName), config.SubscriptionSiteName);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionKey), config.SubscriptionKey);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultStatus), config.Status);
@@ -112,11 +114,13 @@ namespace Dev2.Tests.Runtime.Services
             const string CustomerId = "newCustomer";
             const SubscriptionStatus Status = SubscriptionStatus.InTrial;
             const string SubscriptionId = "5467897";
+            const string MarketplaceResourceId = "8f14e45f-ceea-467e-abd0-2c1a1c8b9600";
             const string StopExecutions = "true";
             var newSubscriptionData = new SubscriptionData
             {
                 CustomerId = CustomerId,
                 SubscriptionId = SubscriptionId,
+                MarketplaceResourceId = MarketplaceResourceId,
                 PlanId = PlanId,
                 Status = Status,
                 SubscriptionSiteName = SubscriptionSiteName,
@@ -127,6 +131,28 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.IsNotNull(config.SaveConfigSettings);
             Assert.AreEqual(1, config.SaveConfigHitCount);
+            Assert.AreEqual(MarketplaceResourceId, SubscriptionConfig.DecryptKey(config.SaveConfigSettings["MarketplaceResourceId"]));
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionConfig))]
+        public void SubscriptionConfig_WithPopulatedMarketplaceResourceId_Expected_RoundTripsThroughEncryptDecrypt()
+        {
+            const string MarketplaceResourceId = "8f14e45f-ceea-467e-abd0-2c1a1c8b9600";
+            var settings = SubscriptionConfig.CreateSettings(
+                DefaultCustomerId,
+                DefaultPlanId,
+                DefaultSubscriptionId,
+                DefaultStatus,
+                DefaultSubscriptionSiteName,
+                DefaultSubscriptionKey,
+                DefaultStopExecutions,
+                Dev2.Services.Security.SecurityEncryption.Encrypt(MarketplaceResourceId));
+
+            var config = new SubscriptionConfigMock(settings);
+
+            Assert.AreEqual(MarketplaceResourceId, config.MarketplaceResourceId);
         }
     }
 }
