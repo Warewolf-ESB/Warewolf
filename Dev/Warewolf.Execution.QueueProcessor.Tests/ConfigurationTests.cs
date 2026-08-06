@@ -295,11 +295,11 @@ namespace Warewolf.Execution.QueueProcessor.Tests
 
             Assert.AreEqual(Guid.Parse("1a82a341-b678-4992-a25a-39cdd57198d4"), source.SourceId);
             Assert.AreEqual("Warewolf DevOps RabbitMQ Source", source.SourceName);
-            Assert.AreEqual("4.tcp.eu.ngrok.io", source.HostName);
-            Assert.AreEqual(20313, source.Port);
-            Assert.AreEqual("testuser", source.UserName);
+            Assert.AreEqual("localhost", source.HostName);
+            Assert.AreEqual(5672, source.Port);
+            Assert.AreEqual("test", source.UserName);
             Assert.AreEqual("/", source.VirtualHost);
-            Assert.IsFalse(source.UseSsl, "an ngrok TCP tunnel on 20313 is plain AMQP");
+            Assert.IsFalse(source.UseSsl, "the local CI broker is plain AMQP on the default port");
         }
 
         [TestMethod]
@@ -677,7 +677,7 @@ namespace Warewolf.Execution.QueueProcessor.Tests
             Assert.IsTrue(catalog.TryGet(Guid.Parse("0b142714-8f6d-41b7-9832-2aefa8c731ec"), out var real));
             Assert.AreEqual("server.ngrok.io", real!.HostName);
             Assert.IsTrue(catalog.TryGet(Guid.Parse("1a82a341-b678-4992-a25a-39cdd57198d4"), out var named));
-            Assert.AreEqual("4.tcp.eu.ngrok.io", named!.HostName);
+            Assert.AreEqual("localhost", named!.HostName);
         }
 
         [TestMethod]

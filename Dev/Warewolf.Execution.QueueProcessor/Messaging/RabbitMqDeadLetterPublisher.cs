@@ -41,8 +41,26 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
         IConnection? _connection;
         IChannel? _channel;
 
+        /// <summary>
+        /// Opens the broker connection. Exists purely so <see cref="EnsureChannelAsync"/> can be
+        /// tested against a mocked <see cref="IConnection"/>/<see cref="IChannel"/> — the same seam
+        /// <see cref="RabbitMqMessagePump"/> uses and for the same reason. Production always uses
+        /// <see cref="CreateConnectionFactory"/>; nothing else may set it.
+        /// </summary>
+        readonly Func<CancellationToken, Task<IConnection>> _connect;
+
         public RabbitMqDeadLetterPublisher(ResolvedQueueConfiguration config)
-            => _config = config ?? throw new ArgumentNullException(nameof(config));
+            : this(config, connect: null)
+        {
+        }
+
+        internal RabbitMqDeadLetterPublisher(
+            ResolvedQueueConfiguration config,
+            Func<CancellationToken, Task<IConnection>>? connect)
+        {
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _connect = connect ?? (ct => CreateConnectionFactory().CreateConnectionAsync(ct));
+        }
 
         public async Task PublishAsync(
             byte[] body, IReadOnlyDictionary<string, object?> diagnostics, CancellationToken ct)
@@ -95,25 +113,7 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
 
                 await DisposeChannelAsync().ConfigureAwait(false);
 
-                var source = _config.DeadLetterSource;
-                var factory = new ConnectionFactory
-                {
-                    HostName = source.HostName,
-                    Port = source.Port,
-                    UserName = source.UserName,
-                    Password = source.Password,
-                    VirtualHost = source.VirtualHost,
-                    AutomaticRecoveryEnabled = true,
-                    ClientProvidedName =
-                        $"wwqp-dlq/{QueueProcessorCorrelationName()}",
-                };
-
-                if (source.UseSsl)
-                {
-                    factory.Ssl = new SslOption { Enabled = true, ServerName = source.HostName };
-                }
-
-                _connection = await factory.CreateConnectionAsync(ct).ConfigureAwait(false);
+                _connection = await _connect(ct).ConfigureAwait(false);
                 _channel = await _connection.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
 
                 // PASSIVE FIRST, then create only if absent.
@@ -141,15 +141,19 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                     // from OperationInterruptedException - so the active declare must go on a FRESH
                     // channel. PublishRabbitMQActivity reuses the closed one and would throw
                     // AlreadyClosedException instead of creating the queue; do not repeat that.
+                    //
+                    // Only the CHANNEL is dead here - the CONNECTION is still open and must be
+                    // reused, not torn down: DisposeChannelAsync() disposes both, so calling it here
+                    // would null out _connection and the very next line would throw a
+                    // NullReferenceException on every dead-letter queue that needs on-demand
+                    // creation. CloseBrokenChannelAsync() closes only the channel.
                     Dev2Logger.Info(
                         $"Dead-letter queue '{_config.DeadLetterQueueName}' does not exist - creating it " +
                         $"with durable={_config.DeadLetterDurable} from the trigger's DeadLetterOptions.",
                         ExecutionId);
 
-                    await DisposeChannelAsync().ConfigureAwait(false);
-                    // _connection was assigned above; the compiler's flow analysis cannot see that
-                    // through the try/catch.
-                    _channel = await _connection!.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
+                    await CloseBrokenChannelAsync().ConfigureAwait(false);
+                    _channel = await _connection.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
 
                     await _channel.QueueDeclareAsync(
                         queue: _config.DeadLetterQueueName!,
@@ -172,6 +176,43 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
 
         static string QueueProcessorCorrelationName()
             => Logging.QueueProcessorCorrelation.ReplicaId;
+
+        ConnectionFactory CreateConnectionFactory()
+        {
+            var source = _config.DeadLetterSource;
+            var factory = new ConnectionFactory
+            {
+                HostName = source.HostName,
+                Port = source.Port,
+                UserName = source.UserName,
+                Password = source.Password,
+                VirtualHost = source.VirtualHost,
+                AutomaticRecoveryEnabled = true,
+                ClientProvidedName = $"wwqp-dlq/{QueueProcessorCorrelationName()}",
+            };
+
+            if (source.UseSsl)
+            {
+                factory.Ssl = new SslOption { Enabled = true, ServerName = source.HostName };
+            }
+
+            return factory;
+        }
+
+        /// <summary>
+        /// Closes only the channel, leaving the connection open for reuse. Used exclusively when
+        /// a failed passive declare has closed the channel but the connection is still healthy -
+        /// see the 404 handler in <see cref="EnsureChannelAsync"/>. Do not use
+        /// <see cref="DisposeChannelAsync"/> for that case: it also disposes the connection.
+        /// </summary>
+        async Task CloseBrokenChannelAsync()
+        {
+            if (_channel is not null)
+            {
+                try { await _channel.DisposeAsync().ConfigureAwait(false); } catch { /* replacing */ }
+                _channel = null;
+            }
+        }
 
         async Task DisposeChannelAsync()
         {

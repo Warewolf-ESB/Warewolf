@@ -1,7 +1,17 @@
 # =============================================================================
 # Local development stack for the queue processor.
 #
+# The worker's Dockerfile is single-stage and builds FROM A PUBLISH OUTPUT, not the repo (see
+# its header) - there is no SDK stage and no `dotnet publish`/`dotnet build` inside it. So,
+# unlike a typical `docker compose up --build`, publish first:
+#
+#   dotnet publish Dev/Warewolf.Execution.QueueProcessor -c Release `
+#       -o Dev/Warewolf.Execution.QueueProcessor/bin/publish
 #   docker compose -f Dev/Warewolf.Execution.QueueProcessor/docker-compose.yml up --build
+#
+# (bin/ is already git-ignored, so bin/publish is never committed.) Pointing the build context
+# at the repo instead - as this file previously did - copies raw source into /app, and the
+# container fails immediately with no Warewolf.Execution.QueueProcessor.dll to run.
 #
 # Brings up RabbitMQ (with the management UI) and the worker, pointed at a stub
 # engine. Publish a message to the queue and watch it flow through to the stub:
@@ -49,9 +59,10 @@ services:
   queueprocessor:
     container_name: wwqp-worker
     build:
-      # Repo root, because the build reaches sibling projects under Dev/.
-      context: ../../
-      dockerfile: Dev/Warewolf.Execution.QueueProcessor/Dockerfile
+      # A `dotnet publish` output directory (see the file header), NOT the repo - the Dockerfile
+      # has no build stage, so the context must already contain the built DLLs.
+      context: ./bin/publish
+      dockerfile: ../../Dockerfile
     depends_on:
       rabbitmq:
         condition: service_healthy
