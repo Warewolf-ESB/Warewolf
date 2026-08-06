@@ -251,6 +251,16 @@ function Invoke-Az {
         Write-Host "      [DRYRUN] az $(Format-AzArgsForLog $Args)" -ForegroundColor DarkGray
         return $null
     }
+    # Merging stderr into the output stream via 2>&1 does NOT stop it being promoted
+    # to a terminating NativeCommandError while the script-level
+    # $ErrorActionPreference is 'Stop' - Windows PowerShell 5.1 converts merged
+    # stderr lines to ErrorRecord objects and still honours 'Stop' for them, so an
+    # expected-on-first-run "EntityNotFound" from an -AllowFail probe (e.g. a
+    # 'show' command used to check whether a resource already exists) would abort
+    # the whole script before $LASTEXITCODE below is ever checked. Scope
+    # $ErrorActionPreference to 'Continue' for just this call (function-local,
+    # reverts automatically on return) so only the exit code decides success/fail.
+    $ErrorActionPreference = 'Continue'
     $out = & az @Args 2>&1
     if ($LASTEXITCODE -ne 0) {
         if ($AllowFail) { return $null }
