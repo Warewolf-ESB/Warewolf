@@ -58,6 +58,30 @@
     connection string with LISTEN rights on the destination queue (a different,
     least-privilege rule than the Send-only one used for -ExternalShovelDestUri)
     — this is what the harness uses to verify the message actually arrived.
+.PARAMETER RabbitMqMode
+    'Container' (default): this script starts its own disposable RabbitMQ
+    container (-RabbitMqImage) on a per-run docker network, as described above.
+    'External': the caller has already got a reachable RabbitMQ broker (with the
+    management + shovel + shovel_management plugins enabled) and supplies
+    -ExternalRabbitMqManagementUri / -ExternalRabbitMqUsername /
+    -ExternalRabbitMqPassword directly; this script never touches docker for the
+    RabbitMQ side (no container, and no docker network unless -DestinationMode
+    Emulator still needs one for the SQL Edge/Service Bus emulator containers).
+    Useful on hosted build agents that cannot pull rabbitmq:3-management (a
+    Linux-only image) because their Docker daemon only supports Windows
+    containers.
+.PARAMETER ExternalRabbitMqManagementUri
+    REQUIRED when -RabbitMqMode External. Base URI of the broker's management
+    HTTP API, e.g. https://rabbitmq.warewolf.online (no trailing /api/... path).
+.PARAMETER ExternalRabbitMqUsername
+    REQUIRED when -RabbitMqMode External. Username for the management API — MUST
+    already have configure/write/read permissions on the target vhost (queue
+    declare, shovel parameter, and the default-exchange publish the harness uses).
+.PARAMETER ExternalRabbitMqPassword
+    REQUIRED when -RabbitMqMode External. Password for -ExternalRabbitMqUsername.
+.PARAMETER ExternalRabbitMqVHost
+    Only used when -RabbitMqMode External. The vhost the source queue/shovel are
+    declared on. Defaults to '/' (RabbitMQ's own default vhost).
 .PARAMETER SkipTeardown
     Leaves all containers/network running after the test (pass/fail) for local
     debugging. Never set this in CI.
@@ -67,10 +91,21 @@ param(
     [ValidateSet('Emulator', 'ExternalServiceBus')]
     [string] $DestinationMode = 'Emulator',
 
-    # RabbitMQ container
+    [ValidateSet('Container', 'External')]
+    [string] $RabbitMqMode = 'Container',
+
+    # RabbitMqMode Container only
     [string] $RabbitMqImage = 'rabbitmq:3-management',
     [int]    $RabbitMqAmqpHostPort = 25672,
     [int]    $RabbitMqManagementHostPort = 25673,
+
+    # RabbitMqMode External only (all REQUIRED in that mode)
+    [string] $ExternalRabbitMqManagementUri,
+    [string] $ExternalRabbitMqUsername,
+    [securestring] $ExternalRabbitMqPassword,
+    [string] $ExternalRabbitMqVHost = '/',
+
+    # Common to both RabbitMqMode values
     [string] $SourceQueueName = 'wwexecution-shovel-source-e2e',
     [string] $ShovelName = 'wwexecution-shovel-e2e',
 
@@ -153,11 +188,37 @@ if ($DestinationMode -eq 'ExternalServiceBus') {
     }
 }
 
-if (-not (Get-Command docker -ErrorAction SilentlyContinue)) { throw 'docker was not found on PATH.' }
+if ($RabbitMqMode -eq 'External') {
+    if ([string]::IsNullOrWhiteSpace($ExternalRabbitMqManagementUri)) {
+        throw '-ExternalRabbitMqManagementUri is required when -RabbitMqMode External.'
+    }
+    if ([string]::IsNullOrWhiteSpace($ExternalRabbitMqUsername)) {
+        throw '-ExternalRabbitMqUsername is required when -RabbitMqMode External.'
+    }
+    if ($null -eq $ExternalRabbitMqPassword -or $ExternalRabbitMqPassword.Length -eq 0) {
+        throw '-ExternalRabbitMqPassword is required when -RabbitMqMode External.'
+    }
+}
+
+# Docker is only needed when something is actually going to be containerized:
+# a Container-mode RabbitMQ, and/or the Emulator destination's SQL Edge/Service
+# Bus emulator containers. An External RabbitMQ + ExternalServiceBus combination
+# needs no docker network/containers at all, and no docker on the agent's PATH -
+# this is what lets this test run on a hosted Windows agent, whose Docker daemon
+# only supports Windows containers and can't pull the Linux-only images this
+# script otherwise uses (rabbitmq:3-management, azure-sql-edge, the Service Bus
+# emulator).
+$needsDocker = ($RabbitMqMode -eq 'Container') -or ($DestinationMode -eq 'Emulator')
+
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw 'dotnet was not found on PATH.' }
-docker version --format '{{.Server.Os}}' 2>&1 | Out-Null
-if ($LASTEXITCODE -ne 0) { throw 'Docker daemon is not reachable (docker version failed). Is Docker running?' }
-Write-Ok 'Docker and .NET SDK are available.'
+if ($needsDocker) {
+    if (-not (Get-Command docker -ErrorAction SilentlyContinue)) { throw 'docker was not found on PATH.' }
+    docker version --format '{{.Server.Os}}' 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw 'Docker daemon is not reachable (docker version failed). Is Docker running?' }
+    Write-Ok 'Docker and .NET SDK are available.'
+} else {
+    Write-Ok '.NET SDK is available (docker not required: RabbitMQ and the destination are both externally provisioned).'
+}
 
 $repoRoot          = Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')
 $configureScript   = Join-Path $PSScriptRoot '..\..\Configure-RabbitMqShovel.ps1'
@@ -170,10 +231,22 @@ $networkName         = "shovel-e2e-net-$runId"
 $rabbitContainerName = "shovel-e2e-rabbitmq-$runId"
 $sqlEdgeContainerName = "shovel-e2e-sqledge-$runId"
 $emulatorContainerName = "shovel-e2e-sbemulator-$runId"
-$rmqUser             = 'e2euser'
-$rmqPassword         = New-RandomPassword
 $configTempFile      = $null
 $enabledPluginsTempFile = $null
+
+if ($RabbitMqMode -eq 'External') {
+    $rmqUser     = $ExternalRabbitMqUsername
+    $rmqPassword = ConvertFrom-SecureStringPlain $ExternalRabbitMqPassword
+    $mgmtUri     = $ExternalRabbitMqManagementUri.TrimEnd('/')
+    $vhostForApi = if ($ExternalRabbitMqVHost -eq '/') { '%2f' } else { [Uri]::EscapeDataString($ExternalRabbitMqVHost) }
+    $rmqVHost    = $ExternalRabbitMqVHost
+} else {
+    $rmqUser     = 'e2euser'
+    $rmqPassword = New-RandomPassword
+    $mgmtUri     = "http://localhost:$RabbitMqManagementHostPort"
+    $vhostForApi = '%2f'
+    $rmqVHost    = '/'
+}
 
 Write-Ok "Run ID: $runId (all containers/network are suffixed with this to avoid collisions)"
 
@@ -189,12 +262,14 @@ $rmqPasswordSecure = ConvertTo-SecureString $rmqPassword -AsPlainText -Force
 # 'wwexecution-shovel' would silently clobber this script's own $ShovelName
 # otherwise, since it's the one parameter name the two scripts share).
 . $configureScript -LoadFunctionsOnly `
-    -RabbitMqManagementUri "http://localhost:$RabbitMqManagementHostPort" `
+    -RabbitMqManagementUri $mgmtUri `
     -RabbitMqUsername $rmqUser `
     -RabbitMqPassword $rmqPasswordSecure `
     -ShovelName $ShovelName
 
 $containersStarted = [System.Collections.Generic.List[string]]::new()
+
+$needsDockerNetwork = ($RabbitMqMode -eq 'Container') -or ($DestinationMode -eq 'Emulator')
 
 try {
     # ════════════════════════════════════════════════════════════════════════
@@ -202,8 +277,10 @@ try {
     # ════════════════════════════════════════════════════════════════════════
     Write-Phase 'Phase 1  Start RabbitMQ'
 
-    Write-Step "Creating docker network '$networkName'"
-    docker network create $networkName | Out-Null
+    if ($needsDockerNetwork) {
+        Write-Step "Creating docker network '$networkName'"
+        docker network create $networkName | Out-Null
+    }
 
     # The RabbitMQ container was previously observed crashing very early in its
     # boot ("Error when reading /var/lib/rabbitmq/.erlang.cookie: eacces"). Root
@@ -216,39 +293,45 @@ try {
     # instead (see below) — no `docker exec` against the RabbitMQ container is
     # used anywhere in this script any more. The retry loop is kept as a cheap
     # defensive safety net (recreate the container if setup fails for any other
-    # reason), not as the primary fix.
+    # reason), not as the primary fix. In -RabbitMqMode External there is no
+    # container to (re)create, so the loop just retries the same HTTP readiness
+    # checks against the already-running broker.
     $rabbitMaxAttempts = 3
     $rabbitSetupDone = $false
     for ($rabbitAttempt = 1; $rabbitAttempt -le $rabbitMaxAttempts -and -not $rabbitSetupDone; $rabbitAttempt++) {
         try {
-            if ($rabbitAttempt -gt 1) {
-                Write-Note "Retrying RabbitMQ container setup (attempt $rabbitAttempt of $rabbitMaxAttempts)..."
-                docker rm -f $rabbitContainerName 2>&1 | Out-Null
+            if ($RabbitMqMode -eq 'Container') {
+                if ($rabbitAttempt -gt 1) {
+                    Write-Note "Retrying RabbitMQ container setup (attempt $rabbitAttempt of $rabbitMaxAttempts)..."
+                    docker rm -f $rabbitContainerName 2>&1 | Out-Null
+                }
+
+                Write-Step "Starting RabbitMQ container '$rabbitContainerName' ($RabbitMqImage)"
+                # RABBITMQ_DEFAULT_USER/_PASS deliberately used instead of the built-in
+                # guest/guest account: RabbitMQ hardcodes "guest" as loopback-only, and
+                # connections arriving via a docker -p published port are NOT seen as
+                # loopback by the container even when the host side is localhost — they
+                # come from the bridge network gateway, so guest/guest would be rejected.
+                #
+                # The shovel plugins are pre-baked into a bind-mounted enabled_plugins
+                # file rather than enabled via `rabbitmq-plugins enable` + a restart
+                # after the node is already up, so the node only ever boots once.
+                $enabledPluginsTempFile = Join-Path ([System.IO.Path]::GetTempPath()) "shovel-e2e-enabled-plugins-$runId"
+                # rabbitmq:3-management's own baked-in default (rabbitmq_management,
+                # rabbitmq_prometheus) plus the two shovel plugins this test needs.
+                '[rabbitmq_management,rabbitmq_prometheus,rabbitmq_shovel,rabbitmq_shovel_management].' |
+                    Set-Content -LiteralPath $enabledPluginsTempFile -Encoding ASCII -NoNewline
+
+                docker run -d --name $rabbitContainerName --network $networkName `
+                    -e "RABBITMQ_DEFAULT_USER=$rmqUser" -e "RABBITMQ_DEFAULT_PASS=$rmqPassword" `
+                    -v "${enabledPluginsTempFile}:/etc/rabbitmq/enabled_plugins" `
+                    -p "${RabbitMqAmqpHostPort}:5672" -p "${RabbitMqManagementHostPort}:15672" `
+                    $RabbitMqImage | Out-Null
+                if ($LASTEXITCODE -ne 0) { throw "docker run failed for RabbitMQ (exit $LASTEXITCODE)." }
+                if (-not $containersStarted.Contains($rabbitContainerName)) { $containersStarted.Add($rabbitContainerName) }
+            } elseif ($rabbitAttempt -eq 1) {
+                Write-Step "Using externally-provisioned RabbitMQ instance (management API: $mgmtUri)"
             }
-
-            Write-Step "Starting RabbitMQ container '$rabbitContainerName' ($RabbitMqImage)"
-            # RABBITMQ_DEFAULT_USER/_PASS deliberately used instead of the built-in
-            # guest/guest account: RabbitMQ hardcodes "guest" as loopback-only, and
-            # connections arriving via a docker -p published port are NOT seen as
-            # loopback by the container even when the host side is localhost — they
-            # come from the bridge network gateway, so guest/guest would be rejected.
-            #
-            # The shovel plugins are pre-baked into a bind-mounted enabled_plugins
-            # file rather than enabled via `rabbitmq-plugins enable` + a restart
-            # after the node is already up, so the node only ever boots once.
-            $enabledPluginsTempFile = Join-Path ([System.IO.Path]::GetTempPath()) "shovel-e2e-enabled-plugins-$runId"
-            # rabbitmq:3-management's own baked-in default (rabbitmq_management,
-            # rabbitmq_prometheus) plus the two shovel plugins this test needs.
-            '[rabbitmq_management,rabbitmq_prometheus,rabbitmq_shovel,rabbitmq_shovel_management].' |
-                Set-Content -LiteralPath $enabledPluginsTempFile -Encoding ASCII -NoNewline
-
-            docker run -d --name $rabbitContainerName --network $networkName `
-                -e "RABBITMQ_DEFAULT_USER=$rmqUser" -e "RABBITMQ_DEFAULT_PASS=$rmqPassword" `
-                -v "${enabledPluginsTempFile}:/etc/rabbitmq/enabled_plugins" `
-                -p "${RabbitMqAmqpHostPort}:5672" -p "${RabbitMqManagementHostPort}:15672" `
-                $RabbitMqImage | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw "docker run failed for RabbitMQ (exit $LASTEXITCODE)." }
-            if (-not $containersStarted.Contains($rabbitContainerName)) { $containersStarted.Add($rabbitContainerName) }
 
             # NOTE: readiness is polled purely over the management HTTP API — never via
             # `docker exec rabbitmqctl ...` / `docker exec rabbitmq-plugins ...`. Those CLI
@@ -265,7 +348,6 @@ try {
             # treats "no exception" as success — that pattern always reports ready on the
             # very first attempt regardless of whether the call actually succeeded. The
             # checks below rely on the *outer* try/catch seeing the real exception instead.
-            $mgmtUri = "http://localhost:${RabbitMqManagementHostPort}"
             $rabbitReady = Wait-ForCondition -Description 'RabbitMQ management API' -MaxAttempts 30 -DelaySeconds 2 -Condition {
                 try { Invoke-RabbitMqApi -Method Get -Path '/api/overview' | Out-Null; $true } catch { $false }
             }
@@ -278,11 +360,10 @@ try {
             $pluginsRunning = Wait-ForCondition -Description 'rabbitmq_shovel plugin running' -MaxAttempts 15 -DelaySeconds 2 -Condition {
                 try { Invoke-RabbitMqApi -Method Get -Path '/api/shovels' | Out-Null; $true } catch { $false }
             }
-            if (-not $pluginsRunning) { throw 'rabbitmq_shovel did not report as running (pre-baked into enabled_plugins at container start).' }
+            if (-not $pluginsRunning) { throw 'rabbitmq_shovel did not report as running (pre-baked into enabled_plugins at container start, or already enabled on the external broker).' }
             Write-Ok 'Shovel plugins enabled and running.'
 
             Write-Step "Declaring source queue '$SourceQueueName'"
-            $vhostForApi = '%2f'
             $queueDeclared = Wait-ForCondition -Description "source queue '$SourceQueueName' declared" -MaxAttempts 5 -DelaySeconds 3 -Condition {
                 try { Invoke-RabbitMqApi -Method Put -Path "/api/queues/$vhostForApi/$([Uri]::EscapeDataString($SourceQueueName))" -Body @{ durable = $true } -Mutating | Out-Null; $true } catch { $false }
             }
@@ -291,8 +372,12 @@ try {
 
             $rabbitSetupDone = $true
         } catch {
-            $containerStatus = docker inspect $rabbitContainerName --format '{{.State.Status}}' 2>&1
-            Write-Note "RabbitMQ setup attempt $rabbitAttempt failed: $($_.Exception.Message) (container status: $containerStatus)"
+            if ($RabbitMqMode -eq 'Container') {
+                $containerStatus = docker inspect $rabbitContainerName --format '{{.State.Status}}' 2>&1
+                Write-Note "RabbitMQ setup attempt $rabbitAttempt failed: $($_.Exception.Message) (container status: $containerStatus)"
+            } else {
+                Write-Note "RabbitMQ setup attempt $rabbitAttempt failed: $($_.Exception.Message)"
+            }
             if ($rabbitAttempt -ge $rabbitMaxAttempts) { throw }
         }
     }
@@ -392,7 +477,7 @@ try {
     # src-uri targets the RabbitMQ node's OWN internal AMQP listener (port 5672
     # inside its own container) — the shovel plugin runs inside that same node,
     # not on the host, so this is unrelated to $RabbitMqAmqpHostPort.
-    $sourceUri = Format-Amqp091Uri -HostName 'localhost' -Port 5672 -User $rmqUser -Password $rmqPassword -VHostName '/'
+    $sourceUri = Format-Amqp091Uri -HostName 'localhost' -Port 5672 -User $rmqUser -Password $rmqPassword -VHostName $rmqVHost
     $shovelDefinition = [ordered]@{
         'src-protocol'       = 'amqp091'
         'src-uri'            = $sourceUri
@@ -451,15 +536,21 @@ catch {
 }
 finally {
     if ($SkipTeardown) {
-        Write-Note "Skipping teardown (-SkipTeardown). Containers left running: $($containersStarted -join ', ') ; network: $networkName"
+        if ($containersStarted.Count -gt 0 -or $needsDockerNetwork) {
+            Write-Note "Skipping teardown (-SkipTeardown). Containers left running: $($containersStarted -join ', ') ; network: $networkName"
+        } else {
+            Write-Note 'Skipping teardown (-SkipTeardown). Nothing docker-managed was started (RabbitMqMode External + DestinationMode ExternalServiceBus).'
+        }
     } else {
         Write-Phase 'Teardown'
         foreach ($name in $containersStarted) {
             Write-Step "Removing container '$name'"
             docker rm -f $name 2>&1 | Out-Null
         }
-        Write-Step "Removing network '$networkName'"
-        docker network rm $networkName 2>&1 | Out-Null
+        if ($needsDockerNetwork) {
+            Write-Step "Removing network '$networkName'"
+            docker network rm $networkName 2>&1 | Out-Null
+        }
         if ($configTempFile -and (Test-Path -LiteralPath $configTempFile)) { Remove-Item -LiteralPath $configTempFile -Force -ErrorAction SilentlyContinue }
         if ($enabledPluginsTempFile -and (Test-Path -LiteralPath $enabledPluginsTempFile)) { Remove-Item -LiteralPath $enabledPluginsTempFile -Force -ErrorAction SilentlyContinue }
         Write-Ok 'Teardown complete.'

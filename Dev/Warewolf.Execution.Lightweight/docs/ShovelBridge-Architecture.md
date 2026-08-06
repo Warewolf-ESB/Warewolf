@@ -122,16 +122,17 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   rule itself (watching `customEvents` for `healthy == "false"`, or a heartbeat gap) is a
   one-time operator setup step, not something this script provisions.
 - **End-to-end integration test — closed.** `Scripts/Tests/Integration/Test-ShovelBridgeE2E.ps1`
-  chains a real RabbitMQ container (shovel + management plugins pre-baked into a
-  bind-mounted `enabled_plugins` file), a real shovel (configured via
-  `Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly`), the local Azure Service Bus emulator
-  (+ its Azure SQL Edge metadata-store dependency), and the
+  chains RabbitMQ (`-RabbitMqMode Container`, the default: a real disposable container with
+  shovel + management plugins pre-baked into a bind-mounted `enabled_plugins` file; or
+  `-RabbitMqMode External`: an already-running, caller-supplied broker), a real shovel
+  (configured via `Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly`), the local Azure Service
+  Bus emulator (+ its Azure SQL Edge metadata-store dependency), and the
   `Warewolf.Execution.ServiceBusWorker.E2EHarness` console app, which publishes a
   uniquely-marked message to RabbitMQ and polls the Service Bus queue for it via the
   `Azure.Messaging.ServiceBus` SDK — proving the bridge actually delivers a message
-  end-to-end, against real containers, not mocks. Wired into CI as the
-  `ShovelBridgeE2ETest` job in `Dev/.azure/pipeline.yml` (Emulator mode, local containers
-  only). All readiness polling is done purely over the RabbitMQ management HTTP API
+  end-to-end, against a real broker/containers, not mocks. Wired into CI as the
+  `ShovelBridgeE2ETest` job in `Dev/.azure/pipeline.yml` (Container + Emulator mode, local
+  containers only). All readiness polling is done purely over the RabbitMQ management HTTP API
   (`/api/overview`, `/api/shovels`) — deliberately never via `docker exec rabbitmqctl` /
   `docker exec rabbitmq-plugins`, since those CLI tools each spin up their own short-lived
   Erlang node to talk to the broker over distribution, and doing so repeatedly while the
@@ -148,7 +149,15 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   used to build `-ExternalServiceBusConnectionString`) — mirroring the same least-privilege
   Send/Listen rule split `Deploy-WwExecutionServiceBusWorker.ps1` uses. Nothing is deleted
   after the run: the queue/rules are provisioned once and reused by every run against that
-  dedicated testing namespace, rather than provisioned/torn down per-run.
+  dedicated testing namespace, rather than provisioned/torn down per-run. That same job also
+  runs RabbitMQ in `-RabbitMqMode External`, against the standing "Warewolf DevOps RabbitMQ
+  Source" broker (management API at `rabbitmq.warewolf.online`) instead of a docker-run
+  `rabbitmq:3-management` container: Microsoft-hosted Windows (`windows-2022`) build agents'
+  Docker daemon only supports Windows containers (no Hyper-V/WSL2 Linux-container backend on
+  the hosted VM, and no in-place daemon switch available there), so it cannot pull that
+  Linux-only image. With both RabbitMQ and the Service Bus destination externally
+  provisioned, this job needs no docker at all.
+
 
 ## Promotion status
 
