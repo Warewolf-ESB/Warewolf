@@ -64,6 +64,27 @@
     <PackageReference Update="Google.Protobuf" Version="3.27.1" />
   </ItemGroup>
 
+  <!--
+    Skip 'dotnet publish' on Debug builds when a RuntimeIdentifier is set.
+
+    The hosted CI pipeline publishes ServerTests.sln (which transitively
+    includes this project) with `-r win-x64`, which triggers an MSB3030 in
+    the Azure Functions Worker SDK when it tries to copy
+    obj\Debug\net8.0\win-x64\extensions.json (the Worker SDK writes the file
+    to the non-RID-qualified obj path while the main publish target looks
+    for it under the RID subfolder). Same root cause and fix as the
+    companion Warewolf.Execution.Lightweight project.
+
+    Warewolf.Execution.ServiceBusWorker.Tests only needs this project's
+    BUILD output (via ProjectReference), not its PUBLISH output, so skipping
+    the publish step on Debug is safe for the test pipeline. Release
+    publishes (the Azure deployment path) still need to publish, so the
+    gate is scoped to Debug only.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' != ''">
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
