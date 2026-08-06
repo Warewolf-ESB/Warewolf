@@ -30,6 +30,9 @@ param(
 	[string]   $FunctionApp   = "wwenginenewscriptai",
 	[string]   $AiName        = "wwenginenewscriptai-ai",
 	[string[]] $Phases        = @("ColdStart", "Warm", "Concurrency", "IdleColdStart"),
+	# When present, dot-sources all helper functions without dispatching any phases.
+	# Required for Pester unit tests that need to call internal functions directly.
+	[switch]   $LoadFunctionsOnly,
 	[int]      $WarmRequests  = 30,
 	[int]      $SeqRequests   = 40,
 	[int]      $ParRequests   = 40,
@@ -69,10 +72,14 @@ function Write-Log {
 
 # --- Discover executable public workflow targets from /public/apis.json -----------------
 function Get-Targets {
-	Write-Log "Discovering public APIs from $BaseUrl/public/apis.json"
-	$apis = (Invoke-WebRequest -Uri "$BaseUrl/public/apis.json" -UseBasicParsing -TimeoutSec 60).Content | ConvertFrom-Json
-	Write-Log "Found $($apis.Apis.Count) public APIs"
-	# Prefer known-good simple GET workflows; fall back to the first few baseUrls.
+	# Probe apis.json for informational logging only — targets are deliberately pinned below
+	# so that runs remain comparable to the baselines in docs/perf/RESULTS.md.
+	Write-Log "Probing $BaseUrl/public/apis.json (informational only — targets are fixed)"
+	try {
+		$apis = (Invoke-WebRequest -Uri "$BaseUrl/public/apis.json" -UseBasicParsing -TimeoutSec 60).Content | ConvertFrom-Json
+		Write-Log "Found $($apis.Apis.Count) public APIs (not used — pinned targets below)"
+	} catch { Write-Log "  (apis.json probe failed — continuing with pinned targets)" }
+	# Pinned targets: changing these invalidates baseline comparability with RESULTS.md.
 	$preferred = @(
 		"$BaseUrl/Public/Hello World.json?Name=Warewolf",
 		"$BaseUrl/Public/Examples/Dice Roll Example/Dice Roll.json"
@@ -382,7 +389,8 @@ function Invoke-Par5Phase {
 	$startIso = $burstStart.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
 	$endIso   = $burstEnd.AddMinutes(2).ToString("yyyy-MM-ddTHH:mm:ssZ")
 	$instances = Get-LiveInstanceCount -StartIso $startIso -EndIso $endIso
-	Write-Log ("  $Label scale-out: {0} instance(s) detected during burst" -f $(if ($instances -gt 0) { $instances } else { "unknown (metric not yet available — retry with -Correlate)" }))
+	$scaleMsg = if ($instances -gt 0) { "$instances instance(s) detected during burst" } else { "unknown (metric not yet available — retry with -Correlate)" }
+	Write-Log "  $Label scale-out: $scaleMsg"
 	return $instances
 }
 
@@ -506,60 +514,81 @@ function Invoke-LoadParPhase {
 	$startIso = $burstStart.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
 	$endIso   = $burstEnd.AddMinutes(2).ToString("yyyy-MM-ddTHH:mm:ssZ")
 	$instances = Get-LiveInstanceCount -StartIso $startIso -EndIso $endIso
-	Write-Log ("  LoadPar scale-out: {0} instance(s) detected during burst" -f $(if ($instances -gt 0) { $instances } else { "unknown — retry with -Correlate" }))
+	$scaleMsg = if ($instances -gt 0) { "$instances instance(s) detected during burst" } else { "unknown (metric not yet available — retry with -Correlate)" }
+	Write-Log "  LoadPar scale-out: $scaleMsg"
 }
 
 # --- Main --------------------------------------------------------------------------------
 Write-Log "RUN $runStamp  app=$FunctionApp  base=$BaseUrl  phases=$($Phases -join ',')"
 Get-Targets | ForEach-Object { Write-Log "  target: $_" }
 
-# ── Existing phases (untouched) ──────────────────────────────────────────────────────────
-if ($Phases -contains "ColdStart")       { Invoke-ColdStartPhase }
-if ($Phases -contains "Warm")            { Invoke-WarmPhase }
-if ($Phases -contains "Concurrency")     { Invoke-ConcurrencyPhase }
-if ($Phases -contains "HighConcurrency") { Invoke-HighConcurrencyPhase }
-if ($Phases -contains "IdleColdStart")   { Invoke-IdleColdStartPhase }
-if ($Correlate -or ($Phases -contains "Correlate")) { Invoke-CorrelationPhase }
+# When -LoadFunctionsOnly is set, stop here — all helpers are dot-sourced and available
+# for Pester tests to call directly, but no phases are dispatched.
+if ($LoadFunctionsOnly) { return }
 
-# ── New phases ───────────────────────────────────────────────────────────────────────────
+# ── Phase dispatch — wrapped in try/finally so the CSV is always written ─────────────────
+try {
+	# ── Existing phases (untouched) ──────────────────────────────────────────────────────
+	if ($Phases -contains "ColdStart")       { Invoke-ColdStartPhase }
+	if ($Phases -contains "Warm")            { Invoke-WarmPhase }
+	if ($Phases -contains "Concurrency")     { Invoke-ConcurrencyPhase }
+	if ($Phases -contains "HighConcurrency") { Invoke-HighConcurrencyPhase }
+	if ($Phases -contains "IdleColdStart")   { Invoke-IdleColdStartPhase }
 
-# Fire 5 requests one after another and record how long each individual request takes.
-# This tells you the steady-state response time when requests are not competing with each other.
-if ($Phases -contains "Seq5")            { Invoke-Seq5Phase }
+	# ── New phases ────────────────────────────────────────────────────────────────────────
 
-# Fire 5 requests all at the same time and record how long each one takes.
-# Also checks Azure Monitor immediately after the burst to see how many instances
-# the Function App scaled out to in order to handle the load.
-if ($Phases -contains "Par5")            { Invoke-Par5Phase | Out-Null }
+	# Fire 5 requests one after another and record how long each individual request takes.
+	# This tells you the steady-state response time when requests are not competing with each other.
+	if ($Phases -contains "Seq5")            { Invoke-Seq5Phase }
 
-# Runs the 5-sequential and 5-parallel tests twice — once right after a forced cold start
-# (app has been stopped and restarted, so the first requests pay the full startup cost)
-# and again after the app has been warmed up (JIT compiled, caches hot).
-# Prints a side-by-side comparison so you can see exactly how much cold start hurts.
-if ($Phases -contains "ColdVsWarm")      { Invoke-ColdVsWarmPhase }
+	# Fire 5 requests all at the same time and record how long each one takes.
+	# Also checks Azure Monitor immediately after the burst to see how many instances
+	# the Function App scaled out to in order to handle the load.
+	if ($Phases -contains "Par5")            { Invoke-Par5Phase | Out-Null }
 
-# Sends 100 requests back-to-back (one at a time) and measures the time for each.
-# Reports total wall-clock time, requests per second, and error count.
-# Use this to understand single-threaded throughput and spot latency drift over time.
-if ($Phases -contains "LoadSeq")         { Invoke-LoadSeqPhase }
+	# Runs the 5-sequential and 5-parallel tests twice — once right after a forced cold start
+	# (app has been stopped and restarted, so the first requests pay the full startup cost)
+	# and again after the app has been warmed up (JIT compiled, caches hot).
+	# Prints a side-by-side comparison so you can see exactly how much cold start hurts.
+	if ($Phases -contains "ColdVsWarm")      { Invoke-ColdVsWarmPhase }
 
-# Sends 100 requests all at once (up to $LoadThrottle threads at a time) and measures
-# how long each request takes under real concurrency pressure.
-# Also checks how many instances the Function App scaled out to during the burst.
-# Use this to find your concurrency ceiling and scaling behaviour under load.
-if ($Phases -contains "LoadPar")         { Invoke-LoadParPhase }
+	# Sends 100 requests back-to-back (one at a time) and measures the time for each.
+	# Reports total wall-clock time, requests per second, and error count.
+	# Use this to understand single-threaded throughput and spot latency drift over time.
+	if ($Phases -contains "LoadSeq")         { Invoke-LoadSeqPhase }
 
-# Convenience shortcut — runs all five new phases above in one go.
-if ($Phases -contains "AllNew") {
-	Invoke-Seq5Phase
-	Invoke-Par5Phase | Out-Null
-	Invoke-ColdVsWarmPhase
-	Invoke-LoadSeqPhase
-	Invoke-LoadParPhase
+	# Sends 100 requests all at once (up to $LoadThrottle threads at a time) and measures
+	# how long each request takes under real concurrency pressure.
+	# Also checks how many instances the Function App scaled out to during the burst.
+	# Use this to find your concurrency ceiling and scaling behaviour under load.
+	if ($Phases -contains "LoadPar")         { Invoke-LoadParPhase }
+
+	# Convenience shortcut — runs all five new phases above in one go.
+	if ($Phases -contains "AllNew") {
+		Invoke-Seq5Phase
+		Invoke-Par5Phase | Out-Null
+		Invoke-ColdVsWarmPhase
+		Invoke-LoadSeqPhase
+		Invoke-LoadParPhase
+	}
+
+	# ── S1 FIX: Correlate dispatched AFTER all load phases so its query window covers them.
+	# Previously this ran before the new phases (Seq5/Par5/ColdVsWarm/LoadSeq/LoadPar/AllNew),
+	# causing the telemetry window to close before those phases executed.
+	if ($Correlate -or ($Phases -contains "Correlate")) { Invoke-CorrelationPhase }
+
+} finally {
+	# S4 FIX: Always write the CSV — even if a phase throws or the run is interrupted.
+	# Export-Csv on an empty list writes a header-only file, which is better than nothing.
+	# S3 FIX: Use InvariantCulture for Ms so decimal separator is always '.' regardless of
+	# the machine locale (en-ZA produces '30295,6' without this; breaks downstream parsers).
+	$results |
+		Select-Object Phase, Seq, TimestampUtc,
+			@{ n='Ms'; e={ $_.Ms.ToString([System.Globalization.CultureInfo]::InvariantCulture) } },
+			Status, Ok, Bytes, Url, Error |
+		Export-Csv -Path $csv -NoTypeInformation
+	Write-Log "DONE. Rows=$($results.Count)  csv=$csv  log=$log"
 }
-
-$results | Export-Csv -Path $csv -NoTypeInformation
-Write-Log "DONE. Rows=$($results.Count)  csv=$csv  log=$log"
 Write-Host "`n=== SUMMARY (first-success / percentiles) ==="
 $results | Group-Object Phase | ForEach-Object {
 	$ok = $_.Group | Where-Object Ok
