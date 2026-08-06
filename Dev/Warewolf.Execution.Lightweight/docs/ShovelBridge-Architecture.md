@@ -150,13 +150,26 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   Send/Listen rule split `Deploy-WwExecutionServiceBusWorker.ps1` uses. Nothing is deleted
   after the run: the queue/rules are provisioned once and reused by every run against that
   dedicated testing namespace, rather than provisioned/torn down per-run. That same job also
-  runs RabbitMQ in `-RabbitMqMode External`, against the standing "Warewolf DevOps RabbitMQ
-  Source" broker (management API at `rabbitmq.warewolf.online`) instead of a docker-run
-  `rabbitmq:3-management` container: Microsoft-hosted Windows (`windows-2022`) build agents'
-  Docker daemon only supports Windows containers (no Hyper-V/WSL2 Linux-container backend on
-  the hosted VM, and no in-place daemon switch available there), so it cannot pull that
-  Linux-only image. With both RabbitMQ and the Service Bus destination externally
-  provisioned, this job needs no docker at all.
+  runs RabbitMQ in `-RabbitMqMode External`, against a **local, choco-installed RabbitMQ
+  Windows service on the hosted agent itself** (management API at `http://localhost:15672`,
+  loopback-only `guest` user) instead of a docker-run `rabbitmq:3-management` container:
+  Microsoft-hosted Windows (`windows-2022`) build agents' Docker daemon only supports Windows
+  containers (no Hyper-V/WSL2 Linux-container backend on the hosted VM, and no in-place
+  daemon switch available there), so it cannot pull that Linux-only image.
+  `-RabbitMqMode External` only needs a reachable broker with management + shovel +
+  shovel_management enabled and caller-supplied creds, so this reuses the same
+  `choco install rabbitmq` + `rabbitmq.conf` (`transient_nonexcl_queues` re-permit) technique
+  `TestRun.ps1`'s `Start-HostRabbitMQServer` already uses for other RabbitMQ-dependent CI jobs
+  on Windows agents, plus explicitly enabling `rabbitmq_shovel`/`rabbitmq_shovel_management`
+  via `rabbitmq-plugins.bat` (not needed by `Start-HostRabbitMQServer`'s own callers). This
+  previously pointed at a standing, self-hosted "Warewolf DevOps RabbitMQ Source" broker
+  (`rabbitmq.warewolf.online`) reached over a non-Azure tunnel; that was replaced because its
+  outbound network path to the real Service Bus destination was unreliable/opaque from CI —
+  the shovel would connect to the source fine but never reach the `running` state against
+  Service Bus. A broker local to the hosted agent uses Microsoft's own outbound networking to
+  Azure, which is what this test actually needs to exercise. With both RabbitMQ (local
+  Windows service) and the Service Bus destination (external, real Azure) available, this job
+  needs no docker at all.
 
 
 ## Promotion status

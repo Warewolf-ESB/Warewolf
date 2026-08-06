@@ -173,6 +173,56 @@ function Wait-ForCondition {
     return $false
 }
 
+function Test-ServiceBusQueueExists {
+    <#
+        Fast, dependency-free existence probe for a Service Bus queue, using the
+        Service Bus HTTP management endpoint (Atom feed) signed with a SAS token
+        derived from the connection string's own key — no Azure SDK/az CLI needed.
+
+        Returns $true / $false when the check could be performed, or $null when
+        the connection string couldn't be parsed (e.g. it uses a shared access
+        signature token directly rather than a key name+key pair) — in which
+        case the caller should treat this as "unknown" and not fail the test on
+        it, since the ORIGINAL (mode-appropriate) failure signal is still the
+        shovel-running wait in Phase 3.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $ConnectionString,
+        [Parameter(Mandatory)][string] $QueueName
+    )
+    $parts = @{}
+    foreach ($seg in $ConnectionString.Split(';')) {
+        if ([string]::IsNullOrWhiteSpace($seg)) { continue }
+        $kv = $seg.Split('=', 2)
+        if ($kv.Length -eq 2) { $parts[$kv[0].Trim()] = $kv[1].Trim() }
+    }
+    if (-not ($parts.ContainsKey('Endpoint') -and $parts.ContainsKey('SharedAccessKeyName') -and $parts.ContainsKey('SharedAccessKey'))) {
+        return $null
+    }
+    $endpoint    = ($parts['Endpoint'] -replace '^sb://', 'https://').TrimEnd('/')
+    $resourceUri = "$endpoint/$QueueName"
+    $expiry      = [DateTimeOffset]::UtcNow.AddMinutes(5).ToUnixTimeSeconds()
+    $toSign      = [Uri]::EscapeDataString($resourceUri) + "`n" + $expiry
+    $hmac        = New-Object System.Security.Cryptography.HMACSHA256
+    $hmac.Key    = [Text.Encoding]::UTF8.GetBytes($parts['SharedAccessKey'])
+    $signature   = [Convert]::ToBase64String($hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($toSign)))
+    $sasToken    = "SharedAccessSignature sr=$([Uri]::EscapeDataString($resourceUri))&sig=$([Uri]::EscapeDataString($signature))&se=$expiry&skn=$($parts['SharedAccessKeyName'])"
+    try {
+        $null = Invoke-WebRequest -Uri "${resourceUri}?api-version=2021-05" -Headers @{ Authorization = $sasToken } -Method Get -UseBasicParsing -TimeoutSec 15
+        return $true
+    } catch {
+        $statusCode = $null
+        if ($_.Exception.PSObject.Properties.Match('Response').Count -gt 0 -and $_.Exception.Response) {
+            $statusCode = [int]$_.Exception.Response.StatusCode
+        }
+        if ($statusCode -eq 404) { return $false }
+        # Any other failure (network/DNS/auth) is inconclusive for "does the queue
+        # exist" — surface it as a note but don't claim the queue is missing.
+        Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)"
+        return $null
+    }
+}
+
 # ════════════════════════════════════════════════════════════════════════════
 # Phase 0 — Pre-flight
 # ════════════════════════════════════════════════════════════════════════════
@@ -466,7 +516,19 @@ try {
         Write-Step 'Using externally-provisioned Service Bus namespace/queue (ExternalServiceBus mode)'
         $shovelDestUri = $ExternalShovelDestUri
         $serviceBusConnectionStringPlain = ConvertFrom-SecureStringPlain $ExternalServiceBusConnectionString
-        Write-Ok "Destination queue '$DestinationQueueName' assumed to already exist on the external namespace."
+
+        # Fail fast with an actionable message rather than burning the full Phase 3
+        # shovel-running wait (30s) only to time out with no indication of WHY: a
+        # missing destination queue is a common setup mistake in this mode (Phase 2
+        # here never creates the queue — it must already exist on the namespace).
+        $queueExists = Test-ServiceBusQueueExists -ConnectionString $serviceBusConnectionStringPlain -QueueName $DestinationQueueName
+        if ($queueExists -eq $false) {
+            throw "Destination queue '$DestinationQueueName' does not exist on the external Service Bus namespace. Create it (e.g. via 'az servicebus queue create') before running this test — see docs/ShovelBridge-Architecture.md."
+        } elseif ($queueExists -eq $true) {
+            Write-Ok "Destination queue '$DestinationQueueName' confirmed to exist on the external namespace."
+        } else {
+            Write-Note "Could not confirm destination queue '$DestinationQueueName' exists (connection string not in key-name/key form) — assuming it exists."
+        }
     }
 
     # ════════════════════════════════════════════════════════════════════════
@@ -492,12 +554,23 @@ try {
     Write-Step "PUT /api/parameters/shovel/%2f/$ShovelName"
     Invoke-RabbitMqApi -Method Put -Path "/api/parameters/shovel/$vhostForApi/$([Uri]::EscapeDataString($ShovelName))" -Body @{ value = $shovelDefinition } -Mutating | Out-Null
 
+    $lastShovelState = $null
     $shovelRunning = Wait-ForCondition -Description "shovel '$ShovelName' running" -MaxAttempts 15 -DelaySeconds 2 -Condition {
         $shovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
         $mine = @($shovels) | Where-Object { $_.name -eq $ShovelName }
+        if ($mine) { $script:lastShovelState = $mine[0] }
         $mine -and $mine[0].state -eq 'running'
     }
-    if (-not $shovelRunning) { throw "Shovel '$ShovelName' did not reach the 'running' state." }
+    if (-not $shovelRunning) {
+        # The management API only ever reports 'starting'/'running' for the
+        # current snapshot — it doesn't retain the connect failure reason once
+        # the shovel restarts. Surface what we DO have (last known state) plus a
+        # pointer to where the real reason lives (broker logs / Admin > Shovel
+        # Status), since a bare "did not reach running" gives no lead on WHICH
+        # side (src vs dest) is failing.
+        $stateDetail = if ($lastShovelState) { " Last observed state: $($lastShovelState | ConvertTo-Json -Compress)." } else { ' No shovel status was ever observed for this name — check the PUT above succeeded.' }
+        throw "Shovel '$ShovelName' did not reach the 'running' state.$stateDetail Check the RabbitMQ broker logs (or Admin > Shovel Status in the management UI) for the connect failure reason — commonly a src-uri auth/permission failure, or a dest-uri (Service Bus) auth/network/queue-not-found failure."
+    }
     Write-Ok "Shovel '$ShovelName' is running."
 
     # ════════════════════════════════════════════════════════════════════════
