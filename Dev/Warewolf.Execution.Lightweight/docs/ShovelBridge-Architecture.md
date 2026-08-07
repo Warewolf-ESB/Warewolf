@@ -123,6 +123,17 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   checks `disableLocalAuth` before every run and restores `false` if a policy has
   flipped it. Any *other* namespace (e.g. a real deployment target) still needs this
   checked/restored manually per the guidance above.
+- **`state: "flow"` is a healthy, running shovel — not a failure — and all status polling
+  in this codebase treats it as equivalent to `state: "running"`.** RabbitMQ reports a
+  connected, actively-forwarding shovel as `"flow"` whenever its own internal flow-control
+  is currently throttling it (e.g. transient backpressure from the destination); it is a
+  normal operational substate, not `terminated`/`starting`. Polling code that only accepts
+  `state -eq 'running'` produces an intermittent **false-negative timeout** — the CI job
+  fails with "did not reach the 'running' state" even though the last observed state shows
+  the shovel connected end-to-end (`"forwarded"`/`"pending"` populated, `src_uri`/`dest_uri`
+  both present, no `terminated`/error). `Test-ShovelBridgeE2E.ps1` (Phase 3),
+  `Configure-RabbitMqShovel.ps1` (Phase 3), and `Monitor-RabbitMqShovel.ps1` all check
+  `state -in @('running', 'flow')` for exactly this reason.
 - **The broker needs a `customize_hostname_check` TLS fix in `advanced.config`, or
   every Shovel destination connection to a real Service Bus namespace fails.** This
   produces the *exact same* symptom as the `disableLocalAuth` drift above (Shovel

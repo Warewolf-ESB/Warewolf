@@ -326,7 +326,10 @@ try {
     Write-Step "GET /api/shovels/{vhost=$VHost} (looking for '$ShovelName')"
     $state = Get-ShovelState -VHostName $VHost -Name $ShovelName
 
-    $isHealthy = ($state -eq 'running')
+    # 'flow' is a normal, healthy operational substate of a running shovel (connected on
+    # both ends, just currently throttled by RabbitMQ's own flow control) — treat it the
+    # same as 'running', not as unhealthy. See docs/ShovelBridge-Architecture.md.
+    $isHealthy = ($state -in @('running', 'flow'))
     $stateForReport = if ($null -eq $state) { 'not-configured' } else { $state }
 
     # ════════════════════════════════════════════════════════════════════════
@@ -352,7 +355,7 @@ try {
         return
     }
 
-    Write-Note "Shovel '$ShovelName' is UNHEALTHY (state: '$stateForReport', expected 'running')."
+    Write-Note "Shovel '$ShovelName' is UNHEALTHY (state: '$stateForReport', expected 'running' or 'flow')."
     Send-AppInsightsEvent -EventName 'ShovelHealthCheck' -Properties $eventProperties
     Save-MonitorSummary -Status 'unhealthy' -State $stateForReport
     throw "Shovel '$ShovelName' (vhost '$VHost') is not running (state: '$stateForReport'). Check RabbitMQ logs / the management UI's Admin > Shovel Status page, and verify the Service Bus destination credential has not been rotated without updating the shovel (see docs/KeyRotationRunbook.md)."

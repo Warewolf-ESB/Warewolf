@@ -152,6 +152,25 @@ Describe 'Monitor-RabbitMqShovel — end-to-end (DryRun, no broker/telemetry mut
         }
     }
 
+    Context 'healthy shovel (flow-controlled)' {
+        # 'flow' is a normal, healthy operational substate of a running shovel (connected
+        # end-to-end, just currently throttled by RabbitMQ's own flow control) — it must
+        # be treated the same as 'running', not as a failure. See
+        # docs/ShovelBridge-Architecture.md.
+        BeforeEach { $global:shovelState = 'flow' }
+
+        It 'reports healthy and completes without throwing' {
+            { & $script:MonitorScript @commonArgs } | Should -Not -Throw
+        }
+
+        It 'writes a "healthy" run summary reporting the "flow" state' {
+            & $script:MonitorScript @commonArgs
+            $summary = Get-Content (Get-ChildItem $global:logDir -Filter '*.summary.json' | Select-Object -First 1).FullName | ConvertFrom-Json
+            $summary.status      | Should -Be 'healthy'
+            $summary.shovelState | Should -Be 'flow'
+        }
+    }
+
     Context 'unhealthy shovel (wrong state)' {
         BeforeEach { $global:shovelState = 'terminated' }
 

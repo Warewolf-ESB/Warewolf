@@ -618,17 +618,20 @@ try {
     if ($DryRun) {
         Write-Note 'Skipped in dry-run (no shovel was actually created).'
     } else {
+        # 'flow' is a normal, healthy operational substate of a running shovel (connected
+        # on both ends, just currently throttled by RabbitMQ's own flow control) — treat
+        # it the same as 'running', not as a failure. See docs/ShovelBridge-Architecture.md.
         $state = $null
         for ($i = 1; $i -le 10; $i++) {
             $shovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
             $mine = @($shovels) | Where-Object { $_.name -eq $ShovelName }
-            if ($mine) { $state = $mine[0].state; if ($state -eq 'running') { break } }
+            if ($mine) { $state = $mine[0].state; if ($state -in @('running', 'flow')) { break } }
             Start-Sleep -Seconds 2
         }
-        if ($state -eq 'running') {
-            Write-Ok "Shovel '$ShovelName' is running."
+        if ($state -in @('running', 'flow')) {
+            Write-Ok "Shovel '$ShovelName' is running (state: $state)."
         } else {
-            Write-Note "Shovel '$ShovelName' reported state '$state' (expected 'running') after 20s — check RabbitMQ logs / the management UI's Admin > Shovel Status page."
+            Write-Note "Shovel '$ShovelName' reported state '$state' (expected 'running' or 'flow') after 20s — check RabbitMQ logs / the management UI's Admin > Shovel Status page."
         }
     }
 

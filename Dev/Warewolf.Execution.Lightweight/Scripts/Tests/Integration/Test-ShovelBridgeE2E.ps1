@@ -680,11 +680,17 @@ try {
     Invoke-RabbitMqApi -Method Put -Path "/api/parameters/shovel/$vhostForApi/$([Uri]::EscapeDataString($ShovelName))" -Body @{ value = $shovelDefinition } -Mutating | Out-Null
 
     $lastShovelState = $null
+    # 'flow' is a normal, healthy operational substate of a running shovel — it means
+    # the shovel is up and connected on both ends but is currently being throttled by
+    # RabbitMQ's own flow-control (e.g. backpressure from the destination), NOT that it
+    # failed to connect. Treating only 'running' as success is a false-negative trap:
+    # a shovel snapshotted mid flow-control at the poll instant is fully healthy and
+    # will keep delivering, so accept both here (see docs/ShovelBridge-Architecture.md).
     $shovelRunning = Wait-ForCondition -Description "shovel '$ShovelName' running" -MaxAttempts 15 -DelaySeconds 2 -Condition {
         $shovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
         $mine = @($shovels) | Where-Object { $_.name -eq $ShovelName }
         if ($mine) { $script:lastShovelState = $mine[0] }
-        $mine -and $mine[0].state -eq 'running'
+        $mine -and $mine[0].state -in @('running', 'flow')
     }
     if (-not $shovelRunning) {
         # The management API only ever reports 'starting'/'running' for the
