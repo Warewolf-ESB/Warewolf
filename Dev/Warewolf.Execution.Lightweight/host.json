@@ -4,6 +4,9 @@
     "extensions": {
         "http": {
             "routePrefix": ""
+        },
+        "serviceBus": {
+            "autoCompleteMessages": false
         }
     },
     "logging": {
@@ -29,6 +32,7 @@
         "Function": "Information",
         "Host.Results": "Information",
         "Host.Aggregator": "Warning",
+        "Host.General": "Debug",
         "Microsoft.Azure.WebJobs": "Trace",
         "Microsoft.Azure.WebJobs.Script": "Debug",
         "Warewolf.Execution.Lightweight.Logging.AzureExecutionLogger": "Trace",

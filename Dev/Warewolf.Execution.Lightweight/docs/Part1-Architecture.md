@@ -88,12 +88,23 @@ between Entra identity and Warewolf `secure.config` groups:
 | `Permission.DeployTo` | Fine-grained permission flag |
 | `Permission.DeployFrom` | Fine-grained permission flag |
 | `Permission.Administrator` | Fine-grained permission flag |
+| `Warewolf_ClientApps` | Dedicated role for app-only (daemon / managed-identity) client callers |
+| `Warewolf_JobProcessor` | The suspend/resume poller Function App (`Warewolf.Execution.EngineJobProcessor`). Needs a **global-scope** (`IsServer=true`) `Execute` row, because `/secure/resume/{jobId}` has no per-workflow resource entry |
+| `Warewolf_QueueProcessor` | The RabbitMQ queue workers (`Warewolf.Execution.QueueProcessor`, one Container App per trigger). Needs a **per-workflow** (`IsServer=false`) `View`+`Execute` row for **each** trigger's `WorkflowName`, because a queue worker calls a named workflow on `/Secure/{*name}` |
 
 > **Design rule** — the group app roles (`WarewolfAdministrators`, `PUBLIC`,
 > etc.) represent *membership* in a Warewolf group.  The `Permission.*` roles
 > represent individual capability flags.  Both are declared as app roles with
 > `allowedMemberTypes: ["User", "Application"]` so both users and daemon clients
 > can be assigned them.
+
+> **Daemon callers and scope.** The two processor roles above illustrate the scope rule in §5:
+> a caller whose route resolves to a **named workflow** is authorized from the **resource** role
+> map, so it needs a per-workflow row; a caller on a route with no resource entry falls back to
+> the **global** map and needs `IsServer=true`. Getting this the wrong way round yields the
+> WOLF-8418 **HTTP 500** denial rather than a 403, which is the usual first symptom.
+> Each queue worker Container App has its **own** system-assigned managed identity, so
+> `Warewolf_QueueProcessor` is assigned once **per app** (see `Deploy-EndToEnd-Runbook.md` §8d).
 
 ### 2.3 Easy Auth Configuration
 
@@ -277,6 +288,26 @@ dictionary of `WorkflowAuthPolicy` objects keyed by lowercase workflow name.
 - Only entries with `Execute == true` are included in `AllowedGroups`
 - Server-wide entries (`IsGlobal == true`) are excluded from per-workflow policies
 
+### 4.7 Non-HTTP trigger authorization — `ServiceBusWorkflowTriggerFunction`
+
+**Files:** `Functions/ServiceBusWorkflowTriggerFunction.cs`, `Auth/Parsers/EntraBearerTokenValidator.cs`
+
+The HTTP middleware pipeline above (4.1–4.3) only runs for HTTP-triggered functions.
+The secure Service Bus trigger (Model A of
+`docs/ServiceBusSecureTrigger-Architecture.md`) is a non-HTTP entry point, so it
+performs the equivalent steps **inline**, reusing the same shared, transport-agnostic
+pieces rather than a parallel implementation:
+
+- Token validation delegates to `EntraBearerTokenValidator` — the same RS256/issuer/
+  audience/lifetime validation core that `BearerTokenPrincipalParser` (§4.2) uses for
+  HTTP, just bound to a Service-Bus-specific audience (`ServiceBusEntraAuthOptions`).
+- The authorization decision itself calls the **same** `IWorkflowPolicyMatcher.Evaluate(...)`
+  singleton described in §4.4 — zero changes to the matcher were needed since it was
+  already transport-agnostic.
+
+See `docs/ServiceBusSecureTrigger-Architecture.md` for the full message flow, threat
+model mapping, and configuration reference.
+
 ---
 
 ## 5. Policy Data Model
@@ -369,6 +400,10 @@ WorkflowClaimsPrincipal : ClaimsPrincipal
 | `KEYVAULT_SECRET_NAME` | `HostEnvironmentConfig` | Key Vault secret name (default `dp-keyring-v1`) |
 | `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | Easy Auth | Client secret reference |
 | `AZURE_FUNCTIONS_ENVIRONMENT` | `HostEnvironmentConfig` | `Development` triggers dev bypasses |
+| `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` | `ServiceBusEntraAuthOptions` | Expected `aud` claim for tokens carried in secure Service Bus trigger messages (see `docs/ServiceBusSecureTrigger-Architecture.md`) |
+| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | `[ServiceBusTrigger]` attribute indirection | Queue name the secure trigger listens on |
+| `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | `ServiceBusTriggerOptions` | Replay-prevention window for message-borne token `jti` values |
+| `ServiceBusConnection__fullyQualifiedNamespace` | Functions Service Bus binding | Identity-based Service Bus connection (no connection string) |
 
 ---
 

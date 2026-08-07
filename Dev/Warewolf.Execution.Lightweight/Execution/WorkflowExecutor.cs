@@ -46,7 +46,6 @@ namespace Warewolf.Execution.Lightweight
     public class WorkflowExecutor : IWorkflowExecutor
     {
         readonly IExecutionLogger _executionLogger;
-        readonly IUsageEventEmitter _usageEventEmitter;
 
         // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
         // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
@@ -59,19 +58,8 @@ namespace Warewolf.Execution.Lightweight
             new(StringComparer.OrdinalIgnoreCase);
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
-            : this(executionLogger, usageEventEmitter: null)
-        {
-        }
-
-        /// <summary>
-        /// DI-friendly constructor.  <paramref name="usageEventEmitter"/> is optional —
-        /// when null, a no-op emitter is used so existing call sites and tests that
-        /// pass only the logger keep working unchanged.
-        /// </summary>
-        public WorkflowExecutor(IExecutionLogger executionLogger, IUsageEventEmitter usageEventEmitter)
         {
             _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
-            _usageEventEmitter = usageEventEmitter ?? NoOpUsageEventEmitter.Instance;
         }
 
         /// <summary>
@@ -326,15 +314,18 @@ namespace Warewolf.Execution.Lightweight
 
                 Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, ErrorCount: {result.Errors.Count}, Duration: {stopwatch.Elapsed.TotalMilliseconds}ms", executionId.ToString());
 
-                // Per-execution usage telemetry (8438) — emit AFTER the result is built so the
-                // emit never affects response latency or content.  The emitter is non-throwing.
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: resolvedName,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    result.IsSuccess,
-                    errorCount:   result.Errors.Count,
-                    startedAtUtc: startTime));
+                // Per-execution usage telemetry (8438 / 8501) — record the execution facts
+                // AFTER the result is built so building the response is never affected.
+                // The actual publish (and its full-request timing) happens in
+                // UsagePublishMiddleware, registered first in the pipeline; this only
+                // hands off the workflow-specific payload via the ambient context.
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = resolvedName,
+                    ExecutionId  = executionId,
+                    IsSuccess    = result.IsSuccess,
+                    ErrorCount   = result.Errors.Count
+                };
 
                 return result;
             }
@@ -346,13 +337,13 @@ namespace Warewolf.Execution.Lightweight
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    false,
-                    errorCount:   1,
-                    startedAtUtc: startTime));
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
@@ -368,13 +359,13 @@ namespace Warewolf.Execution.Lightweight
                 stopwatch.Stop();
                 Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
                 _executionLogger.LogError(nameof(Execute), ex, executionId);
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    false,
-                    errorCount:   1,
-                    startedAtUtc: startTime));
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
@@ -514,7 +505,7 @@ namespace Warewolf.Execution.Lightweight
             Guid resourceId,
             int versionNumber)
         {
-            var rawPayload = BuildJsonPayload(request.InputParameters);
+            var rawPayload = ResolveInputPayload(request);
             var workflowDir = Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
 
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), rawPayload)
@@ -535,9 +526,10 @@ namespace Warewolf.Execution.Lightweight
                 ExecutingUser = ResolveExecutingUser(request.ExecutingPrincipal)
             };
 
-            if (!string.IsNullOrEmpty(dataList)
-                && request.InputParameters != null
-                && request.InputParameters.Count > 0)
+            // Gate on the PAYLOAD, not on InputParameters.Count: a raw body (flat JSON or XML)
+            // carries inputs without ever populating InputParameters, and gating on the dictionary
+            // meant such a body was never handed to the environment at all.
+            if (!string.IsNullOrEmpty(dataList) && !string.IsNullOrWhiteSpace(rawPayload))
             {
                 ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(
                     dataObject,
@@ -546,6 +538,59 @@ namespace Warewolf.Execution.Lightweight
             }
 
             return dataObject;
+        }
+
+        /// <summary>
+        /// Chooses the payload handed to <c>UpdateEnvironmentFromInputPayload</c>, preferring the
+        /// caller's ORIGINAL body over one re-synthesised from <see cref="WorkflowExecutionRequest.InputParameters"/>.
+        /// </summary>
+        /// <remarks>
+        /// Parity with Dev2.Runtime.WebServer, which passes <c>WebRequestTO.RawRequestPayload</c>
+        /// straight through. Re-synthesising from a Dictionary&lt;string,string&gt; silently dropped
+        /// flat bodies, XML bodies and nested/recordset inputs - see
+        /// <see cref="WorkflowExecutionRequest.RawInputPayload"/>.
+        ///
+        /// Query-string inputs are merged in when the raw body is a JSON object, and the BODY WINS
+        /// on a name clash - the same precedence as before, where the body was parsed after the
+        /// query string and overwrote it. An XML body is used as-is, because merging query values
+        /// into arbitrary XML would require guessing its shape.
+        /// </remarks>
+        internal static string ResolveInputPayload(WorkflowExecutionRequest request)
+        {
+            var raw = request.RawInputPayload;
+            var hasQueryInputs = request.InputParameters is { Count: > 0 };
+
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return BuildJsonPayload(request.InputParameters);
+            }
+
+            if (!hasQueryInputs)
+            {
+                return raw;
+            }
+
+            if (raw.TrimStart().StartsWith("{", StringComparison.Ordinal))
+            {
+                try
+                {
+                    var merged = JObject.Parse(raw);
+                    foreach (var kv in request.InputParameters)
+                    {
+                        if (merged[kv.Key] == null)
+                        {
+                            merged[kv.Key] = kv.Value;
+                        }
+                    }
+                    return merged.ToString(Formatting.None);
+                }
+                catch
+                {
+                    // Not parseable after all - fall through and use the body untouched.
+                }
+            }
+
+            return raw;
         }
 
         /// <summary>
@@ -598,6 +643,24 @@ namespace Warewolf.Execution.Lightweight
             while (next != null)
             {
                 var current = next;
+
+                // Nested sub-workflow invocation nodes (e.g. "Hello World" called from a
+                // continuation) default to the Server's legacy Windows-groups authorization
+                // (ServerAuthorizationService), which the Lightweight engine has no secure.config
+                // to satisfy. The caller was already authorized at the HTTP/claims layer before
+                // execution began, so hand nested invocations a permissive service instead.
+                if (current is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity dsfActivity)
+                {
+                    dsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                // A sub-workflow invoke may also be nested inside a composite/container
+                // activity (DsfSequenceActivity, DsfForEachActivity, GateActivity, etc.) whose
+                // own Execute() iterates its children internally, never surfacing them through
+                // this flat `next`-chain loop. Walk GetChildrenNodes() recursively so every
+                // nested DsfActivity gets the same permissive patch before `current` executes.
+                PatchNestedAuthorizationServices(current, new HashSet<string>());
+
                 next = current.Execute(dataObject, 0);
                 environment.AllErrors.UnionWith(environment.Errors);
 
@@ -610,6 +673,46 @@ namespace Warewolf.Execution.Lightweight
                     }
                     break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Recursively walks <paramref name="node"/>'s <see cref="IDev2Activity.GetChildrenNodes"/>
+        /// tree, patching every nested <c>DsfActivity</c> (sub-workflow invoke) onto the permissive
+        /// <see cref="Security.LightweightAuthorizationService"/> — mirroring the flat top-level
+        /// patch in <see cref="ExecuteActivityChain"/> for nodes reachable only through a
+        /// composite/container activity's own internal iteration (Sequence, ForEach, Gate,
+        /// ManualResumption, RedisCache, SelectAndApply, etc.), which never surface through the
+        /// outer `next`-chain loop. <paramref name="visited"/> is keyed on <see cref="IDev2Activity.UniqueID"/>
+        /// to guard against re-processing a node twice and against any cyclic/self-referencing
+        /// GetChildrenNodes() implementation causing unbounded recursion.
+        /// </summary>
+        static void PatchNestedAuthorizationServices(IDev2Activity node, HashSet<string> visited)
+        {
+            if (node == null || !visited.Add(node.UniqueID))
+            {
+                return;
+            }
+
+            var children = node.GetChildrenNodes();
+            if (children == null)
+            {
+                return;
+            }
+
+            foreach (var child in children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity childDsfActivity)
+                {
+                    childDsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                PatchNestedAuthorizationServices(child, visited);
             }
         }
 

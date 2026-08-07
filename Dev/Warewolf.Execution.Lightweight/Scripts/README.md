@@ -9,9 +9,16 @@ control plane.
 | `Deploy-WwExecutionEngine.ps1`                | **End-to-end deployment orchestrator** — runs every step in `docs/Deployment-Steps.txt` (RG → storage → Function App → App Insights → Entra/Easy Auth → publish, with optional Key Vault setup + resource encryption). Thin: reuses the scripts below. |
 | `Deploy-WwExecutionEngine.authconfig.example.json` | Template for the orchestrator's `-AuthConfigPath` (GroupPermissions + UserAssignments). Each GroupPermissions key becomes an MI-assignable app role; the `Warewolf_ClientApps` entry is the dedicated role for app-only client apps (daemon/MI callers get it via `Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign`, and `secure.config` must grant the matching `WindowsGroup` Execute on the workflows they call). |
 | `Deploy-WwJobProcessor.ps1`                   | **ExecutionEngineJobProcessor deploy orchestrator** — provisions the poller/reaper Function App (RG → storage → Function App + system-assigned MI → App Insights → Key Vault wiring → stage + WFAES-encrypt the persistence settings pair → app settings → publish). Standalone, or invoked by `Deploy-WwExecutionEngine.ps1 -DeployJobProcessor`. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions. The persistence source files (`persistencesettings.json`, `persistencesettingsdbsource.bite`) are **prompted when not passed**. Role assignment (`Warewolf_JobProcessor`) is a separate step via `Configure-WwExecutionAuth-Clients.ps1` — see the runbook. |
+| `Deploy-WwExecutionServiceBusWorker.ps1`      | **Service Bus worker deploy orchestrator ("shovel bridge")** — provisions the Service Bus-triggered Function App published from `Warewolf.Execution.ServiceBusWorker` (RG → storage → Function App + system-assigned MI → App Insights → Service Bus namespace/queue with dead-lettering → RBAC or SAS listen auth → app settings → publish). Also provisions a queue-scoped **Send-only SAS rule** (`shovel-send` by default) — the credential a RabbitMQ Shovel plugin uses as its AMQP 1.0 destination to bridge RabbitMQ messages into this queue. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions as `Deploy-WwJobProcessor.ps1`. No dedicated Rollback companion (same as the JobProcessor) — the run summary JSON records what to tear down manually. Role assignment (`Warewolf_ClientApps`) is a separate step — see `docs/KB-ClientApps-Configuration.md` §2.6. Can also be chained automatically from `Deploy-WwExecutionEngine.ps1 -DeployServiceBusWorker` (see below). |
+| `Configure-RabbitMqShovel.ps1`                | **RabbitMQ → Service Bus shovel bridge configurator** — configures a dynamic RabbitMQ Shovel (via the RabbitMQ Management HTTP API, `PUT /api/parameters/shovel/{vhost}/{name}`) that forwards messages from an existing RabbitMQ source queue (AMQP 0.9.1) to the Service Bus queue provisioned by `Deploy-WwExecutionServiceBusWorker.ps1` (AMQP 1.0), per Microsoft's documented RabbitMQ-to-Service-Bus bridging pattern. Fetches the destination SAS key live via `az` (or accepts it directly as a SecureString) — never writes it to disk. Verifies the source queue exists and polls the shovel's running state after applying. Requires the `rabbitmq_shovel`/`rabbitmq_shovel_management` plugins to already be enabled on the broker (one-time, broker-host admin action — the script probes for this and gives the exact `rabbitmq-plugins enable` instruction if missing). Same conventions: params-first/prompt-if-missing, `-DryRun`, masked summary + transcript, `-LoadFunctionsOnly` test hook. Validated against a live `rabbitmq:3-management` Docker container (see docs/ShovelBridge-Architecture.md). |
+| `Monitor-RabbitMqShovel.ps1`                  | **Shovel health monitor** — a standalone script the customer/operator schedules (Task Scheduler, cron, Azure Automation runbook, etc.) since RabbitMQ is customer/on-prem infrastructure, not something a serverless Azure Function can reliably poll. Polls `GET /api/shovels/{vhost}` for the named shovel; `running` = healthy (exit 0), anything else or missing = unhealthy (throws, non-zero exit). Optionally emits a `ShovelHealthCheck` Application Insights custom event via the plain HTTP `/v2/track` ingestion API (no SDK) — a failure event on every unhealthy check, plus an optional heartbeat event on healthy checks via `-SendHeartbeatOnHealthy` — so an Azure Monitor alert rule can watch `customEvents` for `healthy == "false"` (or a heartbeat gap). Read-only against RabbitMQ (GET only); never mutates broker state. Same conventions: params-first/prompt-if-missing, `-DryRun`, masked summary + transcript, `-LoadFunctionsOnly` test hook. |
+| `Deploy-WwQueueProcessor.ps1`                 | **RabbitMQ QueueProcessor deployment** — Azure Container Apps, **one app per queue-trigger**, autoscaled 0→N by the KEDA `rabbitmq` scaler. Pointed at a trigger file, a folder of trigger files, or a manifest; derives `maxReplicas` from the trigger's `Concurrency` and the KEDA target from its `Prefetch`. Replaces `N × QueueWorker.exe` for the Azure path (on-prem unchanged). |
 | `Rollback-WwExecutionEngine.ps1`              | **Teardown companion** — deletes ONLY what a deploy run created (summary-/tag-driven), in dependency order, with a leak check. Existing resources are preserved. |
 | `Tests/Deploy-WwExecutionEngine.Tests.ps1`    | Pester 5 suite for the orchestrator (helpers + DryRun end-to-end). Run: `Invoke-Pester -Path ./Tests/Deploy-WwExecutionEngine.Tests.ps1`. |
 | `Tests/Deploy-WwJobProcessor.Tests.ps1`       | Pester 5 suite for the JobProcessor orchestrator (static/ValidateSet, helpers via `-LoadFunctionsOnly`, DryRun end-to-end with az-shim, persistence-pair staging + fail-loud prompt validation). Run: `Invoke-Pester -Path ./Tests/Deploy-WwJobProcessor.Tests.ps1`. |
+| `Tests/Configure-RabbitMqShovel.Tests.ps1`    | Pester 5 suite for the shovel configurator (AMQP URI builders, plugin-probe warning, DryRun end-to-end with a shimmed RabbitMQ management API). |
+| `Tests/Monitor-RabbitMqShovel.Tests.ps1`      | Pester 5 suite for the shovel health monitor (`ConvertFrom-AppInsightsConnectionString` parsing, healthy/unhealthy/missing-shovel DryRun end-to-end with a shimmed RabbitMQ management API, telemetry-echo payload shape, secret masking). |
+| `Tests/Integration/Test-ShovelBridgeE2E.ps1` | **RabbitMQ → Shovel → Service Bus end-to-end test** — proves the bridge works against real containers/brokers (not mocks): brings up RabbitMQ (`-RabbitMqMode Container`, the default: a fresh `rabbitmq:3-management` container with shovel + management plugins pre-baked into a bind-mounted `enabled_plugins` file so the node only ever boots once; `-RabbitMqMode External`: an already-running, caller-supplied broker reached via `-ExternalRabbitMqManagementUri`/`-ExternalRabbitMqUsername`/`-ExternalRabbitMqPassword` — no docker needed for the RabbitMQ side), stands up the destination (`-DestinationMode Emulator`: local Azure Service Bus emulator + its Azure SQL Edge metadata-store dependency; `-DestinationMode ExternalServiceBus`: a caller-provisioned real namespace/queue), configures the shovel by dot-sourcing `Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly`, then runs the `Warewolf.Execution.ServiceBusWorker.E2EHarness` console app to publish a uniquely-marked message and verify it arrives on the Service Bus queue via the `Azure.Messaging.ServiceBus` SDK. All readiness polling is HTTP-only (`/api/overview`, `/api/shovels`) — never `docker exec rabbitmqctl`/`rabbitmq-plugins`, which was found to race the node's own cookie-file handling during boot and crash it. Docker is skipped entirely (and never required on PATH) when `-RabbitMqMode External` is combined with `-DestinationMode ExternalServiceBus` — this is what lets the test run on a Microsoft-hosted Windows agent, whose Docker daemon only supports Windows containers and can't pull the Linux-only images this script otherwise uses. Wired into CI as the `ShovelBridgeE2ETest` job in `Dev/.azure/pipeline.yml` (`-RabbitMqMode Container -DestinationMode Emulator`) and the `ShovelBridgeE2ETest_ExternalServiceBus` job in `Dev/.azure/pipeline-CLOUD.yml` (`-RabbitMqMode External -DestinationMode ExternalServiceBus`, against a local, choco-installed RabbitMQ Windows service on that same hosted agent — same technique as `TestRun.ps1`'s `Start-HostRabbitMQServer`, plus enabling the shovel plugins — rather than a standing external broker). `-SkipTeardown` leaves any containers running for local debugging. |
 | `Tests/Rollback-WwExecutionEngine.Tests.ps1`  | Pester 5 suite for the rollback script (ownership resolver + DryRun teardown). |
 | `Tests/Configure-WwExecutionAuth.Tests.ps1`   | Pester 5 suite for the auth script's helpers (e.g. `Resolve-AssignmentUser` Stage 6 guard) via `-LoadFunctionsOnly`. |
 | `Configure-WwExecutionAuth.ps1`               | End-to-end Entra + Easy Auth + secure-config provisioning (idempotent). |
@@ -21,7 +28,8 @@ control plane.
 | `Configure-WwExecutionAuth-debug.ps1`         | Debug variant with extra diagnostic dumps.                              |
 | `Configure-WwExecutionAuth-local.ps1` etc.    | Local dev wrappers used by individual contributors.                     |
 | `Cleanup-WwExecutionAuth.ps1`                 | Tear down all artifacts created by the configure script.                |
-| `Encrypt-Config.ps1`                          | Encrypts `secure.config` plaintext into the deployable form.            |
+| `Encrypt-Config.ps1`                          | Encrypts `secure.config` plaintext into the deployable form, and converts `.bite` sources from DPAPI/plaintext to **WFAES** (AES-256-GCM, key in Key Vault). Two modes: **attribute** (default — rewrites the `ConnectionString` of a `<Source>` element) and **`-WholeFile`** (encrypts the entire file; required for **queue-trigger JSON**, which has no `<Source>` element and is otherwise *silently skipped*). `-VerifyOnly` round-trips in memory without writing. |
+| `Tests/Encrypt-Config.Tests.ps1`              | Pester 5 suite for `Encrypt-Config.ps1` — `-WholeFile` round-trip, idempotency, tamper detection (AES-GCM), attribute-mode regression, and the single-file-folder StrictMode fix. Runs offline (`az` is shadowed). |
 | `Setup-EntraAuth.ps1`                         | Lightweight subset for Entra app + role provisioning only.              |
 | `KeyVaultSetup.ps1`, `KeyVaultSetup.azcli`    | One-time KV bootstrap for SecretKey storage.                            |
 | `Generate-WorkflowIndex.ps1`                  | Builds workflow discovery index used by `apis.json` route.              |
@@ -213,6 +221,122 @@ global-scope `Execute` row to the engine's `secure.config`. See
 
 Tested by `Tests/Deploy-WwJobProcessor.Tests.ps1` (Pester 5) following the same
 `-LoadFunctionsOnly` + az-shim / `-DryRun` conventions as the engine suite.
+
+---
+
+## RabbitMQ QueueProcessor deployment (`Deploy-WwQueueProcessor.ps1`)
+
+The Linux **container** worker (`Warewolf.Execution.QueueProcessor`) that replaces
+`N × QueueWorker.exe` for the Azure path: it consumes one RabbitMQ queue trigger and POSTs
+the mapped message to the engine's `/Secure/{workflow}.json` with a managed-identity token.
+Hosted on **Azure Container Apps**, autoscaled **0 → N replicas** by the KEDA `rabbitmq`
+scaler, **one Container App per queue-trigger**. The on-prem Server +
+`QueueWorker.exe` path is untouched.
+
+Publish first, then deploy (the script does **not** build the .NET project; it does build the
+container image via `az acr build`):
+
+```powershell
+dotnet publish Dev\Warewolf.Execution.QueueProcessor\Warewolf.Execution.QueueProcessor.csproj -c Release -o D:\QueueProcessor\Publish
+
+./Deploy-WwQueueProcessor.ps1 `
+  -ResourceGroup   DEV2 `
+  -Location        southafricanorth `
+  -AcaEnvironment  aca-warewolf `
+  -AcrName         acrwarewolf `
+  -PublishPath     D:\QueueProcessor\Publish `
+  -TriggerPath     'C:\ProgramData\Warewolf\Triggers\Queue' `
+  -QueueSourcePath 'C:\ProgramData\Warewolf\Resources\Sources' `
+  -EngineBaseUrl   https://wwengine.azurewebsites.net `
+  -EngineResourceAppId <engine-app-id> `
+  -KeyVaultName kvwarewolf -KeyVaultSecretName wwaeskey -EncryptStagedSettings `
+  -RabbitMqSecretUri https://kvwarewolf.vault.azure.net/secrets/rabbitmq-uri
+```
+
+**How the trigger file is pointed at the script** (mutually exclusive; `-TriggerId` narrows a
+folder/manifest to one trigger; **zero matches is a hard error**):
+
+| Parameter | Result |
+|---|---|
+| `-TriggerFilePath <file>` | one Container App |
+| `-TriggerPath <folder>` + `-TriggerFilter` (default `*.bite`) | one Container App **per matching file** |
+| `-TriggerManifestPath <json>` | one per entry, with per-trigger overrides |
+
+**Derived from the trigger file** (single source of truth — operators keep editing the trigger /
+its release variable): `maxReplicas = Concurrency`; KEDA `value = Prefetch × MaxConcurrency`
+(messages per replica, so `replicas = ceil(queueLength / value)` capped at `maxReplicas`);
+The worker reads `Prefetch` from the staged trigger for its per-consumer QoS (no prefetch env
+var — the trigger is the single source of truth). `-ScalingMode` defaults to `Elastic` (`minReplicas = 0`);
+`Fixed`/`Warm` and any `-MaxReplicas` above `Concurrency` are exception paths and are flagged in
+the plan output. `Concurrency = 0` deploys `min = max = 0` (disabled), mirroring on-prem.
+
+**Fail-loud plan-time guards:** unsubstituted `#{…}` release token; derived app-name collision;
+invalid timeout nesting (`-EngineTimeoutSeconds ≤ -ShutdownGraceSeconds < -TerminationGracePeriodSeconds`);
+missing trigger/source file. Peak core usage (`Σ maxReplicas × cpu`) is printed to check against the
+ACA environment quota.
+
+Can also run as a **companion of the engine deploy**, fanning out over every pointed trigger:
+
+```powershell
+./Deploy-WwExecutionEngine.ps1 ... `
+  -DeployRabbitMqTriggers `
+  -QueueTriggerPath 'C:\ProgramData\Warewolf\Triggers\Queue' `
+  -QueueSourcePath  'C:\ProgramData\Warewolf\Resources\Sources' `
+  -AcaEnvironment aca-warewolf -AcrName acrwarewolf `
+  -QueueProcessorPublishPath D:\QueueProcessor\Publish `
+  -RabbitMqSecretUri https://kvwarewolf.vault.azure.net/secrets/rabbitmq-uri
+```
+
+**What gets staged into the container** — config is **baked into the image**, not mounted or
+fetched at startup (this worker scales to zero, so any share mount or blob round-trip would be paid
+on every 0→1 scale and could stop a replica starting):
+
+```
+/app/Settings/triggers/<TriggerId>.bite      the queue-trigger definition
+/app/Settings/sources/<QueueSourceId>.bite   every source the trigger references…
+/app/Settings/sources/<QueueSinkId>.bite     …including the dead-letter sink, when it differs
+```
+
+Sources are prompted for with `-QueueSourcePath` and copied automatically for **both**
+`QueueSourceId` and `QueueSinkId` — a sink source that is not staged gives a replica that starts
+and then cannot dead-letter. **Every referenced source is resolved at plan time** and listed with
+the triggers that reference it; any gap aborts the run before a single Container App is created, so
+a fan-out over many triggers is all-or-nothing rather than half-deployed. At runtime the worker
+reads all staged sources **once at startup** and caches them indexed by `ID`, so nothing re-reads a
+`.bite` after cold start. The script writes `{sourceId}.bite`; the worker also resolves an
+operator-named Studio file (e.g. `Warewolf DevOps RabbitMQ Source.bite`) by scanning for a matching
+`ID` attribute. `Settings\` itself is still searched **after** `Settings\sources\`, so a deployment
+staged under the earlier flat layout keeps working. Paths are overridable with
+`QUEUE__SETTINGSPATH` / `QUEUE__TRIGGERSSUBPATH` / `QUEUE__SOURCESSUBPATH` / `QUEUE__TRIGGERFILTER`;
+defaults resolve against **`AppContext.BaseDirectory`**, not the working directory, and folder
+casing is matched case-insensitively (the worker is Linux, the deploy is Windows).
+
+**Tenant id is always set.** `-EngineTenantId` defaults from `az account show` and is prompted if
+that yields nothing, because a blank tenant is legal only for a *system-assigned* managed identity
+— for anything else the credential chain fails with *"Invalid tenant id provided"* at the first
+message, which reads like a missing app role rather than missing config.
+
+**Optimum scale shape:** `minReplicas 0`, `maxReplicas = Concurrency`, and trigger
+`Prefetch = MaxConcurrency` (both 1 unless a workflow is measured safe to run concurrently).
+Dispatch is serial per channel, so a larger prefetch adds no throughput — it raises the KEDA target
+(`value = Prefetch × MaxConcurrency`), which **delays** scale-out, and leaves more buffered messages
+to nack on drain. Scale **out**, not up; a prefetch above the cap is flagged as a plan-time advisory.
+
+**Testing locally without deploying:** `Dev\Warewolf.Execution.QueueProcessor\Settings\` holds a
+committed working sample (dev broker source under `sources\` + an `order-queue` trigger under
+`triggers\`) copied to the build output, so the worker runs straight from `bin\`. It is deliberately
+**excluded from `dotnet publish`**, so it never reaches a container image. For `docker compose`,
+copy it to `Settings.local\` (git-ignored) and repoint the `ConnectionString` at the compose broker.
+
+**After deploying:** grant **each** app's managed identity the engine app role
+`Warewolf_QueueProcessor`, and add a **per-workflow** (`IsServer=false`) `View`+`Execute` row to
+`secure.config` for each trigger's `WorkflowName` — unlike the JobProcessor's global-scope row.
+Full walkthrough, verification, and teardown: `docs\Deploy-EndToEnd-Runbook.md` §8.
+
+To **prove** the whole Azure path (engine `/Public` + `/Secure`, one Container App per trigger, the
+ACA/KEDA scale rule, then a live scale-`0→N` test by publishing to the queue) in a disposable
+resource group you delete afterwards, follow
+[`docs/Deploy-E2E-Verification-Runbook.md`](../docs/Deploy-E2E-Verification-Runbook.md).
 
 ---
 

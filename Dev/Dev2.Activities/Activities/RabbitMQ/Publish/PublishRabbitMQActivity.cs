@@ -193,7 +193,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                 using (Connection = ConnectionFactory.CreateConnection())
                 {
-                    using (Channel = Connection.CreateModel())
+                    Channel = Connection.CreateModel();
+                    try
                     {
                         bool newExchangeOrQueue = false;
 						try
@@ -203,6 +204,15 @@ namespace Dev2.Activities.RabbitMQ.Publish
 						}
 						catch (OperationInterruptedException)
 						{
+							// A failed passive declare closes the channel server-side (the
+							// broker's 404 NOT_FOUND is a channel-level AMQP exception), so
+							// the active declare must run on a brand-new channel - retrying
+							// on the one the broker just closed throws AlreadyClosedException
+							// instead of creating the exchange (see also
+							// RabbitMqDeadLetterPublisher.EnsureChannelAsync, which documents
+							// and avoids this same pitfall).
+							Channel.Dispose();
+							Channel = Connection.CreateModel();
 							// The exchange does not exist, so declare it
 							Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
                             newExchangeOrQueue = true;
@@ -214,6 +224,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
 						}
 						catch (OperationInterruptedException)
 						{
+							// Same reasoning as above: the queue's passive-declare 404 also
+							// closes this channel, so its active declare needs a fresh one too.
+							Channel.Dispose();
+							Channel = Connection.CreateModel();
 							// The queue does not exist, so declare it
 							Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
 							newExchangeOrQueue = true;
@@ -227,6 +241,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         basicProperties.Persistent = true;
                         basicProperties.CorrelationId = CorrelationID;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
+                    }
+                    finally
+                    {
+                        Channel?.Dispose();
                     }
                 }
 

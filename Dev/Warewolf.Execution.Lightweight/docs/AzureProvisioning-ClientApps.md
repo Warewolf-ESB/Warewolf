@@ -44,7 +44,7 @@ maps to one of the registration types provisioned by this script:
 | [`DotNetWebMvc/`](../../Warewolf.Execution.Lightweight.ClientExamples/DotNetWebMvc/) | ASP.NET Core MVC | **Confidential** | `Confidential` (default `https://localhost:5001/signin-oidc`) |
 | [`DotNetConsole/`](../../Warewolf.Execution.Lightweight.ClientExamples/DotNetConsole/) | .NET 8 console | **Console** | `Console -AppRolesToAssign <group-role>` |
 | [`AzureFunction/`](../../Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/) | .NET 8 isolated Function | **Daemon** (Managed Identity) | `Daemon -DaemonUseManagedIdentity -ManagedIdentityObjectId <miSpId> -AppRolesToAssign <group-role>` |
-| [`AzureServiceBus/`](../../Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/) | SB-triggered worker | **Daemon** (Managed Identity) | `Daemon -DaemonUseManagedIdentity -ManagedIdentityObjectId <miSpId> -AppRolesToAssign <group-role>` |
+| [`Warewolf.Execution.ServiceBusWorker/`](../../Warewolf.Execution.ServiceBusWorker/) | SB-triggered worker | **Daemon** (Managed Identity) | `Daemon -DaemonUseManagedIdentity -ManagedIdentityObjectId <miSpId> -AppRolesToAssign <group-role>` |
 
 > The two SPA examples use **separate registrations** (distinct dev ports: Angular
 > `4201`, React `5173`), so run the script once per app with a different

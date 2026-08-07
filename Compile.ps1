@@ -379,6 +379,55 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
+			if ($OutputFolderName -eq "ServerTests") {
+				# WOLF-8508: ServerTests.sln publishes Warewolf.Execution.Lightweight
+				# alongside its companion Function Apps (EngineJobProcessor,
+				# ServiceBusWorker) into this one shared flat directory
+				# (-p:ErrorOnDuplicatePublishOutputFiles=false above silences the
+				# resulting filename collisions). Two SDK-generated/static files are
+				# named identically across all three projects, so whichever project's
+				# copy happens to publish last wins non-deterministically:
+				#   - host.json: only Lightweight's sets extensions.http.routePrefix to
+				#     "", so a sibling's host.json winning breaks every documented
+				#     unprefixed route (e.g. /Public/apis.json 404s under the
+				#     Functions-default "api" prefix).
+				#   - worker.config.json: its defaultWorkerPath names which project's own
+				#     .dll is actually launched as the dotnet-isolated worker process. If
+				#     a sibling's wins, THAT project's Program.cs becomes the process's
+				#     composition root instead of Lightweight's -- e.g.
+				#     ServiceBusWorker's Program.cs eagerly validates its own
+				#     WwExecutionOptions (TenantId/ResourceAppId) via DataAnnotations. The
+				#     "Other Specs" test harness (StartAsAzureFunction.ps1) only ever
+				#     writes Lightweight's own required local.settings.json values, so
+				#     when ServiceBusWorker's worker.config.json wins the race the
+				#     process crashes at startup with "OptionsValidationException: ...
+				#     'TenantId' ... is required", even though Lightweight (the app under
+				#     test) never uses that option at all.
+				# (local.settings.json itself isn't part of this collision:
+				# StartAsAzureFunction.ps1 unconditionally regenerates it with exactly
+				# Lightweight's required keys immediately before starting func, for every
+				# test run.)
+				# Re-pin both files so Lightweight's own routing and worker process
+				# always win regardless of companion-project publish order.
+				$_lightweightHostJson = "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\host.json"
+				if (Test-Path $_lightweightHostJson) {
+					Copy-Item -Path $_lightweightHostJson -Destination "$PSScriptRoot\Bin\$OutputFolderName\host.json" -Force
+					Write-Host "Pinned Warewolf.Execution.Lightweight's host.json in $OutputFolderName (routePrefix, logging, functionTimeout)."
+				}
+				$_workerConfigPath = "$PSScriptRoot\Bin\$OutputFolderName\worker.config.json"
+				$_workerConfig = [ordered]@{
+					description = [ordered]@{
+						language              = "dotnet-isolated"
+						extensions            = @(".dll")
+						defaultExecutablePath = "dotnet"
+						defaultWorkerPath     = "Warewolf.Execution.Lightweight.dll"
+						workerIndexing        = "true"
+						canUsePlaceholder     = $true
+					}
+				}
+				$_workerConfig | ConvertTo-Json -Depth 4 | Set-Content -Path $_workerConfigPath -Encoding UTF8
+				Write-Host "Pinned worker.config.json's defaultWorkerPath to Warewolf.Execution.Lightweight.dll in $OutputFolderName."
+			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
 				# host when the publish targeted linux-x64 --self-contained.  A self-contained
@@ -428,6 +477,49 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (Test-Path $_sqliteInterop) {
 					Copy-Item $_sqliteInterop "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 					Write-Host "Copied win-x64 SQLite.Interop.dll to flat output root in $OutputFolderName."
+				}
+				# WOLF-8508: framework-dependent, RID-specific publishes (SelfContained=false,
+				# -r win-x64) flatten Windows-specific *managed* assemblies (e.g.
+				# Microsoft.Win32.SystemEvents.dll, System.Management.dll, System.DirectoryServices.dll,
+				# etc.) to the flat output root, but each project's own *.deps.json still records
+				# them at their nested NuGet-relative path (e.g.
+				# "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll"). With many projects
+				# publishing into this one shared directory, the .NET assembly binder used by some
+				# hosts (notably the Azure Functions isolated-worker process backing
+				# Warewolf.Execution.Lightweight) resolves purely via deps.json and does not fall
+				# back to the flat root, so it throws FileNotFoundException for an assembly that is
+				# actually present, just at the "wrong" path. Repair every affected package by
+				# recreating the nested runtimes/win*/... path from the flat copy that publish
+				# already produced.
+				$_depsFiles = Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName\*.deps.json" -ErrorAction SilentlyContinue
+				foreach ($_depsFileInfo in $_depsFiles) {
+					try {
+						$_deps = Get-Content $_depsFileInfo.FullName -Raw | ConvertFrom-Json
+					} catch {
+						Write-Host "Skipping unreadable deps.json: $($_depsFileInfo.FullName)"
+						continue
+					}
+					$_winTargetName = $null
+					foreach ($_tName in $_deps.targets.PSObject.Properties.Name) {
+						if ($_tName -like "*/win*") { $_winTargetName = $_tName; break }
+					}
+					if (-not $_winTargetName) { continue }
+					$_target = $_deps.targets.$_winTargetName
+					foreach ($_pkgName in $_target.PSObject.Properties.Name) {
+						$_pkg = $_target.$_pkgName
+						if (-not $_pkg.runtime) { continue }
+						foreach ($_relPath in $_pkg.runtime.PSObject.Properties.Name) {
+							if ($_relPath -notlike "runtimes/win*") { continue }
+							$_nestedPath = Join-Path "$PSScriptRoot\Bin\$OutputFolderName" ($_relPath -replace '/', '\')
+							if (Test-Path $_nestedPath) { continue }
+							$_flatPath = Join-Path "$PSScriptRoot\Bin\$OutputFolderName" (Split-Path $_relPath -Leaf)
+							if (Test-Path $_flatPath) {
+								$null = New-Item -Path (Split-Path $_nestedPath -Parent) -ItemType Directory -Force
+								Copy-Item -Path $_flatPath -Destination $_nestedPath -Force
+								Write-Host "Restored nested $_relPath from flat output root in $OutputFolderName (per $($_depsFileInfo.Name))."
+							}
+						}
+					}
 				}
 			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"

@@ -414,7 +414,313 @@ A successful dispatch shows the engine returning **200** (claimed + executed) or
 
 ---
 
-## 8. Teardown
+## 8. (Optional) RabbitMQ QueueProcessors — deploy + authorize
+
+The **QueueProcessor** (`Warewolf.Execution.QueueProcessor`) is the Linux **container** worker that
+replaces `N × QueueWorker.exe` for the Azure path: it consumes one RabbitMQ queue trigger and POSTs
+the mapped message to the engine's `/Secure/{workflow}.json` route with a managed-identity token.
+It runs on **Azure Container Apps**, autoscaled **0 → N replicas** by the KEDA `rabbitmq` scaler,
+**one Container App per queue-trigger**. The on-prem Server + `QueueWorker.exe` path is unchanged.
+
+It is a **daemon caller of the engine**, so it obeys the same two-part authorization contract as any
+client — with role **`Warewolf_QueueProcessor`** and **one important difference from the JobProcessor**:
+
+- **Token side** — each Container App's system-assigned MI must hold the engine app role
+  `Warewolf_QueueProcessor` (roleless ⇒ HTTP **500**, WOLF-8418). Because there is one app *per
+  trigger*, there is one MI per trigger, so the assignment is a **loop** ([§8d](#8d-authorize-each-app-loop)).
+- **Config side** — unlike the JobProcessor's **global-scope** (`IsServer=true`) row, a queue worker
+  calls a **named workflow**, so `secure.config` needs a **per-workflow** (`IsServer=false`)
+  `View=true` + `Execute=true` row for **each** trigger's `WorkflowName`
+  (e.g. `ProfilerWrapper\Queue\MandateCollectionSuccessConsume`). Add `Warewolf_QueueProcessor` to the
+  engine's auth config + `secure.config` at [§2](#2-prepare-the-engines-auth--permission-config) before
+  this step.
+
+> **Go-live gate.** Before the first **production** trigger is enabled, all four must hold: the broker
+> terminates TLS and the app runs `RABBITMQ__USESSL=true` against `amqps`; a DLX / delivery-limit policy
+> exists on the queue; `ENGINE__TIMEOUTSECONDS ≤ WORKER__SHUTDOWNGRACESECONDS < terminationGracePeriodSeconds`
+> is verified on the deployed revision; and App Insights shows the worker's events correlating with the
+> engine's traces. Details in the migration plan (Phase 11).
+
+### 8a. Publish + build
+
+The deploy script does **not** build the .NET project (same rule as the other scripts):
+
+```powershell
+dotnet publish Dev/Warewolf.Execution.QueueProcessor/Warewolf.Execution.QueueProcessor.csproj `
+  -c Release -o D:\QueueProcessor\Publish
+```
+
+The script then builds and pushes the container image **once per run** via `az acr build` (no local
+Docker daemon needed) and reuses it for every trigger. To reuse an already-built image, pass
+`-Image <acr>.azurecr.io/warewolf/queueprocessor@sha256:<digest>` and omit `-PublishPath`/`-AcrName`.
+
+### 8b. Deploy per trigger — how the trigger file is pointed at the script
+
+Three mutually exclusive modes; `-TriggerId` narrows a folder/manifest to one trigger (the per-trigger
+cutover path). **Zero matches is a hard error**, never a silent no-op.
+
+| Parameter | Result |
+|---|---|
+| `-TriggerFilePath <file>` | one Container App |
+| `-TriggerPath <folder>` (+ `-TriggerFilter`, default `triggers*.bite`) | **one Container App per matching file** |
+| `-TriggerManifestPath <json>` | one per manifest entry, with per-trigger overrides |
+
+```powershell
+# ── Dry run for ONE trigger: prints the plan, changes nothing ────────────────
+.\Deploy-WwQueueProcessor.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -AcaEnvironment aca-warewolf -AcrName acrwarewolf `
+  -PublishPath D:\QueueProcessor\Publish `
+  -TriggerFilePath 'C:\ProgramData\Warewolf\Triggers\Queue\1ac40da8-3b56-45f8-a1aa-00e6864db38b.bite' `
+  -QueueSourcePath 'C:\ProgramData\Warewolf\Resources\Sources' `
+  -EngineBaseUrl $EngineUrl -EngineResourceAppId $ResourceAppId `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
+  -RabbitMqSecretUri "https://$KeyVaultName.vault.azure.net/secrets/rabbitmq-uri" `
+  -DryRun
+```
+
+The plan shows exactly what will be derived from the trigger file, so you can check capacity before
+anything is created:
+
+```
+    Triggers resolved           : 1
+      - wwqp-mandatecollectionsucce-8065   queue='profiler.mandatecollectionsuccess.request' max=5 min=0 value=10 prefetch=10
+    Peak cores (max x cpu)      : 2.5
+```
+
+`max` = the trigger's **Concurrency**; `min` = 0 (Elastic, the standard); `value` = **Prefetch ×
+MaxConcurrency**, i.e. the KEDA target in messages per replica, so
+`replicas = ceil(queueLength / value)` capped at `max`.
+
+```powershell
+# ── Real deploy of that one trigger ─────────────────────────────────────────
+.\Deploy-WwQueueProcessor.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -AcaEnvironment aca-warewolf -AcrName acrwarewolf `
+  -PublishPath D:\QueueProcessor\Publish `
+  -TriggerFilePath 'C:\ProgramData\Warewolf\Triggers\Queue\1ac40da8-….bite' `
+  -QueueSourcePath 'C:\ProgramData\Warewolf\Resources\Sources' `
+  -EngineBaseUrl $EngineUrl -EngineResourceAppId $ResourceAppId `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
+  -RabbitMqSecretUri "https://$KeyVaultName.vault.azure.net/secrets/rabbitmq-uri" `
+  -EncryptStagedSettings `
+  -LogDir $LogDir -NonInteractive
+
+# ── ALL triggers in a folder: one Container App each, one shared image + env ──
+.\Deploy-WwQueueProcessor.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -AcaEnvironment aca-warewolf `
+  -Image "acrwarewolf.azurecr.io/warewolf/queueprocessor@sha256:<digest>" `
+  -TriggerPath 'C:\ProgramData\Warewolf\Triggers\Queue' -TriggerFilter 'triggers*.bite' `
+  -QueueSourcePath 'C:\ProgramData\Warewolf\Resources\Sources' `
+  -EngineBaseUrl $EngineUrl -EngineResourceAppId $ResourceAppId `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
+  -RabbitMqSecretUri "https://$KeyVaultName.vault.azure.net/secrets/rabbitmq-uri" `
+  -EncryptStagedSettings -LogDir $LogDir -NonInteractive
+```
+
+> **Fail-fast.** The first failing trigger aborts the loop (already-created apps stay). Pass
+> `-ContinueOnTriggerError` to deploy the remainder and exit non-zero with a per-trigger table.
+>
+> **`Concurrency = 0`** deploys the app with `min = max = 0` — disabled, mirroring the on-prem meaning.
+>
+> **Scaling exceptions** (`-ScalingMode Fixed|Warm`, or `-MaxReplicas` above `Concurrency`) are printed
+> in the plan as `(EXCEPTION: …)` so a deviation from the Elastic standard is visible afterwards.
+
+### 8c. Deploy as an engine companion (one command)
+
+`-DeployRabbitMqTriggers` fans the child script out over **every** trigger it is pointed at, after the
+engine deploy — the same pattern as `-DeployJobProcessor` in [§7a](#7a-deploy-the-processor):
+
+```powershell
+.\Deploy-WwExecutionEngine.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount $StorageAccount -AppName $AppName `
+  -PublishPath $PublishPath -AuthConfigPath $AuthConfigPath -SecureConfigPath $SecureConfigPath `
+  -KeyVaultName $KeyVaultName -KeyVaultSecretName $KeyVaultSecretName `
+  -DeployRabbitMqTriggers `
+  -QueueTriggerPath 'C:\ProgramData\Warewolf\Triggers\Queue' `
+  -QueueSourcePath  'C:\ProgramData\Warewolf\Resources\Sources' `
+  -AcaEnvironment aca-warewolf -AcrName acrwarewolf `
+  -QueueProcessorPublishPath D:\QueueProcessor\Publish `
+  -RabbitMqSecretUri "https://$KeyVaultName.vault.azure.net/secrets/rabbitmq-uri" `
+  -QueueEngineResourceAppId $ResourceAppId
+```
+
+The engine's plan phase lists the fan-out **before** anything is created, and **fails loudly** at plan
+time on: zero matching trigger files; any surviving `#{…}` release token (Concurrency must already be
+substituted, since `maxReplicas` is derived from it); or a `-QueueProcessorPublishPath` that collides
+with the engine's `-PublishPath` **or** the JobProcessor's. Add `-ContinueOnQueueTriggerError` to keep
+going past a failing trigger. The `containerapp` CLI extension is installed by the **child**, so an
+engine deploy without this switch gains no new prerequisite.
+
+### 8d. Authorize each app (loop)
+
+One MI per app, so iterate the deployed apps — the summary JSON lists them:
+
+```powershell
+$qpSummary = (Get-ChildItem "$LogDir\deploy-WwQueueProcessor-*.summary.json" |
+              Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+$apps = (Get-Content $qpSummary | ConvertFrom-Json).queueProcessorApps |
+        Where-Object { $_.status -eq 'deployed' }
+
+foreach ($app in $apps) {
+    # A Container App's MI principalId is already captured in the summary; if absent, read it:
+    $principalId = $app.principalId
+    if (-not $principalId) {
+        $principalId = az containerapp show --name $app.app --resource-group $ResourceGroup `
+                         --query identity.principalId -o tsv
+    }
+
+    .\Configure-WwExecutionAuth-Clients.ps1 `
+      -ResourceAppId $ResourceAppId -TenantId $TenantId `
+      -ClientType Daemon -DaemonUseManagedIdentity `
+      -ManagedIdentityObjectId $principalId `
+      -AppRolesToAssign Warewolf_QueueProcessor `
+      -NonInteractive
+}
+```
+
+> `Configure-WwExecutionAuth-Clients.ps1` takes `-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup`
+> for Function Apps, which use `az functionapp identity assign`. A **Container App** MI is read with
+> `az containerapp identity show`, so the `-ManagedIdentityObjectId` path above is used instead — it
+> works today with **no script change**.
+
+### 8e. Verify
+
+```powershell
+# Apps, revisions, and current replica counts
+az containerapp list --resource-group $ResourceGroup --query "[?starts_with(name,'wwqp-')].{name:name,replicas:properties.template.scale}" -o table
+az containerapp revision list --name wwqp-<slug> --resource-group $ResourceGroup -o table
+
+# Live logs (startup should show the resolved trigger, then 'Consuming queue ...')
+az containerapp logs show --name wwqp-<slug> --resource-group $ResourceGroup --follow
+```
+
+A healthy cold start logs the resolved configuration and, if the source is not TLS, an explicit
+unencrypted-traffic warning:
+
+```
+QueueConfigurationLoader resolved trigger 'MandateCollectionSuccessTrigger' (…):
+  queue='profiler.mandatecollectionsuccess.request',
+  workflow='ProfilerWrapper/Queue/MandateCollectionSuccessConsume',
+  prefetch=10, concurrency=5, durable=True, mapEntireMessage=True,
+  source=amqp://testuser@server.ngrok.io:20313/, tls=False
+Consuming queue 'profiler.mandatecollectionsuccess.request' (prefetch 10, maxConcurrency 1, …)
+```
+
+Then publish a message to the queue and confirm the workflow executed on the engine.
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Replica exits with `CONFIGURATION ERROR: … unsubstituted release token` | The staged trigger `.bite` still contains `#{…}` | Substitute release variables **before** deploying; the script guards this at plan time too |
+| `… is neither plaintext JSON nor WFAES-encrypted` | A Windows **DPAPI** trigger/source reached the container | Re-stage with `-EncryptStagedSettings` (WFAES via the engine's Key Vault key) |
+| `500` from the engine on every message | MI lacks `Warewolf_QueueProcessor`, **or** `secure.config` has no per-workflow `Execute` row | [§8d](#8d-authorize-each-app-loop) + [§2](#2-prepare-the-engines-auth--permission-config). Denials are wrapped as **500** (WOLF-8418), not 403 |
+| Replicas start but idle while the queue has messages | `value` too small relative to `Prefetch` — the first replica claimed the backlog | Set `value ≈ Prefetch × MaxConcurrency` (the script's default) or lower `Prefetch` |
+| Stays at 0 replicas with a backlog | No `-RabbitMqSecretUri`, so the KEDA rule cannot authenticate to the broker | Re-run with the Key Vault secret URI |
+| Duplicate executions after a deploy/scale-in | Drain window too short for the workflow | Raise `-ShutdownGraceSeconds` (and `-TerminationGracePeriodSeconds`) or lower `-EngineTimeoutSeconds` |
+
+---
+
+## 8.5 (Optional) Shovel bridge — Service Bus worker + RabbitMQ shovel
+
+The **shovel bridge** lets an existing on-prem/customer **RabbitMQ** broker feed the engine
+without exposing RabbitMQ to Azure or running a queue-worker container per trigger. It has two
+first-class parts, both documented in full in
+[`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md):
+
+- **Azure side — `Deploy-WwExecutionServiceBusWorker.ps1`** provisions the Service Bus-triggered
+  Function App (`Warewolf.Execution.ServiceBusWorker/`): a Service Bus namespace/queue with
+  dead-lettering, Managed Identity listen auth, and a queue-scoped **Send-only SAS rule**
+  (`shovel-send` by default) — the credential the RabbitMQ Shovel plugin uses as its AMQP 1.0
+  destination. Like the JobProcessor, it is a **daemon caller of the engine** and needs the
+  **`Warewolf_ClientApps`** app role + a matching `secure.config` `Execute` row
+  ([§2](#2-prepare-the-engines-auth--permission-config)).
+- **RabbitMQ side — `Configure-RabbitMqShovel.ps1`** configures a dynamic Shovel (RabbitMQ
+  Management HTTP API) that forwards an existing source queue (AMQP 0.9.1) to the Service Bus
+  queue above (AMQP 1.0). Requires the `rabbitmq_shovel`/`rabbitmq_shovel_management` plugins
+  enabled on the broker (one-time, broker-host admin action).
+
+### 8.5a Deploy the Service Bus worker
+
+Publish first (the script does **not** build) — its publish output **MUST differ** from the
+engine's:
+
+```powershell
+dotnet publish Dev/Warewolf.Execution.ServiceBusWorker/Warewolf.Execution.ServiceBusWorker.csproj -c Release -o D:\ServiceBusWorker\Publish
+
+.\Deploy-WwExecutionServiceBusWorker.ps1 `
+  -ResourceGroup $ResourceGroup -Location $Location `
+  -StorageAccount stwwsbworker -AppName $ServiceBusWorkerApp `
+  -PublishPath D:\ServiceBusWorker\Publish `
+  -ServiceBusNamespace $ServiceBusNamespace -ServiceBusQueueName wwexecution-queue `
+  -CreateShovelSendRule $true `
+  -WwExecutionBaseUrl $EngineUrl -WwExecutionTenantId $TenantId `
+  -WwExecutionResourceAppId $ResourceAppId
+```
+
+…or as a companion of the engine deploy (runs after the engine, reusing the engine's URL/tenant;
+prompts for anything not passed):
+
+```powershell
+.\Deploy-WwExecutionEngine.ps1 ... `
+  -DeployServiceBusWorker -ServiceBusWorkerAppName $ServiceBusWorkerApp `
+  -ServiceBusWorkerPublishPath D:\ServiceBusWorker\Publish `
+  -ServiceBusWorkerStorageAccount stwwsbworker
+```
+
+### 8.5b Authorize the worker MI (role `Warewolf_ClientApps`)
+
+Mirror the daemon registration from [§5](#5-register-the-client-as-a-daemon) — `-AppRolesToAssign`
+**fails loudly** if `Warewolf_ClientApps` does not exist on the engine (it ships in the example
+authconfig, see [§2](#2-prepare-the-engines-auth--permission-config)):
+
+```powershell
+.\Configure-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId `
+  -ClientType Daemon -DaemonUseManagedIdentity `
+  -DaemonFunctionAppName $ServiceBusWorkerApp `
+  -DaemonFunctionAppResourceGroup $ResourceGroup `
+  -AppRolesToAssign Warewolf_ClientApps `
+  -NonInteractive
+```
+
+See `docs/KB-ClientApps-Configuration.md` §2.6 for the worker's own `appsettings.json` shape and
+token-acquisition details.
+
+### 8.5c Configure the RabbitMQ shovel
+
+Fetches the destination `shovel-send` SAS key live via `az` — never writes it to disk:
+
+```powershell
+.\Configure-RabbitMqShovel.ps1 `
+  -RabbitMqManagementUri "https://<broker-host>:15671" `
+  -RabbitMqUsername <user> -RabbitMqPassword <SecureString> `
+  -SourceQueue <existing-rabbitmq-queue> `
+  -ServiceBusNamespace $ServiceBusNamespace -ServiceBusQueueName wwexecution-queue `
+  -ServiceBusResourceGroup $ResourceGroup -ServiceBusSasKeyName shovel-send
+```
+
+### 8.5d Verify
+
+```powershell
+# Shovel running state:
+az servicebus queue show --namespace-name $ServiceBusNamespace --resource-group $ResourceGroup --name wwexecution-queue -o table
+
+# Or use the standalone health monitor (schedule via Task Scheduler/cron/Azure Automation —
+# RabbitMQ is customer/on-prem infra, not something a Function can reliably poll):
+.\Monitor-RabbitMqShovel.ps1 -RabbitMqManagementUri "https://<broker-host>:15671" `
+  -RabbitMqUsername <user> -RabbitMqPassword <SecureString> -ShovelName <name>
+```
+
+Publish a message to the RabbitMQ source queue and confirm it arrives on the Service Bus queue
+and is executed on the engine. A `500` from the engine means the worker's MI lacks
+`Warewolf_ClientApps` or `secure.config` has no matching `Execute` row (denials are wrapped as
+**500**, WOLF-8418 — same as every other daemon caller in this runbook).
+
+---
+
+## 9. Teardown
 
 ```powershell
 # Remove the client registration / role assignment (safe to re-run):
@@ -436,6 +742,39 @@ $jpSummary = (Get-ChildItem "$LogDir\deploy-WwJobProcessor-*.summary.json" -Erro
               Where-Object { $_.Name -notlike '*dryrun*' } |
               Sort-Object LastWriteTime | Select-Object -Last 1).FullName
 if ($jpSummary) { .\Rollback-WwExecutionEngine.ps1 -SummaryPath $jpSummary }
+
+# Remove the QueueProcessor Container Apps (§8) — per app, so one trigger can be
+# torn down without touching its siblings:
+$qpSummary = (Get-ChildItem "$LogDir\deploy-WwQueueProcessor-*.summary.json" -ErrorAction SilentlyContinue |
+              Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+if ($qpSummary) {
+    $qpApps = (Get-Content $qpSummary | ConvertFrom-Json).queueProcessorApps
+    foreach ($app in $qpApps) {
+        # Role assignment first (the MI disappears with the app):
+        if ($app.principalId) {
+            .\Remove-WwExecutionAuth-Clients.ps1 `
+              -ResourceAppId $ResourceAppId -TenantId $TenantId -ClientType Daemon `
+              -ManagedIdentityObjectId $app.principalId
+        }
+        az containerapp delete --name $app.app --resource-group $ResourceGroup --yes
+    }
+    # The ACA environment is shared by every queue worker — only delete it when the LAST
+    # app is gone and no other Warewolf install uses it:
+    # az containerapp env delete --name aca-warewolf --resource-group $ResourceGroup --yes
+}
+
+# Remove the shovel bridge (if deployed — §8.5):
+# 1. Delete the RabbitMQ shovel itself (broker-side, via the Management API — no script
+#    companion; use the RabbitMQ management UI/API DELETE /api/parameters/shovel/{vhost}/{name}).
+# 2. Remove the worker's role assignment (safe to re-run):
+.\Remove-WwExecutionAuth-Clients.ps1 `
+  -ResourceAppId $ResourceAppId -TenantId $TenantId -ClientType Daemon
+# 3. Roll back the Service Bus worker deployment (no dedicated Rollback companion, same as the
+#    JobProcessor — the run summary JSON records what to tear down manually):
+$sbwSummary = (Get-ChildItem "$LogDir\deploy-WwExecutionServiceBusWorker-*.summary.json" -ErrorAction SilentlyContinue |
+               Where-Object { $_.Name -notlike '*dryrun*' } |
+               Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+if ($sbwSummary) { .\Rollback-WwExecutionEngine.ps1 -SummaryPath $sbwSummary }
 ```
 
 ---
@@ -444,6 +783,7 @@ if ($jpSummary) { .\Rollback-WwExecutionEngine.ps1 -SummaryPath $jpSummary }
 
 - [HangfireDemo-Deploy-Validate-Runbook.md](HangfireDemo-Deploy-Validate-Runbook.md) — deploy **with persistence** + validate the suspend/resume demo (suspend → poll → scheduled resume → manual resumption).
 - [Deploy-RunGuide.md](Deploy-RunGuide.md) — full engine-deploy reference (parameters, roles, encryption, troubleshooting).
+- [ShovelBridge-Architecture.md](ShovelBridge-Architecture.md) — shovel bridge topology, security model, and troubleshooting (§8.5).
 - `Scripts/Configure-WwExecutionAuth-Clients.ps1` / `Configure-WwExecutionAuth-ClientApps.ps1` — client registration (`-?` for help).
 - `Warewolf.Execution.Lightweight.ClientExamples/AzureFunction/README.md` — the daemon client sample.
 - `docs/KB-ClientApps-Configuration.md` — per-example client configuration reference.

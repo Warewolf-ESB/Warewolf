@@ -1,6 +1,8 @@
 using Dev2.Web;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Frozen;
 using System.Web;
 using Warewolf.Execution.Lightweight.Models;
@@ -66,6 +68,20 @@ namespace Warewolf.Execution.Lightweight
             if (!string.IsNullOrWhiteSpace(workflowNameFromRoute))
             {
                 executionRequest.WorkflowName = workflowNameFromRoute;
+
+                // SECURITY: the ROUTE is authoritative once it names a workflow.
+                //
+                // Authorization is evaluated on the route-derived name (WorkflowHttpFunction:326)
+                // BEFORE this request is parsed (:365). ResolveFilePath then returns early whenever
+                // WorkflowFilePath is already populated - so a body- or query-supplied
+                // 'workflowFilePath' used to win over the route and execute a DIFFERENT workflow
+                // than the one that was authorized. On /Public that means reaching a workflow which
+                // is not public at all.
+                //
+                // Clearing it here keeps the two decisions on the same subject. The generic
+                // /workflow route passes no route name and is unaffected, so callers that legitimately
+                // select a workflow by path keep working.
+                executionRequest.WorkflowFilePath = null;
             }
 
             ResolveFilePath(executionRequest, workflowsDirectory);
@@ -193,16 +209,73 @@ namespace Warewolf.Execution.Lightweight
                 return;
             }
 
+            string body;
+            using (var reader = new StreamReader(request.Body))
+            {
+                body = await reader.ReadToEndAsync();
+            }
+
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return;
+            }
+
+            // ── application/x-www-form-urlencoded ────────────────────────────────────────────
+            // Parity with the full server, whose ExtractKeyValuePairForPostMethod falls through to
+            // ExtractArgumentsFromDataListOrQueryString for a non-XML, non-JSON body - i.e. it treats
+            // the body as a query string. Handled as INPUT PARAMETERS rather than as a raw payload,
+            // because ExecutionEnvironmentUtils only understands JSON and XML: passing 'a=1&b=2' to it
+            // would bind nothing at all.
+            var contentType = TryGetHeaderValue(request, "Content-Type") ?? string.Empty;
+            if (contentType.Contains("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase))
+            {
+                var form = HttpUtility.ParseQueryString(body);
+                foreach (var key in form.AllKeys)
+                {
+                    if (key != null && !_reservedQueryKeys.Contains(key))
+                    {
+                        executionRequest.InputParameters[key] = form[key];
+                    }
+                }
+                return;
+            }
+
+            // Only attempt the DTO/envelope parse when the body actually looks like a JSON object.
+            // Previously an XML body reached JsonConvert.DeserializeObject<WorkflowExecutionRequest>,
+            // threw, and was swallowed by the catch - so XML inputs were silently discarded even
+            // though ExecutionEnvironmentUtils converts XML payloads perfectly well.
+            var trimmed = body.TrimStart();
+            var looksLikeJsonObject = trimmed.StartsWith("{", StringComparison.Ordinal);
+
+            var hasEnvelopeInputs = false;
+            if (looksLikeJsonObject)
+            {
+                try
+                {
+                    hasEnvelopeInputs = JObject.Parse(body)["inputParameters"] != null;
+                }
+                catch
+                {
+                    // Malformed JSON: fall through and treat the body as an opaque payload.
+                }
+            }
+
+            // Anything that is NOT the documented envelope is preserved VERBATIM and handed to
+            // ExecutionEnvironmentUtils, exactly as Dev2.Runtime.WebServer does with
+            // WebRequestTO.RawRequestPayload. That is what makes a flat body, an XML body and
+            // nested/recordset inputs bind here the same way they do on the full server.
+            if (!hasEnvelopeInputs)
+            {
+                executionRequest.RawInputPayload = body;
+            }
+
+            if (!looksLikeJsonObject)
+            {
+                return;
+            }
+
             try
             {
-                using var reader = new StreamReader(request.Body);
-                var body = await reader.ReadToEndAsync();
-
-                if (string.IsNullOrWhiteSpace(body))
-                {
-                    return;
-                }
-
                 var bodyRequest = JsonConvert.DeserializeObject<WorkflowExecutionRequest>(body);
                 if (bodyRequest == null)
                 {

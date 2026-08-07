@@ -69,6 +69,13 @@ internal static class ServiceCollectionExtensions
             // can be injected into health checks, audit, and tests.
             services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
+            // Dedicated, narrow "trigger-via-service-bus" Entra audience — a token minted
+            // for the general HTTP audience must never validate against this one (spec
+            // §4.2 step 2). Registered as its own singleton type rather than a second
+            // keyed EntraAuthOptions instance (no keyed-service DI pattern in this project).
+            services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
+            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
+
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware
             // can emit structured 401/403 audit events even when encryption is off.
@@ -173,7 +180,8 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IRouteAuthorizationRegistry>(
             _ => RouteAuthorizationRegistry.BuildFrom(
                 typeof(WorkflowHttpFunction),
-                typeof(Functions.WorkflowResumeFunction)));
+                typeof(Functions.WorkflowResumeFunction),
+                typeof(Functions.ServiceBusResultFunction)));
 
         // Suspend/resume: executes suspended-workflow continuations on the lightweight
         // pipeline (resume route + both manual-resumption paths via the driver seam).
@@ -182,6 +190,13 @@ internal static class ServiceCollectionExtensions
         // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
         services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
+
+        // Secure Service Bus workflow trigger (Model A) — jti replay cache,
+        // business-idempotency dedupe, and correlation-id → result store shared by
+        // ServiceBusWorkflowTriggerFunction and the ServiceBusResultFunction polling
+        // endpoint. Hangfire-hash-backed when Config.Persistence is enabled, in-memory
+        // fallback otherwise (single-instance-only caveat — see the class docs).
+        services.AddSingleton<IServiceBusReplayAndResultStore, ServiceBusReplayAndResultStore>();
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.
         services.AddHostedService<SecureConfigWatcher>();

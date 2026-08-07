@@ -124,5 +124,29 @@ namespace Warewolf.Execution.Lightweight.Security
                 $"Workflow={workflow} | Path={path} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
                 AuditExecutionId);
         }
+
+        /// <summary>
+        /// (Spec-Secure-ServiceBus-Triggered-Execution.md §8) Emits a structured audit
+        /// event for a secure Service Bus workflow-trigger message outcome — the
+        /// message-level counterpart of <see cref="LogAuthOutcome"/> for the HTTP paths.
+        /// Logged at Warning so it is included in default Application Insights retention.
+        /// </summary>
+        /// <param name="status">Terminal status, e.g. "Succeeded", "Denied", "InvalidToken", "Malformed".</param>
+        /// <param name="caller">Caller identity resolved from the validated token (UPN or "app:{oid}"); never the raw token.</param>
+        /// <param name="workflow">Workflow name in scope, or empty when the message was malformed before it could be read.</param>
+        /// <param name="reason">Denial/failure reason; never include token or secret material.</param>
+        /// <param name="correlationId">The message's correlation id.</param>
+        public void LogServiceBusOutcome(
+            string status,
+            string caller,
+            string workflow,
+            string reason,
+            string correlationId)
+        {
+            _logger.LogWarning(
+                $"SECURITY_AUDIT | Event=ServiceBusTriggerOutcome | Status={status} | Caller={caller} | " +
+                $"Workflow={workflow} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
+                AuditExecutionId);
+        }
     }
 }

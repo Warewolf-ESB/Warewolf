@@ -17,15 +17,31 @@
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
-  <!-- Pin Google.Protobuf to 3.25.2 solution-wide.
-       MySql.Data 8.4.0 brings in Google.Protobuf 3.25.1 as a transitive dependency.
-       When all projects share a flat OutDir the 3.25.1 DLL from MySql.Data consumers
-       overwrites the 3.25.2 DLL that Warewolf.Execution.Lightweight requires, causing the
+  <!-- Pin Google.Protobuf to 3.27.1 solution-wide.
+       MySql.Data 8.4.0 brings in Google.Protobuf 3.25.1 as a transitive dependency, and the
+       Microsoft.Azure.Functions.Worker.Extensions.ServiceBus 5.20.0 extension (used by
+       Warewolf.Execution.Lightweight's secure Service Bus trigger) requires >= 3.27.1.
+       When all projects share a flat OutDir a lower-versioned DLL from another consumer
+       overwrites the higher-versioned DLL that Warewolf.Execution.Lightweight requires, causing the
        dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on startup
-       (strong-named assembly version 3.25.2.0 is not found because only 3.25.1.0 is present).
-       Setting the minimum version here forces every project's NuGet resolution to 3.25.2. -->
+       (strong-named assembly version 3.27.1.0 is not found because only an older version is present).
+       Setting the minimum version here forces every project's NuGet resolution to 3.27.1. -->
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
+    <PackageReference Include="Google.Protobuf" Version="3.27.1" />
+  </ItemGroup>
+
+  <!-- Pin System.Text.Json to 10.0.3 solution-wide.
+       Warewolf.Execution.Lightweight (and its EngineJobProcessor/Tests/Integration.Tests siblings)
+       pull in Azure.Core 1.52.0 via the Azure Functions worker SDK, which requires
+       System.Text.Json >= 10.0.3 for net8.0. Most other projects only need an older floor
+       (commonly via Microsoft.PowerFx.Core at 4.7.2, or plain net8.0 defaults at 8.0.x). When all
+       projects share a flat OutDir (ServerTests.sln publish) whichever project's copy is written
+       last wins, so an older DLL can silently overwrite the 10.0.3 copy Lightweight requires,
+       causing the dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on
+       startup (assembly version 10.0.0.0 not found). Setting the minimum version here forces every
+       project's NuGet resolution to 10.0.3. -->
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
   </ItemGroup>
 
   <!-- Pin System.Security.Cryptography.Xml to 8.0.4 solution-wide.
