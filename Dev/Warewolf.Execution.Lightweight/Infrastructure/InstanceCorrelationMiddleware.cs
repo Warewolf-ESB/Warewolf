@@ -86,8 +86,19 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
             catch (Exception ex)
             {
                 stopwatch.Stop();
+
+                // This is the outermost middleware, so the catch sees exceptions raised by ANY
+                // activity — their message/stack can carry connector credentials, connection
+                // strings or evaluated workflow values. Only safe identifiers and the exception
+                // type reach Error; the exception object is never passed to it (the sinks would
+                // persist ex.ToString()). Full detail stays at Debug, which is suppressed at the
+                // production minimum log level of Information.
                 Dev2Logger.Error(
-                    $"Request failed for function '{functionName}' (InvocationId: {invocationId}) after {stopwatch.ElapsedMilliseconds}ms: {ex.Message}",
+                    $"Request failed for function '{functionName}' (InvocationId: {invocationId}) " +
+                    $"after {stopwatch.ElapsedMilliseconds}ms. ExceptionType={ex.GetType().Name}",
+                    invocationId);
+                Dev2Logger.Debug(
+                    $"Request failure details for function '{functionName}' (InvocationId: {invocationId}).",
                     ex, invocationId);
                 throw;
             }

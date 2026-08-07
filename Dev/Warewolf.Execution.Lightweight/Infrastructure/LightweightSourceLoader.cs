@@ -137,14 +137,17 @@ namespace Warewolf.Execution.Lightweight
             {
                 try
                 {
+                    // Leaf folder name + entry count only: this string is embedded in exception
+                    // messages, so it must not disclose absolute paths.
                     if (indexLazy.IsValueCreated)
-                        sb.Append($"{dir}({indexLazy.Value.Count} entries), ");
+                        sb.Append($"{DirName(dir)}({indexLazy.Value.Count} entries), ");
                     else
-                        sb.Append($"{dir}(index not yet built), ");
+                        sb.Append($"{DirName(dir)}(index not yet built), ");
                 }
                 catch (Exception ex)
                 {
-                    sb.Append($"{dir}(INDEX BUILD ERROR: {ex.GetType().Name}: {ex.Message}), ");
+                    // Exception TYPE only — an index-build message can carry file-system detail.
+                    sb.Append($"{DirName(dir)}(INDEX BUILD ERROR: {ex.GetType().Name}), ");
                 }
             }
             sb.Append("]; ");
@@ -152,6 +155,18 @@ namespace Warewolf.Execution.Lightweight
                 sb.Append($"LoadErrors=[{string.Join("; ", _loadErrors)}]");
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Returns the leaf folder name of <paramref name="directory"/> — e.g. <c>Resources</c>
+        /// for <c>D:\home\site\wwwroot\Resources</c>.  Used so production Info/Error/Warning
+        /// entries and <see cref="GetDiagnostics"/> can identify which directory is involved
+        /// without disclosing its absolute path.
+        /// </summary>
+        private static string DirName(string directory) =>
+            Path.GetFileName(directory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+                is { Length: > 0 } name
+                ? name
+                : "(root)";
 
         /// <summary>
         /// Registers <paramref name="baseDirectory"/> for on-demand source resolution and
@@ -168,7 +183,10 @@ namespace Warewolf.Execution.Lightweight
             }
 
             var key = Path.GetFullPath(baseDirectory);
-            Dev2Logger.Warn($"[LightweightSourceLoader] EnsureIndexed: registering directory '{key}' (exists={Directory.Exists(key)}).", GlobalConstants.WarewolfInfo);
+
+            // Leaf folder name at Warning; the absolute path is Debug-only.
+            Dev2Logger.Warn($"[LightweightSourceLoader] EnsureIndexed: registering directory '{DirName(key)}' (exists={Directory.Exists(key)}).", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Debug($"[LightweightSourceLoader] EnsureIndexed: registering directory path '{key}'.", GlobalConstants.WarewolfInfo);
             _directoryIndices.GetOrAdd(key,
                 k => new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
                     () => BuildFileIndex(k),
@@ -192,10 +210,12 @@ namespace Warewolf.Execution.Lightweight
             var lazy = _registeredIds.GetOrAdd(sourceId, id =>
                 new Lazy<bool>(() =>
                 {
-                    // Log which directories are indexed so we can diagnose path issues.
-                    var indexedDirs = string.Join(", ", _directoryIndices.Keys);
+                    // Directory COUNT at Warning so path issues are still visible in production;
+                    // the absolute paths themselves are Debug-only.
                     Dev2Logger.Warn(
-                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{indexedDirs}]", GlobalConstants.WarewolfInfo);
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): {_directoryIndices.Count} indexed directory(ies).", GlobalConstants.WarewolfInfo);
+                    Dev2Logger.Debug(
+                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{string.Join(", ", _directoryIndices.Keys)}]", GlobalConstants.WarewolfInfo);
 
                     // Check whether the ID exists in any index before attempting to load.
                     // This lets us give a precise "found but failed" vs "not found" diagnostic.
@@ -204,19 +224,26 @@ namespace Warewolf.Execution.Lightweight
                     {
                         try
                         {
-                            var keys = string.Join(", ", indexLazy.Value.Keys.Take(20));
-                            var indexMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{keys}]";
-                            _loadErrors.Add(indexMsg);
-                            Dev2Logger.Warn($"[LightweightSourceLoader] {indexMsg}", GlobalConstants.WarewolfInfo);
+                            // Entry COUNT only at Warning — index keys are resource GUIDs and the
+                            // directory is an absolute path, so neither belongs in production logs.
+                            // Not accumulated into _loadErrors either: this is a success-path
+                            // diagnostic, and _loadErrors is replayed verbatim by GetDiagnostics().
+                            Dev2Logger.Warn(
+                                $"[LightweightSourceLoader] EnsureSourceLoaded({id}): directory '{DirName(dir)}' index has {indexLazy.Value.Count} entries.", GlobalConstants.WarewolfInfo);
+                            Dev2Logger.Debug(
+                                $"[LightweightSourceLoader] EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{string.Join(", ", indexLazy.Value.Keys.Take(20))}]", GlobalConstants.WarewolfInfo);
 
                             if (indexLazy.Value.ContainsKey(id))
                                 foundInIndex = true;
                         }
                         catch (Exception ex)
                         {
-                            var buildFailMsg = $"EnsureSourceLoaded({id}): directory '{dir}' index build failed: {ex.GetType().Name}: {ex.Message}";
+                            // Exception TYPE only — the message can carry file-system and
+                            // Key Vault detail. Full detail is Debug-only.
+                            var buildFailMsg = $"EnsureSourceLoaded({id}): index build failed for directory '{DirName(dir)}': {ex.GetType().Name}";
                             _loadErrors.Add(buildFailMsg);
                             Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
+                            Dev2Logger.Debug($"[LightweightSourceLoader] EnsureSourceLoaded({id}): index build failure details for directory '{dir}'.", ex, GlobalConstants.WarewolfInfo);
                         }
                     }
 
@@ -356,33 +383,28 @@ namespace Warewolf.Execution.Lightweight
                     Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
                     return null;
                 }
-                if (source is DropBoxSource dropboxSource)
+                if (source is DropBoxSource)
                 {
-                    var tokenPreview = dropboxSource.AccessToken?.Length > 8
-                        ? dropboxSource.AccessToken.Substring(0, 8) + "..."
-                        : "(empty/null)";
-                    var dropboxMsg = $"LoadSourceFile: DropBoxSource '{dropboxSource.ResourceName}' (ID={dropboxSource.ResourceID}) loaded from '{Path.GetFileName(filePath)}'. " +
-                        $"AccessToken={tokenPreview}(len={dropboxSource.AccessToken?.Length}) " +
-                        $"RefreshToken={(string.IsNullOrEmpty(dropboxSource.RefreshToken) ? "MISSING" : "present")} " +
-                        $"AppKey={(string.IsNullOrEmpty(dropboxSource.AppKey) ? "MISSING" : "present")}";
-                    _loadErrors.Add(dropboxMsg);
-                    Dev2Logger.Warn($"[LightweightSourceLoader] {dropboxMsg}", GlobalConstants.WarewolfInfo);
+                    // Never log or store a token prefix, length, or presence flag: a prefix
+                    // identifies the credential and a length narrows a brute-force search.
+                    // Nothing is added to _loadErrors — GetDiagnostics() replays it verbatim
+                    // into exception messages that can reach a response body.
+                    Dev2Logger.Warn(
+                        "[LightweightSourceLoader] Dropbox source loaded successfully.",
+                        GlobalConstants.WarewolfInfo);
                 }
                 return source;
             }
             catch (Exception ex)
             {
-                var chain = new System.Text.StringBuilder();
-                chain.Append($"{ex.GetType().Name}: {ex.Message}");
-                var inner = ex.InnerException;
-                while (inner != null)
-                {
-                    chain.Append($" ---> {inner.GetType().Name}: {inner.Message}");
-                    inner = inner.InnerException;
-                }
-                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {chain}";
+                // Exception TYPE only. This is the .bite decrypt path, so exception and
+                // inner-exception messages can embed decrypted connection-string fragments
+                // and Key Vault detail — they must reach neither the Warning sink nor
+                // _loadErrors (which GetDiagnostics() replays verbatim). Full chain at Debug.
+                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {ex.GetType().Name}";
                 _loadErrors.Add(msg);
                 Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Debug($"[LightweightSourceLoader] LoadSourceFile failure details for '{Path.GetFileName(filePath)}' (Type={sourceType}).", ex, GlobalConstants.WarewolfInfo);
                 return null;
             }
         }

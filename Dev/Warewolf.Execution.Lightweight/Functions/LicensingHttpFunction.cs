@@ -91,9 +91,10 @@ namespace Warewolf.Execution.Lightweight
                 var subscriptionData = _serializer.Deserialize<SubscriptionData>(execMsg.Message);
                 return await ResponseBuilder.BuildStringAsync(req, JsonConvert.SerializeObject(subscriptionData));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return await ErrorResponse(req, ex.Message, HttpStatusCode.InternalServerError);
+                // A Chargebee/HTTP failure message can carry endpoint and site detail.
+                return await ErrorResponse(req, "Failed to retrieve subscription data.", HttpStatusCode.InternalServerError);
             }
         }
 
@@ -162,9 +163,10 @@ namespace Warewolf.Execution.Lightweight
                     JsonConvert.SerializeObject(new { success = true }),
                     statusCode: HttpStatusCode.Created);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return await ErrorResponse(req, ex.Message, HttpStatusCode.InternalServerError);
+                // A Chargebee/HTTP failure message can carry endpoint and site detail.
+                return await ErrorResponse(req, "Failed to save subscription data.", HttpStatusCode.InternalServerError);
             }
         }
 

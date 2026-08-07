@@ -5,6 +5,7 @@
  */
 
 using System.Net;
+using System.Text.Json;
 using Dev2.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -138,8 +139,15 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
             var response = request.CreateResponse(HttpStatusCode.Unauthorized);
             response.Headers.Add("Content-Type", "application/json");
             response.Headers.Add("WWW-Authenticate", "Bearer realm=\"warewolf\"");
-            await response.WriteStringAsync(
-                $"{{\"error\":\"unauthorized\",\"message\":\"A valid Bearer token is required.\",\"path\":\"{path}\"}}");
+            // Serialised rather than interpolated: the raw request path was written straight
+            // into hand-built JSON, so a path containing a quote broke the document and
+            // permitted response injection. Same three properties, same order, now escaped.
+            await response.WriteStringAsync(JsonSerializer.Serialize(new
+            {
+                error   = "unauthorized",
+                message = "A valid Bearer token is required.",
+                path,
+            }));
 
             context.GetInvocationResult().Value = response;
             return;

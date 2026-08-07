@@ -80,7 +80,7 @@ namespace Warewolf.Execution.Lightweight
         public WorkflowExecutionResult Execute(string workflowFilePath, Dictionary<string, string> inputs = null)
         {
             var executionId = Guid.NewGuid();
-            Dev2Logger.Info($"WorkflowExecutor Execute starting for file: {workflowFilePath}", executionId.ToString());
+            Dev2Logger.Info($"WorkflowExecutor Execute starting for file: {Path.GetFileName(workflowFilePath)}", executionId.ToString());
 
             var result = Execute(new WorkflowExecutionRequest
             {
@@ -138,8 +138,9 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");
-                return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
+                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {Path.GetFileName(request.WorkflowFilePath)}", "WorkflowExecutor-Validation");
+                // Filename only — the absolute server path must not reach the caller.
+                return WorkflowExecutionResult.Failure($"Workflow file not found: {Path.GetFileName(request.WorkflowFilePath)}");
             }
 
             // License/subscription gate — mirrors ExecutorBase.TryExecute subscription check.
@@ -157,7 +158,11 @@ namespace Warewolf.Execution.Lightweight
                 }
                 catch (Exception licEx)
                 {
-                    Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
+                    // Log only the exception type at Error — a licensing/subscription failure can
+                    // surface provider detail (endpoints, tokens) in its message. Full detail is
+                    // kept at Debug, which does not ship at the default INFO level.
+                    Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception. ExceptionType={licEx.GetType().Name}", "WorkflowExecutor-License");
+                    Dev2Logger.Debug("WorkflowExecutor Execute: License check failure detail.", licEx, "WorkflowExecutor-License");
                     return WorkflowExecutionResult.Failure("Execution blocked: unable to validate license/subscription.");
                 }
             }
@@ -166,7 +171,7 @@ namespace Warewolf.Execution.Lightweight
             var startTime = DateTime.UtcNow;
             var executionId = Guid.NewGuid();
 
-            Dev2Logger.Info($"WorkflowExecutor Execute starting. File: {request.WorkflowFilePath}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
+            Dev2Logger.Info($"WorkflowExecutor Execute starting. File: {Path.GetFileName(request.WorkflowFilePath)}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
 
             try
             {
@@ -249,7 +254,8 @@ namespace Warewolf.Execution.Lightweight
                 var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
                 Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed for resources directory: {resourcesDir}", executionId.ToString());
                 LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
-                _executionLogger.LogInfo($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                // Debug, not Info: GetDiagnostics() embeds absolute indexed directory paths.
+                _executionLogger.LogDebug($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
                 Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed completed for resources directory: {resourcesDir}", executionId.ToString());
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
@@ -275,7 +281,8 @@ namespace Warewolf.Execution.Lightweight
                         EmitWorkflowStartState(resolvedName, request, startTime);
 
                     ExecuteActivityChain(dataObject, startActivity);
-                    _executionLogger.LogInfo($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
+                    // Debug, not Info: GetDiagnostics() embeds absolute indexed directory paths.
+                    _executionLogger.LogDebug($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
                     // Emit workflow End state after activities finish � mirrors the End marker
                     // the full Warewolf server emits, including the final output variable values.
@@ -341,11 +348,20 @@ namespace Warewolf.Execution.Lightweight
             catch (InvalidWorkflowException iwe)
             {
                 stopwatch.Stop();
-                Dev2Logger.Error("WorkflowExecutor Execute: InvalidWorkflowException", iwe, executionId.ToString());
-                _executionLogger.LogError(nameof(Execute), iwe, executionId);
+                // Exception is not passed to the Error sinks: the composite sinks persist
+                // exception.ToString() (message + stack) and workflow exception text can embed
+                // evaluated variable values. Full detail stays at Debug.
+                Dev2Logger.Error("WorkflowExecutor Execute: InvalidWorkflowException", executionId.ToString());
+                Dev2Logger.Debug("WorkflowExecutor Execute: InvalidWorkflowException detail.", iwe, executionId.ToString());
+                _executionLogger.LogError($"{nameof(Execute)} failed with InvalidWorkflowException.", executionId);
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
+                // The fallback must not return iwe.Message: a XAML/workflow-definition exception
+                // can embed evaluated variable values and absolute paths. The NoStartNodeError
+                // branch is unchanged. Full detail remains at Debug above.
+                var errorMessage = start > 0
+                    ? GlobalConstants.NoStartNodeError
+                    : "Workflow execution failed because the workflow definition is invalid.";
                 _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
                     workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
                     executionId:  executionId,
@@ -366,8 +382,10 @@ namespace Warewolf.Execution.Lightweight
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
-                _executionLogger.LogError(nameof(Execute), ex, executionId);
+                // See the InvalidWorkflowException branch: exception detail is Debug-only.
+                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {Path.GetFileName(request.WorkflowFilePath)}. ExceptionType={ex.GetType().Name}", executionId.ToString());
+                Dev2Logger.Debug($"WorkflowExecutor Execute: unexpected exception detail for workflow: {Path.GetFileName(request.WorkflowFilePath)}", ex, executionId.ToString());
+                _executionLogger.LogError($"{nameof(Execute)} failed with an unexpected exception.", executionId);
                 _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
                     workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
                     executionId:  executionId,
@@ -379,7 +397,10 @@ namespace Warewolf.Execution.Lightweight
                 {
                     IsSuccess = false,
                     ExecutionId = executionId,
-                    Errors = new List<string> { $"{ex.Message}{Environment.NewLine}{ex.StackTrace}" },
+                    // Catch-all handler: the exception can originate in any activity, so its
+                    // message and stack can carry connector credentials, connection strings or
+                    // evaluated variable values. ExecutionId below remains the caller's correlator.
+                    Errors = new List<string> { "Workflow execution failed due to an unexpected error." },
                     StartTime = startTime,
                     EndTime = DateTime.UtcNow,
                     Duration = stopwatch.Elapsed
@@ -731,16 +752,29 @@ namespace Warewolf.Execution.Lightweight
             if (errors.HasErrors())
             {
                 result.Errors = errors.FetchErrors().ToList();
+
+                // Warewolf error strings routinely embed evaluated variable values, so only the
+                // error count reaches Warning — Warning IS emitted when the production minimum
+                // log level is Information. Per-error text stays at Debug, which is suppressed
+                // at that minimum.
+                _executionLogger.LogWarning($"Workflow execution produced {result.Errors.Count} error(s).", executionId);
+
                 foreach (var err in result.Errors)
                 {
-                    _executionLogger.LogWarning(err, executionId);
+                    _executionLogger.LogDebug($"Workflow execution error detail: {err}", executionId);
                 }
             }
 
             if (dataObject.ExecutionException != null && result.Errors.Count == 0)
             {
-                _executionLogger.LogError("ExecuteActivityChain", dataObject.ExecutionException, executionId);
-                result.Errors.Add($"{dataObject.ExecutionException.Message}{Environment.NewLine}{dataObject.ExecutionException.StackTrace}");
+                // Activity exceptions frequently carry evaluated variable values and connector
+                // detail (connection strings, endpoints) in their message/stack, so only the
+                // exception type reaches Error. Full detail stays at Debug.
+                _executionLogger.LogError($"ExecuteActivityChain failed. ExceptionType={dataObject.ExecutionException.GetType().Name}", executionId);
+                _executionLogger.LogDebug("ExecuteActivityChain failure detail.", dataObject.ExecutionException, executionId);
+                // Response body carries a generic message only — the activity exception's
+                // message and stack stay out of it (full detail is at Debug above).
+                result.Errors.Add("Workflow execution failed due to an unexpected error.");
             }
         }
 

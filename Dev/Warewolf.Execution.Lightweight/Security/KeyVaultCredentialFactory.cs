@@ -52,7 +52,10 @@ internal static class KeyVaultCredentialFactory
     {
         const string executionId = "KeyVaultCredentialFactory";
 
-        Dev2Logger.Info($"KeyVaultCredentialFactory Create starting. IsDevelopment: {options.IsDevelopment}, TenantId: {options.TenantId ?? "(not set)"}, ManagedIdentityClientId: {options.ManagedIdentityClientId ?? "(not set)"}", executionId);
+        // Tenant and managed-identity client IDs are Debug-only — they identify the
+        // deployment's Entra objects and must not reach production sinks.
+        Dev2Logger.Info($"KeyVaultCredentialFactory Create starting. IsDevelopment: {options.IsDevelopment}", executionId);
+        Dev2Logger.Debug($"KeyVaultCredentialFactory Create starting. IsDevelopment: {options.IsDevelopment}, TenantId: {options.TenantId ?? "(not set)"}, ManagedIdentityClientId: {options.ManagedIdentityClientId ?? "(not set)"}", executionId);
 
         try
         {
@@ -60,12 +63,14 @@ internal static class KeyVaultCredentialFactory
                 ? BuildDevelopmentChain(options.TenantId)
                 : BuildCloudCredential(options.ManagedIdentityClientId);
 
-            Dev2Logger.Info($"KeyVaultCredentialFactory Create completed. Credential type: {credential.GetType().Name}", executionId);
+            Dev2Logger.Info("KeyVaultCredentialFactory Create completed.", executionId);
+            Dev2Logger.Debug($"KeyVaultCredentialFactory Create completed. Credential type: {credential.GetType().Name}", executionId);
             return credential;
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error("KeyVaultCredentialFactory Create failed", ex, executionId);
+            Dev2Logger.Error($"KeyVaultCredentialFactory Create failed. ExceptionType={ex.GetType().Name}", executionId);
+            Dev2Logger.Debug("KeyVaultCredentialFactory Create failure details.", ex, executionId);
             throw;
         }
     }
@@ -86,7 +91,9 @@ internal static class KeyVaultCredentialFactory
         }
         else
         {
-            Dev2Logger.Info($"KeyVaultCredentialFactory BuildCloudCredential using User-Assigned Managed Identity. ClientId: {managedIdentityClientId}", executionId);
+            // Identity KIND at Info (the operational signal); the client ID is Debug-only.
+            Dev2Logger.Info("KeyVaultCredentialFactory BuildCloudCredential using User-Assigned Managed Identity", executionId);
+            Dev2Logger.Debug($"KeyVaultCredentialFactory BuildCloudCredential using User-Assigned Managed Identity. ClientId: {managedIdentityClientId}", executionId);
             return new ManagedIdentityCredential(
                 ManagedIdentityId.FromUserAssignedClientId(managedIdentityClientId));
         }
@@ -100,7 +107,8 @@ internal static class KeyVaultCredentialFactory
     {
         const string executionId = "KeyVaultCredentialFactory-Dev";
 
-        Dev2Logger.Info($"KeyVaultCredentialFactory BuildDevelopmentChain creating credential chain. TenantId: {tenantId ?? "(not set)"}", executionId);
+        Dev2Logger.Info("KeyVaultCredentialFactory BuildDevelopmentChain creating credential chain", executionId);
+        Dev2Logger.Debug($"KeyVaultCredentialFactory BuildDevelopmentChain creating credential chain. TenantId: {tenantId ?? "(not set)"}", executionId);
 
         return new(
             // 0. Service-principal / container pass-through — resolves instantly when env vars present

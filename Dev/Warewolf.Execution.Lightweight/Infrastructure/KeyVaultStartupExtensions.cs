@@ -33,7 +33,7 @@ internal static class KeyVaultStartupExtensions
     {
         const string executionId = "KeyVaultStartupExtensions";
 
-        Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync starting for instance: {config.InstanceId}", executionId);
+        Dev2Logger.Info("KeyVaultStartupExtensions InitializeKeyVaultAsync starting", executionId);
 
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
@@ -52,20 +52,24 @@ internal static class KeyVaultStartupExtensions
             var encryptionHelper = host.Services.GetRequiredService<FileEncryptionHelper>();
             DpapiWrapper.AesEncryptHook = encryptionHelper.Encrypt;
 
-            Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption + encryption hooks wired. KeyId: {secretManager.KeyId}", executionId);
-     
+            // KeyId is key-material metadata — never logged at Info/Error/Warning.
+            Dev2Logger.Info("KeyVaultStartupExtensions AES decryption + encryption hooks wired.", executionId);
+
             var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
             Dev2Logger.Info(log, executionId);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
 
-            Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}, KeyId: {secretManager.KeyId}", executionId);
+            Dev2Logger.Info("KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully.", executionId);
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}", ex, executionId);
+            // The exception object is withheld from Error: an Azure SDK failure message
+            // can name the vault, the secret and the refused identity. Detail at Debug.
+            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed. ExceptionType={ex.GetType().Name}", executionId);
+            Dev2Logger.Debug("KeyVaultStartupExtensions InitializeKeyVaultAsync failure details.", ex, executionId);
 
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
-            Dev2Logger.Error(log, ex, executionId);
+            Dev2Logger.Error(log, executionId);
 
             audit.LogKeyVaultErrorAndMessage(log, ex);
             throw; // Fail fast: cannot serve requests without the AES key.

@@ -60,7 +60,8 @@ internal static class StartupOrchestrator
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error("StartupOrchestrator RunStartupAsync failed", ex, executionId);
+            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed. ExceptionType={ex.GetType().Name}", executionId);
+            Dev2Logger.Debug("StartupOrchestrator RunStartupAsync failure details.", ex, executionId);
             throw;
         }
     }
@@ -186,7 +187,9 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-Diagnostics";
 
-        Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
+        // Vault name and the absolute workflows directory are withheld from Info and kept at Debug.
+        Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}", executionId);
+        Dev2Logger.Debug($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
         Dev2Logger.Warn(
             $"Startup | Phase=Diagnostics | EncryptionEnabled={config.EncryptionEnabled} | " +
@@ -197,7 +200,7 @@ internal static class StartupOrchestrator
         if (Directory.Exists(config.WorkflowsDirectory))
         {
             var biteFiles = Directory.GetFiles(config.WorkflowsDirectory, "*.bite", SearchOption.AllDirectories);
-            Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files in {config.WorkflowsDirectory}", executionId);
+            Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files", executionId);
 
             Dev2Logger.Warn(
                 $"Startup | Phase=Diagnostics | ResourceDirectory={config.WorkflowsDirectory} | BiteFileCount={biteFiles.Length} | Files=[{string.Join(", ", biteFiles.Select(Path.GetFileName))}]",
@@ -223,18 +226,24 @@ internal static class StartupOrchestrator
             return;
         }
 
-        Dev2Logger.Info($"StartupOrchestrator InitializeEncryptionAsync starting for vault: {config.VaultName}, secret: {config.SecretName}", executionId);
+        Dev2Logger.Info("StartupOrchestrator InitializeEncryptionAsync starting", executionId);
+        Dev2Logger.Debug($"StartupOrchestrator InitializeEncryptionAsync starting for vault: {config.VaultName}, secret: {config.SecretName}", executionId);
 
         try
         {
             await host.InitializeKeyVaultAsync(config).ConfigureAwait(false);
-            Dev2Logger.Info($"StartupOrchestrator KeyVault initialization successful for vault: {config.VaultName}", executionId);
+            Dev2Logger.Info("StartupOrchestrator KeyVault initialization successful", executionId);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
             var (category, guidance) = ClassifyKeyVaultException(ex, config);
 
-            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}, VaultName: {config.VaultName}, SecretName: {config.SecretName}", ex, executionId);
+            // Category is a fixed classification tag and is safe. VaultName, SecretName and
+            // the exception object are withheld. NOTE: `guidance` is NOT logged at
+            // Error/Warning either — ClassifyKeyVaultException embeds the vault name, the
+            // secret name and (for RequestFailedException) rfe.Message inside it.
+            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}. ExceptionType={ex.GetType().Name}", executionId);
+            Dev2Logger.Debug($"StartupOrchestrator KeyVault initialization failed. Category: {category}, VaultName: {config.VaultName}, SecretName: {config.SecretName}, Guidance: {guidance}", ex, executionId);
 
             if (!config.SkipFailureToRetrieveSecret)
             {
@@ -322,14 +331,13 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-WarmUp";
 
-        Dev2Logger.Info($"StartupOrchestrator WarmUpWorkflowIndex starting for directory: {config.WorkflowsDirectory}", executionId);
+        Dev2Logger.Info("StartupOrchestrator WarmUpWorkflowIndex starting", executionId);
+        Dev2Logger.Debug($"StartupOrchestrator WarmUpWorkflowIndex starting for directory: {config.WorkflowsDirectory}", executionId);
 
         try
         {
             WorkflowIndex.Instance.WarmUp(config.WorkflowsDirectory);
-            Dev2Logger.Info(
-                $"Startup | Phase=WorkflowIndexWarmUp | Status=Completed | Directory={config.WorkflowsDirectory}",
-                executionId);
+            Dev2Logger.Info("Startup | Phase=WorkflowIndexWarmUp | Status=Completed", executionId);
         }
         catch (Exception ex)
         {
