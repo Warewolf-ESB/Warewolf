@@ -87,7 +87,10 @@ namespace Warewolf.Execution.EngineJobProcessor
                 await secretManager.InitializeAsync().ConfigureAwait(false);
 
                 Warewolf.Security.Encryption.DpapiWrapper.AesDecryptHook =
-                    new FileDecryptionHelper(secretManager).DecryptConnectionString;
+                    new FileDecryptionHelper(
+                        secretManager,
+                        Microsoft.Extensions.Logging.Abstractions.NullLogger<FileDecryptionHelper>.Instance)
+                        .DecryptConnectionString;
 
                 Dev2.Common.Dev2Logger.Info(
                     $"Startup | Phase=KeyVault | Status=Completed | KeyId={secretManager.KeyId} | AES decryption hook wired.",
