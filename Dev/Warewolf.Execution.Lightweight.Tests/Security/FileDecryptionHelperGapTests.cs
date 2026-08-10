@@ -75,7 +75,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void Constructor_NullSecretManager_Throws()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new FileDecryptionHelper(null!));
+            Assert.ThrowsException<ArgumentNullException>(() => new FileDecryptionHelper(null!, NullLogger<FileDecryptionHelper>.Instance));
         }
 
         // ── IsAesEncrypted (was the only covered line) ───────────────────────────
@@ -98,7 +98,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_RoundTripsKnownPlaintext()
         {
-            var helper    = new FileDecryptionHelper(NewInitialisedManager());
+            var helper    = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
             var encrypted = EncryptValue("Server=.;Database=Test;User Id=sa;Password=x", _key32);
 
             var actual = helper.DecryptConnectionString(encrypted);
@@ -110,7 +110,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_NonEncryptedValue_PassesThroughUnchanged()
         {
-            var helper = new FileDecryptionHelper(NewInitialisedManager());
+            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
 
             Assert.AreEqual("not-encrypted", helper.DecryptConnectionString("not-encrypted"));
             Assert.AreEqual("",              helper.DecryptConnectionString(""));
@@ -120,7 +120,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_TooShortPayload_ThrowsCryptographicException()
         {
-            var helper = new FileDecryptionHelper(NewInitialisedManager());
+            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
 
             // 8 bytes of payload — less than NonceSize (12) + TagSize (16) = 28.
             var tooShort = FileDecryptionHelper.WfAesPrefix +
@@ -135,7 +135,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_TamperedTag_ThrowsCryptographicException()
         {
-            var helper    = new FileDecryptionHelper(NewInitialisedManager());
+            var helper    = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
             var encrypted = EncryptValue("secret", _key32);
 
             // Flip the last byte of the base64 payload — that decodes to a tag-bit
@@ -157,7 +157,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             var otherKey  = Enumerable.Range(64, 32).Select(i => (byte)i).ToArray();
             var encrypted = EncryptValue("secret", otherKey);
 
-            var helper = new FileDecryptionHelper(NewInitialisedManager());
+            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
 
             Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => helper.DecryptConnectionString(encrypted));

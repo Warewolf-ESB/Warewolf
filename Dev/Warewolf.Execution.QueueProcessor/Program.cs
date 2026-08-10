@@ -228,7 +228,9 @@ try
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         await secretManager.InitializeAsync().ConfigureAwait(false);
 
-        var decryptionHelper = new FileDecryptionHelper(secretManager);
+        var decryptionHelper = new FileDecryptionHelper(
+            secretManager,
+            host.Services.GetRequiredService<ILogger<FileDecryptionHelper>>());
         DpapiWrapper.AesDecryptHook = decryptionHelper.DecryptConnectionString;
 
         Dev2Logger.Info("Key Vault AES decrypt hook wired (WFAES:: values are now readable).", executionId);

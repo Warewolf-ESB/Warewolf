@@ -46,7 +46,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         static (FileEncryptionHelper Encryptor, FileDecryptionHelper Decryptor) NewHelperPair()
         {
             var mgr = NewInitialisedManager();
-            return (new FileEncryptionHelper(mgr), new FileDecryptionHelper(mgr));
+            return (new FileEncryptionHelper(mgr), new FileDecryptionHelper(mgr, NullLogger<FileDecryptionHelper>.Instance));
         }
 
         static KeyVaultSecretManager NewManagerWithKey(byte[] key)
@@ -179,7 +179,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             var encrypted = encryptor.Encrypt("secret-under-old-key");
 
             var otherKey = Enumerable.Range(0, 32).Select(i => (byte)i).ToArray();   // a different key
-            var otherDecryptor = new FileDecryptionHelper(NewManagerWithKey(otherKey));
+            var otherDecryptor = new FileDecryptionHelper(NewManagerWithKey(otherKey), NullLogger<FileDecryptionHelper>.Instance);
 
             Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => otherDecryptor.DecryptConnectionString(encrypted),
@@ -237,7 +237,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
                 NullLogger<KeyVaultSecretManager>.Instance, json);
             mgr.InitializeAsync().GetAwaiter().GetResult();
 
-            DpapiWrapper.AesDecryptHook = new FileDecryptionHelper(mgr).DecryptConnectionString;
+            DpapiWrapper.AesDecryptHook = new FileDecryptionHelper(mgr, NullLogger<FileDecryptionHelper>.Instance).DecryptConnectionString;
             DpapiWrapper.AesEncryptHook = new FileEncryptionHelper(mgr).Encrypt;
         }
 
