@@ -340,6 +340,18 @@ $objectId = az ad sp show --id a15fdb40-3dbe-470c-8b4c-55d3d5448fe9 --query id -
 az ad app owner add --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a --owner-object-id $objectId
 ```
 
+**Update (2026-08-10):** the above grant has been applied — `az ad app owner list --id
+dc1182bc-ffc1-4a1d-a414-ab672998eb9a` confirms the `Warewolf DevOps` SP's object id
+(`0c1c56b0-af18-4b2f-8e59-975dd3cff135`) is now listed as an owner, alongside `Warewolf
+Security` and the human account that provisioned it. Owner grants on app registrations are
+eventually consistent, so a run shortly after the grant lands can still see a transient 403
+even though the grant is genuinely in place. Rather than re-chase this manually each time,
+the pipeline step now logs the caller's resolved object id and the app's live owner list
+before rotating, and retries a few times with a delay specifically on `Insufficient
+privileges`/`Authorization_RequestDenied` — see the step's inline comments in
+`pipeline-CLOUD.yml`. If a 403 still occurs after retries, the logged owner list will show
+whether the SP is genuinely missing (re-run the grant above) or something else is wrong.
+
 `Enable-ServiceBusSecureTrigger.ps1 -EntraServiceBusAudience 'api://e200900a-2d5d-4356-94c0-cd7e33232ce0'
 -EntraTenantId 'ca0cc53b-9af4-4067-bcdf-be9c648450d1' -FunctionAppName WarewolfServer-UAT
 -ResourceGroup DEV2 -ServiceBusNamespace WarewolfShovelBridgeTesting` was re-verified with
