@@ -24,18 +24,31 @@ namespace Dev2.WorkflowConverters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GenerateNodeId() => Guid.NewGuid().ToString();
 
-        public static Cell CreateEdge(string sourceId, string targetId, string label = "")
+        public static Cell CreateEdge(string sourceId, string targetId, string label = "", bool isDecisionArm = false, bool isTrueArm = false)
         {
+            var data = new Dictionary<string, object>
+            {
+                [Constants.TYPE] = Constants.SEQUENCE
+            };
+
+            // FlowDecision.True/False branches are round-tripped by X6ToWorkflowConverter's
+            // HandleDecisionConnection, which reads these two data flags back off the edge
+            // (see Constants.ISDECISIONARM/ISTRUEARM). Without them the reconstructed
+            // FlowDecision has null True/False branches, silently dropping all conditional
+            // branching on round-trip.
+            if (isDecisionArm)
+            {
+                data[Constants.ISDECISIONARM] = true;
+                data[Constants.ISTRUEARM] = isTrueArm;
+            }
+
             return new Cell
             {
                 id = GenerateNodeId(),
                 Source = new Connector(sourceId),
                 Target = new Connector(targetId),
                 label = label,
-                data = new Dictionary<string, object>
-                {
-                    [Constants.TYPE] = Constants.SEQUENCE
-                }
+                data = data
             };
         }
 

@@ -442,6 +442,8 @@
     <Compile Include="WorkflowConverters\SwitchActivityDataHelper.cs" />
     <Compile Include="WorkflowConverters\WorkflowToX6Converter.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter.cs" />
+    <Compile Include="WorkflowConverters\UnsupportedActivityTypeException.cs" />
+    <Compile Include="WorkflowConverters\EmptyWorkflowGraphException.cs" />
     <Compile Include="TestMockStep.cs" />
     <Compile Include="TO\AssignObjectDTO.cs" />
     <Compile Include="TO\ActivityDTO.cs" />

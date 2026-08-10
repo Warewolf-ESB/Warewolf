@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj" />
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />
   </ItemGroup>

@@ -214,14 +214,14 @@ namespace Dev2.Activities.WF
         /// <param name="sourceId">Source node ID</param>
         /// <param name="targetId">Target node ID</param>
         /// <param name="label">Optional edge label</param>
-        private static void CreateEdgeIfNotExists(X6WorkflowLoadModel graphData, string sourceId, string targetId, string label = "")
+        private static void CreateEdgeIfNotExists(X6WorkflowLoadModel graphData, string sourceId, string targetId, string label = "", bool isDecisionArm = false, bool isTrueArm = false)
         {
             if (string.IsNullOrEmpty(sourceId) || string.IsNullOrEmpty(targetId))
                 return;
                 
             if (!EdgeExists(graphData, sourceId, targetId, label))
             {
-                graphData.Edges.Add(CommonHelper.CreateEdge(sourceId, targetId, label));
+                graphData.Edges.Add(CommonHelper.CreateEdge(sourceId, targetId, label, isDecisionArm, isTrueArm));
             }
         }
 
@@ -235,7 +235,8 @@ namespace Dev2.Activities.WF
         /// <param name="edgeLabel">Optional label for the edge</param>
         /// <returns>The node ID of the processed or existing node</returns>
         private string ProcessOrLinkFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
-            Dictionary<Activity, string> activityNodeMap, string sourceNodeId, string edgeLabel = "")
+            Dictionary<Activity, string> activityNodeMap, string sourceNodeId, string edgeLabel = "",
+            bool isDecisionArm = false, bool isTrueArm = false)
         {
             if (flowNode == null) return sourceNodeId;
             
@@ -244,7 +245,7 @@ namespace Dev2.Activities.WF
             if (activity != null && activityNodeMap.TryGetValue(activity, out var existingNodeId))
             {
                 // Node already processed - just create edge if needed
-                CreateEdgeIfNotExists(graphData, sourceNodeId, existingNodeId, edgeLabel);
+                CreateEdgeIfNotExists(graphData, sourceNodeId, existingNodeId, edgeLabel, isDecisionArm, isTrueArm);
                 return existingNodeId;
             }
             else
@@ -253,7 +254,7 @@ namespace Dev2.Activities.WF
                 var targetNodeId = ProcessFlowNode(flowNode, graphData, activityNodeMap, null);
                 
                 // Create edge from source to the newly processed node with the appropriate label
-                CreateEdgeIfNotExists(graphData, sourceNodeId, targetNodeId, edgeLabel);
+                CreateEdgeIfNotExists(graphData, sourceNodeId, targetNodeId, edgeLabel, isDecisionArm, isTrueArm);
                 
                 return targetNodeId;
             }
@@ -297,13 +298,13 @@ namespace Dev2.Activities.WF
             // Process True branch
             if (flowDecision.True != null)
             {
-                ProcessOrLinkFlowNode(flowDecision.True, graphData, activityNodeMap, decisionNodeId, Constants.TRUE);
+                ProcessOrLinkFlowNode(flowDecision.True, graphData, activityNodeMap, decisionNodeId, Constants.TRUE, isDecisionArm: true, isTrueArm: true);
             }
 
             // Process False branch
             if (flowDecision.False != null)
             {
-                ProcessOrLinkFlowNode(flowDecision.False, graphData, activityNodeMap, decisionNodeId, Constants.FALSE);
+                ProcessOrLinkFlowNode(flowDecision.False, graphData, activityNodeMap, decisionNodeId, Constants.FALSE, isDecisionArm: true, isTrueArm: false);
             }
 
             return decisionNodeId;
