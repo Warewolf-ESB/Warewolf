@@ -136,6 +136,16 @@
     <!-- Azure Key Vault + Managed Identity (encryption support) -->
     <PackageReference Include="Azure.Identity" Version="1.20.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+    <!-- Low-level MCP server APIs only (no ASP.NET Core dependency). McpFunction hand-adapts
+         these to the isolated-worker HttpRequestData/HttpResponseData model instead of using
+         ModelContextProtocol.AspNetCore's app.MapMcp(), which requires the ASP.NET Core hosting
+         model this Functions host doesn't use. Pinned to 1.0.0 (not the latest 2.1.0): its
+         Microsoft.Extensions.AI.Abstractions dependency requires System.Text.Json >= 10.0.3,
+         matching this repo's solution-wide System.Text.Json 10.0.3 pin in ..\Directory.Build.props
+         exactly. Newer SDK releases (1.1.0+) require System.Text.Json >= 10.0.6/10.0.10, which
+         would force raising that solution-wide floor and risk the flat-OutDir DLL version
+         conflict the pin's comment warns about — out of scope for this change. -->
+    <PackageReference Include="ModelContextProtocol.Core" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
     <!-- OIDC / JWT validation for Entra Bearer-token authentication -->
