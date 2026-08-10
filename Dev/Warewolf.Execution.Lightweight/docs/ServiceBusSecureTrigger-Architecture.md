@@ -352,6 +352,105 @@ privileges`/`Authorization_RequestDenied` — see the step's inline comments in
 `pipeline-CLOUD.yml`. If a 403 still occurs after retries, the logged owner list will show
 whether the SP is genuinely missing (re-run the grant above) or something else is wrong.
 
+**Needs re-verification (2026-08-10, later same day):** a subsequent pipeline run's
+diagnostic block logged `Current owners of app 'dc1182bc-...': ` as an **empty list** and
+`Caller is currently listed as an owner: False` for the same `Warewolf DevOps` SP object id
+above — i.e. the app now appears to have *no* owners at all from this run's perspective,
+not just a missing grant for this one SP. That's inconsistent with the "confirmed" state
+above and needs to be re-checked live against the same tenant/directory context the
+pipeline's service connection actually authenticates into (`az account show` inside the
+step, not whatever context the manual `az ad app owner add` was run under) — possible
+causes include the grant having been applied against a different tenant, the grant having
+been reverted/removed since, or a scoping issue on the read itself. Re-run `az ad app owner
+list --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a` and, if the SP is genuinely absent, re-apply
+the `az ad app owner add` grant above against the correct tenant before assuming the retry
+loop alone will resolve it.
+
+Separately, a script bug in the pipeline step meant the retry loop above never actually
+engaged: the step sets `$ErrorActionPreference = 'Stop'`, and under Windows PowerShell any
+stderr line from a native command (`az.exe`) becomes an immediate terminating error the
+instant it's written — regardless of the `2>$stderrFile` redirection used to capture it for
+the retry check. So every run failed on attempt 1 with a bare `NativeCommandError`, with no
+`##[warning] Attempt 1/3...` message ever logged. Fixed in `pipeline-CLOUD.yml` by switching
+to `$ErrorActionPreference = 'Continue'` for the duration of each `az ad app credential
+reset` call (restored via `try`/`finally`), so a non-zero exit is now surfaced through
+`$LASTEXITCODE`/`$stderrFile` and the existing retry-with-backoff logic can actually run as
+designed.
+
+**Root cause found (2026-08-10, confirmed live):** re-checked with an interactive `az login`
+(human account, correct `ca0cc53b-...` tenant) — `az ad app owner list --id
+dc1182bc-ffc1-4a1d-a414-ab672998eb9a` genuinely shows `Warewolf DevOps`
+(`0c1c56b0-af18-4b2f-8e59-975dd3cff135`) as an owner right now, alongside `Warewolf Security`
+and the provisioning human account. So the Owner grant is real and was never reverted — the
+pipeline's own empty-owner-list/403 readings were **not** a propagation-lag artifact.
+
+The actual gap: `GET /servicePrincipals/{id}/appRoleAssignments` for the `Warewolf DevOps` SP
+returns an **empty array**, and a directory-role-assignment lookup for the same SP is also
+empty — this SP holds **zero Microsoft Graph application permissions and zero Entra
+directory roles**. Being listed as an app registration **Owner** only satisfies Microsoft
+Graph's authorization check for **delegated (signed-in user)** callers; for an **app-only /
+client-credentials** caller (exactly how the pipeline's `AzureClientId`/`AzureClientSecret`
+service connection authenticates), `POST /applications/{id}/addPassword` (what `az ad app
+credential reset` calls under the hood) additionally requires the calling application itself
+to hold a Graph **application permission** — `Application.ReadWrite.OwnedBy` (scoped to apps
+it owns/creates — the minimal fit here) or the broader `Application.ReadWrite.All` — granted
+with admin consent. Ownership alone does not extend to app-only tokens. This also explains
+the empty owner-list reads from within the pipeline: listing owners via Graph in an app-only
+context is subject to the same permission gap.
+
+**Fix required (needs a tenant admin — Global Administrator, Privileged Role Administrator,
+Application Administrator, or Cloud Application Administrator):** the signed-in human account
+used above (`Ashley.lewis@theunlimited.co.za`) does **not** hold any Entra directory role
+(confirmed via `/me/memberOf/microsoft.graph.directoryRole` — empty) and a direct attempt to
+grant the role failed with the same `Authorization_RequestDenied` 403. A tenant admin needs to
+grant Microsoft Graph application permission `Application.ReadWrite.OwnedBy` (app role id
+`18a4783c-866b-4cc7-a460-3d5e5662c884` on the Microsoft Graph resource SP
+`422d3988-beb2-44ec-967a-2db062b550c9`) to the `Warewolf DevOps` SP
+(`0c1c56b0-af18-4b2f-8e59-975dd3cff135`), with admin consent — either via Entra ID portal
+(App registrations → `Warewolf DevOps` → API permissions → Add a permission → Microsoft Graph
+→ Application permissions → `Application.ReadWrite.OwnedBy` → Grant admin consent) or via
+Graph REST as an admin:
+```powershell
+az rest --method POST --uri "https://graph.microsoft.com/v1.0/servicePrincipals/0c1c56b0-af18-4b2f-8e59-975dd3cff135/appRoleAssignments" `
+  --body '{"principalId":"0c1c56b0-af18-4b2f-8e59-975dd3cff135","resourceId":"422d3988-beb2-44ec-967a-2db062b550c9","appRoleId":"18a4783c-866b-4cc7-a460-3d5e5662c884"}' `
+  --headers "Content-Type=application/json"
+```
+Owner status on the individual app remains useful/complementary (and is what the pipeline's
+diagnostic block reports), but it does not substitute for this Graph application permission
+grant for the app-only pipeline caller.
+
+**Superseded (2026-08-10) — the pipeline no longer rotates this secret per-run at all.**
+Granting `Application.ReadWrite.OwnedBy` requires escalating to a tenant admin, which the
+person running this pipeline did not have. Rather than chase that escalation, the pipeline
+job was changed to match this codebase's own documented Daemon-client convention (see
+`docs/KB-ClientApps-Configuration.md`, "Microsoft Entra (directory)" prerequisite row and
+"Client credentials (Daemon, Console non-interactive)"): a Daemon's client secret is minted
+**once** by an Application Administrator (via `az ad app credential reset` or
+`Configure-WwExecutionAuth-Clients.ps1`) and reused directly for `client_credentials` token
+requests thereafter — it is never rotated on every run. Per-run rotation (the design
+described above) was the actual root cause of needing Graph write permissions on the
+pipeline's own low-privilege service principal in the first place; no other Daemon client in
+this codebase does that.
+
+The `Rotate ShovelBridge E2E daemon secret and acquire Entra token` step in
+`pipeline-CLOUD.yml` has been replaced with `Acquire Entra token for ShovelBridge E2E daemon
+(stored secret)`, which only does the `client_credentials` POST — no `az ad app credential
+reset` call, no Graph permission needed by the pipeline's caller at all. It reads the secret
+from a new secure pipeline variable, `ShovelE2EDaemonClientSecret` (must be added to the
+pipeline's variable group/Library in Azure DevOps, marked secret — not stored in this repo).
+
+**Action required to re-enable this leg:** ask an Application Administrator (see
+`docs/KB-ClientApps-Configuration.md`'s prerequisites table for who qualifies) to run, once:
+```powershell
+az login   # as an Application Administrator
+az ad app credential reset --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a --years 1 --query password -o tsv
+```
+...and add the resulting value as the `ShovelE2EDaemonClientSecret` secret pipeline variable.
+Re-mint and update that variable manually before it expires (1 year from creation) — this is
+now an occasional manual maintenance task, not a per-run pipeline responsibility. Until that
+variable is set, the `Acquire Entra token...` step fails fast with a clear message naming the
+app id and pointing back to this section, rather than the opaque 403 seen previously.
+
 `Enable-ServiceBusSecureTrigger.ps1 -EntraServiceBusAudience 'api://e200900a-2d5d-4356-94c0-cd7e33232ce0'
 -EntraTenantId 'ca0cc53b-9af4-4067-bcdf-be9c648450d1' -FunctionAppName WarewolfServer-UAT
 -ResourceGroup DEV2 -ServiceBusNamespace WarewolfShovelBridgeTesting` was re-verified with
