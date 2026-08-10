@@ -322,6 +322,24 @@ $secret = az ad app credential reset --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a -
     -ClientSecret $secret -GrantType ClientCredentials
 ```
 
+**Owner gotcha found running the pipeline for real:** `az ad app credential reset` above
+requires the *caller* to be an Owner of `dc1182bc-ffc1-4a1d-a414-ab672998eb9a`, and this
+tripped up the pipeline's `Rotate ShovelBridge E2E daemon secret and acquire Entra token`
+step with a 403 `Insufficient privileges`. Don't be misled by the app's Owners blade in the
+portal listing `Warewolf Security` as an owner — that's the unrelated app called out above
+(Studio sign-in, `api://05794411-...`), not the pipeline's CI/CD identity. The pipeline
+authenticates via the `AzureClientId`/`AzureClientSecret`/`AzureTenantId` variables (see
+`Log in to Azure CLI` step in `pipeline-CLOUD.yml`); the actual caller was confirmed via
+`az ad sp list --display-name "Warewolf DevOps"` to be the **`Warewolf DevOps`** service
+principal (`appId a15fdb40-3dbe-470c-8b4c-55d3d5448fe9`). Also note the Entra portal's own
+"Add owners" picker only searches **users** — it can't find or add a service principal, so
+this has to be done via CLI/Graph:
+
+```powershell
+$objectId = az ad sp show --id a15fdb40-3dbe-470c-8b4c-55d3d5448fe9 --query id -o tsv
+az ad app owner add --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a --owner-object-id $objectId
+```
+
 `Enable-ServiceBusSecureTrigger.ps1 -EntraServiceBusAudience 'api://e200900a-2d5d-4356-94c0-cd7e33232ce0'
 -EntraTenantId 'ca0cc53b-9af4-4067-bcdf-be9c648450d1' -FunctionAppName WarewolfServer-UAT
 -ResourceGroup DEV2 -ServiceBusNamespace WarewolfShovelBridgeTesting` was re-verified with
