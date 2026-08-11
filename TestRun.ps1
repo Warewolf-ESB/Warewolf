@@ -154,6 +154,16 @@ function dp([string]$path) {
     [System.IO.Path]::GetFullPath($path) -replace '\\', '/'
 }
 
+# [System.IO.Path]::GetRelativePath() only exists on .NET Core/.NET 5+ (and thus pwsh);
+# CI agents invoke this script under Windows PowerShell 5.1 (.NET Framework), which lacks
+# it entirely, so use a Uri-based equivalent that works under both hosts.
+function Get-RelativePathCompat([string]$FromDirectory, [string]$ToPath) {
+    $fromUri = [System.Uri]((Join-Path $FromDirectory ''))
+    $toUri   = [System.Uri]$ToPath
+    $relative = [System.Uri]::UnescapeDataString($fromUri.MakeRelativeUri($toUri).ToString())
+    return $relative -replace '/', [System.IO.Path]::DirectorySeparatorChar
+}
+
 function Get-Slug([string]$JobName) {
     return ($JobName -replace '_', '-').ToLower()
 }
@@ -2721,7 +2731,7 @@ try {
                     # isolated there by Compile.ps1 to keep its own RabbitMQ.Client 7.1.2 out of the flat
                     # directory's 5.1.2 pin) instead of just $a.Name, so the -Recurse search above and the
                     # vstest invocation below agree on where the assembly actually is.
-                    $asmList += [System.IO.Path]::GetRelativePath($PWD.Path, $a.FullName)
+                    $asmList += Get-RelativePathCompat $PWD.Path $a.FullName
                 }
             }
             if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
