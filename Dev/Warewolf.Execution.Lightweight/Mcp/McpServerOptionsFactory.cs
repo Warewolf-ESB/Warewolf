@@ -104,6 +104,18 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<string, GetToolSchemaResult>)GetToolSchemaTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = GetToolSchemaTool.ToolName,
+                Description = "Returns the JSON shape of one toolbox tool's data fields, for placement inside a workflow body or as an add_step payload.",
+                ReadOnly = true,
+                Idempotent = true,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }

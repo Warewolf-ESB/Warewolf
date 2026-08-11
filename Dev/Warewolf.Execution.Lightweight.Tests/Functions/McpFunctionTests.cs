@@ -236,8 +236,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
             Assert.AreEqual(HttpStatusCode.OK, status);
             var tools = JObject.Parse(ExtractSseJsonData(body))["result"]?["tools"] as JArray;
             Assert.IsNotNull(tools);
-            // list_workflows, list_tools, get_workflow_definition, and get_workflow_schema are all registered.
-            Assert.AreEqual(4, tools!.Count);
+            // list_workflows, list_tools, get_workflow_definition, get_workflow_schema, and
+            // get_tool_schema are all registered.
+            Assert.AreEqual(5, tools!.Count);
 
             var tool = tools!.Single(t => t["name"]?.ToString() == "list_workflows");
 
