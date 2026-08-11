@@ -128,6 +128,19 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement, System.Text.Json.JsonElement, CreateWorkflowResult>)CreateWorkflowTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = CreateWorkflowTool.ToolName,
+                Description = "Validates an envelope + body pair (as validate_workflow), then compiles and saves it as a new workflow, provided the caller has Contribute permission and the name does not already exist.",
+                ReadOnly = false,
+                Destructive = false,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }

@@ -113,20 +113,31 @@ internal static class ListWorkflowsTool
     // ── Permission filtering ──────────────────────────────────────────────────
 
     /// <summary>
-    /// Returns whether <paramref name="principal"/> holds View permission for
-    /// <paramref name="workflowRelativePath"/>, using the same open-access rule as
-    /// <see cref="Functions.McpFunction.TryAuthenticate"/>: when <c>secure.config</c> is
-    /// not effective, every caller is allowed through.
-    /// </summary>
-    /// <summary>
     /// <c>internal</c> (not <c>private</c>) so <see cref="GetWorkflowDefinitionTool"/> can
     /// apply the exact same View-permission rule to a single named workflow, rather than
-    /// duplicating this logic.
+    /// duplicating this logic. Thin wrapper over <see cref="HasPermission"/> fixed to
+    /// <see cref="WorkflowPermission.View"/>.
     /// </summary>
     internal static bool HasViewPermission(
         IWorkflowAuthPolicyLoader authPolicyLoader,
         WorkflowClaimsPrincipal? principal,
-        string workflowRelativePath)
+        string workflowRelativePath) =>
+        HasPermission(authPolicyLoader, principal, workflowRelativePath, WorkflowPermission.View);
+
+    /// <summary>
+    /// Returns whether <paramref name="principal"/> holds every flag in
+    /// <paramref name="requiredPermission"/> for <paramref name="workflowRelativePath"/>, using
+    /// the same open-access rule as <see cref="Functions.McpFunction.TryAuthenticate"/>: when
+    /// <c>secure.config</c> is not effective, every caller is allowed through. <c>internal</c>
+    /// so write tools (e.g. <see cref="CreateWorkflowTool"/>, requiring
+    /// <see cref="WorkflowPermission.Contribute"/>) share the exact same resource-if-present-
+    /// else-global, Public-OR'd resolution as the View check, rather than duplicating it.
+    /// </summary>
+    internal static bool HasPermission(
+        IWorkflowAuthPolicyLoader authPolicyLoader,
+        WorkflowClaimsPrincipal? principal,
+        string workflowRelativePath,
+        WorkflowPermission requiredPermission)
     {
         if (!authPolicyLoader.IsConfigEffective)
         {
@@ -140,7 +151,7 @@ internal static class ListWorkflowsTool
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
         var effectivePermissions = authPolicyLoader.GetEffectivePermissions(workflowRelativePath, callerRoles);
-        return effectivePermissions.HasFlag(WorkflowPermission.View);
+        return effectivePermissions.HasFlag(requiredPermission);
     }
 
     // ── File scanning (cheap: header-only, mirrors ApisJsonGenerator) ────────

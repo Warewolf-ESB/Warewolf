@@ -137,6 +137,62 @@ namespace Warewolf.Execution.Lightweight
             }
         }
 
+        /// <summary>
+        /// Adds or updates a single entry in the in-memory index for
+        /// <paramref name="workflowsDirectory"/>, so a workflow just written to disk by
+        /// <c>create_workflow</c>/<c>edit_workflow</c> resolves via the fast <see cref="Resolve"/>
+        /// path on the very next call — without waiting for a fresh process start (which would
+        /// re-run <see cref="WarmUp"/>) or relying solely on <see cref="WorkflowNameResolver"/>'s
+        /// on-disk fallback.
+        ///
+        /// <para>
+        /// Only the in-memory <see cref="FrozenDictionary{TKey,TValue}"/> cache is updated — the
+        /// persisted <c>workflow-index.json</c> file (a build-time artefact written by
+        /// <c>Scripts/Generate-WorkflowIndex.ps1</c>) is intentionally left untouched here; the
+        /// next build reconciles it from disk. Safe to call even before the index for this
+        /// directory has ever been loaded (loads it first via <see cref="GetIndex"/>).
+        /// </para>
+        /// </summary>
+        /// <param name="workflowsDirectory">Base directory that hosts workflow files.</param>
+        /// <param name="nameWithoutExtension">Relative path without extension, any casing/separator.</param>
+        /// <param name="relativePathWithExtension">Relative path with extension, original casing, forward-slash separated.</param>
+        internal void AddOrUpdate(string workflowsDirectory, string nameWithoutExtension, string relativePathWithExtension)
+        {
+            if (string.IsNullOrWhiteSpace(workflowsDirectory) ||
+                string.IsNullOrWhiteSpace(nameWithoutExtension) ||
+                string.IsNullOrWhiteSpace(relativePathWithExtension))
+            {
+                return;
+            }
+
+            try
+            {
+                var cacheKey = Path.GetFullPath(workflowsDirectory);
+                var normalizedName = nameWithoutExtension.Replace('\\', '/').TrimStart('/').ToLowerInvariant();
+                var normalizedPath = relativePathWithExtension.Replace('\\', '/');
+
+                // Snapshot the current (possibly not-yet-loaded) index, layer the new entry on
+                // top, and re-freeze. Not on any hot path, so the read-copy-replace race with a
+                // concurrent Resolve() (which would just see the old, still-valid snapshot) is
+                // an acceptable trade-off for keeping this simple.
+                var current = GetIndex(workflowsDirectory);
+                var updated = new Dictionary<string, string>(current, StringComparer.OrdinalIgnoreCase)
+                {
+                    [normalizedName] = normalizedPath
+                };
+
+                _cache[cacheKey] = new Lazy<FrozenDictionary<string, string>>(
+                    () => updated.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
+                    LazyThreadSafetyMode.ExecutionAndPublication);
+
+                Dev2Logger.Info($"WorkflowIndex AddOrUpdate: '{normalizedName}' -> '{normalizedPath}' in directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WorkflowIndex AddOrUpdate failed for: '{nameWithoutExtension}' in directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
+            }
+        }
+
         // ── Internal helpers ──────────────────────────────────────────────────
 
         FrozenDictionary<string, string> GetIndex(string workflowsDirectory)
