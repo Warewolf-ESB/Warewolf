@@ -173,11 +173,21 @@ namespace Warewolf.Execution.Lightweight.Security
             // All keys exhausted
             var triedKeyIds = string.Join(", ", _keyRing.Select(k => $"'{k.KeyId}'"));
             Dev2Logger.Error($"FileDecryptionHelper could not decrypt value — all keys tried: [{triedKeyIds}].", lastException!, executionId);
-            throw new CryptographicException(
+            var failureMessage =
                 $"AES-GCM decryption failed for all {_keyRing.Count} key(s) in the ring " +
                 $"[{triedKeyIds}]. The .bite file may be corrupted or the key ring is " +
-                "missing the key that encrypted this value.",
-                lastException);
+                "missing the key that encrypted this value.";
+
+            // Preserve the specific exception type (.NET 8+ throws AuthenticationTagMismatchException,
+            // a CryptographicException subtype, when the GCM tag doesn't match) so callers relying on
+            // the more specific type — e.g. to distinguish tampering/wrong-key from other crypto errors —
+            // still see it after all keys in the ring have been exhausted.
+            if (lastException is AuthenticationTagMismatchException)
+            {
+                throw new AuthenticationTagMismatchException(failureMessage, lastException);
+            }
+
+            throw new CryptographicException(failureMessage, lastException);
         }
     }
 }
