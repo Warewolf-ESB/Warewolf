@@ -293,26 +293,44 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   Windows service) and the Service Bus destination (external, real Azure) available, this job
   needs no docker at all.
   **Scope note:** as described above, this test proves message *arrival* on the Service Bus
-  queue (bridge connectivity/plumbing) — it does not execute a Warewolf workflow or exercise
-  any engine trigger. `-VerifyWorkflowExecution` (both scripts) extends this same pipeline to
-  additionally prove workflow *execution* through the in-process Model A trigger
+  queue (bridge connectivity/plumbing) — it does not, on its own, execute a Warewolf workflow
+  or exercise any engine trigger. `-VerifyWorkflowExecution` (both scripts) extends this same
+  pipeline to additionally prove workflow *execution* through the in-process Model A trigger
   (`ServiceBusWorkflowTriggerFunction`) — see
   `docs/ServiceBusSecureTrigger-Architecture.md` § "End-to-end verification" for the harness
   mode, new parameters, and the separate `Enable-ServiceBusSecureTrigger.ps1` provisioning
-  prerequisite. That mode is not yet wired into either CI pipeline (it requires the target
-  Function App to have the trigger provisioned and an Entra token available, which is a
-  manual/reviewed setup step, not something CI can safely automate today).
+  prerequisite. This mode IS wired into CI: as a second, additive leg in
+  `ShovelBridgeE2ETest_ExternalServiceBus` (`Dev/.azure/pipeline-CLOUD.yml`, a single message)
+  and as the sole leg of `ShovelBridgeLoadTest_ExternalServiceBus`
+  (`Dev/.azure/pipeline-LOADTEST.yml`, 1000 messages) — both target the same
+  already-provisioned UAT engine and its pre-configured `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`.
 
-  **Load testing:** `Test-ShovelBridgeE2E.ps1`'s arrival-mode check (i.e. NOT
-  `-VerifyWorkflowExecution`) also accepts `-MessageCount` (default 1) to publish that many
-  uniquely-marked messages and wait for all of them to arrive, rather than just one — this
-  proves the shovel bridge's own throughput, independent of workflow execution. Wired into CI
-  as the `ShovelBridgeLoadTest_ExternalServiceBus` job in `Dev/.azure/pipeline-LOADTEST.yml`,
-  which reuses the exact same `-RabbitMqMode External -DestinationMode ExternalServiceBus`
-  setup as `ShovelBridgeE2ETest_ExternalServiceBus` above (local choco RabbitMQ, the same
-  `WarewolfShovelBridgeTesting` namespace) but with `-MessageCount 1000` against its own
-  dedicated queue/rule/shovel names (suffixed `-loadtest`) so it never collides with the
-  ordinary single-message E2E test running concurrently on the same namespace.
+  **Load testing:** `Test-ShovelBridgeE2E.ps1`'s `-MessageCount` (default 1) applies to BOTH
+  modes:
+  - Without `-VerifyWorkflowExecution`: publishes that many uniquely-marked messages and
+    waits for all of them to arrive, proving the shovel bridge's own throughput, independent
+    of workflow execution.
+  - With `-VerifyWorkflowExecution`: publishes that many distinct workflow-trigger messages
+    and requires ALL of them to report a Succeeded execution result from the target engine —
+    a fully end-to-end load test (bridge throughput AND workflow-execution correctness at
+    scale), polled concurrently (bounded parallelism) since the engine's own
+    `GET /secure/servicebus-result/{correlationId}` endpoint has no bulk/batch variant.
+
+  Wired into CI as the `ShovelBridgeLoadTest_ExternalServiceBus` job in
+  `Dev/.azure/pipeline-LOADTEST.yml`, which reuses the exact same
+  `-RabbitMqMode External -DestinationMode ExternalServiceBus` setup as
+  `ShovelBridgeE2ETest_ExternalServiceBus` above (local choco RabbitMQ, the same
+  `WarewolfShovelBridgeTesting` namespace) plus its `-VerifyWorkflowExecution` leg's own
+  Entra daemon-token acquisition, but with `-MessageCount 1000`. It uses its own dedicated
+  RabbitMQ-side queue/shovel names (suffixed `-loadtest`) so it never collides with the
+  ordinary single-message E2E test's shovel running concurrently on the same broker/agent
+  type, but DELIBERATELY reuses the exact same Service Bus verification queue/SAS rule as
+  `ShovelBridgeE2ETest_ExternalServiceBus`'s own `-VerifyWorkflowExecution` leg — that queue
+  name must match the target engine's single, fixed `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
+  app setting, so it cannot be uniquely suffixed per job. Running both jobs concurrently is
+  safe: each only ever sends messages (via its own distinct shovel), the target engine's
+  single Managed Identity subscription is the only consumer of either job's messages, and
+  correlationIds keep each job's own results distinct.
 
 
 ## Promotion status
@@ -332,9 +350,9 @@ This worker was originally built as a client example and has been promoted to a
   wired into CI as the `ShovelBridgeE2ETest` job) — see "Known risks / open work" above.
   The `ExternalServiceBus`-mode variant against the real `WarewolfShovelBridgeTesting`
   Service Bus namespace is now wired into `pipeline-CLOUD.yml`'s "Test on Azure" stage as
-  the `ShovelBridgeE2ETest_ExternalServiceBus` job, and a 1000-message load-test variant is
-  wired into `pipeline-LOADTEST.yml`'s `Load_Test` stage as the
-  `ShovelBridgeLoadTest_ExternalServiceBus` job.
+  the `ShovelBridgeE2ETest_ExternalServiceBus` job, and a fully end-to-end 1000-message
+  workflow-execution load-test variant is wired into `pipeline-LOADTEST.yml`'s `Load_Test`
+  stage as the `ShovelBridgeLoadTest_ExternalServiceBus` job.
 
 
 ## See also

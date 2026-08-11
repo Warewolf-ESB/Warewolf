@@ -86,13 +86,18 @@
     Leaves all containers/network running after the test (pass/fail) for local
     debugging. Never set this in CI.
 .PARAMETER MessageCount
-    Only used when NOT -VerifyWorkflowExecution (i.e. plain message-arrival checking). Number
-    of uniquely-marked messages to publish to the RabbitMQ source queue and wait to arrive on
-    the destination Service Bus queue via the shovel. Default: 1 (the original single-message
-    behaviour). Set this higher (e.g. 1000) to load-test the shovel bridge's own throughput —
-    this proves the bridge can sustain that volume, it does NOT execute any workflows (see
-    -VerifyWorkflowExecution for that separate, heavier concern, which this parameter does not
-    apply to). Remember to raise -HarnessTimeoutSeconds accordingly for larger counts.
+    Number of distinct messages to publish and verify. Default: 1 (the original single-message
+    behaviour). Set this higher (e.g. 1000) to load-test the pipeline at scale. Applies to
+    BOTH modes:
+      * Without -VerifyWorkflowExecution: publishes N uniquely-marked messages to the RabbitMQ
+        source queue and waits for all N to arrive on the destination Service Bus queue via
+        the shovel — proves the bridge's own throughput, not workflow execution.
+      * With -VerifyWorkflowExecution: publishes N distinct workflow-trigger messages
+        (correlationId '<CorrelationId>-000000' .. '-{N-1}') and requires ALL N to report a
+        Succeeded result from the target engine — proves the full end-to-end pipeline
+        (RabbitMQ -> Shovel -> Service Bus -> workflow execution) at that volume.
+    Remember to raise -HarnessTimeoutSeconds / -ResultTimeoutSeconds accordingly for larger
+    counts.
 .PARAMETER VerifyWorkflowExecution
     Additive, opt-in "full pipeline" mode. Without this switch, the test only proves
     RabbitMQ -> Shovel -> Service Bus message ARRIVAL (see docs/ShovelBridge-Architecture.md)
@@ -104,6 +109,8 @@
     outcome — proving the message was actually consumed and executed by
     ServiceBusWorkflowTriggerFunction (the in-process "Model A" secure trigger; see
     docs/ServiceBusSecureTrigger-Architecture.md), not just that it reached the queue.
+    Combine with -MessageCount > 1 to load-test the FULL pipeline end-to-end (bridge +
+    workflow execution), requiring all N executions to succeed, not just N message arrivals.
     REQUIRES -DestinationMode ExternalServiceBus (a live engine must already be listening
     on -DestinationQueueName via Managed Identity — the local emulator has no engine
     attached to it) and -WorkflowName / -MessageAuthToken / -EngineBaseUrl. Deliberately does
@@ -120,9 +127,11 @@
     inputs are today.
 .PARAMETER CorrelationId
     Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
-    omitted, a fresh GUID is generated and printed so it can be used to poll
-    /secure/servicebus-result/{correlationId} independently if this script's own polling
-    times out.
+    -MessageCount is 1 (default), this is used verbatim and, when omitted, a fresh GUID is
+    generated and printed so it can be used to poll /secure/servicebus-result/{correlationId}
+    independently if this script's own polling times out. When -MessageCount > 1, this value
+    (or the generated GUID) is instead used as a PREFIX: N correlationIds are derived as
+    '<CorrelationId>-000000' .. '<CorrelationId>-{N-1}' (fixed-width, zero-padded).
 .PARAMETER MessageAuthToken
     REQUIRED when -VerifyWorkflowExecution. A valid Entra bearer token (audience =
     WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE on the target engine) for a caller authorized to run
@@ -144,8 +153,10 @@
     EasyAuth/claims/policy pipeline, requiring WorkflowPermission.View on -WorkflowName).
     Defaults to -MessageAuthToken when omitted (the same caller polling their own result).
 .PARAMETER ResultTimeoutSeconds
-    Only used when -VerifyWorkflowExecution. How long to poll for a terminal result before
-    failing. Default: 90.
+    Only used when -VerifyWorkflowExecution. How long to poll for ALL correlationIds (1, or N
+    when -MessageCount > 1) to reach a terminal result before failing. Default: 90. Raise this
+    substantially for large -MessageCount values (e.g. 1000) since each execution takes real
+    engine processing time and this timeout is shared across all of them.
 #>
 [CmdletBinding()]
 param(
@@ -185,8 +196,9 @@ param(
     [int]    $HarnessTimeoutSeconds = 90,
     [switch] $SkipTeardown,
 
-    # Arrival-mode-only (ignored under -VerifyWorkflowExecution): >1 drives a shovel-bridge
-    # load/throughput test instead of a single-message correctness check.
+    # Number of distinct messages to publish and verify; applies to both plain arrival
+    # checking and -VerifyWorkflowExecution (see the parameter help above for how the
+    # -CorrelationId is used as a prefix when this is > 1).
     [ValidateRange(1, [int]::MaxValue)]
     [int]    $MessageCount = 1,
 
@@ -369,7 +381,7 @@ if ($VerifyWorkflowExecution) {
     if ([string]::IsNullOrWhiteSpace($CorrelationId)) {
         $CorrelationId = [Guid]::NewGuid().ToString('N')
     }
-    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' (correlationId '$CorrelationId') and poll $EngineBaseUrl for its execution result, instead of proving bare message arrival."
+    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' ($(if ($MessageCount -eq 1) { "correlationId '$CorrelationId'" } else { "$MessageCount messages, correlationId prefix '$CorrelationId'" })) and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival."
 }
 
 # Docker is only needed when something is actually going to be containerized:
@@ -741,6 +753,7 @@ try {
             '--engine-base-url', $EngineBaseUrl
             '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $resultTokenSecure)
             '--result-timeout-seconds', $ResultTimeoutSeconds
+            '--message-count', $MessageCount
         )
         if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $harnessArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
         if (-not [string]::IsNullOrWhiteSpace($Jti)) { $harnessArgs += @('--jti', $Jti) }
@@ -772,6 +785,7 @@ try {
         Write-Host "  Source        : $SourceQueueName (RabbitMQ)" -ForegroundColor White
         Write-Host "  Destination   : $DestinationQueueName (Service Bus, Managed Identity trigger)" -ForegroundColor White
         Write-Host "  Workflow      : $WorkflowName" -ForegroundColor White
+        Write-Host "  Messages      : $MessageCount" -ForegroundColor White
         Write-Host "  CorrelationId : $CorrelationId" -ForegroundColor White
         Write-Host "  Engine        : $EngineBaseUrl" -ForegroundColor White
     } else {

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
@@ -140,7 +141,13 @@ internal static class Program
     /// <summary>
     /// Full-pipeline proof: publish the real workflow-trigger message contract (with a
     /// caller bearer token as a message header) and poll the Lightweight engine's own
-    /// result endpoint for a terminal, successful execution outcome.
+    /// result endpoint for a terminal, successful execution outcome. <c>--message-count</c>
+    /// (default 1, unchanged single-message behaviour) drives the same bulk/load use case as
+    /// arrival mode's own <c>--message-count</c> — e.g. the ShovelBridge load test job
+    /// publishes 1000 distinct workflow-trigger messages here and requires ALL 1000 to
+    /// actually execute successfully on the target engine, proving the full
+    /// RabbitMQ -> Shovel -> Service Bus -> workflow-execution pipeline end-to-end at that
+    /// volume, not just bridge connectivity.
     /// </summary>
     private static async Task<int> RunWorkflowExecutionModeAsync(Dictionary<string, string> opts, Func<string, string> required)
     {
@@ -153,37 +160,85 @@ internal static class Program
         var engineBaseUrl = required("engine-base-url").TrimEnd('/');
         var messageAuthToken = required("message-auth-token");
         var resultPollAuthToken = opts.GetValueOrDefault("result-poll-auth-token", messageAuthToken);
-        var correlationId = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
+        var correlationIdPrefix = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
         var jti = opts.GetValueOrDefault("jti", string.Empty);
         var workflowInputsJson = opts.GetValueOrDefault("workflow-inputs-json", string.Empty);
         var timeoutSeconds = int.Parse(opts.GetValueOrDefault("result-timeout-seconds", "90"));
-
-        Console.WriteLine($"CorrelationId: {correlationId}");
-        Console.WriteLine($"Publishing '{workflow}' workflow-trigger message to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
-
-        await PublishWorkflowTriggerMessageAsync(
-            rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-            workflow, workflowInputsJson, correlationId, messageAuthToken, jti);
-        Console.WriteLine("Published. Waiting for the Shovel to bridge it to Service Bus and the Lightweight engine's in-process trigger to process it ...");
-
-        var result = await WaitForServiceBusResultAsync(engineBaseUrl, resultPollAuthToken, correlationId, TimeSpan.FromSeconds(timeoutSeconds));
-
-        if (result is null)
+        var messageCount = int.Parse(opts.GetValueOrDefault("message-count", "1"));
+        if (messageCount < 1)
         {
-            Console.WriteLine($"FAIL: no result was recorded for correlationId '{correlationId}' at {engineBaseUrl}/secure/servicebus-result/{correlationId} within {timeoutSeconds}s.");
+            throw new ArgumentException("--message-count must be at least 1.");
+        }
+
+        // Fixed-width numeric suffixes (D6), same convention as arrival mode's markers — each
+        // correlationId is independently tracked through publish + result-polling below.
+        var correlationIds = messageCount == 1
+            ? new[] { correlationIdPrefix }
+            : Enumerable.Range(0, messageCount).Select(i => $"{correlationIdPrefix}-{i:D6}").ToArray();
+
+        Console.WriteLine(messageCount == 1
+            ? $"CorrelationId: {correlationIds[0]}"
+            : $"CorrelationId prefix: {correlationIdPrefix} ({messageCount} messages, '{correlationIds[0]}' .. '{correlationIds[^1]}')");
+        Console.WriteLine($"Publishing {messageCount} '{workflow}' workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
+
+        var publishStopwatch = Stopwatch.StartNew();
+        await PublishManyWorkflowTriggerMessagesAsync(
+            rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
+            workflow, workflowInputsJson, correlationIds, messageAuthToken, jti);
+        publishStopwatch.Stop();
+        Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
+
+        var waitStopwatch = Stopwatch.StartNew();
+        var results = await WaitForServiceBusResultsAsync(engineBaseUrl, resultPollAuthToken, correlationIds, TimeSpan.FromSeconds(timeoutSeconds));
+        waitStopwatch.Stop();
+
+        var succeededIds = correlationIds.Where(id => results.TryGetValue(id, out var r) && string.Equals(r.Status, "Succeeded", StringComparison.OrdinalIgnoreCase)).ToArray();
+        var failedResults = correlationIds.Where(id => results.ContainsKey(id) && !succeededIds.Contains(id)).Select(id => (Id: id, Result: results[id])).ToArray();
+        var neverResolvedIds = correlationIds.Where(id => !results.ContainsKey(id)).ToArray();
+
+        if (messageCount == 1)
+        {
+            // Preserve the original single-message wording exactly.
+            if (neverResolvedIds.Length > 0)
+            {
+                Console.WriteLine($"FAIL: no result was recorded for correlationId '{correlationIds[0]}' at {engineBaseUrl}/secure/servicebus-result/{correlationIds[0]} within {timeoutSeconds}s.");
+                return 1;
+            }
+            if (succeededIds.Length == 1)
+            {
+                var outputs = results[correlationIds[0]].OutputsJson ?? "(none)";
+                Console.WriteLine($"PASS: workflow '{workflow}' (correlationId '{correlationIds[0]}') executed successfully via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine. Outputs: {outputs}");
+                return 0;
+            }
+            var (failedId, failedResult) = failedResults[0];
+            Console.WriteLine($"FAIL: workflow '{workflow}' (correlationId '{failedId}') did not succeed. Status='{failedResult.Status}'. Error='{failedResult.Error ?? "(no error detail)"}'.");
             return 1;
         }
 
-        var status = result.Value.GetProperty("status").GetString();
-        if (string.Equals(status, "Succeeded", StringComparison.OrdinalIgnoreCase))
+        if (succeededIds.Length == messageCount)
         {
-            var outputs = result.Value.TryGetProperty("outputs", out var outputsEl) ? outputsEl.ToString() : "(none)";
-            Console.WriteLine($"PASS: workflow '{workflow}' (correlationId '{correlationId}') executed successfully via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine. Outputs: {outputs}");
+            var rate = messageCount / Math.Max(waitStopwatch.Elapsed.TotalSeconds, 0.001);
+            Console.WriteLine($"PASS: all {messageCount} '{workflow}' executions (correlationId prefix '{correlationIdPrefix}') succeeded via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine in {waitStopwatch.Elapsed.TotalSeconds:F1}s ({rate:F1} exec/s).");
             return 0;
         }
 
-        var error = result.Value.TryGetProperty("error", out var errorEl) ? errorEl.GetString() : "(no error detail)";
-        Console.WriteLine($"FAIL: workflow '{workflow}' (correlationId '{correlationId}') did not succeed. Status='{status}'. Error='{error}'.");
+        Console.WriteLine($"FAIL: only {succeededIds.Length}/{messageCount} '{workflow}' execution(s) (correlationId prefix '{correlationIdPrefix}') succeeded within {timeoutSeconds}s ({failedResults.Length} failed, {neverResolvedIds.Length} never got a result).");
+        foreach (var (id, result) in failedResults.Take(10))
+        {
+            Console.WriteLine($"  FAILED correlationId '{id}': Status='{result.Status}', Error='{result.Error ?? "(no error detail)"}'");
+        }
+        if (failedResults.Length > 10)
+        {
+            Console.WriteLine($"  ... and {failedResults.Length - 10} more failures (see /secure/servicebus-result/{{correlationId}} on {engineBaseUrl} for full detail).");
+        }
+        foreach (var id in neverResolvedIds.Take(10))
+        {
+            Console.WriteLine($"  NO RESULT for correlationId '{id}' (never appeared at /secure/servicebus-result/{{correlationId}}).");
+        }
+        if (neverResolvedIds.Length > 10)
+        {
+            Console.WriteLine($"  ... and {neverResolvedIds.Length - 10} more correlationIds with no result.");
+        }
         return 1;
     }
 
@@ -242,6 +297,12 @@ internal static class Program
                 [--result-poll-auth-token <token>]     default: same as --message-auth-token;
                                                         used to call GET /secure/servicebus-result
                 [--result-timeout-seconds <n>]         default: 90
+                [--message-count <n>]                  default: 1; publishes N workflow-trigger
+                                                        messages with distinct correlationIds
+                                                        (correlation-id-000000 .. -{n-1}) and
+                                                        requires ALL N to report a Succeeded
+                                                        result - used for full end-to-end
+                                                        (bridge + workflow execution) load testing
             """);
     }
 
@@ -320,14 +381,30 @@ internal static class Program
     /// prefers the JSON body's own <c>correlationId</c> field, but falls back to the
     /// message's native <c>CorrelationId</c> if that field is omitted.
     /// </summary>
-    private static async Task PublishWorkflowTriggerMessageAsync(
+    private static async Task PublishManyWorkflowTriggerMessagesAsync(
         string managementUri, string username, string password, string vhost, string queue,
-        string workflow, string workflowInputsJson, string correlationId, string authToken, string jti)
+        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken, string jti)
     {
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
 
+        var progressStopwatch = Stopwatch.StartNew();
+        for (var i = 0; i < correlationIds.Count; i++)
+        {
+            await PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, correlationIds[i], authToken, jti);
+            if (correlationIds.Count > 1 && progressStopwatch.Elapsed.TotalSeconds >= 10)
+            {
+                Console.WriteLine($"  ... published {i + 1}/{correlationIds.Count}");
+                progressStopwatch.Restart();
+            }
+        }
+    }
+
+    private static async Task PublishWorkflowTriggerMessageAsync(
+        HttpClient http, string managementUri, string vhost, string queue,
+        string workflow, string workflowInputsJson, string correlationId, string authToken, string jti)
+    {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
         Dictionary<string, string>? inputs = null;
@@ -374,15 +451,21 @@ internal static class Program
         }
     }
 
+    private readonly record struct ServiceBusResult(string Status, string? Error, string? OutputsJson);
+
     /// <summary>
-    /// Polls the Lightweight engine's own <c>GET /secure/servicebus-result/{correlationId}</c>
-    /// endpoint (<c>ServiceBusResultFunction</c>) for a terminal outcome. A 404 means the
-    /// message hasn't been processed yet (still in flight through the Shovel, or the engine
-    /// hasn't dequeued it) and is not an error — polling continues until a 200 (terminal
-    /// result recorded) or the timeout elapses. Returns <c>null</c> on timeout.
+    /// Concurrently polls the Lightweight engine's own
+    /// GET /secure/servicebus-result/{correlationId} endpoint (ServiceBusResultFunction) for
+    /// every correlationId in correlationIds until each has a terminal result or the shared
+    /// timeout elapses. There is no bulk/batch results endpoint, so this issues one GET per
+    /// pending correlationId per sweep, bounded by maxConcurrency concurrent requests,
+    /// removing each id from the pending set as soon as it resolves. A 404 means the message
+    /// hasn't been processed yet (still in flight through the Shovel, or the engine hasn't
+    /// dequeued it) and is not an error. The single-correlationId case (N=1) is just the
+    /// degenerate case of this same sweep loop.
     /// </summary>
-    private static async Task<JsonElement?> WaitForServiceBusResultAsync(
-        string engineBaseUrl, string authToken, string correlationId, TimeSpan timeout)
+    private static async Task<ConcurrentDictionary<string, ServiceBusResult>> WaitForServiceBusResultsAsync(
+        string engineBaseUrl, string authToken, IReadOnlyList<string> correlationIds, TimeSpan timeout, int maxConcurrency = 20)
     {
         using var http = new HttpClient();
         var bearerValue = authToken.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
@@ -390,41 +473,90 @@ internal static class Program
             : authToken;
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerValue);
 
-        var resultUrl = $"{engineBaseUrl}/secure/servicebus-result/{Uri.EscapeDataString(correlationId)}";
+        var results = new ConcurrentDictionary<string, ServiceBusResult>();
+        var pending = new ConcurrentDictionary<string, byte>(correlationIds.Select(id => new KeyValuePair<string, byte>(id, 0)));
         var deadline = DateTime.UtcNow + timeout;
+        using var throttle = new SemaphoreSlim(maxConcurrency);
+        var progressStopwatch = Stopwatch.StartNew();
 
-        while (DateTime.UtcNow < deadline)
+        while (pending.Count > 0 && DateTime.UtcNow < deadline)
         {
-            HttpResponseMessage response;
-            try
+            var sweepIds = pending.Keys.ToArray();
+            var sweepTasks = sweepIds.Select(async id =>
             {
-                response = await http.GetAsync(resultUrl);
+                await throttle.WaitAsync();
+                try
+                {
+                    var result = await PollOneServiceBusResultAsync(http, engineBaseUrl, id);
+                    if (result is { } resolved)
+                    {
+                        results[id] = resolved;
+                        pending.TryRemove(id, out _);
+                    }
+                }
+                finally
+                {
+                    throttle.Release();
+                }
+            });
+            await Task.WhenAll(sweepTasks);
+
+            if (correlationIds.Count > 1 && pending.Count > 0 && progressStopwatch.Elapsed.TotalSeconds >= 10)
+            {
+                Console.WriteLine($"  ... {results.Count}/{correlationIds.Count} resolved, {pending.Count} still pending");
+                progressStopwatch.Restart();
             }
-            catch (HttpRequestException ex)
+
+            if (pending.Count > 0 && DateTime.UtcNow < deadline)
             {
-                Console.WriteLine($"  (transient error polling {resultUrl}: {ex.Message} — retrying)");
                 await Task.Delay(TimeSpan.FromSeconds(3));
-                continue;
             }
-
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(3));
-                continue;
-            }
-
-            var body = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException($"GET {resultUrl} returned {(int)response.StatusCode}: {body}");
-            }
-
-            using var doc = JsonDocument.Parse(body);
-            return doc.RootElement.Clone();
         }
 
-        return null;
+        return results;
     }
+
+    /// <summary>
+    /// One GET against the result endpoint for a single correlationId. Returns null if the
+    /// result isn't recorded yet (404 - still in flight, not an error) or on a transient
+    /// network error (caller's sweep loop will retry it next round); returns a terminal
+    /// ServiceBusResult for a recorded success/failure outcome, or an "HttpError" result for
+    /// an unexpected non-2xx/non-404 response so it doesn't abort polling for the rest of a
+    /// bulk run.
+    /// </summary>
+    private static async Task<ServiceBusResult?> PollOneServiceBusResultAsync(HttpClient http, string engineBaseUrl, string correlationId)
+    {
+        var resultUrl = $"{engineBaseUrl}/secure/servicebus-result/{Uri.EscapeDataString(correlationId)}";
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await http.GetAsync(resultUrl);
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"  (transient error polling {resultUrl}: {ex.Message} - retrying)");
+            return null;
+        }
+
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        var body = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            return new ServiceBusResult("HttpError", $"GET {resultUrl} returned {(int)response.StatusCode}: {body}", null);
+        }
+
+        using var doc = JsonDocument.Parse(body);
+        var status = doc.RootElement.GetProperty("status").GetString() ?? "Unknown";
+        var error = doc.RootElement.TryGetProperty("error", out var errorEl) ? errorEl.GetString() : null;
+        var outputsJson = doc.RootElement.TryGetProperty("outputs", out var outputsEl) ? outputsEl.ToString() : null;
+        return new ServiceBusResult(status, error, outputsJson);
+    }
+
 
     /// <summary>
     /// Polls the destination Service Bus queue for messages carrying any of the given
