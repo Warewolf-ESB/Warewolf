@@ -2716,7 +2716,13 @@ try {
             }
             $asmList = @()
             foreach ($a in $allAsm) {
-                if ([array]::indexof($ExcludeProjects, $a.Name.TrimEnd(".dll")) -eq -1) { $asmList += $a.Name }
+                if ([array]::indexof($ExcludeProjects, $a.Name.TrimEnd(".dll")) -eq -1) {
+                    # Preserve the subdirectory (e.g. QueueProcessor\Warewolf.Execution.QueueProcessor.Tests.dll,
+                    # isolated there by Compile.ps1 to keep its own RabbitMQ.Client 7.1.2 out of the flat
+                    # directory's 5.1.2 pin) instead of just $a.Name, so the -Recurse search above and the
+                    # vstest invocation below agree on where the assembly actually is.
+                    $asmList += [System.IO.Path]::GetRelativePath($PWD.Path, $a.FullName)
+                }
             }
             if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
                 Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
