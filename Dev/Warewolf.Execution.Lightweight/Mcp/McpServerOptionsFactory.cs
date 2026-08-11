@@ -116,6 +116,18 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<System.Text.Json.JsonElement, System.Text.Json.JsonElement, ValidateWorkflowResult>)ValidateWorkflowTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = ValidateWorkflowTool.ToolName,
+                Description = "Checks an envelope + body pair for structural and semantic validity without saving or running it, against the X6 graph shape.",
+                ReadOnly = true,
+                Idempotent = true,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }
