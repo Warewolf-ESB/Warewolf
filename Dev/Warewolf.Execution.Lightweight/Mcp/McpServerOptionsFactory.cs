@@ -92,6 +92,18 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<GetWorkflowSchemaResult>)GetWorkflowSchemaTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = GetWorkflowSchemaTool.ToolName,
+                Description = "Returns the hard-coded JSON shape of the workflow envelope and the body/add_step graph shapes used by create_workflow/edit_workflow/add_step.",
+                ReadOnly = true,
+                Idempotent = true,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }
