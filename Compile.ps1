@@ -427,6 +427,32 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				}
 				$_workerConfig | ConvertTo-Json -Depth 4 | Set-Content -Path $_workerConfigPath -Encoding UTF8
 				Write-Host "Pinned worker.config.json's defaultWorkerPath to Warewolf.Execution.Lightweight.dll in $OutputFolderName."
+
+				# Re-pin RabbitMQ.Client.dll to 5.1.2: ServerTests.sln also publishes
+				# Warewolf.Execution.QueueProcessor(.Tests), which is deliberately pinned to
+				# RabbitMQ.Client 7.1.2 (async-only IChannel API - see that project's own
+				# csproj comments) precisely so NuGet would NOT unify the dependency graph
+				# to 7.x for everything else. But -p:ErrorOnDuplicatePublishOutputFiles=false
+				# above means both versions' identically-named RabbitMQ.Client.dll still
+				# collide as physical files in this one shared flat directory, and whichever
+				# project's copy happens to publish last wins non-deterministically -
+				# regardless of what each test assembly's own .deps.json expects. RabbitMQ.Client
+				# 7.x removed the synchronous ConnectionFactory.CreateConnection() overload
+				# (fully async now), so when its DLL wins the race, every 5.1.2-based
+				# consumer built from this same solution (Warewolf.Driver.RabbitMQ(.Tests),
+				# Dev2.Data, Dev2.Activities(.Tests), Dev2.Runtime.Services) throws
+				# System.MissingMethodException at runtime instead of connecting. 5.1.2 has
+				# far more consumers in this solution than 7.1.2 (only
+				# Warewolf.Execution.QueueProcessor(.Tests) needs 7.x), so pin 5.1.2 as the
+				# deterministic winner here.
+				$_nugetPackagesRoot = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { "$env:USERPROFILE\.nuget\packages" }
+				$_rabbitMqDll = Join-Path $_nugetPackagesRoot "rabbitmq.client\5.1.2\lib\netstandard2.0\RabbitMQ.Client.dll"
+				if (Test-Path $_rabbitMqDll) {
+					Copy-Item -Path $_rabbitMqDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\RabbitMQ.Client.dll" -Force
+					Write-Host "Pinned RabbitMQ.Client.dll to 5.1.2 in $OutputFolderName (majority of consumers; QueueProcessor's 7.1.2 is isolated to its own test job)."
+				} else {
+					Write-Host "WARNING: could not find RabbitMQ.Client 5.1.2 at '$_rabbitMqDll' to pin in $OutputFolderName - RabbitMQ.Client.dll version in this shared output may be non-deterministic."
+				}
 			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
