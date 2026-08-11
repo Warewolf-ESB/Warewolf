@@ -85,6 +85,14 @@
 .PARAMETER SkipTeardown
     Leaves all containers/network running after the test (pass/fail) for local
     debugging. Never set this in CI.
+.PARAMETER MessageCount
+    Only used when NOT -VerifyWorkflowExecution (i.e. plain message-arrival checking). Number
+    of uniquely-marked messages to publish to the RabbitMQ source queue and wait to arrive on
+    the destination Service Bus queue via the shovel. Default: 1 (the original single-message
+    behaviour). Set this higher (e.g. 1000) to load-test the shovel bridge's own throughput —
+    this proves the bridge can sustain that volume, it does NOT execute any workflows (see
+    -VerifyWorkflowExecution for that separate, heavier concern, which this parameter does not
+    apply to). Remember to raise -HarnessTimeoutSeconds accordingly for larger counts.
 .PARAMETER VerifyWorkflowExecution
     Additive, opt-in "full pipeline" mode. Without this switch, the test only proves
     RabbitMQ -> Shovel -> Service Bus message ARRIVAL (see docs/ShovelBridge-Architecture.md)
@@ -176,6 +184,11 @@ param(
 
     [int]    $HarnessTimeoutSeconds = 90,
     [switch] $SkipTeardown,
+
+    # Arrival-mode-only (ignored under -VerifyWorkflowExecution): >1 drives a shovel-bridge
+    # load/throughput test instead of a single-message correctness check.
+    [ValidateRange(1, [int]::MaxValue)]
+    [int]    $MessageCount = 1,
 
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     [switch] $VerifyWorkflowExecution,
@@ -741,6 +754,7 @@ try {
             '--servicebus-connection-string', $serviceBusConnectionStringPlain
             '--destination-queue', $DestinationQueueName
             '--timeout-seconds', $HarnessTimeoutSeconds
+            '--message-count', $MessageCount
         )
     }
     Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
@@ -764,6 +778,7 @@ try {
         Write-Host "  Mode        : $DestinationMode" -ForegroundColor White
         Write-Host "  Source      : $SourceQueueName (RabbitMQ)" -ForegroundColor White
         Write-Host "  Destination : $DestinationQueueName (Service Bus)" -ForegroundColor White
+        Write-Host "  Messages    : $MessageCount" -ForegroundColor White
     }
     Write-Host ''
 }

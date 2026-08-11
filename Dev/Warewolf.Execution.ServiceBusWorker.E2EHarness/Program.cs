@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -78,7 +79,14 @@ internal static class Program
         }
     }
 
-    /// <summary>Original bridge-delivery proof: publish a marker, poll Service Bus for it.</summary>
+    /// <summary>
+    /// Original bridge-delivery proof: publish one or more uniquely-marked messages and poll
+    /// Service Bus until all of them arrive (or the timeout elapses). <c>--message-count</c>
+    /// (default 1, unchanged single-message behaviour) lets a caller drive a bulk/load run —
+    /// e.g. the ShovelBridge load test job publishes 1000 messages here to prove the shovel
+    /// bridge itself can sustain that volume, without also exercising workflow execution (see
+    /// <c>workflow-execution</c> mode for that separate, heavier concern).
+    /// </summary>
     private static async Task<int> RunArrivalModeAsync(Dictionary<string, string> opts, Func<string, string> required)
     {
         var rabbitMqManagementUri = required("rabbitmq-management-uri").TrimEnd('/');
@@ -89,23 +97,43 @@ internal static class Program
         var serviceBusConnectionString = required("servicebus-connection-string");
         var destinationQueue = required("destination-queue");
         var timeoutSeconds = int.Parse(opts.GetValueOrDefault("timeout-seconds", "60"));
-        var marker = opts.GetValueOrDefault("marker", Guid.NewGuid().ToString("N"));
-
-        Console.WriteLine($"Marker: {marker}");
-        Console.WriteLine($"Publishing test message to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
-
-        await PublishToRabbitMqAsync(rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue, marker);
-        Console.WriteLine("Published. Waiting for the Shovel to bridge it to Service Bus ...");
-
-        var found = await WaitForMessageOnServiceBusAsync(serviceBusConnectionString, destinationQueue, marker, TimeSpan.FromSeconds(timeoutSeconds));
-
-        if (found)
+        var messageCount = int.Parse(opts.GetValueOrDefault("message-count", "1"));
+        if (messageCount < 1)
         {
-            Console.WriteLine($"PASS: message with marker '{marker}' arrived on Service Bus queue '{destinationQueue}' via the RabbitMQ Shovel bridge.");
+            throw new ArgumentException("--message-count must be at least 1.");
+        }
+        var markerPrefix = opts.GetValueOrDefault("marker", Guid.NewGuid().ToString("N"));
+
+        // Fixed-width numeric suffixes (D6) guarantee no marker is ever a substring of another
+        // marker sharing the same prefix, so exact-match lookup by value (see
+        // WaitForMessagesOnServiceBusAsync) is unambiguous even at 1000+ messages.
+        var markers = messageCount == 1
+            ? new[] { markerPrefix }
+            : Enumerable.Range(0, messageCount).Select(i => $"{markerPrefix}-{i:D6}").ToArray();
+
+        Console.WriteLine(messageCount == 1
+            ? $"Marker: {markers[0]}"
+            : $"Marker prefix: {markerPrefix} ({messageCount} messages, '{markers[0]}' .. '{markers[^1]}')");
+        Console.WriteLine($"Publishing {messageCount} message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
+
+        var publishStopwatch = Stopwatch.StartNew();
+        await PublishManyToRabbitMqAsync(rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue, markers);
+        publishStopwatch.Stop();
+        Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus ...");
+
+        var waitStopwatch = Stopwatch.StartNew();
+        var arrivedCount = await WaitForMessagesOnServiceBusAsync(serviceBusConnectionString, destinationQueue, markers, TimeSpan.FromSeconds(timeoutSeconds));
+        waitStopwatch.Stop();
+
+        if (arrivedCount == messageCount)
+        {
+            var rate = messageCount / Math.Max(waitStopwatch.Elapsed.TotalSeconds, 0.001);
+            var suffix = messageCount == 1 ? $"message with marker '{markers[0]}'" : $"all {messageCount} messages (marker prefix '{markerPrefix}')";
+            Console.WriteLine($"PASS: {suffix} arrived on Service Bus queue '{destinationQueue}' via the RabbitMQ Shovel bridge in {waitStopwatch.Elapsed.TotalSeconds:F1}s ({rate:F1} msg/s).");
             return 0;
         }
 
-        Console.WriteLine($"FAIL: message with marker '{marker}' did NOT arrive on Service Bus queue '{destinationQueue}' within {timeoutSeconds}s.");
+        Console.WriteLine($"FAIL: only {arrivedCount}/{messageCount} message(s) (marker prefix '{markerPrefix}') arrived on Service Bus queue '{destinationQueue}' within {timeoutSeconds}s.");
         return 1;
     }
 
@@ -192,6 +220,10 @@ internal static class Program
                 --destination-queue <name>
                 [--timeout-seconds <n>]                default: 60
                 [--marker <guid>]                      default: a freshly generated GUID
+                [--message-count <n>]                  default: 1; publishes N uniquely-marked
+                                                        messages (marker-000000 .. marker-{n-1})
+                                                        and waits for all N to arrive - used for
+                                                        shovel-bridge load/throughput testing
 
             Usage: ShovelBridgeE2EHarness --mode workflow-execution [options]
                 --rabbitmq-management-uri <uri>
@@ -224,6 +256,29 @@ internal static class Program
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
 
+        await PublishToRabbitMqAsync(http, managementUri, vhost, queue, marker);
+    }
+
+    /// <summary>
+    /// Publishes <paramref name="markers"/> (one message each) to the same RabbitMQ queue,
+    /// reusing a single authenticated <see cref="HttpClient"/> across all of them — publishing
+    /// a fresh client per message (as the single-message overload above does) is wasteful once
+    /// the count reaches load-test volumes (e.g. 1000 messages).
+    /// </summary>
+    private static async Task PublishManyToRabbitMqAsync(string managementUri, string username, string password, string vhost, string queue, IReadOnlyList<string> markers)
+    {
+        using var http = new HttpClient();
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
+
+        foreach (var marker in markers)
+        {
+            await PublishToRabbitMqAsync(http, managementUri, vhost, queue, marker);
+        }
+    }
+
+    private static async Task PublishToRabbitMqAsync(HttpClient http, string managementUri, string vhost, string queue, string marker)
+    {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
         var payload = JsonSerializer.Serialize(new { marker, sentAtUtc = DateTime.UtcNow.ToString("o") });
 
@@ -372,38 +427,67 @@ internal static class Program
     }
 
     /// <summary>
-    /// Polls the destination Service Bus queue for a message carrying the given
-    /// marker, completing it on match and abandoning any unrelated messages
-    /// found along the way (the queue is expected to be dedicated to this test,
-    /// so this is a safety net, not the expected path).
+    /// Polls the destination Service Bus queue for messages carrying any of the given
+    /// <paramref name="markers"/>, completing each on an exact match (parsed from the
+    /// message's own JSON <c>marker</c> property — see <see cref="PublishToRabbitMqAsync(HttpClient, string, string, string, string)"/>)
+    /// and abandoning any unrelated message found along the way (the queue is expected to be
+    /// dedicated to this test, so this is a safety net, not the expected path). Returns once
+    /// every marker has arrived or the timeout elapses, whichever comes first — a single
+    /// marker is just the N=1 case of this same loop, so this also serves the original
+    /// one-message arrival check.
     /// </summary>
-    private static async Task<bool> WaitForMessageOnServiceBusAsync(string connectionString, string queueName, string marker, TimeSpan timeout)
+    private static async Task<int> WaitForMessagesOnServiceBusAsync(string connectionString, string queueName, IReadOnlyList<string> markers, TimeSpan timeout)
     {
         await using var client = new ServiceBusClient(connectionString);
         await using var receiver = client.CreateReceiver(queueName);
 
+        var remaining = new HashSet<string>(markers, StringComparer.Ordinal);
+        var totalCount = markers.Count;
         var deadline = DateTime.UtcNow + timeout;
-        while (DateTime.UtcNow < deadline)
+        var lastProgressReport = DateTime.UtcNow;
+
+        while (remaining.Count > 0 && DateTime.UtcNow < deadline)
         {
-            var remaining = deadline - DateTime.UtcNow;
-            var waitTime = remaining > TimeSpan.FromSeconds(5) ? TimeSpan.FromSeconds(5) : remaining;
+            var remainingTime = deadline - DateTime.UtcNow;
+            var waitTime = remainingTime > TimeSpan.FromSeconds(5) ? TimeSpan.FromSeconds(5) : remainingTime;
             if (waitTime <= TimeSpan.Zero) break;
 
-            var messages = await receiver.ReceiveMessagesAsync(maxMessages: 10, maxWaitTime: waitTime);
+            var messages = await receiver.ReceiveMessagesAsync(maxMessages: 100, maxWaitTime: waitTime);
             foreach (var message in messages)
             {
                 var body = message.Body.ToString();
-                if (body.Contains(marker, StringComparison.Ordinal))
+                string? marker = null;
+                try
                 {
-                    await receiver.CompleteMessageAsync(message);
-                    return true;
+                    using var doc = JsonDocument.Parse(body);
+                    if (doc.RootElement.TryGetProperty("marker", out var markerEl))
+                    {
+                        marker = markerEl.GetString();
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Not our JSON shape - treated as unrelated below.
                 }
 
-                Console.WriteLine($"  (ignoring unrelated message on the queue: {body})");
-                await receiver.AbandonMessageAsync(message);
+                if (marker is not null && remaining.Remove(marker))
+                {
+                    await receiver.CompleteMessageAsync(message);
+                }
+                else
+                {
+                    Console.WriteLine($"  (ignoring unrelated message on the queue: {body})");
+                    await receiver.AbandonMessageAsync(message);
+                }
+            }
+
+            if (totalCount > 1 && DateTime.UtcNow - lastProgressReport >= TimeSpan.FromSeconds(10))
+            {
+                Console.WriteLine($"  ... {totalCount - remaining.Count}/{totalCount} arrived so far");
+                lastProgressReport = DateTime.UtcNow;
             }
         }
 
-        return false;
+        return totalCount - remaining.Count;
     }
 }

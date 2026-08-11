@@ -303,6 +303,17 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   Function App to have the trigger provisioned and an Entra token available, which is a
   manual/reviewed setup step, not something CI can safely automate today).
 
+  **Load testing:** `Test-ShovelBridgeE2E.ps1`'s arrival-mode check (i.e. NOT
+  `-VerifyWorkflowExecution`) also accepts `-MessageCount` (default 1) to publish that many
+  uniquely-marked messages and wait for all of them to arrive, rather than just one — this
+  proves the shovel bridge's own throughput, independent of workflow execution. Wired into CI
+  as the `ShovelBridgeLoadTest_ExternalServiceBus` job in `Dev/.azure/pipeline-LOADTEST.yml`,
+  which reuses the exact same `-RabbitMqMode External -DestinationMode ExternalServiceBus`
+  setup as `ShovelBridgeE2ETest_ExternalServiceBus` above (local choco RabbitMQ, the same
+  `WarewolfShovelBridgeTesting` namespace) but with `-MessageCount 1000` against its own
+  dedicated queue/rule/shovel names (suffixed `-loadtest`) so it never collides with the
+  ordinary single-message E2E test running concurrently on the same namespace.
+
 
 ## Promotion status
 
@@ -321,7 +332,9 @@ This worker was originally built as a client example and has been promoted to a
   wired into CI as the `ShovelBridgeE2ETest` job) — see "Known risks / open work" above.
   The `ExternalServiceBus`-mode variant against the real `WarewolfShovelBridgeTesting`
   Service Bus namespace is now wired into `pipeline-CLOUD.yml`'s "Test on Azure" stage as
-  the `ShovelBridgeE2ETest_ExternalServiceBus` job.
+  the `ShovelBridgeE2ETest_ExternalServiceBus` job, and a 1000-message load-test variant is
+  wired into `pipeline-LOADTEST.yml`'s `Load_Test` stage as the
+  `ShovelBridgeLoadTest_ExternalServiceBus` job.
 
 
 ## See also
