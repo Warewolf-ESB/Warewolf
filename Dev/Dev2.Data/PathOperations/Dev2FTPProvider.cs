@@ -16,8 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Authentication;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -26,6 +25,8 @@ using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
+using FluentFTP;
+using FluentFTP.Exceptions;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
 
@@ -256,41 +257,59 @@ namespace Dev2.Data.PathOperations
 
             public void ReadFromFtp(IActivityIOPath path, ref Stream result)
             {
-                var request = CreateFtpWebRequest(path);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                request.UseBinary = true;
-                request.KeepAlive = true;
-                request.EnableSsl = EnableSsl(path);
-
-                if (path.IsNotCertVerifiable)
+                using (var client = BuildFtpClient(path))
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                }
-
-                if (path.Username != string.Empty)
-                {
-                    request.Credentials = new NetworkCredential(path.Username, path.Password);
-                }
-
-                using (var response = (FtpWebResponse)request.GetResponse())
-                {
-                    using (var ftpStream = response.GetResponseStream())
+                    var ftpPath = ExtractFileNameFromPath(path.Path);
+                    if (!client.DownloadBytes(out var data, ftpPath))
                     {
-
-                        if (ftpStream != null && ftpStream.CanRead)
-                        {
-                            var data = ftpStream.ToByteArray();
-                            result = new MemoryStream(data);
-                        }
-                        else
-                        {
-                            throw new Exception(@"Fail");
-                        }
+                        throw new Exception(@"Fail");
                     }
+                    result = new MemoryStream(data);
                 }
             }
 
-            private static FtpWebRequest CreateFtpWebRequest(IActivityIOPath path) => (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
+            FtpClient BuildFtpClient(IActivityIOPath path) => BuildFtpClient(path.Path, path.Username, path.Password, EnableSsl(path), path.IsNotCertVerifiable);
+
+            FtpClient BuildFtpClient(string rawPath, string user, string pass, bool ssl, bool isNotCertVerifiable)
+            {
+                var hostName = ExtractHostNameFromPath(rawPath);
+                if (hostName.ToLower(CultureInfo.InvariantCulture).StartsWith(@"localhost"))
+                {
+                    hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+                }
+
+                var port = 21;
+                if (Uri.TryCreate(rawPath, UriKind.RelativeOrAbsolute, out Uri uri) && uri.Port > 0)
+                {
+                    port = uri.Port;
+                }
+
+                var client = new FtpClient(hostName, port);
+                if (user != string.Empty)
+                {
+                    client.Credentials = new NetworkCredential(user, pass);
+                }
+                if (ssl)
+                {
+                    client.Config.EncryptionMode = FtpEncryptionMode.Explicit;
+                    client.Config.SslProtocols = SslProtocols.Tls12;
+                }
+                if (isNotCertVerifiable)
+                {
+                    client.Config.ValidateAnyCertificate = true;
+                }
+
+                try
+                {
+                    client.Connect();
+                }
+                catch (Exception)
+                {
+                    client.Dispose();
+                    throw;
+                }
+                return client;
+            }
 
             public void ReadFromSftp(IActivityIOPath path, ref Stream result, List<string> filesToCleanup)
             {
@@ -401,38 +420,18 @@ namespace Dev2.Data.PathOperations
 
             public int WriteToFtp(Stream src, IActivityIOPath dst)
             {
-                var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
-                request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.UseBinary = true;
-                request.KeepAlive = false;
-                request.EnableSsl = EnableSsl(dst);
-
-                if (dst.Username != string.Empty)
+                byte[] payload;
+                using (src)
                 {
-                    request.Credentials = new NetworkCredential(dst.Username, dst.Password);
+                    payload = src.ToByteArray();
                 }
+                var result = payload.Length;
 
-                if (dst.IsNotCertVerifiable)
+                using (var client = BuildFtpClient(dst))
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                }
-
-                request.ContentLength = src.Length;
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    using (src)
-                    {
-                        var payload = src.ToByteArray();
-                        var writeLen = payload.Length;
-                        requestStream.Write(payload, 0, writeLen);
-                    }
-                }
-
-                var result = (int)request.ContentLength;
-
-                using (var response = (FtpWebResponse)request.GetResponse())
-                {
-                    if (response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData)
+                    var ftpPath = ExtractFileNameFromPath(dst.Path);
+                    var status = client.UploadBytes(payload, ftpPath, FtpRemoteExists.Overwrite);
+                    if (status != FtpStatus.Success)
                     {
                         throw new Exception(ErrorResource.FileNotCreated);
                     }
@@ -478,50 +477,24 @@ namespace Dev2.Data.PathOperations
                 var result = new List<IActivityIOPath>();
                 try
                 {
-                    var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(src.Path));
-                    request.Method = WebRequestMethods.Ftp.ListDirectory;
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSsl(src);
-
-                    if (src.Username != string.Empty)
+                    using (var client = BuildFtpClient(src))
                     {
-                        request.Credentials = new NetworkCredential(src.Username, src.Password);
-                    }
-
-                    if (src.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                    }
-
-                    using (FtpWebResponse response = request.GetResponse() as FtpWebResponse)
-                    {
-                        using (Stream responseStream = response?.GetResponseStream())
-                        {
-                            if (responseStream != null)
-                            {
-                                using (StreamReader reader = new StreamReader(responseStream))
-                                {
-                                    while (!reader.EndOfStream)
-                                    {
-                                        var uri = BuildValidPathForFtp(src, reader.ReadLine());
-                                        result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true, src.PrivateKeyFile));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (WebException webEx)
-                {
-                    var webResponse = webEx.Response as FtpWebResponse;
-                    {
-                        if (webResponse?.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                        var ftpPath = ExtractFileNameFromPath(src.Path);
+                        if (!client.DirectoryExists(ftpPath))
                         {
                             throw new DirectoryNotFoundException(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                         }
-                        throw;
+
+                        foreach (var item in client.GetListing(ftpPath))
+                        {
+                            var uri = BuildValidPathForFtp(src, item.Name);
+                            result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true, src.PrivateKeyFile));
+                        }
                     }
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
@@ -568,42 +541,19 @@ namespace Dev2.Data.PathOperations
 
             public bool CreateDirectoryStandardFtp(IActivityIOPath dst)
             {
-                FtpWebResponse response = null;
                 try
                 {
-                    var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
-                    request.Method = WebRequestMethods.Ftp.MakeDirectory;
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSsl(dst);
-                    if (dst.Username != string.Empty)
+                    using (var client = BuildFtpClient(dst))
                     {
-                        request.Credentials = new NetworkCredential(dst.Username, dst.Password);
-                    }
-
-                    if (dst.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                    }
-                    using (response = (FtpWebResponse)request.GetResponse())
-                    {
-                        if (response.StatusCode != FtpStatusCode.PathnameCreated)
-                        {
-                            throw new Exception(@"Fail");
-                        }
+                        var ftpPath = ExtractFileNameFromPath(dst.Path);
+                        return client.CreateDirectory(ftpPath, false);
                     }
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
-                    // throw
                     return false;
                 }
-                finally
-                {
-                    response?.Close();
-                }
-                return true;
             }
 
             public bool CreateDirectorySftp(IActivityIOPath dst)
@@ -626,13 +576,6 @@ namespace Dev2.Data.PathOperations
                     sftp.Disconnect();
                     sftp.Dispose();
                 }
-                return result;
-            }
-
-            static string ConvertSslToPlain(string path)
-            {
-                var result = path;
-                result = result.Replace(@"FTPS:", @"FTP:").Replace(@"ftps:", @"ftp:");
                 return result;
             }
 
@@ -676,35 +619,18 @@ namespace Dev2.Data.PathOperations
 
             string ExtendedDirListStandardFtp(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
             {
-                FtpWebResponse resp = null;
-                string result = null;
                 try
                 {
-                    var req = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path));
-                    if (user != string.Empty)
+                    using (var client = BuildFtpClient(path, user, pass, ssl, isNotCertVerifiable))
                     {
-                        req.Credentials = new NetworkCredential(user, pass);
-                    }
-                    req.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-                    req.KeepAlive = false;
-                    req.EnableSsl = ssl;
-                    if (isNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                    }
-
-                    using (resp = (FtpWebResponse)req.GetResponse())
-                    {
-                        using (Stream stream = resp.GetResponseStream())
+                        var ftpPath = ExtractFileNameFromPath(path);
+                        var result = new StringBuilder();
+                        foreach (var item in client.GetListing(ftpPath))
                         {
-                            if (stream != null)
-                            {
-                                using (var reader = new StreamReader(stream, Encoding.UTF8))
-                                {
-                                    result = reader.ReadToEnd();
-                                }
-                            }
+                            var marker = item.Type == FtpObjectType.Directory ? @"<DIR>" : @"-";
+                            result.AppendLine($"{marker} {item.Name}");
                         }
+                        return result.ToString();
                     }
                 }
                 catch (Exception ex)
@@ -712,11 +638,6 @@ namespace Dev2.Data.PathOperations
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                     throw;
                 }
-                finally
-                {
-                    resp?.Close();
-                }
-                return result;
             }
 
             string ExtendedDirListSftp(string path, string user, string pass, string privateKeyFile)
@@ -808,29 +729,20 @@ namespace Dev2.Data.PathOperations
 
             bool DeleteUsingStandardFtp(IList<IActivityIOPath> src)
             {
-                FtpWebResponse response = null;
                 foreach (var activityIOPath in src)
                 {
                     try
                     {
-                        var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(activityIOPath.Path));
-                        request.Method = PathIs(activityIOPath) == enPathType.Directory ? WebRequestMethods.Ftp.RemoveDirectory : WebRequestMethods.Ftp.DeleteFile;
-                        request.UseBinary = true;
-                        request.KeepAlive = false;
-                        request.EnableSsl = EnableSsl(activityIOPath);
-                        if (activityIOPath.IsNotCertVerifiable)
+                        using (var client = BuildFtpClient(activityIOPath))
                         {
-                            ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                        }
-                        if (activityIOPath.Username != string.Empty)
-                        {
-                            request.Credentials = new NetworkCredential(activityIOPath.Username, activityIOPath.Password);
-                        }
-                        using (response = (FtpWebResponse)request.GetResponse())
-                        {
-                            if (response.StatusCode != FtpStatusCode.FileActionOK)
+                            var ftpPath = ExtractFileNameFromPath(activityIOPath.Path);
+                            if (PathIs(activityIOPath) == enPathType.Directory)
                             {
-                                throw new Exception(@"Fail");
+                                client.DeleteDirectory(ftpPath);
+                            }
+                            else
+                            {
+                                client.DeleteFile(ftpPath);
                             }
                         }
                     }
@@ -838,11 +750,6 @@ namespace Dev2.Data.PathOperations
                     {
                         throw new Exception(string.Format(ErrorResource.CouldNotDelete, activityIOPath.Path), exception);
                     }
-                    finally
-                    {
-                        response?.Close();
-                    }
-
                 }
                 return true;
             }
@@ -891,51 +798,28 @@ namespace Dev2.Data.PathOperations
 
             bool IsFilePresentStandardFtp(IActivityIOPath path)
             {
-                FtpWebResponse response = null;
                 bool fileIsPresent;
                 try
                 {
-                    var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
-                    request.Method = WebRequestMethods.Ftp.GetFileSize;
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSsl(path);
-                    if (path.Username != string.Empty)
+                    using (var client = BuildFtpClient(path))
                     {
-                        request.Credentials = new NetworkCredential(path.Username, path.Password);
-                    }
-                    if (path.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                    }
-                    using (response = (FtpWebResponse)request.GetResponse())
-                    {
-                        using (Stream responseStream = response.GetResponseStream())
+                        var ftpPath = ExtractFileNameFromPath(path.Path);
+                        fileIsPresent = client.FileExists(ftpPath);
+                        if (fileIsPresent)
                         {
-                            if (responseStream != null)
-                            {
-                                using (StreamReader reader = new StreamReader(responseStream))
-                                {
-                                    Dev2Logger.Info("FTP file of size " + reader.ReadToEnd() + " found at " + path.Path, GlobalConstants.WarewolfInfo);
-                                }
-                            }
+                            Dev2Logger.Info("FTP file found at " + path.Path, GlobalConstants.WarewolfInfo);
                         }
                     }
-                    fileIsPresent = true;
                 }
-                catch (WebException wex)
+                catch (FtpException fex)
                 {
-                    Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error(this, fex, GlobalConstants.WarewolfError);
                     fileIsPresent = false;
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                     throw;
-                }
-                finally
-                {
-                    response?.Close();
                 }
                 return fileIsPresent;
             }
@@ -967,55 +851,28 @@ namespace Dev2.Data.PathOperations
 
             public bool IsDirectoryAlreadyPresentStandardFtp(IActivityIOPath path)
             {
-                FtpWebResponse response = null;
                 bool isAlive;
                 try
                 {
-                    var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
-                    request.Method = WebRequestMethods.Ftp.ListDirectory;
-                    request.UseBinary = true;
-                    request.KeepAlive = false;
-                    request.EnableSsl = EnableSsl(path);
-
-                    if (path.Username != string.Empty)
+                    using (var client = BuildFtpClient(path))
                     {
-                        request.Credentials = new NetworkCredential(path.Username, path.Password);
-                    }
-
-                    if (path.IsNotCertVerifiable)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-                    }
-
-                    using (response = (FtpWebResponse)request.GetResponse())
-                    {
-
-                        using (Stream responseStream = response.GetResponseStream())
+                        var ftpPath = ExtractFileNameFromPath(path.Path);
+                        isAlive = client.DirectoryExists(ftpPath);
+                        if (isAlive)
                         {
-                            if (responseStream != null)
-                            {
-                                using (StreamReader reader = new StreamReader(responseStream))
-                                {
-                                    Dev2Logger.Info("FTP directory containing files " + reader.ReadToEnd() + " found at " + path.Path, GlobalConstants.WarewolfInfo);
-                                }
-                            }
+                            Dev2Logger.Info("FTP directory found at " + path.Path, GlobalConstants.WarewolfInfo);
                         }
                     }
-                    isAlive = true;
                 }
-                catch (WebException wex)
+                catch (FtpException fex)
                 {
-                    Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error(this, fex, GlobalConstants.WarewolfError);
                     isAlive = false;
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
                     throw;
-                }
-                finally
-                {
-                    response?.Close();
                 }
                 return isAlive;
             }
@@ -1043,11 +900,6 @@ namespace Dev2.Data.PathOperations
                     sftpClient.Dispose();
                 }
                 return isAlive;
-            }
-
-            bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-            {
-                return true;
             }
 
             public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
