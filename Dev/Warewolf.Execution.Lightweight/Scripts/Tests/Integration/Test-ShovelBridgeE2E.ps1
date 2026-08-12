@@ -118,13 +118,15 @@
     receiver on the same queue would compete with the engine's own subscription and could
     steal the message before the engine processes it.
 .PARAMETER WorkflowName
-    REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "Hello World" —
-    matched against the target engine's secure.config exactly as an HTTP /secure/{workflow}
-    path segment would be.
+    REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "RabbitProcess" (see
+    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, bundled
+    alongside its "NewSqlServerSource (Local Backup)" DB source, replacing the generic "Hello
+    World" smoke-test workflow previously used as the example here) — matched against the
+    target engine's secure.config exactly as an HTTP /secure/{workflow} path segment would be.
 .PARAMETER WorkflowInputsJson
     Only used when -VerifyWorkflowExecution. Optional JSON object of string inputs, e.g.
-    '{"Name":"FromRabbitMq"}'. Passed through to the workflow exactly like HTTP query-string
-    inputs are today.
+    '{"message":"FromRabbitMq"}' (RabbitProcess's own single input — see its DataList). Passed
+    through to the workflow exactly like HTTP query-string inputs are today.
 .PARAMETER CorrelationId
     Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
     -MessageCount is 1 (default), this is used verbatim and, when omitted, a fresh GUID is
