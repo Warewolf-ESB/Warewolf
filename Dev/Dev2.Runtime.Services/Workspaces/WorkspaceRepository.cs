@@ -417,6 +417,12 @@ namespace Dev2.Workspaces
                         // Deserialization failed so overwrite with new one.
                         Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
 
+                        // Legacy fallback for files still in the pre-MessagePack .NET Framework
+                        // BinaryFormatter format. On net9.0+ (where BinaryFormatter no longer
+                        // exists) this always returns null, so environments must have run a
+                        // net8.0-or-earlier build at least once to self-migrate any such files
+                        // (see BinarySerializationHelper.DeserializeFile remarks) before this
+                        // fallback stops being able to recover them.
                         var helper = new Dev2.Net6.Compatibility.BinarySerializationHelper();
                         var deserializedDictionary = helper.DeserializeFile(filePath);
                         if (deserializedDictionary != null)

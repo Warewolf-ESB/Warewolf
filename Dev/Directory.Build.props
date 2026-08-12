@@ -13,7 +13,14 @@
     <!-- Fix parallel build missing g.cs and XAML compilation issues in wpftmp projects -->
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <GenerateTemporaryTargetAssemblyDebuggingInformation>false</GenerateTemporaryTargetAssemblyDebuggingInformation>
-    
+  </PropertyGroup>
+
+  <!-- BinaryFormatter is deprecated in .NET 8 and fully removed starting with .NET 9, so this
+       opt-in switch is only meaningful (and only recognized) on net8.0 and earlier TargetFrameworks.
+       Scoped here rather than left global so it doesn't linger as a stale/no-op setting once
+       projects move to net9.0+. See Dev2.Net6.Compatibility/BinarySerializationHelper.cs for the
+       one remaining (legacy-read-only) consumer, which is itself gated behind #if !NET9_0_OR_GREATER. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
