@@ -453,6 +453,34 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				} else {
 					Write-Host "WARNING: could not find RabbitMQ.Client 5.1.2 at '$_rabbitMqDll' to pin in $OutputFolderName - RabbitMQ.Client.dll version in this shared output may be non-deterministic."
 				}
+
+				# WOLF-8508 follow-up: the pin above is a physical file overwrite in this one
+				# shared flat directory, so it also clobbered Warewolf.Execution.QueueProcessor.Tests'
+				# own RabbitMQ.Client 7.1.2 (async-only IChannel API) even though that project's own
+				# test job (pipeline.yml "LightweightExecutionUnitTests") runs it separately -
+				# separate test EXECUTION was never separate PUBLISH. Fix: republish
+				# Warewolf.Execution.QueueProcessor.Tests into its own isolated subfolder, which
+				# .NET Core's per-assembly .deps.json/AssemblyDependencyResolver will resolve RabbitMQ.Client
+				# from independently of the flat directory's pinned copy. TestRun.ps1's direct-mode
+				# assembly lookup already does `Get-ChildItem ".\$p.dll" -Recurse` from its working
+				# directory, so it finds this isolated copy with no TestRun.ps1/pipeline.yml changes.
+				$_queueProcessorTestsProj = "$PSScriptRoot\Dev\Warewolf.Execution.QueueProcessor.Tests\Warewolf.Execution.QueueProcessor.Tests.csproj"
+				$_queueProcessorOut = "$PSScriptRoot\Bin\$OutputFolderName\QueueProcessor"
+				if (Test-Path $_queueProcessorTestsProj) {
+					# Remove the flat copy first so TestRun.ps1's -Recurse assembly search does not
+					# also match the stale, wrongly-pinned copy left behind by the solution-wide publish.
+					Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName" -Filter "Warewolf.Execution.QueueProcessor.Tests.*" -File -ErrorAction SilentlyContinue |
+						Remove-Item -Force -ErrorAction SilentlyContinue
+					dotnet restore "$_queueProcessorTestsProj" -r $Runtime --nologo -v minimal --force
+					dotnet publish "$_queueProcessorTestsProj" -c $Config -r $Runtime $_scFlag --no-restore -o "$_queueProcessorOut" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
+					if ($LASTEXITCODE -ne 0) {
+						Write-Host "dotnet publish failed for Warewolf.Execution.QueueProcessor.Tests.csproj."
+						exit 1
+					}
+					Write-Host "Republished Warewolf.Execution.QueueProcessor.Tests in isolation to $_queueProcessorOut (keeps its own RabbitMQ.Client 7.1.2 out of the 5.1.2 pin above)."
+				} else {
+					Write-Host "WARNING: could not find $_queueProcessorTestsProj to isolate from the RabbitMQ.Client 5.1.2 pin."
+				}
 			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows

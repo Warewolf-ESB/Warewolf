@@ -242,7 +242,17 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `Azure.Messaging.ServiceBus` SDK — proving the bridge actually delivers a message
   end-to-end, against a real broker/containers, not mocks. Wired into CI as the
   `ShovelBridgeE2ETest` job in `Dev/.azure/pipeline.yml` (Container + Emulator mode, local
-  containers only). All readiness polling is done purely over the RabbitMQ management HTTP API
+  containers only). That job runs on an `ubuntu-latest` pool rather than the
+  `windows-2022` pool used everywhere else in this pipeline: all three containers it
+  starts (`rabbitmq:3-management`, `azure-sql-edge`, and the Service Bus emulator) are
+  Linux-only images, and Microsoft-hosted `windows-2022` agents' Docker daemon only
+  supports Windows containers (no Hyper-V/WSL2 Linux-container backend, no in-place
+  daemon switch) — it fails to pull any of them ("no matching manifest for
+  windows/amd64", "could not find plugin bridge"). Unlike RabbitMQ, neither SQL Edge nor
+  the Service Bus emulator has a Windows-native (choco or otherwise) substitute, so
+  switching only RabbitMQ to the choco/`-RabbitMqMode External` technique used by
+  `ShovelBridgeE2ETest_ExternalServiceBus` (below) would still leave this job broken; a
+  Linux pool fixes all three at once with no script changes. All readiness polling is done purely over the RabbitMQ management HTTP API
   (`/api/overview`, `/api/shovels`) — deliberately never via `docker exec rabbitmqctl` /
   `docker exec rabbitmq-plugins`, since those CLI tools each spin up their own short-lived
   Erlang node to talk to the broker over distribution, and doing so repeatedly while the

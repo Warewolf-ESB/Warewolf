@@ -12,6 +12,7 @@
 using Dev2.Common;
 using System;
 using System.ServiceProcess;
+using System.Threading.Tasks;
 
 namespace Dev2
 {
@@ -36,16 +37,24 @@ namespace Dev2
         {
             Dev2Logger.Info("** Service Starting **", GlobalConstants.WarewolfInfo);
             RunSuccessful = true;
-            var t = _serverLifecycleManager.Run(new LifeCycleInitializationList());
-            t.Wait();
-            if (EnvironmentVariables.IsServerOnline)
+            // OnStart must return promptly or the Service Control Manager reports 1053
+            // ("service did not respond to the start or control request in a timely fashion")
+            // and can tear down the process before it finishes initializing. Large resource
+            // catalogues (e.g. the Load pipeline's 2000+ resource set) can take well beyond
+            // the SCM's default start-request timeout to load. Run() already performs its work
+            // on a background Task, so check the outcome asynchronously via a continuation
+            // instead of blocking here with Wait().
+            _serverLifecycleManager.Run(new LifeCycleInitializationList()).ContinueWith(t =>
             {
-                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
-            }
-            else
-            {
-                Stop();
-            }
+                if (EnvironmentVariables.IsServerOnline)
+                {
+                    Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
+                }
+                else
+                {
+                    Stop();
+                }
+            });
         }
 
         protected override void OnStop()
