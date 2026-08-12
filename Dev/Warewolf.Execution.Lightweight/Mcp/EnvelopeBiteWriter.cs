@@ -18,8 +18,8 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 /// definition — the "envelope-wrapping step" <c>warewolf-lee-mcp-v3-spec.md</c>'s
 /// <c>create_workflow</c> section describes as "new Lightweight-local code (mirrors
 /// <c>Hello World.bite</c>'s structure)". Shared by <see cref="ToolHandlers.CreateWorkflowTool"/>
-/// now and intended for <c>edit_workflow</c> (not yet implemented) to reuse later, since both
-/// tools produce the exact same <c>&lt;Service&gt;</c> shape — only the mutable pieces
+/// and <see cref="ToolHandlers.EditWorkflowTool"/>, since both tools produce the exact same
+/// <c>&lt;Service&gt;</c> shape — only the mutable pieces
 /// (<c>Service ID</c>/<c>VersionNumber</c>/<c>IsNewWorkflow</c>) differ between "first save" and
 /// "subsequent save", which their respective callers control via this class's parameters rather
 /// than this class guessing at that policy itself.

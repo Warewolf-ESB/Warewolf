@@ -153,7 +153,9 @@ internal static class CreateWorkflowTool
         return new CreateWorkflowResult(name, true);
     }
 
-    static string ResolveDisplayName(System.Text.Json.JsonElement envelope, string relativePath)
+    /// <summary><c>internal</c> (not <c>private</c>) so <see cref="EditWorkflowTool"/> resolves the
+    /// same "envelope name wins over the file-path name" rule identically, rather than duplicating it.</summary>
+    internal static string ResolveDisplayName(System.Text.Json.JsonElement envelope, string relativePath)
     {
         if (envelope.ValueKind == System.Text.Json.JsonValueKind.Object &&
             envelope.TryGetProperty("name", out var nameEl) &&
@@ -169,7 +171,9 @@ internal static class CreateWorkflowTool
         return Path.GetFileName(relativePath.TrimEnd('/'));
     }
 
-    static string ResolveDescription(System.Text.Json.JsonElement envelope)
+    /// <summary><c>internal</c> (not <c>private</c>) so <see cref="EditWorkflowTool"/> shares the
+    /// same description-resolution rule identically, rather than duplicating it.</summary>
+    internal static string ResolveDescription(System.Text.Json.JsonElement envelope)
     {
         if (envelope.ValueKind == System.Text.Json.JsonValueKind.Object &&
             envelope.TryGetProperty("description", out var descriptionEl) &&

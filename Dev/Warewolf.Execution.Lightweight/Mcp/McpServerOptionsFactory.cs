@@ -141,6 +141,19 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement, System.Text.Json.JsonElement, EditWorkflowResult>)EditWorkflowTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = EditWorkflowTool.ToolName,
+                Description = "Validates an envelope + body pair (as validate_workflow), then compiles and overwrites an existing workflow's .bite file in place, provided the caller has Contribute permission and the name already exists.",
+                ReadOnly = false,
+                Destructive = true,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }
