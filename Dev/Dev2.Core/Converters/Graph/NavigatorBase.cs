@@ -17,7 +17,6 @@ using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Converters.Graph
 {
-    [Serializable]
     public abstract class NavigatorBase
     {
         #region Properties

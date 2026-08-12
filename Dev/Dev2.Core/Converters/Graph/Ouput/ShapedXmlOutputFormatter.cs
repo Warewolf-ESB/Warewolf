@@ -19,7 +19,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
-    [Serializable]
     public class ShapedXmlOutputFormatter : IOutputFormatter
     {
         #region Constructors

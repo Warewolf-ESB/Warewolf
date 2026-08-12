@@ -15,7 +15,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    [Serializable]
     public class DataBrowser : IDataBrowser
     {
         #region Methods

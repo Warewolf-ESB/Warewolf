@@ -10,30 +10,40 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Dev2.Session
 {
-    [Serializable]
+    [DataContract]
     public class SaveDebugTO
     {
         #region Properties
 
+        [DataMember]
         public string WorkflowXaml { get; set; }
 
+        [DataMember]
         public string DataList { get; set; }
 
+        [DataMember]
         public string ServiceName { get; set; }
 
+        [DataMember]
         public bool IsDebugMode { get; set; }
 
+        [DataMember]
         public bool RememberInputs { get; set; }
 
+        [DataMember]
         public string XmlData { get; set; }
-        
+
+        [DataMember]
         public string JsonData { get; set; }
 
+        [DataMember]
         public string WorkflowID { get; set; }
 
+        [DataMember]
         public int DataListHash { get; set; }
 
         #endregion Properties

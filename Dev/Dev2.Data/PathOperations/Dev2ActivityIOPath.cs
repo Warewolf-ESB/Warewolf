@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 
@@ -20,7 +21,7 @@ namespace Dev2.PathOperations
     /// Status : New
     /// Purpose : To provide a concrete impl of the IActivityIOPath interface
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class Dev2ActivityIOPath : IActivityIOPath
     {
 
@@ -34,35 +35,41 @@ namespace Dev2.PathOperations
             PrivateKeyFile = privateKeyFile;
         }
 
+        [DataMember]
         public enActivityIOPathType PathType
         {
             get;
             set;
         }
 
+        [DataMember]
         public string Path
         {
             get;
             set;
         }
 
+        [DataMember]
         public string Username
         {
             get;
             set;
         }
 
+        [DataMember]
         public string Password
         {
             get;
             set;
         }
+        [DataMember]
         public string PrivateKeyFile
         {
             get;
             set;
         }
 
+        [DataMember]
         public bool IsNotCertVerifiable
         {
             get;

@@ -14,7 +14,6 @@ using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
-    [Serializable]
     public class ListOfIndex
     {
         public int MaxValue { get; set; }

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -21,22 +22,29 @@ namespace Dev2.Data.ServiceModel.Messages
     /// <summary>
     /// Send compile time messages to the studio ;)
     /// </summary>
-    [Serializable]
-    
+    [DataContract]
     public class CompileMessageTO : ICompileMessageTO
     {
+        [DataMember]
         public Guid UniqueID { get; set; }
+        [DataMember]
         public Guid ServiceID { get; set; }
+        [DataMember]
         public Guid MessageID { get; set; }
+        [DataMember]
         public Guid WorkspaceID { get; set; }
+        [DataMember]
         public string ServiceName { get; set; }
+        [DataMember]
         [JsonConverter(typeof(StringEnumConverter))]
         public CompileMessageType MessageType { get; set; }
 
+        [DataMember]
         [JsonConverter(typeof(StringEnumConverter))]
         public ErrorType ErrorType { get; set; }
 
         // should be json or other sensable string data ;)
+        [DataMember]
         public string MessagePayload { get; set; }
 
         public ICompileMessageTO Clone() => new CompileMessageTO

@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 
 
 using System;
@@ -8,7 +9,7 @@ namespace Dev2.Runtime.DynamicProxy
 {
     public class DynamicProxy : DynamicObject
     {
-        public DynamicProxy(Type proxyType, Binding binding, 
+        public DynamicProxy(Type proxyType, Binding binding,
                 EndpointAddress address)
             : base(proxyType)
         {
@@ -28,3 +29,4 @@ namespace Dev2.Runtime.DynamicProxy
         public object Proxy => ObjectInstance;
     }
 }
+#endif

@@ -10,18 +10,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
+    [CollectionDataContract]
     public class NamespaceList : List<NamespaceItem>
     {
         public override string ToString() => JsonConvert.SerializeObject(this);
     }
 
-    [Serializable]
+    [DataContract]
     public class NamespaceItem:INamespaceItem
     {
         #region ToString
@@ -30,10 +31,19 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
+        [DataMember]
         public string AssemblyLocation { get; set; }
+
+        [DataMember]
         public string AssemblyName { get; set; }
+
+        [DataMember]
         public string FullName { get; set; }
+
+        [DataMember]
         public string MethodName { get; set; }
+
+        [DataMember]
         public string JsonObject { get; set; }
     }
 }

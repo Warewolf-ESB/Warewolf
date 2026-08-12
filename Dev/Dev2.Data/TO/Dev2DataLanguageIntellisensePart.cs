@@ -10,18 +10,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.TO
 {
-    [Serializable]
+    [DataContract]
     public class Dev2DataLanguageIntellisensePart : IDev2DataLanguageIntellisensePart
     {
 
+        [DataMember]
         public string Name { get; private set; }
 
+        [DataMember]
         public string Description { get; private set; }
 
+        [DataMember]
         public IList<IDev2DataLanguageIntellisensePart> Children { get; private set; }
 
         public Dev2DataLanguageIntellisensePart(string name, string desc, IList<IDev2DataLanguageIntellisensePart> children)

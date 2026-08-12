@@ -18,7 +18,6 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [DataContract]
-    [Serializable]
     public class ServiceMethod
     {
         #region CTOR
@@ -99,8 +98,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         [DataMember]
         public bool IsProperty { get; internal set; }
 
+        [DataMember]
         public List<MethodOutput> Outputs { get; set; }
 
+        [DataMember]
         public IOutputDescription OutputDescription { get; set; }
 
         #endregion

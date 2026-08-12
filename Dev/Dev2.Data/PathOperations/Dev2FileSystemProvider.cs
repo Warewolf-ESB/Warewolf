@@ -42,7 +42,6 @@ namespace Dev2.PathOperations
         }
     }
     
-    [Serializable]
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
         public IActivityIOPath IOPath

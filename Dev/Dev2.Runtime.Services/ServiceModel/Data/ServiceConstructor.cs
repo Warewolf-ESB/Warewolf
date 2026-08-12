@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [DataContract]
-    [Serializable]
     public class ServiceConstructor
     {
         public ServiceConstructor()

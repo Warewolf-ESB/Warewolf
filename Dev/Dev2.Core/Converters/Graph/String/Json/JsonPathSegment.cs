@@ -9,11 +9,12 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
+    [DataContract]
     public class JsonPathSegment : IPathSegment
     {
         internal JsonPathSegment()
@@ -26,8 +27,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             IsEnumarable = isEnumarable;
         }
 
+        [DataMember]
         public string ActualSegment { get; set; }
+        [DataMember]
         public string DisplaySegment { get; set; }
+        [DataMember]
         public bool IsEnumarable { get; set; }
 
         public string ToString(bool considerEnumerable)

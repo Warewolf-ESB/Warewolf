@@ -13,21 +13,28 @@
     <!-- Fix parallel build missing g.cs and XAML compilation issues in wpftmp projects -->
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <GenerateTemporaryTargetAssemblyDebuggingInformation>false</GenerateTemporaryTargetAssemblyDebuggingInformation>
-    
+  </PropertyGroup>
+
+  <!-- BinaryFormatter is deprecated in .NET 8 and fully removed starting with .NET 9, so this
+       opt-in switch is only meaningful (and only recognized) on net8.0 and earlier TargetFrameworks.
+       Scoped here rather than left global so it doesn't linger as a stale/no-op setting once
+       projects move to net9.0+. See Dev2.Net6.Compatibility/BinarySerializationHelper.cs for the
+       one remaining (legacy-read-only) consumer, which is itself gated behind #if !NET9_0_OR_GREATER. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
-  <!-- Pin Google.Protobuf to 3.27.1 solution-wide.
+  <!-- Pin Google.Protobuf to 3.32.1 solution-wide.
        MySql.Data 8.4.0 brings in Google.Protobuf 3.25.1 as a transitive dependency, and the
-       Microsoft.Azure.Functions.Worker.Extensions.ServiceBus 5.20.0 extension (used by
-       Warewolf.Execution.Lightweight's secure Service Bus trigger) requires >= 3.27.1.
+       Microsoft.Azure.Functions.Worker.Extensions.ServiceBus 5.24.0 extension (used by
+       Warewolf.Execution.Lightweight's secure Service Bus trigger) requires >= 3.32.1.
        When all projects share a flat OutDir a lower-versioned DLL from another consumer
        overwrites the higher-versioned DLL that Warewolf.Execution.Lightweight requires, causing the
        dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on startup
-       (strong-named assembly version 3.27.1.0 is not found because only an older version is present).
-       Setting the minimum version here forces every project's NuGet resolution to 3.27.1. -->
+       (strong-named assembly version 3.32.1.0 is not found because only an older version is present).
+       Setting the minimum version here forces every project's NuGet resolution to 3.32.1. -->
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.27.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.32.1" />
   </ItemGroup>
 
   <!-- Pin System.Text.Json to 10.0.3 solution-wide.

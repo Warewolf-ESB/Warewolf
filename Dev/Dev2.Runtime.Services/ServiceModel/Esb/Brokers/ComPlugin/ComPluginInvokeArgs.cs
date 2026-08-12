@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -18,15 +19,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     /// <summary>
     /// Args to pass into the plugin ;)
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class ComPluginInvokeArgs
     {
+        [DataMember]
         public bool Is32Bit { get; set; }
+        [DataMember]
         public string ClsId { get; set; }
+        [DataMember]
         public string AssemblyName { get; set; }
+        [DataMember]
         public string Fullname { get; set; }
+        [DataMember]
         public string Method { get; set; }
+        [DataMember]
         public List<MethodParameter> Parameters { get; set; }
+        [DataMember]
         public IOutputFormatter OutputFormatter { get; set; }
 
     }

@@ -15,7 +15,6 @@ using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
     public class Resource : ResourceBase
     {
 
