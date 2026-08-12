@@ -14,7 +14,6 @@ namespace Dev2.Net6.Compatibility
     /// that <see cref="GetEnumerator"/>, <see cref="Keys"/>, and <see cref="Values"/>
     /// all return a snapshot of the data at the time it was called.
     /// </summary>
-    [Serializable]
     public class ConcurrentDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private readonly object _lockObj = new object();

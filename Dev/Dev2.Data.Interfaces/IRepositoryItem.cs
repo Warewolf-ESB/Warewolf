@@ -8,15 +8,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Runtime.Serialization;
-
 namespace Dev2.Data.Interfaces
 {
     /// <summary>
     /// Defines the requirements for a repository item
     /// </summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
-    public interface IRepositoryItem<TKey> : ISerializable
+    /// <remarks>
+    /// ISerializable removed for .NET 8+ compatibility. Use DataContractSerializer instead of BinaryFormatter.
+    /// </remarks>
+    public interface IRepositoryItem<TKey>
     {
         /// <summary>
         /// Gets or sets the key.

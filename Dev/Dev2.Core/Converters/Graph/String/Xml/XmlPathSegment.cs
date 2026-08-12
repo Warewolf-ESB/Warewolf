@@ -9,11 +9,12 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
-    [Serializable]
+    [DataContract]
     public class XmlPathSegment : IPathSegment
     {
         internal XmlPathSegment()
@@ -33,9 +34,13 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             IsAttribute = isAttribute;
         }
 
+        [DataMember]
         public bool IsAttribute { get; set; }
+        [DataMember]
         public string ActualSegment { get; set; }
+        [DataMember]
         public string DisplaySegment { get; set; }
+        [DataMember]
         public bool IsEnumarable { get; set; }
 
         public T As<T>() where T : class, IPathSegment

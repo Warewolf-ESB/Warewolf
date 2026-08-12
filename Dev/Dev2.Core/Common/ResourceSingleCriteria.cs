@@ -11,16 +11,21 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace Dev2.Common
 {
     [ExcludeFromCodeCoverage]
-    [Serializable]
+    [DataContract]
     public class ResourceSingleCriteria
     {
+        [DataMember]
         public Guid ResourceID { get; set; }
+        [DataMember]
         public Guid WorkspaceId { get; set; }
+        [DataMember]
         public string ResourceName { get; set; }
+        [DataMember]
         public string ResourcePath { get; set; }
     }
 }

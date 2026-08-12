@@ -11,7 +11,8 @@
 
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -23,12 +24,14 @@ namespace Dev2.Data.Binary_Objects
             string result;
             using(MemoryStream ms = new MemoryStream())
             {
-                BinaryFormatter formater = new BinaryFormatter();
-                formater.Serialize(ms, item);
-
-                result = Convert.ToBase64String(ms.ToArray());
-
-                ms.Dispose();
+                var serializer = new DataContractSerializer(item.GetType());
+                using (var writer = XmlDictionaryWriter.CreateBinaryWriter(ms, null, null, false))
+                {
+                    serializer.WriteObject(writer, item);
+                    writer.Flush();
+                    ms.Position = 0;
+                    result = Convert.ToBase64String(ms.ToArray());
+                }
             }
 
             return result;
@@ -40,9 +43,11 @@ namespace Dev2.Data.Binary_Objects
 
             using(MemoryStream ms = new MemoryStream(Convert.FromBase64String(item)))
             {
-                BinaryFormatter formater = new BinaryFormatter();
-
-                return (T)formater.Deserialize(ms);
+                var serializer = new DataContractSerializer(typeof(T));
+                using (var reader = XmlDictionaryReader.CreateBinaryReader(ms, XmlDictionaryReaderQuotas.Max))
+                {
+                    return (T)serializer.ReadObject(reader);
+                }
             }
 
         }

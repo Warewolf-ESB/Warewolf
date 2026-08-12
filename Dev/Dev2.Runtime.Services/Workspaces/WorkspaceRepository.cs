@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
@@ -22,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 #if !NETFRAMEWORK
 using ServiceStack.Redis.Generic;
 #endif
+using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
@@ -263,51 +263,56 @@ namespace Dev2.Workspaces
             Delete(workspace.ID);
         }
 
-        #endregion
+		#endregion
 
-        #region File Handling
+		#region File Handling
 
-        // TODO: Refactor file serialization handling into separate testable class
+		// TODO: Refactor file serialization handling into separate testable class
 
-        #region Read
+		#region Read
 
-        IWorkspace Read(Guid workdspaceID)
-        {
-            // force a lock on the file system ;)
-            lock (WorkspaceLock)
-            {
-                var filePath = GetFileName(workdspaceID);
-                var fileExists = File.Exists(filePath);
-                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
-                {
-                    var formatter = new BinaryFormatter();
-                    if (fileExists)
-                    {
-                        try
-                        {
-                            return (IWorkspace)formatter.Deserialize(stream);
-                        }
+		IWorkspace Read(Guid workdspaceID)
+		{
+			// force a lock on the file system ;)
+			lock (WorkspaceLock)
+			{
+				var filePath = GetFileName(workdspaceID);
+				var fileExists = File.Exists(filePath);
+				var knownTypes = new List<Type> { typeof(List<IWorkspaceItem>) };
+				var serializer = new DataContractSerializer(typeof(Workspace), knownTypes);
 
-                        catch (Exception ex)
+				if (fileExists)
+				{
+					try
+					{
+						using (var stream = File.OpenRead(filePath))
+						{
+							return (IWorkspace)serializer.ReadObject(stream);
+						}
+					}
 
-                        {
-                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                            // Deserialization failed so overwrite with new one.
-                        }
-                    }
+					catch (Exception ex)
 
-                    var result = new Workspace(workdspaceID);
-                    formatter.Serialize(stream, result);
-                    return result;
-                }
-            }
-        }
+					{
+						Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+						// Deserialization failed so overwrite with new one.
+					}
+				}
 
-        #endregion
+				var result = new Workspace(workdspaceID);
+				using (var stream = File.Create(filePath))
+				{
+					serializer.WriteObject(stream, result);
+				}
+				return result;
+			}
+		}
 
-        #region Write
+		#endregion
 
-        void Write(IWorkspace workspace)
+		#region Write
+
+		void Write(IWorkspace workspace)
         {
             if (workspace == null)
             {
@@ -315,10 +320,12 @@ namespace Dev2.Workspaces
             }
 
             var filePath = GetFileName(workspace.ID);
+            var knownTypes = new List<Type> { typeof(List<IWorkspaceItem>) };
+            var serializer = new DataContractSerializer(typeof(Workspace), knownTypes);
+
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, workspace);
+                serializer.WriteObject(stream, workspace);
             }
         }
 
@@ -448,8 +455,6 @@ namespace Dev2.Workspaces
             var filePath = GetUserMapFileName();
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                // var formatter = new BinaryFormatter();
-                //formatter.Serialize(stream, userMap);
                 MessagePack.MessagePackSerializer.Typeless.Serialize(stream, userMap);
             }
         }

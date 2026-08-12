@@ -19,7 +19,6 @@ using Dev2.DataList.Contract.Binary_Objects.Structs;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    [Serializable]
     public class BinaryDataListItem : IBinaryDataListItem
     {
         #region Internal Struct

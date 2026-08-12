@@ -10,11 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
+    [CollectionDataContract]
     public class ServiceMethodList : List<ServiceMethod>
     {
         public override string ToString() => JsonConvert.SerializeObject(this);

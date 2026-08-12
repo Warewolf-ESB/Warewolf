@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Common;
@@ -26,7 +27,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Dev2.Diagnostics.Debug
 {
-    [Serializable]
+    [DataContract]
     public class DebugState : IDebugState, INotifyPropertyChanged
     {
         DateTime _startTime;
@@ -54,6 +55,7 @@ namespace Dev2.Diagnostics.Debug
             _disconnectedID = Guid.NewGuid();
         }
 
+        [DataMember]
         public Guid DisconnectedID
         {
             get => _disconnectedID;
@@ -67,6 +69,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the ID.
         /// </summary>
+        [DataMember]
         public Guid ID
         {
             get { return _id; }
@@ -77,6 +80,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
+        [DataMember]
         public Guid? ParentID
         {
             get { return _parentID; }
@@ -87,17 +91,22 @@ namespace Dev2.Diagnostics.Debug
             }
         }
 
+        [DataMember]
         public bool IsAdded { get; set; }
+
+        [DataMember]
         public Guid SourceResourceID { get; set; }
 
         /// <summary>
         ///     Gets or sets the server ID.
         /// </summary>
+        [DataMember]
         public Guid ServerID { get; set; }
 
         /// <summary>
         /// Gets or sets the environment ID.
         /// </summary>
+        [DataMember]
         public Guid EnvironmentID
         {
             get
@@ -113,17 +122,20 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Gets or sets the client ID.
         /// </summary>
+        [DataMember]
         public Guid ClientID { get; set; }
 
         /// <summary>
         ///     Gets or sets the type of the state.
         /// </summary>
+        [DataMember]
         [JsonConverter(typeof(StringEnumConverter))]
         public StateType StateType { get; set; }
 
         /// <summary>
         ///     Gets or sets the display name.
         /// </summary>
+        [DataMember]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -131,11 +143,13 @@ namespace Dev2.Diagnostics.Debug
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/21</date>
+        [DataMember]
         public bool HasError { get; set; }
 
         /// <summary>
         ///     Gets or sets the error message
         /// </summary>
+        [DataMember]
         public string ErrorMessage
         {
             get
@@ -151,22 +165,26 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the activity version.
         /// </summary>
+        [DataMember]
         public string Version { get; set; }
 
         /// <summary>
         ///     Gets or sets the name of the activity.
         /// </summary>
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
         ///     Gets or sets the type of the activity.
         /// </summary>
+        [DataMember]
         public ActivityType ActivityType { get; set; }
 
         public TimeSpan Duration => EndTime - StartTime;
 
-        // XmlSerializer does not support TimeSpan, so use this property for serialization 
+        // XmlSerializer does not support TimeSpan, so use this property for serialization
         // instead.
+        [DataMember]
         public string DurationString
         {
             get
@@ -179,6 +197,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the start time.
         /// </summary>
+        [DataMember]
         public DateTime StartTime
         {
             get { return _startTime; }
@@ -194,6 +213,7 @@ namespace Dev2.Diagnostics.Debug
         /// <value>
         ///     The end time.
         /// </value>
+        [DataMember]
         public DateTime EndTime
         {
             get { return _endTime; }
@@ -209,21 +229,25 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets the inputs.
         /// </summary>
+        [DataMember]
         public List<IDebugItem> Inputs { get; private set; }
 
         /// <summary>
         ///     Gets the outputs.
         /// </summary>
+        [DataMember]
         public List<IDebugItem> Outputs { get; private set; }
 
         /// <summary>
         ///     Gets the outputs.
         /// </summary>
+        [DataMember]
         public List<IDebugItem> AssertResultList { get; private set; }
 
         /// <summary>
         ///     Gets or sets the server name.
         /// </summary>
+        [IgnoreDataMember]
         [XmlIgnore]
         public string Server
         {
@@ -240,6 +264,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the workspace ID.
         /// </summary>
+        [IgnoreDataMember]
         [XmlIgnore]
         public Guid WorkspaceID { get; set; }
 
@@ -251,18 +276,21 @@ namespace Dev2.Diagnostics.Debug
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/21</date>
+        [IgnoreDataMember]
         [XmlIgnore]
         public Guid OriginalInstanceID { get; set; }
 
         /// <summary>
         ///     Gets or sets the server ID.
         /// </summary>
+        [IgnoreDataMember]
         [XmlIgnore]
         public Guid OriginatingResourceID { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is simulation.
         /// </summary>
+        [IgnoreDataMember]
         [XmlIgnore]
         public bool IsSimulation { get; set; }
 
@@ -274,9 +302,11 @@ namespace Dev2.Diagnostics.Debug
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/21</date>
+        [IgnoreDataMember]
         [XmlIgnore]
         public string Message { get; set; }
 
+        [DataMember]
         public int NumberOfSteps { get; set; }
 
         public string Origin
@@ -302,13 +332,19 @@ namespace Dev2.Diagnostics.Debug
             }
         }
 
+        [DataMember]
         public ExecutionOrigin ExecutionOrigin { get; set; }
 
+        [DataMember]
         public string ExecutionOriginDescription { get; set; }
 
+        [DataMember]
         public string ExecutingUser { get; set; }
 
+        [DataMember]
         public Guid SessionID { get; set; }
+
+        [DataMember]
         public Guid WorkSurfaceMappingId { get; set; }
 
 		#endregion
@@ -438,6 +474,7 @@ namespace Dev2.Diagnostics.Debug
         public bool IsFirstStep() => StateType == StateType.Start &&
                    OriginalInstanceID == ID;
 
+        [DataMember]
         public bool IsDurationVisible
         {
             get
@@ -449,8 +486,11 @@ namespace Dev2.Diagnostics.Debug
                 _isDurationVisible = value;
             }
         }
+
+        [DataMember]
         public string ActualType { get; set; }
 
+        [IgnoreDataMember]
         [XmlIgnore]
         public List<IDebugState> Children { get; set; }
 

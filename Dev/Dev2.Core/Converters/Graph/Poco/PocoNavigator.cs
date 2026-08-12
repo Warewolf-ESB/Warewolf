@@ -21,7 +21,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
-    [Serializable]
     public class PocoNavigator : NavigatorBase, INavigator
     {
         #region Constructor

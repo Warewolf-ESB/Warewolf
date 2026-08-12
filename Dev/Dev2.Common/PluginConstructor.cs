@@ -10,11 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.Common
 {
-    [Serializable]
+    [DataContract]
     public class PluginConstructor : IPluginConstructor, IEquatable<PluginConstructor>
     {
         public PluginConstructor()
@@ -22,13 +23,17 @@ namespace Dev2.Common
             Inputs = new List<IConstructorParameter>();
         }
 
+        [DataMember]
         public IList<IConstructorParameter> Inputs { get; set; }
+        [DataMember]
         public string ReturnObject { get; set; }
+        [DataMember]
         public string ConstructorName { get; set; }
 
         public string GetIdentifier() => ConstructorName;
 
 
+        [DataMember]
         public bool IsExistingObject { get; set; }
 
 
@@ -80,6 +85,7 @@ namespace Dev2.Common
 
         public override string ToString() => ConstructorName;
 
+        [DataMember]
         public Guid ID { get; set; }
     }
 }

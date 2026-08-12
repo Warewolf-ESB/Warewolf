@@ -27,7 +27,6 @@ namespace Unlimited.Framework.Converters.Graph.Output
     /// <summary>
     ///     A serialization service which uses the DataContractSerializer to serialize to XML
     /// </summary>
-    [Serializable]
     public class OutputDescriptionSerializationService : IOutputDescriptionSerializationService
     {
         #region Class Members

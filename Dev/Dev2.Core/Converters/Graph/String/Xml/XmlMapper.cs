@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 
 {
-    [Serializable]
     public class XmlMapper : IMapper
     {
         #region Constructors

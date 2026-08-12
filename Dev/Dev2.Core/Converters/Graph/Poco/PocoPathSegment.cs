@@ -9,11 +9,12 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
-    [Serializable]
+    [DataContract]
     class PocoPathSegment : IPathSegment
     {
         internal PocoPathSegment()
@@ -26,8 +27,11 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             IsEnumarable = isEnumarable;
         }
 
+        [DataMember]
         public string ActualSegment { get; set; }
+        [DataMember]
         public string DisplaySegment { get; set; }
+        [DataMember]
         public bool IsEnumarable { get; set; }
 
         public string ToString(bool considerEnumerable)

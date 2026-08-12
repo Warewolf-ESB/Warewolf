@@ -1,12 +1,26 @@
 ﻿using KGySoft.Serialization.Binary;
 using System.Linq.Expressions;
+
+#pragma warning disable SYSLIB0011 // BinaryFormatter is obsolete
 using System.Runtime.Serialization.Formatters.Binary;
+#pragma warning restore SYSLIB0011
 
 namespace Dev2.Net6.Compatibility
 {
+    /// <summary>
+    /// BACKWARD COMPATIBILITY ONLY: This class uses BinaryFormatter to deserialize files
+    /// that were serialized in .NET Framework. BinaryFormatter is deprecated in .NET 8+.
+    /// DO NOT use this class for new serialization - use DataContractSerializer instead.
+    /// This class should only be used as a fallback to read legacy data.
+    /// </summary>
     public class BinarySerializationHelper
     {
-        
+
+        /// <summary>
+        /// Deserializes a file that was previously serialized using BinaryFormatter in .NET Framework.
+        /// WARNING: This method uses the obsolete BinaryFormatter and should only be used for
+        /// backward compatibility to read legacy files.
+        /// </summary>
         public System.Collections.Concurrent.ConcurrentDictionary<string, Guid> DeserializeFile(string binarySerializedFile)
         {
             var localDictionary = new System.Collections.Concurrent.ConcurrentDictionary<string, Guid>();
@@ -42,6 +56,9 @@ namespace Dev2.Net6.Compatibility
                         return;
                     };
 
+                    // Using BinaryFormatter for backward compatibility only
+                    // This is required to read files serialized in .NET Framework
+#pragma warning disable SYSLIB0011 // BinaryFormatter is obsolete
                     var formatter = new BinaryFormatter // or a BinarySerializationFormatter
                     {
                         SurrogateSelector = surrogate, // to remap field names as specified above
@@ -49,6 +66,7 @@ namespace Dev2.Net6.Compatibility
                     };
 
                     var retValue = formatter.Deserialize(streamSerializedInNetFramework);
+#pragma warning restore SYSLIB0011
                 }
             }
             catch (Exception)

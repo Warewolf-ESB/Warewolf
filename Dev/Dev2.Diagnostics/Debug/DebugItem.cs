@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -22,7 +23,7 @@ using Dev2.Common.Utils;
 namespace Dev2.Diagnostics
 {
     //TODO: Issues with the way large results are stored in SaveFile.
-    [Serializable]
+    [DataContract]
     public class DebugItem : IDebugItem
     {
         static readonly string _invalidFileNameChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
@@ -38,6 +39,7 @@ namespace Dev2.Diagnostics
         public static readonly int MaxCharDispatchCount = 150;
         public static readonly int ActCharDispatchCount = 100;
 
+        [DataMember]
         public List<IDebugItemResult> ResultsList { get; set; }
         public static List<DebugItem> EmptyList { get; set; } = new List<DebugItem>();
         

@@ -10,11 +10,12 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
+    [DataContract]
     public class MethodOutput : IDev2Definition
     {
         public MethodOutput(string name, string mapsTo, string value, bool isRecordSet, string recordSetName, bool isEvaluated, string defaultValue, bool isRequired, string rawValue, bool emptyToNull)
@@ -36,32 +37,44 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
         #region Properties
 
-        
-
+        [DataMember]
         public string Name { get; private set; }
 
+        [DataMember]
         public string MapsTo { get; private set; }
 
+        [DataMember]
         public string Value { get; private set; }
 
+        [DataMember]
         public bool IsRecordSet { get; private set; }
 
+        [DataMember]
         public string RecordSetName { get; private set; }
 
+        [DataMember]
         public bool IsEvaluated { get; private set; }
 
+        [DataMember]
         public string DefaultValue { get; private set; }
 
+        [DataMember]
         public bool IsRequired { get; private set; }
 
+        [DataMember]
         public string RawValue { get; private set; }
 
+        [DataMember]
         public bool EmptyToNull { get; private set; }
-        public bool IsTextResponse { get;  set; }
-        public bool IsObject { get; set; }
-        public bool IsJsonArray { get; set; }
 
-        
+        [DataMember]
+        public bool IsTextResponse { get;  set; }
+
+        [DataMember]
+        public bool IsObject { get; set; }
+
+        [DataMember]
+        public bool IsJsonArray { get; set; }
 
         #endregion
 

@@ -13,7 +13,6 @@ using System;
 
 namespace Dev2.DataList.Contract.Binary_Objects.Structs
 {
-    [Serializable]
     public struct SBinaryDataListItem
     {
 

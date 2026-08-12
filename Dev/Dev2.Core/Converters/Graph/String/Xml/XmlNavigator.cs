@@ -18,7 +18,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
-    [Serializable]
     public class XmlNavigator : NavigatorBase, INavigator
     {
         public XmlNavigator(object data)

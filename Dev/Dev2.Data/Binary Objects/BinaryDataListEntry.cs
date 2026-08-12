@@ -27,7 +27,6 @@ using Dev2.DataList.Contract.Translators;
 namespace Dev2.DataList.Contract.Binary_Objects
 // ReSharper restore CheckNamespace
 {
-    [Serializable]
     internal class BinaryDataListEntry : IBinaryDataListEntry
     {
         #region Fields

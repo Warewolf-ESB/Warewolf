@@ -22,6 +22,7 @@ using Dev2.Runtime.Interfaces;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Resource.Errors;
 
+#if NETFRAMEWORK
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class WcfProxyService : IWcfProxyService
@@ -147,3 +148,19 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
     }
 }
+#else
+namespace Dev2.Runtime.ServiceModel.Data
+{
+    public class WcfProxyService : Dev2.Runtime.Interfaces.IWcfProxyService
+    {
+        public Dev2.Common.Interfaces.Core.Graph.IOutputDescription ExecuteWebService(WcfService src)
+            => throw new System.PlatformNotSupportedException("WCF is not supported on this target framework.");
+
+        public object ExcecuteMethod(Dev2.Common.Interfaces.IWcfAction action, string endpointUrl)
+            => throw new System.PlatformNotSupportedException("WCF is not supported on this target framework.");
+
+        public System.Collections.Generic.Dictionary<System.Reflection.MethodInfo, System.Reflection.ParameterInfo[]> GetMethods(string endpoint)
+            => throw new System.PlatformNotSupportedException("WCF is not supported on this target framework.");
+    }
+}
+#endif

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
@@ -19,16 +20,24 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// <summary>
     /// Args to pass into the plugin ;)
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class PluginInvokeArgs
     {
+        [DataMember]
         public string AssemblyLocation { get; set; }
+        [DataMember]
         public string AssemblyName { get; set; }
+        [DataMember]
         public string Fullname { get; set; }
+        [DataMember]
         public string Method { get; set; }
-        public List<IDev2MethodInfo> MethodsToRun { get; set; } 
+        [DataMember]
+        public List<IDev2MethodInfo> MethodsToRun { get; set; }
+        [DataMember]
         public IPluginConstructor PluginConstructor { get; set; }
+        [DataMember]
         public IOutputFormatter OutputFormatter { get; set; }
+        [DataMember]
         public List<MethodParameter> Parameters { get; set; }
     }
 }

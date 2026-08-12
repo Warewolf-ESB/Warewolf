@@ -12,7 +12,6 @@
 
 
 using System;
-using System.ServiceModel;
 
 namespace Dev2
 {

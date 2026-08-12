@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
@@ -19,7 +20,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
+    [DataContract]
     public class JsonPath : BasePath
     {
         #region Class Members

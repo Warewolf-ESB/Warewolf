@@ -31,7 +31,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.PathOperations
 {
-    [Serializable]
 #pragma warning disable S101
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint
 #pragma warning restore S101
