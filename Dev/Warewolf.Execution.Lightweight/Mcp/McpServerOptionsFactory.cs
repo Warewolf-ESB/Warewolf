@@ -167,6 +167,19 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, IWorkflowExecutor, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement?, System.Threading.CancellationToken, System.Threading.Tasks.Task<ExecuteWorkflowResult>>)ExecuteWorkflowTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = ExecuteWorkflowTool.ToolName,
+                Description = "Runs a workflow on this instance and returns its outputs, provided the caller has Execute permission. Works identically whether or not the workflow's body is editable by this server.",
+                ReadOnly = false,
+                Destructive = true,
+                Idempotent = false,
+                OpenWorld = true,
+            }));
+
         return options;
     }
 }
