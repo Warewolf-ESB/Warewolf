@@ -2,11 +2,21 @@
 <#
 .SYNOPSIS
     Runs Test-ShovelBridgeE2E.ps1 in -DestinationMode ExternalServiceBus (real Azure
-    Service Bus) with -RabbitMqMode External pointed at the Warewolf DevOps RabbitMQ
-    broker reachable through its ngrok/management URL (rabbitmq.warewolf.online) —
-    the manual equivalent of the "RabbitMQ Shovel -> Service Bus E2E Test
-    (ExternalServiceBus mode, Azure)" job in Dev/.azure/pipeline-CLOUD.yml, but using
-    the standing DevOps broker instead of a local choco RabbitMQ on the agent.
+    Service Bus) with -RabbitMqMode External pointed at the hosted CloudAMQP (LavinMQ)
+    broker (ostrich-01.lmq.cloudamqp.com) — the manual equivalent of the "RabbitMQ
+    Shovel -> Service Bus E2E Test (ExternalServiceBus mode, Azure)" job in
+    Dev/.azure/pipeline-CLOUD.yml, but using the standing CloudAMQP broker instead of a
+    local choco RabbitMQ on the agent.
+
+    NOTE: this previously pointed at the Warewolf DevOps RabbitMQ broker reachable
+    through an ngrok tunnel (rabbitmq.warewolf.online) — that broker's host/port could
+    rotate whenever the tunnel restarted. CloudAMQP's LavinMQ instance is a stable,
+    directly-addressable hostname, so no tunnel/rotation caveat applies here anymore.
+    LavinMQ implements the same RabbitMQ-compatible Management HTTP API this script
+    (via Configure-RabbitMqShovel.ps1's Invoke-RabbitMqApi helper) already calls, and
+    supports Shovels natively (a built-in LavinMQ feature, not an installable plugin —
+    unlike RabbitMQ's rabbitmq_shovel/rabbitmq_shovel_management plugins), so no script
+    changes were needed beyond the connection defaults below.
 
     SCOPE (default): proves publish -> RabbitMQ source queue -> Shovel -> Azure Service
     Bus queue ARRIVAL. It does NOT itself execute a workflow on the Lightweight engine.
@@ -26,10 +36,14 @@
     deployment's auth configuration.
 
 .NOTES
-    Prereqs already verified against the DevOps broker: testuser has the 'administrator'
-    tag + full configure/write/read on vhost '/', and rabbitmq_shovel /
-    rabbitmq_shovel_management are enabled. You still need: `az login` to a subscription
-    that can manage the Service Bus namespace below.
+    Prereqs already verified against the CloudAMQP broker: the 'bmkzdabu' user has full
+    configure/write/read on its default vhost (CloudAMQP provisions the default vhost
+    with the same name as the instance's AMQP username — override -RabbitMqVHost if
+    yours differs), and LavinMQ's Shovel feature is available out of the box (no
+    plugin-enable step needed, unlike RabbitMQ). You still need: `az login` to a
+    subscription that can manage the Service Bus namespace below, and the CloudAMQP
+    instance password — NEVER hardcode it here; set it via the CLOUDAMQP_SHOVEL_PASSWORD
+    environment variable or pass -RabbitMqPassword explicitly.
 #>
 [CmdletBinding()]
 param(
@@ -41,11 +55,18 @@ param(
     [string] $ServiceBusSendRule    = 'shovel-e2e-send',
     [string] $ServiceBusListenRule  = 'shovel-e2e-listen',
 
-    # ── DevOps RabbitMQ (ngrok) ─────────────────────────────────────────────────
-    [string] $RabbitMqManagementUri = 'https://rabbitmq.warewolf.online',
-    [string] $RabbitMqUsername      = 'testuser',
-    [string] $RabbitMqPassword      = 'test123',
-    [string] $RabbitMqVHost         = '/',
+    # ── CloudAMQP RabbitMQ (LavinMQ) ────────────────────────────────────────────
+    # Replaces the previous Warewolf DevOps RabbitMQ broker (ngrok tunnel,
+    # rabbitmq.warewolf.online) with the hosted CloudAMQP instance below. The
+    # Management URI is the plain instance hostname over HTTPS (443) — LavinMQ serves
+    # its RabbitMQ-compatible Management API on the same host, no separate :15672 port.
+    # $RabbitMqPassword is intentionally NOT hardcoded — it is read from the
+    # CLOUDAMQP_SHOVEL_PASSWORD environment variable by default so the real secret
+    # never lands in source control; pass -RabbitMqPassword to override.
+    [string] $RabbitMqManagementUri = 'https://ostrich-01.lmq.cloudamqp.com',
+    [string] $RabbitMqUsername      = 'bmkzdabu',
+    [string] $RabbitMqPassword      = $env:CLOUDAMQP_SHOVEL_PASSWORD,
+    [string] $RabbitMqVHost         = 'bmkzdabu',
 
     [int]    $HarnessTimeoutSeconds = 120,
     [switch] $SkipTeardown,
@@ -88,6 +109,10 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+if ([string]::IsNullOrWhiteSpace($RabbitMqPassword)) {
+    throw "RabbitMQ password not supplied. Set the CLOUDAMQP_SHOVEL_PASSWORD environment variable (never commit the real value to source control) or pass -RabbitMqPassword explicitly."
+}
 
 if ($DestUriVerifyNone -and -not [string]::IsNullOrWhiteSpace($DestUriCaCertFile)) {
     throw 'Supply either -DestUriVerifyNone or -DestUriCaCertFile, not both: verify_none disables all peer certificate validation, making an explicit CA bundle moot. Prefer -DestUriCaCertFile — it keeps full certificate validation.'
