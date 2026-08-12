@@ -154,6 +154,19 @@ public static class McpServerOptionsFactory
                 OpenWorld = false,
             }));
 
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement, string?, string?, AddStepResult>)AddStepTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = AddStepTool.ToolName,
+                Description = "Appends a single tool to the end (or a specified branch point) of an existing, editable workflow's flow, without requiring the caller to resubmit the whole graph.",
+                ReadOnly = false,
+                Destructive = false,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
         return options;
     }
 }

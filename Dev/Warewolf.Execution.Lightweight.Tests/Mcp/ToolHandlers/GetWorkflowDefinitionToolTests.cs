@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;

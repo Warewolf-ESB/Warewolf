@@ -101,7 +101,13 @@ internal static class GetWorkflowDefinitionTool
 
     // ── Body production + fidelity gate ───────────────────────────────────────
 
-    static (bool editable, JsonElement? body, string? reason) BuildBody(string filePath, string workflowName)
+    /// <summary>
+    /// <c>internal</c> so <see cref="AddStepTool"/> can reuse the exact same
+    /// "load XAML → convert to X6 → fidelity gate" pipeline rather than duplicating it —
+    /// <c>add_step</c>'s "must already be <c>bodyEditable: true</c>" precondition needs to be
+    /// byte-for-byte identical to what this tool reports.
+    /// </summary>
+    internal static (bool editable, JsonElement? body, string? reason) BuildBody(string filePath, string workflowName)
     {
         StringBuilder xamlDefinition;
         try
@@ -170,6 +176,15 @@ internal static class GetWorkflowDefinitionTool
         }
         foreach (var edge in edges)
         {
+            // WorkflowToX6Converter/CommonHelper.CreateEdge does not stamp a "shape" on edge
+            // cells, but X6ToWorkflowConverter (and add_step's own node/edge split) identify
+            // connections purely via shape == "edge". Without this, every edge coming back from
+            // a real, already-existing workflow would be misclassified as a node downstream.
+            if (edge is JObject edgeObject)
+            {
+                edgeObject["shape"] = "edge";
+            }
+
             cells.Add(edge);
         }
 

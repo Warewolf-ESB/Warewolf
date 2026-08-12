@@ -57,7 +57,28 @@ internal static class EnvelopeBiteWriter
         string user)
     {
         var dataList = BuildDataListElement(envelope);
+        return BuildBiteFileContents(serviceId, displayName, description, dataList, xamlDefinition, versionNumber, timestampUtc, user);
+    }
 
+    /// <summary>
+    /// Same <c>&lt;Service&gt;</c> assembly as the <c>envelope</c>-taking overload, but with an
+    /// already-built <c>&lt;DataList&gt;</c> element supplied directly rather than derived from
+    /// an <c>envelope</c> JSON object. Used by <see cref="ToolHandlers.AddStepTool"/>, which has
+    /// no <c>envelope</c> input and must preserve the existing file's <c>&lt;DataList&gt;</c>
+    /// verbatim (round-tripping it through <see cref="BuildDataListElement"/>'s flat
+    /// <c>{kind,name,fields}</c> shape would lose recordset/IO-direction fidelity for anything
+    /// this tool did not itself just author).
+    /// </summary>
+    internal static string BuildBiteFileContents(
+        string serviceId,
+        string displayName,
+        string description,
+        XElement dataList,
+        string xamlDefinition,
+        int versionNumber,
+        DateTimeOffset timestampUtc,
+        string user)
+    {
         var service = new XElement("Service",
             new XAttribute("ID", serviceId),
             new XAttribute("Version", "1.0"),

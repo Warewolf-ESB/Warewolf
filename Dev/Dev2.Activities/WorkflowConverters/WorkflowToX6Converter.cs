@@ -6,6 +6,7 @@ using Dev2.Activities.RedisCache;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WorkflowConverters;
  
+using Dev2;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.WorkflowConverters;
@@ -79,7 +80,18 @@ namespace Dev2.Activities.WF
 
             if (activity is not Flowchart)
             {
-                nodeId = CommonHelper.GenerateNodeId();
+                // Prefer the activity's own persisted UniqueID (set by X6ToWorkflowConverter's
+                // ApplyUniqueIdFromNode when this activity was originally authored from an X6 cell)
+                // so that node ids stay stable across repeated ConvertToX6Json calls on the same
+                // XAML. Without this, every call minted a fresh random id here, which meant a node
+                // id returned by one get_workflow_definition/add_step call could never be resolved
+                // by a later call's afterStepId lookup (add_step's own documented "stepId... usable
+                // as a future call's afterStepId" contract). Only fall back to a fresh id when the
+                // activity has no UniqueID (e.g. non-Dev2 WF-Foundation activities like the start
+                // WriteLine node), where stability isn't meaningful anyway.
+                nodeId = activity is IDev2Activity dev2Activity && !string.IsNullOrWhiteSpace(dev2Activity.UniqueID)
+                    ? dev2Activity.UniqueID
+                    : CommonHelper.GenerateNodeId();
                 activityNodeMap[activity] = nodeId;
 
                 if (!HasNestedActivities(activity))//if (activity is not DsfForEachActivity)

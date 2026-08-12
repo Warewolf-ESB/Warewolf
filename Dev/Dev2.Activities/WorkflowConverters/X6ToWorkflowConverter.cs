@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using Dev2;
+using Dev2.Common;
 using Dev2.Common.X6;
 using Dev2.Utilities;
 using Dev2.Activities.Exchange;
@@ -145,6 +146,7 @@ namespace Dev2.Activities.WF
                 if (activity != null)
                 {
                     ApplyDisplayNameFromNode(node, activity);
+                    ApplyUniqueIdFromNode(node, activity);
                     activityMap[node.id] = activity;
 
                     if (isStartNode)
@@ -217,6 +219,7 @@ namespace Dev2.Activities.WF
                     if (nestedActivity != null)
                     {
                         ApplyDisplayNameFromNode(nestedNode, nestedActivity);
+                        ApplyUniqueIdFromNode(nestedNode, nestedActivity);
 
                         // Initialize DataFunc if it doesn't exist
                         if (forEach.DataFunc == null)
@@ -460,6 +463,21 @@ namespace Dev2.Activities.WF
                 !string.IsNullOrWhiteSpace(displayName))
             {
                 activity.DisplayName = displayName;
+            }
+        }
+
+        /// <summary>
+        /// Persists the X6 cell's id as this activity's UniqueID so that a later
+        /// WorkflowToX6Converter.ConvertToX6Json call (e.g. from a subsequent get_workflow_definition
+        /// or add_step call) reports the same node id back for this activity, instead of minting a
+        /// fresh random one. This is what makes add_step's afterStepId/stepId contract ("stepId...
+        /// usable as a future call's afterStepId") actually hold across calls.
+        /// </summary>
+        private static void ApplyUniqueIdFromNode(Cell node, Activity activity)
+        {
+            if (node?.id != null && activity is IDev2Activity dev2Activity)
+            {
+                dev2Activity.UniqueID = node.id;
             }
         }
 
@@ -795,9 +813,11 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDotNetMultiAssignActivity</returns>
         private static DsfDotNetMultiAssignObjectActivity CreateAssignObectActivity(Cell node)
         {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
+                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
 
-            if (!node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignObjectActivity();
