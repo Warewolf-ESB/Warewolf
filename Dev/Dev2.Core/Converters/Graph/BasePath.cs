@@ -16,7 +16,17 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    [DataContract]
+    // Deliberately [Serializable] rather than [DataContract]: DataSourceShape/BasePath's
+    // OutputDescription XML is round-tripped via DataContractSerializer's plain-CLR-object
+    // (POCO) fallback, which serializes members using compiler-generated backing-field names
+    // (e.g. "_x003C_Paths_x003E_k__BackingField") and silently no-ops on a mismatched shape
+    // instead of throwing. Real persisted resources (and existing test fixtures) depend on
+    // that exact fallback wire format and lenient-failure behavior; switching to [DataContract]
+    // changes both the wire format and the failure mode, breaking backward compatibility with
+    // already-persisted OutputDescription XML. This type has no ISerializable/GetObjectData
+    // and is never round-tripped through BinaryFormatter, so [Serializable] carries no
+    // .NET 8+/BinaryFormatter-deprecation risk.
+    [Serializable]
     public abstract class BasePath : IPath
     {
         #region Constructor
