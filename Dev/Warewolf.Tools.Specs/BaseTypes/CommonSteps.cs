@@ -1254,12 +1254,16 @@ namespace Dev2.Activities.Specs.BaseTypes
         [BeforeTestRun]
         public static void ConfigureFtpClientForResilience()
         {
-            // FTPS specs against pyftpdlib's TLS_FTPHandler hang on CI agents with
-            // "The underlying connection was closed: An unexpected error occurred
-            // on a receive" — pyOpenSSL's TLS 1.3 close_notify sequence on the
-            // data channel deadlocks against .NET FtpWebRequest. Pin TLS 1.2
-            // (not OR-in) so the data channel never negotiates 1.3. Also disable
-            // 100-Continue and Nagle to reduce framing surface area.
+            // Historical note: this used to pin TLS 1.2 process-wide to work around
+            // .NET FtpWebRequest hanging against pyftpdlib's TLS_FTPHandler ("The
+            // underlying connection was closed") when pyOpenSSL negotiated a TLS 1.3
+            // close_notify on the data channel. Dev2FTPProvider has since been
+            // migrated off FtpWebRequest onto FluentFTP, which pins its own
+            // per-connection SslProtocols (Tls12) via FtpClient.Config and is not
+            // affected by this global setting. This ServicePointManager
+            // configuration is left in place because other specs in this process
+            // (e.g. DropBox, web POST) may still rely on it; it is no longer
+            // required for FTP/FTPS specs specifically.
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

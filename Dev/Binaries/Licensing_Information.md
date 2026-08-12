@@ -37,6 +37,7 @@ Caliburn.Micro - [The MIT License](http://opensource.org/licenses/MIT) - [Source
 Vestris.ResourceLib - [The MIT License](http://opensource.org/licenses/MIT) - [Source Code Repository](https://resourcelib.codeplex.com/) <br/>
 ICSharpCode.AvalonEdit - [The MIT License](http://opensource.org/licenses/MIT) - [Source Code Repository](https://resourcelib.codeplex.com/) <br/>
 AeroWizard - [The MIT License](http://opensource.org/licenses/MIT) - [Source Code Repository](https://aerowizard.codeplex.com/) <br/>
+FluentFTP - [The MIT License](http://opensource.org/licenses/MIT) - [Source Code Repository](https://github.com/robinrodricks/FluentFTP) <br/>
 
 
 ##Commercial Binaries 

@@ -490,7 +490,10 @@ namespace Dev2.Diagnostics.Debug
         [DataMember]
         public string ActualType { get; set; }
 
-        [IgnoreDataMember]
+        // Must remain a DataMember (not IgnoreDataMember) so Newtonsoft.Json registers the
+        // nested $id references while parsing this collection; some historic debug-state
+        // JSON payloads use $ref to point back into a nested Children entry.
+        [DataMember]
         [XmlIgnore]
         public List<IDebugState> Children { get; set; }
 
