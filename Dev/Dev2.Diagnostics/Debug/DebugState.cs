@@ -247,7 +247,9 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the server name.
         /// </summary>
-        [IgnoreDataMember]
+        // Must remain a DataMember (not IgnoreDataMember) so Newtonsoft.Json includes it;
+        // DebugState's [DataContract] makes Json.NET use opt-in (DataMember-only) serialization.
+        [DataMember]
         [XmlIgnore]
         public string Server
         {
