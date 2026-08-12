@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -23,25 +23,24 @@
   <ItemGroup>
     <!--
       Mirrors the same override in Warewolf.Execution.ServiceBusWorker.csproj: the worker's
-      Service Bus extension requires Google.Protobuf >= 3.27.1, but this solution's
-      Dev/Directory.Build.props pins 3.25.2 for the engine — causing NU1605 here too since
+      Service Bus extension requires Google.Protobuf >= 3.32.1, but this solution's
+      Dev/Directory.Build.props pins a lower floor for the engine — causing NU1605 here too since
       this project pulls the worker in transitively.
     -->
-    <PackageReference Update="Google.Protobuf" Version="3.27.1" />
+    <PackageReference Update="Google.Protobuf" Version="3.32.1" />
 
     <!--
       Mirrors the same override in Warewolf.Execution.ServiceBusWorker.csproj: without it this
-      project's own restore/publish graph also pulls the old netstandard2.0-era
-      Microsoft.Extensions.Hosting/FileProviders.Physical 5.0.0 family (via
-      Microsoft.Azure.Functions.Worker 1.22.0, inherited transitively through the
+      project's own restore/publish graph also pulls an older Microsoft.Extensions.Hosting family
+      (via Microsoft.Azure.Functions.Worker 2.52.0, inherited transitively through the
       ProjectReference below), which can win a flat multi-project ServerTests.sln publish and
       crash the Lightweight engine's isolated worker at startup. See the worker project for
       the full explanation.
     -->
-    <PackageReference Update="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="10.0.0" />
   </ItemGroup>
 
-  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- ========================================================= -->
   <!-- CORE CONFIGURATION -->
   <!-- ========================================================= -->
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
 
@@ -104,31 +104,32 @@
   <!-- ========================================================= -->
   <ItemGroup>
 
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.23.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
 
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
 
     <!-- Service Bus trigger for the secure, in-process "Model A" workflow trigger
          (Spec-Secure-ServiceBus-Triggered-Execution.md). Pinned to the same version
          already used by the companion Warewolf.Execution.ServiceBusWorker project. -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.20.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.24.0" />
 
     <!-- Worker SDK for isolated process model - generates .azurefunctions folder -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.18.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0" />
 
     <!-- Application Insights for rich telemetry and structured logging -->
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.4.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.51.0" />
 
     <!-- Required for AddApplicationInsightsTelemetryWorkerService() in the isolated
          worker. NOT a transitive dependency of the Functions AI package above, so it
          must be referenced explicitly; without it ConfigureFunctionsApplicationInsights()
          throws "Application Insights SDK has not been added" at startup.
          MUST stay on the 2.x line: Microsoft.Azure.Functions.Worker.ApplicationInsights
-         1.4.0 is built against the Application Insights v2 core (Microsoft.ApplicationInsights
+         2.51.0 depends on Microsoft.ApplicationInsights.PerfCounterCollector >= 2.23.0,
+         which is built against the Application Insights v2 core (Microsoft.ApplicationInsights
          2.x, which is where Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer
-         lives). Using 3.0.0 pulls Microsoft.ApplicationInsights 3.0.0.1 and crashes the worker
+         lives). Using 3.0.0+ pulls Microsoft.ApplicationInsights 3.x and crashes the worker
          at startup with TypeLoadException: 'Could not load type ... ITelemetryInitializer'. -->
-    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
 
     <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
@@ -312,7 +313,7 @@
     </PropertyGroup>
   </Target>
 
-  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
