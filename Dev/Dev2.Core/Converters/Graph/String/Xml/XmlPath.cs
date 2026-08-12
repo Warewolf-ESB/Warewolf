@@ -18,7 +18,8 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
-    [DataContract]
+    // See BasePath.cs for why this is [Serializable] rather than [DataContract].
+    [Serializable]
     public class XmlPath : BasePath
     {
         #region Class Members

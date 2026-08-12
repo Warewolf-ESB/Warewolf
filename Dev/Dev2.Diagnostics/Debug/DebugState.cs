@@ -247,7 +247,9 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the server name.
         /// </summary>
-        [IgnoreDataMember]
+        // Must remain a DataMember (not IgnoreDataMember) so Newtonsoft.Json includes it;
+        // DebugState's [DataContract] makes Json.NET use opt-in (DataMember-only) serialization.
+        [DataMember]
         [XmlIgnore]
         public string Server
         {
@@ -490,7 +492,10 @@ namespace Dev2.Diagnostics.Debug
         [DataMember]
         public string ActualType { get; set; }
 
-        [IgnoreDataMember]
+        // Must remain a DataMember (not IgnoreDataMember) so Newtonsoft.Json registers the
+        // nested $id references while parsing this collection; some historic debug-state
+        // JSON payloads use $ref to point back into a nested Children entry.
+        [DataMember]
         [XmlIgnore]
         public List<IDebugState> Children { get; set; }
 
