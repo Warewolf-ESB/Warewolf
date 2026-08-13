@@ -24,7 +24,7 @@ namespace Dev2.Sql.Tests
         public void IsTransientErrorNumber_GivenKnownTransientAzureSqlErrorNumbers_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var transientErrorNumbers = new[] { 40613, 40197, 40501, 40540, 49918, 49919, 49920, 4060, 10928, 10929, 10053, 10054, 10060 };
+            var transientErrorNumbers = new[] { 40613, 40197, 40501, 40540, 49918, 49919, 49920, 4060, 10928, 10929, 10053, 10054, 10060, 15197 };
 
             //------------Execute Test---------------------------
             foreach (var errorNumber in transientErrorNumbers)

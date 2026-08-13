@@ -40,6 +40,15 @@ namespace Dev2.Services.Sql
             49918, // Cannot process request. Not enough resources to process request
             49919, // Cannot process create or update request at this time
             49920, // Cannot process request. Too many operations in progress
+            15197, // "There is no text for object '%s'." - not officially documented as
+                   // transient by Microsoft, but observed in practice immediately after a
+                   // serverless database auto-resumes from Paused: sp_helptext (used by
+                   // DatabaseServiceExecution.MssqlGetSqlForProcedure to detect a FOR XML
+                   // result shape) can briefly fail this way before the resumed database's
+                   // system catalogs are fully warm, even though VIEW DEFINITION is granted
+                   // and the procedure is neither dropped nor encrypted. A short retry
+                   // clears it; a genuinely encrypted/missing/permission-denied procedure
+                   // will still fail the same way after exhausting the retry budget.
         };
 
         public static bool IsTransientErrorNumber(int errorNumber) => TransientErrorNumbers.Contains(errorNumber);

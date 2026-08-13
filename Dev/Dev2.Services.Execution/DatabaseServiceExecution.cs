@@ -409,7 +409,23 @@ namespace Dev2.Services.Execution
                         connection.Open();
                     }
                 }
-                if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
+                // The connection.Open() retry above only protects the login/handshake step. A
+                // serverless database can still be finishing its auto-resume immediately
+                // afterwards, so the very next command - this metadata lookup via sp_helptext -
+                // can independently hit a transient failure (see AzureSqlTransientErrorRetry's
+                // 15197 entry) even though Open() itself already succeeded. Give it the same
+                // fair retry before treating it as a real (encrypted/missing/permission-denied)
+                // procedure failure.
+                var isStoredProcForXmlResult = false;
+                AzureSqlTransientErrorRetry.Retry(
+                    () => isStoredProcForXmlResult = MssqlIsStoredProcForXmlResult(connection, ProcedureName),
+                    AzureSqlTransientErrorRetry.IsTransient,
+                    AzureSqlTransientErrorRetry.ManagedIdentityMaxAttempts,
+                    AzureSqlTransientErrorRetry.ManagedIdentityRetryBaseDelay,
+                    (attempt, maxAttempts, ex) => Dev2Logger.Warn(
+                        $"SQL Server: procedure metadata lookup for '{ProcedureName}' hit a transient error ({BuildSqlErrorDetail(ex)}) on attempt {attempt}/{maxAttempts}. Retrying...",
+                        GlobalConstants.WarewolfWarn));
+                if (isStoredProcForXmlResult)
                 {
                     MssqlReadDataForXml(update, startTime, connection, commandTimeout);
                 }

@@ -360,6 +360,49 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   single Managed Identity subscription is the only consumer of either job's messages, and
   correlationIds keep each job's own results distinct.
 
+- **`-VerifyWorkflowExecution` failure signature: `usp_jobs1_LogStart` "no text for object"
+  (SQL error 15197) cascading into `[[JobLogId]]` null-variable errors under load.**
+  `RabbitProcess.bite` (the workflow both `-VerifyWorkflowExecution` legs execute) is bundled
+  with its own `NewSqlServerSource (Local Backup)` DB source and calls three stored
+  procedures in sequence — `dbo.usp_jobs1_LogStart`, `usp_jobs1_LogProcessing`,
+  `usp_jobs1_LogFinished` — against that source on the target engine (e.g. UAT's
+  `warewolf-dev2-mcgeaj.database.windows.net` / `WarewolfEntraTestDb`, a **serverless**
+  `GP_S_Gen5` tier database on Azure SQL's free-limits offer, `autoPauseDelay: 60` minutes,
+  which cannot be disabled while free-limit-enrolled). Every SQL Server DB activity
+  execution unconditionally runs `sp_helptext` against the target procedure first
+  (`DatabaseServiceExecution.MssqlIsStoredProcForXmlResult` / `MssqlGetSqlForProcedure`,
+  `Dev/Dev2.Services.Execution/DatabaseServiceExecution.cs`) to detect a `FOR XML` result
+  shape. During the 2026-08-13 1000-message load test run, this failed for effectively all
+  1000 executions with a genuine SQL Server error 15197 ("There is no text for object
+  'dbo.usp_jobs1_LogStart'.") raised by `sp_helptext` itself, confirmed via Application
+  Insights (`warewolfserver-uat-ai`) — **not** a permissions/schema problem: `VIEW
+  DEFINITION`/`EXECUTE` were already correctly granted to `WarewolfServer-UAT`'s managed
+  identity at the `dbo` schema level, and manually re-running `sp_helptext` (directly and
+  via `EXECUTE AS USER = 'WarewolfServer-UAT'`) immediately after the failed run succeeded
+  and returned the full procedure text. Application Insights also logged a `Database
+  'WarewolfEntraTestDb' ... is not currently available` (SQL error 40613) event at
+  10:38:44Z, one minute into the run — i.e. the database was auto-resuming from Paused
+  exactly when the load test fired. `MssqlSqlExecution`'s existing
+  `AzureSqlTransientErrorRetry.Retry` wrapper only covered `connection.Open()` (added
+  specifically to give Managed Identity "a fair chance" against a resuming serverless
+  database, per its own comment) — the very next command, the `sp_helptext` metadata
+  lookup, had no such protection, so it could still hit a transient failure in the brief
+  window after `Open()` succeeds but before the resumed database's system catalogs are
+  fully warm. **Fixed** by extending the same retry to that lookup and adding SQL error
+  15197 to `AzureSqlTransientErrorRetry`'s transient-error set (both empirically observed,
+  not Microsoft-documented as transient — a genuinely encrypted/missing/permission-denied
+  procedure still fails the same way after the retry budget is exhausted).
+  Because the recordset output the first step would have produced
+  (`[[dbo_usp_jobs1_LogStart().JobLogId]]`) is never populated when it fails, the *next*
+  step (`usp_jobs1_LogProcessing`, which requires `[[JobLogId]]` as an input) fails
+  separately with `NullValueInVariableException` ("Error with variables in input.
+  `[[JobLogId]]`") — so most executions in a load test surface only that generic cascading
+  error rather than the original SQL exception; check Application Insights / at least one
+  failed correlationId's raw `Error` text for the underlying SQL error number to find the
+  true cause of a similar failure. Confirm the RabbitMQ→Service Bus legs (Phases 1-3)
+  succeeded first (they are independent of this SQL dependency) before investigating the
+  DB source.
+
 
 ## Promotion status
 
