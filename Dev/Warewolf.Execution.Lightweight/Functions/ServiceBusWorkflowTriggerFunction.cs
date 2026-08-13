@@ -277,7 +277,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await messageActions.DeadLetterMessageAsync(
                 message,
                 deadLetterReason: "execution_failed",
-                deadLetterErrorDescription: outcome.Error ?? "Workflow execution failed.",
+                deadLetterErrorDescription: TruncateDeadLetterDescription(outcome.Error ?? "Workflow execution failed."),
                 cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
@@ -314,8 +314,29 @@ public sealed class ServiceBusWorkflowTriggerFunction
         await messageActions.DeadLetterMessageAsync(
             message,
             deadLetterReason: status.ToString(),
-            deadLetterErrorDescription: reason,
+            deadLetterErrorDescription: TruncateDeadLetterDescription(reason),
             cancellationToken: cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Azure Service Bus rejects a <c>deadLetterErrorDescription</c> longer than 4096 characters
+    /// with <c>ArgumentOutOfRangeException</c>. That surfaces as an <c>RpcException</c> from the
+    /// settlement service and leaves the message <b>unsettled</b>, so it is redelivered and
+    /// re-executed instead of being dead-lettered — turning one poison message into repeated
+    /// load. Warewolf SQL failures routinely exceed the limit (full exception text plus stack
+    /// trace), so the description is truncated here rather than at each call site.
+    /// </summary>
+    internal const int MaxDeadLetterDescriptionLength = 4096;
+
+    internal static string TruncateDeadLetterDescription(string description)
+    {
+        if (string.IsNullOrEmpty(description) || description.Length <= MaxDeadLetterDescriptionLength)
+        {
+            return description;
+        }
+
+        const string suffix = "... [truncated]";
+        return description.Substring(0, MaxDeadLetterDescriptionLength - suffix.Length) + suffix;
     }
 
     /// <summary>

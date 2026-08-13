@@ -62,6 +62,39 @@ namespace Dev2.Activities
                     return;
                 }
 
+                // Diagnostics for WOLF-8510: under concurrent load a minority of executions fail
+                // with a bare "Object reference not set to an instance of an object.", which the
+                // catch below reports as ex.Message with the stack discarded - leaving nothing in
+                // Application Insights but a stackless System.Exception. Name the null member
+                // explicitly instead of letting a NullReferenceException escape anonymously.
+                // Note the type check below silently no-ops when ServiceExecution is null, so
+                // without this guard the failure only surfaces at ServiceExecution.Execute.
+                if (ServiceExecution is null || Inputs is null || Outputs is null)
+                {
+                    var missing = new List<string>();
+                    if (ServiceExecution is null)
+                    {
+                        missing.Add(nameof(ServiceExecution));
+                    }
+                    if (Inputs is null)
+                    {
+                        missing.Add(nameof(Inputs));
+                    }
+                    if (Outputs is null)
+                    {
+                        missing.Add(nameof(Outputs));
+                    }
+
+                    var detail =
+                        $"SQL Server activity '{DisplayName}' (UniqueID={UniqueID}, ProcedureName='{ProcedureName}', SourceId={SourceId}) " +
+                        $"cannot execute: {string.Join(", ", missing)} {(missing.Count == 1 ? "is" : "are")} null. " +
+                        $"ExecutionID={dataObject?.ExecutionID}.";
+
+                    Dev2Logger.Error(detail, dataObject?.ExecutionID.ToString());
+                    execErrors.AddError(detail);
+                    return;
+                }
+
                 if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
                 {
                     if (databaseServiceExecution.SourceIsNull())
@@ -77,6 +110,13 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
+                // Log the exception object itself (not just ex.Message) so the type and stack
+                // reach Application Insights - AddError below deliberately keeps the original
+                // message-only text so downstream error handling and tests are unaffected.
+                Dev2Logger.Error(
+                    $"SQL Server activity '{DisplayName}' (UniqueID={UniqueID}, ProcedureName='{ProcedureName}', ExecutionID={dataObject?.ExecutionID}) threw {ex.GetType().FullName}.",
+                    ex,
+                    GlobalConstants.WarewolfError);
                 execErrors.AddError(ex.Message);
             }
             finally
