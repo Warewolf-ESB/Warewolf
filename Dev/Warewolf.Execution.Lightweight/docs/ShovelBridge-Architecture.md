@@ -469,6 +469,122 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   provisioning script for it in the repo, which is why its absence went unnoticed; adding one
   is worthwhile follow-up work.
 
+- **2026-08-13 16:33 UTC 1000-message `-VerifyWorkflowExecution` run: only 89/1000 succeeded,
+  but the DB-side fixes above are confirmed working — the bottleneck has moved upstream of SQL.**
+  Investigated live against `WarewolfEntraTestDb` using an owner-level `az login` session
+  (`sqlcmd ... --authentication-method=ActiveDirectoryAzCli`), which is the more reliable way to
+  inspect this database going forward since it doesn't depend on `devops_warewolf`'s grants:
+  - `WarewolfServer-UAT` **does now exist** as an Entra database principal (`EXTERNAL_USER`) with
+    `EXECUTE` and `VIEW DEFINITION` granted database-wide — the "does not exist as a database
+    user" finding earlier in this doc is now stale; something provisioned it since.
+  - `usp_jobs1_LogStart` / `usp_jobs1_LogProcessing` definitions match the fixes described above
+    (hash-based `INSERT`, graceful FOR XML fallback) — confirmed by reading `OBJECT_DEFINITION`
+    directly.
+  - `dbo.jobs1` after the run: **106 rows total** (`JobLogId` 8–113, no gaps), 99 `FINISHED`,
+    3 `PROCESSING`, 4 `STARTED`, only 3 duplicate `MessageContentHash` pairs (i.e. the
+    `{correlationId}` templating fix is working — hashes are essentially unique per message).
+  - **Only 106 of the 1000 published messages ever reached `usp_jobs1_LogStart`'s `INSERT` at
+    all.** Since a gapless identity range means no attempt got as far as the `INSERT` and then
+    rolled back (an `sp_getapplock` timeout throws *before* the `INSERT`, consuming no identity
+    value), this rules out DB-side lock contention as the dominant cause — with per-message
+    unique hashes there is no reason for `sp_getapplock` contention across different messages
+    anyway. The other ~894 executions never made it to a SQL call at all.
+  - Conclusion: **DB permissions and stored-procedure logic are no longer the bottleneck** for
+    the majority of failures — see the corrected/superseding finding immediately below, which
+    identifies the actual dominant cause via Application Insights telemetry (the App Insights
+    lookup above initially appeared empty only because `az monitor app-insights query`'s
+    `--analytics-query` silently mishandles multi-line PowerShell here-strings; single-line
+    queries against `warewolfserver-uat-ai` in resource group `DEV2` work fine and the resource
+    has telemetry going back well beyond this run).
+
+- **ROOT CAUSE (2026-08-13, confirmed via `warewolfserver-uat-ai` Application Insights):
+  the Lightweight engine's `DynamicActivity`/`IDev2Activity` object graph is a process-wide
+  singleton per workflow file, and several Dev2 activity base classes hold per-execution state
+  in plain mutable instance fields — so concurrent executions of the same workflow race on the
+  same objects.** Of ~20,080 exceptions logged on 2026-08-13, **17,620 (88%) are exactly
+  `"Object reference not set to an instance of an object."` in `ActivityName = "DsfNativeActivity
+  {serviceName} Assign (1)"` on the `ServiceBusWorkflowTrigger` function** — dwarfing the SQL
+  pool-timeout (220) and 51001 (22) counts documented above. This, not DB/engine "capacity", is
+  the actual dominant cause of the 89/1000 load-test result. Root cause chain, confirmed by
+  direct code inspection:
+  1. `Warewolf.Execution.Lightweight/Execution/WorkflowExecutor.cs` — `_dynamicActivityCache` is
+     a `static ConcurrentDictionary<string, DynamicActivity>`: the compiled XAML object graph for
+     a given workflow file is a **process-wide singleton**, intentionally cached because
+     `ActivityXamlServices.Load` is expensive. The accompanying comment asserts this is safe
+     because a fresh `IDev2Activity` chain is parsed "each time" — true only in the sense of a
+     fresh list of *references*.
+  2. `Dev/Dev2.Activities/Activities/ActivityParser.cs` (`Parse` →
+     `WorkflowInspectionServices.GetActivities(dynamicActivity)`, and
+     `ParseToLinkedFlatList`'s handling of `DsfForEachActivity.DataFunc.Handler`) only *walks*
+     the existing object graph — it never clones activity node objects. Every concurrent
+     execution of the same workflow therefore reuses the **exact same `DsfForEachActivity` and
+     `DsfDotNetMultiAssignActivity` ("Assign (1)") instances**.
+  3. `Dev/Dev2.Activities/Activities/DsfNativeActivity.cs` (the base class behind
+     `DsfDotNetMultiAssignActivity` and effectively every built-in Dev2 activity) declares
+     `protected List<DebugItem> _debugInputs`/`_debugOutputs` as **plain mutable instance
+     fields** (not WF `Variable<T>`/context-scoped state), and
+     `DsfDotNetMultiAssignActivity.ExecuteTool` (`Dev/Dev2.Activities/Activities/
+     DsfDotNetMultiAssignActivity.cs:88-89`) calls `_debugOutputs.Clear()` / `_debugInputs.Clear()`
+     followed by `.Add(...)` on every execution, with **no synchronization**.
+  4. Two concurrent executions of the same workflow racing `List<T>.Clear()`/`.Add()` on the
+     same shared list is a textbook data race that manifests as an intermittent, generic
+     `NullReferenceException` — exactly the observed symptom. It concentrates on "Assign (1)"
+     here because that step sits inside a 10-iteration `ForEach` (`RabbitProcess.bite`'s "For
+     Each" 1..10 wrapping "Assign (1)"), multiplying re-entrancy per execution, but the hazard is
+     generic to **any** activity derived from `DsfNativeActivity<T>` run concurrently on this
+     engine — not specific to RabbitProcess/ShovelBridge.
+  - **This is a correctness bug in shared `Dev2.Activities` code (used by both the Lightweight
+    and Server engines), not a ShovelBridge-specific or DB-specific issue**, and not something
+    pipeline concurrency knobs (`ShovelPrefetchCount`/`PublishConcurrency`) can work around except
+    by accident (lower concurrency = narrower race window = fewer failures, not zero).
+
+- **FIXED (2026-08-13) — ported from `8504-Execution-Engine-Queue-Processor-End-to-end-testing`.**
+  That branch independently found and fixed this exact defect (own comment/tests cite the same
+  `RabbitProcess`/`[[JobLogId]]` symptoms and near-identical concurrency measurements, 2026-08-11/12)
+  before this investigation reached the fix stage. Rather than merging the whole 8504 branch —
+  which deletes this ShovelBridge harness (`Test-ShovelBridgeE2E.ps1`, this doc,
+  `RabbitProcess.bite`, `Configure-RabbitMqShovel.ps1`) in favour of an unrelated QueueProcessor
+  E2E rewrite, and bundles an orthogonal usage-telemetry refactor into the same file — only the
+  pooling fix itself was ported into `Warewolf.Execution.Lightweight/Execution/WorkflowExecutor.cs`
+  (plus its two callers, `ResumptionExecutor.cs` and `LightweightEsbChannel.cs`), leaving this
+  branch's own recent work (e.g. `PatchNestedAuthorizationServices`) untouched.
+  - **Fix shape**: the shared `_dynamicActivityCache` (one `DynamicActivity` singleton per workflow
+    path, handed to every concurrent execution) is replaced by a **rent/return pool**
+    (`_workflowPool: ConcurrentDictionary<string, ConcurrentBag<PreparedWorkflow>>`). Each execution
+    calls `WorkflowExecutor.RentPreparedWorkflow(path, xaml)` to take **exclusive ownership** of a
+    `PreparedWorkflow` (the compiled `DynamicActivity` + its parsed `IDev2Activity` chain, kept
+    together since parsing doesn't clone — the chain *is* the same object graph), executes against
+    it, and calls `ReturnPreparedWorkflow(path, prepared)` in a `finally` so it's released even on
+    exception paths. No two concurrent executions can ever hold the same instance, so the shared
+    mutable-field race (`_debugInputs`/`_debugOutputs`, `ServiceExecution`) cannot occur.
+  - **Reuse preserved**: a returned instance is reused by the next rent for the same path, so
+    sequential executions (the common case) still avoid re-compiling XAML — only concurrent
+    executions of the *same* workflow each get their own instance.
+  - **Bounded pool**: retained (idle) instances per path are capped at `MaxPooledPerWorkflow`
+    (default 8, override via `WAREWOLF_WORKFLOW_POOL_MAX`) — renting is never throttled (so
+    exclusivity holds under any concurrency), but instances beyond the cap are simply not kept on
+    return, preventing unbounded memory growth on an Azure Functions Consumption instance.
+  - **Deliberately NOT fixed**: the underlying defect — plain mutable instance fields on shared
+    `Dev2.Activities` objects (`DsfNativeActivity._debugInputs`/`_debugOutputs`,
+    `DatabaseServiceExecution` assignment, etc.) — remains latent in `Dev2.Activities`. This fix
+    only guarantees the Lightweight engine never lets two executions touch the same instance; it
+    does **not** make those objects thread-safe. `Dev2.Server` (on-prem) and Studio are unaffected
+    by this change and remain exposed to the same class of bug if they ever execute the same
+    workflow concurrently within one process.
+  - **Tests**: ported `WorkflowPoolConcurrencyTests.cs` (11 tests) from 8504 into
+    `Warewolf.Execution.Lightweight.Tests/Execution/` — asserts on object identity (no SQL Server,
+    engine, or network needed): rent-without-return yields distinct `DynamicActivity`/
+    `IDev2Activity` chain instances, including under real concurrency (8 callers via a `Barrier`);
+    rent-after-return reuses the same instance; pool grows only to peak concurrency and never
+    beyond `MaxPooledPerWorkflow`; renting still succeeds (and stays exclusive) beyond the cap;
+    return is null-tolerant; path normalisation (casing) shares one pool. All 743 existing
+    `Warewolf.Execution.Lightweight.Tests` and the 8
+    `WorkflowExecutorEndToEndTests`/`Warewolf.Execution.Lightweight.Integration.Tests` pass
+    unchanged after the port.
+  - **Not yet re-validated against the live pipeline**: this fix has not yet been re-run through
+    `pipeline-LOADTEST.yml`'s ShovelBridge job against `warewolf-dev2-mcgeaj`/`WarewolfServer-UAT`
+    to confirm the 89/1000 result recovers to ~1000/1000. That re-run is the next concrete step
+    before considering this issue closed end-to-end.
 
 ## Promotion status
 
