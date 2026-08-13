@@ -155,6 +155,19 @@ public static class McpServerOptionsFactory
             }));
 
         options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, string, bool, DeployWorkflowResult>)DeployWorkflowTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = DeployWorkflowTool.ToolName,
+                Description = "Writes a caller-supplied, complete .bite file's XML content to disk as a workflow, provided the caller has Contribute permission. Rejects when a workflow already exists at `name` unless `overwrite` is true.",
+                ReadOnly = false,
+                Destructive = true,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
+        options.ToolCollection.Add(McpServerTool.Create(
             (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement, string?, string?, AddStepResult>)AddStepTool.Handle,
             new McpServerToolCreateOptions
             {
