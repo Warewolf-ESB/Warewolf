@@ -237,9 +237,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
             var tools = JObject.Parse(ExtractSseJsonData(body))["result"]?["tools"] as JArray;
             Assert.IsNotNull(tools);
             // list_workflows, list_tools, get_workflow_definition, get_workflow_schema,
-            // get_tool_schema, validate_workflow, create_workflow, edit_workflow, add_step, and
-            // execute_workflow are all registered.
-            Assert.AreEqual(10, tools!.Count);
+            // get_tool_schema, validate_workflow, create_workflow, edit_workflow, add_step,
+            // add_source, and execute_workflow are all registered.
+            Assert.AreEqual(11, tools!.Count);
 
             var tool = tools!.Single(t => t["name"]?.ToString() == "list_workflows");
 

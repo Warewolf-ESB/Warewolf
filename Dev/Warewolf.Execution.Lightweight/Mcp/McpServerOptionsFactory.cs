@@ -168,6 +168,21 @@ public static class McpServerOptionsFactory
             }));
 
         options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, Secrets.IMcpSecretResolver, System.Security.Claims.ClaimsPrincipal?, string, string, System.Text.Json.JsonElement, System.Threading.CancellationToken, System.Threading.Tasks.Task<AddSourceResult>>)AddSourceTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = AddSourceTool.ToolName,
+                Description = "Creates a new connection source (database, cache, email, or message-broker) as a .bite file, provided the caller has Contribute permission and the name does not already exist. " +
+                    "For password/secret-shaped config fields, never put the literal secret in this JSON — reference \"${secret-name}\" for a secret already staged in this server's Key Vault instead; " +
+                    "the server fetches the real value itself at save time via its own Managed Identity and never echoes it back.",
+                ReadOnly = false,
+                Destructive = false,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
+        options.ToolCollection.Add(McpServerTool.Create(
             (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, IWorkflowExecutor, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement?, System.Threading.CancellationToken, System.Threading.Tasks.Task<ExecuteWorkflowResult>>)ExecuteWorkflowTool.Handle,
             new McpServerToolCreateOptions
             {

@@ -86,6 +86,12 @@ internal static class ServiceCollectionExtensions
             // WindowsGroupPermissions entries at startup.
             services.AddSingleton<IWorkflowAuthPolicyLoader, WorkflowAuthPolicyLoader>();
 
+            // Default secret-reference resolver for the add_source MCP tool's "${NAME}"
+            // placeholders — a local-dev fallback (this host's own environment variables).
+            // AddKeyVaultEncryption overrides this with KeyVaultMcpSecretResolver whenever
+            // Key Vault is configured (see IMcpSecretResolver for why the fallback matters).
+            services.AddSingleton<Mcp.Secrets.IMcpSecretResolver, Mcp.Secrets.EnvironmentMcpSecretResolver>();
+
             Dev2Logger.Info("ServiceCollectionExtensions AddCoreServices completed successfully", executionId);
             return services;
         }
@@ -244,6 +250,16 @@ internal static class ServiceCollectionExtensions
                 sp.GetRequiredService<ILogger<FileDecryptionHelper>>()));
         services.AddSingleton(sp =>
             new FileEncryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+
+        // Overrides the EnvironmentMcpSecretResolver registered in AddCoreServices: the
+        // add_source MCP tool's "${NAME}" placeholders now resolve against this same vault
+        // (real Key Vault access, not the DEBUG_AZURE_KEYVAULT_SECRET bypass — there is no
+        // vault to query in that mode, so the environment-variable fallback stays active).
+        if (!useDebugBypass)
+        {
+            services.AddSingleton<Mcp.Secrets.IMcpSecretResolver>(
+                _ => new Mcp.Secrets.KeyVaultMcpSecretResolver(config.VaultUri, KeyVaultCredentialFactory.Create(config.CredentialOptions)));
+        }
 
         // AuditLogger is registered globally in AddCoreServices (DI-07);
         // no per-encryption registration needed here.
