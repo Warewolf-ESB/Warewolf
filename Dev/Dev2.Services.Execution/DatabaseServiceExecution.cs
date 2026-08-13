@@ -338,10 +338,33 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MssqlIsStoredProcForXmlResult(SqlConnection connection, string procedureName)
+        // SQL Server error raised by sp_helptext when it cannot return a module's text. Despite
+        // the wording ("There is no text for object..."), the object usually exists and is
+        // perfectly executable - the caller simply lacks VIEW DEFINITION on it, or it was
+        // created WITH ENCRYPTION.
+        public const int SqlErrorProcedureTextUnavailable = 15197;
+
+        // True when ex means "the procedure's text could not be read" rather than "the procedure
+        // could not be run". Covers both shapes this surfaces as: the SqlException sp_helptext
+        // itself raises, and the WarewolfDbException MssqlGetSqlForProcedure raises when
+        // sp_helptext returns no rows at all.
+        public static bool IsProcedureTextUnavailable(Exception ex)
+        {
+            if (ex is WarewolfDbException)
+            {
+                return true;
+            }
+            return ex is SqlException sqlEx
+                   && sqlEx.Errors.Cast<SqlError>().Any(e => e.Number == SqlErrorProcedureTextUnavailable);
+        }
+
+        // Scans a procedure's T-SQL body for a FOR XML clause. Note the deliberate absence of an
+        // early exit: as originally written, each FOR token re-assigns the result, so the LAST
+        // FOR in the body decides. Preserved verbatim during extraction to keep behaviour
+        // identical - this is characterised by tests rather than changed here.
+        public static bool IsForXmlProcedureScript(string procSqlScript)
         {
             bool result = false;
-            var procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
             var statements = TSQLStatementReader.ParseStatements(procSqlScript);
             foreach (var statement in statements)
             {
@@ -364,6 +387,31 @@ namespace Dev2.Services.Execution
                 }
             }
             return result;
+        }
+
+        private bool MssqlIsStoredProcForXmlResult(SqlConnection connection, string procedureName)
+        {
+            string procSqlScript;
+            try
+            {
+                procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
+            }
+            catch (Exception ex) when (IsProcedureTextUnavailable(ex))
+            {
+                // Detecting a FOR XML result shape is an optimisation, not a precondition for
+                // running the procedure: EXECUTE and VIEW DEFINITION are separate permissions,
+                // so a caller granted only EXECUTE (the common least-privilege setup, and the
+                // case that broke the ShovelBridge load test) can run this procedure perfectly
+                // well while being unable to read its body. Failing here would reject an
+                // otherwise valid execution, so fall back to the non-FOR XML read path.
+                Dev2Logger.Warn(
+                    $"SQL Server: could not read the definition of '{procedureName}' to detect a FOR XML result shape ({BuildSqlErrorDetail(ex)}). " +
+                    "This usually means the connecting principal lacks VIEW DEFINITION, or the procedure is encrypted. " +
+                    "Continuing with the standard (non-FOR XML) result handling; grant VIEW DEFINITION if this procedure does return FOR XML.",
+                    GlobalConstants.WarewolfWarn);
+                return false;
+            }
+            return IsForXmlProcedureScript(procSqlScript);
         }
 
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
@@ -409,22 +457,12 @@ namespace Dev2.Services.Execution
                         connection.Open();
                     }
                 }
-                // The connection.Open() retry above only protects the login/handshake step. A
-                // serverless database can still be finishing its auto-resume immediately
-                // afterwards, so the very next command - this metadata lookup via sp_helptext -
-                // can independently hit a transient failure (see AzureSqlTransientErrorRetry's
-                // 15197 entry) even though Open() itself already succeeded. Give it the same
-                // fair retry before treating it as a real (encrypted/missing/permission-denied)
-                // procedure failure.
-                var isStoredProcForXmlResult = false;
-                AzureSqlTransientErrorRetry.Retry(
-                    () => isStoredProcForXmlResult = MssqlIsStoredProcForXmlResult(connection, ProcedureName),
-                    AzureSqlTransientErrorRetry.IsTransient,
-                    AzureSqlTransientErrorRetry.ManagedIdentityMaxAttempts,
-                    AzureSqlTransientErrorRetry.ManagedIdentityRetryBaseDelay,
-                    (attempt, maxAttempts, ex) => Dev2Logger.Warn(
-                        $"SQL Server: procedure metadata lookup for '{ProcedureName}' hit a transient error ({BuildSqlErrorDetail(ex)}) on attempt {attempt}/{maxAttempts}. Retrying...",
-                        GlobalConstants.WarewolfWarn));
+                // No retry around this metadata lookup: the failure it used to guard against
+                // (15197) is a permanent VIEW DEFINITION/encryption condition, not a transient
+                // one, and MssqlIsStoredProcForXmlResult now degrades gracefully instead.
+                // Retrying it only held a pooled connection open for the full backoff budget,
+                // exhausting the pool once enough executions ran concurrently.
+                var isStoredProcForXmlResult = MssqlIsStoredProcForXmlResult(connection, ProcedureName);
                 if (isStoredProcForXmlResult)
                 {
                     MssqlReadDataForXml(update, startTime, connection, commandTimeout);

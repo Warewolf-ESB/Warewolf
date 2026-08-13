@@ -24,7 +24,7 @@ namespace Dev2.Sql.Tests
         public void IsTransientErrorNumber_GivenKnownTransientAzureSqlErrorNumbers_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var transientErrorNumbers = new[] { 40613, 40197, 40501, 40540, 49918, 49919, 49920, 4060, 10928, 10929, 10053, 10054, 10060, 15197 };
+            var transientErrorNumbers = new[] { 40613, 40197, 40501, 40540, 49918, 49919, 49920, 4060, 10928, 10929, 10053, 10054, 10060 };
 
             //------------Execute Test---------------------------
             foreach (var errorNumber in transientErrorNumbers)
@@ -48,6 +48,26 @@ namespace Dev2.Sql.Tests
                 //------------Assert Results-------------------------
                 Assert.IsFalse(AzureSqlTransientErrorRetry.IsTransientErrorNumber(errorNumber), $"Error number {errorNumber} (login failed / invalid object / constraint violation) should not be classified as transient.");
             }
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("AzureSqlTransientErrorRetry")]
+        public void IsTransientErrorNumber_GivenProcedureTextUnavailableError_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            // 15197 ("There is no text for object '%s'.") was previously (incorrectly) treated as
+            // transient. It is raised whenever the caller cannot read a module's definition -
+            // missing VIEW DEFINITION, or an encrypted procedure - which is deterministic and
+            // per-principal. Retrying can never clear it and only holds a pooled connection open
+            // for the entire backoff budget, exhausting the pool under concurrent load.
+            const int procedureTextUnavailable = 15197;
+
+            //------------Execute Test---------------------------
+            var result = AzureSqlTransientErrorRetry.IsTransientErrorNumber(procedureTextUnavailable);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result, "Error 15197 is a permanent VIEW DEFINITION/encryption condition and must never be retried.");
         }
 
         [TestMethod]

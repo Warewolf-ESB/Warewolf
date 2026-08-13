@@ -190,6 +190,12 @@ internal static class Program
             ? $"CorrelationId: {correlationIds[0]}"
             : $"CorrelationId prefix: {correlationIdPrefix} ({messageCount} messages, '{correlationIds[0]}' .. '{correlationIds[^1]}')");
         Console.WriteLine($"Publishing {messageCount} '{workflow}' workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
+        if (messageCount > 1 && !string.IsNullOrWhiteSpace(workflowInputsJson) && !WorkflowInputTemplate.HasCorrelationIdPlaceholder(workflowInputsJson))
+        {
+            Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
+            Console.WriteLine("           A workflow that keys off the message body (e.g. RabbitProcess -> usp_jobs1_LogStart, which takes an exclusive");
+            Console.WriteLine("           applock on a hash of the content) will serialise every execution behind one lock instead of running concurrently.");
+        }
 
         var publishStopwatch = Stopwatch.StartNew();
         await PublishManyWorkflowTriggerMessagesAsync(
@@ -473,11 +479,15 @@ internal static class Program
     {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
+        // Expand {correlationId} so each message in a bulk run carries a distinct inputs map -
+        // see WorkflowInputTemplate for why identical bodies serialise a load run.
+        var expandedInputsJson = WorkflowInputTemplate.Expand(workflowInputsJson, correlationId);
+
         Dictionary<string, string>? inputs = null;
-        if (!string.IsNullOrWhiteSpace(workflowInputsJson))
+        if (!string.IsNullOrWhiteSpace(expandedInputsJson))
         {
-            inputs = JsonSerializer.Deserialize<Dictionary<string, string>>(workflowInputsJson)
-                ?? throw new InvalidOperationException($"--workflow-inputs-json did not deserialize to a string map: {workflowInputsJson}");
+            inputs = JsonSerializer.Deserialize<Dictionary<string, string>>(expandedInputsJson)
+                ?? throw new InvalidOperationException($"--workflow-inputs-json did not deserialize to a string map: {expandedInputsJson}");
         }
 
         var payload = JsonSerializer.Serialize(new { workflow, inputs, correlationId });

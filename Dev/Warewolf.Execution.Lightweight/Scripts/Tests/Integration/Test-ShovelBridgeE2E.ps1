@@ -135,14 +135,24 @@
     steal the message before the engine processes it.
 .PARAMETER WorkflowName
     REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "RabbitProcess" (see
-    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, bundled
-    alongside its "NewSqlServerSource (Local Backup)" DB source, replacing the generic "Hello
-    World" smoke-test workflow previously used as the example here) — matched against the
+    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, replacing
+    the generic "Hello World" smoke-test workflow previously used as the example here. Its DB
+    activities bind to SourceId b9184f70-… (the shared NewSqlServerSource the pipeline
+    downloads), NOT the unreferenced "NewSqlServerSource (Local Backup)" .bite sitting beside
+    it, whose connection string is DPAPI-encrypted under its author's account) — matched against the
     target engine's secure.config exactly as an HTTP /secure/{workflow} path segment would be.
 .PARAMETER WorkflowInputsJson
     Only used when -VerifyWorkflowExecution. Optional JSON object of string inputs, e.g.
     '{"message":"FromRabbitMq"}' (RabbitProcess's own single input — see its DataList). Passed
     through to the workflow exactly like HTTP query-string inputs are today.
+
+    Supports one placeholder, '{correlationId}', which the harness expands per message — e.g.
+    '{"message":"loadtest-{correlationId}"}'. USE IT FOR ANY -MessageCount > 1 RUN: without it
+    every message carries a byte-identical inputs map, and RabbitProcess hashes the message
+    content into an EXCLUSIVE sp_getapplock in dbo.usp_jobs1_LogStart (15s timeout). Identical
+    bodies therefore serialise the entire run behind a single lock, and are recorded as N retry
+    attempts of ONE job instead of N distinct jobs. The harness prints a warning if you omit it
+    on a multi-message run.
 .PARAMETER CorrelationId
     Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
     -MessageCount is 1 (default), this is used verbatim and, when omitted, a fresh GUID is

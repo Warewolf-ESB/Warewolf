@@ -362,10 +362,16 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
 
 - **`-VerifyWorkflowExecution` failure signature: `usp_jobs1_LogStart` "no text for object"
   (SQL error 15197) cascading into `[[JobLogId]]` null-variable errors under load.**
-  `RabbitProcess.bite` (the workflow both `-VerifyWorkflowExecution` legs execute) is bundled
-  with its own `NewSqlServerSource (Local Backup)` DB source and calls three stored
-  procedures in sequence — `dbo.usp_jobs1_LogStart`, `usp_jobs1_LogProcessing`,
-  `usp_jobs1_LogFinished` — against that source on the target engine (e.g. UAT's
+  `RabbitProcess.bite` (the workflow both `-VerifyWorkflowExecution` legs execute) calls
+  three stored procedures in sequence — `dbo.usp_jobs1_LogStart`, `usp_jobs1_LogProcessing`,
+  `usp_jobs1_LogFinished`. All three of its DB activities bind to
+  `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` — the shared `NewSqlServerSource` that
+  `pipeline-CLOUD.yml` downloads from the devops endpoint, **not** the
+  `NewSqlServerSource (Local Backup)` source (`d3f6a2e1-…`) sitting alongside it in
+  `Resources/rabbit/`. That bundled source is unreferenced by any activity, and its
+  connection string is DPAPI-encrypted under its author's Windows account, so it cannot be
+  read or used on another machine. The procedures therefore run against whatever
+  `b9184f70-…` resolves to on the target engine (e.g. UAT's
   `warewolf-dev2-mcgeaj.database.windows.net` / `WarewolfEntraTestDb`, a **serverless**
   `GP_S_Gen5` tier database on Azure SQL's free-limits offer, `autoPauseDelay: 60` minutes,
   which cannot be disabled while free-limit-enrolled). Every SQL Server DB activity
@@ -373,25 +379,47 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   (`DatabaseServiceExecution.MssqlIsStoredProcForXmlResult` / `MssqlGetSqlForProcedure`,
   `Dev/Dev2.Services.Execution/DatabaseServiceExecution.cs`) to detect a `FOR XML` result
   shape. During the 2026-08-13 1000-message load test run, this failed for effectively all
-  1000 executions with a genuine SQL Server error 15197 ("There is no text for object
-  'dbo.usp_jobs1_LogStart'.") raised by `sp_helptext` itself, confirmed via Application
-  Insights (`warewolfserver-uat-ai`) — **not** a permissions/schema problem: `VIEW
-  DEFINITION`/`EXECUTE` were already correctly granted to `WarewolfServer-UAT`'s managed
-  identity at the `dbo` schema level, and manually re-running `sp_helptext` (directly and
-  via `EXECUTE AS USER = 'WarewolfServer-UAT'`) immediately after the failed run succeeded
-  and returned the full procedure text. Application Insights also logged a `Database
-  'WarewolfEntraTestDb' ... is not currently available` (SQL error 40613) event at
-  10:38:44Z, one minute into the run — i.e. the database was auto-resuming from Paused
-  exactly when the load test fired. `MssqlSqlExecution`'s existing
-  `AzureSqlTransientErrorRetry.Retry` wrapper only covered `connection.Open()` (added
-  specifically to give Managed Identity "a fair chance" against a resuming serverless
-  database, per its own comment) — the very next command, the `sp_helptext` metadata
-  lookup, had no such protection, so it could still hit a transient failure in the brief
-  window after `Open()` succeeds but before the resumed database's system catalogs are
-  fully warm. **Fixed** by extending the same retry to that lookup and adding SQL error
-  15197 to `AzureSqlTransientErrorRetry`'s transient-error set (both empirically observed,
-  not Microsoft-documented as transient — a genuinely encrypted/missing/permission-denied
-  procedure still fails the same way after the retry budget is exhausted).
+  1000 executions with SQL Server error 15197 ("There is no text for object
+  'dbo.usp_jobs1_LogStart'.") raised by `sp_helptext` itself.
+
+  **Root cause: the connecting principal holds `EXECUTE` but not `VIEW DEFINITION`.** An
+  earlier revision of this document attributed the failure to a serverless auto-resume race
+  and called it transient. That was a misdiagnosis, disproved by direct inspection of
+  `WarewolfEntraTestDb` on 2026-08-13:
+
+  | Check | Result |
+  |---|---|
+  | `OBJECTPROPERTY(...,'IsEncrypted')` on all 8 `usp_jobs1_*` | `0` — not encrypted |
+  | `sys.sql_modules` row visible / `definition` | row present / `NULL` |
+  | `HAS_PERMS_BY_NAME('dbo.usp_jobs1_LogStart','OBJECT','VIEW DEFINITION')` | `0` |
+  | `HAS_PERMS_BY_NAME('dbo.usp_jobs1_LogStart','OBJECT','EXECUTE')` | `1` |
+  | Roles held by `devops_warewolf` | `db_datareader`, `db_datawriter` only |
+  | `dbo.jobs1` row count | `0` — no execution has ever succeeded |
+
+  `sp_helptext` was reproduced failing with 15197 against a **warm, idle, single-connection**
+  database, which rules out load, concurrency and auto-resume. `definition IS NULL` combined
+  with `IsEncrypted = 0` and a visible catalog row has exactly one cause: the caller lacks
+  `VIEW DEFINITION`. This is deterministic and per-principal — retrying can never clear it.
+
+  Note also that **`WarewolfServer-UAT` does not exist as a database user** in
+  `WarewolfEntraTestDb` (`sys.database_principals` contains only `devops_warewolf`), so the
+  engine never authenticates as its Managed Identity here — it falls through to the SQL-auth
+  fallback path in `MssqlSqlExecution`. Any future claim that a grant was applied "to the
+  UAT managed identity" on this database should be checked against that.
+
+  The previous 15197-as-transient "fix" actively made the load test worse: each of the 1000
+  executions burned 3 attempts with 5s + 10s backoff while **holding its pooled connection**,
+  against the `MaxPoolSize = 100` set in `Dev/Dev2.Services.Sql/SqlConnectionWrapper.cs`.
+  That is the origin of the run's other two error classes — "Timeout expired ... max pool
+  size was reached" and "[Post-Login] complete=29162". **Now fixed** by (a) removing 15197
+  from `AzureSqlTransientErrorRetry`'s transient set, (b) removing the retry wrapper around
+  the metadata lookup, and (c) making `MssqlIsStoredProcForXmlResult` degrade gracefully —
+  an unreadable definition now falls back to the standard non-`FOR XML` read path with a
+  warning instead of failing the execution, since `EXECUTE` is what actually matters and
+  `VIEW DEFINITION` is a separate permission. To restore genuine `FOR XML` *detection* on
+  this database (only needed if a procedure really does return `FOR XML`), run:
+  `GRANT VIEW DEFINITION ON SCHEMA::dbo TO devops_warewolf;`
+
   Because the recordset output the first step would have produced
   (`[[dbo_usp_jobs1_LogStart().JobLogId]]`) is never populated when it fails, the *next*
   step (`usp_jobs1_LogProcessing`, which requires `[[JobLogId]]` as an input) fails
@@ -402,6 +430,44 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   true cause of a similar failure. Confirm the RabbitMQ→Service Bus legs (Phases 1-3)
   succeeded first (they are independent of this SQL dependency) before investigating the
   DB source.
+
+- **`usp_jobs1_LogStart` never wrote `MessageContentHash`, capping `dbo.jobs1` at one row.**
+  The procedure computes `@hash = HASHBYTES('SHA2_256', @MessageContent)`, takes its applock
+  on it and queries by it — but omitted `MessageContentHash` from its own `INSERT` column
+  list, so the column stayed `NULL` on every row. Two consequences compounded: the attempt
+  lookup `WHERE MessageContentHash = @hash` never matched (so `AttemptNumber` was always
+  `1`), and `UQ_jobs1_ContentHash_AttemptNumber` — UNIQUE, **unfiltered**, on
+  `(MessageContentHash, AttemptNumber)` — treats `NULL`s as equal. The second row ever
+  inserted therefore failed with error 2601, "duplicate key ... `(<NULL>, 1)`", regardless of
+  message content. Reproduced directly, and consistent with `dbo.jobs1` having zero rows.
+  **Fixed** on `WarewolfEntraTestDb` (2026-08-13) by adding `MessageContentHash` / `@hash` to
+  that `INSERT`; verified that distinct contents now coexist and that a repeated content
+  correctly yields `AttemptNumber = 2`.
+
+- **All messages in a load run shared one message body, serialising the whole run.**
+  `pipeline-LOADTEST.yml` passed a literal `VerifyWorkflowInputsJson: '{"message":"loadtest"}'`,
+  and the harness applied that same map to every message — only `correlationId` varied, and
+  `correlationId` never reaches the workflow's `[[message]]` input. All 1000 executions
+  therefore hashed to the same value and queued behind a **single exclusive `sp_getapplock`**
+  (15s timeout) in `usp_jobs1_LogStart`, and were semantically recorded as 1000 retry
+  attempts of one job. **Fixed** by adding a `{correlationId}` placeholder to
+  `--workflow-inputs-json` (`WorkflowInputTemplate` in the E2E harness, unit-tested in
+  `Warewolf.Execution.ServiceBusWorker.Tests`) and setting the pipeline to
+  `'{"message":"loadtest-{correlationId}"}'`. The harness now prints a warning if a
+  multi-message run omits the placeholder. **Use the placeholder for any `-MessageCount > 1`
+  run.**
+
+- **`RabbitProcess2.bite`'s schema — now provisioned.** It calls `dbo.usp_jobs2_LogStart` /
+  `_LogProcessing` / `_LogFinished`, and neither the `jobs2` table nor any `usp_jobs2_*`
+  procedure previously existed on `WarewolfEntraTestDb` — only the `jobs1` set did, so that
+  workflow failed 100% of the time. **Provisioned on 2026-08-13** as an exact clone of
+  `jobs1`: the table (same columns, `PK_jobs2`, `UQ_jobs2_ContentHash_AttemptNumber`,
+  `IX_jobs2_ContentHash`, `IX_jobs2_Status_CreatedAtUtc`) plus all 8 procedures, cloned
+  **after** the `MessageContentHash` fix above so the defect was not copied forward.
+  `EXECUTE` is granted at `dbo` schema level, so `devops_warewolf` picked the new procedures
+  up automatically. Note this schema exists only as live database state — there is no
+  provisioning script for it in the repo, which is why its absence went unnoticed; adding one
+  is worthwhile follow-up work.
 
 
 ## Promotion status
