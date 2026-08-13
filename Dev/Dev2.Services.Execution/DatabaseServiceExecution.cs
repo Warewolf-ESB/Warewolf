@@ -508,6 +508,24 @@ namespace Dev2.Services.Execution
                         reader.Close();
                         dbTransaction.Commit();
                         Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+
+                        // Diagnostics for WOLF-8510. Two unexplained failure classes under load
+                        // (SQL 51001/51002 "invalid state transition ... for this JobLogId", and
+                        // the cascading "Error with variables in input. [[JobLogId]]") both hinge
+                        // on what the FIRST step's recordset actually returned. Log the shape and
+                        // the leading scalar - for usp_jobs*_LogStart that is the JobLogId - so a
+                        // failed execution can be joined against the dbo.jobs* row it claims to
+                        // have created. Deliberately logs only the first cell, never the whole
+                        // row: MessageContent is NVARCHAR(MAX) and would flood the log.
+                        var firstScalar = table.Rows.Count > 0 && table.Columns.Count > 0
+                            ? Convert.ToString(table.Rows[0][0])
+                            : "(no rows)";
+                        Dev2Logger.Info(
+                            $"DB proc result | Proc={ProcedureName} | Rows={table.Rows.Count} | Columns={table.Columns.Count} | " +
+                            $"FirstColumn={(table.Columns.Count > 0 ? table.Columns[0].ColumnName : "(none)")} | FirstValue={firstScalar} | " +
+                            $"ExecutionID={DataObj.ExecutionID}",
+                            DataObj.ExecutionID.ToString());
+
                         var startTime1 = Stopwatch.StartNew();
                         TranslateDataTableToEnvironment(table, DataObj.Environment, update);
                         Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());

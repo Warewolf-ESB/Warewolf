@@ -1191,7 +1191,19 @@ try {
     }
 
     # 1.2 Storage account
+    # Storage account names are globally unique across the whole subscription (not
+    # scoped to a resource group), so an RG-scoped existence check can miss an
+    # account that legitimately lives in a different (often shared) RG - the same
+    # cross-RG sharing pattern already seen with the App Service Plan. Fall back to
+    # a subscription-wide lookup by name before concluding the account is absent.
     $stExists = Invoke-Az @('storage', 'account', 'show', '--name', $StorageAccount, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+    if (-not $stExists) {
+        $stExists = Invoke-Az @('storage', 'account', 'show', '--name', $StorageAccount, '-o', 'json') -AllowFail
+        if ($stExists) {
+            $stRg = ($stExists | ConvertFrom-Json).resourceGroup
+            Write-Note "Storage account '$StorageAccount' exists in a different resource group ('$stRg', not '$ResourceGroup') - treating as read-only, not recreating."
+        }
+    }
     if ($stExists) {
         Write-Ok "Storage account '$StorageAccount' already exists."
         $created['storageAccount'] = $false
