@@ -98,6 +98,22 @@
         (RabbitMQ -> Shovel -> Service Bus -> workflow execution) at that volume.
     Remember to raise -HarnessTimeoutSeconds / -ResultTimeoutSeconds accordingly for larger
     counts.
+.PARAMETER PublishConcurrency
+    How many of the -MessageCount publishes are in flight at once (passed through to the
+    harness's own --publish-concurrency). Default: 1 — the original, fully sequential
+    behaviour (one blocking RabbitMQ Management API HTTP call at a time). At load-test volumes
+    (e.g. 1000 messages) this sequential publish loop is the dominant cost, NOT the Shovel's
+    own bridging throughput — raise this (e.g. 20, matching the harness's own bounded-
+    concurrency result polling) to speed up the publish phase specifically. See -ShovelPrefetchCount
+    for the Shovel's own, separate throughput knob.
+.PARAMETER ShovelPrefetchCount
+    The Shovel's 'src-prefetch-count': how many unacknowledged messages it keeps in flight
+    between the RabbitMQ source queue and the Service Bus destination (ack-mode is
+    'on-confirm', so this bounds how many messages can be pipelined awaiting a destination
+    confirm). Default: 5 (the shovel's original hardcoded value). Raising this can increase
+    the Shovel's own bridging throughput — most useful once -PublishConcurrency > 1, since
+    otherwise the sequential publish loop is the bottleneck and the Shovel is rarely fed faster
+    than one message at a time regardless of this setting.
 .PARAMETER VerifyWorkflowExecution
     Additive, opt-in "full pipeline" mode. Without this switch, the test only proves
     RabbitMQ -> Shovel -> Service Bus message ARRIVAL (see docs/ShovelBridge-Architecture.md)
@@ -203,6 +219,24 @@ param(
     # -CorrelationId is used as a prefix when this is > 1).
     [ValidateRange(1, [int]::MaxValue)]
     [int]    $MessageCount = 1,
+
+    # How many of the -MessageCount publishes are in flight at once (passed through as the
+    # harness's own --publish-concurrency). Default 1 preserves the original fully sequential
+    # behaviour. Sequential HTTP-per-message publishing via the RabbitMQ Management API is the
+    # dominant cost at load-test volumes (e.g. 1000 messages) — raise this (e.g. 20, matching
+    # the harness's own result-polling concurrency) to speed up the publish phase; the Shovel's
+    # own -ShovelPrefetchCount below is a separate, later-stage throughput knob.
+    [ValidateRange(1, [int]::MaxValue)]
+    [int]    $PublishConcurrency = 1,
+
+    # RabbitMQ Shovel 'src-prefetch-count': how many unacknowledged messages the Shovel keeps
+    # in flight between the RabbitMQ source queue and the Service Bus destination (ack-mode is
+    # 'on-confirm', so this bounds pipelining while awaiting destination confirms). Default 5
+    # matches the shovel's original hardcoded value. Raising this can increase the Shovel's own
+    # bridging throughput once publishing (-PublishConcurrency above) is no longer the
+    # bottleneck — see docs/ShovelBridge-Architecture.md.
+    [ValidateRange(1, [int]::MaxValue)]
+    [int]    $ShovelPrefetchCount = 5,
 
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     [switch] $VerifyWorkflowExecution,
@@ -696,7 +730,7 @@ try {
         'src-protocol'       = 'amqp091'
         'src-uri'            = $sourceUri
         'src-queue'          = $SourceQueueName
-        'src-prefetch-count' = 5
+        'src-prefetch-count' = $ShovelPrefetchCount
         'dest-protocol'      = 'amqp10'
         'dest-uri'           = $shovelDestUri
         'dest-address'       = $DestinationQueueName
@@ -756,6 +790,7 @@ try {
             '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $resultTokenSecure)
             '--result-timeout-seconds', $ResultTimeoutSeconds
             '--message-count', $MessageCount
+            '--publish-concurrency', $PublishConcurrency
         )
         if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $harnessArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
         if (-not [string]::IsNullOrWhiteSpace($Jti)) { $harnessArgs += @('--jti', $Jti) }
@@ -770,6 +805,7 @@ try {
             '--destination-queue', $DestinationQueueName
             '--timeout-seconds', $HarnessTimeoutSeconds
             '--message-count', $MessageCount
+            '--publish-concurrency', $PublishConcurrency
         )
     }
     Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'

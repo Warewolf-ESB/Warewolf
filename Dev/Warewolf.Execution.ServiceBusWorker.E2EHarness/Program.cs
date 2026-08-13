@@ -103,6 +103,11 @@ internal static class Program
         {
             throw new ArgumentException("--message-count must be at least 1.");
         }
+        var publishConcurrency = int.Parse(opts.GetValueOrDefault("publish-concurrency", "1"));
+        if (publishConcurrency < 1)
+        {
+            throw new ArgumentException("--publish-concurrency must be at least 1.");
+        }
         var markerPrefix = opts.GetValueOrDefault("marker", Guid.NewGuid().ToString("N"));
 
         // Fixed-width numeric suffixes (D6) guarantee no marker is ever a substring of another
@@ -118,7 +123,7 @@ internal static class Program
         Console.WriteLine($"Publishing {messageCount} message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
 
         var publishStopwatch = Stopwatch.StartNew();
-        await PublishManyToRabbitMqAsync(rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue, markers);
+        await PublishManyToRabbitMqAsync(rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue, markers, publishConcurrency);
         publishStopwatch.Stop();
         Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus ...");
 
@@ -169,6 +174,11 @@ internal static class Program
         {
             throw new ArgumentException("--message-count must be at least 1.");
         }
+        var publishConcurrency = int.Parse(opts.GetValueOrDefault("publish-concurrency", "1"));
+        if (publishConcurrency < 1)
+        {
+            throw new ArgumentException("--publish-concurrency must be at least 1.");
+        }
 
         // Fixed-width numeric suffixes (D6), same convention as arrival mode's markers — each
         // correlationId is independently tracked through publish + result-polling below.
@@ -184,7 +194,7 @@ internal static class Program
         var publishStopwatch = Stopwatch.StartNew();
         await PublishManyWorkflowTriggerMessagesAsync(
             rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-            workflow, workflowInputsJson, correlationIds, messageAuthToken, jti);
+            workflow, workflowInputsJson, correlationIds, messageAuthToken, jti, publishConcurrency);
         publishStopwatch.Stop();
         Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
 
@@ -279,6 +289,12 @@ internal static class Program
                                                         messages (marker-000000 .. marker-{n-1})
                                                         and waits for all N to arrive - used for
                                                         shovel-bridge load/throughput testing
+                [--publish-concurrency <n>]            default: 1 (sequential, unchanged
+                                                        behaviour); bounds how many of the N
+                                                        publishes above are in flight at once -
+                                                        raise this (e.g. 20) at load-test volumes,
+                                                        since sequential HTTP-per-message publish
+                                                        is the dominant cost, not shovel throughput
 
             Usage: ShovelBridgeE2EHarness --mode workflow-execution [options]
                 --rabbitmq-management-uri <uri>
@@ -303,6 +319,12 @@ internal static class Program
                                                         requires ALL N to report a Succeeded
                                                         result - used for full end-to-end
                                                         (bridge + workflow execution) load testing
+                [--publish-concurrency <n>]            default: 1 (sequential, unchanged
+                                                        behaviour); bounds how many of the N
+                                                        publishes above are in flight at once -
+                                                        raise this (e.g. 20) at load-test volumes,
+                                                        since sequential HTTP-per-message publish
+                                                        is the dominant cost, not shovel throughput
             """);
     }
 
@@ -324,18 +346,18 @@ internal static class Program
     /// Publishes <paramref name="markers"/> (one message each) to the same RabbitMQ queue,
     /// reusing a single authenticated <see cref="HttpClient"/> across all of them — publishing
     /// a fresh client per message (as the single-message overload above does) is wasteful once
-    /// the count reaches load-test volumes (e.g. 1000 messages).
+    /// the count reaches load-test volumes (e.g. 1000 messages). <paramref name="maxConcurrency"/>
+    /// (default 1, unchanged sequential behaviour) bounds how many publishes are in flight at
+    /// once — see <see cref="PublishManyBoundedAsync"/> for why this is the harness's actual
+    /// throughput knob at load-test volumes.
     /// </summary>
-    private static async Task PublishManyToRabbitMqAsync(string managementUri, string username, string password, string vhost, string queue, IReadOnlyList<string> markers)
+    private static async Task PublishManyToRabbitMqAsync(string managementUri, string username, string password, string vhost, string queue, IReadOnlyList<string> markers, int maxConcurrency = 1)
     {
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
 
-        foreach (var marker in markers)
-        {
-            await PublishToRabbitMqAsync(http, managementUri, vhost, queue, marker);
-        }
+        await PublishManyBoundedAsync(markers, marker => PublishToRabbitMqAsync(http, managementUri, vhost, queue, marker), maxConcurrency);
     }
 
     private static async Task PublishToRabbitMqAsync(HttpClient http, string managementUri, string vhost, string queue, string marker)
@@ -383,22 +405,66 @@ internal static class Program
     /// </summary>
     private static async Task PublishManyWorkflowTriggerMessagesAsync(
         string managementUri, string username, string password, string vhost, string queue,
-        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken, string jti)
+        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken, string jti,
+        int maxConcurrency = 1)
     {
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
 
+        await PublishManyBoundedAsync(
+            correlationIds,
+            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, id, authToken, jti),
+            maxConcurrency);
+    }
+
+    /// <summary>
+    /// Fans <paramref name="publishOne"/> out over <paramref name="items"/> with an
+    /// in-flight cap of <paramref name="maxConcurrency"/> concurrent publishes (a
+    /// <see cref="SemaphoreSlim"/>, same bounded-concurrency shape as
+    /// <see cref="WaitForServiceBusResultsAsync"/>'s result polling below) — publishing one
+    /// message at a time (the original, still-default behaviour at
+    /// <paramref name="maxConcurrency"/> == 1) is the dominant cost at load-test volumes
+    /// (e.g. 1000 messages), since each publish is a separate blocking HTTP round-trip to the
+    /// RabbitMQ Management API. Raising <paramref name="maxConcurrency"/> pipelines multiple
+    /// round-trips at once, which is the actual throughput knob for the harness's own publish
+    /// step (the Shovel's own <c>src-prefetch-count</c> is a separate, later-stage knob — see
+    /// docs/ShovelBridge-Architecture.md).
+    /// </summary>
+    private static async Task PublishManyBoundedAsync(IReadOnlyList<string> items, Func<string, Task> publishOne, int maxConcurrency)
+    {
+        using var throttle = new SemaphoreSlim(Math.Max(1, maxConcurrency));
+        var completed = 0;
         var progressStopwatch = Stopwatch.StartNew();
-        for (var i = 0; i < correlationIds.Count; i++)
+        var progressLock = new object();
+
+        var tasks = items.Select(async item =>
         {
-            await PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, correlationIds[i], authToken, jti);
-            if (correlationIds.Count > 1 && progressStopwatch.Elapsed.TotalSeconds >= 10)
+            await throttle.WaitAsync();
+            try
             {
-                Console.WriteLine($"  ... published {i + 1}/{correlationIds.Count}");
-                progressStopwatch.Restart();
+                await publishOne(item);
             }
-        }
+            finally
+            {
+                throttle.Release();
+            }
+
+            var done = Interlocked.Increment(ref completed);
+            if (items.Count > 1 && progressStopwatch.Elapsed.TotalSeconds >= 10)
+            {
+                lock (progressLock)
+                {
+                    if (progressStopwatch.Elapsed.TotalSeconds >= 10)
+                    {
+                        Console.WriteLine($"  ... published {done}/{items.Count}");
+                        progressStopwatch.Restart();
+                    }
+                }
+            }
+        });
+
+        await Task.WhenAll(tasks);
     }
 
     private static async Task PublishWorkflowTriggerMessageAsync(

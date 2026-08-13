@@ -326,6 +326,24 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     scale), polled concurrently (bounded parallelism) since the engine's own
     `GET /secure/servicebus-result/{correlationId}` endpoint has no bulk/batch variant.
 
+  **Throughput knobs at load-test volumes:** the dominant cost of a large `-MessageCount` run
+  is the harness's own publish loop — by default it publishes one message at a time via a
+  blocking RabbitMQ Management API HTTP call, which is far slower than the Shovel's own
+  bridging. Two independent knobs, both plumbed through the script:
+  - `-PublishConcurrency` (default 1, unchanged sequential behaviour) bounds how many of those
+    publishes are in flight at once (`--publish-concurrency` on the harness,
+    `PublishManyBoundedAsync` in `Program.cs`) — this is the knob that actually speeds up the
+    publish phase, since it's usually the bottleneck, not the Shovel.
+  - `-ShovelPrefetchCount` (default 5, the Shovel's original hardcoded value) sets the
+    Shovel's own `src-prefetch-count` — how many unacknowledged messages it keeps pipelined
+    between the RabbitMQ source queue and the Service Bus destination given `ack-mode:
+    on-confirm`. Raising this is a secondary tune that only helps once publishing is no
+    longer the limiting factor (i.e. combined with `-PublishConcurrency > 1`).
+  `ShovelBridgeLoadTest_ExternalServiceBus` (`Dev/.azure/pipeline-LOADTEST.yml`) sets
+  `PublishConcurrency: 20` and `ShovelPrefetchCount: 50`; the single-message
+  `ShovelBridgeE2ETest_ExternalServiceBus` job leaves both at their sequential/original
+  defaults since concurrency doesn't matter for one message.
+
   Wired into CI as the `ShovelBridgeLoadTest_ExternalServiceBus` job in
   `Dev/.azure/pipeline-LOADTEST.yml`, which reuses the exact same
   `-RabbitMqMode External -DestinationMode ExternalServiceBus` setup as
