@@ -183,6 +183,20 @@ public static class McpServerOptionsFactory
             }));
 
         options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, Secrets.IMcpSecretResolver, System.Security.Claims.ClaimsPrincipal?, string, string, System.Text.Json.JsonElement, System.Threading.CancellationToken, System.Threading.Tasks.Task<EditSourceResult>>)EditSourceTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = EditSourceTool.ToolName,
+                Description = "Rebuilds an existing connection source's connection string from a fresh sourceType + config pair and overwrites its .bite file in place, provided the caller has " +
+                    "Contribute permission and the name already exists. Same \"${secret-name}\" Key Vault reference rule as add_source applies to password/secret-shaped config fields.",
+                ReadOnly = false,
+                Destructive = true,
+                Idempotent = false,
+                OpenWorld = false,
+            }));
+
+        options.ToolCollection.Add(McpServerTool.Create(
             (Func<Infrastructure.HostEnvironmentConfig, Auth.IWorkflowAuthPolicyLoader, IWorkflowExecutor, System.Security.Claims.ClaimsPrincipal?, string, System.Text.Json.JsonElement?, System.Threading.CancellationToken, System.Threading.Tasks.Task<ExecuteWorkflowResult>>)ExecuteWorkflowTool.Handle,
             new McpServerToolCreateOptions
             {
@@ -193,6 +207,21 @@ public static class McpServerOptionsFactory
                 Destructive = true,
                 Idempotent = false,
                 OpenWorld = true,
+            }));
+
+        options.ToolCollection.Add(McpServerTool.Create(
+            (Func<Auth.IWorkflowAuthPolicyLoader, System.Security.Claims.ClaimsPrincipal?, string, string?, SetVarResult>)SetVarTool.Handle,
+            new McpServerToolCreateOptions
+            {
+                Services = serviceProvider,
+                Name = SetVarTool.ToolName,
+                Description = "Sets or clears a process environment variable / application setting on this host instance, provided the caller has Administrator permission. " +
+                    "Takes effect immediately for anything that reads the variable live; values cached once at process startup only apply after a restart. " +
+                    "Refuses names that look like secrets/credentials — use add_source's \"${NAME}\" Key Vault reference syntax for those instead.",
+                ReadOnly = false,
+                Destructive = true,
+                Idempotent = true,
+                OpenWorld = false,
             }));
 
         return options;

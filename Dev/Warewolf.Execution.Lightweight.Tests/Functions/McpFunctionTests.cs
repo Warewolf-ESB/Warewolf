@@ -238,8 +238,8 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
             Assert.IsNotNull(tools);
             // list_workflows, list_tools, get_workflow_definition, get_workflow_schema,
             // get_tool_schema, validate_workflow, create_workflow, edit_workflow, add_step,
-            // add_source, and execute_workflow are all registered.
-            Assert.AreEqual(11, tools!.Count);
+            // add_source, edit_source, execute_workflow, and set_var are all registered.
+            Assert.AreEqual(13, tools!.Count);
 
             var tool = tools!.Single(t => t["name"]?.ToString() == "list_workflows");
 

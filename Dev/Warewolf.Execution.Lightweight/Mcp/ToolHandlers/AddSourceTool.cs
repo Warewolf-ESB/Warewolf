@@ -77,6 +77,14 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <c>ToXml()</c> methods so a source this tool creates is byte-for-byte parseable by the same
 /// runtime loader as one saved from Studio.
 /// </para>
+///
+/// <para>
+/// <b>Shared with <see cref="EditSourceTool"/>.</b> Config parsing/secret resolution
+/// (<see cref="ResolveConfigAsync"/>), cross-field validation (<see cref="ApplyConditionalRequirements"/>),
+/// connection-string building (<see cref="BuildConnectionString"/>), and <c>.bite</c> XML
+/// construction (<see cref="BuildSourceXml"/>) are exposed <c>internal</c> so <c>edit_source</c>
+/// can reuse them verbatim rather than duplicating this tool's field-for-field logic.
+/// </para>
 /// </summary>
 internal static class AddSourceTool
 {
@@ -165,7 +173,7 @@ internal static class AddSourceTool
 
     // ── config parsing / secret-reference substitution ────────────────────────
 
-    static async Task<(Dictionary<string, string?> Values, IReadOnlyList<string> ResolvedSecretFields)> ResolveConfigAsync(
+    internal static async Task<(Dictionary<string, string?> Values, IReadOnlyList<string> ResolvedSecretFields)> ResolveConfigAsync(
         SourceCatalog.Entry entry, JsonElement config, IMcpSecretResolver secretResolver, CancellationToken cancellationToken)
     {
         if (config.ValueKind != JsonValueKind.Object)
@@ -273,7 +281,7 @@ internal static class AddSourceTool
 
     // ── cross-field conditional requirements (not expressible in SourceCatalog's flat field list) ──
 
-    static void ApplyConditionalRequirements(SourceCatalog.Entry entry, IReadOnlyDictionary<string, string?> values)
+    internal static void ApplyConditionalRequirements(SourceCatalog.Entry entry, IReadOnlyDictionary<string, string?> values)
     {
         switch (entry.SourceType)
         {
@@ -299,7 +307,7 @@ internal static class AddSourceTool
 
     // ── connection-string construction (mirrors DbSource/RedisSource/EmailSource/RabbitMQSource) ──
 
-    static string BuildConnectionString(SourceCatalog.Entry entry, IReadOnlyDictionary<string, string?> v)
+    internal static string BuildConnectionString(SourceCatalog.Entry entry, IReadOnlyDictionary<string, string?> v)
     {
         string Get(string fieldName) => v.GetValueOrDefault(fieldName) ?? string.Empty;
 
@@ -412,7 +420,7 @@ internal static class AddSourceTool
 
     // ── .bite XML construction (mirrors ResourceBase.ToXml()/DbSource.ToXml()/etc.'s shape) ──
 
-    static string BuildSourceXml(
+    internal static string BuildSourceXml(
         SourceCatalog.Entry entry,
         string resourceId,
         string displayName,
