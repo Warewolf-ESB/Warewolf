@@ -174,8 +174,13 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   generically RFC 6125-correct) to `amqp10_client` connections, restoring correct
   wildcard-SAN acceptance without weakening certificate validation. The
   `ShovelBridgeE2ETest_ExternalServiceBus` CI job's `Install & start local RabbitMQ`
-  step now writes this `advanced.config` automatically (see `pipeline-CLOUD.yml`).
-  Any broker you don't control the config of (a shared/managed broker) cannot apply
+  step now writes this `advanced.config` automatically (see `pipeline-CLOUD.yml`), and
+  `Test-ShovelBridgeE2E.ps1`'s own `-RabbitMqMode Container` bind-mounts the identical
+  `advanced.config` into its disposable RabbitMQ container at boot (alongside its
+  `enabled_plugins` bind mount) — so a local run against `-DestinationMode
+  ExternalServiceBus` needs no manual broker setup for this fix either way. Only
+  `-RabbitMqMode External` against a broker you don't control the config of (a
+  shared/managed broker, e.g. a hosted CI agent without choco/admin rights) cannot apply
   this fix — the only remaining option there is `-DestUriVerifyNone` (implemented as an
   opt-in switch on `Configure-RabbitMqShovel.ps1` / the E2E test scripts, appending
   `&verify=verify_none` to the dest-uri), which disables *all* peer certificate
@@ -209,7 +214,16 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   Because the dest-uri's credential-bearing userinfo is masked by design in both
   `rabbitmqctl` and Management API output, this fix must be applied by whoever holds
   the real SAS key/credentials — it cannot be verified or reapplied from masked output
-  alone.
+  alone. Unlike the `customize_hostname_check` broker-side fix above, this one is
+  caller-side (part of the dest-uri itself), so `Test-ShovelBridgeE2E.ps1`'s
+  `-RabbitMqMode Container` cannot bake it in automatically — pass a dest-uri with
+  `&cacertfile=...` already appended via `-ExternalShovelDestUri` (e.g. built with
+  `Format-ServiceBusAmqp10Uri -CaCertFile ...`) when running Container mode against the
+  official `rabbitmq:3-management` image (Erlang/OTP 26+), or expect the same
+  `{cacerts, undefined}` crash-loop described above. **Confirmed live** against
+  `WarewolfShovelBridgeTesting`: a `-RabbitMqMode Container` run reached `running` only
+  once both the (now automatic) `customize_hostname_check` fix AND a caller-supplied
+  `&cacertfile=/etc/ssl/certs/ca-certificates.crt` were present.
 
 ## Known risks / open work
 

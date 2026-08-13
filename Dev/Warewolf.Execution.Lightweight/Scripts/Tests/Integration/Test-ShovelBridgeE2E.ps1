@@ -53,6 +53,18 @@
     .servicebus.windows.net:5671/?sasl=plain) — build it with
     Configure-RabbitMqShovel.ps1's own Format-ServiceBusAmqp10Uri so the exact
     same URI shape used in production is exercised here.
+
+    -RabbitMqMode Container already bind-mounts the amqp10_client
+    customize_hostname_check fix (see docs/ShovelBridge-Architecture.md
+    "Security") into the broker's advanced.config, so the Shovel's TLS
+    handshake against a real Service Bus namespace's wildcard SAN succeeds
+    without any caller action. A SEPARATE, additional prerequisite on
+    Erlang/OTP 26+ images (including the default rabbitmq:3-management image)
+    is still the caller's responsibility: append
+    '&cacertfile=/etc/ssl/certs/ca-certificates.crt' to this URI yourself (as
+    Format-ServiceBusAmqp10Uri's own -CaCertFile does) or the Shovel
+    crash-loops with '{cacerts, undefined}' — this script cannot add it for
+    you since it doesn't know which policy/key the caller embedded in the URI.
 .PARAMETER ExternalServiceBusConnectionString
     REQUIRED when -DestinationMode ExternalServiceBus. A full Service Bus SAS
     connection string with LISTEN rights on the destination queue (a different,
@@ -463,6 +475,7 @@ $sqlEdgeContainerName = "shovel-e2e-sqledge-$runId"
 $emulatorContainerName = "shovel-e2e-sbemulator-$runId"
 $configTempFile      = $null
 $enabledPluginsTempFile = $null
+$advancedConfigTempFile = $null
 
 if ($RabbitMqMode -eq 'External') {
     $rmqUser     = $ExternalRabbitMqUsername
@@ -552,9 +565,34 @@ try {
                 '[rabbitmq_management,rabbitmq_prometheus,rabbitmq_shovel,rabbitmq_shovel_management].' |
                     Set-Content -LiteralPath $enabledPluginsTempFile -Encoding ASCII -NoNewline
 
+                # Bind-mount the amqp10_client wildcard-hostname-check fix (see
+                # docs/ShovelBridge-Architecture.md "Security") so this container-mode
+                # broker behaves the same as the choco-installed native broker used
+                # against ExternalServiceBus in CI, which writes this same file. Without
+                # it, the Shovel's dest-uri TLS handshake against a real Azure Service Bus
+                # namespace always fails with 'hostname_check_failed', because Erlang's
+                # default verify_peer hostname check is a literal (non-wildcard-aware)
+                # match against Service Bus's '*.servicebus.windows.net' SAN. Harmless to
+                # bake in unconditionally (also applies to -DestinationMode Emulator,
+                # where it's simply inert): it only customises amqp10_client's own TLS
+                # peer-verification match function, keeping full certificate validation.
+                $advancedConfigTempFile = Join-Path ([System.IO.Path]::GetTempPath()) "shovel-e2e-advanced-config-$runId"
+                @'
+[
+  {amqp10_client, [
+    {ssl_options, [
+      {customize_hostname_check, [
+        {match_fun, public_key:pkix_verify_hostname_match_fun(https)}
+      ]}
+    ]}
+  ]}
+].
+'@ | Set-Content -LiteralPath $advancedConfigTempFile -Encoding ASCII -NoNewline
+
                 docker run -d --name $rabbitContainerName --network $networkName `
                     -e "RABBITMQ_DEFAULT_USER=$rmqUser" -e "RABBITMQ_DEFAULT_PASS=$rmqPassword" `
                     -v "${enabledPluginsTempFile}:/etc/rabbitmq/enabled_plugins" `
+                    -v "${advancedConfigTempFile}:/etc/rabbitmq/advanced.config" `
                     -p "${RabbitMqAmqpHostPort}:5672" -p "${RabbitMqManagementHostPort}:15672" `
                     $RabbitMqImage | Out-Null
                 if ($LASTEXITCODE -ne 0) { throw "docker run failed for RabbitMQ (exit $LASTEXITCODE)." }
@@ -771,8 +809,10 @@ try {
         # Status), since a bare "did not reach running" gives no lead on WHICH
         # side (src vs dest) is failing.
         $stateDetail = if ($lastShovelState) { " Last observed state: $($lastShovelState | ConvertTo-Json -Compress)." } else { ' No shovel status was ever observed for this name — check the PUT above succeeded.' }
-        $destHint = if ($DestinationMode -eq 'ExternalServiceBus') {
-            " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom)."
+        $destHint = if ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'External') {
+            " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom). -RabbitMqMode Container already bakes this fix in, so if you're seeing this in Container mode the cause is something else."
+        } elseif ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'Container') {
+            " -RabbitMqMode Container already bakes in the amqp10_client wildcard-hostname-check fix, so 'hostname_check_failed' is unlikely here. If the broker logs instead show '{cacerts, undefined}', append '&cacertfile=/etc/ssl/certs/ca-certificates.crt' to -ExternalShovelDestUri (Erlang/OTP 26+ requires an explicit CA bundle) — see the 'Security' section of docs/ShovelBridge-Architecture.md."
         } else { '' }
         throw "Shovel '$ShovelName' did not reach the 'running' state.$stateDetail Check the RabbitMQ broker logs (or Admin > Shovel Status in the management UI) for the connect failure reason — commonly a src-uri auth/permission failure, or a dest-uri (Service Bus) auth/network/queue-not-found failure.$destHint"
     }
@@ -867,6 +907,7 @@ finally {
         }
         if ($configTempFile -and (Test-Path -LiteralPath $configTempFile)) { Remove-Item -LiteralPath $configTempFile -Force -ErrorAction SilentlyContinue }
         if ($enabledPluginsTempFile -and (Test-Path -LiteralPath $enabledPluginsTempFile)) { Remove-Item -LiteralPath $enabledPluginsTempFile -Force -ErrorAction SilentlyContinue }
+        if ($advancedConfigTempFile -and (Test-Path -LiteralPath $advancedConfigTempFile)) { Remove-Item -LiteralPath $advancedConfigTempFile -Force -ErrorAction SilentlyContinue }
         Write-Ok 'Teardown complete.'
     }
 }
