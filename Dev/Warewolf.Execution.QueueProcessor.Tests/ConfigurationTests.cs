@@ -54,28 +54,35 @@ namespace Warewolf.Execution.QueueProcessor.Tests
         static QueueConfigurationLoader LoaderFor(QueueProcessorOptions options) =>
             new(new OptionsWrapper<QueueProcessorOptions>(options), new TriggerBiteReader());
 
-        // ── Unsupported input shape: '@'-prefixed MapEntireMessage ───────────
+        // ── '@'-prefixed MapEntireMessage: now SUPPORTED, subject to the engine build ─────────
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void Load_AtPrefixedMapEntireMessage_RefusesToStart()
+        public void Load_AtPrefixedMapEntireMessage_LoadsSuccessfully()
         {
             // An '@'-prefixed single input with MapEntireMessage makes the forwarder post
-            // multipart/form-data (parity with WarewolfWebRequestForwarder.cs:100-108). The full
-            // server binds that - SubmittedData.ExtractKeyValuePairForPostMethod branches on
-            // IsMimeMultipartContent("form-data") - but the Lightweight engine binds only the query
-            // string, a JSON body and an XML body. Verified live against the deployed engine:
-            // multipart/form-data returned 500 "Scalar value { x } is NULL".
+            // multipart/form-data (parity with WarewolfWebRequestForwarder.cs:100-108).
             //
-            // Left unguarded the failure mode is the worst kind: the replica starts, consumes every
-            // message, gets a non-2xx for each, and dead-letters + acks them all. The queue drains,
-            // the app scales back to zero, and nothing looks wrong. Refusing to start turns silent
-            // data movement into a deployment-time error.
-            var ex = Assert.ThrowsException<InvalidOperationException>(
-                () => LoaderFor(StagedOptions(AtInputTrigger)).Load());
+            // This USED TO refuse to start, because the Lightweight engine bound only the query
+            // string, a JSON body and an XML body, so every such message would have been
+            // dead-lettered while appearing to process normally. That guard was removed once
+            // WorkflowFunctionHelper.ParseMultipartAsync added multipart binding - matching the full
+            // server including its Base64-for-typed-parts rule - so the shape is now supported and
+            // must load.
+            //
+            // DEPLOYMENT DEPENDENCY, deliberately NOT enforced here: that support lives in the
+            // ENGINE, not the worker. A worker pointed at an engine built BEFORE that change will
+            // still dead-letter every message from such a trigger, and nothing detects it at runtime.
+            // Verify the target engine binds multipart before deploying one.
+            var resolved = LoaderFor(StagedOptions(AtInputTrigger)).Load();
 
-            StringAssert.Contains(ex.Message, "multipart/form-data");
-            StringAssert.Contains(ex.Message, "@object");
+            Assert.IsNotNull(resolved, "an '@'-prefixed MapEntireMessage trigger must now load");
+            var first = resolved.Trigger.Inputs?.FirstOrDefault();
+            Assert.IsNotNull(first, "the trigger under test declares one input");
+            StringAssert.StartsWith(first!.Name, "@",
+                "this fixture exists to cover the '@'-prefixed shape; if it no longer starts with '@' the fixture drifted");
+            Assert.IsTrue(resolved.Trigger.MapEntireMessage,
+                "this fixture exists to cover MapEntireMessage; if that changed the fixture drifted");
         }
 
         [TestMethod]

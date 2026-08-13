@@ -57,9 +57,51 @@ namespace Warewolf.Execution.QueueProcessor.Engine
         const string ExecutionId = "QueueProcessor-Engine";
 
         readonly HttpClient _httpClient;
+        readonly bool _retryEngineInternalErrors;
 
-        public EngineWorkflowClient(HttpClient httpClient)
-            => _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        public EngineWorkflowClient(HttpClient httpClient, bool retryEngineInternalErrors = false)
+        {
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _retryEngineInternalErrors = retryEngineInternalErrors;
+        }
+
+        /// <summary>
+        /// Decides whether a non-2xx response means "this message is unacceptable" (dead-letter) or
+        /// "the platform could not serve it, try again" (requeue).
+        ///
+        /// <para>Every status listed here shares one property: <b>the workflow provably never
+        /// ran</b>. The request was rejected at the front door, so the message itself is untouched
+        /// and a retry is meaningful.</para>
+        /// <list type="bullet">
+        ///   <item><b>408</b> Request Timeout — the server gave up reading the request;</item>
+        ///   <item><b>429</b> Too Many Requests — explicit throttling, retry is the intended response;</item>
+        ///   <item><b>502</b> Bad Gateway — the Functions host was unavailable;</item>
+        ///   <item><b>503</b> Service Unavailable — the app was shedding load while scaling out;</item>
+        ///   <item><b>504</b> Gateway Timeout — the front end gave up waiting for the host.</item>
+        /// </list>
+        ///
+        /// <para>WHY THIS EXISTS: every non-2xx used to be a BusinessFailure, which the forwarder
+        /// dead-letters AND acks — permanently. Measured 2026-08-12 on a Consumption plan, a burst of
+        /// 100 messages across 10 replicas produced 17x502, 8x503 and 6x504, and all 31 were
+        /// discarded as though the messages were malformed. They were not: 30 of them never reached
+        /// the workflow at all, which the database proved by having no row for them.</para>
+        ///
+        /// <para><b>500 is deliberately excluded unless opted in.</b> It is overloaded — a genuine
+        /// workflow error, a WOLF-8418 authorization denial, and host memory exhaustion all surface
+        /// as 500, and only the last is worth retrying. See
+        /// <see cref="Configuration.QueueProcessorOptions.RetryEngineInternalErrors"/>.</para>
+        /// </summary>
+        internal static bool IsRetryableStatus(HttpStatusCode status, bool retryInternalServerError)
+            => status switch
+            {
+                HttpStatusCode.RequestTimeout      => true,   // 408
+                HttpStatusCode.TooManyRequests     => true,   // 429
+                HttpStatusCode.BadGateway          => true,   // 502
+                HttpStatusCode.ServiceUnavailable  => true,   // 503
+                HttpStatusCode.GatewayTimeout      => true,   // 504
+                HttpStatusCode.InternalServerError => retryInternalServerError,  // 500 - opt-in only
+                _                                  => false,
+            };
 
         public async Task<EngineCallResult> PostSecureAsync(
             string workflowPath,
@@ -107,14 +149,18 @@ namespace Warewolf.Execution.QueueProcessor.Engine
                     return new EngineCallResult(EngineCallOutcome.Success, response.StatusCode, body, null);
                 }
 
+                var retryable = IsRetryableStatus(response.StatusCode, _retryEngineInternalErrors);
+
                 Dev2Logger.Error(
-                    $"Engine returned {(int)response.StatusCode} for '{relativeUrl}'. " +
+                    $"Engine returned {(int)response.StatusCode} for '{relativeUrl}' " +
+                    $"(classified {(retryable ? "TRANSPORT - will be retried" : "BUSINESS - will be dead-lettered")}). " +
                     "Note: the engine wraps authorization denials as HTTP 500 (WOLF-8418), so a 500 " +
                     "here often means this identity has no Execute permission on the workflow in " +
                     $"secure.config. Body: {Truncate(body)}", ExecutionId);
 
                 return new EngineCallResult(
-                    EngineCallOutcome.BusinessFailure, response.StatusCode, body, null);
+                    retryable ? EngineCallOutcome.TransportFailure : EngineCallOutcome.BusinessFailure,
+                    response.StatusCode, body, null);
             }
             catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
             {

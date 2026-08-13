@@ -435,11 +435,36 @@ client — with role **`Warewolf_QueueProcessor`** and **one important differenc
   engine's auth config + `secure.config` at [§2](#2-prepare-the-engines-auth--permission-config) before
   this step.
 
-> **Go-live gate.** Before the first **production** trigger is enabled, all four must hold: the broker
+> **Go-live gate.** Before the first **production** trigger is enabled, all five must hold: the broker
 > terminates TLS and the app runs `RABBITMQ__USESSL=true` against `amqps`; a DLX / delivery-limit policy
-> exists on the queue; `ENGINE__TIMEOUTSECONDS ≤ WORKER__SHUTDOWNGRACESECONDS < terminationGracePeriodSeconds`
-> is verified on the deployed revision; and App Insights shows the worker's events correlating with the
-> engine's traces. Details in the migration plan (Phase 11).
+> exists on the queue; `ENGINE__TIMEOUTSECONDS ≤ WORKER__SHUTDOWNGRACESECONDS < terminationGracePeriodSeconds
+> < the engine's functionTimeout` is verified **on the deployed revision**; every trigger declares a
+> `DeadLetterQueue`; and App Insights shows the worker's events correlating with the engine's traces.
+> Details in the migration plan (Phase 11).
+
+**Timeout chain — defaults and how to verify.** All four values, outermost last:
+
+| Setting | Default | Where it lives |
+|---|---|---|
+| `ENGINE__TIMEOUTSECONDS` | **180** | Container App env var (`-EngineTimeoutSeconds`) |
+| `WORKER__SHUTDOWNGRACESECONDS` | **210** | Container App env var (`-ShutdownGraceSeconds`) |
+| `terminationGracePeriodSeconds` | **240** | Container App **template property** (`-TerminationGracePeriodSeconds`) |
+| `functionTimeout` | **600** (`00:10:00`) | the **engine's** `host.json` |
+
+Raised from 45/60/90 on 2026-08-11 after 45 s proved under-sized in a live run. Sizing is measured, not
+guessed — see the migration plan's §2.6 table.
+
+> ⚠️ **Verify the third one on the live app, not in the plan output.** `terminationGracePeriodSeconds`
+> is a template property, not an env var, and until 2026-08-11 the deploy script validated and printed
+> it but never sent it to Azure — so deployments silently ran on ACA's 30 s default and SIGKILL could
+> arrive mid-drain. Check it explicitly:
+>
+> ```powershell
+> az containerapp show -g <rg> -n <app> -o json |
+>     ConvertFrom-Json | ForEach-Object { $_.properties.template.terminationGracePeriodSeconds }
+> ```
+>
+> An empty result means the default is in force and the drain budget is not what the plan claimed.
 
 ### 8a. Publish + build
 
@@ -618,7 +643,9 @@ Then publish a message to the queue and confirm the workflow executed on the eng
 | `500` from the engine on every message | MI lacks `Warewolf_QueueProcessor`, **or** `secure.config` has no per-workflow `Execute` row | [§8d](#8d-authorize-each-app-loop) + [§2](#2-prepare-the-engines-auth--permission-config). Denials are wrapped as **500** (WOLF-8418), not 403 |
 | Replicas start but idle while the queue has messages | `value` too small relative to `Prefetch` — the first replica claimed the backlog | Set `value ≈ Prefetch × MaxConcurrency` (the script's default) or lower `Prefetch` |
 | Stays at 0 replicas with a backlog | No `-RabbitMqSecretUri`, so the KEDA rule cannot authenticate to the broker | Re-run with the Key Vault secret URI |
-| Duplicate executions after a deploy/scale-in | Drain window too short for the workflow | Raise `-ShutdownGraceSeconds` (and `-TerminationGracePeriodSeconds`) or lower `-EngineTimeoutSeconds` |
+| Duplicate executions after a deploy/scale-in | Drain window too short for the workflow | Raise `-ShutdownGraceSeconds` (and `-TerminationGracePeriodSeconds`) or lower `-EngineTimeoutSeconds`. **Check the live value first** — `terminationGracePeriodSeconds` was never applied before 2026-08-11, so an older revision may be on ACA's 30 s default |
+| Queue stops draining; one consumer attached, replica healthy, depth static | A delivery was left unacked and `Prefetch=1` blocks every further delivery | Fixed 2026-08-11 — the pump now nacks + requeues and dead-letters once the retry is spent. On an **older image** the only recovery is `az containerapp revision restart`, which requeues the stuck message |
+| Everything dead-letters but the queue drains to zero | A business failure is dead-lettered **and acked**, so a drained queue proves nothing | Compare `succeeded` vs `deadLettered` in `Get-WwQueueRunReport.ps1`, never queue depth alone |
 
 ---
 

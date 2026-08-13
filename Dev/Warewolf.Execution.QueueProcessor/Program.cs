@@ -180,15 +180,24 @@ try
 
     // ── Engine client: typed HttpClient + MI token handler ──────────────────────
     builder.Services.AddTransient<WwExecutionTokenHandler>();
+    // Built with AddTypedClient rather than AddHttpClient<TClient,TImpl> so the retry-classification
+    // flag is passed EXPLICITLY. The generic overload activates the client through
+    // ActivatorUtilities, which would silently fall back to the parameter's default and make the
+    // option look configurable while never actually taking effect.
     builder.Services
-        .AddHttpClient<IEngineWorkflowClient, EngineWorkflowClient>((sp, client) =>
+        .AddHttpClient(nameof(EngineWorkflowClient), (sp, client) =>
         {
             var opt = sp.GetRequiredService<IOptions<QueueProcessorOptions>>().Value;
             client.BaseAddress = new Uri(opt.BaseUrl.TrimEnd('/') + "/");
             // Bounded, unlike the on-prem forwarder's Timeout.InfiniteTimeSpan.
             client.Timeout = TimeSpan.FromSeconds(opt.EngineTimeoutSeconds + 5);
         })
-        .AddHttpMessageHandler<WwExecutionTokenHandler>();
+        .AddHttpMessageHandler<WwExecutionTokenHandler>()
+        .AddTypedClient<IEngineWorkflowClient>((client, sp) =>
+        {
+            var opt = sp.GetRequiredService<IOptions<QueueProcessorOptions>>().Value;
+            return new EngineWorkflowClient(client, opt.RetryEngineInternalErrors);
+        });
 
     // ── Messaging ───────────────────────────────────────────────────────────────
     builder.Services.AddSingleton<IDeadLetterPublisher>(sp =>
@@ -212,7 +221,11 @@ try
         return new RabbitMqMessagePump(
             sp.GetRequiredService<ResolvedQueueConfiguration>(),
             sp.GetRequiredService<IConsumer>(),
-            opt.MaxConcurrency);
+            opt.MaxConcurrency,
+            opt.MaxDeliveryAttempts,
+            // The pump needs its own handle on the dead-letter publisher: a TRANSPORT failure never
+            // reaches EngineForwarder's dead-letter path, which only fires on a non-2xx response.
+            sp.GetRequiredService<IDeadLetterPublisher>());
     });
 
     builder.Services.AddHostedService<QueueConsumerService>();

@@ -11,6 +11,10 @@ control plane.
 | `Deploy-WwJobProcessor.ps1`                   | **ExecutionEngineJobProcessor deploy orchestrator** — provisions the poller/reaper Function App (RG → storage → Function App + system-assigned MI → App Insights → Key Vault wiring → stage + WFAES-encrypt the persistence settings pair → app settings → publish). Standalone, or invoked by `Deploy-WwExecutionEngine.ps1 -DeployJobProcessor`. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions. The persistence source files (`persistencesettings.json`, `persistencesettingsdbsource.bite`) are **prompted when not passed**. Role assignment (`Warewolf_JobProcessor`) is a separate step via `Configure-WwExecutionAuth-Clients.ps1` — see the runbook. |
 | `Deploy-WwQueueProcessor.ps1`                 | **RabbitMQ QueueProcessor deployment** — Azure Container Apps, **one app per queue-trigger**, autoscaled 0→N by the KEDA `rabbitmq` scaler. Pointed at a trigger file, a folder of trigger files, or a manifest; derives `maxReplicas` from the trigger's `Concurrency` and the KEDA target from its `Prefetch`. Replaces `N × QueueWorker.exe` for the Azure path (on-prem unchanged). |
 | `Rollback-WwExecutionEngine.ps1`              | **Teardown companion** — deletes ONLY what a deploy run created (summary-/tag-driven), in dependency order, with a leak check. Existing resources are preserved. |
+| `New-WwE2EStaging.ps1`                        | **E2E harness — staging.** Builds a disposable staging tree (settings, generated triggers + broker source, optional `dotnet publish`) from repo templates, stamps a unique run suffix, validates readiness and emits `staging-manifest.json`. Only the Warewolf licence and broker credentials are hand-supplied; the generated source is **plaintext** so DPAPI never blocks the Linux worker. See [`docs/E2E-Harness-README.md`](../docs/E2E-Harness-README.md). |
+| `Invoke-WwE2EVerification.ps1`                | **E2E harness — orchestrator.** Consumes the manifest, then deploys engine + workers, pre-creates broker topology, publishes real messages, watches KEDA scale 0→N→0, runs the drain and unacked-visibility probes, and **scores 18 acceptance criteria** to JSON + markdown. `-DryRun` by default (`-Execute` to deploy); teardown is opt-in via `-TeardownWhenDone`. Exit code 0 = all criteria passed. |
+| `WwE2E.Common.psm1`                           | Shared helpers for the harness — AMQP topology/depth (with the `System.Threading.RateLimiting` shared-framework load), client-credentials engine tokens, Log Analytics evidence queries, and an `az` wrapper that **refuses `--query`** because cmd.exe mangles JMESPath. |
+| `Get-WwQueueRunReport.ps1`                    | **Per-message run report** — read-only and **time-window driven** (`-LastMinutes`, or `-StartUtc`/`-EndUtc`), so it re-renders any past burst still inside workspace retention rather than needing to watch one live. Reconstructs each delivery from `ContainerAppConsoleLogs_CL` into `txn → replica → revision → startedUtc → durationMs → outcome`, plus replica distribution, per-queue percentiles, reliability counts and a CSV + JSON. With `-ExpectedManifest` it **reconciles** against what was published (missing / duplicated / wrong-outcome) instead of merely counting what appears in the logs. `-IncludeEngine` joins to the engine's App Insights on `ExecutionId`. |
 | `Tests/Deploy-WwExecutionEngine.Tests.ps1`    | Pester 5 suite for the orchestrator (helpers + DryRun end-to-end). Run: `Invoke-Pester -Path ./Tests/Deploy-WwExecutionEngine.Tests.ps1`. |
 | `Tests/Deploy-WwJobProcessor.Tests.ps1`       | Pester 5 suite for the JobProcessor orchestrator (static/ValidateSet, helpers via `-LoadFunctionsOnly`, DryRun end-to-end with az-shim, persistence-pair staging + fail-loud prompt validation). Run: `Invoke-Pester -Path ./Tests/Deploy-WwJobProcessor.Tests.ps1`. |
 | `Tests/Rollback-WwExecutionEngine.Tests.ps1`  | Pester 5 suite for the rollback script (ownership resolver + DryRun teardown). |
@@ -265,9 +269,34 @@ var — the trigger is the single source of truth). `-ScalingMode` defaults to `
 the plan output. `Concurrency = 0` deploys `min = max = 0` (disabled), mirroring on-prem.
 
 **Fail-loud plan-time guards:** unsubstituted `#{…}` release token; derived app-name collision;
-invalid timeout nesting (`-EngineTimeoutSeconds ≤ -ShutdownGraceSeconds < -TerminationGracePeriodSeconds`);
-missing trigger/source file. Peak core usage (`Σ maxReplicas × cpu`) is printed to check against the
-ACA environment quota.
+invalid timeout nesting (`-EngineTimeoutSeconds ≤ -ShutdownGraceSeconds < -TerminationGracePeriodSeconds`,
+and `-EngineTimeoutSeconds <` the **engine's** `functionTimeout`); missing trigger/source file. Peak core
+usage (`Σ maxReplicas × cpu`) is printed to check against the ACA environment quota.
+
+**Failure handling.** Engine 2xx → ack. Engine non-2xx → dead-letter the mapped body **and** ack (so a
+drained queue proves nothing on its own — compare `succeeded` vs `deadLettered`). A **transport** failure
+(timeout, socket error) → nack with requeue, and dead-letter once `-MaxDeliveryAttempts` is spent.
+
+`-MaxDeliveryAttempts` accepts only **1** (dead-letter at once) or **2** (requeue once, then dead-letter,
+the default). Attempts are counted with the AMQP `redelivered` flag, which is a boolean — the broker
+records that a message has been seen before, not how many times — so higher values are clamped with a
+logged warning. Before 2026-08-11 a transport failure was left **unacked**, which with `Prefetch=1`
+stopped the consumer permanently (34 messages stranded for 20+ minutes behind one message).
+
+**Timeout defaults** (raised from 45/60/90 on 2026-08-11 after 45 s proved under-sized in a live run;
+sized from measured engine latency, see the migration plan §2.6):
+
+| Setting | Default |
+|---|---|
+| `-EngineTimeoutSeconds` | 180 |
+| `-ShutdownGraceSeconds` | 210 |
+| `-TerminationGracePeriodSeconds` | 240 |
+| the engine's `functionTimeout` (`host.json`, not a script parameter) | 600 |
+
+> ⚠️ `-TerminationGracePeriodSeconds` was validated and printed but **never applied** until 2026-08-11 —
+> it is a Container App *template* property, not an env var, so `--set-env-vars` could not carry it.
+> Older revisions run on ACA's 30 s default regardless of what the plan output claimed. Verify with
+> `az containerapp show` and check `properties.template.terminationGracePeriodSeconds` is not empty.
 
 Can also run as a **companion of the engine deploy**, fanning out over every pointed trigger:
 

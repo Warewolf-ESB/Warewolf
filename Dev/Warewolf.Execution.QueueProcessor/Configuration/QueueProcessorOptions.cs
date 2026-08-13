@@ -157,9 +157,30 @@ namespace Warewolf.Execution.QueueProcessor.Configuration
         /// Replaces the on-prem forwarder's <c>Timeout.InfiniteTimeSpan</c>
         /// (<c>WarewolfWebRequestForwarder.cs:97</c>), which could park a worker forever.
         /// Must satisfy <see cref="Validate"/>'s nesting rule.
+        ///
+        /// <para><b>Why 180 and not the original 45.</b> A timeout that fires while the engine is
+        /// still working is not a safe failure: the worker abandons a request the engine goes on to
+        /// COMPLETE, so the workflow's side effects happen anyway and the retry runs them a second
+        /// time. Under-sizing this is what produced the 2026-08-11 stall - one engine call exceeded
+        /// 45s, the delivery was left unacked, and with <c>Prefetch=1</c> the consumer never
+        /// received another message.</para>
+        ///
+        /// <para>Sized from measured engine latency rather than guessed:</para>
+        /// <list type="bullet">
+        ///   <item>burst at the DEPLOYED concurrency (3+1 replicas, Prefetch=1) - max 11.5s;</item>
+        ///   <item>controlled test at concurrency 4 - max 10.0s;</item>
+        ///   <item>controlled stress at concurrency 10 - 153s completed successfully, and three
+        ///   requests exceeded a 200s client timeout.</item>
+        /// </list>
+        /// 180s covers the worst SUCCESSFUL observation under 2.5x overload with headroom, and sits
+        /// far below the engine's own ceiling.
+        ///
+        /// <para><b>Hard ceiling: the engine's <c>functionTimeout</c>, 00:10:00 = 600s in
+        /// host.json.</b> Setting this at or above that is pointless - the engine kills the
+        /// invocation first, so the worker would wait for a response that can never arrive.</para>
         /// </summary>
         [Range(1, 3600)]
-        public int EngineTimeoutSeconds { get; set; } = 45;
+        public int EngineTimeoutSeconds { get; set; } = 180;
 
         // ── Worker behaviour ────────────────────────────────────────────────────
 
@@ -171,9 +192,71 @@ namespace Warewolf.Execution.QueueProcessor.Configuration
         [Range(1, 64)]
         public int MaxConcurrency { get; set; } = 1;
 
-        /// <summary>Drain budget on SIGTERM before the connection is closed.</summary>
+        /// <summary>
+        /// Drain budget on SIGTERM before the connection is closed. Must be >=
+        /// <see cref="EngineTimeoutSeconds"/>, or a scale-in kills a replica while an engine call it
+        /// would have completed is still outstanding - which loses the ack and forces a redelivery.
+        /// Tracks the engine timeout: 180 -> 210.
+        /// </summary>
         [Range(1, 3600)]
-        public int ShutdownGraceSeconds { get; set; } = 60;
+        public int ShutdownGraceSeconds { get; set; } = 210;
+
+        /// <summary>
+        /// How many times a delivery may be attempted before it is dead-lettered instead of retried,
+        /// when the engine call fails at TRANSPORT level (timeout, socket error) rather than
+        /// returning a non-2xx. Set with <c>WORKER__MAXDELIVERYATTEMPTS</c>.
+        ///
+        /// <para><b>Only 1 and 2 are meaningful, and values above 2 are clamped to 2.</b> Attempt
+        /// counting uses the AMQP <c>redelivered</c> flag, which is a BOOLEAN - the broker records
+        /// that a message has been delivered before, not how many times. Counting beyond two would
+        /// need the message to be republished with an incremented header rather than requeued,
+        /// which changes queue ordering and message identity; that was considered and deliberately
+        /// not adopted.</para>
+        ///
+        /// <para><c>1</c> = dead-letter on the first transport failure, never retry.
+        /// <c>2</c> (default) = requeue once, dead-letter if it fails again.</para>
+        ///
+        /// <para>WHY THIS EXISTS AT ALL: the pump previously left a failed delivery unacked,
+        /// expecting the broker to redeliver it "when the channel drops". The channel does not
+        /// drop, and with <c>Prefetch=1</c> the broker will not deliver anything else while one
+        /// message is unacked - so a single engine timeout stalled the consumer permanently.
+        /// Measured 2026-08-11: 34 messages stranded for 20+ minutes behind one unacked message,
+        /// with a healthy replica and an attached consumer. KEDA cannot recover it either, because
+        /// a non-empty queue keeps the replica alive and nothing forces the restart that would
+        /// requeue the message.</para>
+        /// </summary>
+        public int MaxDeliveryAttempts { get; set; } = 2;
+
+        /// <summary>
+        /// <see cref="MaxDeliveryAttempts"/> constrained to what the redelivered flag can express.
+        /// Clamping is reported by the pump at startup rather than applied silently.
+        /// </summary>
+        public int EffectiveMaxDeliveryAttempts => Math.Clamp(MaxDeliveryAttempts, 1, 2);
+
+        /// <summary>
+        /// Whether an engine <b>HTTP 500</b> should be retried (treated as transport) instead of
+        /// dead-lettered. Set with <c>WORKER__RETRYENGINEINTERNALERRORS</c>. <b>Default false.</b>
+        ///
+        /// <para>OFF by default deliberately, because 500 is overloaded in this engine. It carries
+        /// at least three different meanings:</para>
+        /// <list type="bullet">
+        ///   <item>a genuine workflow error (e.g. a required input was null) — retrying can never help;</item>
+        ///   <item>a WOLF-8418 authorization denial, which surfaces as 500 rather than 403 —
+        ///   retrying can never help;</item>
+        ///   <item>host exhaustion such as "Insufficient memory to continue the execution of the
+        ///   program", observed on the Consumption plan at concurrency 10 (2026-08-12) — retrying
+        ///   very likely DOES help, because the message itself is fine.</item>
+        /// </list>
+        ///
+        /// <para>Only the third is retryable, and the status code alone cannot distinguish them.
+        /// Turning this on therefore buys resilience to host exhaustion at the cost of spending a
+        /// delivery attempt on messages that are genuinely bad or genuinely unauthorized. Prefer
+        /// capping concurrency so the host never exhausts; use this when that is not possible.</para>
+        ///
+        /// <para>Unaffected either way: 408, 429, 502, 503 and 504 are ALWAYS retryable — in every
+        /// one of those the workflow provably never ran.</para>
+        /// </summary>
+        public bool RetryEngineInternalErrors { get; set; }
 
         /// <summary>TLS override; unset lets the source decide (plan §1.7).</summary>
         public bool? UseSsl { get; set; }

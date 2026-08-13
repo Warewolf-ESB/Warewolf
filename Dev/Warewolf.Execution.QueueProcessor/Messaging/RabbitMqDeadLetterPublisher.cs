@@ -37,12 +37,46 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
 
         readonly ResolvedQueueConfiguration _config;
         readonly SemaphoreSlim _gate = new(1, 1);
+        readonly Func<CancellationToken, Task<IConnection>> _connectionFactory;
 
         IConnection? _connection;
         IChannel? _channel;
 
-        public RabbitMqDeadLetterPublisher(ResolvedQueueConfiguration config)
-            => _config = config ?? throw new ArgumentNullException(nameof(config));
+        /// <param name="connectionFactory">
+        /// Optional broker-connection factory. Defaults to a real AMQP connection built from the
+        /// trigger's dead-letter source. Injectable so the DLQ paths - which only run when the engine
+        /// has already failed - can be unit tested without a broker. That matters here: this class
+        /// executes ONLY on the failure path, so a defect in it survives every happy-path test.
+        /// </param>
+        public RabbitMqDeadLetterPublisher(
+            ResolvedQueueConfiguration config,
+            Func<CancellationToken, Task<IConnection>>? connectionFactory = null)
+        {
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _connectionFactory = connectionFactory ?? CreateBrokerConnectionAsync;
+        }
+
+        async Task<IConnection> CreateBrokerConnectionAsync(CancellationToken ct)
+        {
+            var source = _config.DeadLetterSource;
+            var factory = new ConnectionFactory
+            {
+                HostName = source.HostName,
+                Port = source.Port,
+                UserName = source.UserName,
+                Password = source.Password,
+                VirtualHost = source.VirtualHost,
+                AutomaticRecoveryEnabled = true,
+                ClientProvidedName = $"wwqp-dlq/{QueueProcessorCorrelationName()}",
+            };
+
+            if (source.UseSsl)
+            {
+                factory.Ssl = new SslOption { Enabled = true, ServerName = source.HostName };
+            }
+
+            return await factory.CreateConnectionAsync(ct).ConfigureAwait(false);
+        }
 
         public async Task PublishAsync(
             byte[] body, IReadOnlyDictionary<string, object?> diagnostics, CancellationToken ct)
@@ -95,26 +129,8 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
 
                 await DisposeChannelAsync().ConfigureAwait(false);
 
-                var source = _config.DeadLetterSource;
-                var factory = new ConnectionFactory
-                {
-                    HostName = source.HostName,
-                    Port = source.Port,
-                    UserName = source.UserName,
-                    Password = source.Password,
-                    VirtualHost = source.VirtualHost,
-                    AutomaticRecoveryEnabled = true,
-                    ClientProvidedName =
-                        $"wwqp-dlq/{QueueProcessorCorrelationName()}",
-                };
-
-                if (source.UseSsl)
-                {
-                    factory.Ssl = new SslOption { Enabled = true, ServerName = source.HostName };
-                }
-
-                _connection = await factory.CreateConnectionAsync(ct).ConfigureAwait(false);
-                _channel = await _connection.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
+                _connection = await _connectionFactory(ct).ConfigureAwait(false);
+                _channel = await OpenChannelAsync(ct).ConfigureAwait(false);
 
                 // PASSIVE FIRST, then create only if absent.
                 //
@@ -146,10 +162,20 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                         $"with durable={_config.DeadLetterDurable} from the trigger's DeadLetterOptions.",
                         ExecutionId);
 
-                    await DisposeChannelAsync().ConfigureAwait(false);
-                    // _connection was assigned above; the compiler's flow analysis cannot see that
-                    // through the try/catch.
-                    _channel = await _connection!.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
+                    // Replace the CHANNEL ONLY. A failed passive declare is a channel-level AMQP
+                    // error (404): the broker closes that channel and leaves the connection open.
+                    //
+                    // This line previously called DisposeChannelAsync(), which disposes and NULLS
+                    // BOTH _channel and _connection, and then dereferenced `_connection!` - so it
+                    // threw NullReferenceException every time, and the `!` suppressed the exact
+                    // compiler warning that would have caught it. The blast radius was total: the DLQ
+                    // is by definition absent the first time anything fails, so EVERY first
+                    // dead-letter on a fresh deployment threw, EngineForwarder refused to ack (by
+                    // design, so the message is not lost), and the broker redelivered forever - a
+                    // queue that never drains and replicas pinned at maxReplicas. Reproduced live on
+                    // 2026-08-11: 26 messages looping, DLQ never created.
+                    await DisposeChannelOnlyAsync().ConfigureAwait(false);
+                    _channel = await OpenChannelAsync(ct).ConfigureAwait(false);
 
                     await _channel.QueueDeclareAsync(
                         queue: _config.DeadLetterQueueName!,
@@ -172,6 +198,38 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
 
         static string QueueProcessorCorrelationName()
             => Logging.QueueProcessorCorrelation.ReplicaId;
+
+        /// <summary>
+        /// Opens a channel on the current connection, re-establishing the connection first if it is
+        /// missing or closed. Never dereferences a possibly-null connection - the failure this
+        /// replaced. Kept separate from <see cref="DisposeChannelAsync"/> so channel-scoped recovery
+        /// cannot accidentally tear down the connection.
+        /// </summary>
+        async Task<IChannel> OpenChannelAsync(CancellationToken ct)
+        {
+            if (_connection is null || !_connection.IsOpen)
+            {
+                // Connection genuinely gone (not just a channel-level error): rebuild it.
+                if (_connection is not null)
+                {
+                    try { await _connection.DisposeAsync().ConfigureAwait(false); } catch { /* replacing */ }
+                    _connection = null;
+                }
+                _connection = await _connectionFactory(ct).ConfigureAwait(false);
+            }
+
+            return await _connection.CreateChannelAsync(cancellationToken: ct).ConfigureAwait(false);
+        }
+
+        /// <summary>Disposes the channel only, deliberately leaving the connection intact.</summary>
+        async Task DisposeChannelOnlyAsync()
+        {
+            if (_channel is not null)
+            {
+                try { await _channel.DisposeAsync().ConfigureAwait(false); } catch { /* replacing */ }
+                _channel = null;
+            }
+        }
 
         async Task DisposeChannelAsync()
         {
