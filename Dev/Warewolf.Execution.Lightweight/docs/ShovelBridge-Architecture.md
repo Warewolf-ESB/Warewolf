@@ -600,6 +600,124 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     to confirm the 89/1000 result recovers to ~1000/1000. That re-run is the next concrete step
     before considering this issue closed end-to-end.
 
+- **2026-08-14 — `-VerifyWorkflowExecution` "hang" turned out to be `Workflow file not found:
+  ...\Resources\RabbitProcess.xml` for 922/1000, plus 78/1000 with no result before the poll
+  timeout — a workflow-name resolution defect, not message loss or a stuck harness.**
+  Investigated live against `WarewolfServer-UAT` via the Kudu VFS API
+  (`https://warewolfserver-uat.scm.azurewebsites.net/api/vfs/site/wwwroot/...`), which confirmed
+  the `Resources` folder itself was staged correctly per §5.4 of `Deploy-UAT-Redeploy-Spec.md`:
+  `Resources/rabbit/RabbitProcess.bite`, `Resources/rabbit/NewSqlServerSource.bite`, and a
+  `Resources/workflow-index.json` keying the workflow as **`rabbit/rabbitprocess`** (folder-
+  qualified, generated over the staged tree). The RabbitMQ→Shovel→Service Bus bridge itself was
+  fully healthy throughout (`deliver_get`/`ack` = 1000/1000, shovel stayed `running`).
+  - **Root cause**: both `WorkflowIndex.Resolve()`
+    (`Warewolf.Execution.Lightweight/Infrastructure/WorkflowIndex.cs`) and the legacy on-disk
+    fallback in `WorkflowFunctionHelper.cs`'s `ResolveFilePath` require the caller-supplied
+    workflow name to already match how it's stored — the index does an **exact key match** against
+    the full relative path, and the fallback's `FindFileCaseInsensitive` uses
+    `RecurseSubdirectories = false`. Neither resolves a bare `'RabbitProcess'` to
+    `Resources/rabbit/RabbitProcess.bite` once the file lives in a subfolder — this reproduces on
+    every run against this Resources layout, independent of load or concurrency.
+  - **Not a regression in this document's earlier root-cause findings** (§ "ROOT CAUSE... object
+    graph is a process-wide singleton" etc.) — those explain failures *after* a workflow
+    successfully resolves and executes. This defect fires earlier, before execution even starts,
+    and likely explains a meaningful share of prior "instant failure" counts in earlier runs
+    against this same UAT engine once its `Resources` folder started preserving the repo's
+    `rabbit/` subfolder (introduced by the WOLF-8510 redeploy in `Deploy-UAT-Redeploy-Spec.md`
+    §5.4 — UAT's Resources layout before that redeploy was presumably flat).
+  - **Fix applied**: `pipeline-LOADTEST.yml` and `pipeline-CLOUD.yml` both pass
+    `VerifyWorkflowName: 'RabbitProcess'` to the same `VerifyEngineBaseUrl`
+    (`warewolfserver-uat.azurewebsites.net`) — both updated to `'rabbit/RabbitProcess'`.
+    Confirmed working live via `Test-ShovelBridgeE2E.ps1 -WorkflowName 'rabbit/RabbitProcess'`
+    (1000-message run resolving successfully instead of erroring instantly).
+  - **Not fixed (deliberately out of scope here)**: `WorkflowIndex`/`WorkflowFunctionHelper` are
+    unchanged — exact-key-match plus non-recursive fallback is reasonable engine behaviour; the
+    defect was a stale pipeline parameter, not the resolution logic itself. If workflows are ever
+    restaged flat (no `rabbit/` subfolder), the bare name would need to be restored accordingly.
+
+- **2026-08-14 — Full 1000-message `-VerifyWorkflowExecution` run (after the `rabbit/`-qualified
+  workflow-name fix above) still only reached 702/1000, with two distinct, unrelated failure
+  classes — neither is message loss; the bridge itself stayed healthy (shovel `running`
+  throughout).**
+  - **`SQL 51001` / `Error with variables in input. [[JobLogId]]` (majority of the 298
+    failures)**: the documented shared-`DynamicActivity` instance-state race (see
+    `WorkflowExecutor.cs`'s own `_workflowPool` comment and
+    `Warewolf.Execution.Lightweight.Tests/Execution/WorkflowPoolConcurrencyTests.cs`). The fix
+    (exclusive-ownership workflow pooling) already exists on this branch (ported from
+    `origin/8504-Execution-Engine-Queue-Processor-End-to-end-testing`) but is **not live on
+    `WarewolfServer-UAT`** — `Deploy-UAT-Redeploy-Spec.md` is still "proposed, not yet executed"
+    and the app's last-modified timestamp predates every WOLF-8510 commit. Expected to clear once
+    that redeploy runs; not a new defect.
+  - **`401: Authentication required` on `GET /secure/servicebus-result/{correlationId}`
+    (remainder of the 298 failures)**: NOT a token-lifetime bug in the engine — this leg uses an
+    Entra ID client-credentials token (`pipeline-LOADTEST.yml`'s "Acquire Entra token" step),
+    whose default ~60-minute lifetime comfortably covers even a 30-minute
+    `-ResultTimeoutSeconds 1800` run, and `EntraTokenValidator.cs` validates `exp` per-request
+    with no caching. Working theory (not provable from this engine's App Insights, which has had
+    no telemetry for 7+ days): a manually-run test reused a bearer token that was already stale
+    from earlier in the same interactive session, rather than minting one immediately before the
+    run. **Mitigation added**: `Test-ShovelBridgeE2E.ps1`'s Phase 0 now decodes
+    `-MessageAuthToken`/`-ResultPollAuthToken` client-side (best-effort, no signature check — the
+    engine still does real validation) and fails fast with an actionable message if either token
+    won't outlive `-ResultTimeoutSeconds` plus a setup buffer, instead of letting a 30-minute,
+    1000-message run silently degrade into a wall of terminal `401` HttpErrors. Tokens without a
+    parseable `exp` claim (opaque tokens) are left unchecked, not blocked.
+
+- **2026-08-14 — `WarewolfServer-UAT` redeploy (`Deploy-UAT-Redeploy-Spec.md`) confirmed executed;
+  the `JobLogId` root cause above is expected to be resolved, but this is not yet proven live.**
+  Someone/something completed the spec's §1-6 (runtime upgrade to .NET 10, package deploy,
+  workflow-resource staging) between the spec being drafted and a later verification pass the
+  same day — before this session made any change. Verified directly against the live site via the
+  Kudu VFS API, since `warewolfserver-uat-ai` App Insights still has zero telemetry:
+  `netFrameworkVersion` is `v10.0`, the deployed `Warewolf.Execution.Lightweight.dll` is a fresh
+  build (not the stale 08-13 08:50 package), `Resources/rabbit/` contains exactly
+  `RabbitProcess.bite` + `RabbitProcess2.bite` + a `NewSqlServerSource.bite` resolving to
+  `SourceId="b9184f70-…"` (the DPAPI-locked `(Local Backup)` file correctly excluded), and
+  `workflow-index.json` keys the workflows as `rabbit/rabbitprocess`/`rabbit/rabbitprocess2` —
+  consistent with both pipelines' `'rabbit/RabbitProcess'` name. `GET /apis.json` returns `200`.
+  **Not yet verified**: an actual single-message or full load-test run against this build, because
+  minting the `-MessageAuthToken` needed by `Test-ShovelBridgeE2E.ps1 -VerifyWorkflowExecution`
+  requires the `ShovelE2EDaemonClientSecretValue` Azure DevOps pipeline secret (write-only by
+  design, not retrievable outside a pipeline run and not mirrored in the app's Key Vault), and
+  triggering `pipeline-LOADTEST.yml` directly was blocked by the same broken `az` CLI
+  extension-cache permission error already on file for `az monitor app-insights query`. See
+  `Deploy-UAT-Redeploy-Spec.md` §12 for the full finding and what's needed to close it out.
+
+- **2026-08-14 — Confirmed the `JobLogId` fix, and found + corrected a second bad deploy: the
+  build behind the entry above did not actually contain the pooling fix.** Minted a fresh Entra
+  client-credentials token (the user's supplied `ShovelE2EDaemonClientSecret` value didn't match
+  the app registration's active secret; created an additive replacement per the sanctioned
+  `az ad app credential reset` convention documented in `pipeline-CLOUD.yml`) and called
+  `/Secure/rabbit/RabbitProcess` directly (`WorkflowHttpFunction.cs`) as a lower-risk proxy for
+  §7.4 — same `WorkflowExecutor` path as the Service Bus trigger, but doesn't exercise RabbitMQ,
+  the Shovel, or `ServiceBusWorkflowTriggerFunction` itself.
+  - A 15-way concurrent burst reproduced the **exact pre-fix signature verbatim** — `"Object
+    reference not set to an instance of an object."` / `"Error with variables in input.
+    [[JobLogId]]"` / `SQL Error [Number=51001]... invalid state transition` — 10/15 failed.
+    Confirmed `8510` HEAD does contain the fix (`_workflowPool`/`RentPreparedWorkflow` present, no
+    uncommitted changes) and that a fresh local `Release` build differs in size from the live DLL
+    (389120 vs 388096 bytes) — the previously-deployed package was not built from this HEAD.
+    Kudu's deployment history carries no commit metadata, so its actual source could not be traced.
+  - **Corrected**: backed up the live DLL, downloaded the (already-correct) live `Resources/` tree
+    via Kudu VFS, merged it into a fresh HEAD build, and redeployed
+    (`az functionapp deployment source config-zip`). Note for the deploy scripts/docs:
+    `WEBSITE_RUN_FROM_PACKAGE=1` on this app means a "Succeeded" zip-deploy response does **not**
+    mean the running worker has switched packages — `packagename.txt` updates immediately but an
+    explicit `az functionapp restart` was needed before Kudu VFS (and live behaviour) reflected the
+    new package.
+  - **Verified fixed**: post-restart, a 20-way burst against the cold (just-restarted) pool had
+    **zero** `[[JobLogId]]` errors — its failures were a different, expected-under-cold-start
+    signature (`Insufficient memory...` during Roslyn VB-expression compilation in
+    `ActivityParser.Parse`, plus a few `502`s consistent with Consumption-plan scale-out), the
+    up-front cost the pooling fix trades for correctness when every concurrent request hits an
+    empty pool at once. A follow-up 10-way burst against the now-warm pool: **10/10 succeeded,
+    zero errors of any kind.** The concurrency fix is confirmed working live.
+  - **Still open**: §7.5, the full 1000-message run through the real RabbitMQ→Shovel→Service Bus
+    pipeline (not exercised by the direct-HTTP proxy above) — needs either the ADO pipeline run or
+    a local RabbitMQ+Shovel+Service Bus stack. Also open: whether the cold-pool memory pressure
+    warrants a plan-capacity or warm-up follow-up (see §10-style follow-ups) for bursty concurrent
+    traffic after any cold start/restart. See `Deploy-UAT-Redeploy-Spec.md` §13 for full detail.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

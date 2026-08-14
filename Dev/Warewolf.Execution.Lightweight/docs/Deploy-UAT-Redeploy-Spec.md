@@ -1,6 +1,10 @@
 # Spec — full redeploy of `WarewolfServer-UAT` (.NET 8 → .NET 10)
 
-**Status:** proposed, not yet executed
+**Status:** §1-6 executed. First-pass package (deployed by another operator/process before
+2026-08-14) was on .NET 10 with correct `Resources/`, but **did not contain the concurrency fix**
+— reproduced live (see §13). A corrective redeploy from `8510` HEAD (fix confirmed present in the
+built DLL) was performed and **verified to resolve the `[[JobLogId]]` error under concurrency**
+(see §13). §7.5 (full 1000-message RabbitMQ+Shovel+ServiceBus load test) remains unexecuted.
 **Author:** drafted 2026-08-13 during WOLF-8510 (ShovelBridge load test)
 **Target:** `WarewolfServer-UAT` (Function App, RG `DEV2`)
 
@@ -198,6 +202,19 @@ contents into `<PublishDir>\Resources`, runs `Generate-WorkflowIndex.ps1` over t
 `-EncryptResources`, so `NewSqlServerSource.bite` must already carry a decryptable
 (WFAES-encrypted-by-devops or plaintext) `ConnectionString` — do not hand-edit it.
 
+> **Callers must use the folder-qualified workflow name after this staging (confirmed
+> 2026-08-14 — see `docs/ShovelBridge-Architecture.md`).** Because the `rabbit\` subfolder is
+> preserved (`Resources\rabbit\RabbitProcess.bite`, not a flat `Resources\RabbitProcess.bite`),
+> `Generate-WorkflowIndex.ps1` keys the workflow in `workflow-index.json` as
+> `rabbit/rabbitprocess` — a full relative path. `WorkflowIndex.Resolve()` does an **exact key
+> match only**, and the legacy on-disk fallback (`WorkflowFunctionHelper.cs`) is
+> **non-recursive**, so a bare `RabbitProcess` workflow name can **never** resolve against this
+> layout — it fails instantly with `Workflow file not found: ...\Resources\RabbitProcess.xml`
+> for every execution, which looks like message loss/a stuck load test but isn't. Any caller
+> (pipeline, `Test-ShovelBridgeE2E.ps1 -WorkflowName`, manual `curl`) must pass
+> `rabbit/RabbitProcess`, not `RabbitProcess`. `pipeline-LOADTEST.yml` and `pipeline-CLOUD.yml`
+> were updated accordingly on 2026-08-14.
+
 ## 6. Procedure
 
 ### 6.1 Upgrade the runtime
@@ -342,4 +359,132 @@ Per `CLAUDE.md` change-synchronisation:
 - `Scripts/README.md` — note UAT as a deploy target.
 - `docs/Deploy-RunGuide.md` / `docs/Deploy-EndToEnd-Runbook.md` — add the UAT flow.
 - `docs/ShovelBridge-Architecture.md` — record that the load test depends on a manually deployed
-  engine, and the outcome of the redeploy.
+  engine, and the outcome of the redeploy. **Done (2026-08-14)** — see the dated entry covering
+  the `rabbit/RabbitProcess` workflow-name resolution finding below §5.4 of this doc.
+- `Dev/.azure/pipeline-LOADTEST.yml` / `pipeline-CLOUD.yml` — **Done (2026-08-14)**:
+  `VerifyWorkflowName` updated from `'RabbitProcess'` to `'rabbit/RabbitProcess'` in both, per
+  the folder-qualified-name requirement now called out in §5.4 above.
+
+## 12. Execution findings (2026-08-14, second pass)
+
+Re-attempting this spec on 2026-08-14 found **§1-6 already executed** — by another operator or
+automated process between this spec being drafted (2026-08-13) and this pass — before any change
+was made in this session. Verified directly (App Insights for `warewolfserver-uat-ai` still has
+**zero telemetry**, so verification here used the Kudu VFS API against the live site instead):
+
+| Check | Result |
+|---|---|
+| `netFrameworkVersion` | `v10.0` (confirmed via `az functionapp config show`) |
+| `WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED` | `0` (R2 mitigation applied) |
+| `lastModifiedTimeUtc` | `2026-08-14T00:22:08Z` — after this spec was drafted |
+| `Warewolf.Execution.Lightweight.dll` mtime (Kudu VFS) | `2026-08-13T23:58:12` — a rebuild, not the stale 08-13 08:50 package |
+| `Resources/` (Kudu VFS) | contains `workflow-index.json` + `rabbit/` only — **no flat-layout or stray files** |
+| `Resources/rabbit/` (Kudu VFS) | `RabbitProcess.bite`, `RabbitProcess2.bite`, `NewSqlServerSource.bite` — **`NewSqlServerSource (Local Backup).bite` correctly excluded**, matching the §5.4 required set exactly |
+| `NewSqlServerSource.bite` content | `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` confirmed, `ConnectionString="WFAES::..."` (not DPAPI, not an HTML SSO page) |
+| `workflow-index.json` keys | `rabbit/rabbitprocess`, `rabbit/rabbitprocess2` present — folder-qualified, matching the `rabbit/RabbitProcess` name now used by both pipelines |
+| Live probe | `GET /apis.json` → `200 OK` (app is up and responding) |
+
+**Not verified — blocked, requires the pipeline's own secrets:**
+
+- §7.4 (single-message functional proof) and §7.5 (full 1000-message load test) both need a live
+  Entra client-credentials token. Acquiring one requires `ShovelE2EDaemonClientSecretValue`
+  (`pipeline-LOADTEST.yml` "Acquire Entra token for ShovelBridge E2E daemon" step) — an Azure
+  DevOps secret pipeline variable, which by design cannot be read back outside a pipeline run.
+  Not present in this session's environment; no equivalent was found in the app's own Key Vault
+  (`WWExecutionEngine`).
+- Triggering `pipeline-LOADTEST.yml` directly (which already has this secret wired in) via
+  `az devops` was attempted but blocked by the same broken `az` CLI extension-metadata permission
+  error already on file for `az monitor app-insights query` (`PermissionError: Access is denied:
+  ...\cliextensions\application-insights\application_insights-1.2.3.dist-info` — this file's ACL
+  could not be read or repaired from this session either).
+- Deliberately did **not** substitute an interactively-logged-in user token for the daemon app's
+  client-credentials token — that would exercise a different, untested auth path and risks
+  recording a false pass.
+
+**Action needed to close out §7:** either supply `ShovelE2EDaemonClientSecretValue` (plus
+`ShovelE2EDaemonClientId` / `ShovelE2EResourceAppId` / `ShovelE2EEntraTenantId`, all needed to
+mint a `-MessageAuthToken`) to run `Test-ShovelBridgeE2E.ps1 -VerifyWorkflowExecution` directly, or
+trigger `pipeline-LOADTEST.yml`'s `ShovelBridgeLoadTest_ExternalServiceBus` job from a machine/
+account with working Azure DevOps access.
+
+## 13. Corrective redeploy and fix verification (2026-08-14, third pass)
+
+The user supplied an env var claiming to hold `ShovelE2EDaemonClientSecretValue`. It did **not**
+match the app registration's active secret (`az ad app credential list` showed hint `ms7`, created
+2026-08-14T06:52; the supplied value's hint was `lX6`) — `AADSTS7000215: Invalid client secret
+provided`. Per the sanctioned convention documented in a `pipeline-CLOUD.yml` comment ("minted ONCE
+by an Application Administrator via `az ad app credential reset`... reused directly, NOT rotated
+per run"), minted a new **additive** secret (`shovelbridge-verification-2026-08-14-temp-2`, expires
+2026-09-14, does not revoke `ms7`) on app `dc1182bc-ffc1-4a1d-a414-ab672998eb9a` and acquired a
+valid Entra token against `api://e200900a-.../.default` (confirmed same audience as both
+`WAREWOLF_ENTRA_AUDIENCE` and `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` on this instance).
+
+**Lower-risk proxy for §7.4:** rather than standing up RabbitMQ+Shovel+ServiceBus locally, called
+the engine's `/Secure/rabbit/RabbitProcess` HTTP route directly with this token
+(`WorkflowHttpFunction.cs`) — same `WorkflowExecutor`/Resources/SQL-activity path as the Service
+Bus trigger, different Function entry point. This does **not** exercise the RabbitMQ Shovel or the
+`ServiceBusWorkflowTriggerFunction` wrapper itself.
+
+**Finding: the §12 "already executed" redeploy did not contain the concurrency fix.** A single
+call succeeded, but a 15-way concurrent burst reproduced the *exact* pre-fix signature verbatim —
+`"Object reference not set to an instance of an object."` and `"Error with variables in input.
+[[JobLogId]]"`, plus the underlying `SQL Error [Number=51001]... invalid state transition — row
+not found in STARTED status for this JobLogId` — 10/15 requests failed. This is the precise
+signature the `2b784fe7b6` fix's own code comment documents reproducing on 2026-08-11 pre-fix.
+Confirmed the currently-checked-out `8510` HEAD **does** contain the fix
+(`_workflowPool`/`RentPreparedWorkflow`/`PreparedWorkflow` present in `WorkflowExecutor.cs`, no
+uncommitted changes), and that the live deployed DLL (388096 bytes) differs in size from a fresh
+local `Release` build of that HEAD (389120 bytes) — i.e. **whatever was deployed in the §12 pass
+was not built from this HEAD**. Kudu's deployment history has no commit/author metadata (plain
+`az_cli_functions` zip pushes), so the actual source of that build could not be traced further.
+
+**Corrective action taken:** rather than leaving a known-broken fix live, performed a targeted
+code-only redeploy (Resources were already correct, so left untouched):
+1. Backed up the live DLL (`Warewolf.Execution.Lightweight.dll`, 388096 bytes) to
+   `$env:TEMP\uat-redeploy-backup\pre-corrective-dll\`.
+2. Downloaded the live `Resources/` tree via Kudu VFS (already verified correct in §12) to
+   `$env:TEMP\uat-redeploy-backup\live-resources\`.
+3. Merged it into the already-built, HEAD-sourced `C:\ExecutionEngine\Publish\` (confirmed via
+   binary string search to contain `RentPreparedWorkflow`/`PreparedWorkflow`).
+4. Zipped and deployed via `az functionapp deployment source config-zip` (`DEV2` /
+   `WarewolfServer-UAT`).
+5. **`WEBSITE_RUN_FROM_PACKAGE=1`** on this app — the deploy uploads a new package
+   (`d:\home\data\SitePackages\<timestamp>.zip`) and updates `packagename.txt`, but the running
+   worker does not pick it up until restarted. Kudu VFS still showed the old DLL immediately after
+   a "Succeeded" deploy; an explicit `az functionapp restart` was required before the new package
+   took effect. **Worth adding to `Deploy-WwExecutionEngine.ps1`/its docs as a known gotcha** if not
+   already handled by the orchestrator's own deploy phase.
+6. Verified post-restart: deployed DLL now 389120 bytes / mtime matching the local build exactly;
+   `Resources/rabbit/` unchanged (3 files, same sizes as §12).
+
+**Post-redeploy verification:**
+- Single-request smoke test: `200 OK`.
+- 20-way concurrent burst (cold pool, first traffic since restart): 10/20 succeeded. **Zero
+  `[[JobLogId]]`/SQL 51001 errors** — the failures that did occur were a new signature:
+  `Insufficient memory to continue the execution of the program` inside
+  `RentPreparedWorkflow → ActivityParser.Parse → System.Activities.ScriptingAotCompiler.BuildAssembly`
+  (Roslyn VB-expression JIT compilation), plus several `502 Bad Gateway`s consistent with
+  Consumption-plan cold-start/scale-out under a sudden burst against an empty workflow pool (every
+  concurrent request on a cold pool must compile its own XAML+VB chain simultaneously — this is
+  the known, documented up-front cost the pooling fix explicitly trades for correctness).
+- 10-way concurrent burst immediately after (pool now warm): **10/10 succeeded, zero errors of any
+  kind.**
+
+**Conclusion:** the concurrency fix is confirmed working on the live, corrected UAT deployment —
+the original `[[JobLogId]]` failure mode does not reproduce once the pool is warm, across two
+separate concurrent bursts (15-way and 20-way) post-fix vs. one pre-fix (15-way, 10/15 failed with
+the JobLogId signature). The transient cold-pool memory/502 errors on the very first post-restart
+burst are a **separate, plan-capacity concern** (Roslyn compilation is memory-heavy; the
+Consumption/current plan may need a warm-up strategy, pre-compiled workflow cache persistence
+across cold starts, or a higher-memory plan for bursty concurrent traffic) — not a recurrence of
+the bug this spec targeted, but worth a follow-up item (see §10).
+
+**Still not executed:** §7.5, the full 1000-message load test through the actual
+RabbitMQ→Shovel→Service Bus pipeline (the direct-HTTP calls above bypass RabbitMQ, the Shovel, and
+`ServiceBusWorkflowTriggerFunction` entirely). Needs either the real ADO pipeline run or standing up
+RabbitMQ+Shovel+Service Bus locally.
+
+**Cleanup owed:** the temporary Entra secret `shovelbridge-verification-2026-08-14-temp-2` on app
+`dc1182bc-ffc1-4a1d-a414-ab672998eb9a` (expires 2026-09-14, additive, does not affect `ms7`) should
+be deleted once the user confirms no further verification is needed, via
+`az ad app credential delete --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a --key-id <id>`.

@@ -298,6 +298,41 @@ function ConvertFrom-SecureStringPlain {
     finally { [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
 }
 
+function Get-JwtRemainingLifetimeSeconds {
+    <#
+    Best-effort, client-side pre-flight check of a bearer token's remaining lifetime —
+    decodes the UNSIGNED payload segment (base64url) of a 3-part JWT and reads the
+    standard 'exp' claim. This is deliberately NOT token validation (no signature check,
+    no issuer/audience check - the engine itself does that); it exists purely so this
+    script can fail fast in Phase 0 with an actionable message instead of a caller
+    discovering, after a 30-minute/1000-message run, that a token minted (or merely
+    reused from earlier in an interactive session) before the run started expired
+    partway through Phase 4's result-polling loop and turned into a wall of
+    "401: Authentication required" HttpErrors indistinguishable at a glance from a real
+    authorization problem.
+
+    Returns $null — "unknown, don't block" — when the token isn't a 3-segment JWT (e.g.
+    an opaque token) or has no parseable 'exp' claim; callers must treat $null as
+    "can't tell", never as "expired".
+    #>
+    param([Parameter(Mandatory)][string] $Token)
+
+    $raw = if ($Token.StartsWith('Bearer ', [StringComparison]::OrdinalIgnoreCase)) { $Token.Substring(7) } else { $Token }
+    $parts = $raw.Trim().Split('.')
+    if ($parts.Length -ne 3) { return $null }
+
+    try {
+        $payloadSegment = $parts[1].Replace('-', '+').Replace('_', '/')
+        switch ($payloadSegment.Length % 4) { 2 { $payloadSegment += '==' } 3 { $payloadSegment += '=' } }
+        $payload = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($payloadSegment)) | ConvertFrom-Json
+        if (-not $payload.exp) { return $null }
+        $expUtc = [DateTimeOffset]::FromUnixTimeSeconds([long]$payload.exp).UtcDateTime
+        return [int][Math]::Floor(($expUtc - (Get-Date).ToUniversalTime()).TotalSeconds)
+    } catch {
+        return $null
+    }
+}
+
 function New-RandomPassword {
     <# Meets SQL Server's complexity policy: 3 of {upper, lower, digit, symbol}, 8-128 chars. #>
     $bytes = New-Object byte[] 24
@@ -440,6 +475,32 @@ if ($VerifyWorkflowExecution) {
         $CorrelationId = [Guid]::NewGuid().ToString('N')
     }
     Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' ($(if ($MessageCount -eq 1) { "correlationId '$CorrelationId'" } else { "$MessageCount messages, correlationId prefix '$CorrelationId'" })) and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival."
+
+    # Fail fast on a stale bearer token rather than discovering it 30 minutes and (at
+    # load-test volumes) 1000 messages later as a wall of "401: Authentication required"
+    # HttpErrors that look, at a glance, like a real authorization failure rather than an
+    # expired token. -ResultTimeoutSeconds bounds Phase 4's OWN polling window; add a fixed
+    # buffer for Phases 1-3's setup time (RabbitMQ/shovel/queue provisioning), which elapses
+    # BEFORE Phase 4 starts spending the token's remaining lifetime.
+    $setupBufferSeconds = 300
+    $requiredLifetimeSeconds = $ResultTimeoutSeconds + $setupBufferSeconds
+    $tokensToCheck = [ordered]@{ '-MessageAuthToken' = (ConvertFrom-SecureStringPlain $MessageAuthToken) }
+    if ($ResultPollAuthToken) {
+        $tokensToCheck['-ResultPollAuthToken'] = ConvertFrom-SecureStringPlain $ResultPollAuthToken
+    }
+    foreach ($tokenName in $tokensToCheck.Keys) {
+        $remaining = Get-JwtRemainingLifetimeSeconds -Token $tokensToCheck[$tokenName]
+        if ($null -eq $remaining) {
+            continue # opaque/non-JWT token or unparseable 'exp' claim - can't tell, don't block
+        }
+        if ($remaining -le 0) {
+            throw "$tokenName has ALREADY EXPIRED ($([Math]::Abs($remaining))s ago). Mint a fresh token immediately before invoking this script - reusing one from earlier in an interactive session (or from a pipeline step run well before Phase 4) is the most common cause. See docs/ShovelBridge-Architecture.md (2026-08-14 entry)."
+        }
+        if ($remaining -lt $requiredLifetimeSeconds) {
+            throw "$tokenName expires in ${remaining}s, less than the ${requiredLifetimeSeconds}s this run may need (-ResultTimeoutSeconds $ResultTimeoutSeconds + a ${setupBufferSeconds}s buffer for Phases 1-3 setup). It WILL expire mid-poll and surface as '401: Authentication required' HttpErrors on whichever correlationIds are still pending at that point - indistinguishable at a glance from a real authorization failure. Mint a fresh token immediately before invoking this script rather than reusing an older one."
+        }
+        Write-Ok "$tokenName has ${remaining}s remaining - comfortably covers this run (needs ${requiredLifetimeSeconds}s)."
+    }
 }
 
 # Docker is only needed when something is actually going to be containerized:
@@ -859,9 +920,12 @@ try {
         )
     }
     Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
-    $harnessOutput = & dotnet @harnessArgs 2>&1
+    # Stream the harness's output live rather than buffering it and dumping it only
+    # after the process exits — at load-test volumes this run can take many minutes
+    # (build + publish + poll up to -ResultTimeoutSeconds), and a silent console during
+    # that window is indistinguishable from a hang.
+    & dotnet @harnessArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
     $harnessExitCode = $LASTEXITCODE
-    $harnessOutput | ForEach-Object { Write-Host "    $_" }
 
     # ════════════════════════════════════════════════════════════════════════
     # Phase 4b — Post-run Shovel/RabbitMQ diagnostics (root-causing message loss)
