@@ -203,10 +203,44 @@ Every run's markdown summary carries its own teardown block. The rules that matt
 
 Full detail: `docs/Deploy-E2E-Rollback-Commands.md`.
 
+## Load testing is a different job — use `Invoke-WwQueueLoadTest.ps1`
+
+The harness above proves **provisioning and wiring**. It does not prove the deployment survives
+volume. For that, run the load test against an already-deployed pair:
+
+```powershell
+cd Dev\Warewolf.Execution.Lightweight\Scripts
+.\Invoke-WwQueueLoadTest.ps1                        # interactive, Enter through every prompt = RUN 2
+.\Invoke-WwQueueLoadTest.ps1 -MessageCount 20 -Yes  # quick smoke test
+.\Invoke-WwQueueLoadTest.ps1 -MessageCount 100 -NonInteractive   # CI; exit code carries the verdict
+```
+
+It verifies Azure login, confirms Engine / ACA / KEDA / broker / database, **stops on blockers**,
+takes a row watermark (never truncates), pre-warms, publishes, waits for database rows to stop
+rising, then reconciles into four buckets. Defaults live in `WwLoadTest.Defaults.psd1` and reproduce
+RUN 2: 100 messages, 6 replicas, 100/100, 0 dead-lettered, ~90 s.
+
+**The two things to know before reading any load-test result:**
+
+- **A drained queue proves nothing** — 2xx→ack and non-2xx→dead-letter+ack *both* drain it. RUN 1
+  ended with an empty queue, zero replicas and no obvious errors having processed 68 of 100.
+- **Concurrency = `maxReplicas` × `WORKER__MAXCONCURRENCY`**, and it is the number that decides
+  success. Measured against a Consumption-plan engine: 6 → 24/24, 8 → 24/24, **10 → out of memory**
+  (~32 MB per concurrent execution against ~1.5 GB). RUN 1 used 10 replicas and lost 32 messages;
+  RUN 2 used 6 and lost none, in a quarter of the time. Fewer replicas is not a compromise here.
+
+**Pre-warming is not optional.** Cold start measured 64,757 ms against ~3,100 ms warm, and every
+502/503/504 in RUN 1 came from that window. The warm-up **executes the real workflow and writes
+rows**, so the watermark is taken *after* it.
+
+Full detail — setup, phases, join keys, artefacts, traps: `docs/LoadTest-Guide.md`.
+
 ## Reference
 
 | Document | Purpose |
 |---|---|
+| `docs/LoadTest-Guide.md` | Load test: how a RUN works, setup, expectations, how results are derived |
+| `docs/RUN-LoadTest-Runbook.md` | The manual 7-step runbook the load-test script automates |
 | `docs/E2E-Harness-README.md` | Prerequisites, parameters, what is secret, how to read the output |
 | `docs/Deploy-E2E-Verification-Runbook.md` | The manual runbook this harness automates |
 | `docs/Deploy-E2E-Execution-StepByStep.md` | A worked isolated-parallel run |
