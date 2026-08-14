@@ -863,6 +863,60 @@ try {
     $harnessExitCode = $LASTEXITCODE
     $harnessOutput | ForEach-Object { Write-Host "    $_" }
 
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 4b — Post-run Shovel/RabbitMQ diagnostics (root-causing message loss)
+    # ════════════════════════════════════════════════════════════════════════
+    # At load-test volumes a fraction of messages have been observed to never reach
+    # the engine (e.g. 943/1000) with NO publish failures from the harness and NO
+    # exceptions on the engine side - meaning the loss happens somewhere between this
+    # local RabbitMQ source queue and the Service Bus destination (the Shovel's own
+    # bridging, or a transient disconnect/reconnect). Always captured (pass or fail)
+    # so a healthy run's numbers are available as a baseline for comparison. This is
+    # the evidence needed to tell WHICH side lost the messages:
+    #   - source queue empty (messages=0) AND publish == deliver_get == ack (all equal
+    #     to MessageCount) -> every message was published, shoveled out, and acked;
+    #     loss happened downstream of RabbitMQ entirely (Service Bus delivery, or the
+    #     engine's own trigger dequeue) - inspect the Service Bus dead-letter queue
+    #     for that run's correlationIds (see docs/ShovelBridge-Architecture.md).
+    #   - publish == MessageCount but deliver_get/ack < MessageCount -> the Shovel
+    #     itself never picked up (or never got an on-confirm ack for) some messages
+    #     - a Shovel-side bridging/reliability issue, not a Service Bus/engine one.
+    #   - publish < MessageCount -> the harness under-published (would already have
+    #     thrown - see PublishToRabbitMqAsync - so should not happen silently).
+    Write-Phase 'Phase 4b  Post-run Shovel/RabbitMQ diagnostics'
+    try {
+        Write-Step "GET /api/queues/$vhostForApi/$SourceQueueName"
+        $finalQueue = Invoke-RabbitMqApi -Method Get -Path "/api/queues/$vhostForApi/$([Uri]::EscapeDataString($SourceQueueName))" -AllowFail
+        if ($finalQueue) {
+            $stats = $finalQueue.message_stats
+            Write-Host "  Source queue '$SourceQueueName' final state:" -ForegroundColor White
+            Write-Host "    messages (total)        : $($finalQueue.messages)" -ForegroundColor White
+            Write-Host "    messages_ready          : $($finalQueue.messages_ready)" -ForegroundColor White
+            Write-Host "    messages_unacknowledged : $($finalQueue.messages_unacknowledged)" -ForegroundColor White
+            if ($stats) {
+                Write-Host "    publish (lifetime)      : $($stats.publish)" -ForegroundColor White
+                Write-Host "    deliver_get (lifetime)  : $($stats.deliver_get)" -ForegroundColor White
+                Write-Host "    ack (lifetime)          : $($stats.ack)" -ForegroundColor White
+                Write-Host "    redeliver (lifetime)    : $($stats.redeliver)" -ForegroundColor White
+            } else {
+                Write-Note 'No message_stats present on the queue response (RabbitMQ only populates these after some activity/short delay).'
+            }
+        } else {
+            Write-Note "Could not retrieve source queue '$SourceQueueName' status for diagnostics (queue may already be gone, or the management API call failed)."
+        }
+
+        Write-Step "GET /api/shovels/$vhostForApi (looking for '$ShovelName')"
+        $finalShovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
+        $finalMine = @($finalShovels) | Where-Object { $_.name -eq $ShovelName }
+        if ($finalMine) {
+            Write-Host "  Shovel '$ShovelName' final state: $($finalMine[0] | ConvertTo-Json -Compress)" -ForegroundColor White
+        } else {
+            Write-Note "Shovel '$ShovelName' no longer reported by the management API (may have been torn down or restarted already)."
+        }
+    } catch {
+        Write-Note "Post-run diagnostics query itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+    }
+
     if ($harnessExitCode -ne 0) {
         throw "E2E harness reported failure (exit code $harnessExitCode). See output above."
     }
