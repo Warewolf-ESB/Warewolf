@@ -130,30 +130,24 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         public string GetDiagnostics()
         {
-            var sb = new System.Text.StringBuilder();
-            sb.Append($"AmbientSourceLoader.Current={(AmbientSourceLoader.Current == null ? "null" : "registered")}; ");
-            sb.Append($"IndexedDirs=[");
-            foreach (var (dir, indexLazy) in _directoryIndices)
+            // Leaf folder names only — SharepointReadListActivity embeds this string in a thrown
+            // InvalidOperationException, which reaches the caller via the workflow's error list,
+            // so it must not disclose absolute paths.
+            var dirs   = string.Join(", ", _directoryIndices.Select(kv => $"{DirName(kv.Key)}({Describe(kv.Value)})"));
+            var errors = _loadErrors.IsEmpty ? string.Empty : $" LoadErrors=[{string.Join("; ", _loadErrors)}]";
+
+            return $"AmbientSourceLoader.Current={(AmbientSourceLoader.Current is null ? "null" : "registered")}; " +
+                   $"IndexedDirs=[{dirs}];{errors}";
+
+            // A Lazy whose factory threw reports IsValueCreated == false and caches the
+            // exception, so "index not built" deliberately covers both never-attempted and
+            // failed. We must not touch .Value to tell them apart: for a never-attempted
+            // index that would trigger the whole directory scan from a diagnostic call.
+            static string Describe(Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>> index)
             {
-                try
-                {
-                    // Leaf folder name + entry count only: this string is embedded in exception
-                    // messages, so it must not disclose absolute paths.
-                    if (indexLazy.IsValueCreated)
-                        sb.Append($"{DirName(dir)}({indexLazy.Value.Count} entries), ");
-                    else
-                        sb.Append($"{DirName(dir)}(index not yet built), ");
-                }
-                catch (Exception ex)
-                {
-                    // Exception TYPE only — an index-build message can carry file-system detail.
-                    sb.Append($"{DirName(dir)}(INDEX BUILD ERROR: {ex.GetType().Name}), ");
-                }
+                try   { return index.IsValueCreated ? $"{index.Value.Count} entries" : "index not built"; }
+                catch (Exception ex) { return $"INDEX BUILD ERROR: {ex.Message}"; }
             }
-            sb.Append("]; ");
-            if (_loadErrors.Count > 0)
-                sb.Append($"LoadErrors=[{string.Join("; ", _loadErrors)}]");
-            return sb.ToString();
         }
 
         /// <summary>
@@ -184,9 +178,8 @@ namespace Warewolf.Execution.Lightweight
 
             var key = Path.GetFullPath(baseDirectory);
 
-            // Leaf folder name at Warning; the absolute path is Debug-only.
+            // Leaf folder name only; the absolute path is never logged. Emitted once.
             Dev2Logger.Warn($"[LightweightSourceLoader] EnsureIndexed: registering directory '{DirName(key)}' (exists={Directory.Exists(key)}).", GlobalConstants.WarewolfInfo);
-            Dev2Logger.Debug($"[LightweightSourceLoader] EnsureIndexed: registering directory path '{key}'.", GlobalConstants.WarewolfInfo);
             _directoryIndices.GetOrAdd(key,
                 k => new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
                     () => BuildFileIndex(k),
@@ -211,11 +204,9 @@ namespace Warewolf.Execution.Lightweight
                 new Lazy<bool>(() =>
                 {
                     // Directory COUNT at Warning so path issues are still visible in production;
-                    // the absolute paths themselves are Debug-only.
+                    // the absolute paths themselves are never logged. Emitted once.
                     Dev2Logger.Warn(
                         $"[LightweightSourceLoader] EnsureSourceLoaded({id}): {_directoryIndices.Count} indexed directory(ies).", GlobalConstants.WarewolfInfo);
-                    Dev2Logger.Debug(
-                        $"[LightweightSourceLoader] EnsureSourceLoaded({id}): indexed directories=[{string.Join(", ", _directoryIndices.Keys)}]", GlobalConstants.WarewolfInfo);
 
                     // Check whether the ID exists in any index before attempting to load.
                     // This lets us give a precise "found but failed" vs "not found" diagnostic.
@@ -230,20 +221,15 @@ namespace Warewolf.Execution.Lightweight
                             // diagnostic, and _loadErrors is replayed verbatim by GetDiagnostics().
                             Dev2Logger.Warn(
                                 $"[LightweightSourceLoader] EnsureSourceLoaded({id}): directory '{DirName(dir)}' index has {indexLazy.Value.Count} entries.", GlobalConstants.WarewolfInfo);
-                            Dev2Logger.Debug(
-                                $"[LightweightSourceLoader] EnsureSourceLoaded({id}): directory '{dir}' index ({indexLazy.Value.Count} entries): [{string.Join(", ", indexLazy.Value.Keys.Take(20))}]", GlobalConstants.WarewolfInfo);
 
                             if (indexLazy.Value.ContainsKey(id))
                                 foundInIndex = true;
                         }
                         catch (Exception ex)
                         {
-                            // Exception TYPE only — the message can carry file-system and
-                            // Key Vault detail. Full detail is Debug-only.
-                            var buildFailMsg = $"EnsureSourceLoaded({id}): index build failed for directory '{DirName(dir)}': {ex.GetType().Name}";
+                            var buildFailMsg = $"EnsureSourceLoaded({id}): index build failed for directory '{DirName(dir)}': {ex.Message}";
                             _loadErrors.Add(buildFailMsg);
                             Dev2Logger.Warn($"[LightweightSourceLoader] {buildFailMsg}", GlobalConstants.WarewolfInfo);
-                            Dev2Logger.Debug($"[LightweightSourceLoader] EnsureSourceLoaded({id}): index build failure details for directory '{dir}'.", ex, GlobalConstants.WarewolfInfo);
                         }
                     }
 
@@ -397,14 +383,11 @@ namespace Warewolf.Execution.Lightweight
             }
             catch (Exception ex)
             {
-                // Exception TYPE only. This is the .bite decrypt path, so exception and
-                // inner-exception messages can embed decrypted connection-string fragments
-                // and Key Vault detail — they must reach neither the Warning sink nor
-                // _loadErrors (which GetDiagnostics() replays verbatim). Full chain at Debug.
-                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {ex.GetType().Name}";
+                // NOTE: this string is also accumulated into _loadErrors, which GetDiagnostics()
+                // replays into exception messages that can surface in an HTTP response body.
+                var msg = $"LoadSourceFile: exception loading '{Path.GetFileName(filePath)}' (Type={sourceType}): {ex.Message}";
                 _loadErrors.Add(msg);
                 Dev2Logger.Warn($"[LightweightSourceLoader] {msg}", GlobalConstants.WarewolfInfo);
-                Dev2Logger.Debug($"[LightweightSourceLoader] LoadSourceFile failure details for '{Path.GetFileName(filePath)}' (Type={sourceType}).", ex, GlobalConstants.WarewolfInfo);
                 return null;
             }
         }

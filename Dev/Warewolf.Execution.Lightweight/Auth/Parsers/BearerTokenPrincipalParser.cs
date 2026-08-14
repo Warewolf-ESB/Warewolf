@@ -118,7 +118,8 @@ public sealed class BearerTokenPrincipalParser : IPrincipalParser
                 nameType:           ClaimTypes.Name,
                 roleType:           ClaimTypes.Role);
 
-            _logger.LogDebug("Bearer token validated for {User}", identity.Name ?? "(unknown)");
+            // The validated identity's name is caller identity — never logged, at any level.
+            _logger.LogDebug("Bearer token validated.");
             return new WorkflowClaimsPrincipal(identity);
         }
         catch (SecurityTokenExpiredException stee)

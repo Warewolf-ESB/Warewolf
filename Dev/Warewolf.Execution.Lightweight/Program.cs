@@ -24,11 +24,9 @@ try
     Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(bootstrapLogger);
     Dev2Logger.CorrelationPrefixProvider = ExecutionLoggerBase.GetCorrelationPrefixStatic;
 
-    Dev2Logger.Info("Program starting - bootstrap logging active", executionId);
-    Dev2Logger.Info($"Program configuration loaded. WorkflowsDirectory: {config.WorkflowsDirectory}, EncryptionEnabled: {config.EncryptionEnabled}, IsDevelopment: {config.IsDevelopment}", executionId);
+    Dev2Logger.Info($"Program configuration loaded. EncryptionEnabled: {config.EncryptionEnabled}, IsDevelopment: {config.IsDevelopment}", executionId);
 
     // ── Step 3: Build host ───────────────────────────────────────────────────
-    Dev2Logger.Debug("Program building host", executionId);
 
     var host = new HostBuilder()
         .ConfigureWarewolf(config)
@@ -98,9 +96,7 @@ try
     // Azure Functions host captures and flattens to a [Information] wrapper (the reported symptom).
     // NOTE: with ENABLEAPPLICATIONINSIGHTS=false the host's outer capture stamp is still its own
     // platform behaviour; true per-level severity records require the AI structured channel.
-    Dev2Logger.Debug($"Program logging configuration: EnableAI={loggingConfig.RegisterApplicationInsightsSdk}, EnableElastic={loggingConfig.EnableElasticsearch}, MinLevel={loggingConfig.MinimumLevel}", executionId);
 
-    Dev2Logger.Info("Program host built successfully, running startup orchestrator", executionId);
 
     // ── Step 4: Run startup (encryption, index warm-up) ──────────────────────
     await StartupOrchestrator.RunStartupAsync(host, config);
@@ -110,15 +106,12 @@ try
     // is wired before the Elasticsearch .bite file is read.
     var executionLogger = host.Services.GetRequiredService<IExecutionLogger>();
 
-    Dev2Logger.Info("Program startup orchestrator completed, upgrading to full composite logger", executionId);
 
     // Replace bootstrap sink with the full composite (Console + AI + Elastic + Audit).
     Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
 
-    Dev2Logger.Info("Program Dev2Logger external sink upgraded to full CompositeExecutionLogger", executionId);
 
     // ── Step 6: License check ────────────────────────────────────────────────
-    Dev2Logger.Debug("Program loading Warewolf License", executionId);
 
     var licenseProvider = SubscriptionProvider.Instance;
     if (licenseProvider.IsLicensed)

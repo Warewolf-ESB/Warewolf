@@ -59,7 +59,10 @@ namespace Warewolf.Execution.Lightweight.Security
             _logger      = logger     ?? throw new ArgumentNullException(nameof(logger));
             _debugSecret = debugSecret;
 
-            Dev2Logger.Debug($"KeyVaultSecretManager constructor. VaultUri: {vaultUri}, SecretName: {secretName}, HasDebugSecret: {debugSecret != null}, HasCredential: {credential != null}", executionId);
+            // Vault URI, secret name, key id and any length of the key material are never
+            // logged, at any level — only presence/absence flags, which are what actually
+            // diagnose a misconfiguration.
+            Dev2Logger.Debug($"KeyVaultSecretManager constructor. HasDebugSecret: {debugSecret != null}, HasCredential: {credential != null}", executionId);
 
             if (debugSecret is null)
             {
@@ -104,7 +107,7 @@ namespace Warewolf.Execution.Lightweight.Security
                     return;
                 }
 
-                Dev2Logger.Debug($"KeyVaultSecretManager fetching secret '{_secretName}' from '{_vaultUri}'. CredentialType: {_credential!.GetType().Name}", executionId);
+                Dev2Logger.Debug($"KeyVaultSecretManager fetching configuration secret. CredentialType: {_credential!.GetType().Name}", executionId);
 
                 // Secret name, vault URI and credential type are Debug-only (see the
                 // Dev2Logger.Debug line above) — they must not reach production sinks.
@@ -114,7 +117,7 @@ namespace Warewolf.Execution.Lightweight.Security
                     await _client!.GetSecretAsync(_secretName, version: null, cancellationToken)
                                  .ConfigureAwait(false);
 
-                Dev2Logger.Debug($"KeyVaultSecretManager successfully fetched secret '{_secretName}' from Key Vault", executionId);
+                Dev2Logger.Debug("KeyVaultSecretManager successfully fetched configuration secret from Key Vault", executionId);
 
                 ParseAndSetMaterial(secret.Value);
 
@@ -122,11 +125,9 @@ namespace Warewolf.Execution.Lightweight.Security
             }
             catch (Exception ex)
             {
-                // Secret name, vault URI and the exception object are withheld from Error:
-                // an Azure SDK exception message can name the vault, the secret and the
-                // identity that was refused. Full detail stays at Debug.
-                Dev2Logger.Error($"KeyVaultSecretManager InitializeAsync failed. ExceptionType={ex.GetType().Name}", executionId);
-                Dev2Logger.Debug("KeyVaultSecretManager InitializeAsync failure details.", ex, executionId);
+                // The exception object itself is still not passed (the sinks would persist
+                // ex.ToString() with the full stack); the message is logged for troubleshooting.
+                Dev2Logger.Error($"KeyVaultSecretManager InitializeAsync failed: {ex.Message}", executionId);
                 throw;
             }
         }
@@ -137,7 +138,8 @@ namespace Warewolf.Execution.Lightweight.Security
         {
             const string executionId = "KeyVaultSecretManager-Parse";
 
-            Dev2Logger.Debug($"KeyVaultSecretManager ParseAndSetMaterial starting. JsonLength: {rawJson?.Length ?? 0}", executionId);
+            // The secret's length characterises the key material — not logged.
+            Dev2Logger.Debug("KeyVaultSecretManager ParseAndSetMaterial starting.", executionId);
 
             // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
             // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
@@ -173,8 +175,7 @@ namespace Warewolf.Execution.Lightweight.Security
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error($"KeyVaultSecretManager ParseAndSetMaterial failed. ExceptionType={ex.GetType().Name}", executionId);
-                Dev2Logger.Debug("KeyVaultSecretManager ParseAndSetMaterial failure details.", ex, executionId);
+                Dev2Logger.Error($"KeyVaultSecretManager ParseAndSetMaterial failed: {ex.Message}", executionId);
                 throw;
             }
         }
@@ -202,22 +203,20 @@ namespace Warewolf.Execution.Lightweight.Security
 
                 if (keyBytes.Length != 32)
                 {
-                    // The actual length is withheld from Error (it characterises the key
-                    // material); it remains available at Debug.
+                    // The actual length is never logged — it characterises the key material.
+                    // The thrown InvalidOperationException below still carries it to the caller.
                     Dev2Logger.Error("KeyVaultSecretManager invalid key length (expected 32 bytes)", executionId);
-                    Dev2Logger.Debug($"KeyVaultSecretManager invalid key length: {keyBytes.Length} bytes (expected 32)", executionId);
                     throw new InvalidOperationException(
                         $"AES-256 key must be 32 bytes; got {keyBytes.Length}. " +
                         "Re-run Encrypt-Config.ps1 to regenerate the key material.");
                 }
 
-                Dev2Logger.Debug($"KeyVaultSecretManager GetKeyBytes successful. KeyId: {_material.KeyId}, KeyLength: {keyBytes.Length} bytes", executionId);
+                Dev2Logger.Debug("KeyVaultSecretManager GetKeyBytes successful.", executionId);
                 return keyBytes;
             }
             catch (Exception ex) when (ex is not InvalidOperationException)
             {
-                Dev2Logger.Error($"KeyVaultSecretManager GetKeyBytes failed. ExceptionType={ex.GetType().Name}", executionId);
-                Dev2Logger.Debug("KeyVaultSecretManager GetKeyBytes failure details.", ex, executionId);
+                Dev2Logger.Error($"KeyVaultSecretManager GetKeyBytes failed: {ex.Message}", executionId);
                 throw;
             }
         }

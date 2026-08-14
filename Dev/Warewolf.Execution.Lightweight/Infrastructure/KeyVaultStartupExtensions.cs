@@ -33,7 +33,7 @@ internal static class KeyVaultStartupExtensions
     {
         const string executionId = "KeyVaultStartupExtensions";
 
-        Dev2Logger.Info("KeyVaultStartupExtensions InitializeKeyVaultAsync starting", executionId);
+        Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync starting for instance: {config.InstanceId}", executionId);
 
         var secretManager = host.Services.GetRequiredService<KeyVaultSecretManager>();
         var audit         = host.Services.GetRequiredService<AuditLogger>();
@@ -59,14 +59,13 @@ internal static class KeyVaultStartupExtensions
             Dev2Logger.Info(log, executionId);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
 
-            Dev2Logger.Info("KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully.", executionId);
+            Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}", executionId);
         }
         catch (Exception ex)
         {
-            // The exception object is withheld from Error: an Azure SDK failure message
-            // can name the vault, the secret and the refused identity. Detail at Debug.
-            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed. ExceptionType={ex.GetType().Name}", executionId);
-            Dev2Logger.Debug("KeyVaultStartupExtensions InitializeKeyVaultAsync failure details.", ex, executionId);
+            // The exception object itself is still not passed (the sinks would persist
+            // ex.ToString() with the full stack); the message is logged for troubleshooting.
+            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}: {ex.Message}", executionId);
 
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
             Dev2Logger.Error(log, executionId);

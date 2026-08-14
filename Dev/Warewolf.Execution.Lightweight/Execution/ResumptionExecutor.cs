@@ -157,11 +157,11 @@ namespace Warewolf.Execution.Lightweight
                 // string.Join(NewLine, errors) built from Environment.Errors / AllErrors — i.e.
                 // evaluated variable values — and other throw sites embed absolute paths.
                 // It therefore reaches neither the log nor the response: only the exception type
-                // is logged at Error (never the exception object), and the returned Error string
-                // is generic. Full detail stays at Debug, suppressed at the production minimum
-                // of Information. suspensionId remains the correlator in both.
-                _executionLogger.LogError($"Resume operation failed. JobId={suspensionId}. ExceptionType={ex.GetType().Name}", Guid.Empty);
-                _executionLogger.LogDebug($"Resume operation failure details. JobId={suspensionId}", ex, Guid.Empty);
+                // is logged (the exception object is never passed, since the sinks persist
+                // ex.ToString()), and the returned Error string is generic. The failure is
+                // logged exactly once; suspensionId is the correlator. Hangfire retains the
+                // full exception on the job's FailedState above for diagnostics.
+                _executionLogger.LogError($"Resume operation failed. JobId={suspensionId}: {ex.Message}", Guid.Empty);
                 return new ResumeExecutionResult(false, "Resume execution failed due to an unexpected error.", null, stopwatch.ElapsedMilliseconds);
             }
         }
@@ -260,7 +260,7 @@ namespace Warewolf.Execution.Lightweight
             {
                 Dev2Logger.Warn(
                     $"Resume version mismatch: job was suspended at workflow version {versionNumber} but the deployed " +
-                    $"'{Path.GetFileName(filePath)}' is version {fileVersion}. Resuming against the deployed version " +
+                    $"'{Path.GetFileNameWithoutExtension(filePath)}' is version {fileVersion}. Resuming against the deployed version " +
                     "(the engine has no version catalog).", "ResumptionExecutor");
             }
 

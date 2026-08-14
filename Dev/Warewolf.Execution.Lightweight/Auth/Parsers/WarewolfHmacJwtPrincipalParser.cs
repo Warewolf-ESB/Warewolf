@@ -82,9 +82,8 @@ public sealed class WarewolfHmacJwtPrincipalParser : IPrincipalParser
             nameType:           ClaimTypes.Name,
             roleType:           ClaimTypes.Role);
 
-        _logger.LogDebug(
-            "Warewolf HMAC JWT validated; groups=[{Groups}]",
-            string.Join(", ", groups));
+        // Group membership identifies the caller — never logged, at any level.
+        _logger.LogDebug("Warewolf HMAC JWT validated; groupCount={GroupCount}", groups.Count);
 
         return Task.FromResult<WorkflowClaimsPrincipal?>(new WorkflowClaimsPrincipal(identity));
     }

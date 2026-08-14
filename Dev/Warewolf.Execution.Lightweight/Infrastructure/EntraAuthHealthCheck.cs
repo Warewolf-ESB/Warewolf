@@ -36,13 +36,9 @@ internal sealed class EntraAuthHealthCheck : IHostedService
     {
         if (_options.IsEnabled)
         {
-            // Tenant ID and audience values identify the deployment's Entra objects —
-            // Debug-only, never in production Info/Error/Warning entries.
+            // Tenant ID and audience values identify the deployment's Entra objects and are
+            // never logged. Emitted once.
             _logger.LogInformation("EntraAuthHealthCheck: bearer-token validation ENABLED.");
-            _logger.LogDebug(
-                "EntraAuthHealthCheck: bearer-token validation ENABLED — TenantId={TenantId} Audiences=[{Audiences}]",
-                _options.TenantId,
-                string.Join(", ", _options.ValidAudiences));
         }
         else
         {

@@ -60,8 +60,7 @@ internal static class StartupOrchestrator
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed. ExceptionType={ex.GetType().Name}", executionId);
-            Dev2Logger.Debug("StartupOrchestrator RunStartupAsync failure details.", ex, executionId);
+            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed: {ex.Message}", executionId);
             throw;
         }
     }
@@ -187,9 +186,8 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-Diagnostics";
 
-        // Vault name and the absolute workflows directory are withheld from Info and kept at Debug.
+        // Vault name and the absolute workflows directory are never logged. Emitted once.
         Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}", executionId);
-        Dev2Logger.Debug($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
         Dev2Logger.Warn(
             $"Startup | Phase=Diagnostics | EncryptionEnabled={config.EncryptionEnabled} | " +
@@ -227,7 +225,6 @@ internal static class StartupOrchestrator
         }
 
         Dev2Logger.Info("StartupOrchestrator InitializeEncryptionAsync starting", executionId);
-        Dev2Logger.Debug($"StartupOrchestrator InitializeEncryptionAsync starting for vault: {config.VaultName}, secret: {config.SecretName}", executionId);
 
         try
         {
@@ -242,8 +239,7 @@ internal static class StartupOrchestrator
             // the exception object are withheld. NOTE: `guidance` is NOT logged at
             // Error/Warning either — ClassifyKeyVaultException embeds the vault name, the
             // secret name and (for RequestFailedException) rfe.Message inside it.
-            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}. ExceptionType={ex.GetType().Name}", executionId);
-            Dev2Logger.Debug($"StartupOrchestrator KeyVault initialization failed. Category: {category}, VaultName: {config.VaultName}, SecretName: {config.SecretName}, Guidance: {guidance}", ex, executionId);
+            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}: {ex.Message}", executionId);
 
             if (!config.SkipFailureToRetrieveSecret)
             {
@@ -332,7 +328,6 @@ internal static class StartupOrchestrator
         const string executionId = "StartupOrchestrator-WarmUp";
 
         Dev2Logger.Info("StartupOrchestrator WarmUpWorkflowIndex starting", executionId);
-        Dev2Logger.Debug($"StartupOrchestrator WarmUpWorkflowIndex starting for directory: {config.WorkflowsDirectory}", executionId);
 
         try
         {

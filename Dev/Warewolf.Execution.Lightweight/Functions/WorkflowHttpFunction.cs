@@ -331,10 +331,12 @@ namespace Warewolf.Execution.Lightweight
                         if (matchResult.Outcome == PolicyMatchOutcome.Forbidden ||
                             matchResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny)
                         {
+                            // DenialReason names the caller and lists their groups — never
+                            // returned to the caller. CorrelationId ties this to the audit entry.
                             return await HttpResponseHelper.WriteWrappedErrorAsync(request, context, HttpStatusCode.InternalServerError,
                                 (int)HttpStatusCode.InternalServerError, "internal_server_error",
                                 "Invalid Authentication Token or invalid permissions to Execute resource",
-                                matchResult.DenialReason ?? "Insufficient permissions.", correlationId);
+                                "Insufficient permissions.", correlationId);
                         }
                         break;
                     }

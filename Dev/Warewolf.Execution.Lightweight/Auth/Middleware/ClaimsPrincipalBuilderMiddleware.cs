@@ -50,11 +50,12 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
             var principal = await BuildPrincipalAsync(request, context.CancellationToken);
             context.Items[AuthConstants.PrincipalContextKey] = principal;
 
+            // Caller identity and group membership are never logged, at any level.
+            // Counts and the resolved permission flags carry the diagnostic value.
             _logger.LogTrace(
-                "Principal built: User={User} Authenticated={Auth} Groups=[{Groups}] Permissions={Perms}",
-                principal.UserName,
+                "Principal built: Authenticated={Auth} GroupCount={GroupCount} Permissions={Perms}",
                 principal.Identity?.IsAuthenticated,
-                string.Join(", ", principal.Groups),
+                principal.Groups.Count,
                 principal.Permissions);
 
             LogVerboseDiagnostics(principal);
@@ -101,21 +102,23 @@ public sealed class ClaimsPrincipalBuilderMiddleware : IFunctionsWorkerMiddlewar
         try
         {
             var identity = principal.Identity as ClaimsIdentity;
-            var roles = string.Join(", ", principal.Identities
+            var roleCount = principal.Identities
                 .SelectMany(i => i.Claims)
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value));
-            var groups = string.Join(", ", principal.Groups);
+                .Count(c => c.Type == ClaimTypes.Role);
             var perms = string.Join(", ", principal.Permissions);
             var claimCount = identity?.Claims.Count() ?? 0;
 
+            // User name, role names and group names are caller identity — never logged,
+            // at any level. Counts preserve the diagnostic signal (did the parser produce
+            // an identity, and did it carry any roles?) without naming the caller.
             _logger.LogDebug(
-                "[AuthDiag] ClaimsPrincipal: User={User} AuthType={AuthType} IsAuthenticated={IsAuth} " +
-                "Roles=[{Roles}] Groups=[{Groups}] Permissions=[{Perms}] ClaimCount={ClaimCount}",
-                principal.UserName,
+                "[AuthDiag] ClaimsPrincipal: AuthType={AuthType} IsAuthenticated={IsAuth} " +
+                "RoleCount={RoleCount} GroupCount={GroupCount} Permissions=[{Perms}] ClaimCount={ClaimCount}",
                 identity?.AuthenticationType ?? "(none)",
                 identity?.IsAuthenticated ?? false,
-                roles, groups, perms, claimCount);
+                roleCount,
+                principal.Groups.Count,
+                perms, claimCount);
         }
         catch (Exception ex)
         {
