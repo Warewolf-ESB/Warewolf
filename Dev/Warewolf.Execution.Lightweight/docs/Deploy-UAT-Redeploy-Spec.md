@@ -88,8 +88,8 @@ the `jobs1`/`jobs2` SQL schema (already applied directly to `WarewolfEntraTestDb
 | **R4** | Plan is shared and lives in a **different resource group**. | A plan-level change hits unrelated apps. | Treat the plan as read-only for this deploy. |
 | **R5** | `httpsOnly: false`. | Security weakness, pre-existing. | Flag to the team; do not silently change it as part of this deploy — it may be load-bearing for an existing caller. |
 | **R6** | Deploy replaces app settings if the orchestrator is run without care. | Broken auth / wrong queue / lost secrets. | Back up settings first; diff after deploy (§6.5). |
-| **R7** | Workflow resources must include `RabbitProcess.bite` + `RabbitProcess2.bite` and the DB source `b9184f70-…`. | Load test fails at step 1. | Confirm staged resources in the plan phase (§6.3). |
-| **R8** | DPAPI-encrypted `.bite` sources cannot travel between machines. | Source fails to decrypt. | The bundled `NewSqlServerSource (Local Backup)` (`d3f6a2e1-…`) is **unreferenced** by both workflows — exclude it. Both bind to `b9184f70-…`. |
+| **R7** | `Warewolf.Execution.Lightweight.csproj` only copies its bundled `Resources\` folder to the build/publish output in **Debug** config — a `-c Release` publish (§5.3) has **no `Resources` folder at all** unless `-WorkflowsSourcePath` is passed to the orchestrator. | **Confirmed root cause of the 2026-08-13 load-test hang**: 29,782 `FileNotFoundException: Could not find file 'C:\home\site\wwwroot\Resources'` in App Insights (`warewolfserver-uat-ai`), then every workflow execution failed instantly and the load test hung polling for results that never arrived. | **Mandatory:** stage the resources (§5.4) and pass `-WorkflowsSourcePath` to every dry-run and deploy (§6.2/§6.4); confirm it in the plan phase (§6.3). |
+| **R8** | DPAPI-encrypted `.bite` sources cannot travel between machines. | Source fails to decrypt. | The bundled `NewSqlServerSource (Local Backup)` (`d3f6a2e1-…`) is **unreferenced** by both workflows — exclude it (§5.4). Both workflows bind to `b9184f70-…`, fetched fresh from the devops endpoint (§5.4). |
 
 ## 5. Pre-flight
 
@@ -124,6 +124,80 @@ dotnet publish Dev\Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight
 Publish path must not collide with JobProcessor/ServiceBusWorker publish dirs — the orchestrator
 fails at plan time if they do.
 
+### 5.4 Stage the workflow resources (the `Resources` folder)
+
+**This step is mandatory and is the step this spec exists to stop people skipping.**
+`Warewolf.Execution.Lightweight.csproj` only copies its bundled `Resources\**\*` into the
+build/publish output when `$(Configuration) == 'Debug'` — a `-c Release` publish (§5.3) produces
+**no `Resources` folder at all**. The engine reads workflows from
+`WorkflowsDirectory` (env var, default `<wwwroot>\Resources`) at startup and per-invocation; if
+that folder is absent, every workflow execution fails immediately.
+
+This is not theoretical: the App Insights resource for this app (`warewolfserver-uat-ai`, RG
+`DEV2`) shows exactly that failure during the 2026-08-13 load test — a ~2-minute burst of
+**29,782** identical exceptions,
+
+```
+System.IO.FileNotFoundException: Could not find file 'C:\home\site\wwwroot\Resources'.
+```
+
+thrown from `ServiceBusWorkflowTrigger` (and its `AzureExecutionLogger`/`AuditExecutionLogger`),
+followed by zero further exceptions while `ServiceBusResult` kept polling every few seconds for
+results that could never arrive — i.e. the load test's apparent "hang" was every workflow
+execution failing instantly on a missing `Resources` folder, not a performance problem. Query it
+yourself with:
+
+```powershell
+az monitor app-insights query --app warewolfserver-uat-ai --resource-group DEV2 `
+  --analytics-query "exceptions | summarize count() by type, tostring(outerMessage) | order by count_ desc" -o json
+```
+
+(Use `-o json`, not `-o table` — the CLI's table formatter silently renders blank for some
+`summarize`/`bin()` shapes even when rows exist.)
+
+**Required resource set for the ShovelBridge load test** (R7/R8):
+
+| File | Source | Include? |
+|---|---|---|
+| `Resources\rabbit\RabbitProcess.bite` | committed, `Dev\Warewolf.Execution.Lightweight\Resources\rabbit\` | Yes — the workflow under test |
+| `Resources\rabbit\RabbitProcess2.bite` | committed, same folder | Yes — second load-test workflow |
+| `Resources\NewSqlServerSource.bite` (`SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"`) | **not committed** — fetched fresh from the devops endpoint (rotating connection string) | Yes — both workflows' DB activities bind to this ID; without it every DB step fails to resolve its source |
+| `Resources\rabbit\NewSqlServerSource (Local Backup).bite` (`d3f6a2e1-…`) | committed, same folder | **No — exclude.** Unreferenced by both workflows; its connection string is DPAPI-encrypted under its author's Windows account and cannot decrypt on another machine or in Azure |
+
+Assemble a local staging folder and fetch the DB source the same way `pipeline-CLOUD.yml` does
+(`Download NewSqlServerSource.bite from DevOps Endpoint`, `Build` stage):
+
+```powershell
+$stagingDir = 'D:\ExecutionEngine\WorkflowResources'
+New-Item -ItemType Directory -Path "$stagingDir\rabbit" -Force | Out-Null
+
+# 1. Committed rabbit workflows — copy everything except the unreferenced local-backup source.
+Get-ChildItem 'Dev\Warewolf.Execution.Lightweight\Resources\rabbit' -File |
+    Where-Object { $_.Name -ne 'NewSqlServerSource (Local Backup).bite' } |
+    Copy-Item -Destination "$stagingDir\rabbit" -Force
+
+# 2. Fresh NewSqlServerSource.bite (b9184f70-…) from the devops endpoint — same headers/retry
+#    pattern as pipeline-CLOUD.yml's "Download NewSqlServerSource.bite from DevOps Endpoint" step.
+$uri = 'https://devops.warewolf.online/warewolf-devops/api/download-bite/mssql'
+$headers = @{
+    'CF-Access-Client-Id'     = $env:CFAccessClientIdValue
+    'CF-Access-Client-Secret' = $env:CFAccessClientSecretValue
+}
+Invoke-WebRequest -Uri $uri -Headers $headers -OutFile "$stagingDir\NewSqlServerSource.bite"
+
+# Sanity check: must be Source XML for b9184f70-…, not an HTML SSO login page.
+$body = Get-Content "$stagingDir\NewSqlServerSource.bite" -Raw
+if ($body -notmatch '<Source ' -or $body -notmatch 'ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082"') {
+    throw "Downloaded content is not the expected NewSqlServerSource .bite XML — check CF-Access-Client-Id/Secret."
+}
+```
+
+Pass `$stagingDir` as `-WorkflowsSourcePath` in §6.2/§6.4 below — the orchestrator copies its
+contents into `<PublishDir>\Resources`, runs `Generate-WorkflowIndex.ps1` over the result, and
+(only when `-EncryptResources` is set) WFAES-encrypts it. This spec does not set
+`-EncryptResources`, so `NewSqlServerSource.bite` must already carry a decryptable
+(WFAES-encrypted-by-devops or plaintext) `ConnectionString` — do not hand-edit it.
+
 ## 6. Procedure
 
 ### 6.1 Upgrade the runtime
@@ -138,17 +212,21 @@ az functionapp config appsettings set --name WarewolfServer-UAT --resource-group
 
 ```powershell
 & Dev\Warewolf.Execution.Lightweight\Scripts\Deploy-WwExecutionEngine.ps1 `
-    -ResourceGroup  'DEV2' `
-    -Location       'eastus' `
-    -StorageAccount '<UAT storage account>' `
-    -AppName        'WarewolfServer-UAT' `
-    -PublishPath    'D:\ExecutionEngine\Publish' `
+    -ResourceGroup       'DEV2' `
+    -Location            'eastus' `
+    -StorageAccount      '<UAT storage account>' `
+    -AppName             'WarewolfServer-UAT' `
+    -PublishPath         'D:\ExecutionEngine\Publish' `
+    -WorkflowsSourcePath 'D:\ExecutionEngine\WorkflowResources' `
     -SkipAuthProvisioning `
     -LicenseCheckEnabled:$false `
     -DryRun
 ```
 
 `-StorageAccount` must be read from the backup (`AzureWebJobsStorage`), not guessed.
+`-WorkflowsSourcePath` must point at the staging folder assembled in §5.4 — **omitting it is the
+defect that caused the 2026-08-13 load-test hang** (§5.4); the orchestrator does not fail if it's
+left out, it just quietly ships an app with no `Resources` folder.
 
 ### 6.3 Review the PLAN output (Phase 0.5)
 
@@ -157,8 +235,10 @@ anything. Confirm specifically:
 
 - targeting is `WarewolfServer-UAT` / `DEV2` — **not** `warewolfserver`;
 - `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` is unchanged;
-- staged workflow resources include `RabbitProcess.bite` and `RabbitProcess2.bite`;
-- the DB source `b9184f70-…` is staged and is **not** DPAPI-encrypted;
+- **`Workflows source` is NOT `(none)`** — it must show the §5.4 staging folder path;
+- staged workflow resources include `RabbitProcess.bite`, `RabbitProcess2.bite`, and a
+  `NewSqlServerSource.bite` resolving to `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"`;
+- `NewSqlServerSource (Local Backup).bite` (`d3f6a2e1-…`) is **not** staged;
 - no app setting from §2 is dropped.
 
 ### 6.4 Deploy
@@ -182,7 +262,25 @@ Any missing name is a defect — restore from the backup before proceeding.
    deploy.
 2. **Runtime is actually .NET 10:** confirm `netFrameworkVersion` is `v10.0` *and* the worker
    started — a mismatched placeholder can leave the app up but failing per-invocation.
-3. **New code is live** — this is the whole point of the redeploy. Run a **single**-message
+3. **`Resources` folder actually deployed (§5.4 — check this before anything else):** the
+   `StartupOrchestrator` logs the disk-scan result on every cold start. Confirm it found `.bite`
+   files and confirm zero `FileNotFoundException`s referencing `Resources`:
+
+   ```kusto
+   traces
+   | where timestamp > ago(15m)
+   | where message contains "StartupOrchestrator found" and message contains ".bite files"
+   | project timestamp, message
+   ```
+
+   ```powershell
+   az monitor app-insights query --app warewolfserver-uat-ai --resource-group DEV2 `
+     --analytics-query "exceptions | where timestamp > ago(15m) and outerMessage contains 'wwwroot\\Resources' | count" -o json
+   ```
+
+   Both must show resources found / zero matching exceptions before proceeding to step 4 — this
+   is the exact signature of the 2026-08-13 incident (§5.4, R7).
+4. **New code is live** — this is the whole point of the redeploy. Run a **single**-message
    `Test-ShovelBridgeE2E.ps1 -VerifyWorkflowExecution` first, then confirm in App Insights:
 
    ```kusto
@@ -194,7 +292,7 @@ Any missing name is a defect — restore from the backup before proceeding.
 
    The `DB proc result | Proc=… | Rows=… | FirstValue=…` line only exists in the new build. If it
    is absent, the deploy did not take effect and there is no point running the load test.
-4. **Load test:** re-run `ShovelBridgeLoadTest_ExternalServiceBus` (1000 messages).
+5. **Load test:** re-run `ShovelBridgeLoadTest_ExternalServiceBus` (1000 messages).
 
 ## 8. Rollback
 
