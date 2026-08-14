@@ -205,7 +205,7 @@ internal static class Program
         Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
 
         var waitStopwatch = Stopwatch.StartNew();
-        var results = await WaitForServiceBusResultsAsync(engineBaseUrl, resultPollAuthToken, correlationIds, TimeSpan.FromSeconds(timeoutSeconds));
+        var (results, lastTransientErrors) = await WaitForServiceBusResultsAsync(engineBaseUrl, resultPollAuthToken, correlationIds, TimeSpan.FromSeconds(timeoutSeconds));
         waitStopwatch.Stop();
 
         var succeededIds = correlationIds.Where(id => results.TryGetValue(id, out var r) && string.Equals(r.Status, "Succeeded", StringComparison.OrdinalIgnoreCase)).ToArray();
@@ -217,7 +217,8 @@ internal static class Program
             // Preserve the original single-message wording exactly.
             if (neverResolvedIds.Length > 0)
             {
-                Console.WriteLine($"FAIL: no result was recorded for correlationId '{correlationIds[0]}' at {engineBaseUrl}/secure/servicebus-result/{correlationIds[0]} within {timeoutSeconds}s.");
+                var lastErrorSuffix = lastTransientErrors.TryGetValue(correlationIds[0], out var lastError) ? $" Last transient error: {lastError}" : string.Empty;
+                Console.WriteLine($"FAIL: no result was recorded for correlationId '{correlationIds[0]}' at {engineBaseUrl}/secure/servicebus-result/{correlationIds[0]} within {timeoutSeconds}s.{lastErrorSuffix}");
                 return 1;
             }
             if (succeededIds.Length == 1)
@@ -249,7 +250,8 @@ internal static class Program
         }
         foreach (var id in neverResolvedIds.Take(10))
         {
-            Console.WriteLine($"  NO RESULT for correlationId '{id}' (never appeared at /secure/servicebus-result/{{correlationId}}).");
+            var lastErrorSuffix = lastTransientErrors.TryGetValue(id, out var lastError) ? $"; last transient error: {lastError}" : string.Empty;
+            Console.WriteLine($"  NO RESULT for correlationId '{id}' (never appeared at /secure/servicebus-result/{{correlationId}}{lastErrorSuffix}).");
         }
         if (neverResolvedIds.Length > 10)
         {
@@ -540,7 +542,7 @@ internal static class Program
     /// dequeued it) and is not an error. The single-correlationId case (N=1) is just the
     /// degenerate case of this same sweep loop.
     /// </summary>
-    private static async Task<ConcurrentDictionary<string, ServiceBusResult>> WaitForServiceBusResultsAsync(
+    private static async Task<(ConcurrentDictionary<string, ServiceBusResult> Results, ConcurrentDictionary<string, string> LastTransientErrors)> WaitForServiceBusResultsAsync(
         string engineBaseUrl, string authToken, IReadOnlyList<string> correlationIds, TimeSpan timeout, int maxConcurrency = 20)
     {
         using var http = new HttpClient();
@@ -550,6 +552,10 @@ internal static class Program
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerValue);
 
         var results = new ConcurrentDictionary<string, ServiceBusResult>();
+        // Remembers the most recent transient (retried) error per still-pending id purely for
+        // end-of-run diagnostics - see the "NO RESULT" reporting below - it never marks an id
+        // resolved.
+        var lastTransientErrors = new ConcurrentDictionary<string, string>();
         var pending = new ConcurrentDictionary<string, byte>(correlationIds.Select(id => new KeyValuePair<string, byte>(id, 0)));
         var deadline = DateTime.UtcNow + timeout;
         using var throttle = new SemaphoreSlim(maxConcurrency);
@@ -563,11 +569,16 @@ internal static class Program
                 await throttle.WaitAsync();
                 try
                 {
-                    var result = await PollOneServiceBusResultAsync(http, engineBaseUrl, id);
+                    var (result, transientError) = await PollOneServiceBusResultAsync(http, engineBaseUrl, id);
                     if (result is { } resolved)
                     {
                         results[id] = resolved;
                         pending.TryRemove(id, out _);
+                        lastTransientErrors.TryRemove(id, out _);
+                    }
+                    else if (transientError is { } error)
+                    {
+                        lastTransientErrors[id] = error;
                     }
                 }
                 finally
@@ -589,18 +600,21 @@ internal static class Program
             }
         }
 
-        return results;
+        return (results, lastTransientErrors);
     }
 
     /// <summary>
-    /// One GET against the result endpoint for a single correlationId. Returns null if the
-    /// result isn't recorded yet (404 - still in flight, not an error) or on a transient
-    /// network error (caller's sweep loop will retry it next round); returns a terminal
-    /// ServiceBusResult for a recorded success/failure outcome, or an "HttpError" result for
-    /// an unexpected non-2xx/non-404 response so it doesn't abort polling for the rest of a
-    /// bulk run.
+    /// One GET against the result endpoint for a single correlationId. Returns a null Result if
+    /// the result isn't recorded yet (404 - still in flight, not an error), on a transient
+    /// network error, or on a transient server-side status code (503/502/504/429/408 - the
+    /// engine overloaded, cold-starting, or mid-restart under load-test volumes) - in all of
+    /// these cases the caller's sweep loop retries the id on the next sweep instead of giving up
+    /// on it permanently. Returns a terminal ServiceBusResult for a recorded success/failure
+    /// outcome, or an "HttpError" result for any other unexpected non-2xx/non-404 response (e.g.
+    /// a real 500 auth denial per WOLF-8418, which is NOT transient) so it doesn't abort polling
+    /// for the rest of a bulk run.
     /// </summary>
-    private static async Task<ServiceBusResult?> PollOneServiceBusResultAsync(HttpClient http, string engineBaseUrl, string correlationId)
+    private static async Task<(ServiceBusResult? Result, string? TransientError)> PollOneServiceBusResultAsync(HttpClient http, string engineBaseUrl, string correlationId)
     {
         var resultUrl = $"{engineBaseUrl}/secure/servicebus-result/{Uri.EscapeDataString(correlationId)}";
 
@@ -612,26 +626,45 @@ internal static class Program
         catch (HttpRequestException ex)
         {
             Console.WriteLine($"  (transient error polling {resultUrl}: {ex.Message} - retrying)");
-            return null;
+            return (null, ex.Message);
         }
 
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            return null;
+            return (null, null);
         }
 
         var body = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
-            return new ServiceBusResult("HttpError", $"GET {resultUrl} returned {(int)response.StatusCode}: {body}", null);
+            var detail = $"GET {resultUrl} returned {(int)response.StatusCode}: {body}";
+            if (IsTransientStatusCode(response.StatusCode))
+            {
+                return (null, detail);
+            }
+            return (new ServiceBusResult("HttpError", detail, null), null);
         }
 
         using var doc = JsonDocument.Parse(body);
         var status = doc.RootElement.GetProperty("status").GetString() ?? "Unknown";
         var error = doc.RootElement.TryGetProperty("error", out var errorEl) ? errorEl.GetString() : null;
         var outputsJson = doc.RootElement.TryGetProperty("outputs", out var outputsEl) ? outputsEl.ToString() : null;
-        return new ServiceBusResult(status, error, outputsJson);
+        return (new ServiceBusResult(status, error, outputsJson), null);
     }
+
+    /// <summary>
+    /// Status codes worth retrying rather than failing permanently: transport/scale hiccups on
+    /// the engine side (overloaded, cold-starting, or mid-restart under load-test volumes), not
+    /// genuine application-level denials. 500 is deliberately excluded - per WOLF-8418, the
+    /// Lightweight engine's auth middleware wraps policy denials as HTTP 500, which is a real,
+    /// terminal failure, not a transient one.
+    /// </summary>
+    private static bool IsTransientStatusCode(System.Net.HttpStatusCode statusCode) =>
+        statusCode is System.Net.HttpStatusCode.ServiceUnavailable
+            or System.Net.HttpStatusCode.BadGateway
+            or System.Net.HttpStatusCode.GatewayTimeout
+            or System.Net.HttpStatusCode.RequestTimeout
+            or System.Net.HttpStatusCode.TooManyRequests;
 
 
     /// <summary>
