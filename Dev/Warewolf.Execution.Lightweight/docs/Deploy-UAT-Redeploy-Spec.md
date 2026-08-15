@@ -344,9 +344,18 @@ new logging is designed to confirm or kill it.
 
 ## 10. Follow-ups (not part of this deploy)
 
-- **Automate UAT deploys.** The absence of any pipeline or documented procedure is the root cause
-  of this entire detour. Either add a deploy stage to `pipeline-LOADTEST.yml` or make UAT a
-  target of `pipeline-CLOUD.yml`.
+- **Automate UAT deploys.** ✅ **Done (2026-08-15).** Added a `Deploy_UAT` stage to
+  `pipeline-LOADTEST.yml` (`Build_And_Publish_UAT` + `Deploy_UAT` jobs), which runs on every
+  pipeline execution, immediately before `Load_Test` — it publishes the current commit,
+  stages the load-test workflow resources + a fresh `NewSqlServerSource.bite`, resolves the
+  storage account from the app's own `AzureWebJobsStorage` setting (never hardcoded), passes
+  `-EnablePersistence` with the git-tracked `Scripts/persistencesettings.uat.json` and
+  `Scripts/persistencesettingsdbsource.uat.bite` (§14's own follow-up — both committed, the
+  latter WFAES-encrypted at rest like `Settings/ElasticsearchLoggingSource.bite`, so no
+  Secure File/secret-variable handling is needed), explicitly restarts the app afterward (the
+  §13 `WEBSITE_RUN_FROM_PACKAGE` gotcha), and smoke-tests `/apis.json` before letting
+  `Load_Test` proceed. No manual operator action is required — both persistence files are
+  checked into source control (see `Scripts/README.md`'s "Deploy targets" section).
 - **Version stamping.** There is no reliable way to tell which build UAT is running. Surface an
   app version in a health endpoint and log it at startup.
 - **`jobs1`/`jobs2` provisioning script.** The schema exists only as live database state; that is
@@ -358,14 +367,20 @@ new logging is designed to confirm or kill it.
 
 Per `CLAUDE.md` change-synchronisation:
 
-- `Scripts/README.md` — note UAT as a deploy target.
-- `docs/Deploy-RunGuide.md` / `docs/Deploy-EndToEnd-Runbook.md` — add the UAT flow.
+- `Scripts/README.md` — note UAT as a deploy target. **Done (2026-08-15)** — see the new
+  "Deploy targets" section and the `persistencesettings.uat.json` row in the scripts table.
+- `docs/Deploy-RunGuide.md` / `docs/Deploy-EndToEnd-Runbook.md` — add the UAT flow. Still
+  outstanding; the automated `Deploy_UAT` pipeline stage (§10) now covers routine redeploys, but
+  a manual runbook entry for out-of-band/emergency redeploys is not yet written.
 - `docs/ShovelBridge-Architecture.md` — record that the load test depends on a manually deployed
   engine, and the outcome of the redeploy. **Done (2026-08-14)** — see the dated entry covering
-  the `rabbit/RabbitProcess` workflow-name resolution finding below §5.4 of this doc.
+  the `rabbit/RabbitProcess` workflow-name resolution finding below §5.4 of this doc. Note this
+  is now superseded by §10's automation — the load test no longer depends on a *manual* deploy.
 - `Dev/.azure/pipeline-LOADTEST.yml` / `pipeline-CLOUD.yml` — **Done (2026-08-14)**:
   `VerifyWorkflowName` updated from `'RabbitProcess'` to `'rabbit/RabbitProcess'` in both, per
-  the folder-qualified-name requirement now called out in §5.4 above.
+  the folder-qualified-name requirement now called out in §5.4 above. **Further update (2026-08-
+  15)**: `pipeline-LOADTEST.yml` gained the `Deploy_UAT` stage (§10) — the deploy-then-test flow
+  it was previously missing.
 
 ## 12. Execution findings (2026-08-14, second pass)
 
@@ -533,8 +548,12 @@ the row-count evidence in `ShovelBridge-Architecture.md`) and this fix. Add a Ph
 check for "Persistence (Hangfire): enabled (wwexecution-uat-hangfire)" specifically for this app,
 the same way §6.3 already checks `Workflows source`.
 
-**Follow-up not yet done:** commit a reusable, git-tracked `persistencesettings.uat.json`
-(`Enable: true`, otherwise identical to the repo default) under this app's own deploy config so
-`-PersistenceSettingsPath` has a checked-in source of truth instead of an ad-hoc local file each
-time. The DbSource `.bite` itself should stay OUT of source control (it carries a real, if
-encrypted, credential) — reference it by a documented, stable local/secret-store path instead.
+**Follow-up done (2026-08-15):** `Scripts/persistencesettings.uat.json` (`Enable: true`,
+otherwise identical to the repo default) and `Scripts/persistencesettingsdbsource.uat.bite`
+(a `DbSource` pointing at `wwexecution-uat-hangfire`, `ConnectionString` WFAES-encrypted at
+rest) are now both committed as the checked-in source of truth for `-PersistenceSettingsPath`
+and `-PersistenceDbSourcePath`, consumed by `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage (see
+§10). Committing the DbSource `.bite` follows the same precedent already set by
+`Settings/ElasticsearchLoggingSource.bite` — its connection string is only ever decryptable
+via this app's own Key Vault key at runtime, so it does not need Secure File/secret-variable
+treatment like a plaintext credential would.
