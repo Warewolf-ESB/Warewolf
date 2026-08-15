@@ -66,7 +66,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
     private readonly ILogger<ServiceBusWorkflowTriggerFunction> _logger;
 
     public ServiceBusWorkflowTriggerFunction(
-        ServiceBusEntraAuthOptions serviceBusAuthOptions,
+        EntraBearerTokenValidator tokenValidator,
         IWorkflowPolicyMatcher policyMatcher,
         IWorkflowExecutor executor,
         IServiceBusReplayAndResultStore store,
@@ -74,7 +74,19 @@ public sealed class ServiceBusWorkflowTriggerFunction
         HostEnvironmentConfig config,
         ILogger<ServiceBusWorkflowTriggerFunction> logger)
     {
-        _tokenValidator = new EntraBearerTokenValidator(serviceBusAuthOptions);
+        // tokenValidator MUST be DI-injected as a singleton (see ServiceCollectionExtensions
+        // AUTH-09/SB), never `new`'d here: EntraBearerTokenValidator caches Entra's OIDC
+        // metadata/JWKS internally, and this Function class is NOT explicitly registered in
+        // DI, so the Functions isolated-worker host resolves it (and therefore would
+        // resolve a `new`-here validator) PER INVOCATION. Under a burst of many concurrent
+        // Service Bus messages that would mean one cold OIDC-metadata fetch per message —
+        // hundreds of simultaneous outbound calls to login.microsoftonline.com — which
+        // exhausts outbound connections/SNAT ports on a Consumption-plan Function App and
+        // manifests as widespread IDX20803/IDX20804 + InvalidToken failures under load
+        // (reproduced by the 1000-message ShovelBridge load test). Injecting the singleton
+        // gives this trigger the same one-cache-for-app-lifetime behaviour that
+        // BearerTokenPrincipalParser already has for the HTTP path.
+        _tokenValidator = tokenValidator;
         _policyMatcher  = policyMatcher;
         _executor       = executor;
         _store          = store;

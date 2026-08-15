@@ -41,6 +41,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Functions;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Models;
@@ -149,7 +150,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         IServiceBusReplayAndResultStore? store = null,
         ServiceBusEntraAuthOptions? authOptions = null) =>
         new(
-            authOptions ?? new ServiceBusEntraAuthOptions(),
+            new EntraBearerTokenValidator(authOptions ?? new ServiceBusEntraAuthOptions()),
             policyMatcher ?? new FakePolicyMatcher(PolicyMatchResult.Allow()),
             executor ?? new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" }),
             store ?? new ServiceBusReplayAndResultStore(new MemoryStorage()),
