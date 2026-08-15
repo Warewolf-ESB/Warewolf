@@ -606,13 +606,17 @@ internal static class Program
     /// <summary>
     /// One GET against the result endpoint for a single correlationId. Returns a null Result if
     /// the result isn't recorded yet (404 - still in flight, not an error), on a transient
-    /// network error, or on a transient server-side status code (503/502/504/429/408 - the
-    /// engine overloaded, cold-starting, or mid-restart under load-test volumes) - in all of
-    /// these cases the caller's sweep loop retries the id on the next sweep instead of giving up
-    /// on it permanently. Returns a terminal ServiceBusResult for a recorded success/failure
-    /// outcome, or an "HttpError" result for any other unexpected non-2xx/non-404 response (e.g.
-    /// a real 500 auth denial per WOLF-8418, which is NOT transient) so it doesn't abort polling
-    /// for the rest of a bulk run.
+    /// network error, on a client-side request timeout (HttpClient.Timeout, default 100s,
+    /// elapsing for this one poll under load - surfaces as a TaskCanceledException, NOT an
+    /// HttpRequestException, since no CancellationToken is ever passed to GetAsync here so
+    /// there is no other source of cancellation to confuse it with), or on a transient
+    /// server-side status code (503/502/504/429/408 - the engine overloaded, cold-starting, or
+    /// mid-restart under load-test volumes) - in all of these cases the caller's sweep loop
+    /// retries the id on the next sweep instead of giving up on it permanently. Returns a
+    /// terminal ServiceBusResult for a recorded success/failure outcome, or an "HttpError"
+    /// result for any other unexpected non-2xx/non-404 response (e.g. a real 500 auth denial
+    /// per WOLF-8418, which is NOT transient) so it doesn't abort polling for the rest of a
+    /// bulk run.
     /// </summary>
     private static async Task<(ServiceBusResult? Result, string? TransientError)> PollOneServiceBusResultAsync(HttpClient http, string engineBaseUrl, string correlationId)
     {
@@ -627,6 +631,18 @@ internal static class Program
         {
             Console.WriteLine($"  (transient error polling {resultUrl}: {ex.Message} - retrying)");
             return (null, ex.Message);
+        }
+        catch (OperationCanceledException ex)
+        {
+            // HttpClient.Timeout elapsing throws TaskCanceledException (a subclass of
+            // OperationCanceledException), not HttpRequestException - previously uncaught here,
+            // this propagated out of WaitForServiceBusResultsAsync's Task.WhenAll and aborted
+            // the ENTIRE bulk run (all still-pending correlationIds, not just this one poll)
+            // even with a large --result-timeout-seconds budget remaining. Treat it exactly
+            // like the other transient cases above: retry this one id on the next sweep.
+            var detail = $"HttpClient.Timeout ({http.Timeout.TotalSeconds:F0}s) elapsed polling {resultUrl}: {ex.Message}";
+            Console.WriteLine($"  (transient timeout polling {resultUrl} - retrying)");
+            return (null, detail);
         }
 
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

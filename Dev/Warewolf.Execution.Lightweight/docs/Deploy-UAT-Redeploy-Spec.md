@@ -4,7 +4,9 @@
 2026-08-14) was on .NET 10 with correct `Resources/`, but **did not contain the concurrency fix**
 — reproduced live (see §13). A corrective redeploy from `8510` HEAD (fix confirmed present in the
 built DLL) was performed and **verified to resolve the `[[JobLogId]]` error under concurrency**
-(see §13). §7.5 (full 1000-message RabbitMQ+Shovel+ServiceBus load test) remains unexecuted.
+(see §13). **§7.5 (full 1000-message RabbitMQ+Shovel+ServiceBus load test) is now executed and
+PASSING 1000/1000 (2026-08-15) — see §14 and `docs/ShovelBridge-Architecture.md`.** The blocker
+was a persistence-configuration regression (§14), not the Shovel bridge itself.
 **Author:** drafted 2026-08-13 during WOLF-8510 (ShovelBridge load test)
 **Target:** `WarewolfServer-UAT` (Function App, RG `DEV2`)
 
@@ -488,3 +490,51 @@ RabbitMQ+Shovel+Service Bus locally.
 `dc1182bc-ffc1-4a1d-a414-ab672998eb9a` (expires 2026-09-14, additive, does not affect `ms7`) should
 be deleted once the user confirms no further verification is needed, via
 `az ad app credential delete --id dc1182bc-ffc1-4a1d-a414-ab672998eb9a --key-id <id>`.
+
+## 14. Persistence (Hangfire) enabled — critical guardrail for ALL future redeploys (2026-08-15)
+
+**§7.5 (the full 1000-message load test) is now executed and passing 1000/1000 — see
+`docs/ShovelBridge-Architecture.md`'s dated 2026-08-15 entries for the full root-cause writeup.**
+The blocker was NOT the RabbitMQ Shovel bridge; it was `Config.Persistence.Enable=false` on this
+deployment, which made `ServiceBusReplayAndResultStore` fall back to a per-instance in-memory
+result cache — invisible across Consumption-plan scale-out instances, producing the "no result"
+cases every prior pass of this spec (§9-§13) chased as a bridge-delivery problem.
+
+**Current live state (as of 2026-08-15, ~06:30 UTC):**
+- `Settings/persistencesettings.json`: `"Enable": true` (was `false`).
+- `Settings/persistencesettingsdbsource.bite`: WFAES-encrypted connection string to Azure SQL
+  database `wwexecution-uat-hangfire` (server `warewolf-dev2-mcgeaj`, RG `DEV2`), SQL login
+  `wwexecution_uat_hangfire` (already existed with `db_owner`, pre-dating this fix — its password
+  was reset as part of this change since the prior one was unknown/unrecoverable). Encrypted with
+  the SAME Key Vault key already used for this deployment's other WFAES resources (`WWExecutionEngine`
+  / secret `WWExecutionEngineTestSecret` — read from the live app's own `KEYVAULT_SECRET_NAME`
+  setting).
+- `wwexecution-uat-hangfire` scaled from its original `S0` (10 DTU) to **`S2` (50 DTU)** —
+  `S0` produced 8/1000 SQL-capacity-related failures (bare 500s + one token-validation timeout)
+  under the load test's burst; `S2` produced 0/1000. This is a resource-tier setting, trivially
+  reversible (`az sql db update --service-objective <tier>`), not a code/config change.
+- Deployed via the minimal-diff path: downloaded the entire live, already-working package via
+  Kudu's `/api/zip/site/wwwroot/`, replaced ONLY the two `Settings/persistence*` files in place,
+  re-zipped, `az functionapp deployment source config-zip`, `az functionapp restart` — deliberately
+  NOT a full rebuild-and-redeploy, to avoid the R7/R8 (`Resources` folder) and app-settings-drift
+  risks §5.4/§6.5 of this spec exist to catch.
+
+**⚠️ MANDATORY for the next person who does a full redeploy of `WarewolfServer-UAT` (§6.1-§6.4):**
+A full redeploy publishes fresh from source, which means the repo's own committed defaults apply
+unless overridden — `Settings/persistencesettings.json` ships `"Enable": false` and there is no
+committed `persistencesettingsdbsource.bite` at all (by design — see its own header comment; other
+consumers of this repo should NOT get persistence-enabled-by-default). **If a full redeploy is done
+without explicitly passing `-EnablePersistence -PersistenceSettingsPath <Enable:true copy>
+-PersistenceDbSourcePath <bite pointing at wwexecution-uat-hangfire>` to `Deploy-WwExecutionEngine.ps1`,
+persistence will silently revert to disabled and every "no result" symptom in this document's §9-§13
+will return** — this is exactly what happened between the 2026-08-13 provisioning of
+`wwexecution-uat-hangfire` (which enabled persistence and produced nine clean 1000/1000 runs, per
+the row-count evidence in `ShovelBridge-Architecture.md`) and this fix. Add a Phase 0.5 plan-review
+check for "Persistence (Hangfire): enabled (wwexecution-uat-hangfire)" specifically for this app,
+the same way §6.3 already checks `Workflows source`.
+
+**Follow-up not yet done:** commit a reusable, git-tracked `persistencesettings.uat.json`
+(`Enable: true`, otherwise identical to the repo default) under this app's own deploy config so
+`-PersistenceSettingsPath` has a checked-in source of truth instead of an ad-hoc local file each
+time. The DbSource `.bite` itself should stay OUT of source control (it carries a real, if
+encrypted, credential) — reference it by a documented, stable local/secret-store path instead.

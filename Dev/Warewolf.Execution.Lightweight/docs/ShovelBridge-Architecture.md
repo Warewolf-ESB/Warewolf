@@ -845,6 +845,150 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
       un-retried dead-lettering of transient cold-start failures); the load test's residual ~0.8%
       "no result" rate is now attributable to a different, pre-existing bridge-delivery-reliability
       gap, not to the execution engine.
+  - **Harness bug found (2026-08-15): a single slow poll aborted the whole 1000-message run.**
+    The very next full re-run (same command as the 992/1000 run above) failed outright with
+    `FAIL: TaskCanceledException: The request was canceled due to the configured
+    HttpClient.Timeout of 100 seconds elapsing.` — NOT a partial result like 992/1000, a total
+    harness crash. Post-run diagnostics showed the RabbitMQ side was actually fine (source queue
+    `messages (total): 0`, `deliver_get`/`ack` both `6000`, `redeliver: 0` — every message the
+    Shovel accepted was delivered and acknowledged; the Shovel itself stayed `running`).
+    - **Root cause**: `Program.cs`'s `PollOneServiceBusResultAsync` (used by
+      `WaitForServiceBusResultsAsync`'s bounded-concurrency sweep loop, 20-way concurrent GETs
+      against `/secure/servicebus-result/{correlationId}`) only caught `HttpRequestException` and
+      a fixed set of transient status codes (503/502/504/429/408) as retryable. `HttpClient`'s
+      default 100s `Timeout` elapsing on a single GET throws `TaskCanceledException` (a
+      `HttpRequestException` is NOT thrown in this case on modern .NET) — this was uncaught, so
+      it propagated out of that one sweep task, through `Task.WhenAll(sweepTasks)`, out of
+      `WaitForServiceBusResultsAsync`, and up to `Main`'s catch-all, which printed a bare `FAIL:`
+      and returned exit code 1 — abandoning polling for every still-pending correlationId even
+      though the 1800s `-ResultTimeoutSeconds` budget had barely been used. One slow response
+      under 1000-message/20-way-concurrent load was enough to fail the entire run.
+    - **Fix**: added a `catch (OperationCanceledException ex)` alongside the existing
+      `catch (HttpRequestException ex)` in `PollOneServiceBusResultAsync`, treating an
+      `HttpClient.Timeout` the same as the other transient statuses above — the sweep loop just
+      retries that one correlationId on the next 3s sweep instead of aborting. No
+      `CancellationToken` is ever passed to `GetAsync` anywhere in this harness, so a
+      `TaskCanceledException` here can only mean the client-side `Timeout` elapsed, never an
+      unrelated cancellation being masked.
+    - **Verified (2026-08-15)**: rebuilt the harness (`dotnet build -c Release`, 0 errors, only
+      the pre-existing unrelated `NU1510` warning) and re-ran the full 1000-message
+      `-VerifyWorkflowExecution` load test end-to-end against `warewolfserver-uat`. The fix
+      holds: multiple `(transient timeout polling ... - retrying)` lines appeared during the run
+      (proving the bug condition still occurs regularly under this load) and each was retried
+      instead of aborting the run. The full 1800s poll budget was used and the harness exited
+      cleanly with a proper summary: **967/1000 succeeded, 0 explicit failures, 33 "no result"**
+      — no crash, no lost diagnostics for the other 967.
+    - **The residual "no result" cases are confirmed, again, to be the same pre-existing
+      bridge-delivery-gap issue** (not a regression from this fix, and not caused by it): using a
+      temporary Listen-rights SAS rule on the destination queue (created and torn down the same
+      way as the prior 8-case investigation), a small throwaway peek tool
+      (`Azure.Messaging.ServiceBus`, `PeekMessagesAsync`) scanned BOTH the active queue (0
+      messages — fully drained) and the ENTIRE dead-letter subqueue (12,510 messages
+      accumulated across this shared, never-purged testing namespace) for this run's own
+      correlationId prefix. **Zero matches in either** — none of the 33 missing messages (the
+      10 explicitly logged, or their body/correlationId content generally) exist anywhere on the
+      destination queue. This directly rules out an engine-side execution/dead-letter bug for
+      these 33 (an engine failure would have to leave a dead-lettered message behind) and
+      confirms the messages never arrived at Service Bus at all — a RabbitMQ Shovel delivery gap,
+      not the harness, not `WaitForServiceBusResultsAsync`, and not the Lightweight engine.
+      The raw RabbitMQ queue-level lifetime counters (`publish`/`deliver_get`/`ack`) were not
+      usable to corroborate this further: they accumulate across every historical run on this
+      shared, reused source queue (including concurrent CI activity), so a single run's delta
+      cannot be isolated from them — the direct destination-queue peek above is the reliable
+      signal.
+    - **CORRECTION (2026-08-15, same day) — the "Shovel bridge delivery gap" conclusion above was
+      WRONG. The real root cause was found, fixed, and the load test now passes 1000/1000.**
+      The Shovel/RabbitMQ side was never the problem. Chasing the planned next steps for this
+      (enabling Shovel publisher-confirms logging, inspecting broker logs for reconnects,
+      tuning `-ShovelPrefetchCount`/`-PublishConcurrency`) would have been wasted effort against
+      infrastructure (`rabbitmq.warewolf.online`) this project doesn't control (no SSH, and its
+      Prometheus port `15692` isn't exposed through the tunnel — confirmed by direct probe) — the
+      actual defect was entirely on the Lightweight engine's own result-store.
+      - **Actual root cause: `Config.Persistence.Enable` was `false` on the deployed
+        `warewolfserver-uat`, so `ServiceBusReplayAndResultStore` (Security/ServiceBusReplayAndResultStore.cs)
+        falls back to a per-instance, in-memory `ConcurrentDictionary` for BOTH jti replay
+        protection and — critically — `TryGetResult`/`SaveResult`.** Under the 1000-message
+        burst, Azure Functions Consumption-plan scale-out spins up multiple instances; a message
+        can be processed (and its result `SaveResult`'d) on instance A while the harness's later
+        `GET /secure/servicebus-result/{correlationId}` poll is load-balanced to instance B,
+        whose in-memory dictionary never saw that result — a permanent 404 for a message that
+        actually executed successfully. This exactly matches every symptom recorded above: 0
+        active messages, 0 dead-lettered messages, yet a persistent 404 forever. The
+        `ServiceBusReplayAndResultStore` class's own doc comment already named this exact failure
+        mode ("NOT safe across multiple instances behind a load balancer or multiple
+        Consumption-plan workers") — it had just never been connected to this symptom before.
+      - **Confirmed, not just theorised**, via direct evidence, in order:
+        1. Fetched the live `Settings/persistencesettings.json` from the deployed package via
+           Kudu VFS: `"Enable": false`.
+        2. Found a pre-existing, already-provisioned Azure SQL database
+           `wwexecution-uat-hangfire` (RG `DEV2`, server `warewolf-dev2-mcgeaj`) with the full
+           Hangfire schema already installed (11 `HangFire.*` tables) and **9,001 pre-existing
+           `sbtrigger:result:*` rows in `HangFire.Hash`**, comprising exactly nine prior clean
+           1000-row load-test runs (`9 × 1000 = 9000`) plus one single-message test — i.e.
+           persistence had demonstrably worked perfectly before, with zero "no result" cases in
+           any of those nine runs, then was later silently disabled.
+        3. The deployed `Settings/persistencesettingsdbsource.bite` (dated 2026-08-10, i.e.
+           **before** the DB above was even created on 2026-08-13) turned out to be a leftover
+           local-dev placeholder (`Data Source=(local)\sqlexpress;Initial Catalog=hangfiredb;
+           Integrated Security=SSPI` — unreachable from Azure) — further confirming persistence
+           was non-functional on this deployment regardless of the `Enable` flag.
+      - **Fix applied**: reset the password on the pre-existing, dedicated SQL login
+        `wwexecution_uat_hangfire` (already `db_owner` on `wwexecution-uat-hangfire` — this login
+        already existed, confirming it was the one used by the nine earlier successful runs),
+        built a new `Settings/persistencesettingsdbsource.bite` pointing at
+        `wwexecution-uat-hangfire` in the same minimal shape
+        `Warewolf.Execution.Lightweight.Tests/PersistenceConfigLoaderTests.cs` uses, WFAES-encrypted
+        it via `Scripts/Encrypt-Config.ps1` against the SAME Key Vault key already in use for this
+        deployment (`WWExecutionEngine` / secret `WWExecutionEngineTestSecret` — read from the
+        live app's own `KEYVAULT_SECRET_NAME` setting, not guessed), and flipped
+        `Settings/persistencesettings.json`'s `Enable` to `true`. Downloaded the entire live,
+        already-working package via Kudu's `/api/zip/site/wwwroot/`, replaced ONLY these two
+        files (deliberately avoiding a full rebuild/redeploy and its much larger blast radius —
+        no code, `Resources/`, or app-settings changes), re-zipped, redeployed via
+        `az functionapp deployment source config-zip`, and restarted (required —
+        `WEBSITE_RUN_FROM_PACKAGE=1` mounts `wwwroot` read-only from the package, confirmed by
+        the earlier 2026-08-14 redeploy notes in `Deploy-UAT-Redeploy-Spec.md`).
+      - **Verified working end-to-end before the full load test**: a single-message
+        `-VerifyWorkflowExecution` run (§7.4-style) passed, and its result row was confirmed
+        present in `HangFire.Hash` by direct SQL query immediately after — proving the store is
+        genuinely shared/durable now, not just "no longer false".
+      - **First full 1000-message re-run (persistence enabled, SQL DB still at its original `S0`
+        tier): 992/1000 succeeded, 0 "no result" (down from 33), 8 explicit failures** — 1
+        `InvalidToken` ("A task was canceled") and 7 bare `HttpError` 500s on the result-GET path.
+        This is a materially different (and much better) failure signature than before: EVERY
+        correlationId now gets a definitive answer, with no invisible/unexplained cases. The
+        remaining 8 are consistent with the Hangfire SQL store's own capacity, not a logic bug:
+        `wwexecution-uat-hangfire` was provisioned at `S0` (10 DTUs, the smallest Standard tier)
+        — persistence being enabled means every trigger's jti-replay check (`AcquireDistributedLock`
+        + hash read/write) and every result save/read now costs a real SQL round-trip instead of
+        an in-memory lookup, and a burst of 1000 messages plus 20-way concurrent result-polling
+        against a 10-DTU database is a plausible bottleneck (SQL timeouts manifesting as the
+        auth-pipeline's generic 500 path, and possibly starved thread-pool threads manifesting as
+        the one token-validation cancellation).
+      - **Scaled `wwexecution-uat-hangfire` from `S0` to `S2` (50 DTUs, `az sql db update
+        --service-objective S2`) — a reversible, resource-only change, no code/config changes.**
+        **Second full 1000-message re-run: 1000/1000 succeeded, in 118.5s (8.4 exec/s)`, and all
+        1000 result rows were confirmed present in `HangFire.Hash` by direct SQL query
+        immediately after.** The ShovelBridge load test now passes cleanly end-to-end.
+      - **Net assessment, superseding every prior entry in this dated log**: there was never a
+        RabbitMQ Shovel bridge-delivery gap. Every "no result"/partial-success outcome recorded on
+        2026-08-13/14/15 was the same single root cause (`Config.Persistence.Enable=false` →
+        per-instance in-memory result visibility under Consumption-plan scale-out), which
+        manifested at a rate (8-39 per 1000) that happened to resemble a small bridge-loss
+        percentage closely enough to mislead every prior investigation, including this document's
+        own. The residual DTU-capacity sensitivity is a normal, expected trade-off of moving from
+        in-memory to durable SQL-backed persistence under burst load, not a new defect class.
+      - **Follow-up required (not yet done, flagged for whoever next redeploys UAT)**: the
+        UAT redeploy on 2026-08-14 22:00 UTC (recorded earlier in this doc) evidently reverted
+        persistence back to disabled — the exact regression this section just fixed — because
+        redeploying from a fresh publish output naturally carries the repo's own committed
+        default (`Enable: false`, no `persistencesettingsdbsource.bite` at all). **Any future full
+        redeploy of `WarewolfServer-UAT` MUST re-stage the persistence-enabled
+        `Settings/persistencesettings.json` + `Settings/persistencesettingsdbsource.bite` pair
+        (via `Deploy-WwExecutionEngine.ps1 -EnablePersistence -PersistenceSettingsPath ...
+        -PersistenceDbSourcePath ...`, pointing at `wwexecution-uat-hangfire` — do NOT let the
+        deploy silently fall back to the repo's disabled default), or this exact defect will
+        recur.** See the added note in `docs/Deploy-UAT-Redeploy-Spec.md`.
 
 ## Promotion status
 
