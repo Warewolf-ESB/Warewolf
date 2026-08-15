@@ -394,6 +394,28 @@ namespace Warewolf.Execution.Lightweight
                     Duration = stopwatch.Elapsed
                 };
             }
+            catch (OutOfMemoryException oom)
+            {
+                // TRANSIENT, not a workflow/business failure: this is the documented
+                // Consumption-plan cold-start memory-pressure signature (compile-time
+                // allocation failure, e.g. inside Roslyn/PEReader) — see the _workflowPool
+                // comment above and docs/ShovelBridge-Architecture.md. Flagging
+                // IsTransientFailure lets a broker-driven caller (ServiceBusWorkflowTriggerFunction)
+                // retry instead of treating this as terminal and dead-lettering immediately;
+                // retrying will very likely succeed once the instance has warmed up or scaled
+                // out. HTTP callers ignore the flag and see the same failure response as before.
+                stopwatch.Stop();
+                Dev2Logger.Error($"WorkflowExecutor Execute: OutOfMemoryException (transient) for workflow: {request.WorkflowFilePath}", oom, executionId.ToString());
+                _executionLogger.LogError(nameof(Execute), oom, executionId);
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
+                return BuildTransientFailureResult(oom, executionId, startTime, stopwatch.Elapsed);
+            }
             catch (Exception ex)
             {
                 stopwatch.Stop();
@@ -426,6 +448,26 @@ namespace Warewolf.Execution.Lightweight
                 ReturnPreparedWorkflow(request.WorkflowFilePath, prepared);
             }
         }
+
+        /// <summary>
+        /// Builds the <see cref="WorkflowExecutionResult"/> for the <see cref="OutOfMemoryException"/>
+        /// catch clause in <see cref="Execute(WorkflowExecutionRequest)"/>. Extracted as a small,
+        /// pure, internal (<c>InternalsVisibleTo</c> the test project) helper so unit tests can verify
+        /// the transient-failure shape (<see cref="WorkflowExecutionResult.IsTransientFailure"/> = true,
+        /// error message preserved) deterministically, without needing to force a real
+        /// <see cref="OutOfMemoryException"/> by exhausting process memory.
+        /// </summary>
+        internal static WorkflowExecutionResult BuildTransientFailureResult(OutOfMemoryException oom, Guid executionId, DateTime startTime, TimeSpan elapsed) =>
+            new()
+            {
+                IsSuccess = false,
+                IsTransientFailure = true,
+                ExecutionId = executionId,
+                Errors = new List<string> { oom.Message },
+                StartTime = startTime,
+                EndTime = DateTime.UtcNow,
+                Duration = elapsed
+            };
 
         /// <summary>
         /// Step 1: Read the workflow resource XML file from disk.

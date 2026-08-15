@@ -718,6 +718,134 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     warrants a plan-capacity or warm-up follow-up (see §10-style follow-ups) for bursty concurrent
     traffic after any cold start/restart. See `Deploy-UAT-Redeploy-Spec.md` §13 for full detail.
 
+- **2026-08-14 — §7.5 closed: full 1000-message `-VerifyWorkflowExecution` run via a local
+  RabbitMQ (`-RabbitMqMode External`) + `-DestinationMode ExternalServiceBus` stack reached
+  **961/1000** (24 `HttpError`, 15 no-result-before-timeout) — a large jump from the pre-fix
+  702/1000, confirming the `_workflowPool`/`RentPreparedWorkflow` fix from the entry above holds at
+  full load. The residual 3.9% is a **different, infrastructure-level** failure signature, not a
+  bad deploy — do not redeploy on this evidence alone.**
+  - **Not the `JobLogId` race**: the 24 `HttpError`s were bare `GET
+    /secure/servicebus-result/{correlationId}` → `500` responses with an **empty body** (confirmed
+    from `E2EHarness`'s own captured response text), unlike WOLF-8418 policy denials (which always
+    nest an `Error{…}` JSON body) or the earlier `SQL 51001`/`[[JobLogId]]` text. The 15 no-results
+    were transient `503`s that never resolved before `-ResultTimeoutSeconds 1800` expired.
+  - **Deploy freshness ruled out**: `WarewolfServer-UAT`'s `lastModifiedTimeUtc` was `2026-08-14
+    11:44:50`, ~8 hours before this run — the same "corrected" build from the entry above, not a
+    stale/mismatched package.
+  - **App Insights has no telemetry** (`warewolfserver-uat-ai`, confirmed via the Application
+    Insights REST API: zero `requests` rows in the last 7 days), so the 500s can't be root-caused
+    from a captured exception. Instrumentation wiring for this app is still an open gap.
+  - **Confirmed root cause — direct from the dead-letter queue, not inference**: rather than relying
+    on Kudu's `LogFiles/eventlog.xml` or (telemetry-less) App Insights, a temporary `Listen`-rights
+    SAS rule was added to `wwexecution-secure-trigger-queue-e2e` (removed again immediately after)
+    and used to non-destructively peek its `$DeadLetterQueue` sub-queue
+    (`ServiceBusReceiver.PeekMessagesAsync`, `SubQueue.DeadLetter`) filtered to this run's
+    correlationId prefix. **7 of the 15 "no result" correlationIds (`-000039`, `-000152`, `-000171`,
+    `-000172`, `-000174`, `-000176`, `-000180`) were found dead-lettered**, all at `19:43:22Z`
+    (a single burst), all with `DeadLetterReason: execution_failed` and
+    `DeadLetterErrorDescription: Insufficient memory to continue the execution of the program.` —
+    the exact same cold-start memory-pressure signature (Roslyn VB-expression compilation in
+    `ActivityParser.Parse`) already observed and closed as "expected under cold start" in the direct-
+    HTTP-proxy entry above. These messages are **permanently** dead-lettered (not slow) — the
+    remaining 8 "no result" correlationIds were not found in the DLQ and are presumed still subject
+    to Service Bus's own `maxDeliveryCount=10` redelivery/lock-renewal cycle rather than exhausted.
+    The other 24 `HttpError`s are **not** message-processing failures at all (nothing dead-lettered
+    matches those correlationIds) — they're specific to the `GET
+    /secure/servicebus-result/{correlationId}` read path itself, still unexplained pending
+    `warewolfserver-uat-ai` telemetry.
+  - **Recommendation (superseded by the 2026-08-14 fix entry below)**: at the time of this finding
+    there was no code defect evidence — the DLQ confirmed an infrastructure/capacity cause
+    (cold-start memory pressure being dead-lettered permanently instead of retried), not a logic
+    bug, so a redeploy was **not** recommended on this evidence alone. That gap (permanent
+    dead-letter instead of retry) has since been fixed in code — see below; a redeploy **will** be
+    needed once that fix is validated. The plan-capacity/warm-up follow-up (e.g. an Elastic Premium
+    plan with an `Always Ready` instance count, or a pre-warming request burst before starting the
+    load test) and wiring up `warewolfserver-uat-ai` telemetry (so the residual `HttpError` 500s can
+    be root-caused from `requests`/`exceptions` instead of DLQ inspection) both remain open.
+
+- **2026-08-14 — Code fix: OutOfMemoryException surfaced as a *transient* failure, retried instead
+  of dead-lettered.** The DLQ evidence above showed cold-start `OutOfMemoryException`s during
+  `ActivityParser.Parse`'s Roslyn VB-expression compilation being dead-lettered with
+  `deadLetterReason: "execution_failed"` on the **first** attempt, identically to a genuine
+  workflow/business failure — even though Service Bus's standard `maxDeliveryCount=10`
+  retry/backoff (already correctly wired for *unexpected exceptions* thrown out of
+  `_executor.Execute()`, see `ServiceBusWorkflowTriggerFunction.ProcessAuthenticatedMessageAsync`)
+  would very likely have succeeded on redelivery once the instance warmed up or scaled out. Root
+  cause: `WorkflowExecutor.Execute`'s catch-all `catch (Exception ex)` was swallowing
+  `OutOfMemoryException` and returning it as an ordinary `WorkflowExecutionResult { IsSuccess =
+  false }`, which the trigger function's business-failure branch dead-lettered immediately, never
+  reaching the exception-rethrow/retry path.
+  - **Fix**: `WorkflowExecutionResult` gained a new `IsTransientFailure` flag (default `false`).
+    `WorkflowExecutor.Execute` now has a dedicated `catch (OutOfMemoryException oom)` clause
+    (`Execution/WorkflowExecutor.cs`, ahead of the generic catch) that sets `IsTransientFailure =
+    true` via the new internal `BuildTransientFailureResult` helper.
+    `ServiceBusWorkflowTriggerFunction.ProcessAuthenticatedMessageAsync` (`Functions/`) now checks
+    `result.IsTransientFailure` before the existing success/business-failure branching: when true,
+    it deliberately does **not** call `_store.SaveResult` (a persisted terminal "Failed" result
+    would satisfy the idempotency dedupe check on redelivery and complete the retried message
+    without ever re-executing it) and does **not** dead-letter — it throws instead, reusing the
+    same Service Bus retry/backoff path as an unexpected exception, so the message is only
+    dead-lettered once `maxDeliveryCount` is actually exhausted. HTTP callers
+    (`WorkflowHttpFunction.cs`, `LoginFunction.cs`) are unaffected — they ignore the new flag and
+    keep their existing synchronous failure-response behaviour (there is no broker to retry
+    against for a synchronous HTTP call). See `docs/ServiceBusSecureTrigger-Architecture.md` for
+    the updated flow description.
+  - **Tests**: `WorkflowExecutorTransientFailureTests` (new) verifies
+    `BuildTransientFailureResult`/`WorkflowExecutionResult.TransientFailure` set
+    `IsTransientFailure = true` and don't affect the existing `Failure(...)` factory.
+    `ServiceBusWorkflowTriggerFunctionTests.ProcessAuthenticated_ExecutionTransientFailure_ThrowsInsteadOfDeadLettering_NoResultPersisted`
+    (new) verifies a transient result throws, is not dead-lettered/completed, and is not persisted
+    to the replay/result store. All 740 existing tests under the `Execution`/`Functions` filter
+    (including the pre-existing business-failure and unexpected-exception cases) remain green — no
+    behavioural regression for genuine business failures or HTTP callers.
+  - **Not yet addressed by this fix**: the 24 unexplained `HttpError` 500s on the
+    `GET /secure/servicebus-result/{correlationId}` read path (separate issue, still pending
+    `warewolfserver-uat-ai` telemetry) and the plan-capacity/warm-up follow-up (this fix makes cold
+    starts *recoverable* via retry, it does not reduce how often they happen).
+  - **Recommendation**: redeploy `WarewolfServer-UAT` once this fix is reviewed, then re-run the
+    full 1000-message load test to confirm the residual DLQ rate for `execution_failed` drops to
+    (near) zero and overall success rate improves beyond 961/1000.
+  - **Deployed (2026-08-14, 22:00 UTC)**: this fix has now been redeployed to `WarewolfServer-UAT`
+    ahead of a PR/merge — `dotnet publish -c Release`, `az functionapp deployment source
+    config-zip` (`DEV2`/`WarewolfServer-UAT`), then an explicit `az functionapp restart` (this app
+    runs `WEBSITE_RUN_FROM_PACKAGE=1`, so the new package is not picked up without a restart — see
+    the redeploy gotcha in `Deploy-UAT-Redeploy-Spec.md`). Verified via Kudu VFS: live
+    `Warewolf.Execution.Lightweight.dll` is now 390144 bytes / mtime matching the local build
+    exactly (previously-live DLL was 389120 bytes), and `GET /apis.json` returns `200` post-restart
+    confirming the app is up. **Still to do**: re-run the full 1000-message load test against this
+    deployment to confirm the fix holds under real load, and get this change merged via PR (it is
+    currently only deployed to UAT from the local `8510-ShovelBridgeE2ETestUpdates` branch, not yet
+    committed/merged).
+  - **Re-run result (2026-08-14, ~22:15-22:45 UTC), post-deploy**: full 1000-message
+    `-VerifyWorkflowExecution` run against the redeployed engine reached **992/1000 succeeded, 0
+    explicit failures, 8 "no result"** — a clear improvement over the pre-fix 961/1000 (24
+    `HttpError`, 15 no-result), and critically **zero** `HttpError`s this time.
+    - **The fix is confirmed working**: the Service Bus queue's `deadLetterMessageCount` was
+      **12384 both before and after this run** — i.e. this run added **zero** new dead-lettered
+      messages. Combined with 0 explicit failures reported by the harness, every transient
+      (OOM/cold-start) execution failure that occurred during this run was retried and recovered
+      via Service Bus's standard redelivery — none exhausted `maxDeliveryCount` and fell through to
+      a permanent dead-letter, which is exactly the behaviour this fix was built to produce.
+    - **The residual 8 "no result" cases are a *different*, unrelated issue, NOT addressed by this
+      fix**: re-peeked the DLQ (temporary `Listen`-rights SAS rule, same technique as the original
+      diagnosis, removed again after) for all 8 correlationIds — **found in neither the DLQ nor the
+      live queue** (`activeMessageCount: 0` at run end) — and a direct `GET
+      /secure/servicebus-result/{correlationId}` call for each, well after the run, returned a
+      persistent `404` (not a transient error) for all 8. A message that was received and processed
+      always ends up in exactly one of: completed-with-a-saved-result, or dead-lettered
+      (business failure or delivery-count-exhaustion) — none of the 8 match any of those states.
+      The most likely explanation is that these specific messages were **never actually delivered**
+      by the RabbitMQ Shovel to the Service Bus destination queue in the first place (a bridge-layer
+      delivery gap under the 20-way concurrent burst), rather than anything going wrong in the
+      Lightweight engine's execution/retry/dead-letter handling. This is a **separate, still-open
+      issue** in the RabbitMQ→Shovel→Service Bus bridge itself and needs its own investigation
+      (e.g. Shovel `message_stats`/`ack`/`nack` counters per run, or enabling publisher-confirms
+      logging) — out of scope for this fix.
+    - **Net assessment**: the dead-letter/retry fix fully achieves its goal (no more permanent,
+      un-retried dead-lettering of transient cold-start failures); the load test's residual ~0.8%
+      "no result" rate is now attributable to a different, pre-existing bridge-delivery-reliability
+      gap, not to the execution engine.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

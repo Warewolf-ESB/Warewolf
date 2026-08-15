@@ -374,6 +374,30 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionTransientFailure_ThrowsInsteadOfDeadLettering_NoResultPersisted()
+    {
+        // OutOfMemoryException-under-cold-start signature, surfaced by WorkflowExecutor as
+        // IsTransientFailure = true — must retry (throw), NOT dead-letter, and must NOT persist a
+        // terminal result (a persisted "Failed" result would satisfy the dedupe check on the
+        // Service-Bus-driven redelivery and complete it without ever re-executing).
+        var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.TransientFailure("Insufficient memory to continue the execution of the program."));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-transient");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-transient", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.IsFalse(store.TryGetResult("corr-transient", out _));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
     public async Task ProcessAuthenticated_ExecutorThrowsUnexpectedException_RethrowsWithoutSwallowing()
     {
         var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));

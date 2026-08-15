@@ -83,6 +83,9 @@ ServiceBusWorkflowTriggerFunction  (Warewolf.Execution.Lightweight, in-process)
       ├─ Forbidden / ConfigMissingDeny → dead-letter + record (Denied)
       └─ Allowed                        → continue
    8. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal)
+      ├─ transient failure (IsTransientFailure, e.g. OutOfMemoryException under Consumption-plan
+      │  cold-start memory pressure) → thrown, NOT recorded, NOT dead-lettered — SB extension
+      │  retry/backoff applies, same as an unexpected exception below
       ├─ business/activity failure → dead-letter + record (Failed)     — non-transient, not retried
       ├─ unexpected exception      → rethrown                          — SB extension retry/backoff applies
       └─ success                   → complete message + record (Succeeded)
@@ -181,7 +184,7 @@ successful return.
 | Stolen/replayed token reused across messages | `jti` replay check, atomic across instances |
 | Duplicate delivery (Service Bus at-least-once) causes duplicate side effects | Correlation-id idempotency check short-circuits re-execution |
 | Malformed/garbage messages wedge the queue | Malformed messages are dead-lettered immediately, not retried |
-| A workflow that will always fail (bad inputs) exhausts retry budget pointlessly | Business/activity failures are dead-lettered directly (non-transient); only genuinely unexpected exceptions are rethrown for the SB extension's retry/backoff |
+| A workflow that will always fail (bad inputs) exhausts retry budget pointlessly | Business/activity failures are dead-lettered directly (non-transient); only genuinely unexpected exceptions and results flagged `IsTransientFailure` (e.g. `OutOfMemoryException` under cold-start memory pressure) are rethrown for the SB extension's retry/backoff |
 | Broker credentials leak | Managed-Identity-only connection (`__fullyQualifiedNamespace`), no connection string/SAS key in any config |
 
 ## End-to-end verification (RabbitMQ Shovel → Service Bus → this trigger)

@@ -41,8 +41,10 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).</item>
 ///   <item>Replay protection: register the token's <c>jti</c> (mirrored application property preferred, falls back to the token claim) — a repeat is dead-lettered, never retried.</item>
 ///   <item>Authorize via <see cref="IWorkflowPolicyMatcher.Evaluate"/> — denial is dead-lettered, never retried.</item>
-///   <item>Execute in-process via <see cref="IWorkflowExecutor"/>. A business/activity failure is dead-lettered (not transient — retrying will not help).
-///         An unexpected exception is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
+///   <item>Execute in-process via <see cref="IWorkflowExecutor"/>. A genuine business/activity failure is dead-lettered (not transient — retrying will not help).
+///         A <see cref="WorkflowExecutionResult.IsTransientFailure"/> result (e.g. an <see cref="OutOfMemoryException"/> under Consumption-plan
+///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
+///         An unexpected exception (thrown, not returned) is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
 ///   <item>Persist the terminal outcome (success, failure, or denial) via <see cref="IServiceBusReplayAndResultStore"/> for
 ///         <see cref="ServiceBusResultFunction"/>'s polling endpoint, and emit a structured audit event via <see cref="AuditLogger.LogServiceBusOutcome"/>.</item>
 /// </list>
@@ -246,6 +248,24 @@ public sealed class ServiceBusWorkflowTriggerFunction
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Unexpected execution exception — leaving message for standard Service Bus retry.",
                 correlationId, payload.Workflow);
             throw;
+        }
+
+        if (!result.IsSuccess && result.IsTransientFailure)
+        {
+            // Transient (e.g. an OutOfMemoryException during compile/execute — the documented
+            // Consumption-plan cold-start memory-pressure signature, see WorkflowExecutor.Execute's
+            // dedicated catch clause), NOT a terminal business outcome. Deliberately do NOT persist
+            // a result here: a persisted Failed result would satisfy the idempotency dedupe check
+            // above on redelivery, completing the retried message without ever re-executing it. Do
+            // NOT dead-letter either — throw so the Service Bus extension applies its standard
+            // retry/backoff, exactly like the unexpected-exception path above, and only dead-letters
+            // once maxDeliveryCount is exhausted, instead of failing the whole run on the first hit.
+            var transientError = string.Join("; ", result.Errors);
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Transient execution failure ({Error}) — leaving message for standard Service Bus retry instead of dead-lettering.",
+                correlationId, payload.Workflow, transientError);
+            throw new InvalidOperationException(
+                $"Transient workflow execution failure for correlationId '{correlationId}': {transientError}");
         }
 
         var outcome = new ServiceBusTriggerResult
