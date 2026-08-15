@@ -233,7 +233,7 @@ az functionapp config appsettings set --name WarewolfServer-UAT --resource-group
 & Dev\Warewolf.Execution.Lightweight\Scripts\Deploy-WwExecutionEngine.ps1 `
     -ResourceGroup       'DEV2' `
     -Location            'eastus' `
-    -StorageAccount      '<UAT storage account>' `
+    -StorageAccount      'warewolfuatsa' `
     -AppName             'WarewolfServer-UAT' `
     -PublishPath         'D:\ExecutionEngine\Publish' `
     -WorkflowsSourcePath 'D:\ExecutionEngine\WorkflowResources' `
@@ -242,7 +242,18 @@ az functionapp config appsettings set --name WarewolfServer-UAT --resource-group
     -DryRun
 ```
 
-`-StorageAccount` must be read from the backup (`AzureWebJobsStorage`), not guessed.
+`-StorageAccount` is Phase-1 existence/creation bookkeeping only — the orchestrator never applies
+it to an existing app's `AzureWebJobsStorage` (that connection string is only set inside
+`functionapp create`, which doesn't run when the app already exists), so `WarewolfServer-UAT`
+keeps running on its real, existing storage account regardless of this value. **Do not** resolve
+it dynamically from the live `AzureWebJobsStorage` setting: the real account
+(`storageaccountwarew83c6`) lives in RG `Warewolf`, not `DEV2`, and the pipeline's service
+principal only has RBAC on `DEV2` — so the orchestrator's cross-RG existence check (which falls
+back to a subscription-wide `az storage account show` when the RG-scoped lookup misses) silently
+returns "not found" (a 403 swallowed by its `-AllowFail` probe) and it then tries to recreate an
+account that already exists globally, failing with `StorageAccountAlreadyExists`. Instead, use a
+small dedicated placeholder account owned by this SP directly in `DEV2` — `warewolfuatsa` — the
+same pattern as `pipeline-CLOUD.yml`'s `warewolfserversa`.
 `-WorkflowsSourcePath` must point at the staging folder assembled in §5.4 — **omitting it is the
 defect that caused the 2026-08-13 load-test hang** (§5.4); the orchestrator does not fail if it's
 left out, it just quietly ships an app with no `Resources` folder.
@@ -347,8 +358,11 @@ new logging is designed to confirm or kill it.
 - **Automate UAT deploys.** ✅ **Done (2026-08-15).** Added a `Deploy_UAT` stage to
   `pipeline-LOADTEST.yml` (`Build_And_Publish_UAT` + `Deploy_UAT` jobs), which runs on every
   pipeline execution, immediately before `Load_Test` — it publishes the current commit,
-  stages the load-test workflow resources + a fresh `NewSqlServerSource.bite`, resolves the
-  storage account from the app's own `AzureWebJobsStorage` setting (never hardcoded), passes
+  stages the load-test workflow resources + a fresh `NewSqlServerSource.bite`, passes
+  `-StorageAccount 'warewolfuatsa'` (a small dedicated placeholder account owned by the pipeline's
+  SP directly in `DEV2` — Phase-1 bookkeeping only, never applied to the app's real storage; see
+  §6.2 for why the earlier "resolve dynamically from `AzureWebJobsStorage`" approach was reverted
+  — WOLF-8510, 2026-08-15), passes
   `-EnablePersistence` with the git-tracked `Scripts/persistencesettings.uat.json` and
   `Scripts/persistencesettingsdbsource.uat.bite` (§14's own follow-up — both committed, the
   latter WFAES-encrypted at rest like `Settings/ElasticsearchLoggingSource.bite`, so no
