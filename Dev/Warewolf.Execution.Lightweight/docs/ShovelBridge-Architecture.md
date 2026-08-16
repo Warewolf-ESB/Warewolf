@@ -990,6 +990,76 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
         deploy silently fall back to the repo's disabled default), or this exact defect will
         recur.** See the added note in `docs/Deploy-UAT-Redeploy-Spec.md`.
 
+- **2026-08-16 — Full 1000-message `-VerifyWorkflowExecution` run via `pipeline-LOADTEST.yml`'s
+  `Deploy_UAT` → `ShovelBridgeLoadTest_ExternalServiceBus` jobs (correlationId prefix
+  `b4f19c2eefdf4270aa073b15fa3dd97f`) reached **843/1000 (150 failed, 7 no result)** — worse than
+  the 2026-08-15 fix's clean 1000/1000, but confirmed via direct evidence (Azure CLI/REST against
+  the live resources, not inference) to be a THIRD, previously undocumented cause, NOT a
+  re-regression of either fix already recorded above.**
+  - **Persistence still enabled, unchanged**: live `Settings/persistencesettings.json` (Kudu VFS)
+    shows `"Enable": true` — the 2026-08-14 persistence-disabled regression has not recurred.
+  - **`wwexecution-uat-hangfire` still at `S2` (50 DTU)**, not reverted to `S0`
+    (`az sql db show` → `currentSku: {name: Standard, capacity: 50}`), and **DB was never a
+    bottleneck this run**: `dtu_consumption_percent` (`Microsoft.Insights/metrics` REST API,
+    00:10-00:50Z window) peaked at only 0.9% — ruling out the exact DTU-starvation cause fixed on
+    2026-08-15.
+  - **`warewolfserver-uat-ai` now has real telemetry** (every earlier entry in this log recorded
+    "zero telemetry") — its `exceptions`/`traces` tables have data for 2026-08-16 (107 exceptions,
+    24233 traces), though `requests` remains empty (a separate, smaller gap worth a follow-up).
+  - **Exceptions during the test window, queried directly from `exceptions` via the Application
+    Insights Analytics REST API**:
+    - **51× `Grpc.Core.RpcException` / `MessageLockLost`** at
+      `ServiceBusWorkflowTriggerFunction.ProcessAuthenticatedMessageAsync` — `"The lock supplied is
+      invalid. Either the lock expired, or the message has already been removed from the queue"`
+      from `CompleteMessageAsync`. The destination queue's `LockDuration` is a fixed `PT1M`
+      (`az servicebus queue show`); under a genuine 1000-message concurrent burst, with
+      `host.json`'s `concurrency.dynamicConcurrencyEnabled: true` self-throttling the worker under
+      CPU/thread-pool pressure, per-invocation processing (including the cold-start Roslyn compiles
+      below) can outrun the SDK's own lock-renewal loop.
+    - **32× `System.OutOfMemoryException` at `Dev2.Activities.ActivityParser.Parse`** — the same
+      cold-start Roslyn VB-expression-compile memory-pressure signature already root-caused and
+      made *retriable* (not permanently dead-lettered) by the 2026-08-14 `IsTransientFailure` fix.
+    - **24× `System.InvalidOperationException` — "Transient workflow execution failure for
+      correlationId ..."** — that same fix working exactly as designed (the deliberate re-throw
+      that forces Service Bus redelivery instead of dead-lettering), not a new defect.
+  - **Working theory for the harness's dominant `InvalidToken` ("operation was canceled") failure
+    signature** (not yet proven by a direct correlationId-to-exception join — `exceptions` here
+    doesn't carry the correlationId as a queryable custom dimension): `EntraBearerTokenValidator
+    .ValidateAsync` is called with the invocation's own `CancellationToken`
+    (`ServiceBusWorkflowTriggerFunction.cs`) — if that token is cancelled when the Functions host
+    abandons/retries an invocation whose message lock has already lapsed, or under
+    `dynamicConcurrencyEnabled` self-throttling, the in-flight token validation throws
+    `OperationCanceledException` and is caught/reported as `InvalidToken`. Flagged as the next
+    concrete step to prove (e.g. logging the correlationId alongside this exception) if it recurs.
+  - **Net assessment**: neither of the two previously-fixed root causes (workflow-pool
+    thread-safety, `Config.Persistence.Enable`) regressed. The residual ~15.7% failure rate is best
+    explained by **Consumption-plan (Y1) capacity under sustained 1000-message concurrent burst** —
+    insufficient CPU/thread-pool headroom to keep every in-flight message's Service Bus lock
+    renewed and its token-validation call running to completion — compounded by the known Roslyn
+    cold-start memory pressure. This matches the risk already flagged as
+    `Deploy-UAT-Redeploy-Spec.md`'s Risk R3 ("Consumption (`Y1`) plan: no `alwaysOn`, cold starts,
+    capped scale-out").
+  - **Recommendation (not yet actioned — a cost/infra decision, out of scope for this
+    investigation)**: the plan-capacity/warm-up follow-up flagged repeatedly above (an Elastic
+    Premium plan with an `Always Ready` instance count, and/or staggering the harness's publish
+    burst instead of a single 1000-message blast) remains the most direct lever to close this gap.
+    A lower-risk, no-cost alternative worth trying first: tune `ServiceBusOptions
+    .MaxAutoLockRenewalDuration` (isolated-worker `worker.json`/host configuration) so lock renewal
+    keeps pace with slower cold-start invocations without changing the queue's own `LockDuration`.
+  - **A proven, already-built no-cost fix for this exact class of problem exists but is NOT on this
+    branch**: `origin/8504-Execution-Engine-Queue-Processor-End-to-end-testing`'s
+    `Scripts/Invoke-WwEnginePreWarm.ps1` (commit `bcca73646e`) warms a Consumption-plan engine
+    sequentially (Phase A, until latency stabilizes) then at the burst's own target concurrency
+    (Phase B, 3 rounds, to force scale-out) *before* publishing, calling the same
+    `Secure/{workflow}.json` HTTP route and therefore the same `WorkflowExecutor` the Service Bus
+    trigger uses. Its own header cites first-call-cold 64.7s vs ~3.1s warm, and a 100-message burst
+    going from 31/100 discarded (502/503/504, no pre-warm, 10 replicas) to 0 failures (pre-warmed, 6
+    replicas). Only 8504's `WorkflowExecutor` pool fix was ported to this branch/pipeline
+    (`2b784fe7b6`, "port the patch for concurrency from the 8504 branch") — the pre-warm script was
+    not, and `pipeline-LOADTEST.yml` has no warm-up step between `Deploy_UAT` and `Load_Test`.
+    Porting it (or an equivalent warm-up step against `warewolfserver-uat` before the 1000-message
+    publish) is the most direct untried fix for this run's failure signature.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
