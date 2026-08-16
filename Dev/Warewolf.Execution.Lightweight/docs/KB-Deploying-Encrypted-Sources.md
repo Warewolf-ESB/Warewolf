@@ -127,6 +127,27 @@ az functionapp config appsettings set --name wwenginetestv1 --resource-group dev
 
 The code change must ship in the **`Dev2.Services.Sql.dll`** the engine loads — see the deployment warning below.
 
+### SQL Server — Azure SQL with "Active Directory Password" auth (no TLS fix needed)
+
+Used for `Resources/rabbit/RabbitProcess.bite` / `RabbitProcess2.bite`'s `NewSqlServerSource.bite` against
+`WarewolfServer-UAT`. Distinct from the self-signed/ngrok scenario above — Azure SQL's own certificate chain
+is trusted by default, so **no `WAREWOLF_SQL_TRUST_SERVER_CERT` flag is required here**.
+
+- The source's `Authentication` value in the (pre-encryption) connection string must be
+  **`Active Directory Password`**, not `Active Directory Managed Identity` — the latter only works when the
+  Function App's own managed identity has been granted a SQL login, which is a separate, unconfigured path
+  for this engine. A downloaded/exported source that reads "Managed Identity" but ships a real password is
+  mislabeled and must be corrected to `Active Directory Password` before encrypting, or the engine will
+  attempt (and fail) an MI token acquisition instead of using the supplied credential.
+- Steps 1–4 (WFAES-encrypt, Kudu-deploy, full stop→start, verify) apply as normal — see §3 above. On
+  `WarewolfServer-UAT` specifically, `WEBSITE_RUN_FROM_PACKAGE=1` means Kudu VFS single-file PUT is
+  **not available**; the encrypted source must instead be staged into a full `Deploy-WwExecutionEngine.ps1`
+  redeploy's `-WorkflowsSourcePath` folder (see `Scripts/README.md` and the deploy skill's phased-flow
+  description).
+- Decryption at runtime requires `AZURE_KEYVAULT_NAME` + `KEYVAULT_SECRET_NAME` app settings and the Function
+  App's managed identity holding `Key Vault Secrets User` on that vault — provision both once per engine
+  (`Encrypt-Config.ps1` only writes the `WFAES::…` payload; it does not wire up the runtime decrypt path).
+
 ---
 
 ## 5. ⚠️ Deploying an engine DLL (only needed for the SQL code fix)

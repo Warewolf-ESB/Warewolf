@@ -40,6 +40,16 @@ namespace Dev2.Services.Sql
             49918, // Cannot process request. Not enough resources to process request
             49919, // Cannot process create or update request at this time
             49920, // Cannot process request. Too many operations in progress
+            // NOTE: 15197 ("There is no text for object '%s'.") was previously listed here on
+            // the assumption that a resuming serverless database could briefly fail the
+            // sp_helptext metadata lookup. That was a misdiagnosis: 15197 is raised whenever
+            // the *caller* cannot read a module's definition - i.e. it lacks VIEW DEFINITION,
+            // or the procedure is encrypted/missing. It is deterministic and per-principal,
+            // so retrying can never clear it; it only holds a pooled connection open for the
+            // whole backoff budget, which exhausts the pool under load. See
+            // DatabaseServiceExecution.IsProcedureTextUnavailable, which now degrades
+            // gracefully instead (the FOR XML sniff is an optimisation, not a hard
+            // requirement - EXECUTE on the procedure is what actually matters).
         };
 
         public static bool IsTransientErrorNumber(int errorNumber) => TransientErrorNumbers.Contains(errorNumber);

@@ -1,0 +1,29 @@
+{
+  // Warewolf Execution Engine — suspend/resume persistence settings for WarewolfServer-UAT.
+  //
+  // Git-tracked source of truth for `-PersistenceSettingsPath` when deploying to
+  // WarewolfServer-UAT (see docs/Deploy-UAT-Redeploy-Spec.md §14 and Dev/.azure/
+  // pipeline-LOADTEST.yml's Deploy_UAT stage). Identical to the repo default
+  // (Settings/persistencesettings.json) except "Enable": true — a full redeploy without
+  // this explicit override silently reverts persistence to disabled, which reintroduces
+  // every "no result" ShovelBridge load-test symptom chased in §9-§13 of that spec.
+  //
+  // MUST be copied to a file literally named 'persistencesettings.json' before being
+  // passed as -PersistenceSettingsPath (Deploy-WwExecutionEngine.ps1 validates the
+  // source file's leaf name exactly, since the engine always reads that exact path from
+  // its own publish output).
+  //
+  // The Hangfire SQL Server connection is NOT stored here — see the companion
+  // -PersistenceDbSourcePath, sourced from the 'persistencesettingsdbsource.uat.bite'
+  // secure file in the Azure DevOps Library (never committed — it carries a real,
+  // if WFAES-encrypted, credential to wwexecution-uat-hangfire).
+  "Enable": true,
+
+  "PersistenceScheduler": "Hangfire",
+
+  "EncryptDataSource": false,
+
+  "PrepareSchemaIfNecessary": true,
+
+  "UseAsServer": false
+}

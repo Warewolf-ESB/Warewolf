@@ -41,8 +41,10 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).</item>
 ///   <item>Replay protection: register the token's <c>jti</c> (mirrored application property preferred, falls back to the token claim) — a repeat is dead-lettered, never retried.</item>
 ///   <item>Authorize via <see cref="IWorkflowPolicyMatcher.Evaluate"/> — denial is dead-lettered, never retried.</item>
-///   <item>Execute in-process via <see cref="IWorkflowExecutor"/>. A business/activity failure is dead-lettered (not transient — retrying will not help).
-///         An unexpected exception is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
+///   <item>Execute in-process via <see cref="IWorkflowExecutor"/>. A genuine business/activity failure is dead-lettered (not transient — retrying will not help).
+///         A <see cref="WorkflowExecutionResult.IsTransientFailure"/> result (e.g. an <see cref="OutOfMemoryException"/> under Consumption-plan
+///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
+///         An unexpected exception (thrown, not returned) is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
 ///   <item>Persist the terminal outcome (success, failure, or denial) via <see cref="IServiceBusReplayAndResultStore"/> for
 ///         <see cref="ServiceBusResultFunction"/>'s polling endpoint, and emit a structured audit event via <see cref="AuditLogger.LogServiceBusOutcome"/>.</item>
 /// </list>
@@ -64,7 +66,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
     private readonly ILogger<ServiceBusWorkflowTriggerFunction> _logger;
 
     public ServiceBusWorkflowTriggerFunction(
-        ServiceBusEntraAuthOptions serviceBusAuthOptions,
+        EntraBearerTokenValidator tokenValidator,
         IWorkflowPolicyMatcher policyMatcher,
         IWorkflowExecutor executor,
         IServiceBusReplayAndResultStore store,
@@ -72,7 +74,19 @@ public sealed class ServiceBusWorkflowTriggerFunction
         HostEnvironmentConfig config,
         ILogger<ServiceBusWorkflowTriggerFunction> logger)
     {
-        _tokenValidator = new EntraBearerTokenValidator(serviceBusAuthOptions);
+        // tokenValidator MUST be DI-injected as a singleton (see ServiceCollectionExtensions
+        // AUTH-09/SB), never `new`'d here: EntraBearerTokenValidator caches Entra's OIDC
+        // metadata/JWKS internally, and this Function class is NOT explicitly registered in
+        // DI, so the Functions isolated-worker host resolves it (and therefore would
+        // resolve a `new`-here validator) PER INVOCATION. Under a burst of many concurrent
+        // Service Bus messages that would mean one cold OIDC-metadata fetch per message —
+        // hundreds of simultaneous outbound calls to login.microsoftonline.com — which
+        // exhausts outbound connections/SNAT ports on a Consumption-plan Function App and
+        // manifests as widespread IDX20803/IDX20804 + InvalidToken failures under load
+        // (reproduced by the 1000-message ShovelBridge load test). Injecting the singleton
+        // gives this trigger the same one-cache-for-app-lifetime behaviour that
+        // BearerTokenPrincipalParser already has for the HTTP path.
+        _tokenValidator = tokenValidator;
         _policyMatcher  = policyMatcher;
         _executor       = executor;
         _store          = store;
@@ -248,6 +262,24 @@ public sealed class ServiceBusWorkflowTriggerFunction
             throw;
         }
 
+        if (!result.IsSuccess && result.IsTransientFailure)
+        {
+            // Transient (e.g. an OutOfMemoryException during compile/execute — the documented
+            // Consumption-plan cold-start memory-pressure signature, see WorkflowExecutor.Execute's
+            // dedicated catch clause), NOT a terminal business outcome. Deliberately do NOT persist
+            // a result here: a persisted Failed result would satisfy the idempotency dedupe check
+            // above on redelivery, completing the retried message without ever re-executing it. Do
+            // NOT dead-letter either — throw so the Service Bus extension applies its standard
+            // retry/backoff, exactly like the unexpected-exception path above, and only dead-letters
+            // once maxDeliveryCount is exhausted, instead of failing the whole run on the first hit.
+            var transientError = string.Join("; ", result.Errors);
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Transient execution failure ({Error}) — leaving message for standard Service Bus retry instead of dead-lettering.",
+                correlationId, payload.Workflow, transientError);
+            throw new InvalidOperationException(
+                $"Transient workflow execution failure for correlationId '{correlationId}': {transientError}");
+        }
+
         var outcome = new ServiceBusTriggerResult
         {
             CorrelationId  = correlationId,
@@ -277,7 +309,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await messageActions.DeadLetterMessageAsync(
                 message,
                 deadLetterReason: "execution_failed",
-                deadLetterErrorDescription: outcome.Error ?? "Workflow execution failed.",
+                deadLetterErrorDescription: TruncateDeadLetterDescription(outcome.Error ?? "Workflow execution failed."),
                 cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
@@ -314,8 +346,29 @@ public sealed class ServiceBusWorkflowTriggerFunction
         await messageActions.DeadLetterMessageAsync(
             message,
             deadLetterReason: status.ToString(),
-            deadLetterErrorDescription: reason,
+            deadLetterErrorDescription: TruncateDeadLetterDescription(reason),
             cancellationToken: cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Azure Service Bus rejects a <c>deadLetterErrorDescription</c> longer than 4096 characters
+    /// with <c>ArgumentOutOfRangeException</c>. That surfaces as an <c>RpcException</c> from the
+    /// settlement service and leaves the message <b>unsettled</b>, so it is redelivered and
+    /// re-executed instead of being dead-lettered — turning one poison message into repeated
+    /// load. Warewolf SQL failures routinely exceed the limit (full exception text plus stack
+    /// trace), so the description is truncated here rather than at each call site.
+    /// </summary>
+    internal const int MaxDeadLetterDescriptionLength = 4096;
+
+    internal static string TruncateDeadLetterDescription(string description)
+    {
+        if (string.IsNullOrEmpty(description) || description.Length <= MaxDeadLetterDescriptionLength)
+        {
+            return description;
+        }
+
+        const string suffix = "... [truncated]";
+        return description.Substring(0, MaxDeadLetterDescriptionLength - suffix.Length) + suffix;
     }
 
     /// <summary>

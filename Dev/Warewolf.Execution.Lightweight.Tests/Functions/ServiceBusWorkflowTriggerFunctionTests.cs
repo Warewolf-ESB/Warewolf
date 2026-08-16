@@ -41,6 +41,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Functions;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Models;
@@ -149,7 +150,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         IServiceBusReplayAndResultStore? store = null,
         ServiceBusEntraAuthOptions? authOptions = null) =>
         new(
-            authOptions ?? new ServiceBusEntraAuthOptions(),
+            new EntraBearerTokenValidator(authOptions ?? new ServiceBusEntraAuthOptions()),
             policyMatcher ?? new FakePolicyMatcher(PolicyMatchResult.Allow()),
             executor ?? new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" }),
             store ?? new ServiceBusReplayAndResultStore(new MemoryStorage()),
@@ -370,6 +371,30 @@ public class ServiceBusWorkflowTriggerFunctionTests
         store.TryGetResult("corr-failure", out var result);
         Assert.AreEqual(ServiceBusTriggerStatus.Failed, result!.Status);
         StringAssert.Contains(result.Error, "divide by zero");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionTransientFailure_ThrowsInsteadOfDeadLettering_NoResultPersisted()
+    {
+        // OutOfMemoryException-under-cold-start signature, surfaced by WorkflowExecutor as
+        // IsTransientFailure = true — must retry (throw), NOT dead-letter, and must NOT persist a
+        // terminal result (a persisted "Failed" result would satisfy the dedupe check on the
+        // Service-Bus-driven redelivery and complete it without ever re-executing).
+        var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.TransientFailure("Insufficient memory to continue the execution of the program."));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-transient");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-transient", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.IsFalse(store.TryGetResult("corr-transient", out _));
     }
 
     [TestMethod]

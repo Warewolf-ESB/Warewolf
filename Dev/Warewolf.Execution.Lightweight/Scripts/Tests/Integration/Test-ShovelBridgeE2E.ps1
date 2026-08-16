@@ -53,6 +53,18 @@
     .servicebus.windows.net:5671/?sasl=plain) — build it with
     Configure-RabbitMqShovel.ps1's own Format-ServiceBusAmqp10Uri so the exact
     same URI shape used in production is exercised here.
+
+    -RabbitMqMode Container already bind-mounts the amqp10_client
+    customize_hostname_check fix (see docs/ShovelBridge-Architecture.md
+    "Security") into the broker's advanced.config, so the Shovel's TLS
+    handshake against a real Service Bus namespace's wildcard SAN succeeds
+    without any caller action. A SEPARATE, additional prerequisite on
+    Erlang/OTP 26+ images (including the default rabbitmq:3-management image)
+    is still the caller's responsibility: append
+    '&cacertfile=/etc/ssl/certs/ca-certificates.crt' to this URI yourself (as
+    Format-ServiceBusAmqp10Uri's own -CaCertFile does) or the Shovel
+    crash-loops with '{cacerts, undefined}' — this script cannot add it for
+    you since it doesn't know which policy/key the caller embedded in the URI.
 .PARAMETER ExternalServiceBusConnectionString
     REQUIRED when -DestinationMode ExternalServiceBus. A full Service Bus SAS
     connection string with LISTEN rights on the destination queue (a different,
@@ -135,14 +147,24 @@
     steal the message before the engine processes it.
 .PARAMETER WorkflowName
     REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "RabbitProcess" (see
-    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, bundled
-    alongside its "NewSqlServerSource (Local Backup)" DB source, replacing the generic "Hello
-    World" smoke-test workflow previously used as the example here) — matched against the
+    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, replacing
+    the generic "Hello World" smoke-test workflow previously used as the example here. Its DB
+    activities bind to SourceId b9184f70-… (the shared NewSqlServerSource the pipeline
+    downloads), NOT the unreferenced "NewSqlServerSource (Local Backup)" .bite sitting beside
+    it, whose connection string is DPAPI-encrypted under its author's account) — matched against the
     target engine's secure.config exactly as an HTTP /secure/{workflow} path segment would be.
 .PARAMETER WorkflowInputsJson
     Only used when -VerifyWorkflowExecution. Optional JSON object of string inputs, e.g.
     '{"message":"FromRabbitMq"}' (RabbitProcess's own single input — see its DataList). Passed
     through to the workflow exactly like HTTP query-string inputs are today.
+
+    Supports one placeholder, '{correlationId}', which the harness expands per message — e.g.
+    '{"message":"loadtest-{correlationId}"}'. USE IT FOR ANY -MessageCount > 1 RUN: without it
+    every message carries a byte-identical inputs map, and RabbitProcess hashes the message
+    content into an EXCLUSIVE sp_getapplock in dbo.usp_jobs1_LogStart (15s timeout). Identical
+    bodies therefore serialise the entire run behind a single lock, and are recorded as N retry
+    attempts of ONE job instead of N distinct jobs. The harness prints a warning if you omit it
+    on a multi-message run.
 .PARAMETER CorrelationId
     Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
     -MessageCount is 1 (default), this is used verbatim and, when omitted, a fresh GUID is
@@ -274,6 +296,41 @@ function ConvertFrom-SecureStringPlain {
     $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Value)
     try { return [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) }
     finally { [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+}
+
+function Get-JwtRemainingLifetimeSeconds {
+    <#
+    Best-effort, client-side pre-flight check of a bearer token's remaining lifetime —
+    decodes the UNSIGNED payload segment (base64url) of a 3-part JWT and reads the
+    standard 'exp' claim. This is deliberately NOT token validation (no signature check,
+    no issuer/audience check - the engine itself does that); it exists purely so this
+    script can fail fast in Phase 0 with an actionable message instead of a caller
+    discovering, after a 30-minute/1000-message run, that a token minted (or merely
+    reused from earlier in an interactive session) before the run started expired
+    partway through Phase 4's result-polling loop and turned into a wall of
+    "401: Authentication required" HttpErrors indistinguishable at a glance from a real
+    authorization problem.
+
+    Returns $null — "unknown, don't block" — when the token isn't a 3-segment JWT (e.g.
+    an opaque token) or has no parseable 'exp' claim; callers must treat $null as
+    "can't tell", never as "expired".
+    #>
+    param([Parameter(Mandatory)][string] $Token)
+
+    $raw = if ($Token.StartsWith('Bearer ', [StringComparison]::OrdinalIgnoreCase)) { $Token.Substring(7) } else { $Token }
+    $parts = $raw.Trim().Split('.')
+    if ($parts.Length -ne 3) { return $null }
+
+    try {
+        $payloadSegment = $parts[1].Replace('-', '+').Replace('_', '/')
+        switch ($payloadSegment.Length % 4) { 2 { $payloadSegment += '==' } 3 { $payloadSegment += '=' } }
+        $payload = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($payloadSegment)) | ConvertFrom-Json
+        if (-not $payload.exp) { return $null }
+        $expUtc = [DateTimeOffset]::FromUnixTimeSeconds([long]$payload.exp).UtcDateTime
+        return [int][Math]::Floor(($expUtc - (Get-Date).ToUniversalTime()).TotalSeconds)
+    } catch {
+        return $null
+    }
 }
 
 function New-RandomPassword {
@@ -418,6 +475,32 @@ if ($VerifyWorkflowExecution) {
         $CorrelationId = [Guid]::NewGuid().ToString('N')
     }
     Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' ($(if ($MessageCount -eq 1) { "correlationId '$CorrelationId'" } else { "$MessageCount messages, correlationId prefix '$CorrelationId'" })) and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival."
+
+    # Fail fast on a stale bearer token rather than discovering it 30 minutes and (at
+    # load-test volumes) 1000 messages later as a wall of "401: Authentication required"
+    # HttpErrors that look, at a glance, like a real authorization failure rather than an
+    # expired token. -ResultTimeoutSeconds bounds Phase 4's OWN polling window; add a fixed
+    # buffer for Phases 1-3's setup time (RabbitMQ/shovel/queue provisioning), which elapses
+    # BEFORE Phase 4 starts spending the token's remaining lifetime.
+    $setupBufferSeconds = 300
+    $requiredLifetimeSeconds = $ResultTimeoutSeconds + $setupBufferSeconds
+    $tokensToCheck = [ordered]@{ '-MessageAuthToken' = (ConvertFrom-SecureStringPlain $MessageAuthToken) }
+    if ($ResultPollAuthToken) {
+        $tokensToCheck['-ResultPollAuthToken'] = ConvertFrom-SecureStringPlain $ResultPollAuthToken
+    }
+    foreach ($tokenName in $tokensToCheck.Keys) {
+        $remaining = Get-JwtRemainingLifetimeSeconds -Token $tokensToCheck[$tokenName]
+        if ($null -eq $remaining) {
+            continue # opaque/non-JWT token or unparseable 'exp' claim - can't tell, don't block
+        }
+        if ($remaining -le 0) {
+            throw "$tokenName has ALREADY EXPIRED ($([Math]::Abs($remaining))s ago). Mint a fresh token immediately before invoking this script - reusing one from earlier in an interactive session (or from a pipeline step run well before Phase 4) is the most common cause. See docs/ShovelBridge-Architecture.md (2026-08-14 entry)."
+        }
+        if ($remaining -lt $requiredLifetimeSeconds) {
+            throw "$tokenName expires in ${remaining}s, less than the ${requiredLifetimeSeconds}s this run may need (-ResultTimeoutSeconds $ResultTimeoutSeconds + a ${setupBufferSeconds}s buffer for Phases 1-3 setup). It WILL expire mid-poll and surface as '401: Authentication required' HttpErrors on whichever correlationIds are still pending at that point - indistinguishable at a glance from a real authorization failure. Mint a fresh token immediately before invoking this script rather than reusing an older one."
+        }
+        Write-Ok "$tokenName has ${remaining}s remaining - comfortably covers this run (needs ${requiredLifetimeSeconds}s)."
+    }
 }
 
 # Docker is only needed when something is actually going to be containerized:
@@ -453,6 +536,7 @@ $sqlEdgeContainerName = "shovel-e2e-sqledge-$runId"
 $emulatorContainerName = "shovel-e2e-sbemulator-$runId"
 $configTempFile      = $null
 $enabledPluginsTempFile = $null
+$advancedConfigTempFile = $null
 
 if ($RabbitMqMode -eq 'External') {
     $rmqUser     = $ExternalRabbitMqUsername
@@ -542,9 +626,34 @@ try {
                 '[rabbitmq_management,rabbitmq_prometheus,rabbitmq_shovel,rabbitmq_shovel_management].' |
                     Set-Content -LiteralPath $enabledPluginsTempFile -Encoding ASCII -NoNewline
 
+                # Bind-mount the amqp10_client wildcard-hostname-check fix (see
+                # docs/ShovelBridge-Architecture.md "Security") so this container-mode
+                # broker behaves the same as the choco-installed native broker used
+                # against ExternalServiceBus in CI, which writes this same file. Without
+                # it, the Shovel's dest-uri TLS handshake against a real Azure Service Bus
+                # namespace always fails with 'hostname_check_failed', because Erlang's
+                # default verify_peer hostname check is a literal (non-wildcard-aware)
+                # match against Service Bus's '*.servicebus.windows.net' SAN. Harmless to
+                # bake in unconditionally (also applies to -DestinationMode Emulator,
+                # where it's simply inert): it only customises amqp10_client's own TLS
+                # peer-verification match function, keeping full certificate validation.
+                $advancedConfigTempFile = Join-Path ([System.IO.Path]::GetTempPath()) "shovel-e2e-advanced-config-$runId"
+                @'
+[
+  {amqp10_client, [
+    {ssl_options, [
+      {customize_hostname_check, [
+        {match_fun, public_key:pkix_verify_hostname_match_fun(https)}
+      ]}
+    ]}
+  ]}
+].
+'@ | Set-Content -LiteralPath $advancedConfigTempFile -Encoding ASCII -NoNewline
+
                 docker run -d --name $rabbitContainerName --network $networkName `
                     -e "RABBITMQ_DEFAULT_USER=$rmqUser" -e "RABBITMQ_DEFAULT_PASS=$rmqPassword" `
                     -v "${enabledPluginsTempFile}:/etc/rabbitmq/enabled_plugins" `
+                    -v "${advancedConfigTempFile}:/etc/rabbitmq/advanced.config" `
                     -p "${RabbitMqAmqpHostPort}:5672" -p "${RabbitMqManagementHostPort}:15672" `
                     $RabbitMqImage | Out-Null
                 if ($LASTEXITCODE -ne 0) { throw "docker run failed for RabbitMQ (exit $LASTEXITCODE)." }
@@ -761,8 +870,10 @@ try {
         # Status), since a bare "did not reach running" gives no lead on WHICH
         # side (src vs dest) is failing.
         $stateDetail = if ($lastShovelState) { " Last observed state: $($lastShovelState | ConvertTo-Json -Compress)." } else { ' No shovel status was ever observed for this name — check the PUT above succeeded.' }
-        $destHint = if ($DestinationMode -eq 'ExternalServiceBus') {
-            " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom)."
+        $destHint = if ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'External') {
+            " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom). -RabbitMqMode Container already bakes this fix in, so if you're seeing this in Container mode the cause is something else."
+        } elseif ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'Container') {
+            " -RabbitMqMode Container already bakes in the amqp10_client wildcard-hostname-check fix, so 'hostname_check_failed' is unlikely here. If the broker logs instead show '{cacerts, undefined}', append '&cacertfile=/etc/ssl/certs/ca-certificates.crt' to -ExternalShovelDestUri (Erlang/OTP 26+ requires an explicit CA bundle) — see the 'Security' section of docs/ShovelBridge-Architecture.md."
         } else { '' }
         throw "Shovel '$ShovelName' did not reach the 'running' state.$stateDetail Check the RabbitMQ broker logs (or Admin > Shovel Status in the management UI) for the connect failure reason — commonly a src-uri auth/permission failure, or a dest-uri (Service Bus) auth/network/queue-not-found failure.$destHint"
     }
@@ -809,9 +920,66 @@ try {
         )
     }
     Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
-    $harnessOutput = & dotnet @harnessArgs 2>&1
+    # Stream the harness's output live rather than buffering it and dumping it only
+    # after the process exits — at load-test volumes this run can take many minutes
+    # (build + publish + poll up to -ResultTimeoutSeconds), and a silent console during
+    # that window is indistinguishable from a hang.
+    & dotnet @harnessArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
     $harnessExitCode = $LASTEXITCODE
-    $harnessOutput | ForEach-Object { Write-Host "    $_" }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 4b — Post-run Shovel/RabbitMQ diagnostics (root-causing message loss)
+    # ════════════════════════════════════════════════════════════════════════
+    # At load-test volumes a fraction of messages have been observed to never reach
+    # the engine (e.g. 943/1000) with NO publish failures from the harness and NO
+    # exceptions on the engine side - meaning the loss happens somewhere between this
+    # local RabbitMQ source queue and the Service Bus destination (the Shovel's own
+    # bridging, or a transient disconnect/reconnect). Always captured (pass or fail)
+    # so a healthy run's numbers are available as a baseline for comparison. This is
+    # the evidence needed to tell WHICH side lost the messages:
+    #   - source queue empty (messages=0) AND publish == deliver_get == ack (all equal
+    #     to MessageCount) -> every message was published, shoveled out, and acked;
+    #     loss happened downstream of RabbitMQ entirely (Service Bus delivery, or the
+    #     engine's own trigger dequeue) - inspect the Service Bus dead-letter queue
+    #     for that run's correlationIds (see docs/ShovelBridge-Architecture.md).
+    #   - publish == MessageCount but deliver_get/ack < MessageCount -> the Shovel
+    #     itself never picked up (or never got an on-confirm ack for) some messages
+    #     - a Shovel-side bridging/reliability issue, not a Service Bus/engine one.
+    #   - publish < MessageCount -> the harness under-published (would already have
+    #     thrown - see PublishToRabbitMqAsync - so should not happen silently).
+    Write-Phase 'Phase 4b  Post-run Shovel/RabbitMQ diagnostics'
+    try {
+        Write-Step "GET /api/queues/$vhostForApi/$SourceQueueName"
+        $finalQueue = Invoke-RabbitMqApi -Method Get -Path "/api/queues/$vhostForApi/$([Uri]::EscapeDataString($SourceQueueName))" -AllowFail
+        if ($finalQueue) {
+            $stats = $finalQueue.message_stats
+            Write-Host "  Source queue '$SourceQueueName' final state:" -ForegroundColor White
+            Write-Host "    messages (total)        : $($finalQueue.messages)" -ForegroundColor White
+            Write-Host "    messages_ready          : $($finalQueue.messages_ready)" -ForegroundColor White
+            Write-Host "    messages_unacknowledged : $($finalQueue.messages_unacknowledged)" -ForegroundColor White
+            if ($stats) {
+                Write-Host "    publish (lifetime)      : $($stats.publish)" -ForegroundColor White
+                Write-Host "    deliver_get (lifetime)  : $($stats.deliver_get)" -ForegroundColor White
+                Write-Host "    ack (lifetime)          : $($stats.ack)" -ForegroundColor White
+                Write-Host "    redeliver (lifetime)    : $($stats.redeliver)" -ForegroundColor White
+            } else {
+                Write-Note 'No message_stats present on the queue response (RabbitMQ only populates these after some activity/short delay).'
+            }
+        } else {
+            Write-Note "Could not retrieve source queue '$SourceQueueName' status for diagnostics (queue may already be gone, or the management API call failed)."
+        }
+
+        Write-Step "GET /api/shovels/$vhostForApi (looking for '$ShovelName')"
+        $finalShovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
+        $finalMine = @($finalShovels) | Where-Object { $_.name -eq $ShovelName }
+        if ($finalMine) {
+            Write-Host "  Shovel '$ShovelName' final state: $($finalMine[0] | ConvertTo-Json -Compress)" -ForegroundColor White
+        } else {
+            Write-Note "Shovel '$ShovelName' no longer reported by the management API (may have been torn down or restarted already)."
+        }
+    } catch {
+        Write-Note "Post-run diagnostics query itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+    }
 
     if ($harnessExitCode -ne 0) {
         throw "E2E harness reported failure (exit code $harnessExitCode). See output above."
@@ -857,6 +1025,7 @@ finally {
         }
         if ($configTempFile -and (Test-Path -LiteralPath $configTempFile)) { Remove-Item -LiteralPath $configTempFile -Force -ErrorAction SilentlyContinue }
         if ($enabledPluginsTempFile -and (Test-Path -LiteralPath $enabledPluginsTempFile)) { Remove-Item -LiteralPath $enabledPluginsTempFile -Force -ErrorAction SilentlyContinue }
+        if ($advancedConfigTempFile -and (Test-Path -LiteralPath $advancedConfigTempFile)) { Remove-Item -LiteralPath $advancedConfigTempFile -Force -ErrorAction SilentlyContinue }
         Write-Ok 'Teardown complete.'
     }
 }

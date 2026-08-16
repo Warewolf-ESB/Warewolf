@@ -1,0 +1,7 @@
+<Source ID="7a4e9f21-0e6b-4c8a-9f3d-2b6e5a1c8d47" Name="wwexecution-uat-hangfire" ResourceType="DbSource" IsValid="true" ConnectionString="WFAES::37kWVgQmxdsHviXFqj7u19YWlQo6x9TxPOwDJhJvRZ8XLbdR6x92k6DH+pBnVY++70TVkbOlM170AjoQeM0XqtpHZcg4TEIi0ox5X7A0tUyprXPksF97+Mb+9T+ILbYWYa5zOaU/rXGd8dOn68ZhQXmgm0TwIZxGLzf3YG0y1EzHYItcvvNFEvOawDt4uZHHh9dF3eVyW1Yn5U3DZEs+qanCI1fSsQ9QFwgS8kXWeIZ3tQo49oVI2Dweh5pfKWHtic/7bIaZvYg8I1TaZvH1dK4CVaqNJJ6ib52wgf5yqg==" Type="DbSource" ServerType="SqlDatabase" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>wwexecution-uat-hangfire</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DbSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-15T07:16:34.6616327+01:00" Reason="Save" User="ShovelBridge-load-test-fix" VersionNumber="1" ResourceId="7a4e9f21-0e6b-4c8a-9f3d-2b6e5a1c8d47" VersionId="54a7c5db-a571-4e72-933d-16495d8eef1d" />
+</Source>

@@ -77,6 +77,18 @@ internal static class ServiceCollectionExtensions
             services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
             services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
 
+            // The Service Bus secure trigger's token validator MUST be a DI singleton, not
+            // constructed per-invocation: EntraBearerTokenValidator caches Entra's OIDC
+            // metadata/JWKS internally, and ServiceBusWorkflowTriggerFunction (unlike
+            // IPrincipalParser's HTTP-path implementations) is not itself registered here,
+            // so the Functions isolated-worker host resolves a new instance per invocation.
+            // Without this singleton, a burst of concurrent Service Bus messages triggers
+            // one cold OIDC-metadata fetch per message — reproduced by the ShovelBridge
+            // 1000-message load test as widespread IDX20803/IDX20804 + InvalidToken
+            // failures once the Function App scales out under load.
+            services.AddSingleton(sp =>
+                new EntraBearerTokenValidator(sp.GetRequiredService<ServiceBusEntraAuthOptions>()));
+
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware
             // can emit structured 401/403 audit events even when encryption is off.

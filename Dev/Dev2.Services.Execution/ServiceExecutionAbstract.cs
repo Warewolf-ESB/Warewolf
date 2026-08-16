@@ -259,8 +259,16 @@ namespace Dev2.Services.Execution
                     outputFormatter = GetOutputFormatter(Service);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Diagnostics for WOLF-8510: this previously swallowed the exception silently and
+                // returned false, so a failure here left no trace anywhere and simply skipped
+                // output formatting. Behaviour is unchanged (still returns false) - only the
+                // exception is now recorded.
+                Dev2Logger.Error(
+                    $"GetOutputFormatter failed for service '{Service?.ResourceName}' - output formatting will be skipped.",
+                    ex,
+                    GlobalConstants.WarewolfError);
                 return false;
             }
 

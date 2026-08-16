@@ -43,6 +43,25 @@ namespace Warewolf.Execution.Lightweight.Models
         public bool IsSuccess { get; set; }
 
         /// <summary>
+        /// True when a non-success result stems from a transient/environmental condition
+        /// (currently: <see cref="OutOfMemoryException"/> during compile/execute, most often
+        /// hit on an Azure Functions Consumption-plan instance under cold-start memory
+        /// pressure — see <c>WorkflowExecutor.Execute</c>'s dedicated catch clause and
+        /// <c>docs/ShovelBridge-Architecture.md</c>) rather than a genuine workflow/business
+        /// failure that would fail identically on retry (validation errors, missing
+        /// variables, missing files, etc.).
+        ///
+        /// <para>
+        /// Callers that can retry (e.g. <c>ServiceBusWorkflowTriggerFunction</c>, which is
+        /// driven by a message broker with its own redelivery/backoff) should treat this as a
+        /// signal to retry rather than treat the failure as terminal. HTTP callers ignore this
+        /// flag entirely and keep returning their existing failure response — there is no
+        /// broker to retry against for a synchronous HTTP call.
+        /// </para>
+        /// </summary>
+        public bool IsTransientFailure { get; set; }
+
+        /// <summary>
         /// The execution ID assigned to this workflow run.
         /// </summary>
         public Guid ExecutionId { get; set; }
@@ -102,6 +121,19 @@ namespace Warewolf.Execution.Lightweight.Models
         public static WorkflowExecutionResult Failure(string errorMessage) => new()
         {
             IsSuccess = false,
+            Errors = new List<string> { errorMessage },
+            StartTime = DateTime.UtcNow,
+            EndTime = DateTime.UtcNow
+        };
+
+        /// <summary>
+        /// Creates a transient failure result (<see cref="IsTransientFailure"/> = true) with the
+        /// specified error message — see <see cref="IsTransientFailure"/> for what qualifies.
+        /// </summary>
+        public static WorkflowExecutionResult TransientFailure(string errorMessage) => new()
+        {
+            IsSuccess = false,
+            IsTransientFailure = true,
             Errors = new List<string> { errorMessage },
             StartTime = DateTime.UtcNow,
             EndTime = DateTime.UtcNow

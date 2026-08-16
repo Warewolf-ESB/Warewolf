@@ -22,6 +22,18 @@
 
   <ItemGroup>
     <!--
+      Source-link (NOT ProjectReference) a single pure helper from the E2E harness. The harness
+      is an Exe deliberately kept out of ServerTests.sln / TestRun.ps1's globs (see its own
+      csproj comment); referencing it as a project would drag that Exe into a flat ServerTests
+      publish. Compiling this one dependency-free file directly gives the helper unit coverage
+      without disturbing that isolation.
+    -->
+    <Compile Include="..\Warewolf.Execution.ServiceBusWorker.E2EHarness\WorkflowInputTemplate.cs"
+             Link="Harness\WorkflowInputTemplate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
       Mirrors the same override in Warewolf.Execution.ServiceBusWorker.csproj: the worker's
       Service Bus extension requires Google.Protobuf >= 3.32.1, but this solution's
       Dev/Directory.Build.props pins a lower floor for the engine — causing NU1605 here too since
