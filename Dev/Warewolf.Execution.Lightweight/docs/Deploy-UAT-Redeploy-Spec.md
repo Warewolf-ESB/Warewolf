@@ -232,7 +232,7 @@ az functionapp config appsettings set --name WarewolfServer-UAT --resource-group
 ```powershell
 & Dev\Warewolf.Execution.Lightweight\Scripts\Deploy-WwExecutionEngine.ps1 `
     -ResourceGroup       'DEV2' `
-    -Location            'eastus' `
+    -Location            'southafricanorth' `
     -StorageAccount      'warewolfuatsa' `
     -AppName             'WarewolfServer-UAT' `
     -PublishPath         'D:\ExecutionEngine\Publish' `

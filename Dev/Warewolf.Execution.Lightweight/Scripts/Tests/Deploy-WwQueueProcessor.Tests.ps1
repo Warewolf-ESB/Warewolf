@@ -739,11 +739,18 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
             # answer that read - otherwise these tests would only ever cover the explicit
             # -EngineTenantId path and the defaulting branch would go untested.
             if (($args -join ' ') -match 'account show.*tenantId') { return 'tid-from-az-context' }
+            # 'group exists' answers the idempotent resource-group check below. Defaults to 'false'
+            # (group missing) unless a test opts in via $global:rgExists, so the existing suite -
+            # which never sets it - keeps exercising the "group is missing, create it" branch.
+            if (($args -join ' ') -match '^group exists') { return $(if ($global:rgExists) { 'true' } else { 'false' }) }
             return ''
         }
     }
 
-    AfterAll { Remove-Item Function:\az -ErrorAction SilentlyContinue }
+    AfterAll {
+        Remove-Item Function:\az -ErrorAction SilentlyContinue
+        Remove-Variable -Name rgExists -Scope Global -ErrorAction SilentlyContinue
+    }
 
     It 'resolves one trigger, derives the plan, and performs NO mutating az call' {
         $global:azCalls = @()
@@ -768,6 +775,32 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
         # Every state-changing call must be echoed, not executed.
         ($global:azCalls | Where-Object { $_ -match 'containerapp create|containerapp update|group create' }).Count |
             Should -Be 0 -Because '-DryRun must not mutate anything'
+    }
+
+    It 'does NOT attempt to create the resource group when it already exists' {
+        # 'az group create' is not idempotent across a location mismatch: it fails outright when
+        # the group already exists in a different region than -Location. Deploy-WwExecutionEngine.ps1
+        # avoids this by checking 'az group exists' first; this script must do the same, otherwise a
+        # resource group shared with another component (provisioned against a different default
+        # region) breaks every future deploy.
+        $global:azCalls = @()
+        $global:rgExists = $true
+        try {
+            $out = & $script:DeployScript `
+                -ResourceGroup RG -Location southafricanorth `
+                -AcaEnvironment aca-test -Image 'acr.azurecr.io/wwqp@sha256:abc' `
+                -TriggerFilePath (Join-Path $script:FixtureDir 'triggers-mandate.bite') `
+                -QueueSourcePath $script:FixtureDir `
+                -EngineBaseUrl 'https://engine' -EngineResourceAppId 'app-1' `
+                -RabbitMqSecretUri 'https://kv.vault.azure.net/secrets/rabbit' `
+                -DryRun -NonInteractive 6>&1 | Out-String
+
+            $out | Should -Match "Resource group 'RG' already exists"
+            ($global:azCalls | Where-Object { $_ -match '^group create' }).Count |
+                Should -Be 0 -Because 'an existing group must never be re-created regardless of -Location'
+        } finally {
+            $global:rgExists = $false
+        }
     }
 
     It 'passes env vars ON CREATE so the first revision is not born broken' {
