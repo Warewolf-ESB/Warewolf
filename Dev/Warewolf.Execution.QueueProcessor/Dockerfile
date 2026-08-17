@@ -31,7 +31,14 @@
 # so it appears in Warewolf.Execution.QueueProcessor.runtimeconfig.json. On the plain runtime image the
 # host cannot resolve it and the container exits 150 -- "No frameworks were found." -- before any
 # RabbitMQ connection is attempted, which surfaces in ACA as CrashLoopBackOff.
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+#
+# MUST match the TargetFramework this project (and Dev2.Common) actually build against - net10.0
+# (see the pipeline's 'Install .NET 10 SDK' step and the NETSDK1045 comment next to it). An 8.0
+# base image starts, but its dotnet muxer only has Microsoft.NETCore.App 8.0.x, which cannot
+# resolve the runtimeconfig.json's "version": "10.0.0" requirement - the process exits immediately
+# with "You must install or update .NET to run this application.", which ACA also reports as
+# CrashLoopBackOff, and the container never gets far enough to open a RabbitMQ connection.
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 
 # Non-root by default; the worker needs no privileged operation and no inbound port.
 RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin warewolf
