@@ -16,11 +16,20 @@
     If $NewVersion already matches the version currently marked as latest, the
     file is left untouched (idempotent - re-running a release publish is safe).
 
+    THE QUEUEWORKER LINK IS SELF-HEALING. Unlike engine-zip-link/scripts-zip-link, which are
+    assumed to already exist in the live template and are simply replaced,
+    data-role="queueworker-zip-link" may not exist yet (it did not ship with the original
+    template). If found, its href is replaced exactly like the other two; if absent, a new
+    <a data-role="queueworker-zip-link"> is INSERTED right after the scripts-zip-link anchor,
+    so the page grows the third download button the first time this script runs against a
+    template that doesn't have it yet, with no manual page edit required first.
+
 .EXAMPLE
     .\Update-ReleaseNotes.ps1 -Path .\release-notes.php -NewVersion 3.0.2.90 `
         -NotesBullets @('Added X', 'Fixed Y') `
         -EngineZipUrl 'https://stwwreleases.blob.core.windows.net/releases/AzureFunctionsPackage-3.0.2.90.zip' `
-        -ScriptsZipUrl 'https://stwwreleases.blob.core.windows.net/releases/Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip'
+        -ScriptsZipUrl 'https://stwwreleases.blob.core.windows.net/releases/Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip' `
+        -QueueWorkerZipUrl 'https://stwwreleases.blob.core.windows.net/releases/Warewolf-QueueProcessor-3.0.2.90.zip'
 #>
 param(
     [Parameter(Mandatory)] [string]$Path,
@@ -32,7 +41,8 @@ param(
     # blank - release notes are optional, only PublishRelease should gate anything.
     [string[]]$NotesBullets = @(),
     [Parameter(Mandatory)] [string]$EngineZipUrl,
-    [Parameter(Mandatory)] [string]$ScriptsZipUrl
+    [Parameter(Mandatory)] [string]$ScriptsZipUrl,
+    [Parameter(Mandatory)] [string]$QueueWorkerZipUrl
 )
 
 $ErrorActionPreference = 'Stop'
@@ -58,6 +68,11 @@ if (-not $scriptsHrefMatch.Success) { throw "Could not find data-role=`"scripts-
 $oldEngineHref  = $engineHrefMatch.Groups[1].Value
 $oldScriptsHref = $scriptsHrefMatch.Groups[1].Value
 
+# Not required to exist yet - see the .DESCRIPTION note on the queueworker link being
+# self-healing. $null here means "no button to archive, and insert rather than replace below".
+$queueWorkerHrefMatch = [regex]::Match($content, 'data-role="queueworker-zip-link"[^>]*href="([^"]+)"')
+$oldQueueWorkerHref = if ($queueWorkerHrefMatch.Success) { $queueWorkerHrefMatch.Groups[1].Value } else { $null }
+
 if ($oldVersion -eq $NewVersion) {
     Write-Warning "release-notes.php already shows '$NewVersion' as the latest version - leaving the file unchanged (idempotent no-op)."
     return
@@ -70,6 +85,10 @@ if ($bullets.Count -eq 0) {
 $newNotesUl = "<ul class=`"baseline-large`">`n" + (($bullets | ForEach-Object { "`t`t`t`t`t<li>$_</li>" }) -join "`n") + "`n`t`t`t`t</ul>"
 
 # Archive the OLD latest block as a new <article> immediately after the insert marker.
+# The queueworker button is included only when the OLD latest block actually had one - a
+# release published before this script gained -QueueWorkerZipUrl support has nothing to
+# archive for it, and fabricating a link here would point at a zip that was never built.
+$oldQueueWorkerButton = if ($oldQueueWorkerHref) { "`n`t`t<a class=`"btn btn-primary`" href=`"$oldQueueWorkerHref`">Download QueueProcessor</a>" } else { '' }
 $archiveArticle = @"
 
 	<article class="release-notes" data-version="$oldVersion">
@@ -79,7 +98,7 @@ $archiveArticle = @"
 		$oldNotes
 		<p>
 		<a class="btn btn-primary" href="$oldEngineHref">Download Execution Zip</a>
-		<a class="btn btn-primary" href="$oldScriptsHref">Download Scripts</a>
+		<a class="btn btn-primary" href="$oldScriptsHref">Download Scripts</a>$oldQueueWorkerButton
 	</div>
 	</article>
 "@
@@ -104,6 +123,28 @@ $content = $content.Replace(
 $content = $content.Replace(
     "data-role=`"scripts-zip-link`" href=`"$oldScriptsHref`"",
     "data-role=`"scripts-zip-link`" href=`"$ScriptsZipUrl`"")
+
+if ($queueWorkerHrefMatch.Success) {
+    $content = $content.Replace(
+        "data-role=`"queueworker-zip-link`" href=`"$oldQueueWorkerHref`"",
+        "data-role=`"queueworker-zip-link`" href=`"$QueueWorkerZipUrl`"")
+} else {
+    # First run against a template that predates the queueworker link: clone the scripts-zip-link
+    # <a> element's own opening tag (whatever classes/attributes it actually carries live, not a
+    # hardcoded guess) and insert a new anchor for it right after, so the button ships with the
+    # exact same styling as its neighbour.
+    $scriptsAnchorPattern = '(<a\b[^>]*data-role="scripts-zip-link"[^>]*>)(.*?)(</a>)'
+    $scriptsAnchorMatch = [regex]::Match($content, $scriptsAnchorPattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
+    if (-not $scriptsAnchorMatch.Success) {
+        throw "Could not find the full scripts-zip-link <a> element in '$Path' to model the new queueworker-zip-link anchor on."
+    }
+    $queueWorkerOpenTag = $scriptsAnchorMatch.Groups[1].Value `
+        -replace 'data-role="scripts-zip-link"', 'data-role="queueworker-zip-link"' `
+        -replace 'href="[^"]*"', "href=`"$QueueWorkerZipUrl`""
+    $queueWorkerAnchor = "$queueWorkerOpenTag" + 'Download QueueProcessor' + '</a>'
+    $content = $content.Replace($scriptsAnchorMatch.Value, $scriptsAnchorMatch.Value + "`n`t`t$queueWorkerAnchor")
+    Write-Host "Inserted new data-role=`"queueworker-zip-link`" anchor (not present in the template before this run)."
+}
 
 Set-Content -LiteralPath $Path -Value $content -NoNewline -Encoding UTF8
 Write-Host "release-notes.php updated: $oldVersion -> $NewVersion"
