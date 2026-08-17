@@ -118,7 +118,22 @@ param(
     [string] $EngineResourceAppId,
     [string] $EngineScope,
     [string] $EngineTenantId,
-    [int]    $EngineTimeoutSeconds = 45,
+    # How long the worker waits for the engine before giving up. A timeout that fires while the
+    # engine is still working is NOT a safe failure: the engine completes the workflow anyway, so
+    # the side effects happen and the retry repeats them.
+    #
+    # Sized from measured engine latency (2026-08-11), not guessed:
+    #   burst at the DEPLOYED concurrency (3+1 replicas, Prefetch=1) - max 11.5s
+    #   controlled test at concurrency 4                             - max 10.0s
+    #   controlled stress at concurrency 10                          - 153s completed; 3 > 200s
+    # 180s covers the worst SUCCESSFUL observation under 2.5x overload with headroom.
+    #
+    # Raised from 45s, which was under-sized: one engine call exceeded it during the 2026-08-11 run,
+    # the delivery was left unacked, and with Prefetch=1 the consumer stalled permanently.
+    #
+    # HARD CEILING is the ENGINE's own functionTimeout (host.json, 00:10:00 = 600s). At or above
+    # that the engine kills the invocation first and the worker waits for a reply that never comes.
+    [int]    $EngineTimeoutSeconds = 180,
 
     # ── Scaling (derived from the trigger unless overridden) ──────────────────
     [ValidateSet('Elastic', 'Fixed', 'Warm')]
@@ -129,8 +144,48 @@ param(
     [int]    $MaxConcurrency = 1,
     [string] $Cpu = '0.5',
     [string] $Memory = '1.0Gi',
-    [int]    $ShutdownGraceSeconds = 60,
-    [int]    $TerminationGracePeriodSeconds = 90,
+    # Both track EngineTimeoutSeconds and must keep the nesting
+    #   engine (180) <= drain (210) < termination (240)
+    # so a scale-in never SIGKILLs a replica whose engine call would still have completed.
+    [int]    $ShutdownGraceSeconds = 210,
+    [int]    $TerminationGracePeriodSeconds = 240,
+
+    # Attempts allowed for a delivery whose engine call fails at TRANSPORT level (timeout, socket
+    # error) before it is dead-lettered instead of retried. Emitted as WORKER__MAXDELIVERYATTEMPTS.
+    #
+    # ONLY 1 AND 2 ARE MEANINGFUL and the worker clamps anything higher: attempts are counted with
+    # the AMQP `redelivered` flag, which is a BOOLEAN - the broker records that a message has been
+    # delivered before, not how many times. Counting further would require republishing the message
+    # with an incremented header instead of requeueing it, changing queue order and message identity.
+    #
+    #   1 = dead-letter on the first transport failure, never retry
+    #   2 = requeue once, dead-letter if it fails again (default)
+    #
+    # Before this existed the worker left a failed delivery UNACKED, and with Prefetch=1 the broker
+    # then delivered nothing further - one engine timeout stalled the consumer permanently
+    # (measured 2026-08-11: 34 messages stranded behind a single unacked message).
+    [ValidateRange(1, 2)]
+    [int]    $MaxDeliveryAttempts = 2,
+
+    # Retry an engine HTTP 500 instead of dead-lettering it. Emitted as
+    # WORKER__RETRYENGINEINTERNALERRORS. OFF by default, deliberately.
+    #
+    # 408/429/502/503/504 are ALWAYS retried and are unaffected by this switch - in each of those the
+    # workflow provably never ran. 500 is different because this engine overloads it: a genuine
+    # workflow error, a WOLF-8418 authorization denial, and host memory exhaustion all surface as
+    # 500, and only the last is worth retrying. Turning this on buys resilience to exhaustion at the
+    # cost of spending a delivery attempt on messages that can never succeed.
+    #
+    # Prefer capping concurrency (trigger Concurrency) so the host never exhausts. Measured
+    # 2026-08-12 on an Azure Functions Consumption plan: concurrency 6 and 8 both scored 24/24,
+    # while 10 produced "Insufficient memory to continue the execution of the program".
+    [switch] $RetryEngineInternalErrors,
+
+    # Seconds to pause after granting the app identity its roles, so Key Vault's DATA plane converges
+    # before the first replica starts. The control-plane check in Assert-RoleAssigned is NOT enough:
+    # measured 2026-08-11, a verified 'Key Vault Secrets User' still produced 403 ForbiddenByRbac with
+    # "Assignment: (not found)" on getSecret, crash-looping the replica. 0 disables the wait.
+    [int]    $RbacPropagationSeconds = 60,
 
     # ── Secrets / identity ───────────────────────────────────────────────────
     [string] $KeyVaultName,
@@ -364,6 +419,47 @@ function Assert-RoleAssigned {
            'Creating role assignments needs Owner or User Access Administrator at that scope. ' +
            'Without it the deploy cannot continue: ACA resolves the keyvaultref secret with this ' +
            'identity and rejects the revision, and the image pull would fail too.')
+}
+
+function Wait-RbacDataPlaneSettle {
+    <#
+        Pauses after the role grants so Key Vault's DATA plane can catch up before the first replica
+        starts.
+
+        WHY THIS IS NOT REDUNDANT WITH Assert-RoleAssigned: that function retries until the assignment
+        reads back from the CONTROL plane (`az role assignment list`). Key Vault's data plane is a
+        separate, later-converging cache. Measured 2026-08-11: the control plane confirmed
+        'Key Vault Secrets User', the container started, and `getSecret` still returned
+
+            403 Forbidden ... "Caller is not authorized to perform action on resource."
+            Action: 'Microsoft.KeyVault/vaults/secrets/getSecret/action'   Assignment: (not found)
+
+        so the replica crash-looped at Program.cs startup until propagation completed.
+
+        WHAT THIS DOES AND DOES NOT GUARANTEE: it shrinks the race, it does not remove it - the data
+        plane offers no "is it effective yet" probe the operator can run on the identity's behalf, and
+        we cannot authenticate AS the managed identity from here. If a replica still loses the race it
+        crash-loops and ACA restarts it, which self-heals; the cost is a slow, alarming-looking first
+        start. The complete fix is retry-with-backoff inside KeyVaultSecretManager.InitializeAsync,
+        which is shared with the engine and therefore a separate decision.
+
+        Set -RbacPropagationSeconds 0 to skip (e.g. redeploying an app whose identity already holds
+        the roles, where nothing has changed and there is nothing to propagate).
+    #>
+    param([string] $PrincipalId)
+
+    if ($DryRun) { Write-Ok "Would wait ${RbacPropagationSeconds}s for Key Vault data-plane RBAC propagation."; return }
+    if (-not $PrincipalId) { return }
+    if ($RbacPropagationSeconds -le 0) {
+        Write-Note 'Skipping the RBAC data-plane settle wait (-RbacPropagationSeconds 0).'
+        return
+    }
+
+    Write-Step ("Waiting ${RbacPropagationSeconds}s for Key Vault data-plane RBAC to converge " +
+                '(control plane is already verified; the data plane lags and a replica that ' +
+                'loses the race crash-loops until it catches up)')
+    Start-Sleep -Seconds $RbacPropagationSeconds
+    Write-Ok 'RBAC settle wait complete.'
 }
 
 function Grant-AppIdentityRoles {
@@ -681,6 +777,22 @@ function Assert-TimeoutNesting {
         throw ("Timeout ordering invalid: -ShutdownGraceSeconds ($ShutdownGraceSeconds) must be < " +
                "-TerminationGracePeriodSeconds ($TerminationGracePeriodSeconds), otherwise SIGKILL " +
                'arrives mid-drain.')
+    }
+
+    # The chain has a FOURTH member that lives on the engine, not here: host.json's functionTimeout
+    # (00:10:00 = 600s). Waiting longer than the engine is willing to run is not a longer timeout,
+    # it is a guaranteed one - the engine kills the invocation and the worker waits for a reply that
+    # can never arrive, burning the whole budget before retrying.
+    $engineFunctionTimeoutSeconds = 600
+    if ($EngineTimeoutSeconds -ge $engineFunctionTimeoutSeconds) {
+        throw ("Timeout ordering invalid: -EngineTimeoutSeconds ($EngineTimeoutSeconds) must be < the " +
+               "engine's functionTimeout (${engineFunctionTimeoutSeconds}s, host.json). Above it the " +
+               'engine aborts the invocation first and the worker can never receive a response.')
+    }
+    if ($EngineTimeoutSeconds -gt ($engineFunctionTimeoutSeconds * 0.75)) {
+        Write-Note ("-EngineTimeoutSeconds ($EngineTimeoutSeconds) is within 25% of the engine's " +
+                    "functionTimeout (${engineFunctionTimeoutSeconds}s). Leave room for the engine to " +
+                    'return an error rather than being killed mid-flight.')
     }
 }
 
@@ -1138,6 +1250,8 @@ foreach ($planned in $plannedApps) {
             "ENGINE__TIMEOUTSECONDS=$EngineTimeoutSeconds"
             "WORKER__MAXCONCURRENCY=$($scale.MaxConcurrency)"
             "WORKER__SHUTDOWNGRACESECONDS=$ShutdownGraceSeconds"
+            "WORKER__MAXDELIVERYATTEMPTS=$MaxDeliveryAttempts"
+            "WORKER__RETRYENGINEINTERNALERRORS=$($RetryEngineInternalErrors.IsPresent.ToString().ToLowerInvariant())"
             "EXECUTIONLOGLEVEL=$ExecutionLogLevel"
             "ENABLECONSOLELOGGING=true"
             "ENABLEAPPLICATIONINSIGHTS=$($EnableAppInsights.IsPresent.ToString().ToLowerInvariant())"
@@ -1225,6 +1339,7 @@ foreach ($planned in $plannedApps) {
                                            '--query', 'identity.principalId', '-o', 'tsv') -AllowFail
 
         Grant-AppIdentityRoles -PrincipalId $principalId
+        Wait-RbacDataPlaneSettle -PrincipalId $principalId
 
         # ── Secret (Key Vault reference) + env vars + KEDA rule ──────────────
         # ORDER IS LOAD-BEARING: 'secret set' with a keyvaultref makes ACA resolve the secret
@@ -1289,6 +1404,16 @@ foreach ($planned in $plannedApps) {
 
         Invoke-Az -AzArgs (@('containerapp', 'update', '--name', $appName, '--resource-group', $ResourceGroup,
                              '--set-env-vars') + $envVars + @('-o', 'none')) -Mutating | Out-Null
+
+        # ACTUALLY APPLY the termination grace period. It was previously validated against
+        # ShutdownGraceSeconds and printed in the plan, but never sent to Azure - so every deployment
+        # silently ran on ACA's 30s default while the plan claimed a longer drain budget, and SIGKILL
+        # could arrive mid-drain. It is a TEMPLATE property, not an env var, so --set-env-vars cannot
+        # carry it; it needs its own flag.
+        Invoke-Az -AzArgs @('containerapp', 'update', '--name', $appName, '--resource-group', $ResourceGroup,
+                            '--termination-grace-period', "$TerminationGracePeriodSeconds",
+                            '-o', 'none') -Mutating | Out-Null
+        Write-Ok "Termination grace period set to ${TerminationGracePeriodSeconds}s (drain budget ${ShutdownGraceSeconds}s)."
 
         if ($scale.MaxReplicas -gt 0 -and $RabbitMqSecretUri) {
             $scaleArgs = @(
@@ -1363,7 +1488,55 @@ if (-not $DryRun) {
     Write-Ok "Summary written: $summaryPath"
 }
 
+# ── Resources manipulated, with reachable URLs ───────────────────────────────
+# Printed on every run, including a partial one, because a half-finished fan-out is exactly when you
+# need to know which apps exist. Driven off $results, which is also what the summary JSON records.
+$verb = $DryRun ? 'WOULD CREATE' : 'CREATED'
+# This script has no -SubscriptionId parameter, so resolve it for the portal links rather than
+# emitting 'subscriptions//resourceGroups'. -AllowFail keeps a broken link from failing the deploy.
+$subIdForLinks = Invoke-Az -AzArgs @('account', 'show', '--query', 'id', '-o', 'tsv') -AllowFail
+$subIdForLinks = "$subIdForLinks".Trim()
 Write-Host ''
+Write-Host '  -- Resources manipulated --' -ForegroundColor Cyan
+Write-Host "     $verb" -ForegroundColor Green
+Write-Host "       ACR repository: $ImageRepository  (image $resolvedImage)" -ForegroundColor Green
+foreach ($r in $results) {
+    # A FAILED entry carries only trigger/triggerId/app/queue/status/error - the scale and identity
+    # fields never got assigned - so every optional field is probed before printing.
+    $failedRow = $r.status -eq 'failed'
+    $has = { param($n) [bool]$r.PSObject.Properties[$n] -and $null -ne $r.PSObject.Properties[$n].Value }
+    Write-Host ("       {0}Container App: {1}" -f $(if ($failedRow) { 'FAILED  ' } else { '' }), $r.app) `
+               -ForegroundColor $(if ($failedRow) { 'Red' } else { 'Green' })
+    Write-Host ("         trigger '{0}' queue '{1}'{2}" -f $r.trigger, $r.queue,
+                $(if (& $has 'workflow') { " -> $($r.workflow)" } else { '' })) -ForegroundColor DarkGray
+    if (& $has 'maxReplicas') {
+        Write-Host ("         scale: min={0} max={1} value={2} prefetch={3} mode={4}" -f `
+                    $r.minReplicas, $r.maxReplicas, $r.targetLength, $r.prefetch, $r.scalingMode) -ForegroundColor DarkGray
+    }
+    if (& $has 'principalId') {
+        Write-Host ("         identity {0}  (granted AcrPull + Key Vault Secrets User)" -f $r.principalId) -ForegroundColor DarkGray
+    }
+    if ($failedRow -and (& $has 'error')) {
+        Write-Host ("         error: {0}" -f $r.error) -ForegroundColor Red
+    } else {
+        Write-Host ("         Portal : https://portal.azure.com/#@/resource/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.App/containerApps/{2}" -f `
+                    $subIdForLinks, $ResourceGroup, $r.app) -ForegroundColor Blue
+    }
+}
+Write-Host '     REUSED (pre-existing - teardown will NOT remove these)' -ForegroundColor Gray
+Write-Host "       ACA environment : $AcaEnvironment" -ForegroundColor Gray
+Write-Host "       Container registry: $AcrName" -ForegroundColor Gray
+Write-Host "       Resource group  : $ResourceGroup" -ForegroundColor Gray
+if ($KeyVaultName) { Write-Host "       Key Vault       : $KeyVaultName (secret $KeyVaultSecretName)" -ForegroundColor Gray }
+Write-Host ''
+Write-Host '     ENDPOINTS' -ForegroundColor Blue
+Write-Host "       Engine          : $EngineBaseUrl" -ForegroundColor Blue
+Write-Host "       Engine scope    : $effectiveScope" -ForegroundColor Blue
+foreach ($r in ($results | Where-Object { $_.PSObject.Properties['workflow'] -and $_.workflow })) {
+    Write-Host ("       Workflow posted : {0}/secure/{1}.json" -f $EngineBaseUrl.TrimEnd('/'), $r.workflow) -ForegroundColor Blue
+}
+Write-Host ''
+
 Write-Note 'NEXT (required): grant EACH app''s managed identity the engine app role Warewolf_QueueProcessor.'
 Write-Note 'A per-workflow secure.config row is NOT required, and adding one can LOCK THE WORKER OUT: a'
 Write-Note 'workflow uses the resource role map exclusively once it has any Execute-bearing resource entry,'
@@ -1380,3 +1553,4 @@ if ($failed.Count -gt 0) {
 # a wrapper checking $LASTEXITCODE - would read a clean deploy as a failure.
 $global:LASTEXITCODE = 0
 exit 0
+

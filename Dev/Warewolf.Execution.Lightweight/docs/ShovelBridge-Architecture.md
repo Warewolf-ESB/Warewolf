@@ -1046,19 +1046,6 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     A lower-risk, no-cost alternative worth trying first: tune `ServiceBusOptions
     .MaxAutoLockRenewalDuration` (isolated-worker `worker.json`/host configuration) so lock renewal
     keeps pace with slower cold-start invocations without changing the queue's own `LockDuration`.
-  - **A proven, already-built no-cost fix for this exact class of problem exists but is NOT on this
-    branch**: `origin/8504-Execution-Engine-Queue-Processor-End-to-end-testing`'s
-    `Scripts/Invoke-WwEnginePreWarm.ps1` (commit `bcca73646e`) warms a Consumption-plan engine
-    sequentially (Phase A, until latency stabilizes) then at the burst's own target concurrency
-    (Phase B, 3 rounds, to force scale-out) *before* publishing, calling the same
-    `Secure/{workflow}.json` HTTP route and therefore the same `WorkflowExecutor` the Service Bus
-    trigger uses. Its own header cites first-call-cold 64.7s vs ~3.1s warm, and a 100-message burst
-    going from 31/100 discarded (502/503/504, no pre-warm, 10 replicas) to 0 failures (pre-warmed, 6
-    replicas). Only 8504's `WorkflowExecutor` pool fix was ported to this branch/pipeline
-    (`2b784fe7b6`, "port the patch for concurrency from the 8504 branch") — the pre-warm script was
-    not, and `pipeline-LOADTEST.yml` has no warm-up step between `Deploy_UAT` and `Load_Test`.
-    Porting it (or an equivalent warm-up step against `warewolfserver-uat` before the 1000-message
-    publish) is the most direct untried fix for this run's failure signature.
 
 ## Promotion status
 

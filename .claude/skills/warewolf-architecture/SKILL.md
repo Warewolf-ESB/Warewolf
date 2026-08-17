@@ -75,6 +75,38 @@ Full-featured SOA/ESB server. Wraps `Dev2.Runtime.*`, exposes REST APIs on port 
 - **`Dev2.Runtime.*`** — workflow execution, variable resolution, configuration management, WebServer hosting
 - **`Dev2.Activities`** / **`Dev2.Activities.Designers`** — 100+ built-in microservice activities (file ops, data manipulation, API calls, DB access); each is drag-droppable in the Studio designer
 
+### ⚠️ Activity instances are NOT safe to share across concurrent executions
+
+`ActivityParser.Parse` **clones nothing**. It walks the `Flowchart` via
+`WorkflowInspectionServices.GetActivities()` and returns references to the *same* `Dsf*Activity`
+objects ([ActivityParser.cs:192-202](../../../Dev/Dev2.Activities/Activities/ActivityParser.cs#L192-L202)).
+Any caller caching a `DynamicActivity` and parsing it per request therefore hands **one shared activity
+graph** to every concurrent execution.
+
+That matters because activities hold **per-execution state in instance fields**. All six database
+activities do:
+
+```csharp
+public IServiceExecution ServiceExecution { get; protected set; }          // instance field
+BeforeExecutionStart(...) { ServiceExecution = new DatabaseServiceExecution(dataObject); }
+ExecutionImpl(...)        { ServiceExecution.Execute(out execErrors, update); }
+```
+
+Two concurrent executions overwrite each other's `ServiceExecution`, and the loser runs against the
+winner's `DsfDataObject` — so its output variable is silently never written. Measured 2026-08-11 on a
+SQL workflow: sequential 10/10 pass; concurrency 4/6/10 → 3/4, 4/6, 8/10, the failures reporting
+`Object reference not set…` plus `Error with variables in input. [[JobLogId]]`. A workflow with no such
+state (an Assign) passes 20/20 at concurrency 20, which is why single-message tests never catch it.
+
+- **Lightweight** — fixed. `WorkflowExecutor` pools *prepared workflows*; each execution rents one
+  exclusively and returns it in a `finally`. Three call sites: `WorkflowExecutor`, `ResumptionExecutor`,
+  `LightweightEsbChannel` (nested sub-workflows — the most exposed, one callee usually has many callers).
+- **Server** — **still exposed.** `ResourceActivityCache` shares parsed chains the same way and
+  `Dev2.Activities` was deliberately not changed. Treat concurrent execution of one workflow with a
+  DB/service activity as unsafe there until fixed.
+
+When adding an activity, keep per-execution state on the `DsfDataObject`, never on the activity.
+
 ## Studio (WPF desktop client)
 - **`Warewolf.Studio.ViewModels`** / **`Warewolf.Studio.Views`** — MVVM pair for the designer UI
 - **`Warewolf.Studio.Core`** / **`Warewolf.Studio.CustomControls`** / **`Warewolf.Studio.Themes.Luna`** — supporting UI components

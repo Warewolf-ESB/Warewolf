@@ -6,27 +6,25 @@
     and scale-out.
 
 .DESCRIPTION
-    Adapted from `origin/8504-Execution-Engine-Queue-Processor-End-to-end-testing`'s
-    script of the same name (commit `bcca73646e`), which was built and measured for the
-    Container Apps/KEDA queue-processor path but targets exactly the same underlying
-    problem this repo's ServiceBus-triggered load test hits: on the Consumption (Y1 /
-    Dynamic) plan the platform adds instances gradually and sheds load while it does. A
-    burst arriving into that window does not fail because a workflow is wrong - it fails
-    because the request/message never reaches a warm instance in time. The original
-    script measured, against `wwengine-e2e-ldi413` on 2026-08-12/13:
+    Serves TWO callers with different authentication shapes, unified into one script
+    rather than forked into two:
+
+      * pipeline-LOADTEST.yml's ShovelBridgeLoadTest_ExternalServiceBus job already mints
+        an Entra access token for the daemon app immediately before running the load
+        test, and passes it straight through via -EngineBaseUrl/-AccessToken - no extra
+        token-minting dependency needed for that path.
+      * Invoke-WwQueueLoadTest.ps1 (Container Apps / KEDA queue-processor path) has no
+        pre-minted token of its own; it passes -EngineAppName/-EngineAppId (+
+        -ResourceGroup/-TenantId) and this script mints one itself via
+        WwE2E.Common.psm1's Get-E2EEngineToken, the same helper the E2E verification
+        harness uses.
+
+    Measured against `wwengine-e2e-ldi413` on 2026-08-12/13:
 
         first request after idle    64,757 ms      (cold start)
         requests 2-5                 3,1xx ms      (warm, sequential)
         RUN 1, no pre-warm, 10 replicas   17x502, 8x503, 6x504 - 31 of 100 messages discarded
         RUN 2, pre-warmed,   6 replicas   0 failures, 100/100
-
-    This adaptation is intentionally self-contained rather than a straight port: the
-    original depends on `WwE2E.Common.psm1` (its own `Get-E2EEngineToken` helper), which
-    was never ported to this branch. `pipeline-LOADTEST.yml` already mints an Entra
-    access token for the same daemon app (`ShovelE2EDaemonClientSecret`) immediately
-    before running the load test - this script accepts that token directly via
-    `-AccessToken` instead of minting its own, so no new pipeline secret or dependency is
-    needed.
 
     Two phases, because they warm different things:
 
@@ -40,27 +38,38 @@
       the rest.
 
     Every call executes the real workflow via its `Secure/{workflow}` HTTP route (same
-    `WorkflowExecutor`/Roslyn-compile pool the ServiceBus trigger uses - see
-    `docs/ShovelBridge-Architecture.md`'s 2026-08-16 entry), so IT WRITES REAL ROWS to
-    whatever the workflow persists. Use `-MessagePrefix` to make them identifiable.
+    `WorkflowExecutor`/Roslyn-compile pool both the ServiceBus trigger and the queue
+    processor call into), so IT WRITES REAL ROWS to whatever the workflow persists. Use
+    `-MessagePrefix` to make them identifiable, and take a MAX(id) watermark after
+    warming (not before) so the run's own rows can be counted separately.
 
 .PARAMETER EngineBaseUrl
-    REQUIRED. Base URL of the target engine, e.g. https://warewolfserver-uat.azurewebsites.net
-    (no trailing slash required).
+    Base URL of the target engine, e.g. https://warewolfserver-uat.azurewebsites.net (no
+    trailing slash required). Either this or -EngineAppName is required.
+.PARAMETER EngineAppName
+    Function App name, used to derive the base URL (https://{EngineAppName}.azurewebsites.net)
+    when -EngineBaseUrl is not given, and to mint a token via -EngineAppId when
+    -AccessToken is not given.
+.PARAMETER EngineAppId
+    Entra application (client) ID of the engine's Easy Auth app registration. Required
+    when minting a token (i.e. -AccessToken was not supplied).
+.PARAMETER ResourceGroup
+    Resource group containing -EngineAppName. Only used when minting a token.
+.PARAMETER TenantId
+    Entra tenant ID. Only used when minting a token.
 .PARAMETER WorkflowRoute
-    Route (relative to EngineBaseUrl) of the workflow to warm, via the engine's
+    Route (relative to the resolved base URL) of the workflow to warm, via the engine's
     anonymous-but-token-checked Secure route (see WorkflowHttpFunction.cs). Default:
-    'Secure/rabbit/RabbitProcess' - the same workflow the ShovelBridge load test drives.
+    'Secure/rabbit/RabbitProcess' - RabbitProcess's DataList exposes a single Input,
+    'message', which is what Format-WarmupRequestBody populates.
 .PARAMETER AccessToken
-    REQUIRED. A valid Entra bearer token for the engine's Secure route, as a SecureString.
-    Minted the same way the caller already mints one for the workflow-execution
-    verification leg (client-credentials against the ShovelBridge E2E daemon app) - this
-    script does not mint its own.
+    A valid Entra bearer token for the engine's Secure route, as a SecureString. Either
+    this or -EngineAppName/-EngineAppId (to mint one) is required.
 .PARAMETER TargetConcurrency
-    The concurrency the burst will produce. For pipeline-LOADTEST.yml's
-    ShovelBridgeLoadTest_ExternalServiceBus job this is $(PublishConcurrency) (the
-    publish-side concurrency), used here as a proxy for the execution-side concurrency
-    the Service Bus trigger will fan out to.
+    The concurrency the burst will produce. For the queue path this is maxReplicas x
+    WORKER__MAXCONCURRENCY (with MaxConcurrency=1 it is simply the replica count); for
+    pipeline-LOADTEST.yml's ShovelBridge job this is $(PublishConcurrency), a proxy for
+    the execution-side concurrency the Service Bus trigger will fan out to.
 .PARAMETER MaxSequential / StableStreak / StableThresholdMs
     Phase A tuning: stop after StableStreak consecutive calls under StableThresholdMs,
     or after MaxSequential calls, whichever comes first.
@@ -83,6 +92,10 @@
     .\Invoke-WwEnginePreWarm.ps1 -EngineBaseUrl 'https://warewolfserver-uat.azurewebsites.net' `
         -AccessToken $token -TargetConcurrency 20
 
+.EXAMPLE
+    .\Invoke-WwEnginePreWarm.ps1 -EngineAppName wwengine-e2e-ldi413 `
+        -EngineAppId e0029ee1-e9a1-42b4-98e5-6585954340f8 -TargetConcurrency 6
+
 .NOTES
     See docs/ShovelBridge-Architecture.md's 2026-08-16 entry for the failure signature
     (Service Bus MessageLockLost + Roslyn cold-start OutOfMemoryException +
@@ -92,6 +105,10 @@
 [CmdletBinding()]
 param(
     [string]       $EngineBaseUrl,
+    [string]       $EngineAppName,
+    [string]       $EngineAppId,
+    [string]       $ResourceGroup      = 'DEV2',
+    [string]       $TenantId           = 'ca0cc53b-9af4-4067-bcdf-be9c648450d1',
     [string]       $WorkflowRoute      = 'Secure/rabbit/RabbitProcess',
     [securestring] $AccessToken,
 
@@ -144,15 +161,30 @@ function Test-WarmupRoundClean {
 
 if ($LoadFunctionsOnly) { return }
 
-if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) { throw "-EngineBaseUrl is required." }
-if (-not $AccessToken) { throw "-AccessToken is required (a SecureString bearer token for the engine's Secure route)." }
+if ([string]::IsNullOrWhiteSpace($EngineBaseUrl) -and [string]::IsNullOrWhiteSpace($EngineAppName)) {
+    throw "-EngineBaseUrl is required (or -EngineAppName, to derive https://{EngineAppName}.azurewebsites.net)."
+}
+if (-not $AccessToken -and (-not $EngineAppName -or -not $EngineAppId)) {
+    throw "-AccessToken is required (a SecureString bearer token), or -EngineAppName and -EngineAppId so one can be minted via WwE2E.Common.psm1's Get-E2EEngineToken."
+}
 
-$plainToken = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-    [Runtime.InteropServices.Marshal]::SecureStringToBSTR($AccessToken))
+$resolvedBaseUrl = if ($EngineBaseUrl) { $EngineBaseUrl } else { "https://$EngineAppName.azurewebsites.net" }
+
+if ($AccessToken) {
+    $plainToken = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($AccessToken))
+}
+else {
+    Import-Module (Join-Path $PSScriptRoot 'WwE2E.Common.psm1') -Force
+    $plainToken = Get-E2EEngineToken -TenantId $TenantId -EngineAppId $EngineAppId `
+                                     -FunctionAppName $EngineAppName -ResourceGroup $ResourceGroup
+}
+
 $headers = @{ Authorization = "Bearer $plainToken"; 'Content-Type' = 'application/json' }
-$uri = Get-WarmupUri -BaseUrl $EngineBaseUrl -Route $WorkflowRoute
+$uri = Get-WarmupUri -BaseUrl $resolvedBaseUrl -Route $WorkflowRoute
 
 Write-Host "  Engine  : $uri"
+Write-Host "  Auth    : $(if ($AccessToken) { '-AccessToken (supplied)' } else { 'minted via Get-E2EEngineToken' })"
 Write-Host "  Target  : concurrency $TargetConcurrency"
 
 if ($DryRun) {
@@ -225,3 +257,4 @@ if ($clean) {
     Write-Host "      Re-run this script, or lower -TargetConcurrency." -ForegroundColor Red
 }
 Write-Host "  NOTE: warm-up executed the real workflow, so it has written rows tagged '$MessagePrefix-*'." -ForegroundColor DarkGray
+Write-Host "        Take a MAX(id) watermark NOW, before publishing, so the run's own rows can be counted separately." -ForegroundColor DarkGray
