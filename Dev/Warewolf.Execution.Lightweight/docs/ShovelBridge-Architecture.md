@@ -1047,6 +1047,38 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     .MaxAutoLockRenewalDuration` (isolated-worker `worker.json`/host configuration) so lock renewal
     keeps pace with slower cold-start invocations without changing the queue's own `LockDuration`.
 
+- **2026-08-17 — Fix: `Test-ShovelBridgeE2E.ps1` now pre-warms `-EngineBaseUrl` in Phase 0.** The
+  `ShovelBridgeE2ETest_ExternalServiceBus` job's `-VerifyWorkflowExecution` leg (run ID `7ead1234`,
+  correlationId `0903d48c96d148bb820458c241213837`) failed with `FAIL: no result was recorded for
+  correlationId '...' at https://warewolfserver-uat.azurewebsites.net/... within 90s. Last transient
+  error: GET .../secure/servicebus-result/... returned 503: The service is unavailable.` — the
+  Shovel itself bridged the message fine (`forwarded: 1`, `state: flow` in the Phase 4b diagnostics),
+  so this was purely a read-path failure against the UAT engine.
+  - **Root cause: `WarewolfServer-UAT` Consumption-plan (Y1, `alwaysOn: false`) cold start
+    consuming the entire 90s `-ResultTimeoutSeconds` budget**, the same capacity limitation as Risk
+    R3 (`Deploy-UAT-Redeploy-Spec.md`) and every prior entry in this log. Ruled out an
+    auth/config-policy cause first: the response body was the literal platform string `"The service
+    is unavailable."`, not the app's own JSON error shape (`WorkflowAuthorizationMiddleware.cs`'s
+    `ConfigMissingDeny` path always returns `{"error":"config_missing",...}`); confirmed live that
+    `BYPASS_SECURE_CONFIG=true` is still set on the app (so `ConfigMissingDeny` can't fire); and
+    confirmed the app was reachable and warm (`GET /apis.json` → `200`) minutes later — consistent
+    with a cold instance finishing initialisation shortly after the harness gave up, not a
+    persistent outage.
+  - **Fix**: added a new `-EnginePrewarmTimeoutSeconds` parameter (default `120`) and a Phase 0
+    pre-warm loop that polls the public, unauthenticated `GET /apis.json` route on `-EngineBaseUrl`
+    (retrying every 5s) until it responds or the budget elapses, **before** Phases 1-3's own RabbitMQ/
+    Shovel setup time — so cold start now overlaps with that setup instead of eating into Phase 4's
+    timed result-poll window. A failed/timed-out pre-warm logs a warning and does not abort the run;
+    Phase 4's existing transient-503 retry logic (`Warewolf.Execution.ServiceBusWorker.E2EHarness`)
+    is unchanged and still the last line of defence. This is exactly the "pre-warming request burst
+    before starting the load test" lever flagged as open, low-risk and no-cost in the entries above —
+    it does not address the underlying Y1-capacity limitation (still open, still a cost/infra
+    decision), only the specific failure mode of the harness's own fixed poll window being consumed
+    by a cold start it never triggered proactively.
+  - **Not yet re-verified against a live pipeline run** — the change has been parse-checked and the
+    pre-warm probe manually confirmed to succeed against the (currently warm) live engine, but the
+    `ShovelBridgeE2ETest_ExternalServiceBus` job itself has not been re-run post-fix.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
