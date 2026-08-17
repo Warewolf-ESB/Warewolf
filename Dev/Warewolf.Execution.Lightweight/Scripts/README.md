@@ -277,8 +277,8 @@ dotnet publish Dev\Warewolf.Execution.QueueProcessor\Warewolf.Execution.QueuePro
   -QueueSourcePath 'C:\ProgramData\Warewolf\Resources\Sources' `
   -EngineBaseUrl   https://wwengine.azurewebsites.net `
   -EngineResourceAppId <engine-app-id> `
-  -KeyVaultName kvwarewolf -KeyVaultSecretName wwaeskey -EncryptStagedSettings `
-  -RabbitMqSecretUri https://kvwarewolf.vault.azure.net/secrets/rabbitmq-uri
+  -KeyVaultName WWExecutionEngine -KeyVaultSecretName wwaeskey -EncryptStagedSettings `
+  -RabbitMqSecretUri https://wwexecutionengine.vault.azure.net/secrets/rabbitmq-uri
 ```
 
 **How the trigger file is pointed at the script** (mutually exclusive; `-TriggerId` narrows a
@@ -337,7 +337,7 @@ Can also run as a **companion of the engine deploy**, fanning out over every poi
   -QueueSourcePath  'C:\ProgramData\Warewolf\Resources\Sources' `
   -AcaEnvironment aca-warewolf -AcrName acrwarewolf `
   -QueueProcessorPublishPath D:\QueueProcessor\Publish `
-  -RabbitMqSecretUri https://kvwarewolf.vault.azure.net/secrets/rabbitmq-uri
+  -RabbitMqSecretUri https://wwexecutionengine.vault.azure.net/secrets/rabbitmq-uri
 ```
 
 **What gets staged into the container** — config is **baked into the image**, not mounted or
