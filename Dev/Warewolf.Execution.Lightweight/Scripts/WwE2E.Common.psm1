@@ -48,6 +48,29 @@ function Write-E2ECriterion {
 # Azure CLI
 # ═════════════════════════════════════════════════════════════════════════════
 
+# NON-INTERACTIVE az, SET AT MODULE LOAD so every consumer is covered - the load test, the
+# verification harness, and Get-WwQueueRunReport.ps1 run standalone.
+#
+# `az monitor log-analytics query` and `az monitor app-insights query` live in EXTENSIONS that are
+# not part of the base CLI. When one is missing, az does not fail - extension.use_dynamic_install
+# defaults to 'yes_prompt', so it asks:
+#     The command requires the extension log-analytics. Do you want to install it now? (Y/n)
+# and then blocks on stdin. Invoke-E2EAzJson sends stderr to $null, so the question is never even
+# displayed. On 2026-08-18 a reviewer's run sat at "Querying Log Analytics (worker containers)" for
+# over 30 minutes at the LAST step, with the whole burst already published and drained. Every
+# machine these scripts were written on had the extensions installed, which is why it never showed.
+#
+# Process-scoped, so nothing is changed permanently for the operator.
+# ALLOW_PREVIEW matters as much as the first setting here: every extension this harness needs is a
+# PREVIEW build (log-analytics 1.0.0b1, application-insights 2.0.0b1, containerapp 1.3.0b4), and a
+# dynamic install of a preview extension consults extension.dynamic_install_allow_preview - which,
+# unset, is a second question that can block on stdin. Enabling the first without this would fix
+# only half the hang.
+$env:AZURE_EXTENSION_USE_DYNAMIC_INSTALL            = 'yes_without_prompt'
+$env:AZURE_EXTENSION_DYNAMIC_INSTALL_ALLOW_PREVIEW  = 'true'
+$env:AZURE_CORE_ONLY_SHOW_ERRORS                    = 'true'
+$env:AZURE_CORE_COLLECT_TELEMETRY                   = '0'
+
 function Invoke-E2EAzJson {
     <#
         Runs `az ... -o json` and returns the deserialised object.

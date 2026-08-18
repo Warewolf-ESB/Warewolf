@@ -126,6 +126,14 @@ param(
     [string] $OutputDir,
     [string] $DefaultsPath,
 
+    # Full transcript of the run. Defaults to <OutputDir>\loadtest-<runLabel>.log.
+    [string] $LogFile,
+    [switch] $NoTranscript,
+
+    # Hard ceiling on any single external step, so a blocked call fails the run instead of hanging
+    # it. The observed hang was an az extension prompt waiting on stdin for over 30 minutes.
+    [ValidateRange(30, 7200)][int] $StepTimeoutSeconds = 900,
+
     # Dot-source the pure helpers for unit testing. No Azure, no broker, no database.
     [switch] $LoadFunctionsOnly
 )
@@ -227,6 +235,160 @@ function Get-WwMaskedConnectionString {
               else { 'unknown' }
 
     [pscustomobject]@{ Server = $server; Database = $db; Auth = $auth }
+}
+
+function Get-WwRequiredAzExtensions {
+    <#
+        The az CLI extensions this run cannot complete without, and the step each one blocks.
+
+        These are NOT part of the base az CLI. On a machine that lacks one, az does not fail - it
+        ASKS, because extension.use_dynamic_install defaults to 'yes_prompt':
+
+            The command requires the extension log-analytics. Do you want to install it now? (Y/n)
+
+        and then blocks on stdin. Invoke-E2EAzJson redirects stderr to $null, so the question is
+        never even displayed. A reviewer saw "Querying Log Analytics (worker containers)" and nothing
+        else for over 30 minutes. The machine that authored the scripts had every extension already
+        installed, which is exactly why it never surfaced during development.
+    #>
+    [CmdletBinding()]
+    param()
+    @(
+        [pscustomobject]@{ Name = 'containerapp';        Blocks = 'Container App and KEDA pre-flight, replica counts' }
+        [pscustomobject]@{ Name = 'log-analytics';       Blocks = 'Phase 8 worker log query (the observed hang)' }
+        [pscustomobject]@{ Name = 'application-insights'; Blocks = 'Phase 8 engine correlation' }
+    )
+}
+
+function Get-WwMissingAzExtensions {
+    <#
+        Which required extensions are absent. Pure: takes the installed list, so it is testable
+        without an az CLI.
+    #>
+    [CmdletBinding()]
+    param(
+        [string[]] $Installed,
+        [object[]] $Required
+    )
+    if (-not $Required) { $Required = Get-WwRequiredAzExtensions }
+    $have = [System.Collections.Generic.HashSet[string]]::new(
+        [string[]]@($Installed | Where-Object { $_ }), [StringComparer]::OrdinalIgnoreCase)
+    return , @($Required | Where-Object { -not $have.Contains($_.Name) })
+}
+
+function Initialize-WwAzNonInteractive {
+    <#
+        Stops the az CLI from ever blocking this process on a console question.
+
+        Belt and braces, because the failure mode is a silent 30-minute hang:
+
+          use_dynamic_install=yes_without_prompt  installs a missing extension instead of asking
+          AZURE_CORE_ONLY_SHOW_ERRORS             suppresses the survey/upgrade chatter
+          AZURE_CORE_COLLECT_TELEMETRY=0          no first-run telemetry question
+
+        Process-scoped, so it changes nothing permanently for the operator.
+    #>
+    [CmdletBinding()]
+    param()
+    $env:AZURE_EXTENSION_USE_DYNAMIC_INSTALL           = 'yes_without_prompt'
+    # Every extension this harness needs is a PREVIEW build, and installing one consults a SECOND
+    # config key that can ask its own question. Setting only the first fixes half the hang.
+    $env:AZURE_EXTENSION_DYNAMIC_INSTALL_ALLOW_PREVIEW = 'true'
+    $env:AZURE_CORE_ONLY_SHOW_ERRORS                   = 'true'
+    $env:AZURE_CORE_COLLECT_TELEMETRY                  = '0'
+}
+
+function Invoke-WwStepWithTimeout {
+    <#
+        Runs a step with a hard ceiling, so a blocked external call FAILS the run instead of hanging
+        it indefinitely.
+
+        Start-ThreadJob rather than Start-Job: same process, so it starts in milliseconds instead of
+        spawning a whole PowerShell, and the child's output streams back as it goes.
+
+        HONEST LIMIT, stated because a timeout that quietly does nothing is worse than none: killing
+        the job does not necessarily kill a native child process it spawned. This turns an unbounded
+        hang into a bounded one with a clear message and an artefact on disk; it is not a guarantee
+        that every stray az.exe dies. Initialize-WwAzNonInteractive is what prevents the hang in the
+        first place - this is the backstop for everything else.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string] $Label,
+        [Parameter(Mandatory)][scriptblock] $Script,
+        [int] $TimeoutSeconds = 900,
+        [object[]] $ArgumentList
+    )
+    $job = Start-ThreadJob -ScriptBlock $Script -ArgumentList $ArgumentList
+    try {
+        $done = Wait-Job -Job $job -Timeout $TimeoutSeconds
+
+        # Errors are collected via -ErrorVariable rather than read back off the job afterwards: a
+        # ThreadJob's ChildJobs[0].Error is empty by the time Receive-Job has drained it, which
+        # produced the useless message "'boom' failed: " with the real reason discarded.
+        $jobErrors = @()
+        $out = Receive-Job -Job $job -ErrorVariable jobErrors -ErrorAction SilentlyContinue
+        if ($null -ne $out) { $out }
+
+        if (-not $done) {
+            throw ("'$Label' exceeded $TimeoutSeconds s and was abandoned. Raise -StepTimeoutSeconds if the " +
+                   'step is legitimately slow, or investigate what it is waiting on - an az CLI prompt on ' +
+                   'stdin is the usual cause.')
+        }
+        if ($job.State -eq 'Failed') {
+            $err = if (@($jobErrors).Count -gt 0) { @($jobErrors)[0] } else { 'no error detail was captured' }
+            throw "'$Label' failed: $err"
+        }
+    }
+    finally { Remove-Job -Job $job -Force -ErrorAction SilentlyContinue }
+}
+
+function Select-WwRunManifest {
+    <#
+        Narrows a manifest to the entries THIS run published, identified by the run label prefix.
+
+        WHY THIS EXISTS: Publish-WwQueueBurst APPENDS to an existing manifest, deliberately, so
+        several bursts can share one. Reuse the same -OutputDir for a second run and the new run
+        inherits the previous run's messages as though it had published them. That happened for
+        real on 2026-08-14: a 20-message run and a 1000-message run shared D:\loadtest-out, the
+        second reconciled against 1020, and the earlier run's 20 - long since processed, and below
+        this run's watermark - were reported as LOST. The run was flawless; the manifest was not.
+
+        Filtering by label makes a shared manifest harmless even when one is passed deliberately.
+    #>
+    [CmdletBinding()]
+    param(
+        [object[]] $Manifest,
+        [Parameter(Mandatory)][string] $Label
+    )
+    return , @(@($Manifest | Where-Object { $_ }) | Where-Object { [string]$_.txn -like "$Label-*" })
+}
+
+function Test-WwManifestMatchesBurst {
+    <#
+        Returns a warning string when the manifest holds entries this burst did not publish.
+
+        The previous version PRINTED the discrepancy - "Distinct bodies 1020 / 1000" - and carried
+        straight on to reconcile against the larger number. Evidence on screen that nothing acts on
+        is worse than no evidence: it makes the eventual FAIL look like a product defect.
+    #>
+    [CmdletBinding()]
+    param(
+        [int] $ManifestTotal,
+        [int] $RunTotal,
+        [int] $PublishedTotal,
+        [string] $ManifestPath
+    )
+    if ($RunTotal -ne $PublishedTotal) {
+        return ("Manifest holds $RunTotal entry(ies) for this run but $PublishedTotal message(s) were " +
+                "published. Reconciliation would be wrong. Manifest: $ManifestPath")
+    }
+    if ($ManifestTotal -gt $RunTotal) {
+        $stale = $ManifestTotal - $RunTotal
+        return ("Manifest '$ManifestPath' holds $stale entry(ies) from an EARLIER run. They are excluded " +
+                'by run label, so this run reconciles against its own messages only.')
+    }
+    return $null
 }
 
 function Get-WwBrokerSourceDiagnosis {
@@ -644,9 +806,38 @@ function Write-Kv   { param([string] $K, $V, [string] $Colour = 'Gray')
 $d = Get-WwLoadTestDefaults -Path $DefaultsPath
 if ($NonInteractive) { $Yes = $true }
 
+# Before ANY az call. Without this the CLI can stop and ask a console question that nothing will
+# ever answer - see Initialize-WwAzNonInteractive.
+Initialize-WwAzNonInteractive
+
+# ── Transcript ───────────────────────────────────────────────────────────────
+# Started before the run label is even resolved, because the steps most likely to hang are the ones
+# whose progress is otherwise invisible. Everything written from here on is on disk as it happens,
+# so an abandoned run can still be diagnosed from the log rather than from a screenshot.
+if (-not $RunLabel) { $RunLabel = 'loadtest-' + (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss') }
+if (-not $OutputDir) {
+    $logRoot = if (Test-Path -LiteralPath $d.LogRoot) { $d.LogRoot } else { Join-Path ([System.IO.Path]::GetTempPath()) 'ww-queue-runs' }
+    $OutputDir = Join-Path $logRoot $RunLabel
+}
+New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
+if (-not $LogFile) { $LogFile = Join-Path $OutputDir "$RunLabel.log" }
+
+$transcriptOn = $false
+if (-not $NoTranscript) {
+    # An earlier run that threw leaves its transcript running, and PowerShell allows only one at a
+    # time - so a second run would fail to log precisely when logging matters most.
+    try { Stop-Transcript | Out-Null } catch { }
+    try { Start-Transcript -LiteralPath $LogFile -Force | Out-Null; $transcriptOn = $true }
+    catch { Write-Host "  [-] Could not start transcript at '$LogFile': $($_.Exception.Message)" -ForegroundColor DarkYellow }
+}
+
 Write-Head 'Warewolf queue load test'
 Write-Host '  Reproduces RUN 2 (2026-08-13): 100 messages, 6 replicas, 100/100, 0 dead-lettered.'
 Write-Host '  Press Enter at any prompt to accept the RUN 2 default shown in brackets.'
+Write-Kv 'Run label'  $RunLabel 'White'
+Write-Kv 'Artefacts'  $OutputDir 'White'
+Write-Kv 'Log file'   $(if ($transcriptOn) { $LogFile } else { '(transcript disabled)' }) 'White'
+Write-Kv 'Step timeout' "$StepTimeoutSeconds s"
 
 # ── Phase 0: Azure login ─────────────────────────────────────────────────────
 Write-Head 'Phase 0 - Azure login'
@@ -658,6 +849,30 @@ Write-Kv 'Subscription'   "$($az.Subscription)  ($($az.SubscriptionId))" 'White'
 Write-Kv 'Tenant'         $az.TenantId    'White'
 Write-Ok  'Azure CLI authenticated.'
 Write-Note 'Confirm the SUBSCRIPTION above is the intended one - the defaults target a shared resource group.'
+
+# ── az CLI extensions ────────────────────────────────────────────────────────
+# Checked HERE, in seconds, rather than discovered in Phase 8 after a full burst has been published
+# and drained. A missing extension used to hang the run silently at the very last step, with the
+# expensive part already done and the results unrecoverable.
+Write-Sub 'az CLI extensions'
+$installed = @(Invoke-E2EAzJson -AzArgs @('extension', 'list') -AllowFail | ForEach-Object { $_.name })
+$missing   = Get-WwMissingAzExtensions -Installed $installed
+foreach ($ext in Get-WwRequiredAzExtensions) {
+    $have = $installed -contains $ext.Name
+    Write-Kv $ext.Name $(if ($have) { 'installed' } else { 'MISSING' }) $(if ($have) { 'Green' } else { 'Red' })
+}
+if ($missing.Count -gt 0) {
+    foreach ($m in $missing) { Write-Bad "Missing az extension '$($m.Name)' - blocks: $($m.Blocks)" }
+    Write-Note 'Install them with:'
+    Write-Host ('      az extension add --name ' + (@($missing | ForEach-Object Name) -join ' --name ')) -ForegroundColor White
+    Write-Note ('Dynamic install is enabled for this process, so the run can proceed and az will fetch them ' +
+                'automatically without prompting. Installing them up front is faster and avoids a mid-run stall.')
+    if (-not $Yes) {
+        $go = Read-Host '  Continue and let az install them on demand? [y/N]'
+        if ($go -notmatch '^(y|yes)$') { throw "Missing az extension(s): $((@($missing | ForEach-Object Name)) -join ', ')." }
+    }
+}
+else { Write-Ok 'All required extensions present.' }
 
 # ── Phase 1: mode ────────────────────────────────────────────────────────────
 Write-Head 'Phase 1 - Deployment mode'
@@ -716,13 +931,12 @@ if ($pathErrors.Count -gt 0) {
            'layout; pass -WorkerPublishPath / -BrokerSourceBitePath (or -AmqpUri) for a different machine.')
 }
 
-if (-not $RunLabel) { $RunLabel = 'loadtest-' + (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss') }
-if (-not $OutputDir) {
-    $logRoot = if (Test-Path -LiteralPath $d.LogRoot) { $d.LogRoot } else { Join-Path ([System.IO.Path]::GetTempPath()) 'ww-queue-runs' }
-    $OutputDir = Join-Path $logRoot $RunLabel
-}
-New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
-$manifestPath = Join-Path $OutputDir 'manifest.json'
+# $RunLabel and $OutputDir were resolved before the transcript started - see the top of the run.
+# The run label is in the FILENAME, not just inside the file. A fixed 'manifest.json' meant reusing
+# -OutputDir silently merged runs, because the publisher appends. One file per run makes that
+# impossible rather than merely detectable.
+$burstLabel   = $RunLabel -replace '[^A-Za-z0-9]', ''
+$manifestPath = Join-Path $OutputDir "manifest-$burstLabel.json"
 
 # ── Database connection string ───────────────────────────────────────────────
 if (-not $SkipDatabase) {
@@ -1059,17 +1273,31 @@ if ($preWarmEndUtc -and $startUtc -lt $preWarmEndUtc) {
 }
 $publish  = Join-Path $ScriptDir 'Publish-WwQueueBurst.ps1'
 $burst = & $publish -QueueName $cfg.QueueName -SuccessCount $cfg.MessageCount -FailureCount $cfg.FailureCount `
-                    -Label ($RunLabel -replace '[^A-Za-z0-9]', '') -AmqpUri $AmqpUri `
+                    -Label $burstLabel -AmqpUri $AmqpUri `
                     -PublishPath $cfg.WorkerPublishPath -ManifestPath $manifestPath
 
 Write-Ok "Published $($burst.Total) message(s) to '$($burst.Queue)'."
 Write-Kv 'Manifest' $manifestPath
 
-$manifest = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)
+# Reconcile against THIS RUN'S entries only. See Select-WwRunManifest for why.
+$manifestAll = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)
+$manifest    = Select-WwRunManifest -Manifest $manifestAll -Label $burstLabel
+
+$warn = Test-WwManifestMatchesBurst -ManifestTotal $manifestAll.Count -RunTotal $manifest.Count `
+                                    -PublishedTotal $burst.Total -ManifestPath $manifestPath
+if ($warn) {
+    # A count mismatch WITHIN this run's own label means the manifest cannot describe what was sent,
+    # so every bucket downstream would be wrong. Stale entries from an earlier run are merely noted,
+    # because the label filter has already removed them.
+    if ($manifest.Count -ne $burst.Total) { Write-Bad $warn; throw $warn }
+    Write-Note $warn
+}
+
 $distinctTxn  = @($manifest | ForEach-Object txn  | Select-Object -Unique).Count
 $distinctBody = @($manifest | Where-Object { $_.kind -eq 'success' } | ForEach-Object body | Select-Object -Unique).Count
-Write-Kv 'Distinct transaction ids' "$distinctTxn / $($manifest.Count)"
-Write-Kv 'Distinct bodies'          "$distinctBody / $($cfg.MessageCount)"
+Write-Kv 'This run''s manifest entries' "$($manifest.Count) / $($manifestAll.Count) in file"
+Write-Kv 'Distinct transaction ids'     "$distinctTxn / $($manifest.Count)"
+Write-Kv 'Distinct bodies'              "$distinctBody / $($cfg.MessageCount)"
 
 # ── Phase 7: drain ───────────────────────────────────────────────────────────
 Write-Head 'Phase 7 - Drain'
@@ -1139,13 +1367,42 @@ Write-Note 'Log Analytics ingestion lags 2-5 minutes. Waiting before querying.'
 Start-Sleep -Seconds 120
 
 $report = Join-Path $ScriptDir 'Get-WwQueueRunReport.ps1'
-& $report -ResourceGroup $cfg.ResourceGroup -AppName @($cfg.WorkerAppName) `
-          -AcaEnvironment $d.AcaEnvironment `
-          -StartUtc $startUtc -EndUtc $endUtc `
-          -IncludeEngine -EngineAppInsightsName $cfg.EngineAppInsightsName `
-          -ExpectedManifest $manifestPath -OutputDir $OutputDir -RunLabel $RunLabel
 
-$reportJson = Get-ChildItem -LiteralPath $OutputDir -Filter 'queue-run-report-*.json' |
+# The report reconciles against whatever manifest file it is handed, so it gets THIS RUN'S entries.
+# With per-run filenames the two are normally identical; they differ only when a shared manifest was
+# passed deliberately, and the report must not inherit another run's messages either.
+$reportManifest = $manifestPath
+if ($manifest.Count -ne $manifestAll.Count) {
+    $reportManifest = Join-Path $OutputDir "manifest-$burstLabel-runonly.json"
+    $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $reportManifest -Encoding utf8
+    Write-Note "Report reconciles against this run's $($manifest.Count) entry(ies): $reportManifest"
+}
+
+# Bounded. This is the step that hung for 30+ minutes on a reviewer's machine, and it is the LAST
+# one - so a hang here strands a run whose expensive work is already complete. On timeout the run
+# continues without the worker-side report: the database and dead-letter evidence still produce a
+# full reconciliation, and a partial verdict beats no verdict.
+$reportArgs = @{
+    ResourceGroup = $cfg.ResourceGroup; AppName = @($cfg.WorkerAppName); AcaEnvironment = $d.AcaEnvironment
+    StartUtc = $startUtc; EndUtc = $endUtc
+    IncludeEngine = $true; EngineAppInsightsName = $cfg.EngineAppInsightsName
+    ExpectedManifest = $reportManifest; OutputDir = $OutputDir; RunLabel = $RunLabel
+}
+$reportFailed = $null
+try {
+    Invoke-WwStepWithTimeout -Label 'Phase 8 worker/engine report' -TimeoutSeconds $StepTimeoutSeconds `
+        -ArgumentList @($report, $reportArgs) -Script {
+            param($ScriptPath, $Splat)
+            & $ScriptPath @Splat
+        }
+}
+catch {
+    $reportFailed = $_.Exception.Message
+    Write-Bad "Worker/engine report unavailable: $reportFailed"
+    Write-Note 'Continuing - the database and dead-letter evidence below still reconcile the run.'
+}
+
+$reportJson = Get-ChildItem -LiteralPath $OutputDir -Filter 'queue-run-report-*.json' -ErrorAction SilentlyContinue |
                 Sort-Object LastWriteTime | Select-Object -Last 1
 $rpt = if ($reportJson) { Get-Content -LiteralPath $reportJson.FullName -Raw | ConvertFrom-Json } else { $null }
 
@@ -1154,13 +1411,18 @@ $dbTxns = @(); $dbStats = $null; $dupRows = 0
 if (-not $SkipDatabase) {
     Write-Sub 'Database rows above the watermark'
 
+    # TRY_CONVERT WITHOUT a style argument. Style 127 is strict ISO 8601 and REQUIRES the 'T'
+    # separator, so a column holding '2026-08-14 09:03:15.123' - a space, which is what SQL Server
+    # itself renders by default - converts to NULL. Every timestamp came back empty on the
+    # 2026-08-14 run for exactly that reason: 1000 rows returned, and every latency figure blank.
+    # The styleless form accepts both separators.
     $rows = Invoke-WwSqlQuery -ConnectionString $SqlConnectionString -Query @"
 SELECT JSON_VALUE(MessageContent, '$.txn') AS Txn,
        Status,
        TRY_CONVERT(int, AttemptNumber) AS AttemptNumber,
-       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), StartedAtUtc,   127), 126) AS StartedAtUtc,
-       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), ProcessingAtUtc,127), 126) AS ProcessingAtUtc,
-       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), FinishedAtUtc,  127), 126) AS FinishedAtUtc
+       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), StartedAtUtc),    126) AS StartedAtUtc,
+       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), ProcessingAtUtc), 126) AS ProcessingAtUtc,
+       CONVERT(varchar(33), TRY_CONVERT(datetime2(3), FinishedAtUtc),   126) AS FinishedAtUtc
 FROM $($cfg.JobTable)
 WHERE $($d.JobIdColumn) > $watermark;
 "@
@@ -1179,6 +1441,7 @@ WHERE $($d.JobIdColumn) > $watermark;
 
     $dbStats = [pscustomobject]@{
         Rows              = @($rows).Count
+        TimestampsParsed  = $total.Count      # < Rows means the columns were unusable, not that the run was fast
         DistinctTxns      = @($dbTxns | Select-Object -Unique).Count
         DuplicateTxns     = $dupRows
         ByStatus          = @($rows | Group-Object Status | ForEach-Object { [pscustomobject]@{ Status = $_.Name; Count = $_.Count } })
@@ -1196,9 +1459,22 @@ WHERE $($d.JobIdColumn) > $watermark;
     Write-Kv 'Duplicate txns'       $dbStats.DuplicateTxns $(if ($dupRows -eq 0) { 'Green' } else { 'Red' })
     Write-Kv 'AttemptNumber > 1'    $dbStats.Reprocessed
     $dbStats.ByStatus | Format-Table -AutoSize | Out-String -Width 80 | Write-Host
-    Write-Kv 'Start -> Processing avg' "$($dbStats.StartToProcAvgMs) ms"
-    Write-Kv 'Processing -> Finished avg' "$($dbStats.ProcToFinishAvgMs) ms"
-    Write-Kv 'Total  avg / p50 / p95 / max' "$($dbStats.TotalAvgMs) / $($dbStats.TotalP50Ms) / $($dbStats.TotalP95Ms) / $($dbStats.TotalMaxMs) ms"
+
+    # Say when the timestamps could not be read, instead of printing blank averages. Blank figures
+    # read as "the run was too fast to measure"; they actually mean the columns were unusable.
+    if (@($rows).Count -gt 0 -and $total.Count -eq 0) {
+        Write-Bad ("None of the $(@($rows).Count) row(s) yielded a usable timestamp, so no latency could be " +
+                   "computed. Check that $($cfg.JobTable) has StartedAtUtc / ProcessingAtUtc / FinishedAtUtc " +
+                   'populated and in a convertible format.')
+    }
+    elseif ($total.Count -lt @($rows).Count) {
+        Write-Note "$(@($rows).Count - $total.Count) of $(@($rows).Count) row(s) had no usable Started/Finished pair; latency covers the rest."
+    }
+    else {
+        Write-Kv 'Start -> Processing avg' "$($dbStats.StartToProcAvgMs) ms"
+        Write-Kv 'Processing -> Finished avg' "$($dbStats.ProcToFinishAvgMs) ms"
+        Write-Kv 'Total  avg / p50 / p95 / max' "$($dbStats.TotalAvgMs) / $($dbStats.TotalP50Ms) / $($dbStats.TotalP95Ms) / $($dbStats.TotalMaxMs) ms"
+    }
 }
 
 # ── Dead-letter contents ─────────────────────────────────────────────────────
@@ -1294,6 +1570,12 @@ $summary = [pscustomobject]@{
         unexpected = $buckets.Unexpected
     }
     workerReport  = $(if ($reportJson) { $reportJson.FullName } else { $null })
+    workerReportError = $reportFailed          # set when Phase 8 timed out or failed
+    logFile       = $(if ($transcriptOn) { $LogFile } else { $null })
+    azExtensions  = [pscustomobject]@{
+        installed = $installed
+        missing   = @($missing | ForEach-Object Name)
+    }
 }
 $summaryPath = Join-Path $OutputDir 'loadtest-summary.json'
 $summary | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $summaryPath -Encoding utf8
@@ -1302,6 +1584,9 @@ Write-Head 'Artefacts'
 Write-Ok "Summary  : $summaryPath"
 Write-Ok "Manifest : $manifestPath"
 Write-Ok "Drain    : $(Join-Path $OutputDir 'drain-samples.json')"
-if ($reportJson) { Write-Ok "Report   : $($reportJson.FullName)" }
+if ($reportJson)   { Write-Ok "Report   : $($reportJson.FullName)" }
+if ($transcriptOn) { Write-Ok "Log      : $LogFile" }
+
+if ($transcriptOn) { try { Stop-Transcript | Out-Null } catch { } }
 
 if (-not $verdict.Pass) { exit 1 }

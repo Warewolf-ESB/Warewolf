@@ -356,6 +356,20 @@ if ($IncludeEngine) {
                 }
             }
             Write-Ok "$($engineRequests.Count) engine HTTP request(s) in window"
+
+            # Traces but no requests is a CONFIGURATION shape, not a fault, and saying so stops the
+            # reader hunting for a broken query. `requests` telemetry is emitted by the Functions
+            # HOST, which needs APPLICATIONINSIGHTS_CONNECTION_STRING. The engine instead reads its
+            # own WAREWOLF_APPINSIGHTS_CONNECTION_STRING in AzureExecutionLogger and writes `traces`
+            # through its own TelemetryClient - so traces flow and requests never do. Observed on
+            # 2026-08-14: 1656 execution ids in traces, 0 rows in requests.
+            if ($engineRequests.Count -eq 0 -and $engineByExec.Count -gt 0) {
+                Write-Note ('Engine traces are present but `requests` is empty. The Functions HOST emits request ' +
+                            'telemetry and needs APPLICATIONINSIGHTS_CONNECTION_STRING; this engine sets only ' +
+                            'WAREWOLF_APPINSIGHTS_CONNECTION_STRING, which its own logger uses for traces. ' +
+                            'Expected for this deployment - result codes and request durations are unavailable, ' +
+                            'and outcome must be read from the worker side.')
+            }
         }
         catch { Write-Note "Engine requests query failed: $($_.Exception.Message.Split([Environment]::NewLine)[0])" }
     }

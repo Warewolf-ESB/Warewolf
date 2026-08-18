@@ -141,9 +141,12 @@ Describe 'Numeric parameters are nullable' {
     # from "zero".
     BeforeAll {
         $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:LoadTestScript, [ref]$null, [ref]$null)
-        $script:Params = @{}
+        $script:Params      = @{}
+        $script:ParamHasDef = @{}
         foreach ($p in $ast.ParamBlock.Parameters) {
-            $script:Params[$p.Name.VariablePath.UserPath] = $p.StaticType.FullName
+            $n = $p.Name.VariablePath.UserPath
+            $script:Params[$n]      = $p.StaticType.FullName
+            $script:ParamHasDef[$n] = ($null -ne $p.DefaultValue)
         }
     }
 
@@ -154,8 +157,14 @@ Describe 'Numeric parameters are nullable' {
         $script:Params[$_] | Should -BeLike 'System.Nullable*System.Int32*'
     }
 
-    It 'leaves no bare [int] parameter that a caller might omit' {
-        @($script:Params.GetEnumerator() | Where-Object { $_.Value -eq 'System.Int32' }).Count | Should -Be 0
+    It 'leaves no bare [int] parameter without a default' {
+        # A bare [int] WITH an explicit default is safe - omitting it yields that default, not 0.
+        # -StepTimeoutSeconds = 900 is the legitimate case. The defect is a bare [int] and NO
+        # default, which silently becomes 0 and looks like a deliberate zero.
+        $bare = @($script:Params.GetEnumerator() |
+                    Where-Object { $_.Value -eq 'System.Int32' -and -not $script:ParamHasDef[$_.Key] } |
+                    ForEach-Object Key)
+        ($bare -join ', ') | Should -BeNullOrEmpty
     }
 }
 
@@ -182,6 +191,252 @@ Describe 'Get-WwMaskedConnectionString' {
 
     It 'returns null for an empty string' {
         Get-WwMaskedConnectionString -ConnectionString '' | Should -BeNullOrEmpty
+    }
+}
+
+Describe 'az CLI extension pre-flight' {
+
+    # REGRESSION for the 2026-08-18 reviewer run. `az monitor log-analytics query` needs the
+    # log-analytics extension, which is NOT in the base CLI. Without it az asks
+    #   "The command requires the extension log-analytics. Do you want to install it now? (Y/n)"
+    # and blocks on stdin. Invoke-E2EAzJson sends stderr to $null, so the question is never even
+    # shown: the run sat at "Querying Log Analytics (worker containers)" for over 30 minutes, at the
+    # LAST step, with the whole burst already published and drained. The authoring machine had every
+    # extension installed, which is why it never appeared in development.
+
+    It 'requires the extensions the run actually depends on' {
+        $names = @(Get-WwRequiredAzExtensions | ForEach-Object Name)
+        $names | Should -Contain 'log-analytics'
+        $names | Should -Contain 'application-insights'
+        $names | Should -Contain 'containerapp'
+    }
+
+    It 'names the step each extension blocks' {
+        foreach ($e in Get-WwRequiredAzExtensions) { $e.Blocks | Should -Not -BeNullOrEmpty }
+    }
+
+    It 'reports nothing missing when all are installed' {
+        (Get-WwMissingAzExtensions -Installed @('containerapp','log-analytics','application-insights','authV2')).Count |
+            Should -Be 0
+    }
+
+    It 'detects the extension whose absence caused the hang' {
+        $m = Get-WwMissingAzExtensions -Installed @('containerapp','application-insights')
+        @($m | ForEach-Object Name) | Should -Contain 'log-analytics'
+    }
+
+    It 'treats an empty install list as everything missing' {
+        (Get-WwMissingAzExtensions -Installed @()).Count | Should -Be (Get-WwRequiredAzExtensions).Count
+    }
+
+    It 'matches extension names case-insensitively' {
+        (Get-WwMissingAzExtensions -Installed @('ContainerApp','LOG-ANALYTICS','Application-Insights')).Count |
+            Should -Be 0
+    }
+}
+
+Describe 'Initialize-WwAzNonInteractive' {
+
+    It 'stops az from prompting on stdin' {
+        # The definitive fix: with dynamic install set to yes_without_prompt there is no question to
+        # block on, whether or not the extension is present.
+        Initialize-WwAzNonInteractive
+        $env:AZURE_EXTENSION_USE_DYNAMIC_INSTALL | Should -Be 'yes_without_prompt'
+        $env:AZURE_CORE_ONLY_SHOW_ERRORS         | Should -Be 'true'
+        $env:AZURE_CORE_COLLECT_TELEMETRY        | Should -Be '0'
+    }
+
+    It 'allows preview extensions, which every required one is' {
+        # log-analytics 1.0.0b1, application-insights 2.0.0b1, containerapp 1.3.0b4 are all preview.
+        # Installing a preview extension consults a SECOND config key that can ask its own question,
+        # so enabling dynamic install alone would fix only half the hang.
+        Initialize-WwAzNonInteractive
+        $env:AZURE_EXTENSION_DYNAMIC_INSTALL_ALLOW_PREVIEW | Should -Be 'true'
+    }
+
+    It 'sets the same variables in the shared module, for standalone entry points' {
+        # Get-WwQueueRunReport.ps1 can be run on its own and hits the identical prompt.
+        $mod = Get-Content -LiteralPath (Join-Path (Split-Path $script:LoadTestScript -Parent) 'WwE2E.Common.psm1') -Raw
+        $mod | Should -Match 'AZURE_EXTENSION_USE_DYNAMIC_INSTALL'
+        $mod | Should -Match 'AZURE_EXTENSION_DYNAMIC_INSTALL_ALLOW_PREVIEW'
+    }
+
+    It 'is called before any az invocation in the script' {
+        # Matched on the AST, not the text: a text search anchored to [Environment]::NewLine misses
+        # when the file uses LF endings, which is how this test first failed.
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:LoadTestScript, [ref]$null, [ref]$null)
+        $calls = $ast.FindAll({
+            param($n)
+            $n -is [System.Management.Automation.Language.CommandAst] -and
+            $n.GetCommandName() -in @('Initialize-WwAzNonInteractive', 'Get-E2EAzContext', 'Invoke-E2EAzJson')
+        }, $true)
+
+        $init    = @($calls | Where-Object { $_.GetCommandName() -eq 'Initialize-WwAzNonInteractive' } |
+                        Select-Object -First 1)
+        $firstAz = @($calls | Where-Object { $_.GetCommandName() -ne 'Initialize-WwAzNonInteractive' } |
+                        Sort-Object { $_.Extent.StartOffset } | Select-Object -First 1)
+
+        $init.Count    | Should -Be 1
+        $firstAz.Count | Should -Be 1
+        $init[0].Extent.StartOffset | Should -BeLessThan $firstAz[0].Extent.StartOffset
+    }
+}
+
+Describe 'Invoke-WwStepWithTimeout' {
+
+    It 'returns normally when the step finishes in time' {
+        { Invoke-WwStepWithTimeout -Label 'quick' -TimeoutSeconds 30 -Script { 1 + 1 } } | Should -Not -Throw
+    }
+
+    It 'passes output through' {
+        Invoke-WwStepWithTimeout -Label 'echo' -TimeoutSeconds 30 -Script { 'hello' } | Should -Be 'hello'
+    }
+
+    It 'throws once the ceiling is exceeded instead of waiting forever' {
+        # The whole point: a blocked step must FAIL the run, not hang it.
+        { Invoke-WwStepWithTimeout -Label 'sleeper' -TimeoutSeconds 2 -Script { Start-Sleep -Seconds 30 } } |
+            Should -Throw '*exceeded 2 s*'
+    }
+
+    It 'names the step and suggests the usual cause' {
+        $err = $null
+        try { Invoke-WwStepWithTimeout -Label 'Phase 8 report' -TimeoutSeconds 2 -Script { Start-Sleep -Seconds 30 } }
+        catch { $err = $_.Exception.Message }
+        $err | Should -Match 'Phase 8 report'
+        $err | Should -Match 'stdin'
+    }
+
+    It 'surfaces an error raised inside the step' {
+        { Invoke-WwStepWithTimeout -Label 'boom' -TimeoutSeconds 30 -Script { throw 'inner failure' } } |
+            Should -Throw '*inner failure*'
+    }
+
+    It 'forwards arguments to the step' {
+        Invoke-WwStepWithTimeout -Label 'args' -TimeoutSeconds 30 -ArgumentList @(7) -Script { param($n) $n * 3 } |
+            Should -Be 21
+    }
+}
+
+Describe 'Run transcript' {
+
+    BeforeAll { $script:Src = Get-Content -LiteralPath $script:LoadTestScript -Raw }
+
+    It 'starts a transcript before the first phase' {
+        # A run that hangs leaves no evidence unless the log is written AS IT GOES.
+        $start = $script:Src.IndexOf('Start-Transcript')
+        $phase0 = $script:Src.IndexOf("Write-Head 'Phase 0 - Azure login'")
+        $start | Should -BeGreaterThan 0
+        $start | Should -BeLessThan $phase0
+    }
+
+    It 'stops a transcript left running by an earlier aborted run' {
+        # PowerShell permits only one at a time, so a previous throw would stop the NEXT run logging.
+        $script:Src | Should -Match 'try \{ Stop-Transcript \| Out-Null \} catch \{ \}'
+    }
+
+    It 'records the log path in the summary artefact' {
+        $script:Src | Should -Match 'logFile\s*='
+    }
+
+    It 'bounds the report step that hung' {
+        $script:Src | Should -Match "Invoke-WwStepWithTimeout -Label 'Phase 8 worker/engine report'"
+    }
+}
+
+Describe 'Select-WwRunManifest' {
+
+    # REGRESSION for the 2026-08-14 run. Publish-WwQueueBurst APPENDS to an existing manifest, and
+    # the orchestrator used a FIXED 'manifest.json' inside -OutputDir. A 20-message run and a
+    # 1000-message run shared D:\loadtest-out, so the second reconciled against 1020 and reported
+    # the first run's 20 - processed long before, and below this run's watermark - as LOST. The run
+    # itself was flawless: 1000/1000, zero dead-letters, zero duplicates.
+
+    BeforeAll {
+        $script:Mixed = @(
+            1..20   | ForEach-Object { [pscustomobject]@{ txn = "loadtest20260814071947-orders-S-$_"; kind = 'success' } }
+            1..1000 | ForEach-Object { [pscustomobject]@{ txn = "loadtest20260814085510-orders-S-$_"; kind = 'success' } }
+        )
+    }
+
+    It 'keeps only the entries belonging to this run label' {
+        (Select-WwRunManifest -Manifest $script:Mixed -Label 'loadtest20260814085510').Count | Should -Be 1000
+    }
+
+    It 'excludes an earlier run sharing the same manifest file' {
+        $sel = Select-WwRunManifest -Manifest $script:Mixed -Label 'loadtest20260814085510'
+        @($sel | Where-Object { $_.txn -like 'loadtest20260814071947-*' }).Count | Should -Be 0
+    }
+
+    It 'does not match a label that is merely a prefix of another' {
+        # 'run1' must not swallow 'run12'. The separator is part of the match.
+        $m = @(
+            [pscustomobject]@{ txn = 'run1-orders-S-0001';  kind = 'success' }
+            [pscustomobject]@{ txn = 'run12-orders-S-0001'; kind = 'success' }
+        )
+        (Select-WwRunManifest -Manifest $m -Label 'run1').Count | Should -Be 1
+    }
+
+    It 'returns an empty set when nothing matches, without throwing' {
+        (Select-WwRunManifest -Manifest $script:Mixed -Label 'nosuchrun').Count | Should -Be 0
+    }
+
+    It 'tolerates an empty manifest' {
+        (Select-WwRunManifest -Manifest @() -Label 'x').Count | Should -Be 0
+    }
+}
+
+Describe 'Test-WwManifestMatchesBurst' {
+
+    It 'passes when the manifest holds exactly this burst' {
+        Test-WwManifestMatchesBurst -ManifestTotal 100 -RunTotal 100 -PublishedTotal 100 -ManifestPath 'm.json' |
+            Should -BeNullOrEmpty
+    }
+
+    It 'reports stale entries left by an earlier run' {
+        $w = Test-WwManifestMatchesBurst -ManifestTotal 1020 -RunTotal 1000 -PublishedTotal 1000 -ManifestPath 'm.json'
+        $w | Should -Match '20 entry\(ies\) from an EARLIER run'
+    }
+
+    It 'reports a mismatch within this run, which invalidates reconciliation' {
+        # Distinct from stale entries: here the manifest cannot describe what was actually sent, so
+        # every bucket downstream would be wrong and the caller throws.
+        $w = Test-WwManifestMatchesBurst -ManifestTotal 990 -RunTotal 990 -PublishedTotal 1000 -ManifestPath 'm.json'
+        $w | Should -Match 'Reconciliation would be wrong'
+    }
+
+    It 'names the manifest file so the stale one can be found' {
+        Test-WwManifestMatchesBurst -ManifestTotal 1020 -RunTotal 1000 -PublishedTotal 1000 -ManifestPath 'D:\out\m.json' |
+            Should -Match 'D:\\out\\m\.json'
+    }
+}
+
+Describe 'Manifest filename is scoped to the run' {
+
+    It 'embeds the run label in the manifest filename' {
+        # The fix that makes cross-run contamination impossible rather than merely detectable.
+        $src = Get-Content -LiteralPath $script:LoadTestScript -Raw
+        $src | Should -Match 'manifest-\$burstLabel'
+        $src | Should -Not -Match "Join-Path \`$OutputDir 'manifest\.json'"
+    }
+}
+
+Describe 'SQL timestamp conversion' {
+
+    It 'uses TRY_CONVERT without the strict ISO style' {
+        # REGRESSION. Style 127 REQUIRES the 'T' separator, so a column holding
+        # '2026-08-14 09:03:15.123' converts to NULL. On the 2026-08-14 run all 1000 rows returned
+        # and every latency figure was blank for exactly that reason.
+        $src = Get-Content -LiteralPath $script:LoadTestScript -Raw
+        $src | Should -Not -Match 'TRY_CONVERT\(datetime2\(3\),\s*\w+\s*,\s*127\)'
+        $src | Should -Match 'TRY_CONVERT\(datetime2\(3\), StartedAtUtc\)'
+    }
+
+    It 'reports unusable timestamps instead of printing blank averages' {
+        # Blank figures read as "too fast to measure"; they mean the columns were unusable.
+        $src = Get-Content -LiteralPath $script:LoadTestScript -Raw
+        $src | Should -Match 'yielded a usable timestamp'
+        $src | Should -Match 'no usable Started/Finished pair'
+        $src | Should -Match 'TimestampsParsed'
     }
 }
 
