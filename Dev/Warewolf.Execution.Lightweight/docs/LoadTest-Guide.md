@@ -62,6 +62,7 @@ successes.
 |---|---|
 | PowerShell **7+** | `Invoke-WebRequest -SkipHttpErrorCheck`, `ForEach-Object -Parallel`, `??` |
 | Azure CLI, signed in | Phase 0 aborts if not — `az login` |
+| **az extensions** `containerapp`, `log-analytics`, `application-insights` | Not in the base CLI. Phase 0 checks them — see below |
 | Windows PowerShell **5.1** | Only for the SQL queries. `Microsoft.Data.SqlClient` needs its native SNI companion and will not load standalone; 5.1 has `System.Data.SqlClient` in-box |
 | QueueProcessor publish output | Supplies `RabbitMQ.Client.dll` — default `G:\Deployment\apps\QueueProcessor` |
 | .NET 8 **ASP.NET Core shared framework** | `RabbitMQ.Client` 7.x needs `System.Threading.RateLimiting`, which is absent from the publish output *correctly* (the container's `aspnet:8.0` base image provides it) |
@@ -77,6 +78,49 @@ successes.
   so at the default a *successful* execution logs nothing and the engine column is correctly, but
   uselessly, empty.
 - **No competing consumer** on the queue. Pre-flight blocks on this — see §7.
+
+### The az extensions, and the hang they used to cause
+
+`az monitor log-analytics query` and `az monitor app-insights query` live in **extensions**, not the
+base CLI. When one is missing, az does not fail — it *asks*:
+
+```
+The command requires the extension log-analytics. Do you want to install it now? (Y/n)
+```
+
+and blocks on stdin. Because `Invoke-E2EAzJson` sends stderr to `$null`, the question is never even
+displayed. A reviewer's run sat at `Querying Log Analytics (worker containers)` for **over 30
+minutes** — at the *last* step, with the whole burst already published and drained.
+
+Three things now prevent it:
+
+1. `WwE2E.Common.psm1` sets `AZURE_EXTENSION_USE_DYNAMIC_INSTALL=yes_without_prompt` **at module
+   load**, so az installs quietly instead of asking. Process-scoped; nothing changes permanently.
+   This covers every entry point, including `Get-WwQueueRunReport.ps1` run on its own.
+2. **Phase 0 checks the extensions** and names the step each missing one blocks, in seconds rather
+   than after a full run.
+3. **`-StepTimeoutSeconds`** (default 900) bounds the report step, so anything else that blocks
+   fails the run instead of hanging it.
+
+Install them up front to avoid a mid-run stall:
+
+```powershell
+az extension add --name containerapp --name log-analytics --name application-insights
+```
+
+### Every run writes a log
+
+A transcript starts **before Phase 0** and captures everything as it happens, so an abandoned or
+killed run can still be diagnosed:
+
+```
+<OutputDir>\<runLabel>.log
+```
+
+Override with `-LogFile`, or disable with `-NoTranscript`. The path is recorded in
+`loadtest-summary.json`. A transcript left running by an earlier aborted run is stopped first —
+PowerShell allows only one at a time, so otherwise the *next* run would fail to log exactly when it
+mattered most.
 
 ### Running from the repo only, with no `G:\Deployment`
 
@@ -414,6 +458,29 @@ no unexpected transaction ids; and the database actually consulted.
 
 Each was hit for real.
 
+- **A manifest is per-run, and reusing `-OutputDir` used to merge them.** `Publish-WwQueueBurst`
+  *appends* to an existing manifest by design, so several bursts can share one. With a fixed
+  `manifest.json` filename, a second run into the same folder inherited the first run's messages —
+  which had been processed long before and sit below the new watermark, so they reconciled as
+  **LOST**. Observed 2026-08-14: a flawless 1000/1000 run reported `FAIL — 20 message(s) LOST`
+  because a 20-message run had used the same folder. Now the filename carries the run label
+  (`manifest-<runLabel>.json`) *and* reconciliation filters by label, so a shared manifest is
+  harmless.
+- **Engine `traces` without engine `requests` is configuration, not a fault.** `requests` telemetry
+  is emitted by the Functions **host**, which needs `APPLICATIONINSIGHTS_CONNECTION_STRING`. This
+  engine sets only `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`, which its own `AzureExecutionLogger`
+  uses to write `traces` through its own `TelemetryClient`. So traces flow and requests never do
+  (observed: 1,656 execution ids, 0 request rows). Read outcome from the worker side; engine result
+  codes and request durations are simply unavailable on this deployment.
+- **`TRY_CONVERT(..., 127)` needs the `T` separator.** Style 127 is strict ISO 8601, so a column
+  holding `2026-08-14 09:03:15.123` — a space, which is what SQL Server renders by default —
+  converts to `NULL`. All 1,000 rows came back with every latency figure blank for that reason. The
+  queries now use the styleless form, and a run that still cannot read its timestamps **says so**
+  rather than printing empty averages that read as "too fast to measure".
+- **A missing az extension hangs rather than fails.** `extension.use_dynamic_install` defaults to
+  `yes_prompt`, so az stops and asks — on stdin, with stderr suppressed, so nothing is visible. See
+  the pre-flight section above. This is the single worst failure mode in the whole harness, because
+  it looks exactly like a slow query.
 - **Never trust the exit code.** A throwing PowerShell script leaves the previous `az` exit code in
   place, so a failed step can report 0. Read the log.
 - **Zero log rows ≠ nothing happened.** `Invoke-E2ELogAnalytics` passes `-AllowFail`, so a bad column
@@ -441,12 +508,12 @@ Import-Module Pester -RequiredVersion 5.7.1
 Invoke-Pester -Path .\Tests\Invoke-WwQueueLoadTest.Tests.ps1, .\Tests\Publish-WwQueueBurst.Tests.ps1
 ```
 
-99 tests, no Azure, no broker, no database — `-LoadFunctionsOnly` dot-sources the decision logic in
+129 tests, no Azure, no broker, no database — `-LoadFunctionsOnly` dot-sources the decision logic in
 isolation. They cover the concurrency arithmetic, bucket classification, verdict rules, pre-flight
 blockers, connection-string masking, percentiles, timestamp parsing, path validation, source
-diagnosis and manifest invariants.
+diagnosis, manifest scoping, az-extension detection, step timeouts and manifest invariants.
 
-Five are regression tests for defects found while building and running this:
+Eight are regression tests for defects found while building and running this:
 
 - **numeric parameters must be nullable** — a bare `[int]` that is not supplied defaults to `0`, which
   is indistinguishable from an explicit `0`, so every unbound int overrode its RUN 2 default with zero
@@ -463,6 +530,16 @@ Five are regression tests for defects found while building and running this:
   six different reasons, and the original message asserted one of them ("a WFAES-encrypted source
   needs the Key Vault key") unconditionally. A reviewer who mistyped one character in a filename was
   sent looking for a Key Vault key for a file that did not exist
+- **reconciliation must be scoped to this run's label** — a shared `-OutputDir` merged two runs'
+  manifests and reported the earlier run's 20 messages as LOST from a flawless 1000/1000 run. The
+  filename now carries the run label, the label filter is belt-and-braces, and a count mismatch
+  *within* a run throws instead of reconciling against numbers that cannot describe what was sent
+- **evidence on screen must be acted on** — the failing run printed `Distinct bodies 1020 / 1000`
+  and carried straight on. Unactioned evidence is worse than none: it makes the eventual FAIL look
+  like a product defect
+- **a missing az extension must not be able to hang the run** — the extension list is checked in
+  Phase 0, `Initialize-WwAzNonInteractive` is asserted to run before the first az call, and the
+  report step is bounded by a timeout that names the step and points at stdin as the usual cause
 
 ---
 
