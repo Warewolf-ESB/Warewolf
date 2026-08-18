@@ -57,6 +57,22 @@ function Invoke-E2EAzJson {
         "].{name:name was unexpected at this time." - even when the PowerShell string itself is
         correctly quoted. Cost several failed calls on the 2026-08-06 run before being pinned down.
         Filter and project in PowerShell instead; it is also easier to read.
+
+        CAPTURES STDERR INSTEAD OF DISCARDING IT. The previous implementation ran `2>$null`, so a
+        failure only ever threw "az ... failed with exit code N" - the actual az error text (an
+        auth failure, ResourceNotFound, a transient control-plane blip, ...) was thrown away and
+        unrecoverable even from the pipeline log. This is exactly what made a live CI failure
+        (2026-08-18, `containerapp env show` on an environment that a deploy step 20 minutes
+        earlier had just confirmed existed) undiagnosable: the environment was real, so the
+        failure was almost certainly transient, but there was no way to tell from "exit code 1"
+        alone. Mirrors Deploy-WwQueueProcessor.ps1's Invoke-Az, which already splits stdout from
+        stderr for this reason (see its comment) and puts the real text in the throw.
+
+        ALSO RETRIES the same narrow set of transient transport errors Invoke-Az retries -
+        connection resets, timeouts, throttling - observed against this subscription. These calls
+        hit the identical Azure CLI/network path, so the same flakiness applies. A genuine
+        ResourceNotFound does not match the pattern, so -AllowFail probes still return $null on the
+        first attempt instead of stalling through retries.
     #>
     param(
         [Parameter(Mandatory)][string[]] $AzArgs,
@@ -65,13 +81,33 @@ function Invoke-E2EAzJson {
     if ($AzArgs -contains '--query') {
         throw 'Invoke-E2EAzJson does not accept --query (cmd.exe mangles JMESPath). Filter in PowerShell.'
     }
-    $raw = & az @AzArgs -o json 2>$null
-    if ($LASTEXITCODE -ne 0) {
+
+    $transient = 'Connection aborted|ConnectionResetError|10054|Read timed out|timed out|' +
+                 'ServiceUnavailable|Gateway Time-?out|TooManyRequests|Too many requests|' +
+                 'ServerTimeout|temporarily unavailable'
+    $maxTries = 4
+
+    for ($try = 1; $try -le $maxTries; $try++) {
+        $raw = & az @AzArgs -o json 2>&1
+        $exit = $LASTEXITCODE
+        # stderr (az extension warnings etc) must not reach the returned VALUE - split it out the
+        # same way Invoke-Az does, then reassemble only the true stdout lines before parsing.
+        $stdout = @($raw | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
+
+        if ($exit -eq 0) {
+            if ($stdout.Count -eq 0) { return $null }
+            return ($stdout | ConvertFrom-Json)
+        }
+
+        $errText = ($raw | ForEach-Object { "$_" }) -join ' '
+        if ($try -lt $maxTries -and $errText -match $transient) {
+            Start-Sleep -Seconds (5 * $try)
+            continue
+        }
+
         if ($AllowFail) { return $null }
-        throw "az $($AzArgs -join ' ') failed with exit code $LASTEXITCODE"
+        throw "az $($AzArgs -join ' ') failed with exit code ${exit}: $errText"
     }
-    if (-not $raw) { return $null }
-    return ($raw | ConvertFrom-Json)
 }
 
 # ═════════════════════════════════════════════════════════════════════════════

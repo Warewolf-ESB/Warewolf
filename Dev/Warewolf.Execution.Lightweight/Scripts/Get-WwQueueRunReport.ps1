@@ -123,6 +123,36 @@ if (-not $OutputDir) {
 }
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
+# A terminating error anywhere below (most commonly an `az` call inside Invoke-E2EAzJson, e.g.
+# 'containerapp env show' resolving the workspace at Get-WwQueueRunReport.ps1:146) previously left
+# $OutputDir with nothing in it: the real report/CSV are only written once at the very end, so the
+# CI artifact for a FAILED run was always empty (an ADO "Processed 0 files" / few-byte upload is
+# just the empty folder). Write a small diagnostic file here on any failure so the published
+# artifact always carries the reason, then rethrow unchanged - this must not turn a real failure
+# into a silent pass.
+trap {
+    $errPath = Join-Path $OutputDir ("queue-run-error-{0}.json" -f (Get-Date -Format 'yyyyMMdd-HHmmss'))
+    try {
+        [pscustomobject]@{
+            runLabel         = $RunLabel
+            generatedUtc     = (Get-Date).ToUniversalTime().ToString('o')
+            windowStartUtc   = $StartUtc.ToString('o')
+            windowEndUtc     = $EndUtc.ToString('o')
+            resourceGroup    = $ResourceGroup
+            appNamePrefix    = $AppNamePrefix
+            apps             = $AppName
+            error            = $_.Exception.Message
+            scriptStackTrace = $_.ScriptStackTrace
+        } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $errPath -Encoding utf8
+        Write-Host "##[error]Get-WwQueueRunReport.ps1 failed: $($_.Exception.Message)"
+        Write-Host "Diagnostic written to $errPath"
+    } catch {
+        Write-Host "##[warning]Failed to write diagnostic error report to '$errPath': $($_.Exception.Message)"
+    }
+    # No 'continue'/'break': fall through so the original terminating error still propagates and
+    # the caller (the pipeline step) still fails exactly as before.
+}
+
 Write-Head "Queue run report - $RunLabel"
 Write-Host "  Window (UTC)   : $kqlStart  ->  $kqlEnd  ($([int]($EndUtc - $StartUtc).TotalMinutes) min)"
 Write-Host "  Resource group : $ResourceGroup"
