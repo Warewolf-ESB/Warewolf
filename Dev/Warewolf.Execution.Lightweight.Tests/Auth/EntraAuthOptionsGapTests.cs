@@ -139,4 +139,59 @@ public class EntraAuthOptionsGapTests
         StringAssert.Contains(opts.MetadataAddress, "my-tenant-id");
         StringAssert.Contains(opts.MetadataAddress, "openid-configuration");
     }
+
+    // ── Audience normalization ───────────────────────────────────────────────
+    // A misconfigured WAREWOLF_ENTRA_AUDIENCE holding a bare client GUID (no URI
+    // scheme) must be auto-prefixed with "api://" so it still matches the `aud`
+    // claim Entra issues for an api://{clientId}/.default scope request, instead
+    // of rejecting every caller with 401 (regression guard for 8511-correct-id:
+    // pipeline-CLOUD.yml previously pointed the QueueProcessor at the wrong
+    // engine app id and every delivery was dead-lettered with a 401).
+
+    [TestMethod]
+    public void Audience_BareGuid_IsPrefixedWithApiScheme()
+    {
+        var opts = new EntraAuthOptions { TenantId = "t", Audience = "05794411-b275-4801-97ac-8b078ed7196c" };
+        Assert.AreEqual("api://05794411-b275-4801-97ac-8b078ed7196c", opts.Audience);
+    }
+
+    [TestMethod]
+    public void Audience_AlreadyApiScheme_IsUnchanged()
+    {
+        var opts = new EntraAuthOptions { TenantId = "t", Audience = "api://my-app" };
+        Assert.AreEqual("api://my-app", opts.Audience);
+    }
+
+    [TestMethod]
+    public void Audience_HttpsScheme_IsUnchanged()
+    {
+        var opts = new EntraAuthOptions { TenantId = "t", Audience = "https://my-tenant.onmicrosoft.com/my-app" };
+        Assert.AreEqual("https://my-tenant.onmicrosoft.com/my-app", opts.Audience);
+    }
+
+    [TestMethod]
+    public void Audience_Null_StaysNull()
+    {
+        var opts = new EntraAuthOptions { TenantId = "t", Audience = null };
+        Assert.IsNull(opts.Audience);
+    }
+
+    [TestMethod]
+    public void Audience_EmptyOrWhitespace_IsUnchanged()
+    {
+        var opts = new EntraAuthOptions { TenantId = "t", Audience = "   " };
+        Assert.AreEqual("   ", opts.Audience);
+    }
+
+    [TestMethod]
+    public void FromEnvironment_BareGuidAudience_IsPrefixedWithApiScheme()
+    {
+        Environment.SetEnvironmentVariable(TenantEnv,   "tenant-guid");
+        Environment.SetEnvironmentVariable(AudienceEnv, "05794411-b275-4801-97ac-8b078ed7196c");
+        Environment.SetEnvironmentVariable(ClientEnv,   null);
+
+        var opts = EntraAuthOptions.FromEnvironment();
+
+        Assert.AreEqual("api://05794411-b275-4801-97ac-8b078ed7196c", opts.Audience);
+    }
 }
