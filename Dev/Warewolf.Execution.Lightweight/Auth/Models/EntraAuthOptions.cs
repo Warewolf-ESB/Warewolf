@@ -12,7 +12,10 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 /// <c>EasyAuth-Runbook.md</c>:
 /// <list type="bullet">
 ///   <item><c>WAREWOLF_ENTRA_TENANT_ID</c> – Entra tenant GUID.</item>
-///   <item><c>WAREWOLF_ENTRA_AUDIENCE</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).</item>
+///   <item><c>WAREWOLF_ENTRA_AUDIENCE</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).
+///   A bare identifier with no URI scheme (e.g. just the client GUID) is auto-prefixed with
+///   <c>api://</c> — see <see cref="Audience"/> — since that is the <c>aud</c> value Entra
+///   actually issues for an <c>api://{clientId}/.default</c> scope request.</item>
 ///   <item><c>WAREWOLF_ENTRA_CLIENT_ID</c> – Optional alternative audience.</item>
 /// </list>
 /// </summary>
@@ -21,11 +24,32 @@ public class EntraAuthOptions
     /// <summary>Entra tenant GUID. <c>null</c> when not configured (token path disabled).</summary>
     public string? TenantId { get; init; }
 
-    /// <summary>Expected token audience (<c>aud</c> claim).</summary>
-    public string? Audience { get; init; }
+    private readonly string? _audience;
+
+    /// <summary>
+    /// Expected token audience (<c>aud</c> claim). A value with no URI scheme (e.g. a bare
+    /// client GUID such as <c>05794411-b275-4801-97ac-8b078ed7196c</c>) is normalised to
+    /// <c>api://{value}</c> on assignment, so a misconfigured <c>WAREWOLF_ENTRA_AUDIENCE</c>
+    /// still matches the <c>aud</c> claim Entra actually issues instead of rejecting every
+    /// caller with 401.
+    /// </summary>
+    public string? Audience
+    {
+        get => _audience;
+        init => _audience = NormalizeAudience(value);
+    }
 
     /// <summary>Optional alternative audience (typically the bare client GUID).</summary>
     public string? ClientId { get; init; }
+
+    /// <summary>
+    /// Prefixes <paramref name="value"/> with <c>api://</c> when it is non-empty and does not
+    /// already specify a URI scheme (already <c>api://...</c>, <c>https://...</c>, etc.).
+    /// </summary>
+    private static string? NormalizeAudience(string? value) =>
+        string.IsNullOrWhiteSpace(value) || value.Contains("://", StringComparison.Ordinal)
+            ? value
+            : $"api://{value}";
 
     /// <summary>
     /// <c>true</c> when sufficient configuration is present to attempt RS256 validation
