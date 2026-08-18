@@ -95,7 +95,7 @@ the `jobs1`/`jobs2` SQL schema (already applied directly to `WarewolfEntraTestDb
 | **R5** | `httpsOnly: false`. | Security weakness, pre-existing. | Flag to the team; do not silently change it as part of this deploy — it may be load-bearing for an existing caller. |
 | **R6** | Deploy replaces app settings if the orchestrator is run without care. | Broken auth / wrong queue / lost secrets. | Back up settings first; diff after deploy (§6.5). |
 | **R7** | `Warewolf.Execution.Lightweight.csproj` only copies its bundled `Resources\` folder to the build/publish output in **Debug** config — a `-c Release` publish (§5.3) has **no `Resources` folder at all** unless `-WorkflowsSourcePath` is passed to the orchestrator. | **Confirmed root cause of the 2026-08-13 load-test hang**: 29,782 `FileNotFoundException: Could not find file 'C:\home\site\wwwroot\Resources'` in App Insights (`warewolfserver-uat-ai`), then every workflow execution failed instantly and the load test hung polling for results that never arrived. | **Mandatory:** stage the resources (§5.4) and pass `-WorkflowsSourcePath` to every dry-run and deploy (§6.2/§6.4); confirm it in the plan phase (§6.3). |
-| **R8** | DPAPI-encrypted `.bite` sources cannot travel between machines. | Source fails to decrypt. | The bundled `NewSqlServerSource (Local Backup)` (`d3f6a2e1-…`) is **unreferenced** by both workflows — exclude it (§5.4). Both workflows bind to `b9184f70-…`, fetched fresh from the devops endpoint (§5.4). |
+| **R8** | DPAPI-encrypted `.bite` sources cannot travel between machines. | Source fails to decrypt. | The bundled `NewSqlServerSource (Local Backup)` (`d3f6a2e1-…`) is **unreferenced** by both workflows — exclude it (§5.4). Both workflows bind to `b9184f70-…`, now committed pre-encrypted (WFAES) as `Resources\rabbit\NewSqlServerSource.bite` (§5.4) — the devops-endpoint fetch this row previously described has been retired. |
 
 ## 5. Pre-flight
 
@@ -167,42 +167,38 @@ az monitor app-insights query --app warewolfserver-uat-ai --resource-group DEV2 
 |---|---|---|
 | `Resources\rabbit\RabbitProcess.bite` | committed, `Dev\Warewolf.Execution.Lightweight\Resources\rabbit\` | Yes — the workflow under test |
 | `Resources\rabbit\RabbitProcess2.bite` | committed, same folder | Yes — second load-test workflow |
-| `Resources\NewSqlServerSource.bite` (`SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"`) | **not committed** — fetched fresh from the devops endpoint (rotating connection string) | Yes — both workflows' DB activities bind to this ID; without it every DB step fails to resolve its source |
+| `Resources\rabbit\NewSqlServerSource.bite` (`SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"`) | **committed**, same folder — pre-encrypted (`WFAES::…`), decrypted at runtime via the engine's Key Vault wiring | Yes — both workflows' DB activities bind to this ID; without it every DB step fails to resolve its source |
 | `Resources\rabbit\NewSqlServerSource (Local Backup).bite` (`d3f6a2e1-…`) | committed, same folder | **No — exclude.** Unreferenced by both workflows; its connection string is DPAPI-encrypted under its author's Windows account and cannot decrypt on another machine or in Azure |
 
-Assemble a local staging folder and fetch the DB source the same way `pipeline-CLOUD.yml` does
-(`Download NewSqlServerSource.bite from DevOps Endpoint`, `Build` stage):
+> **Update (WOLF-8510, 2026-08-18):** `NewSqlServerSource.bite` used to be fetched fresh from the
+> devops endpoint on every run because its connection string rotated on every tunnel restart. That
+> endpoint dependency has been retired — the source is now committed pre-encrypted at
+> `Resources\rabbit\NewSqlServerSource.bite` with the same `SourceId`, so step 2 below (and both
+> pipelines' `Download NewSqlServerSource.bite from DevOps Endpoint` step) is no longer needed for
+> this workflow set. **Do not re-introduce a second `NewSqlServerSource.bite` anywhere else under
+> the staging folder** — `LightweightSourceLoader.BuildFileIndex` indexes `.bite` files by
+> `ResourceID` across the whole `Resources` tree and silently lets the last file found win on an ID
+> collision (`Infrastructure/LightweightSourceLoader.cs`), so a second copy at a different path
+> would make source resolution non-deterministic instead of failing loudly.
+
+Assemble a local staging folder — the committed `rabbit\` folder already carries the DB source, so
+no devops-endpoint fetch is required:
 
 ```powershell
 $stagingDir = 'D:\ExecutionEngine\WorkflowResources'
 New-Item -ItemType Directory -Path "$stagingDir\rabbit" -Force | Out-Null
 
-# 1. Committed rabbit workflows — copy everything except the unreferenced local-backup source.
+# Committed rabbit workflows + DB source — copy everything except the unreferenced local-backup source.
 Get-ChildItem 'Dev\Warewolf.Execution.Lightweight\Resources\rabbit' -File |
     Where-Object { $_.Name -ne 'NewSqlServerSource (Local Backup).bite' } |
     Copy-Item -Destination "$stagingDir\rabbit" -Force
-
-# 2. Fresh NewSqlServerSource.bite (b9184f70-…) from the devops endpoint — same headers/retry
-#    pattern as pipeline-CLOUD.yml's "Download NewSqlServerSource.bite from DevOps Endpoint" step.
-$uri = 'https://devops.warewolf.online/warewolf-devops/api/download-bite/mssql'
-$headers = @{
-    'CF-Access-Client-Id'     = $env:CFAccessClientIdValue
-    'CF-Access-Client-Secret' = $env:CFAccessClientSecretValue
-}
-Invoke-WebRequest -Uri $uri -Headers $headers -OutFile "$stagingDir\NewSqlServerSource.bite"
-
-# Sanity check: must be Source XML for b9184f70-…, not an HTML SSO login page.
-$body = Get-Content "$stagingDir\NewSqlServerSource.bite" -Raw
-if ($body -notmatch '<Source ' -or $body -notmatch 'ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082"') {
-    throw "Downloaded content is not the expected NewSqlServerSource .bite XML — check CF-Access-Client-Id/Secret."
-}
 ```
 
 Pass `$stagingDir` as `-WorkflowsSourcePath` in §6.2/§6.4 below — the orchestrator copies its
 contents into `<PublishDir>\Resources`, runs `Generate-WorkflowIndex.ps1` over the result, and
 (only when `-EncryptResources` is set) WFAES-encrypts it. This spec does not set
 `-EncryptResources`, so `NewSqlServerSource.bite` must already carry a decryptable
-(WFAES-encrypted-by-devops or plaintext) `ConnectionString` — do not hand-edit it.
+(WFAES-encrypted) `ConnectionString` — do not hand-edit it.
 
 > **Callers must use the folder-qualified workflow name after this staging (confirmed
 > 2026-08-14 — see `docs/ShovelBridge-Architecture.md`).** Because the `rabbit\` subfolder is

@@ -379,8 +379,9 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `RabbitProcess.bite` (the workflow both `-VerifyWorkflowExecution` legs execute) calls
   three stored procedures in sequence — `dbo.usp_jobs1_LogStart`, `usp_jobs1_LogProcessing`,
   `usp_jobs1_LogFinished`. All three of its DB activities bind to
-  `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` — the shared `NewSqlServerSource` that
-  `pipeline-CLOUD.yml` downloads from the devops endpoint, **not** the
+  `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` — the shared `NewSqlServerSource` committed
+  pre-encrypted (WFAES) at `Resources/rabbit/NewSqlServerSource.bite` (WOLF-8510, superseding the
+  devops-endpoint fetch `pipeline-LOADTEST.yml` previously ran on every build), **not** the
   `NewSqlServerSource (Local Backup)` source (`d3f6a2e1-…`) sitting alongside it in
   `Resources/rabbit/`. That bundled source is unreferenced by any activity, and its
   connection string is DPAPI-encrypted under its author's Windows account, so it cannot be
