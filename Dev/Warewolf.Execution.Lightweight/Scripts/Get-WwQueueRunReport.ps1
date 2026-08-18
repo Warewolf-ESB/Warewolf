@@ -35,6 +35,14 @@
     SUCCESSFUL execution logs nothing at all. Raise the Function App setting to INFO before the
     burst or -IncludeEngine will correctly report zero engine lines for healthy messages.
 
+    THE ENGINE'S STATUS CODE DOES NOT NEED -IncludeEngine
+    The worker logs the engine's HTTP status and response body itself
+    (EngineWorkflowClient.cs:154-159), so the EngStatus/EngBody columns are populated straight
+    from the container logs even with no App Insights component, no engine correlation and no
+    EXECUTIONLOGLEVEL change. Engine correlation ADDS the engine's own view; it is not the only
+    way, nor the first way, to find out why a message was dead-lettered. A 401/403 in EngStatus
+    in particular can NEVER be explained engine-side - the request never reached the app.
+
 .PARAMETER LastMinutes
     Window ending now. Ignored when -StartUtc is supplied.
 
@@ -178,6 +186,7 @@ if ($rows.Count -eq 0) {
 #    failed  : AuditingConsumerDecorator.Consume (inner returned Failed)
 #    threw   : AuditingConsumerDecorator.Consume (exception escaped)
 #    deadltr : RabbitMqDeadLetterPublisher.PublishAsync
+#    engine  : EngineWorkflowClient.PostSecureAsync
 $rxPrefix  = '\[Replica:(?<replica>[^\]]*)\]\s*\[Queue:(?<queue>[^\]]*)\]\s*\[Tag:(?<tag>\d+)\]\s*\[Txn:(?<txn>[^\]]*)\]'
 $rxExec    = '\[ExecutionId:(?<exec>[^\]]*)\]'
 $rxStart   = "Queue execution starting\.\s*queue='(?<q>[^']*)'\s*workflow='(?<wf>[^']*)'\s*txn='(?<txn>[^']*)'\s*bytes=(?<bytes>\d+)\s*body=(?<body>.*)$"
@@ -189,10 +198,29 @@ $rxDlqNew  = "Dead-letter queue '(?<dlq>[^']*)' does not exist - creating it"
 $rxUnacked = "Consumer returned Failed for delivery (?<tag>\d+)"
 $rxRefuse  = 'refusing to ack'
 
+# THE line that says WHY a message was dead-lettered - EngineWorkflowClient.cs:154-159. Without
+# it this report can only ever say 'DeadLettered(acked)', never the HTTP status the engine
+# returned nor the body it returned it with, even though both are sitting in the console logs
+# already pulled above. A dead-letter with no status is an unfalsifiable finding: 401 (rejected
+# by EasyAuth before the app), 404 (workflow not in the deployed Resources) and 500 (workflow
+# error, or a WOLF-8418 authorization denial) are indistinguishable without it.
+$rxEngStatus = "Engine returned (?<code>\d{3}) for '(?<url>[^']*)'\s*\(classified (?<class>[A-Z]+)"
+$rxEngBody   = 'Body:\s*(?<body>.*)$'
+
+# Transport-side counterparts (EngineWorkflowClient.cs:169-177). These end in a REDELIVERY, not
+# a dead-letter, so they explain a 'Failed(redelivered)' row the same way the above explains a
+# dead-lettered one.
+$rxEngFail   = "Engine call to '(?<url>[^']*)' (?<what>timed out after [^.]*|failed)\."
+
 $messages = [ordered]@{}      # key: "app|txn|tag"  -> record
 $lifecycle = [System.Collections.Generic.List[object]]::new()
 $dlqCreated = [System.Collections.Generic.List[object]]::new()
 $anomalies  = [System.Collections.Generic.List[object]]::new()
+
+# Prefixed lines (i.e. lines belonging to a specific delivery) that match NONE of the shapes
+# below. Silently dropping these is exactly how the engine-status line stayed invisible; counting
+# them means the next diagnostic the C# grows shows up as a number instead of as nothing at all.
+$unparsed = [System.Collections.Generic.List[object]]::new()
 
 function Get-Key { param($app, $txn, $tag) "$app|$txn|$tag" }
 
@@ -249,6 +277,14 @@ foreach ($r in $rows) {
             StartLines    = 0
             RefusedAck    = $false
             UnackedFailed = $false
+            # Worker-OBSERVED engine response. Distinct from EngineLogLines/EngineErrors added
+            # further down, which come from the engine's own App Insights and are only ever
+            # populated when -IncludeEngine is passed AND the execution ids correlate.
+            EngineStatus    = ''
+            EngineClass     = ''
+            EngineUrl       = ''
+            EngineBody      = ''
+            EngineTransport = ''
         }
     }
     $m = $messages[$key]
@@ -291,9 +327,32 @@ foreach ($r in $rows) {
         continue
     }
 
-    if ($line -match $rxRefuse)  { $m.RefusedAck = $true;    $anomalies.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Txn = $txn; Line = $line }) }
-    if ($line -match $rxUnacked) { $m.UnackedFailed = $true; $anomalies.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Txn = $txn; Line = $line }) }
-    if ($line -match $rxDlqNew)  { $dlqCreated.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Dlq = [regex]::Match($line, $rxDlqNew).Groups['dlq'].Value }) }
+    # Deliberately BEFORE the anomaly fall-through: this is the diagnostic line, not an anomaly.
+    $mm = [regex]::Match($line, $rxEngStatus)
+    if ($mm.Success) {
+        $m.EngineStatus = $mm.Groups['code'].Value
+        $m.EngineClass  = $mm.Groups['class'].Value
+        $m.EngineUrl    = $mm.Groups['url'].Value
+        # The body is matched separately rather than as one expression: the C# puts a long
+        # explanatory note between the URL and 'Body:', and that note is free to change without
+        # the status capture - the part that matters - going dark.
+        $mb = [regex]::Match($line, $rxEngBody)
+        if ($mb.Success) { $m.EngineBody = $mb.Groups['body'].Value.Trim() }
+        continue
+    }
+
+    $mm = [regex]::Match($line, $rxEngFail)
+    if ($mm.Success) {
+        $m.EngineTransport = $mm.Groups['what'].Value
+        $m.EngineUrl       = $mm.Groups['url'].Value
+        continue
+    }
+
+    if ($line -match $rxRefuse)  { $m.RefusedAck = $true;    $anomalies.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Txn = $txn; Line = $line }); continue }
+    if ($line -match $rxUnacked) { $m.UnackedFailed = $true; $anomalies.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Txn = $txn; Line = $line }); continue }
+    if ($line -match $rxDlqNew)  { $dlqCreated.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Dlq = [regex]::Match($line, $rxDlqNew).Groups['dlq'].Value }); continue }
+
+    $unparsed.Add([pscustomobject]@{ TimeUtc = $ts; App = $app; Txn = $txn; Line = $line })
 }
 
 # A message that succeeded AND was dead-lettered is the business-failure path: the engine
@@ -428,7 +487,11 @@ foreach ($app in ($msgs | ForEach-Object { $_.App } | Sort-Object -Unique)) {
         @{n = 'ms';        e = { $_.DurationMs } },
         @{n = 'Outcome';   e = { $_.Outcome } },
         @{n = 'DLQ';       e = { if ($_.DeadLettered) { 'yes' } else { '' } } },
+        # The engine's own answer, as the WORKER saw it. This is the column that turns
+        # 'DeadLettered(acked)' from a symptom into a cause.
+        @{n = 'EngStatus'; e = { if ($_.EngineStatus) { $_.EngineStatus } elseif ($_.EngineTransport) { $_.EngineTransport } else { '' } } },
         @{n = 'EngLines';  e = { $_.EngineLogLines } },
+        @{n = 'EngBody';   e = { if ($_.EngineBody.Length -gt $BodyPreviewChars) { $_.EngineBody.Substring(0, $BodyPreviewChars) + '...' } else { $_.EngineBody } } },
         @{n = 'Body';      e = { $_.BodyPreview } }
     if ($ShowAllRows -or $set.Count -le 80) { $view | Format-Table -AutoSize | Out-String -Width 240 | Write-Host }
     else {
@@ -514,6 +577,49 @@ Write-Host "  Unknown outcome            : $unknown"
 Write-Host "  Redelivered (>1 start line): $redeliv"
 Write-Host "  'refusing to ack' lines    : $refused"
 
+# Engine responses AS THE WORKER SAW THEM. This block is the whole point of parsing the engine
+# status line: a non-2xx count here, broken down by code, says what to go and fix. It needs no
+# -IncludeEngine and no App Insights - it comes from the container logs already fetched.
+$engStatuses = @($msgs | Where-Object { $_.EngineStatus } | Group-Object EngineStatus | Sort-Object Name)
+$engTransport = @($msgs | Where-Object { $_.EngineTransport })
+
+# Built as an ordered dictionary rather than by summing hashtables: ConvertTo-Json renders this
+# as { "500": 1 }, which is what the CI step consumes.
+$engineStatusCounts = [ordered]@{}
+foreach ($g in $engStatuses) { $engineStatusCounts[$g.Name] = $g.Count }
+if ($engStatuses.Count -gt 0 -or $engTransport.Count -gt 0) {
+    Write-Host ''
+    Write-Host '  Engine responses observed by the worker:'
+    foreach ($g in $engStatuses) {
+        $sample = @($g.Group | Where-Object { $_.EngineBody })[0]
+        $hint = if ($sample) { "  e.g. $($sample.EngineBody.Substring(0, [math]::Min(120, $sample.EngineBody.Length)))" } else { '' }
+        Write-Host ("    HTTP {0}  x{1}{2}" -f $g.Name, $g.Count, $hint)
+    }
+    if ($engTransport.Count -gt 0) {
+        Write-Host ("    transport failures x{0} (no HTTP status - unreachable, TLS/DNS, token or timeout)" -f $engTransport.Count)
+    }
+    # 401/403 never reach the workflow, so no amount of engine-side log hunting will explain them.
+    $frontDoor = @($msgs | Where-Object { $_.EngineStatus -in '401', '403' })
+    if ($frontDoor.Count -gt 0) {
+        Write-Note "$($frontDoor.Count) message(s) were rejected at the front door (401/403) - EasyAuth refused the worker's token before the engine app ran, so there is nothing to find in the engine's own logs. Check the Container App's managed identity, the audience/scope, and the engine's authsettingsV2."
+    }
+    $notFound = @($msgs | Where-Object { $_.EngineStatus -eq '404' })
+    if ($notFound.Count -gt 0) {
+        Write-Note "$($notFound.Count) message(s) got 404 - the workflow is not present in the DEPLOYED engine's Resources, regardless of whether it exists in the repo. Check the publish output, not secure.config."
+    }
+    $five = @($msgs | Where-Object { $_.EngineStatus -eq '500' })
+    if ($five.Count -gt 0) {
+        Write-Note "$($five.Count) message(s) got 500 - overloaded by design: a genuine workflow error, a WOLF-8418 authorization denial, or host exhaustion. Triage by the EngBody column above, not by the status."
+    }
+}
+elseif ($deadLtr -gt 0) {
+    Write-Bad "$deadLtr message(s) were dead-lettered but NO engine status line was parsed. The worker only dead-letters on a non-2xx, so that line should exist - either the log window clipped it, or EngineWorkflowClient's message changed and `$rxEngStatus no longer matches it."
+}
+
+if ($unparsed.Count -gt 0) {
+    Write-Note "$($unparsed.Count) per-delivery log line(s) matched no known shape and were not interpreted (see the JSON artefact's 'unparsed'). If the worker grew a new diagnostic, teach this script about it rather than reading around it."
+}
+
 # Guard on $total: with zero deliveries every condition below is vacuously true, and the report
 # would announce a clean run precisely when it found nothing at all.
 if ($total -eq 0) {
@@ -590,7 +696,8 @@ $jsonPath = Join-Path $OutputDir "queue-run-report-$stamp.json"
 
 $msgs | Select-Object App, Queue, Workflow, Txn, ExecutionId, DeliveryTag, Replica, Revision,
                       StartedUtc, EndedUtc, DurationMs, Outcome, DeadLettered, DlqName,
-                      StartLines, Bytes, EngineLogLines, EngineErrors, BodyPreview |
+                      StartLines, Bytes, EngineStatus, EngineClass, EngineUrl, EngineTransport,
+                      EngineLogLines, EngineErrors, EngineBody, BodyPreview |
     Export-Csv -LiteralPath $csvPath -NoTypeInformation -Encoding utf8
 
 [pscustomobject]@{
@@ -605,6 +712,10 @@ $msgs | Select-Object App, Queue, Workflow, Txn, ExecutionId, DeliveryTag, Repli
     totals        = [pscustomobject]@{
         deliveries = $total; distinctTxn = $distinctTxn; succeeded = $succeeded
         deadLettered = $deadLtr; unknown = $unknown; redelivered = $redeliv; refusedAck = $refused
+        # Worker-observed engine responses, keyed by status code, e.g. { "500": 1 }. Callers
+        # (the CI verify step) read this to say WHY a run failed without re-parsing the CSV.
+        engineStatusCounts = $engineStatusCounts
+        engineTransportFailures = $engTransport.Count
     }
     perQueue      = $queueStats
     perReplica    = $replicaStats
@@ -617,6 +728,7 @@ $msgs | Select-Object App, Queue, Workflow, Txn, ExecutionId, DeliveryTag, Repli
     anomalies     = $anomalies
     lifecycle     = $lifecycle
     engineRequests= $engineRequests
+    unparsed      = $unparsed
 } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $jsonPath -Encoding utf8
 
 Write-Head 'Artefacts'

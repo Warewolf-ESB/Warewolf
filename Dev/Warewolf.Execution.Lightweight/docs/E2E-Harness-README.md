@@ -276,6 +276,24 @@ still inside workspace retention:
 Produces `txn → replica → revision → startedUtc → durationMs → outcome` per delivery, replica
 distribution, per-queue percentiles and throughput, reliability counts, plus a CSV and JSON.
 
+**The `EngStatus` / `EngBody` columns are where a dead-letter is triaged.** `DeadLettered(acked)` is
+a *symptom*: the worker only ever takes that path on a non-2xx from the engine
+(`EngineForwarder.cs`), so the status code is the finding. The worker logs it itself
+(`EngineWorkflowClient.cs:154-159`), which means these columns are populated straight from the
+container logs — **no `-IncludeEngine`, no App Insights and no `EXECUTIONLOGLEVEL` change required**.
+Read them first:
+
+| `EngStatus` | What it means | Where to look |
+|---|---|---|
+| `401` / `403` | Rejected by EasyAuth **before** the engine app ran | The caller's managed identity, the audience/scope, `authsettingsV2` — *never* the engine's own logs, which will be empty by construction |
+| `404` | The workflow is absent from the **deployed** engine's `Resources`, whatever the repo contains | The publish output |
+| `500` | Overloaded by design — a workflow error, a WOLF-8418 authorization denial, or host exhaustion | The `EngBody` column, not the status |
+| `timed out after …` / `failed` | Transport, not HTTP. Ends in a **redelivery**, not a dead-letter | Reachability, TLS/DNS, token acquisition |
+
+A dead-letter reported with a blank `EngStatus` means the status line was not parsed — either the
+window clipped it or the C# message changed and the script's regex needs updating. The report says
+so explicitly rather than leaving the column empty and silent.
+
 **Three things that decide whether the output means anything:**
 
 - **The join key is the AMQP `CorrelationId`,** which the pump copies into
