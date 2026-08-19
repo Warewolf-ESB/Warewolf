@@ -49,6 +49,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             return mgr;
         }
 
+        static FileDecryptionHelper NewHelper() =>
+            new(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+
         // Mirror of the encryption side of Encrypt-Config.ps1: emit
         //   WFAES:: + base64( nonce || ciphertext || tag )
         static string EncryptValue(string plaintext, byte[] key)
@@ -75,7 +78,8 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void Constructor_NullSecretManager_Throws()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new FileDecryptionHelper(null!, NullLogger<FileDecryptionHelper>.Instance));
+            Assert.ThrowsException<ArgumentNullException>(
+                () => new FileDecryptionHelper(null!, NullLogger<FileDecryptionHelper>.Instance));
         }
 
         // ── IsAesEncrypted (was the only covered line) ───────────────────────────
@@ -98,7 +102,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_RoundTripsKnownPlaintext()
         {
-            var helper    = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+            var helper    = NewHelper();
             var encrypted = EncryptValue("Server=.;Database=Test;User Id=sa;Password=x", _key32);
 
             var actual = helper.DecryptConnectionString(encrypted);
@@ -110,7 +114,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_NonEncryptedValue_PassesThroughUnchanged()
         {
-            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+            var helper = NewHelper();
 
             Assert.AreEqual("not-encrypted", helper.DecryptConnectionString("not-encrypted"));
             Assert.AreEqual("",              helper.DecryptConnectionString(""));
@@ -120,9 +124,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_TooShortPayload_ThrowsCryptographicException()
         {
-            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+            var helper = NewHelper();
 
-            // 8 bytes of payload — less than NonceSize (12) + TagSize (16) = 28.
+            // 8 bytes of payload
             var tooShort = FileDecryptionHelper.WfAesPrefix +
                            Convert.ToBase64String(new byte[8]);
 
@@ -135,7 +139,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
         [TestCategory("UnitTest")]
         public void DecryptConnectionString_TamperedTag_ThrowsCryptographicException()
         {
-            var helper    = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+            var helper    = NewHelper();
             var encrypted = EncryptValue("secret", _key32);
 
             // Flip the last byte of the base64 payload — that decodes to a tag-bit
@@ -144,8 +148,10 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             bytes[^1] ^= 0x01;
             var tampered = FileDecryptionHelper.WfAesPrefix + Convert.ToBase64String(bytes);
 
-            Assert.ThrowsException<AuthenticationTagMismatchException>(
+            var ex = Assert.ThrowsException<CryptographicException>(
                 () => helper.DecryptConnectionString(tampered));
+            Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,
+                "The wrapped inner exception must be the GCM tag-mismatch failure.");
         }
 
         [TestMethod]
@@ -157,10 +163,12 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             var otherKey  = Enumerable.Range(64, 32).Select(i => (byte)i).ToArray();
             var encrypted = EncryptValue("secret", otherKey);
 
-            var helper = new FileDecryptionHelper(NewInitialisedManager(), NullLogger<FileDecryptionHelper>.Instance);
+            var helper = NewHelper();
 
-            Assert.ThrowsException<AuthenticationTagMismatchException>(
+            var ex = Assert.ThrowsException<CryptographicException>(
                 () => helper.DecryptConnectionString(encrypted));
+            Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,
+                "The wrapped inner exception must be the GCM tag-mismatch failure.");
         }
     }
 }

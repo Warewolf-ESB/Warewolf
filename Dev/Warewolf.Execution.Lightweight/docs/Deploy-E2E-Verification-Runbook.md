@@ -12,6 +12,16 @@ delete at the end:
 | **E** | **End-to-end proof** — publish to RabbitMQ, KEDA scales 0→N, message executes | replica count rises from 0, `Queue execution succeeded` in logs, queue drains |
 | **F** | **Teardown** — surgical, by name and run tag | targeted `az containerapp delete` + `Rollback-WwExecutionEngine.ps1`. ⛔ **never `az group delete`** |
 
+> ### ⚡ There is now an automated harness for this
+> Unless you specifically want to drive the phases by hand, use
+> [E2E-Harness-README.md](E2E-Harness-README.md) instead — `New-WwE2EStaging.ps1` +
+> `Invoke-WwE2EVerification.ps1` run these phases, score the acceptance criteria and write a summary,
+> with a unique run suffix so two reviewers never collide. It also has the corrections this runbook
+> predates: broker topology must be **pre-created** (§S11), the documented
+> `az account get-access-token` step **cannot work** on a fresh app registration (§S9), and execution
+> evidence comes from **Log Analytics**, not App Insights `traces` (§S12). Details in
+> [Deploy-E2E-Execution-Summary.md](Deploy-E2E-Execution-Summary.md).
+
 > ### Read before running
 > - **Everything in Phase A is billable** while it exists. Phase F removes all of it in one command
 >   *because* every resource lives in one dedicated group. Do not point this runbook at a shared

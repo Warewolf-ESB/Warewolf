@@ -106,33 +106,19 @@ namespace Warewolf.Execution.QueueProcessor.Configuration
                     ExecutionId);
             }
 
-            // FAIL FAST on the one input shape this engine cannot bind.
+            // NOTE - '@'-prefixed MapEntireMessage triggers.
             //
-            // An '@'-prefixed single input with MapEntireMessage makes the forwarder post
-            // multipart/form-data (parity with WarewolfWebRequestForwarder.cs:100-108). The full
-            // server handles that - SubmittedData.ExtractKeyValuePairForPostMethod branches on
-            // IsMimeMultipartContent("form-data") - but the Lightweight engine binds ONLY the query
-            // string, a JSON body and an XML body. Verified live against the deployed engine:
-            //   multipart/form-data          -> 500 "Scalar value { x } is NULL"
-            //   application/x-www-form-urlencoded -> now supported
+            // Such a trigger makes the forwarder post multipart/form-data (parity with
+            // WarewolfWebRequestForwarder.cs:100-108). This used to be a hard startup failure,
+            // because the Lightweight engine bound only the query string, a JSON body and an XML
+            // body - so every message would have been dead-lettered while appearing to process
+            // normally. WorkflowFunctionHelper.ParseMultipartAsync now binds multipart, matching
+            // the full server including its Base64-for-typed-parts rule, so the shape is supported
+            // and the guard has been removed.
             //
-            // Left alone, the failure mode is the worst kind: the replica starts, consumes happily,
-            // and the engine returns non-2xx for EVERY message, so all of them are dead-lettered and
-            // acked. The queue drains, the app scales back to zero, and nothing looks wrong.
-            // Refusing to start makes it a deployment-time error instead of silent data movement.
-            var firstInput = trigger.Inputs?.FirstOrDefault();
-            if (trigger.MapEntireMessage
-                && firstInput?.Name is { Length: > 0 } inputName
-                && inputName.StartsWith('@'))
-            {
-                throw new InvalidOperationException(
-                    $"Trigger '{trigger.Name}' ({trigger.TriggerId}) maps the entire message to the " +
-                    $"'@'-prefixed input '{inputName}', which the forwarder sends as multipart/form-data. " +
-                    "The Warewolf Execution Engine does not bind multipart bodies, so every message " +
-                    "would be dead-lettered while appearing to process normally. Rename the input " +
-                    "without the '@' prefix (the message is then sent as a JSON body), or point this " +
-                    "trigger at the full Warewolf Server.");
-            }
+            // DEPLOYMENT DEPENDENCY: that support lives in the ENGINE, not here. A worker pointed
+            // at an engine built before it will still dead-letter every message from such a
+            // trigger. Verify the target engine binds multipart before deploying one.
 
             // Both come from the catalog cached at startup - no disk access per reference, and a
             // missing/invalid source has already failed the process before any message is taken.

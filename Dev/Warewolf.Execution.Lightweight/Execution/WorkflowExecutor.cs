@@ -68,6 +68,9 @@ namespace Warewolf.Execution.Lightweight
         //                            "Object reference not set to an instance of an object."
         //                            "Error with variables in input. [[JobLogId]]"
         //     a SQL-FREE workflow -> 20/20 at concurrency 20 (an Assign has no such instance state)
+        // In the queue path this is worse than a plain error: the worker dead-letters AND acks a
+        // business failure, so the queue drains to zero and the deployment looks healthy while
+        // valid messages are silently diverted (16 of 30 in the 2026-08-11 burst).
         //
         // The fix is exclusive ownership: each execution RENTS a prepared workflow and RETURNS it
         // in a finally. The pool grows to the peak concurrency seen for that workflow and no
@@ -256,7 +259,6 @@ namespace Warewolf.Execution.Lightweight
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
 
-                // Step 4: Parse DynamicActivity into IDev2Activity chain
                 var startActivity = prepared.StartActivity;
                 Dev2Logger.Debug("WorkflowExecutor Step 4 completed: IDev2Activity chain available", executionId.ToString());
 
@@ -616,7 +618,7 @@ namespace Warewolf.Execution.Lightweight
         /// Releases a rented workflow back for reuse. Null-tolerant so callers can return
         /// unconditionally from a <c>finally</c> without first testing whether the rent succeeded.
         /// </summary>
-        internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow prepared)
+        internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow? prepared)
         {
             if (prepared?.Activity == null || string.IsNullOrEmpty(filePath))
             {
