@@ -79,16 +79,19 @@ namespace Warewolf.Execution.Lightweight
             var childEnv = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
             dataObject.PushEnvironment(childEnv);
 
+            WorkflowExecutor.PreparedWorkflow prepared = null;
             try
             {
                 var fileContents = WorkflowExecutor.ReadWorkflowFile(subWorkflowPath);
                 var (xamlDefinition, _, _) = WorkflowExecutor.ExtractWorkflowParts(fileContents);
                 if (xamlDefinition != null)
                 {
-                    // Use the process-level cache: sub-workflow XAML is compiled at most once
-                    // per unique file path regardless of how many parent workflows call it.
-                    var activity = WorkflowExecutor.GetOrLoadDynamicActivity(subWorkflowPath, xamlDefinition);
-                    var startActivity = new ActivityParser().Parse(activity);
+                    // Rented for the duration of the sub-workflow, not shared. This path is the
+                    // MOST exposed of the three: one sub-workflow is typically called by several
+                    // parents, so concurrent callers would otherwise run the same Dsf*Activity
+                    // instances simultaneously. See the _workflowPool comment in WorkflowExecutor.
+                    prepared = WorkflowExecutor.RentPreparedWorkflow(subWorkflowPath, xamlDefinition);
+                    var startActivity = prepared?.StartActivity;
                     if (startActivity != null)
                     {
                         WorkflowExecutor.ExecuteActivityChain(dataObject, startActivity);
@@ -99,6 +102,10 @@ namespace Warewolf.Execution.Lightweight
             {
                 dataObject.Environment.AddError(ex.Message);
                 errors.AddError(ex.Message);
+            }
+            finally
+            {
+                WorkflowExecutor.ReturnPreparedWorkflow(subWorkflowPath, prepared);
             }
 
             // Capture child-env results, restore parent env, map outputs back

@@ -132,12 +132,15 @@ namespace Warewolf.Execution.QueueProcessor.Tests
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public async Task Delivery_ConsumerFailed_IsLeftUnackedSoTheBrokerRedelivers()
+        public async Task Delivery_ConsumerFailed_IsNeverAcked()
         {
-            // The whole redelivery guarantee rests on this: acking a failure would silently DROP
-            // the message. It is deliberately not nacked either - an unacked message returns when
-            // the channel closes, and nacking immediately would hot-loop a permanently failing
-            // message against the broker.
+            // Acking a failure would silently DROP the message, so that part of the original
+            // contract stands. What changed is the disposal: the pump used to leave the delivery
+            // UNACKED, reasoning that "an unacked message returns when the channel closes" and
+            // that nacking would hot-loop. Both halves were wrong - the channel does not close,
+            // and with Prefetch=1 an outstanding message blocks every further delivery, so the
+            // consumer stalled permanently. It is now nacked with requeue and dead-lettered once
+            // the redelivered flag shows the retry is spent; see MessagePumpFailureHandlingTests.
             _consumer.Setup(c => c.Consume(It.IsAny<byte[]>(), It.IsAny<Headers>()))
                      .ReturnsAsync(ConsumerResult.Failed);
 
@@ -147,11 +150,13 @@ namespace Warewolf.Execution.QueueProcessor.Tests
 
             _channel.Verify(c => c.BasicAckAsync(It.IsAny<ulong>(), It.IsAny<bool>(),
                                                  It.IsAny<CancellationToken>()), Times.Never);
+            _channel.Verify(c => c.BasicNackAsync(7, false, true, It.IsAny<CancellationToken>()), Times.Once,
+                "the delivery must be resolved, not abandoned");
         }
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public async Task Delivery_ConsumerThrows_IsLeftUnackedAndDoesNotKillThePump()
+        public async Task Delivery_ConsumerThrows_IsResolvedAndDoesNotKillThePump()
         {
             _consumer.Setup(c => c.Consume(It.IsAny<byte[]>(), It.IsAny<Headers>()))
                      .ThrowsAsync(new InvalidOperationException("boom"));
@@ -163,6 +168,8 @@ namespace Warewolf.Execution.QueueProcessor.Tests
 
             _channel.Verify(c => c.BasicAckAsync(It.IsAny<ulong>(), It.IsAny<bool>(),
                                                  It.IsAny<CancellationToken>()), Times.Never);
+            _channel.Verify(c => c.BasicNackAsync(9, false, true, It.IsAny<CancellationToken>()), Times.Once,
+                "an escaped exception must not abandon the delivery either");
             Assert.AreEqual(0, pump.InFlight, "the slot must be released even on an exception");
         }
 

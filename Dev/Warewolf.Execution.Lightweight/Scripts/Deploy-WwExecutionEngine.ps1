@@ -1265,8 +1265,39 @@ try {
         Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning).'
         $created['entraApp'] = $false
     } else {
-        $created['entraApp'] = $true
-        $created['entraAppDisplayName'] = "$AppName-auth"
+        # PROBE BEFORE PROVISIONING. Configure-WwExecutionAuth.ps1 is idempotent and happily REUSES an
+        # existing registration, so "auth provisioning ran" never meant "this run created the app".
+        #
+        # This flag is not cosmetic. Rollback-WwExecutionEngine.ps1 treats created.entraApp = true as
+        # OWNERSHIP and deletes the registration (Rollback:346-347, :406) - and a directory object
+        # survives resource-group teardown, so it is the one artefact whose removal reaches outside the
+        # deployment. Setting it unconditionally meant every redeploy of an EXISTING engine wrote a
+        # summary arming a later rollback to destroy an app registration it did not create, taking down
+        # every client that authenticates against it. Observed 2026-08-11: an in-place redeploy of
+        # wwengine-e2e-th2teq reported "CREATED Entra app registration" for an app created days earlier.
+        $entraDisplayName = "$AppName-auth"
+        $entraPreExists   = $true   # fail-safe default: never ARM a delete on an unproven assumption
+
+        $existingApp = Invoke-Az @('ad', 'app', 'list', '--display-name', $entraDisplayName,
+                                   '--only-show-errors', '-o', 'json') -AllowFail
+        if ($null -eq $existingApp) {
+            Write-Note ("Could not determine whether Entra app '$entraDisplayName' already exists " +
+                        '(the Graph probe failed). Recording it as PRE-EXISTING so rollback will not ' +
+                        'delete it; pass -IncludeEntraApp to Rollback-WwExecutionEngine.ps1 if this run ' +
+                        'really did create it.')
+        } else {
+            try {
+                $entraPreExists = @(($existingApp | Out-String | ConvertFrom-Json)).Count -gt 0
+            } catch {
+                Write-Note "Entra app probe returned unparseable JSON; treating '$entraDisplayName' as pre-existing."
+            }
+        }
+
+        $created['entraApp'] = -not $entraPreExists
+        $created['entraAppDisplayName'] = $entraDisplayName
+        Write-Ok ("Entra app registration '$entraDisplayName': " +
+                  ($entraPreExists ? 'PRE-EXISTING (reused; teardown will NOT delete it)'
+                                   : 'not present, will be created by this run'))
         $groupPermissions = @{}
         $userAssignments  = @()
         if ($AuthConfigPath) {
@@ -1804,6 +1835,51 @@ try {
     if (-not $SkipAuthProvisioning -and (Test-Path -LiteralPath $AuthOutputPath)) {
         Write-Host "  Auth out : $AuthOutputPath" -ForegroundColor White
     }
+
+    # ── Resources manipulated, with reachable URLs ───────────────────────────
+    # Driven by the SAME `created` map that Rollback-WwExecutionEngine.ps1 consumes, so what is
+    # printed here and what teardown will remove can never disagree. Pre-existing resources are
+    # listed as REUSED precisely so nobody mistakes them for things this run owns.
+    # NOTE the local names: $created is the run's ownership MAP (consumed by the rollback script) and
+    # must not be shadowed here.
+    $verb = $DryRun ? 'WOULD CREATE' : 'CREATED'
+    Write-Host ''
+    Write-Host '  -- Resources manipulated --' -ForegroundColor Cyan
+    $createdList = [System.Collections.Generic.List[string]]::new()
+    $reusedList  = [System.Collections.Generic.List[string]]::new()
+    $entraName   = $created['entraAppDisplayName']
+    if (-not $entraName) { $entraName = "$AppName-auth" }
+    foreach ($pair in @(
+        @{ Key = 'resourceGroup';  Kind = 'Resource group';         Name = $ResourceGroup }
+        @{ Key = 'storageAccount'; Kind = 'Storage account';        Name = $StorageAccount }
+        @{ Key = 'functionApp';    Kind = 'Function App';           Name = $AppName }
+        @{ Key = 'appInsights';    Kind = 'App Insights';           Name = $AppInsightsName }
+        @{ Key = 'keyVault';       Kind = 'Key Vault';              Name = $KeyVaultName }
+        @{ Key = 'entraApp';       Kind = 'Entra app registration'; Name = $entraName }
+    )) {
+        if (-not $pair.Name) { continue }
+        if ($created[$pair.Key]) { $createdList.Add("$($pair.Kind): $($pair.Name)") }
+        else                     { $reusedList.Add("$($pair.Kind): $($pair.Name)") }
+    }
+    if ($createdList.Count) {
+        Write-Host "     $verb" -ForegroundColor Green
+        $createdList | ForEach-Object { Write-Host "       $_" -ForegroundColor Green }
+    }
+    if ($reusedList.Count) {
+        Write-Host '     REUSED (pre-existing - teardown will NOT remove these)' -ForegroundColor Gray
+        $reusedList | ForEach-Object { Write-Host "       $_" -ForegroundColor Gray }
+    }
+    Write-Host '     UPDATED' -ForegroundColor Cyan
+    Write-Host "       Function App settings: $($appSettings.Count) applied to $AppName" -ForegroundColor Cyan
+    if (-not $SkipAuthProvisioning) { Write-Host "       Easy Auth + Entra app roles on $AppName" -ForegroundColor Cyan }
+    Write-Host ''
+    Write-Host '     ENDPOINTS' -ForegroundColor Blue
+    Write-Host "       Engine     : $baseUrl" -ForegroundColor Blue
+    Write-Host "       Discovery  : $baseUrl/apis.json" -ForegroundColor Blue
+    Write-Host "       Public     : $baseUrl/Public/{workflow}.json     (anonymous)" -ForegroundColor Blue
+    Write-Host "       Secure     : $baseUrl/Secure/{workflow}.json     (Entra JWT)" -ForegroundColor Blue
+    Write-Host "       Services   : $baseUrl/Services/{workflow}.json   (function key)" -ForegroundColor Blue
+    Write-Host "       Portal     : https://portal.azure.com/#@/resource/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroup/providers/Microsoft.Web/sites/$AppName" -ForegroundColor Blue
     Write-Host ''
 }
 catch {

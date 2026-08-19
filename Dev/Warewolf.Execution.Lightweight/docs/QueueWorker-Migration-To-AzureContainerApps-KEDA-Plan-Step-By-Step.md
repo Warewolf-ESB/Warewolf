@@ -147,8 +147,9 @@ Companion documents:
     **system-assigned managed identity** + Entra app role `Warewolf_QueueProcessor`;
   - logs through **`Dev2Logger`** with `ExternalSink` bound to the engine's `CompositeExecutionLogger`
     (Console + App Insights + Elasticsearch + Audit), replacing the WebSocket audit publisher;
-  - preserves today's **dead-letter-then-ack** semantics for business failures and
-    **no-ack → redelivery** for transport failures;
+  - preserves today's **dead-letter-then-ack** semantics for business failures, and for transport
+    failures **nacks with requeue, then dead-letters once the retry is spent** (the on-prem
+    no-ack-and-wait-for-the-channel-to-drop behaviour deadlocks under `Prefetch=1` — see §2.6);
   - handles **SIGTERM** deterministically (stop consuming → drain in-flight → exit).
 - **One Container App per queue-trigger**, all sharing **one ACA environment**.
 - **KEDA `rabbitmq` scale rule** per app: `minReplicas = 0`, `maxReplicas = N`.
@@ -741,14 +742,35 @@ ingress, pinned image digest in production revisions. **The trigger's per-trigge
 |---|---|---|
 | Engine 2xx | `Success` | **ack** |
 | Engine non-2xx (incl. a WOLF-8418 500 denial) | publish the mapped body to the dead-letter queue, then `Success` — parity with [LoggingConsumerWrapper.cs:64-79](../../Warewolf.QueueWorker/LoggingConsumerWrapper.cs#L64-L79) | **ack** |
-| Transport / token / mapping failure | `Failed` | **no ack** → redelivered |
+| Transport / token / mapping failure, **first attempt** | `Failed` | **nack with requeue** → redelivered |
+| Transport / token / mapping failure, **redelivered** | `Failed`, attempts exhausted | **dead-lettered, then acked** |
 | SIGTERM mid-flight | stop deliveries, drain in-flight within the grace window, close | in-flight completes; unstarted stays unacked |
 | Queue deleted / consumer cancelled | watchdog throws | replica exits → restarted |
+
+> ⚠️ **Corrected 2026-08-11 — the transport row previously read "no ack → redelivered", and that was a
+> deadlock, not a contract.** The pump left the delivery unacked on the reasoning that the broker would
+> redeliver it "when the channel drops". The channel does not drop, and with `Prefetch=1` the broker
+> sends **nothing further** while one message is outstanding — so a single engine timeout stopped the
+> consumer permanently. Measured live: 34 messages stranded for 20+ minutes with a healthy replica and
+> an attached consumer. KEDA cannot recover it either, because a non-empty queue keeps the replica
+> alive and nothing forces the restart that would requeue the message. **Every delivery must now end
+> acked, nacked or dead-lettered — never abandoned.**
+>
+> Attempts are counted with the AMQP `redelivered` flag, which is a **boolean**: the broker records
+> that a message has been seen before, not how many times. `-MaxDeliveryAttempts` therefore admits
+> only **1** (dead-letter at once) or **2** (requeue once, then dead-letter) and clamps anything higher
+> with a logged warning. True configurable *N* would require republishing the message with an
+> incremented header instead of requeueing it, changing queue order and message identity — considered
+> and deliberately not adopted.
+>
+> If the trigger declares **no** dead-letter queue there is nowhere to put an exhausted message, so it
+> is nacked with `requeue: false` (discarded) and an error is logged. Requeueing forever would simply
+> reproduce the original stall.
 
 **Improvement 1 — bounded engine timeout.** Today's `Timeout.InfiniteTimeSpan`
 ([WarewolfWebRequestForwarder.cs:97](../../Warewolf.Common.Framework48/WarewolfWebRequestForwarder.cs#L97))
 parks a whole process on one hung workflow; `ENGINE__TIMEOUTSECONDS` maps a timeout to the transport
-class (no ack → redelivery).
+class (nack + requeue, then dead-letter once the retry is spent).
 
 **Improvement 2 — graceful shutdown.** Nothing handles shutdown today; in ACA, scale-in and revision
 rollouts are routine rather than exceptional. Detailed design, timelines, and worked examples: **§2.6.1**.
@@ -847,14 +869,42 @@ has not answered by t = 60 s:
 This is the honest failure mode of at-least-once delivery, and it is why the timeout budget must nest:
 
 ```
-ENGINE__TIMEOUTSECONDS  ≤  WORKER__SHUTDOWNGRACESECONDS  <  terminationGracePeriodSeconds
-        45 s                          60 s                          90 s
+ENGINE__TIMEOUTSECONDS  ≤  WORKER__SHUTDOWNGRACESECONDS  <  terminationGracePeriodSeconds  <  functionTimeout
+       180 s                        210 s                          240 s                        600 s
+                                                                                            (engine host.json)
 ```
 
-With `ENGINE__TIMEOUTSECONDS (45) ≤ grace (60)`, any in-flight call is *guaranteed* to resolve — success
+With `ENGINE__TIMEOUTSECONDS (180) ≤ grace (210)`, any in-flight call is *guaranteed* to resolve — success
 or timeout — inside the drain window, so the "grace exceeded" row above becomes unreachable in practice.
-The outer margin (`90 > 60`) leaves room for connection teardown and process exit before SIGKILL.
-Phase 8's deploy script validates this ordering and fails loudly if the three values are inconsistent.
+The outer margin (`240 > 210`) leaves room for connection teardown and process exit before SIGKILL.
+Phase 8's deploy script validates this ordering and fails loudly if the values are inconsistent.
+
+**The fourth member lives on the engine.** `functionTimeout` in the engine's `host.json` is `00:10:00`.
+Waiting longer than the engine is willing to run is not a longer timeout, it is a guaranteed one: the
+engine aborts the invocation and the worker waits for a reply that can never arrive, burning the whole
+budget before it retries. The deploy script now rejects `-EngineTimeoutSeconds ≥ 600` and warns above 450.
+
+**Why 180 and not the original 45 (measured 2026-08-11).** 45 s was under-sized and it caused a live
+outage of the consumer: one engine call exceeded it, the delivery was left unacked, and with `Prefetch=1`
+the broker delivered nothing further — 34 messages stranded for 20+ minutes behind a single message. The
+replacement is sized from observed engine latency rather than chosen:
+
+| Scenario | Concurrency | Max engine request |
+|---|---|---|
+| Burst at the **deployed** configuration (3+1 replicas, `Prefetch=1`) | 4 | 11.5 s |
+| Controlled test | 4 | 10.0 s |
+| Controlled stress | 10 | **153 s** completed; 3 exceeded a 200 s client timeout |
+
+180 s covers the worst *successful* observation under 2.5× overload with headroom, at 3.3× margin below
+the engine's own ceiling. Note the deployed configuration cannot exceed concurrency 4; the stress figure
+is deliberate over-provisioning so that a slow backend degrades throughput rather than diverting good
+messages to the dead-letter queue.
+
+> ⚠️ `-TerminationGracePeriodSeconds` was **validated and printed but never applied** until 2026-08-11 —
+> it is a Container App *template* property, not an env var, so `--set-env-vars` could not carry it and
+> the flag was simply never passed. Every deployment before that fix ran on ACA's 30 s default, meaning
+> SIGKILL could arrive long before the advertised drain budget elapsed. Verify it on a live app with
+> `az containerapp show ... ` and check `properties.template.terminationGracePeriodSeconds` is not empty.
 
 **What this does *not* fix.** SIGKILL (grace exhausted), a node failure, or a network partition can still
 duplicate a delivery — RabbitMQ competing consumers are at-least-once and always were (§1.2). Graceful
@@ -1398,12 +1448,16 @@ of Phase 11). Zero matches is a **hard error**, never a silent no-op.
 # ── Engine wiring ───────────────────────────────────────────────────────────
 -EngineBaseUrl https://<engine>.azurewebsites.net
 -EngineScope   api://<engine-app-id>/.default
--EngineTimeoutSeconds 45
+-EngineTimeoutSeconds 180           # must stay < the engine's functionTimeout (600s)
 
 # ── Scaling (derived from the trigger; overrides are exception paths) ────────
 -ScalingMode Elastic|Fixed|Warm     # default Elastic (decision #23)
 -MaxReplicas -MinReplicas -TargetQueueLength -MaxConcurrency -Cpu -Memory
--ShutdownGraceSeconds 60  -TerminationGracePeriodSeconds 90
+-ShutdownGraceSeconds 210  -TerminationGracePeriodSeconds 240
+
+# ── Failure handling ────────────────────────────────────────────────────────
+-MaxDeliveryAttempts 2              # 1 = dead-letter at once; 2 = requeue once then dead-letter
+                                    # ONLY 1 or 2 are meaningful - see below
 
 # ── Secrets / identity ──────────────────────────────────────────────────────
 -KeyVaultName <kv> -KeyVaultSecretName <name>   # WFAES key, same pair as the engine
@@ -1645,7 +1699,7 @@ structure verbatim, and **renumber Teardown to §9**. Content:
 | Mapping | JSON / XML / whole-message parity with `MessageToInputsMapper`; single `@object` → `multipart/form-data`; malformed body → classified failure, not a crash |
 | Auth | MI token accepted; roleless → 500 (WOLF-8418) classified **permanent**; token cache refresh at the skew boundary; acquisition failure → transient |
 | Dead-letter | Non-2xx → mapped body in the dead-letter queue **and** original acked; payload byte-parity with today |
-| Poison/transport | Unreachable/timeout → no ack → redelivered; repeated exception → DLX; zero loss on every path |
+| Poison/transport | Unreachable/timeout → **nack + requeue**, and **dead-lettered once `MaxDeliveryAttempts` is spent**; a delivery is never left unacked (that deadlocks the consumer under `Prefetch=1` — see §2.6); zero loss on every path |
 | Shutdown/scale-in (§2.6.1) | SIGTERM with 1 in-flight + 9 buffered (`Prefetch = 10`) → `BasicCancel` stops new deliveries, the **9 are nacked/requeued immediately** and picked up by a surviving replica, the 1 completes and acks, process exits 0 → **zero duplicates**; grace exceeded → in-flight deliberately unacked + `WARN` emitted (one visible duplicate, no loss); revision rollout under load loses nothing; SIGKILL path still redelivers (at-least-once, documented) |
 | Prefetch ↔ scaling (§2.8.7) | `value` derived as `Prefetch × MaxConcurrency`; backlog 8 with `Prefetch 10` → **1** replica (not 5); backlog 50 → 5 (ceiling); `Prefetch 1` → per-message fan-out; `Prefetch < MaxConcurrency` rejected at deploy time; changing `Prefetch` updates both the worker's `BasicQos` prefetch and `value` |
 | Trigger-file fidelity (§2.8.8) | Reference `MandateCollectionSuccessTrigger` parses (`$id`/`$type`/`$ref`); `Durable=true` → `QueueDeclare(true,false,false)`; `QueueSinkId == QueueSourceId` → one staged source; `MapEntireMessage` + `PayloadRequest` → body `{"PayloadRequest":"<raw>"}` (**not** multipart — no `@` prefix); `WorkflowName` with `\` separators resolves to `/Secure/ProfilerWrapper/Queue/MandateCollectionSuccessConsume.json`; an unsubstituted `#{…}` token fails the deploy |
