@@ -144,7 +144,9 @@ namespace Warewolf.Execution.Lightweight.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get",
                          Route = "oauth/dropbox/start")] HttpRequestData req)
         {
-            _logger.LogInformation("[OAuth] /start called — URL={Url}", req.Url);
+            // The /start query string carries ?appKey={dropboxAppKey} — a client credential —
+            // so the URL is never logged. Only the route and the outcome are recorded.
+            _logger.LogInformation("[OAuth] /start called.");
 
             var query    = HttpUtility.ParseQueryString(req.Url.Query);
             var sourceId = (query["sourceId"] ?? string.Empty).Trim();
@@ -212,7 +214,9 @@ namespace Warewolf.Execution.Lightweight.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get",
                          Route = "oauth/dropbox/callback")] HttpRequestData req)
         {
-            _logger.LogInformation("[OAuth] /callback called — URL={Url}", req.Url);
+            // The /callback query string carries ?code={authorization_code} and ?state={csrf}
+            // — both security tokens — so the URL is never logged.
+            _logger.LogInformation("[OAuth] /callback called.");
 
             var query = HttpUtility.ParseQueryString(req.Url.Query);
             var code  = (query["code"]  ?? string.Empty).Trim();
@@ -235,8 +239,9 @@ namespace Warewolf.Execution.Lightweight.Functions
             }
 
             // ── PKCE session lookup ───────────────────────────────────────────────
-            _logger.LogInformation("[OAuth] Session lookup for state={State} (active sessions={Count})",
-                state, _sessions.Count);
+            // The OAuth `state` is a one-time CSRF token — not logged. The session count is
+            // non-sensitive and is what actually diagnoses a lookup miss.
+            _logger.LogInformation("[OAuth] Session lookup (active sessions={Count})", _sessions.Count);
 
             if (!_sessions.TryRemove(state, out var session))
             {

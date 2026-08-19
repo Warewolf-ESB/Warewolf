@@ -155,9 +155,11 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
                 if (_globalRoleMap.TryGetValue(role, out var globalPerms) &&
                     globalPerms.HasFlag(WorkflowPermission.Administrator))
                 {
+                    // Role/group names identify the organisation's AD structure — never logged,
+                    // at any level, consistent with the rest of the auth path.
                     _logger.LogDebug(
-                        "Super-admin bypass for role '{Role}' on workflow '{Workflow}'.",
-                        role, workflowName);
+                        "Super-admin bypass applied for workflow '{Workflow}'.",
+                        workflowName);
                     return WorkflowPermission.All;
                 }
             }
@@ -329,10 +331,11 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 
             dict[workflowKey] = policy;
 
+            // Group names are never logged — the count carries the diagnostic value.
             _logger.LogDebug(
-                "Resource policy built: workflow='{Workflow}' roles=[{Roles}]",
+                "Resource policy built: workflow='{Workflow}' roleCount={RoleCount}",
                 workflowKey,
-                string.Join(", ", rolePolicies.Select(e => e.GroupName)));
+                rolePolicies.Count);
         }
 
         return dict;

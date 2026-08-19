@@ -350,8 +350,12 @@ namespace Warewolf.Execution.Lightweight
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                // See the InvalidWorkflowException branch: logged once, exception object withheld.
-                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {WorkflowIdentifier(request)}: {ex.Message}", executionId.ToString());
+                // ex.Message is NOT logged here: this catch is uncontrolled — it covers file
+                // reads (absolute paths), XAML parsing and every activity in the chain, so the
+                // message can carry connection strings, connector credentials, request URIs and
+                // evaluated variable values. The workflow identifier and executionId are the
+                // correlators; the exception type is the triage hint.
+                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {WorkflowIdentifier(request)}. ExceptionType={ex.GetType().Name}", executionId.ToString());
                 _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
                     workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
                     executionId:  executionId,
@@ -743,10 +747,11 @@ namespace Warewolf.Execution.Lightweight
 
             if (dataObject.ExecutionException != null && result.Errors.Count == 0)
             {
-                // Activity exceptions frequently carry evaluated variable values and connector
-                // detail (connection strings, endpoints) in their message/stack, so only the
-                // exception type reaches Error. Logged once.
-                _executionLogger.LogError($"ExecuteActivityChain failed: {dataObject.ExecutionException.Message}", executionId);
+                // The message is NOT logged: ExecutionException is constructed from
+                // environment.FetchErrors() (see ExecuteActivityChain), so it IS the workflow's
+                // evaluated variable values. executionId correlates this to the completion line,
+                // which already carries the error count.
+                _executionLogger.LogError("ExecuteActivityChain failed.", executionId);
                 // Response body carries a generic message only — the activity exception's
                 // message and stack stay out of it (full detail is at Debug above).
                 result.Errors.Add("Workflow execution failed due to an unexpected error.");

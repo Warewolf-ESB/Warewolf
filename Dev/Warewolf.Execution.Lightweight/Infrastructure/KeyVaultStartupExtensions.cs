@@ -63,9 +63,10 @@ internal static class KeyVaultStartupExtensions
         }
         catch (Exception ex)
         {
-            // The exception object itself is still not passed (the sinks would persist
-            // ex.ToString() with the full stack); the message is logged for troubleshooting.
-            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}: {ex.Message}", executionId);
+            // ex.Message is NOT logged: KeyVaultSecretManager's own throw embeds the secret
+            // name, and Azure SDK failures name the vault URI, secret and refused identity.
+            // InstanceId stays as the correlator; the exception type is the triage hint.
+            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}. ExceptionType={ex.GetType().Name}", executionId);
 
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
             Dev2Logger.Error(log, executionId);

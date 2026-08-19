@@ -161,7 +161,11 @@ namespace Warewolf.Execution.Lightweight
                 // ex.ToString()), and the returned Error string is generic. The failure is
                 // logged exactly once; suspensionId is the correlator. Hangfire retains the
                 // full exception on the job's FailedState above for diagnostics.
-                _executionLogger.LogError($"Resume operation failed. JobId={suspensionId}: {ex.Message}", Guid.Empty);
+                // ex.Message is NOT logged: RunContinuation throws with
+                // string.Join(NewLine, errors) built from Environment.Errors / AllErrors — i.e.
+                // evaluated variable values — other throw sites embed absolute paths, and any
+                // activity exception propagates here. JobId is the correlator.
+                _executionLogger.LogError($"Resume operation failed. JobId={suspensionId}. ExceptionType={ex.GetType().Name}", Guid.Empty);
                 return new ResumeExecutionResult(false, "Resume execution failed due to an unexpected error.", null, stopwatch.ElapsedMilliseconds);
             }
         }
