@@ -148,7 +148,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             bytes[^1] ^= 0x01;
             var tampered = FileDecryptionHelper.WfAesPrefix + Convert.ToBase64String(bytes);
 
-            var ex = Assert.ThrowsException<CryptographicException>(
+            var ex = Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => helper.DecryptConnectionString(tampered));
             Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,
                 "The wrapped inner exception must be the GCM tag-mismatch failure.");
@@ -165,7 +165,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
 
             var helper = NewHelper();
 
-            var ex = Assert.ThrowsException<CryptographicException>(
+            var ex = Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => helper.DecryptConnectionString(encrypted));
             Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,
                 "The wrapped inner exception must be the GCM tag-mismatch failure.");
