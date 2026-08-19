@@ -142,6 +142,25 @@ build/publish output when `$(Configuration) == 'Debug'` — a `-c Release` publi
 `WorkflowsDirectory` (env var, default `<wwwroot>\Resources`) at startup and per-invocation; if
 that folder is absent, every workflow execution fails immediately.
 
+> **2026-08-19 — do not set a `WorkflowsDirectory` app setting on this app.** It was
+> discovered set to a persistent Azure Files path (`D:\home\data\Warewolf\Resources`, *outside*
+> the deployed package) on `WarewolfServer-UAT`, almost certainly as an earlier, ad-hoc
+> workaround for the exact `FileNotFoundException` below, predating this spec's guidance to
+> stage `-WorkflowsSourcePath` into `<PublishDir>\Resources`. Because that override takes
+> precedence over the package's own `Resources` folder, **every zip-deploy since it was set —
+> pipeline or manual — silently never reached the files the running engine actually used**; the
+> engine kept serving whatever had last been pushed to that persistent path by hand via Kudu.
+> This caused a real, hard-to-diagnose incident (see `docs/ShovelBridge-Architecture.md`'s
+> 2026-08-19 correction entry: an orphaned, unencrypted duplicate `NewSqlServerSource.bite` on
+> that persistent path kept routing DB activities at the deleted `WarewolfEntraTestDb`, no
+> matter how many times the correct, encrypted source was redeployed). The app setting has been
+> removed and the persistent folder deleted; `Deploy-WwExecutionEngine.ps1`'s existing
+> `-WorkflowsSourcePath` staging into the package (as documented in this section) is now the
+> **sole** mechanism that updates workflow resources on this app, with no manual Kudu step
+> required. If you ever need to set `WorkflowsDirectory` again for some other reason, be aware
+> it makes the package's `Resources` folder — and therefore every future deploy — irrelevant
+> until it is unset again.
+
 This is not theoretical: the App Insights resource for this app (`warewolfserver-uat-ai`, RG
 `DEV2`) shows exactly that failure during the 2026-08-13 load test — a ~2-minute burst of
 **29,782** identical exceptions,

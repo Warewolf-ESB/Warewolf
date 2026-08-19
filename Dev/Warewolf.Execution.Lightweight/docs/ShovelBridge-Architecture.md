@@ -13,7 +13,84 @@
 > `Resources/rabbit/Provision-ShovelBridgeSchema.sql` — closing the "no provisioning script
 > exists in the repo" gap called out below. The historical narrative below is left as-is
 > since it documents real incidents against the (now-deleted) old database; read
-> `WarewolfEntraTestDb` there as "the database in use at the time."
+> `WarewolfEntraTestDb` there as "the database in use at the time." **`WarewolfServer-UAT`'s
+> Managed Identity was also re-added as an Entra ID (`FROM EXTERNAL PROVIDER`) database user
+> on `WarewolfDevOpsTestDb`, with `EXECUTE`/`VIEW DEFINITION` on `dbo` — matching the state it
+> reached on the old database per the 2026-08-13 16:33 UTC entry below — so the engine's own
+> Managed-Identity probe (see the "does not exist as a database user" note below) no longer
+> falls through on the new database either.**
+
+> **2026-08-19 follow-up — masked-password source fixed; deploy step hardened.** The
+> `Resources/rabbit/NewSqlServerSource.bite` committed as part of the migration above had its
+> `ConnectionString`'s password field accidentally set to the literal, six-character `******`
+> placeholder (Studio's UI display convention for a password field — see
+> `Dev2.Runtime.Services/ServiceModel/Data/DbSource.cs`'s masked `ConnectionString` getter and
+> the matching SpecFlow "Password field is `******`" assertions) instead of the real
+> `devops_warewolf` password, presumably copied from a Studio screen rather than re-supplied as
+> plain text before running `Encrypt-Config.ps1`. This produced SQL error 18456 ("Login failed
+> for user 'devops_warewolf'") on every execution, not a credentials mismatch. Fixed by
+> decrypting the committed source with `Encrypt-Config.ps1 -Decrypt` (Key Vault
+> `WWExecutionEngine` / secret `WWExecutionEngineTestSecret` — same key `WarewolfServer-UAT`
+> reads at runtime), substituting the real password, and re-encrypting in place; verified
+> byte-for-byte via SHA-256 comparison before committing (never round-tripped through a display
+> layer that would re-mask it). A concurrent 1000-message load test run also surfaced SQL error
+> 4060 ("Cannot open database `WarewolfEntraTestDb`") on some executions in the very same burst
+> that got 18456 on others — proof that some Consumption-plan (Y1) instances were still serving
+> a pre-migration, in-memory-cached copy of the source alongside freshly cold-started instances
+> running the current one. `pipeline-LOADTEST.yml`'s post-deploy step used `az functionapp
+> restart`, which `docs/KB-Deploying-Encrypted-Sources.md` §3 already documents as insufficient
+> to force this on a Consumption plan (a warm worker can survive a `restart` with its old
+> decrypted source still resident); that step now does a full `stop` then `start` instead, so
+> every scaled-out instance cold-starts and re-decrypts the resources on the next deploy.
+
+> **2026-08-19 correction — the actual live root cause was a stale `WorkflowsDirectory`
+> override, not (only) warm workers; the app setting has now been removed.** After committing
+> the fix above, a full local `Deploy-WwExecutionEngine.ps1` redeploy plus a genuine
+> `stop`/`start` (both confirmed to run successfully) *still* returned SQL error 4060 against
+> `WarewolfEntraTestDb` on direct `POST /Public/rabbit/RabbitProcess.json` calls. Root cause,
+> confirmed directly via Kudu (`/api/vfs/`), was **not** in-memory worker staleness:
+> `WarewolfServer-UAT` had an app setting `WorkflowsDirectory=D:\home\data\Warewolf\Resources`
+> — a persistent Azure Files path *outside* the deployed package — which
+> `Infrastructure/HostEnvironmentConfig.cs` reads in preference to the default
+> `<wwwroot>\Resources`. Every zip-deploy (pipeline or manual) stages `-WorkflowsSourcePath`
+> into `<PublishDir>\Resources` (i.e. **inside** the package, per
+> `docs/Deploy-UAT-Redeploy-Spec.md` §5.4) — so with this override in place, **no deploy has
+> ever reached the files the running engine actually reads**, on this app, since whenever the
+> setting was first added. The persistent folder still held whatever had been manually pushed
+> there via Kudu on 2026-08-14: `RabbitProcess.bite`/`RabbitProcess2.bite` (fine), plus a
+> **second, unencrypted, plaintext-password copy of `NewSqlServerSource.bite`** sitting directly
+> under `Resources\` (not `Resources\rabbit\`) — same `SourceId=b9184f70-…`, but still pointing
+> at `WarewolfEntraTestDb` via `Authentication=Active Directory Managed Identity`. Because
+> `Infrastructure/LightweightSourceLoader.BuildFileIndex` indexes `.bite` files by `ResourceID`
+> across the *entire* `WorkflowsDirectory` tree via `Directory.EnumerateFiles(..., AllDirectories)`
+> and lets the last one found win (exactly the failure mode `docs/Deploy-UAT-Redeploy-Spec.md`
+> §5.4 already warned about for a *different* stray file), this orphaned root-level copy was the
+> **only** copy of that source ID actually present at runtime (the correct one had never
+> physically arrived), so every DB activity resolved to it and failed against the deleted
+> database. Remediated in two steps, in order:
+> 1. Uploaded the corrected, WFAES-encrypted `Resources/rabbit/NewSqlServerSource.bite` (same
+>    ciphertext committed to source control) directly into
+>    `D:\home\data\Warewolf\Resources\rabbit\` via Kudu VFS `PUT`, and deleted the stale
+>    plaintext root-level duplicate via Kudu VFS `DELETE` (`If-Match: *`), as an immediate
+>    tactical fix — confirmed working via repeated direct `POST /Public/rabbit/RabbitProcess.json`
+>    calls (SQL auth to `WarewolfDevOpsTestDb` now succeeds consistently; only a pre-existing,
+>    unrelated `jobs1` `UQ_jobs1_ContentHash_AttemptNumber` unique-constraint collision remains,
+>    an artifact of ad-hoc test payloads sharing a `NULL` content hash, not a credentials issue).
+> 2. **Removed the `WorkflowsDirectory` app setting from `WarewolfServer-UAT` entirely**
+>    (`az functionapp config appsettings delete --setting-names WorkflowsDirectory`, followed by
+>    a `stop`/`start`) as the durable fix, since `Deploy-WwExecutionEngine.ps1` already solves the
+>    original Release-publish-has-no-`Resources`-folder problem the override likely existed to
+>    work around (§5.4) by staging `-WorkflowsSourcePath` straight into the package. Re-tested
+>    after removal: the engine now serves correctly from the package's bundled `Resources`
+>    folder with **no** manual Kudu step required, confirmed by a fresh cold `stop`/`start` cycle
+>    followed by successful `POST /Public/rabbit/RabbitProcess.json` calls. The now-unused
+>    `D:\home\data\Warewolf\Resources` tree was deleted via Kudu VFS to avoid a future engineer
+>    mistaking it for the live source of truth. **Net effect: `pipeline-LOADTEST.yml`'s existing
+>    `Deploy_UAT` job (including today's `stop`/`start` hardening above) is now sufficient on its
+>    own — no additional Kudu-sync step is needed** — because the package it already builds and
+>    deploys is, for the first time, actually what the running app reads. If `WorkflowsDirectory`
+>    is ever reintroduced on this app (e.g. copied from another app's settings), treat it as a
+>    footgun: it silently makes every future deploy a no-op for workflow/source content.
 
 ## Purpose
 

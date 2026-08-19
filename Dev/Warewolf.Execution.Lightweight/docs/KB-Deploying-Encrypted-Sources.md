@@ -189,6 +189,35 @@ az functionapp start --name wwenginetestv1 --resource-group dev2
 | `Could not load file or assembly 'Dev2.Services.Sql, Version=3.0.2.85'` | Hot‑swapped a `0.0.0.0` local DLL | Rebuild stamped `3.0.2.85`, redeploy (Section 5) |
 | `FROM address is not in the valid format:` (Email) | DPAPI EmailSource → empty UserName (From falls back to it) | Deploy WFAES EmailSource |
 | Secret `dp-keyring-v1` not found / Forbidden | Wrong vault/secret | Use `WWExecutionEngine` / `WWExecutionEngineTestSecret` |
+| Deployed the right file, redeployed repeatedly, correct source **still** never takes effect (2026-08-19, `WarewolfServer-UAT`, WOLF-8510) | A `WorkflowsDirectory` app setting points at a **persistent** path (e.g. `D:\home\data\Warewolf\...`) instead of the default `<wwwroot>\Resources` — every zip-deploy stages into the package, which is no longer where the engine reads from | `az functionapp config appsettings list ... --query "[?name=='WorkflowsDirectory']"` first, on **any** app that "won't pick up" a redeployed source; if set, either sync the same files into that persistent path via Kudu VFS, or (preferred) remove the setting so the package's own `Resources` folder — the thing your deploy actually updates — is used again. See `docs/Deploy-UAT-Redeploy-Spec.md` §5.4 and `docs/ShovelBridge-Architecture.md`'s 2026-08-19 correction entry for the full incident. |
+
+---
+
+## 6.1 If a redeployed source "never takes effect": check `WorkflowsDirectory` first
+
+Before assuming a warm-worker cache (Step 3 above) or re-checking your ciphertext, rule out the
+simplest explanation: **the app might not be reading from the package you just deployed at all.**
+`Infrastructure/HostEnvironmentConfig.cs` resolves the engine's workflow/source root from the
+`WorkflowsDirectory` environment variable, defaulting to `<wwwroot>\Resources` (i.e. inside
+whatever you just deployed) only when that variable is **unset**:
+
+```bash
+az functionapp config appsettings list --name <app> --resource-group <rg> \
+  --query "[?name=='WorkflowsDirectory']" -o json
+```
+
+If it's set to anything outside the package (a `D:\home\...` persistent-storage path is the
+classic case), every zip-deploy — pipeline or manual, Kudu VFS single-file or full package — is
+silently a no-op for workflow/source content: the engine keeps serving whatever was last placed
+at that persistent path, by whatever means, however long ago. Worse, because
+`Infrastructure/LightweightSourceLoader.BuildFileIndex` indexes `.bite` files by `ResourceID`
+**recursively across the whole tree** and lets the last file found win on an ID collision, a
+stray old copy left anywhere under that persistent path with the same `SourceId` as your correct
+one can silently keep "winning" no matter how many times you redeploy the right file elsewhere.
+Fix by either keeping the persistent path in sync by hand (Kudu VFS `PUT`/`DELETE`, same as Step
+2 above but against the persistent path instead of `site/wwwroot`), or — better — removing the
+`WorkflowsDirectory` override so the app goes back to reading the package it was actually just
+deployed with.
 
 ---
 

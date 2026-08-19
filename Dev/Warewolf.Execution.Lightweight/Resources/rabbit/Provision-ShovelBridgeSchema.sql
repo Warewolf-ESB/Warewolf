@@ -750,3 +750,21 @@ ALTER ROLE db_datawriter ADD MEMBER devops_warewolf;
 GRANT EXECUTE ON SCHEMA::dbo TO devops_warewolf;
 GRANT VIEW DEFINITION ON SCHEMA::dbo TO devops_warewolf;
 GO
+
+-- ── Entra ID (Azure AD) login for the engine's own Managed Identity ─────────────
+-- WOLF-8510: `DatabaseServiceExecution`/`MssqlSqlExecution` has the Lightweight engine
+-- itself try to authenticate as its own Function App Managed Identity for an internal
+-- sp_helptext/definition probe before falling back to the source's configured SQL auth
+-- (devops_warewolf, above) -- see ShovelBridge-Architecture.md's "connecting principal
+-- holds EXECUTE but not VIEW DEFINITION" / "WarewolfServer-UAT does not exist as a
+-- database user" notes. Without this, that probe silently falls through every time.
+-- This block requires running as the server's AAD admin (CREATE USER ... FROM EXTERNAL
+-- PROVIDER cannot be run as a SQL login). Repeat for any other Function App (e.g. a
+-- future non-UAT engine) that needs to reach this database, substituting its own
+-- system-assigned Managed Identity's Function App name below.
+IF DATABASE_PRINCIPAL_ID('WarewolfServer-UAT') IS NULL
+    CREATE USER [WarewolfServer-UAT] FROM EXTERNAL PROVIDER;
+GO
+GRANT EXECUTE ON SCHEMA::dbo TO [WarewolfServer-UAT];
+GRANT VIEW DEFINITION ON SCHEMA::dbo TO [WarewolfServer-UAT];
+GO
