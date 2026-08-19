@@ -1,5 +1,20 @@
 # Shovel Bridge Architecture — RabbitMQ → Azure Service Bus → Lightweight Execution Engine
 
+> **2026-08-19 update — database migrated.** `WarewolfEntraTestDb` (referenced throughout
+> the history below) permanently exhausted Azure SQL's monthly free-limit allowance and was
+> deleted. `Resources/rabbit/NewSqlServerSource.bite` (`SourceId=b9184f70-…`) now points at
+> **`WarewolfDevOpsTestDb`**, a new, non-free-limit database on the same server
+> (`warewolf-dev2-mcgeaj.database.windows.net`) and reusing the same `devops_warewolf`
+> server-level login/password, so no other connection details changed. The `jobs1`/`jobs2`
+> tables, all 16 `usp_jobs{1,2}_*` procedures, `sp_TestEntraConnectivity`, and the
+> `EXECUTE`/`VIEW DEFINITION` grants described below (the fix for the 15197 issue) were
+> reproduced identically on the new database from a live-schema extraction taken
+> immediately before the old database was deleted, and are now committed as
+> `Resources/rabbit/Provision-ShovelBridgeSchema.sql` — closing the "no provisioning script
+> exists in the repo" gap called out below. The historical narrative below is left as-is
+> since it documents real incidents against the (now-deleted) old database; read
+> `WarewolfEntraTestDb` there as "the database in use at the time."
+
 ## Purpose
 
 Trigger Warewolf workflow executions on the **Lightweight** (Azure Functions) execution

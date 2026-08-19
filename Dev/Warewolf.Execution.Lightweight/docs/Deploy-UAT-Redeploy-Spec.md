@@ -82,7 +82,10 @@ the ShovelBridge load test.
 
 **Out of scope:** changing the App Service Plan tier (see R3 — flagged as a decision, not an
 action), Entra/Easy Auth re-provisioning (already configured; use `-SkipAuthProvisioning`), and
-the `jobs1`/`jobs2` SQL schema (already applied directly to `WarewolfEntraTestDb`).
+the `jobs1`/`jobs2` SQL schema (already applied to **`WarewolfDevOpsTestDb`**, which replaced the
+free-limit-exhausted `WarewolfEntraTestDb` on 2026-08-19 — see
+`Resources/rabbit/Provision-ShovelBridgeSchema.sql` and the update note atop
+`ShovelBridge-Architecture.md`).
 
 ## 4. Risks
 
