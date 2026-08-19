@@ -141,14 +141,14 @@ BEGIN
 
         INSERT INTO dbo.jobs1
         (
-            MessageContent, AttemptNumber,
+            MessageContent, MessageContentHash, AttemptNumber,
             AdditionalContext, QueueName, ExecutionEngineInstanceId, MachineName,
             Status, StartedAtUtc,
             CreatedAtUtc, ModifiedAtUtc
         )
         VALUES
         (
-            @MessageContent, CONVERT(NVARCHAR(20), @attemptInt),
+            @MessageContent, @hash, CONVERT(NVARCHAR(20), @attemptInt),
             @AdditionalContext, @QueueName, @ExecutionEngineInstanceId, @MachineName,
             'STARTED', CONVERT(NVARCHAR(50), SYSUTCDATETIME(), 127),
             CONVERT(NVARCHAR(50), SYSUTCDATETIME(), 127), CONVERT(NVARCHAR(50), SYSUTCDATETIME(), 127)
