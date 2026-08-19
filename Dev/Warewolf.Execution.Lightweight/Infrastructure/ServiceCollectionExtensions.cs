@@ -14,7 +14,6 @@ using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Logging;
-using Warewolf.Execution.Lightweight.Mcp;
 using Warewolf.Execution.Lightweight.Security;
 using Warewolf.Licensing;
 
@@ -194,14 +193,6 @@ internal static class ServiceCollectionExtensions
 
         // Policy matcher — extracted matching strategy; swap implementation here to change behaviour.
         services.AddSingleton<IWorkflowPolicyMatcher, WorkflowPolicyMatcher>();
-
-        // MCP hosting skeleton (warewolf-lee-mcp-v3-spec.md, "Hosting & transport") — the
-        // server description (name/version/capabilities/tools) is process-wide and reused
-        // by McpFunction for every /mcp request. `sp` is passed through as
-        // McpServerToolCreateOptions.Services so tool parameters bound from DI (e.g.
-        // HostEnvironmentConfig, IWorkflowAuthPolicyLoader) are recognised and excluded
-        // from the client-visible JSON input schema.
-        services.AddSingleton(sp => McpServerOptionsFactory.Create(sp));
 
         // Route authorization registry — built once from [RequireWorkflowPermission] attributes.
         services.AddSingleton<IRouteAuthorizationRegistry>(

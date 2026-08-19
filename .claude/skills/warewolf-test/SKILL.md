@@ -43,6 +43,31 @@ How in-process dependencies are satisfied — **do not reintroduce live equivale
 
 > A **live** lightweight engine on port 7071 is only needed by **SpecFlow acceptance tests** (`-ServerType LightweightExecution`), not by `*.Integration.Tests`. Run one manually: `cd Dev\Warewolf.Execution.Lightweight; func start --port 7071` (or `dotnet run`). Free the port: `Get-NetTCPConnection -LocalPort 7071 -State Listen | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }`. SpecFlow `ServerType`: `FullServer` (port 3142) or `LightweightExecution` (port 7071).
 
+## MCP tools — plain REST, no live-engine JSON-RPC tests
+
+The 14 workflow-authoring MCP tools (`Mcp/ToolHandlers/`) are exposed as plain REST endpoints
+under `/mcp-api/{tool_name}` (`Functions/McpApiFunctions.cs`), each a thin HTTP-trigger wrapper
+around an unchanged, transport-agnostic `Handle(...)` method. The `/mcp` JSON-RPC/SSE endpoint
+(`McpFunction`) and its dedicated `Warewolf.Execution.Lightweight.Mcp.Integration.Tests` live-engine
+project have been **retired** — see "Known limitation" below for why. In-process coverage of the
+new endpoints (auth gate, request binding, error mapping) lives in
+`Warewolf.Execution.Lightweight.Tests\Functions\McpApiFunctionsTests.cs`; per-tool business logic
+is still covered by each tool's own unit tests under `Warewolf.Execution.Lightweight.Tests\Mcp\`.
+The actual MCP protocol surface (JSON-RPC framing, tool registration for AI clients) is now hosted
+by a separate Node/Express server (`warewolf-devops-mcp`), which calls these REST endpoints via
+plain `fetch()`.
+
+> **Known limitation that motivated this move (confirmed, not something we can fix here):** the
+> official `ModelContextProtocol.Client` SDK's `HttpClientTransport` always POSTs with
+> `Transfer-Encoding: chunked` (no `Content-Length`) on .NET. Azure Functions' isolated-worker gRPC
+> relay (`azure-functions-host`'s `GrpcMessageConversionExtensions.ToRpcHttp`) only forwards the HTTP
+> body to the worker when `request.ContentLength > 0` — chunked requests have no `Content-Length`
+> header, so the body is silently dropped before the worker ever sees it. This is an open,
+> upstream host bug (`Azure/azure-functions-host#7930`), reproduced against both `func start` and
+> real deployed Function Apps, not a local-dev-only artifact. Plain REST endpoints with ordinary
+> string-bodied JSON requests (via `fetch()`/`HttpClient` + `StringContent`, which set
+> `Content-Length` and never chunk) sidestep it entirely.
+
 ## Local verification and pipeline parity
 
 When you change/add **unit tests** (or the code they cover):
@@ -89,3 +114,4 @@ For each failure:
 | Web-tool assertion `Expected <http://localhost:4000/...> Actual <https://httpbin.org/...>` | `HttpbinEmulator` host/url out of sync with `TestConstants` / `.bite` address | Keep all three on `localhost:4000` (emulator `HttpbinHost`/`HttpbinBase`, `.bite` `Address`, `TestConstants`) |
 | HTTP 404 on a workflow path | Workflow `.bite` file missing from `Resources/` | Verify the workflow file exists; check `workflow-index.json` |
 | `Assert.AreEqual failed` with mismatched values | Workflow logic or output mapping changed | Read the workflow XML and align test expectations |
+| MCP-style tool call gets a 400 `"bad_request"` from `/mcp-api/{tool}` | A tool `Handle(...)` threw `McpException` (validation, not-found, or permission-denied) — all map uniformly to 400 | Read the `message` field for the specific reason; it's the tool's own `McpException.Message` |

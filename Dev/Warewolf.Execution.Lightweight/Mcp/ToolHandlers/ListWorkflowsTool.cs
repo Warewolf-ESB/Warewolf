@@ -37,12 +37,12 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 ///
 /// <para>
 /// <b>Permission filtering.</b> Uses the same <see cref="IWorkflowAuthPolicyLoader"/>
-/// already gating <c>/mcp</c> at the HTTP layer (<see cref="Functions.McpFunction"/>),
+/// already gating <c>/mcp-api/*</c> at the HTTP layer (<see cref="Functions.McpApiFunctions"/>),
 /// rather than <see cref="Security.PermissionChecker"/> (the <c>/Public/*</c> helper) or
 /// <see cref="IWorkflowPolicyMatcher"/> (the <c>/Secure/*</c> per-route gate) — both of
 /// those encode a stricter "config missing → 503 unless BYPASS_SECURE_CONFIG" policy that
-/// the <c>/mcp</c> baseline gate deliberately does not apply (see
-/// <see cref="Functions.McpFunction.TryAuthenticate"/>). Reusing
+/// the <c>/mcp-api/*</c> baseline gate deliberately does not apply (see
+/// <c>McpApiFunctions.TryAuthenticate</c>). Reusing
 /// <see cref="IWorkflowAuthPolicyLoader.IsConfigEffective"/> and
 /// <see cref="IWorkflowAuthPolicyLoader.GetEffectivePermissions"/> directly keeps this
 /// tool's authorization semantics consistent with that same gate.
@@ -127,7 +127,7 @@ internal static class ListWorkflowsTool
     /// <summary>
     /// Returns whether <paramref name="principal"/> holds every flag in
     /// <paramref name="requiredPermission"/> for <paramref name="workflowRelativePath"/>, using
-    /// the same open-access rule as <see cref="Functions.McpFunction.TryAuthenticate"/>: when
+    /// the same open-access rule as <c>Functions.McpApiFunctions.TryAuthenticate</c>: when
     /// <c>secure.config</c> is not effective, every caller is allowed through. <c>internal</c>
     /// so write tools (e.g. <see cref="CreateWorkflowTool"/>, requiring
     /// <see cref="WorkflowPermission.Contribute"/>) share the exact same resource-if-present-
