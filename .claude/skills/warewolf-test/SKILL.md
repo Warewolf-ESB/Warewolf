@@ -56,6 +56,19 @@ When you change/add **unit tests** (or the code they cover):
 - When a test genuinely requires a platform/elevation/external service that may be unavailable, degrade to **Inconclusive** (not fail) with a message explaining the prerequisite and how to run it.
 - Keep tests **in sync** with code — a behaviour change must be matched by a test change. Plan tests *with* a new feature, not bolted on afterwards.
 - **Never create or update unit tests automatically.** Always propose the tests and wait for the user's go-ahead. Present viable harness/type alternatives (unit vs integration vs spec; in-process fake vs live) and let the user choose. Prompt before adopting a newer framework feature/assertion style.
+- **A regression test that has never failed proves nothing.** After writing one for a bug, *reintroduce
+  the defect* behind a temporary hook (an env-var branch is enough), confirm the new tests fail, then
+  remove the hook and confirm they pass. Report both numbers. Measured value on 2026-08-11: 4/8 pool
+  tests and 11/11 pump tests failed with their defects restored — without that check, several
+  assertions would have passed for reasons unrelated to the fix.
+- **Watch for existing tests that encode the bug as intended behaviour.** Two did here
+  (`Delivery_ConsumerFailed_IsLeftUnackedSoTheBrokerRedelivers` and its exception twin) and both still
+  *passed* after the fix, because they asserted only "never acked" — which a nack also satisfies. Their
+  names and comments documented a deadlock as a deliberate contract. Fixing a defect means auditing the
+  tests that describe it, not just adding new ones.
+- **Assert the invariant, not the symptom.** The concurrency defect needed no database: two renters must
+  never hold the same activity instance, so the tests assert *object identity*. That runs in
+  milliseconds with no SQL Server, no engine and no network, and cannot flake.
 
 ## After every test run: failure summary and fix
 

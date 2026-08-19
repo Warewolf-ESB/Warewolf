@@ -1,0 +1,30 @@
+{
+  "Timestamp": "2026-08-18T15:38:56.5743693+05:30",
+  "TenantId": "tenant-id",
+  "ResourceAppId": "res-app-id",
+  "Scope": "api://res-app-id/.default",
+  "Authority": "https://login.microsoftonline.com/tenant-id",
+  "FunctionAppName": "<functionAppName>",
+  "FunctionAppUrl": "https://<functionAppName>.azurewebsites.net",
+  "Clients": [
+    {
+      "App": "azurefunction",
+      "DisplayName": "Azure Function caller",
+      "ClientType": "Daemon",
+      "ClientId": null,
+      "GrantType": null,
+      "RedirectUris": [],
+      "RolesAssigned": [],
+      "SecretExpiry": null,
+      "HasSecret": false,
+      "ClientSecret": null,
+      "OutputFile": null,
+      "Status": "failed",
+      "Validation": {
+        "Flow": "n/a",
+        "Result": "skipped",
+        "Detail": "provisioning failed: az CLI failed (3) running `az ad app show --id res-app-id -o json`:\nERROR: Application with identifier URI 'res-app-id' doesn't exist\r\n"
+      }
+    }
+  ]
+}

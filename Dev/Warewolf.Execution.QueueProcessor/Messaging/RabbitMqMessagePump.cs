@@ -58,6 +58,8 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
         readonly ResolvedQueueConfiguration _config;
         readonly IConsumer _consumer;
         readonly int _maxConcurrency;
+        readonly int _maxDeliveryAttempts;
+        readonly IDeadLetterPublisher? _deadLetter;
 
         readonly SemaphoreSlim _throttle;
         readonly ConcurrentDictionary<ulong, byte> _inFlight = new();
@@ -79,8 +81,13 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
         /// </summary>
         readonly Func<CancellationToken, Task<IConnection>> _connect;
 
-        public RabbitMqMessagePump(ResolvedQueueConfiguration config, IConsumer consumer, int maxConcurrency)
-            : this(config, consumer, maxConcurrency, connect: null)
+        public RabbitMqMessagePump(
+            ResolvedQueueConfiguration config,
+            IConsumer consumer,
+            int maxConcurrency,
+            int maxDeliveryAttempts = 2,
+            IDeadLetterPublisher? deadLetter = null)
+            : this(config, consumer, maxConcurrency, connect: null, maxDeliveryAttempts, deadLetter)
         {
         }
 
@@ -88,13 +95,25 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
             ResolvedQueueConfiguration config,
             IConsumer consumer,
             int maxConcurrency,
-            Func<CancellationToken, Task<IConnection>>? connect)
+            Func<CancellationToken, Task<IConnection>>? connect,
+            int maxDeliveryAttempts = 2,
+            IDeadLetterPublisher? deadLetter = null)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
             _maxConcurrency = Math.Max(1, maxConcurrency);
+            _maxDeliveryAttempts = Math.Clamp(maxDeliveryAttempts, 1, 2);
+            _deadLetter = deadLetter;
             _throttle = new SemaphoreSlim(_maxConcurrency, _maxConcurrency);
             _connect = connect ?? (ct => CreateConnectionFactory().CreateConnectionAsync(ct));
+
+            if (maxDeliveryAttempts > 2)
+            {
+                Dev2Logger.Warn(
+                    $"MaxDeliveryAttempts={maxDeliveryAttempts} clamped to 2. Attempt counting uses the " +
+                    "AMQP redelivered flag, which is a boolean and cannot express more than " +
+                    "'first attempt' vs 'seen before'.", ExecutionId);
+            }
         }
 
         public int InFlight => _inFlight.Count;
@@ -203,12 +222,8 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 }
                 else
                 {
-                    // Parity: a Failed result is NOT acked, so the broker redelivers it when the
-                    // channel drops. The business-failure path (engine non-2xx) is dead-lettered
-                    // and reported as Success by the forwarder, exactly as on-prem.
-                    Dev2Logger.Warn(
-                        $"Consumer returned Failed for delivery {eventArgs.DeliveryTag} on " +
-                        $"'{_config.QueueName}'; leaving it unacked for redelivery.", ExecutionId);
+                    await HandleTransportFailureAsync(eventArgs, body, "consumer returned Failed")
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -216,6 +231,11 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 Dev2Logger.Error(
                     $"Unhandled error processing delivery {eventArgs.DeliveryTag} on '{_config.QueueName}'",
                     ex, ExecutionId);
+
+                // An escaped exception used to fall through and leave the delivery unacked, which
+                // is the same permanent stall as the Failed path. Route it through the same policy.
+                await HandleTransportFailureAsync(eventArgs, eventArgs.Body.ToArray(), $"exception: {ex.Message}")
+                    .ConfigureAwait(false);
             }
             finally
             {
@@ -322,13 +342,13 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
             return stranded;
         }
 
-        async Task SafeNackAsync(ulong deliveryTag)
+        async Task SafeNackAsync(ulong deliveryTag, bool requeue = true)
         {
             try
             {
                 if (_channel is not null)
                 {
-                    await _channel.BasicNackAsync(deliveryTag, multiple: false, requeue: true)
+                    await _channel.BasicNackAsync(deliveryTag, multiple: false, requeue: requeue)
                                   .ConfigureAwait(false);
                 }
             }
@@ -338,6 +358,80 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 // when the connection closes moments later.
                 Dev2Logger.Debug($"Nack during drain failed for {deliveryTag}: {ex.Message}", ExecutionId);
             }
+        }
+
+        /// <summary>
+        /// Resolves a TRANSPORT-level failure - the engine could not be reached or did not answer,
+        /// as distinct from a business failure, which the forwarder dead-letters and reports as
+        /// Success. The delivery must always end acked, nacked or dead-lettered here: leaving it
+        /// unacked is what deadlocked the consumer, because with <c>Prefetch=1</c> the broker
+        /// sends nothing further while one message is outstanding.
+        ///
+        /// <para>Attempts are counted by the AMQP <c>redelivered</c> flag, so the ceiling is two.
+        /// See <see cref="QueueProcessorOptions.MaxDeliveryAttempts"/>.</para>
+        /// </summary>
+        async Task HandleTransportFailureAsync(BasicDeliverEventArgs eventArgs, byte[] body, string reason)
+        {
+            var attemptsExhausted = _maxDeliveryAttempts <= 1 || eventArgs.Redelivered;
+
+            if (!attemptsExhausted)
+            {
+                Dev2Logger.Warn(
+                    $"Delivery {eventArgs.DeliveryTag} on '{_config.QueueName}' failed ({reason}); " +
+                    "requeueing for one retry.", ExecutionId);
+                await SafeNackAsync(eventArgs.DeliveryTag, requeue: true).ConfigureAwait(false);
+                return;
+            }
+
+            if (_deadLetter is not null && _config.HasDeadLetter)
+            {
+                try
+                {
+                    var diagnostics = new Dictionary<string, object?>
+                    {
+                        ["x-warewolf-queue"]           = _config.QueueName,
+                        ["x-warewolf-workflow"]        = _config.WorkflowPath,
+                        ["x-warewolf-failure-reason"]  = reason,
+                        ["x-warewolf-redelivered"]     = eventArgs.Redelivered,
+                        ["x-warewolf-dead-lettered-utc"] = DateTime.UtcNow.ToString("O"),
+                    };
+
+                    await _deadLetter.PublishAsync(body, diagnostics, CancellationToken.None)
+                                     .ConfigureAwait(false);
+
+                    // Ack ONLY after the dead-letter publish succeeded, so the message is never
+                    // acknowledged until a durable copy exists somewhere.
+                    if (_channel is not null)
+                    {
+                        await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false)
+                                      .ConfigureAwait(false);
+                    }
+
+                    Dev2Logger.Error(
+                        $"Delivery {eventArgs.DeliveryTag} on '{_config.QueueName}' dead-lettered after " +
+                        $"{_maxDeliveryAttempts} attempt(s) ({reason}).", ExecutionId);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    // Same contract as EngineForwarder: if dead-lettering fails we must NOT ack, or
+                    // the message is lost. Requeue so another replica can try.
+                    Dev2Logger.Fatal(
+                        $"Dead-letter publish failed for delivery {eventArgs.DeliveryTag} on " +
+                        $"'{_config.QueueName}'; requeueing rather than losing it.", ex, ExecutionId);
+                    await SafeNackAsync(eventArgs.DeliveryTag, requeue: true).ConfigureAwait(false);
+                    return;
+                }
+            }
+
+            // No dead-letter queue is configured for this trigger, so there is nowhere to put it.
+            // Discarding is the lesser evil: requeueing forever would stall this consumer exactly
+            // as before, and the message has already had every attempt the redelivered flag allows.
+            Dev2Logger.Error(
+                $"Delivery {eventArgs.DeliveryTag} on '{_config.QueueName}' failed ({reason}) and the " +
+                "trigger declares NO dead-letter queue - discarding it to keep the consumer moving. " +
+                "Configure DeadLetterQueue on the trigger to retain failures.", ExecutionId);
+            await SafeNackAsync(eventArgs.DeliveryTag, requeue: false).ConfigureAwait(false);
         }
 
         ConnectionFactory CreateConnectionFactory()

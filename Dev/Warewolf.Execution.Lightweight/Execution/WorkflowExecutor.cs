@@ -48,14 +48,54 @@ namespace Warewolf.Execution.Lightweight
         readonly IExecutionLogger _executionLogger;
 
         // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
-        // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
-        // immutable within a single function deployment, so caching by normalised file path is
-        // safe.  DynamicActivity is the compiled definition (not an execution instance) � all
-        // runtime state flows through DsfDataObject � so sharing across concurrent requests is
-        // thread-safe.  ActivityParser.Parse() is called fresh each time to get a new IDev2Activity
-        // chain; only the expensive XAML compilation step is avoided on cache hits.
-        private static readonly ConcurrentDictionary<string, DynamicActivity> _dynamicActivityCache =
+        // and compiles potentially hundreds of KB of XAML on every call, so they must be reused.
+        //
+        // THEY MUST NOT BE SHARED BY CONCURRENT EXECUTIONS. The previous design cached ONE
+        // DynamicActivity per path and relied on "all runtime state flows through DsfDataObject".
+        // That is false: ActivityParser.Parse() does not clone anything - it walks the cached
+        // Flowchart via WorkflowInspectionServices.GetActivities() and hands back references to
+        // the SAME Dsf*Activity objects (ActivityParser.cs:192-202). Those objects carry
+        // per-execution state in instance fields; every database activity assigns
+        //     ServiceExecution = new DatabaseServiceExecution(dataObject)
+        // in BeforeExecutionStart and reads it back in ExecutionImpl. Two concurrent executions
+        // therefore overwrite each other's ServiceExecution, and the loser executes against the
+        // winner's DsfDataObject - so its output variable is never written.
+        //
+        // Measured live 2026-08-11 against rabbit\RabbitProcess (a SQL workflow):
+        //     sequential x10      -> 10/10 HTTP 200
+        //     concurrency 3       ->  3/3  HTTP 200
+        //     concurrency 4/6/10  ->  3/4, 4/6, 8/10; the rest HTTP 500
+        //                            "Object reference not set to an instance of an object."
+        //                            "Error with variables in input. [[JobLogId]]"
+        //     a SQL-FREE workflow -> 20/20 at concurrency 20 (an Assign has no such instance state)
+        // In the queue path this is worse than a plain error: the worker dead-letters AND acks a
+        // business failure, so the queue drains to zero and the deployment looks healthy while
+        // valid messages are silently diverted (16 of 30 in the 2026-08-11 burst).
+        //
+        // The fix is exclusive ownership: each execution RENTS a prepared workflow and RETURNS it
+        // in a finally. The pool grows to the peak concurrency seen for that workflow and no
+        // further, so the XAML compile and the parse are both still amortised. Sequential reuse of
+        // a returned instance is exactly what the old cache already did on every call, and is
+        // proven by the 10/10 sequential result above.
+        //
+        // Fixed in Warewolf.Execution.Lightweight ONLY, deliberately: the offending instance field
+        // lives in shared Dev2.Activities code used by the on-prem server and Studio, and pooling
+        // here fixes every activity carrying that pattern - not just the six database activities -
+        // without changing behaviour for those hosts. The shared-code defect remains latent there.
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<PreparedWorkflow>> _workflowPool =
             new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// A compiled workflow plus its parsed activity chain, owned EXCLUSIVELY by one execution
+        /// between <see cref="RentPreparedWorkflow"/> and <see cref="ReturnPreparedWorkflow"/>.
+        /// The chain is kept with the activity it was parsed from because the two are the same
+        /// object graph - parsing a rented activity again would only re-walk the identical tree.
+        /// </summary>
+        internal sealed class PreparedWorkflow
+        {
+            internal DynamicActivity Activity { get; init; }
+            internal IDev2Activity StartActivity { get; init; }
+        }
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
         {
@@ -156,6 +196,10 @@ namespace Warewolf.Execution.Lightweight
 
             Dev2Logger.Info($"WorkflowExecutor Execute starting. File: {request.WorkflowFilePath}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
 
+            // Declared outside the try so the finally can release it however this method exits -
+            // including the early returns for a missing start node and the two catch blocks.
+            PreparedWorkflow prepared = null;
+
             try
             {
                 // Step 1: Read the workflow XML file
@@ -202,23 +246,21 @@ namespace Warewolf.Execution.Lightweight
                     };
                 }
 
-                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path �
-                // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
-                Dev2Logger.Debug("WorkflowExecutor Step 3: Loading DynamicActivity from XAML", executionId.ToString());
-                var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
-                Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Successfully loaded DynamicActivity from XAML", executionId.ToString());
+                // Steps 3+4: take EXCLUSIVE ownership of a compiled+parsed workflow. Rented rather
+                // than shared because the activity instances carry per-execution state - see the
+                // _workflowPool comment. Released in the finally at the end of this method.
+                Dev2Logger.Debug("WorkflowExecutor Step 3: Renting prepared workflow (compile+parse)", executionId.ToString());
+                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition);
+                Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Prepared workflow rented", executionId.ToString());
 
-                if (dynamicActivity == null)
+                if (prepared?.Activity == null)
                 {
                     Dev2Logger.Error("WorkflowExecutor Execute: Failed to load DynamicActivity from XAML", executionId.ToString());
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
 
-                // Step 4: Parse DynamicActivity into IDev2Activity chain
-                Dev2Logger.Debug("WorkflowExecutor Step 4: Parsing DynamicActivity into IDev2Activity chain", executionId.ToString());
-                var activityParser = new ActivityParser();
-                var startActivity = activityParser.Parse(dynamicActivity);
-                Dev2Logger.Debug("WorkflowExecutor Step 4 completed: Successfully parsed IDev2Activity chain", executionId.ToString());
+                var startActivity = prepared.StartActivity;
+                Dev2Logger.Debug("WorkflowExecutor Step 4 completed: IDev2Activity chain available", executionId.ToString());
 
                 if (startActivity == null)
                 {
@@ -376,6 +418,15 @@ namespace Warewolf.Execution.Lightweight
                     Duration = stopwatch.Elapsed
                 };
             }
+            finally
+            {
+                // Released here rather than after ExecuteActivityChain so that a workflow which
+                // throws mid-chain still returns its instance to the pool. Returning an instance
+                // that failed is safe: the activity state it carries is overwritten by the next
+                // execution's BeforeExecutionStart, which is exactly what the previous shared-cache
+                // design relied on for every sequential execution.
+                ReturnPreparedWorkflow(request.WorkflowFilePath, prepared);
+            }
         }
 
         /// <summary>
@@ -485,14 +536,104 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
-        /// Returns the <see cref="DynamicActivity"/> for <paramref name="filePath"/> from the
-        /// process-level cache, compiling it from <paramref name="xamlDefinition"/> on first access.
-        /// Subsequent calls for the same path skip <see cref="ActivityXamlServices.Load"/> entirely.
+        /// Takes exclusive ownership of a compiled+parsed workflow for <paramref name="filePath"/>,
+        /// reusing a previously returned one when available and compiling a new one otherwise.
+        ///
+        /// <para>The caller MUST pass the result to <see cref="ReturnPreparedWorkflow"/> in a
+        /// <c>finally</c>. Failing to return one is not a correctness bug - the next execution
+        /// simply compiles another - but it forfeits the reuse that makes this cheap.</para>
         /// </summary>
-        internal static DynamicActivity GetOrLoadDynamicActivity(string filePath, StringBuilder xamlDefinition)
-            => _dynamicActivityCache.GetOrAdd(
-                Path.GetFullPath(filePath),
-                _ => LoadDynamicActivity(xamlDefinition));
+        /// <returns>
+        /// <c>null</c> when the XAML does not yield a <see cref="DynamicActivity"/>, matching the
+        /// previous contract so the caller's existing null handling is unchanged.
+        /// </returns>
+        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition)
+        {
+            var key = Path.GetFullPath(filePath);
+
+            if (_workflowPool.TryGetValue(key, out var available) && available.TryTake(out var reused))
+            {
+                return reused;
+            }
+
+            var activity = LoadDynamicActivity(xamlDefinition);
+            if (activity == null)
+            {
+                return null;
+            }
+
+            // Parsed once per compiled instance rather than once per execution: Parse() only walks
+            // the activity's own object graph, so the chain it returns belongs to this instance and
+            // is as exclusively owned as the instance itself.
+            return new PreparedWorkflow
+            {
+                Activity      = activity,
+                StartActivity = new ActivityParser().Parse(activity)
+            };
+        }
+
+        /// <summary>
+        /// Releases a rented workflow back for reuse. Null-tolerant so callers can return
+        /// unconditionally from a <c>finally</c> without first testing whether the rent succeeded.
+        /// </summary>
+        internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow? prepared)
+        {
+            if (prepared?.Activity == null || string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            var bag = _workflowPool.GetOrAdd(Path.GetFullPath(filePath), _ => new ConcurrentBag<PreparedWorkflow>());
+
+            // BOUNDED. Beyond the cap the instance is simply not retained - it becomes garbage and
+            // the next rent compiles a fresh one. Renting is deliberately NOT throttled, so the
+            // exclusivity guarantee is untouched; only how much is KEPT is capped.
+            //
+            // Why this matters: a compiled workflow tree measured ~32 MB (engine working set rose
+            // 396 MB -> 712 MB across 10 concurrent executions, 2026-08-12). An unbounded pool grows
+            // to peak concurrency and never shrinks, so a single burst permanently raises the
+            // floor. On an Azure Functions Consumption instance (~1.5 GB) that reached exhaustion:
+            //   "Insufficient memory to continue the execution of the program."
+            //     at System.Reflection.PortableExecutable.PEReader..ctor(...)
+            // - i.e. the XAML compile itself failed for lack of memory, returning HTTP 500.
+            //
+            // Set the cap at or above expected peak concurrency and the reuse rate is unchanged;
+            // set it below and the excess simply recompiles, trading CPU for a hard memory ceiling.
+            if (bag.Count >= MaxPooledPerWorkflow)
+            {
+                return;
+            }
+
+            bag.Add(prepared);
+        }
+
+        /// <summary>
+        /// Maximum prepared workflows RETAINED per workflow path. Override with
+        /// <c>WAREWOLF_WORKFLOW_POOL_MAX</c>; values below 1 are ignored in favour of the default.
+        /// </summary>
+        /// <remarks>
+        /// 8 by default: comfortably above the per-replica concurrency the queue path generates
+        /// (<c>WORKER__MAXCONCURRENCY</c> is 1, so one replica issues one request at a time), while
+        /// bounding retained memory to roughly 8 x the compiled tree size per distinct workflow.
+        /// </remarks>
+        internal static int MaxPooledPerWorkflow { get; } = ResolvePoolCap();
+
+        static int ResolvePoolCap()
+        {
+            const int fallback = 8;
+            var raw = Environment.GetEnvironmentVariable("WAREWOLF_WORKFLOW_POOL_MAX");
+            return int.TryParse(raw, out var parsed) && parsed >= 1 ? parsed : fallback;
+        }
+
+        /// <summary>
+        /// Discards every pooled workflow. Test hook only - lets a test observe compilation
+        /// behaviour from a known-empty state without depending on execution order.
+        /// </summary>
+        internal static void ClearWorkflowPool() => _workflowPool.Clear();
+
+        /// <summary>Pooled (idle) instance count for <paramref name="filePath"/>. Test hook only.</summary>
+        internal static int PooledWorkflowCount(string filePath)
+            => _workflowPool.TryGetValue(Path.GetFullPath(filePath), out var bag) ? bag.Count : 0;
 
         /// <summary>
         /// Step 5: Build DsfDataObject and map input parameters into the execution environment.
