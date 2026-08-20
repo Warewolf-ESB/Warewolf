@@ -105,12 +105,17 @@ internal static class PersistenceConfigLoader
         }
         catch (Exception ex)
         {
+            // The exception object is withheld: the sinks persist ex.ToString(), this path's
+            // own throw embeds two absolute Settings paths, and SetDataSourceFromBiteFile
+            // AES-decrypts the DbSource ConnectionString — a failure there can surface
+            // connection detail. The remediation text below is the actionable part.
             Dev2Logger.Fatal(
                 "Startup | Phase=Persistence | Status=Failed | " +
                 "Persistence is enabled but its configuration could not be loaded. " +
                 "Fix Settings/persistencesettings.json + Settings/persistencesettingsdbsource.bite " +
-                "(and confirm the Key Vault AES key decrypts the ConnectionString) or set Enable=false.",
-                ex, executionId);
+                "(and confirm the Key Vault AES key decrypts the ConnectionString) or set Enable=false. " +
+                $"ExceptionType={ex.GetType().Name}",
+                executionId);
             throw; // Fail fast: a half-configured persistence layer must not serve traffic.
         }
     }

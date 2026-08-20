@@ -243,13 +243,17 @@ internal static class StartupOrchestrator
 
             if (!config.SkipFailureToRetrieveSecret)
             {
+                // VaultName, SecretName, Guidance and the exception object are all withheld:
+                // ClassifyKeyVaultException embeds the vault and secret names in its guidance
+                // (and rfe.Message for RequestFailedException), and the sinks persist
+                // ex.ToString() — Azure SDK failures name the vault URI and refused identity.
+                // Category, InstanceId and the bypass instruction are the safe, actionable parts.
                 Dev2Logger.Fatal(
                     $"Startup | Phase=KeyVaultInit | Status=Failed | Category={category} | " +
-                    $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
-                    $"Guidance={guidance} | " +
+                    $"InstanceId={config.InstanceId} | ExceptionType={ex.GetType().Name} | " +
                     "To bypass this failure and start with degraded decryption, " +
                     "set environment variable SkipFailureToRetrieveSecret=true (NOT recommended for production).",
-                    ex, executionId);
+                    executionId);
 
                 throw; // Fail fast — host cannot serve encrypted sources without the AES key.
             }

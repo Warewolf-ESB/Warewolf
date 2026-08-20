@@ -132,7 +132,11 @@ catch (Exception ex)
 {
     // Fatal cold-start failure — write to stderr so the Azure Functions runtime
     // captures it regardless of whether the logging pipeline is available.
-    Dev2Logger.Fatal("Program terminated unexpectedly during startup", ex, executionId);
+    // The exception object is withheld from the log sinks (they persist ex.ToString()):
+    // this is the outermost catch, so a rethrown Key Vault or persistence failure lands
+    // here carrying vault/secret names, identity detail, absolute paths or connection
+    // detail. executionId correlates to the phase-specific Fatal already emitted.
+    Dev2Logger.Fatal($"Program terminated unexpectedly during startup. ExceptionType={ex.GetType().Name}", executionId);
 
     await Console.Error.WriteLineAsync(
         $"[FATAL] Host terminated unexpectedly at {DateTimeOffset.UtcNow:O}: {ex}");
