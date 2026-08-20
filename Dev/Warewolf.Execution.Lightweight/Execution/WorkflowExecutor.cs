@@ -421,6 +421,14 @@ namespace Warewolf.Execution.Lightweight
             catch (Exception ex)
             {
                 stopwatch.Stop();
+                // Full exception (message + stack trace) goes to the server-side logs only -
+                // Dev2Logger/_executionLogger both receive the whole `ex` object below. The
+                // CALLER-facing Errors list must never include ex.StackTrace: it leaks internal
+                // implementation detail (local file paths, type/member names) to whoever is on
+                // the other end of create_workflow/execute_workflow/invoke_workflow. See
+                // consolidated MCP testing findings, "Supporting bugs" - an unhandled-looking
+                // ArgumentNullException("source") surfaced a raw stack trace including a local
+                // dev machine path.
                 Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
                 _executionLogger.LogError(nameof(Execute), ex, executionId);
                 UsagePublishContext.Current = new UsagePublishContext
@@ -434,7 +442,7 @@ namespace Warewolf.Execution.Lightweight
                 {
                     IsSuccess = false,
                     ExecutionId = executionId,
-                    Errors = new List<string> { $"{ex.Message}{Environment.NewLine}{ex.StackTrace}" },
+                    Errors = new List<string> { $"Workflow execution failed: {ex.Message}" },
                     StartTime = startTime,
                     EndTime = DateTime.UtcNow,
                     Duration = stopwatch.Elapsed

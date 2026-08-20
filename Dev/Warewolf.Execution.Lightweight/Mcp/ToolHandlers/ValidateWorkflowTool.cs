@@ -102,13 +102,19 @@ internal static class ValidateWorkflowTool
         [Description("The workflow body — the X6 graph { resourcename, cells[] } per get_workflow_schema's body_schema.")]
         JsonElement body)
     {
+        var missingRequired = new List<string>();
         if (envelope.ValueKind is JsonValueKind.Undefined)
         {
-            throw new McpException("`envelope` is required.");
+            missingRequired.Add("`envelope`");
         }
         if (body.ValueKind is JsonValueKind.Undefined)
         {
-            throw new McpException("`body` is required.");
+            missingRequired.Add("`body`");
+        }
+        if (missingRequired.Count > 0)
+        {
+            var verb = missingRequired.Count > 1 ? "are" : "is";
+            throw new McpException($"{string.Join(" and ", missingRequired)} {verb} required.");
         }
 
         var errors = new List<ValidationIssue>();
@@ -155,13 +161,36 @@ internal static class ValidateWorkflowTool
             }
         }
 
-        var hasStartNode = nodes.Any(n => GetDataType(n.Cell) is { } t &&
-            string.Equals(t, Constants.START, StringComparison.OrdinalIgnoreCase));
-        if (!hasStartNode)
+        var startNodes = nodes.Where(n => GetDataType(n.Cell) is { } t &&
+            string.Equals(t, Constants.START, StringComparison.OrdinalIgnoreCase)).ToList();
+        if (startNodes.Count == 0)
         {
             errors.Add(ValidationIssue.Error(
                 "The workflow graph has no reachable start node (no cell with data.type == \"start\"); a Flowchart could not be finalised.",
                 "/cells"));
+        }
+        else
+        {
+            // X6ToWorkflowConverter.BuildWorkflow always compiles the "start" cell to a
+            // placeholder WriteLine activity and then discards it in favour of whatever the
+            // start cell's outgoing edge points to (`startFlowNode.Next ?? startFlowNode`). If
+            // the start cell has no outgoing edge, that placeholder — which is not an
+            // IDev2Activity — becomes the Flowchart's literal StartNode, and ActivityParser.Parse
+            // then crashes with an unhandled `ArgumentNullException("source")` at execution time
+            // (WorkflowExecutor.RentPreparedWorkflow → ActivityParser.Parse). Catching this here
+            // turns that into a clean validation error instead of a persisted, unexecutable
+            // workflow — reproduced 2026-08-20 against a start-node-only body.
+            foreach (var (index, startCell) in startNodes)
+            {
+                var hasOutgoingEdge = edges.Any(e => e.Source?.Id == startCell.id);
+                if (!hasOutgoingEdge)
+                {
+                    errors.Add(ValidationIssue.Error(
+                        $"The start node (cell '{startCell.id}') has no outgoing connection to another step; " +
+                        "a workflow must contain at least one activity reachable from its start node.",
+                        $"/cells/{index}"));
+                }
+            }
         }
 
         foreach (var (index, cell) in nodes)

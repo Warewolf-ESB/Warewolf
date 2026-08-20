@@ -174,6 +174,29 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("no reachable start node")));
         }
 
+        /// <summary>
+        /// Regression test: X6ToWorkflowConverter.BuildWorkflow compiles the "start" cell to a
+        /// placeholder WriteLine activity and discards it via
+        /// <c>flowchart.StartNode = startFlowNode.Next ?? startFlowNode</c> - if the start cell
+        /// has no outgoing edge, that non-IDev2Activity placeholder becomes the literal
+        /// StartNode, and ActivityParser.Parse crashed with an unhandled
+        /// ArgumentNullException("source") at execution time (reproduced against
+        /// warewolfserver-mcp and locally, 2026-08-20). This must be caught here - before
+        /// create_workflow/edit_workflow ever persist the file - not just at execution.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StartNodeWithNoOutgoingEdge_ReturnsInvalid()
+        {
+            var body = BodyOf("StartOnly", MakeStartNode());
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Severity == "error" &&
+                e.Message.Contains("no outgoing connection", StringComparison.OrdinalIgnoreCase)));
+        }
+
         // ── unresolved activity type ───────────────────────────────────────
 
         [TestMethod]
@@ -292,8 +315,16 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 inputs = new[] { new { name = "Unused", kind = "scalar", fields = new string[0] } },
                 outputs = new object[0]
             });
-            // A workflow that never references [[Unused]] anywhere.
-            var body = BodyOf("UnusedInput", MakeStartNode());
+            // A workflow that never references [[Unused]] anywhere - still needs a real step
+            // connected to start (a degenerate start-only body is itself a hard error; see
+            // Handle_StartNodeWithNoOutgoingEdge_ReturnsInvalid below).
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object>
+                {
+                    ["displayName"] = "Assign",
+                    ["fields"] = new JArray(new JObject { ["FieldName"] = "NotAVariable", ["FieldValue"] = "hello", ["IndexNumber"] = 1 })
+                });
+            var body = BodyOf("UnusedInput", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
 
             var result = ValidateWorkflowTool.Handle(envelope, body);
 

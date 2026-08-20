@@ -9,6 +9,7 @@ using ModelContextProtocol;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Warewolf.Execution.Lightweight.Auth;
@@ -87,7 +88,7 @@ internal static class CreateWorkflowTool
         var validation = ValidateWorkflowTool.Handle(envelope, body);
         if (!validation.Valid)
         {
-            var messages = string.Join("; ", validation.Errors);
+            var messages = string.Join("; ", validation.Errors.Select(e => e.Message));
             throw new McpException($"`envelope`/`body` failed validation: {messages}");
         }
 
