@@ -45,13 +45,20 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <item>Invalidates the relevant <see cref="WorkflowIndex"/> cache entry via
 /// <see cref="WorkflowIndex.AddOrUpdate"/> so the new workflow is immediately resolvable by name
 /// without waiting for a process restart.</item>
+/// <item>Resolves the workflow's actual HTTP invocation path(s) via
+/// <see cref="WorkflowHttpEndpointResolver"/> and includes them in the response — a workflow is
+/// reachable over HTTP immediately (no route "activation"/sync step exists in this architecture;
+/// see that type's remarks), but the correct path is easy to guess wrong (there is no <c>api/</c>
+/// prefix and no bare-name route), so the response states it explicitly rather than leaving the
+/// caller to find it by trial and error.</item>
 /// </list>
 /// </para>
 ///
 /// <para>
-/// <b>Validation failure reporting.</b> The spec's <c>create_workflow</c> output shape is only
-/// <c>{ name, created }</c> — there is no room for a structured error array like
-/// <c>validate_workflow</c>'s. A validation failure is therefore reported as an
+/// <b>Validation failure reporting.</b> The spec's <c>create_workflow</c> success shape is
+/// <c>{ name, created }</c> (plus the additive <c>httpEndpoints</c> field below) — there is no
+/// room for a structured error array like <c>validate_workflow</c>'s. A validation failure is
+/// therefore reported as an
 /// <see cref="McpException"/> whose message concatenates every <c>error</c>-severity finding
 /// (callers that need the full structured detail should call <c>validate_workflow</c> directly
 /// first, which this tool re-runs internally regardless).
@@ -150,7 +157,8 @@ internal static class CreateWorkflowTool
 
         WorkflowIndex.Instance.AddOrUpdate(workflowsDirectory, relativePath, relativePath + ".bite");
 
-        return new CreateWorkflowResult(name, true);
+        var httpEndpoints = WorkflowHttpEndpointResolver.Resolve(authPolicyLoader, relativePath);
+        return new CreateWorkflowResult(name, true, httpEndpoints);
     }
 
     /// <summary><c>internal</c> (not <c>private</c>) so <see cref="EditWorkflowTool"/> resolves the
@@ -189,4 +197,5 @@ internal static class CreateWorkflowTool
 /// <summary>The full <c>create_workflow</c> response payload.</summary>
 internal sealed record CreateWorkflowResult(
     [property: JsonPropertyName("name")] string Name,
-    [property: JsonPropertyName("created")] bool Created);
+    [property: JsonPropertyName("created")] bool Created,
+    [property: JsonPropertyName("httpEndpoints")] WorkflowHttpEndpoints HttpEndpoints);

@@ -299,5 +299,106 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.ThrowsException<McpException>(() =>
                 Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Dup", ValidEnvelope(), ValidBody("Dup")));
         }
+
+        // ── Tests: httpEndpoints (bug fix — callers must not have to guess the invocation path) ──
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ConfigMissing_NoBypassFlag_ReturnsNoUrls()
+        {
+            var previous = Environment.GetEnvironmentVariable("BYPASS_SECURE_CONFIG");
+            Environment.SetEnvironmentVariable("BYPASS_SECURE_CONFIG", null);
+            try
+            {
+                var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "NoConfigWf", ValidEnvelope(), ValidBody("NoConfigWf"));
+
+                Assert.IsNull(result.HttpEndpoints.PublicUrl,
+                    "secure.config missing and BYPASS_SECURE_CONFIG not set: /Public/* is denied with a 500 (WorkflowPolicyMatcher.ConfigMissingDeny), so publicUrl must be omitted.");
+                Assert.IsNull(result.HttpEndpoints.SecureUrl,
+                    "secure.config missing: /Secure/* always 401s (no secret key to validate a JWT against), so secureUrl must be omitted.");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("BYPASS_SECURE_CONFIG", previous);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ConfigMissing_BypassFlagSet_ReturnsPublicUrlOnly()
+        {
+            var previous = Environment.GetEnvironmentVariable("BYPASS_SECURE_CONFIG");
+            Environment.SetEnvironmentVariable("BYPASS_SECURE_CONFIG", "true");
+            try
+            {
+                var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "BypassWf", ValidEnvelope(), ValidBody("BypassWf"));
+
+                Assert.AreEqual("/Public/BypassWf", result.HttpEndpoints.PublicUrl,
+                    "BYPASS_SECURE_CONFIG=true with config not effective is the one case that makes /Public/* truly open-access.");
+                Assert.IsNull(result.HttpEndpoints.SecureUrl,
+                    "/Secure/* always 401s without secure.config, bypass or not.");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("BYPASS_SECURE_CONFIG", previous);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SecureConfigEffective_PublicGroupGrantsExecute_ReturnsBothUrls()
+        {
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (path, roles) =>
+                    path.Equals("PublicWf", StringComparison.OrdinalIgnoreCase) && !roles.Any()
+                        ? WorkflowPermission.Contribute | WorkflowPermission.View | WorkflowPermission.Execute
+                        : WorkflowPermission.Contribute,
+            };
+
+            var result = Handle(HostConfig(), loader, Principal("Developers"), "PublicWf", ValidEnvelope(), ValidBody("PublicWf"));
+
+            Assert.AreEqual("/Secure/PublicWf", result.HttpEndpoints.SecureUrl);
+            Assert.AreEqual("/Public/PublicWf", result.HttpEndpoints.PublicUrl);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SecureConfigEffective_PublicGroupNotGranted_ReturnsSecureUrlOnly()
+        {
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (_, roles) =>
+                    roles.Any() ? WorkflowPermission.Contribute : WorkflowPermission.None,
+            };
+
+            var result = Handle(HostConfig(), loader, Principal("Developers"), "SecureOnlyWf", ValidEnvelope(), ValidBody("SecureOnlyWf"));
+
+            Assert.AreEqual("/Secure/SecureOnlyWf", result.HttpEndpoints.SecureUrl);
+            Assert.IsNull(result.HttpEndpoints.PublicUrl,
+                "The Public group has no View+Execute grant for this workflow, so publicUrl must be omitted.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_NestedFolderName_HttpEndpoints_UseForwardSlashPath()
+        {
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (path, roles) =>
+                    path.Equals("Sub/Deep", StringComparison.OrdinalIgnoreCase) && !roles.Any()
+                        ? WorkflowPermission.Contribute | WorkflowPermission.View | WorkflowPermission.Execute
+                        : WorkflowPermission.Contribute,
+            };
+
+            var result = Handle(HostConfig(), loader, Principal("Developers"), "Sub/Deep",
+                ValidEnvelope(), ValidBody("Deep"));
+
+            Assert.AreEqual("/Public/Sub/Deep", result.HttpEndpoints.PublicUrl);
+            Assert.AreEqual("/Secure/Sub/Deep", result.HttpEndpoints.SecureUrl);
+        }
     }
 }

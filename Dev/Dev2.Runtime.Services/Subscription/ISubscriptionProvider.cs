@@ -28,6 +28,18 @@ namespace Dev2.Runtime.Subscription
 
         void SaveSubscriptionData(ISubscriptionData subscriptionData);
 
+        /// <summary>
+        /// Licenses (or re-licenses) this instance from <paramref name="subscriptionData"/>,
+        /// including its <c>SubscriptionKey</c> — unlike <see cref="SaveSubscriptionData"/>,
+        /// which always keeps this instance's existing <c>SubscriptionKey</c>/<c>SubscriptionSiteName</c>
+        /// regardless of what is passed in (that method exists for the Chargebee plan/status
+        /// update path, where the key must not change). <c>SubscriptionSiteName</c> is still never
+        /// caller-settable through either method: it always stays whatever this instance already
+        /// has. Intended for MCP/administrative tooling that needs to license a deployed-but-unlicensed
+        /// (or re-key) instance without redeploying or staging a file over Kudu/VFS.
+        /// </summary>
+        void SetLicense(ISubscriptionData subscriptionData);
+
         ISubscriptionData GetSubscriptionData();
 
         ISubscriptionData DefaultSubscription();

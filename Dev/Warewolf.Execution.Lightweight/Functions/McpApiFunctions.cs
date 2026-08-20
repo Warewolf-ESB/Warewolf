@@ -4,6 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Runtime.Subscription;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 namespace Warewolf.Execution.Lightweight.Functions
 {
     /// <summary>
-    /// Plain REST wrappers around the 14 workflow-authoring tool handlers under
+    /// Plain REST wrappers around the 16 workflow-authoring and licensing tool handlers under
     /// <c>Mcp/ToolHandlers/</c>, one HTTP-triggered POST route per tool under
     /// <c>/mcp-api/{tool_name}</c>. Replaces the retired <c>/mcp</c> JSON-RPC/SSE
     /// endpoint (formerly <c>McpFunction</c>).
@@ -240,6 +241,25 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return SetVarTool.Handle(_authPolicyLoader, principal, p.Name, p.Value);
             });
 
+        [Function("McpApiSetLicense")]
+        public Task<HttpResponseData> SetLicense(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/set_license")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<SetLicenseRequest>(req, ct) ?? new SetLicenseRequest();
+                return await SetLicenseTool.Handle(
+                    _authPolicyLoader, SecretResolver, SubscriptionProvider.Instance, principal,
+                    p.CustomerId, p.PlanId, p.SubscriptionId, p.MarketplaceResourceId, p.Status,
+                    p.SubscriptionKey, p.StopExecutions, ct);
+            });
+
+        [Function("McpApiGetLicenseStatus")]
+        public Task<HttpResponseData> GetLicenseStatus(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_license_status")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, (_, _) => Task.FromResult<object>(GetLicenseStatusTool.Handle(SubscriptionProvider.Instance)));
+
         // ── Shared plumbing ──────────────────────────────────────────────────
 
         /// <summary>
@@ -368,4 +388,13 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record ExecuteWorkflowRequest(string Name = "", JsonElement? Inputs = null);
 
     sealed record SetVarRequest(string Name = "", string? Value = null);
+
+    sealed record SetLicenseRequest(
+        string? CustomerId = null,
+        string? PlanId = null,
+        string? SubscriptionId = null,
+        string? MarketplaceResourceId = null,
+        string? Status = null,
+        string? SubscriptionKey = null,
+        bool? StopExecutions = null);
 }

@@ -90,7 +90,7 @@ internal static class AddSourceTool
 {
     internal const string ToolName = "add_source";
 
-    static readonly Regex SecretPlaceholder = new(@"\$\{([A-Za-z][A-Za-z0-9_-]*)\}", RegexOptions.Compiled);
+    internal static readonly Regex SecretPlaceholder = new(@"\$\{([A-Za-z][A-Za-z0-9_-]*)\}", RegexOptions.Compiled);
 
     internal static async Task<AddSourceResult> Handle(
         HostEnvironmentConfig hostConfig,
@@ -237,9 +237,10 @@ internal static class AddSourceTool
     /// (dev-only fallback) an environment variable on this host when Key Vault isn't configured.
     /// Never resolved from anything the caller supplies. Throws when a referenced name cannot be
     /// resolved, rather than silently persisting the literal placeholder text into the saved
-    /// source.
+    /// source. <c>internal</c> so other secret-shaped-field tools (e.g. <see cref="SetLicenseTool"/>)
+    /// share this exact resolution logic instead of re-implementing it.
     /// </summary>
-    static async Task<string> ResolveSecretPlaceholdersAsync(
+    internal static async Task<string> ResolveSecretPlaceholdersAsync(
         string raw, string fieldName, IMcpSecretResolver secretResolver, ICollection<string> resolvedSecretFields, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(raw) || !raw.Contains("${", StringComparison.Ordinal))

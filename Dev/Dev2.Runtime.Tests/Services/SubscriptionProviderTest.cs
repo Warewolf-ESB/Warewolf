@@ -18,6 +18,9 @@ using Warewolf.Licensing;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize] // SubscriptionProvider._config/_theInstance are static (shared mutable
+                        // state): SaveSubscriptionData/SetLicense both reassign them, so tests
+                        // must run serially or they race each other's mocks.
     public class SubscriptionProviderTest
     {
         [TestMethod]
@@ -94,6 +97,110 @@ namespace Dev2.Tests.Runtime.Services
             providerIml.SaveSubscriptionData(mockSubscriptionData.Object);
 
             config.Verify(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        public void SubscriptionProvider_SaveSubscriptionData_NeverChangesSubscriptionKeyOrSiteName()
+        {
+            // SaveSubscriptionData is the Chargebee plan/status-update path: it must always keep
+            // this instance's existing SubscriptionKey/SubscriptionSiteName, no matter what the
+            // caller passes — see SetLicense (below) for the method that DOES allow the key to change.
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("attacker-supplied-site");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("attacker-supplied-key");
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            mockSubscriptionData.Setup(o => o.CustomerId).Returns("cust-1");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("sub-1");
+            mockSubscriptionData.Setup(o => o.MarketplaceResourceId).Returns(string.Empty);
+
+            var config = CreateConfig();
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+
+            ISubscriptionData captured = null;
+            config.Setup(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()))
+                .Callback<ISubscriptionData>(d => captured = d);
+
+            providerIml.SaveSubscriptionData(mockSubscriptionData.Object);
+
+            Assert.IsNotNull(captured);
+            Assert.AreEqual(providerIml.SubscriptionKey, captured.SubscriptionKey);
+            Assert.AreEqual(providerIml.SubscriptionSiteName, captured.SubscriptionSiteName);
+            Assert.AreNotEqual("attacker-supplied-key", captured.SubscriptionKey);
+            Assert.AreNotEqual("attacker-supplied-site", captured.SubscriptionSiteName);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        public void SubscriptionProvider_SetLicense_SetsSubscriptionKeyFromSuppliedData()
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("caller-supplied-site-ignored");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("new-real-license-key");
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("enterprise");
+            mockSubscriptionData.Setup(o => o.StopExecutions).Returns(false);
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            mockSubscriptionData.Setup(o => o.CustomerId).Returns("cust-2");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("sub-2");
+            mockSubscriptionData.Setup(o => o.MarketplaceResourceId).Returns(string.Empty);
+
+            var config = CreateConfig();
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+
+            ISubscriptionData captured = null;
+            config.Setup(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()))
+                .Callback<ISubscriptionData>(d => captured = d);
+
+            providerIml.SetLicense(mockSubscriptionData.Object);
+
+            config.Verify(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()), Times.Once);
+            Assert.IsNotNull(captured);
+            Assert.AreEqual("new-real-license-key", captured.SubscriptionKey);
+            Assert.AreEqual("enterprise", captured.PlanId);
+            Assert.AreEqual("cust-2", captured.CustomerId);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        public void SubscriptionProvider_SetLicense_StillPinsSubscriptionSiteNameToCurrentInstance()
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("caller-supplied-site-must-be-ignored");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("new-real-license-key");
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("enterprise");
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            mockSubscriptionData.Setup(o => o.CustomerId).Returns("cust-3");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("sub-3");
+            mockSubscriptionData.Setup(o => o.MarketplaceResourceId).Returns(string.Empty);
+
+            var config = CreateConfig();
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+
+            ISubscriptionData captured = null;
+            config.Setup(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()))
+                .Callback<ISubscriptionData>(d => captured = d);
+
+            providerIml.SetLicense(mockSubscriptionData.Object);
+
+            Assert.IsNotNull(captured);
+            Assert.AreEqual(providerIml.SubscriptionSiteName, captured.SubscriptionSiteName);
+            Assert.AreNotEqual("caller-supplied-site-must-be-ignored", captured.SubscriptionSiteName);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SubscriptionProvider_SetLicense_WithNull_ThrowsArgumentNullException()
+        {
+            var config = CreateConfig();
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+
+            providerIml.SetLicense(null);
         }
 
         static Mock<ISubscriptionConfig> CreateConfig()

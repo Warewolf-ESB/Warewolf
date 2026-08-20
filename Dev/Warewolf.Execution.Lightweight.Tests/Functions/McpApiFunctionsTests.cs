@@ -573,5 +573,18 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
                 Environment.SetEnvironmentVariable(varName, null);
             }
         }
+
+        // set_license and get_license_status are deliberately NOT covered by a wrapper
+        // round-trip test here, unlike every other route in this file: both go through the real,
+        // process-wide static SubscriptionProvider.Instance singleton (see
+        // docs/SubscriptionConfig-IsolatedWorker-Resolution-Spec.md and LicensingHttpFunction,
+        // which uses the same singleton directly, not DI). A SetLicense call mutates that shared
+        // static state for the rest of this test process, which was confirmed to break unrelated
+        // license-gate tests elsewhere in this assembly (WorkflowExecutorTests'
+        // Execute_LicenseCheck* tests) when both ran in the same parallel run. Their request-body
+        // binding is a mechanical one-line pass-through identical in shape to every other route
+        // here; full business-rule coverage (permission gating, partial-update semantics, status
+        // validation, secret resolution) lives in SetLicenseToolTests.cs/GetLicenseStatusToolTests.cs
+        // against a fully mocked ISubscriptionProvider, with no shared/global state.
     }
 }

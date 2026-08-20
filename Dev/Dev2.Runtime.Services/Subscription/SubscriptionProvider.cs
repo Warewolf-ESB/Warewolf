@@ -92,6 +92,35 @@ namespace Dev2.Runtime.Subscription
             _theInstance = RefreshInstance;
         }
 
+        public void SetLicense(ISubscriptionData subscriptionData)
+        {
+            if (subscriptionData == null)
+            {
+                throw new ArgumentNullException(nameof(subscriptionData));
+            }
+
+            var newSubscriptionData = new SubscriptionData
+            {
+                CustomerId = subscriptionData.CustomerId,
+                SubscriptionId = subscriptionData.SubscriptionId,
+                PlanId = subscriptionData.PlanId,
+                MarketplaceResourceId = subscriptionData.MarketplaceResourceId,
+                Status = subscriptionData.Status,
+                // SubscriptionSiteName is deliberately never taken from subscriptionData — same
+                // rule SaveSubscriptionData enforces (see interface remarks): it always stays
+                // whatever this instance already resolved to.
+                SubscriptionSiteName = SubscriptionSiteName,
+                // Unlike SaveSubscriptionData, SubscriptionKey IS caller-settable here — this is
+                // the method that lets MCP/administrative tooling actually license a
+                // deployed-but-unlicensed instance.
+                SubscriptionKey = subscriptionData.SubscriptionKey,
+                IsLicensed = subscriptionData.IsLicensed,
+                StopExecutions = subscriptionData.StopExecutions
+            };
+            _config.UpdateSubscriptionSettings(newSubscriptionData);
+            _theInstance = RefreshInstance;
+        }
+
         private ISubscriptionData SetNewSubscriptionData(ISubscriptionData subscriptionData)
         {
             var newSubscriptionData = new SubscriptionData

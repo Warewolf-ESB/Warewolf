@@ -186,6 +186,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
             public SubscriptionStatus Status   { get; set; } = SubscriptionStatus.NotActive;
 
             public void SaveSubscriptionData(ISubscriptionData subscriptionData) { }
+            public void SetLicense(ISubscriptionData subscriptionData) { }
             public ISubscriptionData GetSubscriptionData() => null!;
             public ISubscriptionData DefaultSubscription() => null!;
         }

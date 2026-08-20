@@ -54,12 +54,16 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <see cref="WorkflowIndex.AddOrUpdate"/>, matching <c>create_workflow</c>'s own
 /// cache-freshness guarantee (the name/path is unchanged here, but this keeps both tools
 /// consistent and the refresh is cheap).</item>
+/// <item>Resolves the workflow's HTTP invocation path(s) via
+/// <see cref="WorkflowHttpEndpointResolver"/> and includes them in the response — same rationale
+/// as <see cref="CreateWorkflowTool"/>.</item>
 /// </list>
 /// </para>
 ///
 /// <para>
 /// <b>Validation failure reporting.</b> Same as <c>create_workflow</c>: the spec's
-/// <c>edit_workflow</c> output shape is only <c>{ name, updated }</c> — there is no room for a
+/// <c>edit_workflow</c> success shape is <c>{ name, updated }</c> (plus the additive
+/// <c>httpEndpoints</c> field below) — there is no room for a
 /// structured error array like <c>validate_workflow</c>'s. A validation failure is therefore
 /// reported as an <see cref="McpException"/> whose message concatenates every <c>error</c>-
 /// severity finding (callers that need the full structured detail should call
@@ -157,7 +161,8 @@ internal static class EditWorkflowTool
         // consistent with create_workflow's own guarantee and costs nothing extra.
         WorkflowIndex.Instance.AddOrUpdate(workflowsDirectory, relativePath, relativePath + ".bite");
 
-        return new EditWorkflowResult(name, true);
+        var httpEndpoints = WorkflowHttpEndpointResolver.Resolve(authPolicyLoader, relativePath);
+        return new EditWorkflowResult(name, true, httpEndpoints);
     }
 
     /// <summary>
@@ -189,4 +194,5 @@ internal static class EditWorkflowTool
 /// <summary>The full <c>edit_workflow</c> response payload.</summary>
 internal sealed record EditWorkflowResult(
     [property: JsonPropertyName("name")] string Name,
-    [property: JsonPropertyName("updated")] bool Updated);
+    [property: JsonPropertyName("updated")] bool Updated,
+    [property: JsonPropertyName("httpEndpoints")] WorkflowHttpEndpoints HttpEndpoints);
