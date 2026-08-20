@@ -125,9 +125,11 @@ namespace Warewolf.Execution.Lightweight.Security
             }
             catch (Exception ex)
             {
-                // The exception object itself is still not passed (the sinks would persist
-                // ex.ToString() with the full stack); the message is logged for troubleshooting.
-                Dev2Logger.Error($"KeyVaultSecretManager InitializeAsync failed: {ex.Message}", executionId);
+                // Neither the exception object nor ex.Message is emitted: this catch covers
+                // GetSecretAsync, so ex is the raw Azure SDK exception — a 403 RequestFailedException
+                // names the caller client IP, a 404 the vault and secret, an AuthenticationFailedException
+                // the tenant and identity. Only the exception type is safe to surface.
+                Dev2Logger.Error($"KeyVaultSecretManager InitializeAsync failed. ExceptionType={ex.GetType().Name}", executionId);
                 throw;
             }
         }
@@ -175,7 +177,9 @@ namespace Warewolf.Execution.Lightweight.Security
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error($"KeyVaultSecretManager ParseAndSetMaterial failed: {ex.Message}", executionId);
+                // ex.Message is withheld: the deserialise failure thrown above names the secret,
+                // and a JsonException reports the path/position inside the raw key-material JSON.
+                Dev2Logger.Error($"KeyVaultSecretManager ParseAndSetMaterial failed. ExceptionType={ex.GetType().Name}", executionId);
                 throw;
             }
         }

@@ -68,10 +68,14 @@ internal static class KeyVaultStartupExtensions
             // InstanceId stays as the correlator; the exception type is the triage hint.
             Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}. ExceptionType={ex.GetType().Name}", executionId);
 
+            // The audit event is emitted through Dev2Logger alone: its ExternalSink fans out to
+            // CompositeExecutionLogger, whose AuditExecutionLogger is always present and is never
+            // level-filtered, so SECURITY_AUDIT | Event=KeyVaultError still reaches the audit sink.
+            // audit.LogKeyVaultErrorAndMessage(log, ex) is deliberately NOT called: it duplicated
+            // this same message and passed the exception object, which the sink persists as
+            // ex.ToString() — the Azure SDK text naming the caller client IP on a 403.
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
-            Dev2Logger.Error(log, executionId);
-
-            audit.LogKeyVaultErrorAndMessage(log, ex);
+            Dev2Logger.Error($"{log} | ExceptionType={ex.GetType().Name}", executionId);
             throw; // Fail fast: cannot serve requests without the AES key.
         }
     }

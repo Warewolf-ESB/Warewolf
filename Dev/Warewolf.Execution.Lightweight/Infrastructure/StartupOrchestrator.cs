@@ -60,7 +60,7 @@ internal static class StartupOrchestrator
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed: {ex.Message}", executionId);
+            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed. ExceptionType={ex.GetType().Name}", executionId);
             throw;
         }
     }
@@ -233,13 +233,7 @@ internal static class StartupOrchestrator
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            var (category, guidance) = ClassifyKeyVaultException(ex, config);
-
-            // Category is a fixed classification tag and is safe. VaultName, SecretName and
-            // the exception object are withheld. NOTE: `guidance` is NOT logged at
-            // Error/Warning either — ClassifyKeyVaultException embeds the vault name, the
-            // secret name and (for RequestFailedException) rfe.Message inside it.
-            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}: {ex.Message}", executionId);
+            var (category, _) = ClassifyKeyVaultException(ex, config);
 
             if (!config.SkipFailureToRetrieveSecret)
             {
@@ -261,10 +255,12 @@ internal static class StartupOrchestrator
             // SkipFailureToRetrieveSecret=true: allow host to start in degraded mode.
             Dev2Logger.Warn($"StartupOrchestrator KeyVault initialization failed but SkipFailureToRetrieveSecret=true, starting in degraded mode. Category: {category}", executionId);
 
+            // VaultName, SecretName and Guidance are withheld: guidance embeds the vault and
+            // secret names, and rfe.Message for a RequestFailedException — which on a 403 carries
+            // the caller client IP. Category, InstanceId and the exception type are the safe parts.
             Dev2Logger.Warn(
                 $"Startup | Phase=KeyVaultInit | Status=Degraded | Category={category} | " +
-                $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
-                $"Guidance={guidance} | " +
+                $"InstanceId={config.InstanceId} | ExceptionType={ex.GetType().Name} | " +
                 "SkipFailureToRetrieveSecret=true — host is starting WITHOUT the AES decryption key. " +
                 "All workflows that read encrypted sources (connection strings, credentials) " +
                 "will FAIL at execution time with a decryption error. " +
