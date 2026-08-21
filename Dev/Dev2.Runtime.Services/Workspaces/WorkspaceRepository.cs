@@ -430,6 +430,17 @@ namespace Dev2.Workspaces
                             WriteUserMap(deserializedDictionary, isAlreadyLocked: true);
                             return deserializedDictionary;
                         }
+
+#if NET9_0_OR_GREATER
+                        // Differentiate this from a genuine parse failure: on net9.0+ BinaryFormatter no
+                        // longer exists, so DeserializeFile() always returns null here. This is the
+                        // *expected* outcome once an environment has already self-migrated its legacy
+                        // data to MessagePack on a net8.0-or-earlier build; it only means real data loss
+                        // if that self-migration never happened for this environment.
+                        Dev2Logger.Warn($"WorkspaceRepository: legacy BinaryFormatter recovery unavailable on this runtime (net9.0+) for '{filePath}' - treating as no legacy data. Expected if this environment already migrated to MessagePack on a net8.0-or-earlier build; otherwise the legacy user map in this file is unrecoverable and a fresh empty map will be created.", GlobalConstants.WarewolfError);
+#else
+                        Dev2Logger.Warn($"WorkspaceRepository: legacy BinaryFormatter deserialization returned no data for '{filePath}' - the file may be corrupt or in an unrecognised format. A fresh empty map will be created.", GlobalConstants.WarewolfError);
+#endif
                     }
                 }
 

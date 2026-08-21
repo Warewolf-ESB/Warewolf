@@ -37,6 +37,15 @@ namespace Dev2.Net6.Compatibility
         public System.Collections.Concurrent.ConcurrentDictionary<string, Guid> DeserializeFile(string binarySerializedFile)
         {
 #if NET9_0_OR_GREATER
+            // Distinct signal (not just a silent null) that legacy binary-formatted recovery is
+            // unavailable on this runtime. This project cannot take a ProjectReference on
+            // Dev2.Diagnostics (Dev2Logger) without creating a circular dependency
+            // (Dev2.Common -> Dev2.Net6.Compatibility -> Dev2.Diagnostics -> Dev2.Common), so this
+            // uses System.Diagnostics.Trace; callers such as WorkspaceRepository.ReadUserMap, which
+            // do have access to Dev2Logger, are expected to log a more prominent/differentiated
+            // message when this returns null.
+            System.Diagnostics.Trace.TraceWarning(
+                $"BinarySerializationHelper.DeserializeFile: legacy BinaryFormatter recovery is unavailable on this runtime (net9.0+) - the file at '{binarySerializedFile}' could not be read and is being treated as unavailable.");
             return null;
 #else
             var localDictionary = new System.Collections.Concurrent.ConcurrentDictionary<string, Guid>();
